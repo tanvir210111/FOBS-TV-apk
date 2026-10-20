@@ -352,6 +352,7 @@ function renderHomeFeeds() {
             rating: '8.9',
             imdbRating: '8.9',
             poster: 'https://thumb.wikimedia.org/wikipedia/en/thumb/a/a7/The_Remarried_Empress.jpg/250px-The_Remarried_Empress.jpg',
+            streamUrl: 'https://kmdl.eu.org/download.aspx?file=xPNWgqNHLkAytmDTGDm4GwYeWwcDY1W6CuG4iWEJnr5f4ErO%2BuuJqEr%2FsO0eehR5&expiry=mOFG9s9rePeaGm0KT6XmdQ%3D%3D&mac=14bb0fe204da1e71cf1de664a37b2a4926fcff9e8bb2fbdb6f40ce79d5beda07',
             type: 'series'
           }
         ];
@@ -565,6 +566,7 @@ function openPlayerById(type, id) {
         releaseDate: 'Nov 04, 2026',
         booked: '0',
         poster: 'https://thumb.wikimedia.org/wikipedia/en/thumb/a/a7/The_Remarried_Empress.jpg/250px-The_Remarried_Empress.jpg',
+        streamUrl: 'https://kmdl.eu.org/download.aspx?file=xPNWgqNHLkAytmDTGDm4GwYeWwcDY1W6CuG4iWEJnr5f4ErO%2BuuJqEr%2FsO0eehR5&expiry=mOFG9s9rePeaGm0KT6XmdQ%3D%3D&mac=14bb0fe204da1e71cf1de664a37b2a4926fcff9e8bb2fbdb6f40ce79d5beda07',
         description: "Set in an opulent imperial court, Empress Navier's life is upended when her husband, Emperor Sovieshu, demands a divorce to make a runaway slave his new empress. Refusing to be cast aside or broken by betrayal, Navier agrees under one condition: approval to immediately remarry Prince Heinrey of the rival Western Kingdom, igniting a high-stakes battle to reclaim her throne and destiny.",
         cast: [
           { name: "Shin Min-a", character: "Empress Navier", photo: "https://image.tmdb.org/t/p/w185/6CjxjYvZBuvbAQTcuoPb8EeVrUI.jpg" },
@@ -578,11 +580,7 @@ function openPlayerById(type, id) {
   }
 
   if (item) {
-    if (type === 'upcoming' || !item.streamUrl) {
-      openDetailsSheet(item);
-    } else {
-      openPlayer(item);
-    }
+    openPlayer(item);
   }
 }
 
@@ -780,6 +778,7 @@ function openDetailsSheet(customMedia = null) {
           <span>${country}</span>
           <span>${genre}</span>
         </div>
+        <button class="details-sheet-play-btn" onclick="closeDetailsSheet(); openPlayer(appState.currentMedia);"><i class="fa-solid fa-play"></i> Watch Now</button>
       </div>
     </div>
 

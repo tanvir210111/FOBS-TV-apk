@@ -1648,6 +1648,28 @@ body {
   gap: 6px;
 }
 
+.details-sheet-play-btn {
+  margin-top: 8px;
+  background: var(--accent-green);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.details-sheet-play-btn:active {
+  transform: scale(0.96);
+  background: var(--accent-green-hover);
+}
+
 /* Info Section (Screenshot 2) */
 .details-section-label {
   font-size: 14px;
