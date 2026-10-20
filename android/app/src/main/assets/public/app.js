@@ -7,7 +7,8 @@ let appState = {
     featured: null,
     movies: [],
     series: [],
-    liveTv: []
+    liveTv: [],
+    upcoming: []
   },
   currentMedia: null,
   currentEpisode: null,
@@ -33,6 +34,7 @@ async function fetchAppContent() {
     if (data.movies) data.movies.forEach(m => m.type = 'movie');
     if (data.series) data.series.forEach(s => s.type = 'series');
     if (data.liveTv) data.liveTv.forEach(t => t.type = 'liveTv');
+    if (data.upcoming) data.upcoming.forEach(u => u.type = u.type || 'series');
     appState.content = data;
     renderAllViews();
   } catch (err) {
@@ -297,14 +299,15 @@ function renderHomeFeeds() {
       <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
         <div class="card-poster-wrap">
           <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-          <span class="card-badge-top">${item.language || 'Hindi'}</span>
+          <span class="card-badge-left">Hindi</span>
+          <span class="card-badge-right">${item.language || 'Korean'}</span>
           ${idx < 3 ? `<div class="card-rank-number">${idx + 1}</div>` : ''}
           <div class="card-play-hover">
             <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
           </div>
         </div>
         <div class="card-title">${item.title}</div>
-        <div class="card-meta">⭐ ${item.rating || '7.5'} • ${isSeries ? (item.seasonsCount ? item.seasonsCount + ' Seasons' : 'Series') : (item.year || '2025')}</div>
+        <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.1'} • ${isSeries ? (item.seasonsCount ? item.seasonsCount + ' Seasons' : 'Series') : (item.year || '2023')}</div>
       </div>
     `;
   }).join('');
@@ -319,48 +322,55 @@ function renderHomeFeeds() {
         <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
           <div class="card-poster-wrap">
             <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-            <span class="card-badge-top">${item.language || 'Hindi'}</span>
+            <span class="card-badge-left">Hindi</span>
+            <span class="card-badge-right">${item.language || 'Korean'}</span>
             <div class="card-play-hover">
               <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
             </div>
           </div>
           <div class="card-title">${item.title}</div>
-          <div class="card-meta">⭐ ${item.rating || '7.5'} • ${item.year || '2025'}</div>
+          <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.1'} • ${item.year || '2023'}</div>
         </div>
       `;
     }).join('');
   }
 
-  // 2. Coming Soon (Matching Screenshot 2)
+  // 2. Coming Soon - The Remarried Empress (2026 Korean TV Series)
   const upcomingContainer = document.getElementById('upcomingList');
   if (upcomingContainer) {
-    const upcomingItems = [
-      ...movies.filter(m => m.year >= '2025'),
-      ...series.filter(s => s.year >= '2025')
-    ];
-    const displayUpcoming = upcomingItems.length ? upcomingItems : [...movies.slice().reverse()];
-    
-    // Realistic release dates & booked counts matching Screenshot 2
-    const sampleDates = [
-      { month: 'Oct', day: '21', booked: '351' },
-      { month: 'Oct', day: '21', booked: '1,327' },
-      { month: 'Oct', day: '22', booked: '39' },
-      { month: 'Oct', day: '25', booked: '842' },
-      { month: 'Nov', day: '04', booked: '1,890' }
-    ];
+    const upcomingItems = (appState.content.upcoming && appState.content.upcoming.length > 0)
+      ? appState.content.upcoming
+      : [
+          {
+            id: 'upcoming-remarried-empress-2026',
+            title: 'The Remarried Empress',
+            language: 'Korean',
+            year: '2026',
+            releaseMonth: 'Nov',
+            releaseDay: '04',
+            booked: '3,480',
+            rating: '8.9',
+            imdbRating: '8.9',
+            poster: 'https://thumb.wikimedia.org/wikipedia/en/thumb/a/a7/The_Remarried_Empress.jpg/250px-The_Remarried_Empress.jpg',
+            type: 'series'
+          }
+        ];
 
-    upcomingContainer.innerHTML = displayUpcoming.map((item, idx) => {
-      const isSeries = !!item.episodes || item.type === 'series';
-      const meta = sampleDates[idx % sampleDates.length];
+    upcomingContainer.innerHTML = upcomingItems.map(item => {
+      const month = item.releaseMonth || 'Nov';
+      const day = item.releaseDay || '04';
+      const booked = item.booked || '3,480';
       return `
-        <div class="coming-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
+        <div class="coming-card" onclick='openPlayerById("upcoming", "${item.id}")'>
           <div class="coming-poster-wrap">
             <img src="${item.poster}" alt="${item.title}" class="coming-poster-img" loading="lazy">
-            <div class="coming-date-badge">${meta.month}<span>${meta.day}</span></div>
-            <div class="coming-bell-btn" onclick="event.stopPropagation(); showToast('Reminder set for ${item.title}!')">
+            <span class="card-badge-left">Hindi</span>
+            <span class="card-badge-right">${item.language || 'Korean'}</span>
+            <div class="coming-date-badge">${month}<span>${day}</span></div>
+            <div class="coming-bell-btn" onclick="event.stopPropagation(); showToast('Reminder set for ${item.title} (Premiere Nov 04, 2026)!')">
               <i class="fa-regular fa-bell"></i>
             </div>
-            <div class="coming-booked-tag">${meta.booked} booked</div>
+            <div class="coming-booked-tag">${booked} booked</div>
           </div>
           <div class="coming-info-box">
             <div class="coming-title" title="${item.title}">${item.title}</div>
@@ -377,13 +387,14 @@ function renderHomeFeeds() {
       <div class="media-card" onclick='openPlayerById("movie", "${item.id}")'>
         <div class="card-poster-wrap">
           <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-          <span class="card-badge-top">${item.language || 'Hindi'}</span>
+          <span class="card-badge-left">Hindi</span>
+          <span class="card-badge-right">${item.language || 'Korean'}</span>
           <div class="card-play-hover">
             <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
           </div>
         </div>
         <div class="card-title">${item.title}</div>
-        <div class="card-meta">${item.genre}</div>
+        <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.1'} • ${item.genre ? item.genre.split(',')[0] : 'Drama'}</div>
       </div>
     `).join('');
   }
@@ -395,13 +406,14 @@ function renderHomeFeeds() {
       <div class="media-card" onclick='openPlayerById("series", "${item.id}")'>
         <div class="card-poster-wrap">
           <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-          <span class="card-badge-top">${item.language || 'Hindi'}</span>
+          <span class="card-badge-left">Hindi</span>
+          <span class="card-badge-right">${item.language || 'Korean'}</span>
           <div class="card-play-hover">
             <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
           </div>
         </div>
         <div class="card-title">${item.title}</div>
-        <div class="card-meta">${item.seasonsCount || 1} Seasons • ${item.episodes ? item.episodes.length : 0} Eps</div>
+        <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.2'} • ${item.seasonsCount || 1} Seasons</div>
       </div>
     `).join('');
   }
@@ -433,13 +445,14 @@ function renderAllMovies() {
     <div class="media-card" onclick='openPlayerById("movie", "${item.id}")'>
       <div class="card-poster-wrap">
         <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-        <span class="card-badge-top">${item.language || 'Hindi'}</span>
+        <span class="card-badge-left">Hindi</span>
+        <span class="card-badge-right">${item.language || 'Korean'}</span>
         <div class="card-play-hover">
           <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
         </div>
       </div>
       <div class="card-title">${item.title}</div>
-      <div class="card-meta">⭐ ${item.rating || '7.5'} • ${item.year || '2025'}</div>
+      <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.1'} • ${item.year || '2023'}</div>
     </div>
   `).join('');
 }
@@ -455,13 +468,14 @@ function renderAllSeries() {
     <div class="media-card" onclick='openPlayerById("series", "${item.id}")'>
       <div class="card-poster-wrap">
         <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-        <span class="card-badge-top">${item.language || 'Hindi'}</span>
+        <span class="card-badge-left">Hindi</span>
+        <span class="card-badge-right">${item.language || 'Korean'}</span>
         <div class="card-play-hover">
           <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
         </div>
       </div>
       <div class="card-title">${item.title}</div>
-      <div class="card-meta">${item.seasonsCount || 1} Seasons • ${item.episodes ? item.episodes.length : 0} Eps</div>
+      <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.2'} • ${item.seasonsCount || 1} Seasons</div>
     </div>
   `).join('');
 }
@@ -536,9 +550,40 @@ function openPlayerById(type, id) {
   } else if (type === 'series') {
     item = appState.content.series.find(s => s.id === id);
     if (item) item.type = 'series';
+  } else if (type === 'upcoming') {
+    item = (appState.content.upcoming || []).find(u => u.id === id);
+    if (!item && id === 'upcoming-remarried-empress-2026') {
+      item = {
+        id: 'upcoming-remarried-empress-2026',
+        title: 'The Remarried Empress',
+        originalTitle: '재혼 황후',
+        language: 'Korean',
+        year: '2026',
+        country: 'Korea',
+        genre: 'Romance, Historical, Drama, Fantasy',
+        rating: '8.9',
+        imdbRating: '8.9',
+        releaseDate: 'Nov 04, 2026',
+        booked: '3,480',
+        poster: 'https://thumb.wikimedia.org/wikipedia/en/thumb/a/a7/The_Remarried_Empress.jpg/250px-The_Remarried_Empress.jpg',
+        description: "Set in an opulent imperial court, Empress Navier's life is upended when her husband, Emperor Sovieshu, demands a divorce to make a runaway slave his new empress. Refusing to be cast aside or broken by betrayal, Navier agrees under one condition: approval to immediately remarry Prince Heinrey of the rival Western Kingdom, igniting a high-stakes battle to reclaim her throne and destiny.",
+        cast: [
+          { name: "Shin Min-a", character: "Empress Navier", photo: "https://image.tmdb.org/t/p/w185/6CjxjYvZBuvbAQTcuoPb8EeVrUI.jpg" },
+          { name: "Ju Ji-hoon", character: "Emperor Sovieshu", photo: "https://image.tmdb.org/t/p/w185/tI0ANQSwcOBfQUeHgfcwn7VmHRO.jpg" },
+          { name: "Lee Jong-suk", character: "Prince Heinrey", photo: "https://image.tmdb.org/t/p/w185/v8N9oQpC115G7kEa3nIq6v0o5U6.jpg" },
+          { name: "Lee Se-young", character: "Rashta", photo: "https://image.tmdb.org/t/p/w185/hKF1uh0iEfuZlBE79CXPw415qyn.jpg" }
+        ],
+        type: 'series'
+      };
+    }
   }
+
   if (item) {
-    openPlayer(item);
+    if (type === 'upcoming' || !item.streamUrl) {
+      openDetailsSheet(item);
+    } else {
+      openPlayer(item);
+    }
   }
 }
 
@@ -556,9 +601,10 @@ function openLiveTvPlayer(id) {
     country: 'Live Stream',
     genre: channel.category,
     rating: '9.9',
+    imdbRating: '9.9',
     streamUrl: channel.streamUrl,
     poster: channel.logo,
-    audioTracks: ['Original Audio']
+    audioTracks: ['Hindi dub']
   };
 
   openPlayer(mockMedia);
@@ -573,42 +619,37 @@ function openPlayer(media, episodeIndex = 0) {
 
   const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-'));
 
-  // Set Details
-  const titleText = `${media.title} [${media.language || 'Hindi'}][${media.tag || 'HD'}]`;
+  // Set Details matching Screenshot 1: "12.12: The Day [Korean][HD] Info >"
+  const titleText = `${media.title} [${media.language || 'Korean'}][${media.tag || 'HD'}]`;
   document.getElementById('playerMediaTitle').innerText = titleText;
   
-  const seasonText = isSeries ? `${media.seasonsCount || 1} seasons` : (media.duration || '2h 15m');
+  const seasonText = isSeries ? `${media.seasonsCount || 1} seasons` : (media.duration || '2h 21m');
+  const ratingText = media.imdbRating || media.rating || '8.1';
 
   document.getElementById('playerMediaMeta').innerHTML = `
     <i class="fa-solid fa-tv"></i>
-    <span class="star-rating"><i class="fa-solid fa-star"></i> ${media.rating || '7.5'}</span>
-    <span>${media.year || '2026'}</span>
-    <span>${media.country || 'India'}</span>
-    <span>${media.genre || 'Action'}</span>
+    <span class="star-rating"><i class="fa-solid fa-star"></i> ${ratingText}</span>
+    <span>${media.year || '2023'}</span>
+    <span>${media.country || 'Korea'}</span>
+    <span>${media.genre ? media.genre.split(',')[0].trim() : 'Drama'}</span>
     <span id="playerSeasonTag">${seasonText}</span>
   `;
 
-  // Dub/Audio dropdown text
-  const dubText = (media.audioTracks && media.audioTracks[0]) || 'Hindi dub';
-  appState.currentAudioTrack = dubText;
-  document.getElementById('currentDubText').innerText = dubText;
+  // Dub/Audio dropdown text (Always Hindi dub as requested)
+  appState.currentAudioTrack = 'Hindi dub';
+  document.getElementById('currentDubText').innerText = 'Hindi dub';
 
-  // Handle Series vs Movie UI
+  // Handle Series vs Movie UI (Green movie resource button removed completely)
   const seriesEpisodesWrapper = document.getElementById('seriesEpisodesWrapper');
-  const movieResourceRow = document.getElementById('movieResourceRow');
 
   if (isSeries && media.episodes && media.episodes.length > 0) {
     if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'block';
-    if (movieResourceRow) movieResourceRow.style.display = 'none';
 
     appState.currentEpisode = media.episodes[episodeIndex] || media.episodes[0];
     renderEpisodePills(media.episodes, episodeIndex);
     playStreamUrl(appState.currentEpisode ? appState.currentEpisode.streamUrl : null);
   } else {
     if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'none';
-    if (movieResourceRow) movieResourceRow.style.display = 'block';
-    const movieTitleEl = document.getElementById('movieResourceTitle');
-    if (movieTitleEl) movieTitleEl.innerText = titleText;
     appState.currentEpisode = null;
     playStreamUrl(media.streamUrl || media.driveUrl);
   }
@@ -702,6 +743,77 @@ function closePlayer() {
   overlay.classList.remove('open');
 }
 
+// Open "More details" Sheet Modal (Screenshot 2 Match with TMDB Data)
+function openDetailsSheet(customMedia = null) {
+  const media = customMedia || appState.currentMedia;
+  if (!media) return;
+
+  const overlay = document.getElementById('moreDetailsOverlay');
+  const content = document.getElementById('detailsSheetContent');
+  if (!overlay || !content) return;
+
+  const defaultCast = [
+    { name: "Hwang Jung-min", character: "Jeon Doo-gwang", photo: "https://image.tmdb.org/t/p/w185/hKF1uh0iEfuZlBE79CXPw415qyn.jpg" },
+    { name: "Jung Woo-sung", character: "Lee Tae-shin", photo: "https://image.tmdb.org/t/p/w185/tI0ANQSwcOBfQUeHgfcwn7VmHRO.jpg" },
+    { name: "Lee Sung-min", character: "Jung Sang-ho", photo: "https://image.tmdb.org/t/p/w185/6CjxjYvZBuvbAQTcuoPb8EeVrUI.jpg" },
+    { name: "Park Hae-joon", character: "Roh Tae-geon", photo: "https://image.tmdb.org/t/p/w185/v8N9oQpC115G7kEa3nIq6v0o5U6.jpg" },
+    { name: "Kim Sung-kyun", character: "Kim Jun-yeop", photo: "https://image.tmdb.org/t/p/w185/hKF1uh0iEfuZlBE79CXPw415qyn.jpg" }
+  ];
+
+  const cast = (media.cast && media.cast.length > 0) ? media.cast : defaultCast;
+  const rating = media.imdbRating || media.rating || '8.1';
+  const genre = media.genre ? media.genre.split(',')[0].trim() : 'Drama';
+  const country = media.country || 'Korea';
+  const year = media.year || '2023';
+
+  content.innerHTML = `
+    <div class="details-media-head">
+      <div class="details-poster-wrap">
+        <img src="${media.poster}" alt="${media.title}" class="details-media-poster">
+        <div class="poster-zoom-btn"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="details-media-meta-wrap">
+        <div class="details-media-title">${media.title} [Hindi]</div>
+        <div class="details-meta-line">
+          <i class="fa-solid fa-film"></i>
+          <span class="star-rating"><i class="fa-solid fa-star"></i> ${rating}</span>
+          <span>${year}</span>
+          <span>${country}</span>
+          <span>${genre}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="details-section-label">Info</div>
+    <div class="details-overview-text">
+      ${media.description || 'Full movie & TV series details fetched from TMDB database.'}
+    </div>
+
+    <div class="details-section-label">Starring (${cast.length})</div>
+    <div class="starring-scroll-row">
+      ${cast.map(c => `
+        <div class="cast-card">
+          <div class="cast-photo-wrap">
+            <img src="${c.photo}" alt="${c.name}" class="cast-photo-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'">
+          </div>
+          <div class="cast-actor-name">${c.name}</div>
+          <div class="cast-character-name">${c.character || 'Extra'}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  overlay.classList.add('open');
+}
+
+function closeDetailsSheet(e) {
+  if (e && e.target !== document.getElementById('moreDetailsOverlay') && !e.target.closest('.sheet-close-btn')) {
+    return;
+  }
+  const overlay = document.getElementById('moreDetailsOverlay');
+  if (overlay) overlay.classList.remove('open');
+}
+
 // Render "For You" Recommendations
 function renderForYouRecommendations() {
   const container = document.getElementById('forYouGrid');
@@ -713,12 +825,14 @@ function renderForYouRecommendations() {
     <div class="media-card" onclick='openPlayerById("${item.type || 'movie'}", "${item.id}")'>
       <div class="card-poster-wrap">
         <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-        <span class="card-badge-top">${item.language || 'Hindi'}</span>
+        <span class="card-badge-left">Hindi</span>
+        <span class="card-badge-right">${item.language || 'Korean'}</span>
         <div class="card-play-hover">
           <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
         </div>
       </div>
       <div class="card-title">${item.title}</div>
+      <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.1'}</div>
     </div>
   `).join('');
 }
@@ -867,25 +981,27 @@ function handleSearch() {
   // Switch to movie tab to show results
   switchMainTab('movie');
 
-  const filteredMovies = (appState.content.movies || []).filter(m => 
+  const allItems = [...(appState.content.movies || []), ...(appState.content.series || [])];
+  const filtered = allItems.filter(m => 
     m.title.toLowerCase().includes(query) ||
     (m.genre && m.genre.toLowerCase().includes(query)) ||
     (m.language && m.language.toLowerCase().includes(query))
   );
 
-  document.getElementById('movieCountBadge').innerText = `${filteredMovies.length} Results`;
+  document.getElementById('movieCountBadge').innerText = `${filtered.length} Results`;
   const grid = document.getElementById('allMoviesGrid');
-  if (filteredMovies.length === 0) {
+  if (filtered.length === 0) {
     grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px 10px; color: var(--text-muted);">No movies or series found matching "${query}".</div>`;
   } else {
-    grid.innerHTML = filteredMovies.map(item => `
-      <div class="media-card" onclick='openPlayerById("movie", "${item.id}")'>
+    grid.innerHTML = filtered.map(item => `
+      <div class="media-card" onclick='openPlayerById("${item.type || 'movie'}", "${item.id}")'>
         <div class="card-poster-wrap">
           <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-          <span class="card-badge-top">${item.language || 'Hindi'}</span>
+          <span class="card-badge-left">Hindi</span>
+          <span class="card-badge-right">${item.language || 'Korean'}</span>
         </div>
         <div class="card-title">${item.title}</div>
-        <div class="card-meta">⭐ ${item.rating || '7.5'}</div>
+        <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.1'}</div>
       </div>
     `).join('');
   }

@@ -660,7 +660,8 @@ body {
   transition: transform 0.3s ease;
 }
 
-.card-badge-top {
+.card-badge-top,
+.card-badge-right {
   position: absolute;
   top: 6px;
   right: 6px;
@@ -672,6 +673,22 @@ body {
   padding: 1px 5px;
   border-radius: 4px;
   backdrop-filter: blur(4px);
+  z-index: 2;
+}
+
+.card-badge-left {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: rgba(0, 150, 75, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+  z-index: 2;
 }
 
 /* Big Stylized Rank Numbers (1, 2, 3) like Screenshot 1 */
@@ -1217,15 +1234,10 @@ body {
   font-weight: 700;
 }
 
-/* Movie Resource Button */
+/* Movie Resource Button (Removed as requested) */
 .movie-resource-row {
-  margin-bottom: 10px;
+  display: none !important;
 }
-
-.movie-stream-pill {
-  width: 100%;
-  background: #142e23;
-  border: 1px solid #1f513d;
   color: #27d988;
   padding: 9px 12px;
   border-radius: 6px;
@@ -1582,13 +1594,36 @@ body {
   margin-bottom: 16px;
 }
 
-.details-media-poster {
+.details-poster-wrap {
+  position: relative;
   width: 58px;
   height: 80px;
+  flex-shrink: 0;
+}
+
+.details-media-poster {
+  width: 100%;
+  height: 100%;
   border-radius: 6px;
   object-fit: cover;
-  flex-shrink: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.poster-zoom-btn {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(2px);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8.5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .details-media-meta-wrap {

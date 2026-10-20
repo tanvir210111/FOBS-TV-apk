@@ -83,6 +83,7 @@ app.get('/api/content', (req, res) => {
   if (data.movies) data.movies.forEach(m => m.type = 'movie');
   if (data.series) data.series.forEach(s => s.type = 'series');
   if (data.liveTv) data.liveTv.forEach(t => t.type = 'liveTv');
+  if (data.upcoming) data.upcoming.forEach(u => u.type = u.type || 'series');
   res.json(data);
 });
 
