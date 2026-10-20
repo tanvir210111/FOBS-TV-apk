@@ -260,9 +260,9 @@
             <i class="fa-solid fa-download"></i>
             <span>Download</span>
           </button>
-          <button class="action-strip-btn" onclick="playInExternalApp()" title="Play in MX Player or VLC">
-            <i class="fa-solid fa-circle-play" style="color: var(--accent-green);"></i>
-            <span>MX / VLC</span>
+          <button class="action-strip-btn" onclick="openDownloadsView()" title="View downloads">
+            <i class="fa-solid fa-folder-arrow-down"></i>
+            <span>View downloads</span>
           </button>
         </div>
 
@@ -421,6 +421,30 @@
             </div>
             <div class="comm-action-btn">Join <i class="fa-solid fa-chevron-right"></i></div>
           </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- DOWNLOADS MODAL SHEET (VIEW DOWNLOADS) -->
+    <!-- ============================================== -->
+    <div class="bottom-sheet-overlay" id="downloadsOverlay" onclick="closeDownloadsView(event)">
+      <div class="community-sheet" onclick="event.stopPropagation()">
+        <div class="community-sheet-header">
+          <div class="community-header-title">
+            <div class="community-badge-icon" style="background: linear-gradient(135deg, #00875a 0%, #27d988 100%); color: #fff;">
+              <i class="fa-solid fa-download"></i>
+            </div>
+            <div>
+              <h3>Downloads Manager</h3>
+              <p id="downloadsSubText">Your saved movies & series</p>
+            </div>
+          </div>
+          <button class="sheet-close-btn" onclick="closeDownloadsView()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="downloads-list" id="downloadsListContainer">
+          <!-- Dynamic Content Rendered in app.js -->
         </div>
       </div>
     </div>

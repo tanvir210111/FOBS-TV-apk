@@ -745,6 +745,17 @@ function triggerDownload() {
 function downloadMedia(url, title) {
   if (!url) return;
   showToast(`Starting download: ${title}...`);
+
+  try {
+    const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
+    downloads.unshift({
+      title,
+      url,
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    });
+    localStorage.setItem('fobs_downloads', JSON.stringify(downloads.slice(0, 25)));
+  } catch (e) {}
+
   const downloadUrl = `/api/download?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`;
   
   const link = document.createElement('a');
@@ -755,25 +766,54 @@ function downloadMedia(url, title) {
   document.body.removeChild(link);
 }
 
-// Play Video in External Players (MX Player, VLC, Samsung Video, etc.)
-function playInExternalApp() {
-  const currentStream = appState.currentEpisode ? appState.currentEpisode.streamUrl : (appState.currentMedia?.streamUrl || appState.currentMedia?.driveUrl);
-  if (!currentStream) {
-    showToast('No video stream available to play');
+// Downloads View Management
+function openDownloadsView() {
+  const overlay = document.getElementById('downloadsOverlay');
+  const container = document.getElementById('downloadsListContainer');
+  const subText = document.getElementById('downloadsSubText');
+
+  const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
+
+  if (downloads.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 30px 10px; color: var(--text-muted);">
+        <i class="fa-solid fa-cloud-arrow-down" style="font-size: 38px; color: #4facfe; margin-bottom: 12px; display: block;"></i>
+        <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px;">No Downloads Yet</div>
+        <p style="font-size: 12px; line-height: 1.5; color: #9ea3b5; max-width: 260px; margin: 0 auto;">
+          Click the "Download" button on any movie or episode to save it directly to your phone storage!
+        </p>
+      </div>
+    `;
+    subText.innerText = '0 saved files';
+  } else {
+    subText.innerText = `${downloads.length} saved file${downloads.length > 1 ? 's' : ''}`;
+    container.innerHTML = downloads.map((item, idx) => `
+      <div class="community-card" style="align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+          <div class="comm-icon-box" style="background: rgba(0, 242, 254, 0.15); color: #00f2fe;">
+            <i class="fa-solid fa-file-video"></i>
+          </div>
+          <div class="comm-info">
+            <div class="comm-name" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px;">${item.title}</div>
+            <div class="comm-desc">Downloaded on ${item.date}</div>
+          </div>
+        </div>
+        <button class="comm-action-btn" onclick="downloadMedia('${item.url}', '${item.title}')" style="cursor: pointer;">
+          <i class="fa-solid fa-download"></i>
+        </button>
+      </div>
+    `).join('');
+  }
+
+  if (overlay) overlay.classList.add('open');
+}
+
+function closeDownloadsView(e) {
+  if (e && e.target !== document.getElementById('downloadsOverlay') && !e.target.closest('.sheet-close-btn')) {
     return;
   }
-
-  showToast('Opening video in external player...');
-
-  const rawStream = currentStream.startsWith('http') ? currentStream : `${window.location.origin}${currentStream}`;
-  const proxyUrl = `${window.location.origin}/api/stream?url=${encodeURIComponent(rawStream)}`;
-  const intentUrl = `intent:${proxyUrl}#Intent;type=video/*;action=android.intent.action.VIEW;end`;
-
-  try {
-    window.location.href = intentUrl;
-  } catch (e) {
-    window.open(proxyUrl, '_blank');
-  }
+  const overlay = document.getElementById('downloadsOverlay');
+  if (overlay) overlay.classList.remove('open');
 }
 
 // Language / Dubbing Bottom Sheet Modal (Screenshot 2 & 5)

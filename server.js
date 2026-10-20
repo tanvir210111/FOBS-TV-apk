@@ -161,8 +161,8 @@ app.get('/api/stream', async (req, res) => {
     });
 
     let contentType = response.headers['content-type'];
-    if (!contentType || contentType === 'application/octet-stream' || contentType.includes('matroska')) {
-      contentType = 'video/mp4';
+    if (!contentType || contentType === 'application/octet-stream') {
+      contentType = (targetUrl && (targetUrl.includes('.mkv') || targetUrl.includes('matroska'))) ? 'video/x-matroska' : 'video/mp4';
     }
 
     const headersToSend = {
