@@ -76,6 +76,26 @@ public class MainActivity extends BridgeActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (backPressedCallback != null && backPressedCallback.isEnabled()) {
+            backPressedCallback.handleOnBackPressed();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, android.view.KeyEvent event) {
+        if (keyCode == android.view.KeyEvent.KEYCODE_BACK) {
+            if (backPressedCallback != null && backPressedCallback.isEnabled()) {
+                backPressedCallback.handleOnBackPressed();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         try {

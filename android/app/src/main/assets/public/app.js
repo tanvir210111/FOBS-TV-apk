@@ -24,6 +24,7 @@ async function initApp() {
   await fetchAppContent();
   setupVideoListeners();
   setupHeroSwipeGestures();
+  setupPlayerSwipeToClose();
 }
 
 // Fetch Content from Backend
@@ -279,6 +280,60 @@ function setupHeroSwipeGestures() {
     setTimeout(() => { isSwipingHero = false; }, 200);
     startHeroAutoSlide();
   });
+}
+
+// Touch & Swipe Gestures to close player (Slide back horizontally or swipe down)
+function setupPlayerSwipeToClose() {
+  const player = document.getElementById('playerOverlay');
+  if (!player) return;
+
+  let startX = 0;
+  let startY = 0;
+  let deltaX = 0;
+  let deltaY = 0;
+  let isTouching = false;
+
+  player.addEventListener('touchstart', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.closest('input')) return;
+    const t = e.touches[0];
+    startX = t.clientX;
+    startY = t.clientY;
+    deltaX = 0;
+    deltaY = 0;
+    isTouching = true;
+  }, { passive: true });
+
+  player.addEventListener('touchmove', (e) => {
+    if (!isTouching) return;
+    const t = e.touches[0];
+    deltaX = t.clientX - startX;
+    deltaY = t.clientY - startY;
+  }, { passive: true });
+
+  player.addEventListener('touchend', () => {
+    if (!isTouching) return;
+    isTouching = false;
+
+    // 1. Slide from left to right (Edge or screen swipe back)
+    if (deltaX > 60 && Math.abs(deltaX) > Math.abs(deltaY) * 1.1) {
+      closePlayer();
+      return;
+    }
+
+    // 2. Slide from right edge to left (Android right-edge back gesture on screen)
+    if (startX > window.innerWidth - 65 && deltaX < -50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.1) {
+      closePlayer();
+      return;
+    }
+
+    // 3. Swipe down to dismiss (when scrolled at top, like YouTube)
+    const scrollContainer = player.querySelector('.player-content-scroll');
+    const isAtTop = !scrollContainer || scrollContainer.scrollTop <= 5;
+    if (deltaY > 90 && Math.abs(deltaY) > Math.abs(deltaX) * 1.2 && isAtTop) {
+      closePlayer();
+      return;
+    }
+  }, { passive: true });
 }
 
 // Render Home Carousels
