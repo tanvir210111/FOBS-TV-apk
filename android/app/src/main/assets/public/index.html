@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>FOBS TV - Live Streaming & Download App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Mobile Frame Container -->
+  <div class="app-container">
+
+    <!-- Top Status Bar & App Header -->
+    <header class="app-header">
+      <div class="header-top-row">
+        <div class="brand-logo" onclick="switchMainTab('home')">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4.5L19 12L4 19.5V4.5Z" fill="url(#logo_grad)" />
+              <defs>
+                <linearGradient id="logo_grad" x1="4" y1="4.5" x2="19" y2="19.5" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#00F2FE" />
+                  <stop offset="1" stop-color="#4FACFE" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <span class="brand-name">FOBS TV</span>
+        </div>
+
+        <div class="search-bar-wrapper">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="searchInput" placeholder="Type movie or series name..." autocomplete="off">
+          <button class="search-btn" onclick="handleSearch()">Search</button>
+        </div>
+      </div>
+
+      <!-- 4 Main Navigation Tabs: Home, Movie, Series, Live TV -->
+      <nav class="main-tabs-nav">
+        <button class="nav-tab-pill active" data-tab="home" onclick="switchMainTab('home')">
+          <i class="fa-solid fa-house"></i> Home
+        </button>
+        <button class="nav-tab-pill" data-tab="movie" onclick="switchMainTab('movie')">
+          <i class="fa-solid fa-film"></i> Movie
+        </button>
+        <button class="nav-tab-pill" data-tab="series" onclick="switchMainTab('series')">
+          <i class="fa-solid fa-tv"></i> Series
+        </button>
+        <button class="nav-tab-pill" data-tab="livetv" onclick="switchMainTab('livetv')">
+          <i class="fa-solid fa-satellite-dish"></i> Live TV
+        </button>
+      </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content" id="mainContent">
+
+      <!-- HOME TAB VIEW -->
+      <section id="homeView" class="tab-view active">
+        <!-- Hero Spotlight Banner with 4s 75/25 Auto-Slider (Matching Screenshot 3) -->
+        <div class="hero-slider-container" id="heroSliderContainer">
+          <div class="hero-backdrop-track" id="heroBackdropTrack"></div>
+          <div class="hero-gradient-overlay"></div>
+
+          <!-- Bottom 75% Active + 25% Next Peek Slider Track -->
+          <div class="hero-bottom-slider">
+            <div class="hero-cards-track" id="heroCardsTrack"></div>
+          </div>
+        </div>
+
+        <!-- Section: Trending Movies & Series (with 1, 2, 3 Rank Overlay) -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title">Trending Movies & Series</h2>
+            <span class="section-more" onclick="switchMainTab('movie')">All <i
+                class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="trendingList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Latest Movies & Series -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title">Latest Movies & Series</h2>
+            <span class="section-more" onclick="switchMainTab('movie')">All <i
+                class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="latestList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Coming Soon (Matching Screenshot 2) -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title">Coming Soon</h2>
+            <span class="section-more" onclick="switchMainTab('movie')">All <i
+                class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="upcomingList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Movies -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title">Movies</h2>
+            <span class="section-more" onclick="switchMainTab('movie')">All <i
+                class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="homeMoviesList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Series -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title">Series</h2>
+            <span class="section-more" onclick="switchMainTab('series')">All <i
+                class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="homeSeriesList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Live TV -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title">Live TV</h2>
+            <span class="section-more" onclick="switchMainTab('livetv')">All <i
+                class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="homeLiveTvList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- MOVIE TAB VIEW -->
+      <section id="movieView" class="tab-view">
+        <div class="section-heading-bar">
+          <h2>All Movies</h2>
+          <span class="count-badge" id="movieCountBadge">0 Movies</span>
+        </div>
+        <div class="grid-3-col" id="allMoviesGrid">
+          <!-- Populated via JS -->
+        </div>
+      </section>
+
+      <!-- SERIES TAB VIEW -->
+      <section id="seriesView" class="tab-view">
+        <div class="section-heading-bar">
+          <h2>Web Series & Shows</h2>
+          <span class="count-badge" id="seriesCountBadge">0 Shows</span>
+        </div>
+        <div class="grid-3-col" id="allSeriesGrid">
+          <!-- Populated via JS -->
+        </div>
+      </section>
+
+      <!-- LIVE TV TAB VIEW -->
+      <section id="livetvView" class="tab-view">
+        <div class="section-heading-bar">
+          <h2>Live TV Channels</h2>
+          <span class="count-badge pulse-badge"><span class="pulse-dot"></span> LIVE NOW</span>
+        </div>
+        <div class="live-tv-grid" id="liveTvGrid">
+          <!-- Populated via JS -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-tab-bar">
+      <button class="bottom-tab-item active" data-tab="home" onclick="switchMainTab('home')">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </button>
+      <button class="bottom-tab-item" data-tab="movie" onclick="switchMainTab('movie')">
+        <i class="fa-solid fa-film"></i>
+        <span>Movie</span>
+      </button>
+      <button class="bottom-tab-item" data-tab="series" onclick="switchMainTab('series')">
+        <i class="fa-solid fa-tv"></i>
+        <span>Series</span>
+      </button>
+      <button class="bottom-tab-item" data-tab="livetv" onclick="switchMainTab('livetv')">
+        <i class="fa-solid fa-tower-broadcast"></i>
+        <span>Live TV</span>
+      </button>
+    </nav>
+
+    <!-- ============================================== -->
+    <!-- PLAYER & DETAILS VIEW (SCREENSHOT 2,3,4,6,7 MATCH) -->
+    <!-- ============================================== -->
+    <div class="player-view-overlay" id="playerOverlay">
+      <!-- Player Top Bar Overlay -->
+      <div class="player-top-header">
+        <button class="player-nav-btn" onclick="closePlayer()">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <div class="player-header-actions">
+          <button class="player-icon-btn" title="Cast to TV"><i class="fa-solid fa-tv"></i></button>
+          <button class="player-icon-btn" title="Help"><i class="fa-regular fa-circle-question"></i></button>
+        </div>
+      </div>
+
+      <!-- Embedded Video Player -->
+      <div class="video-container" id="videoContainer">
+        <video id="mainVideoPlayer" playsinline controls preload="metadata"></video>
+        <div class="video-loader" id="videoLoader">
+          <div class="spinner"></div>
+          <div class="loader-text">Loading...</div>
+        </div>
+      </div>
+
+      <!-- Details & Actions Section -->
+      <div class="player-content-scroll">
+        <div class="player-title-row" onclick="openDetailsSheet()">
+          <div class="player-title-info">
+            <div class="player-title-inline">
+              <h2 id="playerMediaTitle">Epic - First Semester [Hindi]</h2>
+              <span class="info-tag-btn">Info <i class="fa-solid fa-chevron-right"></i></span>
+            </div>
+            <div class="media-meta-line" id="playerMediaMeta">
+              <i class="fa-solid fa-film"></i>
+              <span class="star-rating"><i class="fa-solid fa-star"></i> 5.3</span>
+              <span>2026</span>
+              <span>India</span>
+              <span>Comedy</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Action Buttons -->
+        <div class="action-buttons-strip">
+          <button class="action-strip-btn" onclick="toggleAddToList()">
+            <i class="fa-solid fa-plus"></i>
+            <span>Add to list</span>
+          </button>
+          <button class="action-strip-btn" onclick="shareMedia()">
+            <i class="fa-solid fa-share-nodes"></i>
+            <span>Share</span>
+          </button>
+          <button class="action-strip-btn" onclick="triggerDownload()">
+            <i class="fa-solid fa-download"></i>
+            <span>Download</span>
+          </button>
+          <button class="action-strip-btn">
+            <i class="fa-regular fa-eye"></i>
+            <span>View</span>
+          </button>
+        </div>
+
+        <!-- Resources Section with Dub Selector -->
+        <div class="resources-section">
+          <div class="resources-meta">
+            <span>Resources</span>
+            <span class="uploader-tag">Uploaded by FOBS TV</span>
+          </div>
+
+          <div class="dub-selector-row">
+            <button class="dub-dropdown-btn" onclick="openLanguageSheet()">
+              <span id="currentDubText">Hindi dub</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </div>
+
+          <!-- Series Episode Scrollable Pills -->
+          <div class="series-episodes-wrapper" id="seriesEpisodesWrapper">
+            <div class="episodes-scroll-row" id="episodesListRow">
+              <button class="ep-pill ep-all">All</button>
+              <button class="ep-pill active">01</button>
+              <button class="ep-pill">02</button>
+              <button class="ep-pill">03</button>
+              <button class="ep-pill">04</button>
+            </div>
+          </div>
+
+          <!-- For Movies: Single Stream Resource Card -->
+          <div class="movie-resource-row" id="movieResourceRow">
+            <button class="movie-stream-pill active" id="movieResourceBtn">
+              <span id="movieResourceTitle">Nayi Naveli [Hindi][CAM]</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Floating / Prominent Cyan-Green Download Button (Matching reference) -->
+        <div class="floating-download-container">
+          <button class="cyan-download-pill" onclick="triggerDownload()">
+            <i class="fa-solid fa-download"></i>
+            <span>Download</span>
+          </button>
+        </div>
+
+        <!-- Tabs: For You vs Comments -->
+        <div class="sub-tabs-header">
+          <button class="sub-tab-btn active" id="forYouTabBtn" onclick="switchSubTab('foryou')">For you</button>
+          <button class="sub-tab-btn" id="commentsTabBtn" onclick="switchSubTab('comments')">Comments (99+)</button>
+        </div>
+
+        <div id="forYouView" class="sub-tab-content active">
+          <div class="grid-3-col" id="forYouGrid">
+            <!-- 3-column recommendations -->
+          </div>
+        </div>
+
+        <div id="commentsView" class="sub-tab-content">
+          <div class="comments-container">
+            <div class="comment-item">
+              <div class="comment-avatar">R</div>
+              <div class="comment-body">
+                <div class="comment-user">Rahul Roy <span class="comment-time">10m ago</span></div>
+                <div class="comment-text">Quality is super clear! Google Drive stream smoothly buffering without any
+                  lag! 🔥</div>
+              </div>
+            </div>
+            <div class="comment-item">
+              <div class="comment-avatar">A</div>
+              <div class="comment-body">
+                <div class="comment-user">Anik Sen <span class="comment-time">1h ago</span></div>
+                <div class="comment-text">Downloaded in 2 minutes! Thanks for Hindi dubbing option.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- MORE DETAILS MODAL (SCREENSHOT 2 MATCH) -->
+    <!-- ============================================== -->
+    <div class="bottom-sheet-overlay" id="moreDetailsOverlay" onclick="closeDetailsSheet(event)">
+      <div class="details-bottom-sheet" onclick="event.stopPropagation()">
+        <div class="details-sheet-header">
+          <h3>More details</h3>
+          <button class="sheet-close-btn" onclick="closeDetailsSheet()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="details-sheet-scroll" id="detailsSheetContent">
+          <!-- Dynamic TMDB Details & Cast -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- LANGUAGE / AUDIO TRACK BOTTOM SHEET MODAL -->
+    <!-- ============================================== -->
+    <div class="bottom-sheet-overlay" id="languageSheetOverlay" onclick="closeLanguageSheet(event)">
+      <div class="bottom-sheet-container" onclick="event.stopPropagation()">
+        <div class="sheet-header">
+          <h3>Select language</h3>
+          <button class="sheet-close-btn" onclick="closeLanguageSheet()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="sheet-options-list" id="languageOptionsList">
+          <button class="sheet-option-btn" onclick="selectLanguage('Original Audio')">Original Audio</button>
+          <button class="sheet-option-btn" onclick="selectLanguage('English dub')">English dub</button>
+          <button class="sheet-option-btn selected" onclick="selectLanguage('Hindi dub')">Hindi dub</button>
+          <button class="sheet-option-btn" onclick="selectLanguage('Bengali dub')">Bengali dub</button>
+          <button class="sheet-option-btn" onclick="selectLanguage('Tamil dub')">Tamil dub</button>
+          <button class="sheet-option-btn" onclick="selectLanguage('Telugu dub')">Telugu dub</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- ADD CONTENT MODAL (GOOGLE DRIVE & CLOUD LINKS) -->
+    <!-- ============================================== -->
+    <div class="modal-overlay" id="addModalOverlay">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>Add Movie / Series / Live TV</h3>
+          <button class="modal-close-btn" onclick="closeAddModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="addMediaForm" onsubmit="submitNewMedia(event)">
+          <div class="form-group">
+            <label>Type</label>
+            <select id="formType" onchange="toggleFormFields()">
+              <option value="movie">Movie</option>
+              <option value="series">Web Series</option>
+              <option value="liveTv">Live TV</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" id="formTitle" placeholder="e.g. Inception or Hawa" required>
+          </div>
+
+          <div class="form-group">
+            <label>Language</label>
+            <select id="formLanguage">
+              <option value="Hindi">Hindi</option>
+              <option value="Bengali">Bengali</option>
+              <option value="English">English</option>
+              <option value="Tamil">Tamil</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Genre / Category</label>
+            <input type="text" id="formGenre" placeholder="Action, Comedy, Sports" value="Action">
+          </div>
+
+          <div class="form-group">
+            <label>Poster Image URL</label>
+            <input type="url" id="formPoster" placeholder="https://..."
+              value="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80">
+          </div>
+
+          <div class="form-group">
+            <label>Google Drive or Direct Video Link</label>
+            <input type="text" id="formStreamUrl" placeholder="https://drive.google.com/file/d/.../view or .mp4 link"
+              required>
+            <small class="form-help">Backend automatically proxies Google Drive links with byte-range fast streaming &
+              one-click download!</small>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary" onclick="closeAddModal()">Cancel</button>
+            <button type="submit" class="btn-primary">Add Now</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toastNotification">
+      <i class="fa-solid fa-circle-check"></i>
+      <span id="toastMsg">Added to list!</span>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
