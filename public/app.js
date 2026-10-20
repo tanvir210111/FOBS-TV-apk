@@ -348,7 +348,7 @@ function renderHomeFeeds() {
             year: '2026',
             releaseMonth: 'Nov',
             releaseDay: '04',
-            booked: '3,480',
+            booked: '0',
             rating: '8.9',
             imdbRating: '8.9',
             poster: 'https://thumb.wikimedia.org/wikipedia/en/thumb/a/a7/The_Remarried_Empress.jpg/250px-The_Remarried_Empress.jpg',
@@ -359,12 +359,11 @@ function renderHomeFeeds() {
     upcomingContainer.innerHTML = upcomingItems.map(item => {
       const month = item.releaseMonth || 'Nov';
       const day = item.releaseDay || '04';
-      const booked = item.booked || '3,480';
+      const booked = item.booked !== undefined ? item.booked : '0';
       return `
         <div class="coming-card" onclick='openPlayerById("upcoming", "${item.id}")'>
           <div class="coming-poster-wrap">
             <img src="${item.poster}" alt="${item.title}" class="coming-poster-img" loading="lazy">
-            <span class="card-badge-left">Hindi</span>
             <span class="card-badge-right">${item.language || 'Korean'}</span>
             <div class="coming-date-badge">${month}<span>${day}</span></div>
             <div class="coming-bell-btn" onclick="event.stopPropagation(); showToast('Reminder set for ${item.title} (Premiere Nov 04, 2026)!')">
@@ -564,7 +563,7 @@ function openPlayerById(type, id) {
         rating: '8.9',
         imdbRating: '8.9',
         releaseDate: 'Nov 04, 2026',
-        booked: '3,480',
+        booked: '0',
         poster: 'https://thumb.wikimedia.org/wikipedia/en/thumb/a/a7/The_Remarried_Empress.jpg/250px-The_Remarried_Empress.jpg',
         description: "Set in an opulent imperial court, Empress Navier's life is upended when her husband, Emperor Sovieshu, demands a divorce to make a runaway slave his new empress. Refusing to be cast aside or broken by betrayal, Navier agrees under one condition: approval to immediately remarry Prince Heinrey of the rival Western Kingdom, igniting a high-stakes battle to reclaim her throne and destiny.",
         cast: [

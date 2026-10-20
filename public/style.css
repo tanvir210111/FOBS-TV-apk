@@ -530,21 +530,29 @@ body {
 }
 
 /* Bottom dark card container for Coming Soon */
+.coming-poster-wrap .card-badge-right {
+  right: 34px;
+}
+
 .coming-info-box {
-  background: #191b24;
-  padding: 6px 6px 8px 6px;
+  background: #161822;
+  padding: 8px 10px 10px 10px;
   border-radius: 0 0 8px 8px;
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-top: none;
+  box-sizing: border-box;
 }
 
 .coming-title {
-  font-size: 11px;
-  font-weight: 600;
-  color: #fff;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: #d6d9e0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: left;
+  line-height: 1.35;
+  letter-spacing: -0.1px;
 }
 
 /* ============================================================
