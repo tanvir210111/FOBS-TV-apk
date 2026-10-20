@@ -535,6 +535,12 @@ function switchMainTab(tabName) {
     targetView.classList.add('active');
   }
 
+  if (tabName !== 'home') {
+    try {
+      history.pushState({ screen: 'tab', tab: tabName }, '');
+    } catch (e) {}
+  }
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -610,6 +616,9 @@ function openPlayer(media, episodeIndex = 0) {
   appState.currentMedia = media;
   const overlay = document.getElementById('playerOverlay');
   overlay.classList.add('open');
+  try {
+    history.pushState({ screen: 'player' }, '');
+  } catch (e) {}
 
   const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-'));
 
@@ -696,6 +705,51 @@ function playStreamUrl(url) {
   });
 }
 
+// Screen orientation handling for video fullscreen
+function setVideoOrientationLandscape() {
+  if (window.AndroidApp && typeof window.AndroidApp.setLandscape === 'function') {
+    window.AndroidApp.setLandscape();
+  }
+  if (screen.orientation && screen.orientation.lock) {
+    screen.orientation.lock('sensor-landscape').catch(() => {
+      screen.orientation.lock('landscape').catch(() => {});
+    });
+  }
+}
+
+function setVideoOrientationPortrait() {
+  if (window.AndroidApp && typeof window.AndroidApp.setPortrait === 'function') {
+    window.AndroidApp.setPortrait();
+  }
+  if (screen.orientation && screen.orientation.unlock) {
+    screen.orientation.unlock();
+  }
+}
+
+function togglePlayerFullscreen() {
+  const videoPlayer = document.getElementById('mainVideoPlayer');
+  if (!videoPlayer) return;
+
+  const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  if (!isFullscreen) {
+    if (videoPlayer.requestFullscreen) {
+      videoPlayer.requestFullscreen().catch(() => {});
+    } else if (videoPlayer.webkitRequestFullscreen) {
+      videoPlayer.webkitRequestFullscreen();
+    } else if (videoPlayer.webkitEnterFullscreen) {
+      videoPlayer.webkitEnterFullscreen();
+    }
+    setVideoOrientationLandscape();
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen().catch(() => {});
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+    setVideoOrientationPortrait();
+  }
+}
+
 // Setup Video Event Listeners
 function setupVideoListeners() {
   const videoPlayer = document.getElementById('mainVideoPlayer');
@@ -726,15 +780,44 @@ function setupVideoListeners() {
       videoPlayer.play().catch(() => {});
     }
   });
+
+  // Auto-switch to Landscape when entering fullscreen, return to Portrait when exiting
+  const onFsChange = () => {
+    const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+    if (isFs) {
+      setVideoOrientationLandscape();
+    } else {
+      setVideoOrientationPortrait();
+    }
+  };
+
+  document.addEventListener('fullscreenchange', onFsChange);
+  document.addEventListener('webkitfullscreenchange', onFsChange);
+
+  videoPlayer.addEventListener('webkitbeginfullscreen', () => {
+    setVideoOrientationLandscape();
+  });
+  videoPlayer.addEventListener('webkitendfullscreen', () => {
+    setVideoOrientationPortrait();
+  });
 }
 
 // Close Video Player Overlay
 function closePlayer() {
   const overlay = document.getElementById('playerOverlay');
   const videoPlayer = document.getElementById('mainVideoPlayer');
-  videoPlayer.pause();
-  videoPlayer.src = '';
-  overlay.classList.remove('open');
+
+  if (document.fullscreenElement || document.webkitFullscreenElement) {
+    if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+  }
+  setVideoOrientationPortrait();
+
+  if (videoPlayer) {
+    videoPlayer.pause();
+    videoPlayer.src = '';
+  }
+  if (overlay) overlay.classList.remove('open');
 }
 
 // Open "More details" Sheet Modal (Screenshot 2 Match with TMDB Data)
@@ -799,6 +882,9 @@ function openDetailsSheet(customMedia = null) {
   `;
 
   overlay.classList.add('open');
+  try {
+    history.pushState({ screen: 'details' }, '');
+  } catch (e) {}
 }
 
 function closeDetailsSheet(e) {
@@ -1111,4 +1197,91 @@ function closeCommunity(e) {
   const overlay = document.getElementById('communityOverlay');
   if (overlay) overlay.classList.remove('open');
 }
+
+// ============================================================
+// ANDROID & MOBILE BACK GESTURE (SWIPE BACK) / SYSTEM BACK HANDLER
+// ============================================================
+window.handleAndroidBack = function() {
+  // 0. If video is currently in fullscreen, exit fullscreen and restore portrait
+  if (document.fullscreenElement || document.webkitFullscreenElement) {
+    if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    setVideoOrientationPortrait();
+    return true;
+  }
+
+  // 1. More details bottom sheet
+  const moreDetails = document.getElementById('moreDetailsOverlay');
+  if (moreDetails && moreDetails.classList.contains('open')) {
+    moreDetails.classList.remove('open');
+    return true;
+  }
+
+  // 2. Language selection sheet
+  const langSheet = document.getElementById('languageSheetOverlay');
+  if (langSheet && langSheet.classList.contains('open')) {
+    langSheet.classList.remove('open');
+    return true;
+  }
+
+  // 3. Downloads sheet
+  const downloads = document.getElementById('downloadsOverlay');
+  if (downloads && downloads.classList.contains('open')) {
+    downloads.classList.remove('open');
+    return true;
+  }
+
+  // 4. Community modal
+  const community = document.getElementById('communityOverlay');
+  if (community && community.classList.contains('open')) {
+    community.classList.remove('open');
+    return true;
+  }
+
+  // 5. Add Content modal
+  const addModal = document.getElementById('addModalOverlay');
+  if (addModal && addModal.classList.contains('open')) {
+    addModal.classList.remove('open');
+    return true;
+  }
+
+  // 6. Main Video Player Overlay (When watching video/series)
+  const player = document.getElementById('playerOverlay');
+  if (player && player.classList.contains('open')) {
+    closePlayer();
+    return true;
+  }
+
+  // 7. If search input has text, clear search
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput && searchInput.value && searchInput.value.trim().length > 0) {
+    searchInput.value = '';
+    if (typeof handleSearch === 'function') handleSearch('');
+    return true;
+  }
+
+  // 8. If on a sub-tab, return to home
+  if (appState && appState.currentTab && appState.currentTab !== 'home') {
+    switchMainTab('home');
+    return true;
+  }
+
+  // 9. On home screen with nothing open: double-press back to exit
+  const now = Date.now();
+  if (!window.lastBackPressTime || now - window.lastBackPressTime > 2000) {
+    window.lastBackPressTime = now;
+    if (typeof showToast === 'function') {
+      showToast('Press back again to exit');
+    }
+    return true; // Prevent accidental exit
+  }
+
+  return false; // Exit app on second back within 2s
+};
+
+// Listen to browser & WebView popstate (for back gesture navigation)
+window.addEventListener('popstate', function(event) {
+  window.handleAndroidBack();
+});
+
 
