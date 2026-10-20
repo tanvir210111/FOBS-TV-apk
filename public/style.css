@@ -100,6 +100,7 @@ body {
   letter-spacing: -0.5px;
   background: linear-gradient(135deg, #ffffff, #00f2fe);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -1237,14 +1238,6 @@ body {
 /* Movie Resource Button (Removed as requested) */
 .movie-resource-row {
   display: none !important;
-}
-  color: #27d988;
-  padding: 9px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  text-align: center;
-  cursor: pointer;
 }
 
 /* Full-Width Vibrant Cyan Join FOBS Community Button */
