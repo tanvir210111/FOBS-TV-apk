@@ -294,7 +294,9 @@ function setupPlayerSwipeToClose() {
   let isTouching = false;
 
   player.addEventListener('touchstart', (e) => {
+    if (document.fullscreenElement || document.webkitFullscreenElement) return;
     if (e.target.tagName === 'INPUT' || e.target.closest('input')) return;
+    if (e.target.tagName === 'VIDEO' || e.target.closest('video') || e.target.closest('.video-container')) return;
     const t = e.touches[0];
     startX = t.clientX;
     startY = t.clientY;

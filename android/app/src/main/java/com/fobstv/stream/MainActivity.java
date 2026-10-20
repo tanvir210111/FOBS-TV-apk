@@ -44,12 +44,15 @@ public class MainActivity extends BridgeActivity {
         backPressedCallback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                WebView webView = null;
+                WebView targetWebView = null;
                 try {
-                    webView = getBridge().getWebView();
+                    if (getBridge() != null) {
+                        targetWebView = getBridge().getWebView();
+                    }
                 } catch (Exception ignored) {}
 
-                if (webView != null) {
+                if (targetWebView != null) {
+                    final WebView webView = targetWebView;
                     webView.evaluateJavascript(
                         "(function() { return (typeof window.handleAndroidBack === 'function') ? window.handleAndroidBack() : false; })();",
                         value -> {
@@ -58,41 +61,17 @@ public class MainActivity extends BridgeActivity {
                             } else if (webView.canGoBack()) {
                                 webView.goBack();
                             } else {
-                                setEnabled(false);
-                                getOnBackPressedDispatcher().onBackPressed();
-                                setEnabled(true);
+                                finish();
                             }
                         }
                     );
                 } else {
-                    setEnabled(false);
-                    getOnBackPressedDispatcher().onBackPressed();
-                    setEnabled(true);
+                    finish();
                 }
             }
         };
 
         getOnBackPressedDispatcher().addCallback(this, backPressedCallback);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (backPressedCallback != null && backPressedCallback.isEnabled()) {
-            backPressedCallback.handleOnBackPressed();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, android.view.KeyEvent event) {
-        if (keyCode == android.view.KeyEvent.KEYCODE_BACK) {
-            if (backPressedCallback != null && backPressedCallback.isEnabled()) {
-                backPressedCallback.handleOnBackPressed();
-                return true;
-            }
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     @Override
