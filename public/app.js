@@ -29,6 +29,9 @@ async function fetchAppContent() {
   try {
     const res = await fetch('/api/content');
     const data = await res.json();
+    if (data.movies) data.movies.forEach(m => m.type = 'movie');
+    if (data.series) data.series.forEach(s => s.type = 'series');
+    if (data.liveTv) data.liveTv.forEach(t => t.type = 'liveTv');
     appState.content = data;
     renderAllViews();
   } catch (err) {
@@ -461,16 +464,18 @@ function openLiveTvPlayer(id) {
 
 // Open Player & Details Overlay
 function openPlayer(media, episodeIndex = 0) {
+  if (!media) return;
   appState.currentMedia = media;
   const overlay = document.getElementById('playerOverlay');
   overlay.classList.add('open');
+
+  const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-'));
 
   // Set Details
   const titleText = `${media.title} [${media.language || 'Hindi'}][${media.tag || 'HD'}]`;
   document.getElementById('playerMediaTitle').innerText = titleText;
   
-  const seasonText = media.type === 'series' ? `${media.seasonsCount || 1} seasons` : (media.duration || '2h 15m');
-  document.getElementById('playerSeasonTag').innerText = seasonText;
+  const seasonText = isSeries ? `${media.seasonsCount || 1} seasons` : (media.duration || '2h 15m');
 
   document.getElementById('playerMediaMeta').innerHTML = `
     <i class="fa-solid fa-tv"></i>
@@ -490,17 +495,18 @@ function openPlayer(media, episodeIndex = 0) {
   const seriesEpisodesWrapper = document.getElementById('seriesEpisodesWrapper');
   const movieResourceRow = document.getElementById('movieResourceRow');
 
-  if (media.type === 'series' && media.episodes && media.episodes.length > 0) {
-    seriesEpisodesWrapper.style.display = 'block';
-    movieResourceRow.style.display = 'none';
+  if (isSeries && media.episodes && media.episodes.length > 0) {
+    if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'block';
+    if (movieResourceRow) movieResourceRow.style.display = 'none';
 
     appState.currentEpisode = media.episodes[episodeIndex] || media.episodes[0];
     renderEpisodePills(media.episodes, episodeIndex);
-    playStreamUrl(appState.currentEpisode.streamUrl);
+    playStreamUrl(appState.currentEpisode ? appState.currentEpisode.streamUrl : null);
   } else {
-    seriesEpisodesWrapper.style.display = 'none';
-    movieResourceRow.style.display = 'block';
-    document.getElementById('movieResourceTitle').innerText = titleText;
+    if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'none';
+    if (movieResourceRow) movieResourceRow.style.display = 'block';
+    const movieTitleEl = document.getElementById('movieResourceTitle');
+    if (movieTitleEl) movieTitleEl.innerText = titleText;
     appState.currentEpisode = null;
     playStreamUrl(media.streamUrl || media.driveUrl);
   }
@@ -535,7 +541,13 @@ function playStreamUrl(url) {
   const videoPlayer = document.getElementById('mainVideoPlayer');
   const loader = document.getElementById('videoLoader');
 
-  loader.classList.add('active');
+  if (!url) {
+    console.warn('No stream URL provided for media');
+    if (loader) loader.classList.remove('active');
+    return;
+  }
+
+  if (loader) loader.classList.add('active');
 
   // Proxy through backend with range seeking support
   const streamApiUrl = `/api/stream?url=${encodeURIComponent(url)}`;
@@ -551,22 +563,31 @@ function playStreamUrl(url) {
 function setupVideoListeners() {
   const videoPlayer = document.getElementById('mainVideoPlayer');
   const loader = document.getElementById('videoLoader');
+  if (!videoPlayer) return;
 
   videoPlayer.addEventListener('playing', () => {
-    loader.classList.remove('active');
+    if (loader) loader.classList.remove('active');
   });
 
   videoPlayer.addEventListener('waiting', () => {
-    loader.classList.add('active');
+    if (loader) loader.classList.add('active');
   });
 
   videoPlayer.addEventListener('canplay', () => {
-    loader.classList.remove('active');
+    if (loader) loader.classList.remove('active');
   });
 
   videoPlayer.addEventListener('error', (e) => {
     console.error('Video load error, attempting fallback:', e);
-    loader.classList.remove('active');
+    if (loader) loader.classList.remove('active');
+
+    const directUrl = appState.currentEpisode?.streamUrl || appState.currentMedia?.streamUrl || appState.currentMedia?.driveUrl;
+    if (directUrl && videoPlayer.src && videoPlayer.src.includes('/api/stream')) {
+      console.log('Retrying with direct stream URL...');
+      videoPlayer.src = directUrl;
+      videoPlayer.load();
+      videoPlayer.play().catch(() => {});
+    }
   });
 }
 

@@ -80,6 +80,9 @@ async function resolveStreamUrl(rawUrl) {
 // API: Get all contents
 app.get('/api/content', (req, res) => {
   const data = getContentData();
+  if (data.movies) data.movies.forEach(m => m.type = 'movie');
+  if (data.series) data.series.forEach(s => s.type = 'series');
+  if (data.liveTv) data.liveTv.forEach(t => t.type = 'liveTv');
   res.json(data);
 });
 
@@ -130,7 +133,7 @@ app.post('/api/content', (req, res) => {
 app.get('/api/stream', async (req, res) => {
   let targetUrl = req.query.url;
 
-  if (!targetUrl) {
+  if (!targetUrl || targetUrl === 'undefined' || targetUrl === 'null') {
     return res.status(400).send('Missing video URL parameter');
   }
 
@@ -153,11 +156,17 @@ app.get('/api/stream', async (req, res) => {
       headers: requestHeaders,
       responseType: 'stream',
       maxRedirects: 5,
+      timeout: 12000,
       validateStatus: (status) => status >= 200 && status < 400
     });
 
+    let contentType = response.headers['content-type'];
+    if (!contentType || contentType === 'application/octet-stream' || contentType.includes('matroska')) {
+      contentType = 'video/mp4';
+    }
+
     const headersToSend = {
-      'Content-Type': response.headers['content-type'] || 'video/mp4',
+      'Content-Type': contentType,
       'Accept-Ranges': 'bytes'
     };
 
