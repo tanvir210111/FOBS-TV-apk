@@ -299,11 +299,14 @@
           </div>
         </div>
 
-        <!-- Floating / Prominent Cyan-Green Download Button (Matching reference) -->
-        <div class="floating-download-container">
-          <button class="cyan-download-pill" onclick="triggerDownload()">
-            <i class="fa-solid fa-download"></i>
-            <span>Download</span>
+        <!-- Prominent Full-Width Cyan Join FOBS Community Button (In all Movies & Series) -->
+        <div class="floating-community-container">
+          <button class="cyan-community-pill" onclick="openCommunity()">
+            <div class="pill-left">
+              <i class="fa-solid fa-users"></i>
+              <span>Join FOBS Community</span>
+            </div>
+            <i class="fa-solid fa-chevron-right pill-arrow"></i>
           </button>
         </div>
 
@@ -339,6 +342,86 @@
           </div>
         </div>
 
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- FOBS COMMUNITY MODAL SHEET -->
+    <!-- ============================================== -->
+    <div class="bottom-sheet-overlay" id="communityOverlay" onclick="closeCommunity(event)">
+      <div class="community-sheet" onclick="event.stopPropagation()">
+        <div class="community-sheet-header">
+          <div class="community-header-title">
+            <div class="community-badge-icon"><i class="fa-solid fa-users"></i></div>
+            <div>
+              <h3>FOBS Community</h3>
+              <p>Official channels, groups & websites</p>
+            </div>
+          </div>
+          <button class="sheet-close-btn" onclick="closeCommunity()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="community-links-list">
+          <!-- 1. Official Website -->
+          <a href="https://fobs-tv-apk.onrender.com" target="_blank" class="community-card website-card">
+            <div class="comm-icon-box"><i class="fa-solid fa-globe"></i></div>
+            <div class="comm-info">
+              <div class="comm-name">FOBS Team Website</div>
+              <div class="comm-desc">Stream and download online in browser</div>
+            </div>
+            <div class="comm-action-btn">Visit <i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+          </a>
+
+          <!-- 2. Facebook Page -->
+          <a href="https://www.facebook.com" target="_blank" class="community-card fb-page-card">
+            <div class="comm-icon-box"><i class="fa-brands fa-facebook-f"></i></div>
+            <div class="comm-info">
+              <div class="comm-name">Facebook Page</div>
+              <div class="comm-desc">Follow for daily updates & posters</div>
+            </div>
+            <div class="comm-action-btn">Follow <i class="fa-solid fa-chevron-right"></i></div>
+          </a>
+
+          <!-- 3. Facebook Group -->
+          <a href="https://www.facebook.com/groups" target="_blank" class="community-card fb-group-card">
+            <div class="comm-icon-box"><i class="fa-solid fa-people-group"></i></div>
+            <div class="comm-info">
+              <div class="comm-name">Facebook Group</div>
+              <div class="comm-desc">Discussions, member chats & movie talks</div>
+            </div>
+            <div class="comm-action-btn">Join <i class="fa-solid fa-chevron-right"></i></div>
+          </a>
+
+          <!-- 4. WhatsApp Group -->
+          <a href="https://chat.whatsapp.com" target="_blank" class="community-card whatsapp-card">
+            <div class="comm-icon-box"><i class="fa-brands fa-whatsapp"></i></div>
+            <div class="comm-info">
+              <div class="comm-name">WhatsApp Group</div>
+              <div class="comm-desc">Instant alerts & member community</div>
+            </div>
+            <div class="comm-action-btn">Join <i class="fa-solid fa-chevron-right"></i></div>
+          </a>
+
+          <!-- 5. Telegram Channel -->
+          <a href="https://t.me" target="_blank" class="community-card telegram-channel-card">
+            <div class="comm-icon-box"><i class="fa-brands fa-telegram"></i></div>
+            <div class="comm-info">
+              <div class="comm-name">Telegram Channel</div>
+              <div class="comm-desc">Fast direct links & release announcements</div>
+            </div>
+            <div class="comm-action-btn">Subscribe <i class="fa-solid fa-chevron-right"></i></div>
+          </a>
+
+          <!-- 6. Telegram Group -->
+          <a href="https://t.me" target="_blank" class="community-card telegram-group-card">
+            <div class="comm-icon-box"><i class="fa-solid fa-comments"></i></div>
+            <div class="comm-info">
+              <div class="comm-name">Telegram Group</div>
+              <div class="comm-desc">Member chat & movie request bot</div>
+            </div>
+            <div class="comm-action-btn">Join <i class="fa-solid fa-chevron-right"></i></div>
+          </a>
+        </div>
       </div>
     </div>
 

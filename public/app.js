@@ -925,3 +925,18 @@ async function triggerKmdlSync() {
     if (btn) btn.classList.remove('fa-spin');
   }
 }
+
+// FOBS Community Modal Handlers
+function openCommunity() {
+  const overlay = document.getElementById('communityOverlay');
+  if (overlay) overlay.classList.add('open');
+}
+
+function closeCommunity(e) {
+  if (e && e.target !== document.getElementById('communityOverlay') && !e.target.closest('.sheet-close-btn')) {
+    return;
+  }
+  const overlay = document.getElementById('communityOverlay');
+  if (overlay) overlay.classList.remove('open');
+}
+
