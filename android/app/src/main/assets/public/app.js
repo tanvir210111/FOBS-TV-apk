@@ -367,9 +367,6 @@ function renderHomeFeeds() {
             <img src="${item.poster}" alt="${item.title}" class="coming-poster-img" loading="lazy">
             <span class="card-badge-right">${item.language || 'Korean'}</span>
             <div class="coming-date-badge">${month}<span>${day}</span></div>
-            <div class="coming-bell-btn" onclick="event.stopPropagation(); showToast('Reminder set for ${item.title} (Premiere Nov 04, 2026)!')">
-              <i class="fa-regular fa-bell"></i>
-            </div>
             <div class="coming-booked-tag">${booked} booked</div>
           </div>
           <div class="coming-info-box">
