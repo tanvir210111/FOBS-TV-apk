@@ -755,6 +755,27 @@ function downloadMedia(url, title) {
   document.body.removeChild(link);
 }
 
+// Play Video in External Players (MX Player, VLC, Samsung Video, etc.)
+function playInExternalApp() {
+  const currentStream = appState.currentEpisode ? appState.currentEpisode.streamUrl : (appState.currentMedia?.streamUrl || appState.currentMedia?.driveUrl);
+  if (!currentStream) {
+    showToast('No video stream available to play');
+    return;
+  }
+
+  showToast('Opening video in external player...');
+
+  const rawStream = currentStream.startsWith('http') ? currentStream : `${window.location.origin}${currentStream}`;
+  const proxyUrl = `${window.location.origin}/api/stream?url=${encodeURIComponent(rawStream)}`;
+  const intentUrl = `intent:${proxyUrl}#Intent;type=video/*;action=android.intent.action.VIEW;end`;
+
+  try {
+    window.location.href = intentUrl;
+  } catch (e) {
+    window.open(proxyUrl, '_blank');
+  }
+}
+
 // Language / Dubbing Bottom Sheet Modal (Screenshot 2 & 5)
 function openLanguageSheet() {
   document.getElementById('languageSheetOverlay').classList.add('open');

@@ -221,7 +221,7 @@
 
       <!-- Embedded Video Player -->
       <div class="video-container" id="videoContainer">
-        <video id="mainVideoPlayer" playsinline controls preload="metadata"></video>
+        <video id="mainVideoPlayer" playsinline webkit-playsinline x5-playsinline controls preload="metadata"></video>
         <div class="video-loader" id="videoLoader">
           <div class="spinner"></div>
           <div class="loader-text">Loading...</div>
@@ -260,9 +260,9 @@
             <i class="fa-solid fa-download"></i>
             <span>Download</span>
           </button>
-          <button class="action-strip-btn">
-            <i class="fa-regular fa-eye"></i>
-            <span>View</span>
+          <button class="action-strip-btn" onclick="playInExternalApp()" title="Play in MX Player or VLC">
+            <i class="fa-solid fa-circle-play" style="color: var(--accent-green);"></i>
+            <span>MX / VLC</span>
           </button>
         </div>
 
