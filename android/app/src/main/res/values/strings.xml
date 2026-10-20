@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">FOBS TV</string>
+    <string name="title_activity_main">FOBS TV</string>
+    <string name="package_name">com.fobstv.stream</string>
+    <string name="custom_url_scheme">com.fobstv.stream</string>
+</resources>
