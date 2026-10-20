@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function initApp() {
   await fetchAppContent();
   setupVideoListeners();
+  setupHeroSwipeGestures();
 }
 
 // Fetch Content from Backend
@@ -49,27 +50,25 @@ function renderAllViews() {
   renderLiveTv();
 }
 
-// Hero Slider State (Exact 5 items: 2 Movies + 3 Series with Infinite 75/25 Loop)
+// Hero Slider State (Infinite loop and gesture support)
 let currentHeroIndex = 0;
 let heroSliderInterval = null;
 let heroItems = [];
 let loopCardsList = [];
 let isHeroSliding = false;
+let isSwipingHero = false;
 
 function renderHeroBanner() {
   const movies = appState.content.movies || [];
   const series = appState.content.series || [];
   
-  // Exactly 2 movies and 3 series = 5 items total
-  const selectedMovies = movies.slice(0, 2);
-  const selectedSeries = series.slice(0, 3);
-  heroItems = [...selectedMovies, ...selectedSeries];
+  // Combine all movies and series for hero slider
+  heroItems = [...movies, ...series];
 
   if (heroItems.length === 0) return;
 
-  // Add clone of first item at the end for seamless infinite loop (1, 2, 3, 4, 5, 1)
-  // When at index 4 (#5), #1 will peek 25% on the right!
-  loopCardsList = [...heroItems, heroItems[0]];
+  // Add clone for infinite peek slider if more than 1 item
+  loopCardsList = heroItems.length > 1 ? [...heroItems, heroItems[0]] : [...heroItems];
 
   const backdropTrack = document.getElementById('heroBackdropTrack');
   const cardsTrack = document.getElementById('heroCardsTrack');
@@ -86,15 +85,19 @@ function renderHeroBanner() {
       const isSeries = !!slide.episodes || slide.type === 'series';
       const originalIndex = idx % heroItems.length;
       return `
-        <div class="hero-peek-card ${idx === 0 ? 'active' : ''}" data-index="${originalIndex}" onclick="selectHeroSlide(${originalIndex})">
-          <img src="${slide.poster}" alt="${slide.title}" class="hero-peek-thumb" loading="lazy">
+        <div class="hero-peek-card ${idx === 0 ? 'active' : ''}" data-index="${originalIndex}" onclick="handleHeroCardClick(event, '${isSeries ? 'series' : 'movie'}', '${slide.id}')">
+          <div class="hero-peek-thumb-wrap">
+            <img src="${slide.poster}" alt="${slide.title}" class="hero-peek-thumb" loading="lazy">
+          </div>
           <div class="hero-peek-info">
-            <div class="hero-peek-title">${slide.title}</div>
+            <div class="hero-peek-title-scroll-container">
+              <div class="hero-peek-title">${slide.title}</div>
+            </div>
             <div class="hero-peek-sub">
               <i class="fa-solid fa-film"></i> | ${slide.year || '2026'} | ${slide.genre || (isSeries ? 'Series' : 'Action')}
             </div>
           </div>
-          <div class="hero-peek-play" onclick="event.stopPropagation(); openPlayerById('${isSeries ? 'series' : 'movie'}', '${slide.id}')">
+          <div class="hero-peek-play">
             <i class="fa-solid fa-play"></i>
           </div>
         </div>
@@ -108,34 +111,55 @@ function renderHeroBanner() {
   startHeroAutoSlide();
 }
 
+function handleHeroCardClick(event, type, id) {
+  // If user was swiping horizontally, do not open player
+  if (isSwipingHero) return;
+  openPlayerById(type, id);
+}
+
 function startHeroAutoSlide() {
   if (heroSliderInterval) clearInterval(heroSliderInterval);
+  if (heroItems.length <= 1) return;
   heroSliderInterval = setInterval(() => {
     nextHeroSlide();
   }, 4000);
 }
 
 function nextHeroSlide() {
-  if (isHeroSliding) return;
+  if (isHeroSliding || heroItems.length <= 1) return;
   isHeroSliding = true;
 
   const nextIndex = currentHeroIndex + 1;
   applyHeroSlide(nextIndex, true);
 
-  // If we just slid to the clone of item 1 (index = 5)
   if (nextIndex === heroItems.length) {
     setTimeout(() => {
-      // Instantly reset to index 0 without animation
       currentHeroIndex = 0;
       applyHeroSlide(0, false);
       isHeroSliding = false;
-    }, 650); // Matches transition duration
+    }, 650);
   } else {
     currentHeroIndex = nextIndex;
     setTimeout(() => {
       isHeroSliding = false;
     }, 650);
   }
+}
+
+function prevHeroSlide() {
+  if (isHeroSliding || heroItems.length <= 1) return;
+  isHeroSliding = true;
+
+  let prevIndex = currentHeroIndex - 1;
+  if (prevIndex < 0) {
+    prevIndex = heroItems.length - 1;
+  }
+  applyHeroSlide(prevIndex, true);
+  currentHeroIndex = prevIndex;
+
+  setTimeout(() => {
+    isHeroSliding = false;
+  }, 650);
 }
 
 // Slide both the full background poster and the bottom 75/25 card track
@@ -171,10 +195,88 @@ function applyHeroSlide(index, animate = true) {
   }
 }
 
-function selectHeroSlide(idx) {
-  currentHeroIndex = idx;
-  applyHeroSlide(idx, true);
-  startHeroAutoSlide();
+// Touch and Swipe Gestures for Hero Section (Left/Right Drag Support)
+function setupHeroSwipeGestures() {
+  const container = document.getElementById('heroSliderContainer');
+  if (!container) return;
+
+  let startX = 0;
+  let startY = 0;
+  let deltaX = 0;
+  let deltaY = 0;
+  let moved = false;
+
+  container.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    startX = t.clientX;
+    startY = t.clientY;
+    deltaX = 0;
+    deltaY = 0;
+    moved = false;
+    isSwipingHero = false;
+    if (heroSliderInterval) clearInterval(heroSliderInterval);
+  }, { passive: true });
+
+  container.addEventListener('touchmove', (e) => {
+    const t = e.touches[0];
+    deltaX = t.clientX - startX;
+    deltaY = t.clientY - startY;
+    if (Math.abs(deltaX) > 10) {
+      moved = true;
+    }
+  }, { passive: true });
+
+  container.addEventListener('touchend', () => {
+    if (moved && Math.abs(deltaX) > 35 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      isSwipingHero = true;
+      setTimeout(() => { isSwipingHero = false; }, 250);
+
+      if (deltaX < 0) {
+        // Swipe Left (finger moves right to left) -> Next Slide
+        nextHeroSlide();
+      } else {
+        // Swipe Right (finger moves left to right) -> Previous Slide
+        prevHeroSlide();
+      }
+    }
+    startHeroAutoSlide();
+  }, { passive: true });
+
+  // Mouse Drag support for testing on PC
+  let mouseStartX = 0;
+  let mouseDeltaX = 0;
+  let isMouseDown = false;
+
+  container.addEventListener('mousedown', (e) => {
+    // If clicking inside the title container to scroll title, don't drag card
+    if (e.target.closest('.hero-peek-title-scroll-container')) return;
+    isMouseDown = true;
+    mouseStartX = e.clientX;
+    mouseDeltaX = 0;
+    if (heroSliderInterval) clearInterval(heroSliderInterval);
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isMouseDown) return;
+    mouseDeltaX = e.clientX - mouseStartX;
+    if (Math.abs(mouseDeltaX) > 10) {
+      isSwipingHero = true;
+    }
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (!isMouseDown) return;
+    isMouseDown = false;
+    if (Math.abs(mouseDeltaX) > 40) {
+      if (mouseDeltaX < 0) {
+        nextHeroSlide();
+      } else {
+        prevHeroSlide();
+      }
+    }
+    setTimeout(() => { isSwipingHero = false; }, 200);
+    startHeroAutoSlide();
+  });
 }
 
 // Render Home Carousels
