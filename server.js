@@ -276,6 +276,7 @@ app.all('/api/stream', async (req, res) => {
       '-c:a', 'aac',
       '-ac', '2',
       '-b:a', '128k',
+      '-avoid_negative_ts', 'make_zero',
       '-f', 'mp4',
       '-movflags', 'frag_keyframe+default_base_moof',
       'pipe:1'

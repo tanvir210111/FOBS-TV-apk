@@ -1571,6 +1571,8 @@ function openLiveTvPlayer(id) {
 function openPlayer(media, episodeIndex = 0) {
   if (!media) return;
   appState.currentMedia = media;
+  appState.streamSeekOffset = 0;
+  appState.pendingSeekTime = null;
   const overlay = document.getElementById('playerOverlay');
   overlay.classList.add('open');
   document.body.classList.add('player-open');
@@ -1642,6 +1644,8 @@ function renderEpisodePills(episodes, activeIndex) {
 // Select Episode
 function selectEpisode(idx) {
   if (!appState.currentMedia || !appState.currentMedia.episodes) return;
+  appState.streamSeekOffset = 0;
+  appState.pendingSeekTime = null;
   appState.currentEpisode = appState.currentMedia.episodes[idx];
   renderEpisodePills(appState.currentMedia.episodes, idx);
   const activeEpStream = (appState.currentEpisode.audioTracks && appState.currentEpisode.audioTracks[appState.currentAudioTrack])
@@ -1875,42 +1879,144 @@ function getMediaTotalDurationSeconds() {
   return duration > 0 ? duration : (parsedSec > 0 ? parsedSec : 3600);
 }
 
+function updateLandscapeProgress() {
+  if (isScrubbingProgress) return;
+  if (appState.pendingSeekTime !== null && appState.pendingSeekTime !== undefined) return;
+
+  const video = document.getElementById('mainVideoPlayer');
+  if (!video) return;
+
+  const streamOffset = appState.streamSeekOffset || 0;
+  const current = (video.currentTime || 0) + streamOffset;
+  const duration = getMediaTotalDurationSeconds();
+
+  const curEl = document.getElementById('lsCurrentTime');
+  const durEl = document.getElementById('lsTotalDuration');
+  const filledEl = document.getElementById('lsProgressFilled');
+  const thumbEl = document.getElementById('lsProgressThumb');
+  const bufEl = document.getElementById('lsProgressBuffered');
+
+  if (curEl) curEl.innerText = formatPlayerTime(current);
+  if (durEl) durEl.innerText = formatPlayerTime(duration);
+
+  if (duration > 0) {
+    const pct = Math.min(100, Math.max(0, (current / duration) * 100));
+    if (filledEl) filledEl.style.width = `${pct}%`;
+    if (thumbEl) thumbEl.style.left = `${pct}%`;
+
+    if (bufEl && video.buffered && video.buffered.length > 0) {
+      try {
+        const bufEnd = video.buffered.end(video.buffered.length - 1) + streamOffset;
+        const bufPct = Math.min(100, Math.max(0, (bufEnd / duration) * 100));
+        bufEl.style.width = `${bufPct}%`;
+      } catch (e) {}
+    }
+  }
+}
+
+function isTimeBuffered(video, targetRelTime) {
+  if (!video || !video.buffered || video.buffered.length === 0) return false;
+  try {
+    for (let i = 0; i < video.buffered.length; i++) {
+      const start = video.buffered.start(i);
+      const end = video.buffered.end(i);
+      if (targetRelTime >= start && targetRelTime <= Math.max(start, end - 0.5)) {
+        return true;
+      }
+    }
+  } catch (e) {}
+  return false;
+}
+
+let seekDebounceTimer = null;
+
 function seekRelative(offsetSeconds) {
   const video = document.getElementById('mainVideoPlayer');
   if (!video) return;
 
-  const current = (video.currentTime || 0) + (appState.streamSeekOffset || 0);
   const duration = getMediaTotalDurationSeconds();
-  const target = Math.max(0, Math.min(duration, current + offsetSeconds));
+  const streamOffset = appState.streamSeekOffset || 0;
 
-  try {
-    const streamOffset = appState.streamSeekOffset || 0;
-    const relTime = target - streamOffset;
-    if (relTime >= 0) {
-      video.currentTime = relTime;
-    } else {
-      seekToAbsoluteTime(target);
-      return;
-    }
-  } catch (err) {
-    console.warn('Seek error:', err);
+  // If user rapidly clicks +10, accumulate seek time from pendingSeekTime
+  const baseTime = (appState.pendingSeekTime !== null && appState.pendingSeekTime !== undefined)
+    ? appState.pendingSeekTime
+    : ((video.currentTime || 0) + streamOffset);
+
+  const target = Math.max(0, Math.min(duration, baseTime + offsetSeconds));
+  const relTime = target - streamOffset;
+
+  appState.pendingSeekTime = target;
+
+  // Immediate UI feedback on progress bar and time labels
+  const curEl = document.getElementById('lsCurrentTime');
+  const filledEl = document.getElementById('lsProgressFilled');
+  const thumbEl = document.getElementById('lsProgressThumb');
+  if (curEl) curEl.innerText = formatPlayerTime(target);
+  if (duration > 0) {
+    const pct = Math.min(100, Math.max(0, (target / duration) * 100));
+    if (filledEl) filledEl.style.width = `${pct}%`;
+    if (thumbEl) thumbEl.style.left = `${pct}%`;
   }
 
   showToast(offsetSeconds > 0 ? '+10s' : '-10s');
-  updateLandscapeProgress();
-  syncPlayPauseIcons();
   resetLandscapeControlsTimer();
+
+  const isStreamProxy = video.src && video.src.includes('/api/stream');
+
+  // Case 1: Direct MP4 (non-proxy, supports native HTTP 206 range requests)
+  if (!isStreamProxy) {
+    appState.pendingSeekTime = null;
+    try {
+      video.currentTime = target;
+    } catch (e) {}
+    updateLandscapeProgress();
+    syncPlayPauseIcons();
+    return;
+  }
+
+  // Case 2: In /api/stream proxy AND target time is already within the downloaded buffer
+  if (relTime >= 0 && isTimeBuffered(video, relTime)) {
+    appState.pendingSeekTime = null;
+    try {
+      video.currentTime = relTime;
+    } catch (e) {}
+    updateLandscapeProgress();
+    syncPlayPauseIcons();
+    return;
+  }
+
+  // Case 3: In /api/stream proxy AND target is OUTSIDE buffer (or backwards into past stream segment)
+  // Debounce multiple fast clicks (+10 +10 -> +20s) by 280ms
+  if (seekDebounceTimer) clearTimeout(seekDebounceTimer);
+  seekDebounceTimer = setTimeout(() => {
+    const finalTarget = appState.pendingSeekTime !== null ? appState.pendingSeekTime : target;
+    appState.pendingSeekTime = null;
+    seekToAbsoluteTime(finalTarget);
+  }, 280);
 }
 
 function seekToAbsoluteTime(targetSeconds) {
   const video = document.getElementById('mainVideoPlayer');
   if (!video) return;
 
+  const duration = getMediaTotalDurationSeconds();
+  const safeTarget = Math.max(0, Math.min(duration, Math.floor(targetSeconds)));
   const streamOffset = appState.streamSeekOffset || 0;
-  const relTime = targetSeconds - streamOffset;
+  const relTime = safeTarget - streamOffset;
 
-  // Try native seek first
-  if (relTime >= 0 && relTime <= (video.duration || 3600)) {
+  const isStreamProxy = video.src && video.src.includes('/api/stream');
+
+  // Direct MP4 (non-proxy)
+  if (!isStreamProxy) {
+    try {
+      video.currentTime = safeTarget;
+      updateLandscapeProgress();
+      return;
+    } catch (e) {}
+  }
+
+  // Stream proxy and already buffered
+  if (relTime >= 0 && isTimeBuffered(video, relTime)) {
     try {
       video.currentTime = relTime;
       updateLandscapeProgress();
@@ -1918,7 +2024,7 @@ function seekToAbsoluteTime(targetSeconds) {
     } catch (e) {}
   }
 
-  // Reload stream at target offset only if far out of range
+  // Outside buffer on stream proxy: request backend stream starting at safeTarget
   const curEp = appState.currentEpisode;
   const rawUrl = (curEp?.audioTracks && curEp.audioTracks[appState.currentAudioTrack]) 
     || curEp?.streamUrl 
@@ -1926,8 +2032,8 @@ function seekToAbsoluteTime(targetSeconds) {
     || appState.currentMedia?.driveUrl;
 
   if (rawUrl) {
-    appState.streamSeekOffset = targetSeconds;
-    playStreamUrl(rawUrl, appState.selectedAudioIndex, targetSeconds);
+    appState.streamSeekOffset = safeTarget;
+    playStreamUrl(rawUrl, appState.selectedAudioIndex, safeTarget);
   }
 }
 
@@ -2589,7 +2695,7 @@ function switchAudioTrack(lang) {
     || appState.currentMedia?.driveUrl;
 
   if (rawUrl && videoPlayer) {
-    const curTime = videoPlayer.currentTime || 0;
+    const curTime = (videoPlayer.currentTime || 0) + (appState.streamSeekOffset || 0);
     const isPlaying = !videoPlayer.paused;
     playStreamUrl(rawUrl, targetAudioIndex, curTime);
     if (isPlaying) {
