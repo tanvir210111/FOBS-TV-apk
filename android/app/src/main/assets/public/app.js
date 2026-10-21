@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v13';
+const CACHE_KEY = 'fobs_tv_content_cache_v14';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -1116,7 +1116,7 @@ function renderHomeFeeds() {
       <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
         <div class="card-poster-wrap">
           <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-          <span class="card-badge-left">Hindi</span>
+          <span class="card-badge-left">${(item.dubLanguage && item.dubLanguage.includes('Fan')) ? 'Fan Dub' : 'Hindi'}</span>
           <span class="card-badge-right">${item.year || (isSeries ? 'Series' : 'Movie')}</span>
           ${idx < 3 ? `<div class="card-rank-number">${idx + 1}</div>` : ''}
           <div class="card-play-hover">
@@ -1139,7 +1139,7 @@ function renderHomeFeeds() {
         <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
           <div class="card-poster-wrap">
             <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-            <span class="card-badge-left">Hindi</span>
+            <span class="card-badge-left">${(item.dubLanguage && item.dubLanguage.includes('Fan')) ? 'Fan Dub' : 'Hindi'}</span>
             <span class="card-badge-right">${item.year || (isSeries ? 'Series' : 'Movie')}</span>
             <div class="card-play-hover">
               <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
@@ -1190,7 +1190,7 @@ function renderHomeFeeds() {
       <div class="media-card" onclick='openPlayerById("movie", "${item.id}")'>
         <div class="card-poster-wrap">
           <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-          <span class="card-badge-left">Hindi</span>
+          <span class="card-badge-left">${(item.dubLanguage && item.dubLanguage.includes('Fan')) ? 'Fan Dub' : 'Hindi'}</span>
           <span class="card-badge-right">${item.year || 'Movie'}</span>
           <div class="card-play-hover">
             <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
@@ -1592,8 +1592,9 @@ function openPlayer(media, episodeIndex = 0) {
 
   const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-'));
 
-  // Set Details matching user request: "[Hindi]" without [HD] or [Korean]
-  const titleText = `${media.title} [Hindi]`;
+  // Set Details: "[Fan Dubbed]" if Fan Dubbed, otherwise "[Hindi]"
+  const dubTag = (media.dubLanguage && media.dubLanguage.includes('Fan')) ? '[Fan Dubbed]' : '[Hindi]';
+  const titleText = `${media.title} ${dubTag}`;
   document.getElementById('playerMediaTitle').innerText = titleText;
   
   const seasonText = isSeries ? `${media.seasonsCount || 1} seasons` : (media.duration || '2h 21m');
@@ -2182,9 +2183,10 @@ function enterFullscreenMode(options = {}) {
     const media = appState.currentMedia;
     const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-'));
     const epNum = appState.currentEpisode?.number || appState.currentEpisode?.episodeNumber || '01';
+    const dubTag = (media.dubLanguage && media.dubLanguage.includes('Fan')) ? '[Fan Dubbed]' : '[Hindi]';
     titleEl.innerText = isSeries 
-      ? `${media.title} [Hindi] S01 E${epNum}` 
-      : `${media.title} [Hindi]`;
+      ? `${media.title} ${dubTag} S01 E${epNum}` 
+      : `${media.title} ${dubTag}`;
   }
 
   if (!options.skipRotate) {
