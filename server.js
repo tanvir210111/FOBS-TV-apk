@@ -3,6 +3,8 @@ const cors = require('cors');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const { Transform } = require('stream');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +14,41 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const DATA_FILE = path.join(__dirname, 'data', 'content.json');
+const STREAM_CACHE_DIR = path.join(__dirname, 'data', 'stream_cache');
+if (!fs.existsSync(STREAM_CACHE_DIR)) {
+  fs.mkdirSync(STREAM_CACHE_DIR, { recursive: true });
+}
+
+// Range Slicer Transform Stream for Upstream Providers that ignore HTTP Range
+function createRangeSlicer(start, end) {
+  let bytesRead = 0;
+  return new Transform({
+    transform(chunk, encoding, callback) {
+      const chunkStart = bytesRead;
+      const chunkEnd = bytesRead + chunk.length - 1;
+      bytesRead += chunk.length;
+
+      // Entire chunk is before requested start
+      if (chunkEnd < start) {
+        return callback();
+      }
+      // Past requested end
+      if (chunkStart > end) {
+        this.push(null);
+        return callback();
+      }
+
+      const sliceStart = Math.max(0, start - chunkStart);
+      const sliceEnd = Math.min(chunk.length, end - chunkStart + 1);
+      this.push(chunk.slice(sliceStart, sliceEnd));
+
+      if (chunkEnd >= end) {
+        this.push(null);
+      }
+      callback();
+    }
+  });
+}
 
 // Helper to read data
 function getContentData() {
@@ -190,8 +227,8 @@ app.post('/api/content', (req, res) => {
   res.json({ success: true, item: newItem });
 });
 
-// Stream Proxy: Handles Google Drive & Direct links with Range (Byte-level Seeking)
-app.get('/api/stream', async (req, res) => {
+// Stream Proxy: Handles Google Drive, V-Cloud, and Direct links with Range (Byte-level Seeking)
+app.all('/api/stream', async (req, res) => {
   let targetUrl = req.query.url;
 
   if (!targetUrl || targetUrl === 'undefined' || targetUrl === 'null') {
@@ -199,7 +236,60 @@ app.get('/api/stream', async (req, res) => {
   }
 
   const resolvedUrl = await resolveStreamUrl(targetUrl);
+  if (!resolvedUrl) {
+    return res.status(404).send('Failed to resolve stream URL');
+  }
+
   const range = req.headers.range;
+  const isHead = req.method === 'HEAD';
+
+  // Cache key and paths
+  const cacheKey = crypto.createHash('md5').update(resolvedUrl).digest('hex');
+  const cacheFilePath = path.join(STREAM_CACHE_DIR, `${cacheKey}.bin`);
+  const metaFilePath = path.join(STREAM_CACHE_DIR, `${cacheKey}.json`);
+
+  // Check if we have cached metadata
+  let cachedMeta = null;
+  if (fs.existsSync(metaFilePath)) {
+    try {
+      cachedMeta = JSON.parse(fs.readFileSync(metaFilePath, 'utf-8'));
+    } catch (e) {}
+  }
+
+  // Fast path: if requested byte range is already saved on local disk, serve immediately!
+  if (cachedMeta && fs.existsSync(cacheFilePath)) {
+    try {
+      const stat = fs.statSync(cacheFilePath);
+      const totalLength = cachedMeta.totalLength;
+      const contentType = cachedMeta.contentType || 'video/mp4';
+
+      if (range) {
+        const parts = range.replace(/bytes=/, '').split('-');
+        const start = parseInt(parts[0], 10) || 0;
+        const end = parts[1] ? parseInt(parts[1], 10) : totalLength - 1;
+
+        if (start < stat.size) {
+          const serveEnd = Math.min(end, stat.size - 1);
+          const chunkLength = serveEnd - start + 1;
+
+          res.writeHead(206, {
+            'Content-Range': `bytes ${start}-${serveEnd}/${totalLength}`,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': chunkLength,
+            'Content-Type': contentType
+          });
+
+          if (isHead) return res.end();
+          const fileStream = fs.createReadStream(cacheFilePath, { start, end: serveEnd });
+          fileStream.pipe(res);
+          req.on('close', () => fileStream.destroy());
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn('Cache read error, falling back to network:', err.message);
+    }
+  }
 
   const requestHeaders = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
@@ -212,12 +302,12 @@ app.get('/api/stream', async (req, res) => {
 
   try {
     const response = await axios({
-      method: 'GET',
+      method: isHead ? 'HEAD' : 'GET',
       url: resolvedUrl,
       headers: requestHeaders,
-      responseType: 'stream',
+      responseType: isHead ? 'text' : 'stream',
       maxRedirects: 5,
-      timeout: 12000,
+      timeout: 15000,
       validateStatus: (status) => status >= 200 && status < 400
     });
 
@@ -226,32 +316,85 @@ app.get('/api/stream', async (req, res) => {
       contentType = (targetUrl && (targetUrl.includes('.mkv') || targetUrl.includes('matroska'))) ? 'video/x-matroska' : 'video/mp4';
     }
 
-    const headersToSend = {
-      'Content-Type': contentType,
-      'Accept-Ranges': 'bytes'
-    };
+    // Upstream returned 206 natively (e.g. KMDL or Range-supporting servers)
+    if (response.status === 206) {
+      const headersToSend = {
+        'Content-Type': contentType,
+        'Accept-Ranges': 'bytes'
+      };
+      if (response.headers['content-range']) headersToSend['Content-Range'] = response.headers['content-range'];
+      if (response.headers['content-length']) headersToSend['Content-Length'] = response.headers['content-length'];
 
-    if (response.headers['content-range']) {
-      headersToSend['Content-Range'] = response.headers['content-range'];
+      res.writeHead(206, headersToSend);
+      if (isHead) return res.end();
+      response.data.pipe(res);
+      req.on('close', () => response.data.destroy());
+      return;
     }
-    if (response.headers['content-length']) {
-      headersToSend['Content-Length'] = response.headers['content-length'];
+
+    // Upstream returned 200 (e.g. Google usercontent which ignores Range header)
+    const totalLength = parseInt(response.headers['content-length'], 10);
+    if (!isNaN(totalLength) && !cachedMeta) {
+      fs.writeFile(metaFilePath, JSON.stringify({ totalLength, contentType }), () => {});
     }
 
-    res.writeHead(response.status, headersToSend);
-    response.data.pipe(res);
+    if (range && !isNaN(totalLength)) {
+      const parts = range.replace(/bytes=/, '').split('-');
+      const start = parseInt(parts[0], 10) || 0;
+      const end = parts[1] ? parseInt(parts[1], 10) : totalLength - 1;
+      const chunkLength = end - start + 1;
 
-    response.data.on('error', (err) => {
-      console.error('Stream pipe error:', err.message);
-      if (!res.headersSent) {
-        res.status(500).send('Streaming error');
+      res.writeHead(206, {
+        'Content-Range': `bytes ${start}-${end}/${totalLength}`,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': chunkLength,
+        'Content-Type': contentType
+      });
+
+      if (isHead) return res.end();
+
+      if (start === 0 && end === totalLength - 1) {
+        // Cache to disk while streaming start=0
+        try {
+          const writeStream = fs.createWriteStream(cacheFilePath, { flags: 'a' });
+          response.data.on('data', chunk => {
+            writeStream.write(chunk);
+          });
+          response.data.on('end', () => {
+            writeStream.end();
+          });
+        } catch (e) {}
+
+        response.data.pipe(res);
+      } else {
+        const slicer = createRangeSlicer(start, end);
+        response.data.pipe(slicer).pipe(res);
+      }
+    } else {
+      const headersToSend = {
+        'Content-Type': contentType,
+        'Accept-Ranges': 'bytes'
+      };
+      if (!isNaN(totalLength)) {
+        headersToSend['Content-Range'] = `bytes 0-${totalLength - 1}/${totalLength}`;
+        headersToSend['Content-Length'] = totalLength;
+        res.writeHead(206, headersToSend);
+      } else {
+        res.writeHead(200, headersToSend);
+      }
+      if (isHead) return res.end();
+      response.data.pipe(res);
+    }
+
+    req.on('close', () => {
+      if (response.data && typeof response.data.destroy === 'function') {
+        response.data.destroy();
       }
     });
 
   } catch (error) {
     console.error('Stream proxy error:', error.message);
     if (!res.headersSent) {
-      // Fallback: direct redirect if proxy stream blocked by origin
       res.redirect(resolvedUrl);
     }
   }

@@ -1670,36 +1670,21 @@ async function playStreamUrl(url) {
     }
   }, 2500);
 
-  // 1. If url is already a direct Google CDN or media stream, play immediately
-  if (url.includes('googleusercontent.com') || url.includes('.mp4')) {
+  // Pre-warm URL in backend resolver cache in background (non-blocking)
+  fetch(`${API_BASE_URL}/api/resolve?url=${encodeURIComponent(url)}`).catch(() => {});
+
+  // Direct play ONLY for providers known to natively support HTTP 206 Partial Content Range seeking
+  if (url.includes('kmdl.eu.org') && !url.includes('googleusercontent.com')) {
     videoPlayer.src = url;
     videoPlayer.load();
     videoPlayer.play().catch(() => {});
     return;
   }
 
-  // 2. Fast resolve via backend memory cache (/api/resolve returns in < 30ms)
-  try {
-    const resolveUrl = `${API_BASE_URL}/api/resolve?url=${encodeURIComponent(url)}`;
-    const ctrl = new AbortController();
-    const tid = setTimeout(() => ctrl.abort(), 2000);
-    const res = await fetch(resolveUrl, { signal: ctrl.signal });
-    clearTimeout(tid);
-    if (res.ok) {
-      const data = await res.json();
-      if (data && data.ok && data.url && data.url !== url) {
-        console.log('Instant direct stream URL loaded');
-        videoPlayer.src = data.url;
-        videoPlayer.load();
-        videoPlayer.play().catch(() => {});
-        return;
-      }
-    }
-  } catch (err) {
-    console.warn('Fast resolve skipped, falling back to streaming proxy:', err.message);
-  }
-
-  // 3. Fallback: stream through backend proxy
+  // All other streams route through /api/stream proxy to guarantee:
+  // 1. HTTP 206 Partial Content
+  // 2. Accept-Ranges: bytes
+  // 3. Smooth dragging & seeking on both mobile browser and Android APK
   const streamApiUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(url)}`;
   videoPlayer.src = streamApiUrl;
   videoPlayer.load();

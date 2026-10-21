@@ -14,3 +14,5 @@ android/captures/
 *.apk
 *.jpeg
 *.jpg
+*.mkv
+data/stream_cache/
