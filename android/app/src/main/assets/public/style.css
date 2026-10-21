@@ -2385,3 +2385,607 @@ body.is-fullscreen .player-top-header.controls-hidden,
   font-weight: 700;
 }
 
+/* ============================================================
+   MOVIEBOX SIGNATURE LANDSCAPE FULLSCREEN PLAYER STYLES
+   Matches Screenshots 1, 3, 4, 5
+   Active ONLY in landscape / fullscreen; 100% hidden in portrait
+   ============================================================ */
+
+/* Hide landscape controls completely in portrait mode */
+.ls-player-ui {
+  display: none !important;
+}
+
+/* Activate when in landscape fullscreen */
+body.is-fullscreen .ls-player-ui,
+@media (orientation: landscape) body.player-open .ls-player-ui {
+  display: flex !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1000005 !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  pointer-events: none !important;
+}
+
+/* Hide portrait top header in landscape fullscreen */
+body.is-fullscreen #playerTopHeader,
+@media (orientation: landscape) body.player-open #playerTopHeader {
+  display: none !important;
+}
+
+/* Hide default browser controls in landscape fullscreen */
+body.is-fullscreen video::-webkit-media-controls,
+@media (orientation: landscape) body.player-open video::-webkit-media-controls,
+body.is-fullscreen video::-webkit-media-controls-enclosure,
+@media (orientation: landscape) body.player-open video::-webkit-media-controls-enclosure {
+  display: none !important;
+}
+
+/* Tap detector overlay */
+.ls-tap-detector {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* Top Header (Screenshot 4) */
+.ls-top-header {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.88) 0%, transparent 100%);
+  pointer-events: auto;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.ls-top-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ls-back-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+}
+
+.ls-video-title {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 55vw;
+  letter-spacing: -0.2px;
+}
+
+.ls-top-right {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.ls-header-action-btn {
+  background: transparent;
+  border: none;
+  color: #d1d5db;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.ls-header-action-btn i {
+  font-size: 16px;
+}
+
+.ls-header-action-btn:active {
+  color: #00d26a;
+}
+
+/* Screen Lock Pill Button (Screenshot 1 & 4) */
+.ls-lock-wrapper {
+  position: absolute;
+  left: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 6;
+  pointer-events: auto;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.ls-lock-pill-btn {
+  background: rgba(15, 17, 23, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  color: #ffffff;
+  padding: 7px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
+}
+
+.ls-lock-pill-btn.locked {
+  border-color: rgba(0, 210, 106, 0.6);
+  color: #00d26a;
+  background: rgba(0, 210, 106, 0.15);
+}
+
+/* Center Controls: 10s back, Play/Pause, 10s forward (Screenshot 4) */
+.ls-center-controls {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  z-index: 3;
+  pointer-events: auto;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.ls-seek-btn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.15s ease;
+}
+
+.ls-seek-btn:active {
+  transform: scale(0.9);
+}
+
+.ls-10s-svg {
+  width: 40px;
+  height: 40px;
+  color: #ffffff;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+}
+
+.ls-play-pause-btn {
+  background: rgba(15, 17, 23, 0.55);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  color: #ffffff;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.ls-play-pause-btn:active {
+  transform: scale(0.92);
+  background: rgba(0, 210, 106, 0.3);
+}
+
+/* Bottom Control Bar (Screenshot 4) */
+.ls-bottom-bar {
+  position: relative;
+  z-index: 3;
+  padding: 12px 28px 16px 28px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.92) 0%, transparent 100%);
+  pointer-events: auto;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.ls-bottom-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.ls-mini-play-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.ls-time-display {
+  color: #e5e7eb;
+  font-size: 12px;
+  font-weight: 500;
+  min-width: 44px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ls-duration-display {
+  color: #9ca3af;
+}
+
+/* Custom Interactive Progress Track */
+.ls-progress-track-wrapper {
+  flex: 1;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  margin: 0 6px;
+  touch-action: none;
+}
+
+.ls-progress-track-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.ls-progress-buffered {
+  position: absolute;
+  left: 0;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.4);
+  width: 0%;
+}
+
+.ls-progress-filled {
+  position: absolute;
+  left: 0;
+  height: 4px;
+  border-radius: 2px;
+  background: #00d26a;
+  width: 0%;
+}
+
+.ls-progress-thumb {
+  position: absolute;
+  left: 0%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 6px rgba(0, 210, 106, 0.9);
+  pointer-events: none;
+}
+
+/* Bottom Action Buttons */
+.ls-bottom-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 6px;
+}
+
+.ls-action-pill {
+  background: transparent;
+  border: none;
+  color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: color 0.15s;
+}
+
+.ls-action-pill:active {
+  color: #00d26a;
+}
+
+.ls-quality-pill {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Side Drawers (Screenshot 3, 4, 5) */
+.ls-side-drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  background: rgba(12, 14, 20, 0.95);
+  backdrop-filter: blur(18px);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  transform: translateX(100%);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: auto;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.ls-side-drawer.open {
+  transform: translateX(0);
+}
+
+.ls-drawer-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.ls-drawer-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Speed Drawer (Screenshot 4) */
+.ls-speed-drawer {
+  width: 220px;
+}
+
+.ls-speed-options-list {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
+}
+
+.ls-speed-option {
+  background: transparent;
+  border: none;
+  color: #d1d5db;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 14px 24px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ls-speed-option.active {
+  color: #00d26a;
+  font-weight: 700;
+}
+
+/* Language & Subtitle Drawer (Screenshot 5) */
+.ls-language-drawer {
+  width: 360px;
+}
+
+.ls-language-columns {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.ls-lang-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  overflow-y: auto;
+}
+
+.ls-lang-column:last-child {
+  border-right: none;
+}
+
+.ls-column-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.ls-column-sub {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.ls-column-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.ls-lang-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.ls-lang-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: #d1d5db;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ls-lang-item.active {
+  color: #00d26a;
+  font-weight: 600;
+}
+
+.ls-check-icon {
+  color: #00d26a;
+  font-size: 12px;
+}
+
+.ls-check-icon.hidden {
+  display: none;
+}
+
+.ls-dl-icon {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+.ls-subtitle-bottom-bar {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.ls-divider {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* Settings Drawer (Screenshot 3) */
+.ls-setting-drawer {
+  width: 320px;
+}
+
+.ls-setting-content {
+  padding: 16px 20px;
+}
+
+.ls-setting-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ls-setting-left {
+  flex: 1;
+}
+
+.ls-setting-title {
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.ls-setting-desc {
+  font-size: 11px;
+  color: #9ca3af;
+  line-height: 1.4;
+}
+
+/* Modern Toggle Switch */
+.ls-switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.ls-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.ls-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  transition: 0.25s;
+}
+
+.ls-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: 0.25s;
+}
+
+.ls-switch input:checked + .ls-slider {
+  background-color: #00d26a;
+}
+
+.ls-switch input:checked + .ls-slider:before {
+  transform: translateX(16px);
+}
+
+/* Locked Mode (Screenshot 1) */
+.ls-player-ui.is-locked .ls-top-header,
+.ls-player-ui.is-locked .ls-center-controls,
+.ls-player-ui.is-locked .ls-bottom-bar,
+.ls-player-ui.is-locked .ls-side-drawer {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+/* Inactivity Auto-hide */
+.ls-player-ui.controls-hidden .ls-top-header,
+.ls-player-ui.controls-hidden .ls-center-controls,
+.ls-player-ui.controls-hidden .ls-bottom-bar,
+.ls-player-ui.controls-hidden .ls-lock-wrapper {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+

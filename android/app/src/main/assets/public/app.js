@@ -1117,67 +1117,290 @@ function resetPlayerControlsTimer() {
   }
 }
 
+// ============================================================
+// MOVIEBOX SIGNATURE LANDSCAPE PLAYER CONTROLLER
+// Matches Screenshots 1, 3, 4, 5
+// ============================================================
+let lsControlsTimer = null;
+let isPlayerLocked = false;
+let isScrubbingProgress = false;
+
+function formatPlayerTime(seconds) {
+  if (isNaN(seconds) || seconds < 0) return '00:00';
+  const s = Math.floor(seconds);
+  const hrs = Math.floor(s / 3600);
+  const mins = Math.floor((s % 3600) / 60);
+  const secs = s % 60;
+  if (hrs > 0) {
+    return `${hrs}:${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  }
+  return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
+function resetLandscapeControlsTimer() {
+  const lsUi = document.getElementById('landscapePlayerUI');
+  if (!lsUi) return;
+
+  lsUi.classList.remove('controls-hidden');
+  if (lsControlsTimer) clearTimeout(lsControlsTimer);
+
+  const video = document.getElementById('mainVideoPlayer');
+  if (video && !video.paused && !isPlayerLocked) {
+    lsControlsTimer = setTimeout(() => {
+      lsUi.classList.add('controls-hidden');
+    }, 3800);
+  }
+}
+
+function togglePlayerLock() {
+  const lsUi = document.getElementById('landscapePlayerUI');
+  const lockIcon = document.getElementById('lsLockIcon');
+  const lockText = document.getElementById('lsLockText');
+  const lockBtn = document.getElementById('lsLockBtn');
+  if (!lsUi) return;
+
+  isPlayerLocked = !isPlayerLocked;
+  lsUi.classList.toggle('is-locked', isPlayerLocked);
+
+  if (isPlayerLocked) {
+    if (lockIcon) lockIcon.className = 'fa-solid fa-lock';
+    if (lockText) lockText.innerText = 'Tap to Unlock';
+    if (lockBtn) lockBtn.classList.add('locked');
+    closeLandscapeDrawers();
+    showToast('Screen locked');
+  } else {
+    if (lockIcon) lockIcon.className = 'fa-solid fa-lock-open';
+    if (lockText) lockText.innerText = 'Tap to Lock';
+    if (lockBtn) lockBtn.classList.remove('locked');
+    showToast('Screen unlocked');
+  }
+  resetLandscapeControlsTimer();
+}
+
+function togglePlayPauseVideo() {
+  const video = document.getElementById('mainVideoPlayer');
+  if (!video) return;
+  if (video.paused) {
+    video.play().catch(() => {});
+  } else {
+    video.pause();
+  }
+  syncPlayPauseIcons();
+  resetLandscapeControlsTimer();
+}
+
+function syncPlayPauseIcons() {
+  const video = document.getElementById('mainVideoPlayer');
+  const centerIcon = document.getElementById('lsCenterPlayIcon');
+  const bottomIcon = document.getElementById('lsBottomPlayIcon');
+  if (!video) return;
+
+  const isPaused = video.paused;
+  if (centerIcon) {
+    centerIcon.className = isPaused ? 'fa-solid fa-play' : 'fa-solid fa-pause';
+  }
+  if (bottomIcon) {
+    bottomIcon.className = isPaused ? 'fa-solid fa-play' : 'fa-solid fa-pause';
+  }
+}
+
+function seekRelative(offsetSeconds) {
+  const video = document.getElementById('mainVideoPlayer');
+  if (!video) return;
+  const newTime = Math.max(0, Math.min(video.duration || 0, video.currentTime + offsetSeconds));
+  video.currentTime = newTime;
+  updateLandscapeProgress();
+  resetLandscapeControlsTimer();
+}
+
+function updateLandscapeProgress() {
+  if (isScrubbingProgress) return;
+  const video = document.getElementById('mainVideoPlayer');
+  const curTimeEl = document.getElementById('lsCurrentTime');
+  const durTimeEl = document.getElementById('lsTotalDuration');
+  const filledEl = document.getElementById('lsProgressFilled');
+  const thumbEl = document.getElementById('lsProgressThumb');
+  const bufEl = document.getElementById('lsProgressBuffered');
+  if (!video) return;
+
+  const current = video.currentTime || 0;
+  const duration = video.duration || 0;
+
+  if (curTimeEl) curTimeEl.innerText = formatPlayerTime(current);
+  if (durTimeEl && duration > 0) durTimeEl.innerText = formatPlayerTime(duration);
+
+  const percent = duration > 0 ? (current / duration) * 100 : 0;
+  if (filledEl) filledEl.style.width = `${percent}%`;
+  if (thumbEl) thumbEl.style.left = `${percent}%`;
+
+  if (bufEl && video.buffered && video.buffered.length > 0 && duration > 0) {
+    try {
+      const bufferedEnd = video.buffered.end(video.buffered.length - 1);
+      bufEl.style.width = `${(bufferedEnd / duration) * 100}%`;
+    } catch (e) {}
+  }
+}
+
+function setupLandscapeProgressScrubbing() {
+  const wrapper = document.getElementById('lsProgressWrapper');
+  const video = document.getElementById('mainVideoPlayer');
+  if (!wrapper || !video) return;
+
+  const handleScrub = (clientX) => {
+    const rect = wrapper.getBoundingClientRect();
+    const pos = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    const duration = video.duration || 0;
+    if (duration > 0) {
+      video.currentTime = pos * duration;
+      const percent = pos * 100;
+      const filledEl = document.getElementById('lsProgressFilled');
+      const thumbEl = document.getElementById('lsProgressThumb');
+      const curTimeEl = document.getElementById('lsCurrentTime');
+      if (filledEl) filledEl.style.width = `${percent}%`;
+      if (thumbEl) thumbEl.style.left = `${percent}%`;
+      if (curTimeEl) curTimeEl.innerText = formatPlayerTime(video.currentTime);
+    }
+  };
+
+  wrapper.addEventListener('pointerdown', (e) => {
+    isScrubbingProgress = true;
+    wrapper.setPointerCapture(e.pointerId);
+    handleScrub(e.clientX);
+    resetLandscapeControlsTimer();
+  });
+
+  wrapper.addEventListener('pointermove', (e) => {
+    if (isScrubbingProgress) {
+      handleScrub(e.clientX);
+      resetLandscapeControlsTimer();
+    }
+  });
+
+  const onPointerUp = (e) => {
+    if (isScrubbingProgress) {
+      isScrubbingProgress = false;
+      try { wrapper.releasePointerCapture(e.pointerId); } catch (err) {}
+      resetLandscapeControlsTimer();
+    }
+  };
+
+  wrapper.addEventListener('pointerup', onPointerUp);
+  wrapper.addEventListener('pointercancel', onPointerUp);
+}
+
+function toggleLandscapeFitFill() {
+  const video = document.getElementById('mainVideoPlayer');
+  const fitLabel = document.getElementById('lsFitLabel');
+  if (!video) return;
+
+  const isContain = video.classList.toggle('fit-contain');
+  if (fitLabel) {
+    fitLabel.innerText = isContain ? 'Fill' : 'Fit';
+  }
+  showToast(isContain ? 'Aspect Ratio: Fit to Screen' : 'Aspect Ratio: Zoom to Fill (Edge-to-Edge)');
+  resetLandscapeControlsTimer();
+}
+
+function toggleLandscapeDrawer(drawerName) {
+  const drawers = {
+    speed: document.getElementById('lsSpeedDrawer'),
+    language: document.getElementById('lsLanguageDrawer'),
+    setting: document.getElementById('lsSettingDrawer')
+  };
+
+  const target = drawers[drawerName];
+  if (!target) return;
+
+  const willOpen = !target.classList.contains('open');
+  closeLandscapeDrawers();
+
+  if (willOpen) {
+    target.classList.add('open');
+    if (lsControlsTimer) clearTimeout(lsControlsTimer);
+  } else {
+    resetLandscapeControlsTimer();
+  }
+}
+
+function closeLandscapeDrawers() {
+  document.querySelectorAll('.ls-side-drawer').forEach(d => d.classList.remove('open'));
+}
+
+function setLandscapeSpeed(rate) {
+  const video = document.getElementById('mainVideoPlayer');
+  const label = document.getElementById('lsSpeedLabel');
+  if (!video) return;
+
+  video.playbackRate = rate;
+  if (label) label.innerText = `${rate}x`;
+
+  document.querySelectorAll('.ls-speed-option').forEach(btn => {
+    btn.classList.toggle('active', parseFloat(btn.dataset.speed) === rate);
+  });
+
+  showToast(`Speed: ${rate}x`);
+  closeLandscapeDrawers();
+  resetLandscapeControlsTimer();
+}
+
+function selectLandscapeAudio(trackName) {
+  document.querySelectorAll('#lsAudioOptionsList .ls-lang-item').forEach(item => {
+    const isTarget = item.querySelector('span')?.innerText === trackName;
+    item.classList.toggle('active', isTarget);
+    const check = item.querySelector('.ls-check-icon');
+    if (check) check.classList.toggle('hidden', !isTarget);
+  });
+  showToast(`Audio Track: ${trackName}`);
+  closeLandscapeDrawers();
+  resetLandscapeControlsTimer();
+}
+
 function enterFullscreenMode(options = {}) {
   const videoPlayer = document.getElementById('mainVideoPlayer');
   const videoContainer = document.getElementById('videoContainer');
   const playerOverlay = document.getElementById('playerOverlay');
-  const fsBtn = document.getElementById('playerFullscreenToggleBtn');
+  const titleEl = document.getElementById('lsVideoTitle');
 
   document.body.classList.add('is-fullscreen');
   if (playerOverlay) playerOverlay.classList.add('is-fullscreen');
   if (videoContainer) videoContainer.classList.add('is-fullscreen');
 
-  if (fsBtn) {
-    fsBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
-    fsBtn.title = 'Exit Fullscreen';
+  // Sync MovieBox title
+  if (titleEl && appState.currentMedia) {
+    const media = appState.currentMedia;
+    const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-'));
+    const epNum = appState.currentEpisode?.episodeNumber || '01';
+    titleEl.innerText = isSeries 
+      ? `${media.title} [${media.language || 'Hindi'}] S01 E${epNum}` 
+      : `${media.title} [${media.language || 'Hindi'}][${media.tag || 'HD'}]`;
   }
 
   if (!options.skipRotate) {
     setVideoOrientationLandscape();
   }
 
-  // Fallback for non-Android standard desktop browsers only
-  if (!window.AndroidApp && !document.fullscreenElement && !document.webkitFullscreenElement) {
-    const target = videoContainer || videoPlayer;
-    if (target && target.requestFullscreen) {
-      target.requestFullscreen().catch(() => {});
-    }
-  }
-
-  resetPlayerControlsTimer();
+  syncPlayPauseIcons();
+  updateLandscapeProgress();
+  resetLandscapeControlsTimer();
 }
 
 function exitFullscreenMode(options = {}) {
   const videoContainer = document.getElementById('videoContainer');
   const playerOverlay = document.getElementById('playerOverlay');
-  const fsBtn = document.getElementById('playerFullscreenToggleBtn');
-  const topHeader = document.getElementById('playerTopHeader');
 
   document.body.classList.remove('is-fullscreen');
   if (playerOverlay) playerOverlay.classList.remove('is-fullscreen');
   if (videoContainer) videoContainer.classList.remove('is-fullscreen');
 
-  if (fsBtn) {
-    fsBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
-    fsBtn.title = 'Fullscreen';
-  }
+  closeLandscapeDrawers();
 
-  if (topHeader) {
-    topHeader.classList.remove('controls-hidden');
-  }
-  if (playerControlsTimer) {
-    clearTimeout(playerControlsTimer);
-    playerControlsTimer = null;
+  if (lsControlsTimer) {
+    clearTimeout(lsControlsTimer);
+    lsControlsTimer = null;
   }
 
   if (!options.skipRotate) {
     setVideoOrientationPortrait();
-  }
-
-  // Fallback for non-Android standard desktop browsers only
-  if (!window.AndroidApp && (document.fullscreenElement || document.webkitFullscreenElement)) {
-    if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
-    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
   }
 }
 
@@ -1191,15 +1414,7 @@ function togglePlayerFullscreen() {
 }
 
 function toggleVideoScaling() {
-  const videoPlayer = document.getElementById('mainVideoPlayer');
-  const scaleBtn = document.getElementById('playerScaleToggleBtn');
-  if (!videoPlayer) return;
-
-  const isContain = videoPlayer.classList.toggle('fit-contain');
-  if (scaleBtn) {
-    scaleBtn.innerHTML = isContain ? '<i class="fa-solid fa-expand"></i>' : '<i class="fa-solid fa-maximize"></i>';
-  }
-  showToast(isContain ? 'Aspect Ratio: Fit to Screen' : 'Aspect Ratio: Zoom to Fill (Edge-to-Edge)');
+  toggleLandscapeFitFill();
 }
 
 function handlePlayerBackClick() {
@@ -1237,18 +1452,38 @@ function setupVideoListeners() {
   const loader = document.getElementById('videoLoader');
   if (!videoPlayer) return;
 
-  if (videoContainer) {
-    videoContainer.addEventListener('click', () => {
-      resetPlayerControlsTimer();
+  // Tap detector for showing/hiding MovieBox landscape controls
+  const tapDetector = document.getElementById('lsTapDetector');
+  if (tapDetector) {
+    tapDetector.addEventListener('click', () => {
+      const lsUi = document.getElementById('landscapePlayerUI');
+      if (!lsUi) return;
+      if (isPlayerLocked) {
+        lsUi.classList.remove('controls-hidden');
+        resetLandscapeControlsTimer();
+        return;
+      }
+      closeLandscapeDrawers();
+      const isHidden = lsUi.classList.toggle('controls-hidden');
+      if (!isHidden) resetLandscapeControlsTimer();
     });
-    videoContainer.addEventListener('mousemove', resetPlayerControlsTimer);
-    videoContainer.addEventListener('touchstart', resetPlayerControlsTimer, { passive: true });
   }
+
+  setupLandscapeProgressScrubbing();
+
+  videoPlayer.addEventListener('timeupdate', () => {
+    updateLandscapeProgress();
+  });
+
+  videoPlayer.addEventListener('progress', () => {
+    updateLandscapeProgress();
+  });
 
   videoPlayer.addEventListener('playing', () => {
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
     if (loader) loader.classList.remove('active');
-    resetPlayerControlsTimer();
+    syncPlayPauseIcons();
+    resetLandscapeControlsTimer();
   });
 
   videoPlayer.addEventListener('waiting', () => {
@@ -1258,10 +1493,12 @@ function setupVideoListeners() {
   videoPlayer.addEventListener('canplay', () => {
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
     if (loader) loader.classList.remove('active');
+    updateLandscapeProgress();
   });
 
   videoPlayer.addEventListener('pause', () => {
-    resetPlayerControlsTimer();
+    syncPlayPauseIcons();
+    resetLandscapeControlsTimer();
   });
 
   videoPlayer.addEventListener('error', (e) => {

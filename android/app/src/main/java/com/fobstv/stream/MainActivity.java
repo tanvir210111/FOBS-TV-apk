@@ -35,77 +35,38 @@ public class MainActivity extends BridgeActivity {
 
         @Override
         public void onShowCustomView(View view, CustomViewCallback callback) {
-            if (customView != null) {
-                onHideCustomView();
-                return;
+            if (callback != null) {
+                try {
+                    callback.onCustomViewHidden();
+                } catch (Exception ignored) {}
             }
 
-            customView = view;
-            customViewCallback = callback;
-
-            if (fullscreenContainer == null) {
-                fullscreenContainer = new FrameLayout(MainActivity.this);
-                fullscreenContainer.setBackgroundColor(Color.BLACK);
-                ViewGroup decor = (ViewGroup) getWindow().getDecorView();
-                decor.addView(
-                    fullscreenContainer,
-                    new ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT
-                    )
-                );
-            }
-
-            fullscreenContainer.removeAllViews();
-            fullscreenContainer.addView(
-                customView,
-                new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-                )
-            );
-            fullscreenContainer.setVisibility(View.VISIBLE);
-
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-            hideSystemUI();
-
-            WebView webView = getBridge() != null ? getBridge().getWebView() : null;
-            if (webView != null) {
-                webView.evaluateJavascript(
-                    "(function() { if (typeof window.onNativeFullscreenChange === 'function') window.onNativeFullscreenChange(true); })();",
-                    null
-                );
-            }
+            runOnUiThread(() -> {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+                hideSystemUI();
+                WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+                if (webView != null) {
+                    webView.evaluateJavascript(
+                        "(function() { if (typeof window.enterFullscreenMode === 'function') window.enterFullscreenMode({ skipRotate: true }); })();",
+                        null
+                    );
+                }
+            });
         }
 
         @Override
         public void onHideCustomView() {
-            if (customView == null) return;
-
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            showSystemUI();
-
-            if (fullscreenContainer != null) {
-                fullscreenContainer.removeAllViews();
-                fullscreenContainer.setVisibility(View.GONE);
-            }
-
-            if (customViewCallback != null) {
-                try {
-                    customViewCallback.onCustomViewHidden();
-                } catch (Exception ignored) {}
-                customViewCallback = null;
-            }
-
-            customView = null;
-
-            WebView webView = getBridge() != null ? getBridge().getWebView() : null;
-            if (webView != null) {
-                webView.evaluateJavascript(
-                    "(function() { if (typeof window.onNativeFullscreenChange === 'function') window.onNativeFullscreenChange(false); })();",
-                    null
-                );
-            }
+            runOnUiThread(() -> {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                showSystemUI();
+                WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+                if (webView != null) {
+                    webView.evaluateJavascript(
+                        "(function() { if (typeof window.exitFullscreenMode === 'function') window.exitFullscreenMode({ skipRotate: true }); })();",
+                        null
+                    );
+                }
+            });
         }
     }
 

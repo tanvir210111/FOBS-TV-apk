@@ -12,3 +12,5 @@ android/captures/
 *.iml
 *.mp4
 *.apk
+*.jpeg
+*.jpg

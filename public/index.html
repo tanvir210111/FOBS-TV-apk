@@ -236,6 +236,225 @@
           <div class="spinner"></div>
           <div class="loader-text">Loading...</div>
         </div>
+
+        <!-- ============================================================ -->
+        <!-- MOVIEBOX SIGNATURE LANDSCAPE FULLSCREEN PLAYER UI -->
+        <!-- Matches Screenshots 1, 3, 4, 5 -->
+        <!-- Hidden completely in Portrait; Shown only in Landscape Fullscreen -->
+        <!-- ============================================================ -->
+        <div class="ls-player-ui" id="landscapePlayerUI">
+          <!-- Screen Tap Overlay to Toggle Controls -->
+          <div class="ls-tap-detector" id="lsTapDetector"></div>
+
+          <!-- Top Header (Screenshot 4) -->
+          <div class="ls-top-header" id="lsTopHeader">
+            <div class="ls-top-left">
+              <button class="ls-icon-btn ls-back-btn" id="lsBackBtn" onclick="exitFullscreenMode()">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <span class="ls-video-title" id="lsVideoTitle">FOBS TV</span>
+            </div>
+            <div class="ls-top-right">
+              <button class="ls-header-action-btn" title="Cast to TV" onclick="showToast('Searching for TV devices...')">
+                <i class="fa-solid fa-tv"></i>
+                <span>TV</span>
+              </button>
+              <button class="ls-header-action-btn" title="Help" onclick="showToast('Help & feedback: support@fobstv.com')">
+                <i class="fa-regular fa-circle-question"></i>
+                <span>Help</span>
+              </button>
+              <button class="ls-header-action-btn" id="lsSettingToggleBtn" title="Setting" onclick="toggleLandscapeDrawer('setting')">
+                <i class="fa-solid fa-gear"></i>
+                <span>Setting</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Left Side Screen Lock Control (Screenshot 1 & 4) -->
+          <div class="ls-lock-wrapper" id="lsLockWrapper">
+            <button class="ls-lock-pill-btn" id="lsLockBtn" onclick="togglePlayerLock()">
+              <i class="fa-solid fa-lock-open" id="lsLockIcon"></i>
+              <span id="lsLockText">Tap to Lock</span>
+            </button>
+          </div>
+
+          <!-- Center Controls: Rewind 10s, Big Play/Pause, Forward 10s (Screenshot 4) -->
+          <div class="ls-center-controls" id="lsCenterControls">
+            <button class="ls-center-btn ls-seek-btn" id="lsRewind10Btn" onclick="seekRelative(-10)" title="Rewind 10 seconds">
+              <svg viewBox="0 0 48 48" class="ls-10s-svg">
+                <path d="M24 8a16 16 0 1 0 15.3 11.2" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                <polyline points="24,3 24,9 18,6" fill="currentColor"/>
+                <text x="24" y="29" font-size="12" font-weight="700" text-anchor="middle" fill="currentColor">10</text>
+              </svg>
+            </button>
+
+            <button class="ls-center-btn ls-play-pause-btn" id="lsCenterPlayPauseBtn" onclick="togglePlayPauseVideo()" title="Play / Pause">
+              <i class="fa-solid fa-pause" id="lsCenterPlayIcon"></i>
+            </button>
+
+            <button class="ls-center-btn ls-seek-btn" id="lsForward10Btn" onclick="seekRelative(10)" title="Forward 10 seconds">
+              <svg viewBox="0 0 48 48" class="ls-10s-svg">
+                <path d="M24 8a16 16 0 1 1 -15.3 11.2" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                <polyline points="24,3 24,9 30,6" fill="currentColor"/>
+                <text x="24" y="29" font-size="12" font-weight="700" text-anchor="middle" fill="currentColor">10</text>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Bottom Control Bar (Screenshot 4) -->
+          <div class="ls-bottom-bar" id="lsBottomBar">
+            <div class="ls-bottom-row">
+              <button class="ls-icon-btn ls-mini-play-btn" id="lsBottomPlayBtn" onclick="togglePlayPauseVideo()">
+                <i class="fa-solid fa-pause" id="lsBottomPlayIcon"></i>
+              </button>
+
+              <span class="ls-time-display" id="lsCurrentTime">00:00</span>
+
+              <!-- Interactive Progress Slider -->
+              <div class="ls-progress-track-wrapper" id="lsProgressWrapper">
+                <div class="ls-progress-buffered" id="lsProgressBuffered"></div>
+                <div class="ls-progress-filled" id="lsProgressFilled"></div>
+                <div class="ls-progress-thumb" id="lsProgressThumb"></div>
+              </div>
+
+              <span class="ls-time-display ls-duration-display" id="lsTotalDuration">00:00</span>
+
+              <!-- Right Bottom Action Pills -->
+              <div class="ls-bottom-actions">
+                <button class="ls-action-pill" id="lsFitToggleBtn" onclick="toggleLandscapeFitFill()" title="Fit / Fill Aspect Ratio">
+                  <i class="fa-solid fa-arrows-left-right-to-line" id="lsFitIcon"></i>
+                  <span id="lsFitLabel">Fit</span>
+                </button>
+
+                <button class="ls-action-pill" id="lsLanguageToggleBtn" onclick="toggleLandscapeDrawer('language')" title="Audio & Subtitles">
+                  <i class="fa-solid fa-closed-captioning"></i>
+                  <span>Language</span>
+                </button>
+
+                <button class="ls-action-pill" id="lsSpeedToggleBtn" onclick="toggleLandscapeDrawer('speed')" title="Playback Speed">
+                  <i class="fa-solid fa-gauge-high"></i>
+                  <span id="lsSpeedLabel">1x</span>
+                </button>
+
+                <div class="ls-quality-pill" id="lsQualityBadge">1080P</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Side Drawer: Playback Speed (Screenshot 4) -->
+          <div class="ls-side-drawer ls-speed-drawer" id="lsSpeedDrawer">
+            <div class="ls-drawer-header">
+              <span>Speed</span>
+              <button class="ls-drawer-close" onclick="closeLandscapeDrawers()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="ls-speed-options-list">
+              <button class="ls-speed-option" data-speed="0.5" onclick="setLandscapeSpeed(0.5)">0.5x</button>
+              <button class="ls-speed-option" data-speed="0.75" onclick="setLandscapeSpeed(0.75)">0.75x</button>
+              <button class="ls-speed-option active" data-speed="1.0" onclick="setLandscapeSpeed(1.0)">1x</button>
+              <button class="ls-speed-option" data-speed="1.25" onclick="setLandscapeSpeed(1.25)">1.25x</button>
+              <button class="ls-speed-option" data-speed="1.5" onclick="setLandscapeSpeed(1.5)">1.5x</button>
+              <button class="ls-speed-option" data-speed="2.0" onclick="setLandscapeSpeed(2.0)">2x</button>
+            </div>
+          </div>
+
+          <!-- Right Side Drawer: Language & Subtitles (Screenshot 5) -->
+          <div class="ls-side-drawer ls-language-drawer" id="lsLanguageDrawer">
+            <div class="ls-drawer-header">
+              <span>Language & Subtitles</span>
+              <button class="ls-drawer-close" onclick="closeLandscapeDrawers()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="ls-language-columns">
+              <!-- Audio Column -->
+              <div class="ls-lang-column">
+                <div class="ls-column-title">Audio</div>
+                <div class="ls-lang-items" id="lsAudioOptionsList">
+                  <div class="ls-lang-item" onclick="selectLandscapeAudio('Original Audio')">
+                    <span>Original Audio</span>
+                    <i class="fa-solid fa-check ls-check-icon hidden"></i>
+                  </div>
+                  <div class="ls-lang-item active" onclick="selectLandscapeAudio('Hindi dub')">
+                    <span>Hindi dub</span>
+                    <i class="fa-solid fa-check ls-check-icon"></i>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Subtitle Column -->
+              <div class="ls-lang-column">
+                <div class="ls-column-header-row">
+                  <span class="ls-column-title">Subtitle</span>
+                  <label class="ls-switch">
+                    <input type="checkbox" checked id="lsSubtitleToggle">
+                    <span class="ls-slider"></span>
+                  </label>
+                </div>
+                <div class="ls-column-header-row" style="margin-bottom: 8px;">
+                  <span class="ls-column-sub">Bilingual</span>
+                  <label class="ls-switch">
+                    <input type="checkbox" id="lsBilingualToggle">
+                    <span class="ls-slider"></span>
+                  </label>
+                </div>
+
+                <div class="ls-lang-items" id="lsSubtitleOptionsList">
+                  <div class="ls-lang-item active">
+                    <span>English</span>
+                    <i class="fa-solid fa-check ls-check-icon"></i>
+                  </div>
+                  <div class="ls-lang-item">
+                    <span>العربية</span>
+                    <i class="fa-solid fa-download ls-dl-icon"></i>
+                  </div>
+                  <div class="ls-lang-item">
+                    <span>Español</span>
+                    <i class="fa-solid fa-download ls-dl-icon"></i>
+                  </div>
+                  <div class="ls-lang-item">
+                    <span>Filipino</span>
+                    <i class="fa-solid fa-download ls-dl-icon"></i>
+                  </div>
+                  <div class="ls-lang-item">
+                    <span>Français</span>
+                    <i class="fa-solid fa-download ls-dl-icon"></i>
+                  </div>
+                  <div class="ls-lang-item">
+                    <span>हिन्दी</span>
+                    <i class="fa-solid fa-download ls-dl-icon"></i>
+                  </div>
+                </div>
+
+                <div class="ls-subtitle-bottom-bar">
+                  <span>Style</span>
+                  <span class="ls-divider">|</span>
+                  <span>Delay</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Side Drawer: Settings (Screenshot 3) -->
+          <div class="ls-side-drawer ls-setting-drawer" id="lsSettingDrawer">
+            <div class="ls-drawer-header">
+              <span>Settings</span>
+              <button class="ls-drawer-close" onclick="closeLandscapeDrawers()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="ls-setting-content">
+              <div class="ls-setting-item">
+                <div class="ls-setting-left">
+                  <div class="ls-setting-title">
+                    <i class="fa-solid fa-expand" style="font-size: 13px; margin-right: 6px;"></i>
+                    Auto Miniplayer
+                  </div>
+                  <div class="ls-setting-desc">After exiting the page or MovieBox, it will automatically enable Miniplayer.</div>
+                </div>
+                <label class="ls-switch">
+                  <input type="checkbox" checked id="lsMiniplayerToggle">
+                  <span class="ls-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Details & Actions Section -->
