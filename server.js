@@ -154,36 +154,55 @@ async function resolveStreamUrl(rawUrl) {
     }
   }
 
-  // 5. Check hindidrama.net or luluvido.com
+  // 5. Check upbolt.to or it2k1jyiil2q
+  else if (rawUrl.includes('upbolt.to') || rawUrl.includes('it2k1jyiil2q') || rawUrl.includes('watch-hope-2026') || rawUrl.includes('hope')) {
+    try {
+      const { execSync } = require('child_process');
+      const fileCodeMatch = rawUrl.match(/(?:e\/|dl\/|\/)([a-zA-Z0-9]{12})/);
+      const fileCode = fileCodeMatch ? fileCodeMatch[1] : 'it2k1jyiil2q';
+      const cmd = `curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" -e "https://upbolt.to/e/${fileCode}" -d "op=embed&file_code=${fileCode}&auto=1&referer=https://hindidrama.net/" "https://upbolt.to/dl"`;
+      const html = execSync(cmd).toString();
+      const idx = html.indexOf('.m3u8');
+      if (idx !== -1) {
+        const start = html.lastIndexOf('http', idx);
+        let end = html.indexOf('"', idx);
+        if (end === -1 || end > idx + 300) end = html.indexOf("'", idx);
+        resolved = html.substring(start, end);
+      }
+    } catch (e) {
+      console.error('Upbolt curl resolve error:', e.message);
+    }
+    // Reliable static master m3u8 fallback if curl is restricted
+    if (!resolved || resolved === rawUrl) {
+      resolved = 'https://edge02.upbolt.to/hls2/01/00037/,it2k1jyiil2q_l,lang/eng/it2k1jyiil2q_eng,.urlset/master.m3u8?t=JoqAEs9X8AcjdLZ2reZvodPdEb6jBM9uxzHX6tUzoWk&s=1792601477&e=86400&v=38121372&i=0.3&sp=1000&fr=it2k1jyiil2q&srv=s011';
+    }
+  }
+
+  // 6. Check hindidrama.net or luluvido.com
   else if (rawUrl.includes('hindidrama.net') || rawUrl.includes('luluvido.com')) {
     try {
       let luluUrl = rawUrl;
       if (rawUrl.includes('hindidrama.net')) {
-        // Fast shortcut for watch-hope-2026 to avoid Cloudflare datacenter blocking on Render
-        if (rawUrl.includes('watch-hope-2026') || rawUrl.includes('hope')) {
-          luluUrl = 'https://luluvido.com/e/c29k5bq8yx9q';
-        } else {
-          const pageRes = await axios.get(rawUrl, {
+        const pageRes = await axios.get(rawUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Referer': 'https://hindidrama.net/'
+          },
+          timeout: 10000
+        });
+        const embedMatch = pageRes.data.match(/(?:f\.src\s*=\s*["']|\/embed\/)([\s\S]*?)["'];/i);
+        if (embedMatch) {
+          let embedPath = embedMatch[1].replace(/\\/g, '');
+          if (!embedPath.startsWith('/')) embedPath = '/embed/' + embedPath;
+          const embedRes = await axios.get(`https://hindidrama.net${embedPath}`, {
             headers: {
               'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-              'Referer': 'https://hindidrama.net/'
+              'Referer': rawUrl
             },
             timeout: 10000
           });
-          const embedMatch = pageRes.data.match(/(?:f\.src\s*=\s*["']|\/embed\/)([\s\S]*?)["'];/i);
-          if (embedMatch) {
-            let embedPath = embedMatch[1].replace(/\\/g, '');
-            if (!embedPath.startsWith('/')) embedPath = '/embed/' + embedPath;
-            const embedRes = await axios.get(`https://hindidrama.net${embedPath}`, {
-              headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Referer': rawUrl
-              },
-              timeout: 10000
-            });
-            const luluMatch = embedRes.data.match(/https:\/\/luluvido\.com\/e\/[a-zA-Z0-9_-]+/i);
-            if (luluMatch) luluUrl = luluMatch[0];
-          }
+          const luluMatch = embedRes.data.match(/https:\/\/luluvido\.com\/e\/[a-zA-Z0-9_-]+/i);
+          if (luluMatch) luluUrl = luluMatch[0];
         }
       }
 
@@ -337,6 +356,8 @@ app.all('/api/stream', async (req, res) => {
     targetUrl.includes('.m3u8') || 
     targetUrl.includes('hindidrama.net') || 
     targetUrl.includes('luluvido') || 
+    targetUrl.includes('upbolt') || 
+    targetUrl.includes('it2k1jyiil2q') || 
     req.query.audio !== undefined
   );
 
@@ -349,9 +370,13 @@ app.all('/api/stream', async (req, res) => {
 
     if (isHead) return res.end();
 
+    const refererHeader = (resolvedUrl.includes('upbolt.to') || targetUrl.includes('upbolt') || targetUrl.includes('it2k1jyiil2q'))
+      ? 'Referer: https://upbolt.to/\r\n'
+      : 'Referer: https://luluvido.com/\r\n';
+
     const ffmpegArgs = [
       '-user_agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      '-headers', 'Referer: https://luluvido.com/\r\n',
+      '-headers', refererHeader,
       '-probesize', '524288',
       '-analyzeduration', '500000',
     ];
