@@ -1876,39 +1876,30 @@ function getMediaTotalDurationSeconds() {
 }
 
 function seekRelative(offsetSeconds) {
-  const current = (document.getElementById('mainVideoPlayer')?.currentTime || 0) + (appState.streamSeekOffset || 0);
-  const duration = getMediaTotalDurationSeconds();
-  const newTarget = Math.max(0, Math.min(duration, current + offsetSeconds));
-  seekToAbsoluteTime(newTarget);
-  resetLandscapeControlsTimer();
-}
-
-function updateLandscapeProgress() {
-  if (isScrubbingProgress) return;
   const video = document.getElementById('mainVideoPlayer');
-  const curTimeEl = document.getElementById('lsCurrentTime');
-  const durTimeEl = document.getElementById('lsTotalDuration');
-  const filledEl = document.getElementById('lsProgressFilled');
-  const thumbEl = document.getElementById('lsProgressThumb');
-  const bufEl = document.getElementById('lsProgressBuffered');
   if (!video) return;
 
   const current = (video.currentTime || 0) + (appState.streamSeekOffset || 0);
   const duration = getMediaTotalDurationSeconds();
+  const target = Math.max(0, Math.min(duration, current + offsetSeconds));
 
-  if (curTimeEl) curTimeEl.innerText = formatPlayerTime(current);
-  if (durTimeEl && duration > 0) durTimeEl.innerText = formatPlayerTime(duration);
-
-  const percent = duration > 0 ? Math.min(100, Math.max(0, (current / duration) * 100)) : 0;
-  if (filledEl) filledEl.style.width = `${percent}%`;
-  if (thumbEl) thumbEl.style.left = `${percent}%`;
-
-  if (bufEl && video.buffered && video.buffered.length > 0 && duration > 0) {
-    try {
-      const bufferedEnd = video.buffered.end(video.buffered.length - 1) + (appState.streamSeekOffset || 0);
-      bufEl.style.width = `${Math.min(100, (bufferedEnd / duration) * 100)}%`;
-    } catch (e) {}
+  try {
+    const streamOffset = appState.streamSeekOffset || 0;
+    const relTime = target - streamOffset;
+    if (relTime >= 0) {
+      video.currentTime = relTime;
+    } else {
+      seekToAbsoluteTime(target);
+      return;
+    }
+  } catch (err) {
+    console.warn('Seek error:', err);
   }
+
+  showToast(offsetSeconds > 0 ? '+10s' : '-10s');
+  updateLandscapeProgress();
+  syncPlayPauseIcons();
+  resetLandscapeControlsTimer();
 }
 
 function seekToAbsoluteTime(targetSeconds) {
@@ -1918,17 +1909,16 @@ function seekToAbsoluteTime(targetSeconds) {
   const streamOffset = appState.streamSeekOffset || 0;
   const relTime = targetSeconds - streamOffset;
 
-  if (relTime >= 0 && relTime <= (video.duration || 0) && video.buffered.length > 0) {
-    for (let i = 0; i < video.buffered.length; i++) {
-      if (relTime >= video.buffered.start(i) && relTime <= video.buffered.end(i)) {
-        video.currentTime = relTime;
-        updateLandscapeProgress();
-        return;
-      }
-    }
+  // Try native seek first
+  if (relTime >= 0 && relTime <= (video.duration || 3600)) {
+    try {
+      video.currentTime = relTime;
+      updateLandscapeProgress();
+      return;
+    } catch (e) {}
   }
 
-  // Fast-seek via backend /api/stream?url=...&t=${targetSeconds}
+  // Reload stream at target offset only if far out of range
   const curEp = appState.currentEpisode;
   const rawUrl = (curEp?.audioTracks && curEp.audioTracks[appState.currentAudioTrack]) 
     || curEp?.streamUrl 
