@@ -389,26 +389,19 @@ body {
 
 .hero-peek-title-scroll-container {
   width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   white-space: nowrap;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  -webkit-overflow-scrolling: touch;
-  cursor: grab;
-  touch-action: pan-x;
-}
-
-.hero-peek-title-scroll-container::-webkit-scrollbar {
-  display: none;
 }
 
 .hero-peek-title {
-  display: inline-block;
+  display: block;
   font-size: 13.5px;
   font-weight: 700;
   color: #fff;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
   margin-bottom: 3px;
   letter-spacing: 0.2px;
 }
@@ -746,22 +739,12 @@ body {
   font-weight: 600;
   color: #fff;
   white-space: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
   height: 16px;
   line-height: 16px;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-}
-
-.card-title::-webkit-scrollbar {
-  display: none;
-}
-
-.card-title:hover, .card-title:focus, .media-card:hover .card-title {
-  text-overflow: clip;
 }
 
 .card-meta {
@@ -1323,6 +1306,10 @@ body.is-fullscreen .player-top-header.controls-hidden,
   font-weight: 700;
   color: #fff;
   margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .media-meta-line {
@@ -1331,6 +1318,10 @@ body.is-fullscreen .player-top-header.controls-hidden,
   gap: 8px;
   font-size: 11px;
   color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .star-rating {
@@ -1958,13 +1949,24 @@ body.is-fullscreen .player-top-header.controls-hidden,
 .player-title-row {
   cursor: pointer;
   margin-bottom: 12px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.player-title-info {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .player-title-inline {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
   margin-bottom: 4px;
+  width: 100%;
+  min-width: 0;
 }
 
 .player-title-inline h2 {
@@ -1972,6 +1974,11 @@ body.is-fullscreen .player-top-header.controls-hidden,
   font-weight: 700;
   color: #fff;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
 }
 
 .info-tag-btn {
@@ -1982,6 +1989,7 @@ body.is-fullscreen .player-top-header.controls-hidden,
   align-items: center;
   gap: 3px;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .info-tag-btn:hover {
@@ -2397,7 +2405,9 @@ body.is-fullscreen .player-top-header.controls-hidden,
   display: none !important;
 }
 
-/* Activate when in landscape fullscreen */
+/* Activate when in landscape fullscreen or videoContainer is in fullscreen */
+.video-container:fullscreen .ls-player-ui,
+.video-container:-webkit-full-screen .ls-player-ui,
 body.is-fullscreen .ls-player-ui {
   display: flex !important;
   position: absolute !important;
@@ -2408,12 +2418,27 @@ body.is-fullscreen .ls-player-ui {
   pointer-events: none !important;
 }
 
+.video-container:fullscreen,
+.video-container:-webkit-full-screen,
+body.is-fullscreen .video-container {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 1000000 !important;
+  background: #000 !important;
+}
+
 /* Hide portrait top header in landscape fullscreen */
 body.is-fullscreen #playerTopHeader {
   display: none !important;
 }
 
 /* Hide default browser controls in landscape fullscreen */
+.video-container:fullscreen video::-webkit-media-controls,
+.video-container:fullscreen video::-webkit-media-controls-enclosure,
+.video-container:-webkit-full-screen video::-webkit-media-controls,
+.video-container:-webkit-full-screen video::-webkit-media-controls-enclosure,
 body.is-fullscreen video::-webkit-media-controls,
 body.is-fullscreen video::-webkit-media-controls-enclosure {
   display: none !important;

@@ -5,6 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const { Transform } = require('stream');
 const crypto = require('crypto');
+const { spawn } = require('child_process');
+const ffmpegPath = require('ffmpeg-static');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -242,6 +244,56 @@ app.all('/api/stream', async (req, res) => {
 
   const range = req.headers.range;
   const isHead = req.method === 'HEAD';
+  const audioIndex = parseInt(req.query.audio, 10) || 0;
+  const seekTime = req.query.t ? parseFloat(req.query.t) : 0;
+
+  // Live FFmpeg Remuxer: Fixes EAC3 (no sound in Chrome/Android) and switches audio tracks (Hindi vs English/Korean)
+  const isMkvOrEac3 = (targetUrl.includes('vcloud.you') || targetUrl.includes('fast-dl') || targetUrl.includes('.mkv') || req.query.audio !== undefined);
+
+  if (isMkvOrEac3 && ffmpegPath) {
+    res.writeHead(200, {
+      'Content-Type': 'video/mp4',
+      'Accept-Ranges': 'none',
+      'Cache-Control': 'no-cache, no-store'
+    });
+
+    if (isHead) return res.end();
+
+    const ffmpegArgs = [
+      '-probesize', '524288',
+      '-analyzeduration', '500000',
+    ];
+
+    if (seekTime > 0) {
+      ffmpegArgs.push('-ss', String(seekTime));
+    }
+
+    ffmpegArgs.push(
+      '-i', resolvedUrl,
+      '-map', '0:v:0',
+      '-map', `0:a:${audioIndex}?`,
+      '-c:v', 'copy',
+      '-c:a', 'aac',
+      '-ac', '2',
+      '-b:a', '128k',
+      '-f', 'mp4',
+      '-movflags', 'frag_keyframe+empty_moov+default_base_moof',
+      'pipe:1'
+    );
+
+    const ff = spawn(ffmpegPath, ffmpegArgs, { stdio: ['ignore', 'pipe', 'ignore'] });
+    ff.stdout.pipe(res);
+
+    req.on('close', () => {
+      try { ff.kill(); } catch (e) {}
+    });
+
+    ff.on('error', (err) => {
+      console.error('FFmpeg streaming error:', err.message);
+    });
+
+    return;
+  }
 
   // Cache key and paths
   const cacheKey = crypto.createHash('md5').update(resolvedUrl).digest('hex');

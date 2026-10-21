@@ -1650,7 +1650,7 @@ function selectEpisode(idx) {
 }
 
 // Start Stream Playback via Direct Stream Resolution or Backend Proxy
-async function playStreamUrl(url) {
+async function playStreamUrl(url, audioIndex = null, seekTime = null) {
   const videoPlayer = document.getElementById('mainVideoPlayer');
   const loader = document.getElementById('videoLoader');
 
@@ -1673,19 +1673,28 @@ async function playStreamUrl(url) {
   // Pre-warm URL in backend resolver cache in background (non-blocking)
   fetch(`${API_BASE_URL}/api/resolve?url=${encodeURIComponent(url)}`).catch(() => {});
 
-  // Direct play ONLY for providers known to natively support HTTP 206 Partial Content Range seeking
-  if (url.includes('kmdl.eu.org') && !url.includes('googleusercontent.com')) {
+  // Determine active audio index
+  const activeAudio = (audioIndex !== null && audioIndex !== undefined)
+    ? audioIndex 
+    : (appState.selectedAudioIndex !== undefined ? appState.selectedAudioIndex : (appState.currentAudioTrack?.toLowerCase().includes('english') ? 1 : 0));
+
+  // Direct play ONLY for standard MP4s that already have browser-supported AAC audio
+  if (url.includes('kmdl.eu.org') && !url.includes('googleusercontent.com') && audioIndex === null) {
     videoPlayer.src = url;
     videoPlayer.load();
     videoPlayer.play().catch(() => {});
     return;
   }
 
-  // All other streams route through /api/stream proxy to guarantee:
-  // 1. HTTP 206 Partial Content
-  // 2. Accept-Ranges: bytes
-  // 3. Smooth dragging & seeking on both mobile browser and Android APK
-  const streamApiUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(url)}`;
+  // Route through /api/stream proxy to guarantee:
+  // 1. Crystal clear AAC stereo sound (fixes silent EAC3)
+  // 2. Track 0 = Hindi dub, Track 1 = English/Original dub
+  // 3. Smooth seeking & fast loading
+  let streamApiUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(url)}&audio=${activeAudio}`;
+  if (seekTime && seekTime > 0) {
+    streamApiUrl += `&t=${seekTime}`;
+  }
+
   videoPlayer.src = streamApiUrl;
   videoPlayer.load();
   videoPlayer.play().catch(err => {
@@ -1980,11 +1989,29 @@ function enterFullscreenMode(options = {}) {
   if (playerOverlay) playerOverlay.classList.add('is-fullscreen');
   if (videoContainer) videoContainer.classList.add('is-fullscreen');
 
+  // Request native fullscreen on videoContainer so MovieBox controls and drawers are visible
+  if (!options.skipNativeFs && videoContainer) {
+    if (videoContainer.requestFullscreen) {
+      videoContainer.requestFullscreen().catch(() => {});
+    } else if (videoContainer.webkitRequestFullscreen) {
+      videoContainer.webkitRequestFullscreen();
+    } else if (videoContainer.mozRequestFullScreen) {
+      videoContainer.mozRequestFullScreen();
+    } else if (videoContainer.msRequestFullscreen) {
+      videoContainer.msRequestFullscreen();
+    }
+  }
+
+  // Remove native browser controls so they don't block MovieBox controls
+  if (videoPlayer) {
+    videoPlayer.removeAttribute('controls');
+  }
+
   // Sync MovieBox title
   if (titleEl && appState.currentMedia) {
     const media = appState.currentMedia;
     const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-'));
-    const epNum = appState.currentEpisode?.episodeNumber || '01';
+    const epNum = appState.currentEpisode?.number || appState.currentEpisode?.episodeNumber || '01';
     titleEl.innerText = isSeries 
       ? `${media.title} [${media.language || 'Hindi'}] S01 E${epNum}` 
       : `${media.title} [${media.language || 'Hindi'}][${media.tag || 'HD'}]`;
@@ -2000,12 +2027,29 @@ function enterFullscreenMode(options = {}) {
 }
 
 function exitFullscreenMode(options = {}) {
+  const videoPlayer = document.getElementById('mainVideoPlayer');
   const videoContainer = document.getElementById('videoContainer');
   const playerOverlay = document.getElementById('playerOverlay');
 
   document.body.classList.remove('is-fullscreen');
   if (playerOverlay) playerOverlay.classList.remove('is-fullscreen');
   if (videoContainer) videoContainer.classList.remove('is-fullscreen');
+
+  // Restore portrait native controls
+  if (videoPlayer) {
+    videoPlayer.setAttribute('controls', '');
+  }
+
+  // Exit native browser fullscreen
+  if (!options.skipNativeFs) {
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+    }
+  }
 
   closeLandscapeDrawers();
 
@@ -2085,6 +2129,25 @@ function setupVideoListeners() {
   }
 
   setupLandscapeProgressScrubbing();
+
+  // Native fullscreen event synchronization
+  document.addEventListener('fullscreenchange', () => {
+    const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+    if (isFs && !document.body.classList.contains('is-fullscreen')) {
+      enterFullscreenMode({ skipNativeFs: true });
+    } else if (!isFs && document.body.classList.contains('is-fullscreen')) {
+      exitFullscreenMode({ skipNativeFs: true });
+    }
+  });
+
+  document.addEventListener('webkitfullscreenchange', () => {
+    const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+    if (isFs && !document.body.classList.contains('is-fullscreen')) {
+      enterFullscreenMode({ skipNativeFs: true });
+    } else if (!isFs && document.body.classList.contains('is-fullscreen')) {
+      exitFullscreenMode({ skipNativeFs: true });
+    }
+  });
 
   videoPlayer.addEventListener('timeupdate', () => {
     updateLandscapeProgress();
@@ -2446,45 +2509,22 @@ function switchAudioTrack(lang) {
 
   const videoPlayer = document.getElementById('mainVideoPlayer');
 
-  // Check if current episode or media has dedicated stream URL for this audio track
-  let targetUrl = null;
+  const isEnglishOrOriginal = lang.toLowerCase().includes('english') || lang.toLowerCase().includes('eng') || lang.toLowerCase().includes('korean') || lang.toLowerCase().includes('orig');
+  const targetAudioIndex = isEnglishOrOriginal ? 1 : 0;
+  appState.selectedAudioIndex = targetAudioIndex;
+
   const currentEp = appState.currentEpisode;
-  if (currentEp && currentEp.audioTracks && currentEp.audioTracks[lang]) {
-    targetUrl = currentEp.audioTracks[lang];
-  } else if (appState.currentMedia && appState.currentMedia.audioStreams && appState.currentMedia.audioStreams[lang]) {
-    targetUrl = appState.currentMedia.audioStreams[lang];
-  }
+  const rawUrl = (currentEp?.audioTracks && currentEp.audioTracks[lang]) 
+    || currentEp?.streamUrl 
+    || appState.currentMedia?.streamUrl 
+    || appState.currentMedia?.driveUrl;
 
-  if (targetUrl && videoPlayer) {
-    const curSrc = videoPlayer.src || '';
-    if (!curSrc.includes(encodeURIComponent(targetUrl)) && !curSrc.endsWith(targetUrl)) {
-      const curTime = videoPlayer.currentTime;
-      const isPlaying = !videoPlayer.paused;
-      playStreamUrl(targetUrl);
-      const onMetadata = () => {
-        videoPlayer.currentTime = curTime;
-        if (isPlaying) videoPlayer.play().catch(() => {});
-        videoPlayer.removeEventListener('loadedmetadata', onMetadata);
-      };
-      videoPlayer.addEventListener('loadedmetadata', onMetadata);
-    }
-  }
-
-  // HTML5 audioTracks API for multi-audio MKV/HLS streams
-  if (videoPlayer && videoPlayer.audioTracks && videoPlayer.audioTracks.length > 0) {
-    const isEnglish = lang.toLowerCase().includes('english') || lang.toLowerCase().includes('eng');
-    const isHindi = lang.toLowerCase().includes('hindi') || lang.toLowerCase().includes('hin');
-    for (let i = 0; i < videoPlayer.audioTracks.length; i++) {
-      const track = videoPlayer.audioTracks[i];
-      const tLang = (track.language || '').toLowerCase();
-      const tLabel = (track.label || '').toLowerCase();
-      let match = false;
-      if (isEnglish) {
-        match = tLang.includes('en') || tLabel.includes('eng') || i === 1;
-      } else if (isHindi) {
-        match = tLang.includes('hi') || tLabel.includes('hin') || i === 0;
-      }
-      track.enabled = match;
+  if (rawUrl && videoPlayer) {
+    const curTime = videoPlayer.currentTime || 0;
+    const isPlaying = !videoPlayer.paused;
+    playStreamUrl(rawUrl, targetAudioIndex, curTime);
+    if (isPlaying) {
+      videoPlayer.play().catch(() => {});
     }
   }
 
