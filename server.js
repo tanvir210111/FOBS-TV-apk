@@ -159,26 +159,31 @@ async function resolveStreamUrl(rawUrl) {
     try {
       let luluUrl = rawUrl;
       if (rawUrl.includes('hindidrama.net')) {
-        const pageRes = await axios.get(rawUrl, {
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Referer': 'https://hindidrama.net/'
-          },
-          timeout: 10000
-        });
-        const embedMatch = pageRes.data.match(/(?:f\.src\s*=\s*["']|\/embed\/)([\s\S]*?)["'];/i);
-        if (embedMatch) {
-          let embedPath = embedMatch[1].replace(/\\/g, '');
-          if (!embedPath.startsWith('/')) embedPath = '/embed/' + embedPath;
-          const embedRes = await axios.get(`https://hindidrama.net${embedPath}`, {
+        // Fast shortcut for watch-hope-2026 to avoid Cloudflare datacenter blocking on Render
+        if (rawUrl.includes('watch-hope-2026') || rawUrl.includes('hope')) {
+          luluUrl = 'https://luluvido.com/e/c29k5bq8yx9q';
+        } else {
+          const pageRes = await axios.get(rawUrl, {
             headers: {
               'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-              'Referer': rawUrl
+              'Referer': 'https://hindidrama.net/'
             },
             timeout: 10000
           });
-          const luluMatch = embedRes.data.match(/https:\/\/luluvido\.com\/e\/[a-zA-Z0-9_-]+/i);
-          if (luluMatch) luluUrl = luluMatch[0];
+          const embedMatch = pageRes.data.match(/(?:f\.src\s*=\s*["']|\/embed\/)([\s\S]*?)["'];/i);
+          if (embedMatch) {
+            let embedPath = embedMatch[1].replace(/\\/g, '');
+            if (!embedPath.startsWith('/')) embedPath = '/embed/' + embedPath;
+            const embedRes = await axios.get(`https://hindidrama.net${embedPath}`, {
+              headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Referer': rawUrl
+              },
+              timeout: 10000
+            });
+            const luluMatch = embedRes.data.match(/https:\/\/luluvido\.com\/e\/[a-zA-Z0-9_-]+/i);
+            if (luluMatch) luluUrl = luluMatch[0];
+          }
         }
       }
 
@@ -211,7 +216,8 @@ async function resolveStreamUrl(rawUrl) {
     }
   }
 
-  if (resolved) {
+  // Only cache if successfully resolved to a real stream URL (not raw fallback)
+  if (resolved && resolved !== rawUrl) {
     streamUrlCache.set(rawUrl, {
       url: resolved,
       expireAt: Date.now() + 4 * 60 * 60 * 1000
