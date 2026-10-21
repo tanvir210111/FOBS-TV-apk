@@ -1,4 +1,26 @@
-// CineBox Mobile Application Client Logic
+// FOBS TV Mobile Application Client Logic
+
+const BACKEND_URL = 'https://fobs-tv-apk.onrender.com';
+
+// Dynamically determine the backend API base URL
+// - If running on localhost with a custom port (e.g. node dev server localhost:3000), use ''
+// - If running on remote render server in a web browser, use ''
+// - If running inside Capacitor APK on mobile (origin is localhost without port, or capacitor://), point to Render backend
+const API_BASE_URL = (() => {
+  const isCustomLocalPort = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && 
+                            window.location.port && 
+                            window.location.port !== '80' && 
+                            window.location.port !== '443';
+  if (isCustomLocalPort || window.location.hostname.includes('onrender.com')) {
+    return '';
+  }
+  return BACKEND_URL;
+})();
+
+const CACHE_KEY = 'fobs_tv_content_cache';
+const SYNC_KEY = 'fobs_tv_last_sync_time';
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
+let isSyncing = false;
 
 let appState = {
   activeTab: 'home',
@@ -20,28 +42,302 @@ document.addEventListener('DOMContentLoaded', () => {
   initApp();
 });
 
+// App Startup Flow
 async function initApp() {
-  await fetchAppContent();
   setupVideoListeners();
   setupHeroSwipeGestures();
   setupPlayerSwipeToClose();
+  setupAppVisibilityListeners();
+
+  // Step 1: Immediate local render from localStorage cache (0ms delay)
+  const hasCache = loadCachedContent();
+  if (hasCache) {
+    renderAllViews();
+    // Non-blocking background sync if cache is older than 5 minutes
+    syncContentWithBackend({ isBackground: true });
+    return;
+  }
+
+  // Step 2: Immediate local render from bundled APK seed content (local asset fetch)
+  const hasSeed = await loadSeedContent();
+  if (hasSeed) {
+    renderAllViews();
+    syncContentWithBackend({ isBackground: true });
+    return;
+  }
+
+  // Step 3: Cold start without any local cache (first run) - show branded FOBS TV loading overlay
+  await syncContentWithBackend({ isInitial: true, force: true });
 }
 
-// Fetch Content from Backend
-async function fetchAppContent() {
+// Normalize content data structures
+function normalizeContentData(data) {
+  if (!data) return;
+  if (data.movies) data.movies.forEach(m => m.type = 'movie');
+  if (data.series) data.series.forEach(s => s.type = 'series');
+  if (data.liveTv) data.liveTv.forEach(t => t.type = 'liveTv');
+  if (data.upcoming) data.upcoming.forEach(u => u.type = u.type || 'series');
+  return data;
+}
+
+// Local Storage Cache Management
+function loadCachedContent() {
   try {
-    const res = await fetch('/api/content');
-    const data = await res.json();
-    if (data.movies) data.movies.forEach(m => m.type = 'movie');
-    if (data.series) data.series.forEach(s => s.type = 'series');
-    if (data.liveTv) data.liveTv.forEach(t => t.type = 'liveTv');
-    if (data.upcoming) data.upcoming.forEach(u => u.type = u.type || 'series');
-    appState.content = data;
-    renderAllViews();
-  } catch (err) {
-    console.error('Failed to load content:', err);
-    showToast('Failed to connect to backend server');
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return false;
+    const parsed = JSON.parse(raw);
+    if (parsed && (parsed.movies?.length || parsed.series?.length || parsed.liveTv?.length)) {
+      normalizeContentData(parsed);
+      appState.content = parsed;
+      return true;
+    }
+  } catch (e) {
+    console.error('Error reading content cache:', e);
   }
+  return false;
+}
+
+function saveContentToCache(data) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+    localStorage.setItem(SYNC_KEY, Date.now().toString());
+  } catch (e) {
+    console.warn('Error saving content cache:', e);
+  }
+}
+
+// Load seed content bundled inside APK assets
+async function loadSeedContent() {
+  try {
+    const res = await fetch('seed-content.json');
+    if (res.ok) {
+      const data = await res.json();
+      if (data && (data.movies?.length || data.series?.length)) {
+        normalizeContentData(data);
+        appState.content = data;
+        saveContentToCache(data);
+        return true;
+      }
+    }
+  } catch (e) {
+    console.warn('Bundled seed-content.json not loaded:', e.message);
+  }
+  return false;
+}
+
+// Robust Fetch with AbortController Timeout and Cold-Start Retries
+async function fetchApiWithRetry(endpoint, options = {}, { timeout = 25000, maxRetries = 2, delay = 2500 } = {}) {
+  let attempt = 0;
+  while (attempt <= maxRetries) {
+    attempt++;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+    try {
+      const url = endpoint.startsWith('http') ? endpoint : `${API_BASE_URL}${endpoint}`;
+      const res = await fetch(url, {
+        ...options,
+        signal: controller.signal,
+        headers: {
+          'Accept': 'application/json',
+          ...(options.headers || {})
+        }
+      });
+      clearTimeout(timeoutId);
+
+      const contentType = res.headers.get('content-type') || '';
+      // Verify response is valid JSON and not a Render proxy HTML spin-up page
+      if (res.ok && contentType.includes('application/json')) {
+        return await res.json();
+      }
+
+      // If status indicates server waking (502, 503, 504) or HTML was returned, retry
+      if (attempt <= maxRetries) {
+        console.warn(`Server waking up (status ${res.status}). Retrying attempt ${attempt}/${maxRetries}...`);
+        updateServerStatus('Waking up server, please wait...', 'waking');
+        await new Promise(r => setTimeout(r, delay));
+        continue;
+      }
+
+      throw new Error(`Server returned status ${res.status}`);
+    } catch (err) {
+      clearTimeout(timeoutId);
+      if (attempt <= maxRetries) {
+        console.warn(`Fetch error (${err.message}). Retrying in ${delay / 1000}s...`);
+        updateServerStatus('Waking up server, please wait...', 'waking');
+        await new Promise(r => setTimeout(r, delay));
+        continue;
+      }
+      throw err;
+    }
+  }
+}
+
+// Sync Content with Backend Server
+async function syncContentWithBackend({ force = false, isBackground = false, isInitial = false } = {}) {
+  if (isSyncing) return;
+
+  if (!navigator.onLine) {
+    if (isInitial && !appState.content.movies?.length) {
+      showFobsLoadingRetry('No internet connection. Please check your network and try again.');
+    } else {
+      updateServerStatus('Offline mode — showing saved content', 'offline');
+    }
+    return;
+  }
+
+  const lastSync = parseInt(localStorage.getItem(SYNC_KEY) || '0', 10);
+  if (!force && isBackground && (Date.now() - lastSync < CACHE_TTL_MS)) {
+    return; // Content is fresh within 5 minutes, skip redundant backend call
+  }
+
+  isSyncing = true;
+  let slowWarningTimer = null;
+
+  if (isInitial) {
+    showFobsLoadingScreen('Loading FOBS TV...');
+    slowWarningTimer = setTimeout(() => {
+      updateFobsLoadingMsg('Starting instance & waking up server...');
+    }, 3000);
+  } else if (isBackground) {
+    slowWarningTimer = setTimeout(() => {
+      updateServerStatus('Server waking up...', 'waking');
+    }, 2500);
+  } else {
+    updateServerStatus('Connecting to server...', 'waking');
+  }
+
+  try {
+    const data = await fetchApiWithRetry('/api/content', {}, {
+      timeout: 25000,
+      maxRetries: 2,
+      delay: 3000
+    });
+
+    if (slowWarningTimer) clearTimeout(slowWarningTimer);
+
+    normalizeContentData(data);
+    appState.content = data;
+    saveContentToCache(data);
+
+    renderAllViews();
+    hideFobsLoadingScreen();
+
+    if (!isInitial) {
+      updateServerStatus('Connected to FOBS TV', 'success');
+    }
+  } catch (err) {
+    if (slowWarningTimer) clearTimeout(slowWarningTimer);
+    console.error('Failed to sync content with server:', err);
+
+    if (appState.content.movies?.length > 0) {
+      updateServerStatus('Server unavailable — showing saved content', 'error');
+    } else {
+      showFobsLoadingRetry('Server is waking up or temporarily unreachable.');
+    }
+  } finally {
+    isSyncing = false;
+  }
+}
+
+// Backward-compatible content fetch wrapper
+async function fetchAppContent() {
+  await syncContentWithBackend({ force: true });
+}
+
+// Server Status Bar Controls
+function updateServerStatus(text, state = 'info') {
+  const bar = document.getElementById('serverStatusBar');
+  const textEl = document.getElementById('serverStatusText');
+  const retryBtn = document.getElementById('serverRetryBtn');
+  if (!bar || !textEl) return;
+
+  bar.className = `server-status-bar ${state}`;
+  textEl.innerText = text;
+
+  if (state === 'error' || state === 'offline') {
+    if (retryBtn) retryBtn.classList.remove('hidden');
+  } else {
+    if (retryBtn) retryBtn.classList.add('hidden');
+  }
+
+  bar.classList.remove('hidden');
+
+  if (state === 'success') {
+    setTimeout(() => {
+      bar.classList.add('hidden');
+    }, 2500);
+  }
+}
+
+function hideServerStatus() {
+  const bar = document.getElementById('serverStatusBar');
+  if (bar) bar.classList.add('hidden');
+}
+
+// FOBS TV Branded Loading Screen Controls
+function showFobsLoadingScreen(msg = 'Loading FOBS TV...') {
+  const screen = document.getElementById('fobsLoadingScreen');
+  const msgEl = document.getElementById('fobsLoadingMsg');
+  const retryBox = document.getElementById('fobsLoadingRetry');
+  if (msgEl) msgEl.innerText = msg;
+  if (retryBox) retryBox.classList.add('hidden');
+  if (screen) screen.classList.remove('hidden');
+}
+
+function updateFobsLoadingMsg(msg) {
+  const msgEl = document.getElementById('fobsLoadingMsg');
+  if (msgEl) msgEl.innerText = msg;
+}
+
+function hideFobsLoadingScreen() {
+  const screen = document.getElementById('fobsLoadingScreen');
+  if (screen) screen.classList.add('hidden');
+}
+
+function showFobsLoadingRetry(detail = 'Unable to connect to server.') {
+  const screen = document.getElementById('fobsLoadingScreen');
+  const retryBox = document.getElementById('fobsLoadingRetry');
+  const msgEl = document.getElementById('fobsLoadingMsg');
+  if (msgEl) msgEl.innerText = 'Connection Failed';
+  if (retryBox) {
+    const detailEl = retryBox.querySelector('.fobs-error-detail');
+    if (detailEl) detailEl.innerText = detail;
+    retryBox.classList.remove('hidden');
+  }
+  if (screen) screen.classList.remove('hidden');
+}
+
+function retryInitialLoad() {
+  showFobsLoadingScreen('Connecting to server...');
+  syncContentWithBackend({ force: true, isInitial: true });
+}
+
+function triggerManualSync() {
+  updateServerStatus('Reconnecting to server...', 'waking');
+  syncContentWithBackend({ force: true });
+}
+
+// App Visibility & Network Change Listeners (Avoid unnecessary reload loops)
+function setupAppVisibilityListeners() {
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      const lastSync = parseInt(localStorage.getItem(SYNC_KEY) || '0', 10);
+      // Only refresh if more than 10 minutes have elapsed since last sync
+      if (Date.now() - lastSync > 10 * 60 * 1000) {
+        syncContentWithBackend({ isBackground: true });
+      }
+    }
+  });
+
+  window.addEventListener('online', () => {
+    updateServerStatus('Reconnecting...', 'waking');
+    syncContentWithBackend({ force: true });
+  });
+
+  window.addEventListener('offline', () => {
+    updateServerStatus('Offline mode — showing saved content', 'offline');
+  });
 }
 
 // Render All Tabs & Feeds
@@ -750,10 +1046,17 @@ function playStreamUrl(url) {
     return;
   }
 
-  if (loader) loader.classList.add('active');
+  const loaderText = loader ? loader.querySelector('.loader-text') : null;
+  if (loaderText) loaderText.innerText = 'Loading...';
+  if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
+  window.videoStreamColdStartTimer = setTimeout(() => {
+    if (loader && loader.classList.contains('active') && loaderText) {
+      loaderText.innerText = 'Connecting to stream server...';
+    }
+  }, 3500);
 
   // Proxy through backend with range seeking support
-  const streamApiUrl = `/api/stream?url=${encodeURIComponent(url)}`;
+  const streamApiUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(url)}`;
   videoPlayer.src = streamApiUrl;
 
   videoPlayer.load();
@@ -814,6 +1117,7 @@ function setupVideoListeners() {
   if (!videoPlayer) return;
 
   videoPlayer.addEventListener('playing', () => {
+    if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
     if (loader) loader.classList.remove('active');
   });
 
@@ -822,16 +1126,19 @@ function setupVideoListeners() {
   });
 
   videoPlayer.addEventListener('canplay', () => {
+    if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
     if (loader) loader.classList.remove('active');
   });
 
   videoPlayer.addEventListener('error', (e) => {
+    if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
     console.error('Video load error, attempting fallback:', e);
     if (loader) loader.classList.remove('active');
 
     const directUrl = appState.currentEpisode?.streamUrl || appState.currentMedia?.streamUrl || appState.currentMedia?.driveUrl;
     if (directUrl && videoPlayer.src && videoPlayer.src.includes('/api/stream')) {
       console.log('Retrying with direct stream URL...');
+      showToast('Retrying stream via direct link...');
       videoPlayer.src = directUrl;
       videoPlayer.load();
       videoPlayer.play().catch(() => {});
@@ -1008,7 +1315,7 @@ function downloadMedia(url, title) {
     localStorage.setItem('fobs_downloads', JSON.stringify(downloads.slice(0, 25)));
   } catch (e) {}
 
-  const downloadUrl = `/api/download?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`;
+  const downloadUrl = `${API_BASE_URL}/api/download?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`;
   
   const link = document.createElement('a');
   link.href = downloadUrl;
@@ -1170,7 +1477,7 @@ async function submitNewMedia(e) {
   const streamUrl = document.getElementById('formStreamUrl').value.trim();
 
   try {
-    const res = await fetch('/api/content', {
+    const res = await fetch(`${API_BASE_URL}/api/content`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1221,7 +1528,7 @@ async function triggerKmdlSync() {
   showToast('🔄 Connecting to KMDL & fetching TMDB details...');
 
   try {
-    const res = await fetch('/api/sync-kmdl', {
+    const res = await fetch(`${API_BASE_URL}/api/sync-kmdl`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ moviesCount: 6, seriesCount: 4 })

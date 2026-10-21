@@ -3,7 +3,6 @@
   "appName": "FOBS TV",
   "webDir": "public",
   "server": {
-    "url": "https://fobs-tv-apk.onrender.com",
     "cleartext": true
   }
 }

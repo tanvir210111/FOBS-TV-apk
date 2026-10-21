@@ -1,0 +1,267 @@
+{
+  "featured": {
+    "id": "kmdl-m-4VRhomu8JxTX6d53qdTt0Pbt6NA3JGaWQAhm/zTHXYjAVxUCqzGGaBCvUgdPMH58",
+    "title": "12.12: The Day",
+    "subtitle": "A coup d'etat that shook a nation in the winter of 1979.",
+    "language": "Korean",
+    "dubLanguage": "Hindi",
+    "tag": "HD",
+    "year": "2023",
+    "country": "Korea",
+    "genre": "Drama",
+    "rating": "8.1",
+    "imdbRating": "8.1",
+    "poster": "https://image.tmdb.org/t/p/original/7S9LKhPn35NpfbT6668U0dMWOnW.jpg",
+    "streamUrl": "https://kmdl.eu.org/download.aspx?file=xPNWgqNHLkAytmDTGDm4GwYeWwcDY1W6CuG4iWEJnr5f4ErO%2BuuJqEr%2FsO0eehR5&expiry=mOFG9s9rePeaGm0KT6XmdQ%3D%3D&mac=14bb0fe204da1e71cf1de664a37b2a4926fcff9e8bb2fbdb6f40ce79d5beda07",
+    "type": "movie"
+  },
+  "movies": [
+    {
+      "id": "kmdl-m-4VRhomu8JxTX6d53qdTt0Pbt6NA3JGaWQAhm/zTHXYjAVxUCqzGGaBCvUgdPMH58",
+      "title": "12.12: The Day",
+      "language": "Korean",
+      "dubLanguage": "Hindi",
+      "tag": "HD",
+      "year": "2023",
+      "country": "Korea",
+      "genre": "Action, Drama, History",
+      "duration": "2h 21m",
+      "category": "Trending Movies",
+      "rating": "8.1",
+      "imdbRating": "8.1",
+      "poster": "https://image.tmdb.org/t/p/w500/vy14tKxsbJYdDyFl6kQuVkK2s44.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/7S9LKhPn35NpfbT6668U0dMWOnW.jpg",
+      "description": "On December 12, 1979, in Seoul, South Korea, military officers staged a military rebellion following the assassination of President Park Chung-hee. Defense Security Commander Chun Doo-gwang leads an unauthorized insurrection to seize control of the military and government, while stubborn Capital Defense Commander Lee Tae-shin risks his life to resist the treason and defend the republic.",
+      "streamUrl": "https://kmdl.eu.org/download.aspx?file=xPNWgqNHLkAytmDTGDm4GwYeWwcDY1W6CuG4iWEJnr5f4ErO%2BuuJqEr%2FsO0eehR5&expiry=mOFG9s9rePeaGm0KT6XmdQ%3D%3D&mac=14bb0fe204da1e71cf1de664a37b2a4926fcff9e8bb2fbdb6f40ce79d5beda07",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "cast": [
+        {
+          "name": "Hwang Jung-min",
+          "character": "Jeon Doo-gwang",
+          "photo": "https://image.tmdb.org/t/p/w185/hKF1uh0iEfuZlBE79CXPw415qyn.jpg"
+        },
+        {
+          "name": "Jung Woo-sung",
+          "character": "Lee Tae-shin",
+          "photo": "https://image.tmdb.org/t/p/w185/tI0ANQSwcOBfQUeHgfcwn7VmHRO.jpg"
+        },
+        {
+          "name": "Lee Sung-min",
+          "character": "Jung Sang-ho",
+          "photo": "https://image.tmdb.org/t/p/w185/6CjxjYvZBuvbAQTcuoPb8EeVrUI.jpg"
+        },
+        {
+          "name": "Park Hae-joon",
+          "character": "Roh Tae-geon",
+          "photo": "https://image.tmdb.org/t/p/w185/v8N9oQpC115G7kEa3nIq6v0o5U6.jpg"
+        },
+        {
+          "name": "Kim Sung-kyun",
+          "character": "Kim Jun-yeop",
+          "photo": "https://image.tmdb.org/t/p/w185/hKF1uh0iEfuZlBE79CXPw415qyn.jpg"
+        }
+      ],
+      "type": "movie"
+    }
+  ],
+  "series": [
+    {
+      "id": "kmdl-s-TKsJKeaN+j8mQ0OGdXfeVpN10nri619MEJupghPrrQp6uTCwzaS+ZtTKALBkqRgDH+i6GTrjucwXFygB0rDuQK7sp51R9kkztvtHmkxKdAY=",
+      "title": "18 Again",
+      "language": "Korean",
+      "dubLanguage": "Hindi",
+      "year": "2020",
+      "country": "Korea",
+      "genre": "Romance, Fantasy, Drama",
+      "seasonsCount": 1,
+      "rating": "8.2",
+      "imdbRating": "8.2",
+      "poster": "https://image.tmdb.org/t/p/w500/jwrumjdNdtlHRzthQEj9HmxehcR.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/hGtx3dAB6x0ShXpDk4BBvt74Mtx.jpg",
+      "description": "At a difficult place in his marriage and career, a 37-year-old middle-aged man on the brink of divorce gets a miraculous shot at a do-over when he is transformed back into his 18-year-old high school body.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "cast": [
+        {
+          "name": "Kim Ha-neul",
+          "character": "Jung Da-jung",
+          "photo": "https://image.tmdb.org/t/p/w185/6CjxjYvZBuvbAQTcuoPb8EeVrUI.jpg"
+        },
+        {
+          "name": "Yoon Sang-hyun",
+          "character": "Hong Dae-young (37yo)",
+          "photo": "https://image.tmdb.org/t/p/w185/tI0ANQSwcOBfQUeHgfcwn7VmHRO.jpg"
+        },
+        {
+          "name": "Lee Do-hyun",
+          "character": "Go Woo-young (18yo)",
+          "photo": "https://image.tmdb.org/t/p/w185/hKF1uh0iEfuZlBE79CXPw415qyn.jpg"
+        },
+        {
+          "name": "Roh Jeong-eui",
+          "character": "Hong Shi-ah",
+          "photo": "https://image.tmdb.org/t/p/w185/v8N9oQpC115G7kEa3nIq6v0o5U6.jpg"
+        },
+        {
+          "name": "Ryeoun",
+          "character": "Hong Shi-woo",
+          "photo": "https://image.tmdb.org/t/p/w185/tI0ANQSwcOBfQUeHgfcwn7VmHRO.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": "01",
+          "title": "Episode 01",
+          "duration": "45m-60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=B16EyEMAAJ9ATRvRQmfq4TLBEn2hEjJ%2F4NzwuadttnVBKDwMx93%2FLbf1nr19m36n&expiry=%2FTAiknEwFr81xcYa4jc9Gg%3D%3D&mac=84a3bdbf2c62faa4039a62febe849a1dab69568692eb7ac7d7652bb1626e0b5e"
+        },
+        {
+          "number": "02",
+          "title": "Episode 02",
+          "duration": "45m-60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=q1jlfFgFbXmolOKezCjdJdK%2F%2F1Vo8KoHu%2BOkULuCiqUnL%2FqAHM285LhByBx0oi6k&expiry=%2FTAiknEwFr81xcYa4jc9Gg%3D%3D&mac=e41cff29bac695dacfa4f496d2ceef5c1c9ebea30140255252862c835c72f184"
+        },
+        {
+          "number": "03",
+          "title": "Episode 03",
+          "duration": "45m-60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=CHrj8Cf9bexdkM%2FRd4IB3S%2BZjv6CRgE86zLe%2FdrUsmAr38juouM05yIxHc%2B8rGkT&expiry=%2FTAiknEwFr81xcYa4jc9Gg%3D%3D&mac=d054a04b57c2e70fc3bd22bfe3770707c9ca4db5574ef52dfd4592c9b4e5481b"
+        },
+        {
+          "number": "04",
+          "title": "Episode 04",
+          "duration": "45m-60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=kPQiNUYGidnY8BXWchiwStonI2H1cPb1g%2B3LIRQlweBiZ3Qvt%2FLNodE4L3cgVBIv&expiry=%2FTAiknEwFr81xcYa4jc9Gg%3D%3D&mac=2cb6e02f2146f999a74529b5cd79a6e828a7d79e663734c774e45abaa6ea70dc"
+        },
+        {
+          "number": "05",
+          "title": "Episode 05",
+          "duration": "45m-60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=xX7p%2F9mwBhLkEFCCtAF3Wr5%2FcRX%2FGqyJ4WPQ4G7NT86CryzdTSTg8aUequDKqnDF&expiry=%2FTAiknEwFr81xcYa4jc9Gg%3D%3D&mac=7a8651b481cb728f1c9b9ad063d41edde7dda4d6d9d04bd06fa22e8aa8493c84"
+        },
+        {
+          "number": "06",
+          "title": "Episode 06",
+          "duration": "45m-60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=czTQlIdUY2Q6Pl1Hu%2Fu1HbscrpEDvGeONQmBc%2F2WvY%2B6CcFcdUXa7YBIZFc%2F4cgs&expiry=%2FTAiknEwFr81xcYa4jc9Gg%3D%3D&mac=bebe0ea01a63862dd40d1179e1327f3194e7d9967fafbaa9cba570fc27f65772"
+        },
+        {
+          "number": "07",
+          "title": "Episode 07",
+          "duration": "45m-60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=HNTf4ym3TxjPgImsT4iJmYRNK4vtSGCklNAvL%2BcJ1YuIVnBmUU29gXXt8KTUkf8K&expiry=%2FTAiknEwFr81xcYa4jc9Gg%3D%3D&mac=8a1efd7c259c45e73147f7312706883533099b7f09b64607c30f4d3cc25ec85f"
+        },
+        {
+          "number": "08",
+          "title": "Episode 08",
+          "duration": "45m-60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=7GIsgmYzfuIgbYRZsWTPzC2OydQsWtRcwxDQOk4r5PEeSjUrF8x8ENGQzfHL1%2BaR&expiry=%2FTAiknEwFr81xcYa4jc9Gg%3D%3D&mac=98c1137d1cc5187e0affb4a9c6b745931fcb62eda75cf6203ed42ab16df90007"
+        },
+        {
+          "number": "09",
+          "title": "Episode 09",
+          "duration": "45m-60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=iSOZoVXrClaV83D%2F%2B0AzihLuhDUHvV%2BG4UqVXKyweb6ahc7hqE31RE0mGSn67JBh&expiry=%2FTAiknEwFr81xcYa4jc9Gg%3D%3D&mac=9322803b42db78de59bf851c925b2afcdee1b8bf80a8428f3b3f4e2b6490529e"
+        },
+        {
+          "number": "10",
+          "title": "Episode 10",
+          "duration": "45m-60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=IAM7%2F3wdcXq94DQihrpwWMgHGu3bxbbxTWLdix90Qi%2FbnM9xjYkvkK0IjfOEMN7Q&expiry=%2FTAiknEwFr81xcYa4jc9Gg%3D%3D&mac=801097fe38f9b0e7650a1f857bf9c37b7dfbd12c51e0c69bfd93cf2529467777"
+        },
+        {
+          "number": "11",
+          "title": "Episode 11",
+          "duration": "45m-60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=yruZcem239h%2FEjLyG7hkCDY1HKMHQVwj8B30BDbsazV58EPsS0lrTmeQPTeCPF0M&expiry=%2FTAiknEwFr81xcYa4jc9Gg%3D%3D&mac=7c993c1388961fd8b488afa92b556380eef9de5ef94a7353e5a5479b3015ba1a"
+        },
+        {
+          "number": "12",
+          "title": "Episode 12",
+          "duration": "45m-60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=NLCETZdfmvrjIIWjMwQAGHX%2BoikRX2%2Bu2z6MNiDJDufA1s5CdPRBV7OLsY7lyRJH&expiry=%2FTAiknEwFr81xcYa4jc9Gg%3D%3D&mac=0ce73a47c6d6686ad76ec7a4d510a9e14779c5d63abc63002acaa43911803516"
+        },
+        {
+          "number": "13",
+          "title": "Episode 13",
+          "duration": "45m-60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=YN38TRl75dNHCxZXGrjxfRD%2BlvPqeh4RasC%2F3yENQamhojSkUeiVDXpvg3gTf8aX&expiry=%2FTAiknEwFr81xcYa4jc9Gg%3D%3D&mac=66cc0e8e6cbfd3c89e1ee8e41b51bfb6f79a482e08e0c1b11ad9592419d1e595"
+        },
+        {
+          "number": "14",
+          "title": "Episode 14",
+          "duration": "45m-60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=z15PDY1WKDwzuSA%2BKFUO52zbqmWSpb6lHm12gnZIMd4wbILwtLWLPbtmznmPl4l4&expiry=%2FTAiknEwFr81xcYa4jc9Gg%3D%3D&mac=59d6c360e9b776d39acc127503b9089c5fb015be856ae02ba226f5bc7d8b5ce4"
+        },
+        {
+          "number": "15",
+          "title": "Episode 15",
+          "duration": "45m-60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=zpTJ9%2FlnFyGrOKKXdBrS5FEQMEsDnra0RwmrF0qAMhnHUnjjPRB4YZJcIJ0Ci%2BiL&expiry=%2FTAiknEwFr81xcYa4jc9Gg%3D%3D&mac=b8c5100887244691a4b56168a65234a7068706be570d49cd07b8ed4768d61ff2"
+        },
+        {
+          "number": "16",
+          "title": "Episode 16",
+          "duration": "45m-60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=QFMQx1w2NBk%2F8novwsoAB5a7xOl5z9TVw5GzJKfsi56dR3Yqw2F%2FxuUNXwe2A4yB&expiry=%2FTAiknEwFr81xcYa4jc9Gg%3D%3D&mac=c814c3caabf09abca4c16712f94f8e5268e147c3da60d167017490269e96d8ef"
+        }
+      ],
+      "type": "series"
+    }
+  ],
+  "upcoming": [
+    {
+      "id": "upcoming-remarried-empress-2026",
+      "title": "The Remarried Empress",
+      "originalTitle": "재혼 황후",
+      "language": "Korean",
+      "dubLanguage": "Hindi",
+      "year": "2026",
+      "country": "Korea",
+      "genre": "Romance, Historical, Drama, Fantasy",
+      "releaseDate": "Nov 04, 2026",
+      "releaseMonth": "Nov",
+      "releaseDay": "04",
+      "booked": "0",
+      "rating": "8.9",
+      "imdbRating": "8.9",
+      "tag": "2026 TV Series",
+      "poster": "https://thumb.wikimedia.org/wikipedia/en/thumb/a/a7/The_Remarried_Empress.jpg/250px-The_Remarried_Empress.jpg",
+      "backdrop": "https://swebtoon-phinf.pstatic.net/20260105_53/1767603138087NPNU4_JPEG/Poster_480x623_The%20Second%20Marriage.jpg?type=crop540_540",
+      "streamUrl": "https://kmdl.eu.org/download.aspx?file=xPNWgqNHLkAytmDTGDm4GwYeWwcDY1W6CuG4iWEJnr5f4ErO%2BuuJqEr%2FsO0eehR5&expiry=mOFG9s9rePeaGm0KT6XmdQ%3D%3D&mac=14bb0fe204da1e71cf1de664a37b2a4926fcff9e8bb2fbdb6f40ce79d5beda07",
+      "description": "Set in an opulent imperial court, Empress Navier's life is upended when her husband, Emperor Sovieshu, demands a divorce to make a runaway slave his new empress. Refusing to be cast aside or broken by betrayal, Navier agrees to the divorce under one shocking condition: she demands official approval to immediately remarry Prince Heinrey of the rival Western Kingdom, sparking a high-stakes battle to reclaim her throne and destiny.",
+      "cast": [
+        {
+          "name": "Shin Min-a",
+          "character": "Empress Navier",
+          "photo": "https://image.tmdb.org/t/p/w185/6CjxjYvZBuvbAQTcuoPb8EeVrUI.jpg"
+        },
+        {
+          "name": "Ju Ji-hoon",
+          "character": "Emperor Sovieshu",
+          "photo": "https://image.tmdb.org/t/p/w185/tI0ANQSwcOBfQUeHgfcwn7VmHRO.jpg"
+        },
+        {
+          "name": "Lee Jong-suk",
+          "character": "Prince Heinrey",
+          "photo": "https://image.tmdb.org/t/p/w185/v8N9oQpC115G7kEa3nIq6v0o5U6.jpg"
+        },
+        {
+          "name": "Lee Se-young",
+          "character": "Rashta",
+          "photo": "https://image.tmdb.org/t/p/w185/hKF1uh0iEfuZlBE79CXPw415qyn.jpg"
+        }
+      ],
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "type": "series"
+    }
+  ],
+  "liveTv": []
+}

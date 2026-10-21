@@ -60,6 +60,13 @@
       </nav>
     </header>
 
+    <!-- Non-intrusive Server Status Bar (Shows only when waking up or offline) -->
+    <div id="serverStatusBar" class="server-status-bar hidden">
+      <span class="status-pulse-dot"></span>
+      <span id="serverStatusText" class="status-text">Server waking up...</span>
+      <button id="serverRetryBtn" class="status-retry-pill hidden" onclick="triggerManualSync()">Retry</button>
+    </div>
+
     <!-- Main Content Area -->
     <main class="main-content" id="mainContent">
 
@@ -538,6 +545,30 @@
     <div class="toast-notification" id="toastNotification">
       <i class="fa-solid fa-circle-check"></i>
       <span id="toastMsg">Added to list!</span>
+    </div>
+
+    <!-- FOBS TV Startup Branded Loading Screen (Appears only on cold start if no cached data) -->
+    <div id="fobsLoadingScreen" class="fobs-loading-screen hidden">
+      <div class="fobs-loading-card">
+        <div class="fobs-loading-logo">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 4.5L19 12L4 19.5V4.5Z" fill="url(#fobs_loading_grad)" />
+            <defs>
+              <linearGradient id="fobs_loading_grad" x1="4" y1="4.5" x2="19" y2="19.5" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00F2FE" />
+                <stop offset="1" stop-color="#4FACFE" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="fobs-loading-title">FOBS TV</div>
+        <div class="fobs-loading-spinner"></div>
+        <div id="fobsLoadingMsg" class="fobs-loading-msg">Loading FOBS TV...</div>
+        <div id="fobsLoadingRetry" class="fobs-loading-retry hidden">
+          <p class="fobs-error-detail">Server is waking up or connection was interrupted.</p>
+          <button class="btn-primary fobs-retry-btn" onclick="retryInitialLoad()">Retry Connection</button>
+        </div>
+      </div>
     </div>
 
   </div>
