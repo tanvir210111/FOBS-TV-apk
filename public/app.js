@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v15';
+const CACHE_KEY = 'fobs_tv_content_cache_v16';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -1476,6 +1476,12 @@ function filterByGenre(genre) {
 
 // Switch between the 4 Main Tabs: Home, Movie, Series, Live TV
 function switchMainTab(tabName) {
+  // If player is open when switching tabs, immediately close it and terminate playback
+  const player = document.getElementById('playerOverlay');
+  if (player && (player.classList.contains('open') || document.body.classList.contains('player-open'))) {
+    closePlayer();
+  }
+
   appState.activeTab = tabName;
 
   // Update Top Nav Tabs
@@ -2294,10 +2300,17 @@ function applyPlayerBrightness(val) {
     overlay.style.backgroundColor = `rgba(0, 0, 0, ${dimAlpha.toFixed(3)})`;
   }
   
-  // 2. Update Android window brightness if in Capacitor / Native WebAppInterface
+  // 2. Only override Android window brightness if actively dimmed below 100%
+  // When at normal (1.0), restore default system brightness so screen doesn't get stuck at max brightness
   try {
-    if (window.AndroidApp && typeof window.AndroidApp.setWindowBrightness === 'function') {
-      window.AndroidApp.setWindowBrightness(playerBrightness);
+    if (window.AndroidApp) {
+      if (playerBrightness < 0.98 && typeof window.AndroidApp.setWindowBrightness === 'function') {
+        window.AndroidApp.setWindowBrightness(playerBrightness);
+      } else if (typeof window.AndroidApp.resetWindowBrightness === 'function') {
+        window.AndroidApp.resetWindowBrightness();
+      } else if (typeof window.AndroidApp.setWindowBrightness === 'function') {
+        window.AndroidApp.setWindowBrightness(-1);
+      }
     }
   } catch (e) {}
 
@@ -2580,6 +2593,12 @@ function setupVideoListeners() {
 
   videoPlayer.addEventListener('error', (e) => {
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
+
+    // If player is closing or no active media, DO NOT attempt fallback retry!
+    if (videoPlayer._isClosing || !appState.currentMedia) {
+      return;
+    }
+
     console.error('Video load error, attempting fallback:', e);
 
     const curEp = appState.currentEpisode;
@@ -2651,7 +2670,21 @@ function closePlayer() {
   exitFullscreenMode();
   document.body.classList.remove('player-open');
 
-  applyPlayerBrightness(1.0);
+  playerBrightness = 1.0;
+  const overlayEl = document.getElementById('playerBrightnessOverlay');
+  if (overlayEl) {
+    overlayEl.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+  }
+
+  // Restore phone screen brightness back to normal system brightness
+  try {
+    if (window.AndroidApp && typeof window.AndroidApp.resetWindowBrightness === 'function') {
+      window.AndroidApp.resetWindowBrightness();
+    } else if (window.AndroidApp && typeof window.AndroidApp.setWindowBrightness === 'function') {
+      window.AndroidApp.setWindowBrightness(-1);
+    }
+  } catch (e) {}
+
   if (singleTapTimer) {
     clearTimeout(singleTapTimer);
     singleTapTimer = null;
@@ -2660,11 +2693,37 @@ function closePlayer() {
     clearTimeout(gestureHudTimer);
     gestureHudTimer = null;
   }
+  if (seekDebounceTimer) {
+    clearTimeout(seekDebounceTimer);
+    seekDebounceTimer = null;
+  }
+  if (window.videoStreamColdStartTimer) {
+    clearTimeout(window.videoStreamColdStartTimer);
+    window.videoStreamColdStartTimer = null;
+  }
+
+  isPlayerLocked = false;
+  const lsUi = document.getElementById('landscapePlayerUI');
+  if (lsUi) {
+    lsUi.classList.remove('is-locked');
+    lsUi.classList.remove('controls-hidden');
+  }
 
   if (videoPlayer) {
+    videoPlayer._isClosing = true;
     videoPlayer.pause();
-    videoPlayer.src = '';
+    videoPlayer.removeAttribute('src');
+    videoPlayer.load();
+    setTimeout(() => {
+      if (videoPlayer) videoPlayer._isClosing = false;
+    }, 400);
   }
+
+  appState.currentMedia = null;
+  appState.currentEpisode = null;
+  appState.streamSeekOffset = 0;
+  appState.pendingSeekTime = null;
+
   if (overlay) overlay.classList.remove('open');
 }
 
@@ -3167,7 +3226,7 @@ window.handleAndroidBack = function() {
 
   // 6. Main Video Player Overlay (When watching video/series)
   const player = document.getElementById('playerOverlay');
-  if (player && player.classList.contains('open')) {
+  if (player && (player.classList.contains('open') || document.body.classList.contains('player-open'))) {
     closePlayer();
     return true;
   }

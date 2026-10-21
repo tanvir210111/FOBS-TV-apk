@@ -127,7 +127,25 @@ public class MainActivity extends BridgeActivity {
                     Window window = getWindow();
                     if (window != null) {
                         WindowManager.LayoutParams lp = window.getAttributes();
-                        lp.screenBrightness = Math.max(0.01f, Math.min(1.0f, brightness));
+                        if (brightness < 0 || brightness >= 1.0f) {
+                            lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+                        } else {
+                            lp.screenBrightness = Math.max(0.05f, Math.min(1.0f, brightness));
+                        }
+                        window.setAttributes(lp);
+                    }
+                } catch (Exception ignored) {}
+            });
+        }
+
+        @JavascriptInterface
+        public void resetWindowBrightness() {
+            runOnUiThread(() -> {
+                try {
+                    Window window = getWindow();
+                    if (window != null) {
+                        WindowManager.LayoutParams lp = window.getAttributes();
+                        lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
                         window.setAttributes(lp);
                     }
                 } catch (Exception ignored) {}
