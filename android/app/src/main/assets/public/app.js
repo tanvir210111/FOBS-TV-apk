@@ -1975,14 +1975,11 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     ? audioIndex 
     : (appState.selectedAudioIndex !== undefined ? appState.selectedAudioIndex : (appState.currentAudioTrack?.toLowerCase().includes('english') ? 1 : 0));
 
-  // Direct play for standard MP4s that already have browser-supported AAC audio
+  // Direct play only for sources that provide CORS headers and fast direct CDN edge delivery
   const isDirectMp4Source = (
-    url.includes('kmdl.eu.org') ||
-    url.includes('koyeb.app') ||
-    url.includes('filetolink') ||
-    url.includes('royalfiletolink')
+    url.includes('kmdl.eu.org')
   );
-  if (isDirectMp4Source && !url.includes('googleusercontent.com') && audioIndex === null) {
+  if (isDirectMp4Source && !url.includes('googleusercontent.com') && audioIndex === null && !seekTime) {
     videoPlayer.src = url;
     videoPlayer.load();
     videoPlayer.play().catch(() => {});
@@ -2237,8 +2234,6 @@ function seekRelative(offsetSeconds) {
     : ((video.currentTime || 0) + streamOffset);
 
   const target = Math.max(0, Math.min(duration, baseTime + offsetSeconds));
-  const relTime = target - streamOffset;
-
   appState.pendingSeekTime = target;
 
   // Immediate UI feedback on progress bar and time labels
@@ -2255,38 +2250,11 @@ function seekRelative(offsetSeconds) {
   showToast(offsetSeconds > 0 ? '+10s' : '-10s');
   resetLandscapeControlsTimer();
 
-  const isStreamProxy = video.src && video.src.includes('/api/stream');
-
-  // Case 1: Direct MP4 (non-proxy, supports native HTTP 206 range requests)
-  if (!isStreamProxy) {
-    appState.pendingSeekTime = null;
-    try {
-      video.currentTime = target;
-    } catch (e) {}
-    updateLandscapeProgress();
-    syncPlayPauseIcons();
-    return;
-  }
-
-  // Case 2: In /api/stream proxy AND target time is already within the downloaded buffer
-  if (relTime >= 0 && isTimeBuffered(video, relTime)) {
-    appState.pendingSeekTime = null;
-    try {
-      video.currentTime = relTime;
-    } catch (e) {}
-    updateLandscapeProgress();
-    syncPlayPauseIcons();
-    return;
-  }
-
-  // Case 3: In /api/stream proxy AND target is OUTSIDE buffer (or backwards into past stream segment)
-  // Debounce multiple fast clicks (+10 +10 -> +20s) by 280ms
   if (seekDebounceTimer) clearTimeout(seekDebounceTimer);
   seekDebounceTimer = setTimeout(() => {
     const finalTarget = appState.pendingSeekTime !== null ? appState.pendingSeekTime : target;
-    appState.pendingSeekTime = null;
     seekToAbsoluteTime(finalTarget);
-  }, 280);
+  }, 220);
 }
 
 function seekToAbsoluteTime(targetSeconds) {
@@ -2298,34 +2266,55 @@ function seekToAbsoluteTime(targetSeconds) {
   const streamOffset = appState.streamSeekOffset || 0;
   const relTime = safeTarget - streamOffset;
 
-  const isStreamProxy = video.src && video.src.includes('/api/stream');
-
-  // Direct MP4 (non-proxy)
-  if (!isStreamProxy) {
-    try {
-      video.currentTime = safeTarget;
-      updateLandscapeProgress();
-      return;
-    } catch (e) {}
-  }
-
-  // Stream proxy and already buffered
-  if (relTime >= 0 && isTimeBuffered(video, relTime)) {
-    try {
-      video.currentTime = relTime;
-      updateLandscapeProgress();
-      return;
-    } catch (e) {}
-  }
-
-  // Outside buffer on stream proxy: request backend stream starting at safeTarget
   const curEp = appState.currentEpisode;
   const rawUrl = (curEp?.audioTracks && curEp.audioTracks[appState.currentAudioTrack]) 
     || curEp?.streamUrl 
     || appState.currentMedia?.streamUrl 
     || appState.currentMedia?.driveUrl;
 
+  const isTranscodedStream = rawUrl && (
+    rawUrl.includes('.mkv') ||
+    rawUrl.includes('vcloud.you') ||
+    rawUrl.includes('fast-dl') ||
+    rawUrl.includes('hindidrama.net') ||
+    rawUrl.includes('luluvido') ||
+    rawUrl.includes('upbolt') ||
+    rawUrl.includes('it2k1jyiil2q') ||
+    rawUrl.includes('.m3u8')
+  );
+
+  // Standard MP4 streams (e.g. Koyeb / Telegram bot, KMDL, MP4 CDNs):
+  // Support native HTTP 206 byte-range seeking to ANY timestamp without reloading player or restarting
+  if (!isTranscodedStream) {
+    appState.pendingSeekTime = safeTarget;
+    const loader = document.getElementById('videoLoader');
+    if (loader) loader.classList.add('active');
+
+    try {
+      video.currentTime = safeTarget;
+    } catch (e) {
+      console.warn('Native seek error:', e);
+      appState.pendingSeekTime = null;
+    }
+    updateLandscapeProgress();
+    return;
+  }
+
+  // Transcoded MKV/EAC3 live stream: check if target is inside downloaded buffer
+  if (relTime >= 0 && isTimeBuffered(video, relTime)) {
+    appState.pendingSeekTime = safeTarget;
+    try {
+      video.currentTime = relTime;
+    } catch (e) {
+      appState.pendingSeekTime = null;
+    }
+    updateLandscapeProgress();
+    return;
+  }
+
+  // Transcoded stream outside buffer: request backend remux starting at safeTarget
   if (rawUrl) {
+    appState.pendingSeekTime = safeTarget;
     appState.streamSeekOffset = safeTarget;
     playStreamUrl(rawUrl, appState.selectedAudioIndex, safeTarget);
   }
@@ -2868,8 +2857,20 @@ function setupVideoListeners() {
     if (loader) loader.classList.add('active');
   });
 
+  videoPlayer.addEventListener('seeking', () => {
+    if (loader) loader.classList.add('active');
+  });
+
+  videoPlayer.addEventListener('seeked', () => {
+    appState.pendingSeekTime = null;
+    if (loader) loader.classList.remove('active');
+    updateLandscapeProgress();
+    syncPlayPauseIcons();
+  });
+
   videoPlayer.addEventListener('canplay', () => {
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
+    videoPlayer._retryCount = 0;
     if (loader) loader.classList.remove('active');
     updateLandscapeProgress();
   });
@@ -2895,20 +2896,22 @@ function setupVideoListeners() {
     if (!videoPlayer._retryCount) videoPlayer._retryCount = 0;
     if (videoPlayer._retryCount < 2 && rawUrl) {
       videoPlayer._retryCount++;
-      if (!videoPlayer.src.includes('/api/stream')) {
-        console.log('Retrying stream via proxy...');
-        videoPlayer.src = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(rawUrl)}`;
-        videoPlayer.load();
-        videoPlayer.play().catch(() => {});
-        return;
+      const resumeTime = appState.pendingSeekTime || videoPlayer.currentTime || 0;
+      console.log(`Retrying stream via proxy at ${resumeTime}s (attempt ${videoPlayer._retryCount})...`);
+
+      videoPlayer.src = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(rawUrl)}`;
+      videoPlayer.load();
+      if (resumeTime > 0) {
+        const onLoaded = () => {
+          videoPlayer.removeEventListener('loadedmetadata', onLoaded);
+          try { videoPlayer.currentTime = resumeTime; } catch(err) {}
+        };
+        videoPlayer.addEventListener('loadedmetadata', onLoaded);
       }
+      videoPlayer.play().catch(() => {});
+      return;
     }
 
-    if (loader) loader.classList.remove('active');
-  });
-
-  videoPlayer.addEventListener('canplay', () => {
-    videoPlayer._retryCount = 0;
     if (loader) loader.classList.remove('active');
   });
 

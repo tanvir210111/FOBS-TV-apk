@@ -358,8 +358,17 @@ app.all('/api/stream', async (req, res) => {
   const audioIndex = parseInt(req.query.audio, 10) || 0;
   const seekTime = req.query.t ? parseFloat(req.query.t) : 0;
 
-  // Live FFmpeg Remuxer: Fixes EAC3, proxies HLS/m3u8/MKV with headers, and remuxes to fragmented MP4
-  const isMkvOrEac3 = (
+  // Live FFmpeg Remuxer: Handles seek to timestamp t, fixes EAC3, and remuxes to fragmented MP4
+  const isKoyebOrTelegram = (
+    targetUrl.includes('koyeb.app') || 
+    targetUrl.includes('filetolink') || 
+    targetUrl.includes('royalfiletolink')
+  );
+
+  // Telegram bot / Koyeb streams are pure H.264 + AAC MP4s that support native byte-range seeking
+  // Only route through FFmpeg if NOT Koyeb/Telegram AND (seeking transcode or MKV/EAC3/HLS format)
+  const isMkvOrEac3 = !isKoyebOrTelegram && (
+    seekTime > 0 ||
     targetUrl.includes('vcloud.you') || 
     targetUrl.includes('fast-dl') || 
     targetUrl.includes('.mkv') || 
@@ -368,7 +377,7 @@ app.all('/api/stream', async (req, res) => {
     targetUrl.includes('luluvido') || 
     targetUrl.includes('upbolt') || 
     targetUrl.includes('it2k1jyiil2q') || 
-    (req.query.audio !== undefined && !targetUrl.includes('koyeb.app') && !targetUrl.includes('filetolink') && !targetUrl.includes('royalfiletolink'))
+    (req.query.audio !== undefined)
   );
 
   if (isMkvOrEac3 && ffmpegPath) {
@@ -399,10 +408,17 @@ app.all('/api/stream', async (req, res) => {
       '-i', resolvedUrl,
       '-map', '0:v:0',
       '-map', `0:a:${audioIndex}?`,
-      '-c:v', 'copy',
-      '-c:a', 'aac',
-      '-ac', '2',
-      '-b:a', '128k',
+      '-c:v', 'copy'
+    );
+
+    // Fast copy audio without re-encoding for Telegram file-to-link MP4s
+    if (isKoyebOrTelegram) {
+      ffmpegArgs.push('-c:a', 'copy');
+    } else {
+      ffmpegArgs.push('-c:a', 'aac', '-ac', '2', '-b:a', '128k');
+    }
+
+    ffmpegArgs.push(
       '-avoid_negative_ts', 'make_zero',
       '-f', 'mp4',
       '-movflags', 'frag_keyframe+default_base_moof',
@@ -478,14 +494,16 @@ app.all('/api/stream', async (req, res) => {
 
   if (range) {
     requestHeaders['Range'] = range;
+  } else if (isHead) {
+    requestHeaders['Range'] = 'bytes=0-0';
   }
 
   try {
     const response = await axios({
-      method: isHead ? 'HEAD' : 'GET',
+      method: 'GET',
       url: resolvedUrl,
       headers: requestHeaders,
-      responseType: isHead ? 'text' : 'stream',
+      responseType: 'stream',
       maxRedirects: 5,
       timeout: 15000,
       validateStatus: (status) => status >= 200 && status < 400
@@ -496,17 +514,31 @@ app.all('/api/stream', async (req, res) => {
       contentType = (targetUrl && (targetUrl.includes('.mkv') || targetUrl.includes('matroska'))) ? 'video/x-matroska' : 'video/mp4';
     }
 
+    if (isHead) {
+      const totalLen = response.headers['content-range']
+        ? (response.headers['content-range'].split('/')[1] || '')
+        : (response.headers['content-length'] || '');
+      res.writeHead(200, {
+        'Content-Type': contentType,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': totalLen,
+        'Access-Control-Allow-Origin': '*'
+      });
+      try { response.data.destroy(); } catch (e) {}
+      return res.end();
+    }
+
     // Upstream returned 206 natively (e.g. KMDL or Range-supporting servers)
     if (response.status === 206) {
       const headersToSend = {
         'Content-Type': contentType,
-        'Accept-Ranges': 'bytes'
+        'Accept-Ranges': 'bytes',
+        'Access-Control-Allow-Origin': '*'
       };
       if (response.headers['content-range']) headersToSend['Content-Range'] = response.headers['content-range'];
       if (response.headers['content-length']) headersToSend['Content-Length'] = response.headers['content-length'];
 
       res.writeHead(206, headersToSend);
-      if (isHead) return res.end();
       response.data.pipe(res);
       req.on('close', () => response.data.destroy());
       return;
