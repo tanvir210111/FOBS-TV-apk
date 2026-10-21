@@ -43,11 +43,6 @@ public class MainActivity extends BridgeActivity {
             customView = view;
             customViewCallback = callback;
 
-            WebView webView = getBridge() != null ? getBridge().getWebView() : null;
-            if (webView != null) {
-                webView.setVisibility(View.INVISIBLE);
-            }
-
             if (fullscreenContainer == null) {
                 fullscreenContainer = new FrameLayout(MainActivity.this);
                 fullscreenContainer.setBackgroundColor(Color.BLACK);
@@ -74,6 +69,7 @@ public class MainActivity extends BridgeActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
             hideSystemUI();
 
+            WebView webView = getBridge() != null ? getBridge().getWebView() : null;
             if (webView != null) {
                 webView.evaluateJavascript(
                     "(function() { if (typeof window.onNativeFullscreenChange === 'function') window.onNativeFullscreenChange(true); })();",
@@ -105,7 +101,6 @@ public class MainActivity extends BridgeActivity {
 
             WebView webView = getBridge() != null ? getBridge().getWebView() : null;
             if (webView != null) {
-                webView.setVisibility(View.VISIBLE);
                 webView.evaluateJavascript(
                     "(function() { if (typeof window.onNativeFullscreenChange === 'function') window.onNativeFullscreenChange(false); })();",
                     null

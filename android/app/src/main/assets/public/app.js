@@ -1279,6 +1279,29 @@ function setupVideoListeners() {
     }
   });
 
+  // Handle native HTML5 bottom control bar fullscreen button events
+  const onNativeFsChange = () => {
+    const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+    if (isFs && !document.body.classList.contains('is-fullscreen')) {
+      enterFullscreenMode({ skipRotate: false });
+    } else if (!isFs && document.body.classList.contains('is-fullscreen') && (!window.AndroidApp || !window.AndroidApp.isCustomViewActive())) {
+      exitFullscreenMode({ skipRotate: false });
+    }
+  };
+
+  document.addEventListener('fullscreenchange', onNativeFsChange);
+  document.addEventListener('webkitfullscreenchange', onNativeFsChange);
+
+  videoPlayer.addEventListener('webkitbeginfullscreen', () => {
+    enterFullscreenMode({ skipRotate: false });
+  });
+
+  videoPlayer.addEventListener('webkitendfullscreen', () => {
+    if (!window.AndroidApp || !window.AndroidApp.isCustomViewActive()) {
+      exitFullscreenMode({ skipRotate: false });
+    }
+  });
+
   // Device orientation change fallback if screen.orientation changes outside AndroidApp
   if (screen.orientation && screen.orientation.addEventListener) {
     screen.orientation.addEventListener('change', () => {

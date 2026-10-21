@@ -1058,7 +1058,11 @@ body.is-fullscreen .video-container,
 }
 
 body.is-fullscreen .video-container video,
-.player-view-overlay.is-fullscreen .video-container video {
+.player-view-overlay.is-fullscreen .video-container video,
+video:fullscreen,
+video:-webkit-full-screen,
+.video-container:fullscreen,
+.video-container:-webkit-full-screen {
   position: absolute !important;
   inset: 0 !important;
   top: 0 !important;
