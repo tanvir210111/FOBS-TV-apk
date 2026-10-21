@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v8';
+const CACHE_KEY = 'fobs_tv_content_cache_v9';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -363,8 +363,10 @@ function renderHeroBanner() {
   const movies = appState.content.movies || [];
   const series = appState.content.series || [];
   
-  // Combine all movies and series for hero slider
-  heroItems = [...movies, ...series];
+  // Home hero: 2 most recent movies + 3 most recent series (always latest uploads)
+  const recentMovies = movies.slice(0, 2);
+  const recentSeries = series.slice(0, 3);
+  heroItems = [...recentMovies, ...recentSeries];
 
   if (heroItems.length === 0) return;
 
@@ -594,8 +596,8 @@ function renderMovieHeroBanner() {
   const movies = appState.content.movies || [];
   if (movies.length === 0) return;
 
-  // Pick top 6 blockbuster movies for the hero spotlight slider
-  movieHeroItems = movies.slice(0, 6);
+  // Movie hero: 5 most recent movies (if fewer uploaded, shows all available, e.g. 2 currently)
+  movieHeroItems = movies.slice(0, 5);
   movieLoopCardsList = movieHeroItems.length > 1 ? [...movieHeroItems, movieHeroItems[0]] : [...movieHeroItems];
 
   const backdropTrack = document.getElementById('movieHeroBackdropTrack');
@@ -825,7 +827,8 @@ function renderSeriesHeroBanner() {
   const series = appState.content.series || [];
   if (series.length === 0) return;
 
-  seriesHeroItems = series.slice(0, 6);
+  // Series hero: 5 most recent series (always latest uploads)
+  seriesHeroItems = series.slice(0, 5);
   seriesLoopCardsList = seriesHeroItems.length > 1 ? [...seriesHeroItems, seriesHeroItems[0]] : [...seriesHeroItems];
 
   const backdropTrack = document.getElementById('seriesHeroBackdropTrack');
