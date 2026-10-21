@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache';
+const CACHE_KEY = 'fobs_tv_content_cache_v3';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function initApp() {
   setupVideoListeners();
   setupHeroSwipeGestures();
+  setupMovieHeroSwipeGestures();
   setupPlayerSwipeToClose();
   setupAppVisibilityListeners();
 
@@ -578,6 +579,237 @@ function setupHeroSwipeGestures() {
   });
 }
 
+// ============================================================
+// MOVIE TAB HERO SLIDER (INFINITE LOOP & GESTURE SUPPORT)
+// ============================================================
+let currentMovieHeroIndex = 0;
+let movieHeroSliderInterval = null;
+let movieHeroItems = [];
+let movieLoopCardsList = [];
+let isMovieHeroSliding = false;
+let isSwipingMovieHero = false;
+
+function renderMovieHeroBanner() {
+  const movies = appState.content.movies || [];
+  if (movies.length === 0) return;
+
+  // Pick top 6 blockbuster movies for the hero spotlight slider
+  movieHeroItems = movies.slice(0, 6);
+  movieLoopCardsList = movieHeroItems.length > 1 ? [...movieHeroItems, movieHeroItems[0]] : [...movieHeroItems];
+
+  const backdropTrack = document.getElementById('movieHeroBackdropTrack');
+  const cardsTrack = document.getElementById('movieHeroCardsTrack');
+
+  if (backdropTrack) {
+    backdropTrack.innerHTML = movieHeroItems.map((slide, idx) => {
+      const bgUrl = slide.backdrop || slide.poster;
+      return `<div class="hero-backdrop-slide ${idx === 0 ? 'active' : ''}" style="background-image: url('${bgUrl}')"></div>`;
+    }).join('');
+  }
+
+  if (cardsTrack) {
+    cardsTrack.innerHTML = movieLoopCardsList.map((slide, idx) => {
+      const originalIndex = idx % movieHeroItems.length;
+      return `
+        <div class="hero-peek-card ${idx === 0 ? 'active' : ''}" data-index="${originalIndex}" onclick="handleMovieHeroCardClick(event, '${slide.id}')">
+          <div class="hero-peek-thumb-wrap">
+            <img src="${slide.poster}" alt="${slide.title}" class="hero-peek-thumb" loading="lazy" onerror="this.onerror=null; this.src='https://image.tmdb.org/t/p/w500/vy14tKxsbJYdDyFl6kQuVkK2s44.jpg';">
+          </div>
+          <div class="hero-peek-info">
+            <div class="hero-peek-title-scroll-container">
+              <div class="hero-peek-title">${slide.title}</div>
+            </div>
+            <div class="hero-peek-sub">
+              <i class="fa-solid fa-film"></i> | ${slide.year || '2024'} | ${slide.industry || slide.language || 'Movie'}
+            </div>
+          </div>
+          <div class="hero-peek-play">
+            <i class="fa-solid fa-play"></i>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  currentMovieHeroIndex = 0;
+  applyMovieHeroSlide(0, false);
+
+  if (appState.activeTab === 'movie') {
+    startMovieHeroAutoSlide();
+  }
+}
+
+function handleMovieHeroCardClick(event, id) {
+  if (isSwipingMovieHero) return;
+  openPlayerById('movie', id);
+}
+
+function startMovieHeroAutoSlide() {
+  if (movieHeroSliderInterval) clearInterval(movieHeroSliderInterval);
+  if (movieHeroItems.length <= 1) return;
+  movieHeroSliderInterval = setInterval(() => {
+    nextMovieHeroSlide();
+  }, 4000);
+}
+
+function nextMovieHeroSlide() {
+  if (isMovieHeroSliding || movieHeroItems.length <= 1) return;
+  isMovieHeroSliding = true;
+
+  const nextIndex = currentMovieHeroIndex + 1;
+  applyMovieHeroSlide(nextIndex, true);
+
+  if (nextIndex === movieHeroItems.length) {
+    setTimeout(() => {
+      currentMovieHeroIndex = 0;
+      applyMovieHeroSlide(0, false);
+      isMovieHeroSliding = false;
+    }, 650);
+  } else {
+    currentMovieHeroIndex = nextIndex;
+    setTimeout(() => {
+      isMovieHeroSliding = false;
+    }, 650);
+  }
+}
+
+function prevMovieHeroSlide() {
+  if (isMovieHeroSliding || movieHeroItems.length <= 1) return;
+  isMovieHeroSliding = true;
+
+  let prevIndex = currentMovieHeroIndex - 1;
+  if (prevIndex < 0) {
+    prevIndex = movieHeroItems.length - 1;
+  }
+  applyMovieHeroSlide(prevIndex, true);
+  currentMovieHeroIndex = prevIndex;
+
+  setTimeout(() => {
+    isMovieHeroSliding = false;
+  }, 650);
+}
+
+function applyMovieHeroSlide(index, animate = true) {
+  if (!movieHeroItems || movieHeroItems.length === 0) return;
+  const actualIndex = index % movieHeroItems.length;
+
+  // 1. Update full-fill backdrop poster
+  const backdropTrack = document.getElementById('movieHeroBackdropTrack');
+  if (backdropTrack) {
+    const backdropSlides = backdropTrack.querySelectorAll('.hero-backdrop-slide');
+    backdropSlides.forEach((slide, idx) => {
+      slide.classList.toggle('active', idx === actualIndex);
+    });
+  }
+
+  // 2. Slide bottom cards track: 75% active + 25% peek of next card
+  const cardsTrack = document.getElementById('movieHeroCardsTrack');
+  if (cardsTrack && cardsTrack.children.length > 0) {
+    const cards = cardsTrack.children;
+    for (let i = 0; i < cards.length; i++) {
+      cards[i].classList.toggle('active', i === index);
+    }
+
+    const firstCard = cards[0];
+    const cardWidth = firstCard.offsetWidth || 260;
+    const gap = 10;
+    const offset = index * (cardWidth + gap);
+
+    if (animate) {
+      cardsTrack.style.transition = 'transform 0.65s cubic-bezier(0.25, 1, 0.5, 1)';
+    } else {
+      cardsTrack.style.transition = 'none';
+    }
+
+    cardsTrack.style.transform = `translateX(-${offset}px)`;
+  }
+}
+
+// Touch and Swipe Gestures for Movie Hero Section
+function setupMovieHeroSwipeGestures() {
+  const container = document.getElementById('movieHeroSliderContainer');
+  if (!container) return;
+
+  let startX = 0;
+  let startY = 0;
+  let deltaX = 0;
+  let deltaY = 0;
+  let moved = false;
+
+  container.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    startX = t.clientX;
+    startY = t.clientY;
+    deltaX = 0;
+    deltaY = 0;
+    moved = false;
+    isSwipingMovieHero = false;
+    if (movieHeroSliderInterval) clearInterval(movieHeroSliderInterval);
+  }, { passive: true });
+
+  container.addEventListener('touchmove', (e) => {
+    const t = e.touches[0];
+    deltaX = t.clientX - startX;
+    deltaY = t.clientY - startY;
+    if (Math.abs(deltaX) > 10) {
+      moved = true;
+    }
+  }, { passive: true });
+
+  container.addEventListener('touchend', () => {
+    if (moved && Math.abs(deltaX) > 35 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      isSwipingMovieHero = true;
+      setTimeout(() => { isSwipingMovieHero = false; }, 250);
+
+      if (deltaX < 0) {
+        nextMovieHeroSlide();
+      } else {
+        prevMovieHeroSlide();
+      }
+    }
+    if (appState.activeTab === 'movie') {
+      startMovieHeroAutoSlide();
+    }
+  }, { passive: true });
+
+  // Mouse Drag support for testing on PC
+  let mouseStartX = 0;
+  let mouseDeltaX = 0;
+  let isMouseDown = false;
+
+  container.addEventListener('mousedown', (e) => {
+    if (e.target.closest('.hero-peek-title-scroll-container')) return;
+    isMouseDown = true;
+    mouseStartX = e.clientX;
+    mouseDeltaX = 0;
+    if (movieHeroSliderInterval) clearInterval(movieHeroSliderInterval);
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isMouseDown) return;
+    mouseDeltaX = e.clientX - mouseStartX;
+    if (Math.abs(mouseDeltaX) > 10) {
+      isSwipingMovieHero = true;
+    }
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (!isMouseDown) return;
+    isMouseDown = false;
+    if (Math.abs(mouseDeltaX) > 40) {
+      if (mouseDeltaX < 0) {
+        nextMovieHeroSlide();
+      } else {
+        prevMovieHeroSlide();
+      }
+    }
+    setTimeout(() => { isSwipingMovieHero = false; }, 200);
+    if (appState.activeTab === 'movie') {
+      startMovieHeroAutoSlide();
+    }
+  });
+}
+
 // Touch & Swipe Gestures to close player (Slide back horizontally or swipe down)
 function setupPlayerSwipeToClose() {
   const player = document.getElementById('playerOverlay');
@@ -784,27 +1016,116 @@ function renderHomeFeeds() {
   }
 }
 
-// Render All Movies Tab
-function renderAllMovies() {
-  const movies = appState.content.movies || [];
-  const filtered = filterContentByGenre(movies);
-
-  document.getElementById('movieCountBadge').innerText = `${filtered.length} Movies`;
-  const grid = document.getElementById('allMoviesGrid');
-  grid.innerHTML = filtered.map(item => `
+// Helper to Render Individual Movie Card
+function renderMovieCardItem(item, rank = null) {
+  return `
     <div class="media-card" onclick='openPlayerById("movie", "${item.id}")'>
       <div class="card-poster-wrap">
-        <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-        <span class="card-badge-left">Hindi</span>
-        <span class="card-badge-right">${item.language || 'Korean'}</span>
+        <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy" onerror="this.onerror=null; this.src='https://image.tmdb.org/t/p/w500/vy14tKxsbJYdDyFl6kQuVkK2s44.jpg';">
+        <span class="card-badge-left">${item.dubLanguage || 'Hindi'}</span>
+        <span class="card-badge-right">${item.industry || item.language || 'HD'}</span>
+        ${rank ? `<div class="card-rank-number">${rank}</div>` : ''}
         <div class="card-play-hover">
           <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
         </div>
       </div>
       <div class="card-title">${item.title}</div>
-      <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.1'} • ${item.year || '2023'}</div>
+      <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.0'} • ${item.year || '2024'}</div>
     </div>
-  `).join('');
+  `;
+}
+
+// Render All Movies Tab with Hero Banner & Categorized Horizontal Strips
+function renderAllMovies() {
+  const movies = appState.content.movies || [];
+
+  // 1. Render Hero Banner for Movies
+  renderMovieHeroBanner();
+
+  // Categorization helpers
+  const isBollywood = m => (m.industry === 'Bollywood' || m.language === 'Hindi');
+  const isSouth = m => (m.industry === 'South' || m.language === 'Telugu' || m.language === 'Tamil');
+  const isKannada = m => (m.industry === 'Kannada' || m.language === 'Kannada');
+  const isMalayalam = m => (m.industry === 'Malayalam' || m.language === 'Malayalam');
+  const isHollywood = m => (m.industry === 'Hollywood & International' || m.language === 'English' || m.country === 'USA' || m.language === 'Korean');
+
+  // A. Trending Movies (with rank badges 1, 2, 3...)
+  const trendingMovies = movies.filter(m => m.category === 'Trending Movies' || parseFloat(m.imdbRating || m.rating || 0) >= 7.8);
+  const trendingContainer = document.getElementById('movieTrendingList');
+  if (trendingContainer) {
+    trendingContainer.innerHTML = (trendingMovies.length > 0 ? trendingMovies : movies.slice(0, 8)).map((item, idx) => renderMovieCardItem(item, idx < 5 ? idx + 1 : null)).join('');
+  }
+
+  // B. Latest Releases
+  const latestMovies = movies.filter(m => m.category === 'Latest Releases' || m.year === '2024' || m.year === '2025' || m.year === '2026');
+  const latestContainer = document.getElementById('movieLatestList');
+  if (latestContainer) {
+    latestContainer.innerHTML = (latestMovies.length > 0 ? latestMovies : movies.slice(0, 6)).map(item => renderMovieCardItem(item)).join('');
+  }
+
+  // C. Recently Added
+  const recentMovies = movies.filter(m => m.category === 'Recently Added' || m.category === 'Trending Movies');
+  const recentContainer = document.getElementById('movieRecentList');
+  if (recentContainer) {
+    recentContainer.innerHTML = (recentMovies.length > 0 ? recentMovies : movies.slice(4, 10)).map(item => renderMovieCardItem(item)).join('');
+  }
+
+  // D. Bollywood (Hindi)
+  const bollywoodMovies = movies.filter(isBollywood);
+  const bollywoodContainer = document.getElementById('movieBollywoodList');
+  if (bollywoodContainer) {
+    bollywoodContainer.innerHTML = (bollywoodMovies.length > 0 ? bollywoodMovies : movies.filter(m => m.language === 'Hindi')).map(item => renderMovieCardItem(item)).join('');
+  }
+
+  // E. South Indian (Tamil & Telugu)
+  const southMovies = movies.filter(isSouth);
+  const southContainer = document.getElementById('movieSouthList');
+  if (southContainer) {
+    southContainer.innerHTML = (southMovies.length > 0 ? southMovies : movies.filter(m => m.language === 'Telugu' || m.language === 'Tamil')).map(item => renderMovieCardItem(item)).join('');
+  }
+
+  // F. Kannada (Sandalwood)
+  const kannadaMovies = movies.filter(isKannada);
+  const kannadaContainer = document.getElementById('movieKannadaList');
+  if (kannadaContainer) {
+    kannadaContainer.innerHTML = kannadaMovies.map(item => renderMovieCardItem(item)).join('');
+  }
+
+  // G. Malayalam (Mollywood)
+  const malayalamMovies = movies.filter(isMalayalam);
+  const malayalamContainer = document.getElementById('movieMalayalamList');
+  if (malayalamContainer) {
+    malayalamContainer.innerHTML = malayalamMovies.map(item => renderMovieCardItem(item)).join('');
+  }
+
+  // H. Hollywood & International
+  const hollywoodMovies = movies.filter(isHollywood);
+  const hollywoodContainer = document.getElementById('movieHollywoodList');
+  if (hollywoodContainer) {
+    hollywoodContainer.innerHTML = (hollywoodMovies.length > 0 ? hollywoodMovies : movies.filter(m => m.language === 'English' || m.language === 'Korean')).map(item => renderMovieCardItem(item)).join('');
+  }
+
+  // I. Explore All Movies Grid (Bottom)
+  const filtered = filterContentByGenre(movies);
+  const badge = document.getElementById('movieCountBadge');
+  if (badge) badge.innerText = `${filtered.length} Movies`;
+
+  const grid = document.getElementById('allMoviesGrid');
+  if (grid) {
+    grid.innerHTML = filtered.map(item => renderMovieCardItem(item)).join('');
+  }
+}
+
+// Scroll / Filter Helper for "All >" buttons on category strips
+function scrollToAllMovies(category) {
+  const gridTitle = document.getElementById('allMoviesGridTitle');
+  if (gridTitle && category) {
+    gridTitle.innerText = `${category} Movies`;
+  }
+  const grid = document.getElementById('allMoviesGrid');
+  if (grid) {
+    grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 // Render All Series Tab
@@ -886,6 +1207,24 @@ function switchMainTab(tabName) {
   const targetView = document.getElementById(`${tabName}View`);
   if (targetView) {
     targetView.classList.add('active');
+  }
+
+  // Manage Hero Sliders and intervals for battery efficiency & layout accuracy
+  if (tabName === 'movie') {
+    if (heroSliderInterval) clearInterval(heroSliderInterval);
+    setTimeout(() => {
+      applyMovieHeroSlide(currentMovieHeroIndex, false);
+      startMovieHeroAutoSlide();
+    }, 50);
+  } else if (tabName === 'home') {
+    if (movieHeroSliderInterval) clearInterval(movieHeroSliderInterval);
+    setTimeout(() => {
+      applyHeroSlide(currentHeroIndex, false);
+      startHeroAutoSlide();
+    }, 50);
+  } else {
+    if (heroSliderInterval) clearInterval(heroSliderInterval);
+    if (movieHeroSliderInterval) clearInterval(movieHeroSliderInterval);
   }
 
   if (tabName !== 'home') {

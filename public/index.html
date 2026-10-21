@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="referrer" content="no-referrer">
   <title>FOBS TV - Live Streaming & Download App</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,12 +159,114 @@
 
       <!-- MOVIE TAB VIEW -->
       <section id="movieView" class="tab-view">
-        <div class="section-heading-bar">
-          <h2>All Movies</h2>
-          <span class="count-badge" id="movieCountBadge">0 Movies</span>
+        <!-- Hero Spotlight Banner for Movies (Auto-Sliding 75/25 Hero Slider like Home) -->
+        <div class="hero-slider-container" id="movieHeroSliderContainer">
+          <div class="hero-backdrop-track" id="movieHeroBackdropTrack"></div>
+          <div class="hero-gradient-overlay"></div>
+
+          <!-- Bottom 75% Active + 25% Next Peek Slider Track -->
+          <div class="hero-bottom-slider">
+            <div class="hero-cards-track" id="movieHeroCardsTrack"></div>
+          </div>
         </div>
-        <div class="grid-3-col" id="allMoviesGrid">
-          <!-- Populated via JS -->
+
+        <!-- Section: Trending Movies -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-fire" style="color: #ff3b30; margin-right: 6px;"></i> Trending Movies</h2>
+            <span class="section-more" onclick="scrollToAllMovies('Trending')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="movieTrendingList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Latest Releases -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-bolt" style="color: #ffcc00; margin-right: 6px;"></i> Latest Releases</h2>
+            <span class="section-more" onclick="scrollToAllMovies('Latest')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="movieLatestList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Recently Added -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-clock-rotate-left" style="color: #00f2fe; margin-right: 6px;"></i> Recently Added</h2>
+            <span class="section-more" onclick="scrollToAllMovies('Recent')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="movieRecentList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Bollywood (Hindi) -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-film" style="color: #ff6b81; margin-right: 6px;"></i> Bollywood (Hindi)</h2>
+            <span class="section-more" onclick="scrollToAllMovies('Bollywood')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="movieBollywoodList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: South Indian (Tamil & Telugu) -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-gem" style="color: #ff9f43; margin-right: 6px;"></i> South (Tamil & Telugu)</h2>
+            <span class="section-more" onclick="scrollToAllMovies('South')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="movieSouthList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Kannada (Sandalwood) -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-crown" style="color: #ffd32a; margin-right: 6px;"></i> Kannada (Sandalwood)</h2>
+            <span class="section-more" onclick="scrollToAllMovies('Kannada')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="movieKannadaList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Malayalam (Mollywood) -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-masks-theater" style="color: #10ac84; margin-right: 6px;"></i> Malayalam (Mollywood)</h2>
+            <span class="section-more" onclick="scrollToAllMovies('Malayalam')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="movieMalayalamList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Hollywood & International -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-globe" style="color: #54a0ff; margin-right: 6px;"></i> Hollywood & International</h2>
+            <span class="section-more" onclick="scrollToAllMovies('Hollywood')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="movieHollywoodList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- All Movies Explore Grid -->
+        <div class="content-section" style="margin-top: 14px;">
+          <div class="section-heading-bar">
+            <h2 id="allMoviesGridTitle">Explore All Movies</h2>
+            <span class="count-badge" id="movieCountBadge">0 Movies</span>
+          </div>
+          <div class="grid-3-col" id="allMoviesGrid">
+            <!-- Populated via JS -->
+          </div>
         </div>
       </section>
 
