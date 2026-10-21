@@ -1042,9 +1042,6 @@ function renderAllMovies() {
   const trendingMovies = movies.filter(m => m.category === 'Trending Movies' || parseFloat(m.imdbRating || m.rating || 0) >= 7.8);
   renderCategoryList('movieTrendingList', trendingMovies.length > 0 ? trendingMovies : movies, true);
 
-  // B. Latest Releases
-  const latestMovies = movies.filter(m => m.category === 'Latest Releases' || m.year === '2024' || m.year === '2025' || m.year === '2026');
-  renderCategoryList('movieLatestList', latestMovies.length > 0 ? latestMovies : movies);
 
   // C. Recently Added
   const recentMovies = movies.filter(m => m.category === 'Recently Added' || m.category === 'Trending Movies');
