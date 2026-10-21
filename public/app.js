@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v4';
+const CACHE_KEY = 'fobs_tv_content_cache_v5';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -1032,50 +1032,79 @@ function renderAllMovies() {
   renderMovieHeroBanner();
 
   // Categorization helpers
-  const isBollywood = m => (m.industry === 'Bollywood' || m.language === 'Hindi');
-  const isSouth = m => (m.industry === 'South' || m.language === 'Telugu' || m.language === 'Tamil');
-  const isKannada = m => (m.industry === 'Kannada' || m.language === 'Kannada');
-  const isMalayalam = m => (m.industry === 'Malayalam' || m.language === 'Malayalam');
-  const isHollywood = m => (m.industry === 'Hollywood & International' || m.language === 'English' || m.country === 'USA' || m.language === 'Korean');
+  const isBollywood = m => (
+    (m.industry && m.industry.toLowerCase().includes('bollywood')) ||
+    (m.language && m.language.toLowerCase() === 'hindi' && !m.country?.includes('Korea') && !m.country?.includes('USA'))
+  );
+
+  const isSouth = m => (
+    (m.industry && m.industry.toLowerCase().includes('south')) ||
+    (m.language && ['telugu', 'tamil', 'kannada', 'malayalam'].includes(m.language.toLowerCase()))
+  );
+
+  const isHollywood = m => (
+    (m.industry && m.industry.toLowerCase().includes('hollywood')) ||
+    (m.language && m.language.toLowerCase() === 'english') ||
+    (m.country && (m.country.toLowerCase().includes('usa') || m.country.toLowerCase().includes('united states')))
+  );
+
+  const isKorean = m => (
+    (m.industry && m.industry.toLowerCase().includes('korean')) ||
+    (m.language && m.language.toLowerCase() === 'korean') ||
+    (m.country && m.country.toLowerCase().includes('korea'))
+  );
+
+  const isChinese = m => (
+    (m.industry && m.industry.toLowerCase().includes('chinese')) ||
+    (m.language && m.language.toLowerCase() === 'chinese') ||
+    (m.country && (m.country.toLowerCase().includes('china') || m.country.toLowerCase().includes('taiwan') || m.country.toLowerCase().includes('hong kong')))
+  );
+
+  const isJapanese = m => (
+    (m.industry && m.industry.toLowerCase().includes('japanese')) ||
+    (m.language && m.language.toLowerCase() === 'japanese') ||
+    (m.country && m.country.toLowerCase().includes('japan'))
+  );
+
+  const isOthers = m => (
+    !isBollywood(m) && !isSouth(m) && !isHollywood(m) && !isKorean(m) && !isChinese(m) && !isJapanese(m)
+  );
 
   // A. Trending Movies
   const trendingMovies = movies.filter(m => m.category === 'Trending Movies' || parseFloat(m.imdbRating || m.rating || 0) >= 7.8);
   renderCategoryList('movieTrendingList', trendingMovies.length > 0 ? trendingMovies : movies, true);
 
-
-  // C. Recently Added
+  // B. Recently Added
   const recentMovies = movies.filter(m => m.category === 'Recently Added' || m.category === 'Trending Movies');
   renderCategoryList('movieRecentList', recentMovies.length > 0 ? recentMovies : movies);
 
-  // D. Bollywood (Hindi)
+  // C. Bollywood
   const bollywoodMovies = movies.filter(isBollywood);
   renderCategoryList('movieBollywoodList', bollywoodMovies);
 
-  // E. South Indian (Tamil & Telugu)
+  // D. South (Dubbed)
   const southMovies = movies.filter(isSouth);
   renderCategoryList('movieSouthList', southMovies);
 
-  // F. Kannada (Sandalwood)
-  const kannadaMovies = movies.filter(isKannada);
-  renderCategoryList('movieKannadaList', kannadaMovies);
-
-  // G. Malayalam (Mollywood)
-  const malayalamMovies = movies.filter(isMalayalam);
-  renderCategoryList('movieMalayalamList', malayalamMovies);
-
-  // H. Hollywood & International
+  // E. Hollywood (Dubbed)
   const hollywoodMovies = movies.filter(isHollywood);
-  renderCategoryList('movieHollywoodList', hollywoodMovies.length > 0 ? hollywoodMovies : movies);
+  renderCategoryList('movieHollywoodList', hollywoodMovies);
 
-  // I. Explore All Movies Grid (Bottom)
-  const filtered = filterContentByGenre(movies);
-  const badge = document.getElementById('movieCountBadge');
-  if (badge) badge.innerText = `${filtered.length} Movies`;
+  // F. Korean (Dubbed)
+  const koreanMovies = movies.filter(isKorean);
+  renderCategoryList('movieKoreanList', koreanMovies.length > 0 ? koreanMovies : (movies.filter(m => m.country === 'Korea')));
 
-  const grid = document.getElementById('allMoviesGrid');
-  if (grid) {
-    grid.innerHTML = filtered.map(item => renderMovieCardItem(item)).join('');
-  }
+  // G. Chinese (Dubbed)
+  const chineseMovies = movies.filter(isChinese);
+  renderCategoryList('movieChineseList', chineseMovies);
+
+  // H. Japanese (Dubbed)
+  const japaneseMovies = movies.filter(isJapanese);
+  renderCategoryList('movieJapaneseList', japaneseMovies);
+
+  // I. Others (Dubbed)
+  const othersMovies = movies.filter(isOthers);
+  renderCategoryList('movieOthersList', othersMovies);
 }
 
 function renderCategoryList(containerId, items, isRanked = false) {
@@ -1090,14 +1119,7 @@ function renderCategoryList(containerId, items, isRanked = false) {
 
 // Scroll / Filter Helper for "All >" buttons on category strips
 function scrollToAllMovies(category) {
-  const gridTitle = document.getElementById('allMoviesGridTitle');
-  if (gridTitle && category) {
-    gridTitle.innerText = `${category} Movies`;
-  }
-  const grid = document.getElementById('allMoviesGrid');
-  if (grid) {
-    grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+  // Kept clean as safe no-op
 }
 
 // Render All Series Tab
