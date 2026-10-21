@@ -70,6 +70,74 @@
   ],
   "series": [
     {
+      "id": "tmdb-s-67740",
+      "title": "28 Faces of the Moon",
+      "originalTitle": "28개의 달",
+      "language": "Korean",
+      "dubLanguage": "Hindi",
+      "tag": "HD",
+      "year": "2016",
+      "country": "Korea",
+      "genre": "Drama, Mystery",
+      "seasonsCount": 1,
+      "category": "Trending Series",
+      "rating": "5.3",
+      "imdbRating": "5.3",
+      "poster": "https://image.tmdb.org/t/p/w500/lFkSe2mX3pwNAfCVeQmLcLQnHJF.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/ifPh3xY6HJUBTvEe2GXQCVi0g3M.jpg",
+      "description": "The drama tells the story of a man whose life takes a downward spiral after his fiance dies just days before their upcoming marriage.",
+      "audioTracks": [
+        "Hindi dub",
+        "Original Audio"
+      ],
+      "selectedAudio": "Hindi dub",
+      "cast": [
+        {
+          "name": "Kim Kyu-jong",
+          "character": "Kang Woo",
+          "photo": "https://image.tmdb.org/t/p/w185/1AHoF2Kw8z9jJhUHIxPdrneYIFx.jpg"
+        },
+        {
+          "name": "Gum Mi",
+          "character": "Su Jin",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Kang Tae Hwan",
+          "character": "Seong Gyun",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Yang Jin-sung",
+          "character": "Weol Ha / Joo Hye",
+          "photo": "https://image.tmdb.org/t/p/w185/jZfPJjPWLAq9tXQ8qU5ExZHYNIz.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": "01",
+          "title": "Episode 01",
+          "duration": "45m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=ZFvFdJdeBMTzIqL3NyuoA5%2BKY4oJ3jyFd5fzEq9%2BydjT2v6iJNH0s4E2I2sVmHbe&expiry=IDBbrZQt%2FFuIzyJHeXgvLA%3D%3D&mac=427371af69f6d224fcda9876f6539075fee2845f7a9601dcc6a73581ec653a43",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=ZFvFdJdeBMTzIqL3NyuoA5%2BKY4oJ3jyFd5fzEq9%2BydjT2v6iJNH0s4E2I2sVmHbe&expiry=IDBbrZQt%2FFuIzyJHeXgvLA%3D%3D&mac=427371af69f6d224fcda9876f6539075fee2845f7a9601dcc6a73581ec653a43",
+            "Original Audio": "https://kmdl.eu.org/download.aspx?file=ZFvFdJdeBMTzIqL3NyuoA5%2BKY4oJ3jyFd5fzEq9%2BydjT2v6iJNH0s4E2I2sVmHbe&expiry=IDBbrZQt%2FFuIzyJHeXgvLA%3D%3D&mac=427371af69f6d224fcda9876f6539075fee2845f7a9601dcc6a73581ec653a43"
+          }
+        },
+        {
+          "number": "02",
+          "title": "Episode 02",
+          "duration": "45m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=ly17yNYd7AP%2FyVg8mHOtL%2Fb%2FKxZjPfPKuWrigSioTmkwX%2FJ1on9p8YOV8KpqktiK&expiry=IDBbrZQt%2FFuIzyJHeXgvLA%3D%3D&mac=c53b4b1c5573d68b2213925fdab2f9ecba2bd4d0d123834659864f8c7842c798",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=ly17yNYd7AP%2FyVg8mHOtL%2Fb%2FKxZjPfPKuWrigSioTmkwX%2FJ1on9p8YOV8KpqktiK&expiry=IDBbrZQt%2FFuIzyJHeXgvLA%3D%3D&mac=c53b4b1c5573d68b2213925fdab2f9ecba2bd4d0d123834659864f8c7842c798",
+            "Original Audio": "https://kmdl.eu.org/download.aspx?file=ly17yNYd7AP%2FyVg8mHOtL%2Fb%2FKxZjPfPKuWrigSioTmkwX%2FJ1on9p8YOV8KpqktiK&expiry=IDBbrZQt%2FFuIzyJHeXgvLA%3D%3D&mac=c53b4b1c5573d68b2213925fdab2f9ecba2bd4d0d123834659864f8c7842c798"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
       "id": "tmdb-s-74000",
       "title": "20th Century Boy and Girl",
       "originalTitle": "20세기 소년소녀",
