@@ -80,7 +80,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title">Trending Movies & Series</h2>
-            <span class="section-more" onclick="switchMainTab('movie')">All <i
+            <span class="section-more" onclick="openSectionDetail('trending', 'Trending Movies & Series')">All <i
                 class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="trendingList">
@@ -92,7 +92,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title">Latest Movies & Series</h2>
-            <span class="section-more" onclick="switchMainTab('movie')">All <i
+            <span class="section-more" onclick="openSectionDetail('latest', 'Latest Movies & Series')">All <i
                 class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="latestList">
@@ -104,7 +104,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title">Coming Soon</h2>
-            <span class="section-more" onclick="switchMainTab('movie')">All <i
+            <span class="section-more" onclick="openSectionDetail('upcoming', 'Coming Soon')">All <i
                 class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="upcomingList">
@@ -166,7 +166,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title"><i class="fa-solid fa-fire" style="color: #ff3b30; margin-right: 6px;"></i> Trending Movies</h2>
-            <span class="section-more" onclick="scrollToAllMovies('Trending')">All <i class="fa-solid fa-chevron-right"></i></span>
+            <span class="section-more" onclick="openSectionDetail('movie-trending', 'Trending Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieTrendingList">
             <!-- Populated via JS -->
@@ -178,7 +178,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title"><i class="fa-solid fa-clock-rotate-left" style="color: #00f2fe; margin-right: 6px;"></i> Recently Added</h2>
-            <span class="section-more" onclick="scrollToAllMovies('Recent')">All <i class="fa-solid fa-chevron-right"></i></span>
+            <span class="section-more" onclick="openSectionDetail('movie-recent', 'Recently Added Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieRecentList">
             <!-- Populated via JS -->
@@ -189,7 +189,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title"><i class="fa-solid fa-film" style="color: #ff6b81; margin-right: 6px;"></i> Bollywood</h2>
-            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+            <span class="section-more" onclick="openSectionDetail('movie-bollywood', 'Bollywood Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieBollywoodList">
             <!-- Populated via JS -->
@@ -200,7 +200,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title"><i class="fa-solid fa-gem" style="color: #ff9f43; margin-right: 6px;"></i> South (Dubbed)</h2>
-            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+            <span class="section-more" onclick="openSectionDetail('movie-south', 'South (Dubbed) Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieSouthList">
             <!-- Populated via JS -->
@@ -211,7 +211,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title"><i class="fa-solid fa-globe" style="color: #54a0ff; margin-right: 6px;"></i> Hollywood (Dubbed)</h2>
-            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+            <span class="section-more" onclick="openSectionDetail('movie-hollywood', 'Hollywood (Dubbed) Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieHollywoodList">
             <!-- Populated via JS -->
@@ -222,7 +222,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title"><i class="fa-solid fa-heart" style="color: #ff3366; margin-right: 6px;"></i> Korean (Dubbed)</h2>
-            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+            <span class="section-more" onclick="openSectionDetail('movie-korean', 'Korean (Dubbed) Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieKoreanList">
             <!-- Populated via JS -->
@@ -233,7 +233,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title"><i class="fa-solid fa-dragon" style="color: #ffd32a; margin-right: 6px;"></i> Chinese (Dubbed)</h2>
-            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+            <span class="section-more" onclick="openSectionDetail('movie-chinese', 'Chinese (Dubbed) Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieChineseList">
             <!-- Populated via JS -->
@@ -244,7 +244,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title"><i class="fa-solid fa-torii-gate" style="color: #ff6b6b; margin-right: 6px;"></i> Japanese (Dubbed)</h2>
-            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+            <span class="section-more" onclick="openSectionDetail('movie-japanese', 'Japanese (Dubbed) Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieJapaneseList">
             <!-- Populated via JS -->
@@ -255,7 +255,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title"><i class="fa-solid fa-layer-group" style="color: #10ac84; margin-right: 6px;"></i> Others (Dubbed)</h2>
-            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+            <span class="section-more" onclick="openSectionDetail('movie-others', 'Others (Dubbed) Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieOthersList">
             <!-- Populated via JS -->
@@ -280,7 +280,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title"><i class="fa-solid fa-fire" style="color: #ff3b30; margin-right: 6px;"></i> Trending Series</h2>
-            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+            <span class="section-more" onclick="openSectionDetail('series-trending', 'Trending Series')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="seriesTrendingList">
             <!-- Populated via JS -->
@@ -291,7 +291,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title"><i class="fa-solid fa-clock-rotate-left" style="color: #00f2fe; margin-right: 6px;"></i> Recently Added</h2>
-            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+            <span class="section-more" onclick="openSectionDetail('series-recent', 'Recently Added Series')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="seriesRecentList">
             <!-- Populated via JS -->
@@ -302,7 +302,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title"><i class="fa-solid fa-globe" style="color: #54a0ff; margin-right: 6px;"></i> Hollywood (Dubbed)</h2>
-            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+            <span class="section-more" onclick="openSectionDetail('series-hollywood', 'Hollywood (Dubbed) Series')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="seriesHollywoodList">
             <!-- Populated via JS -->
@@ -313,7 +313,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title"><i class="fa-solid fa-heart" style="color: #ff3366; margin-right: 6px;"></i> Korean (Dubbed)</h2>
-            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+            <span class="section-more" onclick="openSectionDetail('series-korean', 'Korean (Dubbed) Series')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="seriesKoreanList">
             <!-- Populated via JS -->
@@ -324,7 +324,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title"><i class="fa-solid fa-dragon" style="color: #ffd32a; margin-right: 6px;"></i> Chinese (Dubbed)</h2>
-            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+            <span class="section-more" onclick="openSectionDetail('series-chinese', 'Chinese (Dubbed) Series')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="seriesChineseList">
             <!-- Populated via JS -->
@@ -335,7 +335,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title"><i class="fa-solid fa-torii-gate" style="color: #ff6b6b; margin-right: 6px;"></i> Japanese (Dubbed)</h2>
-            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+            <span class="section-more" onclick="openSectionDetail('series-japanese', 'Japanese (Dubbed) Series')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="seriesJapaneseList">
             <!-- Populated via JS -->
@@ -346,7 +346,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title"><i class="fa-solid fa-layer-group" style="color: #10ac84; margin-right: 6px;"></i> Others (Dubbed)</h2>
-            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+            <span class="section-more" onclick="openSectionDetail('series-others', 'Others (Dubbed) Series')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="seriesOthersList">
             <!-- Populated via JS -->
@@ -362,6 +362,26 @@
         </div>
         <div class="live-tv-grid" id="liveTvGrid">
           <!-- Populated via JS -->
+        </div>
+      </section>
+
+      <!-- DEDICATED SECTION DETAIL VIEW (Full vertical page for any section's "All >" button) -->
+      <section id="sectionDetailView" class="tab-view section-detail-view">
+        <div class="section-detail-header-bar">
+          <button class="section-back-btn" onclick="closeSectionDetail()" aria-label="Go Back">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <div class="section-title-wrap">
+            <h2 class="section-page-title" id="sectionDetailTitle">Section Name</h2>
+            <span class="section-page-subtitle">All Titles</span>
+          </div>
+          <span class="section-count-badge" id="sectionDetailCount">0 Titles</span>
+        </div>
+
+        <div class="section-detail-body">
+          <div class="grid-3-col" id="sectionDetailGrid">
+            <!-- Populated via JS -->
+          </div>
         </div>
       </section>
 

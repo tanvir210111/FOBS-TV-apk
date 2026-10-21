@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v17';
+const CACHE_KEY = 'fobs_tv_content_cache_v18';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -1384,9 +1384,239 @@ function renderSeriesCardItem(item, rank = null) {
   `;
 }
 
-// Scroll / Filter Helper for "All >" buttons on category strips
+// Categorization Predicates for Sections & Dedicated Pages
+const isBollywoodMedia = m => (
+  (m.industry && m.industry.toLowerCase().includes('bollywood')) ||
+  (m.language && m.language.toLowerCase() === 'hindi' && !m.country?.includes('Korea') && !m.country?.includes('USA'))
+);
+
+const isSouthMedia = m => (
+  (m.industry && m.industry.toLowerCase().includes('south')) ||
+  (m.language && ['telugu', 'tamil', 'kannada', 'malayalam'].includes(m.language.toLowerCase()))
+);
+
+const isHollywoodMedia = x => (
+  (x.industry && x.industry.toLowerCase().includes('hollywood')) ||
+  (x.language && x.language.toLowerCase() === 'english') ||
+  (x.country && (x.country.toLowerCase().includes('usa') || x.country.toLowerCase().includes('united states')))
+);
+
+const isKoreanMedia = x => (
+  (x.industry && x.industry.toLowerCase().includes('korean')) ||
+  (x.language && x.language.toLowerCase() === 'korean') ||
+  (x.country && x.country.toLowerCase().includes('korea'))
+);
+
+const isChineseMedia = x => (
+  (x.industry && x.industry.toLowerCase().includes('chinese')) ||
+  (x.language && x.language.toLowerCase() === 'chinese') ||
+  (x.country && (x.country.toLowerCase().includes('china') || x.country.toLowerCase().includes('taiwan') || x.country.toLowerCase().includes('hong kong')))
+);
+
+const isJapaneseMedia = x => (
+  (x.industry && x.industry.toLowerCase().includes('japanese')) ||
+  (x.language && x.language.toLowerCase() === 'japanese') ||
+  (x.country && (x.country.toLowerCase().includes('japan')))
+);
+
+const isOthersMovieMedia = m => (
+  !isBollywoodMedia(m) && !isSouthMedia(m) && !isHollywoodMedia(m) && !isKoreanMedia(m) && !isChineseMedia(m) && !isJapaneseMedia(m)
+);
+
+const isOthersSeriesMedia = s => (
+  !isHollywoodMedia(s) && !isKoreanMedia(s) && !isChineseMedia(s) && !isJapaneseMedia(s)
+);
+
+// Open Dedicated Section Detail Page ("All >" View)
+function openSectionDetail(sectionKey, title) {
+  const view = document.getElementById('sectionDetailView');
+  const titleEl = document.getElementById('sectionDetailTitle');
+  const countEl = document.getElementById('sectionDetailCount');
+  const gridEl = document.getElementById('sectionDetailGrid');
+  if (!view || !gridEl) return;
+
+  // Track the origin tab to return seamlessly
+  if (appState.activeTab !== 'sectionDetail') {
+    appState.previousTabBeforeSection = appState.activeTab || 'home';
+  }
+  appState.activeTab = 'sectionDetail';
+
+  // Pause hero sliders while browsing section detail view
+  if (heroSliderInterval) clearInterval(heroSliderInterval);
+  if (movieHeroSliderInterval) clearInterval(movieHeroSliderInterval);
+  if (seriesHeroSliderInterval) clearInterval(seriesHeroSliderInterval);
+
+  if (titleEl) titleEl.innerText = title || 'All Titles';
+
+  const movies = appState.content.movies || [];
+  const series = appState.content.series || [];
+  const upcoming = appState.content.upcoming || [];
+
+  let items = [];
+  let isOnlySeries = false;
+
+  switch (sectionKey) {
+    case 'trending':
+      items = [
+        ...(movies.filter(m => m.category === 'Trending Movies' || parseFloat(m.imdbRating || m.rating || 0) >= 7.8)),
+        ...(series.filter(s => s.category === 'Trending Series' || parseFloat(s.imdbRating || s.rating || 0) >= 7.8))
+      ];
+      if (items.length === 0) items = [...movies, ...series];
+      break;
+
+    case 'latest':
+      items = [...movies, ...series];
+      break;
+
+    case 'upcoming':
+      items = upcoming;
+      break;
+
+    // Movie Sections
+    case 'movie-trending':
+      items = movies.filter(m => m.category === 'Trending Movies' || parseFloat(m.imdbRating || m.rating || 0) >= 7.8);
+      if (items.length === 0) items = movies;
+      break;
+
+    case 'movie-recent':
+      items = movies.filter(m => m.category === 'Recently Added' || m.category === 'Trending Movies');
+      if (items.length === 0) items = movies;
+      break;
+
+    case 'movie-bollywood':
+      items = movies.filter(isBollywoodMedia);
+      break;
+
+    case 'movie-south':
+      items = movies.filter(isSouthMedia);
+      break;
+
+    case 'movie-hollywood':
+      items = movies.filter(isHollywoodMedia);
+      break;
+
+    case 'movie-korean':
+      items = movies.filter(isKoreanMedia);
+      if (items.length === 0) items = movies.filter(m => m.country === 'Korea');
+      break;
+
+    case 'movie-chinese':
+      items = movies.filter(isChineseMedia);
+      break;
+
+    case 'movie-japanese':
+      items = movies.filter(isJapaneseMedia);
+      break;
+
+    case 'movie-others':
+      items = movies.filter(isOthersMovieMedia);
+      break;
+
+    // Series Sections
+    case 'series-trending':
+      isOnlySeries = true;
+      items = series.filter(s => s.category === 'Trending Series' || parseFloat(s.imdbRating || s.rating || 0) >= 7.8);
+      if (items.length === 0) items = series;
+      break;
+
+    case 'series-recent':
+      isOnlySeries = true;
+      items = series.filter(s => s.category === 'Recently Added' || s.category === 'Trending Series');
+      if (items.length === 0) items = series;
+      break;
+
+    case 'series-hollywood':
+      isOnlySeries = true;
+      items = series.filter(isHollywoodMedia);
+      break;
+
+    case 'series-korean':
+      isOnlySeries = true;
+      items = series.filter(isKoreanMedia);
+      if (items.length === 0) items = series.filter(s => s.country === 'Korea');
+      break;
+
+    case 'series-chinese':
+      isOnlySeries = true;
+      items = series.filter(isChineseMedia);
+      break;
+
+    case 'series-japanese':
+      isOnlySeries = true;
+      items = series.filter(isJapaneseMedia);
+      break;
+
+    case 'series-others':
+      isOnlySeries = true;
+      items = series.filter(isOthersSeriesMedia);
+      break;
+
+    default:
+      items = [...movies, ...series];
+  }
+
+  // Update item count badge
+  if (countEl) {
+    countEl.innerText = `${items.length} ${items.length === 1 ? 'Title' : 'Titles'}`;
+  }
+
+  // Render cards vertically inside the 3-column grid
+  if (items.length > 0) {
+    if (sectionKey === 'upcoming') {
+      gridEl.innerHTML = items.map(item => `
+        <div class="coming-card" style="width: 100%; max-width: 100%; margin-bottom: 8px;" onclick='openPlayerById("upcoming", "${item.id}")'>
+          <div class="coming-poster-wrap" style="width: 100%; height: 175px;">
+            <img src="${item.poster}" alt="${item.title}" class="coming-poster-img" loading="lazy">
+            <span class="card-badge-right">${item.year || 'Upcoming'}</span>
+            <div class="coming-date-badge">${item.releaseMonth || 'Nov'}<span>${item.releaseDay || '04'}</span></div>
+            <div class="coming-booked-tag">${item.booked || '0'} booked</div>
+          </div>
+          <div class="coming-info-box">
+            <div class="coming-title" title="${item.title}">${item.title}</div>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      gridEl.innerHTML = items.map((item, idx) => {
+        const isItemSeries = isOnlySeries || !!item.episodes || item.type === 'series';
+        return isItemSeries ? renderSeriesCardItem(item) : renderMovieCardItem(item);
+      }).join('');
+    }
+  } else {
+    gridEl.innerHTML = `
+      <div class="empty-category-msg" style="padding: 55px 16px; text-align: center; color: rgba(255,255,255,0.6); grid-column: 1 / -1; width: 100%;">
+        <i class="fa-solid fa-clapperboard" style="font-size: 38px; color: #ff9f43; margin-bottom: 12px; display: inline-block;"></i>
+        <div style="font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px;">Coming Soon</div>
+        <div style="font-size: 12px; color: rgba(255,255,255,0.5);">No titles uploaded in this section yet. Stay tuned!</div>
+      </div>
+    `;
+  }
+
+  // Hide all other views and show section detail
+  document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
+  view.classList.add('active');
+
+  // Instant scroll to top
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  // Push history state so Android hardware back key or browser back returns
+  try {
+    history.pushState({ screen: 'sectionDetail', sectionKey, title }, '');
+  } catch (e) {}
+}
+
+function closeSectionDetail() {
+  const view = document.getElementById('sectionDetailView');
+  if (view && view.classList.contains('active')) {
+    view.classList.remove('active');
+  }
+
+  const prevTab = appState.previousTabBeforeSection || 'home';
+  switchMainTab(prevTab);
+}
+
 function scrollToAllMovies(category) {
-  // Kept clean as safe no-op
+  openSectionDetail(category === 'Trending' ? 'movie-trending' : 'movie-recent', `${category} Movies`);
 }
 
 // Render All Series Tab with Hero Banner & Categorized Horizontal Strips (Bollywood & South excluded)
@@ -3265,6 +3495,13 @@ window.handleAndroidBack = function() {
     return true;
   }
 
+  // 6b. Dedicated Section Detail View ("All >" Page)
+  const sectionDetail = document.getElementById('sectionDetailView');
+  if (sectionDetail && sectionDetail.classList.contains('active')) {
+    closeSectionDetail();
+    return true;
+  }
+
   // 7. If search input has text, clear search
   const searchInput = document.getElementById('searchInput');
   if (searchInput && searchInput.value && searchInput.value.trim().length > 0) {
@@ -3273,8 +3510,8 @@ window.handleAndroidBack = function() {
     return true;
   }
 
-  // 8. If on a sub-tab, return to home
-  if (appState && appState.currentTab && appState.currentTab !== 'home') {
+  // 8. If on a sub-tab (Movie, Series, Live TV), return to home
+  if (appState && appState.activeTab && appState.activeTab !== 'home') {
     switchMainTab('home');
     return true;
   }
