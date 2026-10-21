@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v18';
+const CACHE_KEY = 'fobs_tv_content_cache_v19';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -1257,7 +1257,7 @@ function renderMovieCardItem(item, rank = null) {
     <div class="media-card" onclick='openPlayerById("movie", "${item.id}")'>
       <div class="card-poster-wrap">
         <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy" onerror="this.onerror=null; this.src='https://image.tmdb.org/t/p/w500/vy14tKxsbJYdDyFl6kQuVkK2s44.jpg';">
-        <span class="card-badge-left">${item.dubLanguage || 'Hindi'}</span>
+        <span class="card-badge-left">${(item.dubLanguage && item.dubLanguage.includes('Fan')) ? 'Fan Dub' : (item.dubLanguage || 'Hindi')}</span>
         <span class="card-badge-right">${item.year || 'Movie'}</span>
         ${rank ? `<div class="card-rank-number">${rank}</div>` : ''}
         <div class="card-play-hover">
@@ -1371,7 +1371,7 @@ function renderSeriesCardItem(item, rank = null) {
     <div class="media-card" onclick='openPlayerById("series", "${item.id}")'>
       <div class="card-poster-wrap">
         <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy" onerror="this.onerror=null; this.src='https://image.tmdb.org/t/p/w500/jwrumjdNdtlHRzthQEj9HmxehcR.jpg';">
-        <span class="card-badge-left">${item.dubLanguage || 'Hindi'}</span>
+        <span class="card-badge-left">${(item.dubLanguage && item.dubLanguage.includes('Fan')) ? 'Fan Dub' : (item.dubLanguage || 'Hindi')}</span>
         <span class="card-badge-right">${item.year || 'Series'}</span>
         ${rank ? `<div class="card-rank-number">${rank}</div>` : ''}
         <div class="card-play-hover">
@@ -3077,7 +3077,7 @@ function renderForYouRecommendations() {
     <div class="media-card" onclick='openPlayerById("${item.type || 'movie'}", "${item.id}")'>
       <div class="card-poster-wrap">
         <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-        <span class="card-badge-left">Hindi</span>
+        <span class="card-badge-left">${(item.dubLanguage && item.dubLanguage.includes('Fan')) ? 'Fan Dub' : (item.dubLanguage || 'Hindi')}</span>
         <span class="card-badge-right">${item.year || (item.type === 'series' ? 'Series' : 'Movie')}</span>
         <div class="card-play-hover">
           <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
@@ -3323,7 +3323,7 @@ function handleSearch() {
       <div class="media-card" onclick='openPlayerById("${item.type || 'movie'}", "${item.id}")'>
         <div class="card-poster-wrap">
           <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-          <span class="card-badge-left">Hindi</span>
+          <span class="card-badge-left">${(item.dubLanguage && item.dubLanguage.includes('Fan')) ? 'Fan Dub' : (item.dubLanguage || 'Hindi')}</span>
           <span class="card-badge-right">${item.year || (item.type === 'series' ? 'Series' : 'Movie')}</span>
         </div>
         <div class="card-title">${item.title}</div>
