@@ -273,12 +273,92 @@
 
       <!-- SERIES TAB VIEW -->
       <section id="seriesView" class="tab-view">
-        <div class="section-heading-bar">
-          <h2>Web Series & Shows</h2>
-          <span class="count-badge" id="seriesCountBadge">0 Shows</span>
+        <!-- Hero Spotlight Banner for Series (Auto-Sliding 75/25 Hero Slider like Home & Movie) -->
+        <div class="hero-slider-container" id="seriesHeroSliderContainer">
+          <div class="hero-backdrop-track" id="seriesHeroBackdropTrack"></div>
+          <div class="hero-gradient-overlay"></div>
+
+          <!-- Bottom 75% Active + 25% Next Peek Slider Track -->
+          <div class="hero-bottom-slider">
+            <div class="hero-cards-track" id="seriesHeroCardsTrack"></div>
+          </div>
         </div>
-        <div class="grid-3-col" id="allSeriesGrid">
-          <!-- Populated via JS -->
+
+        <!-- Section: Trending Series -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-fire" style="color: #ff3b30; margin-right: 6px;"></i> Trending Series</h2>
+            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="seriesTrendingList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Recently Added -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-clock-rotate-left" style="color: #00f2fe; margin-right: 6px;"></i> Recently Added</h2>
+            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="seriesRecentList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Hollywood (Dubbed) -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-globe" style="color: #54a0ff; margin-right: 6px;"></i> Hollywood (Dubbed)</h2>
+            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="seriesHollywoodList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Korean (Dubbed) -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-heart" style="color: #ff3366; margin-right: 6px;"></i> Korean (Dubbed)</h2>
+            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="seriesKoreanList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Chinese (Dubbed) -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-dragon" style="color: #ffd32a; margin-right: 6px;"></i> Chinese (Dubbed)</h2>
+            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="seriesChineseList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Japanese (Dubbed) -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-torii-gate" style="color: #ff6b6b; margin-right: 6px;"></i> Japanese (Dubbed)</h2>
+            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="seriesJapaneseList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Others (Dubbed) -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-layer-group" style="color: #10ac84; margin-right: 6px;"></i> Others (Dubbed)</h2>
+            <span class="section-more">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="seriesOthersList">
+            <!-- Populated via JS -->
+          </div>
         </div>
       </section>
 

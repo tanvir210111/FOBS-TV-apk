@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v5';
+const CACHE_KEY = 'fobs_tv_content_cache_v6';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -47,6 +47,7 @@ async function initApp() {
   setupVideoListeners();
   setupHeroSwipeGestures();
   setupMovieHeroSwipeGestures();
+  setupSeriesHeroSwipeGestures();
   setupPlayerSwipeToClose();
   setupAppVisibilityListeners();
 
@@ -810,6 +811,234 @@ function setupMovieHeroSwipeGestures() {
   });
 }
 
+// ============================================================
+// SERIES TAB HERO SLIDER (INFINITE LOOP & GESTURE SUPPORT)
+// ============================================================
+let currentSeriesHeroIndex = 0;
+let seriesHeroSliderInterval = null;
+let seriesHeroItems = [];
+let seriesLoopCardsList = [];
+let isSeriesHeroSliding = false;
+let isSwipingSeriesHero = false;
+
+function renderSeriesHeroBanner() {
+  const series = appState.content.series || [];
+  if (series.length === 0) return;
+
+  seriesHeroItems = series.slice(0, 6);
+  seriesLoopCardsList = seriesHeroItems.length > 1 ? [...seriesHeroItems, seriesHeroItems[0]] : [...seriesHeroItems];
+
+  const backdropTrack = document.getElementById('seriesHeroBackdropTrack');
+  const cardsTrack = document.getElementById('seriesHeroCardsTrack');
+
+  if (backdropTrack) {
+    backdropTrack.innerHTML = seriesHeroItems.map((slide, idx) => {
+      const bgUrl = slide.backdrop || slide.poster;
+      return `<div class="hero-backdrop-slide ${idx === 0 ? 'active' : ''}" style="background-image: url('${bgUrl}')"></div>`;
+    }).join('');
+  }
+
+  if (cardsTrack) {
+    cardsTrack.innerHTML = seriesLoopCardsList.map((slide, idx) => {
+      const originalIndex = idx % seriesHeroItems.length;
+      return `
+        <div class="hero-peek-card ${idx === 0 ? 'active' : ''}" data-index="${originalIndex}" onclick="handleSeriesHeroCardClick(event, '${slide.id}')">
+          <div class="hero-peek-thumb-wrap">
+            <img src="${slide.poster}" alt="${slide.title}" class="hero-peek-thumb" loading="lazy" onerror="this.onerror=null; this.src='https://image.tmdb.org/t/p/w500/jwrumjdNdtlHRzthQEj9HmxehcR.jpg';">
+          </div>
+          <div class="hero-peek-info">
+            <div class="hero-peek-title-scroll-container">
+              <div class="hero-peek-title">${slide.title}</div>
+            </div>
+            <div class="hero-peek-sub">
+              <i class="fa-solid fa-tv"></i> | ${slide.seasonsCount ? slide.seasonsCount + ' Seasons' : (slide.year || 'Series')} | ${slide.language || 'Dubbed'}
+            </div>
+          </div>
+          <div class="hero-peek-play">
+            <i class="fa-solid fa-play"></i>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  currentSeriesHeroIndex = 0;
+  applySeriesHeroSlide(0, false);
+
+  if (appState.activeTab === 'series') {
+    startSeriesHeroAutoSlide();
+  }
+}
+
+function handleSeriesHeroCardClick(event, id) {
+  if (isSwipingSeriesHero) return;
+  openPlayerById('series', id);
+}
+
+function startSeriesHeroAutoSlide() {
+  if (seriesHeroSliderInterval) clearInterval(seriesHeroSliderInterval);
+  if (seriesHeroItems.length <= 1) return;
+  seriesHeroSliderInterval = setInterval(() => {
+    nextSeriesHeroSlide();
+  }, 4000);
+}
+
+function nextSeriesHeroSlide() {
+  if (isSeriesHeroSliding || seriesHeroItems.length <= 1) return;
+  isSeriesHeroSliding = true;
+
+  const nextIndex = currentSeriesHeroIndex + 1;
+  applySeriesHeroSlide(nextIndex, true);
+
+  if (nextIndex === seriesHeroItems.length) {
+    setTimeout(() => {
+      currentSeriesHeroIndex = 0;
+      applySeriesHeroSlide(0, false);
+      isSeriesHeroSliding = false;
+    }, 650);
+  } else {
+    currentSeriesHeroIndex = nextIndex;
+    setTimeout(() => {
+      isSeriesHeroSliding = false;
+    }, 650);
+  }
+}
+
+function prevSeriesHeroSlide() {
+  if (isSeriesHeroSliding || seriesHeroItems.length <= 1) return;
+  isSeriesHeroSliding = true;
+
+  let prevIndex = currentSeriesHeroIndex - 1;
+  if (prevIndex < 0) {
+    prevIndex = seriesHeroItems.length - 1;
+  }
+  applySeriesHeroSlide(prevIndex, true);
+  currentSeriesHeroIndex = prevIndex;
+
+  setTimeout(() => {
+    isSeriesHeroSliding = false;
+  }, 650);
+}
+
+function applySeriesHeroSlide(index, animate = true) {
+  if (!seriesHeroItems || seriesHeroItems.length === 0) return;
+  const actualIndex = index % seriesHeroItems.length;
+
+  const backdropTrack = document.getElementById('seriesHeroBackdropTrack');
+  if (backdropTrack) {
+    const backdropSlides = backdropTrack.querySelectorAll('.hero-backdrop-slide');
+    backdropSlides.forEach((slide, idx) => {
+      slide.classList.toggle('active', idx === actualIndex);
+    });
+  }
+
+  const cardsTrack = document.getElementById('seriesHeroCardsTrack');
+  if (cardsTrack && cardsTrack.children.length > 0) {
+    const cards = cardsTrack.children;
+    for (let i = 0; i < cards.length; i++) {
+      cards[i].classList.toggle('active', i === index);
+    }
+
+    const firstCard = cards[0];
+    const cardWidth = firstCard.offsetWidth || 260;
+    const gap = 10;
+    const offset = index * (cardWidth + gap);
+
+    if (animate) {
+      cardsTrack.style.transition = 'transform 0.65s cubic-bezier(0.25, 1, 0.5, 1)';
+    } else {
+      cardsTrack.style.transition = 'none';
+    }
+
+    cardsTrack.style.transform = `translateX(-${offset}px)`;
+  }
+}
+
+// Touch and Swipe Gestures for Series Hero Section
+function setupSeriesHeroSwipeGestures() {
+  const container = document.getElementById('seriesHeroSliderContainer');
+  if (!container) return;
+
+  let startX = 0;
+  let startY = 0;
+  let deltaX = 0;
+  let deltaY = 0;
+  let moved = false;
+
+  container.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    startX = t.clientX;
+    startY = t.clientY;
+    deltaX = 0;
+    deltaY = 0;
+    moved = false;
+    isSwipingSeriesHero = false;
+    if (seriesHeroSliderInterval) clearInterval(seriesHeroSliderInterval);
+  }, { passive: true });
+
+  container.addEventListener('touchmove', (e) => {
+    const t = e.touches[0];
+    deltaX = t.clientX - startX;
+    deltaY = t.clientY - startY;
+    if (Math.abs(deltaX) > 10) {
+      moved = true;
+    }
+  }, { passive: true });
+
+  container.addEventListener('touchend', () => {
+    if (moved && Math.abs(deltaX) > 35 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      isSwipingSeriesHero = true;
+      setTimeout(() => { isSwipingSeriesHero = false; }, 250);
+
+      if (deltaX < 0) {
+        nextSeriesHeroSlide();
+      } else {
+        prevSeriesHeroSlide();
+      }
+    }
+    if (appState.activeTab === 'series') {
+      startSeriesHeroAutoSlide();
+    }
+  }, { passive: true });
+
+  // Mouse Drag support for testing on PC
+  let mouseStartX = 0;
+  let mouseDeltaX = 0;
+  let isMouseDown = false;
+
+  container.addEventListener('mousedown', (e) => {
+    if (e.target.closest('.hero-peek-title-scroll-container')) return;
+    isMouseDown = true;
+    mouseStartX = e.clientX;
+    mouseDeltaX = 0;
+    if (seriesHeroSliderInterval) clearInterval(seriesHeroSliderInterval);
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isMouseDown) return;
+    mouseDeltaX = e.clientX - mouseStartX;
+    if (Math.abs(mouseDeltaX) > 10) {
+      isSwipingSeriesHero = true;
+    }
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (!isMouseDown) return;
+    isMouseDown = false;
+    if (Math.abs(mouseDeltaX) > 40) {
+      if (mouseDeltaX < 0) {
+        nextSeriesHeroSlide();
+      } else {
+        prevSeriesHeroSlide();
+      }
+    }
+    setTimeout(() => { isSwipingSeriesHero = false; }, 200);
+    if (appState.activeTab === 'series') {
+      startSeriesHeroAutoSlide();
+    }
+  });
+}
+
 // Touch & Swipe Gestures to close player (Slide back horizontally or swipe down)
 function setupPlayerSwipeToClose() {
   const player = document.getElementById('playerOverlay');
@@ -1107,14 +1336,35 @@ function renderAllMovies() {
   renderCategoryList('movieOthersList', othersMovies);
 }
 
-function renderCategoryList(containerId, items, isRanked = false) {
+function renderCategoryList(containerId, items, isRanked = false, isSeries = false) {
   const container = document.getElementById(containerId);
   if (!container) return;
   if (items && items.length > 0) {
-    container.innerHTML = items.map((item, idx) => renderMovieCardItem(item, isRanked && idx < 5 ? idx + 1 : null)).join('');
+    container.innerHTML = items.map((item, idx) =>
+      isSeries ? renderSeriesCardItem(item, isRanked && idx < 5 ? idx + 1 : null) : renderMovieCardItem(item, isRanked && idx < 5 ? idx + 1 : null)
+    ).join('');
   } else {
     container.innerHTML = `<div class="empty-category-msg"><i class="fa-solid fa-clapperboard"></i> Coming Soon</div>`;
   }
+}
+
+// Helper to Render Individual Series Card
+function renderSeriesCardItem(item, rank = null) {
+  return `
+    <div class="media-card" onclick='openPlayerById("series", "${item.id}")'>
+      <div class="card-poster-wrap">
+        <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy" onerror="this.onerror=null; this.src='https://image.tmdb.org/t/p/w500/jwrumjdNdtlHRzthQEj9HmxehcR.jpg';">
+        <span class="card-badge-left">${item.dubLanguage || 'Hindi'}</span>
+        <span class="card-badge-right">${item.language || 'Series'}</span>
+        ${rank ? `<div class="card-rank-number">${rank}</div>` : ''}
+        <div class="card-play-hover">
+          <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
+        </div>
+      </div>
+      <div class="card-title">${item.title}</div>
+      <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.2'} • ${item.seasonsCount ? item.seasonsCount + ' Seasons' : (item.year || 'Series')}</div>
+    </div>
+  `;
 }
 
 // Scroll / Filter Helper for "All >" buttons on category strips
@@ -1122,27 +1372,69 @@ function scrollToAllMovies(category) {
   // Kept clean as safe no-op
 }
 
-// Render All Series Tab
+// Render All Series Tab with Hero Banner & Categorized Horizontal Strips (Bollywood & South excluded)
 function renderAllSeries() {
   const series = appState.content.series || [];
-  const filtered = filterContentByGenre(series);
 
-  document.getElementById('seriesCountBadge').innerText = `${filtered.length} Shows`;
-  const grid = document.getElementById('allSeriesGrid');
-  grid.innerHTML = filtered.map(item => `
-    <div class="media-card" onclick='openPlayerById("series", "${item.id}")'>
-      <div class="card-poster-wrap">
-        <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-        <span class="card-badge-left">Hindi</span>
-        <span class="card-badge-right">${item.language || 'Korean'}</span>
-        <div class="card-play-hover">
-          <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
-        </div>
-      </div>
-      <div class="card-title">${item.title}</div>
-      <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.2'} • ${item.seasonsCount || 1} Seasons</div>
-    </div>
-  `).join('');
+  // 1. Render Hero Banner for Series
+  renderSeriesHeroBanner();
+
+  // Categorization helpers
+  const isHollywood = s => (
+    (s.industry && s.industry.toLowerCase().includes('hollywood')) ||
+    (s.language && s.language.toLowerCase() === 'english') ||
+    (s.country && (s.country.toLowerCase().includes('usa') || s.country.toLowerCase().includes('united states')))
+  );
+
+  const isKorean = s => (
+    (s.industry && s.industry.toLowerCase().includes('korean')) ||
+    (s.language && s.language.toLowerCase() === 'korean') ||
+    (s.country && s.country.toLowerCase().includes('korea'))
+  );
+
+  const isChinese = s => (
+    (s.industry && s.industry.toLowerCase().includes('chinese')) ||
+    (s.language && s.language.toLowerCase() === 'chinese') ||
+    (s.country && (s.country.toLowerCase().includes('china') || s.country.toLowerCase().includes('taiwan') || s.country.toLowerCase().includes('hong kong')))
+  );
+
+  const isJapanese = s => (
+    (s.industry && s.industry.toLowerCase().includes('japanese')) ||
+    (s.language && s.language.toLowerCase() === 'japanese') ||
+    (s.country && s.country.toLowerCase().includes('japan'))
+  );
+
+  const isOthers = s => (
+    !isHollywood(s) && !isKorean(s) && !isChinese(s) && !isJapanese(s)
+  );
+
+  // A. Trending Series
+  const trendingSeries = series.filter(s => s.category === 'Trending Series' || parseFloat(s.imdbRating || s.rating || 0) >= 7.8);
+  renderCategoryList('seriesTrendingList', trendingSeries.length > 0 ? trendingSeries : series, true, true);
+
+  // B. Recently Added
+  const recentSeries = series.filter(s => s.category === 'Recently Added' || s.category === 'Trending Series');
+  renderCategoryList('seriesRecentList', recentSeries.length > 0 ? recentSeries : series, false, true);
+
+  // C. Hollywood (Dubbed)
+  const hollywoodSeries = series.filter(isHollywood);
+  renderCategoryList('seriesHollywoodList', hollywoodSeries, false, true);
+
+  // D. Korean (Dubbed)
+  const koreanSeries = series.filter(isKorean);
+  renderCategoryList('seriesKoreanList', koreanSeries.length > 0 ? koreanSeries : (series.filter(s => s.country === 'Korea')), false, true);
+
+  // E. Chinese (Dubbed)
+  const chineseSeries = series.filter(isChinese);
+  renderCategoryList('seriesChineseList', chineseSeries, false, true);
+
+  // F. Japanese (Dubbed)
+  const japaneseSeries = series.filter(isJapanese);
+  renderCategoryList('seriesJapaneseList', japaneseSeries, false, true);
+
+  // G. Others (Dubbed)
+  const othersSeries = series.filter(isOthers);
+  renderCategoryList('seriesOthersList', othersSeries, false, true);
 }
 
 // Render Live TV Tab
@@ -1204,21 +1496,25 @@ function switchMainTab(tabName) {
   }
 
   // Manage Hero Sliders and intervals for battery efficiency & layout accuracy
+  if (heroSliderInterval) clearInterval(heroSliderInterval);
+  if (movieHeroSliderInterval) clearInterval(movieHeroSliderInterval);
+  if (seriesHeroSliderInterval) clearInterval(seriesHeroSliderInterval);
+
   if (tabName === 'movie') {
-    if (heroSliderInterval) clearInterval(heroSliderInterval);
     setTimeout(() => {
       applyMovieHeroSlide(currentMovieHeroIndex, false);
       startMovieHeroAutoSlide();
     }, 50);
   } else if (tabName === 'home') {
-    if (movieHeroSliderInterval) clearInterval(movieHeroSliderInterval);
     setTimeout(() => {
       applyHeroSlide(currentHeroIndex, false);
       startHeroAutoSlide();
     }, 50);
-  } else {
-    if (heroSliderInterval) clearInterval(heroSliderInterval);
-    if (movieHeroSliderInterval) clearInterval(movieHeroSliderInterval);
+  } else if (tabName === 'series') {
+    setTimeout(() => {
+      applySeriesHeroSlide(currentSeriesHeroIndex, false);
+      startSeriesHeroAutoSlide();
+    }, 50);
   }
 
   if (tabName !== 'home') {
