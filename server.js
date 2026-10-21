@@ -73,6 +73,29 @@ async function resolveStreamUrl(rawUrl) {
     return `https://drive.usercontent.google.com/download?id=${fileId}&export=download&authuser=0&confirm=t`;
   }
 
+  // 3. Check V-Cloud / Fast-DL / NexDrive / VegaCloud links (resolves to direct Google usercontent stream)
+  if (rawUrl.includes('vcloud.you') || rawUrl.includes('fast-dl.one') || rawUrl.includes('nexdrive')) {
+    const codeMatch = rawUrl.match(/(?:dl\/|file\/|code=|\/)([a-f0-9]{6})(?:[^\w]|$)/i);
+    const code = codeMatch ? codeMatch[1] : null;
+    if (code) {
+      try {
+        const vcloudApi = `https://vcloud.you/dl.php?code=${code}&prepare=1`;
+        const res = await axios.get(vcloudApi, {
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+          },
+          timeout: 10000
+        });
+        if (res.data && res.data.ok && (res.data.url || res.data.direct_url)) {
+          return res.data.url || res.data.direct_url;
+        }
+      } catch (err) {
+        console.error('V-Cloud / Fast-DL resolve error:', err.message);
+      }
+    }
+  }
+
   // Direct CDN / MP4 / Cloud URL
   return rawUrl;
 }

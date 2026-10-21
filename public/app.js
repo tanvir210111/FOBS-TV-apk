@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v7';
+const CACHE_KEY = 'fobs_tv_content_cache_v8';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -1649,8 +1649,8 @@ function selectEpisode(idx) {
   playStreamUrl(activeEpStream);
 }
 
-// Start Stream Playback via Backend Google Drive Proxy
-function playStreamUrl(url) {
+// Start Stream Playback via Direct Stream Resolution or Backend Proxy
+async function playStreamUrl(url) {
   const videoPlayer = document.getElementById('mainVideoPlayer');
   const loader = document.getElementById('videoLoader');
 
@@ -1660,6 +1660,7 @@ function playStreamUrl(url) {
     return;
   }
 
+  if (loader) loader.classList.add('active');
   const loaderText = loader ? loader.querySelector('.loader-text') : null;
   if (loaderText) loaderText.innerText = 'Loading...';
   if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
@@ -1669,9 +1670,39 @@ function playStreamUrl(url) {
     }
   }, 3500);
 
-  // Proxy through backend with range seeking support
-  const streamApiUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(url)}`;
-  videoPlayer.src = streamApiUrl;
+  let streamToPlay = url;
+
+  // 1. If it's a V-Cloud / Fast-DL / NexDrive link, resolve directly for zero-latency direct streaming
+  if (url.includes('vcloud.you') || url.includes('fast-dl.one') || url.includes('nexdrive')) {
+    const codeMatch = url.match(/(?:dl\/|file\/|code=|\/)([a-f0-9]{6})(?:[^\w]|$)/i);
+    const code = codeMatch ? codeMatch[1] : null;
+    if (code) {
+      try {
+        const vcloudApi = `https://vcloud.you/dl.php?code=${code}&prepare=1`;
+        const res = await fetch(vcloudApi, {
+          headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.ok && (data.url || data.direct_url)) {
+            streamToPlay = data.url || data.direct_url;
+            console.log('Direct stream URL resolved on client');
+          }
+        }
+      } catch (err) {
+        console.warn('Client direct resolve skipped, using stream proxy:', err.message);
+      }
+    }
+  }
+
+  // 2. Load video source
+  if (streamToPlay.includes('googleusercontent.com')) {
+    videoPlayer.src = streamToPlay;
+  } else {
+    // Proxy through backend with range seeking support
+    const streamApiUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(streamToPlay)}`;
+    videoPlayer.src = streamApiUrl;
+  }
 
   videoPlayer.load();
   videoPlayer.play().catch(err => {
@@ -2105,16 +2136,28 @@ function setupVideoListeners() {
   videoPlayer.addEventListener('error', (e) => {
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
     console.error('Video load error, attempting fallback:', e);
-    if (loader) loader.classList.remove('active');
 
-    const directUrl = appState.currentEpisode?.streamUrl || appState.currentMedia?.streamUrl || appState.currentMedia?.driveUrl;
-    if (directUrl && videoPlayer.src && videoPlayer.src.includes('/api/stream')) {
-      console.log('Retrying with direct stream URL...');
-      showToast('Retrying stream via direct link...');
-      videoPlayer.src = directUrl;
-      videoPlayer.load();
-      videoPlayer.play().catch(() => {});
+    const curEp = appState.currentEpisode;
+    const rawUrl = (curEp?.audioTracks && curEp.audioTracks[appState.currentAudioTrack]) || curEp?.streamUrl || appState.currentMedia?.streamUrl || appState.currentMedia?.driveUrl;
+
+    if (!videoPlayer._retryCount) videoPlayer._retryCount = 0;
+    if (videoPlayer._retryCount < 2 && rawUrl) {
+      videoPlayer._retryCount++;
+      if (!videoPlayer.src.includes('/api/stream')) {
+        console.log('Retrying stream via proxy...');
+        videoPlayer.src = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(rawUrl)}`;
+        videoPlayer.load();
+        videoPlayer.play().catch(() => {});
+        return;
+      }
     }
+
+    if (loader) loader.classList.remove('active');
+  });
+
+  videoPlayer.addEventListener('canplay', () => {
+    videoPlayer._retryCount = 0;
+    if (loader) loader.classList.remove('active');
   });
 
   // Handle native HTML5 bottom control bar fullscreen button events
