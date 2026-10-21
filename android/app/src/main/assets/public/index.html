@@ -11,6 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="assets/fobs_logo.png">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -23,17 +25,7 @@
     <header class="app-header">
       <div class="header-top-row">
         <div class="brand-logo" onclick="switchMainTab('home')">
-          <div class="logo-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 4.5L19 12L4 19.5V4.5Z" fill="url(#logo_grad)" />
-              <defs>
-                <linearGradient id="logo_grad" x1="4" y1="4.5" x2="19" y2="19.5" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#00F2FE" />
-                  <stop offset="1" stop-color="#4FACFE" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
+          <img src="assets/fobs_logo.png" alt="FOBS TV" class="brand-logo-img">
           <span class="brand-name">FOBS TV</span>
         </div>
 
@@ -148,7 +140,7 @@
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title">Live TV</h2>
-            <span class="section-more" onclick="switchMainTab('livetv')">All <i
+            <span class="section-more" onclick="switchMainTab('livetv')">Coming Soon <i
                 class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="homeLiveTvList">
@@ -366,7 +358,7 @@
       <section id="livetvView" class="tab-view">
         <div class="section-heading-bar">
           <h2>Live TV Channels</h2>
-          <span class="count-badge pulse-badge"><span class="pulse-dot"></span> LIVE NOW</span>
+          <span class="count-badge cs-pulse-badge"><span class="pulse-dot"></span> COMING SOON</span>
         </div>
         <div class="live-tv-grid" id="liveTvGrid">
           <!-- Populated via JS -->
@@ -976,15 +968,7 @@
     <div id="fobsLoadingScreen" class="fobs-loading-screen hidden">
       <div class="fobs-loading-card">
         <div class="fobs-loading-logo">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 4.5L19 12L4 19.5V4.5Z" fill="url(#fobs_loading_grad)" />
-            <defs>
-              <linearGradient id="fobs_loading_grad" x1="4" y1="4.5" x2="19" y2="19.5" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#00F2FE" />
-                <stop offset="1" stop-color="#4FACFE" />
-              </linearGradient>
-            </defs>
-          </svg>
+          <img src="assets/fobs_logo.png" alt="FOBS TV" class="fobs-loading-logo-img">
         </div>
         <div class="fobs-loading-title">FOBS TV</div>
         <div class="fobs-loading-spinner"></div>

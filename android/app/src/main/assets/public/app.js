@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v16';
+const CACHE_KEY = 'fobs_tv_content_cache_v17';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -1224,16 +1224,30 @@ function renderHomeFeeds() {
   // 5. Live TV
   const homeLiveTvContainer = document.getElementById('homeLiveTvList');
   if (homeLiveTvContainer) {
-    homeLiveTvContainer.innerHTML = liveTv.map(item => `
-      <div class="media-card" onclick='openLiveTvPlayer("${item.id}")'>
-        <div class="card-poster-wrap" style="height: 120px; display: flex; align-items: center; justify-content: center; background: #1c1d27;">
-          <img src="${item.logo}" alt="${item.title}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
-          <span class="card-badge-top" style="background: #ff3b30;">LIVE</span>
+    if (liveTv.length > 0) {
+      homeLiveTvContainer.innerHTML = liveTv.map(item => `
+        <div class="media-card" onclick='openLiveTvPlayer("${item.id}")'>
+          <div class="card-poster-wrap" style="height: 120px; display: flex; align-items: center; justify-content: center; background: #1c1d27;">
+            <img src="${item.logo}" alt="${item.title}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+            <span class="card-badge-top" style="background: #ff3b30;">LIVE</span>
+          </div>
+          <div class="card-title">${item.title}</div>
+          <div class="card-meta">${item.category}</div>
         </div>
-        <div class="card-title">${item.title}</div>
-        <div class="card-meta">${item.category}</div>
-      </div>
-    `).join('');
+      `).join('');
+    } else {
+      homeLiveTvContainer.innerHTML = `
+        <div class="home-live-cs-card" onclick="switchMainTab('livetv')">
+          <div class="home-live-cs-icon"><i class="fa-solid fa-satellite-dish"></i></div>
+          <div class="home-live-cs-content">
+            <div class="home-live-cs-badge">COMING SOON</div>
+            <div class="home-live-cs-title">Live TV Channels</div>
+            <div class="home-live-cs-sub">500+ Premium Sports, News & 24/7 Channels • Tap to see preview</div>
+          </div>
+          <i class="fa-solid fa-chevron-right home-live-cs-arrow"></i>
+        </div>
+      `;
+    }
   }
 }
 
@@ -1444,14 +1458,34 @@ function renderAllSeries() {
 function renderLiveTv() {
   const liveTv = appState.content.liveTv || [];
   const grid = document.getElementById('liveTvGrid');
-  grid.innerHTML = liveTv.map(item => `
-    <div class="live-channel-card" onclick='openLiveTvPlayer("${item.id}")'>
-      <span class="live-tag-pill">● LIVE</span>
-      <img src="${item.logo}" alt="${item.title}" class="channel-logo-img">
-      <div class="channel-title">${item.title}</div>
-      <div class="channel-sub">${item.category} • ${item.language}</div>
-    </div>
-  `).join('');
+  if (!grid) return;
+
+  if (liveTv.length > 0) {
+    grid.innerHTML = liveTv.map(item => `
+      <div class="live-channel-card" onclick='openLiveTvPlayer("${item.id}")'>
+        <span class="live-tag-pill">● LIVE</span>
+        <img src="${item.logo}" alt="${item.title}" class="channel-logo-img">
+        <div class="channel-title">${item.title}</div>
+        <div class="channel-sub">${item.category} • ${item.language}</div>
+      </div>
+    `).join('');
+  } else {
+    grid.innerHTML = `
+      <div class="live-tv-coming-soon-card">
+        <div class="ltv-cs-glow-circle">
+          <i class="fa-solid fa-satellite-dish fa-beat"></i>
+        </div>
+        <div class="ltv-cs-badge">COMING SOON</div>
+        <h3 class="ltv-cs-title">Live TV Channels</h3>
+        <p class="ltv-cs-desc">We are actively preparing 500+ premium live sports, breaking news, music, and entertainment channels directly inside FOBS TV. Stay tuned for the upcoming launch!</p>
+        <div class="ltv-cs-features">
+          <div class="ltv-cs-feat-pill"><i class="fa-solid fa-bolt"></i> Ultra-Fast HD Streaming</div>
+          <div class="ltv-cs-feat-pill"><i class="fa-solid fa-tv"></i> Live Sports & News</div>
+          <div class="ltv-cs-feat-pill"><i class="fa-solid fa-globe"></i> Global & Local Channels</div>
+        </div>
+      </div>
+    `;
+  }
 }
 
 // Filter helper
