@@ -70,6 +70,194 @@
   ],
   "series": [
     {
+      "id": "tmdb-s-99479",
+      "title": "365: Repeat the Year",
+      "originalTitle": "365 : 운명을 거스르는 1년",
+      "language": "Korean",
+      "dubLanguage": "Hindi",
+      "tag": "HD",
+      "year": "2020",
+      "country": "Korea",
+      "genre": "Mystery, Drama",
+      "seasonsCount": 1,
+      "category": "Trending Series",
+      "rating": "7.5",
+      "imdbRating": "7.5",
+      "poster": "https://image.tmdb.org/t/p/w500/w1LyWBjxVv0hns4w8NekwWA7Mll.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/valKkzJxBlP0WGx3qyRfQqJ3L9x.jpg",
+      "description": "A story where ten people get the chance to go back in time by one year, but unexpectedly mysterious situations start to arise when their fates are changed and twisted in the process.\n\nJi Hyung Joo is a detective in the violent crimes division. He used to be part of the traffic police but was promoted when he arrested a wanted criminal.\n\nIt's been seven years since the change, and he's a talented individual who always knows how to relax. Though he is happy at first to have the chance to go back in time by one year and \"reset\" his life, he begins to search for the truth when a series of mysterious events befall on the group of people he goes back in time with. Based on the Japanese novel, \"Repeat\"",
+      "audioTracks": [
+        "Hindi dub",
+        "Original Audio"
+      ],
+      "selectedAudio": "Hindi dub",
+      "cast": [
+        {
+          "name": "Lee Jun-hyuk",
+          "character": "Ji Hyung Jo",
+          "photo": "https://image.tmdb.org/t/p/w185/zXo037qPJhdSvyhAjGCNoT0TcCF.jpg"
+        },
+        {
+          "name": "Nam Ji-hyun",
+          "character": "Shin Ga Hyun",
+          "photo": "https://image.tmdb.org/t/p/w185/dSFP974u2btrs44Ynw0osCTDBtH.jpg"
+        },
+        {
+          "name": "Kim Ji-soo",
+          "character": "Lee Shin",
+          "photo": "https://image.tmdb.org/t/p/w185/zw95mgurRNWycBcnVt56PfP8lcW.jpg"
+        },
+        {
+          "name": "Yang Dong-geun",
+          "character": "Bae Jung Tae",
+          "photo": "https://image.tmdb.org/t/p/w185/jlUJ6i91HYBs2QmcVKe1x3ByuaD.jpg"
+        },
+        {
+          "name": "Lee Shi-a",
+          "character": "Seo Yeon Soo",
+          "photo": "https://image.tmdb.org/t/p/w185/q1YWr8nu72WHL1ye5RLCSkBcbAT.jpg"
+        },
+        {
+          "name": "Yun Ju-sang",
+          "character": "Hwang No Seob",
+          "photo": "https://image.tmdb.org/t/p/w185/75DMeejInwVubvE0l4vEFBwrjW5.jpg"
+        },
+        {
+          "name": "Im Ha-ryong",
+          "character": "Choi Kyung Man",
+          "photo": "https://image.tmdb.org/t/p/w185/u3GvkCflbBNEwFHnuQqWrVGppM2.jpg"
+        },
+        {
+          "name": "Jung Moon-sung",
+          "character": "Cha Jeung Seok",
+          "photo": "https://image.tmdb.org/t/p/w185/8xZ92BPXva8Siab29Mq0KNbyAOI.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": "01",
+          "title": "Episode 01 & 02",
+          "duration": "60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=ImUL1H%2FfIv5G8b2e7lRvi2CiQzcd6oXEvoEoWcuobX2xujtRemuk2ApB%2F7CFcuoO&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=347ab5c29bbc763e9172017479d45e46c632d15b1ceabde63327cee7dce403ea",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=ImUL1H%2FfIv5G8b2e7lRvi2CiQzcd6oXEvoEoWcuobX2xujtRemuk2ApB%2F7CFcuoO&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=347ab5c29bbc763e9172017479d45e46c632d15b1ceabde63327cee7dce403ea",
+            "Original Audio": "https://kmdl.eu.org/download.aspx?file=ImUL1H%2FfIv5G8b2e7lRvi2CiQzcd6oXEvoEoWcuobX2xujtRemuk2ApB%2F7CFcuoO&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=347ab5c29bbc763e9172017479d45e46c632d15b1ceabde63327cee7dce403ea"
+          }
+        },
+        {
+          "number": "02",
+          "title": "Episode 03 & 04",
+          "duration": "60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=8AK95O6K97nobZ22wEEY0f3swsbUEGEuIS285o7Vzv26qn71OSmxyM2r7OAfe2wS&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=12dfdb2c61cec6316e4cb87f441773cf2092a046df272534b7938b41b71f6da5",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=8AK95O6K97nobZ22wEEY0f3swsbUEGEuIS285o7Vzv26qn71OSmxyM2r7OAfe2wS&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=12dfdb2c61cec6316e4cb87f441773cf2092a046df272534b7938b41b71f6da5",
+            "Original Audio": "https://kmdl.eu.org/download.aspx?file=8AK95O6K97nobZ22wEEY0f3swsbUEGEuIS285o7Vzv26qn71OSmxyM2r7OAfe2wS&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=12dfdb2c61cec6316e4cb87f441773cf2092a046df272534b7938b41b71f6da5"
+          }
+        },
+        {
+          "number": "03",
+          "title": "Episode 05 & 06",
+          "duration": "60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=s33qWNjfRj73BcrZmvKjxaV91piImZS1HYr%2B1t%2BvNIg%2BpojqzQKUK8F7rLe6Fg%2F%2B&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=27d82972ddc43a0a1b75411680a5eed8087025a1dbc9b1b8844af05155883ec9",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=s33qWNjfRj73BcrZmvKjxaV91piImZS1HYr%2B1t%2BvNIg%2BpojqzQKUK8F7rLe6Fg%2F%2B&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=27d82972ddc43a0a1b75411680a5eed8087025a1dbc9b1b8844af05155883ec9",
+            "Original Audio": "https://kmdl.eu.org/download.aspx?file=s33qWNjfRj73BcrZmvKjxaV91piImZS1HYr%2B1t%2BvNIg%2BpojqzQKUK8F7rLe6Fg%2F%2B&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=27d82972ddc43a0a1b75411680a5eed8087025a1dbc9b1b8844af05155883ec9"
+          }
+        },
+        {
+          "number": "04",
+          "title": "Episode 07 & 08",
+          "duration": "60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=Se%2FwJofwFCPGEE%2FvIFTz9D%2BUtqf8zYJZHzKFhit5aYZh5W8%2BeHsWwPo4GJ6CQNDx&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=ca57d5e2b65222b07c422f9a4d3acba631b6f3a70d07196b9e95d1584a52c3a9",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=Se%2FwJofwFCPGEE%2FvIFTz9D%2BUtqf8zYJZHzKFhit5aYZh5W8%2BeHsWwPo4GJ6CQNDx&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=ca57d5e2b65222b07c422f9a4d3acba631b6f3a70d07196b9e95d1584a52c3a9",
+            "Original Audio": "https://kmdl.eu.org/download.aspx?file=Se%2FwJofwFCPGEE%2FvIFTz9D%2BUtqf8zYJZHzKFhit5aYZh5W8%2BeHsWwPo4GJ6CQNDx&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=ca57d5e2b65222b07c422f9a4d3acba631b6f3a70d07196b9e95d1584a52c3a9"
+          }
+        },
+        {
+          "number": "05",
+          "title": "Episode 09 & 10",
+          "duration": "60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=uhVHeMWjIVo411v%2BkulEh0Zc%2FLGcrNLnmWQQu%2FWrErA19jonG9R0%2BRm%2BOLnEi%2FB4&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=c1bc6d9a1b554bc0c7e1bfad650c76b71f7fd6698159849956f423131c59b57b",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=uhVHeMWjIVo411v%2BkulEh0Zc%2FLGcrNLnmWQQu%2FWrErA19jonG9R0%2BRm%2BOLnEi%2FB4&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=c1bc6d9a1b554bc0c7e1bfad650c76b71f7fd6698159849956f423131c59b57b",
+            "Original Audio": "https://kmdl.eu.org/download.aspx?file=uhVHeMWjIVo411v%2BkulEh0Zc%2FLGcrNLnmWQQu%2FWrErA19jonG9R0%2BRm%2BOLnEi%2FB4&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=c1bc6d9a1b554bc0c7e1bfad650c76b71f7fd6698159849956f423131c59b57b"
+          }
+        },
+        {
+          "number": "06",
+          "title": "Episode 11 & 12",
+          "duration": "60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=p2%2FvSbhiQsAWVfNWJrN5f4PK%2FRgH9JvVGnOsS55BPe%2BbBaZU8tT8puGi%2FzXSPEub&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=157affb283b8026906570465f1aaf76bd01c25260bc89b3481a581c4f4b848c8",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=p2%2FvSbhiQsAWVfNWJrN5f4PK%2FRgH9JvVGnOsS55BPe%2BbBaZU8tT8puGi%2FzXSPEub&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=157affb283b8026906570465f1aaf76bd01c25260bc89b3481a581c4f4b848c8",
+            "Original Audio": "https://kmdl.eu.org/download.aspx?file=p2%2FvSbhiQsAWVfNWJrN5f4PK%2FRgH9JvVGnOsS55BPe%2BbBaZU8tT8puGi%2FzXSPEub&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=157affb283b8026906570465f1aaf76bd01c25260bc89b3481a581c4f4b848c8"
+          }
+        },
+        {
+          "number": "07",
+          "title": "Episode 13 & 14",
+          "duration": "60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=kZp8zE7W20EnUBLaAH%2B5ugFyduAmeYTMGPte0e8N5Vm0AFx%2FPa0XgSqhBc4cr1CL&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=2030e25d88ad8cc0cd8f53434ba90f1174f688fbd10da990c5f2701c48d2f807",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=kZp8zE7W20EnUBLaAH%2B5ugFyduAmeYTMGPte0e8N5Vm0AFx%2FPa0XgSqhBc4cr1CL&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=2030e25d88ad8cc0cd8f53434ba90f1174f688fbd10da990c5f2701c48d2f807",
+            "Original Audio": "https://kmdl.eu.org/download.aspx?file=kZp8zE7W20EnUBLaAH%2B5ugFyduAmeYTMGPte0e8N5Vm0AFx%2FPa0XgSqhBc4cr1CL&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=2030e25d88ad8cc0cd8f53434ba90f1174f688fbd10da990c5f2701c48d2f807"
+          }
+        },
+        {
+          "number": "08",
+          "title": "Episode 15 & 16",
+          "duration": "60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=C%2BtoTyu8DnGoCbvhwTloYra6fBupRYuo4ELuNJxyj%2FJKFSwv533qD%2BMdHBAF79yz&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=593c87468aa47c1f1605da48699ca832ef0d0eaa353027ac607d25c21053787b",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=C%2BtoTyu8DnGoCbvhwTloYra6fBupRYuo4ELuNJxyj%2FJKFSwv533qD%2BMdHBAF79yz&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=593c87468aa47c1f1605da48699ca832ef0d0eaa353027ac607d25c21053787b",
+            "Original Audio": "https://kmdl.eu.org/download.aspx?file=C%2BtoTyu8DnGoCbvhwTloYra6fBupRYuo4ELuNJxyj%2FJKFSwv533qD%2BMdHBAF79yz&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=593c87468aa47c1f1605da48699ca832ef0d0eaa353027ac607d25c21053787b"
+          }
+        },
+        {
+          "number": "09",
+          "title": "Episode 17 & 18",
+          "duration": "60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=PnHiapt%2BfGt5oEVSdPJneG8Q%2BU495beqyb7xo%2FMViH%2BqwuR%2B7TQdaBYmqbM48o8h&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=eaa03e176916b87550e508fe82963ef58c900f3e5bfa9383643b0363ffe9df0d",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=PnHiapt%2BfGt5oEVSdPJneG8Q%2BU495beqyb7xo%2FMViH%2BqwuR%2B7TQdaBYmqbM48o8h&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=eaa03e176916b87550e508fe82963ef58c900f3e5bfa9383643b0363ffe9df0d",
+            "Original Audio": "https://kmdl.eu.org/download.aspx?file=PnHiapt%2BfGt5oEVSdPJneG8Q%2BU495beqyb7xo%2FMViH%2BqwuR%2B7TQdaBYmqbM48o8h&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=eaa03e176916b87550e508fe82963ef58c900f3e5bfa9383643b0363ffe9df0d"
+          }
+        },
+        {
+          "number": "10",
+          "title": "Episode 19 & 20",
+          "duration": "60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=4dIeaMplyEfmIvCOYCxuOq3Pv8LX7Qq4x2xBeZbzKSvM39BiCTB5oLaWM9KOLbz8&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=ceea6bc70f19f4058a3d96a1664fe5416d099ab50def2aef58783ccb2d66bae3",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=4dIeaMplyEfmIvCOYCxuOq3Pv8LX7Qq4x2xBeZbzKSvM39BiCTB5oLaWM9KOLbz8&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=ceea6bc70f19f4058a3d96a1664fe5416d099ab50def2aef58783ccb2d66bae3",
+            "Original Audio": "https://kmdl.eu.org/download.aspx?file=4dIeaMplyEfmIvCOYCxuOq3Pv8LX7Qq4x2xBeZbzKSvM39BiCTB5oLaWM9KOLbz8&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=ceea6bc70f19f4058a3d96a1664fe5416d099ab50def2aef58783ccb2d66bae3"
+          }
+        },
+        {
+          "number": "11",
+          "title": "Episode 21 & 22",
+          "duration": "60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=puETpsWfLVpWyNNilTO9xIT0SCbhtY1sdSxUXXnfc1AxNJZrPrRJ6x0SEdQve6NO&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=dc6c57e9cf0b4f6726450992526554dd639af3ec4bdcd1d283381bc06e431803",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=puETpsWfLVpWyNNilTO9xIT0SCbhtY1sdSxUXXnfc1AxNJZrPrRJ6x0SEdQve6NO&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=dc6c57e9cf0b4f6726450992526554dd639af3ec4bdcd1d283381bc06e431803",
+            "Original Audio": "https://kmdl.eu.org/download.aspx?file=puETpsWfLVpWyNNilTO9xIT0SCbhtY1sdSxUXXnfc1AxNJZrPrRJ6x0SEdQve6NO&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=dc6c57e9cf0b4f6726450992526554dd639af3ec4bdcd1d283381bc06e431803"
+          }
+        },
+        {
+          "number": "12",
+          "title": "Episode 23 & 24",
+          "duration": "60m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=ipOaz3SAQ6ZxEttB67MQFxeQaPi1qaN5yK4Veos2uqzfpCctRBjCOqRVUMzYzH%2FO&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=282241c47b543c011ea8297275759feb4d844f7afa8d6e56c78758f1c4dae7f0",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=ipOaz3SAQ6ZxEttB67MQFxeQaPi1qaN5yK4Veos2uqzfpCctRBjCOqRVUMzYzH%2FO&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=282241c47b543c011ea8297275759feb4d844f7afa8d6e56c78758f1c4dae7f0",
+            "Original Audio": "https://kmdl.eu.org/download.aspx?file=ipOaz3SAQ6ZxEttB67MQFxeQaPi1qaN5yK4Veos2uqzfpCctRBjCOqRVUMzYzH%2FO&expiry=8gjIR277rwmO5SwTZqovQg%3D%3D&mac=282241c47b543c011ea8297275759feb4d844f7afa8d6e56c78758f1c4dae7f0"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
       "id": "tmdb-s-67740",
       "title": "28 Faces of the Moon",
       "originalTitle": "28개의 달",
