@@ -2332,6 +2332,7 @@ body.is-fullscreen .player-top-header.controls-hidden,
   letter-spacing: -0.5px;
   background: linear-gradient(135deg, #ffffff 40%, #a5b4fc 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 24px;
 }
@@ -2397,8 +2398,7 @@ body.is-fullscreen .player-top-header.controls-hidden,
 }
 
 /* Activate when in landscape fullscreen */
-body.is-fullscreen .ls-player-ui,
-@media (orientation: landscape) body.player-open .ls-player-ui {
+body.is-fullscreen .ls-player-ui {
   display: flex !important;
   position: absolute !important;
   inset: 0 !important;
@@ -2409,17 +2409,35 @@ body.is-fullscreen .ls-player-ui,
 }
 
 /* Hide portrait top header in landscape fullscreen */
-body.is-fullscreen #playerTopHeader,
-@media (orientation: landscape) body.player-open #playerTopHeader {
+body.is-fullscreen #playerTopHeader {
   display: none !important;
 }
 
 /* Hide default browser controls in landscape fullscreen */
 body.is-fullscreen video::-webkit-media-controls,
-@media (orientation: landscape) body.player-open video::-webkit-media-controls,
-body.is-fullscreen video::-webkit-media-controls-enclosure,
-@media (orientation: landscape) body.player-open video::-webkit-media-controls-enclosure {
+body.is-fullscreen video::-webkit-media-controls-enclosure {
   display: none !important;
+}
+
+@media (orientation: landscape) {
+  body.player-open .ls-player-ui {
+    display: flex !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1000005 !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    pointer-events: none !important;
+  }
+
+  body.player-open #playerTopHeader {
+    display: none !important;
+  }
+
+  body.player-open video::-webkit-media-controls,
+  body.player-open video::-webkit-media-controls-enclosure {
+    display: none !important;
+  }
 }
 
 /* Tap detector overlay */
