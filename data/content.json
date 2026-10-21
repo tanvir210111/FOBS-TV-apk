@@ -18,21 +18,21 @@
   },
   "movies": [
     {
-      "id": "tmdb-m-255709",
+      "id": "tmdb-m-1058424",
       "title": "Hope",
-      "originalTitle": "소원",
+      "originalTitle": "호프",
       "language": "Korean",
       "dubLanguage": "Hindi",
-      "year": "2013",
+      "year": "2026",
       "country": "Korea",
-      "genre": "Drama",
-      "duration": "2h 03m",
+      "genre": "Sci-Fi, Mystery, Action",
+      "duration": "2h 37m",
       "category": "Trending Movies",
-      "rating": "8.4",
-      "imdbRating": "8.2",
-      "poster": "https://image.tmdb.org/t/p/w500/x9yjkm9gIz5qI5fJMUTfBnWiB2o.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/cri20wZDTl1X5QpxlWCSJ4HSpTF.jpg",
-      "description": "After 8-year-old So-won narrowly survives a brutal sexual assault, her family labors to help her heal while coping with their own rage and grief.",
+      "rating": "6.9",
+      "imdbRating": "7.0",
+      "poster": "https://image.tmdb.org/t/p/w500/6VY1ZKgpsc8CfGsQcCGiYEgHdH0.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/qqHFLg90IUSoTmSMpKOOW5RyqN3.jpg",
+      "description": "In the remote South Korean village of Hope Harbor, police chief Bum-seok and officer Sung-ae are called to investigate a mysterious creature wreaking havoc on the community. But all is not as it seems, and perceptions can be misleading. What begins as ignorance plants the seed of disaster, escalating through human conflict into a tragedy of cosmic proportions.",
       "audioTracks": [
         "Hindi dub",
         "Original Audio"
@@ -41,44 +41,49 @@
       "streamUrl": "https://hindidrama.net/hindi-dubbed-online/watch-hope-2026#player-sec",
       "cast": [
         {
-          "name": "Sul Kyung-gu",
-          "character": "Dong-hoon",
-          "photo": "https://image.tmdb.org/t/p/w185/teD7AMzfNl4qhQO2b6MAWwLtPVn.jpg"
+          "name": "Hwang Jung-min",
+          "character": "Go Bum-seok",
+          "photo": "https://image.tmdb.org/t/p/w185/hKF1uh0iEfuZlBE79CXPw415qyn.jpg"
         },
         {
-          "name": "Uhm Ji-won",
-          "character": "Mi-hee",
-          "photo": "https://image.tmdb.org/t/p/w185/icqDRYRw9T99ZIHYCxTUrl0s6aS.jpg"
+          "name": "Zo In-sung",
+          "character": "Go Sung-ki",
+          "photo": "https://image.tmdb.org/t/p/w185/69gbyFI0ET0l0dyjKChlx1Zx269.jpg"
         },
         {
-          "name": "Lee Re",
-          "character": "So-won",
-          "photo": "https://image.tmdb.org/t/p/w185/5KU4nUOdQxgcvRoOEOQtAaRFbTY.jpg"
+          "name": "Hoyeon",
+          "character": "Lim Sung-ae",
+          "photo": "https://image.tmdb.org/t/p/w185/AfQFFyGeG9xOQnEJb1Ash1RomkP.jpg"
         },
         {
-          "name": "Kim Sang-ho",
-          "character": "Gwang-sik",
-          "photo": "https://image.tmdb.org/t/p/w185/zV7FlWdIfnl9UxqW5Bw8W77YjiU.jpg"
+          "name": "Alicia Vikander",
+          "character": "J'aur",
+          "photo": "https://image.tmdb.org/t/p/w185/lZu8qiTwiQIN96cuptgqMCCaUtg.jpg"
         },
         {
-          "name": "Kim Hae-sook",
-          "character": "Psychiatrist Jung-sook",
-          "photo": "https://image.tmdb.org/t/p/w185/dt5bmKeG7qbvDwHrxFZFxiGc9fZ.jpg"
+          "name": "Michael Fassbender",
+          "character": "Ma'veyyo",
+          "photo": "https://image.tmdb.org/t/p/w185/xvbnUiB2ZBR3QIt595OzNy657Vw.jpg"
         },
         {
-          "name": "Ra Mi-ran",
-          "character": "Young-suk's Mother",
-          "photo": "https://image.tmdb.org/t/p/w185/45jkWK6vQpQo32FsbGMSDrZig62.jpg"
+          "name": "Taylor Russell",
+          "character": "Ai'dovor",
+          "photo": "https://image.tmdb.org/t/p/w185/3kW1SvpzyOPPZHxbz7cgR7ilmtQ.jpg"
         },
         {
-          "name": "Kwon Tae-won",
-          "character": "Detective Squad Chief",
-          "photo": "https://image.tmdb.org/t/p/w185/c0i2M1l9sLM10dFARfy1MLM3mSE.jpg"
+          "name": "Cameron Britton",
+          "character": "Va'migere",
+          "photo": "https://image.tmdb.org/t/p/w185/9HFxi8ZnBiby3AQ7tBOPDxXFkCT.jpg"
         },
         {
-          "name": "Kang Shin-chul",
-          "character": "Prosecutor",
-          "photo": "https://image.tmdb.org/t/p/w185/jlgzApoXgacITXIZzz8TOJ2JfVr.jpg"
+          "name": "Lee Sang-hee",
+          "character": "Nak-yeon",
+          "photo": "https://image.tmdb.org/t/p/w185/wOYFSg20yGe48VFALqGAlrLjFHV.jpg"
+        },
+        {
+          "name": "Um Mun-suk",
+          "character": "Yang-bae",
+          "photo": "https://image.tmdb.org/t/p/w185/niV5OXu1cgKnlIU1Iamp1BVeCdT.jpg"
         }
       ],
       "type": "movie"
