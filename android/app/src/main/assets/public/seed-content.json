@@ -18,6 +18,82 @@
   },
   "movies": [
     {
+      "id": "tmdb-m-134126",
+      "title": "A Company Man",
+      "originalTitle": "회사원",
+      "language": "Korean",
+      "dubLanguage": "Hindi",
+      "year": "2012",
+      "country": "Korea",
+      "genre": "Action, Crime, Drama",
+      "duration": "1h 36m",
+      "category": "Trending Movies",
+      "rating": "7.0",
+      "imdbRating": "6.6",
+      "poster": "https://image.tmdb.org/t/p/w500/1b5kBTEDHIMJAKEXDc8sC1ZXrox.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/lWLM8cGkmscrLWYwIPPGmNDXqO9.jpg",
+      "description": "A contract killer becomes disenchanted with his line of work and spares the lives of his two latest would-be-victims. But the assassination company he works for has no intentions of letting him quit.",
+      "audioTracks": [
+        "Hindi dub",
+        "Original Audio"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://kmdl.eu.org/download.aspx?file=euCNiZ3pGWU%2FYLHdKhu75PHF0vLRwF31FomEJDD8alcUydQ3oxIh0hQeexAnYXlG&expiry=t%2FxqYFL4PYhePhUjxWfjFA%3D%3D&mac=5ba4bc783f96d453b1ac23e3721b72ab9cec4b90b9a312c0e8c342b4b35a87f8",
+      "cast": [
+        {
+          "name": "So Ji-sub",
+          "character": "Hyeong-do (Ji Hyeong-do)",
+          "photo": "https://image.tmdb.org/t/p/w185/bj8YIJd7kXnIoemM0GDqelon3kX.jpg"
+        },
+        {
+          "name": "Lee Mi-yeon",
+          "character": "Mi-yeon (Yu Mi-yeon)",
+          "photo": "https://image.tmdb.org/t/p/w185/wRIIVxM4QRvEoDCZn9HpLBIIshO.jpg"
+        },
+        {
+          "name": "Kwak Do-won",
+          "character": "Jong-tae (Gwon Jong-tae)",
+          "photo": "https://image.tmdb.org/t/p/w185/kX31v6ZeiVBQtmhPRyZhoyWBonj.jpg"
+        },
+        {
+          "name": "Kim Dong-jun",
+          "character": "Hun (Ra Hun)",
+          "photo": "https://image.tmdb.org/t/p/w185/zw72EjXTTIu3ex9Mk8biCZK61ob.jpg"
+        },
+        {
+          "name": "Jeon Kuk-hwan",
+          "character": "CEO Jeon (Jeon Hyuk-soo)",
+          "photo": "https://image.tmdb.org/t/p/w185/tsL8mYfFRiv8Fh49lQ7PFopVnjT.jpg"
+        },
+        {
+          "name": "Lee Kyung-young",
+          "character": "Team Leader Ban (Ban Ji-hoon)",
+          "photo": "https://image.tmdb.org/t/p/w185/aDNcLCWs7KHToiXxfG7ACwvne3l.jpg"
+        },
+        {
+          "name": "Han Bo-bae",
+          "character": "Bo-seul (Ra Bo-seul)",
+          "photo": "https://image.tmdb.org/t/p/w185/lHFU765pJ1KdZVrpS3WZ4yioI19.jpg"
+        },
+        {
+          "name": "Jang Da-kyung",
+          "character": "Assistant Manager Seo (Seo Min-hee)",
+          "photo": "https://image.tmdb.org/t/p/w185/iBrT9gdTRl1jb4Ql9EgE9c2X2CR.jpg"
+        },
+        {
+          "name": "Yoo Ha-bok",
+          "character": "Director Jin (Jin Chae-gook)",
+          "photo": "https://image.tmdb.org/t/p/w185/8qbRLH3RoPsEF1ypTWBdL16sDk0.jpg"
+        },
+        {
+          "name": "Park Jin-woo",
+          "character": "Detective Jo (Jo Myeong-deok)",
+          "photo": "https://image.tmdb.org/t/p/w185/vxrBZKHegGuOGtB1cgcMpDd33hd.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
       "id": "tmdb-m-851644",
       "title": "20th Century Girl",
       "originalTitle": "20세기 소녀",
