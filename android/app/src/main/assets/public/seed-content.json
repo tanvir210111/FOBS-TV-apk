@@ -368,6 +368,105 @@
       "type": "series"
     }
   ],
-  "upcoming": [],
+  "upcoming": [
+    {
+      "id": "upcoming-avatar-fire-and-ash",
+      "title": "Avatar: Fire and Ash",
+      "language": "English",
+      "dubLanguage": "Hindi",
+      "year": "2025",
+      "country": "USA",
+      "genre": "Action, Adventure, Sci-Fi",
+      "releaseDate": "Dec 19, 2025",
+      "releaseMonth": "Dec",
+      "releaseDay": "19",
+      "booked": "142.8k",
+      "rating": "9.2",
+      "imdbRating": "9.2",
+      "tag": "Dec 2025",
+      "poster": "https://image.tmdb.org/t/p/w500/bRBeSHfGHwkEpImlhxPmOcUsaeg.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/u8DU5fkLoM5tTRukzPC31oGPxaQ.jpg",
+      "description": "In the wake of the devastating war against the RDA and the loss of their eldest son, Jake Sully and Neytiri face a new threat on Pandora: the Ash People, a violent and power-hungry Na'vi tribe led by the ruthless Varang.",
+      "audioTracks": [
+        "Hindi dub",
+        "English (Original)"
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "upcoming-avengers-doomsday",
+      "title": "Avengers: Doomsday",
+      "language": "English",
+      "dubLanguage": "Hindi",
+      "year": "2026",
+      "country": "USA",
+      "genre": "Action, Adventure, Sci-Fi",
+      "releaseDate": "May 01, 2026",
+      "releaseMonth": "May",
+      "releaseDay": "01",
+      "booked": "210.5k",
+      "rating": "9.4",
+      "imdbRating": "9.4",
+      "tag": "May 2026",
+      "poster": "https://image.tmdb.org/t/p/w500/jzPwsojjFStf5lR5Nm07w2hH56G.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/g3gpP5YDbA85DsA0bt5mgGQIe5q.jpg",
+      "description": "Beloved heroes from distinct universes are set on a deadly collision course and face an existential threat unlike anything they've ever encountered.",
+      "audioTracks": [
+        "Hindi dub",
+        "English (Original)"
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "upcoming-hope-2026",
+      "title": "Hope",
+      "originalTitle": "호프",
+      "language": "Korean",
+      "dubLanguage": "Hindi",
+      "year": "2026",
+      "country": "Korea",
+      "genre": "Action, Mystery, Sci-Fi",
+      "releaseDate": "Jul 15, 2026",
+      "releaseMonth": "Jul",
+      "releaseDay": "15",
+      "booked": "68.3k",
+      "rating": "8.9",
+      "imdbRating": "8.9",
+      "tag": "Korean Sci-Fi",
+      "poster": "https://image.tmdb.org/t/p/w500/6VY1ZKgpsc8CfGsQcCGiYEgHdH0.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/qqHFLg90IUSoTmSMpKOOW5RyqN3.jpg",
+      "description": "In the remote South Korean village of Hope Harbor, police officers Bum-seok and Sung-ae investigate a mysterious extraterrestrial presence wreaking havoc on the community.",
+      "audioTracks": [
+        "Hindi dub",
+        "Korean (Original)"
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "upcoming-squid-game-3",
+      "title": "Squid Game 3",
+      "originalTitle": "오징어 게임 3",
+      "language": "Korean",
+      "dubLanguage": "Hindi",
+      "year": "2026",
+      "country": "Korea",
+      "genre": "Action, Thriller, Mystery",
+      "releaseDate": "Dec 18, 2026",
+      "releaseMonth": "Dec",
+      "releaseDay": "18",
+      "booked": "95.1k",
+      "rating": "9.1",
+      "imdbRating": "9.1",
+      "tag": "Final Season",
+      "poster": "https://image.tmdb.org/t/p/w500/1QdXdRYfktUSONkl1oD5gc6Be0s.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/2meX1nMdScFOoV4370rqHWKmXhY.jpg",
+      "description": "Gi-hun embarks on the final showdown against the Front Man and the lethal hierarchy governing the deadly games once and for all.",
+      "audioTracks": [
+        "Hindi dub",
+        "Korean (Original)"
+      ],
+      "type": "series"
+    }
+  ],
   "liveTv": []
 }
