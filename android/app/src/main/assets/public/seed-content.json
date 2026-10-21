@@ -70,6 +70,159 @@
   ],
   "series": [
     {
+      "id": "tmdb-s-289423",
+      "title": "Take Charge of My Heart",
+      "originalTitle": "나를 충전해줘",
+      "language": "Korean",
+      "dubLanguage": "Hindi",
+      "tag": "HD",
+      "year": "2026",
+      "country": "Korea",
+      "genre": "Sci-Fi & Fantasy, Comedy, Drama",
+      "seasonsCount": 1,
+      "category": "Trending Series",
+      "rating": "8.9",
+      "imdbRating": "8.9",
+      "poster": "https://image.tmdb.org/t/p/w500/ecRrKGXfflZmDZBD4irdkybClT.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/rN9xHDp83kZ3cOr82JR1b4rFIFk.jpg",
+      "description": "A corporate heir with an artificial heart meets a woman who's literally electric. They strike a deal that makes his heart beat — in more ways than one.",
+      "audioTracks": [
+        "Hindi dub",
+        "English dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "cast": [
+        {
+          "name": "Kim Young-kwang",
+          "character": "Baek Ho-rang",
+          "photo": "https://image.tmdb.org/t/p/w185/z7tQSbWHEfXeWMYHNNDGXW9Idfl.jpg"
+        },
+        {
+          "name": "Chae Soo-bin",
+          "character": "Na Bo-bae",
+          "photo": "https://image.tmdb.org/t/p/w185/uHVJPhxn9b9tHK30KTxQpdGIs9K.jpg"
+        },
+        {
+          "name": "Cha Woo-min",
+          "character": "Ji Eun-ho",
+          "photo": "https://image.tmdb.org/t/p/w185/z8Lz0Opnl4i7Aj8b7jC4qYP01xJ.jpg"
+        },
+        {
+          "name": "Jeong Jae-kwang",
+          "character": "Choi Do-yoon",
+          "photo": "https://image.tmdb.org/t/p/w185/5TyczjMUmZUnJD7AmSYiFeWWcwi.jpg"
+        },
+        {
+          "name": "Shin Do-hyun",
+          "character": "Han Seol-hee",
+          "photo": "https://image.tmdb.org/t/p/w185/sysicgtUyGre7xnwBpLrSel6QRf.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": "01",
+          "title": "Episode 01",
+          "duration": "60m",
+          "streamUrl": "https://fast-dl.one/dl/15d146",
+          "audioTracks": {
+            "Hindi dub": "https://fast-dl.one/dl/15d146",
+            "English dub": "https://fast-dl.one/dl/15d146"
+          }
+        },
+        {
+          "number": "02",
+          "title": "Episode 02",
+          "duration": "60m",
+          "streamUrl": "https://fast-dl.one/dl/e0435e",
+          "audioTracks": {
+            "Hindi dub": "https://fast-dl.one/dl/e0435e",
+            "English dub": "https://fast-dl.one/dl/e0435e"
+          }
+        },
+        {
+          "number": "03",
+          "title": "Episode 03",
+          "duration": "60m",
+          "streamUrl": "https://fast-dl.one/dl/6c63ad",
+          "audioTracks": {
+            "Hindi dub": "https://fast-dl.one/dl/6c63ad",
+            "English dub": "https://fast-dl.one/dl/6c63ad"
+          }
+        },
+        {
+          "number": "04",
+          "title": "Episode 04",
+          "duration": "60m",
+          "streamUrl": "https://fast-dl.one/dl/c50e9a",
+          "audioTracks": {
+            "Hindi dub": "https://fast-dl.one/dl/c50e9a",
+            "English dub": "https://fast-dl.one/dl/c50e9a"
+          }
+        },
+        {
+          "number": "05",
+          "title": "Episode 05",
+          "duration": "60m",
+          "streamUrl": "https://fast-dl.one/dl/d4248c",
+          "audioTracks": {
+            "Hindi dub": "https://fast-dl.one/dl/d4248c",
+            "English dub": "https://fast-dl.one/dl/d4248c"
+          }
+        },
+        {
+          "number": "06",
+          "title": "Episode 06",
+          "duration": "60m",
+          "streamUrl": "https://fast-dl.one/dl/49f275",
+          "audioTracks": {
+            "Hindi dub": "https://fast-dl.one/dl/49f275",
+            "English dub": "https://fast-dl.one/dl/49f275"
+          }
+        },
+        {
+          "number": "07",
+          "title": "Episode 07",
+          "duration": "60m",
+          "streamUrl": "https://fast-dl.one/dl/9f1135",
+          "audioTracks": {
+            "Hindi dub": "https://fast-dl.one/dl/9f1135",
+            "English dub": "https://fast-dl.one/dl/9f1135"
+          }
+        },
+        {
+          "number": "08",
+          "title": "Episode 08",
+          "duration": "60m",
+          "streamUrl": "https://fast-dl.one/dl/9089b1",
+          "audioTracks": {
+            "Hindi dub": "https://fast-dl.one/dl/9089b1",
+            "English dub": "https://fast-dl.one/dl/9089b1"
+          }
+        },
+        {
+          "number": "09",
+          "title": "Episode 09",
+          "duration": "60m",
+          "streamUrl": "https://fast-dl.one/dl/587757",
+          "audioTracks": {
+            "Hindi dub": "https://fast-dl.one/dl/587757",
+            "English dub": "https://fast-dl.one/dl/587757"
+          }
+        },
+        {
+          "number": "10",
+          "title": "Episode 10",
+          "duration": "60m",
+          "streamUrl": "https://fast-dl.one/dl/f52731",
+          "audioTracks": {
+            "Hindi dub": "https://fast-dl.one/dl/f52731",
+            "English dub": "https://fast-dl.one/dl/f52731"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
       "id": "kmdl-s-TKsJKeaN+j8mQ0OGdXfeVpN10nri619MEJupghPrrQp6uTCwzaS+ZtTKALBkqRgDH+i6GTrjucwXFygB0rDuQK7sp51R9kkztvtHmkxKdAY=",
       "title": "18 Again",
       "language": "Korean",

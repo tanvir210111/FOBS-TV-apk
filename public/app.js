@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v6';
+const CACHE_KEY = 'fobs_tv_content_cache_v7';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -1602,9 +1602,8 @@ function openPlayer(media, episodeIndex = 0) {
     <span id="playerSeasonTag">${seasonText}</span>
   `;
 
-  // Dub/Audio dropdown text (Always Hindi dub as requested)
-  appState.currentAudioTrack = 'Hindi dub';
-  document.getElementById('currentDubText').innerText = 'Hindi dub';
+  // Dub/Audio dropdown & tracks setup dynamically based on content
+  renderAudioTrackOptions(media);
 
   // Handle Series vs Movie UI (Green movie resource button removed completely)
   const seriesEpisodesWrapper = document.getElementById('seriesEpisodesWrapper');
@@ -1614,7 +1613,9 @@ function openPlayer(media, episodeIndex = 0) {
 
     appState.currentEpisode = media.episodes[episodeIndex] || media.episodes[0];
     renderEpisodePills(media.episodes, episodeIndex);
-    playStreamUrl(appState.currentEpisode ? appState.currentEpisode.streamUrl : null);
+    const activeEpStream = (appState.currentEpisode.audioTracks && appState.currentEpisode.audioTracks[appState.currentAudioTrack])
+      || appState.currentEpisode.streamUrl;
+    playStreamUrl(activeEpStream);
   } else {
     if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'none';
     appState.currentEpisode = null;
@@ -1643,7 +1644,9 @@ function selectEpisode(idx) {
   if (!appState.currentMedia || !appState.currentMedia.episodes) return;
   appState.currentEpisode = appState.currentMedia.episodes[idx];
   renderEpisodePills(appState.currentMedia.episodes, idx);
-  playStreamUrl(appState.currentEpisode.streamUrl);
+  const activeEpStream = (appState.currentEpisode.audioTracks && appState.currentEpisode.audioTracks[appState.currentAudioTrack])
+    || appState.currentEpisode.streamUrl;
+  playStreamUrl(activeEpStream);
 }
 
 // Start Stream Playback via Backend Google Drive Proxy
@@ -1948,13 +1951,7 @@ function setLandscapeSpeed(rate) {
 }
 
 function selectLandscapeAudio(trackName) {
-  document.querySelectorAll('#lsAudioOptionsList .ls-lang-item').forEach(item => {
-    const isTarget = item.querySelector('span')?.innerText === trackName;
-    item.classList.toggle('active', isTarget);
-    const check = item.querySelector('.ls-check-icon');
-    if (check) check.classList.toggle('hidden', !isTarget);
-  });
-  showToast(`Audio Track: ${trackName}`);
+  switchAudioTrack(trackName);
   closeLandscapeDrawers();
   resetLandscapeControlsTimer();
 }
@@ -2364,6 +2361,110 @@ function closeDownloadsView(e) {
   if (overlay) overlay.classList.remove('open');
 }
 
+// Render Dynamic Audio Tracks for Active Media
+function renderAudioTrackOptions(media) {
+  const tracks = (media && media.audioTracks && media.audioTracks.length > 0)
+    ? media.audioTracks
+    : ['Hindi dub', 'English dub'];
+
+  if (!appState.currentAudioTrack || !tracks.includes(appState.currentAudioTrack)) {
+    appState.currentAudioTrack = media?.selectedAudio || tracks[0] || 'Hindi dub';
+  }
+
+  // 1. Update Dub Selector Text (Portrait)
+  const dubText = document.getElementById('currentDubText');
+  if (dubText) dubText.innerText = appState.currentAudioTrack;
+
+  // 2. Render Portrait Language Sheet Options
+  const sheetList = document.getElementById('languageOptionsList');
+  if (sheetList) {
+    sheetList.innerHTML = tracks.map(track => `
+      <button class="sheet-option-btn ${track === appState.currentAudioTrack ? 'selected' : ''}" onclick="selectLanguage('${track}')">
+        ${track}
+      </button>
+    `).join('');
+  }
+
+  // 3. Render Landscape Language Drawer Options
+  const lsList = document.getElementById('lsAudioOptionsList');
+  if (lsList) {
+    lsList.innerHTML = tracks.map(track => `
+      <div class="ls-lang-item ${track === appState.currentAudioTrack ? 'active' : ''}" onclick="selectLandscapeAudio('${track}')">
+        <span>${track}</span>
+        <i class="fa-solid fa-check ls-check-icon ${track === appState.currentAudioTrack ? '' : 'hidden'}"></i>
+      </div>
+    `).join('');
+  }
+}
+
+// Unified Audio Track Switcher
+function switchAudioTrack(lang) {
+  appState.currentAudioTrack = lang;
+
+  // Sync Dub text
+  const dubText = document.getElementById('currentDubText');
+  if (dubText) dubText.innerText = lang;
+
+  // Sync Portrait Sheet Buttons
+  document.querySelectorAll('#languageOptionsList .sheet-option-btn').forEach(btn => {
+    btn.classList.toggle('selected', btn.innerText.trim() === lang);
+  });
+
+  // Sync Landscape Drawer Items
+  document.querySelectorAll('#lsAudioOptionsList .ls-lang-item').forEach(item => {
+    const isTarget = item.querySelector('span')?.innerText.trim() === lang;
+    item.classList.toggle('active', isTarget);
+    const check = item.querySelector('.ls-check-icon');
+    if (check) check.classList.toggle('hidden', !isTarget);
+  });
+
+  const videoPlayer = document.getElementById('mainVideoPlayer');
+
+  // Check if current episode or media has dedicated stream URL for this audio track
+  let targetUrl = null;
+  const currentEp = appState.currentEpisode;
+  if (currentEp && currentEp.audioTracks && currentEp.audioTracks[lang]) {
+    targetUrl = currentEp.audioTracks[lang];
+  } else if (appState.currentMedia && appState.currentMedia.audioStreams && appState.currentMedia.audioStreams[lang]) {
+    targetUrl = appState.currentMedia.audioStreams[lang];
+  }
+
+  if (targetUrl && videoPlayer) {
+    const curSrc = videoPlayer.src || '';
+    if (!curSrc.includes(encodeURIComponent(targetUrl)) && !curSrc.endsWith(targetUrl)) {
+      const curTime = videoPlayer.currentTime;
+      const isPlaying = !videoPlayer.paused;
+      playStreamUrl(targetUrl);
+      const onMetadata = () => {
+        videoPlayer.currentTime = curTime;
+        if (isPlaying) videoPlayer.play().catch(() => {});
+        videoPlayer.removeEventListener('loadedmetadata', onMetadata);
+      };
+      videoPlayer.addEventListener('loadedmetadata', onMetadata);
+    }
+  }
+
+  // HTML5 audioTracks API for multi-audio MKV/HLS streams
+  if (videoPlayer && videoPlayer.audioTracks && videoPlayer.audioTracks.length > 0) {
+    const isEnglish = lang.toLowerCase().includes('english') || lang.toLowerCase().includes('eng');
+    const isHindi = lang.toLowerCase().includes('hindi') || lang.toLowerCase().includes('hin');
+    for (let i = 0; i < videoPlayer.audioTracks.length; i++) {
+      const track = videoPlayer.audioTracks[i];
+      const tLang = (track.language || '').toLowerCase();
+      const tLabel = (track.label || '').toLowerCase();
+      let match = false;
+      if (isEnglish) {
+        match = tLang.includes('en') || tLabel.includes('eng') || i === 1;
+      } else if (isHindi) {
+        match = tLang.includes('hi') || tLabel.includes('hin') || i === 0;
+      }
+      track.enabled = match;
+    }
+  }
+
+  showToast(`Audio Track: ${lang}`);
+}
+
 // Language / Dubbing Bottom Sheet Modal (Screenshot 2 & 5)
 function openLanguageSheet() {
   document.getElementById('languageSheetOverlay').classList.add('open');
@@ -2375,15 +2476,8 @@ function closeLanguageSheet(event) {
 }
 
 function selectLanguage(lang) {
-  appState.currentAudioTrack = lang;
-  document.getElementById('currentDubText').innerText = lang;
-
-  document.querySelectorAll('.sheet-option-btn').forEach(btn => {
-    btn.classList.toggle('selected', btn.innerText.trim() === lang);
-  });
-
+  switchAudioTrack(lang);
   document.getElementById('languageSheetOverlay').classList.remove('open');
-  showToast(`Switched to: ${lang}`);
 }
 
 // Add to list action
