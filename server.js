@@ -207,26 +207,36 @@ async function resolveStreamUrl(rawUrl) {
       }
 
       if (luluUrl.includes('luluvido.com')) {
-        const luluRes = await axios.get(luluUrl, {
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Referer': 'https://hindidrama.net/'
-          },
-          timeout: 10000
-        });
-        const html = luluRes.data;
-        const match = html.match(/eval\(function\(p,a,c,k,e,d\)[\s\S]*?\}\('([\s\S]*?)',(\d+),(\d+),'([\s\S]*?)'\.split\('\|'\)/);
-        if (match) {
-          let p = match[1];
-          const a = parseInt(match[2]);
-          let c = parseInt(match[3]);
-          const k = match[4].split('|');
-          while (c--) {
-            if (k[c]) p = p.replace(new RegExp('\\b' + c.toString(a) + '\\b', 'g'), k[c]);
-          }
-          const m3u8Match = p.match(/file:\s*["'](https:\/\/[^"']+\.m3u8[^"']*)["']/i);
-          if (m3u8Match) {
-            resolved = m3u8Match[1];
+        let html = '';
+        try {
+          const luluRes = await axios.get(luluUrl, {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+              'Referer': 'https://hindidrama.net/'
+            },
+            timeout: 10000
+          });
+          html = luluRes.data;
+        } catch (e1) {
+          try {
+            const { execSync } = require('child_process');
+            html = execSync(`curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" -e "https://hindidrama.net/" "${luluUrl}"`).toString();
+          } catch (e2) {}
+        }
+        if (html) {
+          const match = html.match(/eval\(function\(p,a,c,k,e,d\)[\s\S]*?\}\('([\s\S]*?)',(\d+),(\d+),'([\s\S]*?)'\.split\('\|'\)/);
+          if (match) {
+            let p = match[1];
+            const a = parseInt(match[2]);
+            let c = parseInt(match[3]);
+            const k = match[4].split('|');
+            while (c--) {
+              if (k[c]) p = p.replace(new RegExp('\\b' + c.toString(a) + '\\b', 'g'), k[c]);
+            }
+            const m3u8Match = p.match(/file:\s*["'](https:\/\/[^"']+\.m3u8[^"']*)["']/i);
+            if (m3u8Match) {
+              resolved = m3u8Match[1];
+            }
           }
         }
       }
