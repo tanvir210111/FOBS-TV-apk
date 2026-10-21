@@ -3006,4 +3006,24 @@ body.is-fullscreen video::-webkit-media-controls-enclosure {
   visibility: hidden;
 }
 
+/* Empty Category Coming Soon Placeholder */
+.empty-category-msg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  color: #7d849b;
+  font-size: 13px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  margin: 4px 14px 12px 14px;
+}
+
+.empty-category-msg i {
+  color: var(--accent-green);
+  font-size: 14px;
+}
+
 

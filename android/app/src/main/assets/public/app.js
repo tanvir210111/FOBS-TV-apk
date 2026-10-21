@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v3';
+const CACHE_KEY = 'fobs_tv_content_cache_v4';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -920,46 +920,35 @@ function renderHomeFeeds() {
     }).join('');
   }
 
-  // 2. Coming Soon - The Remarried Empress (2026 Korean TV Series)
+  // 2. Coming Soon (Shows only if upcoming items exist in data)
   const upcomingContainer = document.getElementById('upcomingList');
+  const upcomingSection = upcomingContainer ? upcomingContainer.closest('.content-section') : null;
   if (upcomingContainer) {
-    const upcomingItems = (appState.content.upcoming && appState.content.upcoming.length > 0)
-      ? appState.content.upcoming
-      : [
-          {
-            id: 'upcoming-remarried-empress-2026',
-            title: 'The Remarried Empress',
-            language: 'Korean',
-            year: '2026',
-            releaseMonth: 'Nov',
-            releaseDay: '04',
-            booked: '0',
-            rating: '8.9',
-            imdbRating: '8.9',
-            poster: 'https://thumb.wikimedia.org/wikipedia/en/thumb/a/a7/The_Remarried_Empress.jpg/250px-The_Remarried_Empress.jpg',
-            streamUrl: 'https://kmdl.eu.org/download.aspx?file=xPNWgqNHLkAytmDTGDm4GwYeWwcDY1W6CuG4iWEJnr5f4ErO%2BuuJqEr%2FsO0eehR5&expiry=mOFG9s9rePeaGm0KT6XmdQ%3D%3D&mac=14bb0fe204da1e71cf1de664a37b2a4926fcff9e8bb2fbdb6f40ce79d5beda07',
-            type: 'series'
-          }
-        ];
-
-    upcomingContainer.innerHTML = upcomingItems.map(item => {
-      const month = item.releaseMonth || 'Nov';
-      const day = item.releaseDay || '04';
-      const booked = item.booked !== undefined ? item.booked : '0';
-      return `
-        <div class="coming-card" onclick='openPlayerById("upcoming", "${item.id}")'>
-          <div class="coming-poster-wrap">
-            <img src="${item.poster}" alt="${item.title}" class="coming-poster-img" loading="lazy">
-            <span class="card-badge-right">${item.language || 'Korean'}</span>
-            <div class="coming-date-badge">${month}<span>${day}</span></div>
-            <div class="coming-booked-tag">${booked} booked</div>
+    const upcomingItems = appState.content.upcoming || [];
+    if (upcomingItems.length > 0) {
+      if (upcomingSection) upcomingSection.style.display = 'block';
+      upcomingContainer.innerHTML = upcomingItems.map(item => {
+        const month = item.releaseMonth || 'Nov';
+        const day = item.releaseDay || '04';
+        const booked = item.booked !== undefined ? item.booked : '0';
+        return `
+          <div class="coming-card" onclick='openPlayerById("upcoming", "${item.id}")'>
+            <div class="coming-poster-wrap">
+              <img src="${item.poster}" alt="${item.title}" class="coming-poster-img" loading="lazy">
+              <span class="card-badge-right">${item.language || 'Korean'}</span>
+              <div class="coming-date-badge">${month}<span>${day}</span></div>
+              <div class="coming-booked-tag">${booked} booked</div>
+            </div>
+            <div class="coming-info-box">
+              <div class="coming-title" title="${item.title}">${item.title}</div>
+            </div>
           </div>
-          <div class="coming-info-box">
-            <div class="coming-title" title="${item.title}">${item.title}</div>
-          </div>
-        </div>
-      `;
-    }).join('');
+        `;
+      }).join('');
+    } else {
+      if (upcomingSection) upcomingSection.style.display = 'none';
+      upcomingContainer.innerHTML = '';
+    }
   }
 
   // 3. Movies
@@ -1049,61 +1038,37 @@ function renderAllMovies() {
   const isMalayalam = m => (m.industry === 'Malayalam' || m.language === 'Malayalam');
   const isHollywood = m => (m.industry === 'Hollywood & International' || m.language === 'English' || m.country === 'USA' || m.language === 'Korean');
 
-  // A. Trending Movies (with rank badges 1, 2, 3...)
+  // A. Trending Movies
   const trendingMovies = movies.filter(m => m.category === 'Trending Movies' || parseFloat(m.imdbRating || m.rating || 0) >= 7.8);
-  const trendingContainer = document.getElementById('movieTrendingList');
-  if (trendingContainer) {
-    trendingContainer.innerHTML = (trendingMovies.length > 0 ? trendingMovies : movies.slice(0, 8)).map((item, idx) => renderMovieCardItem(item, idx < 5 ? idx + 1 : null)).join('');
-  }
+  renderCategoryList('movieTrendingList', trendingMovies.length > 0 ? trendingMovies : movies, true);
 
   // B. Latest Releases
   const latestMovies = movies.filter(m => m.category === 'Latest Releases' || m.year === '2024' || m.year === '2025' || m.year === '2026');
-  const latestContainer = document.getElementById('movieLatestList');
-  if (latestContainer) {
-    latestContainer.innerHTML = (latestMovies.length > 0 ? latestMovies : movies.slice(0, 6)).map(item => renderMovieCardItem(item)).join('');
-  }
+  renderCategoryList('movieLatestList', latestMovies.length > 0 ? latestMovies : movies);
 
   // C. Recently Added
   const recentMovies = movies.filter(m => m.category === 'Recently Added' || m.category === 'Trending Movies');
-  const recentContainer = document.getElementById('movieRecentList');
-  if (recentContainer) {
-    recentContainer.innerHTML = (recentMovies.length > 0 ? recentMovies : movies.slice(4, 10)).map(item => renderMovieCardItem(item)).join('');
-  }
+  renderCategoryList('movieRecentList', recentMovies.length > 0 ? recentMovies : movies);
 
   // D. Bollywood (Hindi)
   const bollywoodMovies = movies.filter(isBollywood);
-  const bollywoodContainer = document.getElementById('movieBollywoodList');
-  if (bollywoodContainer) {
-    bollywoodContainer.innerHTML = (bollywoodMovies.length > 0 ? bollywoodMovies : movies.filter(m => m.language === 'Hindi')).map(item => renderMovieCardItem(item)).join('');
-  }
+  renderCategoryList('movieBollywoodList', bollywoodMovies);
 
   // E. South Indian (Tamil & Telugu)
   const southMovies = movies.filter(isSouth);
-  const southContainer = document.getElementById('movieSouthList');
-  if (southContainer) {
-    southContainer.innerHTML = (southMovies.length > 0 ? southMovies : movies.filter(m => m.language === 'Telugu' || m.language === 'Tamil')).map(item => renderMovieCardItem(item)).join('');
-  }
+  renderCategoryList('movieSouthList', southMovies);
 
   // F. Kannada (Sandalwood)
   const kannadaMovies = movies.filter(isKannada);
-  const kannadaContainer = document.getElementById('movieKannadaList');
-  if (kannadaContainer) {
-    kannadaContainer.innerHTML = kannadaMovies.map(item => renderMovieCardItem(item)).join('');
-  }
+  renderCategoryList('movieKannadaList', kannadaMovies);
 
   // G. Malayalam (Mollywood)
   const malayalamMovies = movies.filter(isMalayalam);
-  const malayalamContainer = document.getElementById('movieMalayalamList');
-  if (malayalamContainer) {
-    malayalamContainer.innerHTML = malayalamMovies.map(item => renderMovieCardItem(item)).join('');
-  }
+  renderCategoryList('movieMalayalamList', malayalamMovies);
 
   // H. Hollywood & International
   const hollywoodMovies = movies.filter(isHollywood);
-  const hollywoodContainer = document.getElementById('movieHollywoodList');
-  if (hollywoodContainer) {
-    hollywoodContainer.innerHTML = (hollywoodMovies.length > 0 ? hollywoodMovies : movies.filter(m => m.language === 'English' || m.language === 'Korean')).map(item => renderMovieCardItem(item)).join('');
-  }
+  renderCategoryList('movieHollywoodList', hollywoodMovies.length > 0 ? hollywoodMovies : movies);
 
   // I. Explore All Movies Grid (Bottom)
   const filtered = filterContentByGenre(movies);
@@ -1113,6 +1078,16 @@ function renderAllMovies() {
   const grid = document.getElementById('allMoviesGrid');
   if (grid) {
     grid.innerHTML = filtered.map(item => renderMovieCardItem(item)).join('');
+  }
+}
+
+function renderCategoryList(containerId, items, isRanked = false) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  if (items && items.length > 0) {
+    container.innerHTML = items.map((item, idx) => renderMovieCardItem(item, isRanked && idx < 5 ? idx + 1 : null)).join('');
+  } else {
+    container.innerHTML = `<div class="empty-category-msg"><i class="fa-solid fa-clapperboard"></i> Coming Soon</div>`;
   }
 }
 
@@ -1247,31 +1222,6 @@ function openPlayerById(type, id) {
     if (item) item.type = 'series';
   } else if (type === 'upcoming') {
     item = (appState.content.upcoming || []).find(u => u.id === id);
-    if (!item && id === 'upcoming-remarried-empress-2026') {
-      item = {
-        id: 'upcoming-remarried-empress-2026',
-        title: 'The Remarried Empress',
-        originalTitle: '재혼 황후',
-        language: 'Korean',
-        year: '2026',
-        country: 'Korea',
-        genre: 'Romance, Historical, Drama, Fantasy',
-        rating: '8.9',
-        imdbRating: '8.9',
-        releaseDate: 'Nov 04, 2026',
-        booked: '0',
-        poster: 'https://thumb.wikimedia.org/wikipedia/en/thumb/a/a7/The_Remarried_Empress.jpg/250px-The_Remarried_Empress.jpg',
-        streamUrl: 'https://kmdl.eu.org/download.aspx?file=xPNWgqNHLkAytmDTGDm4GwYeWwcDY1W6CuG4iWEJnr5f4ErO%2BuuJqEr%2FsO0eehR5&expiry=mOFG9s9rePeaGm0KT6XmdQ%3D%3D&mac=14bb0fe204da1e71cf1de664a37b2a4926fcff9e8bb2fbdb6f40ce79d5beda07',
-        description: "Set in an opulent imperial court, Empress Navier's life is upended when her husband, Emperor Sovieshu, demands a divorce to make a runaway slave his new empress. Refusing to be cast aside or broken by betrayal, Navier agrees under one condition: approval to immediately remarry Prince Heinrey of the rival Western Kingdom, igniting a high-stakes battle to reclaim her throne and destiny.",
-        cast: [
-          { name: "Shin Min-a", character: "Empress Navier", photo: "https://image.tmdb.org/t/p/w185/6CjxjYvZBuvbAQTcuoPb8EeVrUI.jpg" },
-          { name: "Ju Ji-hoon", character: "Emperor Sovieshu", photo: "https://image.tmdb.org/t/p/w185/tI0ANQSwcOBfQUeHgfcwn7VmHRO.jpg" },
-          { name: "Lee Jong-suk", character: "Prince Heinrey", photo: "https://image.tmdb.org/t/p/w185/v8N9oQpC115G7kEa3nIq6v0o5U6.jpg" },
-          { name: "Lee Se-young", character: "Rashta", photo: "https://image.tmdb.org/t/p/w185/hKF1uh0iEfuZlBE79CXPw415qyn.jpg" }
-        ],
-        type: 'series'
-      };
-    }
   }
 
   if (item) {
