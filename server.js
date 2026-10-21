@@ -154,6 +154,63 @@ async function resolveStreamUrl(rawUrl) {
     }
   }
 
+  // 5. Check hindidrama.net or luluvido.com
+  else if (rawUrl.includes('hindidrama.net') || rawUrl.includes('luluvido.com')) {
+    try {
+      let luluUrl = rawUrl;
+      if (rawUrl.includes('hindidrama.net')) {
+        const pageRes = await axios.get(rawUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Referer': 'https://hindidrama.net/'
+          },
+          timeout: 10000
+        });
+        const embedMatch = pageRes.data.match(/(?:f\.src\s*=\s*["']|\/embed\/)([\s\S]*?)["'];/i);
+        if (embedMatch) {
+          let embedPath = embedMatch[1].replace(/\\/g, '');
+          if (!embedPath.startsWith('/')) embedPath = '/embed/' + embedPath;
+          const embedRes = await axios.get(`https://hindidrama.net${embedPath}`, {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+              'Referer': rawUrl
+            },
+            timeout: 10000
+          });
+          const luluMatch = embedRes.data.match(/https:\/\/luluvido\.com\/e\/[a-zA-Z0-9_-]+/i);
+          if (luluMatch) luluUrl = luluMatch[0];
+        }
+      }
+
+      if (luluUrl.includes('luluvido.com')) {
+        const luluRes = await axios.get(luluUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Referer': 'https://hindidrama.net/'
+          },
+          timeout: 10000
+        });
+        const html = luluRes.data;
+        const match = html.match(/eval\(function\(p,a,c,k,e,d\)[\s\S]*?\}\('([\s\S]*?)',(\d+),(\d+),'([\s\S]*?)'\.split\('\|'\)/);
+        if (match) {
+          let p = match[1];
+          const a = parseInt(match[2]);
+          let c = parseInt(match[3]);
+          const k = match[4].split('|');
+          while (c--) {
+            if (k[c]) p = p.replace(new RegExp('\\b' + c.toString(a) + '\\b', 'g'), k[c]);
+          }
+          const m3u8Match = p.match(/file:\s*["'](https:\/\/[^"']+\.m3u8[^"']*)["']/i);
+          if (m3u8Match) {
+            resolved = m3u8Match[1];
+          }
+        }
+      }
+    } catch (err) {
+      console.error('hindidrama/luluvido stream resolve error:', err.message);
+    }
+  }
+
   if (resolved) {
     streamUrlCache.set(rawUrl, {
       url: resolved,
@@ -266,8 +323,16 @@ app.all('/api/stream', async (req, res) => {
   const audioIndex = parseInt(req.query.audio, 10) || 0;
   const seekTime = req.query.t ? parseFloat(req.query.t) : 0;
 
-  // Live FFmpeg Remuxer: Fixes EAC3 (no sound in Chrome/Android) and switches audio tracks (Hindi vs English/Korean)
-  const isMkvOrEac3 = (targetUrl.includes('vcloud.you') || targetUrl.includes('fast-dl') || targetUrl.includes('.mkv') || req.query.audio !== undefined);
+  // Live FFmpeg Remuxer: Fixes EAC3, proxies HLS/m3u8/MKV with headers, and remuxes to fragmented MP4
+  const isMkvOrEac3 = (
+    targetUrl.includes('vcloud.you') || 
+    targetUrl.includes('fast-dl') || 
+    targetUrl.includes('.mkv') || 
+    targetUrl.includes('.m3u8') || 
+    targetUrl.includes('hindidrama.net') || 
+    targetUrl.includes('luluvido') || 
+    req.query.audio !== undefined
+  );
 
   if (isMkvOrEac3 && ffmpegPath) {
     res.writeHead(200, {
@@ -279,6 +344,8 @@ app.all('/api/stream', async (req, res) => {
     if (isHead) return res.end();
 
     const ffmpegArgs = [
+      '-user_agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      '-headers', 'Referer: https://luluvido.com/\r\n',
       '-probesize', '524288',
       '-analyzeduration', '500000',
     ];

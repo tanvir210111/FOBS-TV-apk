@@ -18,6 +18,72 @@
   },
   "movies": [
     {
+      "id": "tmdb-m-255709",
+      "title": "Hope",
+      "originalTitle": "소원",
+      "language": "Korean",
+      "dubLanguage": "Hindi",
+      "year": "2013",
+      "country": "Korea",
+      "genre": "Drama",
+      "duration": "2h 03m",
+      "category": "Trending Movies",
+      "rating": "8.4",
+      "imdbRating": "8.2",
+      "poster": "https://image.tmdb.org/t/p/w500/x9yjkm9gIz5qI5fJMUTfBnWiB2o.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/cri20wZDTl1X5QpxlWCSJ4HSpTF.jpg",
+      "description": "After 8-year-old So-won narrowly survives a brutal sexual assault, her family labors to help her heal while coping with their own rage and grief.",
+      "audioTracks": [
+        "Hindi dub",
+        "Original Audio"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://hindidrama.net/hindi-dubbed-online/watch-hope-2026#player-sec",
+      "cast": [
+        {
+          "name": "Sul Kyung-gu",
+          "character": "Dong-hoon",
+          "photo": "https://image.tmdb.org/t/p/w185/teD7AMzfNl4qhQO2b6MAWwLtPVn.jpg"
+        },
+        {
+          "name": "Uhm Ji-won",
+          "character": "Mi-hee",
+          "photo": "https://image.tmdb.org/t/p/w185/icqDRYRw9T99ZIHYCxTUrl0s6aS.jpg"
+        },
+        {
+          "name": "Lee Re",
+          "character": "So-won",
+          "photo": "https://image.tmdb.org/t/p/w185/5KU4nUOdQxgcvRoOEOQtAaRFbTY.jpg"
+        },
+        {
+          "name": "Kim Sang-ho",
+          "character": "Gwang-sik",
+          "photo": "https://image.tmdb.org/t/p/w185/zV7FlWdIfnl9UxqW5Bw8W77YjiU.jpg"
+        },
+        {
+          "name": "Kim Hae-sook",
+          "character": "Psychiatrist Jung-sook",
+          "photo": "https://image.tmdb.org/t/p/w185/dt5bmKeG7qbvDwHrxFZFxiGc9fZ.jpg"
+        },
+        {
+          "name": "Ra Mi-ran",
+          "character": "Young-suk's Mother",
+          "photo": "https://image.tmdb.org/t/p/w185/45jkWK6vQpQo32FsbGMSDrZig62.jpg"
+        },
+        {
+          "name": "Kwon Tae-won",
+          "character": "Detective Squad Chief",
+          "photo": "https://image.tmdb.org/t/p/w185/c0i2M1l9sLM10dFARfy1MLM3mSE.jpg"
+        },
+        {
+          "name": "Kang Shin-chul",
+          "character": "Prosecutor",
+          "photo": "https://image.tmdb.org/t/p/w185/jlgzApoXgacITXIZzz8TOJ2JfVr.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
       "id": "tmdb-m-833593",
       "title": "2037",
       "originalTitle": "이공삼칠",
@@ -495,6 +561,142 @@
     }
   ],
   "series": [
+    {
+      "id": "tmdb-s-202783",
+      "title": "A Killer Paradox",
+      "originalTitle": "살인자ㅇ난감",
+      "language": "Korean",
+      "dubLanguage": "Hindi",
+      "year": "2024",
+      "country": "Korea",
+      "genre": "Crime, Comedy, Mystery, Drama",
+      "seasonsCount": 1,
+      "category": "Trending Series",
+      "rating": "7.4",
+      "imdbRating": "7.3",
+      "poster": "https://image.tmdb.org/t/p/w500/i2yYZGT2If8XcCZS9ASF1g13MiT.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/viQZtznvR20oTTSbXp6MPAWkGB2.jpg",
+      "description": "When one accidental killing leads to another, an ordinary young man finds himself stuck in an endless cat-and-mouse chase with a shrewd detective.",
+      "audioTracks": [
+        "Hindi dub",
+        "Korean Original",
+        "English dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "cast": [
+        {
+          "name": "Choi Woo-shik",
+          "character": "Lee Tang",
+          "photo": "https://image.tmdb.org/t/p/w185/9mZ9DNopxpCLUjXd0rLd42TLamw.jpg"
+        },
+        {
+          "name": "Son Suk-ku",
+          "character": "Jang Nan-gam",
+          "photo": "https://image.tmdb.org/t/p/w185/natZWFVBAWLKWCYebgVGywHtsME.jpg"
+        },
+        {
+          "name": "Lee Hee-jun",
+          "character": "Song Chon",
+          "photo": "https://image.tmdb.org/t/p/w185/4slyXnHbKgzmeyJNetBSORgDDEF.jpg"
+        },
+        {
+          "name": "Kwon Da-ham",
+          "character": "Ahn Yong-jae",
+          "photo": "https://image.tmdb.org/t/p/w185/ulInuoKvagzuCPmuRNQiFyHLFLv.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": "01",
+          "title": "Episode 01",
+          "duration": "51m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=Jzfjtf%2Fx3z7Clme9XBk%2B6KSu8xNVoqbljjrqJpUrb%2BwRfH%2BgNFJCrpsgUd5Cz9yu&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=1f661fdf15625c10bb47850bad2494ba3a225acfa254c762f37552a926935813",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=Jzfjtf%2Fx3z7Clme9XBk%2B6KSu8xNVoqbljjrqJpUrb%2BwRfH%2BgNFJCrpsgUd5Cz9yu&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=1f661fdf15625c10bb47850bad2494ba3a225acfa254c762f37552a926935813",
+            "Korean Original": "https://kmdl.eu.org/download.aspx?file=Jzfjtf%2Fx3z7Clme9XBk%2B6KSu8xNVoqbljjrqJpUrb%2BwRfH%2BgNFJCrpsgUd5Cz9yu&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=1f661fdf15625c10bb47850bad2494ba3a225acfa254c762f37552a926935813",
+            "English dub": "https://kmdl.eu.org/download.aspx?file=Jzfjtf%2Fx3z7Clme9XBk%2B6KSu8xNVoqbljjrqJpUrb%2BwRfH%2BgNFJCrpsgUd5Cz9yu&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=1f661fdf15625c10bb47850bad2494ba3a225acfa254c762f37552a926935813"
+          }
+        },
+        {
+          "number": "02",
+          "title": "Episode 02",
+          "duration": "53m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=%2FRphQsskiGIZXleezY48hw0%2F0yRzfknCJerwM1ZQcEoXg0j3nqn%2B98%2BR3nCOih4Z&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=cd62f0c8fc8d6549a89be7477198e521a758cf485dd1231f3e63b3f6855d51b8",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=%2FRphQsskiGIZXleezY48hw0%2F0yRzfknCJerwM1ZQcEoXg0j3nqn%2B98%2BR3nCOih4Z&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=cd62f0c8fc8d6549a89be7477198e521a758cf485dd1231f3e63b3f6855d51b8",
+            "Korean Original": "https://kmdl.eu.org/download.aspx?file=%2FRphQsskiGIZXleezY48hw0%2F0yRzfknCJerwM1ZQcEoXg0j3nqn%2B98%2BR3nCOih4Z&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=cd62f0c8fc8d6549a89be7477198e521a758cf485dd1231f3e63b3f6855d51b8",
+            "English dub": "https://kmdl.eu.org/download.aspx?file=%2FRphQsskiGIZXleezY48hw0%2F0yRzfknCJerwM1ZQcEoXg0j3nqn%2B98%2BR3nCOih4Z&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=cd62f0c8fc8d6549a89be7477198e521a758cf485dd1231f3e63b3f6855d51b8"
+          }
+        },
+        {
+          "number": "03",
+          "title": "Episode 03",
+          "duration": "51m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=ogIPW%2B0WzaieGHaypuaZcxnikYoO8lyGDG4yTCmf3h49MxxUJIuHvsk6z3wILaLu&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=b4c6f2e6b2d5a05f46567c87b07c6413e7669ef5d725615017cc000dd79286bd",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=ogIPW%2B0WzaieGHaypuaZcxnikYoO8lyGDG4yTCmf3h49MxxUJIuHvsk6z3wILaLu&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=b4c6f2e6b2d5a05f46567c87b07c6413e7669ef5d725615017cc000dd79286bd",
+            "Korean Original": "https://kmdl.eu.org/download.aspx?file=ogIPW%2B0WzaieGHaypuaZcxnikYoO8lyGDG4yTCmf3h49MxxUJIuHvsk6z3wILaLu&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=b4c6f2e6b2d5a05f46567c87b07c6413e7669ef5d725615017cc000dd79286bd",
+            "English dub": "https://kmdl.eu.org/download.aspx?file=ogIPW%2B0WzaieGHaypuaZcxnikYoO8lyGDG4yTCmf3h49MxxUJIuHvsk6z3wILaLu&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=b4c6f2e6b2d5a05f46567c87b07c6413e7669ef5d725615017cc000dd79286bd"
+          }
+        },
+        {
+          "number": "04",
+          "title": "Episode 04",
+          "duration": "50m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=z00%2BNZ6fmz8XbalGfhSjFnKKBaj%2B7Kb74Axz6u4lk6BxioagDylPJNf6QtPAIQ50&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=6633b636fc12971cea43252e15953f4a1dff0f8751e0caecddee640d37b109f4",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=z00%2BNZ6fmz8XbalGfhSjFnKKBaj%2B7Kb74Axz6u4lk6BxioagDylPJNf6QtPAIQ50&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=6633b636fc12971cea43252e15953f4a1dff0f8751e0caecddee640d37b109f4",
+            "Korean Original": "https://kmdl.eu.org/download.aspx?file=z00%2BNZ6fmz8XbalGfhSjFnKKBaj%2B7Kb74Axz6u4lk6BxioagDylPJNf6QtPAIQ50&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=6633b636fc12971cea43252e15953f4a1dff0f8751e0caecddee640d37b109f4",
+            "English dub": "https://kmdl.eu.org/download.aspx?file=z00%2BNZ6fmz8XbalGfhSjFnKKBaj%2B7Kb74Axz6u4lk6BxioagDylPJNf6QtPAIQ50&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=6633b636fc12971cea43252e15953f4a1dff0f8751e0caecddee640d37b109f4"
+          }
+        },
+        {
+          "number": "05",
+          "title": "Episode 05",
+          "duration": "63m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=WBA%2B8PlJ0%2BgmnCvTVdx%2BIV%2FJc%2F1iNjz1V8xSNnGkKFvEcbevI2vhl%2Fkagwb4LuPw&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=1e333231bcfff2e02624370edd2920da0afba6167345799c8659709ee2c937a0",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=WBA%2B8PlJ0%2BgmnCvTVdx%2BIV%2FJc%2F1iNjz1V8xSNnGkKFvEcbevI2vhl%2Fkagwb4LuPw&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=1e333231bcfff2e02624370edd2920da0afba6167345799c8659709ee2c937a0",
+            "Korean Original": "https://kmdl.eu.org/download.aspx?file=WBA%2B8PlJ0%2BgmnCvTVdx%2BIV%2FJc%2F1iNjz1V8xSNnGkKFvEcbevI2vhl%2Fkagwb4LuPw&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=1e333231bcfff2e02624370edd2920da0afba6167345799c8659709ee2c937a0",
+            "English dub": "https://kmdl.eu.org/download.aspx?file=WBA%2B8PlJ0%2BgmnCvTVdx%2BIV%2FJc%2F1iNjz1V8xSNnGkKFvEcbevI2vhl%2Fkagwb4LuPw&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=1e333231bcfff2e02624370edd2920da0afba6167345799c8659709ee2c937a0"
+          }
+        },
+        {
+          "number": "06",
+          "title": "Episode 06",
+          "duration": "46m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=N4nuU1azfb7GbSj8cmrkCUYboKY9zUYCZTBtT%2BXPjO55IhOY%2BVLFRoxvrQgi30uk&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=1d0d8a5fd04a15c454b53adbd5f9bce0aa0d97502b46ef85adde409b7d01a0e3",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=N4nuU1azfb7GbSj8cmrkCUYboKY9zUYCZTBtT%2BXPjO55IhOY%2BVLFRoxvrQgi30uk&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=1d0d8a5fd04a15c454b53adbd5f9bce0aa0d97502b46ef85adde409b7d01a0e3",
+            "Korean Original": "https://kmdl.eu.org/download.aspx?file=N4nuU1azfb7GbSj8cmrkCUYboKY9zUYCZTBtT%2BXPjO55IhOY%2BVLFRoxvrQgi30uk&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=1d0d8a5fd04a15c454b53adbd5f9bce0aa0d97502b46ef85adde409b7d01a0e3",
+            "English dub": "https://kmdl.eu.org/download.aspx?file=N4nuU1azfb7GbSj8cmrkCUYboKY9zUYCZTBtT%2BXPjO55IhOY%2BVLFRoxvrQgi30uk&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=1d0d8a5fd04a15c454b53adbd5f9bce0aa0d97502b46ef85adde409b7d01a0e3"
+          }
+        },
+        {
+          "number": "07",
+          "title": "Episode 07",
+          "duration": "58m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=bhl9O79vgB7%2F1hLb15jad%2Bf%2FH2AfeKEOdPl%2BdY%2BidAMRa%2F%2Bmsyx27LYTgqRqZ9sj&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=0a2a04ddc9293b7dbac0449decbf9bb2723057d3d8b04acf665a45154cf43be2",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=bhl9O79vgB7%2F1hLb15jad%2Bf%2FH2AfeKEOdPl%2BdY%2BidAMRa%2F%2Bmsyx27LYTgqRqZ9sj&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=0a2a04ddc9293b7dbac0449decbf9bb2723057d3d8b04acf665a45154cf43be2",
+            "Korean Original": "https://kmdl.eu.org/download.aspx?file=bhl9O79vgB7%2F1hLb15jad%2Bf%2FH2AfeKEOdPl%2BdY%2BidAMRa%2F%2Bmsyx27LYTgqRqZ9sj&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=0a2a04ddc9293b7dbac0449decbf9bb2723057d3d8b04acf665a45154cf43be2",
+            "English dub": "https://kmdl.eu.org/download.aspx?file=bhl9O79vgB7%2F1hLb15jad%2Bf%2FH2AfeKEOdPl%2BdY%2BidAMRa%2F%2Bmsyx27LYTgqRqZ9sj&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=0a2a04ddc9293b7dbac0449decbf9bb2723057d3d8b04acf665a45154cf43be2"
+          }
+        },
+        {
+          "number": "08",
+          "title": "Episode 08",
+          "duration": "58m",
+          "streamUrl": "https://kmdl.eu.org/download.aspx?file=Y31dvShZ%2B0d7b%2B%2F%2FV1VyO4RKJFMsNo3exSkBrR4nx0vEhmMPONRjzwEbrLLbBddF&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=723d3096b9f6b5167030c5bcc6f3aa289eaa1929493071de5e6c57a0015f0ac6",
+          "audioTracks": {
+            "Hindi dub": "https://kmdl.eu.org/download.aspx?file=Y31dvShZ%2B0d7b%2B%2F%2FV1VyO4RKJFMsNo3exSkBrR4nx0vEhmMPONRjzwEbrLLbBddF&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=723d3096b9f6b5167030c5bcc6f3aa289eaa1929493071de5e6c57a0015f0ac6",
+            "Korean Original": "https://kmdl.eu.org/download.aspx?file=Y31dvShZ%2B0d7b%2B%2F%2FV1VyO4RKJFMsNo3exSkBrR4nx0vEhmMPONRjzwEbrLLbBddF&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=723d3096b9f6b5167030c5bcc6f3aa289eaa1929493071de5e6c57a0015f0ac6",
+            "English dub": "https://kmdl.eu.org/download.aspx?file=Y31dvShZ%2B0d7b%2B%2F%2FV1VyO4RKJFMsNo3exSkBrR4nx0vEhmMPONRjzwEbrLLbBddF&expiry=JRrryM%2FrC6jp%2BZ%2F8t%2F9k3g%3D%3D&mac=723d3096b9f6b5167030c5bcc6f3aa289eaa1929493071de5e6c57a0015f0ac6"
+          }
+        }
+      ],
+      "type": "series"
+    },
     {
       "id": "tmdb-s-68879",
       "title": "7 First Kisses",
