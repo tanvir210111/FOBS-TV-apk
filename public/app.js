@@ -1573,6 +1573,7 @@ function openPlayer(media, episodeIndex = 0) {
   appState.currentMedia = media;
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = null;
+  applyPlayerBrightness(1.0);
   const overlay = document.getElementById('playerOverlay');
   overlay.classList.add('open');
   document.body.classList.add('player-open');
@@ -2270,6 +2271,243 @@ window.onOrientationChanged = function(orientation) {
   }
 };
 
+// ============================================================
+// MOVIEBOX / MX PLAYER STYLE GESTURES & HUD (BRIGHTNESS, SOUND, DOUBLE TAP)
+// ============================================================
+let playerBrightness = 1.0;
+let gestureHudTimer = null;
+let singleTapTimer = null;
+let lastTapInfo = { time: 0, x: 0, y: 0, side: null };
+
+function applyPlayerBrightness(val) {
+  playerBrightness = Math.max(0.05, Math.min(1.0, Number(val)));
+  
+  // 1. Update dark overlay for web view dimming
+  const overlay = document.getElementById('playerBrightnessOverlay');
+  if (overlay) {
+    const dimAlpha = Math.max(0, (1.0 - playerBrightness) * 0.92);
+    overlay.style.backgroundColor = `rgba(0, 0, 0, ${dimAlpha.toFixed(3)})`;
+  }
+  
+  // 2. Update Android window brightness if in Capacitor / Native WebAppInterface
+  try {
+    if (window.AndroidApp && typeof window.AndroidApp.setWindowBrightness === 'function') {
+      window.AndroidApp.setWindowBrightness(playerBrightness);
+    }
+  } catch (e) {}
+
+  return playerBrightness;
+}
+
+function applyPlayerVolume(val) {
+  const video = document.getElementById('mainVideoPlayer');
+  if (!video) return 1.0;
+  
+  const safeVol = Math.max(0, Math.min(1.0, Number(val)));
+  video.volume = safeVol;
+  if (safeVol > 0 && video.muted) {
+    video.muted = false;
+  }
+  return safeVol;
+}
+
+function showGestureHud(type, value) {
+  const hud = document.getElementById('playerGestureHud');
+  const icon = document.getElementById('gestureHudIcon');
+  const fill = document.getElementById('gestureHudBarFill');
+  const valText = document.getElementById('gestureHudVal');
+  if (!hud || !icon || !fill || !valText) return;
+
+  const pct = Math.round(value * 100);
+
+  if (type === 'brightness') {
+    icon.innerHTML = '<i class="fa-solid fa-sun"></i>';
+    fill.style.width = `${pct}%`;
+    valText.innerText = `${pct}%`;
+  } else if (type === 'volume') {
+    let iconClass = 'fa-volume-high';
+    if (value <= 0.001) iconClass = 'fa-volume-xmark';
+    else if (value < 0.5) iconClass = 'fa-volume-low';
+    icon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+    fill.style.width = `${pct}%`;
+    valText.innerText = `${pct}%`;
+  }
+
+  hud.classList.add('visible');
+
+  if (gestureHudTimer) clearTimeout(gestureHudTimer);
+  gestureHudTimer = setTimeout(() => {
+    hud.classList.remove('visible');
+  }, 900);
+}
+
+function triggerDoubleTapSeek(offsetSeconds) {
+  const isForward = offsetSeconds > 0;
+  const rippleEl = document.getElementById(isForward ? 'doubleTapRight' : 'doubleTapLeft');
+
+  if (rippleEl) {
+    rippleEl.classList.remove('active');
+    void rippleEl.offsetWidth; // Force CSS reflow to replay animation
+    rippleEl.classList.add('active');
+
+    setTimeout(() => {
+      rippleEl.classList.remove('active');
+    }, 550);
+  }
+
+  seekRelative(offsetSeconds);
+}
+
+function handleSinglePlayerTap() {
+  const lsUi = document.getElementById('landscapePlayerUI');
+  if (!lsUi) return;
+  if (isPlayerLocked) {
+    lsUi.classList.remove('controls-hidden');
+    resetLandscapeControlsTimer();
+    return;
+  }
+  closeLandscapeDrawers();
+  const isHidden = lsUi.classList.toggle('controls-hidden');
+  if (!isHidden) resetLandscapeControlsTimer();
+}
+
+function setupPlayerGestures() {
+  const tapDetector = document.getElementById('lsTapDetector');
+  if (!tapDetector) return;
+
+  let isPointerDown = false;
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+  let activeSide = null; // 'left' or 'right'
+  let startBrightness = 1.0;
+  let startVolume = 1.0;
+
+  tapDetector.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
+
+    const rect = tapDetector.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return;
+
+    isPointerDown = true;
+    isDragging = false;
+    startX = e.clientX;
+    startY = e.clientY;
+
+    const relX = startX - rect.left;
+    activeSide = relX < (rect.width / 2) ? 'left' : 'right';
+
+    startBrightness = playerBrightness;
+    const video = document.getElementById('mainVideoPlayer');
+    startVolume = video ? (video.muted ? 0 : video.volume) : 1.0;
+
+    try {
+      tapDetector.setPointerCapture(e.pointerId);
+    } catch (err) {}
+  });
+
+  tapDetector.addEventListener('pointermove', (e) => {
+    if (!isPointerDown) return;
+    if (isPlayerLocked) return;
+
+    const deltaX = e.clientX - startX;
+    const deltaY = e.clientY - startY;
+
+    // Detect intentional vertical drag
+    if (!isDragging) {
+      if (Math.abs(deltaY) > 10 && Math.abs(deltaY) > Math.abs(deltaX) * 1.2) {
+        isDragging = true;
+        if (singleTapTimer) {
+          clearTimeout(singleTapTimer);
+          singleTapTimer = null;
+        }
+      }
+    }
+
+    if (isDragging) {
+      const rect = tapDetector.getBoundingClientRect();
+      const sensitivityRange = rect.height * 0.65;
+      const deltaRatio = -deltaY / sensitivityRange;
+
+      if (activeSide === 'left') {
+        // Left side swipe: Brightness (Up = brighter, Down = dimmer)
+        const newBrightness = applyPlayerBrightness(startBrightness + deltaRatio);
+        showGestureHud('brightness', newBrightness);
+      } else {
+        // Right side swipe: Volume / Sound (Up = louder, Down = quieter)
+        const newVolume = applyPlayerVolume(startVolume + deltaRatio);
+        showGestureHud('volume', newVolume);
+      }
+    }
+  });
+
+  const onPointerEnd = (e) => {
+    if (!isPointerDown) return;
+    isPointerDown = false;
+
+    try {
+      tapDetector.releasePointerCapture(e.pointerId);
+    } catch (err) {}
+
+    if (isDragging) {
+      isDragging = false;
+      if (gestureHudTimer) clearTimeout(gestureHudTimer);
+      gestureHudTimer = setTimeout(() => {
+        const hud = document.getElementById('playerGestureHud');
+        if (hud) hud.classList.remove('visible');
+      }, 700);
+      return;
+    }
+
+    // --- Tap / Double-Tap detection ---
+    if (isPlayerLocked) {
+      handleSinglePlayerTap();
+      return;
+    }
+
+    const rect = tapDetector.getBoundingClientRect();
+    const clickX = e.clientX;
+    const clickY = e.clientY;
+    const relX = clickX - rect.left;
+    const currentSide = relX < (rect.width / 2) ? 'left' : 'right';
+    const now = Date.now();
+
+    const timeDiff = now - lastTapInfo.time;
+    const distDiff = Math.hypot(clickX - lastTapInfo.x, clickY - lastTapInfo.y);
+
+    if (timeDiff < 320 && distDiff < 60 && lastTapInfo.side === currentSide) {
+      // DOUBLE TAP!
+      if (singleTapTimer) {
+        clearTimeout(singleTapTimer);
+        singleTapTimer = null;
+      }
+      lastTapInfo.time = 0; // reset
+
+      if (currentSide === 'left') {
+        triggerDoubleTapSeek(-10);
+      } else {
+        triggerDoubleTapSeek(10);
+      }
+    } else {
+      // FIRST TAP: record and debounce single tap
+      lastTapInfo = {
+        time: now,
+        x: clickX,
+        y: clickY,
+        side: currentSide
+      };
+
+      if (singleTapTimer) clearTimeout(singleTapTimer);
+      singleTapTimer = setTimeout(() => {
+        handleSinglePlayerTap();
+      }, 260);
+    }
+  };
+
+  tapDetector.addEventListener('pointerup', onPointerEnd);
+  tapDetector.addEventListener('pointercancel', onPointerEnd);
+}
+
 // Setup Video Event Listeners
 function setupVideoListeners() {
   const videoPlayer = document.getElementById('mainVideoPlayer');
@@ -2277,22 +2515,8 @@ function setupVideoListeners() {
   const loader = document.getElementById('videoLoader');
   if (!videoPlayer) return;
 
-  // Tap detector for showing/hiding MovieBox landscape controls
-  const tapDetector = document.getElementById('lsTapDetector');
-  if (tapDetector) {
-    tapDetector.addEventListener('click', () => {
-      const lsUi = document.getElementById('landscapePlayerUI');
-      if (!lsUi) return;
-      if (isPlayerLocked) {
-        lsUi.classList.remove('controls-hidden');
-        resetLandscapeControlsTimer();
-        return;
-      }
-      closeLandscapeDrawers();
-      const isHidden = lsUi.classList.toggle('controls-hidden');
-      if (!isHidden) resetLandscapeControlsTimer();
-    });
-  }
+  // Initialize Gesture Engine on the tap detector
+  setupPlayerGestures();
 
   setupLandscapeProgressScrubbing();
 
@@ -2421,6 +2645,16 @@ function closePlayer() {
 
   exitFullscreenMode();
   document.body.classList.remove('player-open');
+
+  applyPlayerBrightness(1.0);
+  if (singleTapTimer) {
+    clearTimeout(singleTapTimer);
+    singleTapTimer = null;
+  }
+  if (gestureHudTimer) {
+    clearTimeout(gestureHudTimer);
+    gestureHudTimer = null;
+  }
 
   if (videoPlayer) {
     videoPlayer.pause();

@@ -2545,6 +2545,9 @@ video::-webkit-media-controls-panel {
   inset: 0;
   z-index: 1;
   pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 /* Top Header (Screenshot 4) */
@@ -3146,6 +3149,142 @@ body.is-fullscreen .ls-bottom-bar {
 .empty-category-msg i {
   color: var(--accent-green);
   font-size: 14px;
+}
+
+/* ============================================================
+   MX PLAYER / YOUTUBE STYLE GESTURES & HUD (BRIGHTNESS, SOUND, DOUBLE TAP)
+   ============================================================ */
+
+/* Video Brightness Overlay (Darkens screen smoothly below 100%) */
+.player-brightness-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.05s linear;
+}
+
+/* Floating Center HUD for Brightness & Volume */
+.player-gesture-hud {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  background: rgba(14, 16, 24, 0.92);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 20px;
+  padding: 16px 26px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  min-width: 130px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.7);
+}
+
+.player-gesture-hud.visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.gesture-hud-icon {
+  font-size: 26px;
+  color: #00f2fe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+}
+
+.gesture-hud-bar-wrap {
+  width: 96px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.gesture-hud-bar-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+  border-radius: 3px;
+  transition: width 0.05s linear;
+}
+
+.gesture-hud-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+/* Double Tap Seek Feedback Ripple Overlays (YouTube Style) */
+.player-double-tap-indicator {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 45%;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.player-double-tap-indicator.left {
+  left: 0;
+  border-radius: 0 120px 120px 0;
+  background: radial-gradient(circle at left center, rgba(0, 242, 254, 0.25) 0%, transparent 75%);
+}
+
+.player-double-tap-indicator.right {
+  right: 0;
+  border-radius: 120px 0 0 120px;
+  background: radial-gradient(circle at right center, rgba(0, 242, 254, 0.25) 0%, transparent 75%);
+}
+
+.dt-ripple-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 14px 22px;
+  border-radius: 50px;
+  transform: scale(0.8);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+
+.dt-ripple-content i {
+  font-size: 24px;
+  color: #00f2fe;
+}
+
+.dt-ripple-content span {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.player-double-tap-indicator.active {
+  opacity: 1;
+}
+
+.player-double-tap-indicator.active .dt-ripple-content {
+  transform: scale(1.05);
 }
 
 

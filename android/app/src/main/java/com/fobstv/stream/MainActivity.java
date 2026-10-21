@@ -119,6 +119,20 @@ public class MainActivity extends BridgeActivity {
         public boolean isCustomViewActive() {
             return customView != null;
         }
+
+        @JavascriptInterface
+        public void setWindowBrightness(float brightness) {
+            runOnUiThread(() -> {
+                try {
+                    Window window = getWindow();
+                    if (window != null) {
+                        WindowManager.LayoutParams lp = window.getAttributes();
+                        lp.screenBrightness = Math.max(0.01f, Math.min(1.0f, brightness));
+                        window.setAttributes(lp);
+                    }
+                } catch (Exception ignored) {}
+            });
+        }
     }
 
     public void hideSystemUI() {
