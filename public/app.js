@@ -1957,8 +1957,14 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     ? audioIndex 
     : (appState.selectedAudioIndex !== undefined ? appState.selectedAudioIndex : (appState.currentAudioTrack?.toLowerCase().includes('english') ? 1 : 0));
 
-  // Direct play ONLY for standard MP4s that already have browser-supported AAC audio
-  if (url.includes('kmdl.eu.org') && !url.includes('googleusercontent.com') && audioIndex === null) {
+  // Direct play for standard MP4s that already have browser-supported AAC audio
+  const isDirectMp4Source = (
+    url.includes('kmdl.eu.org') ||
+    url.includes('koyeb.app') ||
+    url.includes('filetolink') ||
+    url.includes('royalfiletolink')
+  );
+  if (isDirectMp4Source && !url.includes('googleusercontent.com') && audioIndex === null) {
     videoPlayer.src = url;
     videoPlayer.load();
     videoPlayer.play().catch(() => {});

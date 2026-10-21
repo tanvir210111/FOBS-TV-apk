@@ -368,7 +368,7 @@ app.all('/api/stream', async (req, res) => {
     targetUrl.includes('luluvido') || 
     targetUrl.includes('upbolt') || 
     targetUrl.includes('it2k1jyiil2q') || 
-    req.query.audio !== undefined
+    (req.query.audio !== undefined && !targetUrl.includes('koyeb.app') && !targetUrl.includes('filetolink') && !targetUrl.includes('royalfiletolink'))
   );
 
   if (isMkvOrEac3 && ffmpegPath) {
