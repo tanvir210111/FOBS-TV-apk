@@ -2504,8 +2504,11 @@ video::-webkit-media-controls-panel {
 
 /* Top Header (Screenshot 4) */
 .ls-top-header {
-  position: relative;
-  z-index: 3;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2668,12 +2671,19 @@ video::-webkit-media-controls-panel {
 
 /* Bottom Control Bar (Screenshot 4) */
 .ls-bottom-bar {
-  position: relative;
-  z-index: 3;
-  padding: 12px 28px 16px 28px;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.92) 0%, transparent 100%);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: 8px 14px 10px 14px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.4) 60%, transparent 100%);
   pointer-events: auto;
   transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+body.is-fullscreen .ls-bottom-bar {
+  padding: 12px 28px 16px 28px;
 }
 
 .ls-bottom-row {
