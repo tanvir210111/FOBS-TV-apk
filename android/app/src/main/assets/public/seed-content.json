@@ -18,6 +18,73 @@
   },
   "movies": [
     {
+      "id": "tmdb-m-851644",
+      "title": "20th Century Girl",
+      "originalTitle": "20세기 소녀",
+      "language": "Korean",
+      "dubLanguage": "Hindi",
+      "year": "2022",
+      "country": "Korea",
+      "genre": "Romance, Drama",
+      "duration": "1h 59m",
+      "category": "Trending Movies",
+      "rating": "8.2",
+      "imdbRating": "8.2",
+      "poster": "https://image.tmdb.org/t/p/w500/od22ftNnyag0TTxcnJhlsu3aLoU.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/37y53Jt8K6MvN6s4zJVFa61luO2.jpg",
+      "description": "In 1999, a teen girl keeps close tabs on a boy in school on behalf of her deeply smitten best friend – then she gets swept up in a love story of her own.",
+      "audioTracks": [
+        "Hindi dub",
+        "English dub",
+        "Original Audio"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://kmdl.eu.org/download.aspx?file=vB4X3m2oAJ7Sw%2FLSc0OZ4HRh6sYXNbiK5YXphR%2BeRj3DI1Ksrta%2FBANIPX13RQxz&expiry=J%2B8KJ1Zw2iRjTPaDZD8D8Q%3D%3D&mac=21793b1af6b55d869daa1ef548c66a36f4beb50bdc6ff994a2eb404a28772850",
+      "cast": [
+        {
+          "name": "Kim You-jung",
+          "character": "Na Bo-ra",
+          "photo": "https://image.tmdb.org/t/p/w185/eFcMTDIgzSGLHZYXcsf1M42cvFt.jpg"
+        },
+        {
+          "name": "Byeon Woo-seok",
+          "character": "Poong Woon-ho",
+          "photo": "https://image.tmdb.org/t/p/w185/iACGQCFJZUMsy4ywEzNiPokXFB9.jpg"
+        },
+        {
+          "name": "Park Jung-woo",
+          "character": "Baek Hyun-jin",
+          "photo": "https://image.tmdb.org/t/p/w185/7euKnxnUz6HqjkAHsSLy2dsPvRg.jpg"
+        },
+        {
+          "name": "Roh Yoon-seo",
+          "character": "Kim Yeon-du",
+          "photo": "https://image.tmdb.org/t/p/w185/A67wGhTozfav5saZ1Umi5f98Ezb.jpg"
+        },
+        {
+          "name": "Kim Sung-kyung",
+          "character": "Bo-ra's Mother",
+          "photo": "https://image.tmdb.org/t/p/w185/xsH2yoY7K2pWjQ5vIMetMrXenV2.jpg"
+        },
+        {
+          "name": "Jeong Seok-yong",
+          "character": "Bo-ra's Father",
+          "photo": "https://image.tmdb.org/t/p/w185/tyTSdGaVKotPmJXGNtz6fXoj8Tc.jpg"
+        },
+        {
+          "name": "Yoon Yi-reh",
+          "character": "Madam",
+          "photo": "https://image.tmdb.org/t/p/w185/uKrJzryFpP2UCUoaV93OgXLohRx.jpg"
+        },
+        {
+          "name": "Jeon Hye-won",
+          "character": "Darn It",
+          "photo": "https://image.tmdb.org/t/p/w185/iiLAT4wZ1DtPUPA0l8YH9MeXgQS.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
       "id": "kmdl-m-4VRhomu8JxTX6d53qdTt0Pbt6NA3JGaWQAhm/zTHXYjAVxUCqzGGaBCvUgdPMH58",
       "title": "12.12: The Day",
       "language": "Korean",
