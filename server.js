@@ -29,52 +29,52 @@ function saveContentData(data) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf-8');
 }
 
+// In-memory cache for resolved Google usercontent & direct streams (TTL: 4 hours)
+const streamUrlCache = new Map();
+
 // Extract Google Drive / KMDL / Direct Cloud URLs
 async function resolveStreamUrl(rawUrl) {
   if (!rawUrl) return null;
 
+  // Check memory cache first (instant 0ms response)
+  const cached = streamUrlCache.get(rawUrl);
+  if (cached && cached.expireAt > Date.now()) {
+    return cached.url;
+  }
+
+  let resolved = rawUrl;
+
   // 1. Check if it's from kmdl.eu.org
   if (rawUrl.includes('kmdl.eu.org')) {
     if (rawUrl.includes('download.aspx')) {
-      return rawUrl;
-    }
-    // If it's a folder link, auto-resolve the underlying video file
-    try {
-      const urlObj = new URL(rawUrl);
-      const postUrl = `https://kmdl.eu.org${urlObj.pathname}`;
-      const res = await axios.post(postUrl, { page_index: 0, password: '' }, { timeout: 8000 });
-      const files = res.data && res.data.data && res.data.data.files;
-      if (files && files.length > 0) {
-        const videoFile = files.find(f => f.link);
-        if (videoFile) return `https://kmdl.eu.org${videoFile.link}`;
-        
-        // Check subfolder (e.g., "Dual Audio", "Multi Audio")
-        const subFolder = files.find(f => f.mimeType === 'application/vnd.google-apps.folder');
-        if (subFolder) {
-          const subUrl = `https://kmdl.eu.org${urlObj.pathname.endsWith('/') ? urlObj.pathname : urlObj.pathname + '/'}${encodeURIComponent(subFolder.name)}/`;
-          const subRes = await axios.post(subUrl, { page_index: 0, password: '' }, { timeout: 8000 });
-          const subFiles = subRes.data && subRes.data.data && subRes.data.data.files;
-          const targetVideo = subFiles?.find(f => f.link);
-          if (targetVideo) return `https://kmdl.eu.org${targetVideo.link}`;
+      resolved = rawUrl;
+    } else {
+      try {
+        const urlObj = new URL(rawUrl);
+        const postUrl = `https://kmdl.eu.org${urlObj.pathname}`;
+        const res = await axios.post(postUrl, { page_index: 0, password: '' }, { timeout: 8000 });
+        const files = res.data && res.data.data && res.data.data.files;
+        if (files && files.length > 0) {
+          const videoFile = files.find(f => f.link);
+          if (videoFile) resolved = `https://kmdl.eu.org${videoFile.link}`;
         }
+      } catch (e) {
+        console.error('KMDL Auto-resolve error:', e.message);
       }
-    } catch (e) {
-      console.error('KMDL Auto-resolve error:', e.message);
     }
-    return rawUrl;
   }
 
   // 2. Check standard Google Drive URL
-  const driveRegex = /(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|drive\.usercontent\.google\.com\/download\?id=)([a-zA-Z0-9_-]+)/;
-  const match = rawUrl.match(driveRegex);
-
-  if (match && match[1]) {
-    const fileId = match[1];
-    return `https://drive.usercontent.google.com/download?id=${fileId}&export=download&authuser=0&confirm=t`;
+  else if (rawUrl.includes('drive.google.com') || rawUrl.includes('drive.usercontent.google.com')) {
+    const driveRegex = /(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|drive\.usercontent\.google\.com\/download\?id=)([a-zA-Z0-9_-]+)/;
+    const match = rawUrl.match(driveRegex);
+    if (match && match[1]) {
+      resolved = `https://drive.usercontent.google.com/download?id=${match[1]}&export=download&authuser=0&confirm=t`;
+    }
   }
 
   // 3. Check V-Cloud / Fast-DL / NexDrive / VegaCloud links (resolves to direct Google usercontent stream)
-  if (rawUrl.includes('vcloud.you') || rawUrl.includes('fast-dl.one') || rawUrl.includes('nexdrive')) {
+  else if (rawUrl.includes('vcloud.you') || rawUrl.includes('fast-dl.one') || rawUrl.includes('nexdrive')) {
     const codeMatch = rawUrl.match(/(?:dl\/|file\/|code=|\/)([a-f0-9]{6})(?:[^\w]|$)/i);
     const code = codeMatch ? codeMatch[1] : null;
     if (code) {
@@ -85,10 +85,10 @@ async function resolveStreamUrl(rawUrl) {
             'X-Requested-With': 'XMLHttpRequest',
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
           },
-          timeout: 10000
+          timeout: 8000
         });
         if (res.data && res.data.ok && (res.data.url || res.data.direct_url)) {
-          return res.data.url || res.data.direct_url;
+          resolved = res.data.url || res.data.direct_url;
         }
       } catch (err) {
         console.error('V-Cloud / Fast-DL resolve error:', err.message);
@@ -96,9 +96,46 @@ async function resolveStreamUrl(rawUrl) {
     }
   }
 
-  // Direct CDN / MP4 / Cloud URL
-  return rawUrl;
+  if (resolved) {
+    streamUrlCache.set(rawUrl, {
+      url: resolved,
+      expireAt: Date.now() + 4 * 60 * 60 * 1000
+    });
+  }
+
+  return resolved;
 }
+
+// Background pre-warming of series streams into memory
+function prewarmEpisodeStreams() {
+  try {
+    const data = getContentData();
+    if (data.series) {
+      data.series.forEach(s => {
+        if (s.episodes) {
+          s.episodes.forEach(ep => {
+            if (ep.streamUrl && ep.streamUrl.includes('vcloud.you')) {
+              resolveStreamUrl(ep.streamUrl).catch(() => {});
+            }
+          });
+        }
+      });
+    }
+  } catch (e) {}
+}
+setTimeout(prewarmEpisodeStreams, 1500);
+
+// API: Instant URL Resolver (CORS-enabled for Web and Android App)
+app.get('/api/resolve', async (req, res) => {
+  const targetUrl = req.query.url;
+  if (!targetUrl) return res.status(400).json({ error: 'Missing url parameter' });
+  try {
+    const resolved = await resolveStreamUrl(targetUrl);
+    res.json({ ok: !!resolved, url: resolved });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // API: Get all contents
 app.get('/api/content', (req, res) => {

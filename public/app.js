@@ -1668,42 +1668,40 @@ async function playStreamUrl(url) {
     if (loader && loader.classList.contains('active') && loaderText) {
       loaderText.innerText = 'Connecting to stream server...';
     }
-  }, 3500);
+  }, 2500);
 
-  let streamToPlay = url;
+  // 1. If url is already a direct Google CDN or media stream, play immediately
+  if (url.includes('googleusercontent.com') || url.includes('.mp4')) {
+    videoPlayer.src = url;
+    videoPlayer.load();
+    videoPlayer.play().catch(() => {});
+    return;
+  }
 
-  // 1. If it's a V-Cloud / Fast-DL / NexDrive link, resolve directly for zero-latency direct streaming
-  if (url.includes('vcloud.you') || url.includes('fast-dl.one') || url.includes('nexdrive')) {
-    const codeMatch = url.match(/(?:dl\/|file\/|code=|\/)([a-f0-9]{6})(?:[^\w]|$)/i);
-    const code = codeMatch ? codeMatch[1] : null;
-    if (code) {
-      try {
-        const vcloudApi = `https://vcloud.you/dl.php?code=${code}&prepare=1`;
-        const res = await fetch(vcloudApi, {
-          headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.ok && (data.url || data.direct_url)) {
-            streamToPlay = data.url || data.direct_url;
-            console.log('Direct stream URL resolved on client');
-          }
-        }
-      } catch (err) {
-        console.warn('Client direct resolve skipped, using stream proxy:', err.message);
+  // 2. Fast resolve via backend memory cache (/api/resolve returns in < 30ms)
+  try {
+    const resolveUrl = `${API_BASE_URL}/api/resolve?url=${encodeURIComponent(url)}`;
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 2000);
+    const res = await fetch(resolveUrl, { signal: ctrl.signal });
+    clearTimeout(tid);
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.ok && data.url && data.url !== url) {
+        console.log('Instant direct stream URL loaded');
+        videoPlayer.src = data.url;
+        videoPlayer.load();
+        videoPlayer.play().catch(() => {});
+        return;
       }
     }
+  } catch (err) {
+    console.warn('Fast resolve skipped, falling back to streaming proxy:', err.message);
   }
 
-  // 2. Load video source
-  if (streamToPlay.includes('googleusercontent.com')) {
-    videoPlayer.src = streamToPlay;
-  } else {
-    // Proxy through backend with range seeking support
-    const streamApiUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(streamToPlay)}`;
-    videoPlayer.src = streamApiUrl;
-  }
-
+  // 3. Fallback: stream through backend proxy
+  const streamApiUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(url)}`;
+  videoPlayer.src = streamApiUrl;
   videoPlayer.load();
   videoPlayer.play().catch(err => {
     console.log('Autoplay deferred until user taps video controls:', err.message);
