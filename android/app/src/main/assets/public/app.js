@@ -1866,11 +1866,6 @@ function getMediaTotalDurationSeconds() {
     }
   }
 
-  // Exact episode runtime for Take Charge of My Heart is 61m 56s = 3716s
-  const title = (appState.currentMedia?.title || '').toLowerCase();
-  if (title.includes('charge of my heart') || (appState.currentEpisode && appState.currentEpisode.number)) {
-    if (parsedSec === 0) parsedSec = 3716;
-  }
 
   // If native video.duration reports an artificially small chunked value (< 180s), return the actual media runtime
   if (parsedSec > 0 && (!duration || duration < 180)) {

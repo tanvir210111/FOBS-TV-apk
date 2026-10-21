@@ -135,6 +135,25 @@ async function resolveStreamUrl(rawUrl) {
     }
   }
 
+  // 4. Check Dailymotion URL (e.g. dailymotion.com/video/x8n6vy0 or dai.ly/x8n6vy0)
+  else if (rawUrl.includes('dailymotion.com') || rawUrl.includes('dai.ly')) {
+    const dmMatch = rawUrl.match(/(?:video\/|dai\.ly\/)([a-zA-Z0-9]+)/);
+    const videoId = dmMatch ? dmMatch[1] : null;
+    if (videoId) {
+      try {
+        const dmRes = await axios.get(`https://www.dailymotion.com/player/metadata/video/${videoId}`, {
+          timeout: 8000
+        });
+        const streamUrl = dmRes.data?.qualities?.auto?.[0]?.url;
+        if (streamUrl) {
+          resolved = streamUrl;
+        }
+      } catch (err) {
+        console.error('Dailymotion resolve error:', err.message);
+      }
+    }
+  }
+
   if (resolved) {
     streamUrlCache.set(rawUrl, {
       url: resolved,
