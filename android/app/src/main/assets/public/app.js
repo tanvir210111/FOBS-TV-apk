@@ -1098,6 +1098,21 @@ function setupPlayerSwipeToClose() {
   }, { passive: true });
 }
 
+// Card Badge Helpers for Ongoing, Language & Year
+function getCardBadgeLeft(item) {
+  if (item.badgeLeft) return item.badgeLeft;
+  if (item.dubLanguage && item.dubLanguage.includes('Fan')) return 'Fan Dub';
+  return item.dubLanguage || 'Hindi';
+}
+
+function getCardBadgeRightHtml(item, fallback = '') {
+  if (item.badgeRight === 'ONGOING' || item.isOngoing || item.status === 'Ongoing') {
+    return `<span class="card-badge-right badge-ongoing">ONGOING</span>`;
+  }
+  const text = item.badgeRight || item.year || fallback;
+  return `<span class="card-badge-right">${text}</span>`;
+}
+
 // Render Home Carousels
 function renderHomeFeeds() {
   const movies = appState.content.movies || [];
@@ -1116,15 +1131,15 @@ function renderHomeFeeds() {
       <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
         <div class="card-poster-wrap">
           <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-          <span class="card-badge-left">${(item.dubLanguage && item.dubLanguage.includes('Fan')) ? 'Fan Dub' : 'Hindi'}</span>
-          <span class="card-badge-right">${item.year || (isSeries ? 'Series' : 'Movie')}</span>
+          <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
+          ${getCardBadgeRightHtml(item, isSeries ? 'Series' : 'Movie')}
           ${idx < 3 ? `<div class="card-rank-number">${idx + 1}</div>` : ''}
           <div class="card-play-hover">
             <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
           </div>
         </div>
         <div class="card-title">${item.title}</div>
-        <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.1'} • ${isSeries ? (item.seasonsCount ? item.seasonsCount + ' Seasons' : 'Series') : (item.year || '2023')}</div>
+        <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.1'} • ${isSeries ? (item.isOngoing ? (item.episodes ? item.episodes.length + ' Eps (Ongoing)' : 'Ongoing') : (item.seasonsCount ? item.seasonsCount + ' Seasons' : 'Series')) : (item.year || '2023')}</div>
       </div>
     `;
   }).join('');
@@ -1139,14 +1154,14 @@ function renderHomeFeeds() {
         <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
           <div class="card-poster-wrap">
             <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-            <span class="card-badge-left">${(item.dubLanguage && item.dubLanguage.includes('Fan')) ? 'Fan Dub' : 'Hindi'}</span>
-            <span class="card-badge-right">${item.year || (isSeries ? 'Series' : 'Movie')}</span>
+            <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
+            ${getCardBadgeRightHtml(item, isSeries ? 'Series' : 'Movie')}
             <div class="card-play-hover">
               <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
             </div>
           </div>
           <div class="card-title">${item.title}</div>
-          <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.1'} • ${item.year || '2023'}</div>
+          <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.1'} • ${item.isOngoing ? (item.episodes ? item.episodes.length + ' Eps (Ongoing)' : 'Ongoing') : (item.year || '2023')}</div>
         </div>
       `;
     }).join('');
@@ -1190,8 +1205,8 @@ function renderHomeFeeds() {
       <div class="media-card" onclick='openPlayerById("movie", "${item.id}")'>
         <div class="card-poster-wrap">
           <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-          <span class="card-badge-left">${(item.dubLanguage && item.dubLanguage.includes('Fan')) ? 'Fan Dub' : 'Hindi'}</span>
-          <span class="card-badge-right">${item.year || 'Movie'}</span>
+          <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
+          ${getCardBadgeRightHtml(item, 'Movie')}
           <div class="card-play-hover">
             <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
           </div>
@@ -1209,14 +1224,14 @@ function renderHomeFeeds() {
       <div class="media-card" onclick='openPlayerById("series", "${item.id}")'>
         <div class="card-poster-wrap">
           <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-          <span class="card-badge-left">Hindi</span>
-          <span class="card-badge-right">${item.year || 'Series'}</span>
+          <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
+          ${getCardBadgeRightHtml(item, 'Series')}
           <div class="card-play-hover">
             <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
           </div>
         </div>
         <div class="card-title">${item.title}</div>
-        <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.2'} • ${item.seasonsCount || 1} Seasons</div>
+        <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.2'} • ${item.isOngoing ? (item.episodes ? item.episodes.length + ' Eps (Ongoing)' : 'Ongoing') : ((item.seasonsCount || 1) + ' Seasons')}</div>
       </div>
     `).join('');
   }
@@ -1257,8 +1272,8 @@ function renderMovieCardItem(item, rank = null) {
     <div class="media-card" onclick='openPlayerById("movie", "${item.id}")'>
       <div class="card-poster-wrap">
         <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy" onerror="this.onerror=null; this.src='https://image.tmdb.org/t/p/w500/vy14tKxsbJYdDyFl6kQuVkK2s44.jpg';">
-        <span class="card-badge-left">${(item.dubLanguage && item.dubLanguage.includes('Fan')) ? 'Fan Dub' : (item.dubLanguage || 'Hindi')}</span>
-        <span class="card-badge-right">${item.year || 'Movie'}</span>
+        <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
+        ${getCardBadgeRightHtml(item, 'Movie')}
         ${rank ? `<div class="card-rank-number">${rank}</div>` : ''}
         <div class="card-play-hover">
           <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
@@ -1371,15 +1386,15 @@ function renderSeriesCardItem(item, rank = null) {
     <div class="media-card" onclick='openPlayerById("series", "${item.id}")'>
       <div class="card-poster-wrap">
         <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy" onerror="this.onerror=null; this.src='https://image.tmdb.org/t/p/w500/jwrumjdNdtlHRzthQEj9HmxehcR.jpg';">
-        <span class="card-badge-left">${(item.dubLanguage && item.dubLanguage.includes('Fan')) ? 'Fan Dub' : (item.dubLanguage || 'Hindi')}</span>
-        <span class="card-badge-right">${item.year || 'Series'}</span>
+        <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
+        ${getCardBadgeRightHtml(item, 'Series')}
         ${rank ? `<div class="card-rank-number">${rank}</div>` : ''}
         <div class="card-play-hover">
           <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
         </div>
       </div>
       <div class="card-title">${item.title}</div>
-      <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.2'} • ${item.seasonsCount ? item.seasonsCount + ' Seasons' : (item.year || 'Series')}</div>
+      <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.2'} • ${item.isOngoing ? (item.episodes ? item.episodes.length + ' Eps (Ongoing)' : 'Ongoing') : (item.seasonsCount ? item.seasonsCount + ' Seasons' : (item.year || 'Series'))}</div>
     </div>
   `;
 }
@@ -1864,19 +1879,22 @@ function openPlayer(media, episodeIndex = 0) {
 
   // Set Details: "[Fan Dubbed]" if Fan Dubbed, otherwise "[Hindi]"
   const dubTag = (media.dubLanguage && media.dubLanguage.includes('Fan')) ? '[Fan Dubbed]' : '[Hindi]';
-  const titleText = `${media.title} ${dubTag}`;
+  const ongoingTag = (media.isOngoing || media.badgeRight === 'ONGOING' || media.status === 'Ongoing') && !media.title.toLowerCase().includes('ongoing') ? ' [Ongoing]' : '';
+  const titleText = `${media.title}${ongoingTag} ${dubTag}`;
   document.getElementById('playerMediaTitle').innerText = titleText;
   
-  const seasonText = isSeries ? `${media.seasonsCount || 1} seasons` : (media.duration || '2h 21m');
+  const seasonText = isSeries ? (media.isOngoing ? `${media.episodes ? media.episodes.length : 2} eps (Ongoing)` : `${media.seasonsCount || 1} seasons`) : (media.duration || '2h 21m');
   const ratingText = media.imdbRating || media.rating || '8.1';
+  const ongoingBadge = (media.isOngoing || media.badgeRight === 'ONGOING' || media.status === 'Ongoing') ? `<span class="player-ongoing-badge" style="background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.5px; margin-left: 4px;">ONGOING</span>` : '';
 
   document.getElementById('playerMediaMeta').innerHTML = `
     <i class="fa-solid fa-tv"></i>
     <span class="star-rating"><i class="fa-solid fa-star"></i> ${ratingText}</span>
-    <span>${media.year || '2023'}</span>
+    <span>${media.year || '2026'}</span>
     <span>${media.country || 'Korea'}</span>
     <span>${media.genre ? media.genre.split(',')[0].trim() : 'Drama'}</span>
     <span id="playerSeasonTag">${seasonText}</span>
+    ${ongoingBadge}
   `;
 
   // Dub/Audio dropdown & tracks setup dynamically based on content
@@ -3083,8 +3101,8 @@ function renderForYouRecommendations() {
     <div class="media-card" onclick='openPlayerById("${item.type || 'movie'}", "${item.id}")'>
       <div class="card-poster-wrap">
         <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-        <span class="card-badge-left">${(item.dubLanguage && item.dubLanguage.includes('Fan')) ? 'Fan Dub' : (item.dubLanguage || 'Hindi')}</span>
-        <span class="card-badge-right">${item.year || (item.type === 'series' ? 'Series' : 'Movie')}</span>
+        <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
+        ${getCardBadgeRightHtml(item, item.type === 'series' ? 'Series' : 'Movie')}
         <div class="card-play-hover">
           <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
         </div>
@@ -3329,8 +3347,8 @@ function handleSearch() {
       <div class="media-card" onclick='openPlayerById("${item.type || 'movie'}", "${item.id}")'>
         <div class="card-poster-wrap">
           <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
-          <span class="card-badge-left">${(item.dubLanguage && item.dubLanguage.includes('Fan')) ? 'Fan Dub' : (item.dubLanguage || 'Hindi')}</span>
-          <span class="card-badge-right">${item.year || (item.type === 'series' ? 'Series' : 'Movie')}</span>
+          <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
+          ${getCardBadgeRightHtml(item, item.type === 'series' ? 'Series' : 'Movie')}
         </div>
         <div class="card-title">${item.title}</div>
         <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.1'}</div>
