@@ -10,4 +10,5 @@ android/build/
 android/captures/
 .gradle/
 *.iml
-
+*.mp4
+*.apk

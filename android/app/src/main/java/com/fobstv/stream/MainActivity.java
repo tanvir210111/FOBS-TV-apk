@@ -1,21 +1,118 @@
 package com.fobstv.stream;
 
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
 import androidx.activity.OnBackPressedCallback;
+import com.getcapacitor.Bridge;
 import com.getcapacitor.BridgeActivity;
+import com.getcapacitor.BridgeWebChromeClient;
 
 public class MainActivity extends BridgeActivity {
     private OnBackPressedCallback backPressedCallback;
+    private View customView;
+    private WebChromeClient.CustomViewCallback customViewCallback;
+    private FrameLayout fullscreenContainer;
+    private FullscreenWebChromeClient customChromeClient;
+
+    private class FullscreenWebChromeClient extends BridgeWebChromeClient {
+        public FullscreenWebChromeClient(Bridge bridge) {
+            super(bridge);
+        }
+
+        @Override
+        public void onShowCustomView(View view, CustomViewCallback callback) {
+            if (customView != null) {
+                onHideCustomView();
+                return;
+            }
+
+            customView = view;
+            customViewCallback = callback;
+
+            WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+            if (webView != null) {
+                webView.setVisibility(View.INVISIBLE);
+            }
+
+            if (fullscreenContainer == null) {
+                fullscreenContainer = new FrameLayout(MainActivity.this);
+                fullscreenContainer.setBackgroundColor(Color.BLACK);
+                ViewGroup decor = (ViewGroup) getWindow().getDecorView();
+                decor.addView(
+                    fullscreenContainer,
+                    new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                );
+            }
+
+            fullscreenContainer.removeAllViews();
+            fullscreenContainer.addView(
+                customView,
+                new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+            );
+            fullscreenContainer.setVisibility(View.VISIBLE);
+
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+            hideSystemUI();
+
+            if (webView != null) {
+                webView.evaluateJavascript(
+                    "(function() { if (typeof window.onNativeFullscreenChange === 'function') window.onNativeFullscreenChange(true); })();",
+                    null
+                );
+            }
+        }
+
+        @Override
+        public void onHideCustomView() {
+            if (customView == null) return;
+
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            showSystemUI();
+
+            if (fullscreenContainer != null) {
+                fullscreenContainer.removeAllViews();
+                fullscreenContainer.setVisibility(View.GONE);
+            }
+
+            if (customViewCallback != null) {
+                try {
+                    customViewCallback.onCustomViewHidden();
+                } catch (Exception ignored) {}
+                customViewCallback = null;
+            }
+
+            customView = null;
+
+            WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+            if (webView != null) {
+                webView.setVisibility(View.VISIBLE);
+                webView.evaluateJavascript(
+                    "(function() { if (typeof window.onNativeFullscreenChange === 'function') window.onNativeFullscreenChange(false); })();",
+                    null
+                );
+            }
+        }
+    }
 
     public class WebAppInterface {
         @JavascriptInterface
@@ -53,9 +150,18 @@ public class MainActivity extends BridgeActivity {
         @JavascriptInterface
         public void exitFullscreen() {
             runOnUiThread(() -> {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                showSystemUI();
+                if (customChromeClient != null && customView != null) {
+                    customChromeClient.onHideCustomView();
+                } else {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    showSystemUI();
+                }
             });
+        }
+
+        @JavascriptInterface
+        public boolean isCustomViewActive() {
+            return customView != null;
         }
     }
 
@@ -105,10 +211,36 @@ public class MainActivity extends BridgeActivity {
         if (hasFocus) {
             int orientation = getRequestedOrientation();
             if (orientation == ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE ||
-                orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE ||
+                customView != null) {
                 hideSystemUI();
             }
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        try {
+            WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+            if (webView != null) {
+                if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    hideSystemUI();
+                    webView.evaluateJavascript(
+                        "(function() { if (typeof window.onOrientationChanged === 'function') window.onOrientationChanged('landscape'); })();",
+                        null
+                    );
+                } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    if (customView == null) {
+                        showSystemUI();
+                    }
+                    webView.evaluateJavascript(
+                        "(function() { if (typeof window.onOrientationChanged === 'function') window.onOrientationChanged('portrait'); })();",
+                        null
+                    );
+                }
+            }
+        } catch (Exception ignored) {}
     }
 
     @Override
@@ -131,6 +263,11 @@ public class MainActivity extends BridgeActivity {
         backPressedCallback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
+                if (customView != null && customChromeClient != null) {
+                    customChromeClient.onHideCustomView();
+                    return;
+                }
+
                 WebView targetWebView = null;
                 try {
                     if (getBridge() != null) {
@@ -177,8 +314,14 @@ public class MainActivity extends BridgeActivity {
                 settings.setDomStorageEnabled(true);
                 settings.setDatabaseEnabled(true);
 
-                // Add Javascript interface for landscape/portrait orientation control
+                // Add Javascript interface for landscape/portrait orientation control & immersive fullscreen
                 webView.addJavascriptInterface(new WebAppInterface(), "AndroidApp");
+
+                // Set our custom WebChromeClient for true native HTML5 video fullscreen support
+                if (customChromeClient == null) {
+                    customChromeClient = new FullscreenWebChromeClient(getBridge());
+                }
+                webView.setWebChromeClient(customChromeClient);
             }
         } catch (Exception e) {
             e.printStackTrace();
