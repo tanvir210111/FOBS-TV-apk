@@ -1114,7 +1114,7 @@ function renderHomeFeeds() {
         <div class="card-poster-wrap">
           <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
           <span class="card-badge-left">Hindi</span>
-          <span class="card-badge-right">${item.language || 'Korean'}</span>
+          <span class="card-badge-right">${item.year || (isSeries ? 'Series' : 'Movie')}</span>
           ${idx < 3 ? `<div class="card-rank-number">${idx + 1}</div>` : ''}
           <div class="card-play-hover">
             <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
@@ -1137,7 +1137,7 @@ function renderHomeFeeds() {
           <div class="card-poster-wrap">
             <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
             <span class="card-badge-left">Hindi</span>
-            <span class="card-badge-right">${item.language || 'Korean'}</span>
+            <span class="card-badge-right">${item.year || (isSeries ? 'Series' : 'Movie')}</span>
             <div class="card-play-hover">
               <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
             </div>
@@ -1164,7 +1164,7 @@ function renderHomeFeeds() {
           <div class="coming-card" onclick='openPlayerById("upcoming", "${item.id}")'>
             <div class="coming-poster-wrap">
               <img src="${item.poster}" alt="${item.title}" class="coming-poster-img" loading="lazy">
-              <span class="card-badge-right">${item.language || 'Korean'}</span>
+              <span class="card-badge-right">${item.year || 'Upcoming'}</span>
               <div class="coming-date-badge">${month}<span>${day}</span></div>
               <div class="coming-booked-tag">${booked} booked</div>
             </div>
@@ -1188,7 +1188,7 @@ function renderHomeFeeds() {
         <div class="card-poster-wrap">
           <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
           <span class="card-badge-left">Hindi</span>
-          <span class="card-badge-right">${item.language || 'Korean'}</span>
+          <span class="card-badge-right">${item.year || 'Movie'}</span>
           <div class="card-play-hover">
             <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
           </div>
@@ -1207,7 +1207,7 @@ function renderHomeFeeds() {
         <div class="card-poster-wrap">
           <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
           <span class="card-badge-left">Hindi</span>
-          <span class="card-badge-right">${item.language || 'Korean'}</span>
+          <span class="card-badge-right">${item.year || 'Series'}</span>
           <div class="card-play-hover">
             <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
           </div>
@@ -1241,7 +1241,7 @@ function renderMovieCardItem(item, rank = null) {
       <div class="card-poster-wrap">
         <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy" onerror="this.onerror=null; this.src='https://image.tmdb.org/t/p/w500/vy14tKxsbJYdDyFl6kQuVkK2s44.jpg';">
         <span class="card-badge-left">${item.dubLanguage || 'Hindi'}</span>
-        <span class="card-badge-right">${item.industry || item.language || 'HD'}</span>
+        <span class="card-badge-right">${item.year || 'Movie'}</span>
         ${rank ? `<div class="card-rank-number">${rank}</div>` : ''}
         <div class="card-play-hover">
           <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
@@ -1355,7 +1355,7 @@ function renderSeriesCardItem(item, rank = null) {
       <div class="card-poster-wrap">
         <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy" onerror="this.onerror=null; this.src='https://image.tmdb.org/t/p/w500/jwrumjdNdtlHRzthQEj9HmxehcR.jpg';">
         <span class="card-badge-left">${item.dubLanguage || 'Hindi'}</span>
-        <span class="card-badge-right">${item.language || 'Series'}</span>
+        <span class="card-badge-right">${item.year || 'Series'}</span>
         ${rank ? `<div class="card-rank-number">${rank}</div>` : ''}
         <div class="card-play-hover">
           <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
@@ -1588,8 +1588,8 @@ function openPlayer(media, episodeIndex = 0) {
 
   const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-'));
 
-  // Set Details matching Screenshot 1: "12.12: The Day [Korean][HD] Info >"
-  const titleText = `${media.title} [${media.language || 'Korean'}][${media.tag || 'HD'}]`;
+  // Set Details matching user request: "[Hindi]" without [HD] or [Korean]
+  const titleText = `${media.title} [Hindi]`;
   document.getElementById('playerMediaTitle').innerText = titleText;
   
   const seasonText = isSeries ? `${media.seasonsCount || 1} seasons` : (media.duration || '2h 21m');
@@ -2179,8 +2179,8 @@ function enterFullscreenMode(options = {}) {
     const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-'));
     const epNum = appState.currentEpisode?.number || appState.currentEpisode?.episodeNumber || '01';
     titleEl.innerText = isSeries 
-      ? `${media.title} [${media.language || 'Hindi'}] S01 E${epNum}` 
-      : `${media.title} [${media.language || 'Hindi'}][${media.tag || 'HD'}]`;
+      ? `${media.title} [Hindi] S01 E${epNum}` 
+      : `${media.title} [Hindi]`;
   }
 
   if (!options.skipRotate) {
@@ -2516,7 +2516,7 @@ function renderForYouRecommendations() {
       <div class="card-poster-wrap">
         <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
         <span class="card-badge-left">Hindi</span>
-        <span class="card-badge-right">${item.language || 'Korean'}</span>
+        <span class="card-badge-right">${item.year || (item.type === 'series' ? 'Series' : 'Movie')}</span>
         <div class="card-play-hover">
           <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
         </div>
@@ -2762,7 +2762,7 @@ function handleSearch() {
         <div class="card-poster-wrap">
           <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
           <span class="card-badge-left">Hindi</span>
-          <span class="card-badge-right">${item.language || 'Korean'}</span>
+          <span class="card-badge-right">${item.year || (item.type === 'series' ? 'Series' : 'Movie')}</span>
         </div>
         <div class="card-title">${item.title}</div>
         <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.1'}</div>
