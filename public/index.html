@@ -418,7 +418,7 @@
 
       <!-- Embedded Video Player -->
       <div class="video-container" id="videoContainer">
-        <video id="mainVideoPlayer" playsinline webkit-playsinline x5-playsinline controls preload="metadata"></video>
+        <video id="mainVideoPlayer" playsinline webkit-playsinline x5-playsinline preload="metadata"></video>
         <div class="video-loader" id="videoLoader">
           <div class="spinner"></div>
           <div class="loader-text">Loading...</div>
@@ -524,6 +524,10 @@
                 </button>
 
                 <div class="ls-quality-pill" id="lsQualityBadge">1080P</div>
+
+                <button class="ls-action-pill ls-fullscreen-pill" id="lsFullscreenToggleBtn" onclick="togglePlayerFullscreen()" title="Fullscreen">
+                  <i class="fa-solid fa-expand"></i>
+                </button>
               </div>
             </div>
           </div>

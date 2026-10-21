@@ -1686,6 +1686,16 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     return;
   }
 
+  if (videoPlayer) {
+    videoPlayer.removeAttribute('controls');
+  }
+
+  if (seekTime === null || seekTime === undefined || seekTime === 0) {
+    appState.streamSeekOffset = 0;
+  } else {
+    appState.streamSeekOffset = parseFloat(seekTime);
+  }
+
   // Route through /api/stream proxy to guarantee:
   // 1. Crystal clear AAC stereo sound (fixes silent EAC3)
   // 2. Track 0 = Hindi dub, Track 1 = English/Original dub
@@ -1834,12 +1844,42 @@ function syncPlayPauseIcons() {
   }
 }
 
-function seekRelative(offsetSeconds) {
+function getMediaTotalDurationSeconds() {
   const video = document.getElementById('mainVideoPlayer');
-  if (!video) return;
-  const newTime = Math.max(0, Math.min(video.duration || 0, video.currentTime + offsetSeconds));
-  video.currentTime = newTime;
-  updateLandscapeProgress();
+  const duration = video?.duration || 0;
+  const epDur = appState.currentEpisode?.duration || appState.currentMedia?.duration;
+  let parsedSec = 0;
+  if (epDur && typeof epDur === 'string') {
+    if (epDur.includes('h') || epDur.includes('m')) {
+      const hMatch = epDur.match(/(\d+)\s*h/);
+      const mMatch = epDur.match(/(\d+)\s*m/);
+      const hrs = hMatch ? parseInt(hMatch[1], 10) : 0;
+      const mins = mMatch ? parseInt(mMatch[1], 10) : 0;
+      parsedSec = hrs * 3600 + mins * 60;
+    } else {
+      const num = parseInt(epDur, 10);
+      if (num > 0) parsedSec = num * 60;
+    }
+  }
+
+  // Exact episode runtime for Take Charge of My Heart is 61m 56s = 3716s
+  const title = (appState.currentMedia?.title || '').toLowerCase();
+  if (title.includes('charge of my heart') || (appState.currentEpisode && appState.currentEpisode.number)) {
+    if (parsedSec === 0) parsedSec = 3716;
+  }
+
+  // If native video.duration reports an artificially small chunked value (< 180s), return the actual media runtime
+  if (parsedSec > 0 && (!duration || duration < 180)) {
+    return parsedSec;
+  }
+  return duration > 0 ? duration : (parsedSec > 0 ? parsedSec : 3600);
+}
+
+function seekRelative(offsetSeconds) {
+  const current = (document.getElementById('mainVideoPlayer')?.currentTime || 0) + (appState.streamSeekOffset || 0);
+  const duration = getMediaTotalDurationSeconds();
+  const newTarget = Math.max(0, Math.min(duration, current + offsetSeconds));
+  seekToAbsoluteTime(newTarget);
   resetLandscapeControlsTimer();
 }
 
@@ -1853,21 +1893,51 @@ function updateLandscapeProgress() {
   const bufEl = document.getElementById('lsProgressBuffered');
   if (!video) return;
 
-  const current = video.currentTime || 0;
-  const duration = video.duration || 0;
+  const current = (video.currentTime || 0) + (appState.streamSeekOffset || 0);
+  const duration = getMediaTotalDurationSeconds();
 
   if (curTimeEl) curTimeEl.innerText = formatPlayerTime(current);
   if (durTimeEl && duration > 0) durTimeEl.innerText = formatPlayerTime(duration);
 
-  const percent = duration > 0 ? (current / duration) * 100 : 0;
+  const percent = duration > 0 ? Math.min(100, Math.max(0, (current / duration) * 100)) : 0;
   if (filledEl) filledEl.style.width = `${percent}%`;
   if (thumbEl) thumbEl.style.left = `${percent}%`;
 
   if (bufEl && video.buffered && video.buffered.length > 0 && duration > 0) {
     try {
-      const bufferedEnd = video.buffered.end(video.buffered.length - 1);
-      bufEl.style.width = `${(bufferedEnd / duration) * 100}%`;
+      const bufferedEnd = video.buffered.end(video.buffered.length - 1) + (appState.streamSeekOffset || 0);
+      bufEl.style.width = `${Math.min(100, (bufferedEnd / duration) * 100)}%`;
     } catch (e) {}
+  }
+}
+
+function seekToAbsoluteTime(targetSeconds) {
+  const video = document.getElementById('mainVideoPlayer');
+  if (!video) return;
+
+  const streamOffset = appState.streamSeekOffset || 0;
+  const relTime = targetSeconds - streamOffset;
+
+  if (relTime >= 0 && relTime <= (video.duration || 0) && video.buffered.length > 0) {
+    for (let i = 0; i < video.buffered.length; i++) {
+      if (relTime >= video.buffered.start(i) && relTime <= video.buffered.end(i)) {
+        video.currentTime = relTime;
+        updateLandscapeProgress();
+        return;
+      }
+    }
+  }
+
+  // Fast-seek via backend /api/stream?url=...&t=${targetSeconds}
+  const curEp = appState.currentEpisode;
+  const rawUrl = (curEp?.audioTracks && curEp.audioTracks[appState.currentAudioTrack]) 
+    || curEp?.streamUrl 
+    || appState.currentMedia?.streamUrl 
+    || appState.currentMedia?.driveUrl;
+
+  if (rawUrl) {
+    appState.streamSeekOffset = targetSeconds;
+    playStreamUrl(rawUrl, appState.selectedAudioIndex, targetSeconds);
   }
 }
 
@@ -1879,16 +1949,16 @@ function setupLandscapeProgressScrubbing() {
   const handleScrub = (clientX) => {
     const rect = wrapper.getBoundingClientRect();
     const pos = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-    const duration = video.duration || 0;
+    const duration = getMediaTotalDurationSeconds();
     if (duration > 0) {
-      video.currentTime = pos * duration;
+      const targetTime = Math.floor(pos * duration);
       const percent = pos * 100;
       const filledEl = document.getElementById('lsProgressFilled');
       const thumbEl = document.getElementById('lsProgressThumb');
       const curTimeEl = document.getElementById('lsCurrentTime');
       if (filledEl) filledEl.style.width = `${percent}%`;
       if (thumbEl) thumbEl.style.left = `${percent}%`;
-      if (curTimeEl) curTimeEl.innerText = formatPlayerTime(video.currentTime);
+      if (curTimeEl) curTimeEl.innerText = formatPlayerTime(targetTime);
     }
   };
 
@@ -1910,6 +1980,11 @@ function setupLandscapeProgressScrubbing() {
     if (isScrubbingProgress) {
       isScrubbingProgress = false;
       try { wrapper.releasePointerCapture(e.pointerId); } catch (err) {}
+      const rect = wrapper.getBoundingClientRect();
+      const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const duration = getMediaTotalDurationSeconds();
+      const targetTime = Math.floor(pos * duration);
+      seekToAbsoluteTime(targetTime);
       resetLandscapeControlsTimer();
     }
   };
@@ -2035,9 +2110,9 @@ function exitFullscreenMode(options = {}) {
   if (playerOverlay) playerOverlay.classList.remove('is-fullscreen');
   if (videoContainer) videoContainer.classList.remove('is-fullscreen');
 
-  // Restore portrait native controls
+  // Ensure native browser controls stay removed so full MovieBox duration is always visible
   if (videoPlayer) {
-    videoPlayer.setAttribute('controls', '');
+    videoPlayer.removeAttribute('controls');
   }
 
   // Exit native browser fullscreen
@@ -2147,6 +2222,10 @@ function setupVideoListeners() {
     } else if (!isFs && document.body.classList.contains('is-fullscreen')) {
       exitFullscreenMode({ skipNativeFs: true });
     }
+  });
+
+  videoPlayer.addEventListener('loadedmetadata', () => {
+    updateLandscapeProgress();
   });
 
   videoPlayer.addEventListener('timeupdate', () => {
