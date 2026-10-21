@@ -969,6 +969,13 @@ function openPlayer(media, episodeIndex = 0) {
   appState.currentMedia = media;
   const overlay = document.getElementById('playerOverlay');
   overlay.classList.add('open');
+  document.body.classList.add('player-open');
+
+  // Auto-enter edge-to-edge fullscreen if screen is already in landscape
+  if (window.innerWidth > window.innerHeight) {
+    enterFullscreenMode({ skipRotate: true });
+  }
+
   try {
     history.pushState({ screen: 'player' }, '');
   } catch (e) {}
@@ -1067,7 +1074,9 @@ function playStreamUrl(url) {
 
 // Screen orientation handling for video fullscreen
 function setVideoOrientationLandscape() {
-  if (window.AndroidApp && typeof window.AndroidApp.setLandscape === 'function') {
+  if (window.AndroidApp && typeof window.AndroidApp.enterFullscreen === 'function') {
+    window.AndroidApp.enterFullscreen();
+  } else if (window.AndroidApp && typeof window.AndroidApp.setLandscape === 'function') {
     window.AndroidApp.setLandscape();
   }
   if (screen.orientation && screen.orientation.lock) {
@@ -1078,7 +1087,9 @@ function setVideoOrientationLandscape() {
 }
 
 function setVideoOrientationPortrait() {
-  if (window.AndroidApp && typeof window.AndroidApp.setPortrait === 'function') {
+  if (window.AndroidApp && typeof window.AndroidApp.exitFullscreen === 'function') {
+    window.AndroidApp.exitFullscreen();
+  } else if (window.AndroidApp && typeof window.AndroidApp.setPortrait === 'function') {
     window.AndroidApp.setPortrait();
   }
   if (screen.orientation && screen.orientation.unlock) {
@@ -1086,39 +1097,142 @@ function setVideoOrientationPortrait() {
   }
 }
 
-function togglePlayerFullscreen() {
+let playerControlsTimer = null;
+
+function resetPlayerControlsTimer() {
+  const topHeader = document.getElementById('playerTopHeader');
+  if (!topHeader) return;
+
+  topHeader.classList.remove('controls-hidden');
+  if (playerControlsTimer) clearTimeout(playerControlsTimer);
+
   const videoPlayer = document.getElementById('mainVideoPlayer');
+  const isFs = document.body.classList.contains('is-fullscreen');
+  if (isFs && videoPlayer && !videoPlayer.paused) {
+    playerControlsTimer = setTimeout(() => {
+      topHeader.classList.add('controls-hidden');
+    }, 3500);
+  }
+}
+
+function enterFullscreenMode(options = {}) {
+  const videoPlayer = document.getElementById('mainVideoPlayer');
+  const videoContainer = document.getElementById('videoContainer');
+  const playerOverlay = document.getElementById('playerOverlay');
+  const fsBtn = document.getElementById('playerFullscreenToggleBtn');
+
+  document.body.classList.add('is-fullscreen');
+  if (playerOverlay) playerOverlay.classList.add('is-fullscreen');
+  if (videoContainer) videoContainer.classList.add('is-fullscreen');
+
+  if (fsBtn) {
+    fsBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
+    fsBtn.title = 'Exit Fullscreen';
+  }
+
+  if (!options.skipRotate) {
+    setVideoOrientationLandscape();
+  }
+
+  // Request HTML5 fullscreen if supported & not yet active
+  if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+    const target = videoContainer || videoPlayer;
+    if (target) {
+      if (target.requestFullscreen) {
+        target.requestFullscreen().catch(() => {});
+      } else if (target.webkitRequestFullscreen) {
+        target.webkitRequestFullscreen();
+      } else if (videoPlayer && videoPlayer.webkitEnterFullscreen) {
+        videoPlayer.webkitEnterFullscreen();
+      }
+    }
+  }
+
+  resetPlayerControlsTimer();
+}
+
+function exitFullscreenMode(options = {}) {
+  const videoContainer = document.getElementById('videoContainer');
+  const playerOverlay = document.getElementById('playerOverlay');
+  const fsBtn = document.getElementById('playerFullscreenToggleBtn');
+  const topHeader = document.getElementById('playerTopHeader');
+
+  document.body.classList.remove('is-fullscreen');
+  if (playerOverlay) playerOverlay.classList.remove('is-fullscreen');
+  if (videoContainer) videoContainer.classList.remove('is-fullscreen');
+
+  if (fsBtn) {
+    fsBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+    fsBtn.title = 'Fullscreen';
+  }
+
+  if (topHeader) {
+    topHeader.classList.remove('controls-hidden');
+  }
+  if (playerControlsTimer) {
+    clearTimeout(playerControlsTimer);
+    playerControlsTimer = null;
+  }
+
+  if (!options.skipRotate) {
+    setVideoOrientationPortrait();
+  }
+
+  if (document.fullscreenElement || document.webkitFullscreenElement) {
+    if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+  }
+}
+
+function togglePlayerFullscreen() {
+  const isFs = document.body.classList.contains('is-fullscreen') ||
+               !!(document.fullscreenElement || document.webkitFullscreenElement);
+  if (isFs) {
+    exitFullscreenMode();
+  } else {
+    enterFullscreenMode();
+  }
+}
+
+function toggleVideoScaling() {
+  const videoPlayer = document.getElementById('mainVideoPlayer');
+  const scaleBtn = document.getElementById('playerScaleToggleBtn');
   if (!videoPlayer) return;
 
-  const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
-  if (!isFullscreen) {
-    if (videoPlayer.requestFullscreen) {
-      videoPlayer.requestFullscreen().catch(() => {});
-    } else if (videoPlayer.webkitRequestFullscreen) {
-      videoPlayer.webkitRequestFullscreen();
-    } else if (videoPlayer.webkitEnterFullscreen) {
-      videoPlayer.webkitEnterFullscreen();
-    }
-    setVideoOrientationLandscape();
+  const isContain = videoPlayer.classList.toggle('fit-contain');
+  if (scaleBtn) {
+    scaleBtn.innerHTML = isContain ? '<i class="fa-solid fa-expand"></i>' : '<i class="fa-solid fa-maximize"></i>';
+  }
+  showToast(isContain ? 'Aspect Ratio: Fit to Screen' : 'Aspect Ratio: Zoom to Fill (Edge-to-Edge)');
+}
+
+function handlePlayerBackClick() {
+  if (document.body.classList.contains('is-fullscreen')) {
+    exitFullscreenMode();
   } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen().catch(() => {});
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    }
-    setVideoOrientationPortrait();
+    closePlayer();
   }
 }
 
 // Setup Video Event Listeners
 function setupVideoListeners() {
   const videoPlayer = document.getElementById('mainVideoPlayer');
+  const videoContainer = document.getElementById('videoContainer');
   const loader = document.getElementById('videoLoader');
   if (!videoPlayer) return;
+
+  if (videoContainer) {
+    videoContainer.addEventListener('click', (e) => {
+      resetPlayerControlsTimer();
+    });
+    videoContainer.addEventListener('mousemove', resetPlayerControlsTimer);
+    videoContainer.addEventListener('touchstart', resetPlayerControlsTimer, { passive: true });
+  }
 
   videoPlayer.addEventListener('playing', () => {
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
     if (loader) loader.classList.remove('active');
+    resetPlayerControlsTimer();
   });
 
   videoPlayer.addEventListener('waiting', () => {
@@ -1128,6 +1242,10 @@ function setupVideoListeners() {
   videoPlayer.addEventListener('canplay', () => {
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
     if (loader) loader.classList.remove('active');
+  });
+
+  videoPlayer.addEventListener('pause', () => {
+    resetPlayerControlsTimer();
   });
 
   videoPlayer.addEventListener('error', (e) => {
@@ -1145,13 +1263,13 @@ function setupVideoListeners() {
     }
   });
 
-  // Auto-switch to Landscape when entering fullscreen, return to Portrait when exiting
+  // Auto-switch when entering/exiting HTML5 fullscreen
   const onFsChange = () => {
     const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
-    if (isFs) {
-      setVideoOrientationLandscape();
-    } else {
-      setVideoOrientationPortrait();
+    if (isFs && !document.body.classList.contains('is-fullscreen')) {
+      enterFullscreenMode({ skipRotate: false });
+    } else if (!isFs && document.body.classList.contains('is-fullscreen')) {
+      exitFullscreenMode({ skipRotate: false });
     }
   };
 
@@ -1159,11 +1277,32 @@ function setupVideoListeners() {
   document.addEventListener('webkitfullscreenchange', onFsChange);
 
   videoPlayer.addEventListener('webkitbeginfullscreen', () => {
-    setVideoOrientationLandscape();
+    enterFullscreenMode({ skipRotate: false });
   });
   videoPlayer.addEventListener('webkitendfullscreen', () => {
-    setVideoOrientationPortrait();
+    exitFullscreenMode({ skipRotate: false });
   });
+
+  // Physical orientation listener for smooth auto-fullscreen transitions
+  const handleOrientation = () => {
+    const isPlayerOpen = document.getElementById('playerOverlay')?.classList.contains('open');
+    if (!isPlayerOpen) return;
+
+    const isLandscape = window.innerWidth > window.innerHeight;
+    const isCurrentlyFs = document.body.classList.contains('is-fullscreen');
+
+    if (isLandscape && !isCurrentlyFs) {
+      enterFullscreenMode({ skipRotate: true });
+    } else if (!isLandscape && isCurrentlyFs) {
+      exitFullscreenMode({ skipRotate: true });
+    }
+  };
+
+  window.addEventListener('resize', handleOrientation);
+  window.addEventListener('orientationchange', handleOrientation);
+  if (screen.orientation && screen.orientation.addEventListener) {
+    screen.orientation.addEventListener('change', handleOrientation);
+  }
 }
 
 // Close Video Player Overlay
@@ -1171,11 +1310,8 @@ function closePlayer() {
   const overlay = document.getElementById('playerOverlay');
   const videoPlayer = document.getElementById('mainVideoPlayer');
 
-  if (document.fullscreenElement || document.webkitFullscreenElement) {
-    if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
-    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-  }
-  setVideoOrientationPortrait();
+  exitFullscreenMode();
+  document.body.classList.remove('player-open');
 
   if (videoPlayer) {
     videoPlayer.pause();
@@ -1567,10 +1703,8 @@ function closeCommunity(e) {
 // ============================================================
 window.handleAndroidBack = function() {
   // 0. If video is currently in fullscreen, exit fullscreen and restore portrait
-  if (document.fullscreenElement || document.webkitFullscreenElement) {
-    if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
-    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-    setVideoOrientationPortrait();
+  if (document.body.classList.contains('is-fullscreen') || document.fullscreenElement || document.webkitFullscreenElement) {
+    exitFullscreenMode();
     return true;
   }
 

@@ -216,11 +216,17 @@
     <!-- ============================================== -->
     <div class="player-view-overlay" id="playerOverlay">
       <!-- Player Top Bar Overlay -->
-      <div class="player-top-header">
-        <button class="player-nav-btn" onclick="closePlayer()">
+      <div class="player-top-header" id="playerTopHeader">
+        <button class="player-nav-btn" id="playerBackBtn" onclick="handlePlayerBackClick()">
           <i class="fa-solid fa-chevron-left"></i>
         </button>
         <div class="player-header-actions">
+          <button class="player-icon-btn" id="playerScaleToggleBtn" title="Zoom to fill / Fit screen" onclick="toggleVideoScaling()">
+            <i class="fa-solid fa-maximize"></i>
+          </button>
+          <button class="player-icon-btn" id="playerFullscreenToggleBtn" title="Toggle Fullscreen" onclick="togglePlayerFullscreen()">
+            <i class="fa-solid fa-expand"></i>
+          </button>
           <button class="player-icon-btn" title="Cast to TV"><i class="fa-solid fa-tv"></i></button>
           <button class="player-icon-btn" title="Help"><i class="fa-regular fa-circle-question"></i></button>
         </div>
