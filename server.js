@@ -299,6 +299,38 @@ async function resolveStreamUrl(rawUrl) {
     }
   }
 
+  // 9. Check kisscloud.online
+  else if (rawUrl.includes('kisscloud.online')) {
+    if (rawUrl.includes('.m3u8')) {
+      resolved = rawUrl;
+    } else {
+      try {
+        const hashMatch = rawUrl.match(/(?:video\/|data=|\/)([a-f0-9]{32})/i);
+        const hash = hashMatch ? hashMatch[1] : null;
+        if (hash) {
+          const kcRes = await axios.post(`https://kisscloud.online/player/index.php?data=${hash}&do=getVideo`,
+            `hash=${hash}&r=https://ww19.myasiantv.es/`,
+            {
+              headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                'Referer': `https://kisscloud.online/video/${hash}`,
+                'Origin': 'https://kisscloud.online',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'X-Requested-With': 'XMLHttpRequest'
+              },
+              timeout: 8000
+            }
+          );
+          if (kcRes.data && kcRes.data.securedLink) {
+            resolved = kcRes.data.securedLink;
+          }
+        }
+      } catch (e) {
+        console.error('KissCloud auto-resolve error:', e.message);
+      }
+    }
+  }
+
   // Only cache if successfully resolved to a real stream URL (not raw fallback)
   if (resolved && resolved !== rawUrl) {
     streamUrlCache.set(rawUrl, {
@@ -510,6 +542,8 @@ app.all('/api/stream', async (req, res) => {
       refererHeader = 'Referer: https://ok.ru/\r\n';
     } else if (resolvedUrl.includes('vkpluscdn') || resolvedUrl.includes('vkcdn') || targetUrl.includes('pkembed') || targetUrl.includes('pkspeed')) {
       refererHeader = 'Referer: https://pkembed.site/\r\n';
+    } else if (resolvedUrl.includes('kisscloud.online') || targetUrl.includes('kisscloud')) {
+      refererHeader = 'Referer: https://kisscloud.online/\r\n';
     }
 
     const ffmpegArgs = [
@@ -615,6 +649,8 @@ app.all('/api/stream', async (req, res) => {
     requestHeaders['Referer'] = 'https://ok.ru/';
   } else if (resolvedUrl.includes('vkpluscdn') || resolvedUrl.includes('vkcdn') || (targetUrl && (targetUrl.includes('pkembed') || targetUrl.includes('pkspeed')))) {
     requestHeaders['Referer'] = 'https://pkembed.site/';
+  } else if (resolvedUrl.includes('kisscloud.online') || (targetUrl && targetUrl.includes('kisscloud'))) {
+    requestHeaders['Referer'] = 'https://kisscloud.online/';
   }
 
   if (range) {

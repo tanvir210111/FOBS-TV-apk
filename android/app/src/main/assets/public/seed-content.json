@@ -141,23 +141,31 @@
         "Hindi (Original)"
       ],
       "selectedAudio": "Hindi (Original)",
-      "streamUrl": "https://streamimdb.ru/embed/movie/tt40855841",
+      "streamUrl": "https://ok.ru/videoembed/16206412843605?nochat=1",
       "servers": [
         {
-          "name": "Server 1 (Fast HD - StreamIMDb)",
-          "url": "https://streamimdb.ru/embed/movie/tt40855841"
+          "name": "Server 1 (Fast HD - OK.ru)",
+          "url": "https://ok.ru/videoembed/16206412843605?nochat=1"
         },
         {
-          "name": "Server 2 (HD Player - Irada)",
-          "url": "https://irada438esc.com/play/tt40855841"
+          "name": "Server 2 (PkSpeed 720p)",
+          "url": "https://pkembed.site/embed-89cilaulgils.html"
         },
         {
-          "name": "Server 3 (HDFriday Direct)",
-          "url": "https://hdfriday2.casa/movies/nayyi-navelli-2026-watch-online-and-download/"
+          "name": "Server 3 (PkSpeed 360p)",
+          "url": "https://pkembed.site/embed-3tygggkh875e.html"
         },
         {
-          "name": "Server 4 (Watch-Movies Direct)",
-          "url": "https://www.watch-movies.com.pk/nayyi-navelli-2026-hindi-full-movie-watch-online-hd-print-free-download/"
+          "name": "Server 4 (CloudVideo 720p)",
+          "url": "https://do7go.com/e/9g57tf02ojn6"
+        },
+        {
+          "name": "Server 5 (Streamtape 720p)",
+          "url": "https://streamtape.to/e/VYDk6k8zWPCKrX2"
+        },
+        {
+          "name": "Server 6 (MixDrop 720p)",
+          "url": "https://mxdrop.to/e/9wwpjngxsppp06"
         }
       ],
       "cast": [
@@ -1430,10 +1438,16 @@
           "duration": "55m",
           "overview": "Conservative marketer Yeon-su takes on a former blind date as a new client.",
           "still": "https://image.tmdb.org/t/p/w500/pUl5AqX4eVpieIdhtqaZTRxdo93.jpg",
-          "streamUrl": "https://streamimdb.ru/embed/tv/tt47661704/S01E01",
+          "streamUrl": "https://kisscloud.online/video/9dada1df65473b498f1f50c9f25beb43",
           "audioTracks": {
-            "Original Audio": "https://streamimdb.ru/embed/tv/tt47661704/S01E01"
-          }
+            "Original Audio": "https://kisscloud.online/video/9dada1df65473b498f1f50c9f25beb43"
+          },
+          "servers": [
+            {
+              "name": "Server 1 (Fast HD - KissCloud)",
+              "url": "https://kisscloud.online/video/9dada1df65473b498f1f50c9f25beb43"
+            }
+          ]
         },
         {
           "number": "02",
@@ -1441,10 +1455,16 @@
           "duration": "54m",
           "overview": "Marketer Yeon-su clashes with her new client, Dal.",
           "still": "https://image.tmdb.org/t/p/w500/t1CwNUIiksO55nLFUF01GJtNFpt.jpg",
-          "streamUrl": "https://streamimdb.ru/embed/tv/tt47661704/S01E02",
+          "streamUrl": "https://kisscloud.online/video/bcba3d64b7e6c74eb7a73be5800d0491",
           "audioTracks": {
-            "Original Audio": "https://streamimdb.ru/embed/tv/tt47661704/S01E02"
-          }
+            "Original Audio": "https://kisscloud.online/video/bcba3d64b7e6c74eb7a73be5800d0491"
+          },
+          "servers": [
+            {
+              "name": "Server 1 (Fast HD - KissCloud)",
+              "url": "https://kisscloud.online/video/bcba3d64b7e6c74eb7a73be5800d0491"
+            }
+          ]
         },
         {
           "number": "03",
@@ -1452,10 +1472,16 @@
           "duration": "57m",
           "overview": "A heated argument over love leads to an unexpected move by Dal, leaving a confused Yeon-su reeling.",
           "still": "https://image.tmdb.org/t/p/w500/b6xVpaHZoVNjuckq7azkn928GSC.jpg",
-          "streamUrl": "https://streamimdb.ru/embed/tv/tt47661704/S01E03",
+          "streamUrl": "https://kisscloud.online/video/205a8cafa5be198a0db7c67b90451497",
           "audioTracks": {
-            "Original Audio": "https://streamimdb.ru/embed/tv/tt47661704/S01E03"
-          }
+            "Original Audio": "https://kisscloud.online/video/205a8cafa5be198a0db7c67b90451497"
+          },
+          "servers": [
+            {
+              "name": "Server 1 (Fast HD - KissCloud)",
+              "url": "https://kisscloud.online/video/205a8cafa5be198a0db7c67b90451497"
+            }
+          ]
         },
         {
           "number": "04",
@@ -1463,13 +1489,20 @@
           "duration": "50m",
           "overview": "Yeon-su's event idea takes shape. Meanwhile, Dal shocks her family with an overly blunt remark.",
           "still": "https://image.tmdb.org/t/p/w500/iI5tXzybcj22Jh1sZjecbRcJb5q.jpg",
-          "streamUrl": "https://streamimdb.ru/embed/tv/tt47661704/S01E04",
+          "streamUrl": "https://kisscloud.online/video/6495fc163fb8f2fc0fe7c8a06fc8ed18",
           "audioTracks": {
-            "Original Audio": "https://streamimdb.ru/embed/tv/tt47661704/S01E04"
-          }
+            "Original Audio": "https://kisscloud.online/video/6495fc163fb8f2fc0fe7c8a06fc8ed18"
+          },
+          "servers": [
+            {
+              "name": "Server 1 (Fast HD - KissCloud)",
+              "url": "https://kisscloud.online/video/6495fc163fb8f2fc0fe7c8a06fc8ed18"
+            }
+          ]
         }
       ],
-      "type": "series"
+      "type": "series",
+      "streamUrl": "https://kisscloud.online/video/9dada1df65473b498f1f50c9f25beb43"
     },
     {
       "id": "tmdb-s-303745",

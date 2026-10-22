@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v42';
+const CACHE_KEY = 'fobs_tv_content_cache_v43';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -2260,14 +2260,9 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     return;
   }
 
-  // Handle direct iframe player embeds
+  // Handle direct iframe player embeds only for dedicated embed players (not blocked ones)
   const isIframeEmbed = (
-    url.includes('streamimdb.ru') ||
-    url.includes('irada438esc.com') ||
-    url.includes('nextgencloudfabric') ||
-    url.includes('hdfriday2.casa') ||
-    url.includes('/embed/movie/') ||
-    url.includes('/play/tt')
+    url.includes('nextgencloudfabric')
   );
 
   if (isIframeEmbed && embedFrame) {
@@ -2305,6 +2300,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
   const isEmbedOrIndirect = (
     url.includes('ok.ru') ||
     url.includes('pkembed.site') ||
+    url.includes('kisscloud.online') ||
     url.includes('vcloud.you') ||
     url.includes('fast-dl.one') ||
     url.includes('dailymotion.com') ||
