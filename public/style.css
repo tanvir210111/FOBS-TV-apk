@@ -2472,8 +2472,6 @@ body.is-fullscreen .player-top-header.controls-hidden,
   background: var(--accent-green);
   box-shadow: 0 0 8px rgba(0, 210, 106, 0.6);
 }
-  box-shadow: 0 0 8px rgba(0, 210, 106, 0.6);
-}
 
 .server-status-bar.error,
 .server-status-bar.offline {
