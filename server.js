@@ -259,7 +259,12 @@ async function resolveStreamUrl(rawUrl) {
           const decoded = optMatch[1].replace(/&quot;/g, '"');
           const opt = JSON.parse(decoded);
           const meta = typeof opt.flashvars.metadata === 'string' ? JSON.parse(opt.flashvars.metadata) : opt.flashvars.metadata;
-          const bestVideo = (meta.videos || []).find(v => v.name === 'sd' || v.name === 'hd') || (meta.videos || [])[0];
+          const qualities = ['full', '1080p', 'hd', '720p', 'sd', '480p', 'low', '360p', 'lowest', 'mobile'];
+          const bestVideo = (meta.videos || []).sort((a, b) => {
+            const idxA = qualities.indexOf(a.name?.toLowerCase());
+            const idxB = qualities.indexOf(b.name?.toLowerCase());
+            return (idxA !== -1 ? idxA : 99) - (idxB !== -1 ? idxB : 99);
+          })[0] || (meta.videos || [])[0];
           if (bestVideo && bestVideo.url) {
             resolved = bestVideo.url;
           } else if (meta.hlsManifestUrl) {
@@ -503,7 +508,7 @@ app.all('/api/stream', async (req, res) => {
       refererHeader = 'Referer: https://upbolt.to/\r\n';
     } else if (resolvedUrl.includes('vkuser.net') || targetUrl.includes('ok.ru')) {
       refererHeader = 'Referer: https://ok.ru/\r\n';
-    } else if (resolvedUrl.includes('vkpluscdn') || targetUrl.includes('pkembed')) {
+    } else if (resolvedUrl.includes('vkpluscdn') || resolvedUrl.includes('vkcdn') || targetUrl.includes('pkembed') || targetUrl.includes('pkspeed')) {
       refererHeader = 'Referer: https://pkembed.site/\r\n';
     }
 
@@ -608,7 +613,7 @@ app.all('/api/stream', async (req, res) => {
 
   if (resolvedUrl.includes('vkuser.net') || (targetUrl && targetUrl.includes('ok.ru'))) {
     requestHeaders['Referer'] = 'https://ok.ru/';
-  } else if (resolvedUrl.includes('vkpluscdn') || (targetUrl && targetUrl.includes('pkembed'))) {
+  } else if (resolvedUrl.includes('vkpluscdn') || resolvedUrl.includes('vkcdn') || (targetUrl && (targetUrl.includes('pkembed') || targetUrl.includes('pkspeed')))) {
     requestHeaders['Referer'] = 'https://pkembed.site/';
   }
 

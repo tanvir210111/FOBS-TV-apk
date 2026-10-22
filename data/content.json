@@ -619,19 +619,19 @@
         "Original Audio"
       ],
       "selectedAudio": "Hindi dub",
-      "streamUrl": "https://pkembed.site/embed-qe8m63wn8yk8.html",
+      "streamUrl": "https://ok.ru/videoembed/16195081144917",
       "servers": [
         {
           "name": "Server 1 (Fast HD - 720p)",
-          "url": "https://pkembed.site/embed-qe8m63wn8yk8.html"
+          "url": "https://ok.ru/videoembed/16195081144917"
         },
         {
           "name": "Server 2 (Data Saver - 360p)",
           "url": "https://pkembed.site/embed-dujgu9120oc9.html"
         },
         {
-          "name": "Server 3 (Backup - OK.ru)",
-          "url": "https://ok.ru/videoembed/16195081144917"
+          "name": "Server 3 (Backup - PkSpeed)",
+          "url": "https://pkembed.site/embed-qe8m63wn8yk8.html"
         }
       ],
       "cast": [
