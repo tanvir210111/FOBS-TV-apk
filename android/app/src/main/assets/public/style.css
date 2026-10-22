@@ -29,6 +29,11 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+html, body {
+  overscroll-behavior-x: none !important;
+  overscroll-behavior: none !important;
+}
+
 body {
   background-color: #07070a;
   color: var(--text-primary);
@@ -39,6 +44,8 @@ body {
   display: flex;
   justify-content: center;
   min-height: 100vh;
+  overscroll-behavior-x: none !important;
+  overscroll-behavior: none !important;
 }
 
 /* Constrained to mobile dimensions for authentic mobile app feel */
@@ -1027,6 +1034,8 @@ body {
   display: none;
   flex-direction: column;
   overflow: hidden;
+  overscroll-behavior-x: none !important;
+  overscroll-behavior: none !important;
 }
 
 .player-view-overlay.open {

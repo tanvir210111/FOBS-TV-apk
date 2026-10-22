@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v37';
+const CACHE_KEY = 'fobs_tv_content_cache_v38';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -1281,7 +1281,11 @@ function setupSeriesHeroSwipeGestures() {
   });
 }
 
-// Touch & Swipe Gestures to close player (Restricted STRICTLY to screen edges like native Android)
+// Touch & Swipe Gestures to close player
+// RULES:
+// 1. NO left-to-right swipe back at all (deltaX > 0 does nothing).
+// 2. Only right-to-left swipe (deltaX < 0) strictly originating from the extreme right edge (startX >= window.innerWidth - 30).
+// 3. Any touch in the middle or left of the screen does NOTHING.
 function setupPlayerSwipeToClose() {
   const player = document.getElementById('playerOverlay');
   if (!player) return;
@@ -1291,9 +1295,10 @@ function setupPlayerSwipeToClose() {
   let deltaX = 0;
   let deltaY = 0;
   let isTouching = false;
-  let isEdgeSwipe = false;
+  let isRightEdgeSwipe = false;
 
-  const EDGE_ZONE_WIDTH = 45; // Only swipes starting within 45px of screen borders
+  // Strictly within 30px from the extreme right edge of the screen
+  const EXTREME_RIGHT_EDGE_WIDTH = 30;
 
   player.addEventListener('touchstart', (e) => {
     if (document.fullscreenElement || document.webkitFullscreenElement) return;
@@ -1308,43 +1313,35 @@ function setupPlayerSwipeToClose() {
     deltaX = 0;
     deltaY = 0;
 
-    // Must start within the left edge (0 - 45px) or right edge (width - 45px)
-    const isLeftEdge = startX <= EDGE_ZONE_WIDTH;
-    const isRightEdge = startX >= (window.innerWidth - EDGE_ZONE_WIDTH);
+    // Check if the touch strictly started at the extreme right edge of the screen
+    isRightEdgeSwipe = startX >= (window.innerWidth - EXTREME_RIGHT_EDGE_WIDTH);
 
-    if (isLeftEdge || isRightEdge) {
-      isEdgeSwipe = true;
+    if (isRightEdgeSwipe) {
       isTouching = true;
     } else {
-      isEdgeSwipe = false;
       isTouching = false;
     }
   }, { passive: true });
 
   player.addEventListener('touchmove', (e) => {
-    if (!isTouching || !isEdgeSwipe) return;
+    if (!isTouching || !isRightEdgeSwipe) return;
     const t = e.touches[0];
     deltaX = t.clientX - startX;
     deltaY = t.clientY - startY;
   }, { passive: true });
 
   player.addEventListener('touchend', () => {
-    if (!isTouching || !isEdgeSwipe) {
+    if (!isTouching || !isRightEdgeSwipe) {
       isTouching = false;
-      isEdgeSwipe = false;
+      isRightEdgeSwipe = false;
       return;
     }
     isTouching = false;
-    isEdgeSwipe = false;
+    isRightEdgeSwipe = false;
 
-    // 1. Left-edge swipe towards right (Standard Android/iOS back gesture)
-    if (startX <= EDGE_ZONE_WIDTH && deltaX > 70 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3) {
-      closePlayer();
-      return;
-    }
-
-    // 2. Right-edge swipe towards left (Android right-edge back gesture)
-    if (startX >= window.innerWidth - EDGE_ZONE_WIDTH && deltaX < -70 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3) {
+    // ONLY Right-edge swipe towards left (deltaX must be negative, moving left by at least 65px)
+    // Left-to-right swipe (deltaX > 0) is completely ignored!
+    if (startX >= (window.innerWidth - EXTREME_RIGHT_EDGE_WIDTH) && deltaX < -65 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3) {
       closePlayer();
       return;
     }
