@@ -42,14 +42,22 @@
       "Hindi (Original)"
     ],
     "selectedAudio": "Hindi (Original)",
-    "streamUrl": "https://irada438esc.com/play/tt40855841",
+    "streamUrl": "https://drive.usercontent.google.com/download?id=1N-jel5KOg4NyaXVwHgj3ewjVEvWzicuB&export=download&authuser=0&confirm=t",
     "servers": [
       {
-        "name": "Server 1 (HD Player - HDFriday)",
+        "name": "Server 1 (Fast HD - HDFriday GDrive 1080P)",
+        "url": "https://drive.usercontent.google.com/download?id=1N-jel5KOg4NyaXVwHgj3ewjVEvWzicuB&export=download&authuser=0&confirm=t"
+      },
+      {
+        "name": "Server 2 (Fast HD - HDFriday GDrive 720P)",
+        "url": "https://drive.usercontent.google.com/download?id=1yIGS4ujk_ZGlyXhcvFrnWw4eXTbh6sQR&export=download&authuser=0&confirm=t"
+      },
+      {
+        "name": "Server 3 (HD Player - HDFriday Web Player)",
         "url": "https://irada438esc.com/play/tt40855841"
       },
       {
-        "name": "Server 2 (Super Player - HDFriday)",
+        "name": "Server 4 (Super Player - HDFriday Web Player)",
         "url": "https://streamimdb.ru/embed/movie/tt40855841"
       }
     ],
@@ -133,14 +141,22 @@
         "Hindi (Original)"
       ],
       "selectedAudio": "Hindi (Original)",
-      "streamUrl": "https://irada438esc.com/play/tt40855841",
+      "streamUrl": "https://drive.usercontent.google.com/download?id=1N-jel5KOg4NyaXVwHgj3ewjVEvWzicuB&export=download&authuser=0&confirm=t",
       "servers": [
         {
-          "name": "Server 1 (HD Player - HDFriday)",
+          "name": "Server 1 (Fast HD - HDFriday GDrive 1080P)",
+          "url": "https://drive.usercontent.google.com/download?id=1N-jel5KOg4NyaXVwHgj3ewjVEvWzicuB&export=download&authuser=0&confirm=t"
+        },
+        {
+          "name": "Server 2 (Fast HD - HDFriday GDrive 720P)",
+          "url": "https://drive.usercontent.google.com/download?id=1yIGS4ujk_ZGlyXhcvFrnWw4eXTbh6sQR&export=download&authuser=0&confirm=t"
+        },
+        {
+          "name": "Server 3 (HD Player - HDFriday Web Player)",
           "url": "https://irada438esc.com/play/tt40855841"
         },
         {
-          "name": "Server 2 (Super Player - HDFriday)",
+          "name": "Server 4 (Super Player - HDFriday Web Player)",
           "url": "https://streamimdb.ru/embed/movie/tt40855841"
         }
       ],

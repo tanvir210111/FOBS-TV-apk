@@ -2263,7 +2263,9 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
   // Handle direct iframe player embeds only for dedicated embed players (not blocked ones)
   const isIframeEmbed = (
     url.includes('nextgencloudfabric') ||
-    url.includes('streamimdb.ru')
+    url.includes('streamimdb.ru') ||
+    url.includes('irada438esc.com') ||
+    url.includes('irada')
   );
 
   if (isIframeEmbed && embedFrame) {
