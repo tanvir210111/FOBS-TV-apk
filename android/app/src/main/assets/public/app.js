@@ -4135,12 +4135,25 @@ window.onNativeApkDownloadComplete = function() {
   const fill = document.getElementById('updateProgressBarFill');
   const percentText = document.getElementById('updateProgressPercent');
   const labelText = document.getElementById('updateProgressLabel');
+  const btnStart = document.getElementById('btnStartUpdate');
 
   if (fill) fill.style.width = '100%';
   if (percentText) percentText.textContent = '100%';
-  if (labelText) labelText.textContent = 'Download complete! Opening package installer...';
+  if (labelText) labelText.textContent = 'Download complete! Tap Install Now if not opened.';
 
   isUpdatingApp = false;
+
+  if (btnStart) {
+    btnStart.style.display = 'flex';
+    btnStart.innerHTML = '<i class="fa-solid fa-download"></i> <span>Install Now</span>';
+    btnStart.onclick = function() {
+      if (window.AndroidApp && typeof window.AndroidApp.installDownloadedApkNow === 'function') {
+        window.AndroidApp.installDownloadedApkNow();
+      } else {
+        startAppUpdate();
+      }
+    };
+  }
 };
 
 window.onNativeApkDownloadError = function(errorMsg) {

@@ -277,6 +277,34 @@ public class MainActivity extends BridgeActivity {
                 }
             });
         }
+
+        @JavascriptInterface
+        public void installDownloadedApkNow() {
+            runOnUiThread(() -> {
+                File storageDir = getExternalCacheDir();
+                if (storageDir == null) storageDir = getCacheDir();
+                File apkFile = new File(storageDir, "fobs_tv_update.apk");
+                if (apkFile.exists()) {
+                    installDownloadedApk(apkFile);
+                } else if (pendingInstallApk != null && pendingInstallApk.exists()) {
+                    installDownloadedApk(pendingInstallApk);
+                }
+            });
+        }
+    }
+
+    private File pendingInstallApk = null;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (pendingInstallApk != null && pendingInstallApk.exists()) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || getPackageManager().canRequestPackageInstalls()) {
+                File apkToInstall = pendingInstallApk;
+                pendingInstallApk = null;
+                installDownloadedApk(apkToInstall);
+            }
+        }
     }
 
     public void installDownloadedApk(File apkFile) {
@@ -288,6 +316,7 @@ public class MainActivity extends BridgeActivity {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 if (!getPackageManager().canRequestPackageInstalls()) {
+                    pendingInstallApk = apkFile;
                     Toast.makeText(this, "Please allow unknown apps permission to update FOBS TV", Toast.LENGTH_LONG).show();
                     Intent settingsIntent = new Intent(android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
                     settingsIntent.setData(Uri.parse("package:" + getPackageName()));
@@ -295,6 +324,7 @@ public class MainActivity extends BridgeActivity {
                     return;
                 }
             }
+            pendingInstallApk = null;
 
             Uri apkUri;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
