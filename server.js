@@ -651,7 +651,7 @@ app.all('/api/stream', async (req, res) => {
     ffmpegArgs.push(
       '-avoid_negative_ts', 'make_zero',
       '-f', 'mp4',
-      '-movflags', 'frag_keyframe+default_base_moof',
+      '-movflags', 'frag_keyframe+empty_moov+default_base_moof',
       'pipe:1'
     );
 

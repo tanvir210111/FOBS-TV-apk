@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v45';
+const CACHE_KEY = 'fobs_tv_content_cache_v46';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -2286,9 +2286,11 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
 
   if (isIframeEmbed && embedFrame) {
     if (videoPlayer) {
+      videoPlayer._ignoreErrors = true;
       videoPlayer.pause();
       videoPlayer.style.display = 'none';
       videoPlayer.removeAttribute('src');
+      videoPlayer.load();
     }
     const lsUi = document.getElementById('landscapePlayerUI');
     if (lsUi) lsUi.style.display = 'none';
@@ -3290,8 +3292,8 @@ function setupVideoListeners() {
   videoPlayer.addEventListener('error', (e) => {
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
 
-    // If player is closing or no active media, DO NOT attempt fallback retry!
-    if (videoPlayer._isClosing || !appState.currentMedia) {
+    // If player is closing, ignoring errors, or iframe embed player is active, DO NOT attempt fallback retry!
+    if (videoPlayer._isClosing || videoPlayer._ignoreErrors || !appState.currentMedia || (embedFrame && embedFrame.style.display === 'block') || videoPlayer.style.display === 'none') {
       return;
     }
 
