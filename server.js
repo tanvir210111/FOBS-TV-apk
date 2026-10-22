@@ -440,31 +440,28 @@ setTimeout(prewarmEpisodeStreams, 1500);
 app.get('/api/debug-irada', async (req, res) => {
   const steps = [];
   try {
-    const rawUrl = req.query.url || 'https://irada438esc.com/play/tt47661704?ep=1';
+    const rawUrl = req.query.url || 'https://hdfriday2.casa/episodes/make-me-tingle-1x1/';
     steps.push({ step: 'start', rawUrl });
-    const pageUrl = rawUrl.split('?')[0];
-    const r = await axios.get(pageUrl, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)', 'Referer': 'https://hdfriday2.casa/' },
+    const r = await axios.get(rawUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
       timeout: 10000
     });
-    steps.push({ step: 'page_get_ok', status: r.status, htmlLength: r.data.length });
-    const m = r.data.match(/(?:let p3\s*=|new HDVBPlayer\()\s*(\{[\s\S]*?\})\s*\)?;/);
-    if (!m) return res.json({ ok: false, error: 'p3 not found in html', steps, htmlPreview: r.data.slice(0, 500) });
-    const p3 = JSON.parse(m[1]);
-    steps.push({ step: 'p3_parsed', href: p3.href, file: p3.file, key: p3.key ? p3.key.slice(0, 10) + '...' : null });
-    const fileUrl = p3.file.startsWith('http') ? p3.file : ('https://' + (p3.href || 'krico443jez.com') + p3.file);
-    const post1 = await axios.post(fileUrl, null, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-        'Referer': pageUrl,
-        'Origin': 'https://irada438esc.com',
-        'X-CSRF-TOKEN': p3.key,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      timeout: 10000
-    });
-    steps.push({ step: 'post1_ok', isArray: Array.isArray(post1.data), length: post1.data?.length });
-    res.json({ ok: true, steps, post1Data: post1.data });
+    const iframes = [...r.data.matchAll(/<iframe[^>]+src=["']([^"']+)["']/gi)].map(m => m[1]);
+    steps.push({ step: 'hdfriday_iframes', iframes });
+
+    for (const iframeUrl of iframes) {
+      try {
+        const fullIframe = iframeUrl.startsWith('//') ? 'https:' + iframeUrl : iframeUrl;
+        const ir = await axios.get(fullIframe, {
+          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)', 'Referer': rawUrl },
+          timeout: 10000
+        });
+        steps.push({ iframe: fullIframe, status: ir.status, len: ir.data.length, hasHdvb: ir.data.includes('HDVBPlayer') });
+      } catch (e) {
+        steps.push({ iframe: iframeUrl, error: e.message, status: e.response?.status });
+      }
+    }
+    res.json({ ok: true, steps });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message, stack: err.stack, steps });
   }
