@@ -36,6 +36,117 @@
   },
   "movies": [
     {
+      "id": "tmdb-m-1101383",
+      "title": "The End of Oak Street (2026)",
+      "originalTitle": "The End of Oak Street",
+      "language": "English",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Hallprint",
+      "tag": "Hallprint",
+      "quality": "Hallprint",
+      "industry": "Hollywood",
+      "year": "2026",
+      "country": "USA",
+      "genre": "Science Fiction, Mystery, Thriller",
+      "duration": "1h 40m",
+      "category": "Trending Movies",
+      "rating": "7.1",
+      "imdbRating": "7.1",
+      "poster": "https://image.tmdb.org/t/p/w500/hkPxuAMEqIqo1HCtIi4sqx0GRuP.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/b9q9VmbXDvJmTziRqkwdEmFdwhr.jpg",
+      "description": "After a mysterious cosmic event rips Oak Street from suburbia and transports their neighborhood to someplace unknown, the Platt family soon discovers that their very survival depends on them sticking together as they navigate their now unrecognizable surroundings.",
+      "audioTracks": [
+        "Hindi dub",
+        "English (Original)"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://pkembed.site/embed-oxrguzwgpg4g.html",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD - PkSpeed 720p)",
+          "url": "https://pkembed.site/embed-oxrguzwgpg4g.html"
+        },
+        {
+          "name": "Server 2 (PkSpeed 360p)",
+          "url": "https://pkembed.site/embed-eqsaz6hcltbk.html"
+        },
+        {
+          "name": "Server 3 (CloudVideo 720p)",
+          "url": "https://do7go.com/e/19sfh1fk7ag3"
+        },
+        {
+          "name": "Server 4 (CloudVideo 360p)",
+          "url": "https://do7go.com/e/o4kidtko1jpw"
+        },
+        {
+          "name": "Server 5 (OK.ru HD)",
+          "url": "https://ok.ru/videoembed/16034672872021?nochat=1"
+        },
+        {
+          "name": "Server 6 (Streamtape 720p)",
+          "url": "https://streamtape.to/e/2K8j939ze0FZ0qe"
+        },
+        {
+          "name": "Server 7 (MixDrop 720p)",
+          "url": "https://mxdrop.to/e/q1lkjkeeh93rre"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Anne Hathaway",
+          "character": "Denise Platt",
+          "photo": "https://image.tmdb.org/t/p/w185/s6tflSD20MGz04ZR2R1lZvhmC4Y.jpg"
+        },
+        {
+          "name": "Ewan McGregor",
+          "character": "Greg Platt",
+          "photo": "https://image.tmdb.org/t/p/w185/q2UDxfwWnmXTB7khOUF3J9puBVP.jpg"
+        },
+        {
+          "name": "Maisy Stella",
+          "character": "Audrey Platt",
+          "photo": "https://image.tmdb.org/t/p/w185/dlnP0Yzbr9EEbVg6M0PQVQ7pwUF.jpg"
+        },
+        {
+          "name": "Christian Convery",
+          "character": "Brian Platt",
+          "photo": "https://image.tmdb.org/t/p/w185/tOR2tSrvHPVDltE4jBDEva3GNqY.jpg"
+        },
+        {
+          "name": "Jordan Alexa Davis",
+          "character": "Jeannette Christiansen",
+          "photo": "https://image.tmdb.org/t/p/w185/itz31u3sG9hAlwuFZ6FWz1KhY1R.jpg"
+        },
+        {
+          "name": "P.J. Byrne",
+          "character": "Mel Jacobs",
+          "photo": "https://image.tmdb.org/t/p/w185/1JVBaxRy3OxkHymD3nwBd5kVWWL.jpg"
+        },
+        {
+          "name": "Hudson Meek",
+          "character": "Kaden Tucker",
+          "photo": "https://image.tmdb.org/t/p/w185/29S5mIoO18vNbOs0qrLC2XRVNlV.jpg"
+        },
+        {
+          "name": "Anne Gee Byrd",
+          "character": "Mrs. Huddleston",
+          "photo": "https://image.tmdb.org/t/p/w185/yNqUNepmVQ462yoTnZOWVbudKeG.jpg"
+        },
+        {
+          "name": "Emily Kuroda",
+          "character": "Mrs. Valcourt",
+          "photo": "https://image.tmdb.org/t/p/w185/yaZhAxSsElEaX0az2U6FUBN38ET.jpg"
+        },
+        {
+          "name": "Simms May",
+          "character": "Zachary",
+          "photo": "https://image.tmdb.org/t/p/w185/jfOkBcfi07i4xl9ayjwcOZgerhe.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
       "id": "tmdb-m-1423191",
       "title": "Resident Evil (2026)",
       "originalTitle": "Resident Evil",
