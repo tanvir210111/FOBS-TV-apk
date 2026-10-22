@@ -296,7 +296,7 @@ public class MainActivity extends BridgeActivity {
     private File pendingInstallApk = null;
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (pendingInstallApk != null && pendingInstallApk.exists()) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || getPackageManager().canRequestPackageInstalls()) {
