@@ -354,21 +354,21 @@ app.get('/api/app-update', (req, res) => {
   const data = getContentData();
   const defaultUpdate = {
     enabled: true,
-    latestVersionCode: 2,
-    latestVersionName: '1.1.0',
-    minVersionCode: 2,
+    latestVersionCode: 3,
+    latestVersionName: '1.2.0',
+    minVersionCode: 3,
     forceUpdate: true,
     title: 'Update Available!',
-    message: 'A new version of FOBS TV is available with faster streaming servers and bug fixes. You must update now to continue using FOBS TV.',
+    message: 'A new version of FOBS TV (v1.2.0) is available with fixed swipe-to-back, smooth scrolling, and all-new 2026 movies. Update now to continue using FOBS TV.',
     releaseNotes: [
-      'Fixed video playback across all servers',
-      'Added Pull-to-Refresh feature',
-      'Added high-speed streaming servers',
-      'In-app fast auto-updater'
+      'Fixed swipe-to-back: no accidental back when swiping in the middle of the screen',
+      'Fixed smooth scrolling and pull-to-refresh',
+      'All 2026 movies with high-speed CDN servers',
+      'Performance and player stability improvements'
     ],
-    downloadUrl: 'https://github.com/tanvir210111/FOBS-TV-apk/releases/latest/download/app-release.apk',
+    downloadUrl: 'https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk',
     fallbackUrl: '/download/apk',
-    fileSize: '5.0 MB'
+    fileSize: '5.2 MB'
   };
   res.json(data.appUpdate || defaultUpdate);
 });

@@ -5,6 +5,9 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -45,3 +48,18 @@ jobs:
         with:
           name: FOBS-TV-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Create or Update GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref == 'refs/heads/main'
+        with:
+          tag_name: latest
+          name: "FOBS TV Latest (v1.2.0)"
+          body: "Latest FOBS TV APK release with fixed swipe-to-back, smooth scrolling, and 2026 movies."
+          draft: false
+          prerelease: false
+          files: |
+            android/app/build/outputs/apk/debug/app-debug.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
