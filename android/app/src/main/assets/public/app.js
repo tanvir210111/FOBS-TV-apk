@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v36';
+const CACHE_KEY = 'fobs_tv_content_cache_v37';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -1281,7 +1281,7 @@ function setupSeriesHeroSwipeGestures() {
   });
 }
 
-// Touch & Swipe Gestures to close player (Slide back horizontally or swipe down)
+// Touch & Swipe Gestures to close player (Restricted STRICTLY to screen edges like native Android)
 function setupPlayerSwipeToClose() {
   const player = document.getElementById('playerOverlay');
   if (!player) return;
@@ -1291,46 +1291,60 @@ function setupPlayerSwipeToClose() {
   let deltaX = 0;
   let deltaY = 0;
   let isTouching = false;
+  let isEdgeSwipe = false;
+
+  const EDGE_ZONE_WIDTH = 45; // Only swipes starting within 45px of screen borders
 
   player.addEventListener('touchstart', (e) => {
     if (document.fullscreenElement || document.webkitFullscreenElement) return;
     if (e.target.tagName === 'INPUT' || e.target.closest('input')) return;
     if (e.target.tagName === 'VIDEO' || e.target.closest('video') || e.target.closest('.video-container')) return;
+    // Don't intercept touches inside interactive or horizontal scrolling rows
+    if (e.target.closest('.servers-list-row') || e.target.closest('.episodes-list-row') || e.target.closest('.cast-row') || e.target.closest('.server-pill') || e.target.closest('.ep-pill')) return;
+
     const t = e.touches[0];
     startX = t.clientX;
     startY = t.clientY;
     deltaX = 0;
     deltaY = 0;
-    isTouching = true;
+
+    // Must start within the left edge (0 - 45px) or right edge (width - 45px)
+    const isLeftEdge = startX <= EDGE_ZONE_WIDTH;
+    const isRightEdge = startX >= (window.innerWidth - EDGE_ZONE_WIDTH);
+
+    if (isLeftEdge || isRightEdge) {
+      isEdgeSwipe = true;
+      isTouching = true;
+    } else {
+      isEdgeSwipe = false;
+      isTouching = false;
+    }
   }, { passive: true });
 
   player.addEventListener('touchmove', (e) => {
-    if (!isTouching) return;
+    if (!isTouching || !isEdgeSwipe) return;
     const t = e.touches[0];
     deltaX = t.clientX - startX;
     deltaY = t.clientY - startY;
   }, { passive: true });
 
   player.addEventListener('touchend', () => {
-    if (!isTouching) return;
+    if (!isTouching || !isEdgeSwipe) {
+      isTouching = false;
+      isEdgeSwipe = false;
+      return;
+    }
     isTouching = false;
+    isEdgeSwipe = false;
 
-    // 1. Slide from left to right (Edge or screen swipe back)
-    if (deltaX > 60 && Math.abs(deltaX) > Math.abs(deltaY) * 1.1) {
+    // 1. Left-edge swipe towards right (Standard Android/iOS back gesture)
+    if (startX <= EDGE_ZONE_WIDTH && deltaX > 70 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3) {
       closePlayer();
       return;
     }
 
-    // 2. Slide from right edge to left (Android right-edge back gesture on screen)
-    if (startX > window.innerWidth - 65 && deltaX < -50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.1) {
-      closePlayer();
-      return;
-    }
-
-    // 3. Swipe down to dismiss (when scrolled at top, like YouTube)
-    const scrollContainer = player.querySelector('.player-content-scroll');
-    const isAtTop = !scrollContainer || scrollContainer.scrollTop <= 5;
-    if (deltaY > 90 && Math.abs(deltaY) > Math.abs(deltaX) * 1.2 && isAtTop) {
+    // 2. Right-edge swipe towards left (Android right-edge back gesture)
+    if (startX >= window.innerWidth - EDGE_ZONE_WIDTH && deltaX < -70 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3) {
       closePlayer();
       return;
     }
