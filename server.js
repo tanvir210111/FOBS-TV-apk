@@ -332,15 +332,35 @@ async function resolveStreamUrl(rawUrl) {
   }
   else if (rawUrl.includes('irada438esc.com') || rawUrl.includes('hdfriday')) {
     try {
-      const pageUrl = rawUrl.includes('irada438esc.com') ? rawUrl : 'https://irada438esc.com/play/tt40855841';
+      let epNum = 1;
+      const epMatch = rawUrl.match(/(?:1x|ep[=-]?|episode-?|s\d+e)(\d+)/i);
+      if (epMatch) epNum = parseInt(epMatch[1], 10);
+
+      let pageUrl = rawUrl;
+      if (rawUrl.includes('hdfriday')) {
+        const pageRes = await axios.get(rawUrl, {
+          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
+          timeout: 10000
+        });
+        const iradaMatch = pageRes.data.match(/https?:\/\/irada438esc\.com\/play\/(tt\d+)/i);
+        if (iradaMatch) {
+          pageUrl = 'https://irada438esc.com/play/' + iradaMatch[1];
+        } else {
+          pageUrl = 'https://irada438esc.com/play/tt40855841';
+        }
+      } else {
+        pageUrl = rawUrl.split('?')[0];
+      }
+
       const r = await axios.get(pageUrl, {
         headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)', 'Referer': 'https://hdfriday2.casa/' },
-        timeout: 8000
+        timeout: 10000
       });
-      const m = r.data.match(/let p3 = (\{[\s\S]*?\});/);
+      const m = r.data.match(/(?:let p3\s*=|new HDVBPlayer\()\s*(\{[\s\S]*?\})\s*\)?;/);
       if (m) {
         const p3 = JSON.parse(m[1]);
-        const post1 = await axios.post(p3.file, null, {
+        const fileUrl = p3.file.startsWith('http') ? p3.file : ('https://' + (p3.href || 'krico443jez.com') + p3.file);
+        const post1 = await axios.post(fileUrl, null, {
           headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
             'Referer': pageUrl,
@@ -348,12 +368,24 @@ async function resolveStreamUrl(rawUrl) {
             'X-CSRF-TOKEN': p3.key,
             'Content-Type': 'application/x-www-form-urlencoded'
           },
-          timeout: 8000
+          timeout: 10000
         });
-        if (post1.data && post1.data[0] && post1.data[0].file) {
-          const t = post1.data[0].file;
-          const fileUrl = 'https://krico443jez.com/playlist/' + t.substr(1) + '.txt';
-          const post2 = await axios.post(fileUrl, null, {
+        let targetFile = null;
+        if (post1.data && post1.data[0]) {
+          if (post1.data[0].file) {
+            targetFile = post1.data[0].file;
+          } else if (post1.data[0].folder) {
+            const eps = post1.data[0].folder;
+            const found = eps.find(e => parseInt(e.title, 10) === epNum) || eps[epNum - 1] || eps[0];
+            if (found) {
+              targetFile = (found.folder && found.folder[0] && found.folder[0].file) ? found.folder[0].file : found.file;
+            }
+          }
+        }
+        if (targetFile) {
+          const fileCode = targetFile.startsWith('~') ? targetFile.substr(1) : targetFile;
+          const fileUrl2 = 'https://krico443jez.com/playlist/' + fileCode + '.txt';
+          const post2 = await axios.post(fileUrl2, null, {
             headers: {
               'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
               'Referer': pageUrl,
@@ -361,7 +393,7 @@ async function resolveStreamUrl(rawUrl) {
               'X-CSRF-TOKEN': p3.key,
               'Content-Type': 'application/x-www-form-urlencoded'
             },
-            timeout: 8000
+            timeout: 10000
           });
           if (typeof post2.data === 'string' && post2.data.startsWith('http')) {
             resolved = post2.data.trim();
@@ -696,6 +728,8 @@ app.all('/api/stream', async (req, res) => {
     requestHeaders['Referer'] = 'https://pkembed.site/';
   } else if (resolvedUrl.includes('kisscloud.online') || (targetUrl && targetUrl.includes('kisscloud'))) {
     requestHeaders['Referer'] = 'https://kisscloud.online/';
+  } else if (resolvedUrl.includes('krico443jez.com') || (targetUrl && (targetUrl.includes('irada438esc.com') || targetUrl.includes('hdfriday')))) {
+    requestHeaders['Referer'] = 'https://irada438esc.com/';
   }
 
   if (range) {

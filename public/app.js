@@ -2171,13 +2171,14 @@ function openPlayer(media, episodeIndex = 0) {
 
   if (isSeries && media.episodes && media.episodes.length > 0) {
     if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'block';
-    const movieServersWrapper = document.getElementById('movieServersWrapper');
-    if (movieServersWrapper) movieServersWrapper.style.display = 'none';
-
     appState.currentEpisode = media.episodes[episodeIndex] || media.episodes[0];
+    appState.activeServerIndex = 0;
     renderEpisodePills(media.episodes, episodeIndex);
-    const activeEpStream = (appState.currentEpisode.audioTracks && appState.currentEpisode.audioTracks[appState.currentAudioTrack])
-      || appState.currentEpisode.streamUrl;
+    renderServerPills(media);
+    const activeEpStream = (appState.currentEpisode.servers && appState.currentEpisode.servers.length > 0)
+      ? appState.currentEpisode.servers[0].url
+      : ((appState.currentEpisode.audioTracks && appState.currentEpisode.audioTracks[appState.currentAudioTrack])
+        || appState.currentEpisode.streamUrl);
     playStreamUrl(activeEpStream);
   } else {
     if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'none';
@@ -2192,16 +2193,20 @@ function openPlayer(media, episodeIndex = 0) {
   renderForYouRecommendations();
 }
 
-// Render Server Pills for Movies with Multiple Sources
+// Render Server Pills for Movies/Series with Multiple Sources
 function renderServerPills(media) {
   const wrapper = document.getElementById('movieServersWrapper');
   const row = document.getElementById('serversListRow');
   if (!wrapper || !row) return;
 
-  if (media && media.servers && media.servers.length > 0) {
+  const currentServers = (appState.currentEpisode && appState.currentEpisode.servers && appState.currentEpisode.servers.length > 0)
+    ? appState.currentEpisode.servers
+    : (media && media.servers && media.servers.length > 0 ? media.servers : null);
+
+  if (currentServers && currentServers.length > 0) {
     wrapper.style.display = 'block';
     const activeIdx = appState.activeServerIndex !== undefined ? appState.activeServerIndex : 0;
-    row.innerHTML = media.servers.map((s, idx) => `
+    row.innerHTML = currentServers.map((s, idx) => `
       <button class="server-pill ${idx === activeIdx ? 'active' : ''}" onclick="selectServer(${idx})">
         <i class="fa-solid fa-play" style="font-size: 8px; opacity: 0.8;"></i> ${s.name}
       </button>
@@ -2211,11 +2216,14 @@ function renderServerPills(media) {
   }
 }
 
-// Select Movie Server Manually
+// Select Server Manually (Movie or Series Episode)
 function selectServer(idx) {
-  if (!appState.currentMedia || !appState.currentMedia.servers || !appState.currentMedia.servers[idx]) return;
+  const currentServers = (appState.currentEpisode && appState.currentEpisode.servers && appState.currentEpisode.servers.length > 0)
+    ? appState.currentEpisode.servers
+    : (appState.currentMedia && appState.currentMedia.servers ? appState.currentMedia.servers : null);
+  if (!currentServers || !currentServers[idx]) return;
   appState.activeServerIndex = idx;
-  const srv = appState.currentMedia.servers[idx];
+  const srv = currentServers[idx];
   renderServerPills(appState.currentMedia);
   showToast(`Switched to: ${srv.name}`);
   appState.streamSeekOffset = 0;
@@ -2242,9 +2250,13 @@ function selectEpisode(idx) {
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = null;
   appState.currentEpisode = appState.currentMedia.episodes[idx];
+  appState.activeServerIndex = 0;
   renderEpisodePills(appState.currentMedia.episodes, idx);
-  const activeEpStream = (appState.currentEpisode.audioTracks && appState.currentEpisode.audioTracks[appState.currentAudioTrack])
-    || appState.currentEpisode.streamUrl;
+  renderServerPills(appState.currentMedia);
+  const activeEpStream = (appState.currentEpisode.servers && appState.currentEpisode.servers.length > 0)
+    ? appState.currentEpisode.servers[0].url
+    : ((appState.currentEpisode.audioTracks && appState.currentEpisode.audioTracks[appState.currentAudioTrack])
+      || appState.currentEpisode.streamUrl);
   playStreamUrl(activeEpStream);
 }
 
@@ -2264,8 +2276,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
   const isIframeEmbed = (
     url.includes('nextgencloudfabric') ||
     url.includes('streamimdb.ru') ||
-    url.includes('irada438esc.com') ||
-    url.includes('irada')
+    (url.includes('irada438esc.com') && !url.includes('ep=') && !url.includes('direct=1'))
   );
 
   if (isIframeEmbed && embedFrame) {

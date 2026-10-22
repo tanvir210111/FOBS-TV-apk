@@ -24,19 +24,19 @@ async function addMakeMeTingle() {
   const episodes = [
     {
       epNum: 1,
-      streamUrl: 'https://streamimdb.ru/embed/tv/tt47661704/S01E01'
+      streamUrl: 'https://hdfriday2.casa/episodes/make-me-tingle-1x1/'
     },
     {
       epNum: 2,
-      streamUrl: 'https://streamimdb.ru/embed/tv/tt47661704/S01E02'
+      streamUrl: 'https://irada438esc.com/play/tt47661704?ep=2'
     },
     {
       epNum: 3,
-      streamUrl: 'https://streamimdb.ru/embed/tv/tt47661704/S01E03'
+      streamUrl: 'https://irada438esc.com/play/tt47661704?ep=3'
     },
     {
       epNum: 4,
-      streamUrl: 'https://streamimdb.ru/embed/tv/tt47661704/S01E04'
+      streamUrl: 'https://hdfriday2.casa/episodes/make-me-tingle-1x4/'
     }
   ].map(({ epNum, streamUrl }) => {
     const tmdbEp = (seasonData.episodes || []).find(e => e.episode_number === epNum) || {};
@@ -50,6 +50,20 @@ async function addMakeMeTingle() {
         ? `https://image.tmdb.org/t/p/w500${tmdbEp.still_path}`
         : `https://image.tmdb.org/t/p/w500${tmdb.backdrop_path}`,
       streamUrl: streamUrl,
+      servers: [
+        {
+          name: 'Server 1 (Fast HD - 1080p)',
+          url: streamUrl
+        },
+        {
+          name: 'Server 2 (HD Player)',
+          url: 'https://irada438esc.com/play/tt47661704'
+        },
+        {
+          name: 'Server 3 (Super Player)',
+          url: `https://streamimdb.ru/embed/tv/tt47661704/S01E0${epNum}`
+        }
+      ],
       audioTracks: {
         'Original Audio': streamUrl
       }
@@ -80,6 +94,21 @@ async function addMakeMeTingle() {
     description: `[Ongoing K-Drama - 4 Episodes Released] ${tmdb.overview || 'A marketer with traditional views on love and marriage tries to navigate a connection with an adult toy company CEO with different values.'}`,
     audioTracks: ['Original Audio'],
     selectedAudio: 'Original Audio',
+    streamUrl: 'https://hdfriday2.casa/episodes/make-me-tingle-1x1/',
+    servers: [
+      {
+        name: 'Server 1 (Fast HD - 1080p)',
+        url: 'https://hdfriday2.casa/episodes/make-me-tingle-1x1/'
+      },
+      {
+        name: 'Server 2 (HD Player)',
+        url: 'https://irada438esc.com/play/tt47661704'
+      },
+      {
+        name: 'Server 3 (Super Player)',
+        url: 'https://streamimdb.ru/embed/tv/tt47661704/S01E01'
+      }
+    ],
     cast: cast,
     episodes: episodes,
     type: 'series'
