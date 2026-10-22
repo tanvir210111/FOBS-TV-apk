@@ -17,7 +17,10 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import androidx.activity.OnBackPressedCallback;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.audiofx.LoudnessEnhancer;
 import android.net.Uri;
 import android.os.Environment;
 import android.widget.Toast;
@@ -39,6 +42,7 @@ public class MainActivity extends BridgeActivity {
     private WebChromeClient.CustomViewCallback customViewCallback;
     private FrameLayout fullscreenContainer;
     private FullscreenWebChromeClient customChromeClient;
+    private LoudnessEnhancer loudnessEnhancer = null;
 
     private class FullscreenWebChromeClient extends BridgeWebChromeClient {
         public FullscreenWebChromeClient(Bridge bridge) {
@@ -159,6 +163,42 @@ public class MainActivity extends BridgeActivity {
                         WindowManager.LayoutParams lp = window.getAttributes();
                         lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
                         window.setAttributes(lp);
+                    }
+                } catch (Exception ignored) {}
+            });
+        }
+
+        @JavascriptInterface
+        public void setAudioBoost(int boostPercent) {
+            runOnUiThread(() -> {
+                try {
+                    AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                    if (am != null) {
+                        int maxVol = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+                        if (boostPercent <= 100) {
+                            int vol = Math.max(0, Math.min(maxVol, Math.round((boostPercent / 100.0f) * maxVol)));
+                            am.setStreamVolume(AudioManager.STREAM_MUSIC, vol, 0);
+                            if (loudnessEnhancer != null) {
+                                loudnessEnhancer.setEnabled(false);
+                            }
+                        } else {
+                            // Max standard stream volume
+                            am.setStreamVolume(AudioManager.STREAM_MUSIC, maxVol, 0);
+                            
+                            // Hardware LoudnessEnhancer for 101% to 200% sound boost (MovieBox style)
+                            int targetBoost = Math.min(200, boostPercent);
+                            if (loudnessEnhancer == null) {
+                                try {
+                                    loudnessEnhancer = new LoudnessEnhancer(0);
+                                } catch (Exception ignored) {}
+                            }
+                            if (loudnessEnhancer != null) {
+                                float extraRatio = (targetBoost - 100) / 100.0f; // 0.0 to 1.0
+                                int targetGainmB = Math.round(extraRatio * 1800); // Up to +18 dB audio boost
+                                loudnessEnhancer.setTargetGain(targetGainmB);
+                                loudnessEnhancer.setEnabled(true);
+                            }
+                        }
                     }
                 } catch (Exception ignored) {}
             });
@@ -518,5 +558,16 @@ public class MainActivity extends BridgeActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            if (loudnessEnhancer != null) {
+                loudnessEnhancer.release();
+                loudnessEnhancer = null;
+            }
+        } catch (Exception ignored) {}
     }
 }

@@ -467,9 +467,22 @@ app.get('/api/resolve', async (req, res) => {
 
 // API: Get all contents
 app.get('/api/content', async (req, res) => {
-  const data = getContentData();
-  if (data.movies) data.movies.forEach(m => m.type = 'movie');
-  if (data.series) data.series.forEach(s => s.type = 'series');
+  const sortByRelease = (list) => {
+    if (!Array.isArray(list)) return [];
+    return list.sort((a, b) => {
+      const dateA = a.releaseDate || (a.year ? `${a.year}-01-01` : '2000-01-01');
+      const dateB = b.releaseDate || (b.year ? `${b.year}-01-01` : '2000-01-01');
+      return dateB.localeCompare(dateA);
+    });
+  };
+  if (data.movies) {
+    data.movies.forEach(m => m.type = 'movie');
+    data.movies = sortByRelease(data.movies);
+  }
+  if (data.series) {
+    data.series.forEach(s => s.type = 'series');
+    data.series = sortByRelease(data.series);
+  }
   if (data.upcoming) data.upcoming.forEach(u => u.type = u.type || 'series');
 
   // If liveTv is empty in local content.json, load working BD live TV channels

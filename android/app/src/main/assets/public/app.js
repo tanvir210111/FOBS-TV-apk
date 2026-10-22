@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v50';
+const CACHE_KEY = 'fobs_tv_content_cache_v53';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -1407,8 +1407,8 @@ function getCardBadgeRightHtml(item, fallback = '') {
 
 // Render Home Carousels
 function renderHomeFeeds() {
-  const movies = appState.content.movies || [];
-  const series = appState.content.series || [];
+  const movies = sortByReleaseDateDesc(appState.content.movies || []);
+  const series = sortByReleaseDateDesc(appState.content.series || []);
   const liveTv = appState.content.liveTv || [];
 
   // Trending Movies & Series with Rank Numbers (1, 2, 3)
@@ -1529,13 +1529,41 @@ function renderHomeFeeds() {
     `).join('');
   }
 
-  // 4b. Anime (Hindi Dubbed)
+  // 4a. Turkish (Hindi Dubbed) - Displayed directly above Anime
+  const homeTurkishContainer = document.getElementById('homeTurkishList');
+  if (homeTurkishContainer) {
+    const allTurkish = [...movies, ...series].filter(isTurkishMedia);
+    const sortedTurkish = sortByReleaseDateDesc(allTurkish);
+    if (sortedTurkish.length > 0) {
+      homeTurkishContainer.innerHTML = sortedTurkish.map(item => {
+        const isSeries = !!item.episodes || item.type === 'series';
+        return `
+          <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
+            <div class="card-poster-wrap">
+              <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
+              <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
+              ${getCardBadgeRightHtml(item, isSeries ? 'Series' : 'Movie')}
+              <div class="card-play-hover">
+                <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
+              </div>
+            </div>
+            <div class="card-title">${item.title}</div>
+            <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.4'} • ${isSeries ? (item.isOngoing ? (item.episodes ? item.episodes.length + ' Eps (Ongoing)' : 'Ongoing') : ((item.seasonsCount || 1) + ' Seasons')) : (item.year || '2023')}</div>
+          </div>
+        `;
+      }).join('');
+    } else {
+      homeTurkishContainer.innerHTML = `<div class="empty-category-msg"><i class="fa-solid fa-moon"></i> Turkish content coming soon</div>`;
+    }
+  }
+
+  // 4b. Anime
   const homeAnimeContainer = document.getElementById('homeAnimeList');
   if (homeAnimeContainer) {
     const allAnime = [...movies, ...series].filter(isAnimeMedia);
-    const animeItems = allAnime.length > 0 ? allAnime : movies.filter(m => m.country === 'Japan');
-    if (animeItems.length > 0) {
-      homeAnimeContainer.innerHTML = animeItems.map(item => `
+    const sortedAnime = sortByReleaseDateDesc(allAnime.length > 0 ? allAnime : movies.filter(m => m.country === 'Japan'));
+    if (sortedAnime.length > 0) {
+      homeAnimeContainer.innerHTML = sortedAnime.map(item => `
         <div class="media-card" onclick='openPlayerById("${item.type || (item.episodes ? 'series' : 'movie')}", "${item.id}")'>
           <div class="card-poster-wrap">
             <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
@@ -1603,6 +1631,19 @@ function renderMovieCardItem(item, rank = null) {
   `;
 }
 
+// Release Date Descending Sorter (Latest Releases Strictly First)
+function sortByReleaseDateDesc(list) {
+  if (!Array.isArray(list)) return [];
+  return [...list].sort((a, b) => {
+    const dateA = a.releaseDate || (a.year ? `${a.year}-01-01` : '2000-01-01');
+    const dateB = b.releaseDate || (b.year ? `${b.year}-01-01` : '2000-01-01');
+    if (dateB !== dateA) {
+      return dateB.localeCompare(dateA);
+    }
+    return (b.id || '').localeCompare(a.id || '');
+  });
+}
+
 // Unified Industry Categorization Predicates
 const isAnimeMedia = x => {
   if (!x) return false;
@@ -1615,9 +1656,21 @@ const isAnimeMedia = x => {
   return genre.includes('anime') || industry.includes('anime') || category.includes('anime') || badgeRight === 'anime' || tag === 'anime' || title.includes('anime');
 };
 
+const isTurkishMedia = x => {
+  if (!x) return false;
+  const cat = (x.category || '').toLowerCase();
+  const ind = (x.industry || '').toLowerCase();
+  const ctry = (x.country || '').toLowerCase();
+  const title = (x.title || '').toLowerCase();
+  const desc = (x.description || '').toLowerCase();
+  return cat.includes('turkish') || ind.includes('turkish') || ctry.includes('turkey') || ctry.includes('türkiye') ||
+         title.includes('ertugrul') || title.includes('osman') || title.includes('golden boy') || title.includes('arafta') ||
+         title.includes('sen cal kapimi') || title.includes('hercai') || title.includes('ask laftan') || desc.includes('turkish');
+};
+
 const isBollywoodMedia = m => {
   if (!m) return false;
-  if (isAnimeMedia(m)) return false;
+  if (isAnimeMedia(m) || isTurkishMedia(m)) return false;
   const cat = (m.category || '').toLowerCase();
   const ind = (m.industry || '').toLowerCase();
   const lang = (m.language || '').toLowerCase();
@@ -1627,7 +1680,7 @@ const isBollywoodMedia = m => {
 
 const isSouthMedia = m => {
   if (!m) return false;
-  if (isAnimeMedia(m)) return false;
+  if (isAnimeMedia(m) || isTurkishMedia(m)) return false;
   const cat = (m.category || '').toLowerCase();
   const ind = (m.industry || '').toLowerCase();
   const lang = (m.language || '').toLowerCase();
@@ -1636,7 +1689,7 @@ const isSouthMedia = m => {
 
 const isHollywoodMedia = x => {
   if (!x) return false;
-  if (isAnimeMedia(x)) return false;
+  if (isAnimeMedia(x) || isTurkishMedia(x)) return false;
   const cat = (x.category || '').toLowerCase();
   const ind = (x.industry || '').toLowerCase();
   const lang = (x.language || '').toLowerCase();
@@ -1646,7 +1699,7 @@ const isHollywoodMedia = x => {
 
 const isKoreanMedia = x => {
   if (!x) return false;
-  if (isAnimeMedia(x)) return false;
+  if (isAnimeMedia(x) || isTurkishMedia(x)) return false;
   const cat = (x.category || '').toLowerCase();
   const ind = (x.industry || '').toLowerCase();
   const lang = (x.language || '').toLowerCase();
@@ -1656,7 +1709,7 @@ const isKoreanMedia = x => {
 
 const isChineseMedia = x => {
   if (!x) return false;
-  if (isAnimeMedia(x)) return false;
+  if (isAnimeMedia(x) || isTurkishMedia(x)) return false;
   const cat = (x.category || '').toLowerCase();
   const ind = (x.industry || '').toLowerCase();
   const lang = (x.language || '').toLowerCase();
@@ -1666,7 +1719,7 @@ const isChineseMedia = x => {
 
 const isJapaneseMedia = x => {
   if (!x) return false;
-  if (isAnimeMedia(x)) return false;
+  if (isAnimeMedia(x) || isTurkishMedia(x)) return false;
   const cat = (x.category || '').toLowerCase();
   const ind = (x.industry || '').toLowerCase();
   const lang = (x.language || '').toLowerCase();
@@ -1675,16 +1728,16 @@ const isJapaneseMedia = x => {
 };
 
 const isOthersMovieMedia = m => (
-  !isBollywoodMedia(m) && !isSouthMedia(m) && !isHollywoodMedia(m) && !isKoreanMedia(m) && !isChineseMedia(m) && !isJapaneseMedia(m) && !isAnimeMedia(m)
+  !isBollywoodMedia(m) && !isSouthMedia(m) && !isHollywoodMedia(m) && !isKoreanMedia(m) && !isChineseMedia(m) && !isJapaneseMedia(m) && !isAnimeMedia(m) && !isTurkishMedia(m)
 );
 
 const isOthersSeriesMedia = s => (
-  !isBollywoodMedia(s) && !isSouthMedia(s) && !isHollywoodMedia(s) && !isKoreanMedia(s) && !isChineseMedia(s) && !isJapaneseMedia(s) && !isAnimeMedia(s)
+  !isBollywoodMedia(s) && !isSouthMedia(s) && !isHollywoodMedia(s) && !isKoreanMedia(s) && !isChineseMedia(s) && !isJapaneseMedia(s) && !isAnimeMedia(s) && !isTurkishMedia(s)
 );
 
 // Render All Movies Tab with Hero Banner & Categorized Horizontal Strips
 function renderAllMovies() {
-  const movies = appState.content.movies || [];
+  const movies = sortByReleaseDateDesc(appState.content.movies || []);
 
   // 1. Render Hero Banner for Movies
   renderMovieHeroBanner();
@@ -1700,43 +1753,47 @@ function renderAllMovies() {
 
   // A. Trending Movies
   const trendingMovies = movies.filter(m => m.category === 'Trending Movies' || parseFloat(m.imdbRating || m.rating || 0) >= 7.8);
-  renderCategoryList('movieTrendingList', trendingMovies.length > 0 ? trendingMovies : movies, true);
+  renderCategoryList('movieTrendingList', sortByReleaseDateDesc(trendingMovies.length > 0 ? trendingMovies : movies), true);
 
   // B. Recently Added
   const recentMovies = movies.filter(m => m.category === 'Recently Added' || m.category === 'Trending Movies');
-  renderCategoryList('movieRecentList', recentMovies.length > 0 ? recentMovies : movies);
+  renderCategoryList('movieRecentList', sortByReleaseDateDesc(recentMovies.length > 0 ? recentMovies : movies));
 
   // C. Bollywood
   const bollywoodMovies = movies.filter(isBollywood);
-  renderCategoryList('movieBollywoodList', bollywoodMovies);
+  renderCategoryList('movieBollywoodList', sortByReleaseDateDesc(bollywoodMovies));
 
   // D. South (Dubbed)
   const southMovies = movies.filter(isSouth);
-  renderCategoryList('movieSouthList', southMovies);
+  renderCategoryList('movieSouthList', sortByReleaseDateDesc(southMovies));
 
   // E. Hollywood (Dubbed)
   const hollywoodMovies = movies.filter(isHollywood);
-  renderCategoryList('movieHollywoodList', hollywoodMovies);
+  renderCategoryList('movieHollywoodList', sortByReleaseDateDesc(hollywoodMovies));
 
   // F. Korean (Dubbed)
   const koreanMovies = movies.filter(isKorean);
-  renderCategoryList('movieKoreanList', koreanMovies.length > 0 ? koreanMovies : (movies.filter(m => m.country === 'Korea')));
+  renderCategoryList('movieKoreanList', sortByReleaseDateDesc(koreanMovies.length > 0 ? koreanMovies : (movies.filter(m => m.country === 'Korea'))));
 
   // G. Chinese (Dubbed)
   const chineseMovies = movies.filter(isChinese);
-  renderCategoryList('movieChineseList', chineseMovies);
+  renderCategoryList('movieChineseList', sortByReleaseDateDesc(chineseMovies));
 
   // H. Japanese (Dubbed)
   const japaneseMovies = movies.filter(isJapanese);
-  renderCategoryList('movieJapaneseList', japaneseMovies);
+  renderCategoryList('movieJapaneseList', sortByReleaseDateDesc(japaneseMovies));
 
-  // I. Anime Movies (Hindi Dub)
+  // I. Turkish Movies (Hindi)
+  const turkishMovies = movies.filter(isTurkishMedia);
+  renderCategoryList('movieTurkishList', sortByReleaseDateDesc(turkishMovies));
+
+  // J. Anime Movies (Hindi Dub)
   const animeMovies = movies.filter(isAnimeMedia);
-  renderCategoryList('movieAnimeList', animeMovies.length > 0 ? animeMovies : (movies.filter(m => m.country === 'Japan')));
+  renderCategoryList('movieAnimeList', sortByReleaseDateDesc(animeMovies.length > 0 ? animeMovies : (movies.filter(m => m.country === 'Japan'))));
 
-  // J. Others (Dubbed)
+  // K. Others (Dubbed)
   const othersMovies = movies.filter(isOthers);
-  renderCategoryList('movieOthersList', othersMovies);
+  renderCategoryList('movieOthersList', sortByReleaseDateDesc(othersMovies));
 }
 
 function renderCategoryList(containerId, items, isRanked = false, isSeries = false) {
@@ -1920,8 +1977,26 @@ function openSectionDetail(sectionKey, title) {
       if (items.length === 0) items = series.filter(s => s.country === 'Japan');
       break;
 
+    case 'turkish':
+      items = [...movies, ...series].filter(isTurkishMedia);
+      break;
+
+    case 'movie-turkish':
+      items = movies.filter(isTurkishMedia);
+      break;
+
+    case 'series-turkish':
+      isOnlySeries = true;
+      items = series.filter(isTurkishMedia);
+      break;
+
     default:
       items = [...movies, ...series];
+  }
+
+  // Strictly sort newest releases first by TMDB release date
+  if (sectionKey !== 'upcoming') {
+    items = sortByReleaseDateDesc(items);
   }
 
   // Update item count badge
@@ -1994,7 +2069,7 @@ function scrollToAllMovies(category) {
 
 // Render All Series Tab with Hero Banner & Categorized Horizontal Strips
 function renderAllSeries() {
-  const series = appState.content.series || [];
+  const series = sortByReleaseDateDesc(appState.content.series || []);
 
   // 1. Render Hero Banner for Series
   renderSeriesHeroBanner();
@@ -2006,49 +2081,51 @@ function renderAllSeries() {
   const isKorean = isKoreanMedia;
   const isChinese = isChineseMedia;
   const isJapanese = isJapaneseMedia;
-  const isOthers = s => (
-    !isBollywood(s) && !isSouth(s) && !isHollywood(s) && !isKorean(s) && !isChinese(s) && !isJapanese(s)
-  );
+  const isOthers = isOthersSeriesMedia;
 
   // A. Trending Series
   const trendingSeries = series.filter(s => s.category === 'Trending Series' || parseFloat(s.imdbRating || s.rating || 0) >= 7.8);
-  renderCategoryList('seriesTrendingList', trendingSeries.length > 0 ? trendingSeries : series, true, true);
+  renderCategoryList('seriesTrendingList', sortByReleaseDateDesc(trendingSeries.length > 0 ? trendingSeries : series), true, true);
 
   // B. Recently Added
   const recentSeries = series.filter(s => s.category === 'Recently Added' || s.category === 'Trending Series');
-  renderCategoryList('seriesRecentList', recentSeries.length > 0 ? recentSeries : series, false, true);
+  renderCategoryList('seriesRecentList', sortByReleaseDateDesc(recentSeries.length > 0 ? recentSeries : series), false, true);
 
   // C. Bollywood Series
   const bollywoodSeries = series.filter(isBollywood);
-  renderCategoryList('seriesBollywoodList', bollywoodSeries, false, true);
+  renderCategoryList('seriesBollywoodList', sortByReleaseDateDesc(bollywoodSeries), false, true);
 
   // D. South Indian Series
   const southSeries = series.filter(isSouth);
-  renderCategoryList('seriesSouthList', southSeries, false, true);
+  renderCategoryList('seriesSouthList', sortByReleaseDateDesc(southSeries), false, true);
 
   // E. Hollywood Series
   const hollywoodSeries = series.filter(isHollywood);
-  renderCategoryList('seriesHollywoodList', hollywoodSeries, false, true);
+  renderCategoryList('seriesHollywoodList', sortByReleaseDateDesc(hollywoodSeries), false, true);
 
   // F. Korean (K-Drama)
   const koreanSeries = series.filter(isKorean);
-  renderCategoryList('seriesKoreanList', koreanSeries.length > 0 ? koreanSeries : (series.filter(s => s.country === 'Korea')), false, true);
+  renderCategoryList('seriesKoreanList', sortByReleaseDateDesc(koreanSeries.length > 0 ? koreanSeries : (series.filter(s => s.country === 'Korea'))), false, true);
 
   // G. Chinese (C-Drama)
   const chineseSeries = series.filter(isChinese);
-  renderCategoryList('seriesChineseList', chineseSeries, false, true);
+  renderCategoryList('seriesChineseList', sortByReleaseDateDesc(chineseSeries), false, true);
 
   // H. Japanese Series
   const japaneseSeries = series.filter(isJapanese);
-  renderCategoryList('seriesJapaneseList', japaneseSeries, false, true);
+  renderCategoryList('seriesJapaneseList', sortByReleaseDateDesc(japaneseSeries), false, true);
 
-  // I. Anime Series
+  // I. Turkish Series (Hindi)
+  const turkishSeries = series.filter(isTurkishMedia);
+  renderCategoryList('seriesTurkishList', sortByReleaseDateDesc(turkishSeries), false, true);
+
+  // J. Anime Series
   const animeSeries = series.filter(isAnimeMedia);
-  renderCategoryList('seriesAnimeList', animeSeries.length > 0 ? animeSeries : (series.filter(s => s.country === 'Japan')), false, true);
+  renderCategoryList('seriesAnimeList', sortByReleaseDateDesc(animeSeries.length > 0 ? animeSeries : (series.filter(s => s.country === 'Japan'))), false, true);
 
-  // J. Others Series
+  // K. Others Series
   const othersSeries = series.filter(isOthers);
-  renderCategoryList('seriesOthersList', othersSeries, false, true);
+  renderCategoryList('seriesOthersList', sortByReleaseDateDesc(othersSeries), false, true);
 }
 
 let currentLiveTvCategory = 'All';
@@ -2449,6 +2526,8 @@ function openPlayer(media, episodeIndex = 0) {
   // Reset video scale to default "Fit" mode (contain, perfectly centered without crop)
   const mainVideo = document.getElementById('mainVideoPlayer');
   if (mainVideo) {
+    mainVideo._hasTriedMultiEmbed = false;
+    mainVideo._retryCount = 0;
     mainVideo.classList.remove('scale-fill', 'fit-cover');
     mainVideo.classList.add('fit-contain');
   }
@@ -2628,6 +2707,11 @@ function selectEpisode(idx) {
   if (!appState.currentMedia) return;
   const currentEpisodes = getActiveSeasonEpisodes(appState.currentMedia);
   if (!currentEpisodes || !currentEpisodes[idx]) return;
+  const mainVideo = document.getElementById('mainVideoPlayer');
+  if (mainVideo) {
+    mainVideo._hasTriedMultiEmbed = false;
+    mainVideo._retryCount = 0;
+  }
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = null;
   appState.currentEpisode = currentEpisodes[idx];
@@ -2657,6 +2741,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
   const isIframeEmbed = (
     url.includes('vidlink.pro') ||
     url.includes('autoembed.co') ||
+    url.includes('multiembed.mov') ||
     url.includes('vidsrc') ||
     url.includes('nextgencloudfabric') ||
     url.includes('streamimdb.ru') ||
@@ -2686,8 +2771,19 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
 
     embedFrame.style.display = 'block';
     embedFrame.src = url;
+    const topHeader = document.getElementById('playerTopHeader');
+    if (topHeader) {
+      topHeader.style.display = 'flex';
+      topHeader.classList.remove('controls-hidden');
+    }
     if (loader) loader.classList.remove('active');
     return;
+  }
+
+  const topHeader = document.getElementById('playerTopHeader');
+  if (topHeader) {
+    topHeader.style.display = 'flex';
+    topHeader.classList.remove('controls-hidden');
   }
 
   if (embedFrame) {
@@ -3464,10 +3560,9 @@ function toggleVideoScaling() {
 
 function handlePlayerBackClick() {
   if (document.body.classList.contains('is-fullscreen')) {
-    exitFullscreenMode();
-  } else {
-    closePlayer();
+    exitFullscreenMode({ skipRotate: false });
   }
+  closePlayer();
 }
 
 // Global bridges called from Android MainActivity
@@ -3518,15 +3613,76 @@ function applyPlayerBrightness(val) {
   return playerBrightness;
 }
 
+let playerSoundLevel = 1.0; // 0.0 to 2.0 (0% to 200% sound boost)
+let webAudioBoostCtx = null;
+let webAudioBoostGain = null;
+let webAudioBoostSource = null;
+let webAudioBoostCompressor = null;
+
+function ensureWebAudioBoost(video) {
+  if (!video) return;
+  if (webAudioBoostCtx) {
+    if (webAudioBoostCtx.state === 'suspended') {
+      webAudioBoostCtx.resume().catch(() => {});
+    }
+    return;
+  }
+  try {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
+
+    // Connect Web Audio safely
+    const isCorsFriendly = !video.src || video.src.startsWith(window.location.origin) || video.src.includes('/api/stream') || video.src.startsWith('blob:');
+    if (isCorsFriendly) {
+      webAudioBoostCtx = new AudioContextClass();
+      webAudioBoostSource = webAudioBoostCtx.createMediaElementSource(video);
+      webAudioBoostGain = webAudioBoostCtx.createGain();
+
+      webAudioBoostCompressor = webAudioBoostCtx.createDynamicsCompressor();
+      webAudioBoostCompressor.threshold.setValueAtTime(-12, webAudioBoostCtx.currentTime);
+      webAudioBoostCompressor.knee.setValueAtTime(30, webAudioBoostCtx.currentTime);
+      webAudioBoostCompressor.ratio.setValueAtTime(12, webAudioBoostCtx.currentTime);
+      webAudioBoostCompressor.attack.setValueAtTime(0.003, webAudioBoostCtx.currentTime);
+      webAudioBoostCompressor.release.setValueAtTime(0.25, webAudioBoostCtx.currentTime);
+
+      webAudioBoostSource.connect(webAudioBoostGain);
+      webAudioBoostGain.connect(webAudioBoostCompressor);
+      webAudioBoostCompressor.connect(webAudioBoostCtx.destination);
+    }
+  } catch (err) {
+    console.warn('Web Audio Boost init:', err.message);
+  }
+}
+
 function applyPlayerVolume(val) {
   const video = document.getElementById('mainVideoPlayer');
-  if (!video) return 1.0;
-  
-  const safeVol = Math.max(0, Math.min(1.0, Number(val)));
-  video.volume = safeVol;
-  if (safeVol > 0 && video.muted) {
-    video.muted = false;
+  const safeVol = Math.max(0, Math.min(2.0, Number(val)));
+  playerSoundLevel = safeVol;
+
+  if (video) {
+    // HTML5 standard volume caps at 1.0
+    video.volume = Math.min(1.0, safeVol);
+    if (safeVol > 0 && video.muted) {
+      video.muted = false;
+    }
+
+    // Web Audio Gain Node Boost for web browsers (100% to 200%)
+    ensureWebAudioBoost(video);
+    if (webAudioBoostGain && webAudioBoostCtx) {
+      try {
+        const gainVal = safeVol <= 1.0 ? 1.0 : safeVol;
+        webAudioBoostGain.gain.setValueAtTime(gainVal, webAudioBoostCtx.currentTime);
+      } catch (e) {}
+    }
   }
+
+  // Native Android hardware volume + LoudnessEnhancer (MovieBox style up to 200%)
+  try {
+    if (window.AndroidApp && typeof window.AndroidApp.setAudioBoost === 'function') {
+      window.AndroidApp.setAudioBoost(Math.round(safeVol * 100));
+    }
+  } catch (e) {}
+
   return safeVol;
 }
 
@@ -3537,19 +3693,32 @@ function showGestureHud(type, value) {
   const valText = document.getElementById('gestureHudVal');
   if (!hud || !icon || !fill || !valText) return;
 
-  const pct = Math.round(value * 100);
-
   if (type === 'brightness') {
+    hud.classList.remove('boost-mode');
+    const pct = Math.round(value * 100);
     icon.innerHTML = '<i class="fa-solid fa-sun"></i>';
     fill.style.width = `${pct}%`;
     valText.innerText = `${pct}%`;
   } else if (type === 'volume') {
-    let iconClass = 'fa-volume-high';
-    if (value <= 0.001) iconClass = 'fa-volume-xmark';
-    else if (value < 0.5) iconClass = 'fa-volume-low';
-    icon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
-    fill.style.width = `${pct}%`;
-    valText.innerText = `${pct}%`;
+    const pct = Math.round(value * 100); // 0 to 200%
+
+    if (pct > 100) {
+      // MovieBox 200% Sound Boost Mode!
+      hud.classList.add('boost-mode');
+      icon.innerHTML = '<i class="fa-solid fa-bolt"></i>';
+      valText.innerHTML = `${pct}% <span class="boost-hud-tag">BOOST</span>`;
+      // Fill bar represents 0% to 200%
+      const fillPct = Math.min(100, Math.round((pct / 200) * 100));
+      fill.style.width = `${fillPct}%`;
+    } else {
+      hud.classList.remove('boost-mode');
+      let iconClass = 'fa-volume-high';
+      if (pct <= 0) iconClass = 'fa-volume-xmark';
+      else if (pct < 50) iconClass = 'fa-volume-low';
+      icon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+      fill.style.width = `${pct}%`;
+      valText.innerText = `${pct}%`;
+    }
   }
 
   hud.classList.add('visible');
@@ -3557,6 +3726,7 @@ function showGestureHud(type, value) {
   if (gestureHudTimer) clearTimeout(gestureHudTimer);
   gestureHudTimer = setTimeout(() => {
     hud.classList.remove('visible');
+    hud.classList.remove('boost-mode');
   }, 900);
 }
 
@@ -3672,7 +3842,7 @@ function setupPlayerGestures() {
 
     startBrightness = playerBrightness;
     const video = document.getElementById('mainVideoPlayer');
-    startVolume = video ? (video.muted ? 0 : video.volume) : 1.0;
+    startVolume = (video && video.muted) ? 0 : (playerSoundLevel !== undefined ? playerSoundLevel : (video ? video.volume : 1.0));
     startVideoTime = video ? video.currentTime : 0;
     targetSeekTime = startVideoTime;
 
@@ -3735,8 +3905,8 @@ function setupPlayerGestures() {
           const newBrightness = applyPlayerBrightness(startBrightness + deltaRatio);
           showGestureHud('brightness', newBrightness);
         } else {
-          // Right side swipe: Volume / Sound (Up = louder, Down = quieter)
-          const newVolume = applyPlayerVolume(startVolume + deltaRatio);
+          // Right side swipe: Volume / Sound (Up = louder up to 200%, Down = quieter down to 0%)
+          const newVolume = applyPlayerVolume(startVolume + deltaRatio * 1.6);
           showGestureHud('volume', newVolume);
         }
       }
@@ -3833,6 +4003,33 @@ function setupVideoListeners() {
 
   setupLandscapeProgressScrubbing();
 
+  // Explicit back button event listeners with event stopPropagation to prevent any overlay interception
+  const backBtn = document.getElementById('playerBackBtn');
+  if (backBtn) {
+    const onBack = (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      handlePlayerBackClick();
+    };
+    backBtn.addEventListener('click', onBack);
+    backBtn.addEventListener('touchend', onBack, { passive: false });
+  }
+
+  const lsBack = document.getElementById('lsBackBtn');
+  if (lsBack) {
+    const onLsBack = (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      handlePlayerBackClick();
+    };
+    lsBack.addEventListener('click', onLsBack);
+    lsBack.addEventListener('touchend', onLsBack, { passive: false });
+  }
+
   // Native fullscreen event synchronization
   document.addEventListener('fullscreenchange', () => {
     const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
@@ -3926,14 +4123,18 @@ function setupVideoListeners() {
     const curEp = appState.currentEpisode;
     const rawUrl = (curEp?.audioTracks && curEp.audioTracks[appState.currentAudioTrack]) || curEp?.streamUrl || appState.currentMedia?.streamUrl || appState.currentMedia?.driveUrl;
 
-    // Automatic server failover if media has backup servers
-    if (appState.currentMedia && appState.currentMedia.servers && appState.currentMedia.servers.length > 1) {
+    // Automatic server failover if media/episode has backup servers
+    const activeServers = (curEp && curEp.servers && curEp.servers.length > 0)
+      ? curEp.servers
+      : (appState.currentMedia && appState.currentMedia.servers ? appState.currentMedia.servers : null);
+
+    if (activeServers && activeServers.length > 1) {
       const curIdx = appState.activeServerIndex !== undefined ? appState.activeServerIndex : 0;
-      if (curIdx + 1 < appState.currentMedia.servers.length) {
+      if (curIdx + 1 < activeServers.length) {
         appState.activeServerIndex = curIdx + 1;
-        const nextServer = appState.currentMedia.servers[appState.activeServerIndex];
+        const nextServer = activeServers[appState.activeServerIndex];
         console.warn(`Stream failed on current server. Auto-switching to: Server ${appState.activeServerIndex + 1}...`);
-        showToast(`Server issue: Auto-switching to Server ${appState.activeServerIndex + 1}...`);
+        showToast(`Auto-switching to Server ${appState.activeServerIndex + 1}...`);
         renderServerPills(appState.currentMedia);
         playStreamUrl(nextServer.url);
         return;
@@ -3941,7 +4142,7 @@ function setupVideoListeners() {
     }
 
     if (!videoPlayer._retryCount) videoPlayer._retryCount = 0;
-    if (videoPlayer._retryCount < 2 && rawUrl) {
+    if (videoPlayer._retryCount < 1 && rawUrl && !rawUrl.includes('/api/stream?url=')) {
       videoPlayer._retryCount++;
       const resumeTime = appState.pendingSeekTime || videoPlayer.currentTime || 0;
       console.log(`Retrying stream via proxy at ${resumeTime}s (attempt ${videoPlayer._retryCount})...`);
@@ -3956,6 +4157,22 @@ function setupVideoListeners() {
         videoPlayer.addEventListener('loadedmetadata', onLoaded);
       }
       videoPlayer.play().catch(() => {});
+      return;
+    }
+
+    // Automatic bulletproof fallback to MultiEmbed streaming server if direct link fails
+    const tmdbId = appState.currentMedia?.tmdbId;
+    if (tmdbId && !videoPlayer._hasTriedMultiEmbed) {
+      videoPlayer._hasTriedMultiEmbed = true;
+      const isSeries = appState.currentMedia.type === 'series' || (appState.currentMedia.episodes && appState.currentMedia.episodes.length > 0);
+      const epNum = curEp?.episode || 1;
+      const seasonNum = appState.currentSeason || 1;
+      const fallbackUrl = isSeries
+        ? `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1&s=${seasonNum}&e=${epNum}`
+        : `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1`;
+      console.warn(`Direct stream failed. Auto-switching to MultiEmbed backup: ${fallbackUrl}`);
+      showToast('Switched to backup video stream...');
+      playStreamUrl(fallbackUrl);
       return;
     }
 
@@ -4478,16 +4695,64 @@ function handleSearch(customQuery = null) {
     ...liveTv.map(t => ({ ...t, type: 'liveTv' }))
   ];
 
-  const filtered = allItems.filter(item => {
-    const t = (item.title || '').toLowerCase();
-    const g = (item.genre || '').toLowerCase();
-    const l = (item.language || '').toLowerCase();
-    const ind = (item.industry || '').toLowerCase();
-    const cat = (item.category || '').toLowerCase();
-    return t.includes(query) || g.includes(query) || l.includes(query) || ind.includes(query) || cat.includes(query);
+  // Smart search normalizer (removes accents, hyphens, colons, punctuation, spaces)
+  const normalize = (str) => {
+    if (!str) return '';
+    return str
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]/g, '');
+  };
+
+  const normQuery = normalize(query);
+  const queryTokens = query
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .split(/[^a-z0-9]+/)
+    .filter(t => t.length > 0);
+
+  const matched = allItems.filter(item => {
+    const rawTitle = (item.title || '').toLowerCase();
+    const origTitle = (item.originalTitle || '').toLowerCase();
+    const genre = (item.genre || '').toLowerCase();
+    const lang = (item.language || '').toLowerCase();
+    const industry = (item.industry || '').toLowerCase();
+    const category = (item.category || '').toLowerCase();
+    const cast = (Array.isArray(item.cast) ? item.cast.join(' ') : (item.cast || '')).toLowerCase();
+    const desc = (item.description || '').toLowerCase();
+
+    // 1. Direct raw substring match
+    if (rawTitle.includes(query) || origTitle.includes(query) || genre.includes(query) || 
+        lang.includes(query) || industry.includes(query) || category.includes(query) ||
+        cast.includes(query) || desc.includes(query)) {
+      return true;
+    }
+
+    // 2. Normalized continuous match (e.g. "spider man" or "spiderman" matches "Spider-Man", "dirilis ertugrul" matches "Diriliş: Ertuğrul")
+    const normTitle = normalize(item.title);
+    const normOrig = normalize(item.originalTitle);
+    if (normQuery.length > 0 && (normTitle.includes(normQuery) || normOrig.includes(normQuery))) {
+      return true;
+    }
+
+    // 3. Multi-word token match: all words in query exist in item title, cast or metadata
+    const fullText = `${rawTitle} ${origTitle} ${genre} ${lang} ${industry} ${category} ${cast} ${desc}`;
+    const normFullText = normalize(fullText);
+    if (queryTokens.length > 0) {
+      const allTokensMatch = queryTokens.every(token => {
+        return fullText.includes(token) || normFullText.includes(token);
+      });
+      if (allTokensMatch) return true;
+    }
+
+    return false;
   });
 
-  if (countEl) countEl.innerText = `${filtered.length} Results`;
+  const filtered = sortByReleaseDateDesc(matched);
+
+  if (countEl) countEl.innerText = `${filtered.length} ${filtered.length === 1 ? 'Result' : 'Results'}`;
 
   if (!gridEl) return;
   if (filtered.length === 0) {

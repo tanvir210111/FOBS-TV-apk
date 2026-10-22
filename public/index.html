@@ -147,6 +147,17 @@
           </div>
         </div>
 
+        <!-- Section: Turkish (Dizi / Hindi Dubbed) -->
+        <div class="content-section" id="homeTurkishSection">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-moon" style="color: #e84118; margin-right: 6px;"></i> Turkish (Hindi Dubbed)</h2>
+            <span class="section-more" onclick="openSectionDetail('turkish', 'Turkish (Hindi Dubbed)')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="homeTurkishList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
         <!-- Section: Anime -->
         <div class="content-section" id="homeAnimeSection">
           <div class="section-header">
@@ -290,6 +301,17 @@
           </div>
         </div>
 
+        <!-- Section: Turkish Movies -->
+        <div class="content-section" id="movieTurkishSection">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-moon" style="color: #e84118; margin-right: 6px;"></i> Turkish Movies (Hindi)</h2>
+            <span class="section-more" onclick="openSectionDetail('movie-turkish', 'Turkish Movies (Hindi)')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="movieTurkishList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
         <!-- Section: Anime Movies -->
         <div class="content-section" id="movieAnimeSection">
           <div class="section-header">
@@ -427,6 +449,17 @@
             <span class="section-more" onclick="openSectionDetail('series-japanese', 'Japanese Series')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="seriesJapaneseList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Turkish Series -->
+        <div class="content-section" id="seriesTurkishSection">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-moon" style="color: #e84118; margin-right: 6px;"></i> Turkish Series (Hindi)</h2>
+            <span class="section-more" onclick="openSectionDetail('series-turkish', 'Turkish Series (Hindi)')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="seriesTurkishList">
             <!-- Populated via JS -->
           </div>
         </div>
@@ -639,7 +672,7 @@
           <!-- Top Header (Screenshot 4) -->
           <div class="ls-top-header" id="lsTopHeader">
             <div class="ls-top-left">
-              <button class="ls-icon-btn ls-back-btn" id="lsBackBtn" onclick="exitFullscreenMode()">
+              <button class="ls-icon-btn ls-back-btn" id="lsBackBtn" onclick="handlePlayerBackClick()">
                 <i class="fa-solid fa-chevron-left"></i>
               </button>
               <span class="ls-video-title" id="lsVideoTitle">FOBS TV</span>
