@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="referrer" content="no-referrer">
+  <meta name="referrer" content="no-referrer-when-downgrade">
   <title>FOBS TV - Live Streaming & Download App</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -437,7 +437,7 @@
       <!-- Embedded Video Player -->
       <div class="video-container" id="videoContainer">
         <video id="mainVideoPlayer" playsinline webkit-playsinline x5-playsinline preload="metadata"></video>
-        <iframe id="mainEmbedPlayer" style="display:none; width:100%; height:100%; border:none; position:absolute; top:0; left:0; z-index:1000010; background:#000;" allowfullscreen allow="autoplay; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        <iframe id="mainEmbedPlayer" style="display:none; width:100%; height:100%; border:none; position:absolute; top:0; left:0; z-index:5; background:#000;" allowfullscreen allow="autoplay; encrypted-media; fullscreen; picture-in-picture" referrerpolicy="origin"></iframe>
         <div class="video-loader" id="videoLoader">
           <div class="spinner"></div>
           <div class="loader-text">Loading...</div>

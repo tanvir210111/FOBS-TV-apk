@@ -22,23 +22,11 @@ async function addMakeMeTingle() {
   }));
 
   const episodes = [
-    {
-      epNum: 1,
-      streamUrl: 'https://hdfriday2.casa/episodes/make-me-tingle-1x1/'
-    },
-    {
-      epNum: 2,
-      streamUrl: 'https://irada438esc.com/play/tt47661704?ep=2'
-    },
-    {
-      epNum: 3,
-      streamUrl: 'https://irada438esc.com/play/tt47661704?ep=3'
-    },
-    {
-      epNum: 4,
-      streamUrl: 'https://hdfriday2.casa/episodes/make-me-tingle-1x4/'
-    }
-  ].map(({ epNum, streamUrl }) => {
+    { epNum: 1 },
+    { epNum: 2 },
+    { epNum: 3 },
+    { epNum: 4 }
+  ].map(({ epNum }) => {
     const tmdbEp = (seasonData.episodes || []).find(e => e.episode_number === epNum) || {};
     const pad = epNum.toString().padStart(2, '0');
     return {
@@ -49,23 +37,23 @@ async function addMakeMeTingle() {
       still: tmdbEp.still_path
         ? `https://image.tmdb.org/t/p/w500${tmdbEp.still_path}`
         : `https://image.tmdb.org/t/p/w500${tmdb.backdrop_path}`,
-      streamUrl: streamUrl,
+      streamUrl: `https://vidlink.pro/tv/311648/1/${epNum}`,
       servers: [
         {
           name: 'Server 1 (Fast HD - 1080p)',
-          url: 'https://irada438esc.com/play/tt47661704'
+          url: `https://vidlink.pro/tv/311648/1/${epNum}`
         },
         {
           name: 'Server 2 (HD Player)',
-          url: streamUrl
+          url: `https://autoembed.co/tv/imdb/tt47661704-1-${epNum}`
         },
         {
           name: 'Server 3 (Super Player)',
-          url: `https://streamimdb.ru/embed/tv/tt47661704/S01E0${epNum}`
+          url: `https://vidsrc.to/embed/tv/311648/1/${epNum}`
         }
       ],
       audioTracks: {
-        'Original Audio': 'https://irada438esc.com/play/tt47661704'
+        'Original Audio': `https://vidlink.pro/tv/311648/1/${epNum}`
       }
     };
   });
@@ -94,19 +82,19 @@ async function addMakeMeTingle() {
     description: `[Ongoing K-Drama - 4 Episodes Released] ${tmdb.overview || 'A marketer with traditional views on love and marriage tries to navigate a connection with an adult toy company CEO with different values.'}`,
     audioTracks: ['Original Audio'],
     selectedAudio: 'Original Audio',
-    streamUrl: 'https://irada438esc.com/play/tt47661704',
+    streamUrl: 'https://vidlink.pro/tv/311648/1/1',
     servers: [
       {
         name: 'Server 1 (Fast HD - 1080p)',
-        url: 'https://irada438esc.com/play/tt47661704'
+        url: 'https://vidlink.pro/tv/311648/1/1'
       },
       {
         name: 'Server 2 (HD Player)',
-        url: 'https://hdfriday2.casa/episodes/make-me-tingle-1x1/'
+        url: 'https://autoembed.co/tv/imdb/tt47661704-1-1'
       },
       {
         name: 'Server 3 (Super Player)',
-        url: 'https://streamimdb.ru/embed/tv/tt47661704/S01E01'
+        url: 'https://vidsrc.to/embed/tv/311648/1/1'
       }
     ],
     cast: cast,

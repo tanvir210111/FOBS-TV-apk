@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v44';
+const CACHE_KEY = 'fobs_tv_content_cache_v45';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -2272,8 +2272,11 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     return;
   }
 
-  // Handle direct iframe player embeds only for dedicated embed players (not blocked ones)
+  // Handle direct iframe player embeds for dedicated embed providers
   const isIframeEmbed = (
+    url.includes('vidlink.pro') ||
+    url.includes('autoembed.co') ||
+    url.includes('vidsrc') ||
     url.includes('nextgencloudfabric') ||
     url.includes('streamimdb.ru') ||
     url.includes('irada438esc.com') ||
@@ -2298,12 +2301,8 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     const brightnessOverlay = document.getElementById('playerBrightnessOverlay');
     if (brightnessOverlay) brightnessOverlay.style.display = 'none';
 
-    let targetSrc = url;
-    if (url.includes('hdfriday')) {
-      targetSrc = 'https://irada438esc.com/play/tt47661704';
-    }
     embedFrame.style.display = 'block';
-    embedFrame.src = targetSrc;
+    embedFrame.src = url;
     if (loader) loader.classList.remove('active');
     return;
   }
