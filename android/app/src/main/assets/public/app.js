@@ -23,8 +23,8 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
 
 // App Versioning & In-App Force Update Configuration
-const CURRENT_APP_VERSION_CODE = 1;
-const CURRENT_APP_VERSION_NAME = '1.0';
+const CURRENT_APP_VERSION_CODE = 2;
+const CURRENT_APP_VERSION_NAME = '1.1.0';
 let currentAppUpdateConfig = null;
 let isUpdatingApp = false;
 
