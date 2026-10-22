@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v49';
+const CACHE_KEY = 'fobs_tv_content_cache_v50';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -2353,7 +2353,7 @@ function renderServerPills(media) {
     const activeIdx = appState.activeServerIndex !== undefined ? appState.activeServerIndex : 0;
     row.innerHTML = currentServers.map((s, idx) => `
       <button class="server-pill ${idx === activeIdx ? 'active' : ''}" onclick="selectServer(${idx})">
-        <i class="fa-solid fa-play" style="font-size: 8px; opacity: 0.8;"></i> ${s.name}
+        <i class="fa-solid fa-play" style="font-size: 8px; opacity: 0.8;"></i> Server ${idx + 1}
       </button>
     `).join('');
   } else {
@@ -2370,7 +2370,7 @@ function selectServer(idx) {
   appState.activeServerIndex = idx;
   const srv = currentServers[idx];
   renderServerPills(appState.currentMedia);
-  showToast(`Switched to: ${srv.name}`);
+  showToast(`Switched to: Server ${idx + 1}`);
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = null;
   playStreamUrl(srv.url);
@@ -2541,28 +2541,32 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     return;
   }
 
-  // Direct play only for sources that provide CORS headers and fast direct CDN edge delivery without IP restrictions
+  // Direct play for sources that provide CORS headers and fast direct CDN edge delivery without IP restrictions
   const isDirectMp4Source = (
+    playableUrl.includes('hakunaymatata') ||
+    playableUrl.includes('bcdnxw') ||
+    playableUrl.includes('haildrop') ||
+    playableUrl.includes('fogtwist') ||
+    playableUrl.includes('sunburst') ||
+    playableUrl.includes('stormshade') ||
     playableUrl.includes('kmdl.eu.org') ||
+    playableUrl.includes('koyeb.app') ||
+    playableUrl.includes('filetolink') ||
     (playableUrl.includes('.mp4') && 
      !playableUrl.includes('drive.google.com') && 
      !playableUrl.includes('vcloud.you') && 
      !playableUrl.includes('vkuser.net') && 
      !playableUrl.includes('okcdn.ru') &&
      !playableUrl.includes('vkpluscdn') &&
-     !playableUrl.includes('vkcdn') &&
-     !playableUrl.includes('hakunaymatata') &&
-     !playableUrl.includes('bcdnxw') &&
-     !playableUrl.includes('haildrop') &&
-     !playableUrl.includes('fogtwist') &&
-     !playableUrl.includes('sunburst') &&
-     !playableUrl.includes('stormshade') &&
-     !playableUrl.includes('moviebox'))
+     !playableUrl.includes('vkcdn'))
   );
-  if (isDirectMp4Source && !playableUrl.includes('googleusercontent.com') && audioIndex === null && !seekTime) {
+  if (isDirectMp4Source && !playableUrl.includes('googleusercontent.com') && audioIndex === null) {
     console.log('Playing direct CDN stream:', playableUrl);
     videoPlayer.src = playableUrl;
     videoPlayer.load();
+    if (seekTime && seekTime > 0) {
+      videoPlayer.currentTime = seekTime;
+    }
     videoPlayer.play().catch(err => {
       console.log('Autoplay deferred until user taps video controls:', err.message);
       if (loader) loader.classList.remove('active');
@@ -3600,8 +3604,8 @@ function setupVideoListeners() {
       if (curIdx + 1 < appState.currentMedia.servers.length) {
         appState.activeServerIndex = curIdx + 1;
         const nextServer = appState.currentMedia.servers[appState.activeServerIndex];
-        console.warn(`Stream failed on current server. Auto-switching to: ${nextServer.name}...`);
-        showToast(`Server issue: Auto-switching to ${nextServer.name}...`);
+        console.warn(`Stream failed on current server. Auto-switching to: Server ${appState.activeServerIndex + 1}...`);
+        showToast(`Server issue: Auto-switching to Server ${appState.activeServerIndex + 1}...`);
         renderServerPills(appState.currentMedia);
         playStreamUrl(nextServer.url);
         return;
