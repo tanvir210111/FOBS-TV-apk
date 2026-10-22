@@ -36,6 +36,115 @@
   },
   "movies": [
     {
+      "id": "tmdb-m-1451944",
+      "title": "Lust Stories 3 (2026)",
+      "originalTitle": "लस्ट स्टोरीज़ ३",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "tag": "HD",
+      "quality": "HD",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Romance, Drama",
+      "duration": "2h 45m",
+      "category": "Trending Movies",
+      "rating": "6.3",
+      "imdbRating": "6.3",
+      "poster": "https://image.tmdb.org/t/p/w500/cLA83DD1qMEBwbRIYXf29RKjMja.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/jRtR4aTq4vmxRg9ah60R5i1kkQ7.jpg",
+      "description": "Through four bite-sized yet emotionally resonant films, the anthology once again explores lust, love, relationships, and repressed desire, offering fresh perspectives on intimacy, longing, and human connection in all their complexity.",
+      "audioTracks": [
+        "Hindi (Original)"
+      ],
+      "selectedAudio": "Hindi (Original)",
+      "streamUrl": "https://pkembed.site/embed-emvuzcl5oiu7.html",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD - PkSpeed 720p)",
+          "url": "https://pkembed.site/embed-emvuzcl5oiu7.html"
+        },
+        {
+          "name": "Server 2 (PkSpeed 360p)",
+          "url": "https://pkembed.site/embed-g675rsg6i5hd.html"
+        },
+        {
+          "name": "Server 3 (CloudVideo 720p)",
+          "url": "https://do7go.com/e/zzk9y29jj17f"
+        },
+        {
+          "name": "Server 4 (CloudVideo 360p)",
+          "url": "https://do7go.com/e/99kpzc8i24fp"
+        },
+        {
+          "name": "Server 5 (OK.ru HD)",
+          "url": "https://ok.ru/videoembed/16231663995477?nochat=1"
+        },
+        {
+          "name": "Server 6 (Streamtape 720p)",
+          "url": "https://streamtape.to/e/Xb8vXOOkQduDMe3"
+        },
+        {
+          "name": "Server 7 (MixDrop 720p)",
+          "url": "https://mxdrop.to/e/vkkp7kkob14n40"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Radhika Apte",
+          "character": "Padma",
+          "photo": "https://image.tmdb.org/t/p/w185/wKPybRcSYcbgDiJZwELudrRNf0r.jpg"
+        },
+        {
+          "name": "Konkona Sen Sharma",
+          "character": "Shonali Ghosh",
+          "photo": "https://image.tmdb.org/t/p/w185/i538HToMEGR6J2OVmOGX3GfWcQC.jpg"
+        },
+        {
+          "name": "Vijay Varma",
+          "character": "Hemant",
+          "photo": "https://image.tmdb.org/t/p/w185/A46ekiPFC3vA1442FJmiIudpxX1.jpg"
+        },
+        {
+          "name": "Abhishek Banerjee",
+          "character": "Debendu",
+          "photo": "https://image.tmdb.org/t/p/w185/cfyRkFBFfodBbNKbsTc8eG9YtVj.jpg"
+        },
+        {
+          "name": "Ali Fazal",
+          "character": "Varun Apte",
+          "photo": "https://image.tmdb.org/t/p/w185/lLDmx3RDuMXObASvdFXeUh1GOgd.jpg"
+        },
+        {
+          "name": "Radhikka Madan",
+          "character": "Sailee Vaidya",
+          "photo": "https://image.tmdb.org/t/p/w185/xX6h0GMgJ1jLJdA5lHrFwZcjEIz.jpg"
+        },
+        {
+          "name": "Aditi Rao Hydari",
+          "character": "Saira",
+          "photo": "https://image.tmdb.org/t/p/w185/iVbsdPXzs4CjlG98qIxG2lsQl31.jpg"
+        },
+        {
+          "name": "Siddharth",
+          "character": "Badru / Hero Badru",
+          "photo": "https://image.tmdb.org/t/p/w185/9XrTuJp9lnB1rsBPzTaoXdp1ig8.jpg"
+        },
+        {
+          "name": "Gurfateh Pirzada",
+          "character": "Karan / Arjun",
+          "photo": "https://image.tmdb.org/t/p/w185/gfeOmcTUCPoAJytEjxo5SvkKObb.jpg"
+        },
+        {
+          "name": "Sana Thampi",
+          "character": "Lisa",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        }
+      ],
+      "type": "movie"
+    },
+    {
       "id": "tmdb-m-1101383",
       "title": "The End of Oak Street (2026)",
       "originalTitle": "The End of Oak Street",
