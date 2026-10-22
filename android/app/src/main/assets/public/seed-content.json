@@ -117,6 +117,97 @@
   },
   "movies": [
     {
+      "id": "tmdb-m-1234139",
+      "title": "Jailer 2 (2026)",
+      "originalTitle": "ஜெயிலர் 2",
+      "language": "Tamil",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Hallprint",
+      "tag": "Hallprint",
+      "quality": "Hallprint",
+      "industry": "South Indian",
+      "year": "2026",
+      "country": "India",
+      "genre": "Action, Comedy",
+      "duration": "2h 43m",
+      "category": "Trending Movies",
+      "rating": "8.0",
+      "imdbRating": "8.0",
+      "poster": "https://image.tmdb.org/t/p/w500/upwdEyhhYZ7pT2hD535fr2MGfpx.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/zpHTOdRl7GEPqFsDGqsN6Hi9Ylt.jpg",
+      "description": "When a dangerous syndicate expands its reach to threaten his family's peace, retired jailer Tiger Muthuvel Pandian goes undercover as a driver. Operating from the shadows, he takes on ruthless new enemies to protect his home.",
+      "audioTracks": [
+        "Hindi dub",
+        "Tamil (Original)"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/ca545ed90a0f2634d5e5f096f1f08ce4.mp4?sign=206ebc29872421678796f2dc1077a2cd&t=1792681525",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/ca545ed90a0f2634d5e5f096f1f08ce4.mp4?sign=206ebc29872421678796f2dc1077a2cd&t=1792681525"
+        },
+        {
+          "name": "Server 2 (Fast SD 480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/efe68efc6c387dd8249c25723df7988f.mp4?sign=b7eb172766a3c7b19b141329cc5fcfb4&t=1792680422"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Rajinikanth",
+          "character": "Muthuvel 'Tiger' Pandian",
+          "photo": "https://image.tmdb.org/t/p/w185/cQBcrXqcQPfXOQfNfgO3slJM2xi.jpg"
+        },
+        {
+          "name": "S. J. Suryah",
+          "character": "Bodhi Kalpak",
+          "photo": "https://image.tmdb.org/t/p/w185/7Q8510XwxPU1193cteaFQsiq2rv.jpg"
+        },
+        {
+          "name": "Suraj Venjaramoodu",
+          "character": "Dileep",
+          "photo": "https://image.tmdb.org/t/p/w185/2FUs0wmR3eHBd8g4GVbCmhkUzeI.jpg"
+        },
+        {
+          "name": "Ramya Krishnan",
+          "character": "Vijayalakshmi 'Viji' Pandian",
+          "photo": "https://image.tmdb.org/t/p/w185/7C1bj7z3XhqxjDIGoCs6MFJdSVa.jpg"
+        },
+        {
+          "name": "Vidya Balan",
+          "character": "Kantha Kalpak",
+          "photo": "https://image.tmdb.org/t/p/w185/m4bnX5VQs2DfvQsLmfbKbBxUkC9.jpg"
+        },
+        {
+          "name": "Namo Narayana",
+          "character": "Moorthi",
+          "photo": "https://image.tmdb.org/t/p/w185/jE3oslL16GYDBjmER7zkdeTVyK8.jpg"
+        },
+        {
+          "name": "Yogi Babu",
+          "character": "Vimal",
+          "photo": "https://image.tmdb.org/t/p/w185/4UMOPd8NqGfKp19VQHsnIzlSRUl.jpg"
+        },
+        {
+          "name": "Mirnaa",
+          "character": "Swetha Pandian",
+          "photo": "https://image.tmdb.org/t/p/w185/l4bmtLBuBPEE2Pg3qh5NTdmKFYP.jpg"
+        },
+        {
+          "name": "Rithvik",
+          "character": "Rithvik 'Rithu' Pandian",
+          "photo": "https://image.tmdb.org/t/p/w185/9j9GPeTCDcqBW5TMDoQwz30usT7.jpg"
+        },
+        {
+          "name": "Hakkim Shajahan",
+          "character": "Sharva Kalpak",
+          "photo": "https://image.tmdb.org/t/p/w185/reEowrr3Gw4vKFfVUOhIT4EM4Es.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
       "id": "tmdb-m-1654581",
       "title": "Nayyi Navelli (2026)",
       "originalTitle": "नय्यी नवेल्ली",
@@ -587,101 +678,6 @@
           "name": "50 Cent",
           "character": "Balrog",
           "photo": "https://image.tmdb.org/t/p/w185/7VfwFIwBxy7qBUErosWRDQOovl9.jpg"
-        }
-      ],
-      "type": "movie"
-    },
-    {
-      "id": "tmdb-m-1234139",
-      "title": "Jailer 2 (2026)",
-      "originalTitle": "ஜெயிலர் 2",
-      "language": "Tamil",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Hallprint",
-      "tag": "Hallprint",
-      "quality": "Hallprint",
-      "industry": "South Indian",
-      "year": "2026",
-      "country": "India",
-      "genre": "Action, Comedy",
-      "duration": "2h 43m",
-      "category": "Trending Movies",
-      "rating": "8.0",
-      "imdbRating": "8.0",
-      "poster": "https://image.tmdb.org/t/p/w500/upwdEyhhYZ7pT2hD535fr2MGfpx.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/zpHTOdRl7GEPqFsDGqsN6Hi9Ylt.jpg",
-      "description": "When a dangerous syndicate expands its reach to threaten his family's peace, retired jailer Tiger Muthuvel Pandian goes undercover as a driver. Operating from the shadows, he takes on ruthless new enemies to protect his home.",
-      "audioTracks": [
-        "Hindi dub",
-        "Tamil (Original)"
-      ],
-      "selectedAudio": "Hindi dub",
-      "streamUrl": "https://pkembed.site/embed-quggka0tac6d.html",
-      "servers": [
-        {
-          "name": "Server 1 (Fast HD - 720p)",
-          "url": "https://pkembed.site/embed-quggka0tac6d.html"
-        },
-        {
-          "name": "Server 2 (Data Saver - 360p)",
-          "url": "https://pkembed.site/embed-0ot5b8dayz34.html"
-        },
-        {
-          "name": "Server 3 (Backup - OK.ru)",
-          "url": "https://ok.ru/videoembed/16194734787157"
-        }
-      ],
-      "cast": [
-        {
-          "name": "Rajinikanth",
-          "character": "Muthuvel 'Tiger' Pandian",
-          "photo": "https://image.tmdb.org/t/p/w185/cQBcrXqcQPfXOQfNfgO3slJM2xi.jpg"
-        },
-        {
-          "name": "S. J. Suryah",
-          "character": "Bodhi Kalpak",
-          "photo": "https://image.tmdb.org/t/p/w185/7Q8510XwxPU1193cteaFQsiq2rv.jpg"
-        },
-        {
-          "name": "Suraj Venjaramoodu",
-          "character": "Dileep",
-          "photo": "https://image.tmdb.org/t/p/w185/2FUs0wmR3eHBd8g4GVbCmhkUzeI.jpg"
-        },
-        {
-          "name": "Ramya Krishnan",
-          "character": "Vijayalakshmi 'Viji' Pandian",
-          "photo": "https://image.tmdb.org/t/p/w185/7C1bj7z3XhqxjDIGoCs6MFJdSVa.jpg"
-        },
-        {
-          "name": "Vidya Balan",
-          "character": "Kantha Kalpak",
-          "photo": "https://image.tmdb.org/t/p/w185/m4bnX5VQs2DfvQsLmfbKbBxUkC9.jpg"
-        },
-        {
-          "name": "Namo Narayana",
-          "character": "Moorthi",
-          "photo": "https://image.tmdb.org/t/p/w185/jE3oslL16GYDBjmER7zkdeTVyK8.jpg"
-        },
-        {
-          "name": "Yogi Babu",
-          "character": "Vimal",
-          "photo": "https://image.tmdb.org/t/p/w185/4UMOPd8NqGfKp19VQHsnIzlSRUl.jpg"
-        },
-        {
-          "name": "Mirnaa",
-          "character": "Swetha Pandian",
-          "photo": "https://image.tmdb.org/t/p/w185/l4bmtLBuBPEE2Pg3qh5NTdmKFYP.jpg"
-        },
-        {
-          "name": "Rithvik",
-          "character": "Rithvik 'Rithu' Pandian",
-          "photo": "https://image.tmdb.org/t/p/w185/9j9GPeTCDcqBW5TMDoQwz30usT7.jpg"
-        },
-        {
-          "name": "Hakkim Shajahan",
-          "character": "Sharva Kalpak",
-          "photo": "https://image.tmdb.org/t/p/w185/reEowrr3Gw4vKFfVUOhIT4EM4Es.jpg"
         }
       ],
       "type": "movie"

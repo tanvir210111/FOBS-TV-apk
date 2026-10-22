@@ -14,6 +14,7 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="assets/fobs_logo.png">
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 
 <body>
@@ -512,10 +513,24 @@
             </button>
           </div>
 
-          <!-- Center Controls: Big Play/Pause Only (+10/-10 removed in favor of Double Tap) -->
+          <!-- Center Controls: MovieBox Signature 3-button layout (-10s, Play/Pause, +10s) -->
           <div class="ls-center-controls" id="lsCenterControls">
+            <button class="ls-center-btn ls-seek-btn" onclick="seekRelative(-10)" title="Rewind 10s">
+              <svg class="ls-10s-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+                <text x="12" y="15" font-size="8" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" fill="currentColor" text-anchor="middle" stroke="none">10</text>
+              </svg>
+            </button>
             <button class="ls-center-btn ls-play-pause-btn" id="lsCenterPlayPauseBtn" onclick="togglePlayPauseVideo()" title="Play / Pause">
               <i class="fa-solid fa-pause" id="lsCenterPlayIcon"></i>
+            </button>
+            <button class="ls-center-btn ls-seek-btn" onclick="seekRelative(10)" title="Forward 10s">
+              <svg class="ls-10s-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12a9 9 0 1 1-9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                <path d="M21 3v5h-5"/>
+                <text x="12" y="15" font-size="8" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" fill="currentColor" text-anchor="middle" stroke="none">10</text>
+              </svg>
             </button>
           </div>
 
@@ -554,12 +569,27 @@
                   <span id="lsSpeedLabel">1x</span>
                 </button>
 
-                <div class="ls-quality-pill" id="lsQualityBadge">1080P</div>
+                <button class="ls-action-pill ls-quality-pill" id="lsQualityBadge" onclick="toggleLandscapeDrawer('quality')" title="Video Quality">1080P</button>
 
                 <button class="ls-action-pill ls-fullscreen-pill" id="lsFullscreenToggleBtn" onclick="togglePlayerFullscreen()" title="Fullscreen">
                   <i class="fa-solid fa-expand"></i>
                 </button>
               </div>
+            </div>
+          </div>
+
+          <!-- Right Side Drawer: Quality (MovieBox Signature) -->
+          <div class="ls-side-drawer ls-quality-drawer" id="lsQualityDrawer">
+            <div class="ls-drawer-header">
+              <span>Quality</span>
+              <button class="ls-drawer-close" onclick="closeLandscapeDrawers()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="ls-speed-options-list" id="lsQualityOptionsList">
+              <button class="ls-speed-option active" data-quality="1080" onclick="setLandscapeQuality('1080p')">1080P FHD</button>
+              <button class="ls-speed-option" data-quality="720" onclick="setLandscapeQuality('720p')">720P HD</button>
+              <button class="ls-speed-option" data-quality="480" onclick="setLandscapeQuality('480p')">480P SD</button>
+              <button class="ls-speed-option" data-quality="360" onclick="setLandscapeQuality('360p')">360P</button>
+              <button class="ls-speed-option" data-quality="auto" onclick="setLandscapeQuality('auto')">Auto</button>
             </div>
           </div>
 

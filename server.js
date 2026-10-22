@@ -11,6 +11,9 @@ const ffmpegPath = require('ffmpeg-static');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const movieboxService = require('./services/movieboxService');
+const liveTvService = require('./services/liveTvService');
+
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -405,6 +408,19 @@ async function resolveStreamUrl(rawUrl) {
     }
   }
 
+  // 11. Check MovieBox CDNs (Hakunaymatata, BCDN, Haildrop, Fogtwist, Sunburst, Stormshade)
+  else if (
+    rawUrl.includes('movieboxapp.in') ||
+    rawUrl.includes('hakunaymatata') ||
+    rawUrl.includes('bcdnxw') ||
+    rawUrl.includes('haildrop') ||
+    rawUrl.includes('fogtwist') ||
+    rawUrl.includes('sunburst') ||
+    rawUrl.includes('stormshade')
+  ) {
+    resolved = rawUrl;
+  }
+
 
   // Only cache if successfully resolved to a real stream URL (not raw fallback)
   if (resolved && resolved !== rawUrl) {
@@ -449,16 +465,75 @@ app.get('/api/resolve', async (req, res) => {
 });
 
 // API: Get all contents
-app.get('/api/content', (req, res) => {
+app.get('/api/content', async (req, res) => {
   const data = getContentData();
   if (data.movies) data.movies.forEach(m => m.type = 'movie');
   if (data.series) data.series.forEach(s => s.type = 'series');
-  if (data.liveTv) data.liveTv.forEach(t => t.type = 'liveTv');
   if (data.upcoming) data.upcoming.forEach(u => u.type = u.type || 'series');
 
-
+  // If liveTv is empty in local content.json, load working BD live TV channels
+  if (!data.liveTv || data.liveTv.length === 0) {
+    try {
+      const bdChannels = await liveTvService.getChannelsByCountry('bd');
+      if (bdChannels && bdChannels.length > 0) {
+        data.liveTv = bdChannels;
+      }
+    } catch (e) {}
+  }
+  if (data.liveTv) data.liveTv.forEach(t => t.type = 'liveTv');
 
   res.json(data);
+});
+
+// API: MovieBox Trending & Categories
+app.get('/api/moviebox/home', async (req, res) => {
+  try {
+    const sections = await movieboxService.getHomepage();
+    res.json({ ok: true, sections });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// API: MovieBox Search
+app.get('/api/moviebox/search', async (req, res) => {
+  const q = req.query.q || req.query.query;
+  if (!q) return res.json({ ok: true, results: [] });
+  try {
+    const results = await movieboxService.search(q);
+    res.json({ ok: true, results });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// API: MovieBox Media Stream Resolver
+app.get('/api/moviebox/resolve', async (req, res) => {
+  const { id, path, se, ep } = req.query;
+  if (!id) return res.status(400).json({ error: 'Missing id parameter' });
+  try {
+    const media = await movieboxService.resolveMedia(
+      id,
+      path || '',
+      parseInt(se || '0', 10),
+      parseInt(ep || '0', 10)
+    );
+    if (!media) return res.status(404).json({ ok: false, error: 'Media stream not found' });
+    res.json({ ok: true, media });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// API: Live TV Channels by Country (bd, in, etc.)
+app.get('/api/tv/channels', async (req, res) => {
+  const country = req.query.country || 'bd';
+  try {
+    const channels = await liveTvService.getChannelsByCountry(country);
+    res.json({ ok: true, country, channels });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
 });
 
 // API: Get app update status
@@ -621,6 +696,16 @@ app.all('/api/stream', async (req, res) => {
       refererHeader = 'Referer: https://kisscloud.online/\r\n';
     } else if (resolvedUrl.includes('krico443jez.com') || targetUrl.includes('irada438esc.com') || targetUrl.includes('hdfriday')) {
       refererHeader = 'Referer: https://irada438esc.com/\r\n';
+    } else if (
+      resolvedUrl.includes('hakunaymatata') || 
+      resolvedUrl.includes('bcdnxw') || 
+      resolvedUrl.includes('haildrop') || 
+      resolvedUrl.includes('fogtwist') || 
+      resolvedUrl.includes('sunburst') || 
+      resolvedUrl.includes('stormshade') || 
+      targetUrl.includes('moviebox')
+    ) {
+      refererHeader = 'Referer: https://movieboxapp.in/\r\n';
     }
 
     const ffmpegArgs = [
@@ -730,6 +815,16 @@ app.all('/api/stream', async (req, res) => {
     requestHeaders['Referer'] = 'https://kisscloud.online/';
   } else if (resolvedUrl.includes('krico443jez.com') || (targetUrl && (targetUrl.includes('irada438esc.com') || targetUrl.includes('hdfriday')))) {
     requestHeaders['Referer'] = 'https://irada438esc.com/';
+  } else if (
+    resolvedUrl.includes('hakunaymatata') || 
+    resolvedUrl.includes('bcdnxw') || 
+    resolvedUrl.includes('haildrop') || 
+    resolvedUrl.includes('fogtwist') || 
+    resolvedUrl.includes('sunburst') || 
+    resolvedUrl.includes('stormshade') || 
+    (targetUrl && targetUrl.includes('moviebox'))
+  ) {
+    requestHeaders['Referer'] = 'https://movieboxapp.in/';
   }
 
   if (range) {

@@ -2191,6 +2191,10 @@ function openPlayer(media, episodeIndex = 0) {
 
   // Populate "For You" recommendations
   renderForYouRecommendations();
+
+  // Setup MovieBox Subtitles and Quality options
+  setupSubtitlesForMedia(media);
+  updateQualityPillsForMedia(media);
 }
 
 // Render Server Pills for Movies/Series with Multiple Sources
@@ -2360,6 +2364,41 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
   const activeAudio = (audioIndex !== null && audioIndex !== undefined)
     ? audioIndex 
     : (appState.selectedAudioIndex !== undefined ? appState.selectedAudioIndex : (appState.currentAudioTrack?.toLowerCase().includes('english') ? 1 : 0));
+
+  // Cleanup any active HLS.js instance
+  if (window.activeHlsPlayer) {
+    try { window.activeHlsPlayer.destroy(); } catch (e) {}
+    window.activeHlsPlayer = null;
+  }
+
+  // Native Hls.js playback for .m3u8 live streams (MovieBox / GENGA Player Engine)
+  if (playableUrl.includes('.m3u8') && window.Hls && window.Hls.isSupported()) {
+    console.log('Playing stream via MovieBox HLS.js engine:', playableUrl);
+    const hls = new window.Hls({
+      enableWorker: true,
+      lowLatencyMode: false,
+      startFragPrefetch: true
+    });
+    hls.loadSource(playableUrl);
+    hls.attachMedia(videoPlayer);
+    hls.on(window.Hls.Events.MANIFEST_PARSED, () => {
+      if (seekTime && seekTime > 0) videoPlayer.currentTime = seekTime;
+      videoPlayer.play().catch(() => {});
+      if (loader) loader.classList.remove('active');
+    });
+    hls.on(window.Hls.Events.ERROR, (event, data) => {
+      if (data.fatal) {
+        if (data.type === window.Hls.ErrorTypes.NETWORK_ERROR) {
+          hls.startLoad();
+        } else {
+          hls.destroy();
+          window.activeHlsPlayer = null;
+        }
+      }
+    });
+    window.activeHlsPlayer = hls;
+    return;
+  }
 
   // Direct play only for sources that provide CORS headers and fast direct CDN edge delivery without IP restrictions
   const isDirectMp4Source = (
@@ -2787,6 +2826,7 @@ function toggleLandscapeFitFill() {
 
 function toggleLandscapeDrawer(drawerName) {
   const drawers = {
+    quality: document.getElementById('lsQualityDrawer'),
     speed: document.getElementById('lsSpeedDrawer'),
     language: document.getElementById('lsLanguageDrawer'),
     setting: document.getElementById('lsSettingDrawer')
@@ -2829,6 +2869,114 @@ function setLandscapeSpeed(rate) {
 
 function selectLandscapeAudio(trackName) {
   switchAudioTrack(trackName);
+  closeLandscapeDrawers();
+  resetLandscapeControlsTimer();
+}
+
+function setLandscapeQuality(quality) {
+  const badge = document.getElementById('lsQualityBadge');
+  if (badge) {
+    badge.innerText = quality.toUpperCase();
+  }
+  document.querySelectorAll('#lsQualityOptionsList .ls-speed-option').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.quality === quality || btn.innerText.toLowerCase().includes(quality.toLowerCase()));
+  });
+
+  const media = appState.currentMedia;
+  if (media && media.servers && media.servers.length > 1) {
+    const matched = media.servers.find(s => s.name.toLowerCase().includes(quality.toLowerCase())) || media.servers[0];
+    if (matched && matched.url) {
+      const video = document.getElementById('mainVideoPlayer');
+      const currentPos = video ? video.currentTime : 0;
+      playStreamUrl(matched.url, null, currentPos);
+    }
+  }
+  showToast(`Quality: ${quality.toUpperCase()}`);
+  closeLandscapeDrawers();
+  resetLandscapeControlsTimer();
+}
+
+function updateQualityPillsForMedia(media) {
+  const qualityList = document.getElementById('lsQualityOptionsList');
+  if (!qualityList) return;
+
+  const servers = (appState.currentEpisode && appState.currentEpisode.servers) 
+    ? appState.currentEpisode.servers 
+    : (media.servers || []);
+
+  if (servers.length > 1) {
+    qualityList.innerHTML = servers.map((s, idx) => {
+      const qName = s.name.replace(/Server\s*\d+\s*\(/i, '').replace(/\)/g, '').trim();
+      return `
+        <button class="ls-speed-option ${idx === 0 ? 'active' : ''}" onclick="setLandscapeQuality('${qName}')">
+          ${qName.toUpperCase()}
+        </button>
+      `;
+    }).join('');
+  }
+}
+
+function setupSubtitlesForMedia(media) {
+  const video = document.getElementById('mainVideoPlayer');
+  if (!video) return;
+
+  // Clear existing tracks
+  while (video.querySelector('track')) {
+    video.querySelector('track').remove();
+  }
+
+  const captions = media.captions || media.subtitles || [];
+  const subtitleContainer = document.getElementById('lsSubtitleOptionsList');
+  if (subtitleContainer) {
+    if (captions.length === 0) {
+      subtitleContainer.innerHTML = '<div class="ls-lang-item active"><span>English (Default)</span><i class="fa-solid fa-check ls-check-icon"></i></div>';
+    } else {
+      subtitleContainer.innerHTML = captions.map((sub, idx) => `
+        <div class="ls-lang-item ${idx === 0 ? 'active' : ''}" onclick="selectSubtitleTrack(${idx}, '${sub.language || sub.lang}')">
+          <span>${sub.language || sub.lang}</span>
+          <i class="fa-solid fa-check ls-check-icon ${idx === 0 ? '' : 'hidden'}"></i>
+        </div>
+      `).join('');
+
+      captions.forEach((sub, idx) => {
+        const track = document.createElement('track');
+        track.kind = 'subtitles';
+        track.label = sub.language || sub.lang;
+        track.srclang = (sub.language || sub.lang || 'en').toLowerCase().substring(0, 2);
+        track.src = sub.url;
+        track.default = (idx === 0);
+        video.appendChild(track);
+      });
+    }
+  }
+
+  const subToggle = document.getElementById('lsSubtitleToggle');
+  if (subToggle) {
+    subToggle.onchange = (e) => {
+      const enabled = e.target.checked;
+      if (video && video.textTracks) {
+        for (let i = 0; i < video.textTracks.length; i++) {
+          video.textTracks[i].mode = enabled ? (i === 0 ? 'showing' : 'hidden') : 'disabled';
+        }
+      }
+      showToast(enabled ? 'Subtitles: ON' : 'Subtitles: OFF');
+    };
+  }
+}
+
+function selectSubtitleTrack(index, label) {
+  const video = document.getElementById('mainVideoPlayer');
+  if (video && video.textTracks) {
+    for (let i = 0; i < video.textTracks.length; i++) {
+      video.textTracks[i].mode = (i === index) ? 'showing' : 'hidden';
+    }
+  }
+  document.querySelectorAll('#lsSubtitleOptionsList .ls-lang-item').forEach((item, idx) => {
+    item.classList.toggle('active', idx === index);
+    const check = item.querySelector('.ls-check-icon');
+    if (check) check.classList.toggle('hidden', idx !== index);
+  });
+  showToast(`Subtitle: ${label}`);
   closeLandscapeDrawers();
   resetLandscapeControlsTimer();
 }

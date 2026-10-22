@@ -6,32 +6,12 @@ const TMDB_API_KEY = '6e766190399843a3e1d85b68eaa3de69';
 
 const servers = [
   {
-    name: 'Server 1 (Fast HD - OK.ru)',
-    url: 'https://ok.ru/videoembed/16194734787157?nochat=1'
+    name: 'Server 1 (Fast HD 720p)',
+    url: 'https://bcdnxw.hakunaymatata.com/resource/ca545ed90a0f2634d5e5f096f1f08ce4.mp4?sign=206ebc29872421678796f2dc1077a2cd&t=1792681525'
   },
   {
-    name: 'Server 2 (PkSpeed 720p)',
-    url: 'https://pkembed.site/embed-quggka0tac6d.html'
-  },
-  {
-    name: 'Server 3 (PkSpeed 360p)',
-    url: 'https://pkembed.site/embed-0ot5b8dayz34.html'
-  },
-  {
-    name: 'Server 4 (CloudVideo 720p)',
-    url: 'https://do7go.com/e/psq4ykhq96ta'
-  },
-  {
-    name: 'Server 5 (CloudVideo 360p)',
-    url: 'https://do7go.com/e/8wsik4sfioi4'
-  },
-  {
-    name: 'Server 6 (Streamtape 720p)',
-    url: 'https://streamtape.to/e/8Z7BZmGjJAHoKD2'
-  },
-  {
-    name: 'Server 7 (MixDrop 720p)',
-    url: 'https://mxdrop.to/e/owwq3p3pil9mgm'
+    name: 'Server 2 (Fast SD 480p)',
+    url: 'https://bcdnxw.hakunaymatata.com/resource/efe68efc6c387dd8249c25723df7988f.mp4?sign=b7eb172766a3c7b19b141329cc5fcfb4&t=1792680422'
   }
 ];
 

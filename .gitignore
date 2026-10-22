@@ -18,3 +18,4 @@ android/captures/
 *.jpg
 *.mkv
 data/stream_cache/
+scratch/
