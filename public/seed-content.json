@@ -36,6 +36,117 @@
   },
   "movies": [
     {
+      "id": "tmdb-m-1153576",
+      "title": "Street Fighter (2026)",
+      "originalTitle": "Street Fighter",
+      "language": "English",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Hallprint",
+      "tag": "Hallprint",
+      "quality": "Hallprint",
+      "industry": "Hollywood",
+      "year": "2026",
+      "country": "USA",
+      "genre": "Action, Fantasy",
+      "duration": "2h 00m",
+      "category": "Trending Movies",
+      "rating": "6.3",
+      "imdbRating": "6.3",
+      "poster": "https://image.tmdb.org/t/p/w500/ccxdepKqORLwccbzvO4eAGkN0IC.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/qRN8eqYwG6HPSy0i3fKzuLrUOhp.jpg",
+      "description": "In 1993, estranged Street Fighters Ryu and Ken Masters are thrown back into combat when the mysterious Chun-Li recruits them for the next World Warrior Tournament: a brutal clash of fists, fate, and fury. But behind this battle royale lies a deadly conspiracy that forces them to face off against each other and the demons of their past. And if they don't, it's GAME OVER!",
+      "audioTracks": [
+        "Hindi dub",
+        "English (Original)"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://ok.ru/videoembed/16237381749333?nochat=1",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD - OK.ru)",
+          "url": "https://ok.ru/videoembed/16237381749333?nochat=1"
+        },
+        {
+          "name": "Server 2 (PkSpeed 720p)",
+          "url": "https://pkembed.site/embed-tx4rjiyhpj1s.html"
+        },
+        {
+          "name": "Server 3 (PkSpeed 360p)",
+          "url": "https://pkembed.site/embed-ucs7rrwm7kod.html"
+        },
+        {
+          "name": "Server 4 (CloudVideo 720p)",
+          "url": "https://do7go.com/e/lvg5ef5bowrp"
+        },
+        {
+          "name": "Server 5 (CloudVideo 360p)",
+          "url": "https://do7go.com/e/vjtb9y73cdta"
+        },
+        {
+          "name": "Server 6 (Streamtape 720p)",
+          "url": "https://streamtape.to/e/b7ODqz66JACPp2B"
+        },
+        {
+          "name": "Server 7 (MixDrop 720p)",
+          "url": "https://mxdrop.to/e/gjjglog8uwd4dmv"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Andrew Koji",
+          "character": "Ryu",
+          "photo": "https://image.tmdb.org/t/p/w185/oU53nWLQ6wFHzERwSi1fD53LxZB.jpg"
+        },
+        {
+          "name": "Noah Centineo",
+          "character": "Ken Masters",
+          "photo": "https://image.tmdb.org/t/p/w185/p1bcst401RyxfDGykx2iQLI7CV5.jpg"
+        },
+        {
+          "name": "Callina Liang",
+          "character": "Chun-Li",
+          "photo": "https://image.tmdb.org/t/p/w185/blJ4iEqMs5oTiKVxUyB9Ky7kNRO.jpg"
+        },
+        {
+          "name": "David Dastmalchian",
+          "character": "M. Bison",
+          "photo": "https://image.tmdb.org/t/p/w185/eLafwcpL64CqzwjjSgKpO7Rv4ae.jpg"
+        },
+        {
+          "name": "Mel Jarnson",
+          "character": "Cammy",
+          "photo": "https://image.tmdb.org/t/p/w185/8m0gnlADmLXkMkvSzDR2OhBfsCB.jpg"
+        },
+        {
+          "name": "Cody Rhodes",
+          "character": "Guile",
+          "photo": "https://image.tmdb.org/t/p/w185/m9hfLcsQuESprcb7dJUj5lQLWCv.jpg"
+        },
+        {
+          "name": "Vidyut Jammwal",
+          "character": "Dhalsim",
+          "photo": "https://image.tmdb.org/t/p/w185/9iBEIKvn1GGzymF3kVPBHtaMkWy.jpg"
+        },
+        {
+          "name": "Olivier Richters",
+          "character": "Zangief",
+          "photo": "https://image.tmdb.org/t/p/w185/8Zz5WYE1Muc3AX9daxCxgNTRE5.jpg"
+        },
+        {
+          "name": "Andrew Schulz",
+          "character": "Dan Hibiki",
+          "photo": "https://image.tmdb.org/t/p/w185/fdeYq1EraYvlYM3VmGXjIaSGoTz.jpg"
+        },
+        {
+          "name": "50 Cent",
+          "character": "Balrog",
+          "photo": "https://image.tmdb.org/t/p/w185/7VfwFIwBxy7qBUErosWRDQOovl9.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
       "id": "tmdb-m-1234139",
       "title": "Jailer 2 (2026)",
       "originalTitle": "ஜெயிலர் 2",
