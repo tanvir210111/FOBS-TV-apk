@@ -57,19 +57,19 @@
         "Original Audio"
       ],
       "selectedAudio": "Hindi dub",
-      "streamUrl": "https://ok.ru/videoembed/16080728820309",
+      "streamUrl": "https://pkembed.site/embed-h8l7ow6hjwi9.html",
       "servers": [
         {
-          "name": "Server 1 (Fast HD - OK.ru)",
-          "url": "https://ok.ru/videoembed/16080728820309"
-        },
-        {
-          "name": "Server 2 (PkSpeed 720p)",
+          "name": "Server 1 (Fast HD - PkSpeed)",
           "url": "https://pkembed.site/embed-h8l7ow6hjwi9.html"
         },
         {
-          "name": "Server 3 (PkSpeed 360p)",
+          "name": "Server 2 (PkSpeed 360p)",
           "url": "https://pkembed.site/embed-raecsttsmkli.html"
+        },
+        {
+          "name": "Server 3 (OK.ru HD)",
+          "url": "https://ok.ru/videoembed/16080728820309"
         },
         {
           "name": "Server 4 (CloudVideo 720p)",
@@ -159,19 +159,19 @@
         "Original Audio"
       ],
       "selectedAudio": "Hindi dub",
-      "streamUrl": "https://ok.ru/videoembed/16195081144917?nochat=1",
+      "streamUrl": "https://pkembed.site/embed-qe8m63wn8yk8.html",
       "servers": [
         {
-          "name": "Server 1 (Fast HD - OK.ru)",
-          "url": "https://ok.ru/videoembed/16195081144917?nochat=1"
-        },
-        {
-          "name": "Server 2 (PkSpeed 720p)",
+          "name": "Server 1 (Fast HD - PkSpeed)",
           "url": "https://pkembed.site/embed-qe8m63wn8yk8.html"
         },
         {
-          "name": "Server 3 (PkSpeed 360p)",
+          "name": "Server 2 (PkSpeed 360p)",
           "url": "https://pkembed.site/embed-dujgu9120oc9.html"
+        },
+        {
+          "name": "Server 3 (OK.ru HD)",
+          "url": "https://ok.ru/videoembed/16195081144917?nochat=1"
         },
         {
           "name": "Server 4 (CloudVideo 720p)",

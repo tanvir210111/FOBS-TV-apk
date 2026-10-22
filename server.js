@@ -602,6 +602,12 @@ app.all('/api/stream', async (req, res) => {
     'Accept': '*/*'
   };
 
+  if (resolvedUrl.includes('vkuser.net') || (targetUrl && targetUrl.includes('ok.ru'))) {
+    requestHeaders['Referer'] = 'https://ok.ru/';
+  } else if (resolvedUrl.includes('vkpluscdn') || (targetUrl && targetUrl.includes('pkembed'))) {
+    requestHeaders['Referer'] = 'https://pkembed.site/';
+  }
+
   if (range) {
     requestHeaders['Range'] = range;
   } else if (isHead) {

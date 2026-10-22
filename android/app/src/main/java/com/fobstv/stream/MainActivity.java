@@ -466,6 +466,15 @@ public class MainActivity extends BridgeActivity {
                 settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
                 settings.setDomStorageEnabled(true);
                 settings.setDatabaseEnabled(true);
+                settings.setAllowFileAccess(true);
+                settings.setAllowContentAccess(true);
+
+                // Set standard mobile Chrome User-Agent to avoid WebView bot/embed blocks on video CDNs
+                String defaultUa = settings.getUserAgentString();
+                if (defaultUa != null) {
+                    String cleanUa = defaultUa.replace("; wv", "").replace("Version/4.0 ", "");
+                    settings.setUserAgentString(cleanUa);
+                }
 
                 // Add Javascript interface for landscape/portrait orientation control & immersive fullscreen
                 webView.addJavascriptInterface(new WebAppInterface(), "AndroidApp");

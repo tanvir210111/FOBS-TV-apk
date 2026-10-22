@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v26';
+const CACHE_KEY = 'fobs_tv_content_cache_v27';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -2262,14 +2262,12 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     ? audioIndex 
     : (appState.selectedAudioIndex !== undefined ? appState.selectedAudioIndex : (appState.currentAudioTrack?.toLowerCase().includes('english') ? 1 : 0));
 
-  // Direct play only for sources that provide CORS headers and fast direct CDN edge delivery
+  // Direct play only for sources that provide CORS headers and fast direct CDN edge delivery without IP restrictions
   const isDirectMp4Source = (
     playableUrl.includes('kmdl.eu.org') ||
-    playableUrl.includes('vkuser.net') ||
-    playableUrl.includes('okcdn.ru') ||
     playableUrl.includes('vkpluscdn.site') ||
     playableUrl.includes('plus1.vkpluscdn') ||
-    (playableUrl.includes('.mp4') && !playableUrl.includes('drive.google.com') && !playableUrl.includes('vcloud.you'))
+    (playableUrl.includes('.mp4') && !playableUrl.includes('drive.google.com') && !playableUrl.includes('vcloud.you') && !playableUrl.includes('vkuser.net') && !playableUrl.includes('okcdn.ru'))
   );
   if (isDirectMp4Source && !playableUrl.includes('googleusercontent.com') && audioIndex === null && !seekTime) {
     console.log('Playing direct CDN stream:', playableUrl);
@@ -2277,6 +2275,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     videoPlayer.load();
     videoPlayer.play().catch(err => {
       console.log('Autoplay deferred until user taps video controls:', err.message);
+      if (loader) loader.classList.remove('active');
     });
     return;
   }
@@ -2304,6 +2303,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
   videoPlayer.load();
   videoPlayer.play().catch(err => {
     console.log('Autoplay deferred until user taps video controls:', err.message);
+    if (loader) loader.classList.remove('active');
   });
 }
 
