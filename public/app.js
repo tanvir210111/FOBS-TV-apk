@@ -1905,6 +1905,8 @@ function openPlayer(media, episodeIndex = 0) {
 
   if (isSeries && media.episodes && media.episodes.length > 0) {
     if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'block';
+    const movieServersWrapper = document.getElementById('movieServersWrapper');
+    if (movieServersWrapper) movieServersWrapper.style.display = 'none';
 
     appState.currentEpisode = media.episodes[episodeIndex] || media.episodes[0];
     renderEpisodePills(media.episodes, episodeIndex);
@@ -1914,11 +1916,45 @@ function openPlayer(media, episodeIndex = 0) {
   } else {
     if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'none';
     appState.currentEpisode = null;
-    playStreamUrl(media.streamUrl || media.driveUrl);
+    appState.activeServerIndex = 0;
+    renderServerPills(media);
+    const initialUrl = (media.servers && media.servers.length > 0) ? media.servers[0].url : (media.streamUrl || media.driveUrl);
+    playStreamUrl(initialUrl);
   }
 
   // Populate "For You" recommendations
   renderForYouRecommendations();
+}
+
+// Render Server Pills for Movies with Multiple Sources
+function renderServerPills(media) {
+  const wrapper = document.getElementById('movieServersWrapper');
+  const row = document.getElementById('serversListRow');
+  if (!wrapper || !row) return;
+
+  if (media && media.servers && media.servers.length > 0) {
+    wrapper.style.display = 'block';
+    const activeIdx = appState.activeServerIndex !== undefined ? appState.activeServerIndex : 0;
+    row.innerHTML = media.servers.map((s, idx) => `
+      <button class="server-pill ${idx === activeIdx ? 'active' : ''}" onclick="selectServer(${idx})">
+        <i class="fa-solid fa-play" style="font-size: 8px; opacity: 0.8;"></i> ${s.name}
+      </button>
+    `).join('');
+  } else {
+    wrapper.style.display = 'none';
+  }
+}
+
+// Select Movie Server Manually
+function selectServer(idx) {
+  if (!appState.currentMedia || !appState.currentMedia.servers || !appState.currentMedia.servers[idx]) return;
+  appState.activeServerIndex = idx;
+  const srv = appState.currentMedia.servers[idx];
+  renderServerPills(appState.currentMedia);
+  showToast(`Switched to: ${srv.name}`);
+  appState.streamSeekOffset = 0;
+  appState.pendingSeekTime = null;
+  playStreamUrl(srv.url);
 }
 
 // Render Episode Pills
@@ -1977,7 +2013,9 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
 
   // Direct play only for sources that provide CORS headers and fast direct CDN edge delivery
   const isDirectMp4Source = (
-    url.includes('kmdl.eu.org')
+    url.includes('kmdl.eu.org') ||
+    url.includes('vkuser.net') ||
+    url.includes('vkpluscdn.site')
   );
   if (isDirectMp4Source && !url.includes('googleusercontent.com') && audioIndex === null && !seekTime) {
     videoPlayer.src = url;
@@ -2892,6 +2930,20 @@ function setupVideoListeners() {
 
     const curEp = appState.currentEpisode;
     const rawUrl = (curEp?.audioTracks && curEp.audioTracks[appState.currentAudioTrack]) || curEp?.streamUrl || appState.currentMedia?.streamUrl || appState.currentMedia?.driveUrl;
+
+    // Automatic server failover if media has backup servers
+    if (appState.currentMedia && appState.currentMedia.servers && appState.currentMedia.servers.length > 1) {
+      const curIdx = appState.activeServerIndex !== undefined ? appState.activeServerIndex : 0;
+      if (curIdx + 1 < appState.currentMedia.servers.length) {
+        appState.activeServerIndex = curIdx + 1;
+        const nextServer = appState.currentMedia.servers[appState.activeServerIndex];
+        console.warn(`Stream failed on current server. Auto-switching to: ${nextServer.name}...`);
+        showToast(`Server issue: Auto-switching to ${nextServer.name}...`);
+        renderServerPills(appState.currentMedia);
+        playStreamUrl(nextServer.url);
+        return;
+      }
+    }
 
     if (!videoPlayer._retryCount) videoPlayer._retryCount = 0;
     if (videoPlayer._retryCount < 2 && rawUrl) {

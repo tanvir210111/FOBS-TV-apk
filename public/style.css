@@ -1569,6 +1569,63 @@ body.is-fullscreen .player-top-header.controls-hidden,
   font-weight: 700;
 }
 
+/* Movie Multi-Servers Row */
+.movie-servers-wrapper {
+  margin-bottom: 14px;
+}
+
+.servers-label {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.servers-scroll-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+
+.servers-scroll-row::-webkit-scrollbar {
+  display: none;
+}
+
+.server-pill {
+  flex: 0 0 auto;
+  padding: 7px 13px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #cbd5e1;
+  border-radius: 18px;
+  font-size: 11.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.server-pill:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.server-pill.active {
+  background: #2563eb;
+  border-color: #60a5fa;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+}
+
 /* Movie Resource Button (Removed as requested) */
 .movie-resource-row {
   display: none !important;

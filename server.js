@@ -245,6 +245,54 @@ async function resolveStreamUrl(rawUrl) {
     }
   }
 
+  // 7. Check ok.ru video
+  else if (rawUrl.includes('ok.ru')) {
+    try {
+      const okIdMatch = rawUrl.match(/ok\.ru\/(?:videoembed\/|video\/)?(\d+)/);
+      if (okIdMatch) {
+        const okRes = await axios.get(`https://ok.ru/videoembed/${okIdMatch[1]}`, {
+          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
+          timeout: 8000
+        });
+        const optMatch = okRes.data.match(/data-options="([^"]+)"/);
+        if (optMatch) {
+          const decoded = optMatch[1].replace(/&quot;/g, '"');
+          const opt = JSON.parse(decoded);
+          const meta = typeof opt.flashvars.metadata === 'string' ? JSON.parse(opt.flashvars.metadata) : opt.flashvars.metadata;
+          const bestVideo = (meta.videos || []).find(v => v.name === 'sd' || v.name === 'hd') || (meta.videos || [])[0];
+          if (bestVideo && bestVideo.url) {
+            resolved = bestVideo.url;
+          } else if (meta.hlsManifestUrl) {
+            resolved = meta.hlsManifestUrl;
+          }
+        }
+      }
+    } catch (e) {
+      console.error('OK.ru auto-resolve error:', e.message);
+    }
+  }
+
+  // 8. Check pkembed / vkplus
+  else if (rawUrl.includes('pkembed.site')) {
+    try {
+      const pkRes = await axios.get(rawUrl, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
+        timeout: 8000
+      });
+      const pkMatch = pkRes.data.match(/eval\(function\(p,a,c,k,e,d\)[\s\S]*?\.split\('\|'\)\)\)/);
+      if (pkMatch) {
+        const unpack = new Function('return ' + pkMatch[0].replace(/^eval/, ''));
+        const unpacked = unpack();
+        const sources = [...unpacked.matchAll(/<source[^>]+src=["']([^"']+)["']/gi)].map(x => x[1]);
+        if (sources.length > 0) {
+          resolved = sources[sources.length - 1];
+        }
+      }
+    } catch (e) {
+      console.error('PkEmbed auto-resolve error:', e.message);
+    }
+  }
+
   // Only cache if successfully resolved to a real stream URL (not raw fallback)
   if (resolved && resolved !== rawUrl) {
     streamUrlCache.set(rawUrl, {
@@ -389,9 +437,14 @@ app.all('/api/stream', async (req, res) => {
 
     if (isHead) return res.end();
 
-    const refererHeader = (resolvedUrl.includes('upbolt.to') || targetUrl.includes('upbolt') || targetUrl.includes('it2k1jyiil2q'))
-      ? 'Referer: https://upbolt.to/\r\n'
-      : 'Referer: https://luluvido.com/\r\n';
+    let refererHeader = 'Referer: https://luluvido.com/\r\n';
+    if (resolvedUrl.includes('upbolt.to') || targetUrl.includes('upbolt') || targetUrl.includes('it2k1jyiil2q')) {
+      refererHeader = 'Referer: https://upbolt.to/\r\n';
+    } else if (resolvedUrl.includes('vkuser.net') || targetUrl.includes('ok.ru')) {
+      refererHeader = 'Referer: https://ok.ru/\r\n';
+    } else if (resolvedUrl.includes('vkpluscdn') || targetUrl.includes('pkembed')) {
+      refererHeader = 'Referer: https://pkembed.site/\r\n';
+    }
 
     const ffmpegArgs = [
       '-user_agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
