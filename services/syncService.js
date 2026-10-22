@@ -237,7 +237,11 @@ async function runMovieBoxSync() {
 
         // Resolving Stream
         console.log(`  🔍 Resolving & verifying stream for "${item.title}"...`);
-        const media = await movieboxService.resolveMedia(item.subjectId, item.detailPath, 0, 0);
+        const isSeriesItem = item.type === 'series';
+        let media = await movieboxService.resolveMedia(item.subjectId, item.detailPath, isSeriesItem ? 1 : 0, isSeriesItem ? 1 : 0);
+        if (!media || !media.streamUrl) {
+          media = await movieboxService.resolveMedia(item.subjectId, item.detailPath, 0, 0);
+        }
         if (!media || !media.streamUrl) {
           console.log(`    ⚠️ No stream found for "${item.title}", skipping.`);
           continue;

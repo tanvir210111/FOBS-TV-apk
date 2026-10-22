@@ -639,6 +639,15 @@ app.post('/api/content', (req, res) => {
 
 // Stream Proxy: Handles Google Drive, V-Cloud, and Direct links with Range (Byte-level Seeking)
 app.all('/api/stream', async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type, Accept, X-Requested-With');
+  res.setHeader('Access-Control-Expose-Headers', 'Content-Range, Content-Length, Accept-Ranges, Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   let targetUrl = req.query.url;
 
   if (!targetUrl || targetUrl === 'undefined' || targetUrl === 'null') {

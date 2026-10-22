@@ -117,6 +117,86 @@
   },
   "movies": [
     {
+      "id": "mb-m-3136667368668152832",
+      "title": "Babita Singh Reporting (Hindi Dub)",
+      "originalTitle": "ASI Babita Singh Reporting [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Crime, Drama",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "3.7",
+      "imdbRating": "3.7",
+      "poster": "https://image.tmdb.org/t/p/w500/nA3xIA93Wenbuc5I5RQwPSUPXU.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/o80iCzo1zqSt4zx9SZkCsjgxzvi.jpg",
+      "description": "People-pleasing cop Baby accepts a fake charge to get leave for her sister-in-law’s baby shower in Rewa. There, she reunites with her childhood friend Bansi, who is murdered that very night. Defying dismissive in-laws, an indifferent husband and an apathetic local police force, she secretly investigates the murder, uncovering family betrayals while finding her own voice, courage and place as a real cop.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/0efb84754f2d88f88c6174c5c511c450.mp4?sign=4979f8a237f425aef7b51c3fef5649f2&t=1792683640",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/0efb84754f2d88f88c6174c5c511c450.mp4?sign=4979f8a237f425aef7b51c3fef5649f2&t=1792683640"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/65502a55da14d5dad0cb0169235dfa53.mp4?sign=f8cb62c57ba5d4a7c918e02015d303fa&t=1792683640"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Nimisha Sajayan",
+          "character": "ASI Babita Singh",
+          "photo": "https://image.tmdb.org/t/p/w185/r1tiqFWXlWDFlZx966yOeBYs2qY.jpg"
+        },
+        {
+          "name": "Anshumaan Pushkar",
+          "character": "Sharad Vashisht",
+          "photo": "https://image.tmdb.org/t/p/w185/ktbqCXjoqLuD96tTkHo1PVqVi14.jpg"
+        },
+        {
+          "name": "Barun Sobti",
+          "character": "Bansi Seni",
+          "photo": "https://image.tmdb.org/t/p/w185/5DyMqVtDdZmKq76Ujtnt59zPLms.jpg"
+        },
+        {
+          "name": "Rajesh Kumar",
+          "character": "Mukesh Sethi",
+          "photo": "https://image.tmdb.org/t/p/w185/vat8qbqIeumutuToGX0VrtA06M6.jpg"
+        },
+        {
+          "name": "Geetika Vidya",
+          "character": "Karamjeet Kaur",
+          "photo": "https://image.tmdb.org/t/p/w185/8vGi0UERPBA5fzkjbIOqLOQfzso.jpg"
+        },
+        {
+          "name": "Sunita Rajwar",
+          "character": "Babita's Mother-in-Law",
+          "photo": "https://image.tmdb.org/t/p/w185/cEhnGiU6arxA4vxZCUspFWDP76F.jpg"
+        },
+        {
+          "name": "Priya Yadav",
+          "character": "Guddi",
+          "photo": "https://image.tmdb.org/t/p/w185/cvex8DWAbE8QZMfcNPbHMew5Q9x.jpg"
+        },
+        {
+          "name": "Priyanka Setia",
+          "character": "Rupa",
+          "photo": "https://image.tmdb.org/t/p/w185/bHZwl5Vpf9X9IlqilC0wi3IGoVV.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
       "id": "tmdb-m-969681",
       "title": "Spider-Man: Brand New Day",
       "originalTitle": "Spider-Man: Brand New Day",
@@ -3398,6 +3478,1837 @@
     }
   ],
   "series": [
+    {
+      "id": "mb-s-4913967391899615376",
+      "title": "The Detective Is Already Dead (Hindi Dub)",
+      "originalTitle": "The Detective Is Already Dead [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2021",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "5.7",
+      "imdbRating": "5.7",
+      "poster": "https://image.tmdb.org/t/p/w500/8gCOlj0bXa2cQnXSl4wRX5tVIA0.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/aqETSDXdeYqcD1PPd2WBfeWtoct.jpg",
+      "description": "After thwarting a hijacking with beautiful, silver-haired detective Siesta, Kimihiko leads a life of globe-trotting and crime-solving—until Siesta dies. A year later, a new case will open old wounds as it threads murder, conspiracy, and his dead partner!",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/80d5b066453cc6c4cc59f06646ccb214.mp4?sign=783b491872432c9e7dd8e2b3bdbcc866&t=1792685826",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/80d5b066453cc6c4cc59f06646ccb214.mp4?sign=783b491872432c9e7dd8e2b3bdbcc866&t=1792685826"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/349e0600343112ced1cc1aa72b9ec442.mp4?sign=a4d9c60e89d585b64f6be8743d429e79&t=1792682874"
+        },
+        {
+          "name": "Server 3 (360p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/c799781c1cac9833e13fd9bb3364ab9a.mp4?sign=052983269618ba476af51a5703a634a0&t=1792686459"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Arata Nagai",
+          "character": "Kimihiko Kimizuka (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/2pBl4uYHU0TKAj3bTivTOaPbtnf.jpg"
+        },
+        {
+          "name": "Saki Miyashita",
+          "character": "Siesta (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/5I1KqliJdfISImVZN7nw8DrqEdA.jpg"
+        },
+        {
+          "name": "Ayana Taketatsu",
+          "character": "Nagisa Natsunagi (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/7p9BhK5EZtHvXWhFa1WejhoNst3.jpg"
+        },
+        {
+          "name": "Kanon Takao",
+          "character": "Yui Saikawa (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/w3h6h9R29uRsOv01qbk94ym2msm.jpg"
+        },
+        {
+          "name": "Saho Shirasu",
+          "character": "Charlotte Arisaka Anderson (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/2iNYxiui27dvP30WiYtVquO1HCN.jpg"
+        },
+        {
+          "name": "Maria Naganawa",
+          "character": "Alicia (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/tt0j0z34Oq3MyvDA3VeizskWcw4.jpg"
+        },
+        {
+          "name": "Yoshitsugu Matsuoka",
+          "character": "Bat (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/ugDwdWEXnmv43jcbnfAi4XwiQ8C.jpg"
+        },
+        {
+          "name": "Mai Fuchigami",
+          "character": "Fuubi Kase (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/rWYdSVyjdyKoWj9SbJRTMJmYgbJ.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/80d5b066453cc6c4cc59f06646ccb214.mp4?sign=783b491872432c9e7dd8e2b3bdbcc866&t=1792685826",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/80d5b066453cc6c4cc59f06646ccb214.mp4?sign=783b491872432c9e7dd8e2b3bdbcc866&t=1792685826"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-4163992514732639728",
+      "title": "The Laid-Off Cheat-Granting Mage Enjoys a Second Lease on Life (Hindi Dub)",
+      "originalTitle": "The Laid-Off Cheat-Granting Mage Enjoys a Second Lease on Life [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2026",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "9.5",
+      "imdbRating": "9.5",
+      "poster": "https://image.tmdb.org/t/p/w500/rncb111IIBmIIO9I9ENW0Xc8mca.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/msusxF6ZPGnQmTGXU9iC4UJOohs.jpg",
+      "description": "Rein spent years enhancing his guildmates’ gear with magic, only to be expelled the moment he enchanted everything. Unfazed, Rein steals back his magic, pours it into his own sword, and makes the best of his newfound freedom as he sets off as an adventurer. Along the way, Rein gathers a band of fellow outcasts and together they fight monsters and carve out their place in an enchanted world.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d331a1fd455c2e91d7bdf9c600e054a1.mp4?sign=56c3a18d7b14f50221650eaefeeea153&t=1792684171",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/d331a1fd455c2e91d7bdf9c600e054a1.mp4?sign=56c3a18d7b14f50221650eaefeeea153&t=1792684171"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/58168deeafc90fce4f96437fbb94fb53.mp4?sign=cea599ac267e6d98efb92b481d3b4d78&t=1792686125"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Daiki Yamashita",
+          "character": "Rein Garland (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/rQNdJdZewk7VGP16ZNbpfJ9ZeMd.jpg"
+        },
+        {
+          "name": "Lynn",
+          "character": "Lily Flambert (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/eJ2NqgzpnzNbT6Nt9EpDfzqNeZM.jpg"
+        },
+        {
+          "name": "Yoshino Aoyama",
+          "character": "Margaret Ells (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/yPOprcT7tPKR3p79RMYtogTEXGr.jpg"
+        },
+        {
+          "name": "Miyu Tomita",
+          "character": "Mirabelle (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/rSR17l4HdchLkhpRuAZbGbXNmUS.jpg"
+        },
+        {
+          "name": "Megumi Han",
+          "character": "Elsie Zra (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/cwnwrPg1YvB19TbfouC4ShGPmbQ.jpg"
+        },
+        {
+          "name": "Konomi Kohara",
+          "character": "Nina (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/3wjTzpJpBiTkLexdMmo9a3wfgRT.jpg"
+        },
+        {
+          "name": "Nobuhiko Okamoto",
+          "character": "Half (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/7s1K2yQVF5iIWILaOfG7QrMZkXA.jpg"
+        },
+        {
+          "name": "Makoto Furukawa",
+          "character": "Cornelius (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/inLmBZhrqXeE9wlViyK28ocKJSw.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d331a1fd455c2e91d7bdf9c600e054a1.mp4?sign=56c3a18d7b14f50221650eaefeeea153&t=1792684171",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/d331a1fd455c2e91d7bdf9c600e054a1.mp4?sign=56c3a18d7b14f50221650eaefeeea153&t=1792684171"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-2338717329384787360",
+      "title": "Grand Blue Dreaming (Hindi Dub)",
+      "originalTitle": "Grand Blue Dreaming [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2025",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "7.9",
+      "imdbRating": "7.9",
+      "poster": "https://pbcdnw.aoneroom.com/image/2026/07/31/c4dc317f4865dde97758460526adff54.jpg",
+      "backdrop": "https://pbcdnw.aoneroom.com/image/2026/07/31/c4dc317f4865dde97758460526adff54.jpg",
+      "description": "High definition Hindi dubbed stream of Grand Blue Dreaming [Hindi]. Available now on FOBS TV.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/ddc3b6d0679681431ed6d0a7c3586cc6.mp4?sign=bf183419cd254f437a2540be1098f922&t=1792682714",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/convert-h264/ddc3b6d0679681431ed6d0a7c3586cc6.mp4?sign=bf183419cd254f437a2540be1098f922&t=1792682714"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/b5f315cd52564ba43b5e491633212d86.mp4?sign=db21607087dbb1f820fdc15ae88d8c46&t=1792682959"
+        }
+      ],
+      "cast": [],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/ddc3b6d0679681431ed6d0a7c3586cc6.mp4?sign=bf183419cd254f437a2540be1098f922&t=1792682714",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/ddc3b6d0679681431ed6d0a7c3586cc6.mp4?sign=bf183419cd254f437a2540be1098f922&t=1792682714"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-5663438161238710152",
+      "title": "Arifureta: From Commonplace to World's Strongest (Hindi Dub)",
+      "originalTitle": "Arifureta: From Commonplace to World's Strongest [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2019",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "8.4",
+      "imdbRating": "8.4",
+      "poster": "https://image.tmdb.org/t/p/w500/kB9tdE00Z5zWIJQux1jiYvRyPIC.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/1lL1ts7dzTUp0eOTHvMqfw6zFJn.jpg",
+      "description": "Hajime Nagumo and his high school class are suddenly summoned to a fantastical land as heroes. But while most of his classmates have powerful stats and abilities, Hajime does not. Underappreciated and unprepared, he tumbles into the depths of a monster-infested dungeon where voracity and sacrifice are his only options. To thrive in this savage world, he’ll have no choice but to welcome the abyss.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/ec9b7979552a08ddc9c88731d1e4894d.mp4?sign=73b7e9dc3e0f466ffa0bdce40069b973&t=1792685462",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/ec9b7979552a08ddc9c88731d1e4894d.mp4?sign=73b7e9dc3e0f466ffa0bdce40069b973&t=1792685462"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/0a45a2d5e89ef50efbe4c197e5c85cfe.mp4?sign=9d214f4184e3665012185c3fe2d2719c&t=1792685462"
+        },
+        {
+          "name": "Server 3 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/996d73bb9a1cf43dc479fa8c7218afda.mp4?sign=def2b994219254a84daeb193865cff62&t=1792685462"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Toshinari Fukamachi",
+          "character": "Hajime Nagumo (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/o7BCrhWApisvlVSsb9JAVVCNW5M.jpg"
+        },
+        {
+          "name": "Yuuki Kuwahara",
+          "character": "Yue (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/n9kLcB2YNl9S2kK6b2rId7cpjdh.jpg"
+        },
+        {
+          "name": "Minami Takahashi",
+          "character": "Shea Haulia (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/9SRX6yrHGtGEJxcnLyGFhOZkXSH.jpg"
+        },
+        {
+          "name": "Yoko Hikasa",
+          "character": "Tio Klarus (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/mP3bj0s1gqJ6tCKFLhu4b1CkJj7.jpg"
+        },
+        {
+          "name": "Saori Onishi",
+          "character": "Kaori Shirasaki (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/cziKB19QMFJ6DQDtxTn07uRY2hq.jpg"
+        },
+        {
+          "name": "Yumiri Hanamori",
+          "character": "Shizuku Yaegashi (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/zXVwGxsxwEvL1f6wxzTYtxytjDn.jpg"
+        },
+        {
+          "name": "Ai Kakuma",
+          "character": "Aiko Hatayama (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/o3tQSeeJAeafJNvQs2IKvpKY7av.jpg"
+        },
+        {
+          "name": "Hiroshi Watanabe",
+          "character": "Haulia Yao (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/4DdXrVRosioqQklJDLy39eGsq9B.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/ec9b7979552a08ddc9c88731d1e4894d.mp4?sign=73b7e9dc3e0f466ffa0bdce40069b973&t=1792685462",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/ec9b7979552a08ddc9c88731d1e4894d.mp4?sign=73b7e9dc3e0f466ffa0bdce40069b973&t=1792685462"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-6446851041895370536",
+      "title": "The Ramparts of Ice (Hindi Dub)",
+      "originalTitle": "The Ramparts of Ice [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2026",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "8.7",
+      "imdbRating": "8.7",
+      "poster": "https://image.tmdb.org/t/p/w500/rke9UC2QrogvxiQD9TGpbvqDosi.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/ht6WUmez8cFbwlrFmGdjbYyn3RG.jpg",
+      "description": "Weighed down by memories she can't shake, high schooler Koyuki Hikawa keeps everyone at arm's length — until three schoolmates draw her out of her shell.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/459d975684b8ea18f145f78a1200a00b.mp4?sign=4d8a2d5d1d4e581e30898754dcc03ab7&t=1792685531",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/459d975684b8ea18f145f78a1200a00b.mp4?sign=4d8a2d5d1d4e581e30898754dcc03ab7&t=1792685531"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/vegamovies/b99a71c80246cd83c1fe6ec44b9343c9.mp4?sign=34b27822e6de0d086a88f19ead6badc1&t=1792686495"
+        },
+        {
+          "name": "Server 3 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/e3986a634b01179e08e8886c9d1d3907.mp4?sign=3dd3b8b529f1757a31c9442089300211&t=1792686218"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Anna Nagase",
+          "character": "Koyuki Hikawa (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/gFKRUlUlqTD7jGdysg5IWIvgoCH.jpg"
+        },
+        {
+          "name": "Fuka Izumi",
+          "character": "Miki Azumi (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/nTC0TuLp4Ek3b08DG9lhwVJHwlW.jpg"
+        },
+        {
+          "name": "Shoya Chiba",
+          "character": "Minato Amamiya (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/pF2urY77wuCYd9Fxh7dTirFYKSF.jpg"
+        },
+        {
+          "name": "Satoshi Inomata",
+          "character": "Yota Hino (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/hAoRLGuberMhFY1f6ULJGiIu1e.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/459d975684b8ea18f145f78a1200a00b.mp4?sign=4d8a2d5d1d4e581e30898754dcc03ab7&t=1792685531",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/459d975684b8ea18f145f78a1200a00b.mp4?sign=4d8a2d5d1d4e581e30898754dcc03ab7&t=1792685531"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-5985714864478734088",
+      "title": "Ragna Crimson (Hindi Dub)",
+      "originalTitle": "Ragna Crimson [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2023",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "7.4",
+      "imdbRating": "7.4",
+      "poster": "https://image.tmdb.org/t/p/w500/z3ymAW3LveYyq0TqHSicuU8S5tG.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/8Tv140K71PVsiU5z0vRNrgZpKAM.jpg",
+      "description": "Ragna teams up with the enigmatic Crimson to stand against the dragons menacing the world. Although Crimson's motivations are mysterious, his goal and Ragna's perfectly align, and together they'll vanquish the dragons once and for all.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/561ace5eae3f40bee96048117b1585f9.mp4?sign=70fee7930b4124a91e53a0f4f2460ea6&t=1792684803",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/561ace5eae3f40bee96048117b1585f9.mp4?sign=70fee7930b4124a91e53a0f4f2460ea6&t=1792684803"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/8e98fec898053ca845d8a4e0cd1fa3c9.mp4?sign=0dbbc18637786a51fad65a19dc840368&t=1792683421"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Chiaki Kobayashi",
+          "character": "Ragna (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/o0XZFXc50z28ICUpvfZ1QcTL2Yt.jpg"
+        },
+        {
+          "name": "Ayumu Murase",
+          "character": "Crimson (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/3aGM6KpcCIEKOXP9510tzaKc8uw.jpg"
+        },
+        {
+          "name": "Inori Minase",
+          "character": "Leonica (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/cqOrQDUbbQLKpujzcK47YqjFdNp.jpg"
+        },
+        {
+          "name": "Mamiko Noto",
+          "character": "Chimera (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/wCSD7Umgzc66p8VGXrrMZtSLSuS.jpg"
+        },
+        {
+          "name": "Hiroki Touchi",
+          "character": "Golem (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/bU2vogWmnTWiQEwUADWlnBqAPhJ.jpg"
+        },
+        {
+          "name": "Reina Ueda",
+          "character": "Ultimatia (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/2WV61uVU7y6XGYqNHLMpP0sApdu.jpg"
+        },
+        {
+          "name": "Takehito Koyasu",
+          "character": "Grymwelte (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/8uBkNDKPNmp9JWgMUI02NVyfhi1.jpg"
+        },
+        {
+          "name": "Shunsuke Takeuchi",
+          "character": "Disas Trois (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/p1bD76bPptJ41mKRtv0mIr8ZcvO.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/561ace5eae3f40bee96048117b1585f9.mp4?sign=70fee7930b4124a91e53a0f4f2460ea6&t=1792684803",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/561ace5eae3f40bee96048117b1585f9.mp4?sign=70fee7930b4124a91e53a0f4f2460ea6&t=1792684803"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-7967254200902451552",
+      "title": "Welcome to Demon School! Iruma-kun (Hindi Dub)",
+      "originalTitle": "Welcome to Demon-School, Iruma-kun [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2019",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "8.3",
+      "imdbRating": "8.3",
+      "poster": "https://image.tmdb.org/t/p/w500/msqjiRwQiaGQpPdnG0Y4OYjDqL9.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/d8bAI2EDM7L2q94wDZfjb82KRoh.jpg",
+      "description": "Fourteen-year-old Iruma Suzuki has just been abandoned and sold to a demon by his irresponsible parents! Surprisingly, the next thing he knows he's living with the demon who has adopted him as his new grandson and has been transferred into a school in the Netherworld where his new demon grandfather works as the principal. Thus begins the cowardly Iruma-kun's extraordinary school life among the otherworldly as he faces his true self, takes on challenges, and rises to become someone great.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/850dc283af379f89c3e2367cb4fa2cbb.mp4?sign=a6979427ea8341fe388a8031447d1094&t=1792686493",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/850dc283af379f89c3e2367cb4fa2cbb.mp4?sign=a6979427ea8341fe388a8031447d1094&t=1792686493"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/baa0b3323707db3f4ecb2972a39dc95e.mp4?sign=20dff93d2d117b162c20a938f36d0fac&t=1792686493"
+        },
+        {
+          "name": "Server 3 (360p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/61c957f2ca514a70f6817aa9e7298747.mp4?sign=68c40ad3de893649e22614f0b94e42f5&t=1792686493"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Ayumu Murase",
+          "character": "Iruma Suzuki (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/3aGM6KpcCIEKOXP9510tzaKc8uw.jpg"
+        },
+        {
+          "name": "Ryohei Kimura",
+          "character": "Alice Asmodeus (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/m4GktFKhjrVTewsZtqTusInHZqT.jpg"
+        },
+        {
+          "name": "Ayaka Asai",
+          "character": "Clara Valac (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/tQCblqK0CJfddLPkYKcI94R2Pgh.jpg"
+        },
+        {
+          "name": "Daisuke Ono",
+          "character": "Naberius Kalego (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/5rjl28lx84JjRS0hzq3Ajvx2dhp.jpg"
+        },
+        {
+          "name": "Saori Hayami",
+          "character": "Ameri Azazel (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/gLv9lO7dlUbIsmyJUvgegqAAXki.jpg"
+        },
+        {
+          "name": "Takuya Sato",
+          "character": "Sabro Sabnock (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/xZgoTs6DOSneHkoOWL751pQzLru.jpg"
+        },
+        {
+          "name": "Takaya Kuroda",
+          "character": "Sullivan (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/7UH1DDjoF7x4b9pOT4bLF9ew8Uq.jpg"
+        },
+        {
+          "name": "Mitsuki Saiga",
+          "character": "Opera (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/qjRHodCBpKY8nEa4p8dZriDoil4.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/850dc283af379f89c3e2367cb4fa2cbb.mp4?sign=a6979427ea8341fe388a8031447d1094&t=1792686493",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/850dc283af379f89c3e2367cb4fa2cbb.mp4?sign=a6979427ea8341fe388a8031447d1094&t=1792686493"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-1418810570597357232",
+      "title": "The Exiled Heavy Knight Knows How to Game the System (Hindi Dub)",
+      "originalTitle": "The Exiled Heavy Knight Knows How to Game the System [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2026",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "8.3",
+      "imdbRating": "8.3",
+      "poster": "https://image.tmdb.org/t/p/w500/bADzMfofNWYdxLnlqNuMkO6du34.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/rQmzx7qyoK5YiXJHnv0jdgVlKyl.jpg",
+      "description": "Born into a prestigious family of master swordsmen, Elymas Edvaughn's future shatters when he awakens the so-called \"defective\" Heavy Knight class. Disowned and cast out, he regains memories of another life—and realizes this world mirrors a VR game he once mastered. Armed with knowledge no one else possesses, he sets out to rewrite his fate and prove the strength of the \"weakest\" class.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/c41f27014e6a4d7e5e41b35e0bec5200.mp4?sign=b30744ed7751c8f7a1f1a2d2c793b43e&t=1792684258",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/c41f27014e6a4d7e5e41b35e0bec5200.mp4?sign=b30744ed7751c8f7a1f1a2d2c793b43e&t=1792684258"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/convert-h264/6bca766a72539262c31ff97c39f1dd7b.mp4?sign=a5953bc98819a633edf6528ee856927e&t=1792684603"
+        },
+        {
+          "name": "Server 3 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/31a49884f059127d9ab594a8c0948530.mp4?sign=5143d688dd26a55d0321e6e92e8320de&t=1792684879"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Takeo Otsuka",
+          "character": "Elma Edvan (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/wqeAMR0HOGUPBXz0TCNxDR51cQy.jpg"
+        },
+        {
+          "name": "Shion Wakayama",
+          "character": "Luce Rubis (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/b697ggFreuliEfl4TjLgxhJCQXr.jpg"
+        },
+        {
+          "name": "Natsuko Abe",
+          "character": "Maris Edvan (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/aX4Ay6DywnXs9DupOaqdxBfUJe8.jpg"
+        },
+        {
+          "name": "Kentaro Tone",
+          "character": "Isaac Edvan (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/9IZ9SpSV0P4bJBN8ALll7IYMLG2.jpg"
+        },
+        {
+          "name": "Katsumi Fukuhara",
+          "character": "Klein (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/ijpwBGoo3iPmb9v1Oh4Fz9CFzOx.jpg"
+        },
+        {
+          "name": "Miyuri Shimabukuro",
+          "character": "Reese (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/rjhyRM2hn1deQG1V6cwC8AEEKNT.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/c41f27014e6a4d7e5e41b35e0bec5200.mp4?sign=b30744ed7751c8f7a1f1a2d2c793b43e&t=1792684258",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/c41f27014e6a4d7e5e41b35e0bec5200.mp4?sign=b30744ed7751c8f7a1f1a2d2c793b43e&t=1792684258"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-542646768450818704",
+      "title": "I Became a Legend After My 10 Year-Long Last Stand (Hindi Dub)",
+      "originalTitle": "I Became a Legend after My 10 Year-Long Last Stand [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2026",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "6.7",
+      "imdbRating": "6.7",
+      "poster": "https://image.tmdb.org/t/p/w500/4LaPshxWTFcBhc5ib8xOfYeD9tH.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/ttcHr50V6A4JNKUlkIhhLsX9c04.jpg",
+      "description": "Luck, an S-rank mage in the hero's party, makes a last stand against the Demon King to save his companions. When he finally returns victorious, ten years have passed, and the world praises him as a legendary hero who died in battle. Unable to reclaim his former life, Luck conceals his identity and begins again as \"Lock,\" an F-rank adventurer forging a future in a world that moved on without him.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d723782ca38c82064b17cbd762d83d52.mp4?sign=6491280e8e2f7dc332f32d9da41f1acd&t=1792683455",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/d723782ca38c82064b17cbd762d83d52.mp4?sign=6491280e8e2f7dc332f32d9da41f1acd&t=1792683455"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/convert-h264/3fd2dad2bbf4f214f796a199bd695cd6.mp4?sign=53eefc730b28cae5e36f580dfaab08d6&t=1792686340"
+        },
+        {
+          "name": "Server 3 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/7d0b15ce90a9b86fcffbc62f2ad41b55.mp4?sign=c1df95fbd581857d912ce78d7eeaa3e7&t=1792685639"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Gakuto Kajiwara",
+          "character": "Luck \"Lock\" Franzen (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/kUer38jXf7vTD2TGGxJMZVYL5Te.jpg"
+        },
+        {
+          "name": "Toshiyuki Morikawa",
+          "character": "Eric Imgard Mendirival (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/hrzGBe4nokgkBNFekNo5hlXB2Bv.jpg"
+        },
+        {
+          "name": "Tsuyoshi Koyama",
+          "character": "Goran Morton (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/xm7AT3bF4ARZvbx87ixXT8rNFgs.jpg"
+        },
+        {
+          "name": "Yui Ishikawa",
+          "character": "(voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/zptGIN1iklKJL1xrfHKOpxR2qJ9.jpg"
+        },
+        {
+          "name": "Mayu Sagara",
+          "character": "(voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/rKam75qicpfKqfrSNhTe84ZcfeM.jpg"
+        },
+        {
+          "name": "Mao Ichimichi",
+          "character": "(voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/a3cflYtrlFK0LXfWODgLDO7E7CP.jpg"
+        },
+        {
+          "name": "Yurie Kozakai",
+          "character": "(voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/mbIMcptHLQir3wrAnnSSAR5uRR1.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d723782ca38c82064b17cbd762d83d52.mp4?sign=6491280e8e2f7dc332f32d9da41f1acd&t=1792683455",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/d723782ca38c82064b17cbd762d83d52.mp4?sign=6491280e8e2f7dc332f32d9da41f1acd&t=1792683455"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-7097651204503001752",
+      "title": "KONOSUBA - God's blessing on this wonderful world! (Hindi Dub)",
+      "originalTitle": "Konosuba: God's Blessing on This Wonderful World! [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2016",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "8.5",
+      "imdbRating": "8.5",
+      "poster": "https://image.tmdb.org/t/p/w500/oRaOeQlwktbGSd2T31FYAcgHZlh.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/rvZJxD36tKoglL8fXoMMWKGQfM.jpg",
+      "description": "After a traffic accident, Kazuma Sato’s  disappointingly brief life was supposed to be over, but he wakes up to  see a beautiful girl before him. She claims to be a goddess, Aqua, and  asks if he would like to go to another world and bring only one thing  with him. Kazuma decides to bring the goddess herself, and they are  transported to a fantasy world filled with adventure, ruled by a demon  king. Now Kazuma only wants to live in peace, but Aqua wants to solve  many of this world’s problems, and the demon king will only turn a blind  eye for so long…",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/754e3e4b6010f8e423b6ba7f099b4c40.mp4?sign=754922ca590404019fe271c1f622c5e7&t=1792684581",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/convert-h264/754e3e4b6010f8e423b6ba7f099b4c40.mp4?sign=754922ca590404019fe271c1f622c5e7&t=1792684581"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/807383b01a481129ab237b9699cf80b6.mp4?sign=656f38d4fa0a753f83a27b8f3ca5d3e9&t=1792685658"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Jun Fukushima",
+          "character": "Kazuma Satou (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/xo2A4cr8TnhC9rLFxSQvhwCbIOw.jpg"
+        },
+        {
+          "name": "Sora Amamiya",
+          "character": "Aqua (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/AouA1SfwEazdSSj8rUS9K1WIF4H.jpg"
+        },
+        {
+          "name": "Rie Takahashi",
+          "character": "Megumin (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/aeB7z0cBTASdjKOjQriBAO6hYq4.jpg"
+        },
+        {
+          "name": "Ai Kayano",
+          "character": "Lalatina 'Darkness' Dustiness Ford (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/l8ywp387rfdAS7mOExe3cEZnsk0.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/754e3e4b6010f8e423b6ba7f099b4c40.mp4?sign=754922ca590404019fe271c1f622c5e7&t=1792684581",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/754e3e4b6010f8e423b6ba7f099b4c40.mp4?sign=754922ca590404019fe271c1f622c5e7&t=1792684581"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-3015067308617353456",
+      "title": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World (Hindi Dub)",
+      "originalTitle": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2024",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "7.4",
+      "imdbRating": "7.4",
+      "poster": "https://image.tmdb.org/t/p/w500/jsugIfxS7mg7G254ZOi6b4jDIgM.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/n493br0MLJHASsqEsUwG5PvxDkN.jpg",
+      "description": "Ars Louvent is reincarnated in another world as the young son of a minor noble who owns a small domain. Ars is not particularly strong or intelligent, but he was born with the Appraisal Skill that's able to see others' abilities and statuses. He uses his skill to find the best hidden talents in the world to make their small, weak domain into the best.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/767d1afb33bc057134132043935de8c9.mp4?sign=e457f389150d64ad8bd3f29ec537e89b&t=1792683849",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/767d1afb33bc057134132043935de8c9.mp4?sign=e457f389150d64ad8bd3f29ec537e89b&t=1792683849"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/d1cbc0a28a373e0d054912aae4842358.mp4?sign=fcb1a73bf514c1b2dfa82bb6799130ca&t=1792686430"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Natsumi Fujiwara",
+          "character": "Ars Louvent (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/9B9NICRp2li1SA3VF7vyIAxQ0x9.jpg"
+        },
+        {
+          "name": "Taito Ban",
+          "character": "Ritsu Muses (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/pSExEOVmjAujKUyJJJSxC1WEzOM.jpg"
+        },
+        {
+          "name": "Narumi Kaho",
+          "character": "Charlotte Wraith (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/9QKQnv8C9usNDeg3z1B9j7qwJxX.jpg"
+        },
+        {
+          "name": "Miho Okasaki",
+          "character": "Rosell Kischa (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/cTkMJzOdsXL8o5q5AhP9eT0sXDK.jpg"
+        },
+        {
+          "name": "Kana Hanazawa",
+          "character": "Licia Plaid (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/9UTBlNRopSOKyoWnCm74tyHOfR1.jpg"
+        },
+        {
+          "name": "Hiroki Touchi",
+          "character": "Raven Louvent / Narration (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/bU2vogWmnTWiQEwUADWlnBqAPhJ.jpg"
+        },
+        {
+          "name": "Hitomi Nabatame",
+          "character": "Mireille Grangeon (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/jidfw5qDgZjC4TPY3YunJQxlEmr.jpg"
+        },
+        {
+          "name": "Haruka Tomatsu",
+          "character": "Fam (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/geVvuA2zMGE5xzfc20aDelJSelu.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/767d1afb33bc057134132043935de8c9.mp4?sign=e457f389150d64ad8bd3f29ec537e89b&t=1792683849",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/cms/767d1afb33bc057134132043935de8c9.mp4?sign=e457f389150d64ad8bd3f29ec537e89b&t=1792683849"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-1046337672425472216",
+      "title": "Mushoku Tensei: Jobless Reincarnation (Hindi Dub)",
+      "originalTitle": "Mushoku Tensei: Jobless Reincarnation [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2024",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "8.2",
+      "imdbRating": "8.2",
+      "poster": "https://pbcdn.aoneroom.com/image/2026/06/29/165b9b02ef1077859684cc7e985f93c9.jpg",
+      "backdrop": "https://pbcdn.aoneroom.com/image/2026/06/29/165b9b02ef1077859684cc7e985f93c9.jpg",
+      "description": "High definition Hindi dubbed stream of Mushoku Tensei: Jobless Reincarnation [Hindi]. Available now on FOBS TV.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a43e7f34e8358a922c8b181114bd4db6.mp4?sign=a94d77830945fd6cb70c3260b74a8b01&t=1792683868",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/a43e7f34e8358a922c8b181114bd4db6.mp4?sign=a94d77830945fd6cb70c3260b74a8b01&t=1792683868"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/8df07245dc98f4aab6336c128354d3c1.mp4?sign=2c0a1aff73ba068e0b943d3beabd7c92&t=1792683868"
+        },
+        {
+          "name": "Server 3 (360p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/a31a7f86a5b8671582231f59e0033a7a.mp4?sign=0d052d0f1157ebb62cb83f0cf7786c7d&t=1792683868"
+        }
+      ],
+      "cast": [],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a43e7f34e8358a922c8b181114bd4db6.mp4?sign=a94d77830945fd6cb70c3260b74a8b01&t=1792683868",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a43e7f34e8358a922c8b181114bd4db6.mp4?sign=a94d77830945fd6cb70c3260b74a8b01&t=1792683868"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-2551537104618775712",
+      "title": "BLACK TORCH (Hindi Dub)",
+      "originalTitle": "Black Torch [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2026",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "8.1",
+      "imdbRating": "8.1",
+      "poster": "https://image.tmdb.org/t/p/w500/fkZ19fifxAOAxbE2ZJvXGVvDDGs.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/ceirDIa8QgeeiFKFnLcQpfAH5V7.jpg",
+      "description": "Jiro Azuma is no average high schooler. A descendant of ninjas and trained in the ancient warrior art of the shinobi, Jiro is also able to talk with animals. After a mysterious encounter with an injured cat named Rago, Jiro discovers the feline is actually the legendary Black Star of Doom! Joined by the Bureau of Espionage, they fight off swarms of mononoke lying in wait to exploit Rago’s powers.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/3e105663a1a04b0418494ad8fe824186.mp4?sign=8fdbd2c0e28774875713e64f34db5816&t=1792682828",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/3e105663a1a04b0418494ad8fe824186.mp4?sign=8fdbd2c0e28774875713e64f34db5816&t=1792682828"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/convert-h264/19200bb1e03b56ef7644bd4eeab350d7.mp4?sign=ee2fd5030ba8d8a0e928dce008bc4689&t=1792684201"
+        },
+        {
+          "name": "Server 3 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/bfb0f26715c3c33d5a7af924262a4da8.mp4?sign=7b620e15c3016b915814195e1dff0a7b&t=1792684226"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Ryota Suzuki",
+          "character": "Jiro Azuma (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/4Xq18mQttuW2yfRCflnWoU7UqQ5.jpg"
+        },
+        {
+          "name": "Yoji Ueda",
+          "character": "Rago (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/fHvIfE0Q7ab0DFlkNVFcXvTKX9y.jpg"
+        },
+        {
+          "name": "Sayaka Senbongi",
+          "character": "Ichika Kishimojin (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/yLRKX9DPDGgTRKBQRFTUh3pvbU0.jpg"
+        },
+        {
+          "name": "Junya Enoki",
+          "character": "Reiji Kirihara (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/vBnNL3Jqy0zkS3ZgsXZmvDM9Dfz.jpg"
+        },
+        {
+          "name": "Junichi Suwabe",
+          "character": "Ryousuke Shiba (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/4S7c3n3r07A83HvkLrnWZGVhiHg.jpg"
+        },
+        {
+          "name": "Reina Ueda",
+          "character": "Hana Usami (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/2WV61uVU7y6XGYqNHLMpP0sApdu.jpg"
+        },
+        {
+          "name": "Toshiyuki Morikawa",
+          "character": "Amagi (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/hrzGBe4nokgkBNFekNo5hlXB2Bv.jpg"
+        },
+        {
+          "name": "Nobuhiko Okamoto",
+          "character": "Kouga (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/7s1K2yQVF5iIWILaOfG7QrMZkXA.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/3e105663a1a04b0418494ad8fe824186.mp4?sign=8fdbd2c0e28774875713e64f34db5816&t=1792682828",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/3e105663a1a04b0418494ad8fe824186.mp4?sign=8fdbd2c0e28774875713e64f34db5816&t=1792682828"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-2288089881081512944",
+      "title": "Re:ZERO -Starting Life in Another World- (Hindi Dub)",
+      "originalTitle": "Re: Zero, Starting Life in Another World [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2016",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "8.1",
+      "imdbRating": "8.1",
+      "poster": "https://image.tmdb.org/t/p/w500/oHqYrPAsIiTD5m4DuxumV4er8BU.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/7ZruEnSnHD6Jx5mF0hBt1E306Vt.jpg",
+      "description": "Natsuki Subaru, an ordinary high school  student, is on his way home from the convenience store when he finds  himself transported to another world. As he's lost and confused in a new  world where he doesn't even know left from right, the only person to  reach out to him was a beautiful girl with silver hair. Determined to  repay her somehow for saving him from his own despair, Subaru agrees to  help the girl find something she's looking for.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/f7dcf2224c9296429780faa888f3ca35.mp4?sign=f44e42e415cd3313e059635571ef051d&t=1792683609",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/f7dcf2224c9296429780faa888f3ca35.mp4?sign=f44e42e415cd3313e059635571ef051d&t=1792683609"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/37604baf13f47e6709f049cc8ccf376c.mp4?sign=43f1769aafbd5e763cfcb1b6da0a7efc&t=1792685670"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Yusuke Kobayashi",
+          "character": "Subaru Natsuki (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/y4ukKDSobZJNuB4H3k89hkrKCDC.jpg"
+        },
+        {
+          "name": "Rie Takahashi",
+          "character": "Emilia (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/aeB7z0cBTASdjKOjQriBAO6hYq4.jpg"
+        },
+        {
+          "name": "Yumi Uchiyama",
+          "character": "Puck (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/JvavoF3YOLCf4LHfl4XvYobANE.jpg"
+        },
+        {
+          "name": "Rie Murakawa",
+          "character": "Ram (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/pawIx7uhV1a2fAHjvTnrCP0KcHX.jpg"
+        },
+        {
+          "name": "Inori Minase",
+          "character": "Rem (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/cqOrQDUbbQLKpujzcK47YqjFdNp.jpg"
+        },
+        {
+          "name": "Satomi Arai",
+          "character": "Beatrice (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/v95wU1gpSLAOJS5yKFTxyheXAW2.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/f7dcf2224c9296429780faa888f3ca35.mp4?sign=f44e42e415cd3313e059635571ef051d&t=1792683609",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/cms/f7dcf2224c9296429780faa888f3ca35.mp4?sign=f44e42e415cd3313e059635571ef051d&t=1792683609"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-368113073112187200",
+      "title": "That Time I Got Reincarnated as a Slime (Hindi Dub)",
+      "originalTitle": "That Time I Got Reincarnated as a Slime [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2024",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "8.0",
+      "imdbRating": "8.0",
+      "poster": "https://pbcdnw.aoneroom.com/image/2026/10/20/b2e7840254eb5be358f2c7f498040a5d.jpg",
+      "backdrop": "https://pbcdnw.aoneroom.com/image/2026/10/20/b2e7840254eb5be358f2c7f498040a5d.jpg",
+      "description": "High definition Hindi dubbed stream of That Time I Got Reincarnated as a Slime [Hindi]. Available now on FOBS TV.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a77fdd00070cfd6a90102aa41e724a5a.mp4?sign=49e3ee84e97e93e3769df5f24163df2f&t=1792683984",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/a77fdd00070cfd6a90102aa41e724a5a.mp4?sign=49e3ee84e97e93e3769df5f24163df2f&t=1792683984"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/convert-h264/1b57f19bd312ea188fa5a440878108c7.mp4?sign=a490ab341ab53b74a5d49376725603b5&t=1792685988"
+        },
+        {
+          "name": "Server 3 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/5946509cba9673ba2ed9ce22e7a2607e.mp4?sign=8b644cb4b74e0ac5f5c579ce88cf7fad&t=1792685048"
+        },
+        {
+          "name": "Server 4 (360p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/92d8d3da2678d6515cbb43dfa652018e.mp4?sign=7e9471b58b718b65435f739b524288c9&t=1792685410"
+        }
+      ],
+      "cast": [],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a77fdd00070cfd6a90102aa41e724a5a.mp4?sign=49e3ee84e97e93e3769df5f24163df2f&t=1792683984",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a77fdd00070cfd6a90102aa41e724a5a.mp4?sign=49e3ee84e97e93e3769df5f24163df2f&t=1792683984"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-3997659161797476824",
+      "title": "Ranma1/2 (Hindi Dub)",
+      "originalTitle": "Ranma  ½ [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2024",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "8.1",
+      "imdbRating": "8.1",
+      "poster": "https://image.tmdb.org/t/p/w500/cDThx8yRYbdPOSgHbjihS4q7GYc.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/xvD9urN8lUtWw5fm4a87Rl3dCZn.jpg",
+      "description": "Akane Tendo meets her new fiancé, Ranma Saotome, a martial arts prodigy with a twist: he magically transforms into a girl upon touching cold water.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9a5fd9431c100ccaecfacffffdc3d70.mp4?sign=dc07835465a42edf1d5d8f03bc426369&t=1792683710",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/a9a5fd9431c100ccaecfacffffdc3d70.mp4?sign=dc07835465a42edf1d5d8f03bc426369&t=1792683710"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/865076dd7ab51b8c617875b10d5b10aa.mp4?sign=ef00a9d7d5ef3ca2cee3e91c9f289897&t=1792685775"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Kappei Yamaguchi",
+          "character": "Ranma Saotome (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/mJyxKRZxLv9D7LH5KcNSkjSKYOB.jpg"
+        },
+        {
+          "name": "Megumi Hayashibara",
+          "character": "Ranma (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/3Alm4pmBIxpeeh0Sdippxdbkpne.jpg"
+        },
+        {
+          "name": "Noriko Hidaka",
+          "character": "Akane Tendo (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/43OuwsjqGf7JxpFpUvB75OdDDXQ.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9a5fd9431c100ccaecfacffffdc3d70.mp4?sign=dc07835465a42edf1d5d8f03bc426369&t=1792683710",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9a5fd9431c100ccaecfacffffdc3d70.mp4?sign=dc07835465a42edf1d5d8f03bc426369&t=1792683710"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-1042151586308440096",
+      "title": "A Wild Last Boss Appeared! (Hindi Dub)",
+      "originalTitle": "A Wild Last Boss Appeared! [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2025",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "7.1",
+      "imdbRating": "7.1",
+      "poster": "https://image.tmdb.org/t/p/w500/xh9lu8gDgzwMBiByTRtTsclluZf.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/gNYmU3RUlCb6dVqkiPCT7vglMfg.jpg",
+      "description": "An MMO gamer awakens as the Black-Winged Tyrant, Lufas Maphaahl, rising from her sealed fate—only to find this is very real. Her defeat 200 years ago unleashed monsters of death, and the legend is one of terror. Now, trapped in the body of history's most feared conqueror, he must survive a world that wants her dead…and uncover why he's here.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/9e1cfa1233cea990fc1a5c8f4ddeb748.mp4?sign=971564d8f2f130fcba3767210effa84b&t=1792682507",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/9e1cfa1233cea990fc1a5c8f4ddeb748.mp4?sign=971564d8f2f130fcba3767210effa84b&t=1792682507"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/convert-h264/457ad5f2b5e80c065c25b55cda3ba634.mp4?sign=8ee684e0b2f4ef9d8052cddb9f931d0d&t=1792685147"
+        },
+        {
+          "name": "Server 3 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/eb6636c7337084834c3e3da2b23669e0.mp4?sign=d78eb74583b84e8d077fb3ce74100245&t=1792686390"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Ami Koshimizu",
+          "character": "Lufas Maphaahl (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/e5sU0stGjTMtFoj0jjHH7OFUqYC.jpg"
+        },
+        {
+          "name": "Yuri Usui",
+          "character": "Dina (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/yY3HhdrEfgplJ4KKwT4wXgIeGTZ.jpg"
+        },
+        {
+          "name": "Yukina Shuto",
+          "character": "Aries (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/mxIpJabfqqJWNjJBzEnJrRDyOsE.jpg"
+        },
+        {
+          "name": "Naoya Uchida",
+          "character": "Aigokeros (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/i1Vl4QbiEsyATmX2HSH2rIEyzeS.jpg"
+        },
+        {
+          "name": "Hisako Tojo",
+          "character": "Libra (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/oWXhLQN274DMfQfM39ukoZc70or.jpg"
+        },
+        {
+          "name": "Cocoro Omori",
+          "character": "Virgo (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/kWFIBZA39oPW9J2SM4OuZqw8u28.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/9e1cfa1233cea990fc1a5c8f4ddeb748.mp4?sign=971564d8f2f130fcba3767210effa84b&t=1792682507",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/9e1cfa1233cea990fc1a5c8f4ddeb748.mp4?sign=971564d8f2f130fcba3767210effa84b&t=1792682507"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-4681337201345660416",
+      "title": "Naruto: Shippuden (Hindi Dub)",
+      "originalTitle": "Naruto: Shippuden [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2017",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "8.7",
+      "imdbRating": "8.7",
+      "poster": "https://pbcdnw.aoneroom.com/image/2026/08/30/b91b67b6bece84f546f8a2a01dc712b8.jpg",
+      "backdrop": "https://pbcdnw.aoneroom.com/image/2026/08/30/b91b67b6bece84f546f8a2a01dc712b8.jpg",
+      "description": "High definition Hindi dubbed stream of Naruto: Shippuden [Hindi]. Available now on FOBS TV.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d35003e9063fad2ea4f699470e552812.mp4?sign=0038b6ce07a624faf692525216dacc29&t=1792685111",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/d35003e9063fad2ea4f699470e552812.mp4?sign=0038b6ce07a624faf692525216dacc29&t=1792685111"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/8dc569dc1b116efa968c7f1edca21230.mp4?sign=708b5583fd1e171d97f02352425a3501&t=1792685240"
+        }
+      ],
+      "cast": [],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d35003e9063fad2ea4f699470e552812.mp4?sign=0038b6ce07a624faf692525216dacc29&t=1792685111",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/d35003e9063fad2ea4f699470e552812.mp4?sign=0038b6ce07a624faf692525216dacc29&t=1792685111"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-8458814937190780632",
+      "title": "Overgeared (Hindi Dub)",
+      "originalTitle": "Overgeared [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2026",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "7.0",
+      "imdbRating": "7.0",
+      "poster": "https://image.tmdb.org/t/p/w500/94GLmulA9qVGsuo9kLpVKi01E2Z.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/745xqHbiUWwO51TM60MXRCR4Onm.jpg",
+      "description": "Escape everyday life in SATISFY, a VR game where players earn real-world fame and fortune. One player, Grid, can't seem to catch a break in the game or in real life. That all changes when a challenging quest leads him to becoming the heir to a legendary blacksmith. His stats are reset to zero, but he's leveling up and crafting some seriously god-tier goods.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/c51177ec7bbd7d3dc74af45c4db47aa9.mp4?sign=88f0daa8a15516c4e74d1be999380290&t=1792686483",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/convert-h264/c51177ec7bbd7d3dc74af45c4db47aa9.mp4?sign=88f0daa8a15516c4e74d1be999380290&t=1792686483"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Tatsumaru Tachibana",
+          "character": "Shin Youngwoo / Grid (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/eShhW1W22SQuUwRaONnpzEZ5w6E.jpg"
+        },
+        {
+          "name": "Asami Seto",
+          "character": "Yura (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/iKKCPgKrNd4pJ0iBOC1SBZy2Y4Y.jpg"
+        },
+        {
+          "name": "Saya Fukuzumi",
+          "character": "Euphemia (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/zlSTVQsai4DcvHimLo8r4dg8DhG.jpg"
+        },
+        {
+          "name": "Shuntaro Takayama",
+          "character": "Huroi (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/eAMybCcZcukliA30Qb0UNR7ZQnh.jpg"
+        },
+        {
+          "name": "Riho Sugiyama",
+          "character": "Jishuka (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/rPVn4cInZVECBWhoHozERc8XTTj.jpg"
+        },
+        {
+          "name": "Masaaki Mizunaka",
+          "character": "Toban (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/cHb2pr4juxk8A3VTuDxgPWHM6WF.jpg"
+        },
+        {
+          "name": "Ko Bonkobara",
+          "character": "Regas (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/ArR2Pkddx548PV71sZ1mBJ2RXd1.jpg"
+        },
+        {
+          "name": "Masaya Fukunishi",
+          "character": "Vantner (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/8paIbTobS6266x57pIhJCq3mBJh.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/c51177ec7bbd7d3dc74af45c4db47aa9.mp4?sign=88f0daa8a15516c4e74d1be999380290&t=1792686483",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/c51177ec7bbd7d3dc74af45c4db47aa9.mp4?sign=88f0daa8a15516c4e74d1be999380290&t=1792686483"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-3997659161797476824",
+      "title": "Ranma1/2 (Hindi Dub)",
+      "originalTitle": "Ranma  ½ [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2024",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "8.1",
+      "imdbRating": "8.1",
+      "poster": "https://image.tmdb.org/t/p/w500/cDThx8yRYbdPOSgHbjihS4q7GYc.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/xvD9urN8lUtWw5fm4a87Rl3dCZn.jpg",
+      "description": "Akane Tendo meets her new fiancé, Ranma Saotome, a martial arts prodigy with a twist: he magically transforms into a girl upon touching cold water.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9a5fd9431c100ccaecfacffffdc3d70.mp4?sign=dc07835465a42edf1d5d8f03bc426369&t=1792683710",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/a9a5fd9431c100ccaecfacffffdc3d70.mp4?sign=dc07835465a42edf1d5d8f03bc426369&t=1792683710"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/865076dd7ab51b8c617875b10d5b10aa.mp4?sign=ef00a9d7d5ef3ca2cee3e91c9f289897&t=1792685775"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Kappei Yamaguchi",
+          "character": "Ranma Saotome (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/mJyxKRZxLv9D7LH5KcNSkjSKYOB.jpg"
+        },
+        {
+          "name": "Megumi Hayashibara",
+          "character": "Ranma (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/3Alm4pmBIxpeeh0Sdippxdbkpne.jpg"
+        },
+        {
+          "name": "Noriko Hidaka",
+          "character": "Akane Tendo (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/43OuwsjqGf7JxpFpUvB75OdDDXQ.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9a5fd9431c100ccaecfacffffdc3d70.mp4?sign=dc07835465a42edf1d5d8f03bc426369&t=1792683710",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9a5fd9431c100ccaecfacffffdc3d70.mp4?sign=dc07835465a42edf1d5d8f03bc426369&t=1792683710"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-2225435141369905464",
+      "title": "Blue Box (Hindi Dub)",
+      "originalTitle": "Blue Box [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Anime",
+      "tag": "Anime",
+      "industry": "Anime",
+      "year": "2024",
+      "country": "Japan",
+      "genre": "Anime, Action",
+      "duration": "45m/ep",
+      "category": "Anime Series",
+      "rating": "7.9",
+      "imdbRating": "7.9",
+      "poster": "https://image.tmdb.org/t/p/w500/sN3TuYevEPWxZhwcp6I2PJRW1jl.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/8p39Ud6ZKMixBQ7R4frg2o3idzc.jpg",
+      "description": "Taiki Inomata loves badminton, but he has a long way to go before he can reach nationals. When Taiki sees upperclassman Chinatsu Kano practicing her heart out on the girls’ basketball team, he falls for her hard. After an unexpected turn of events brings the two closer together, sports might not be the first thing on their minds anymore!",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/c69f69fb2f7b132cd166a856162fd06f.mp4?sign=b06c73ff9609e9fc0542a0c3099c37fb&t=1792683284",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/c69f69fb2f7b132cd166a856162fd06f.mp4?sign=b06c73ff9609e9fc0542a0c3099c37fb&t=1792683284"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/92652177e1729709055444736b1a8de4.mp4?sign=a7bb96c31381a7753bf77305baaeda11&t=1792683284"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Shoya Chiba",
+          "character": "Taiki Inomata (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/pF2urY77wuCYd9Fxh7dTirFYKSF.jpg"
+        },
+        {
+          "name": "Reina Ueda",
+          "character": "Chinatsu Kano (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/2WV61uVU7y6XGYqNHLMpP0sApdu.jpg"
+        },
+        {
+          "name": "Akari Kito",
+          "character": "Hina Chono (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/AoRQOZRC0yINB0WeKnM569rV1wF.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/c69f69fb2f7b132cd166a856162fd06f.mp4?sign=b06c73ff9609e9fc0542a0c3099c37fb&t=1792683284",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/c69f69fb2f7b132cd166a856162fd06f.mp4?sign=b06c73ff9609e9fc0542a0c3099c37fb&t=1792683284"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-1819272685621345488",
+      "title": "Carrie (Hindi Dub)",
+      "originalTitle": "Carrie [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Series",
+      "tag": "HD 720p",
+      "industry": "Hindi Series",
+      "year": "2026",
+      "country": "India",
+      "genre": "Mystery, Drama, Sci-Fi & Fantasy",
+      "duration": "45m/ep",
+      "category": "Trending Series",
+      "rating": "8.3",
+      "imdbRating": "8.3",
+      "poster": "https://image.tmdb.org/t/p/w500/6mUMquPQBFJGqTACS3Azkwwrx8d.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/9yCJtipMeDe8uAdSJKvw8BnYfRz.jpg",
+      "description": "After her father's sudden, untimely death thrusts her into the unforgiving ecosystem of public high school, Carrie is forced to navigate a viral bullying scandal that tears through her community, the relentless pressure and casual cruelty of the social‑media age, and the awakening of mysterious telekinetic powers that rise alongside her adolescence.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/038a4fb4d2678bfc8f390de3e6f2af3c.mp4?sign=842f6fb344302027120b93e01ef42a7e&t=1792685623",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/038a4fb4d2678bfc8f390de3e6f2af3c.mp4?sign=842f6fb344302027120b93e01ef42a7e&t=1792685623"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/657889fe8cdc0204e2e6afaa79466c69.mp4?sign=26b140be77d80375095045be192a59b8&t=1792686142"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Summer H. Howell",
+          "character": "Carrie White",
+          "photo": "https://image.tmdb.org/t/p/w185/9l9D6DhugB4FBIZecuMyZ4Uulyr.jpg"
+        },
+        {
+          "name": "Samantha Sloyan",
+          "character": "Margaret White",
+          "photo": "https://image.tmdb.org/t/p/w185/iI6mYgxrQSwphBJdfwYN3vB6oS2.jpg"
+        },
+        {
+          "name": "Siena Agudong",
+          "character": "Sue Snell",
+          "photo": "https://image.tmdb.org/t/p/w185/nCVWiVrIVqw0LnpyhYsckOMQJHS.jpg"
+        },
+        {
+          "name": "Alison Thornton",
+          "character": "Chris Hargensen",
+          "photo": "https://image.tmdb.org/t/p/w185/hDCMe5RLABbSBA04BIUxJnBmol6.jpg"
+        },
+        {
+          "name": "Joel Oulette",
+          "character": "Tommy Ross",
+          "photo": "https://image.tmdb.org/t/p/w185/qmzQBjq1hLpU37HtsKw5MszgRKa.jpg"
+        },
+        {
+          "name": "Josie Totah",
+          "character": "Tina Blake",
+          "photo": "https://image.tmdb.org/t/p/w185/125iM9BTPVDfRjKGVSqmvgeGsai.jpg"
+        },
+        {
+          "name": "Arthur Conti",
+          "character": "Billy Nolan",
+          "photo": "https://image.tmdb.org/t/p/w185/pnO8qBwvLJfN54UaKsy0QQlAc8u.jpg"
+        },
+        {
+          "name": "Thalia Dudek",
+          "character": "Emaline West",
+          "photo": "https://image.tmdb.org/t/p/w185/lmpaF8Yi0SfojtEwlY1CkEjzGU7.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/038a4fb4d2678bfc8f390de3e6f2af3c.mp4?sign=842f6fb344302027120b93e01ef42a7e&t=1792685623",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/038a4fb4d2678bfc8f390de3e6f2af3c.mp4?sign=842f6fb344302027120b93e01ef42a7e&t=1792685623"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-3908280950886646112",
+      "title": "VisionQuest (Hindi Dub)",
+      "originalTitle": "VisionQuest [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Series",
+      "tag": "HD 720p",
+      "industry": "Hindi Series",
+      "year": "2026",
+      "country": "India",
+      "genre": "Sci-Fi & Fantasy, Drama",
+      "duration": "45m/ep",
+      "category": "Trending Series",
+      "rating": "8.7",
+      "imdbRating": "8.7",
+      "poster": "https://image.tmdb.org/t/p/w500/WGyAyBPncfuu8MZhLY9RtfZPM0.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/uoXXbN2PrOxH6UKyP7kYwmGpAAP.jpg",
+      "description": "With a bounty on his head, Vision must confront his nature and resist Ultron's influence to survive.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/88af3d2e06b66f5b24510765de38d1a6.mp4?sign=83de89a7af56b2ba0474e0ee5ddc969b&t=1792683603",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/88af3d2e06b66f5b24510765de38d1a6.mp4?sign=83de89a7af56b2ba0474e0ee5ddc969b&t=1792683603"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/31241f42b016e1c1238acdf02050c4a9.mp4?sign=4398eabc9b91549c77a389a3f605b9bb&t=1792683976"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Paul Bettany",
+          "character": "Vision",
+          "photo": "https://image.tmdb.org/t/p/w185/oNrDowF5cRtK5lJJuCAh0KeFizy.jpg"
+        },
+        {
+          "name": "James Spader",
+          "character": "Ultron",
+          "photo": "https://image.tmdb.org/t/p/w185/3gurW3OgDOD4hcqDfgcqUnoNg34.jpg"
+        },
+        {
+          "name": "Ruaridh Mollica",
+          "character": "Thomas",
+          "photo": "https://image.tmdb.org/t/p/w185/wiSim6nG9TSY4AO8KOwsaaPJ0EH.jpg"
+        },
+        {
+          "name": "Todd Stashwick",
+          "character": "Paladin",
+          "photo": "https://image.tmdb.org/t/p/w185/seKRXV2HMS36ip4SfQq6PLRiLL2.jpg"
+        },
+        {
+          "name": "Lauren Morais",
+          "character": "Lisa Molinari",
+          "photo": "https://image.tmdb.org/t/p/w185/7Eur3EddzlvXTYzKAGkRmo87xcS.jpg"
+        },
+        {
+          "name": "Orla Brady",
+          "character": "F.R.I.D.A.Y.",
+          "photo": "https://image.tmdb.org/t/p/w185/wjo8xposTE0HenFopy6KELCWoD0.jpg"
+        },
+        {
+          "name": "Diane Morgan",
+          "character": "Handler",
+          "photo": "https://image.tmdb.org/t/p/w185/46Mdcr9ycOaLCKApoj101Cx1c1S.jpg"
+        },
+        {
+          "name": "Polly Frame",
+          "character": "Fiona Guthrie",
+          "photo": "https://image.tmdb.org/t/p/w185/m1u1jCvYeaqbzJijlavj2wKXIK2.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/88af3d2e06b66f5b24510765de38d1a6.mp4?sign=83de89a7af56b2ba0474e0ee5ddc969b&t=1792683603",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/88af3d2e06b66f5b24510765de38d1a6.mp4?sign=83de89a7af56b2ba0474e0ee5ddc969b&t=1792683603"
+          }
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-7658459104725665256",
+      "title": "The Terminal List (Hindi Dub)",
+      "originalTitle": "The Terminal List [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Series",
+      "tag": "HD 720p",
+      "industry": "Hindi Series",
+      "year": "2022",
+      "country": "India",
+      "genre": "Action & Adventure, Drama",
+      "duration": "45m/ep",
+      "category": "Trending Series",
+      "rating": "8.0",
+      "imdbRating": "8.0",
+      "poster": "https://image.tmdb.org/t/p/w500/xyFAzP7RKK8cARCSalIZ9A9T0jV.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/eqLwFXX0R7U0crdgQcj0Rxjb9uc.jpg",
+      "description": "Navy SEAL Commander James Reece turns to vengeance as he investigates the mysterious forces behind the murder of his entire platoon. Free from the military's command structure, Reece applies the lessons he's learned from nearly two decades of warfare to hunt down the people responsible.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250705/3512c0f1540847f8e65b8043508991dc.mp4?sign=5600a1d37e5902b63b98245a32d7f35b&t=1792684735",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250705/3512c0f1540847f8e65b8043508991dc.mp4?sign=5600a1d37e5902b63b98245a32d7f35b&t=1792684735"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250725/5b7572bd31871420673b86e43b36e6f9.mp4?sign=983314606664bbd7f3436fccbf56c8c7&t=1792684617"
+        },
+        {
+          "name": "Server 3 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/0d8a04d8066e81dd56ecc4d8a352ca1d.mp4?sign=cd147fbdafa6f5f856900e99016d51b8&t=1792685791"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Chris Pratt",
+          "character": "James Reece",
+          "photo": "https://image.tmdb.org/t/p/w185/cRH6HPAQ98PlOwwEvhYO4CM9lwu.jpg"
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "title": "Episode 1",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250705/3512c0f1540847f8e65b8043508991dc.mp4?sign=5600a1d37e5902b63b98245a32d7f35b&t=1792684735",
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/tran-audio/20250705/3512c0f1540847f8e65b8043508991dc.mp4?sign=5600a1d37e5902b63b98245a32d7f35b&t=1792684735"
+          }
+        }
+      ],
+      "type": "series"
+    },
     {
       "id": "tmdb-s-311648",
       "title": "Make Me Tingle (Ongoing)",
