@@ -13,9 +13,9 @@
       "Added Pull-to-Refresh feature",
       "In-app fast auto-updater enabled"
     ],
-    "downloadUrl": "https://github.com/tanvir210111/FOBS-TV-apk/releases/latest/download/app-release.apk",
-    "fallbackUrl": "/download/apk",
-    "fileSize": "14.5 MB"
+    "downloadUrl": "/download/apk",
+    "fallbackUrl": "/apk/app-release.apk",
+    "fileSize": "5.0 MB"
   },
   "featured": {
     "id": "kmdl-m-4VRhomu8JxTX6d53qdTt0Pbt6NA3JGaWQAhm/zTHXYjAVxUCqzGGaBCvUgdPMH58",
