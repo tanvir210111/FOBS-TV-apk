@@ -439,31 +439,27 @@ setTimeout(prewarmEpisodeStreams, 1500);
 // API: Instant URL Resolver (CORS-enabled for Web and Android App)
 app.get('/api/debug-irada', async (req, res) => {
   const steps = [];
+  const { execSync } = require('child_process');
   try {
-    const rawUrl = req.query.url || 'https://hdfriday2.casa/episodes/make-me-tingle-1x1/';
-    steps.push({ step: 'start', rawUrl });
-    const r = await axios.get(rawUrl, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
-      timeout: 10000
-    });
-    const iframes = [...r.data.matchAll(/<iframe[^>]+src=["']([^"']+)["']/gi)].map(m => m[1]);
-    steps.push({ step: 'hdfriday_iframes', iframes });
-
-    for (const iframeUrl of iframes) {
-      try {
-        const fullIframe = iframeUrl.startsWith('//') ? 'https:' + iframeUrl : iframeUrl;
-        const ir = await axios.get(fullIframe, {
-          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)', 'Referer': rawUrl },
-          timeout: 10000
-        });
-        steps.push({ iframe: fullIframe, status: ir.status, len: ir.data.length, hasHdvb: ir.data.includes('HDVBPlayer') });
-      } catch (e) {
-        steps.push({ iframe: iframeUrl, error: e.message, status: e.response?.status });
-      }
+    // 1. Test curl with full browser UA and Referer
+    try {
+      const curlOut = execSync('curl -s -i -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" -e "https://hdfriday2.casa/" "https://irada438esc.com/play/tt47661704"').toString();
+      steps.push({ method: 'curl_hdfriday_ref', headerPreview: curlOut.slice(0, 300), len: curlOut.length });
+    } catch (e1) {
+      steps.push({ method: 'curl_error', error: e1.message });
     }
+
+    // 2. Test curl without referer
+    try {
+      const curlOut2 = execSync('curl -s -i -A "Mozilla/5.0" "https://irada438esc.com/play/tt47661704"').toString();
+      steps.push({ method: 'curl_no_ref', headerPreview: curlOut2.slice(0, 300), len: curlOut2.length });
+    } catch (e2) {
+      steps.push({ method: 'curl_no_ref_error', error: e2.message });
+    }
+
     res.json({ ok: true, steps });
   } catch (err) {
-    res.status(500).json({ ok: false, error: err.message, stack: err.stack, steps });
+    res.status(500).json({ ok: false, error: err.message, steps });
   }
 });
 
