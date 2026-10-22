@@ -2025,37 +2025,48 @@ function renderAllSeries() {
   renderCategoryList('seriesOthersList', othersSeries, false, true);
 }
 
+let currentLiveTvCategory = 'All';
+
+function filterLiveTvCategory(cat) {
+  currentLiveTvCategory = cat;
+  document.querySelectorAll('#liveTvCategoryBar .livetv-cat-pill').forEach(btn => {
+    btn.classList.toggle('active', btn.innerText.includes(cat) || (cat === 'All' && btn.innerText.trim() === 'All'));
+  });
+  renderLiveTv();
+}
+
 // Render Live TV Tab
 function renderLiveTv() {
   const liveTv = appState.content.liveTv || [];
   const grid = document.getElementById('liveTvGrid');
   if (!grid) return;
 
-  if (liveTv.length > 0) {
-    grid.innerHTML = liveTv.map(item => `
-      <div class="live-channel-card" onclick='openLiveTvPlayer("${item.id}")'>
-        <span class="live-tag-pill">● LIVE</span>
-        <img src="${item.logo}" alt="${item.title}" class="channel-logo-img">
-        <div class="channel-title">${item.title}</div>
-        <div class="channel-sub">${item.category} • ${item.language}</div>
-      </div>
-    `).join('');
+  const filtered = currentLiveTvCategory === 'All' 
+    ? liveTv 
+    : liveTv.filter(c => (c.category && c.category.toLowerCase().includes(currentLiveTvCategory.toLowerCase())) || 
+                         (currentLiveTvCategory === 'Bangladesh' && (c.country === 'bd' || c.language === 'Bangla')) ||
+                         (currentLiveTvCategory === 'India' && (c.country === 'in' || c.language === 'Hindi')));
+
+  const countBadge = document.getElementById('liveTvCountBadge');
+  if (countBadge) {
+    countBadge.innerHTML = `<span class="pulse-dot"></span> ${filtered.length} Channels LIVE`;
+  }
+
+  if (filtered.length > 0) {
+    grid.innerHTML = filtered.map(item => {
+      const fallbackImg = `https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=150&q=80`;
+      const logoUrl = item.logo || item.poster || fallbackImg;
+      return `
+        <div class="live-channel-card" onclick='openLiveTvPlayer("${item.id}")'>
+          <span class="live-tag-pill">● LIVE</span>
+          <img src="${logoUrl}" alt="${item.title}" class="channel-logo-img" loading="lazy" onerror="this.onerror=null; this.src='${fallbackImg}';">
+          <div class="channel-title">${item.title}</div>
+          <div class="channel-sub">${item.category || 'Live TV'} • ${item.language || 'HD'}</div>
+        </div>
+      `;
+    }).join('');
   } else {
-    grid.innerHTML = `
-      <div class="live-tv-coming-soon-card">
-        <div class="ltv-cs-glow-circle">
-          <i class="fa-solid fa-satellite-dish fa-beat"></i>
-        </div>
-        <div class="ltv-cs-badge">COMING SOON</div>
-        <h3 class="ltv-cs-title">Live TV Channels</h3>
-        <p class="ltv-cs-desc">We are actively preparing 500+ premium live sports, breaking news, music, and entertainment channels directly inside FOBS TV. Stay tuned for the upcoming launch!</p>
-        <div class="ltv-cs-features">
-          <div class="ltv-cs-feat-pill"><i class="fa-solid fa-bolt"></i> Ultra-Fast HD Streaming</div>
-          <div class="ltv-cs-feat-pill"><i class="fa-solid fa-tv"></i> Live Sports & News</div>
-          <div class="ltv-cs-feat-pill"><i class="fa-solid fa-globe"></i> Global & Local Channels</div>
-        </div>
-      </div>
-    `;
+    grid.innerHTML = `<div class="empty-category-msg"><i class="fa-solid fa-satellite-dish"></i> No channels found in this category</div>`;
   }
 }
 
@@ -2231,6 +2242,32 @@ function openPlayer(media, episodeIndex = 0) {
 
   // Real-time unique views
   updateMediaViews(media.id);
+
+  // Disable / Hide Download button for Live TV channels
+  const downloadBtn = document.querySelector('.action-strip-btn[onclick="triggerDownload()"]');
+  if (downloadBtn) {
+    downloadBtn.style.display = (media.type === 'liveTv') ? 'none' : 'flex';
+  }
+
+  // Handle Coming Soon items (MovieBox Signature UI)
+  const csOverlay = document.getElementById('comingSoonPlayerOverlay');
+  const isComingSoon = media.type === 'upcoming' || (media.badgeRight && media.badgeRight.toLowerCase().includes('coming'));
+  if (isComingSoon) {
+    if (csOverlay) {
+      csOverlay.style.display = 'flex';
+      const csTitle = document.getElementById('csMovieTitle');
+      if (csTitle) csTitle.innerText = media.title;
+    }
+    const videoPlayer = document.getElementById('mainVideoPlayer');
+    if (videoPlayer) {
+      videoPlayer.pause();
+      videoPlayer.removeAttribute('src');
+    }
+    const loader = document.getElementById('videoLoader');
+    if (loader) loader.classList.remove('active');
+  } else {
+    if (csOverlay) csOverlay.style.display = 'none';
+  }
 
   const overlay = document.getElementById('playerOverlay');
   overlay.classList.add('open');
@@ -2513,7 +2550,14 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
      !playableUrl.includes('vkuser.net') && 
      !playableUrl.includes('okcdn.ru') &&
      !playableUrl.includes('vkpluscdn') &&
-     !playableUrl.includes('vkcdn'))
+     !playableUrl.includes('vkcdn') &&
+     !playableUrl.includes('hakunaymatata') &&
+     !playableUrl.includes('bcdnxw') &&
+     !playableUrl.includes('haildrop') &&
+     !playableUrl.includes('fogtwist') &&
+     !playableUrl.includes('sunburst') &&
+     !playableUrl.includes('stormshade') &&
+     !playableUrl.includes('moviebox'))
   );
   if (isDirectMp4Source && !playableUrl.includes('googleusercontent.com') && audioIndex === null && !seekTime) {
     console.log('Playing direct CDN stream:', playableUrl);
@@ -3231,17 +3275,10 @@ function applyPlayerBrightness(val) {
     overlay.style.backgroundColor = `rgba(0, 0, 0, ${dimAlpha.toFixed(3)})`;
   }
   
-  // 2. Only override Android window brightness if actively dimmed below 100%
-  // When at normal (1.0), restore default system brightness so screen doesn't get stuck at max brightness
+  // 2. Set actual hardware screen brightness directly on Android (fixes brightness drop at 100%)
   try {
-    if (window.AndroidApp) {
-      if (playerBrightness < 0.98 && typeof window.AndroidApp.setWindowBrightness === 'function') {
-        window.AndroidApp.setWindowBrightness(playerBrightness);
-      } else if (typeof window.AndroidApp.resetWindowBrightness === 'function') {
-        window.AndroidApp.resetWindowBrightness();
-      } else if (typeof window.AndroidApp.setWindowBrightness === 'function') {
-        window.AndroidApp.setWindowBrightness(-1);
-      }
+    if (window.AndroidApp && typeof window.AndroidApp.setWindowBrightness === 'function') {
+      window.AndroidApp.setWindowBrightness(playerBrightness);
     }
   } catch (e) {}
 

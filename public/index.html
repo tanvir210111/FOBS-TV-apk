@@ -398,8 +398,19 @@
       <section id="livetvView" class="tab-view">
         <div class="section-heading-bar">
           <h2>Live TV Channels</h2>
-          <span class="count-badge cs-pulse-badge"><span class="pulse-dot"></span> COMING SOON</span>
+          <span class="count-badge live-pulse-badge" id="liveTvCountBadge"><span class="pulse-dot"></span> 24/7 LIVE</span>
         </div>
+
+        <!-- Live TV Category Pills Filter -->
+        <div class="livetv-category-bar" id="liveTvCategoryBar">
+          <button class="livetv-cat-pill active" onclick="filterLiveTvCategory('All')">All</button>
+          <button class="livetv-cat-pill" onclick="filterLiveTvCategory('Bangladesh')">🇧🇩 Bangladesh</button>
+          <button class="livetv-cat-pill" onclick="filterLiveTvCategory('Sports')">⚽ Sports</button>
+          <button class="livetv-cat-pill" onclick="filterLiveTvCategory('News')">📰 News</button>
+          <button class="livetv-cat-pill" onclick="filterLiveTvCategory('Entertainment')">🎬 Entertainment</button>
+          <button class="livetv-cat-pill" onclick="filterLiveTvCategory('Music')">🎵 Music</button>
+        </div>
+
         <div class="live-tv-grid" id="liveTvGrid">
           <!-- Populated via JS -->
         </div>
@@ -475,6 +486,16 @@
         <div class="video-loader" id="videoLoader">
           <div class="spinner"></div>
           <div class="loader-text">Loading...</div>
+        </div>
+
+        <!-- Coming Soon Overlay inside Video Container (MovieBox Signature) -->
+        <div class="coming-soon-player-overlay" id="comingSoonPlayerOverlay" style="display:none;">
+          <div class="cs-player-glow-wrap">
+            <div class="cs-badge-pill"><i class="fa-solid fa-clock-rotate-left"></i> COMING SOON</div>
+            <h3 class="cs-movie-title" id="csMovieTitle">Title</h3>
+            <p class="cs-release-notice">This title is currently under preparation and will be available exclusively in Hindi Dubbed on FOBS TV.</p>
+            <button class="cs-remind-btn" onclick="showToast('Reminder set! You will be notified upon release.')"><i class="fa-solid fa-bell"></i> Remind Me</button>
+          </div>
         </div>
 
         <!-- Video Brightness Overlay (for dimming below 100%) -->
@@ -730,7 +751,7 @@
                     <i class="fa-solid fa-expand" style="font-size: 13px; margin-right: 6px;"></i>
                     Auto Miniplayer
                   </div>
-                  <div class="ls-setting-desc">After exiting the page or MovieBox, it will automatically enable Miniplayer.</div>
+                  <div class="ls-setting-desc">After exiting the page or FOBS TV, it will automatically enable Miniplayer.</div>
                 </div>
                 <label class="ls-switch">
                   <input type="checkbox" checked id="lsMiniplayerToggle">
