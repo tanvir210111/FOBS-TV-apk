@@ -2421,8 +2421,40 @@ body.is-fullscreen .player-top-header.controls-hidden,
   pointer-events: none;
 }
 
+.ptr-icon {
+  font-size: 12px;
+  color: var(--accent-cyan);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+}
+
+.server-status-bar.pulling {
+  border-bottom: 1px solid rgba(0, 242, 254, 0.35);
+  color: var(--text-primary);
+}
+
+.server-status-bar.pulling .ptr-icon {
+  transform: rotate(0deg);
+  color: var(--accent-cyan);
+}
+
+.server-status-bar.release {
+  border-bottom: 1px solid rgba(245, 166, 35, 0.45);
+  color: #fff;
+  background: rgba(30, 32, 45, 0.98);
+}
+
+.server-status-bar.release .ptr-icon {
+  transform: rotate(180deg);
+  color: var(--accent-gold);
+}
+
 .server-status-bar.waking {
   border-bottom: 1px solid rgba(245, 166, 35, 0.3);
+}
+
+.server-status-bar.waking .ptr-icon {
+  color: var(--accent-cyan);
 }
 
 .server-status-bar.waking .status-pulse-dot {
@@ -2438,6 +2470,8 @@ body.is-fullscreen .player-top-header.controls-hidden,
 
 .server-status-bar.success .status-pulse-dot {
   background: var(--accent-green);
+  box-shadow: 0 0 8px rgba(0, 210, 106, 0.6);
+}
   box-shadow: 0 0 8px rgba(0, 210, 106, 0.6);
 }
 
@@ -3649,6 +3683,430 @@ body.is-fullscreen .ls-bottom-bar {
 .ltv-cs-feat-pill i {
   color: #00f2fe;
 }
+
+/* ============================================================
+   IN-APP UPDATE MODAL & HEADER BADGE STYLES
+   ============================================================ */
+
+/* Header Update Button */
+.header-update-btn {
+  position: relative;
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.15), rgba(79, 172, 254, 0.2));
+  border: 1px solid rgba(0, 242, 254, 0.4);
+  color: #00f2fe;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  margin-left: 8px;
+}
+
+.header-update-btn:active {
+  transform: scale(0.92);
+  background: rgba(0, 242, 254, 0.3);
+}
+
+.header-update-btn.hidden {
+  display: none !important;
+}
+
+.update-pulse-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 9px;
+  height: 9px;
+  background: #ff3366;
+  border: 2px solid #0d111c;
+  border-radius: 50%;
+  animation: updatePulse 1.8s infinite;
+}
+
+@keyframes updatePulse {
+  0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(255, 51, 102, 0.7); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 7px rgba(255, 51, 102, 0); }
+  100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(255, 51, 102, 0); }
+}
+
+/* In-App Force Update Modal Overlay */
+.update-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999999 !important;
+  background: rgba(5, 7, 15, 0.93);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.update-modal-overlay.hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.update-modal-card {
+  position: relative;
+  background: linear-gradient(165deg, rgba(23, 29, 44, 0.98) 0%, rgba(12, 16, 26, 0.99) 100%);
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  border-radius: 26px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 40px rgba(0, 242, 254, 0.12);
+  max-width: 420px;
+  width: 100%;
+  padding: 28px 24px 24px;
+  text-align: center;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.update-card-glow {
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(0, 242, 254, 0.35) 0%, rgba(0, 242, 254, 0) 70%);
+  filter: blur(25px);
+  pointer-events: none;
+}
+
+.update-badge-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.update-icon-wrapper {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(0, 210, 106, 0.2));
+  border: 2px solid rgba(0, 242, 254, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 242, 254, 0.25);
+}
+
+.update-cloud-icon {
+  font-size: 32px;
+  color: #00f2fe;
+  animation: floatBounce 2.4s ease-in-out infinite;
+}
+
+@keyframes floatBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.update-pulse-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 242, 254, 0.35);
+  animation: pulseRing 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes pulseRing {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+.update-badge-pill {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #00d26a;
+  background: rgba(0, 210, 106, 0.12);
+  border: 1px solid rgba(0, 210, 106, 0.3);
+  padding: 4px 14px;
+  border-radius: 12px;
+}
+
+.update-modal-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+}
+
+.update-modal-desc {
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.55;
+  margin-bottom: 18px;
+  padding: 0 4px;
+}
+
+/* What's New Box */
+.update-notes-box {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.update-notes-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #00f2fe;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.update-notes-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.update-notes-list li {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.88);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.4;
+}
+
+.update-notes-list li i {
+  color: #00d26a;
+  font-size: 12px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* File Info Tags */
+.update-file-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 20px;
+  padding: 0 4px;
+}
+
+.file-size-tag {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 4px 10px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+}
+
+.version-tag-info span {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Progress Bar Container */
+.update-progress-container {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.update-progress-container.hidden {
+  display: none !important;
+}
+
+.update-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 12.5px;
+}
+
+.update-progress-label {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+}
+
+.update-progress-percent {
+  color: #00f2fe;
+  font-weight: 800;
+}
+
+.update-progress-bar-bg {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.update-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00d26a, #00f2fe);
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.6);
+  transition: width 0.15s ease-out;
+}
+
+.update-progress-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.update-progress-bytes {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.update-progress-speed {
+  color: #00d26a;
+  font-weight: 600;
+}
+
+/* Primary Update Button */
+.update-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-update-primary {
+  width: 100%;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #00d26a 0%, #00f2fe 100%);
+  border: none;
+  border-radius: 16px;
+  color: #050b14;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 8px 24px rgba(0, 210, 106, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-update-primary:active {
+  transform: scale(0.97);
+  box-shadow: 0 4px 12px rgba(0, 210, 106, 0.25);
+}
+
+.btn-update-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-update-primary i {
+  font-size: 18px;
+}
+
+/* Error & Fallback Container */
+.update-error-fallback {
+  margin-top: 14px;
+  padding: 12px;
+  background: rgba(255, 51, 102, 0.1);
+  border: 1px solid rgba(255, 51, 102, 0.3);
+  border-radius: 14px;
+}
+
+.update-error-fallback.hidden {
+  display: none !important;
+}
+
+.update-error-text {
+  font-size: 12px;
+  color: #ff6b8b;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.update-fallback-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-update-retry {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-update-browser {
+  flex: 1.2;
+  background: rgba(0, 242, 254, 0.15);
+  border: 1px solid rgba(0, 242, 254, 0.35);
+  color: #00f2fe;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Shake Animation when tapping backdrop on forced update */
+@keyframes updateShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+.update-modal-card.shake {
+  animation: updateShake 0.4s ease-in-out;
+}
+
 
 
 

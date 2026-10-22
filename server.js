@@ -345,6 +345,63 @@ app.get('/api/content', (req, res) => {
   res.json(data);
 });
 
+// API: Get app update status
+app.get('/api/app-update', (req, res) => {
+  const data = getContentData();
+  const defaultUpdate = {
+    enabled: true,
+    latestVersionCode: 2,
+    latestVersionName: '1.1.0',
+    minVersionCode: 2,
+    forceUpdate: true,
+    title: 'Update Available!',
+    message: 'A new version of FOBS TV is available with faster streaming servers and bug fixes. You must update now to continue using FOBS TV.',
+    releaseNotes: [
+      'Fixed video playback across all servers',
+      'Added Pull-to-Refresh feature',
+      'Added high-speed streaming servers',
+      'In-app fast auto-updater'
+    ],
+    downloadUrl: 'https://github.com/tanvir210111/FOBS-TV-apk/releases/latest/download/app-release.apk',
+    fallbackUrl: '/download/apk',
+    fileSize: '14.5 MB'
+  };
+  res.json(data.appUpdate || defaultUpdate);
+});
+
+// API: Configure app update info dynamically
+app.post('/api/app-update', (req, res) => {
+  try {
+    const data = getContentData();
+    data.appUpdate = {
+      ...(data.appUpdate || {}),
+      ...req.body
+    };
+    saveContentData(data);
+    res.json({ success: true, appUpdate: data.appUpdate });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Direct APK Download route
+app.get('/download/apk', (req, res) => {
+  const apkDir = path.join(__dirname, 'public', 'apk');
+  const possibleFiles = ['app-release.apk', 'FOBS-TV.apk', 'app-debug.apk'];
+  for (const f of possibleFiles) {
+    const p = path.join(apkDir, f);
+    if (fs.existsSync(p)) {
+      return res.download(p, 'FOBS_TV_latest.apk');
+    }
+  }
+
+  const data = getContentData();
+  if (data.appUpdate && data.appUpdate.downloadUrl) {
+    return res.redirect(data.appUpdate.downloadUrl);
+  }
+  res.redirect('https://github.com/tanvir210111/FOBS-TV-apk/releases/latest');
+});
+
 // API: Add new content (Movie / Series / Live TV)
 app.post('/api/content', (req, res) => {
   const { type, title, language, genre, poster, streamUrl, rating, year, seasonsCount, episodes } = req.body;

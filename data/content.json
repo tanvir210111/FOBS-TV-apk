@@ -1,4 +1,22 @@
 {
+  "appUpdate": {
+    "enabled": true,
+    "latestVersionCode": 2,
+    "latestVersionName": "1.1.0",
+    "minVersionCode": 2,
+    "forceUpdate": true,
+    "title": "New Update Available!",
+    "message": "A new version of FOBS TV is available with faster streaming servers and bug fixes. You must update now to continue using the app.",
+    "releaseNotes": [
+      "Added brand new 2026 Spider-Man & Colony movies",
+      "Fixed video playback on all streaming servers",
+      "Added Pull-to-Refresh feature",
+      "In-app fast auto-updater enabled"
+    ],
+    "downloadUrl": "https://github.com/tanvir210111/FOBS-TV-apk/releases/latest/download/app-release.apk",
+    "fallbackUrl": "/download/apk",
+    "fileSize": "14.5 MB"
+  },
   "featured": {
     "id": "kmdl-m-4VRhomu8JxTX6d53qdTt0Pbt6NA3JGaWQAhm/zTHXYjAVxUCqzGGaBCvUgdPMH58",
     "title": "12.12: The Day",
@@ -133,7 +151,7 @@
       "category": "Trending Movies",
       "rating": "8.1",
       "imdbRating": "8.1",
-      "poster": "https://image.tmdb.org/t/p/w500/smxNv18w3zyrMrBC1G0EAuomnTQ.jpg",
+      "poster": "https://image.tmdb.org/t/p/w500/enz3WLx5QU1FUyhXZld04QWIc6N.jpg",
       "backdrop": "https://image.tmdb.org/t/p/original/pGxUbJ1vKuMYeEjKDokFI7DNbSG.jpg",
       "description": "Professor Se-jeong is thrust into a bloody nightmare when a rapidly mutating virus is released during a biotech conference causing authorities to seal the facility. Trapped inside with no escape, Se-jeong along with a small group of survivors must fight to stay alive while the infected undergo horrific transformations.",
       "audioTracks": [
@@ -141,7 +159,33 @@
         "Original Audio"
       ],
       "selectedAudio": "Hindi dub",
-      "streamUrl": "https://royalfiletolink.koyeb.app/stream/235?hash=cd174f471aaaa0dd",
+      "streamUrl": "https://ok.ru/videoembed/16195081144917?nochat=1",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD - OK.ru)",
+          "url": "https://ok.ru/videoembed/16195081144917?nochat=1"
+        },
+        {
+          "name": "Server 2 (PkSpeed 720p)",
+          "url": "https://pkembed.site/embed-qe8m63wn8yk8.html"
+        },
+        {
+          "name": "Server 3 (PkSpeed 360p)",
+          "url": "https://pkembed.site/embed-dujgu9120oc9.html"
+        },
+        {
+          "name": "Server 4 (CloudVideo 720p)",
+          "url": "https://do7go.com/e/qk73ai0saidn"
+        },
+        {
+          "name": "Server 5 (Streamtape 720p)",
+          "url": "https://streamtape.to/e/Xrv9x2G8pohWd8"
+        },
+        {
+          "name": "Server 6 (MixDrop 720p)",
+          "url": "https://mxdrop.to/e/xwwg643lszq4d4"
+        }
+      ],
       "cast": [
         {
           "name": "Gianna Jun",

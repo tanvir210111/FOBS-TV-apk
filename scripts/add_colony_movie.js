@@ -3,9 +3,35 @@ const fs = require('fs');
 const path = require('path');
 
 const TMDB_API_KEY = '6e766190399843a3e1d85b68eaa3de69';
-const STREAM_URL = 'https://royalfiletolink.koyeb.app/stream/235?hash=cd174f471aaaa0dd';
 
-async function addColonyMovie() {
+const servers = [
+  {
+    name: 'Server 1 (Fast HD - OK.ru)',
+    url: 'https://ok.ru/videoembed/16195081144917?nochat=1'
+  },
+  {
+    name: 'Server 2 (PkSpeed 720p)',
+    url: 'https://pkembed.site/embed-qe8m63wn8yk8.html'
+  },
+  {
+    name: 'Server 3 (PkSpeed 360p)',
+    url: 'https://pkembed.site/embed-dujgu9120oc9.html'
+  },
+  {
+    name: 'Server 4 (CloudVideo 720p)',
+    url: 'https://do7go.com/e/qk73ai0saidn'
+  },
+  {
+    name: 'Server 5 (Streamtape 720p)',
+    url: 'https://streamtape.to/e/Xrv9x2G8pohWd8'
+  },
+  {
+    name: 'Server 6 (MixDrop 720p)',
+    url: 'https://mxdrop.to/e/xwwg643lszq4d4'
+  }
+];
+
+async function updateColonyMovie() {
   console.log('Fetching Colony (2026) data from TMDB (ID: 1375646)...');
   const res = await axios.get('https://api.themoviedb.org/3/movie/1375646', {
     params: {
@@ -53,19 +79,17 @@ async function addColonyMovie() {
     backdrop: tmdb.backdrop_path
       ? `https://image.tmdb.org/t/p/original${tmdb.backdrop_path}`
       : 'https://image.tmdb.org/t/p/original/pGxUbJ1vKuMYeEjKDokFI7DNbSG.jpg',
-    description: tmdb.overview || 'Professor Se-jeong is thrust into a bloody nightmare when a rapidly mutating virus is released during a biotech conference causing authorities to seal the facility.',
+    description: tmdb.overview || 'Professor Se-jeong is thrust into a bloody nightmare when a rapidly mutating virus is released during a biotech conference causing authorities to seal the facility. Trapped inside with no escape, Se-jeong along with a small group of survivors must fight to stay alive while the infected undergo horrific transformations.',
     audioTracks: [
       'Hindi dub',
       'Original Audio'
     ],
     selectedAudio: 'Hindi dub',
-    streamUrl: STREAM_URL,
+    streamUrl: servers[0].url,
+    servers: servers,
     cast: cast,
     type: 'movie'
   };
-
-  console.log('Constructed movie entry:');
-  console.log(JSON.stringify(colonyMovie, null, 2));
 
   const targetFiles = [
     path.join(__dirname, '..', 'data', 'content.json'),
@@ -81,20 +105,22 @@ async function addColonyMovie() {
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     if (!data.movies) data.movies = [];
 
-    // Remove any existing entry for this movie if present
-    data.movies = data.movies.filter(m => m.id !== colonyMovie.id && m.title !== 'Colony');
-
-    // Add Colony (2026) as first item in movies list
-    data.movies.unshift(colonyMovie);
+    // Find and update Colony entry in-place to preserve position, or replace it
+    const existingIndex = data.movies.findIndex(m => m.id === colonyMovie.id || m.title === 'Colony');
+    if (existingIndex !== -1) {
+      data.movies[existingIndex] = colonyMovie;
+    } else {
+      data.movies.unshift(colonyMovie);
+    }
 
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n', 'utf8');
-    console.log(`✅ Updated ${filePath} with Colony (2026)`);
+    console.log(`✅ Updated ${filePath} with Colony (2026) multi-server links`);
   });
 
-  console.log('\n🎉 Successfully added Colony (2026) to all content stores!');
+  console.log('\n🎉 Successfully updated Colony (2026) with all 6 stream servers!');
 }
 
-addColonyMovie().catch(err => {
-  console.error('Error adding Colony movie:', err);
+updateColonyMovie().catch(err => {
+  console.error('Error updating Colony movie:', err);
   process.exit(1);
 });

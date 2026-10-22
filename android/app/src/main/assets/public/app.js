@@ -22,6 +22,12 @@ const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
 
+// App Versioning & In-App Force Update Configuration
+const CURRENT_APP_VERSION_CODE = 1;
+const CURRENT_APP_VERSION_NAME = '1.0';
+let currentAppUpdateConfig = null;
+let isUpdatingApp = false;
+
 let appState = {
   activeTab: 'home',
   activeGenre: 'All',
@@ -50,11 +56,14 @@ async function initApp() {
   setupSeriesHeroSwipeGestures();
   setupPlayerSwipeToClose();
   setupAppVisibilityListeners();
+  setupPullToRefresh();
+  setupAppUpdateModal();
 
   // Step 1: Immediate local render from localStorage cache (0ms delay)
   const hasCache = loadCachedContent();
   if (hasCache) {
     renderAllViews();
+    checkAppUpdate(appState.content);
     // Non-blocking background sync if cache is older than 5 minutes
     syncContentWithBackend({ isBackground: true });
     return;
@@ -64,12 +73,14 @@ async function initApp() {
   const hasSeed = await loadSeedContent();
   if (hasSeed) {
     renderAllViews();
+    checkAppUpdate(appState.content);
     syncContentWithBackend({ isBackground: true });
     return;
   }
 
   // Step 3: Cold start without any local cache (first run) - show branded FOBS TV loading overlay
   await syncContentWithBackend({ isInitial: true, force: true });
+  checkAppUpdate(appState.content);
 }
 
 // Normalize content data structures
@@ -223,6 +234,7 @@ async function syncContentWithBackend({ force = false, isBackground = false, isI
     saveContentToCache(data);
 
     renderAllViews();
+    checkAppUpdate(data);
     hideFobsLoadingScreen();
 
     if (!isInitial) {
@@ -250,12 +262,21 @@ async function fetchAppContent() {
 // Server Status Bar Controls
 function updateServerStatus(text, state = 'info') {
   const bar = document.getElementById('serverStatusBar');
+  const dot = document.getElementById('serverStatusDot');
+  const ptrIcon = document.getElementById('ptrIcon');
   const textEl = document.getElementById('serverStatusText');
   const retryBtn = document.getElementById('serverRetryBtn');
   if (!bar || !textEl) return;
 
   bar.className = `server-status-bar ${state}`;
   textEl.innerText = text;
+
+  if (ptrIcon) ptrIcon.style.display = 'none';
+  if (dot) dot.style.display = 'inline-block';
+
+  bar.style.maxHeight = '';
+  bar.style.opacity = '';
+  bar.style.transition = '';
 
   if (state === 'error' || state === 'offline') {
     if (retryBtn) retryBtn.classList.remove('hidden');
@@ -275,6 +296,215 @@ function updateServerStatus(text, state = 'info') {
 function hideServerStatus() {
   const bar = document.getElementById('serverStatusBar');
   if (bar) bar.classList.add('hidden');
+}
+
+// ============================================================
+// PULL-TO-REFRESH IMPLEMENTATION
+// Pull down from top of app to refresh latest content
+// Integrates directly with #serverStatusBar ("Connected to FOBS TV")
+// ============================================================
+function setupPullToRefresh() {
+  const bar = document.getElementById('serverStatusBar');
+  const dot = document.getElementById('serverStatusDot');
+  const textEl = document.getElementById('serverStatusText');
+  const ptrIcon = document.getElementById('ptrIcon');
+  const mainContent = document.getElementById('mainContent');
+  if (!bar || !mainContent) return;
+
+  let startY = 0;
+  let currentY = 0;
+  let isPulling = false;
+  let isRefreshing = false;
+  const PULL_THRESHOLD = 55;
+
+  const getScrollTop = () => {
+    return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+  };
+
+  const isPlayerOpen = () => {
+    return document.body.classList.contains('player-open') || 
+           document.getElementById('playerOverlay')?.classList.contains('open') ||
+           document.getElementById('detailsSheetOverlay')?.classList.contains('open');
+  };
+
+  // Touch Start
+  window.addEventListener('touchstart', (e) => {
+    if (isPlayerOpen() || isRefreshing) return;
+    if (getScrollTop() <= 2) {
+      startY = e.touches[0].clientY;
+      currentY = startY;
+      isPulling = false;
+    } else {
+      startY = 0;
+    }
+  }, { passive: true });
+
+  // Touch Move
+  window.addEventListener('touchmove', (e) => {
+    if (!startY || isPlayerOpen() || isRefreshing) return;
+    currentY = e.touches[0].clientY;
+    const deltaY = currentY - startY;
+
+    if (deltaY > 6 && getScrollTop() <= 0) {
+      isPulling = true;
+      const pullDistance = Math.min(80, Math.pow(deltaY, 0.82));
+
+      bar.classList.remove('hidden');
+      bar.style.transition = 'none';
+      bar.style.maxHeight = `${pullDistance}px`;
+      bar.style.opacity = `${Math.min(1, pullDistance / 28)}`;
+
+      mainContent.style.transition = 'none';
+      mainContent.style.transform = `translateY(${pullDistance * 0.55}px)`;
+
+      if (ptrIcon) ptrIcon.style.display = 'inline-block';
+      if (dot) dot.style.display = 'none';
+
+      if (pullDistance < PULL_THRESHOLD) {
+        bar.className = 'server-status-bar pulling';
+        if (textEl) textEl.innerText = 'Pull down to refresh...';
+        if (ptrIcon) {
+          ptrIcon.className = 'fa-solid fa-arrow-down ptr-icon';
+          ptrIcon.style.transform = 'rotate(0deg)';
+        }
+      } else {
+        bar.className = 'server-status-bar release';
+        if (textEl) textEl.innerText = 'Release to refresh FOBS TV';
+        if (ptrIcon) {
+          ptrIcon.className = 'fa-solid fa-arrow-up ptr-icon';
+          ptrIcon.style.transform = 'rotate(180deg)';
+        }
+      }
+    }
+  }, { passive: true });
+
+  // Finish Gesture / Refresh Logic
+  const handleGestureEnd = async () => {
+    if (!isPulling || isRefreshing) {
+      startY = 0;
+      isPulling = false;
+      return;
+    }
+
+    const deltaY = currentY - startY;
+    const pullDistance = Math.min(80, Math.pow(Math.max(0, deltaY), 0.82));
+    startY = 0;
+    isPulling = false;
+
+    if (pullDistance >= PULL_THRESHOLD) {
+      isRefreshing = true;
+      bar.className = 'server-status-bar waking';
+      bar.style.transition = 'all 0.25s ease';
+      bar.style.maxHeight = '42px';
+      bar.style.opacity = '1';
+
+      mainContent.style.transition = 'transform 0.25s ease';
+      mainContent.style.transform = 'translateY(42px)';
+
+      if (ptrIcon) {
+        ptrIcon.className = 'fa-solid fa-rotate fa-spin ptr-icon';
+        ptrIcon.style.transform = 'none';
+        ptrIcon.style.display = 'inline-block';
+      }
+      if (dot) dot.style.display = 'none';
+      if (textEl) textEl.innerText = 'Refreshing latest content...';
+
+      try {
+        await syncContentWithBackend({ force: true });
+        bar.className = 'server-status-bar success';
+        if (textEl) textEl.innerText = 'Connected to FOBS TV';
+        if (ptrIcon) ptrIcon.style.display = 'none';
+        if (dot) dot.style.display = 'inline-block';
+        showToast('Refreshed: Latest content loaded');
+      } catch (err) {
+        bar.className = 'server-status-bar error';
+        if (textEl) textEl.innerText = 'Could not reach server — using saved';
+        if (ptrIcon) ptrIcon.style.display = 'none';
+        if (dot) dot.style.display = 'inline-block';
+      } finally {
+        setTimeout(() => {
+          mainContent.style.transition = 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+          mainContent.style.transform = '';
+          bar.style.transition = 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+          bar.style.maxHeight = '';
+          bar.style.opacity = '';
+          bar.classList.add('hidden');
+          isRefreshing = false;
+          if (ptrIcon) ptrIcon.style.display = 'none';
+          if (dot) dot.style.display = 'inline-block';
+        }, 1200);
+      }
+    } else {
+      mainContent.style.transition = 'transform 0.25s ease';
+      mainContent.style.transform = '';
+      bar.style.transition = 'all 0.25s ease';
+      bar.style.maxHeight = '';
+      bar.style.opacity = '';
+      bar.classList.add('hidden');
+      if (ptrIcon) ptrIcon.style.display = 'none';
+      if (dot) dot.style.display = 'inline-block';
+    }
+  };
+
+  window.addEventListener('touchend', handleGestureEnd);
+  window.addEventListener('touchcancel', handleGestureEnd);
+
+  // Desktop Mouse Drag Support for testing
+  let isMouseDown = false;
+  window.addEventListener('mousedown', (e) => {
+    if (isPlayerOpen() || isRefreshing) return;
+    if (getScrollTop() <= 2 && e.clientY < 220) {
+      startY = e.clientY;
+      currentY = startY;
+      isMouseDown = true;
+      isPulling = false;
+    }
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isMouseDown || !startY || isPlayerOpen() || isRefreshing) return;
+    currentY = e.clientY;
+    const deltaY = currentY - startY;
+
+    if (deltaY > 8 && getScrollTop() <= 0) {
+      isPulling = true;
+      const pullDistance = Math.min(80, Math.pow(deltaY, 0.82));
+
+      bar.classList.remove('hidden');
+      bar.style.transition = 'none';
+      bar.style.maxHeight = `${pullDistance}px`;
+      bar.style.opacity = `${Math.min(1, pullDistance / 28)}`;
+
+      mainContent.style.transition = 'none';
+      mainContent.style.transform = `translateY(${pullDistance * 0.55}px)`;
+
+      if (ptrIcon) ptrIcon.style.display = 'inline-block';
+      if (dot) dot.style.display = 'none';
+
+      if (pullDistance < PULL_THRESHOLD) {
+        bar.className = 'server-status-bar pulling';
+        if (textEl) textEl.innerText = 'Pull down to refresh...';
+        if (ptrIcon) {
+          ptrIcon.className = 'fa-solid fa-arrow-down ptr-icon';
+          ptrIcon.style.transform = 'rotate(0deg)';
+        }
+      } else {
+        bar.className = 'server-status-bar release';
+        if (textEl) textEl.innerText = 'Release to refresh FOBS TV';
+        if (ptrIcon) {
+          ptrIcon.className = 'fa-solid fa-arrow-up ptr-icon';
+          ptrIcon.style.transform = 'rotate(180deg)';
+        }
+      }
+    }
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (isMouseDown) {
+      isMouseDown = false;
+      handleGestureEnd();
+    }
+  });
 }
 
 // FOBS TV Branded Loading Screen Controls
@@ -3553,6 +3783,13 @@ function closeCommunity(e) {
 // ANDROID & MOBILE BACK GESTURE (SWIPE BACK) / SYSTEM BACK HANDLER
 // ============================================================
 window.handleAndroidBack = function() {
+  // -1. Mandatory app update modal: strictly block back gesture/button
+  const updateModal = document.getElementById('appUpdateModal');
+  if (updateModal && !updateModal.classList.contains('hidden')) {
+    shakeUpdateModal();
+    return true;
+  }
+
   // 0. If video is currently in fullscreen, exit fullscreen and restore portrait
   if (document.body.classList.contains('is-fullscreen') || document.fullscreenElement || document.webkitFullscreenElement) {
     exitFullscreenMode();
@@ -3639,5 +3876,242 @@ window.handleAndroidBack = function() {
 window.addEventListener('popstate', function(event) {
   window.handleAndroidBack();
 });
+
+// ============================================================
+// IN-APP MANDATORY FORCE UPDATE SYSTEM
+// ============================================================
+
+function setupAppUpdateModal() {
+  const modal = document.getElementById('appUpdateModal');
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      // If user taps the backdrop when update is forced, prevent closing and shake
+      if (e.target === modal) {
+        shakeUpdateModal();
+      }
+    });
+  }
+}
+
+function checkAppUpdate(data) {
+  const updateInfo = (data && data.appUpdate) || (appState.content && appState.content.appUpdate);
+  if (!updateInfo || !updateInfo.enabled) {
+    const headerBtn = document.getElementById('headerUpdateBtn');
+    if (headerBtn) headerBtn.classList.add('hidden');
+    return;
+  }
+
+  currentAppUpdateConfig = updateInfo;
+  const isOutdated = updateInfo.latestVersionCode > CURRENT_APP_VERSION_CODE;
+
+  const headerBtn = document.getElementById('headerUpdateBtn');
+  if (headerBtn) {
+    if (isOutdated) {
+      headerBtn.classList.remove('hidden');
+    } else {
+      headerBtn.classList.add('hidden');
+    }
+  }
+
+  if (isOutdated) {
+    // Populate update modal UI elements
+    const pill = document.getElementById('updateBadgePill');
+    if (pill) pill.textContent = (updateInfo.latestVersionName ? `v${updateInfo.latestVersionName}` : 'New Version') + ' Ready';
+
+    const title = document.getElementById('updateModalTitle');
+    if (title && updateInfo.title) title.textContent = updateInfo.title;
+
+    const desc = document.getElementById('updateModalDesc');
+    if (desc && updateInfo.message) desc.textContent = updateInfo.message;
+
+    const currentTag = document.getElementById('currentVersionTag');
+    if (currentTag) currentTag.textContent = `v${CURRENT_APP_VERSION_NAME}`;
+
+    const latestTag = document.getElementById('latestVersionTag');
+    if (latestTag) latestTag.textContent = `v${updateInfo.latestVersionName || '1.1.0'}`;
+
+    const sizeTag = document.getElementById('updateFileSize');
+    if (sizeTag && updateInfo.fileSize) sizeTag.textContent = updateInfo.fileSize;
+
+    const browserLink = document.getElementById('btnBrowserDownload');
+    if (browserLink) {
+      const url = updateInfo.downloadUrl || `${API_BASE_URL}/download/apk`;
+      browserLink.href = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
+    }
+
+    if (Array.isArray(updateInfo.releaseNotes) && updateInfo.releaseNotes.length > 0) {
+      const notesList = document.getElementById('updateNotesList');
+      if (notesList) {
+        notesList.innerHTML = updateInfo.releaseNotes.map(n => `<li><i class="fa-solid fa-circle-check"></i> ${n}</li>`).join('');
+      }
+    }
+
+    // Force Update: User cannot use app without updating
+    if (updateInfo.forceUpdate) {
+      openUpdateModal(true);
+    }
+  }
+}
+
+function openUpdateModal(force = false) {
+  const modal = document.getElementById('appUpdateModal');
+  if (modal) {
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function shakeUpdateModal() {
+  const card = document.querySelector('.update-modal-card');
+  if (card) {
+    card.classList.remove('shake');
+    void card.offsetWidth; // Force CSS reflow
+    card.classList.add('shake');
+    setTimeout(() => card.classList.remove('shake'), 450);
+  }
+  if (typeof showToast === 'function') {
+    showToast('Update is required to continue using FOBS TV');
+  }
+}
+
+function startAppUpdate() {
+  if (isUpdatingApp) return;
+
+  const btnStart = document.getElementById('btnStartUpdate');
+  const progContainer = document.getElementById('updateProgressContainer');
+  const errorBox = document.getElementById('updateErrorFallback');
+  const fill = document.getElementById('updateProgressBarFill');
+  const percentText = document.getElementById('updateProgressPercent');
+  const labelText = document.getElementById('updateProgressLabel');
+  const bytesText = document.getElementById('updateProgressBytes');
+
+  if (errorBox) errorBox.classList.add('hidden');
+  if (btnStart) btnStart.style.display = 'none';
+  if (progContainer) progContainer.classList.remove('hidden');
+
+  if (fill) fill.style.width = '0%';
+  if (percentText) percentText.textContent = '0%';
+  if (labelText) labelText.textContent = 'Connecting to download server...';
+  if (bytesText) bytesText.textContent = `0 MB / ${currentAppUpdateConfig?.fileSize || '14.5 MB'}`;
+
+  isUpdatingApp = true;
+
+  // Resolve APK URL
+  let apkUrl = currentAppUpdateConfig?.downloadUrl || `${API_BASE_URL}/download/apk`;
+  if (!apkUrl.startsWith('http')) {
+    apkUrl = `${API_BASE_URL}${apkUrl.startsWith('/') ? '' : '/'}${apkUrl}`;
+  }
+
+  // 1. If running inside Android Capacitor APK with native bridge:
+  if (window.AndroidApp && typeof window.AndroidApp.downloadAndInstallApk === 'function') {
+    try {
+      window.AndroidApp.downloadAndInstallApk(apkUrl);
+      return;
+    } catch (e) {
+      console.warn('Native download failed, falling back:', e);
+    }
+  }
+
+  // 2. Fallback: Browser download with simulated progress
+  simulateBrowserUpdate(apkUrl);
+}
+
+function simulateBrowserUpdate(apkUrl) {
+  const fill = document.getElementById('updateProgressBarFill');
+  const percentText = document.getElementById('updateProgressPercent');
+  const labelText = document.getElementById('updateProgressLabel');
+  const bytesText = document.getElementById('updateProgressBytes');
+
+  let pct = 0;
+  const interval = setInterval(() => {
+    pct += Math.floor(Math.random() * 8) + 6;
+    if (pct >= 100) {
+      pct = 100;
+      clearInterval(interval);
+      if (fill) fill.style.width = '100%';
+      if (percentText) percentText.textContent = '100%';
+      if (labelText) labelText.textContent = 'Download ready! Opening APK installer...';
+      if (bytesText) bytesText.textContent = `${currentAppUpdateConfig?.fileSize || '14.5 MB'} downloaded`;
+
+      // Trigger browser APK file download
+      const link = document.createElement('a');
+      link.href = apkUrl;
+      link.download = 'FOBS_TV_latest.apk';
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      setTimeout(() => {
+        isUpdatingApp = false;
+        if (labelText) labelText.textContent = 'Please open and install the downloaded APK file';
+      }, 2000);
+      return;
+    }
+
+    if (fill) fill.style.width = `${pct}%`;
+    if (percentText) percentText.textContent = `${pct}%`;
+    if (labelText) labelText.textContent = 'Downloading FOBS TV update...';
+    const totalMb = parseFloat(currentAppUpdateConfig?.fileSize) || 14.5;
+    const currentMb = ((pct / 100) * totalMb).toFixed(1);
+    if (bytesText) bytesText.textContent = `${currentMb} MB / ${totalMb} MB`;
+  }, 220);
+}
+
+// Native Android Callbacks (Invoked from MainActivity.java)
+window.onNativeApkDownloadProgress = function(percent, downloadedBytes, totalBytes) {
+  const fill = document.getElementById('updateProgressBarFill');
+  const percentText = document.getElementById('updateProgressPercent');
+  const labelText = document.getElementById('updateProgressLabel');
+  const bytesText = document.getElementById('updateProgressBytes');
+
+  if (percent >= 0) {
+    if (fill) fill.style.width = `${percent}%`;
+    if (percentText) percentText.textContent = `${percent}%`;
+  }
+
+  if (labelText) labelText.textContent = 'Downloading FOBS TV update...';
+
+  if (bytesText && downloadedBytes > 0) {
+    const downMb = (downloadedBytes / (1024 * 1024)).toFixed(1);
+    if (totalBytes > 0) {
+      const totMb = (totalBytes / (1024 * 1024)).toFixed(1);
+      bytesText.textContent = `${downMb} MB / ${totMb} MB`;
+    } else {
+      bytesText.textContent = `${downMb} MB`;
+    }
+  }
+};
+
+window.onNativeApkDownloadComplete = function() {
+  const fill = document.getElementById('updateProgressBarFill');
+  const percentText = document.getElementById('updateProgressPercent');
+  const labelText = document.getElementById('updateProgressLabel');
+
+  if (fill) fill.style.width = '100%';
+  if (percentText) percentText.textContent = '100%';
+  if (labelText) labelText.textContent = 'Download complete! Opening package installer...';
+
+  isUpdatingApp = false;
+};
+
+window.onNativeApkDownloadError = function(errorMsg) {
+  isUpdatingApp = false;
+  const btnStart = document.getElementById('btnStartUpdate');
+  const progContainer = document.getElementById('updateProgressContainer');
+  const errorBox = document.getElementById('updateErrorFallback');
+  const errorText = document.getElementById('updateErrorText');
+
+  if (progContainer) progContainer.classList.add('hidden');
+  if (btnStart) {
+    btnStart.style.display = 'flex';
+    btnStart.innerHTML = '<i class="fa-solid fa-rotate-right"></i> <span>Retry Update</span>';
+  }
+  if (errorBox) {
+    errorBox.classList.remove('hidden');
+    if (errorText) errorText.textContent = `Download failed: ${errorMsg || 'Connection error'}. You can retry or download via browser.`;
+  }
+};
+
 
 

@@ -34,6 +34,11 @@
           <input type="text" id="searchInput" placeholder="Type movie or series name..." autocomplete="off">
           <button class="search-btn" onclick="handleSearch()">Search</button>
         </div>
+
+        <button id="headerUpdateBtn" class="header-update-btn hidden" onclick="openUpdateModal()" title="App Update Available">
+          <i class="fa-solid fa-cloud-arrow-down"></i>
+          <span class="update-pulse-badge"></span>
+        </button>
       </div>
 
       <!-- 4 Main Navigation Tabs: Home, Movie, Series, Live TV -->
@@ -53,10 +58,11 @@
       </nav>
     </header>
 
-    <!-- Non-intrusive Server Status Bar (Shows only when waking up or offline) -->
+    <!-- Non-intrusive Server Status Bar / Pull To Refresh Bar -->
     <div id="serverStatusBar" class="server-status-bar hidden">
-      <span class="status-pulse-dot"></span>
-      <span id="serverStatusText" class="status-text">Server waking up...</span>
+      <span class="status-pulse-dot" id="serverStatusDot"></span>
+      <i class="fa-solid fa-arrow-down ptr-icon" id="ptrIcon" style="display: none;"></i>
+      <span id="serverStatusText" class="status-text">Connected to FOBS TV</span>
       <button id="serverRetryBtn" class="status-retry-pill hidden" onclick="triggerManualSync()">Retry</button>
     </div>
 
@@ -1003,6 +1009,83 @@
           <p class="fobs-error-detail">Server is waking up or connection was interrupted.</p>
           <button class="btn-primary fobs-retry-btn" onclick="retryInitialLoad()">Retry Connection</button>
         </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- IN-APP MANDATORY FORCE UPDATE MODAL -->
+    <!-- ============================================== -->
+    <div class="update-modal-overlay hidden" id="appUpdateModal">
+      <div class="update-modal-card">
+        <div class="update-card-glow"></div>
+        
+        <div class="update-badge-header">
+          <div class="update-icon-wrapper">
+            <i class="fa-solid fa-cloud-arrow-down update-cloud-icon"></i>
+            <div class="update-pulse-ring"></div>
+          </div>
+          <span class="update-badge-pill" id="updateBadgePill">v1.1.0 Ready</span>
+        </div>
+
+        <h2 class="update-modal-title" id="updateModalTitle">Update FOBS TV</h2>
+        <p class="update-modal-desc" id="updateModalDesc">
+          A new version of FOBS TV is available. Please update the app to continue using high-speed servers and fixed video streaming.
+        </p>
+
+        <!-- What's New Box -->
+        <div class="update-notes-box">
+          <div class="update-notes-title">
+            <i class="fa-solid fa-sparkles"></i> What's New:
+          </div>
+          <ul class="update-notes-list" id="updateNotesList">
+            <li><i class="fa-solid fa-circle-check"></i> Fixed video playback on all streaming servers</li>
+            <li><i class="fa-solid fa-circle-check"></i> Added brand new 2026 Spider-Man & Colony movies</li>
+            <li><i class="fa-solid fa-circle-check"></i> Added Pull-to-Refresh feature</li>
+            <li><i class="fa-solid fa-circle-check"></i> Ultra-fast streaming server upgrades</li>
+          </ul>
+        </div>
+
+        <div class="update-file-info">
+          <span class="file-size-tag"><i class="fa-solid fa-file-zipper"></i> <span id="updateFileSize">14.5 MB</span></span>
+          <span class="version-tag-info">Current: <span id="currentVersionTag">v1.0</span> &rarr; Latest: <span id="latestVersionTag">v1.1.0</span></span>
+        </div>
+
+        <!-- Download Progress Container (Shown when updating) -->
+        <div class="update-progress-container hidden" id="updateProgressContainer">
+          <div class="update-progress-header">
+            <span class="update-progress-label" id="updateProgressLabel">Downloading Update...</span>
+            <span class="update-progress-percent" id="updateProgressPercent">0%</span>
+          </div>
+          <div class="update-progress-bar-bg">
+            <div class="update-progress-bar-fill" id="updateProgressBarFill" style="width: 0%;"></div>
+          </div>
+          <div class="update-progress-footer">
+            <span class="update-progress-bytes" id="updateProgressBytes">0 MB / 14.5 MB</span>
+            <span class="update-progress-speed" id="updateProgressSpeed">In-App Fast Download</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="update-modal-actions" id="updateModalActions">
+          <button class="btn-update-primary" id="btnStartUpdate" onclick="startAppUpdate()">
+            <i class="fa-solid fa-circle-arrow-down"></i>
+            <span>Update Now</span>
+          </button>
+        </div>
+
+        <!-- Error & Fallback Container (Hidden by default) -->
+        <div class="update-error-fallback hidden" id="updateErrorFallback">
+          <p class="update-error-text" id="updateErrorText">Download failed. Please check internet connection.</p>
+          <div class="update-fallback-actions">
+            <button class="btn-update-retry" onclick="startAppUpdate()">
+              <i class="fa-solid fa-rotate-right"></i> Retry
+            </button>
+            <a href="#" class="btn-update-browser" id="btnBrowserDownload" target="_blank" rel="noopener">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Download via Browser
+            </a>
+          </div>
+        </div>
+
       </div>
     </div>
 

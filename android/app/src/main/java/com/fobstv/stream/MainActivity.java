@@ -17,9 +17,21 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import androidx.activity.OnBackPressedCallback;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
+import android.widget.Toast;
+import androidx.core.content.FileProvider;
 import com.getcapacitor.Bridge;
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.BridgeWebChromeClient;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends BridgeActivity {
     private OnBackPressedCallback backPressedCallback;
@@ -150,6 +162,159 @@ public class MainActivity extends BridgeActivity {
                     }
                 } catch (Exception ignored) {}
             });
+        }
+
+        private final ExecutorService updateExecutor = Executors.newSingleThreadExecutor();
+
+        @JavascriptInterface
+        public void downloadAndInstallApk(String downloadUrl) {
+            if (downloadUrl == null || downloadUrl.trim().isEmpty()) {
+                runOnUiThread(() -> {
+                    WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+                    if (webView != null) {
+                        webView.evaluateJavascript("if (typeof window.onNativeApkDownloadError === 'function') window.onNativeApkDownloadError('Invalid download URL');", null);
+                    }
+                });
+                return;
+            }
+
+            updateExecutor.execute(() -> {
+                InputStream input = null;
+                FileOutputStream output = null;
+                HttpURLConnection connection = null;
+                try {
+                    URL url = new URL(downloadUrl);
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.setInstanceFollowRedirects(true);
+                    connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + ") FOBS-TV-App");
+                    connection.setConnectTimeout(20000);
+                    connection.setReadTimeout(30000);
+                    connection.connect();
+
+                    int status = connection.getResponseCode();
+                    if (status == HttpURLConnection.HTTP_MOVED_TEMP || status == HttpURLConnection.HTTP_MOVED_PERM || status == 307 || status == 308) {
+                        String newUrl = connection.getHeaderField("Location");
+                        if (newUrl != null && !newUrl.isEmpty()) {
+                            connection.disconnect();
+                            url = new URL(newUrl);
+                            connection = (HttpURLConnection) url.openConnection();
+                            connection.setInstanceFollowRedirects(true);
+                            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + ") FOBS-TV-App");
+                            connection.connect();
+                        }
+                    }
+
+                    int fileLength = connection.getContentLength();
+                    input = connection.getInputStream();
+
+                    File storageDir = getExternalCacheDir();
+                    if (storageDir == null) {
+                        storageDir = getCacheDir();
+                    }
+                    File apkFile = new File(storageDir, "fobs_tv_update.apk");
+                    if (apkFile.exists()) {
+                        apkFile.delete();
+                    }
+
+                    output = new FileOutputStream(apkFile);
+                    byte[] data = new byte[16384];
+                    long total = 0;
+                    int count;
+                    long lastUpdate = 0;
+
+                    while ((count = input.read(data)) != -1) {
+                        total += count;
+                        output.write(data, 0, count);
+
+                        long now = System.currentTimeMillis();
+                        if (now - lastUpdate > 150) {
+                            lastUpdate = now;
+                            final int progress = fileLength > 0 ? (int) ((total * 100) / fileLength) : -1;
+                            final long finalTotal = total;
+                            final long finalLength = fileLength;
+                            runOnUiThread(() -> {
+                                WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+                                if (webView != null) {
+                                    webView.evaluateJavascript(
+                                        String.format(java.util.Locale.US, "if (typeof window.onNativeApkDownloadProgress === 'function') window.onNativeApkDownloadProgress(%d, %d, %d);", progress, finalTotal, finalLength),
+                                        null
+                                    );
+                                }
+                            });
+                        }
+                    }
+
+                    output.flush();
+
+                    final long finalTotal = total;
+                    final long finalLength = fileLength > 0 ? fileLength : total;
+                    runOnUiThread(() -> {
+                        WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+                        if (webView != null) {
+                            webView.evaluateJavascript(
+                                String.format(java.util.Locale.US, "if (typeof window.onNativeApkDownloadProgress === 'function') window.onNativeApkDownloadProgress(100, %d, %d); if (typeof window.onNativeApkDownloadComplete === 'function') window.onNativeApkDownloadComplete();", finalTotal, finalLength),
+                                null
+                            );
+                        }
+                        installDownloadedApk(apkFile);
+                    });
+
+                } catch (Exception e) {
+                    final String errorMsg = e.getMessage() != null ? e.getMessage() : "Download error";
+                    runOnUiThread(() -> {
+                        WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+                        if (webView != null) {
+                            webView.evaluateJavascript(
+                                String.format("if (typeof window.onNativeApkDownloadError === 'function') window.onNativeApkDownloadError('%s');", errorMsg.replace("'", "\\'")),
+                                null
+                            );
+                        }
+                    });
+                } finally {
+                    try { if (output != null) output.close(); } catch (Exception ignored) {}
+                    try { if (input != null) input.close(); } catch (Exception ignored) {}
+                    if (connection != null) connection.disconnect();
+                }
+            });
+        }
+    }
+
+    public void installDownloadedApk(File apkFile) {
+        try {
+            if (apkFile == null || !apkFile.exists()) {
+                Toast.makeText(this, "Downloaded APK not found", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (!getPackageManager().canRequestPackageInstalls()) {
+                    Toast.makeText(this, "Please allow unknown apps permission to update FOBS TV", Toast.LENGTH_LONG).show();
+                    Intent settingsIntent = new Intent(android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+                    settingsIntent.setData(Uri.parse("package:" + getPackageName()));
+                    startActivity(settingsIntent);
+                    return;
+                }
+            }
+
+            Uri apkUri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                apkUri = FileProvider.getUriForFile(
+                    this,
+                    getPackageName() + ".fileprovider",
+                    apkFile
+                );
+            } else {
+                apkUri = Uri.fromFile(apkFile);
+            }
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Failed to start installer: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
