@@ -542,19 +542,20 @@ app.get('/api/app-update', (req, res) => {
   const data = getContentData();
   const defaultUpdate = {
     enabled: true,
-    latestVersionCode: 3,
-    latestVersionName: '1.2.0',
-    minVersionCode: 3,
+    latestVersionCode: 4,
+    latestVersionName: '1.3.0',
+    minVersionCode: 4,
     forceUpdate: true,
-    title: 'Update Available!',
-    message: 'A new version of FOBS TV (v1.2.0) is available with fixed swipe-to-back, smooth scrolling, and all-new 2026 movies. Update now to continue using FOBS TV.',
+    title: 'FOBS TV Update Available!',
+    message: 'A new version of FOBS TV (v1.3.0) is available with fixed aspect ratio, centered video playback, and all-new categories. Please update now to continue.',
     releaseNotes: [
-      'Fixed swipe-to-back: no accidental back when swiping in the middle of the screen',
-      'Fixed smooth scrolling and pull-to-refresh',
-      'All 2026 movies with high-speed CDN servers',
-      'Performance and player stability improvements'
+      'Fixed video screen fit: Perfectly centered without cropping or black side distortion',
+      'Bottom Fill/Fit toggle: Seamlessly zoom and crop to edge-to-edge',
+      'Clean Hindi titles across all movies & series',
+      'Added all categories & industries (Bollywood, Hollywood, Korean, Chinese, Anime) with hourly auto-sync',
+      'Instant direct browser APK download'
     ],
-    downloadUrl: 'https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk',
+    downloadUrl: '/download/apk',
     fallbackUrl: '/download/apk',
     fileSize: '5.2 MB'
   };
@@ -1105,6 +1106,17 @@ app.get('/api/views/:id', (req, res) => {
 app.post('/api/views/:id/increment', (req, res) => {
   const views = syncService.incrementMediaViews(req.params.id);
   res.json({ id: req.params.id, views });
+});
+
+// Real-Time Pre-Bookings API (Coming Soon Content)
+app.get('/api/bookings/:id', (req, res) => {
+  const bookings = syncService.getMediaBookings(req.params.id);
+  res.json({ id: req.params.id, bookings });
+});
+
+app.post('/api/bookings/:id/increment', (req, res) => {
+  const bookings = syncService.incrementMediaBookings(req.params.id);
+  res.json({ id: req.params.id, bookings });
 });
 
 // Manual MovieBox Sync trigger

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="referrer" content="no-referrer-when-downgrade">
   <title>FOBS TV - Live Streaming & Download App</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -35,6 +35,10 @@
           <input type="text" id="searchInput" placeholder="Type movie or series name..." autocomplete="off">
           <button class="search-btn" onclick="handleSearch()">Search</button>
         </div>
+
+        <button id="headerCommunityBtn" class="header-community-btn" onclick="openCommunity()" title="FOBS Community">
+          <i class="fa-solid fa-users"></i>
+        </button>
 
         <button id="headerUpdateBtn" class="header-update-btn hidden" onclick="openUpdateModal()" title="App Update Available">
           <i class="fa-solid fa-cloud-arrow-down"></i>
@@ -74,8 +78,8 @@
       <section id="homeView" class="tab-view active">
         <!-- Hero Spotlight Banner with 4s 75/25 Auto-Slider (Matching Screenshot 3) -->
         <div class="hero-slider-container" id="heroSliderContainer">
-          <div class="hero-backdrop-track" id="heroBackdropTrack"></div>
-          <div class="hero-gradient-overlay"></div>
+          <div class="hero-backdrop-track" id="heroBackdropTrack" onclick="handleActiveHeroClick('home')"></div>
+          <div class="hero-gradient-overlay" onclick="handleActiveHeroClick('home')"></div>
 
           <!-- Bottom 75% Active + 25% Next Peek Slider Track -->
           <div class="hero-bottom-slider">
@@ -143,11 +147,11 @@
           </div>
         </div>
 
-        <!-- Section: Anime (Hindi Dubbed) -->
+        <!-- Section: Anime -->
         <div class="content-section" id="homeAnimeSection">
           <div class="section-header">
-            <h2 class="section-title"><i class="fa-solid fa-dragon" style="color: #ff4757; margin-right: 6px;"></i> Anime (Hindi Dubbed)</h2>
-            <span class="section-more" onclick="openSectionDetail('anime', 'Anime (Hindi Dubbed)')">All <i class="fa-solid fa-chevron-right"></i></span>
+            <h2 class="section-title"><i class="fa-solid fa-dragon" style="color: #ff4757; margin-right: 6px;"></i> Anime</h2>
+            <span class="section-more" onclick="openSectionDetail('anime', 'Anime')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="homeAnimeList">
             <!-- Populated via JS -->
@@ -165,14 +169,31 @@
             <!-- Populated via JS -->
           </div>
         </div>
+
+        <!-- FOBS Community Banner Strip -->
+        <div class="home-community-banner" onclick="openCommunity()">
+          <div class="home-community-left">
+            <div class="home-comm-icon-wrap">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="home-comm-text">
+              <div class="home-comm-title">Join FOBS Community</div>
+              <div class="home-comm-desc">Telegram • WhatsApp • Facebook • Official Website</div>
+            </div>
+          </div>
+          <div class="home-comm-btn">
+            <span>Join Now</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </div>
       </section>
 
       <!-- MOVIE TAB VIEW -->
       <section id="movieView" class="tab-view">
         <!-- Hero Spotlight Banner for Movies (Auto-Sliding 75/25 Hero Slider like Home) -->
         <div class="hero-slider-container" id="movieHeroSliderContainer">
-          <div class="hero-backdrop-track" id="movieHeroBackdropTrack"></div>
-          <div class="hero-gradient-overlay"></div>
+          <div class="hero-backdrop-track" id="movieHeroBackdropTrack" onclick="handleActiveHeroClick('movie')"></div>
+          <div class="hero-gradient-overlay" onclick="handleActiveHeroClick('movie')"></div>
 
           <!-- Bottom 75% Active + 25% Next Peek Slider Track -->
           <div class="hero-bottom-slider">
@@ -206,7 +227,7 @@
         <!-- Section: Bollywood -->
         <div class="content-section">
           <div class="section-header">
-            <h2 class="section-title"><i class="fa-solid fa-film" style="color: #ff6b81; margin-right: 6px;"></i> Bollywood</h2>
+            <h2 class="section-title"><i class="fa-solid fa-film" style="color: #ff6b81; margin-right: 6px;"></i> Bollywood Movies</h2>
             <span class="section-more" onclick="openSectionDetail('movie-bollywood', 'Bollywood Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieBollywoodList">
@@ -214,80 +235,97 @@
           </div>
         </div>
 
-        <!-- Section: South (Dubbed) -->
+        <!-- Section: South Indian -->
         <div class="content-section">
           <div class="section-header">
-            <h2 class="section-title"><i class="fa-solid fa-gem" style="color: #ff9f43; margin-right: 6px;"></i> South (Dubbed)</h2>
-            <span class="section-more" onclick="openSectionDetail('movie-south', 'South (Dubbed) Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
+            <h2 class="section-title"><i class="fa-solid fa-gem" style="color: #ff9f43; margin-right: 6px;"></i> South Indian Movies</h2>
+            <span class="section-more" onclick="openSectionDetail('movie-south', 'South Indian Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieSouthList">
             <!-- Populated via JS -->
           </div>
         </div>
 
-        <!-- Section: Hollywood (Dubbed) -->
+        <!-- Section: Hollywood -->
         <div class="content-section">
           <div class="section-header">
-            <h2 class="section-title"><i class="fa-solid fa-globe" style="color: #54a0ff; margin-right: 6px;"></i> Hollywood (Dubbed)</h2>
-            <span class="section-more" onclick="openSectionDetail('movie-hollywood', 'Hollywood (Dubbed) Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
+            <h2 class="section-title"><i class="fa-solid fa-globe" style="color: #54a0ff; margin-right: 6px;"></i> Hollywood Movies</h2>
+            <span class="section-more" onclick="openSectionDetail('movie-hollywood', 'Hollywood Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieHollywoodList">
             <!-- Populated via JS -->
           </div>
         </div>
 
-        <!-- Section: Korean (Dubbed) -->
+        <!-- Section: Korean (K-Movie) -->
         <div class="content-section">
           <div class="section-header">
-            <h2 class="section-title"><i class="fa-solid fa-heart" style="color: #ff3366; margin-right: 6px;"></i> Korean (Dubbed)</h2>
-            <span class="section-more" onclick="openSectionDetail('movie-korean', 'Korean (Dubbed) Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
+            <h2 class="section-title"><i class="fa-solid fa-heart" style="color: #ff3366; margin-right: 6px;"></i> Korean (K-Movie)</h2>
+            <span class="section-more" onclick="openSectionDetail('movie-korean', 'Korean (K-Movie)')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieKoreanList">
             <!-- Populated via JS -->
           </div>
         </div>
 
-        <!-- Section: Chinese (Dubbed) -->
+        <!-- Section: Chinese (C-Movie) -->
         <div class="content-section">
           <div class="section-header">
-            <h2 class="section-title"><i class="fa-solid fa-dragon" style="color: #ffd32a; margin-right: 6px;"></i> Chinese (Dubbed)</h2>
-            <span class="section-more" onclick="openSectionDetail('movie-chinese', 'Chinese (Dubbed) Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
+            <h2 class="section-title"><i class="fa-solid fa-dragon" style="color: #ffd32a; margin-right: 6px;"></i> Chinese (C-Movie)</h2>
+            <span class="section-more" onclick="openSectionDetail('movie-chinese', 'Chinese (C-Movie)')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieChineseList">
             <!-- Populated via JS -->
           </div>
         </div>
 
-        <!-- Section: Japanese (Dubbed) -->
+        <!-- Section: Japanese Movies -->
         <div class="content-section">
           <div class="section-header">
-            <h2 class="section-title"><i class="fa-solid fa-torii-gate" style="color: #ff6b6b; margin-right: 6px;"></i> Japanese (Dubbed)</h2>
-            <span class="section-more" onclick="openSectionDetail('movie-japanese', 'Japanese (Dubbed) Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
+            <h2 class="section-title"><i class="fa-solid fa-torii-gate" style="color: #ff6b6b; margin-right: 6px;"></i> Japanese Movies</h2>
+            <span class="section-more" onclick="openSectionDetail('movie-japanese', 'Japanese Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieJapaneseList">
             <!-- Populated via JS -->
           </div>
         </div>
 
-        <!-- Section: Anime Movies (Hindi Dub) -->
+        <!-- Section: Anime Movies -->
         <div class="content-section" id="movieAnimeSection">
           <div class="section-header">
-            <h2 class="section-title"><i class="fa-solid fa-dragon" style="color: #ff4757; margin-right: 6px;"></i> Anime Movies (Hindi Dub)</h2>
-            <span class="section-more" onclick="openSectionDetail('movie-anime', 'Anime Movies (Hindi Dub)')">All <i class="fa-solid fa-chevron-right"></i></span>
+            <h2 class="section-title"><i class="fa-solid fa-dragon" style="color: #ff4757; margin-right: 6px;"></i> Anime Movies</h2>
+            <span class="section-more" onclick="openSectionDetail('movie-anime', 'Anime Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieAnimeList">
             <!-- Populated via JS -->
           </div>
         </div>
 
-        <!-- Section: Others (Dubbed) -->
+        <!-- Section: Others Movies -->
         <div class="content-section">
           <div class="section-header">
-            <h2 class="section-title"><i class="fa-solid fa-layer-group" style="color: #10ac84; margin-right: 6px;"></i> Others (Dubbed)</h2>
-            <span class="section-more" onclick="openSectionDetail('movie-others', 'Others (Dubbed) Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
+            <h2 class="section-title"><i class="fa-solid fa-layer-group" style="color: #10ac84; margin-right: 6px;"></i> Others Movies</h2>
+            <span class="section-more" onclick="openSectionDetail('movie-others', 'Others Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="movieOthersList">
             <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- FOBS Community Banner Strip -->
+        <div class="home-community-banner" onclick="openCommunity()">
+          <div class="home-community-left">
+            <div class="home-comm-icon-wrap">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="home-comm-text">
+              <div class="home-comm-title">Join FOBS Community</div>
+              <div class="home-comm-desc">Telegram • WhatsApp • Facebook • Official Website</div>
+            </div>
+          </div>
+          <div class="home-comm-btn">
+            <span>Join Now</span>
+            <i class="fa-solid fa-arrow-right"></i>
           </div>
         </div>
       </section>
@@ -296,8 +334,8 @@
       <section id="seriesView" class="tab-view">
         <!-- Hero Spotlight Banner for Series (Auto-Sliding 75/25 Hero Slider like Home & Movie) -->
         <div class="hero-slider-container" id="seriesHeroSliderContainer">
-          <div class="hero-backdrop-track" id="seriesHeroBackdropTrack"></div>
-          <div class="hero-gradient-overlay"></div>
+          <div class="hero-backdrop-track" id="seriesHeroBackdropTrack" onclick="handleActiveHeroClick('series')"></div>
+          <div class="hero-gradient-overlay" onclick="handleActiveHeroClick('series')"></div>
 
           <!-- Bottom 75% Active + 25% Next Peek Slider Track -->
           <div class="hero-bottom-slider">
@@ -327,69 +365,108 @@
           </div>
         </div>
 
-        <!-- Section: Hollywood (Dubbed) -->
+        <!-- Section: Bollywood Series -->
         <div class="content-section">
           <div class="section-header">
-            <h2 class="section-title"><i class="fa-solid fa-globe" style="color: #54a0ff; margin-right: 6px;"></i> Hollywood (Dubbed)</h2>
-            <span class="section-more" onclick="openSectionDetail('series-hollywood', 'Hollywood (Dubbed) Series')">All <i class="fa-solid fa-chevron-right"></i></span>
+            <h2 class="section-title"><i class="fa-solid fa-film" style="color: #ff6b81; margin-right: 6px;"></i> Bollywood Series</h2>
+            <span class="section-more" onclick="openSectionDetail('series-bollywood', 'Bollywood Series')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="seriesBollywoodList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: South Indian Series -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-gem" style="color: #ff9f43; margin-right: 6px;"></i> South Indian Series</h2>
+            <span class="section-more" onclick="openSectionDetail('series-south', 'South Indian Series')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="seriesSouthList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Hollywood Series -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-globe" style="color: #54a0ff; margin-right: 6px;"></i> Hollywood Series</h2>
+            <span class="section-more" onclick="openSectionDetail('series-hollywood', 'Hollywood Series')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="seriesHollywoodList">
             <!-- Populated via JS -->
           </div>
         </div>
 
-        <!-- Section: Korean (Dubbed) -->
+        <!-- Section: Korean (K-Drama) -->
         <div class="content-section">
           <div class="section-header">
-            <h2 class="section-title"><i class="fa-solid fa-heart" style="color: #ff3366; margin-right: 6px;"></i> Korean (Dubbed)</h2>
-            <span class="section-more" onclick="openSectionDetail('series-korean', 'Korean (Dubbed) Series')">All <i class="fa-solid fa-chevron-right"></i></span>
+            <h2 class="section-title"><i class="fa-solid fa-heart" style="color: #ff3366; margin-right: 6px;"></i> Korean (K-Drama)</h2>
+            <span class="section-more" onclick="openSectionDetail('series-korean', 'Korean (K-Drama)')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="seriesKoreanList">
             <!-- Populated via JS -->
           </div>
         </div>
 
-        <!-- Section: Chinese (Dubbed) -->
+        <!-- Section: Chinese (C-Drama) -->
         <div class="content-section">
           <div class="section-header">
-            <h2 class="section-title"><i class="fa-solid fa-dragon" style="color: #ffd32a; margin-right: 6px;"></i> Chinese (Dubbed)</h2>
-            <span class="section-more" onclick="openSectionDetail('series-chinese', 'Chinese (Dubbed) Series')">All <i class="fa-solid fa-chevron-right"></i></span>
+            <h2 class="section-title"><i class="fa-solid fa-dragon" style="color: #ffd32a; margin-right: 6px;"></i> Chinese (C-Drama)</h2>
+            <span class="section-more" onclick="openSectionDetail('series-chinese', 'Chinese (C-Drama)')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="seriesChineseList">
             <!-- Populated via JS -->
           </div>
         </div>
 
-        <!-- Section: Japanese (Dubbed) -->
+        <!-- Section: Japanese Series -->
         <div class="content-section">
           <div class="section-header">
-            <h2 class="section-title"><i class="fa-solid fa-torii-gate" style="color: #ff6b6b; margin-right: 6px;"></i> Japanese (Dubbed)</h2>
-            <span class="section-more" onclick="openSectionDetail('series-japanese', 'Japanese (Dubbed) Series')">All <i class="fa-solid fa-chevron-right"></i></span>
+            <h2 class="section-title"><i class="fa-solid fa-torii-gate" style="color: #ff6b6b; margin-right: 6px;"></i> Japanese Series</h2>
+            <span class="section-more" onclick="openSectionDetail('series-japanese', 'Japanese Series')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="seriesJapaneseList">
             <!-- Populated via JS -->
           </div>
         </div>
 
-        <!-- Section: Anime Series (Hindi Dub) -->
+        <!-- Section: Anime Series -->
         <div class="content-section" id="seriesAnimeSection">
           <div class="section-header">
-            <h2 class="section-title"><i class="fa-solid fa-dragon" style="color: #ff4757; margin-right: 6px;"></i> Anime Series (Hindi Dub)</h2>
-            <span class="section-more" onclick="openSectionDetail('series-anime', 'Anime Series (Hindi Dub)')">All <i class="fa-solid fa-chevron-right"></i></span>
+            <h2 class="section-title"><i class="fa-solid fa-dragon" style="color: #ff4757; margin-right: 6px;"></i> Anime Series</h2>
+            <span class="section-more" onclick="openSectionDetail('series-anime', 'Anime Series')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="seriesAnimeList">
             <!-- Populated via JS -->
           </div>
         </div>
 
-        <!-- Section: Others (Dubbed) -->
+        <!-- Section: Others Series -->
         <div class="content-section">
           <div class="section-header">
-            <h2 class="section-title"><i class="fa-solid fa-layer-group" style="color: #10ac84; margin-right: 6px;"></i> Others (Dubbed)</h2>
-            <span class="section-more" onclick="openSectionDetail('series-others', 'Others (Dubbed) Series')">All <i class="fa-solid fa-chevron-right"></i></span>
+            <h2 class="section-title"><i class="fa-solid fa-layer-group" style="color: #10ac84; margin-right: 6px;"></i> Others Series</h2>
+            <span class="section-more" onclick="openSectionDetail('series-others', 'Others Series')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="seriesOthersList">
             <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- FOBS Community Banner Strip -->
+        <div class="home-community-banner" onclick="openCommunity()">
+          <div class="home-community-left">
+            <div class="home-comm-icon-wrap">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="home-comm-text">
+              <div class="home-comm-title">Join FOBS Community</div>
+              <div class="home-comm-desc">Telegram • WhatsApp • Facebook • Official Website</div>
+            </div>
+          </div>
+          <div class="home-comm-btn">
+            <span>Join Now</span>
+            <i class="fa-solid fa-arrow-right"></i>
           </div>
         </div>
       </section>
@@ -413,6 +490,23 @@
 
         <div class="live-tv-grid" id="liveTvGrid">
           <!-- Populated via JS -->
+        </div>
+
+        <!-- FOBS Community Banner Strip -->
+        <div class="home-community-banner" onclick="openCommunity()">
+          <div class="home-community-left">
+            <div class="home-comm-icon-wrap">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="home-comm-text">
+              <div class="home-comm-title">Join FOBS Community</div>
+              <div class="home-comm-desc">Telegram • WhatsApp • Facebook • Official Website</div>
+            </div>
+          </div>
+          <div class="home-comm-btn">
+            <span>Join Now</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
         </div>
       </section>
 
@@ -510,6 +604,13 @@
             <div class="gesture-hud-bar-fill" id="gestureHudBarFill"></div>
           </div>
           <div class="gesture-hud-val" id="gestureHudVal">100%</div>
+        </div>
+
+        <!-- Swipe Seek HUD (MovieBox Signature Right-to-Left / Left-to-Right gesture) -->
+        <div class="player-seek-hud" id="playerSeekHud" style="display: none;">
+          <div class="seek-hud-icon" id="seekHudIcon"><i class="fa-solid fa-forward"></i></div>
+          <div class="seek-hud-delta" id="seekHudDelta">+10s</div>
+          <div class="seek-hud-time" id="seekHudTime">00:00 / 00:00</div>
         </div>
 
         <!-- Double Tap Seek Ripple Overlays -->
@@ -703,29 +804,11 @@
                 </div>
 
                 <div class="ls-lang-items" id="lsSubtitleOptionsList">
-                  <div class="ls-lang-item active">
-                    <span>English</span>
-                    <i class="fa-solid fa-check ls-check-icon"></i>
-                  </div>
-                  <div class="ls-lang-item">
-                    <span>العربية</span>
-                    <i class="fa-solid fa-download ls-dl-icon"></i>
-                  </div>
-                  <div class="ls-lang-item">
-                    <span>Español</span>
-                    <i class="fa-solid fa-download ls-dl-icon"></i>
-                  </div>
-                  <div class="ls-lang-item">
-                    <span>Filipino</span>
-                    <i class="fa-solid fa-download ls-dl-icon"></i>
-                  </div>
-                  <div class="ls-lang-item">
-                    <span>Français</span>
-                    <i class="fa-solid fa-download ls-dl-icon"></i>
-                  </div>
-                  <div class="ls-lang-item">
-                    <span>हिन्दी</span>
-                    <i class="fa-solid fa-download ls-dl-icon"></i>
+                  <div class="ls-lang-item active" onclick="showToast('Subtitles feature is Coming Soon!')" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                    <span style="display: flex; align-items: center; gap: 8px;">
+                      <i class="fa-solid fa-clock-rotate-left" style="color: #f59e0b;"></i> Coming Soon
+                    </span>
+                    <span style="font-size: 11px; color: #94a3b8; background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 999px;">In Progress</span>
                   </div>
                 </div>
 
@@ -796,6 +879,7 @@
             <span>Download</span>
           </button>
           <div class="action-strip-btn views-counter-btn" id="mediaViewsBadge" title="Real-time Views">
+            <span class="views-live-dot"></span>
             <i class="fa-solid fa-eye" style="color: #00f2fe;"></i>
             <span id="mediaViewsCount">...</span>
           </div>
@@ -813,6 +897,15 @@
               <span id="currentDubText">Hindi dub</span>
               <i class="fa-solid fa-chevron-down"></i>
             </button>
+
+            <!-- Season Selector Dropdown (Right side of Hindi Dub dropdown) -->
+            <div class="season-selector-container" id="seasonSelectorContainer" style="display: none;">
+              <button class="dub-dropdown-btn season-dropdown-btn" id="seasonDropdownBtn" onclick="toggleSeasonDropdown(event)">
+                <span id="currentSeasonText">Season 1</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              <div class="season-dropdown-menu" id="seasonDropdownMenu" style="display: none;"></div>
+            </div>
           </div>
 
           <!-- Series Episode Scrollable Pills -->
@@ -896,29 +989,39 @@
         </div>
 
         <div class="community-links-list">
-          <!-- 1. Official Website -->
-          <a href="https://fobs-tv-apk.onrender.com" target="_blank" class="community-card website-card">
-            <div class="comm-icon-box"><i class="fa-solid fa-globe"></i></div>
+          <!-- 1. Telegram Channel -->
+          <a href="https://t.me/FOBS_Team" target="_blank" rel="noopener noreferrer" class="community-card telegram-channel-card" onclick="event.preventDefault(); openExternalUrl('https://t.me/FOBS_Team');">
+            <div class="comm-icon-box"><i class="fa-brands fa-telegram"></i></div>
             <div class="comm-info">
-              <div class="comm-name">FOBS Team Website</div>
-              <div class="comm-desc">Stream and download online in browser</div>
+              <div class="comm-name">Telegram Channel</div>
+              <div class="comm-desc">Fast direct links, news & release announcements</div>
             </div>
-            <div class="comm-action-btn">Visit <i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+            <div class="comm-action-btn">Subscribe <i class="fa-solid fa-chevron-right"></i></div>
           </a>
 
-          <!-- 2. Facebook Page -->
-          <a href="https://www.facebook.com" target="_blank" class="community-card fb-page-card">
+          <!-- 2. WhatsApp Group -->
+          <a href="https://chat.whatsapp.com/DiJWJsWKUxzFUZnE2UmVLi?s=cl&p=a&mlu=4&ilr=4" target="_blank" rel="noopener noreferrer" class="community-card whatsapp-card" onclick="event.preventDefault(); openExternalUrl('https://chat.whatsapp.com/DiJWJsWKUxzFUZnE2UmVLi?s=cl&p=a&mlu=4&ilr=4');">
+            <div class="comm-icon-box"><i class="fa-brands fa-whatsapp"></i></div>
+            <div class="comm-info">
+              <div class="comm-name">WhatsApp Group</div>
+              <div class="comm-desc">Instant alerts, update notifications & chat</div>
+            </div>
+            <div class="comm-action-btn">Join <i class="fa-solid fa-chevron-right"></i></div>
+          </a>
+
+          <!-- 3. Telegram Group -->
+          <a href="https://t.me/FOBS_Team_Discussion" target="_blank" rel="noopener noreferrer" class="community-card telegram-group-card" onclick="event.preventDefault(); openExternalUrl('https://t.me/FOBS_Team_Discussion');">
+            <div class="comm-icon-box"><i class="fa-solid fa-comments"></i></div>
+            <div class="comm-info">
+              <div class="comm-name">Telegram Group (Discussion)</div>
+              <div class="comm-desc">Movie requests, member chats & discussion</div>
+            </div>
+            <div class="comm-action-btn">Join <i class="fa-solid fa-chevron-right"></i></div>
+          </a>
+
+          <!-- 4. Facebook Group -->
+          <a href="https://facebook.com/groups/3392418557736498/?mibextid=rS40aB7S9Ucbxw6v" target="_blank" rel="noopener noreferrer" class="community-card fb-group-card" onclick="event.preventDefault(); openExternalUrl('https://facebook.com/groups/3392418557736498/?mibextid=rS40aB7S9Ucbxw6v');">
             <div class="comm-icon-box"><i class="fa-brands fa-facebook-f"></i></div>
-            <div class="comm-info">
-              <div class="comm-name">Facebook Page</div>
-              <div class="comm-desc">Follow for daily updates & posters</div>
-            </div>
-            <div class="comm-action-btn">Follow <i class="fa-solid fa-chevron-right"></i></div>
-          </a>
-
-          <!-- 3. Facebook Group -->
-          <a href="https://www.facebook.com/groups" target="_blank" class="community-card fb-group-card">
-            <div class="comm-icon-box"><i class="fa-solid fa-people-group"></i></div>
             <div class="comm-info">
               <div class="comm-name">Facebook Group</div>
               <div class="comm-desc">Discussions, member chats & movie talks</div>
@@ -926,34 +1029,14 @@
             <div class="comm-action-btn">Join <i class="fa-solid fa-chevron-right"></i></div>
           </a>
 
-          <!-- 4. WhatsApp Group -->
-          <a href="https://chat.whatsapp.com" target="_blank" class="community-card whatsapp-card">
-            <div class="comm-icon-box"><i class="fa-brands fa-whatsapp"></i></div>
+          <!-- 5. FOBS Team Website -->
+          <a href="https://fobs-team.vercel.app/" target="_blank" rel="noopener noreferrer" class="community-card website-card" onclick="event.preventDefault(); openExternalUrl('https://fobs-team.vercel.app/');">
+            <div class="comm-icon-box"><i class="fa-solid fa-globe"></i></div>
             <div class="comm-info">
-              <div class="comm-name">WhatsApp Group</div>
-              <div class="comm-desc">Instant alerts & member community</div>
+              <div class="comm-name">FOBS Team Website</div>
+              <div class="comm-desc">Official website - stream & download online</div>
             </div>
-            <div class="comm-action-btn">Join <i class="fa-solid fa-chevron-right"></i></div>
-          </a>
-
-          <!-- 5. Telegram Channel -->
-          <a href="https://t.me" target="_blank" class="community-card telegram-channel-card">
-            <div class="comm-icon-box"><i class="fa-brands fa-telegram"></i></div>
-            <div class="comm-info">
-              <div class="comm-name">Telegram Channel</div>
-              <div class="comm-desc">Fast direct links & release announcements</div>
-            </div>
-            <div class="comm-action-btn">Subscribe <i class="fa-solid fa-chevron-right"></i></div>
-          </a>
-
-          <!-- 6. Telegram Group -->
-          <a href="https://t.me" target="_blank" class="community-card telegram-group-card">
-            <div class="comm-icon-box"><i class="fa-solid fa-comments"></i></div>
-            <div class="comm-info">
-              <div class="comm-name">Telegram Group</div>
-              <div class="comm-desc">Member chat & movie request bot</div>
-            </div>
-            <div class="comm-action-btn">Join <i class="fa-solid fa-chevron-right"></i></div>
+            <div class="comm-action-btn">Visit <i class="fa-solid fa-arrow-up-right-from-square"></i></div>
           </a>
         </div>
       </div>
@@ -979,6 +1062,63 @@
 
         <div class="downloads-list" id="downloadsListContainer">
           <!-- Dynamic Content Rendered in app.js -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- COMING SOON PRE-BOOKING MODAL SHEET (NO PLAYER CONTROLS) -->
+    <!-- ============================================== -->
+    <div class="bottom-sheet-overlay" id="comingSoonBookingModal" onclick="closeUpcomingBookingModal(event)" style="display: none;">
+      <div class="booking-modal-sheet" onclick="event.stopPropagation()">
+        <!-- Header Banner with Close Button -->
+        <div class="booking-banner-wrap" id="csBookingBanner">
+          <button class="booking-close-btn" onclick="closeUpcomingBookingModal()"><i class="fa-solid fa-xmark"></i></button>
+          <div class="booking-backdrop-glow"></div>
+          <div class="booking-poster-container">
+            <img src="" alt="Poster" class="booking-poster-img" id="csBookingPoster">
+          </div>
+        </div>
+
+        <div class="booking-content-scroll">
+          <div class="booking-badge-row">
+            <span class="booking-badge coming"><i class="fa-solid fa-clock-rotate-left"></i> COMING SOON</span>
+            <span class="booking-badge year" id="csBookingYear">2026</span>
+            <span class="booking-badge dub" id="csBookingDub">Hindi Dubbed</span>
+          </div>
+
+          <h2 class="booking-title" id="csBookingTitle">Title</h2>
+          
+          <div class="booking-meta-row" id="csBookingMeta">
+            <span><i class="fa-solid fa-film"></i> <span id="csBookingGenre">Action, Thriller</span></span>
+            <span class="star-rating"><i class="fa-solid fa-star"></i> <span id="csBookingRating">8.5</span></span>
+          </div>
+
+          <!-- Real-Time Booking Counter Widget -->
+          <div class="booking-stats-card">
+            <div class="stats-card-left">
+              <div class="stats-label"><i class="fa-solid fa-ticket" style="color: #00f2fe;"></i> Pre-Bookings</div>
+              <div class="stats-count"><span id="csBookingCount">0</span> <small>People Booked</small></div>
+            </div>
+            <div class="stats-live-dot-wrap">
+              <span class="views-live-dot"></span> Real-Time
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="booking-desc-wrap">
+            <h4>Overview</h4>
+            <p id="csBookingOverview">Upcoming release...</p>
+          </div>
+
+          <!-- Big Action Button (Clean, No download/view/dub/server distractions) -->
+          <div class="booking-action-wrap">
+            <button class="btn-prebook-now" id="csPreBookBtn" onclick="submitBooking()">
+              <i class="fa-solid fa-ticket"></i>
+              <span id="csPreBookBtnText">Pre-Book Ticket Now (Free)</span>
+            </button>
+            <p class="booking-note"><i class="fa-solid fa-bell"></i> Instant notification will be sent when released in Hindi.</p>
+          </div>
         </div>
       </div>
     </div>

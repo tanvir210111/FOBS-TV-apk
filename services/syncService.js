@@ -46,25 +46,54 @@ function saveViewsMap(map) {
 
 function getMediaViews(id) {
   const map = getViewsMap();
-  // Return recorded views or baseline realistic view count based on id hash
-  if (map[id] !== undefined) {
-    return map[id];
-  }
-  // Generate consistent initial count between 25 and 150
-  let hash = 0;
-  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) % 1000;
-  const initial = 25 + (Math.abs(hash) % 125);
-  map[id] = initial;
-  saveViewsMap(map);
-  return initial;
+  return map[id] !== undefined ? map[id] : 0;
 }
 
 function incrementMediaViews(id) {
   const map = getViewsMap();
-  const current = getMediaViews(id);
+  const current = map[id] || 0;
   const updated = current + 1;
   map[id] = updated;
   saveViewsMap(map);
+  return updated;
+}
+
+// ============================================================
+// REAL-TIME COMING SOON BOOKINGS MANAGER
+// Starts strictly at 0 and increments in real-time
+// ============================================================
+const BOOKINGS_FILE = path.join(__dirname, '..', 'data', 'bookings.json');
+
+function getBookingsMap() {
+  try {
+    if (fs.existsSync(BOOKINGS_FILE)) {
+      return JSON.parse(fs.readFileSync(BOOKINGS_FILE, 'utf8'));
+    }
+  } catch (e) {
+    console.error('Error reading bookings file:', e.message);
+  }
+  return {};
+}
+
+function saveBookingsMap(map) {
+  try {
+    fs.writeFileSync(BOOKINGS_FILE, JSON.stringify(map, null, 2), 'utf8');
+  } catch (e) {
+    console.error('Error saving bookings file:', e.message);
+  }
+}
+
+function getMediaBookings(id) {
+  const map = getBookingsMap();
+  return map[id] !== undefined ? map[id] : 0;
+}
+
+function incrementMediaBookings(id) {
+  const map = getBookingsMap();
+  const current = map[id] || 0;
+  const updated = current + 1;
+  map[id] = updated;
+  saveBookingsMap(map);
   return updated;
 }
 
@@ -130,6 +159,8 @@ async function enrichFromTMDB(title, type = 'movie', year = '') {
       photo: c.profile_path ? `https://image.tmdb.org/t/p/w185${c.profile_path}` : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
     }));
 
+    const originCountry = d.origin_country || (d.production_countries || []).map(p => p.iso_3166_1) || [];
+
     return {
       title: d.title || d.name || cleanTitle,
       overview: d.overview,
@@ -138,11 +169,35 @@ async function enrichFromTMDB(title, type = 'movie', year = '') {
       rating: d.vote_average ? d.vote_average.toFixed(1) : '7.8',
       year: (d.release_date || d.first_air_date || '').split('-')[0] || year || '2026',
       genres: (d.genres || []).map(g => g.name).join(', '),
+      origin_country: originCountry,
+      original_language: d.original_language || '',
       cast
     };
   } catch (e) {
     return null;
   }
+}
+
+function determineIndustry(tmdbData, sectionTitle = '', title = '') {
+  const sTitle = (sectionTitle || '').toLowerCase();
+  const cTitle = (title || '').toLowerCase();
+
+  if (sTitle.includes('anime') || cTitle.includes('anime')) return 'Anime';
+  if (sTitle.includes('south') || cTitle.includes('south')) return 'South Indian';
+  if (sTitle.includes('indian drama') || sTitle.includes('bollywood') || cTitle.includes('bollywood')) return 'Bollywood';
+  if (sTitle.includes('k-drama') || sTitle.includes('korean') || cTitle.includes('korean')) return 'Korean';
+  if (sTitle.includes('c-drama') || sTitle.includes('chinese') || cTitle.includes('chinese')) return 'Chinese';
+  if (sTitle.includes('western') || sTitle.includes('hollywood') || cTitle.includes('hollywood')) return 'Hollywood';
+
+  const countries = tmdbData?.origin_country || [];
+  const lang = tmdbData?.original_language || '';
+  if (countries.includes('KR') || lang === 'ko') return 'Korean';
+  if (countries.includes('CN') || countries.includes('HK') || countries.includes('TW') || lang === 'zh') return 'Chinese';
+  if (countries.includes('JP') || lang === 'ja') return 'Japanese';
+  if (['te', 'ta', 'ml', 'kn'].includes(lang)) return 'South Indian';
+  if (countries.includes('IN') || lang === 'hi') return 'Bollywood';
+  if (countries.includes('US') || countries.includes('GB') || countries.includes('CA') || countries.includes('AU') || lang === 'en') return 'Hollywood';
+  return 'Others';
 }
 
 // ============================================================
@@ -189,16 +244,8 @@ async function runMovieBoxSync() {
     for (const sec of sections) {
       const isAnimeSection = /anime/i.test(sec.title);
       const isComingSoon = /coming soon/i.test(sec.title);
-      const isHindiSection = /hindi/i.test(sec.title) || /bollywood/i.test(sec.title) || isAnimeSection || isComingSoon;
-
-      if (!isHindiSection) continue;
 
       for (const item of sec.items) {
-        // Strict Rule: ONLY Hindi dubbed content!
-        const hasHindiInTitle = /hindi/i.test(item.title);
-        const hasHindiInSec = /hindi/i.test(sec.title) || /bollywood/i.test(sec.title);
-        if (!hasHindiInTitle && !hasHindiInSec && !isAnimeSection) continue;
-
         const cleanName = item.title.replace(/\[.*?\]|\(.*?\)/g, '').trim().toLowerCase();
 
         // Check if already in database
@@ -256,7 +303,13 @@ async function runMovieBoxSync() {
 
         // Fetch TMDB rich metadata
         const tmdb = await enrichFromTMDB(item.title, item.type, item.year);
-        const resolvedTitle = `${(tmdb?.title || item.title).replace(/\[Hindi\]/i, '').trim()} (Hindi Dub)`;
+        const baseTitle = (tmdb?.title || item.title)
+          .replace(/\[\s*hindi\s*dub(bed)?\s*\]/gi, '')
+          .replace(/\(\s*hindi\s*dub(bed)?\s*\)/gi, '')
+          .replace(/\[\s*hindi\s*\]/gi, '')
+          .replace(/\(\s*hindi\s*\)/gi, '')
+          .trim();
+        const resolvedTitle = `${baseTitle} [Hindi]`;
         const poster = tmdb?.poster || item.poster;
         const backdrop = tmdb?.backdrop || item.poster;
         const desc = tmdb?.overview || `High definition Hindi dubbed stream of ${item.title}. Available now on FOBS TV.`;
@@ -270,7 +323,67 @@ async function runMovieBoxSync() {
           }))
         ];
 
+        const calculatedIndustry = determineIndustry(tmdb, sec.title, item.title);
+
         if (item.type === 'series') {
+          // Resolve full seasons and episodes if MovieBox detail has them
+          let seasons = [];
+          let allEpisodes = [];
+          try {
+            const detailRes = await axios.get(`https://h5.aoneroom.com/wefeed-h5-bff/web/subject/detail?subjectId=${item.subjectId}`, { timeout: 6000 });
+            const mbSeasons = detailRes.data?.data?.resource?.seasons || [];
+            if (mbSeasons.length > 0) {
+              for (const s of mbSeasons) {
+                const seNum = s.se || 1;
+                const maxEp = Math.min(s.maxEp || 12, 12);
+                const seasonEps = [];
+                for (let ep = 1; ep <= maxEp; ep++) {
+                  const epMedia = await movieboxService.resolveMedia(item.subjectId, item.detailPath, seNum, ep);
+                  if (epMedia && epMedia.streamUrl) {
+                    seasonEps.push({
+                      number: ep,
+                      title: `Episode ${ep}`,
+                      streamUrl: epMedia.streamUrl,
+                      audioTracks: { 'Hindi dub': epMedia.streamUrl }
+                    });
+                  }
+                }
+                if (seasonEps.length > 0) {
+                  seasons.push({
+                    seasonNumber: seNum,
+                    title: `Season ${seNum}`,
+                    episodes: seasonEps
+                  });
+                }
+              }
+            }
+          } catch (e) {}
+
+          if (seasons.length > 0) {
+            allEpisodes = seasons[0].episodes;
+          } else {
+            allEpisodes = [
+              {
+                number: 1,
+                title: 'Episode 1',
+                streamUrl: media.streamUrl,
+                audioTracks: { 'Hindi dub': media.streamUrl }
+              }
+            ];
+          }
+
+          let seriesCat = 'Trending Series';
+          if (isAnimeSection || calculatedIndustry === 'Anime') seriesCat = 'Anime Series';
+          else if (calculatedIndustry === 'Bollywood') seriesCat = 'Bollywood Series';
+          else if (calculatedIndustry === 'South Indian') seriesCat = 'South Indian Series';
+          else if (calculatedIndustry === 'Hollywood') seriesCat = 'Hollywood Series';
+          else if (calculatedIndustry === 'Korean') seriesCat = 'Korean (K-Drama)';
+          else if (calculatedIndustry === 'Chinese') seriesCat = 'Chinese (C-Drama)';
+          else if (calculatedIndustry === 'Japanese') seriesCat = 'Japanese Series';
+          else seriesCat = 'Others Series';
+
+          const seriesCountry = (calculatedIndustry === 'Anime' || calculatedIndustry === 'Japanese') ? 'Japan' : (calculatedIndustry === 'Korean' ? 'Korea' : (calculatedIndustry === 'Chinese' ? 'China' : (calculatedIndustry === 'Hollywood' ? 'USA' : 'India')));
+
           const seriesObj = {
             id: `mb-s-${item.id}`,
             title: resolvedTitle,
@@ -280,12 +393,12 @@ async function runMovieBoxSync() {
             badgeLeft: 'Hindi',
             badgeRight: isAnimeSection ? 'Anime' : 'Series',
             tag: isAnimeSection ? 'Anime' : 'HD 720p',
-            industry: isAnimeSection ? 'Anime' : 'Hindi Series',
+            industry: calculatedIndustry,
             year: tmdb?.year || item.year || '2026',
-            country: isAnimeSection ? 'Japan' : 'India',
+            country: seriesCountry,
             genre: isAnimeSection ? 'Anime, Action' : (tmdb?.genres || 'Drama, Series'),
             duration: '45m/ep',
-            category: isAnimeSection ? 'Anime Series' : 'Trending Series',
+            category: seriesCat,
             rating,
             imdbRating: rating,
             poster,
@@ -296,20 +409,27 @@ async function runMovieBoxSync() {
             streamUrl: media.streamUrl,
             servers,
             cast: tmdb?.cast || [],
-            episodes: [
-              {
-                number: 1,
-                title: 'Episode 1',
-                streamUrl: media.streamUrl,
-                audioTracks: { 'Hindi dub': media.streamUrl }
-              }
-            ],
+            seasonsCount: seasons.length > 0 ? seasons.length : 1,
+            seasons: seasons.length > 0 ? seasons : undefined,
+            episodes: allEpisodes,
             type: 'series'
           };
           data.series.unshift(seriesObj);
           addedSeries++;
-          console.log(`    ✅ Added Hindi Series: "${resolvedTitle}"`);
+          console.log(`    ✅ Added Hindi Series: "${resolvedTitle}" [${calculatedIndustry}] (${allEpisodes.length} eps, ${seasons.length || 1} seasons)`);
         } else {
+          let movieCat = 'Trending Movies';
+          if (isAnimeSection || calculatedIndustry === 'Anime') movieCat = 'Anime Movies';
+          else if (calculatedIndustry === 'Bollywood') movieCat = 'Bollywood Movies';
+          else if (calculatedIndustry === 'South Indian') movieCat = 'South Indian Movies';
+          else if (calculatedIndustry === 'Hollywood') movieCat = 'Hollywood Movies';
+          else if (calculatedIndustry === 'Korean') movieCat = 'Korean (K-Movie)';
+          else if (calculatedIndustry === 'Chinese') movieCat = 'Chinese (C-Movie)';
+          else if (calculatedIndustry === 'Japanese') movieCat = 'Japanese Movies';
+          else movieCat = 'Others Movies';
+
+          const movieCountry = (calculatedIndustry === 'Anime' || calculatedIndustry === 'Japanese') ? 'Japan' : (calculatedIndustry === 'Korean' ? 'Korea' : (calculatedIndustry === 'Chinese' ? 'China' : (calculatedIndustry === 'Hollywood' ? 'USA' : 'India')));
+
           const movieObj = {
             id: `mb-m-${item.id}`,
             title: resolvedTitle,
@@ -320,12 +440,12 @@ async function runMovieBoxSync() {
             badgeRight: isAnimeSection ? 'Anime' : 'Movie',
             tag: isAnimeSection ? 'Anime' : 'HD 720p',
             quality: 'HD 720p',
-            industry: isAnimeSection ? 'Anime' : 'Bollywood',
+            industry: calculatedIndustry,
             year: tmdb?.year || item.year || '2026',
-            country: isAnimeSection ? 'Japan' : 'India',
+            country: movieCountry,
             genre: isAnimeSection ? 'Anime, Action' : (tmdb?.genres || 'Action, Thriller'),
             duration: '2h 15m',
-            category: isAnimeSection ? 'Anime Movies' : 'Trending Movies',
+            category: movieCat,
             rating,
             imdbRating: rating,
             poster,
@@ -340,7 +460,7 @@ async function runMovieBoxSync() {
           };
           data.movies.unshift(movieObj);
           addedMovies++;
-          console.log(`    ✅ Added Hindi Movie: "${resolvedTitle}"`);
+          console.log(`    ✅ Added Hindi Movie: "${resolvedTitle}" [${calculatedIndustry}]`);
         }
       }
     }
@@ -380,5 +500,10 @@ module.exports = {
   runMovieBoxSync,
   startHourlySyncTimer,
   getMediaViews,
-  incrementMediaViews
+  incrementMediaViews,
+  getMediaBookings,
+  incrementMediaBookings,
+  verifyStreamUrl,
+  enrichFromTMDB,
+  determineIndustry
 };

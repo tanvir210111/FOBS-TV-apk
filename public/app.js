@@ -42,7 +42,9 @@ let appState = {
   },
   currentMedia: null,
   currentEpisode: null,
-  currentAudioTrack: 'Hindi dub'
+  currentSeason: 1,
+  currentAudioTrack: 'Hindi dub',
+  viewsPollTimer: null
 };
 
 // Initialize Application
@@ -60,6 +62,7 @@ async function initApp() {
   setupAppVisibilityListeners();
   setupPullToRefresh();
   setupAppUpdateModal();
+  setupSearchInputListener();
 
   // Step 1: Immediate local render from localStorage cache (0ms delay)
   const hasCache = loadCachedContent();
@@ -670,6 +673,29 @@ function handleHeroCardClick(event, type, id) {
   // If user was swiping horizontally, do not open player
   if (isSwipingHero) return;
   openPlayerById(type, id);
+}
+
+// Handle clicking directly on Hero backdrop / poster to play active video
+function handleActiveHeroClick(tab) {
+  if (isSwipingHero || isSwipingMovieHero) return;
+
+  if (tab === 'home' && heroItems && heroItems.length > 0) {
+    const activeItem = heroItems[currentHeroIndex % heroItems.length];
+    if (activeItem) {
+      const type = (activeItem.episodes || activeItem.type === 'series') ? 'series' : 'movie';
+      openPlayerById(type, activeItem.id);
+    }
+  } else if (tab === 'movie' && movieHeroItems && movieHeroItems.length > 0) {
+    const activeItem = movieHeroItems[currentMovieHeroIndex % movieHeroItems.length];
+    if (activeItem) {
+      openPlayerById('movie', activeItem.id);
+    }
+  } else if (tab === 'series' && seriesHeroItems && seriesHeroItems.length > 0) {
+    const activeItem = seriesHeroItems[currentSeriesHeroIndex % seriesHeroItems.length];
+    if (activeItem) {
+      openPlayerById('series', activeItem.id);
+    }
+  }
 }
 
 function startHeroAutoSlide() {
@@ -1443,14 +1469,15 @@ function renderHomeFeeds() {
       upcomingContainer.innerHTML = upcomingItems.map(item => {
         const month = item.releaseMonth || 'Nov';
         const day = item.releaseDay || '04';
-        const booked = item.booked !== undefined ? item.booked : '0';
+        const localKey = `fobs_booking_count_${item.id}`;
+        const booked = localStorage.getItem(localKey) || '0';
         return `
-          <div class="coming-card" onclick='openPlayerById("upcoming", "${item.id}")'>
+          <div class="coming-card" onclick='openUpcomingBookingModal("${item.id}")'>
             <div class="coming-poster-wrap">
               <img src="${item.poster}" alt="${item.title}" class="coming-poster-img" loading="lazy">
               <span class="card-badge-right">${item.year || 'Upcoming'}</span>
               <div class="coming-date-badge">${month}<span>${day}</span></div>
-              <div class="coming-booked-tag">${booked} booked</div>
+              <div class="coming-booked-tag"><span id="bookedBadge_${item.id}">${booked}</span> booked</div>
             </div>
             <div class="coming-info-box">
               <div class="coming-title" title="${item.title}">${item.title}</div>
@@ -1576,6 +1603,85 @@ function renderMovieCardItem(item, rank = null) {
   `;
 }
 
+// Unified Industry Categorization Predicates
+const isAnimeMedia = x => {
+  if (!x) return false;
+  const genre = (x.genre || '').toLowerCase();
+  const industry = (x.industry || '').toLowerCase();
+  const category = (x.category || '').toLowerCase();
+  const title = (x.title || '').toLowerCase();
+  const badgeRight = (x.badgeRight || '').toLowerCase();
+  const tag = (x.tag || '').toLowerCase();
+  return genre.includes('anime') || industry.includes('anime') || category.includes('anime') || badgeRight === 'anime' || tag === 'anime' || title.includes('anime');
+};
+
+const isBollywoodMedia = m => {
+  if (!m) return false;
+  if (isAnimeMedia(m)) return false;
+  const cat = (m.category || '').toLowerCase();
+  const ind = (m.industry || '').toLowerCase();
+  const lang = (m.language || '').toLowerCase();
+  const ctry = (m.country || '').toLowerCase();
+  return cat.includes('bollywood') || ind.includes('bollywood') || (lang === 'hindi' && !ctry.includes('korea') && !ctry.includes('usa') && !ctry.includes('china') && !ctry.includes('japan'));
+};
+
+const isSouthMedia = m => {
+  if (!m) return false;
+  if (isAnimeMedia(m)) return false;
+  const cat = (m.category || '').toLowerCase();
+  const ind = (m.industry || '').toLowerCase();
+  const lang = (m.language || '').toLowerCase();
+  return cat.includes('south') || ind.includes('south') || ['telugu', 'tamil', 'kannada', 'malayalam'].includes(lang);
+};
+
+const isHollywoodMedia = x => {
+  if (!x) return false;
+  if (isAnimeMedia(x)) return false;
+  const cat = (x.category || '').toLowerCase();
+  const ind = (x.industry || '').toLowerCase();
+  const lang = (x.language || '').toLowerCase();
+  const ctry = (x.country || '').toLowerCase();
+  return cat.includes('hollywood') || ind.includes('hollywood') || lang === 'english' || ctry.includes('usa') || ctry.includes('united states');
+};
+
+const isKoreanMedia = x => {
+  if (!x) return false;
+  if (isAnimeMedia(x)) return false;
+  const cat = (x.category || '').toLowerCase();
+  const ind = (x.industry || '').toLowerCase();
+  const lang = (x.language || '').toLowerCase();
+  const ctry = (x.country || '').toLowerCase();
+  return cat.includes('korean') || cat.includes('k-drama') || cat.includes('k-movie') || ind.includes('korean') || lang === 'korean' || ctry.includes('korea');
+};
+
+const isChineseMedia = x => {
+  if (!x) return false;
+  if (isAnimeMedia(x)) return false;
+  const cat = (x.category || '').toLowerCase();
+  const ind = (x.industry || '').toLowerCase();
+  const lang = (x.language || '').toLowerCase();
+  const ctry = (x.country || '').toLowerCase();
+  return cat.includes('chinese') || cat.includes('c-drama') || cat.includes('c-movie') || ind.includes('chinese') || lang === 'chinese' || ctry.includes('china') || ctry.includes('taiwan') || ctry.includes('hong kong');
+};
+
+const isJapaneseMedia = x => {
+  if (!x) return false;
+  if (isAnimeMedia(x)) return false;
+  const cat = (x.category || '').toLowerCase();
+  const ind = (x.industry || '').toLowerCase();
+  const lang = (x.language || '').toLowerCase();
+  const ctry = (x.country || '').toLowerCase();
+  return (cat.includes('japanese') || ind.includes('japanese') || lang === 'japanese' || ctry.includes('japan')) && !cat.includes('anime') && !ind.includes('anime');
+};
+
+const isOthersMovieMedia = m => (
+  !isBollywoodMedia(m) && !isSouthMedia(m) && !isHollywoodMedia(m) && !isKoreanMedia(m) && !isChineseMedia(m) && !isJapaneseMedia(m) && !isAnimeMedia(m)
+);
+
+const isOthersSeriesMedia = s => (
+  !isBollywoodMedia(s) && !isSouthMedia(s) && !isHollywoodMedia(s) && !isKoreanMedia(s) && !isChineseMedia(s) && !isJapaneseMedia(s) && !isAnimeMedia(s)
+);
+
 // Render All Movies Tab with Hero Banner & Categorized Horizontal Strips
 function renderAllMovies() {
   const movies = appState.content.movies || [];
@@ -1584,43 +1690,13 @@ function renderAllMovies() {
   renderMovieHeroBanner();
 
   // Categorization helpers
-  const isBollywood = m => (
-    (m.industry && m.industry.toLowerCase().includes('bollywood')) ||
-    (m.language && m.language.toLowerCase() === 'hindi' && !m.country?.includes('Korea') && !m.country?.includes('USA'))
-  );
-
-  const isSouth = m => (
-    (m.industry && m.industry.toLowerCase().includes('south')) ||
-    (m.language && ['telugu', 'tamil', 'kannada', 'malayalam'].includes(m.language.toLowerCase()))
-  );
-
-  const isHollywood = m => (
-    (m.industry && m.industry.toLowerCase().includes('hollywood')) ||
-    (m.language && m.language.toLowerCase() === 'english') ||
-    (m.country && (m.country.toLowerCase().includes('usa') || m.country.toLowerCase().includes('united states')))
-  );
-
-  const isKorean = m => (
-    (m.industry && m.industry.toLowerCase().includes('korean')) ||
-    (m.language && m.language.toLowerCase() === 'korean') ||
-    (m.country && m.country.toLowerCase().includes('korea'))
-  );
-
-  const isChinese = m => (
-    (m.industry && m.industry.toLowerCase().includes('chinese')) ||
-    (m.language && m.language.toLowerCase() === 'chinese') ||
-    (m.country && (m.country.toLowerCase().includes('china') || m.country.toLowerCase().includes('taiwan') || m.country.toLowerCase().includes('hong kong')))
-  );
-
-  const isJapanese = m => (
-    (m.industry && m.industry.toLowerCase().includes('japanese')) ||
-    (m.language && m.language.toLowerCase() === 'japanese') ||
-    (m.country && m.country.toLowerCase().includes('japan'))
-  );
-
-  const isOthers = m => (
-    !isBollywood(m) && !isSouth(m) && !isHollywood(m) && !isKorean(m) && !isChinese(m) && !isJapanese(m)
-  );
+  const isBollywood = isBollywoodMedia;
+  const isSouth = isSouthMedia;
+  const isHollywood = isHollywoodMedia;
+  const isKorean = isKoreanMedia;
+  const isChinese = isChineseMedia;
+  const isJapanese = isJapaneseMedia;
+  const isOthers = isOthersMovieMedia;
 
   // A. Trending Movies
   const trendingMovies = movies.filter(m => m.category === 'Trending Movies' || parseFloat(m.imdbRating || m.rating || 0) >= 7.8);
@@ -1693,60 +1769,6 @@ function renderSeriesCardItem(item, rank = null) {
     </div>
   `;
 }
-
-// Categorization Predicates for Sections & Dedicated Pages
-const isBollywoodMedia = m => (
-  (m.industry && m.industry.toLowerCase().includes('bollywood')) ||
-  (m.language && m.language.toLowerCase() === 'hindi' && !m.country?.includes('Korea') && !m.country?.includes('USA'))
-);
-
-const isSouthMedia = m => (
-  (m.industry && m.industry.toLowerCase().includes('south')) ||
-  (m.language && ['telugu', 'tamil', 'kannada', 'malayalam'].includes(m.language.toLowerCase()))
-);
-
-const isHollywoodMedia = x => (
-  (x.industry && x.industry.toLowerCase().includes('hollywood')) ||
-  (x.language && x.language.toLowerCase() === 'english') ||
-  (x.country && (x.country.toLowerCase().includes('usa') || x.country.toLowerCase().includes('united states')))
-);
-
-const isKoreanMedia = x => (
-  (x.industry && x.industry.toLowerCase().includes('korean')) ||
-  (x.language && x.language.toLowerCase() === 'korean') ||
-  (x.country && x.country.toLowerCase().includes('korea'))
-);
-
-const isChineseMedia = x => (
-  (x.industry && x.industry.toLowerCase().includes('chinese')) ||
-  (x.language && x.language.toLowerCase() === 'chinese') ||
-  (x.country && (x.country.toLowerCase().includes('china') || x.country.toLowerCase().includes('taiwan') || x.country.toLowerCase().includes('hong kong')))
-);
-
-const isJapaneseMedia = x => (
-  (x.industry && x.industry.toLowerCase().includes('japanese')) ||
-  (x.language && x.language.toLowerCase() === 'japanese') ||
-  (x.country && (x.country.toLowerCase().includes('japan')))
-);
-
-const isAnimeMedia = x => {
-  if (!x) return false;
-  const genre = (x.genre || '').toLowerCase();
-  const industry = (x.industry || '').toLowerCase();
-  const category = (x.category || '').toLowerCase();
-  const title = (x.title || '').toLowerCase();
-  const badgeRight = (x.badgeRight || '').toLowerCase();
-  const tag = (x.tag || '').toLowerCase();
-  return genre.includes('anime') || industry.includes('anime') || category.includes('anime') || badgeRight === 'anime' || tag === 'anime' || title.includes('anime');
-};
-
-const isOthersMovieMedia = m => (
-  !isBollywoodMedia(m) && !isSouthMedia(m) && !isHollywoodMedia(m) && !isKoreanMedia(m) && !isChineseMedia(m) && !isJapaneseMedia(m)
-);
-
-const isOthersSeriesMedia = s => (
-  !isHollywoodMedia(s) && !isKoreanMedia(s) && !isChineseMedia(s) && !isJapaneseMedia(s)
-);
 
 // Open Dedicated Section Detail Page ("All >" View)
 function openSectionDetail(sectionKey, title) {
@@ -1856,6 +1878,16 @@ function openSectionDetail(sectionKey, title) {
       if (items.length === 0) items = series;
       break;
 
+    case 'series-bollywood':
+      isOnlySeries = true;
+      items = series.filter(isBollywoodMedia);
+      break;
+
+    case 'series-south':
+      isOnlySeries = true;
+      items = series.filter(isSouthMedia);
+      break;
+
     case 'series-hollywood':
       isOnlySeries = true;
       items = series.filter(isHollywoodMedia);
@@ -1900,19 +1932,23 @@ function openSectionDetail(sectionKey, title) {
   // Render cards vertically inside the 3-column grid
   if (items.length > 0) {
     if (sectionKey === 'upcoming') {
-      gridEl.innerHTML = items.map(item => `
-        <div class="coming-card" style="width: 100%; max-width: 100%; margin-bottom: 8px;" onclick='openPlayerById("upcoming", "${item.id}")'>
+      gridEl.innerHTML = items.map(item => {
+        const localKey = `fobs_booking_count_${item.id}`;
+        const booked = localStorage.getItem(localKey) || '0';
+        return `
+        <div class="coming-card" style="width: 100%; max-width: 100%; margin-bottom: 8px;" onclick='openUpcomingBookingModal("${item.id}")'>
           <div class="coming-poster-wrap" style="width: 100%; height: 175px;">
             <img src="${item.poster}" alt="${item.title}" class="coming-poster-img" loading="lazy">
             <span class="card-badge-right">${item.year || 'Upcoming'}</span>
             <div class="coming-date-badge">${item.releaseMonth || 'Nov'}<span>${item.releaseDay || '04'}</span></div>
-            <div class="coming-booked-tag">${item.booked || '0'} booked</div>
+            <div class="coming-booked-tag"><span id="bookedBadgeDetail_${item.id}">${booked}</span> booked</div>
           </div>
           <div class="coming-info-box">
             <div class="coming-title" title="${item.title}">${item.title}</div>
           </div>
         </div>
-      `).join('');
+      `;
+      }).join('');
     } else {
       gridEl.innerHTML = items.map((item, idx) => {
         const isItemSeries = isOnlySeries || !!item.episodes || item.type === 'series';
@@ -1956,7 +1992,7 @@ function scrollToAllMovies(category) {
   openSectionDetail(category === 'Trending' ? 'movie-trending' : 'movie-recent', `${category} Movies`);
 }
 
-// Render All Series Tab with Hero Banner & Categorized Horizontal Strips (Bollywood & South excluded)
+// Render All Series Tab with Hero Banner & Categorized Horizontal Strips
 function renderAllSeries() {
   const series = appState.content.series || [];
 
@@ -1964,32 +2000,14 @@ function renderAllSeries() {
   renderSeriesHeroBanner();
 
   // Categorization helpers
-  const isHollywood = s => (
-    (s.industry && s.industry.toLowerCase().includes('hollywood')) ||
-    (s.language && s.language.toLowerCase() === 'english') ||
-    (s.country && (s.country.toLowerCase().includes('usa') || s.country.toLowerCase().includes('united states')))
-  );
-
-  const isKorean = s => (
-    (s.industry && s.industry.toLowerCase().includes('korean')) ||
-    (s.language && s.language.toLowerCase() === 'korean') ||
-    (s.country && s.country.toLowerCase().includes('korea'))
-  );
-
-  const isChinese = s => (
-    (s.industry && s.industry.toLowerCase().includes('chinese')) ||
-    (s.language && s.language.toLowerCase() === 'chinese') ||
-    (s.country && (s.country.toLowerCase().includes('china') || s.country.toLowerCase().includes('taiwan') || s.country.toLowerCase().includes('hong kong')))
-  );
-
-  const isJapanese = s => (
-    (s.industry && s.industry.toLowerCase().includes('japanese')) ||
-    (s.language && s.language.toLowerCase() === 'japanese') ||
-    (s.country && s.country.toLowerCase().includes('japan'))
-  );
-
+  const isBollywood = isBollywoodMedia;
+  const isSouth = isSouthMedia;
+  const isHollywood = isHollywoodMedia;
+  const isKorean = isKoreanMedia;
+  const isChinese = isChineseMedia;
+  const isJapanese = isJapaneseMedia;
   const isOthers = s => (
-    !isHollywood(s) && !isKorean(s) && !isChinese(s) && !isJapanese(s)
+    !isBollywood(s) && !isSouth(s) && !isHollywood(s) && !isKorean(s) && !isChinese(s) && !isJapanese(s)
   );
 
   // A. Trending Series
@@ -2000,27 +2018,35 @@ function renderAllSeries() {
   const recentSeries = series.filter(s => s.category === 'Recently Added' || s.category === 'Trending Series');
   renderCategoryList('seriesRecentList', recentSeries.length > 0 ? recentSeries : series, false, true);
 
-  // C. Hollywood (Dubbed)
+  // C. Bollywood Series
+  const bollywoodSeries = series.filter(isBollywood);
+  renderCategoryList('seriesBollywoodList', bollywoodSeries, false, true);
+
+  // D. South Indian Series
+  const southSeries = series.filter(isSouth);
+  renderCategoryList('seriesSouthList', southSeries, false, true);
+
+  // E. Hollywood Series
   const hollywoodSeries = series.filter(isHollywood);
   renderCategoryList('seriesHollywoodList', hollywoodSeries, false, true);
 
-  // D. Korean (Dubbed)
+  // F. Korean (K-Drama)
   const koreanSeries = series.filter(isKorean);
   renderCategoryList('seriesKoreanList', koreanSeries.length > 0 ? koreanSeries : (series.filter(s => s.country === 'Korea')), false, true);
 
-  // E. Chinese (Dubbed)
+  // G. Chinese (C-Drama)
   const chineseSeries = series.filter(isChinese);
   renderCategoryList('seriesChineseList', chineseSeries, false, true);
 
-  // F. Japanese (Dubbed)
+  // H. Japanese Series
   const japaneseSeries = series.filter(isJapanese);
   renderCategoryList('seriesJapaneseList', japaneseSeries, false, true);
 
-  // G. Anime Series (Hindi Dub)
+  // I. Anime Series
   const animeSeries = series.filter(isAnimeMedia);
   renderCategoryList('seriesAnimeList', animeSeries.length > 0 ? animeSeries : (series.filter(s => s.country === 'Japan')), false, true);
 
-  // H. Others (Dubbed)
+  // J. Others Series
   const othersSeries = series.filter(isOthers);
   renderCategoryList('seriesOthersList', othersSeries, false, true);
 }
@@ -2033,6 +2059,33 @@ function filterLiveTvCategory(cat) {
     btn.classList.toggle('active', btn.innerText.includes(cat) || (cat === 'All' && btn.innerText.trim() === 'All'));
   });
   renderLiveTv();
+}
+
+// Generate branded distinct SVG initials badge for live TV channels
+function getChannelLogoFallback(name) {
+  const cleanName = (name || 'TV').replace(/HD|Live|TV|Channel/gi, '').trim() || name || 'TV';
+  const words = cleanName.split(/\s+/).filter(Boolean);
+  let initials = '';
+  if (words.length >= 2) {
+    initials = (words[0][0] + words[1][0]).toUpperCase();
+  } else {
+    initials = cleanName.slice(0, 3).toUpperCase();
+  }
+  let hash = 0;
+  for (let i = 0; i < (name || '').length; i++) hash = (hash * 31 + name.charCodeAt(i)) & 0xffffff;
+  const hue = Math.abs(hash) % 360;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+    <defs>
+      <linearGradient id="g_${hue}" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="hsl(${hue}, 75%, 45%)" />
+        <stop offset="100%" stop-color="hsl(${(hue + 50) % 360}, 85%, 28%)" />
+      </linearGradient>
+    </defs>
+    <rect width="120" height="120" rx="20" fill="url(#g_${hue})" />
+    <circle cx="60" cy="60" r="44" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="2" />
+    <text x="60" y="68" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="24" text-anchor="middle" letter-spacing="1">${initials}</text>
+  </svg>`;
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
 }
 
 // Render Live TV Tab
@@ -2054,12 +2107,12 @@ function renderLiveTv() {
 
   if (filtered.length > 0) {
     grid.innerHTML = filtered.map(item => {
-      const fallbackImg = `https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=150&q=80`;
-      const logoUrl = item.logo || item.poster || fallbackImg;
+      const fallbackSvg = getChannelLogoFallback(item.title);
+      const logoUrl = item.logo || item.poster || fallbackSvg;
       return `
         <div class="live-channel-card" onclick='openLiveTvPlayer("${item.id}")'>
           <span class="live-tag-pill">● LIVE</span>
-          <img src="${logoUrl}" alt="${item.title}" class="channel-logo-img" loading="lazy" onerror="this.onerror=null; this.src='${fallbackImg}';">
+          <img src="${logoUrl}" alt="${item.title}" class="channel-logo-img" loading="lazy" onerror="this.onerror=null; this.src='${fallbackSvg}';">
           <div class="channel-title">${item.title}</div>
           <div class="channel-sub">${item.category || 'Live TV'} • ${item.language || 'HD'}</div>
         </div>
@@ -2152,36 +2205,184 @@ function switchMainTab(tabName) {
 }
 
 // Real-Time Views Manager for FOBS TV
-async function updateMediaViews(mediaId) {
+async function loadMediaViews(mediaId) {
   if (!mediaId) return;
   const viewsEl = document.getElementById('mediaViewsCount');
+  const localKey = `fobs_views_${mediaId}`;
+
+  // 1. Initial view count starts strictly at 0
+  let currentViews = parseInt(localStorage.getItem(localKey) || '0', 10);
+  if (viewsEl) viewsEl.innerText = `${formatViewsCount(currentViews)} Views`;
+
+  // 2. Fetch authoritative view count from backend (starts at 0)
   try {
-    const res = await fetchApiWithRetry(`/api/views/${encodeURIComponent(mediaId)}/increment`, {
-      method: 'POST'
-    }, { timeout: 3500, maxRetries: 1 });
+    const res = await fetchApiWithRetry(`/api/views/${encodeURIComponent(mediaId)}`, {
+      method: 'GET'
+    }, { timeout: 2500, maxRetries: 0 });
     if (res && res.views !== undefined) {
-      if (viewsEl) viewsEl.innerText = `${formatViewsCount(res.views)} Views`;
-      return;
+      currentViews = res.views;
+      localStorage.setItem(localKey, currentViews.toString());
+      if (viewsEl) viewsEl.innerText = `${formatViewsCount(currentViews)} Views`;
     }
   } catch (e) {}
 
-  const localKey = `fobs_views_${mediaId}`;
-  let v = parseInt(localStorage.getItem(localKey) || '0', 10);
-  if (!v) {
-    let hash = 0;
-    for (let i = 0; i < mediaId.length; i++) hash = (hash * 31 + mediaId.charCodeAt(i)) % 1000;
-    v = 35 + (Math.abs(hash) % 150);
+  // 3. Reset existing heartbeat poller
+  if (appState.viewsPollTimer) {
+    clearInterval(appState.viewsPollTimer);
+    appState.viewsPollTimer = null;
   }
-  v += 1;
-  localStorage.setItem(localKey, v.toString());
-  if (viewsEl) viewsEl.innerText = `${formatViewsCount(v)} Views`;
+
+  // 4. Real-time active viewer heartbeat while video player is open
+  appState.viewsPollTimer = setInterval(async () => {
+    if (!appState.currentMedia || appState.currentMedia.id !== mediaId) {
+      clearInterval(appState.viewsPollTimer);
+      appState.viewsPollTimer = null;
+      return;
+    }
+    try {
+      const res = await fetchApiWithRetry(`/api/views/${encodeURIComponent(mediaId)}`, {
+        method: 'GET'
+      }, { timeout: 2500, maxRetries: 0 });
+      if (res && res.views !== undefined) {
+        currentViews = Math.max(currentViews, res.views);
+        localStorage.setItem(localKey, currentViews.toString());
+        const el = document.getElementById('mediaViewsCount');
+        if (el) el.innerText = `${formatViewsCount(currentViews)} Views`;
+      }
+    } catch (e) {}
+  }, 10000);
 }
+
+// Increment Real-Time View count ONLY when played directly from FOBS TV app
+async function incrementAppMediaViews(mediaId) {
+  if (!mediaId) return;
+  const viewsEl = document.getElementById('mediaViewsCount');
+  const localKey = `fobs_views_${mediaId}`;
+
+  let currentViews = parseInt(localStorage.getItem(localKey) || '0', 10) + 1;
+  localStorage.setItem(localKey, currentViews.toString());
+  if (viewsEl) viewsEl.innerText = `${formatViewsCount(currentViews)} Views`;
+
+  try {
+    const res = await fetchApiWithRetry(`/api/views/${encodeURIComponent(mediaId)}/increment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-FOBS-Client': 'FOBS-TV-App'
+      }
+    }, { timeout: 3500, maxRetries: 1 });
+    if (res && res.views !== undefined) {
+      currentViews = Math.max(currentViews, res.views);
+      localStorage.setItem(localKey, currentViews.toString());
+      if (viewsEl) viewsEl.innerText = `${formatViewsCount(currentViews)} Views`;
+    }
+  } catch (e) {}
+}
+
+const updateMediaViews = loadMediaViews;
 
 function formatViewsCount(count) {
   if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`;
   if (count >= 1000) return `${(count / 1000).toFixed(1)}k`;
   return `${count}`;
 }
+
+// Helper: Get active episodes for currently selected season
+function getActiveSeasonEpisodes(media) {
+  if (!media) return [];
+  if (media.seasons && media.seasons.length > 0) {
+    const found = media.seasons.find(s => s.seasonNumber === appState.currentSeason);
+    if (found && found.episodes && found.episodes.length > 0) {
+      return found.episodes;
+    }
+    return media.seasons[0].episodes || [];
+  }
+  return media.episodes || [];
+}
+
+// Render Season Dropdown next to Dub dropdown
+function renderSeasonDropdown(media) {
+  const container = document.getElementById('seasonSelectorContainer');
+  const textEl = document.getElementById('currentSeasonText');
+  const menu = document.getElementById('seasonDropdownMenu');
+  if (!container || !textEl || !menu) return;
+
+  const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.seasons && media.seasons.length > 0) || (media.id && media.id.startsWith('mb-s-'));
+  if (!isSeries) {
+    container.style.display = 'none';
+    return;
+  }
+
+  container.style.display = 'inline-block';
+
+  let seasonsList = [];
+  if (media.seasons && media.seasons.length > 0) {
+    seasonsList = media.seasons;
+  } else {
+    seasonsList = [{ seasonNumber: 1, name: 'Season 1', episodes: media.episodes || [] }];
+  }
+
+  if (!seasonsList.some(s => s.seasonNumber === appState.currentSeason)) {
+    appState.currentSeason = seasonsList[0].seasonNumber || 1;
+  }
+
+  const activeSeasonObj = seasonsList.find(s => s.seasonNumber === appState.currentSeason) || seasonsList[0];
+  textEl.innerText = activeSeasonObj.name || `Season ${activeSeasonObj.seasonNumber}`;
+
+  menu.innerHTML = seasonsList.map(s => {
+    const sNum = s.seasonNumber || 1;
+    const isActive = sNum === appState.currentSeason;
+    const epCountText = s.episodes ? ` (${s.episodes.length} Eps)` : '';
+    return `
+      <div class="season-dropdown-item ${isActive ? 'active' : ''}" onclick="switchSeason(${sNum})">
+        <span>${s.name || `Season ${sNum}`}${epCountText}</span>
+        ${isActive ? '<i class="fa-solid fa-check" style="color: #00f2fe; font-size: 11px;"></i>' : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+// Toggle Season Dropdown open/close
+function toggleSeasonDropdown(event) {
+  if (event) event.stopPropagation();
+  const menu = document.getElementById('seasonDropdownMenu');
+  if (!menu) return;
+  const isHidden = menu.style.display === 'none' || !menu.style.display;
+  menu.style.display = isHidden ? 'block' : 'none';
+}
+
+// Switch Active Season (Season 1 / Season 2)
+function switchSeason(seasonNumber) {
+  appState.currentSeason = seasonNumber;
+  const menu = document.getElementById('seasonDropdownMenu');
+  if (menu) menu.style.display = 'none';
+
+  if (!appState.currentMedia) return;
+  renderSeasonDropdown(appState.currentMedia);
+
+  const episodes = getActiveSeasonEpisodes(appState.currentMedia);
+  appState.currentEpisode = episodes[0] || null;
+  appState.activeServerIndex = 0;
+  renderEpisodePills(episodes, 0);
+  renderServerPills(appState.currentMedia);
+
+  if (appState.currentEpisode) {
+    const activeEpStream = (appState.currentEpisode.servers && appState.currentEpisode.servers.length > 0)
+      ? appState.currentEpisode.servers[0].url
+      : ((appState.currentEpisode.audioTracks && appState.currentEpisode.audioTracks[appState.currentAudioTrack])
+        || appState.currentEpisode.streamUrl);
+    playStreamUrl(activeEpStream);
+  }
+}
+
+// Global click listener to close season dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  const container = document.getElementById('seasonSelectorContainer');
+  const menu = document.getElementById('seasonDropdownMenu');
+  if (menu && container && !container.contains(e.target)) {
+    menu.style.display = 'none';
+  }
+});
 
 // Open Player by Item ID
 function openPlayerById(type, id) {
@@ -2194,9 +2395,17 @@ function openPlayerById(type, id) {
     if (item) item.type = 'series';
   } else if (type === 'upcoming') {
     item = (appState.content.upcoming || []).find(u => u.id === id);
+    if (item) {
+      openUpcomingBookingModal(item);
+      return;
+    }
   }
 
   if (item) {
+    if (item.type === 'upcoming' || (item.badgeRight && item.badgeRight.toLowerCase().includes('coming'))) {
+      openUpcomingBookingModal(item);
+      return;
+    }
     openPlayer(item);
   }
 }
@@ -2227,18 +2436,24 @@ function openLiveTvPlayer(id) {
 // Open Player & Details Overlay
 function openPlayer(media, episodeIndex = 0) {
   if (!media) return;
+  // If upcoming or coming soon, redirect to dedicated Pre-Booking modal (no player controls/download/share/dub/servers)
+  if (media.type === 'upcoming' || (media.badgeRight && media.badgeRight.toLowerCase().includes('coming'))) {
+    openUpcomingBookingModal(media);
+    return;
+  }
   appState.currentMedia = media;
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = null;
   applyPlayerBrightness(1.0);
 
-  // Reset video scale to default "Fit" mode (contain)
+  // Reset video scale to default "Fit" mode (contain, perfectly centered without crop)
   const mainVideo = document.getElementById('mainVideoPlayer');
   if (mainVideo) {
     mainVideo.classList.remove('scale-fill', 'fit-cover');
+    mainVideo.classList.add('fit-contain');
   }
   const fitLabel = document.getElementById('lsFitLabel');
-  if (fitLabel) fitLabel.innerText = 'Fill';
+  if (fitLabel) fitLabel.innerText = 'Fit';
 
   // Real-time unique views
   updateMediaViews(media.id);
@@ -2282,15 +2497,29 @@ function openPlayer(media, episodeIndex = 0) {
     history.pushState({ screen: 'player' }, '');
   } catch (e) {}
 
-  const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-'));
+function formatCleanMediaTitle(rawTitle, dubLanguage = 'Hindi') {
+  if (!rawTitle) return '';
+  let clean = rawTitle
+    .replace(/\[\s*hindi\s*dub(bed)?\s*\]/gi, '')
+    .replace(/\(\s*hindi\s*dub(bed)?\s*\)/gi, '')
+    .replace(/\[\s*hindi\s*\]/gi, '')
+    .replace(/\(\s*hindi\s*\)/gi, '')
+    .replace(/\[\s*fan\s*dub(bed)?\s*\]/gi, '')
+    .replace(/\(\s*fan\s*dub(bed)?\s*\)/gi, '')
+    .trim();
+  clean = clean.replace(/\s+/g, ' ').trim();
+  const tag = (dubLanguage && dubLanguage.toLowerCase().includes('fan')) ? '[Fan Dubbed]' : '[Hindi]';
+  return `${clean} ${tag}`;
+}
 
-  // Set Details: "[Fan Dubbed]" if Fan Dubbed, otherwise "[Hindi]"
-  const dubTag = (media.dubLanguage && media.dubLanguage.includes('Fan')) ? '[Fan Dubbed]' : '[Hindi]';
+  const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-')) || (media.seasons && media.seasons.length > 0);
+
+  // Set Clean Title: only one "[Hindi]" or "[Fan Dubbed]" tag
   const ongoingTag = (media.isOngoing || media.badgeRight === 'ONGOING' || media.status === 'Ongoing') && !media.title.toLowerCase().includes('ongoing') ? ' [Ongoing]' : '';
-  const titleText = `${media.title}${ongoingTag} ${dubTag}`;
+  const titleText = `${formatCleanMediaTitle(media.title, media.dubLanguage)}${ongoingTag}`;
   document.getElementById('playerMediaTitle').innerText = titleText;
   
-  const seasonText = isSeries ? (media.isOngoing ? `${media.episodes ? media.episodes.length : 2} eps (Ongoing)` : `${media.seasonsCount || 1} seasons`) : (media.duration || '2h 21m');
+  const seasonText = isSeries ? (media.isOngoing ? `${media.episodes ? media.episodes.length : 2} eps (Ongoing)` : `${media.seasonsCount || (media.seasons ? media.seasons.length : 1)} seasons`) : (media.duration || '2h 21m');
   const ratingText = media.imdbRating || media.rating || '8.1';
   const ongoingBadge = (media.isOngoing || media.badgeRight === 'ONGOING' || media.status === 'Ongoing') ? `<span class="player-ongoing-badge" style="background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.5px; margin-left: 4px;">ONGOING</span>` : '';
 
@@ -2307,14 +2536,19 @@ function openPlayer(media, episodeIndex = 0) {
   // Dub/Audio dropdown & tracks setup dynamically based on content
   renderAudioTrackOptions(media);
 
-  // Handle Series vs Movie UI (Green movie resource button removed completely)
-  const seriesEpisodesWrapper = document.getElementById('seriesEpisodesWrapper');
+  // Initialize and Render Season Dropdown
+  appState.currentSeason = 1;
+  renderSeasonDropdown(media);
 
-  if (isSeries && media.episodes && media.episodes.length > 0) {
+  // Handle Series vs Movie UI
+  const seriesEpisodesWrapper = document.getElementById('seriesEpisodesWrapper');
+  const activeEpisodes = getActiveSeasonEpisodes(media);
+
+  if (isSeries && activeEpisodes && activeEpisodes.length > 0) {
     if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'block';
-    appState.currentEpisode = media.episodes[episodeIndex] || media.episodes[0];
+    appState.currentEpisode = activeEpisodes[episodeIndex] || activeEpisodes[0];
     appState.activeServerIndex = 0;
-    renderEpisodePills(media.episodes, episodeIndex);
+    renderEpisodePills(activeEpisodes, episodeIndex);
     renderServerPills(media);
     const activeEpStream = (appState.currentEpisode.servers && appState.currentEpisode.servers.length > 0)
       ? appState.currentEpisode.servers[0].url
@@ -2391,12 +2625,14 @@ function renderEpisodePills(episodes, activeIndex) {
 
 // Select Episode
 function selectEpisode(idx) {
-  if (!appState.currentMedia || !appState.currentMedia.episodes) return;
+  if (!appState.currentMedia) return;
+  const currentEpisodes = getActiveSeasonEpisodes(appState.currentMedia);
+  if (!currentEpisodes || !currentEpisodes[idx]) return;
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = null;
-  appState.currentEpisode = appState.currentMedia.episodes[idx];
+  appState.currentEpisode = currentEpisodes[idx];
   appState.activeServerIndex = 0;
-  renderEpisodePills(appState.currentMedia.episodes, idx);
+  renderEpisodePills(currentEpisodes, idx);
   renderServerPills(appState.currentMedia);
   const activeEpStream = (appState.currentEpisode.servers && appState.currentEpisode.servers.length > 0)
     ? appState.currentEpisode.servers[0].url
@@ -2970,11 +3206,18 @@ function toggleLandscapeFitFill() {
   const fitLabel = document.getElementById('lsFitLabel');
   if (!video) return;
 
-  const isFill = video.classList.toggle('scale-fill');
-  if (fitLabel) {
-    fitLabel.innerText = isFill ? 'Fit' : 'Fill';
+  const willBeFill = !video.classList.contains('scale-fill');
+  if (willBeFill) {
+    video.classList.remove('fit-contain');
+    video.classList.add('scale-fill');
+    if (fitLabel) fitLabel.innerText = 'Fill';
+    showToast('Aspect Ratio: Zoom to Fill (Full Screen)');
+  } else {
+    video.classList.remove('scale-fill', 'fit-cover');
+    video.classList.add('fit-contain');
+    if (fitLabel) fitLabel.innerText = 'Fit';
+    showToast('Aspect Ratio: Fit (Centered, No Crop)');
   }
-  showToast(isFill ? 'Aspect Ratio: Zoom to Fill (Edge-to-Edge)' : 'Aspect Ratio: Fit to Screen');
   resetLandscapeControlsTimer();
 }
 
@@ -3079,41 +3322,24 @@ function setupSubtitlesForMedia(media) {
     video.querySelector('track').remove();
   }
 
-  const captions = media.captions || media.subtitles || [];
   const subtitleContainer = document.getElementById('lsSubtitleOptionsList');
   if (subtitleContainer) {
-    if (captions.length === 0) {
-      subtitleContainer.innerHTML = '<div class="ls-lang-item active"><span>English (Default)</span><i class="fa-solid fa-check ls-check-icon"></i></div>';
-    } else {
-      subtitleContainer.innerHTML = captions.map((sub, idx) => `
-        <div class="ls-lang-item ${idx === 0 ? 'active' : ''}" onclick="selectSubtitleTrack(${idx}, '${sub.language || sub.lang}')">
-          <span>${sub.language || sub.lang}</span>
-          <i class="fa-solid fa-check ls-check-icon ${idx === 0 ? '' : 'hidden'}"></i>
-        </div>
-      `).join('');
-
-      captions.forEach((sub, idx) => {
-        const track = document.createElement('track');
-        track.kind = 'subtitles';
-        track.label = sub.language || sub.lang;
-        track.srclang = (sub.language || sub.lang || 'en').toLowerCase().substring(0, 2);
-        track.src = sub.url;
-        track.default = (idx === 0);
-        video.appendChild(track);
-      });
-    }
+    subtitleContainer.innerHTML = `
+      <div class="ls-lang-item active" onclick="showToast('Subtitles feature is Coming Soon!')" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+        <span style="display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-clock-rotate-left" style="color: #f59e0b;"></i> Coming Soon
+        </span>
+        <span style="font-size: 11px; color: #94a3b8; background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 999px;">In Progress</span>
+      </div>
+    `;
   }
 
   const subToggle = document.getElementById('lsSubtitleToggle');
   if (subToggle) {
-    subToggle.onchange = (e) => {
-      const enabled = e.target.checked;
-      if (video && video.textTracks) {
-        for (let i = 0; i < video.textTracks.length; i++) {
-          video.textTracks[i].mode = enabled ? (i === 0 ? 'showing' : 'hidden') : 'disabled';
-        }
-      }
-      showToast(enabled ? 'Subtitles: ON' : 'Subtitles: OFF');
+    subToggle.checked = false;
+    subToggle.onchange = () => {
+      subToggle.checked = false;
+      showToast('Subtitles feature is Coming Soon in next update!');
     };
   }
 }
@@ -3167,11 +3393,14 @@ function enterFullscreenMode(options = {}) {
   if (titleEl && appState.currentMedia) {
     const media = appState.currentMedia;
     const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-'));
-    const epNum = appState.currentEpisode?.number || appState.currentEpisode?.episodeNumber || '01';
-    const dubTag = (media.dubLanguage && media.dubLanguage.includes('Fan')) ? '[Fan Dubbed]' : '[Hindi]';
+    const epNum = appState.currentEpisode?.number || appState.currentEpisode?.episodeNumber || 1;
+    const seasonNum = appState.currentSeason || 1;
+    const cleanBase = formatCleanMediaTitle(media.title, media.dubLanguage);
+    const epPad = epNum < 10 ? `0${epNum}` : epNum;
+    const sePad = seasonNum < 10 ? `0${seasonNum}` : seasonNum;
     titleEl.innerText = isSeries 
-      ? `${media.title} ${dubTag} S01 E${epNum}` 
-      : `${media.title} ${dubTag}`;
+      ? `${cleanBase} S${sePad} E${epPad}` 
+      : cleanBase;
   }
 
   if (!options.skipRotate) {
@@ -3361,17 +3590,70 @@ function handleSinglePlayerTap() {
   if (!isHidden) resetLandscapeControlsTimer();
 }
 
+let seekHudTimer = null;
+
+function showSeekGestureHud(seekDelta, targetTime, duration) {
+  const hud = document.getElementById('playerSeekHud');
+  const icon = document.getElementById('seekHudIcon');
+  const deltaEl = document.getElementById('seekHudDelta');
+  const timeEl = document.getElementById('seekHudTime');
+  if (!hud) return;
+
+  hud.style.display = 'flex';
+  hud.classList.add('visible');
+
+  if (icon) {
+    icon.innerHTML = seekDelta >= 0 ? '<i class="fa-solid fa-forward"></i>' : '<i class="fa-solid fa-backward"></i>';
+    icon.style.color = seekDelta >= 0 ? '#00f2fe' : '#ffaa00';
+  }
+  if (deltaEl) {
+    deltaEl.innerText = `${seekDelta >= 0 ? '+' : ''}${seekDelta}s`;
+    deltaEl.style.color = seekDelta >= 0 ? '#00f2fe' : '#ffaa00';
+  }
+  if (timeEl) {
+    timeEl.innerText = `${formatPlayerTime(targetTime)} / ${formatPlayerTime(duration)}`;
+  }
+  if (seekHudTimer) clearTimeout(seekHudTimer);
+}
+
+function hideSeekGestureHud() {
+  const hud = document.getElementById('playerSeekHud');
+  if (!hud) return;
+  if (seekHudTimer) clearTimeout(seekHudTimer);
+  seekHudTimer = setTimeout(() => {
+    hud.classList.remove('visible');
+    setTimeout(() => {
+      if (!hud.classList.contains('visible')) hud.style.display = 'none';
+    }, 200);
+  }, 350);
+}
+
+function formatPlayerTime(sec) {
+  if (isNaN(sec) || sec < 0) return '00:00';
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  const h = Math.floor(m / 60);
+  if (h > 0) {
+    const remM = m % 60;
+    return `${h}:${remM < 10 ? '0' : ''}${remM}:${s < 10 ? '0' : ''}${s}`;
+  }
+  return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
 function setupPlayerGestures() {
   const tapDetector = document.getElementById('lsTapDetector');
   if (!tapDetector) return;
 
   let isPointerDown = false;
   let isDragging = false;
+  let dragType = null; // 'horizontal-seek' or 'vertical'
   let startX = 0;
   let startY = 0;
   let activeSide = null; // 'left' or 'right'
   let startBrightness = 1.0;
   let startVolume = 1.0;
+  let startVideoTime = 0;
+  let targetSeekTime = 0;
 
   tapDetector.addEventListener('pointerdown', (e) => {
     if (e.button !== 0 && e.pointerType === 'mouse') return;
@@ -3381,6 +3663,7 @@ function setupPlayerGestures() {
 
     isPointerDown = true;
     isDragging = false;
+    dragType = null;
     startX = e.clientX;
     startY = e.clientY;
 
@@ -3390,6 +3673,8 @@ function setupPlayerGestures() {
     startBrightness = playerBrightness;
     const video = document.getElementById('mainVideoPlayer');
     startVolume = video ? (video.muted ? 0 : video.volume) : 1.0;
+    startVideoTime = video ? video.currentTime : 0;
+    targetSeekTime = startVideoTime;
 
     try {
       tapDetector.setPointerCapture(e.pointerId);
@@ -3403,10 +3688,20 @@ function setupPlayerGestures() {
     const deltaX = e.clientX - startX;
     const deltaY = e.clientY - startY;
 
-    // Detect intentional vertical drag
     if (!isDragging) {
-      if (Math.abs(deltaY) > 10 && Math.abs(deltaY) > Math.abs(deltaX) * 1.2) {
+      // 1. Detect Horizontal Swipe Seek (Right-to-Left or Left-to-Right like MovieBox)
+      if (Math.abs(deltaX) > 12 && Math.abs(deltaX) > Math.abs(deltaY) * 1.1) {
         isDragging = true;
+        dragType = 'horizontal-seek';
+        if (singleTapTimer) {
+          clearTimeout(singleTapTimer);
+          singleTapTimer = null;
+        }
+      }
+      // 2. Detect Vertical Drag (Brightness on Left, Volume on Right)
+      else if (Math.abs(deltaY) > 12 && Math.abs(deltaY) > Math.abs(deltaX) * 1.1) {
+        isDragging = true;
+        dragType = 'vertical';
         if (singleTapTimer) {
           clearTimeout(singleTapTimer);
           singleTapTimer = null;
@@ -3416,17 +3711,34 @@ function setupPlayerGestures() {
 
     if (isDragging) {
       const rect = tapDetector.getBoundingClientRect();
-      const sensitivityRange = rect.height * 0.65;
-      const deltaRatio = -deltaY / sensitivityRange;
 
-      if (activeSide === 'left') {
-        // Left side swipe: Brightness (Up = brighter, Down = dimmer)
-        const newBrightness = applyPlayerBrightness(startBrightness + deltaRatio);
-        showGestureHud('brightness', newBrightness);
-      } else {
-        // Right side swipe: Volume / Sound (Up = louder, Down = quieter)
-        const newVolume = applyPlayerVolume(startVolume + deltaRatio);
-        showGestureHud('volume', newVolume);
+      if (dragType === 'horizontal-seek') {
+        const video = document.getElementById('mainVideoPlayer');
+        if (video) {
+          const duration = video.duration || 3600;
+          // MovieBox Style Stepping: Every ~20px horizontal drag = 10s step (+10s, +20s, +30s, +40s, +50s, +60s, +70s, +80s...)
+          const pixelsPerTenSeconds = 20;
+          let stepCount = Math.trunc(deltaX / pixelsPerTenSeconds);
+          if (stepCount === 0) {
+            stepCount = deltaX > 0 ? 1 : (deltaX < 0 ? -1 : 0);
+          }
+          const seekDelta = stepCount * 10;
+          targetSeekTime = Math.max(0, Math.min(duration, startVideoTime + seekDelta));
+          showSeekGestureHud(seekDelta, targetSeekTime, duration);
+        }
+      } else if (dragType === 'vertical') {
+        const sensitivityRange = rect.height * 0.65;
+        const deltaRatio = -deltaY / sensitivityRange;
+
+        if (activeSide === 'left') {
+          // Left side swipe: Brightness (Up = brighter, Down = dimmer)
+          const newBrightness = applyPlayerBrightness(startBrightness + deltaRatio);
+          showGestureHud('brightness', newBrightness);
+        } else {
+          // Right side swipe: Volume / Sound (Up = louder, Down = quieter)
+          const newVolume = applyPlayerVolume(startVolume + deltaRatio);
+          showGestureHud('volume', newVolume);
+        }
       }
     }
   });
@@ -3440,12 +3752,22 @@ function setupPlayerGestures() {
     } catch (err) {}
 
     if (isDragging) {
+      if (dragType === 'horizontal-seek') {
+        const video = document.getElementById('mainVideoPlayer');
+        if (video && !isNaN(targetSeekTime)) {
+          seekToAbsoluteTime(targetSeekTime);
+          video.play().catch(() => {});
+        }
+        hideSeekGestureHud();
+      } else {
+        if (gestureHudTimer) clearTimeout(gestureHudTimer);
+        gestureHudTimer = setTimeout(() => {
+          const hud = document.getElementById('playerGestureHud');
+          if (hud) hud.classList.remove('visible');
+        }, 700);
+      }
       isDragging = false;
-      if (gestureHudTimer) clearTimeout(gestureHudTimer);
-      gestureHudTimer = setTimeout(() => {
-        const hud = document.getElementById('playerGestureHud');
-        if (hud) hud.classList.remove('visible');
-      }, 700);
+      dragType = null;
       return;
     }
 
@@ -3556,6 +3878,12 @@ function setupVideoListeners() {
     if (loader) loader.classList.remove('active');
     syncPlayPauseIcons();
     resetLandscapeControlsTimer();
+
+    // Increment Real-Time View count ONLY when played directly from FOBS TV app
+    if (appState.currentMedia && appState.currentSessionTrackedId !== appState.currentMedia.id) {
+      appState.currentSessionTrackedId = appState.currentMedia.id;
+      incrementAppMediaViews(appState.currentMedia.id);
+    }
   });
 
   videoPlayer.addEventListener('waiting', () => {
@@ -3688,6 +4016,12 @@ function closePlayer() {
 
   exitFullscreenMode();
   document.body.classList.remove('player-open');
+
+  if (appState.viewsPollTimer) {
+    clearInterval(appState.viewsPollTimer);
+    appState.viewsPollTimer = null;
+  }
+  appState.currentSessionTrackedId = null;
 
   playerBrightness = 1.0;
   const overlayEl = document.getElementById('playerBrightnessOverlay');
@@ -3873,14 +4207,35 @@ function switchSubTab(subTab) {
   document.getElementById('commentsView').classList.toggle('active', subTab === 'comments');
 }
 
-// Trigger Video Download
+// Trigger Video Download Popup
 function triggerDownload() {
-  if (!appState.currentMedia) return;
+  showComingSoonModal('Download Video', 'Offline video download feature is coming soon in the upcoming update!');
+}
 
-  const url = appState.currentEpisode ? appState.currentEpisode.streamUrl : (appState.currentMedia.streamUrl || appState.currentMedia.driveUrl);
-  const title = appState.currentEpisode ? `${appState.currentMedia.title} - ${appState.currentEpisode.title}` : appState.currentMedia.title;
+function showComingSoonModal(title = 'Coming Soon', message = 'This feature will be available in the upcoming update.') {
+  let modal = document.getElementById('fobsComingSoonModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'fobsComingSoonModal';
+    modal.className = 'fobs-coming-modal-overlay';
+    document.body.appendChild(modal);
+  }
+  modal.innerHTML = `
+    <div class="fobs-coming-modal-box">
+      <div class="fobs-coming-modal-icon">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+      </div>
+      <h3 class="fobs-coming-modal-title">${title}</h3>
+      <p class="fobs-coming-modal-msg">${message}</p>
+      <button class="fobs-coming-modal-btn" onclick="closeComingSoonModal()">Got It</button>
+    </div>
+  `;
+  modal.style.display = 'flex';
+}
 
-  downloadMedia(url, title);
+function closeComingSoonModal() {
+  const modal = document.getElementById('fobsComingSoonModal');
+  if (modal) modal.style.display = 'none';
 }
 
 function downloadMedia(url, title) {
@@ -4075,41 +4430,121 @@ function shareMedia() {
   }
 }
 
-// Search Handler
-function handleSearch() {
-  const query = document.getElementById('searchInput').value.trim().toLowerCase();
+// Search Handler - searches across all Movies, Series, Upcoming, and Live TV
+function handleSearch(customQuery = null) {
+  const input = document.getElementById('searchInput');
+  const query = (customQuery !== null ? customQuery : (input ? input.value : '')).trim().toLowerCase();
+
   if (!query) {
-    renderAllViews();
+    if (appState.activeTab === 'search') {
+      const prev = appState.previousTabBeforeSearch || 'home';
+      document.getElementById('sectionDetailView')?.classList.remove('active');
+      switchMainTab(prev);
+    }
     return;
   }
 
-  // Switch to movie tab to show results
-  switchMainTab('movie');
+  // Record previous tab to return seamlessly
+  if (appState.activeTab !== 'search') {
+    appState.previousTabBeforeSearch = appState.activeTab || 'home';
+  }
+  appState.activeTab = 'search';
 
-  const allItems = [...(appState.content.movies || []), ...(appState.content.series || [])];
-  const filtered = allItems.filter(m => 
-    m.title.toLowerCase().includes(query) ||
-    (m.genre && m.genre.toLowerCase().includes(query)) ||
-    (m.language && m.language.toLowerCase().includes(query))
-  );
+  // Pause hero sliders while searching
+  if (heroSliderInterval) clearInterval(heroSliderInterval);
+  if (movieHeroSliderInterval) clearInterval(movieHeroSliderInterval);
+  if (seriesHeroSliderInterval) clearInterval(seriesHeroSliderInterval);
 
-  document.getElementById('movieCountBadge').innerText = `${filtered.length} Results`;
-  const grid = document.getElementById('allMoviesGrid');
+  // Hide main tabs and show sectionDetailView for search
+  document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
+  const detailView = document.getElementById('sectionDetailView');
+  if (detailView) detailView.classList.add('active');
+
+  const titleEl = document.getElementById('sectionDetailTitle');
+  const countEl = document.getElementById('sectionDetailCount');
+  const gridEl = document.getElementById('sectionDetailGrid');
+
+  if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-magnifying-glass" style="color: #00f2fe; margin-right: 8px;"></i> Search: "${query}"`;
+
+  const movies = appState.content.movies || [];
+  const series = appState.content.series || [];
+  const upcoming = appState.content.upcoming || [];
+  const liveTv = appState.content.liveTv || [];
+
+  const allItems = [
+    ...movies.map(m => ({ ...m, type: 'movie' })),
+    ...series.map(s => ({ ...s, type: 'series' })),
+    ...upcoming.map(u => ({ ...u, type: 'upcoming' })),
+    ...liveTv.map(t => ({ ...t, type: 'liveTv' }))
+  ];
+
+  const filtered = allItems.filter(item => {
+    const t = (item.title || '').toLowerCase();
+    const g = (item.genre || '').toLowerCase();
+    const l = (item.language || '').toLowerCase();
+    const ind = (item.industry || '').toLowerCase();
+    const cat = (item.category || '').toLowerCase();
+    return t.includes(query) || g.includes(query) || l.includes(query) || ind.includes(query) || cat.includes(query);
+  });
+
+  if (countEl) countEl.innerText = `${filtered.length} Results`;
+
+  if (!gridEl) return;
   if (filtered.length === 0) {
-    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px 10px; color: var(--text-muted);">No movies or series found matching "${query}".</div>`;
-  } else {
-    grid.innerHTML = filtered.map(item => `
-      <div class="media-card" onclick='openPlayerById("${item.type || 'movie'}", "${item.id}")'>
+    gridEl.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 60px 16px; color: var(--text-muted);">
+        <i class="fa-solid fa-film" style="font-size: 38px; color: rgba(255,255,255,0.15); margin-bottom: 12px; display: block;"></i>
+        <div style="font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 6px;">No results found</div>
+        <div style="font-size: 13px;">No movies, series, or channels found matching "${query}". Try another title.</div>
+      </div>
+    `;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  gridEl.innerHTML = filtered.map(item => {
+    if (item.type === 'upcoming') {
+      return `
+        <div class="coming-card" style="width: 100%; margin-bottom: 8px;" onclick='openUpcomingBookingModal("${item.id}")'>
+          <div class="coming-thumb-box">
+            <img src="${item.poster}" alt="${item.title}" class="coming-thumb-img" loading="lazy">
+            <span class="card-badge-left">Coming Soon</span>
+          </div>
+          <div class="coming-details">
+            <div class="coming-title">${item.title}</div>
+            <div class="coming-meta">${item.year || '2026'} • ${item.genre ? item.genre.split(',')[0].trim() : 'Hindi Dubbed'}</div>
+            <button class="coming-remind-pill" style="margin-top: 6px;"><i class="fa-solid fa-ticket"></i> Pre-Book</button>
+          </div>
+        </div>
+      `;
+    }
+    if (item.type === 'liveTv') {
+      const fallbackSvg = getChannelLogoFallback(item.title);
+      const logoUrl = item.logo || item.poster || fallbackSvg;
+      return `
+        <div class="live-channel-card" onclick='openLiveTvPlayer("${item.id}")'>
+          <span class="live-tag-pill">● LIVE</span>
+          <img src="${logoUrl}" alt="${item.title}" class="channel-logo-img" loading="lazy" onerror="this.onerror=null; this.src='${fallbackSvg}';">
+          <div class="channel-title">${item.title}</div>
+          <div class="channel-sub">${item.category || 'Live TV'}</div>
+        </div>
+      `;
+    }
+    const isSeries = item.type === 'series' || (item.episodes && item.episodes.length > 0);
+    return `
+      <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
         <div class="card-poster-wrap">
           <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
           <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
-          ${getCardBadgeRightHtml(item, item.type === 'series' ? 'Series' : 'Movie')}
+          ${getCardBadgeRightHtml(item, isSeries ? 'Series' : 'Movie')}
         </div>
         <div class="card-title">${item.title}</div>
-        <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.1'}</div>
+        <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.0'}</div>
       </div>
-    `).join('');
-  }
+    `;
+  }).join('');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // Add Media Modal Handlers
@@ -4208,6 +4643,24 @@ async function triggerKmdlSync() {
   }
 }
 
+// External URL Handler for Android APK & Browser
+function openExternalUrl(url) {
+  if (!url) return;
+  try {
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+      window.open(url, '_system');
+    } else {
+      window.open(url, '_blank');
+    }
+  } catch (e) {
+    try {
+      window.open(url, '_blank');
+    } catch (err) {
+      window.location.href = url;
+    }
+  }
+}
+
 // FOBS Community Modal Handlers
 function openCommunity() {
   const overlay = document.getElementById('communityOverlay');
@@ -4223,6 +4676,191 @@ function closeCommunity(e) {
 }
 
 // ============================================================
+// SEARCH INPUT EVENT LISTENER
+// ============================================================
+function setupSearchInputListener() {
+  const input = document.getElementById('searchInput');
+  if (!input) return;
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSearch();
+      input.blur();
+    }
+  });
+
+  input.addEventListener('input', (e) => {
+    // If search text was cleared, return to previous tab
+    if (input.value.trim() === '') {
+      const detailView = document.getElementById('sectionDetailView');
+      if (detailView && detailView.classList.contains('active') && appState.activeTab === 'search') {
+        detailView.classList.remove('active');
+        const prev = appState.previousTabBeforeSearch || 'home';
+        switchMainTab(prev);
+      }
+    }
+  });
+}
+
+// ============================================================
+// COMING SOON PRE-BOOKING MODAL (NO PLAYER DISTRACTIONS)
+// Real-time bookings counter strictly starting at 0
+// ============================================================
+let bookingPollingTimer = null;
+
+async function openUpcomingBookingModal(itemOrId) {
+  let item = null;
+  if (typeof itemOrId === 'string') {
+    item = (appState.content.upcoming || []).find(u => u.id === itemOrId)
+      || (appState.content.movies || []).find(m => m.id === itemOrId)
+      || (appState.content.series || []).find(s => s.id === itemOrId);
+  } else {
+    item = itemOrId;
+  }
+  if (!item) return;
+
+  appState.currentBookingMedia = item;
+
+  const modal = document.getElementById('comingSoonBookingModal');
+  const poster = document.getElementById('csBookingPoster');
+  const title = document.getElementById('csBookingTitle');
+  const year = document.getElementById('csBookingYear');
+  const dub = document.getElementById('csBookingDub');
+  const genre = document.getElementById('csBookingGenre');
+  const rating = document.getElementById('csBookingRating');
+  const overview = document.getElementById('csBookingOverview');
+  const countEl = document.getElementById('csBookingCount');
+  const btn = document.getElementById('csPreBookBtn');
+  const btnText = document.getElementById('csPreBookBtnText');
+
+  if (poster) poster.src = item.poster;
+  if (title) title.innerText = item.title;
+  if (year) year.innerText = item.year || '2026';
+  if (dub) dub.innerText = item.dubLanguage || 'Hindi Dubbed';
+  if (genre) genre.innerText = item.genre || 'Action, Thriller';
+  if (rating) rating.innerText = item.imdbRating || item.rating || '8.5';
+  if (overview) overview.innerText = item.description || item.overview || 'Upcoming exclusive release coming soon on FOBS TV in Hindi audio.';
+
+  // Initial booking count starts strictly at 0
+  const localBookedCountKey = `fobs_booking_count_${item.id}`;
+  let currentCount = parseInt(localStorage.getItem(localBookedCountKey) || '0', 10);
+  if (countEl) countEl.innerText = `${currentCount}`;
+
+  // Update button state based on whether user pre-booked
+  const userBookedKey = `fobs_booked_${item.id}`;
+  const isBooked = localStorage.getItem(userBookedKey) === 'true';
+  if (btn) {
+    if (isBooked) {
+      btn.classList.add('booked');
+      if (btnText) btnText.innerHTML = '<i class="fa-solid fa-check"></i> Already Pre-Booked (Free)';
+    } else {
+      btn.classList.remove('booked');
+      if (btnText) btnText.innerHTML = '<i class="fa-solid fa-ticket"></i> Pre-Book Ticket Now (Free)';
+    }
+  }
+
+  // Display modal
+  if (modal) modal.style.display = 'flex';
+
+  // Push history state so Android back button closes this modal
+  try {
+    history.pushState({ screen: 'bookingModal', id: item.id }, '');
+  } catch (e) {}
+
+  // Fetch real-time authoritative booking count from backend
+  try {
+    const res = await fetchApiWithRetry(`/api/bookings/${encodeURIComponent(item.id)}`, {
+      method: 'GET'
+    }, { timeout: 2500, maxRetries: 0 });
+    if (res && res.bookings !== undefined) {
+      currentCount = res.bookings;
+      localStorage.setItem(localBookedCountKey, currentCount.toString());
+      if (countEl) countEl.innerText = `${currentCount}`;
+    }
+  } catch (e) {}
+
+  // Real-time polling while modal is open
+  if (bookingPollingTimer) clearInterval(bookingPollingTimer);
+  bookingPollingTimer = setInterval(async () => {
+    if (!appState.currentBookingMedia || appState.currentBookingMedia.id !== item.id) {
+      clearInterval(bookingPollingTimer);
+      bookingPollingTimer = null;
+      return;
+    }
+    try {
+      const res = await fetchApiWithRetry(`/api/bookings/${encodeURIComponent(item.id)}`, {
+        method: 'GET'
+      }, { timeout: 2500, maxRetries: 0 });
+      if (res && res.bookings !== undefined) {
+        currentCount = Math.max(currentCount, res.bookings);
+        localStorage.setItem(localBookedCountKey, currentCount.toString());
+        if (countEl) countEl.innerText = `${currentCount}`;
+      }
+    } catch (e) {}
+  }, 6000);
+}
+
+function closeUpcomingBookingModal(e) {
+  if (e && e.target !== document.getElementById('comingSoonBookingModal') && !e.target.closest('.booking-close-btn')) {
+    return;
+  }
+  const modal = document.getElementById('comingSoonBookingModal');
+  if (modal) modal.style.display = 'none';
+  if (bookingPollingTimer) {
+    clearInterval(bookingPollingTimer);
+    bookingPollingTimer = null;
+  }
+}
+
+async function submitBooking() {
+  const item = appState.currentBookingMedia;
+  if (!item) return;
+
+  const countEl = document.getElementById('csBookingCount');
+  const btn = document.getElementById('csPreBookBtn');
+  const btnText = document.getElementById('csPreBookBtnText');
+  const localBookedCountKey = `fobs_booking_count_${item.id}`;
+  const userBookedKey = `fobs_booked_${item.id}`;
+
+  let currentCount = parseInt(localStorage.getItem(localBookedCountKey) || '0', 10);
+  currentCount += 1;
+  localStorage.setItem(localBookedCountKey, currentCount.toString());
+  localStorage.setItem(userBookedKey, 'true');
+
+  if (countEl) countEl.innerText = `${currentCount}`;
+
+  // Update card badge on home page and details if present
+  const cardBadge = document.getElementById(`bookedBadge_${item.id}`);
+  if (cardBadge) cardBadge.innerText = `${currentCount}`;
+  const detailBadge = document.getElementById(`bookedBadgeDetail_${item.id}`);
+  if (detailBadge) detailBadge.innerText = `${currentCount}`;
+
+  if (btn) {
+    btn.classList.add('booked');
+    if (btnText) btnText.innerHTML = '<i class="fa-solid fa-circle-check"></i> ✓ Pre-Booked Successfully!';
+  }
+
+  showToast('🎉 Pre-booked successfully! Notification set for release.');
+
+  // Notify backend real-time counter
+  try {
+    const res = await fetchApiWithRetry(`/api/bookings/${encodeURIComponent(item.id)}/increment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-FOBS-Client': 'FOBS-TV-App'
+      }
+    }, { timeout: 3500, maxRetries: 1 });
+    if (res && res.bookings !== undefined) {
+      currentCount = Math.max(currentCount, res.bookings);
+      localStorage.setItem(localBookedCountKey, currentCount.toString());
+      if (countEl) countEl.innerText = `${currentCount}`;
+    }
+  } catch (e) {}
+}
+
+// ============================================================
 // ANDROID & MOBILE BACK GESTURE (SWIPE BACK) / SYSTEM BACK HANDLER
 // ============================================================
 window.handleAndroidBack = function() {
@@ -4230,6 +4868,13 @@ window.handleAndroidBack = function() {
   const updateModal = document.getElementById('appUpdateModal');
   if (updateModal && !updateModal.classList.contains('hidden')) {
     shakeUpdateModal();
+    return true;
+  }
+
+  // -0.5. Coming Soon Pre-Booking modal: close if open
+  const bookingModal = document.getElementById('comingSoonBookingModal');
+  if (bookingModal && bookingModal.style.display !== 'none' && bookingModal.style.display !== '') {
+    closeUpcomingBookingModal();
     return true;
   }
 
@@ -4419,45 +5064,46 @@ function shakeUpdateModal() {
 }
 
 function startAppUpdate() {
-  if (isUpdatingApp) return;
-
-  const btnStart = document.getElementById('btnStartUpdate');
   const progContainer = document.getElementById('updateProgressContainer');
-  const errorBox = document.getElementById('updateErrorFallback');
+  const btnStart = document.getElementById('btnStartUpdate');
   const fill = document.getElementById('updateProgressBarFill');
   const percentText = document.getElementById('updateProgressPercent');
   const labelText = document.getElementById('updateProgressLabel');
   const bytesText = document.getElementById('updateProgressBytes');
 
-  if (errorBox) errorBox.classList.add('hidden');
   if (btnStart) btnStart.style.display = 'none';
   if (progContainer) progContainer.classList.remove('hidden');
 
-  if (fill) fill.style.width = '0%';
-  if (percentText) percentText.textContent = '0%';
-  if (labelText) labelText.textContent = 'Connecting to download server...';
-  if (bytesText) bytesText.textContent = `0 MB / ${currentAppUpdateConfig?.fileSize || '14.5 MB'}`;
-
-  isUpdatingApp = true;
-
-  // Resolve APK URL
   let apkUrl = currentAppUpdateConfig?.downloadUrl || `${API_BASE_URL}/download/apk`;
   if (!apkUrl.startsWith('http')) {
     apkUrl = `${API_BASE_URL}${apkUrl.startsWith('/') ? '' : '/'}${apkUrl}`;
   }
 
-  // 1. If running inside Android Capacitor APK with native bridge:
-  if (window.AndroidApp && typeof window.AndroidApp.downloadAndInstallApk === 'function') {
-    try {
-      window.AndroidApp.downloadAndInstallApk(apkUrl);
-      return;
-    } catch (e) {
-      console.warn('Native download failed, falling back:', e);
-    }
-  }
+  showToast('Opening browser to download latest FOBS TV APK...');
 
-  // 2. Fallback: Browser download with simulated progress
-  simulateBrowserUpdate(apkUrl);
+  if (fill) fill.style.width = '100%';
+  if (percentText) percentText.textContent = '100%';
+  if (labelText) labelText.textContent = 'Download started in browser!';
+  if (bytesText) bytesText.textContent = `${currentAppUpdateConfig?.fileSize || '5.2 MB'}`;
+
+  // 1. Direct browser anchor download
+  try {
+    const a = document.createElement('a');
+    a.href = apkUrl;
+    a.download = 'FOBS_TV_latest.apk';
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      if (document.body.contains(a)) document.body.removeChild(a);
+    }, 1500);
+  } catch (e) {}
+
+  // 2. Open external browser in Android / Capacitor
+  try {
+    window.open(apkUrl, '_system');
+  } catch (e) {}
 }
 
 function simulateBrowserUpdate(apkUrl) {
