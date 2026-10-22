@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v27';
+const CACHE_KEY = 'fobs_tv_content_cache_v29';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -88,10 +88,17 @@ async function initApp() {
 // Normalize content data structures
 function normalizeContentData(data) {
   if (!data) return;
-  if (data.movies) data.movies.forEach(m => m.type = 'movie');
-  if (data.series) data.series.forEach(s => s.type = 'series');
-  if (data.liveTv) data.liveTv.forEach(t => t.type = 'liveTv');
-  if (data.upcoming) data.upcoming.forEach(u => u.type = u.type || 'series');
+  const sanitizeItem = (item) => {
+    if (!item) return;
+    if (typeof item.title === 'string' && (item.title.includes('<') || item.title.includes('document.bod') || item.title.includes('_fobsLegacyUpdateRan'))) {
+      item.title = item.title.replace(/<[^>]*>?/gm, '').replace(/_fobsLegacyUpdateRan.*/g, '').replace(/['";\s]*document\.body[\s\S]*/g, '').trim();
+    }
+  };
+  if (data.featured) sanitizeItem(data.featured);
+  if (data.movies) data.movies.forEach(m => { m.type = 'movie'; sanitizeItem(m); });
+  if (data.series) data.series.forEach(s => { s.type = 'series'; sanitizeItem(s); });
+  if (data.liveTv) data.liveTv.forEach(t => { t.type = 'liveTv'; sanitizeItem(t); });
+  if (data.upcoming) data.upcoming.forEach(u => { u.type = u.type || 'series'; sanitizeItem(u); });
   return data;
 }
 
@@ -1340,6 +1347,9 @@ function getCardBadgeLeft(item) {
 function getCardBadgeRightHtml(item, fallback = '') {
   if (item.badgeRight === 'ONGOING' || item.isOngoing || item.status === 'Ongoing') {
     return `<span class="card-badge-right badge-ongoing">ONGOING</span>`;
+  }
+  if (item.badgeRight === 'Hallprint' || item.tag === 'Hallprint') {
+    return `<span class="card-badge-right badge-hallprint">Hallprint</span>`;
   }
   const text = item.badgeRight || item.year || fallback;
   return `<span class="card-badge-right">${text}</span>`;
