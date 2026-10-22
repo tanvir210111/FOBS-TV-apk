@@ -275,7 +275,8 @@ async function resolveStreamUrl(rawUrl) {
   // 8. Check pkembed / vkplus
   else if (rawUrl.includes('pkembed.site')) {
     try {
-      const pkRes = await axios.get(rawUrl, {
+      const embedUrl = rawUrl.includes('/embed-') ? rawUrl : rawUrl.replace('pkembed.site/', 'pkembed.site/embed-');
+      const pkRes = await axios.get(embedUrl, {
         headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
         timeout: 8000
       });
@@ -485,7 +486,7 @@ app.all('/api/stream', async (req, res) => {
     targetUrl.includes('luluvido') || 
     targetUrl.includes('upbolt') || 
     targetUrl.includes('it2k1jyiil2q') || 
-    (req.query.audio !== undefined)
+    (req.query.audio !== undefined && parseInt(req.query.audio, 10) > 0)
   );
 
   if (isMkvOrEac3 && ffmpegPath) {

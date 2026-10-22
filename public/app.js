@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v35';
+const CACHE_KEY = 'fobs_tv_content_cache_v36';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -2427,7 +2427,9 @@ function togglePlayerLock() {
 function togglePlayPauseVideo() {
   const video = document.getElementById('mainVideoPlayer');
   if (!video) return;
+  const loader = document.getElementById('videoLoader');
   if (video.paused) {
+    if (loader) loader.classList.remove('active');
     video.play().catch(() => {});
   } else {
     video.pause();
@@ -3142,7 +3144,16 @@ function setupVideoListeners() {
   });
 
   videoPlayer.addEventListener('loadedmetadata', () => {
+    if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
+    if (loader) loader.classList.remove('active');
     updateLandscapeProgress();
+    syncPlayPauseIcons();
+  });
+
+  videoPlayer.addEventListener('loadeddata', () => {
+    if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
+    if (loader) loader.classList.remove('active');
+    syncPlayPauseIcons();
   });
 
   videoPlayer.addEventListener('timeupdate', () => {
