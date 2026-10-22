@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v40';
+const CACHE_KEY = 'fobs_tv_content_cache_v41';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -2251,12 +2251,43 @@ function selectEpisode(idx) {
 // Start Stream Playback via Direct Stream Resolution or Backend Proxy
 async function playStreamUrl(url, audioIndex = null, seekTime = null) {
   const videoPlayer = document.getElementById('mainVideoPlayer');
+  const embedFrame = document.getElementById('mainEmbedPlayer');
   const loader = document.getElementById('videoLoader');
 
   if (!url) {
     console.warn('No stream URL provided for media');
     if (loader) loader.classList.remove('active');
     return;
+  }
+
+  // Handle direct iframe player embeds
+  const isIframeEmbed = (
+    url.includes('streamimdb.ru') ||
+    url.includes('irada438esc.com') ||
+    url.includes('nextgencloudfabric') ||
+    url.includes('hdfriday2.casa') ||
+    url.includes('/embed/movie/') ||
+    url.includes('/play/tt')
+  );
+
+  if (isIframeEmbed && embedFrame) {
+    if (videoPlayer) {
+      videoPlayer.pause();
+      videoPlayer.style.display = 'none';
+      videoPlayer.removeAttribute('src');
+    }
+    embedFrame.style.display = 'block';
+    embedFrame.src = url;
+    if (loader) loader.classList.remove('active');
+    return;
+  }
+
+  if (embedFrame) {
+    embedFrame.src = '';
+    embedFrame.style.display = 'none';
+  }
+  if (videoPlayer) {
+    videoPlayer.style.display = 'block';
   }
 
   if (loader) loader.classList.add('active');
@@ -3317,6 +3348,15 @@ function setupVideoListeners() {
 function closePlayer() {
   const overlay = document.getElementById('playerOverlay');
   const videoPlayer = document.getElementById('mainVideoPlayer');
+  const embedFrame = document.getElementById('mainEmbedPlayer');
+
+  if (embedFrame) {
+    embedFrame.src = '';
+    embedFrame.style.display = 'none';
+  }
+  if (videoPlayer) {
+    videoPlayer.style.display = 'block';
+  }
 
   exitFullscreenMode();
   document.body.classList.remove('player-open');
