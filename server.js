@@ -437,32 +437,6 @@ function prewarmEpisodeStreams() {
 setTimeout(prewarmEpisodeStreams, 1500);
 
 // API: Instant URL Resolver (CORS-enabled for Web and Android App)
-app.get('/api/debug-irada', async (req, res) => {
-  const steps = [];
-  const { execSync } = require('child_process');
-  try {
-    // 1. Test curl with full browser UA and Referer
-    try {
-      const curlOut = execSync('curl -s -i -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" -e "https://hdfriday2.casa/" "https://irada438esc.com/play/tt47661704"').toString();
-      steps.push({ method: 'curl_hdfriday_ref', headerPreview: curlOut.slice(0, 300), len: curlOut.length });
-    } catch (e1) {
-      steps.push({ method: 'curl_error', error: e1.message });
-    }
-
-    // 2. Test curl without referer
-    try {
-      const curlOut2 = execSync('curl -s -i -A "Mozilla/5.0" "https://irada438esc.com/play/tt47661704"').toString();
-      steps.push({ method: 'curl_no_ref', headerPreview: curlOut2.slice(0, 300), len: curlOut2.length });
-    } catch (e2) {
-      steps.push({ method: 'curl_no_ref_error', error: e2.message });
-    }
-
-    res.json({ ok: true, steps });
-  } catch (err) {
-    res.status(500).json({ ok: false, error: err.message, steps });
-  }
-});
-
 app.get('/api/resolve', async (req, res) => {
   const targetUrl = req.query.url;
   if (!targetUrl) return res.status(400).json({ error: 'Missing url parameter' });

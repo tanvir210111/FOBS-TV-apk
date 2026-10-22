@@ -1371,15 +1371,15 @@
         "Original Audio"
       ],
       "selectedAudio": "Original Audio",
-      "streamUrl": "https://hdfriday2.casa/episodes/make-me-tingle-1x1/",
+      "streamUrl": "https://irada438esc.com/play/tt47661704",
       "servers": [
         {
           "name": "Server 1 (Fast HD - 1080p)",
-          "url": "https://hdfriday2.casa/episodes/make-me-tingle-1x1/"
+          "url": "https://irada438esc.com/play/tt47661704"
         },
         {
           "name": "Server 2 (HD Player)",
-          "url": "https://irada438esc.com/play/tt47661704"
+          "url": "https://hdfriday2.casa/episodes/make-me-tingle-1x1/"
         },
         {
           "name": "Server 3 (Super Player)",
@@ -1449,11 +1449,11 @@
           "servers": [
             {
               "name": "Server 1 (Fast HD - 1080p)",
-              "url": "https://hdfriday2.casa/episodes/make-me-tingle-1x1/"
+              "url": "https://irada438esc.com/play/tt47661704"
             },
             {
               "name": "Server 2 (HD Player)",
-              "url": "https://irada438esc.com/play/tt47661704"
+              "url": "https://hdfriday2.casa/episodes/make-me-tingle-1x1/"
             },
             {
               "name": "Server 3 (Super Player)",
@@ -1461,7 +1461,7 @@
             }
           ],
           "audioTracks": {
-            "Original Audio": "https://hdfriday2.casa/episodes/make-me-tingle-1x1/"
+            "Original Audio": "https://irada438esc.com/play/tt47661704"
           }
         },
         {
@@ -1474,11 +1474,11 @@
           "servers": [
             {
               "name": "Server 1 (Fast HD - 1080p)",
-              "url": "https://irada438esc.com/play/tt47661704?ep=2"
+              "url": "https://irada438esc.com/play/tt47661704"
             },
             {
               "name": "Server 2 (HD Player)",
-              "url": "https://irada438esc.com/play/tt47661704"
+              "url": "https://irada438esc.com/play/tt47661704?ep=2"
             },
             {
               "name": "Server 3 (Super Player)",
@@ -1486,7 +1486,7 @@
             }
           ],
           "audioTracks": {
-            "Original Audio": "https://irada438esc.com/play/tt47661704?ep=2"
+            "Original Audio": "https://irada438esc.com/play/tt47661704"
           }
         },
         {
@@ -1499,11 +1499,11 @@
           "servers": [
             {
               "name": "Server 1 (Fast HD - 1080p)",
-              "url": "https://irada438esc.com/play/tt47661704?ep=3"
+              "url": "https://irada438esc.com/play/tt47661704"
             },
             {
               "name": "Server 2 (HD Player)",
-              "url": "https://irada438esc.com/play/tt47661704"
+              "url": "https://irada438esc.com/play/tt47661704?ep=3"
             },
             {
               "name": "Server 3 (Super Player)",
@@ -1511,7 +1511,7 @@
             }
           ],
           "audioTracks": {
-            "Original Audio": "https://irada438esc.com/play/tt47661704?ep=3"
+            "Original Audio": "https://irada438esc.com/play/tt47661704"
           }
         },
         {
@@ -1524,11 +1524,11 @@
           "servers": [
             {
               "name": "Server 1 (Fast HD - 1080p)",
-              "url": "https://hdfriday2.casa/episodes/make-me-tingle-1x4/"
+              "url": "https://irada438esc.com/play/tt47661704"
             },
             {
               "name": "Server 2 (HD Player)",
-              "url": "https://irada438esc.com/play/tt47661704"
+              "url": "https://hdfriday2.casa/episodes/make-me-tingle-1x4/"
             },
             {
               "name": "Server 3 (Super Player)",
@@ -1536,7 +1536,7 @@
             }
           ],
           "audioTracks": {
-            "Original Audio": "https://hdfriday2.casa/episodes/make-me-tingle-1x4/"
+            "Original Audio": "https://irada438esc.com/play/tt47661704"
           }
         }
       ],

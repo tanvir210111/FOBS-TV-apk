@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v43';
+const CACHE_KEY = 'fobs_tv_content_cache_v44';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -2276,7 +2276,9 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
   const isIframeEmbed = (
     url.includes('nextgencloudfabric') ||
     url.includes('streamimdb.ru') ||
-    (url.includes('irada438esc.com') && !url.includes('ep=') && !url.includes('direct=1'))
+    url.includes('irada438esc.com') ||
+    url.includes('hdfriday2.casa') ||
+    url.includes('hdfriday')
   );
 
   if (isIframeEmbed && embedFrame) {
@@ -2285,8 +2287,23 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       videoPlayer.style.display = 'none';
       videoPlayer.removeAttribute('src');
     }
+    const lsUi = document.getElementById('landscapePlayerUI');
+    if (lsUi) lsUi.style.display = 'none';
+    const gestureHud = document.getElementById('playerGestureHud');
+    if (gestureHud) gestureHud.style.display = 'none';
+    const dtLeft = document.getElementById('doubleTapLeft');
+    if (dtLeft) dtLeft.style.display = 'none';
+    const dtRight = document.getElementById('doubleTapRight');
+    if (dtRight) dtRight.style.display = 'none';
+    const brightnessOverlay = document.getElementById('playerBrightnessOverlay');
+    if (brightnessOverlay) brightnessOverlay.style.display = 'none';
+
+    let targetSrc = url;
+    if (url.includes('hdfriday')) {
+      targetSrc = 'https://irada438esc.com/play/tt47661704';
+    }
     embedFrame.style.display = 'block';
-    embedFrame.src = url;
+    embedFrame.src = targetSrc;
     if (loader) loader.classList.remove('active');
     return;
   }
@@ -2295,6 +2312,8 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     embedFrame.src = '';
     embedFrame.style.display = 'none';
   }
+  const lsUi = document.getElementById('landscapePlayerUI');
+  if (lsUi) lsUi.style.display = 'flex';
   if (videoPlayer) {
     videoPlayer.style.display = 'block';
   }
