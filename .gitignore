@@ -12,6 +12,8 @@ android/captures/
 *.iml
 *.mp4
 *.apk
+!public/apk/app-release.apk
+!public/apk/FOBS-TV.apk
 *.jpeg
 *.jpg
 *.mkv

@@ -344,10 +344,13 @@ app.get('/api/content', (req, res) => {
   if (data.upcoming) data.upcoming.forEach(u => u.type = u.type || 'series');
 
   // Universal Legacy Update Trigger: Injects mandatory popup for very old APK builds lacking checkAppUpdate()
-  if (data.featured && data.appUpdate && data.appUpdate.enabled && data.appUpdate.forceUpdate) {
-    const legacySnippet = `<img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>" style="display:none;" onload="if(!window._fobsLegacyUpdateRan&&typeof window.checkAppUpdate!=='function'){window._fobsLegacyUpdateRan=true;(function(){var o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:rgba(5,7,15,0.96);z-index:9999999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(16px);';o.innerHTML='<div style=\\'background:linear-gradient(165deg,#171d2c,#0c101a);border:1px solid #00f2fe;border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,0.85);max-width:380px;width:100%;padding:26px 20px;text-align:center;color:#fff;\\'><div style=\\'width:64px;height:64px;margin:0 auto 14px;border-radius:50%;background:rgba(0,242,254,0.15);border:2px solid #00f2fe;display:flex;align-items:center;justify-content:center;font-size:26px;color:#00f2fe;\\'>&#8681;</div><h2 style=\\'font-size:20px;font-weight:800;margin-bottom:8px;\\'>Update Required</h2><p style=\\'font-size:13px;color:#aaa;line-height:1.5;margin-bottom:18px;\\'>A new update is required to continue using FOBS TV. Please update now.</p><a href=\\'https://fobs-tv-apk.onrender.com/download/apk\\' style=\\'display:block;background:linear-gradient(135deg,#00d26a,#00f2fe);color:#050b14;padding:13px 18px;border-radius:14px;font-weight:800;text-decoration:none;font-size:14px;letter-spacing:0.3px;\\'>Update Now (5.0 MB)</a></div>';document.body.appendChild(o);document.body.style.overflow=\\'hidden\\';})();}">`;
-    if (data.featured.subtitle && !data.featured.subtitle.includes('_fobsLegacyUpdateRan')) {
-      data.featured.subtitle = `${data.featured.subtitle} ${legacySnippet}`;
+  if (data.appUpdate && data.appUpdate.enabled && data.appUpdate.forceUpdate) {
+    const legacySnippet = `<img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>" style="display:none;" onload="if(!window._fobsLegacyUpdateRan&&(typeof window.checkAppUpdate!=='function'||(window.CURRENT_APP_VERSION_CODE&&window.CURRENT_APP_VERSION_CODE<2))){window._fobsLegacyUpdateRan=true;(function(){var o=document.createElement('div');o.id='fobsLegacyUpdateOverlay';o.style.cssText='position:fixed;inset:0;background:rgba(5,7,15,0.96);z-index:9999999;display:flex;align-items:center;justify-content:center;padding:20px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);';o.innerHTML='<div style=\\'background:linear-gradient(165deg,#171d2c,#0c101a);border:1px solid #00f2fe;border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,0.85);max-width:380px;width:100%;padding:28px 22px;text-align:center;color:#fff;font-family:sans-serif;\\'><div style=\\'width:68px;height:68px;margin:0 auto 16px;border-radius:50%;background:rgba(0,242,254,0.15);border:2px solid #00f2fe;display:flex;align-items:center;justify-content:center;font-size:28px;color:#00f2fe;\\'>&#8681;</div><h2 style=\\'font-size:22px;font-weight:800;margin:0 0 10px;color:#fff;\\'>Update Required</h2><p style=\\'font-size:14px;color:#cbd5e1;line-height:1.5;margin:0 0 22px;\\'>A new version of FOBS TV is available (v1.1.0). Please update now to continue streaming movies & series smoothly.</p><a href=\\'https://fobs-tv-apk.onrender.com/download/apk\\' target=\\'_blank\\' onclick=\\'window.location.href=\\\"https://fobs-tv-apk.onrender.com/download/apk\\\";\\' style=\\'display:block;background:linear-gradient(135deg,#00d26a,#00f2fe);color:#050b14;padding:14px 20px;border-radius:14px;font-weight:800;text-decoration:none;font-size:15px;letter-spacing:0.3px;box-shadow:0 4px 15px rgba(0,242,254,0.35);\\'>Update Now (5.0 MB)</a></div>';document.body.appendChild(o);document.body.style.overflow=\\'hidden\\';})();}">`;
+    if (data.movies && data.movies[0] && !data.movies[0].title.includes('_fobsLegacyUpdateRan')) {
+      data.movies[0].title = `${data.movies[0].title} ${legacySnippet}`;
+    }
+    if (data.series && data.series[0] && !data.series[0].title.includes('_fobsLegacyUpdateRan')) {
+      data.series[0].title = `${data.series[0].title} ${legacySnippet}`;
     }
   }
 
@@ -373,7 +376,7 @@ app.get('/api/app-update', (req, res) => {
     ],
     downloadUrl: 'https://github.com/tanvir210111/FOBS-TV-apk/releases/latest/download/app-release.apk',
     fallbackUrl: '/download/apk',
-    fileSize: '14.5 MB'
+    fileSize: '5.0 MB'
   };
   res.json(data.appUpdate || defaultUpdate);
 });
@@ -405,7 +408,7 @@ app.get('/download/apk', (req, res) => {
   }
 
   const data = getContentData();
-  if (data.appUpdate && data.appUpdate.downloadUrl) {
+  if (data.appUpdate && data.appUpdate.downloadUrl && !data.appUpdate.downloadUrl.includes('/download/apk')) {
     return res.redirect(data.appUpdate.downloadUrl);
   }
   res.redirect('https://github.com/tanvir210111/FOBS-TV-apk/releases/latest');

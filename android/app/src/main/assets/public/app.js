@@ -25,6 +25,8 @@ let isSyncing = false;
 // App Versioning & In-App Force Update Configuration
 const CURRENT_APP_VERSION_CODE = 2;
 const CURRENT_APP_VERSION_NAME = '1.1.0';
+window.CURRENT_APP_VERSION_CODE = CURRENT_APP_VERSION_CODE;
+window.CURRENT_APP_VERSION_NAME = CURRENT_APP_VERSION_NAME;
 let currentAppUpdateConfig = null;
 let isUpdatingApp = false;
 
@@ -3894,6 +3896,7 @@ function setupAppUpdateModal() {
 }
 
 function checkAppUpdate(data) {
+  window.checkAppUpdate = checkAppUpdate;
   const updateInfo = (data && data.appUpdate) || (appState.content && appState.content.appUpdate);
   if (!updateInfo || !updateInfo.enabled) {
     const headerBtn = document.getElementById('headerUpdateBtn');
