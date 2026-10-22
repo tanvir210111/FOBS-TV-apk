@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v38';
+const CACHE_KEY = 'fobs_tv_content_cache_v39';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -320,11 +320,17 @@ function setupPullToRefresh() {
   const mainContent = document.getElementById('mainContent');
   if (!bar || !mainContent) return;
 
+  let startX = 0;
   let startY = 0;
+  let currentX = 0;
   let currentY = 0;
   let isPulling = false;
   let isRefreshing = false;
-  const PULL_THRESHOLD = 55;
+
+  // Only engage when pulling down at least 50px deliberately at the top of the screen
+  const ENGAGE_MIN_Y = 50;
+  // Require 90px pull to trigger refresh
+  const PULL_THRESHOLD = 90;
 
   const getScrollTop = () => {
     return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
@@ -339,8 +345,10 @@ function setupPullToRefresh() {
   // Touch Start
   window.addEventListener('touchstart', (e) => {
     if (isPlayerOpen() || isRefreshing) return;
-    if (getScrollTop() <= 2) {
+    if (getScrollTop() <= 0) {
+      startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
+      currentX = startX;
       currentY = startY;
       isPulling = false;
     } else {
@@ -351,25 +359,31 @@ function setupPullToRefresh() {
   // Touch Move
   window.addEventListener('touchmove', (e) => {
     if (!startY || isPlayerOpen() || isRefreshing) return;
+    currentX = e.touches[0].clientX;
     currentY = e.touches[0].clientY;
+    const deltaX = currentX - startX;
     const deltaY = currentY - startY;
 
-    if (deltaY > 6 && getScrollTop() <= 0) {
+    // Must be at the very top of the page (scrollTop <= 0)
+    // Must be distinctly vertical (deltaY > 2.2 * deltaX) so horizontal carousel swipe is NEVER hijacked
+    // Must exceed deliberate ENGAGE_MIN_Y (50px) so normal touches/scrolls are NEVER blocked!
+    if (deltaY > ENGAGE_MIN_Y && Math.abs(deltaY) > Math.abs(deltaX) * 2.2 && getScrollTop() <= 0) {
       isPulling = true;
-      const pullDistance = Math.min(80, Math.pow(deltaY, 0.82));
+      const pullEffective = deltaY - ENGAGE_MIN_Y;
+      const pullDistance = Math.min(65, Math.pow(pullEffective, 0.75));
 
       bar.classList.remove('hidden');
       bar.style.transition = 'none';
       bar.style.maxHeight = `${pullDistance}px`;
-      bar.style.opacity = `${Math.min(1, pullDistance / 28)}`;
+      bar.style.opacity = `${Math.min(1, pullDistance / 24)}`;
 
       mainContent.style.transition = 'none';
-      mainContent.style.transform = `translateY(${pullDistance * 0.55}px)`;
+      mainContent.style.transform = `translateY(${pullDistance * 0.5}px)`;
 
       if (ptrIcon) ptrIcon.style.display = 'inline-block';
       if (dot) dot.style.display = 'none';
 
-      if (pullDistance < PULL_THRESHOLD) {
+      if (deltaY < PULL_THRESHOLD) {
         bar.className = 'server-status-bar pulling';
         if (textEl) textEl.innerText = 'Pull down to refresh...';
         if (ptrIcon) {
@@ -396,11 +410,10 @@ function setupPullToRefresh() {
     }
 
     const deltaY = currentY - startY;
-    const pullDistance = Math.min(80, Math.pow(Math.max(0, deltaY), 0.82));
     startY = 0;
     isPulling = false;
 
-    if (pullDistance >= PULL_THRESHOLD) {
+    if (deltaY >= PULL_THRESHOLD) {
       isRefreshing = true;
       bar.className = 'server-status-bar waking';
       bar.style.transition = 'all 0.25s ease';
@@ -432,9 +445,9 @@ function setupPullToRefresh() {
         if (dot) dot.style.display = 'inline-block';
       } finally {
         setTimeout(() => {
-          mainContent.style.transition = 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+          mainContent.style.transition = 'transform 0.3s ease';
           mainContent.style.transform = '';
-          bar.style.transition = 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+          bar.style.transition = 'all 0.3s ease';
           bar.style.maxHeight = '';
           bar.style.opacity = '';
           bar.classList.add('hidden');
@@ -444,9 +457,9 @@ function setupPullToRefresh() {
         }, 1200);
       }
     } else {
-      mainContent.style.transition = 'transform 0.25s ease';
+      mainContent.style.transition = 'transform 0.2s ease';
       mainContent.style.transform = '';
-      bar.style.transition = 'all 0.25s ease';
+      bar.style.transition = 'all 0.2s ease';
       bar.style.maxHeight = '';
       bar.style.opacity = '';
       bar.classList.add('hidden');
