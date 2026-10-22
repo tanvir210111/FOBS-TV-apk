@@ -5,19 +5,19 @@ const TMDB_API_KEY = '6e766190399843a3e1d85b68eaa3de69';
 
 const servers = [
   {
-    name: 'Server 1 (Fast HD - HDFriday GDrive 1080P)',
+    name: 'Server 1 (Fast HD - 1080p)',
     url: 'https://drive.usercontent.google.com/download?id=1N-jel5KOg4NyaXVwHgj3ewjVEvWzicuB&export=download&authuser=0&confirm=t'
   },
   {
-    name: 'Server 2 (Fast HD - HDFriday GDrive 720P)',
+    name: 'Server 2 (Fast HD - 720p)',
     url: 'https://drive.usercontent.google.com/download?id=1yIGS4ujk_ZGlyXhcvFrnWw4eXTbh6sQR&export=download&authuser=0&confirm=t'
   },
   {
-    name: 'Server 3 (HD Player - HDFriday Web Player)',
+    name: 'Server 3 (HD Player)',
     url: 'https://irada438esc.com/play/tt40855841'
   },
   {
-    name: 'Server 4 (Super Player - HDFriday Web Player)',
+    name: 'Server 4 (Super Player)',
     url: 'https://streamimdb.ru/embed/movie/tt40855841'
   }
 ];
@@ -49,9 +49,9 @@ async function addNayyiNavelli() {
     language: 'Hindi',
     dubLanguage: 'Hindi (Original)',
     badgeLeft: 'Hindi',
-    badgeRight: 'HD Print',
-    tag: 'HD Print',
-    quality: 'HD 1080p',
+    badgeRight: 'Hallprint',
+    tag: 'Hallprint',
+    quality: 'Hallprint',
     industry: 'Bollywood',
     year: '2026',
     country: 'India',
