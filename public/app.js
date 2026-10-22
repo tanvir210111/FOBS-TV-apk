@@ -2003,8 +2003,29 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     }
   }, 2500);
 
-  // Pre-warm URL in backend resolver cache in background (non-blocking)
-  fetch(`${API_BASE_URL}/api/resolve?url=${encodeURIComponent(url)}`).catch(() => {});
+  // Resolve embed or indirect URLs to direct stream URLs
+  let playableUrl = url;
+  const isEmbedOrIndirect = (
+    url.includes('ok.ru') ||
+    url.includes('pkembed.site') ||
+    url.includes('vcloud.you') ||
+    url.includes('fast-dl.one') ||
+    url.includes('dailymotion.com') ||
+    url.includes('dai.ly')
+  );
+
+  if (isEmbedOrIndirect) {
+    try {
+      const resolveRes = await fetch(`${API_BASE_URL}/api/resolve?url=${encodeURIComponent(url)}`);
+      const resolveData = await resolveRes.json();
+      if (resolveData && resolveData.ok && resolveData.url) {
+        playableUrl = resolveData.url;
+        console.log('Successfully resolved stream to direct URL:', playableUrl);
+      }
+    } catch (err) {
+      console.warn('URL resolution error, falling back to original:', err);
+    }
+  }
 
   // Determine active audio index
   const activeAudio = (audioIndex !== null && audioIndex !== undefined)
@@ -2013,14 +2034,20 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
 
   // Direct play only for sources that provide CORS headers and fast direct CDN edge delivery
   const isDirectMp4Source = (
-    url.includes('kmdl.eu.org') ||
-    url.includes('vkuser.net') ||
-    url.includes('vkpluscdn.site')
+    playableUrl.includes('kmdl.eu.org') ||
+    playableUrl.includes('vkuser.net') ||
+    playableUrl.includes('okcdn.ru') ||
+    playableUrl.includes('vkpluscdn.site') ||
+    playableUrl.includes('plus1.vkpluscdn') ||
+    (playableUrl.includes('.mp4') && !playableUrl.includes('drive.google.com') && !playableUrl.includes('vcloud.you'))
   );
-  if (isDirectMp4Source && !url.includes('googleusercontent.com') && audioIndex === null && !seekTime) {
-    videoPlayer.src = url;
+  if (isDirectMp4Source && !playableUrl.includes('googleusercontent.com') && audioIndex === null && !seekTime) {
+    console.log('Playing direct CDN stream:', playableUrl);
+    videoPlayer.src = playableUrl;
     videoPlayer.load();
-    videoPlayer.play().catch(() => {});
+    videoPlayer.play().catch(err => {
+      console.log('Autoplay deferred until user taps video controls:', err.message);
+    });
     return;
   }
 
@@ -2038,7 +2065,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
   // 1. Crystal clear AAC stereo sound (fixes silent EAC3)
   // 2. Track 0 = Hindi dub, Track 1 = English/Original dub
   // 3. Smooth seeking & fast loading
-  let streamApiUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(url)}&audio=${activeAudio}`;
+  let streamApiUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(playableUrl)}&audio=${activeAudio}`;
   if (seekTime && seekTime > 0) {
     streamApiUrl += `&t=${seekTime}`;
   }
