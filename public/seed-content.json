@@ -117,6 +117,2074 @@
   },
   "movies": [
     {
+      "id": "mb-m-5481474927855289304",
+      "title": "Aakhri Sawal (Hindi Dub)",
+      "originalTitle": "Aakhri Sawal [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Drama, Thriller",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "1.0",
+      "imdbRating": "1.0",
+      "poster": "https://image.tmdb.org/t/p/w500/9CXBZH6sRJpFTMSaY3wj1jx98F4.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/akZ9jTTzvBOx3CeTVCo9WyhxL5q.jpg",
+      "description": "Vicky, a brilliant but volatile scholar who ignites a national firestorm when he publicly accuses his legendary mentor, Professor Gopal Nadkarni, of institutional bias. What begins as a faculty dispute is quickly hijacked by a sensationalist news anchor and an ambitious political activist, turning a private disagreement into a televised \"intellectual trial\" watched by millions.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/dd2dbd39e883cbe176edd7ec9ad45586.mp4?sign=92bd938e1afa9d828edbbd21683e3d1f&t=1792684691",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/dd2dbd39e883cbe176edd7ec9ad45586.mp4?sign=92bd938e1afa9d828edbbd21683e3d1f&t=1792684691"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/fd2bd89fb77b72facad46e095b246afd.mp4?sign=4ad5011ad32ef55e5936a328e8603c14&t=1792684691"
+        },
+        {
+          "name": "Server 3 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/13a4696506e941aeb935fc0bb8b4efdc.mp4?sign=bf012ee6e8cc10afa2f813c9905b7bb7&t=1792684691"
+        },
+        {
+          "name": "Server 4 (360p)",
+          "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/e2890dbd2b8edd92c8612ee8daa3f3b7.mp4?sign=2d2745b499d7e049a75bdbd8cec219b1&t=1792684691"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Sanjay Dutt",
+          "character": "Professor Gopal Nadkarni",
+          "photo": "https://image.tmdb.org/t/p/w185/oq4pnvWhl1HxKpp0KVlSfAr3Tiu.jpg"
+        },
+        {
+          "name": "Namashi Chakraborty",
+          "character": "Vicky Hegde",
+          "photo": "https://image.tmdb.org/t/p/w185/uWVWky9A4ZXYRW7haS8Vawf7tDo.jpg"
+        },
+        {
+          "name": "Amit Sadh",
+          "character": "Aditya Rao",
+          "photo": "https://image.tmdb.org/t/p/w185/2saOd8mdC7U3RQseWAfQ91jSUsX.jpg"
+        },
+        {
+          "name": "Tridha Choudhury",
+          "character": "Saara",
+          "photo": "https://image.tmdb.org/t/p/w185/nCb7ZgqAbL7gcgfUsdWHw9yZo2I.jpg"
+        },
+        {
+          "name": "Sameera Reddy",
+          "character": "Professor Pallavi Menon",
+          "photo": "https://image.tmdb.org/t/p/w185/egzWn7xxmKZxnynYuFlD93z3GMf.jpg"
+        },
+        {
+          "name": "Neetu Chandra",
+          "character": "Kavya Rawat",
+          "photo": "https://image.tmdb.org/t/p/w185/8gVCfDlE2sf1Pxpx9qg0OTlCL4k.jpg"
+        },
+        {
+          "name": "Mrinal Kulkarni",
+          "character": "Prabha Nadkarni",
+          "photo": "https://image.tmdb.org/t/p/w185/ieSjGEhHK5DlRO8XGEstQBmhFWl.jpg"
+        },
+        {
+          "name": "Harsimran Oberoi",
+          "character": "Ipshita Das",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-8175753992266569024",
+      "title": "Bharat Bhhagya Viddhaata (Hindi Dub)",
+      "originalTitle": "Bharat Bhhagya Viddhaata [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Drama, Thriller",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "6.0",
+      "imdbRating": "6.0",
+      "poster": "https://image.tmdb.org/t/p/w500/tf5lLrrikOswHKHpzW0UiHycJEx.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/vnEdyQ0XL325M4jd1prEMNo4xlL.jpg",
+      "description": "Inside Cama Hospital, one of the sites targeted during the 2008 Mumbai terror attacks, nurses, ward boys, cleaners, lift operators, security personnel, and administrative workers keep 400 people alive while armed assailants struck the city around them.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/85e232e52b8a65bc33b5072d6d5f7054.mp4?sign=429f12be2a4528d305f4bda5a2223691&t=1792682318",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/85e232e52b8a65bc33b5072d6d5f7054.mp4?sign=429f12be2a4528d305f4bda5a2223691&t=1792682318"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/c6f8fd09978a4a844004bfb683c79529.mp4?sign=cbd217061a76a2540982f8f9d2ab90fe&t=1792682318"
+        },
+        {
+          "name": "Server 3 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/16a72eea4f37db40c164fccb3e555df8.mp4?sign=e282a0d67336bac31d999e6de1a06c56&t=1792682318"
+        },
+        {
+          "name": "Server 4 (360p)",
+          "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/11a8c752d98109107c7ecdb782ddeac6.mp4?sign=8b3c0c16426f3a0ba4e668c0f0a9e5f8&t=1792682318"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Kangana Ranaut",
+          "character": "Gita Madhav Gandhare",
+          "photo": "https://image.tmdb.org/t/p/w185/GmIRKLKP3xEx1mgF7VrFurIEbz.jpg"
+        },
+        {
+          "name": "Girija Oak",
+          "character": "Sheetal",
+          "photo": "https://image.tmdb.org/t/p/w185/f10HPTExCVQ8mZXShctpWPsxxaw.jpg"
+        },
+        {
+          "name": "Smita Tambe",
+          "character": "Trupti",
+          "photo": "https://image.tmdb.org/t/p/w185/o4lW8v4lOyAb4FWHQqaJvfT2QxL.jpg"
+        },
+        {
+          "name": "Esha Dey",
+          "character": "Babita",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Asha Shelar",
+          "character": "Dr Maya Kadam",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Suhita Thatte",
+          "character": "Deena",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Rasika Agashe",
+          "character": "Mohini",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Prasad Oak",
+          "character": "Kedar Gandhare",
+          "photo": "https://image.tmdb.org/t/p/w185/xYiQULIzHIk57rLYeiwipLzVPRi.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-4323176914467930864",
+      "title": "The Great Grand Superhero: Aliens Ka Aagman (Hindi Dub)",
+      "originalTitle": "The Great Grand Superhero: Aliens Ka Aagman [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Comedy, Family, Drama",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "8.0",
+      "imdbRating": "8.0",
+      "poster": "https://image.tmdb.org/t/p/w500/6CYmHknTN2UGGhqQUZh4tqQ6fEr.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/2Lu1jb8kv93ciXYhmUlsj0E2RK1.jpg",
+      "description": "Follows a grandfather and grandson whose relationship transforms through the child's imagination when they encounter aliens.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/4c46fe62493ab2fe1c7ba2a72a1562ec.mp4?sign=7e542d3c56dbaf88bc39b21e786ecdd9&t=1792684688",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/4c46fe62493ab2fe1c7ba2a72a1562ec.mp4?sign=7e542d3c56dbaf88bc39b21e786ecdd9&t=1792684688"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/719aa521a5288bc52b5b531961d768b2.mp4?sign=b16ad726f3dfacc68d15c6cf6cc9fede&t=1792684688"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Jackie Shroff",
+          "character": "Jagdish Chandra",
+          "photo": "https://image.tmdb.org/t/p/w185/sVqe6VioM37LQwgQLd8wnC5vapK.jpg"
+        },
+        {
+          "name": "Prateik Smita Patil",
+          "character": "Cameo",
+          "photo": "https://image.tmdb.org/t/p/w185/uq71pp9TfXR9W6tDz6xIYf4H9TP.jpg"
+        },
+        {
+          "name": "Bhagyashree",
+          "character": "Cameo",
+          "photo": "https://image.tmdb.org/t/p/w185/tfxJIJoElKsbOo4k50UphkCFhVQ.jpg"
+        },
+        {
+          "name": "Mihir Godbole",
+          "character": "Dipu",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Durgesh Kumar",
+          "character": "Kannu",
+          "photo": "https://image.tmdb.org/t/p/w185/nLt1cgrxIapn7fRVwFjqnSFXc1x.jpg"
+        },
+        {
+          "name": "Saharsh Kumar Shukla",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/jBDpti5r8uOuNJAEApcJyvrlVFA.jpg"
+        },
+        {
+          "name": "Kumar Saurabh",
+          "character": "Cast",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Sharat Saxena",
+          "character": "Kartar Singh",
+          "photo": "https://image.tmdb.org/t/p/w185/ArW6nQ23bjVfbcFmNVl4W9zpd7X.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-3136667368668152832",
+      "title": "Babita Singh Reporting (Hindi Dub)",
+      "originalTitle": "ASI Babita Singh Reporting [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Crime, Drama",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "3.7",
+      "imdbRating": "3.7",
+      "poster": "https://image.tmdb.org/t/p/w500/nA3xIA93Wenbuc5I5RQwPSUPXU.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/o80iCzo1zqSt4zx9SZkCsjgxzvi.jpg",
+      "description": "People-pleasing cop Baby accepts a fake charge to get leave for her sister-in-law’s baby shower in Rewa. There, she reunites with her childhood friend Bansi, who is murdered that very night. Defying dismissive in-laws, an indifferent husband and an apathetic local police force, she secretly investigates the murder, uncovering family betrayals while finding her own voice, courage and place as a real cop.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/0efb84754f2d88f88c6174c5c511c450.mp4?sign=a2ebc4782dc4791bc5ae74bb7232f95c&t=1792683462",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/0efb84754f2d88f88c6174c5c511c450.mp4?sign=a2ebc4782dc4791bc5ae74bb7232f95c&t=1792683462"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/65502a55da14d5dad0cb0169235dfa53.mp4?sign=b90b400aade11eb824cd0258147e290d&t=1792683462"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Nimisha Sajayan",
+          "character": "ASI Babita Singh",
+          "photo": "https://image.tmdb.org/t/p/w185/r1tiqFWXlWDFlZx966yOeBYs2qY.jpg"
+        },
+        {
+          "name": "Anshumaan Pushkar",
+          "character": "Sharad Vashisht",
+          "photo": "https://image.tmdb.org/t/p/w185/ktbqCXjoqLuD96tTkHo1PVqVi14.jpg"
+        },
+        {
+          "name": "Barun Sobti",
+          "character": "Bansi Seni",
+          "photo": "https://image.tmdb.org/t/p/w185/5DyMqVtDdZmKq76Ujtnt59zPLms.jpg"
+        },
+        {
+          "name": "Rajesh Kumar",
+          "character": "Mukesh Sethi",
+          "photo": "https://image.tmdb.org/t/p/w185/vat8qbqIeumutuToGX0VrtA06M6.jpg"
+        },
+        {
+          "name": "Geetika Vidya",
+          "character": "Karamjeet Kaur",
+          "photo": "https://image.tmdb.org/t/p/w185/8vGi0UERPBA5fzkjbIOqLOQfzso.jpg"
+        },
+        {
+          "name": "Sunita Rajwar",
+          "character": "Babita's Mother-in-Law",
+          "photo": "https://image.tmdb.org/t/p/w185/cEhnGiU6arxA4vxZCUspFWDP76F.jpg"
+        },
+        {
+          "name": "Priya Yadav",
+          "character": "Guddi",
+          "photo": "https://image.tmdb.org/t/p/w185/cvex8DWAbE8QZMfcNPbHMew5Q9x.jpg"
+        },
+        {
+          "name": "Priyanka Setia",
+          "character": "Rupa",
+          "photo": "https://image.tmdb.org/t/p/w185/bHZwl5Vpf9X9IlqilC0wi3IGoVV.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-920251265093878016",
+      "title": "Cocaine Bear (Hindi Dub)",
+      "originalTitle": "Cocaine [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2023",
+      "country": "India",
+      "genre": "Thriller, Comedy, Crime",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "6.0",
+      "imdbRating": "6.0",
+      "poster": "https://image.tmdb.org/t/p/w500/gOnmaxHo0412UVr1QM5Nekv1xPi.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/a2tys4sD7xzVaogPntGsT1ypVoT.jpg",
+      "description": "Inspired by a true story, an oddball group of cops, criminals, tourists and teens converge in a Georgia forest where a 500-pound black bear goes on a murderous rampage after unintentionally ingesting cocaine.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7c62aa60b3b8465d19eb5d1cb40cc49e.mp4?sign=73fb0aa4c2889dcbc385f148418626ad&t=1792684473",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/7c62aa60b3b8465d19eb5d1cb40cc49e.mp4?sign=73fb0aa4c2889dcbc385f148418626ad&t=1792684473"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/2b4eb94802a31f1b8da60e2ebfde052a.mp4?sign=0edff1937653493574e87fa1a361d1c6&t=1792684473"
+        },
+        {
+          "name": "Server 3 (360p)",
+          "url": "https://bcdnxw.hakunaymatata.com/mlsbd/f6c96b87c4c71f53ed286b6c3cc0984a.mp4?sign=5d5823dde20c88f5ec460db0faec5e9a&t=1792684473"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Keri Russell",
+          "character": "Sari",
+          "photo": "https://image.tmdb.org/t/p/w185/4bLtisDjmCOemk3uC65NAlmdIjz.jpg"
+        },
+        {
+          "name": "Alden Ehrenreich",
+          "character": "Eddie",
+          "photo": "https://image.tmdb.org/t/p/w185/vOLiUSDT8rubu0J2YKwBkOL0K6V.jpg"
+        },
+        {
+          "name": "O'Shea Jackson Jr.",
+          "character": "Daveed",
+          "photo": "https://image.tmdb.org/t/p/w185/kXJ02sXvnExbGNJ11piC6d6WMOc.jpg"
+        },
+        {
+          "name": "Ray Liotta",
+          "character": "Syd",
+          "photo": "https://image.tmdb.org/t/p/w185/jdwGJbJNSRQiG2kB5MJxiu2clCQ.jpg"
+        },
+        {
+          "name": "Isiah Whitlock Jr.",
+          "character": "Bob",
+          "photo": "https://image.tmdb.org/t/p/w185/8OIhQb53rMX7VcTLZbAMeVd7tHc.jpg"
+        },
+        {
+          "name": "Brooklynn Prince",
+          "character": "Dee Dee",
+          "photo": "https://image.tmdb.org/t/p/w185/k9oSIk7V8Sbgs0Dw8tX71f9YeXi.jpg"
+        },
+        {
+          "name": "Christian Convery",
+          "character": "Henry",
+          "photo": "https://image.tmdb.org/t/p/w185/tOR2tSrvHPVDltE4jBDEva3GNqY.jpg"
+        },
+        {
+          "name": "Margo Martindale",
+          "character": "Ranger Liz",
+          "photo": "https://image.tmdb.org/t/p/w185/6ANuYnZZJTuQLL4bbt8vH1qDYje.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-8499680477270401976",
+      "title": "The India Story (Hindi Dub)",
+      "originalTitle": "The India Story [Hindi] ",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Drama, Thriller",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "7.8",
+      "imdbRating": "7.8",
+      "poster": "https://image.tmdb.org/t/p/w500/ocasYrRgkfKBdabKNPl8ttZuu7x.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/4TtfVgg7GHiYFtlIiEjZ3JHTz4S.jpg",
+      "description": "A community confronts the devastating impact of pesticide contamination as industrial negligence threatens public health. The fight for accountability exposes systemic failures in regulatory oversight and corporate responsibility.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/38338ab962ac78d5ffa5eaf972a57c01.mp4?sign=58f7ab15e26742d5437eaa2956c421b0&t=1792684305",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/38338ab962ac78d5ffa5eaf972a57c01.mp4?sign=58f7ab15e26742d5437eaa2956c421b0&t=1792684305"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/e922bde39ea7b800b5a91914ccbf7486.mp4?sign=a12611364fe3e5636205e958593e6167&t=1792684305"
+        },
+        {
+          "name": "Server 3 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/7846fb81b50b9ca79ca4963e42d7151a.mp4?sign=604e524d97ed4df704c9130922494996&t=1792684305"
+        },
+        {
+          "name": "Server 4 (360p)",
+          "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/2cd1b7a4b77335404986a05aa5cd8b49.mp4?sign=21cfa8d5a2bfb9bf5d6d2d58ff7b80de&t=1792684305"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Kajal Aggarwal",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/wDzYjnDRNzyigCPBEwc9gf1hZ0Q.jpg"
+        },
+        {
+          "name": "Shreyas Talpade",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/rKORFoIrI4GlcIfzzyVwCQNL9no.jpg"
+        },
+        {
+          "name": "Murali Sharma",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/8m4L7L9lK4Z2YK4Jg97pMbA0Le5.jpg"
+        },
+        {
+          "name": "Manish Wadhwa",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/dtYKUHR1kZuOBX2Ud2mEhpnTS3x.jpg"
+        },
+        {
+          "name": "Sham Mashalkar",
+          "character": "Cast",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Kamlesh Sawant",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/wtw6SSvi5TINvjF7q9n2yFPN37h.jpg"
+        },
+        {
+          "name": "Trisha Sarda",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/3o1WFvTGcXehIDochAJJqxaZ6Y6.jpg"
+        },
+        {
+          "name": "Atul Tiwari",
+          "character": "Cast",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-5078903437354494336",
+      "title": "Baby Do Die Do (Hindi Dub)",
+      "originalTitle": "Baby Do Die Do [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Mystery, Thriller, Crime, Action",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "7.3",
+      "imdbRating": "7.3",
+      "poster": "https://image.tmdb.org/t/p/w500/jvfqp6gMlvHODYnBXoogqRyIs0k.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/l2TgHsg445CPwSGtg30I0GmoFtG.jpg",
+      "description": "A deaf and mute serial killer in Mumbai can only hear her dead sister's voice as she commits murders for mysterious reasons.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/c39ebf244f0a6e32b63f94de367b36c4.mp4?sign=c8a824187c5024dd02151ab6eae0eff5&t=1792684684",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/c39ebf244f0a6e32b63f94de367b36c4.mp4?sign=c8a824187c5024dd02151ab6eae0eff5&t=1792684684"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Huma Qureshi",
+          "character": "Baby KarMarkar",
+          "photo": "https://image.tmdb.org/t/p/w185/nJWauZQdRjMJxwY3UP4SXrqh9CM.jpg"
+        },
+        {
+          "name": "Sikandar Kher",
+          "character": "Zafar Katkar",
+          "photo": "https://image.tmdb.org/t/p/w185/sULXachczStfQLegNVmxcvuUTWZ.jpg"
+        },
+        {
+          "name": "Chunky Panday",
+          "character": "PM Jain",
+          "photo": "https://image.tmdb.org/t/p/w185/2dG7abdDNs3MVmrAa6HEBFKhch4.jpg"
+        },
+        {
+          "name": "Rachit Singh",
+          "character": "Amandeep Singh Siddhu",
+          "photo": "https://image.tmdb.org/t/p/w185/dSGJWDhYppewWbgPvPGo1xxFthM.jpg"
+        },
+        {
+          "name": "Seema Pahwa",
+          "character": "DCP Anjum Khan",
+          "photo": "https://image.tmdb.org/t/p/w185/jtm1q6oLBzd7C9KIrXlOOcUyzRf.jpg"
+        },
+        {
+          "name": "Vidya Malvade",
+          "character": "Manju Murjhani",
+          "photo": "https://image.tmdb.org/t/p/w185/dLMRAwaJhNyWWqHwfFwjcz5L4q3.jpg"
+        },
+        {
+          "name": "Himanshu Malik",
+          "character": "Micky Murjhani",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Marudhar Shekhawat",
+          "character": "Manu",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-1492986236347339808",
+      "title": "Ohh My Dog (Hindi Dub)",
+      "originalTitle": "Ohh My Dog [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Drama, Family",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "8.2",
+      "imdbRating": "8.2",
+      "poster": "https://image.tmdb.org/t/p/w500/3zVHaUphvyc3O5dDEkzJe9Faf3P.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/nOQYly08Rv5fepk67i4wy43Oyyf.jpg",
+      "description": "In Assam, 14-year-old Apu embarks on a desperate quest to rescue his beloved dog, Momo, after he is kidnapped. Elsewhere, in Bihar, a devoted dog named Oscar sets out on a perilous journey to find his kidnapped owner, a 15-year-old child labourer. As their journeys unfold, it becomes clear that the two kidnappings may be connected to a larger, sinister plan.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/8625b3e8b086ebe4ed9b2366405a4e66.mp4?sign=efae8e33cf61f8087f8790a3f6b8e959&t=1792684683",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/8625b3e8b086ebe4ed9b2366405a4e66.mp4?sign=efae8e33cf61f8087f8790a3f6b8e959&t=1792684683"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/288f83124ecd9ec1861ecfa3ed94b232.mp4?sign=d069244ddd0d24b9108ae7fc3c3eb52e&t=1792684683"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Maahi Rai",
+          "character": "Apu",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Pankaj Tripathi",
+          "character": "Masterji",
+          "photo": "https://image.tmdb.org/t/p/w185/f3Vxz0QB7PHeyPcXrfJX14Xkxnu.jpg"
+        },
+        {
+          "name": "Pavan Malhotra",
+          "character": "Akaljeet Sodhi",
+          "photo": "https://image.tmdb.org/t/p/w185/aqTzRvGsujDgxoLbVEvVEZVTyNr.jpg"
+        },
+        {
+          "name": "Geeta Agrawal Sharma",
+          "character": "Apu's Mother",
+          "photo": "https://image.tmdb.org/t/p/w185/5Jrwb9zWG2Hjmf8PQLuDmCKnMHG.jpg"
+        },
+        {
+          "name": "Rajesh Kumar",
+          "character": "Daroga",
+          "photo": "https://image.tmdb.org/t/p/w185/vat8qbqIeumutuToGX0VrtA06M6.jpg"
+        },
+        {
+          "name": "Shreedhar Dubey",
+          "character": "Mukadam",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Jitendra Joshi",
+          "character": "Rajale",
+          "photo": "https://image.tmdb.org/t/p/w185/rUtSbkJXDwk3jmLiO0Zt8oNgIMO.jpg"
+        },
+        {
+          "name": "Bullu Kumar",
+          "character": "Lalua - Goon 1",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-5127954970351917664",
+      "title": "Bandar (Hindi Dub)",
+      "originalTitle": "Bandar [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Thriller, Crime, Drama",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "6.0",
+      "imdbRating": "6.0",
+      "poster": "https://image.tmdb.org/t/p/w500/3RRA8UBAdPC08spbDgnU0ykQ2MR.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/xS8tsJ8IvNkzBMu3kq3gZFReh7j.jpg",
+      "description": "TV star Samar's life spirals when his ex Gayatri accuses him of rape after he blocks contact with her. Despite his new relationship with Khushi, he faces arrest and encounters a corrupt justice system.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/f8eb21a79cec057a00fbfdd25c06fe3e.mp4?sign=a1a8ad2b9be824917ecc42f7001fdec9&t=1792683721",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/f8eb21a79cec057a00fbfdd25c06fe3e.mp4?sign=a1a8ad2b9be824917ecc42f7001fdec9&t=1792683721"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/9298aa072a27eda809a84a08be0df387.mp4?sign=92386398b366425e71fe5a54dc17396d&t=1792683721"
+        },
+        {
+          "name": "Server 3 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/ac0d01c9bebafea596b3450619ad702b.mp4?sign=86c518523231e07f5a5a65b386cdab8a&t=1792683721"
+        },
+        {
+          "name": "Server 4 (360p)",
+          "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/d474f9618f74fadd9144078fbb6e25b4.mp4?sign=2c5be2849d10aaff799265fb4bc65034&t=1792683721"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Bobby Deol",
+          "character": "Samar Mehra",
+          "photo": "https://image.tmdb.org/t/p/w185/2npVa3PduichY8e7qBiE54m9VVP.jpg"
+        },
+        {
+          "name": "Sanya Malhotra",
+          "character": "Suhani Mehra",
+          "photo": "https://image.tmdb.org/t/p/w185/sQ0VIqGLecfpwYayO05Z7NC32yN.jpg"
+        },
+        {
+          "name": "Saba Azad",
+          "character": "Khushi",
+          "photo": "https://image.tmdb.org/t/p/w185/kK1IEhbhpKCQz4pZ5HWuqpDf9rD.jpg"
+        },
+        {
+          "name": "Sapna Pabbi",
+          "character": "Gayatri Anand",
+          "photo": "https://image.tmdb.org/t/p/w185/n0LTGi9ZrMtUWfZgahD0oyYDrFT.jpg"
+        },
+        {
+          "name": "Jitendra Joshi",
+          "character": "Deore",
+          "photo": "https://image.tmdb.org/t/p/w185/rUtSbkJXDwk3jmLiO0Zt8oNgIMO.jpg"
+        },
+        {
+          "name": "Indrajith Sukumaran",
+          "character": "Lijo",
+          "photo": "https://image.tmdb.org/t/p/w185/32YxjXVmgkPCVKUQAkNqWUGbBIl.jpg"
+        },
+        {
+          "name": "Raj B Shetty",
+          "character": "Lizard Man 1",
+          "photo": "https://image.tmdb.org/t/p/w185/vlNvrGhaYzmRxhkd4GOKFNfSkHY.jpg"
+        },
+        {
+          "name": "Ankush Gedam",
+          "character": "Bilaal",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-5349301616099452064",
+      "title": "Gandhari (Hindi Dub)",
+      "originalTitle": "Gandhari [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Action, Drama, Thriller",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "7.3",
+      "imdbRating": "7.3",
+      "poster": "https://image.tmdb.org/t/p/w500/hCHei97aPYCCsh4vicz9X0wmdFV.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/sT5WVT8LzvDwIbfy9BGXK0fvf3s.jpg",
+      "description": "When a mother loses her eyesight and her daughter in a kidnapping, she takes matters into her own hands to hunt down those responsible.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/d62ac7c812818213425fe64eba516b27.mp4?sign=61ecb4073fd25754f4d1a2876aca72c5&t=1792684681",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/d62ac7c812818213425fe64eba516b27.mp4?sign=61ecb4073fd25754f4d1a2876aca72c5&t=1792684681"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/52620f4ed04292a5cf0a13c278d73f29.mp4?sign=eb33a22efc6e228408fbf370bfd8f929&t=1792684681"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Taapsee Pannu",
+          "character": "Bani Sikdar",
+          "photo": "https://image.tmdb.org/t/p/w185/43e24aeOC8AZITo6ShaKKG9aV0Y.jpg"
+        },
+        {
+          "name": "Ishwak Singh",
+          "character": "Gokul Sikdar",
+          "photo": "https://image.tmdb.org/t/p/w185/iN1QUGzN7c4qBps3xpuWYVzpMag.jpg"
+        },
+        {
+          "name": "Mita Vashisht",
+          "character": "Jhunu Amba",
+          "photo": "https://image.tmdb.org/t/p/w185/mcnaQTCmuz3lXNotFFdkwCO7FTY.jpg"
+        },
+        {
+          "name": "Swastika Mukherjee",
+          "character": "Miss Churni",
+          "photo": "https://image.tmdb.org/t/p/w185/xjEdXwco3KjWU7zFDhJgMJYmerh.jpg"
+        },
+        {
+          "name": "Chhaya Kadam",
+          "character": "Uma Patra",
+          "photo": "https://image.tmdb.org/t/p/w185/umOPkpPA4JUWLkVziYU5GF6gELD.jpg"
+        },
+        {
+          "name": "Jatin Sarna",
+          "character": "Kabir",
+          "photo": "https://image.tmdb.org/t/p/w185/bnKqppKcRxSiEPiq2Fmbriibf5N.jpg"
+        },
+        {
+          "name": "Prashant Narayanan",
+          "character": "Blackhole Leader",
+          "photo": "https://image.tmdb.org/t/p/w185/wm0EzbLnwUBgyz0DjQsGWXViXEa.jpg"
+        },
+        {
+          "name": "Chandan Roy",
+          "character": "Somesh Yadav",
+          "photo": "https://image.tmdb.org/t/p/w185/2zIIonCsFrdcmmZD0g5YIaCPnQY.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-2897664112366868144",
+      "title": "Cocktail 2 (Hindi Dub)",
+      "originalTitle": "Cocktail 2 [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Romance, Comedy",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "5.6",
+      "imdbRating": "5.6",
+      "poster": "https://image.tmdb.org/t/p/w500/oIQmtByV1LtEQSwM4EpdLTyoSlM.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/7CJQvCO8aNKEewAFw90qvQ7fr1T.jpg",
+      "description": "A vacation in Sicily forces longtime partners Diya and Kunal to question their love and commitment after they reunite with Diya's old friend Ally.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/e6f85aca6c84c057bd6f265e05e2da7c.mp4?sign=12b93db005a03466cb2dd20e424fe643&t=1792684639",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/e6f85aca6c84c057bd6f265e05e2da7c.mp4?sign=12b93db005a03466cb2dd20e424fe643&t=1792684639"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/ff8abd682644f98525ea987cb66ca5e7.mp4?sign=0983e362c88e6e4056f548edb6451ede&t=1792681762"
+        },
+        {
+          "name": "Server 3 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/9ecc1821a46710e8336f12f0f7d25b83.mp4?sign=55dc7884670dd15ec21731bb03db2b91&t=1792681375"
+        },
+        {
+          "name": "Server 4 (360p)",
+          "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/7bad0661ad5babe1041abb020b23e671.mp4?sign=122fa5795026248a1a5c075093654ef8&t=1792681989"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Kriti Sanon",
+          "character": "Ally",
+          "photo": "https://image.tmdb.org/t/p/w185/go8GUz7poytTvm9P9HNHQ3T84N1.jpg"
+        },
+        {
+          "name": "Shahid Kapoor",
+          "character": "Kunal",
+          "photo": "https://image.tmdb.org/t/p/w185/q5jqLRioZgIVjXpKS8XHx27ScDQ.jpg"
+        },
+        {
+          "name": "Rashmika Mandanna",
+          "character": "Diya",
+          "photo": "https://image.tmdb.org/t/p/w185/lj16BGfdqygHF8PZVt2KO8GUXn1.jpg"
+        },
+        {
+          "name": "Tiku Talsania",
+          "character": "Kunal's Father",
+          "photo": "https://image.tmdb.org/t/p/w185/pcEzSYDTRrnvA5pcbxhrfGOVTuM.jpg"
+        },
+        {
+          "name": "Neelu Kohli",
+          "character": "Kunal's Mother",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Suparna Marwah",
+          "character": "Diya's Mother",
+          "photo": "https://image.tmdb.org/t/p/w185/wvu7uXRLKsN1qnjP71xWmtbB8gy.jpg"
+        },
+        {
+          "name": "Kanan Arunachalam",
+          "character": "Diya's Father",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Mark Bennington",
+          "character": "Eduardo",
+          "photo": "https://image.tmdb.org/t/p/w185/kr1Nv0Q2cZEO4wVRFrUzdoXtM01.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-5091094358426900488",
+      "title": "Jumanji: Welcome to the Jungle (Hindi Dub)",
+      "originalTitle": "Welcome to the Jungle [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2017",
+      "country": "India",
+      "genre": "Adventure, Comedy, Fantasy",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "6.8",
+      "imdbRating": "6.8",
+      "poster": "https://image.tmdb.org/t/p/w500/pSgXKPU5h6U89ipF7HBYajvYt7j.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/zZKmEmRDc7ZjFucPm2UGNgDRlDc.jpg",
+      "description": "Four teenagers in detention discover an old video game console with a game they’ve never heard of. When they decide to play, they are immediately sucked into the jungle world of Jumanji in the bodies of their avatars. They’ll have to complete the adventure of their lives filled with fun, thrills and danger or be stuck in the game forever!",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/8c2717634c87cd8e72cca977bb46aadf.mp4?sign=5dbd0059c8d0a5e437c34a22b37a9e9a&t=1792681450",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/8c2717634c87cd8e72cca977bb46aadf.mp4?sign=5dbd0059c8d0a5e437c34a22b37a9e9a&t=1792681450"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/convert-h264/cbca5fd77852263cfcb4038a3b9d67d8.mp4?sign=97c5940ca5096b4fad92e39bec8135ec&t=1792681450"
+        },
+        {
+          "name": "Server 3 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/ee23f9452f6cf6cd65f233366513baa5.mp4?sign=c404b0332878f353eecd299a7db1ace5&t=1792681066"
+        },
+        {
+          "name": "Server 4 (360p)",
+          "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/deefe7913159fd479df586518a2b949a.mp4?sign=4af3c82be139a0838bf93da71ec5356c&t=1792684026"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Dwayne Johnson",
+          "character": "Spencer",
+          "photo": "https://image.tmdb.org/t/p/w185/5QApZVV8FUFlVxQpIK3Ew6cqotq.jpg"
+        },
+        {
+          "name": "Kevin Hart",
+          "character": "Fridge",
+          "photo": "https://image.tmdb.org/t/p/w185/byiNydUlM6oP8diA7WMvYbNM7a1.jpg"
+        },
+        {
+          "name": "Jack Black",
+          "character": "Bethany",
+          "photo": "https://image.tmdb.org/t/p/w185/59IhgCtiWI5yTfzPhsjzg7GjCjm.jpg"
+        },
+        {
+          "name": "Karen Gillan",
+          "character": "Martha",
+          "photo": "https://image.tmdb.org/t/p/w185/qYx8CflXVq48nGKX1IJsDrAj0sT.jpg"
+        },
+        {
+          "name": "Rhys Darby",
+          "character": "Nigel",
+          "photo": "https://image.tmdb.org/t/p/w185/65Zy72IsUjopCkRt0s55Tk68GIm.jpg"
+        },
+        {
+          "name": "Bobby Cannavale",
+          "character": "Van Pelt",
+          "photo": "https://image.tmdb.org/t/p/w185/wlp20ggyNI7x0xGUtTjC2Xl2XmD.jpg"
+        },
+        {
+          "name": "Nick Jonas",
+          "character": "Alex",
+          "photo": "https://image.tmdb.org/t/p/w185/y79k7wrDeyRbrGFs2Z3XHU5mq0o.jpg"
+        },
+        {
+          "name": "Alex Wolff",
+          "character": "Young Spencer",
+          "photo": "https://image.tmdb.org/t/p/w185/7PMu5zFOEH7PqFDzrKThgKD4Ndf.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-8195040886506541968",
+      "title": "Alpha (Hindi Dub)",
+      "originalTitle": "Alpha [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Action, Thriller",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "5.0",
+      "imdbRating": "5.0",
+      "poster": "https://image.tmdb.org/t/p/w500/bPtRt3ajQ0EkyeQ1O6iJwAIi9Py.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/b4WXm5ahmtubYXy3wqHUG2nUKoM.jpg",
+      "description": "When Sita, a highly trained assassin raised in isolation as a super-soldier by a rogue commander, discovers the dark truth about her family and her stolen childhood, she teams up with her long lost sister to take down her creator and his illicit military program.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/b0b25f9603328a3dadf7edd7d352b5f1.mp4?sign=9022277141d11df87a1e6bb52b88a90e&t=1792682098",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/b0b25f9603328a3dadf7edd7d352b5f1.mp4?sign=9022277141d11df87a1e6bb52b88a90e&t=1792682098"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/813a0cec4f5caf6fc56efe89d0094d7a.mp4?sign=7586367766d2547719beb86a24a7f572&t=1792682118"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Alia Bhatt",
+          "character": "Sita",
+          "photo": "https://image.tmdb.org/t/p/w185/lAgBZgHKTo6amIO9CfNxUbm1usH.jpg"
+        },
+        {
+          "name": "Sharvari",
+          "character": "Durga",
+          "photo": "https://image.tmdb.org/t/p/w185/zAkx24qd7eH1Ck3ouBnPOysAOaJ.jpg"
+        },
+        {
+          "name": "Bobby Deol",
+          "character": "Fateh Singh Lakhawat / Major Zarrar Khan",
+          "photo": "https://image.tmdb.org/t/p/w185/2npVa3PduichY8e7qBiE54m9VVP.jpg"
+        },
+        {
+          "name": "Anil Kapoor",
+          "character": "Vikrant Kaul",
+          "photo": "https://image.tmdb.org/t/p/w185/dwvnpiwg9m2zj0VHzlgzEotFl0G.jpg"
+        },
+        {
+          "name": "Dibyendu Bhattacharya",
+          "character": "Dr. John Verghese",
+          "photo": "https://image.tmdb.org/t/p/w185/uLlGKCL9y5CFBwcAafTDQhupz5h.jpg"
+        },
+        {
+          "name": "Dia Mirza",
+          "character": "Janaki Kaul",
+          "photo": "https://image.tmdb.org/t/p/w185/oJSZlMkIGC1Yr8QxdBLliUjPRSd.jpg"
+        },
+        {
+          "name": "Hrithik Roshan",
+          "character": "Kabir Dhaliwal",
+          "photo": "https://image.tmdb.org/t/p/w185/d7XGTvyYgmrsA05XOn1YtxYcuY1.jpg"
+        },
+        {
+          "name": "Shubhi Mehta",
+          "character": "Susan Cherian",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-3383785055142172048",
+      "title": "Dhamaal 4 (Hindi Dub)",
+      "originalTitle": "Dhamaal 4 [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Comedy",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "4.1",
+      "imdbRating": "4.1",
+      "poster": "https://image.tmdb.org/t/p/w500/oVij5aEEE6iI4PxB4i0CgKp8h0m.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/95sjD0dRajtU6SKD6Gq6PtrGoGY.jpg",
+      "description": "The Dhamaal boys are back for another treasure hunt, facing hilarious challenges in their quest for the Treasure of Life.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/1f14c660e5bcff4b285e77817bfe73ff.mp4?sign=3ac456b650a5dccc3055099ecc816dac&t=1792681817",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/1f14c660e5bcff4b285e77817bfe73ff.mp4?sign=3ac456b650a5dccc3055099ecc816dac&t=1792681817"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/0753c2f346d77afe57ab0146068fbbd1.mp4?sign=425d08313ea4e7aba6a1a473b9b7d12e&t=1792681817"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Ajay Devgn",
+          "character": "Guddu",
+          "photo": "https://image.tmdb.org/t/p/w185/vnHQQFzTjJ0sv14DGMIoKa3qTxN.jpg"
+        },
+        {
+          "name": "Arshad Warsi",
+          "character": "Adi",
+          "photo": "https://image.tmdb.org/t/p/w185/1Hv35hhpfwNXNm0DqJxpfNJt1q.jpg"
+        },
+        {
+          "name": "Riteish Deshmukh",
+          "character": "Lallan",
+          "photo": "https://image.tmdb.org/t/p/w185/b4Mwk9dDgMS82269iBX7V1YsOpu.jpg"
+        },
+        {
+          "name": "Javed Jaffrey",
+          "character": "Manav",
+          "photo": "https://image.tmdb.org/t/p/w185/5JvPPxLsDEUFy6qDVawM3Itl6NV.jpg"
+        },
+        {
+          "name": "Sanjay Mishra",
+          "character": "Johnny",
+          "photo": "https://image.tmdb.org/t/p/w185/4MGKohKGU4v9SoXcQKCcC4e4Bpi.jpg"
+        },
+        {
+          "name": "Ravi Kishan",
+          "character": "Adhoora",
+          "photo": "https://image.tmdb.org/t/p/w185/rkUTRk0tuA98RepP9jhgcCbhHqy.jpg"
+        },
+        {
+          "name": "Upendra Limaye",
+          "character": "Prithvi Deshpande",
+          "photo": "https://image.tmdb.org/t/p/w185/vFELR5TiBfc6LkLvI5kC5lpEnHv.jpg"
+        },
+        {
+          "name": "Anjali Anand",
+          "character": "Paro",
+          "photo": "https://image.tmdb.org/t/p/w185/hAdKu3EPesGja7We6zKbaZNVyy1.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-3532379387301615648",
+      "title": "Ghamasaan (Hindi Dub)",
+      "originalTitle": "Ghamasaan [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2024",
+      "country": "India",
+      "genre": "Thriller, Action",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "8.0",
+      "imdbRating": "8.0",
+      "poster": "https://image.tmdb.org/t/p/w500/gZuN5Vh9ceBzTk9gl230kE9GrVD.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/87HrTwoaRMgNUIbIKIABd2L8cu5.jpg",
+      "description": "Set in the Hindi heartland, the story follows a cat and mouse chase against a ruthless dacoit. An honest IPS officer is determined to hunt him down, corrupt politicians notwithstanding.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/1ba70c565fc72a334f11303fc560e596.mp4?sign=f9821bf44293dbb8f1e5aaf93f1a39bd&t=1792681648",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/1ba70c565fc72a334f11303fc560e596.mp4?sign=f9821bf44293dbb8f1e5aaf93f1a39bd&t=1792681648"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/62b790260dada0c1d7f8f38685bfbcbb.mp4?sign=9a6e9803bab438bbf9b03c3126fd665b&t=1792681295"
+        },
+        {
+          "name": "Server 3 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/0bcd1ff9ef5ae1a94f4a089857032fb3.mp4?sign=76aad2a17e589c41a5c0b459097ff003&t=1792681648"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Pratik Gandhi",
+          "character": "Aditya Singh",
+          "photo": "https://image.tmdb.org/t/p/w185/dM6X5HrC1WKMfk3MwQJk1YFelk9.jpg"
+        },
+        {
+          "name": "Arshad Warsi",
+          "character": "Maharaj",
+          "photo": "https://image.tmdb.org/t/p/w185/1Hv35hhpfwNXNm0DqJxpfNJt1q.jpg"
+        },
+        {
+          "name": "Ishita Dutta",
+          "character": "Aparna Singh",
+          "photo": "https://image.tmdb.org/t/p/w185/fO1yfVsuy5z71SFJUvNtS2rcp8m.jpg"
+        },
+        {
+          "name": "Rajpal Yadav",
+          "character": "Kalika",
+          "photo": "https://image.tmdb.org/t/p/w185/aJJAU9EPiiXRsWDuy60mXE8U6lT.jpg"
+        },
+        {
+          "name": "Jatin Goswami",
+          "character": "Angad",
+          "photo": "https://image.tmdb.org/t/p/w185/8N3uhXVc2TOTQeeKsRXukqu7epD.jpg"
+        },
+        {
+          "name": "Deepraj Rana",
+          "character": "Harsh Verma",
+          "photo": "https://image.tmdb.org/t/p/w185/iwcSbYrvzo7crjtMQwMSqB9gvqv.jpg"
+        },
+        {
+          "name": "Pankaj Saraswat",
+          "character": "SK Dubey",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Anurag Thakur",
+          "character": "Balram Yadav",
+          "photo": "https://image.tmdb.org/t/p/w185/3uhvhOTAVFsSVRVR41rjILq9Fcn.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-8826677989518759008",
+      "title": "Awarapan 2 (Hindi Dub)",
+      "originalTitle": "Awarapan 2 [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Action, Drama, Romance",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "5.5",
+      "imdbRating": "5.5",
+      "poster": "https://image.tmdb.org/t/p/w500/8V35iNRx9zVH5OHO0lH6IlfGfZY.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/qrYsuB5kPCw0y7IVIuOyEAI1GXh.jpg",
+      "description": "Once a feared gangster, Shivam lives hidden away from his past, with no faith left in God or himself. But when fate pulls him into Bangkok's cartel war and forces him back into the darkness he swore never to return to, Shivam must choose what he is willing to live for, when there is nothing left to lose.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/fbc96faf1568f0724475672172a1f8e8.mp4?sign=faeb1305ba6df1dd9a0ebb03b49eb34c&t=1792682118",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/fbc96faf1568f0724475672172a1f8e8.mp4?sign=faeb1305ba6df1dd9a0ebb03b49eb34c&t=1792682118"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/5e4613517ae7a29e01216057d320dfcf.mp4?sign=7f85e6a1f087f617a9d2d2f1bab4d4df&t=1792684332"
+        },
+        {
+          "name": "Server 3 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/bc83203453a4fc6f09bf12c239ca9e5e.mp4?sign=ab4f9d3535febc9f34c47725157a340c&t=1792684421"
+        },
+        {
+          "name": "Server 4 (360p)",
+          "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/884d3225553ab20628ca949d37a5e4c5.mp4?sign=bf85e44adb0ca5717dec6c6851333007&t=1792684676"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Emraan Hashmi",
+          "character": "Shivam Pandit",
+          "photo": "https://image.tmdb.org/t/p/w185/kflgvFCFZnpTRbKmJWn5T0G5EKI.jpg"
+        },
+        {
+          "name": "Shabana Azmi",
+          "character": "Nafisa Nawaz",
+          "photo": "https://image.tmdb.org/t/p/w185/gy7DpFaZnpU4XOwBc8jhhE8rYYj.jpg"
+        },
+        {
+          "name": "Disha Patani",
+          "character": "Zara",
+          "photo": "https://image.tmdb.org/t/p/w185/jeFgIW3d3BP6MkfnMlmEGP33Oyq.jpg"
+        },
+        {
+          "name": "Puran Gabbi",
+          "character": "Zorawar",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Suvinder Vicky",
+          "character": "Jaideep",
+          "photo": "https://image.tmdb.org/t/p/w185/6T3Y0jvLMdMw19ShLZvLNHIkaSD.jpg"
+        },
+        {
+          "name": "Vijayant Kohli",
+          "character": "Mehmood",
+          "photo": "https://image.tmdb.org/t/p/w185/dzzewlf0Z5dEkVxu4QkH86xUEx4.jpg"
+        },
+        {
+          "name": "Atul Kumar",
+          "character": "Samarth",
+          "photo": "https://image.tmdb.org/t/p/w185/rbPFvPZgqiK21z4uyD5QhRwr7bb.jpg"
+        },
+        {
+          "name": "Aniruddh Rawal",
+          "character": "Sikander",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-5774857026010610896",
+      "title": "Masterplan (Hindi Dub)",
+      "originalTitle": "Masterplan [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Action, Thriller",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "7.0",
+      "imdbRating": "7.0",
+      "poster": "https://image.tmdb.org/t/p/w500/5xmXVd7nCK3tAo34XkO58SxUCip.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/dgUDj84BWtW6EZzee8BkgKnjDhh.jpg",
+      "description": "When a legendary thief sets his sights on the Mona Lisa, he recruits two young strangers to help him before revealing they are long-lost siblings… and oh yes, by the way, he is their father. Thrown into a chaotic reunion they never asked for, this new family must learn to work together — and try not to kill each other — if they want any chance at pulling off the heist of the century.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/a4d41c3d105102713e3d756b5cb9db8b.mp4?sign=37c401a88963547c8f2bce61048dc47e&t=1792681587",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/a4d41c3d105102713e3d756b5cb9db8b.mp4?sign=37c401a88963547c8f2bce61048dc47e&t=1792681587"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/e68330436adb028466b58900cf518d7a.mp4?sign=153bb8955fb6bc2d6b1d1c97ed2bbcec&t=1792681705"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Stanley Tucci",
+          "character": "Roger",
+          "photo": "https://image.tmdb.org/t/p/w185/q4TanMDI5Rgsvw4SfyNbPBh4URr.jpg"
+        },
+        {
+          "name": "Simona Tabasco",
+          "character": "Chiara",
+          "photo": "https://image.tmdb.org/t/p/w185/eHH3kzBwc69E9BvDRCtOEtY1CSc.jpg"
+        },
+        {
+          "name": "Victor Belmondo",
+          "character": "Jay",
+          "photo": "https://image.tmdb.org/t/p/w185/sO3BOoXM8UseOJr7Ba0q0jgGbRV.jpg"
+        },
+        {
+          "name": "Eliott Margueron",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/bXXHdRf9NBXHlA0OBlROZgolaMp.jpg"
+        },
+        {
+          "name": "Barbara Lo Gaglio",
+          "character": "Professor",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Etienne Guillou-Kervern",
+          "character": "French Spook Officer",
+          "photo": "https://image.tmdb.org/t/p/w185/hbNAiy6lw4yKb1oA5hFvSANVP6b.jpg"
+        },
+        {
+          "name": "Srbo Markovic",
+          "character": "Bruno's Bodyguard",
+          "photo": "https://image.tmdb.org/t/p/w185/pYtUeefoM9CN78S0gRc6K6BUgUd.jpg"
+        },
+        {
+          "name": "Julia Messina",
+          "character": "TV Reporter",
+          "photo": "https://image.tmdb.org/t/p/w185/pvmoRAjGVcoOgR6h6wg1ZhyvWxO.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-5244918809701544168",
+      "title": "Sacrifice (Hindi Dub)",
+      "originalTitle": "Sacrifice [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Adventure, Comedy, Action",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "5.1",
+      "imdbRating": "5.1",
+      "poster": "https://image.tmdb.org/t/p/w500/SGH7mlgfDyGgRCi2At62Ljg3zV.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/oAUf1pvGlafCZVlEuPt1JyONHR1.jpg",
+      "description": "During a star-studded charity gala brimming with celebrities, billionaires, and empty speeches, a movie star in the midst of an existential crisis is taken hostage by a radical warrior and her devoted followers. As the night descends into chaos, both an inward journey and an outward adventure ensue, where the line between performance and belief, salvation and sacrifice, begins to blur.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/vegamovies/74c9dc04abcd2667a97d647863b61512.mp4?sign=0ed0c3e331b716eac5277068f506e9bf&t=1792681326",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/vegamovies/74c9dc04abcd2667a97d647863b61512.mp4?sign=0ed0c3e331b716eac5277068f506e9bf&t=1792681326"
+        },
+        {
+          "name": "Server 2 (720p)",
+          "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/ecba90d575f84803bc35753943d2334a.mp4?sign=4c0234283aa5bd6b6bcdc0f84ff2c809&t=1792682473"
+        },
+        {
+          "name": "Server 3 (360p)",
+          "url": "https://bcdnxw.hakunaymatata.com/vegamovies/70461dcc5cf0745655db7ef161998de7.mp4?sign=2233d449d8bd45793643b3b763d04dd2&t=1792681959"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Chris Evans",
+          "character": "Mike Tyler",
+          "photo": "https://image.tmdb.org/t/p/w185/3bOGNsHlrswhyW79uvIHH1V43JI.jpg"
+        },
+        {
+          "name": "Anya Taylor-Joy",
+          "character": "Joan",
+          "photo": "https://image.tmdb.org/t/p/w185/qYNofOjlRke2MlJVihmJmEdQI4v.jpg"
+        },
+        {
+          "name": "Vincent Cassel",
+          "character": "Ben Bracken",
+          "photo": "https://image.tmdb.org/t/p/w185/ivUQfhn5olOmR5hthN8C8GThBV4.jpg"
+        },
+        {
+          "name": "Salma Hayek Pinault",
+          "character": "Gloria Bracken",
+          "photo": "https://image.tmdb.org/t/p/w185/3j8MpAjyopkAc8mbNiDeXyqBmcS.jpg"
+        },
+        {
+          "name": "John Malkovich",
+          "character": "Gunnar",
+          "photo": "https://image.tmdb.org/t/p/w185/7GoOdGNc4ra1L0F5nJTkmIB37iu.jpg"
+        },
+        {
+          "name": "Charli xcx",
+          "character": "Mother Nature",
+          "photo": "https://image.tmdb.org/t/p/w185/xnYIKjdP2anSMmDlFbJN3zZQMkC.jpg"
+        },
+        {
+          "name": "Sam Richardson",
+          "character": "Oliver",
+          "photo": "https://image.tmdb.org/t/p/w185/hUN7IIbegvL7aSqQI5KRWoqqJLm.jpg"
+        },
+        {
+          "name": "Zarene Dallas",
+          "character": "Freyja",
+          "photo": "https://image.tmdb.org/t/p/w185/pCpRhGfErWK0jkagdmGQGpy0hLl.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-6242809544159155600",
+      "title": "Moana (Hindi Dub)",
+      "originalTitle": "Moana [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Family, Fantasy, Comedy, Adventure",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "7.5",
+      "imdbRating": "7.5",
+      "poster": "https://image.tmdb.org/t/p/w500/gaet1xQ2nxrG0V1Ep9T20ZMNEIC.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/c6BPbkO5Npt1OdwttAxCFo06wtH.jpg",
+      "description": "Teenage Moana answers the Ocean's call and, for the first time, voyages beyond the reef of her island of Motunui with infamous demigod Maui on an unforgettable journey to restore prosperity to her people.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/009162de03ff074212d4e0e98556e910.mp4?sign=7a46568088c67e7cc14052a42a0822c4&t=1792681642",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/009162de03ff074212d4e0e98556e910.mp4?sign=7a46568088c67e7cc14052a42a0822c4&t=1792681642"
+        },
+        {
+          "name": "Server 2 (360p)",
+          "url": "https://bcdnxw.hakunaymatata.com/vegamovies/a18e6b3392e0c7a756c6469e571bb83e.mp4?sign=7d7470b758544860f526923e0ce9b6ce&t=1792681819"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Catherine Lagaʻaia",
+          "character": "Moana",
+          "photo": "https://image.tmdb.org/t/p/w185/tUyT2VfVuRJPqeAbLhFFOtZa4fH.jpg"
+        },
+        {
+          "name": "Dwayne Johnson",
+          "character": "Maui",
+          "photo": "https://image.tmdb.org/t/p/w185/5QApZVV8FUFlVxQpIK3Ew6cqotq.jpg"
+        },
+        {
+          "name": "Rena Owen",
+          "character": "Gramma Tala",
+          "photo": "https://image.tmdb.org/t/p/w185/648ZdDBmlx6OFDFRmgAbh6q5LBo.jpg"
+        },
+        {
+          "name": "John Tui",
+          "character": "Chief Tui",
+          "photo": "https://image.tmdb.org/t/p/w185/2jIc9M5kl2GmK8fZtbtUr2s1jkS.jpg"
+        },
+        {
+          "name": "Frankie Adams",
+          "character": "Sina",
+          "photo": "https://image.tmdb.org/t/p/w185/aAUHUSf0lh3OBRoaiCRL9ep8lfL.jpg"
+        },
+        {
+          "name": "Jemaine Clement",
+          "character": "Tamatoa (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/6eiNbeurpHb2fxIeT0RrJ0wRI25.jpg"
+        },
+        {
+          "name": "Emma Puahi-Shapazian",
+          "character": "Moana (4 years old)",
+          "photo": "https://image.tmdb.org/t/p/w185/iFHiH7MAJja89Grgu47AdvsPhEU.jpg"
+        },
+        {
+          "name": "Amaya Masoli",
+          "character": "Moana (8 years old)",
+          "photo": "https://image.tmdb.org/t/p/w185/fDqCryVbJGSb6CPLCIxmfbN8wsV.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-4151920426815471968",
+      "title": "Mandaadi (Hindi Dub)",
+      "originalTitle": "Mandaadi [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Action, Drama",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "7.8",
+      "imdbRating": "7.8",
+      "poster": "https://image.tmdb.org/t/p/w500/jLVMvJAmnVRo2lzbqtGiecLzPLy.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/dJ4sqrmX2KviF8HBKlLrDedUhnh.jpg",
+      "description": "A fishing captain applies his maritime knowledge in a traditional boat race along Tamil Nadu's coast during a festival, leading a six-person team against other crews.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/76a6485f1c27599cdf2ff725bdb24791.mp4?sign=9b880c4f1e11890cbaac8547e7968d74&t=1792684402",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/76a6485f1c27599cdf2ff725bdb24791.mp4?sign=9b880c4f1e11890cbaac8547e7968d74&t=1792684402"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/67c050a4cd72c93ce335f7f10a20bc4b.mp4?sign=9584a2ad2fe51d178b64ac7ccf6360ba&t=1792681368"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Soori",
+          "character": "Muthukaali 'Kaali' / Mandaadi",
+          "photo": "https://image.tmdb.org/t/p/w185/AncGjHZaaNcpEu6JosiV25IwSSg.jpg"
+        },
+        {
+          "name": "Suhas",
+          "character": "Saattapuli",
+          "photo": "https://image.tmdb.org/t/p/w185/4TZK8EkWiWPiC7wvDu4yFIXP41D.jpg"
+        },
+        {
+          "name": "Mahima Nambiar",
+          "character": "Angel Rakkamma",
+          "photo": "https://image.tmdb.org/t/p/w185/us0TCjr5IHotLbyr6PKjofEqN2x.jpg"
+        },
+        {
+          "name": "Sathyaraj",
+          "character": "Machamuni",
+          "photo": "https://image.tmdb.org/t/p/w185/lnlBZ7V3K3Z3OIsjCd0zkKx26L3.jpg"
+        },
+        {
+          "name": "Mithun Jai Sankar",
+          "character": "Maari",
+          "photo": "https://image.tmdb.org/t/p/w185/r3ynMua2UoFlLnEP8PEEe3x2PnT.jpg"
+        },
+        {
+          "name": "Ravindra Vijay",
+          "character": "Singaram",
+          "photo": "https://image.tmdb.org/t/p/w185/2mw4VbANE3QtI9dzQXdrG74RizL.jpg"
+        },
+        {
+          "name": "Balasaravanan",
+          "character": "Qatar Ravi",
+          "photo": "https://image.tmdb.org/t/p/w185/1Hyg5Src1SQnVw9E3g0QHMUydVx.jpg"
+        },
+        {
+          "name": "Stun Siva",
+          "character": "Saattapuli's father",
+          "photo": "https://image.tmdb.org/t/p/w185/rTBzBagl6uD6YooliwpL5MU2kyB.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-2785754964193329504",
+      "title": "Khalifa: The Ruler (Hindi Dub)",
+      "originalTitle": "Khalifa [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Action, Thriller, Crime",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "4.9",
+      "imdbRating": "4.9",
+      "poster": "https://image.tmdb.org/t/p/w500/3HOC3omTbl7lB9gxKu7uCEpOtuC.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/6Jz7rnnZrSkgs9ySWUxewpcxr7Q.jpg",
+      "description": "Aamir Ali, a notorious gold smuggling kingpin who inherited his multi-million dollar criminal enterprise from a lineage of gangsters, is drawn into a web of vengeance, legacy and power.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/5adac4df86a7e838c7d13bca5a3f68ec.mp4?sign=9ad2a2bf61f84c3bc42abb1b32b2a7c9&t=1792683614",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/convert-h264/5adac4df86a7e838c7d13bca5a3f68ec.mp4?sign=9ad2a2bf61f84c3bc42abb1b32b2a7c9&t=1792683614"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/d007da3eee1c00d151ab9f74b1087e95.mp4?sign=838a73f074618099ec7a8aa299a1ff73&t=1792683236"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Prithviraj Sukumaran",
+          "character": "Aamir Ali",
+          "photo": "https://image.tmdb.org/t/p/w185/1xhG42QU8tMQRTDdP1Ed3y9GRvm.jpg"
+        },
+        {
+          "name": "Mohanlal",
+          "character": "Mambarakkal Ahmed Ali",
+          "photo": "https://image.tmdb.org/t/p/w185/wvoBULQimwguAGPOHZ8TDoy7jBJ.jpg"
+        },
+        {
+          "name": "Neil Nitin Mukesh",
+          "character": "Harris Basheer",
+          "photo": "https://image.tmdb.org/t/p/w185/3VPYz01QFt82gCr0aObbDMWtMop.jpg"
+        },
+        {
+          "name": "Indrans",
+          "character": "Hamsa",
+          "photo": "https://image.tmdb.org/t/p/w185/vs5Acy2hJ4dWoM3xRGdnFKdVXzw.jpg"
+        },
+        {
+          "name": "Shammi Thilakan",
+          "character": "Raghavan",
+          "photo": "https://image.tmdb.org/t/p/w185/7lDFgyfGXbQEFFrbnVA24XaYGW.jpg"
+        },
+        {
+          "name": "Malvika Sharma",
+          "character": "Fiza",
+          "photo": "https://image.tmdb.org/t/p/w185/eHeDO98xywcCpka7CQ3QAj8foGP.jpg"
+        },
+        {
+          "name": "Renji Panicker",
+          "character": "Younus Ali",
+          "photo": "https://image.tmdb.org/t/p/w185/ladi1ITpyay8RFpC1eAMZgMPc5e.jpg"
+        },
+        {
+          "name": "Mohini",
+          "character": "Noorjahan",
+          "photo": "https://image.tmdb.org/t/p/w185/h4P1Nwl5bswA2n2d4gPLJ6k2pV.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-7908270876544975128",
+      "title": "The Paradise (Hindi Dub)",
+      "originalTitle": "The Paradise [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Action, Drama",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "4.4",
+      "imdbRating": "4.4",
+      "poster": "https://image.tmdb.org/t/p/w500/smghVMoMWSIFi5dgIz4w1UIcEcY.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/7AcH5TFppoMusNkCBLaQP6UOODp.jpg",
+      "description": "In 1980s Secunderabad, a marginalized tribe battles discrimination and fights for citizenship under an unexpected leader's guidance, challenging systemic oppression.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/d0c43c812c7363b30291720f4fd21325.mp4?sign=09cd1b2be8aafefdc47dbb4d2192517a&t=1792681812",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/d0c43c812c7363b30291720f4fd21325.mp4?sign=09cd1b2be8aafefdc47dbb4d2192517a&t=1792681812"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/02ac883a814a975a2d9f662fce93023b.mp4?sign=6ec4c2d2551b922ef56e53727b171feb&t=1792684644"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Nani",
+          "character": "Sarakka 'Jadal'",
+          "photo": "https://image.tmdb.org/t/p/w185/jfOH4sUWs3VXuGUlo0VLMYNRBQ4.jpg"
+        },
+        {
+          "name": "Mohan Babu",
+          "character": "Shikanja Maalik",
+          "photo": "https://image.tmdb.org/t/p/w185/zwqcXtnk0ju0nhuhvZXSLL2nLIy.jpg"
+        },
+        {
+          "name": "Kayadu Lohar",
+          "character": "Subbulakshmi 'Subbu'",
+          "photo": "https://image.tmdb.org/t/p/w185/pHaMPnrfnWvTPZA4IOmZk8BHY0U.jpg"
+        },
+        {
+          "name": "Sonali Kulkarni",
+          "character": "Sammakka",
+          "photo": "https://image.tmdb.org/t/p/w185/aQeM6N2JgGFbI5VoltWhkxw6OQC.jpg"
+        },
+        {
+          "name": "Raghav Juyal",
+          "character": "Vikram Maalik",
+          "photo": "https://image.tmdb.org/t/p/w185/ncJa8IBYfDknQLpjeciaQy6dXkH.jpg"
+        },
+        {
+          "name": "Sampoornesh Babu",
+          "character": "Biriyani",
+          "photo": "https://image.tmdb.org/t/p/w185/8LUNhS7JGsv5YDIX3qBPJP3f1BI.jpg"
+        },
+        {
+          "name": "Vishika",
+          "character": "Devi",
+          "photo": "https://image.tmdb.org/t/p/w185/dt5c2fK775R4bL4ZeU1BNE8vA0C.jpg"
+        },
+        {
+          "name": "Tanikella Bharani",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/zRjr0F64Eznbliz1RvN9icj3Lq1.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-3245114829035696656",
+      "title": "Main Ladega (Hindi Dub)",
+      "originalTitle": "Main Ladega [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2024",
+      "country": "India",
+      "genre": "Drama",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "6.4",
+      "imdbRating": "6.4",
+      "poster": "https://image.tmdb.org/t/p/w500/yHKCsn5FteTI4UyHPvFE64ua6BT.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/yXvVIZCIitmt8SeGAoSuEn8Z6Mi.jpg",
+      "description": "A young boy escapes his troubled home, finding solace I in boxing at an army hostel, where he channels his pain into strength to protect his family.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/c3579d6ede647997e96803b9dd8a2727.mp4?sign=a94522c8943ddf7af0fee4eee9d6c51f&t=1792682060",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/c3579d6ede647997e96803b9dd8a2727.mp4?sign=a94522c8943ddf7af0fee4eee9d6c51f&t=1792682060"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/bfb1ceb2ef4e6543ed89c1d7107d0f67.mp4?sign=f1f79bdc2b1cf8845a45e0173007b80f&t=1792682742"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Akash Pratap Singh",
+          "character": "Akash Pratap Singh",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Ashwath Bhatt",
+          "character": "Father",
+          "photo": "https://image.tmdb.org/t/p/w185/hSJyFIy8Mvj59YQlcluhd9Xf97F.jpg"
+        },
+        {
+          "name": "Gandharv Dewan",
+          "character": "Gurnaam",
+          "photo": "https://image.tmdb.org/t/p/w185/9acKcAdQuVeu5st3ig0ajvVmnAw.jpg"
+        },
+        {
+          "name": "Jyoti Gauba",
+          "character": "Mother",
+          "photo": "https://image.tmdb.org/t/p/w185/uy7CdrcNYEA8FgZaOb2FlgyBuI1.jpg"
+        },
+        {
+          "name": "Prathamesh Mehta",
+          "character": "Nana",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Sabni Rana",
+          "character": "Nani",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Vallari Viraj",
+          "character": "Gauri",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Saurabh Pachauri",
+          "character": "Sonu",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-4393216074666474704",
+      "title": "Pooja Meri Jaan (Hindi Dub)",
+      "originalTitle": "Pooja Meri Jaan [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Thriller, Crime, Romance",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "7.8",
+      "imdbRating": "7.8",
+      "poster": "https://image.tmdb.org/t/p/w500/g6JmYwvEopRlHCV1NykM5NjSPrw.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/anwB9RlA2haerdblfBcl5OH9gtr.jpg",
+      "description": "After Pooja rejects Aniket’s romantic advances, his subsequent death by suicide leaves her facing accusations. As lawyer and friend Sana investigates the circumstances surrounding the incident, questions of obsession, consent, responsibility and the truth behind Pooja’s relationship with Aniket begin to emerge.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/1343d3c6a2aa6910d3430248e8264f99.mp4?sign=58134587a751d2eb8d074ae4981bd9ef&t=1792682654",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/1343d3c6a2aa6910d3430248e8264f99.mp4?sign=58134587a751d2eb8d074ae4981bd9ef&t=1792682654"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/382e758abd85c698b4564645a2df979c.mp4?sign=44b00f73e2271a8c080a5b37909e9207&t=1792681882"
+        },
+        {
+          "name": "Server 3 (360p)",
+          "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/7b2e1c9d420ee81c55d99aa3370f8e5f.mp4?sign=204d27d33030d465387ad884cc15f26f&t=1792681882"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Mrunal Thakur",
+          "character": "Pooja Dogra",
+          "photo": "https://image.tmdb.org/t/p/w185/4ITqe6SrpQgwUFU52rkmZNffyrM.jpg"
+        },
+        {
+          "name": "Huma Qureshi",
+          "character": "Sana Mehfooz",
+          "photo": "https://image.tmdb.org/t/p/w185/nJWauZQdRjMJxwY3UP4SXrqh9CM.jpg"
+        },
+        {
+          "name": "Vikram Singh Chauhan",
+          "character": "Aniket Srivastava",
+          "photo": "https://image.tmdb.org/t/p/w185/v0ZovWaL6dmEab0C3AhSg9aBQNv.jpg"
+        },
+        {
+          "name": "Vijay Raaz",
+          "character": "Jatin Trivedi",
+          "photo": "https://image.tmdb.org/t/p/w185/bLSjiy51UPjVnTYRDmgRUy1VOwD.jpg"
+        },
+        {
+          "name": "Sunita Rajwar",
+          "character": "Sushila Chauhan",
+          "photo": "https://image.tmdb.org/t/p/w185/cEhnGiU6arxA4vxZCUspFWDP76F.jpg"
+        },
+        {
+          "name": "Rajesh Jais",
+          "character": "Gulshan Dogra",
+          "photo": "https://image.tmdb.org/t/p/w185/rl5oYssWspV4io2IKOeQuMi9BL2.jpg"
+        },
+        {
+          "name": "Suparna Marwah",
+          "character": "Alka Srivastava",
+          "photo": "https://image.tmdb.org/t/p/w185/wvu7uXRLKsN1qnjP71xWmtbB8gy.jpg"
+        },
+        {
+          "name": "Nikhil Angrish",
+          "character": "Mayank Joshi",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-m-9107376937579734040",
+      "title": "DC (Hindi Dub)",
+      "originalTitle": "DC [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Movie",
+      "tag": "HD 720p",
+      "quality": "HD 720p",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Romance, Action, Drama",
+      "duration": "2h 15m",
+      "category": "Trending Movies",
+      "rating": "7.8",
+      "imdbRating": "7.8",
+      "poster": "https://image.tmdb.org/t/p/w500/grRYMAxmfk9VHXY30gm6vfiwyoN.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/v7kqufGRDotShPCw53SM7m8t6oc.jpg",
+      "description": "From avenging his mother’s murder to battling police corruption, Das becomes a fugitive after a deadly heist. Amid a trail of bloodshed and loss, he frees Chandra from a life of exploitation, and she gives him a reason to seek a life beyond violence.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7e6d8cda25429f87adb033b049db02a6.mp4?sign=562026003f16574aec981ae7ae41db02&t=1792683655",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/7e6d8cda25429f87adb033b049db02a6.mp4?sign=562026003f16574aec981ae7ae41db02&t=1792683655"
+        },
+        {
+          "name": "Server 2 (480p)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/8ba311aefdc5e6150fd6f04fde3cae1f.mp4?sign=ca3b2bd372afb8f393dc516940c0fc89&t=1792682244"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Lokesh Kanagaraj",
+          "character": "Devadas",
+          "photo": "https://image.tmdb.org/t/p/w185/yym15SAcSzIe6xzxOWCgDWiSaZN.jpg"
+        },
+        {
+          "name": "Wamiqa Gabbi",
+          "character": "Chandra",
+          "photo": "https://image.tmdb.org/t/p/w185/tA0n2mvKpBFrfKGm8uaLx9lK2tV.jpg"
+        },
+        {
+          "name": "Sanjana Krishnamoorthy",
+          "character": "Parvathi",
+          "photo": "https://image.tmdb.org/t/p/w185/sPh2ToZD1U981VZFOmRZO6wZ16v.jpg"
+        },
+        {
+          "name": "Avinash Raghudevan",
+          "character": "Kitty",
+          "photo": "https://image.tmdb.org/t/p/w185/AuiRkWkzpmZU2P88s1wwcqVDKJV.jpg"
+        },
+        {
+          "name": "Jawahar Sakthi",
+          "character": "Karuppan",
+          "photo": "https://image.tmdb.org/t/p/w185/tujqtpUT92SDeo2AuUJiJGKBfYp.jpg"
+        },
+        {
+          "name": "Sharath Ravi",
+          "character": "Chunnilal",
+          "photo": "https://image.tmdb.org/t/p/w185/5hgdkBe06e6xRRTPvQEPcoanC2u.jpg"
+        },
+        {
+          "name": "Kasthoori Raja",
+          "character": "Sendhooran",
+          "photo": "https://image.tmdb.org/t/p/w185/7i5YtjslyQAQrBoEhlWz8G4yqj5.jpg"
+        },
+        {
+          "name": "Thalaivasal Vijay",
+          "character": "Arasu",
+          "photo": "https://image.tmdb.org/t/p/w185/2mlbBSwHF2nzlPpVnjXpTKLaoxQ.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
       "id": "tmdb-m-1234139",
       "title": "Jailer 2 (2026)",
       "originalTitle": "ஜெயிலர் 2",
@@ -2797,6 +4865,1463 @@
   ],
   "upcoming": [
     {
+      "id": "mb-up-5837916216886820048",
+      "title": "Dhoom:4 [Hindi]",
+      "year": "2027",
+      "genre": "Action, Drama",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "6.2",
+      "imdbRating": "6.2",
+      "poster": "https://pbcdnw.aoneroom.com/image/2026/09/23/700765979360f717166154b5d83ccbc1.jpg",
+      "backdrop": "https://pbcdnw.aoneroom.com/image/2026/09/23/700765979360f717166154b5d83ccbc1.jpg",
+      "description": "Upcoming Hindi dubbed release coming soon exclusively on FOBS TV.",
+      "cast": [],
+      "type": "movie"
+    },
+    {
+      "id": "mb-up-6624920251769814224",
+      "title": "Dead-End Job [Hindi]",
+      "year": "2026",
+      "genre": "Mystery, Sci-Fi & Fantasy",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "7.8",
+      "imdbRating": "7.8",
+      "poster": "https://image.tmdb.org/t/p/w500/1yobke0bpfNOazuF9wW7QbM2GER.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/gWedDgBsZkuOho2qe3q2sTQmbpO.jpg",
+      "description": "When a debtor is lured by a strange agency with the promise of lucrative gigs, he is soon thrust into a hellish world of terror and unpredictability.",
+      "cast": [
+        {
+          "name": "Lee Jae-wook",
+          "character": "Byeon Hyuk-joon",
+          "photo": "https://image.tmdb.org/t/p/w185/9dsWM2kiXO4utrg4GctdXDvhOKD.jpg"
+        },
+        {
+          "name": "Go Min-si",
+          "character": "Yeon-joo",
+          "photo": "https://image.tmdb.org/t/p/w185/tgBb9dDyewLlautcmJH9KSXZz1O.jpg"
+        },
+        {
+          "name": "Kim Min-ha",
+          "character": "Byeon Ji-yoon",
+          "photo": "https://image.tmdb.org/t/p/w185/zPNNamrJLWoXADXALQmuTdo6zBS.jpg"
+        },
+        {
+          "name": "Lee Hee-jun",
+          "character": "Kang-joon / Mr. S",
+          "photo": "https://image.tmdb.org/t/p/w185/4slyXnHbKgzmeyJNetBSORgDDEF.jpg"
+        },
+        {
+          "name": "Yoon Byung-hee",
+          "character": "Special appearance",
+          "photo": "https://image.tmdb.org/t/p/w185/77HOYpL0BI6BN4kaTYUMNIlnLM0.jpg"
+        },
+        {
+          "name": "Cho Hyun-chul",
+          "character": "Special appearance",
+          "photo": "https://image.tmdb.org/t/p/w185/i1yEjtwITyedbFCealmBfuaAn3M.jpg"
+        },
+        {
+          "name": "Choi Hyun-wook",
+          "character": "Special appearance",
+          "photo": "https://image.tmdb.org/t/p/w185/2s3xxkSPJMy8WFeyRd1lyFLYofk.jpg"
+        },
+        {
+          "name": "Yoon Kyung-ho",
+          "character": "Special appearance",
+          "photo": "https://image.tmdb.org/t/p/w185/217cVZqyvJypi4OR1uvxoaJxvLm.jpg"
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-up-2289924869888305376",
+      "title": "The Perfect Lie [Hindi]",
+      "year": "2026",
+      "genre": "Drama",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "6.5",
+      "imdbRating": "6.5",
+      "poster": "https://image.tmdb.org/t/p/w500/a8qjbVX7lo1v7m5Awzhx7Ptk8gO.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/vYO9OkYHSNfYuqz6VMS4aCCfRb8.jpg",
+      "description": "When one of their own is killed in a house fire, four picture-perfect couples are forced to question everything they thought they knew about each other.",
+      "cast": [
+        {
+          "name": "Loes Haverkort",
+          "character": "Karen van der Made",
+          "photo": "https://image.tmdb.org/t/p/w185/7Mz5pEkDGCXWY5nhiwSn8yWDFjx.jpg"
+        },
+        {
+          "name": "Remko Vrijdag",
+          "character": "Ivo Smit",
+          "photo": "https://image.tmdb.org/t/p/w185/g6KW48DqW8kcd2JkKRdUDyMrerk.jpg"
+        },
+        {
+          "name": "Noortje Herlaar",
+          "character": "Babette Struyck",
+          "photo": "https://image.tmdb.org/t/p/w185/9UupimmSLCQ7uoLCg2wDOcmTjAJ.jpg"
+        },
+        {
+          "name": "Edwin Jonker",
+          "character": "Evert Struyck",
+          "photo": "https://image.tmdb.org/t/p/w185/6oTvPHOxmwMVoZp6sCb6xzo3wNk.jpg"
+        },
+        {
+          "name": "Rifka Lodeizen",
+          "character": "Hanneke Lemstra",
+          "photo": "https://image.tmdb.org/t/p/w185/l5hLOMTloXy9WKSX3WNA5MyXnfk.jpg"
+        },
+        {
+          "name": "Matthijs van de Sande Bakhuyzen",
+          "character": "Simon de Jager",
+          "photo": "https://image.tmdb.org/t/p/w185/yNhTWoImNo9JInAYkfEQngHI4z.jpg"
+        },
+        {
+          "name": "Charlie Dagelet",
+          "character": "Patricia de Jager",
+          "photo": "https://image.tmdb.org/t/p/w185/9PkrramaZKhm6agGOk99G6gf049.jpg"
+        },
+        {
+          "name": "Teun Luijkx",
+          "character": "Michel van der Made / Michel Brouwers",
+          "photo": "https://image.tmdb.org/t/p/w185/wOQZpDsOVgNOJbQ2FgqY3gRoQ6J.jpg"
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-up-2200978777247829384",
+      "title": "Nocturne [Hindi]",
+      "year": "2026",
+      "genre": "Crime, Mystery",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "7.8",
+      "imdbRating": "7.8",
+      "poster": "https://image.tmdb.org/t/p/w500/nyvXVcPnHEwVmqCdzjjCsu1jqhm.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/DCSa6Fd3NN075JOqcJqO3VU6fM.jpg",
+      "description": "When a victim of notorious serial killer Jurek Walter unexpectedly turns up alive, detective Jonah Lynn races against time to find the one person still missing, while his protégé Saga Bauer goes undercover to get answers from the killer himself.",
+      "cast": [
+        {
+          "name": "Liev Schreiber",
+          "character": "Jonah Lynn",
+          "photo": "https://image.tmdb.org/t/p/w185/26G7QjSb5ZazgWb9XB2X6SwcILQ.jpg"
+        },
+        {
+          "name": "Zazie Beetz",
+          "character": "FBI Agent Saga Bauer",
+          "photo": "https://image.tmdb.org/t/p/w185/sgxzT54GnvgeMnOZgpQQx9csAdd.jpg"
+        },
+        {
+          "name": "Stephen Graham",
+          "character": "Jurek Walter",
+          "photo": "https://image.tmdb.org/t/p/w185/yguEO9zFvuccq87kOJpFLsmUgvs.jpg"
+        },
+        {
+          "name": "Bill Camp",
+          "character": "Chief Dave Ellison",
+          "photo": "https://image.tmdb.org/t/p/w185/wxYyJSltCHwU0MTg838SllOlvNT.jpg"
+        },
+        {
+          "name": "Rory Culkin",
+          "character": "Karl Anders",
+          "photo": "https://image.tmdb.org/t/p/w185/6SkUiLHFlPEEFtKpLc7VrczaqDx.jpg"
+        },
+        {
+          "name": "Chrissy Metz",
+          "character": "Ida Frost",
+          "photo": "https://image.tmdb.org/t/p/w185/d1qBoF1JQdLI8OF99sVeNQqjXZG.jpg"
+        },
+        {
+          "name": "Poorna Jagannathan",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/o2BQX1tAgo47GGvpBy1k4LQLRs6.jpg"
+        },
+        {
+          "name": "Gary Carr",
+          "character": "Nathan Pollock",
+          "photo": "https://image.tmdb.org/t/p/w185/nY9pVfJG70QojfwgCiW5Kja4HjU.jpg"
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-up-6630269010766617880",
+      "title": "LOL: Last One Laughing Philippines [Hindi]",
+      "year": "2024",
+      "genre": "Reality, Comedy",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "6.0",
+      "imdbRating": "6.0",
+      "poster": "https://image.tmdb.org/t/p/w500/5v6xysCUVEDfcfiPSU2OMCFZl9Q.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/zyUpRvjs1OPyGkWHqoTws1GFy35.jpg",
+      "description": "“LOL” or “Last One Laughing” is a reality show where ten comedians battle it out to make each other laugh. With no smiles allowed, they unleash their best jokes and antics, aiming to make each other crack up for six hours. It’s a hilarious battle of wit and self-control, where the last one laughing wins ONE MILLION PESOS!",
+      "cast": [
+        {
+          "name": "Vice Ganda",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/bqaoLgLzvX87gxCN6iksEKX59CK.jpg"
+        },
+        {
+          "name": "Epy Quizon",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/7eS7NWjtkAuOEjZexdAaJhVYEV7.jpg"
+        },
+        {
+          "name": "Chariz Solomon",
+          "character": "Cast",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Candy Pangilinan",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/fbvy4o5JERdPhg4PGHW4Y6te3uV.jpg"
+        },
+        {
+          "name": "Donna Cariaga",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/mqAziN0aLyVINTyO2eA4p5OxkEi.jpg"
+        },
+        {
+          "name": "Esnyr Ranollo",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/i3xMfmPCsDuk7pULlVt4O24By1C.jpg"
+        },
+        {
+          "name": "James Caraan",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/u6wDpi2wzmt7mXrGnIe4G1jVjUl.jpg"
+        },
+        {
+          "name": "Ethel Booba",
+          "character": "Cast",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-up-2879333471120509368",
+      "title": "Gudang Merica [Hindi]",
+      "year": "2026",
+      "genre": "Comedy, Horror, Mystery",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "5.5",
+      "imdbRating": "5.5",
+      "poster": "https://image.tmdb.org/t/p/w500/mhAp8VzvFMn1wP8Z1gZd5iFzLVM.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/ymyCANhZD7Bhuvbc2KQeB3sEqwI.jpg",
+      "description": "At the quiet Harapan Ayah Hospital, Razi blends in with three medical students undergoing their clinical rotations. What initially seems like routine night shifts gradually turns into a series of terrifying experiences after an unidentified patient dies under their care. Strange occurrences begin to emerge—shadows, unsettling sounds, and the presence of a horrifying figure. The situation reaches its peak when the patient’s body mysteriously disappears from their watch. Caught between medical logic and the fear of the unexplainable, they are forced to confront a mystery that slowly reveals a truth far greater than they ever imagined.",
+      "cast": [
+        {
+          "name": "Ardhito Pramono",
+          "character": "Razi",
+          "photo": "https://image.tmdb.org/t/p/w185/5wJDh9KPUaKD4U260PUzBvAOGJ3.jpg"
+        },
+        {
+          "name": "Arla Ailani",
+          "character": "Rindu",
+          "photo": "https://image.tmdb.org/t/p/w185/aGUWD0jst9DmOBBVEBV35OhEv6i.jpg"
+        },
+        {
+          "name": "Fatih Unru",
+          "character": "Adit",
+          "photo": "https://image.tmdb.org/t/p/w185/8smQ1Ymhr1gCYXrN8sIvSHRQUYY.jpg"
+        },
+        {
+          "name": "Zulfa Maharani",
+          "character": "Tanti",
+          "photo": "https://image.tmdb.org/t/p/w185/bqHdour1CH2adzNqY3KgorxBc3A.jpg"
+        },
+        {
+          "name": "Benidictus Siregar",
+          "character": "Sidik",
+          "photo": "https://image.tmdb.org/t/p/w185/syoUo25hvxWmqUYMSM0OuclGx8n.jpg"
+        },
+        {
+          "name": "Rizky Inggar",
+          "character": "Suster Ella",
+          "photo": "https://image.tmdb.org/t/p/w185/a4aBVbcT6NTtCY9u4ZoxVYONRiP.jpg"
+        },
+        {
+          "name": "Angga Nggok",
+          "character": "Tukang Bubur",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Melly Manuhutu",
+          "character": "Nenek",
+          "photo": "https://image.tmdb.org/t/p/w185/gDM2lqp9DgnyBxy2NbS39JvxXif.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-up-2790387378479848728",
+      "title": "Dexter: Resurrection [Hindi]",
+      "year": "2025",
+      "genre": "Crime, Drama, Mystery",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "8.5",
+      "imdbRating": "8.5",
+      "poster": "https://image.tmdb.org/t/p/w500/o2Oyi3boT100bY5kCP4MBiTeetO.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/vcpj6rRDS93ImHCLPY8bwBuFGjR.jpg",
+      "description": "Dexter Morgan awakens from a coma and sets out for New York City, determined to find Harrison and make things right. But when Miami Metro's Angel Batista arrives with questions, Dexter realizes his past is catching up to him fast.",
+      "cast": [
+        {
+          "name": "Michael C. Hall",
+          "character": "Dexter Morgan",
+          "photo": "https://image.tmdb.org/t/p/w185/7zUMGoujuev5PUwwv4Gl6ikB50k.jpg"
+        },
+        {
+          "name": "Uma Thurman",
+          "character": "Charley Brown",
+          "photo": "https://image.tmdb.org/t/p/w185/sBgAZWi3o4FsnaTvnTNtK6jpQcF.jpg"
+        },
+        {
+          "name": "Jack Alcott",
+          "character": "Harrison Morgan",
+          "photo": "https://image.tmdb.org/t/p/w185/65KEuv3LIBEaeIkqhyps6heZ9aa.jpg"
+        },
+        {
+          "name": "Ntare Guma Mbaho Mwine",
+          "character": "Blessing Kamara",
+          "photo": "https://image.tmdb.org/t/p/w185/nmwMBGmrqVgeAOdWJJJJi9A2l7C.jpg"
+        },
+        {
+          "name": "Kadia Saraf",
+          "character": "Claudette Wallace",
+          "photo": "https://image.tmdb.org/t/p/w185/lHaOGTMcq4SQeaHxC2BSeAwony9.jpg"
+        },
+        {
+          "name": "Dominic Fumusa",
+          "character": "Melvin Oliva",
+          "photo": "https://image.tmdb.org/t/p/w185/1wgHvqNM0LisAhkInYDD9JIGPJ0.jpg"
+        },
+        {
+          "name": "James Remar",
+          "character": "Harry Morgan",
+          "photo": "https://image.tmdb.org/t/p/w185/ctMVpFDKKWCty60lLORf3IoJcv9.jpg"
+        },
+        {
+          "name": "Brian Cox",
+          "character": "The New York Ripper",
+          "photo": "https://image.tmdb.org/t/p/w185/scSjbFCTRngXlkJRoKptM5kQGw7.jpg"
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-up-6890914839200685336",
+      "title": "Christmas at the Kringles [Hindi]",
+      "year": "2026",
+      "genre": "Action, Horror, Comedy",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "7.8",
+      "imdbRating": "7.8",
+      "poster": "https://image.tmdb.org/t/p/w500/oVxkhheRVWSacimUZBuMemQX85E.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/7lEFPOUwk3H1aLx1UqGafAXRUPY.jpg",
+      "description": "The Severson family move to a suburban neighborhood where their next-door neighbors, the Kringles, celebrate Christmas year-round. But when their son becomes increasingly attached to the unusual family, Mark and Julie begin to suspect that their neighbors aren't quite what they seem.",
+      "cast": [
+        {
+          "name": "Ron Livingston",
+          "character": "Mark Severson",
+          "photo": "https://image.tmdb.org/t/p/w185/pr5CjWnkaf5WKTIYh8wtNufjmyb.jpg"
+        },
+        {
+          "name": "Rachel Bilson",
+          "character": "Julie Severson",
+          "photo": "https://image.tmdb.org/t/p/w185/jlacH60rFke82EfuvFqgjcxPIx0.jpg"
+        },
+        {
+          "name": "Rob Riggle",
+          "character": "Drunk Santa",
+          "photo": "https://image.tmdb.org/t/p/w185/hQgOp8vWxl6KPZbqzKSSL4k6G1j.jpg"
+        },
+        {
+          "name": "Arden Myrin",
+          "character": "Carol Kringle",
+          "photo": "https://image.tmdb.org/t/p/w185/zJ0CqYNRWIcfZedYjYj1oRiBUov.jpg"
+        },
+        {
+          "name": "Thomas Lennon",
+          "character": "Nick Kringle",
+          "photo": "https://image.tmdb.org/t/p/w185/s8pw7BfuMxN7P0p5XJ9POfod7zW.jpg"
+        },
+        {
+          "name": "Beverly D'Angelo",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/8fYQIA8dAaA4GOTxOFSKIvTqzi.jpg"
+        },
+        {
+          "name": "Donald Faison",
+          "character": "Daryl",
+          "photo": "https://image.tmdb.org/t/p/w185/gNwWP1CHob9Y8fjY69w7EwGxMoz.jpg"
+        },
+        {
+          "name": "David Wain",
+          "character": "Noel Tannebaum",
+          "photo": "https://image.tmdb.org/t/p/w185/yh4AtjuNvBwca8HvzIXjo1Y1Nwf.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-up-733649723655179656",
+      "title": "Wicker [Hindi]",
+      "year": "2026",
+      "genre": "Romance, Fantasy, Comedy",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "6.2",
+      "imdbRating": "6.2",
+      "poster": "https://image.tmdb.org/t/p/w500/6FcBZOKvyrLCKGCyBG0ySCR4okt.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/xVh1ypMoVkMf5IB7y3hnRplJ14c.jpg",
+      "description": "On the outskirts of a village by the sea, lives a Fisherwoman; smelly, single and perpetually ridiculed. One day, fed up with her stuffy, small-minded neighbours, she commissions herself a husband to be made from wicker. In an otherwise conservative town, this unconventional romance sparks outrage, jealousy and chaos.",
+      "cast": [
+        {
+          "name": "Olivia Colman",
+          "character": "Fisherwoman",
+          "photo": "https://image.tmdb.org/t/p/w185/lawJUdbLb1YW0niaYjiVGR9IBG8.jpg"
+        },
+        {
+          "name": "Alexander Skarsgård",
+          "character": "Wicker Husband",
+          "photo": "https://image.tmdb.org/t/p/w185/6VNNddrSrIVgdzhXr4Zg89gmOzY.jpg"
+        },
+        {
+          "name": "Peter Dinklage",
+          "character": "Basket Weaver",
+          "photo": "https://image.tmdb.org/t/p/w185/9CAd7wr8QZyIN0E7nm8v1B6WkGn.jpg"
+        },
+        {
+          "name": "Elizabeth Debicki",
+          "character": "Tailor’s Wife",
+          "photo": "https://image.tmdb.org/t/p/w185/nTTnQVTn13Ve4ifjRY9v8kVc99w.jpg"
+        },
+        {
+          "name": "Marli Siu",
+          "character": "Basket Weaver's Sister",
+          "photo": "https://image.tmdb.org/t/p/w185/pNi3TfnnJuDz25m93Nr2AKIYV4R.jpg"
+        },
+        {
+          "name": "Nabhaan Rizwan",
+          "character": "Tailor",
+          "photo": "https://image.tmdb.org/t/p/w185/ljDpNmRnx9Mxe6DZbOMVZlGVXAN.jpg"
+        },
+        {
+          "name": "Richard E. Grant",
+          "character": "Doctor",
+          "photo": "https://image.tmdb.org/t/p/w185/92oaBntIXhndCxUXaGywUyILIIE.jpg"
+        },
+        {
+          "name": "Kiell Smith-Bynoe",
+          "character": "Innkeeper",
+          "photo": "https://image.tmdb.org/t/p/w185/6pVa2SEgMfR2u7E3xfIUGZSqinh.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-up-5496206329599478200",
+      "title": "The Mongoose [Hindi]",
+      "year": "2026",
+      "genre": "Action, Thriller",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "7.8",
+      "imdbRating": "7.8",
+      "poster": "https://image.tmdb.org/t/p/w500/eSS5mvSG84UUuvtbHel5Yu3Wik4.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/iRIhPqqoUHiFBxn8oYf3gCQnaKk.jpg",
+      "description": "A falsely accused war hero with nothing to lose leads police on an epic televised cross-country car chase, helped by members of his former Special Forces Army battalion and closely monitored by a fascinated public rooting for his safe getaway.",
+      "cast": [
+        {
+          "name": "Liam Neeson",
+          "character": "Ryan 'Fang' Flanagan",
+          "photo": "https://image.tmdb.org/t/p/w185/sRLev3wJioBgun3ZoeAUFpkLy0D.jpg"
+        },
+        {
+          "name": "Marisa Tomei",
+          "character": "Tara",
+          "photo": "https://image.tmdb.org/t/p/w185/vAQ10fvGfVyuJdMNKVMA4ZkacWL.jpg"
+        },
+        {
+          "name": "Ving Rhames",
+          "character": "Tanker",
+          "photo": "https://image.tmdb.org/t/p/w185/tOVDvu1EQP78AwaUw6uh1wN818E.jpg"
+        },
+        {
+          "name": "Michael Chiklis",
+          "character": "Major Walter Pope",
+          "photo": "https://image.tmdb.org/t/p/w185/pAkKjbzxP6Z6Y5zAGpwmWQo1iji.jpg"
+        },
+        {
+          "name": "Brett Tucker",
+          "character": "Todd",
+          "photo": "https://image.tmdb.org/t/p/w185/6IUQyy2pA8PRXX1MEx088JH6pcu.jpg"
+        },
+        {
+          "name": "Stella Stocker",
+          "character": "Helene (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/ilRVeYRcQrAeHYLMOPPzLzZMJcC.jpg"
+        },
+        {
+          "name": "Hamish Michael",
+          "character": "Captain Parks",
+          "photo": "https://image.tmdb.org/t/p/w185/4O0WjvxElALgMFIiX19RJJbJM7B.jpg"
+        },
+        {
+          "name": "Toby Truslove",
+          "character": "Captain McBride",
+          "photo": "https://image.tmdb.org/t/p/w185/17AaSGRY0RyJBFbdj0uSLK7n5wV.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-up-568529383837815064",
+      "title": "Balaraw: Blood Island [Hindi]",
+      "year": "2026",
+      "genre": "Mystery, Drama",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "7.8",
+      "imdbRating": "7.8",
+      "poster": "https://image.tmdb.org/t/p/w500/s1A6UOu8IOmw0kJXohlitMRiwQb.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/hmdREhKDHJaMXOk8y2nuLDldDbn.jpg",
+      "description": "Years after her mother vanished, Sabina follows a mysterious clue to an uncharted island, where she confronts hidden dark secrets within her own family.",
+      "cast": [
+        {
+          "name": "Janine Gutierrez",
+          "character": "Sabina Tejeros",
+          "photo": "https://image.tmdb.org/t/p/w185/6TQI03vvaY4Am2reUC3HNsNvtfQ.jpg"
+        },
+        {
+          "name": "Charlie Dizon",
+          "character": "Bulak Bernabe",
+          "photo": "https://image.tmdb.org/t/p/w185/ubucChuTyf5BBmvgUqbO5QUpIhL.jpg"
+        },
+        {
+          "name": "Agot Isidro",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/dOOKYxGJIGJMq9xkfgzDmpbmwCS.jpg"
+        },
+        {
+          "name": "Ronnie Lazaro",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/7faCmRBH2912iXtCn4cDojOAVr4.jpg"
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-up-3497733994953821576",
+      "title": "Teka Teki Tika [Hindi]",
+      "year": "2021",
+      "genre": "Comedy, Mystery, Thriller",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "6.0",
+      "imdbRating": "6.0",
+      "poster": "https://image.tmdb.org/t/p/w500/pgbDs1l0fDbTAYq2JXxYjQrxKyE.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/5FjcRoqQDnYArjUdOdqveTmRhMM.jpg",
+      "description": "A happy family whose lives complement each other. While celebrating his wedding anniversary with his family, a rich businessman was suddenly surprised by the appearance of a mysterious woman who claimed to be his biological child, Tika. Until finally the division in the family was inevitable. Behind all that, there is a big secret about Tika's identity.",
+      "cast": [
+        {
+          "name": "Sheila Dara Aisha",
+          "character": "Tika",
+          "photo": "https://image.tmdb.org/t/p/w185/bnCnmSsqW6nKz4LhoEKknQMJ52H.jpg"
+        },
+        {
+          "name": "Dion Wiyoko",
+          "character": "Arnold Limanto",
+          "photo": "https://image.tmdb.org/t/p/w185/xWz4rgxMGkuJAG9d2q0rp2XSQfD.jpg"
+        },
+        {
+          "name": "Morgan Oey",
+          "character": "Andre Limanto",
+          "photo": "https://image.tmdb.org/t/p/w185/fa2IjUgmUrFLxGXkemSrl92r7J2.jpg"
+        },
+        {
+          "name": "Ferry Salim",
+          "character": "Budiman Limanto",
+          "photo": "https://image.tmdb.org/t/p/w185/hw6a3N6DsXENVHAH9FJtA538r79.jpg"
+        },
+        {
+          "name": "Jenny Zhang",
+          "character": "Sherly Winata",
+          "photo": "https://image.tmdb.org/t/p/w185/uMYGUAiXlDY8GUmIfsUQ5bn6Aac.jpg"
+        },
+        {
+          "name": "Eriska Rein",
+          "character": "Laura Wilona",
+          "photo": "https://image.tmdb.org/t/p/w185/mBvYavx9RIOGI0dBlRR9DTcu8fM.jpg"
+        },
+        {
+          "name": "Tansri Kemala",
+          "character": "Jane Mikaila",
+          "photo": "https://image.tmdb.org/t/p/w185/jNb3JvmiZpevmwJ1SehyKc2PlMg.jpg"
+        },
+        {
+          "name": "Ayu Laksmi",
+          "character": "Sri Marwati",
+          "photo": "https://image.tmdb.org/t/p/w185/6Ij0ul9puMjFwioSYkvbmJbFUid.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-up-3466771747515555096",
+      "title": "Warkop DKI: ViRaLiN dOoOoNg..!! [Hindi]",
+      "year": "2026",
+      "genre": "Comedy",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "5.5",
+      "imdbRating": "5.5",
+      "poster": "https://image.tmdb.org/t/p/w500/w9B66TqXL0WGw2roQOk3ohxJQWM.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/dyBfej8BJJe2XHWGnYCmHNA9uyi.jpg",
+      "description": "Three best friends, Dono, Kasino, and Indro, want to get quickly rich by becoming content creators. After numerous failed attempts, they try making a horror-drama video in a remote village. However, their fake plan turns into reality when they are actually haunted by vengeful spirits. To survive, they must uncover the spirits' tragic pasts and help them get justice. Although their horror project fails, their hilarious failed videos make them viral and famous.",
+      "cast": [
+        {
+          "name": "Deddy Mahendra Desta",
+          "character": "Dono",
+          "photo": "https://image.tmdb.org/t/p/w185/gPyyAJrZsdqR9EumAF77i6AakjK.jpg"
+        },
+        {
+          "name": "Vino G. Bastian",
+          "character": "Kasino",
+          "photo": "https://image.tmdb.org/t/p/w185/c3QxAW2JOjX7plgQPAFbgYogvAH.jpg"
+        },
+        {
+          "name": "Tora Sudiro",
+          "character": "Indro",
+          "photo": "https://image.tmdb.org/t/p/w185/iDiIkJd3ZJh0NN8IahI6QeZ4NRB.jpg"
+        },
+        {
+          "name": "Indro",
+          "character": "Papi Yulia",
+          "photo": "https://image.tmdb.org/t/p/w185/54LwiUhsGogWfIGINeLr4eGjSPk.jpg"
+        },
+        {
+          "name": "Marsha Timothy",
+          "character": "Yulia",
+          "photo": "https://image.tmdb.org/t/p/w185/o1egclqHgdiyp5QJ333Hgk5AyMJ.jpg"
+        },
+        {
+          "name": "Asri Welas",
+          "character": "Nenek Yulia / Tante Hotel / Mayat Nenek",
+          "photo": "https://image.tmdb.org/t/p/w185/vhFQbWx3LIZNITGgHAASQRj0aDr.jpg"
+        },
+        {
+          "name": "Indy Barends",
+          "character": "Mami Yulia",
+          "photo": "https://image.tmdb.org/t/p/w185/8cueK736vUjJEn1T6Bl5L7bslyI.jpg"
+        },
+        {
+          "name": "Ivan Gunawan",
+          "character": "Pablo",
+          "photo": "https://image.tmdb.org/t/p/w185/17Z0TvdGIA7ygrCulPkGwSIJUqg.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-up-6490938897294936504",
+      "title": "Summer Vacation [Hindi]",
+      "year": "2026",
+      "genre": "Drama, Sci-Fi & Fantasy, Mystery",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "7.8",
+      "imdbRating": "7.8",
+      "poster": "https://image.tmdb.org/t/p/w500/ru4oyTVoPVQZPUE5rI3YPMgLHBY.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/tXSbEP4vGLOBpJtFg2Vsmm6aStx.jpg",
+      "description": "An ordinary teen girl longs for something new – will meeting a handsome boy in a countryside village change her life?",
+      "cast": [
+        {
+          "name": "Cho Yi-hyun",
+          "character": "Kim Ha-yeon",
+          "photo": "https://image.tmdb.org/t/p/w185/cWCNUAyQ9AFUDBfEskZou4eVbEH.jpg"
+        },
+        {
+          "name": "Jung Jin-young",
+          "character": "Jo Yoo-gyeom",
+          "photo": "https://image.tmdb.org/t/p/w185/8NHVBNi1Jb7f0RujRLtjD2i05tc.jpg"
+        },
+        {
+          "name": "Ryu Hae-jun",
+          "character": "Kim Jeong-yeon",
+          "photo": "https://image.tmdb.org/t/p/w185/fbIujzRO7dBvO93WmDsF3kzzOTI.jpg"
+        },
+        {
+          "name": "Hong Ye-ji",
+          "character": "Seong Sae-ryeong",
+          "photo": "https://image.tmdb.org/t/p/w185/5BoA7ZE5v1fTAmDgCotMrGxaFa0.jpg"
+        },
+        {
+          "name": "Seo Ji-young",
+          "character": "Yoo-gyeom's mother",
+          "photo": "https://image.tmdb.org/t/p/w185/xjKNPKUBjGhKIF5eT0KiPqsYMJR.jpg"
+        },
+        {
+          "name": "Kang Ji-eun",
+          "character": "Sin Hye-jin",
+          "photo": "https://image.tmdb.org/t/p/w185/2godIG1dfY3T1akTDsstvStYPh4.jpg"
+        },
+        {
+          "name": "Kim Bo-young",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/7bkTIOSKICJcATCcRTPY9BdTJSa.jpg"
+        },
+        {
+          "name": "Shin Hyeon-jong",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/usKoh1MeD97Ja4caRe8hD7yPWQQ.jpg"
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-up-8424109037343628216",
+      "title": "Jangan Buang Ibu [Hindi]",
+      "year": "2023",
+      "genre": "Action, Drama",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "6.5",
+      "imdbRating": "6.5",
+      "poster": "https://pbcdnw.aoneroom.com/image/2026/02/04/e291df6ccd53e9a9cf480850bfcbe4fe.jpeg",
+      "backdrop": "https://pbcdnw.aoneroom.com/image/2026/02/04/e291df6ccd53e9a9cf480850bfcbe4fe.jpeg",
+      "description": "Upcoming Hindi dubbed release coming soon exclusively on FOBS TV.",
+      "cast": [],
+      "type": "movie"
+    },
+    {
+      "id": "mb-up-8872217200267086264",
+      "title": "Spinners [Hindi]",
+      "year": "2023",
+      "genre": "Crime, Drama",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "8.4",
+      "imdbRating": "8.4",
+      "poster": "https://image.tmdb.org/t/p/w500/uwiVqtc7NKIl61hVT4enJOxV9tW.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/tWunElWzuQKWCkJcyXk3QQ3b3i2.jpg",
+      "description": "Ethan is a 17-year-old driver working for a local gang. Disgusted with gang life, Ethan discovers a possible way out via spinning, an extreme motorsport. But the looming gang war jeopardises that hope.",
+      "cast": [
+        {
+          "name": "Cantona James",
+          "character": "Ethan",
+          "photo": "https://image.tmdb.org/t/p/w185/1NaEckELJfHQwLUv2dMiJSCiT1s.jpg"
+        },
+        {
+          "name": "Brendon Daniels",
+          "character": "Hercules",
+          "photo": "https://image.tmdb.org/t/p/w185/oHDSfLvYOGdAG0Jy23lNbJYJWIt.jpg"
+        },
+        {
+          "name": "Dillon Windvogel",
+          "character": "Shane",
+          "photo": "https://image.tmdb.org/t/p/w185/940mgHYGhn8DR1BZwByA23rFnuQ.jpg"
+        },
+        {
+          "name": "Braeden Buys",
+          "character": "Trevor",
+          "photo": "https://image.tmdb.org/t/p/w185/l2uPC48zu1l3XHIYAClJb51XB2N.jpg"
+        },
+        {
+          "name": "Elton Landrew",
+          "character": "Damien",
+          "photo": "https://image.tmdb.org/t/p/w185/4Chut5CUfVhbuK6FAe7IatQ52QQ.jpg"
+        },
+        {
+          "name": "Stephren Saayman",
+          "character": "Jackie",
+          "photo": "https://image.tmdb.org/t/p/w185/eh333ZEpMbVRTiqHn6vHgYMHiSb.jpg"
+        },
+        {
+          "name": "David Isaacs",
+          "character": "Nazeem",
+          "photo": "https://image.tmdb.org/t/p/w185/5KQWhXlw5F1jXHiMYUxSr7YoKY6.jpg"
+        },
+        {
+          "name": "Jihaad Otto",
+          "character": "Byron",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-up-9174873168975128800",
+      "title": "Oh! My Guard [Hindi]",
+      "year": "2026",
+      "genre": "Drama, Comedy, Sci-Fi & Fantasy",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "7.8",
+      "imdbRating": "7.8",
+      "poster": "https://image.tmdb.org/t/p/w500/dg4IIruyBEtSgjW5fdXi46xrSzC.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/jFpUscK4vAj2F6pZH1ZT20cO6sw.jpg",
+      "description": "A wildly unpredictable romance begins when a flawed “master of melodrama” actor encounters a mysterious woman who believes she is the female lead of a TV drama.",
+      "cast": [
+        {
+          "name": "Jung Yong-hwa",
+          "character": "Um Tae-bong",
+          "photo": "https://image.tmdb.org/t/p/w185/pxxZ2G17NI5L8MP0dNMiRDuUg2Z.jpg"
+        },
+        {
+          "name": "Hong Seung-hee",
+          "character": "Oh Hae-ra / Cha Hong-do",
+          "photo": "https://image.tmdb.org/t/p/w185/iF8vAp98sUh0CQ07mhrCB4euHPR.jpg"
+        },
+        {
+          "name": "Lee Yi-kyung",
+          "character": "Han Jeong-woo",
+          "photo": "https://image.tmdb.org/t/p/w185/rAH9iQ6olF5cyVKkVQuoGyaFxK.jpg"
+        },
+        {
+          "name": "Park You-na",
+          "character": "Song Na-ri",
+          "photo": "https://image.tmdb.org/t/p/w185/6MawaOrDuD5R40ufBf0uDU0Wq0p.jpg"
+        },
+        {
+          "name": "Han Chae-a",
+          "character": "So Hyeon-ju",
+          "photo": "https://image.tmdb.org/t/p/w185/ymEg1gkzA6mc3KU9j1DlrrXQNPz.jpg"
+        },
+        {
+          "name": "Hwang Tae-kwang",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/ySOF1TSNiYIlSJdaqwlUz9WEsNi.jpg"
+        },
+        {
+          "name": "Kwak Min-seok",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/jShebpoVSfChQZ0drJWy7dOend5.jpg"
+        },
+        {
+          "name": "Choi Dae-sung",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/yCahIo38xjsXOSRyLPY5oIlqFg9.jpg"
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-up-2300409812770776784",
+      "title": "Final Table [Hindi]",
+      "year": "2026",
+      "genre": "Drama",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "7.8",
+      "imdbRating": "7.8",
+      "poster": "https://image.tmdb.org/t/p/w500/uaMjtALuvZC7dGkYllGKKWEWW1J.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/anwMEnTDkhv5qJ8wXSRieCvFHGs.jpg",
+      "description": "The Table: K-Chef 2026 brings together Korea's top chefs to compete for the title of the country's best chef. Mysterious world-renowned chef Chris K., also known as Kang Han, Song-yi, who is fighting to save her restaurant, perfectionist star chef Woo-jin, and chefs with stories of their own face off in a fierce culinary battle. More than a competition, they find comfort in food and one another.",
+      "cast": [
+        {
+          "name": "Ahn Hyo-seop",
+          "character": "Kang Han / Chris K",
+          "photo": "https://image.tmdb.org/t/p/w185/hVnKQ5WO8MGFrm6ShPmL90NZloV.jpg"
+        },
+        {
+          "name": "Hong Hwa-yeon",
+          "character": "Choi Song-i",
+          "photo": "https://image.tmdb.org/t/p/w185/XzUpzJuGHsghd1ZolrFU7JIXOV.jpg"
+        },
+        {
+          "name": "Chang Ryul",
+          "character": "Cha Woo-jin",
+          "photo": "https://image.tmdb.org/t/p/w185/ad3JzZUeo9jj3UpRK4NoYioCIxQ.jpg"
+        },
+        {
+          "name": "Eugene Jung",
+          "character": "Seon Jeong-won",
+          "photo": "https://image.tmdb.org/t/p/w185/iiY8UUU93EjutlfRrTZTPm566d6.jpg"
+        },
+        {
+          "name": "Jang Young-nam",
+          "character": "Moon Hae-seon",
+          "photo": "https://image.tmdb.org/t/p/w185/u0hl8WSswFhKVaKwaMAERU0xUJk.jpg"
+        },
+        {
+          "name": "Cha Ji-yeon",
+          "character": "Baek Hyeon-ju",
+          "photo": "https://image.tmdb.org/t/p/w185/6ntm2nrIvIcb8ifMpyalDNaUVoF.jpg"
+        },
+        {
+          "name": "Lee Je-hyeong",
+          "character": "Hall staff 2",
+          "photo": "https://image.tmdb.org/t/p/w185/6uHH9mvl3l1yysO8yvOcaT05YSS.jpg"
+        },
+        {
+          "name": "Bret Allan Lindquist",
+          "character": "Belgium - Chef A",
+          "photo": "https://image.tmdb.org/t/p/w185/9K51gOdC3OU1SPmIiwvrgshOPQn.jpg"
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-up-8865013454558612496",
+      "title": "Happy's Place [Hindi]",
+      "year": "2024",
+      "genre": "Comedy",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "6.7",
+      "imdbRating": "6.7",
+      "poster": "https://image.tmdb.org/t/p/w500/3dehoKPCwLwKTWATfzGqoJ2Psdl.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/lQ9Yun6lMNNcQWFM0r2iKReKQeO.jpg",
+      "description": "Bobbie inherits her father's restaurant and is less than thrilled to discover that she has a new business partner in the half-sister she never knew she had.",
+      "cast": [
+        {
+          "name": "Reba McEntire",
+          "character": "Bobbie",
+          "photo": "https://image.tmdb.org/t/p/w185/q4T5XDHzVepqQi4NoqI9GKJcD3s.jpg"
+        },
+        {
+          "name": "Belissa Escobedo",
+          "character": "Isabella",
+          "photo": "https://image.tmdb.org/t/p/w185/584tOsPVFbzq7GJxET5diOGZ8p0.jpg"
+        },
+        {
+          "name": "Melissa Peterman",
+          "character": "Gabby",
+          "photo": "https://image.tmdb.org/t/p/w185/dyWRlAOJnSGzRwhVVfMIkYC4cp7.jpg"
+        },
+        {
+          "name": "Rex Linn",
+          "character": "Emmett",
+          "photo": "https://image.tmdb.org/t/p/w185/dY8x6OrmS0dBdogxeF2QALrCvpI.jpg"
+        },
+        {
+          "name": "Pablo Castelblanco",
+          "character": "Steve",
+          "photo": "https://image.tmdb.org/t/p/w185/10RmdpGNsEF51OAn7ZZS1CgnZyl.jpg"
+        },
+        {
+          "name": "Tokala Black Elk",
+          "character": "Takoda",
+          "photo": "https://image.tmdb.org/t/p/w185/fZ4wmUVQdyfRCHpcWKeAyyvdc9g.jpg"
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-up-601426853345348024",
+      "title": "Switzerland [Hindi]",
+      "year": "2023",
+      "genre": "Comedy",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "6.9",
+      "imdbRating": "6.9",
+      "poster": "https://image.tmdb.org/t/p/w500/yjVWlezdAQY3mfOinNC7dCo5PG9.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/ozjvm9t1q6BWeWeEDhCu0J5izzZ.jpg",
+      "description": "A crazy referendum throws Switzerland into a state of emergency. By the acceptance of the initiative “No Bilangue” there should be from now on only one national language: French. Many German-speaking Swiss are therefore having a crisis.",
+      "cast": [
+        {
+          "name": "Beat Schlatter",
+          "character": "Walter Egli / Jeannot Bachmann",
+          "photo": "https://image.tmdb.org/t/p/w185/aT8gAQIwk3AnoSUHrVg9wVs0Znx.jpg"
+        },
+        {
+          "name": "Vincent Kucholl",
+          "character": "Jonas Bornand",
+          "photo": "https://image.tmdb.org/t/p/w185/jm9nyZa1AZLzeoRposKtzPWZRil.jpg"
+        },
+        {
+          "name": "Catherine Pagani",
+          "character": "Francesca Gamboni",
+          "photo": "https://image.tmdb.org/t/p/w185/c9jcwGkYOqkAtRdcTDwL9Aj2TjK.jpg"
+        },
+        {
+          "name": "Leonardo Nigro",
+          "character": "Enzo Castani",
+          "photo": "https://image.tmdb.org/t/p/w185/gnuUdxZdZzxowKSQAgfoMNGfdVt.jpg"
+        },
+        {
+          "name": "Silvia Jost",
+          "character": "Rosemarie Egli",
+          "photo": "https://image.tmdb.org/t/p/w185/sA6NFl1rxvQyvk5sSsgVrF7Z03h.jpg"
+        },
+        {
+          "name": "Pascal Ulli",
+          "character": "Ivan Keller",
+          "photo": "https://image.tmdb.org/t/p/w185/bgNfJQI6TM3a7pFCIvpsiLJl08B.jpg"
+        },
+        {
+          "name": "Sandro Brotz",
+          "character": "Presenter of “Arena”",
+          "photo": "https://image.tmdb.org/t/p/w185/b8UOlYpacELYJDzLCq1GwnjjOMb.jpg"
+        },
+        {
+          "name": "Urs Gredig",
+          "character": "Presenter of “Gredig Direkt”",
+          "photo": "https://image.tmdb.org/t/p/w185/iqWpxtvm16QTGZNJ2CROkFeaRAq.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-up-6404314973212138776",
+      "title": "The Only Living Pickpocket in New York [Hindi]",
+      "year": "2026",
+      "genre": "Crime, Drama, Thriller",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "6.5",
+      "imdbRating": "6.5",
+      "poster": "https://image.tmdb.org/t/p/w500/pNdB9va2AEPQe9UfhKAdIt8nus9.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/nZLt2sLZTEOyK50TjwNlGqzWsp5.jpg",
+      "description": "Harry Lehman is an aging pickpocket who plies his trade with ever-diminishing returns in a drastically changed New York. Wallets stuffed with cash have been replaced by easily cancelled credit cards, and Harry struggles to make ends meet as he cares for his disabled wife, Rosie. When he unwittingly purloins and fences a valuable USB stick, Harry finds himself in a race against time to return the loot or face the rage of a vengeful crime family.",
+      "cast": [
+        {
+          "name": "John Turturro",
+          "character": "Harry",
+          "photo": "https://image.tmdb.org/t/p/w185/6O9W9cJW0kCqMzYeLupV9oH0ftn.jpg"
+        },
+        {
+          "name": "Giancarlo Esposito",
+          "character": "Detective Warren",
+          "photo": "https://image.tmdb.org/t/p/w185/MJOo4QZgMAb3y8QzOUDVFQusQZ.jpg"
+        },
+        {
+          "name": "Will Price",
+          "character": "Dylan",
+          "photo": "https://image.tmdb.org/t/p/w185/7Gv2bTLOxuPSkcIMRuPpEXcHFn4.jpg"
+        },
+        {
+          "name": "Tatiana Maslany",
+          "character": "Kelly",
+          "photo": "https://image.tmdb.org/t/p/w185/pdoZ5tgZt1IdBXckGtyqRJ9DoJB.jpg"
+        },
+        {
+          "name": "Victoria Moroles",
+          "character": "Eve",
+          "photo": "https://image.tmdb.org/t/p/w185/ihnzexDHpbzBToHbT3U5LHckTcK.jpg"
+        },
+        {
+          "name": "Steve Buscemi",
+          "character": "Ben",
+          "photo": "https://image.tmdb.org/t/p/w185/n0pZumkrcZrAPMoPq684RhYnjPV.jpg"
+        },
+        {
+          "name": "Delaney Grace Coyle",
+          "character": "Cast",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Rob Brown",
+          "character": "Sammy, An Orderly",
+          "photo": "https://image.tmdb.org/t/p/w185/jVevsp9OsdImQ8YxNjdG3KLYket.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-up-103356882055843208",
+      "title": "Clayface [Hindi]",
+      "year": "2026",
+      "genre": "Horror, Thriller, Science Fiction",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "7.2",
+      "imdbRating": "7.2",
+      "poster": "https://image.tmdb.org/t/p/w500/5jCpQnWPikggmQZoDp1eAi6BI6w.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/uL4cIrNi2uaUnWIOQQ28EVnkETG.jpg",
+      "description": "Matt Hagen's meteoric rise from Gotham street kid to Hollywood leading man is tragically cut short when a local crime boss's actions leave him horribly disfigured. Abandoned by his team and with nothing left, Matt seeks out a cutting edge treatment that miraculously returns him to his former self… but also unexpectedly affects his grip on reality, spiraling him down a destructive path of all-consuming revenge.",
+      "cast": [
+        {
+          "name": "Tom Rhys Harries",
+          "character": "Matt Hagen / Clayface",
+          "photo": "https://image.tmdb.org/t/p/w185/elxvpHPqOxGcKe6U2hcArIcpyWo.jpg"
+        },
+        {
+          "name": "Naomi Ackie",
+          "character": "Caitlyn Corr",
+          "photo": "https://image.tmdb.org/t/p/w185/dijwuTAEZUzQtoJfK49S4X80fQw.jpg"
+        },
+        {
+          "name": "Eddie Marsan",
+          "character": "Frank Fitzpatrick",
+          "photo": "https://image.tmdb.org/t/p/w185/9atfOgIxhfOKvv2be8HEp6SzOct.jpg"
+        },
+        {
+          "name": "Max Minghella",
+          "character": "John Borrelli",
+          "photo": "https://image.tmdb.org/t/p/w185/AhVDxsOOoAnwwVBL7ZY8W0mGsYJ.jpg"
+        },
+        {
+          "name": "David Dencik",
+          "character": "Marcos Jabo",
+          "photo": "https://image.tmdb.org/t/p/w185/q5wLADc6yYd3owxSEG8VKbf7YWV.jpg"
+        },
+        {
+          "name": "Francesca Corney",
+          "character": "Rosie",
+          "photo": "https://image.tmdb.org/t/p/w185/p2B2dYAvl0TMUtbrZxzOdNgBbSE.jpg"
+        },
+        {
+          "name": "Ruby Sear",
+          "character": "Theresa",
+          "photo": "https://image.tmdb.org/t/p/w185/hNlLm6NaHPjakDJhPEY1suGcxKi.jpg"
+        },
+        {
+          "name": "Wil Coban",
+          "character": "Bones",
+          "photo": "https://image.tmdb.org/t/p/w185/73REwJckTBMNJoiGIrrGhcCdTqf.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-up-1632328955548125624",
+      "title": "Wildwood [Hindi]",
+      "year": "2026",
+      "genre": "Animation, Adventure, Fantasy",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "9.0",
+      "imdbRating": "9.0",
+      "poster": "https://image.tmdb.org/t/p/w500/snFM00mpNAfUzUtkdEW0uDEvXA0.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/sl5NJ1vtyhP9Vr88bB4blULsJYp.jpg",
+      "description": "Prue and her classmate Curtis are drawn into a magical forest filled with enchanted creatures, loyal allies, and formidable adversaries as they embark on a desperate quest to rescue Prue's abducted baby brother from a murder of crows led by a mysterious woman named Alexandra.",
+      "cast": [
+        {
+          "name": "Peyton Elizabeth Lee",
+          "character": "Prue McKeel (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/hnEl4HxqGNGHCJ7Y8l3dJ21WHeG.jpg"
+        },
+        {
+          "name": "Jacob Tremblay",
+          "character": "Curtis Mehlberg (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/h8CXDp86Y36CUENF4SXJq5ZRTsf.jpg"
+        },
+        {
+          "name": "Carey Mulligan",
+          "character": "Alexandra (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/iwVHhqoz5b62FR0SDpZ7wfsuTBI.jpg"
+        },
+        {
+          "name": "Mahershala Ali",
+          "character": "Brenden (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/9ZmSejm5lnUVY5IJ1iNx2QEjnHb.jpg"
+        },
+        {
+          "name": "Angela Bassett",
+          "character": "The General (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/tKnuviliyeKNGlo26IU5gIrJAtd.jpg"
+        },
+        {
+          "name": "Awkwafina",
+          "character": "Septima (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/l5AKkg3H1QhMuXmTTmq1EyjyiRb.jpg"
+        },
+        {
+          "name": "Jake Johnson",
+          "character": "Mr. McKeel (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/3UNfW2qZgRkW81neNVfQvaRC92K.jpg"
+        },
+        {
+          "name": "Charlie Day",
+          "character": "Dmitri (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/c0HNhjChGybnHa4eoLyqO4dDu1j.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-up-7686292754640821176",
+      "title": "Klara and the Sun [Hindi]",
+      "year": "2026",
+      "genre": "Science Fiction, Drama",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "6.2",
+      "imdbRating": "6.2",
+      "poster": "https://image.tmdb.org/t/p/w500/xqovj2p6HRsgHxN81qYAYF4StgM.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/s4E7NDJCOG3wqc5psv2RLr9QfUm.jpg",
+      "description": "An Artificial Friend named Klara finds a deep bond with a troubled young girl, bringing light and hope to a grieving family through her unwavering devotion and innocent wonder.",
+      "cast": [
+        {
+          "name": "Jenna Ortega",
+          "character": "Klara",
+          "photo": "https://image.tmdb.org/t/p/w185/cV4x7jNmsGLdKZn5I6xVF3Ltnmg.jpg"
+        },
+        {
+          "name": "Mia Tharia",
+          "character": "Josie",
+          "photo": "https://image.tmdb.org/t/p/w185/oHb6lb5swU8U4JPEGfbUY5vkW5y.jpg"
+        },
+        {
+          "name": "Amy Adams",
+          "character": "Chrissie",
+          "photo": "https://image.tmdb.org/t/p/w185/gn0K6c6d1L6qQrRc86iL8uyIqiF.jpg"
+        },
+        {
+          "name": "Natasha Lyonne",
+          "character": "Manager",
+          "photo": "https://image.tmdb.org/t/p/w185/2QJoTBEIeYyjGSDot9qxv2ayPH3.jpg"
+        },
+        {
+          "name": "Aran Murphy",
+          "character": "Rick",
+          "photo": "https://image.tmdb.org/t/p/w185/gXwVwAY791aYZXkdSjLaRwYY37l.jpg"
+        },
+        {
+          "name": "Rachel House",
+          "character": "Melania",
+          "photo": "https://image.tmdb.org/t/p/w185/2LCQF7Bn0I91o17GGkox0ZhhbE7.jpg"
+        },
+        {
+          "name": "Steve Buscemi",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/n0pZumkrcZrAPMoPq684RhYnjPV.jpg"
+        },
+        {
+          "name": "Davida McKenzie",
+          "character": "Simone",
+          "photo": "https://image.tmdb.org/t/p/w185/2BqQHNNIXbUYSWbUk6UMrG7dwYu.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-up-622396739110201040",
+      "title": "Love Language [Hindi]",
+      "year": "2026",
+      "genre": "Romance, Comedy",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "7.8",
+      "imdbRating": "7.8",
+      "poster": "https://image.tmdb.org/t/p/w500/sCQde3BSMpDgA1qpE0zzboFdwl0.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/2reWDfgqvrUmA05y6UCKb2UXNvP.jpg",
+      "description": "Following a failed engagement, Lou discovers she has a talent for writing other people’s wedding vows. Word spreads across Chicago’s wedding scene and Lou’s services are in high demand. She even has a new admirer in Dash. But everything changes when she’s asked to write vows for Olivia, who’s marrying Warren, Lou’s old college flame.",
+      "cast": [
+        {
+          "name": "Chloë Grace Moretz",
+          "character": "Lou",
+          "photo": "https://image.tmdb.org/t/p/w185/yq4rYmaTRC5degaOYmJQFpaiho1.jpg"
+        },
+        {
+          "name": "Anthony Ramos",
+          "character": "Dash",
+          "photo": "https://image.tmdb.org/t/p/w185/gCeRfH3aetIpZwKxe8Wl4ZYcQg5.jpg"
+        },
+        {
+          "name": "Manny Jacinto",
+          "character": "Warren",
+          "photo": "https://image.tmdb.org/t/p/w185/jMbNV4nr5647r6CZJbT6nsnspMz.jpg"
+        },
+        {
+          "name": "Isabel May",
+          "character": "Olivia",
+          "photo": "https://image.tmdb.org/t/p/w185/RJ4djIbfvUHXCCgniiAi0ebhED.jpg"
+        },
+        {
+          "name": "Lukas Gage",
+          "character": "Gus",
+          "photo": "https://image.tmdb.org/t/p/w185/xXknCnXtRBmqg38TkMuPFtugt5s.jpg"
+        },
+        {
+          "name": "Billie Lourd",
+          "character": "Tilda",
+          "photo": "https://image.tmdb.org/t/p/w185/1u8bZL6ZXu5iDbPO3Z0Spetyt34.jpg"
+        },
+        {
+          "name": "Chloe Fineman",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/pzGIb2jkjeXGhOJryPf2n2w13lI.jpg"
+        },
+        {
+          "name": "Bobbi Althoff",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/3paiMEXfQXBsEWLbo44K3GKeoP4.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-up-316996389379230136",
+      "title": "Yaga [Hindi]",
+      "year": "2026",
+      "genre": "Drama, Sci-Fi & Fantasy",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "7.8",
+      "imdbRating": "7.8",
+      "poster": "https://image.tmdb.org/t/p/w500/2kxIViR7g3e08ZHLlvNFFJkgJtI.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/owhTL4n2r9ryfxyYlhHKt97ogVk.jpg",
+      "description": "While a private investigator probes the disappearance of the young heir to a powerful fishery, he finds himself at odds with an apprehensive local detective, a charismatic university professor with a taste for younger men, and a labyrinth of enigmatic suspects, secret lives, and ancient magic.",
+      "cast": [
+        {
+          "name": "Carrie-Anne Moss",
+          "character": "Katherine",
+          "photo": "https://image.tmdb.org/t/p/w185/9zya72vRZYBQILfetACsnmCBgdj.jpg"
+        },
+        {
+          "name": "Clark Backo",
+          "character": "Carson",
+          "photo": "https://image.tmdb.org/t/p/w185/d24KKFxfoql6PBsBPsejFgzhSlH.jpg"
+        },
+        {
+          "name": "Noah Reid",
+          "character": "Rapp",
+          "photo": "https://image.tmdb.org/t/p/w185/fMIRF0rPO7orxBSAAVhjJ5TAmBS.jpg"
+        },
+        {
+          "name": "Hudson Williams",
+          "character": "Henry Park",
+          "photo": "https://image.tmdb.org/t/p/w185/aUvrPx2xOqnPVpjiKGESCUItj85.jpg"
+        },
+        {
+          "name": "Ezra Franky",
+          "character": "Pam",
+          "photo": "https://image.tmdb.org/t/p/w185/rPUN92bJFlwtJ7jEPsV4A4fwKcY.jpg"
+        },
+        {
+          "name": "Patrick Gilmore",
+          "character": "Eckert",
+          "photo": "https://image.tmdb.org/t/p/w185/9jcnrVixk0KCIL4NB66ayMdGEfv.jpg"
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-up-238604873925804384",
+      "title": "Pehla Pyaar Doosri Baar [Hindi]",
+      "year": "2026",
+      "genre": "Romance, Comedy, Drama",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "7.8",
+      "imdbRating": "7.8",
+      "poster": "https://image.tmdb.org/t/p/w500/tGS4b47RIpF3DTAkezHBqfYNTm2.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/iaVcws1W3owTlRSI8GKcov95UHS.jpg",
+      "description": "Three friends attend their school reunion and enter into different relationships, discovering the trials, tribulations, allure, and absurdities of love.",
+      "cast": [
+        {
+          "name": "Alisha Chopra",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/yCwCE8vPAzVQjRCG5dOKWH8GxMn.jpg"
+        },
+        {
+          "name": "Sparsh Walia",
+          "character": "Cast",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Sakshi Vaidya",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/mjxptpTIascHLZkcXXHZ3VKKId5.jpg"
+        },
+        {
+          "name": "Kunal Vaid",
+          "character": "Cast",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Sargun Kaur Luthra",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/49aUdW0f1EjKrntB82qHooy7eDx.jpg"
+        },
+        {
+          "name": "Tushar Chhibber",
+          "character": "Cast",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        }
+      ],
+      "type": "movie"
+    },
+    {
+      "id": "mb-up-6164881272604084120",
+      "title": "Lupin [Hindi]",
+      "year": "2021",
+      "genre": "Crime, Drama, Mystery",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "rating": "7.7",
+      "imdbRating": "7.7",
+      "poster": "https://image.tmdb.org/t/p/w500/h6Z2oogE4mJk2uffdtIlLhb0EHx.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/aY7zv2pfk9H0QxaaL3PBjvalbKQ.jpg",
+      "description": "Inspired by the adventures of Arsène Lupin, gentleman thief Assane Diop sets out to avenge his father for an injustice inflicted by a wealthy family.",
+      "cast": [
+        {
+          "name": "Omar Sy",
+          "character": "Assane Diop",
+          "photo": "https://image.tmdb.org/t/p/w185/Uuy6WuizieB4fOIGFp0gY90Yq2.jpg"
+        }
+      ],
+      "type": "series"
+    },
+    {
       "id": "upcoming-avengers-doomsday",
       "title": "Avengers: Doomsday",
       "language": "English",
@@ -2820,5 +6345,546 @@
       "type": "movie"
     }
   ],
-  "liveTv": []
+  "liveTv": [
+    {
+      "id": "tv-bd-7ynlcad0y1lkdj",
+      "name": "Ananda TV",
+      "title": "Ananda TV",
+      "category": "Bangladesh Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://app.ncare.live/c3VydmVyX8RpbEU9Mi8xNy8yMDE0GIDU6RgzQ6NTAgdEoaeFzbF92YWxIZTO0U0ezN1IzMyfvcGVMZEJCTEFWeVN3PTOmdFsaWRtaW51aiPhnPTI2/anandatv.stream/live-orgin/anandatv.stream/playlist.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "bd"
+    },
+    {
+      "id": "tv-bd-7aohjcypolqezk",
+      "name": "Boishakhi TV",
+      "title": "Boishakhi TV",
+      "category": "Bangladesh Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://boishakhi.sonarbanglatv.com/boishakhi/boishakhitv/index.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "bd"
+    },
+    {
+      "id": "tv-bd-agfcnepngslm7x",
+      "name": "Channel 24",
+      "title": "Channel 24",
+      "category": "Bangladesh Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://www.youtube-nocookie.com/embed/V9mlD6ZQCfk",
+      "streamType": "youtube",
+      "badge": "LIVE",
+      "country": "bd"
+    },
+    {
+      "id": "tv-bd-uxmcphtew9grap",
+      "name": "Channel S",
+      "title": "Channel S",
+      "category": "Bangladesh Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://app.ncare.live/c3VydmVyX8RpbEU9Mi8xNy8yMDE0GIDU6RgzQ6NTAgdEoaeFzbF92YWxIZTO0U0ezN1IzMyfvcGVMZEJCTEFWeVN3PTOmdFsaWRtaW51aiPhnPTI2/channels.stream/live-orgin/channels.stream/playlist.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "bd"
+    },
+    {
+      "id": "tv-bd-mxpvi5qy87ebef",
+      "name": "DBC News",
+      "title": "DBC News",
+      "category": "Bangladesh Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://www.youtube-nocookie.com/embed/_j_rSwx5Kso",
+      "streamType": "youtube",
+      "badge": "LIVE",
+      "country": "bd"
+    },
+    {
+      "id": "tv-bd-s9kasrdktk2huz",
+      "name": "Desh TV",
+      "title": "Desh TV",
+      "category": "Bangladesh Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://www.youtube-nocookie.com/embed/VxAnLFTH-7E",
+      "streamType": "youtube",
+      "badge": "LIVE",
+      "country": "bd"
+    },
+    {
+      "id": "tv-bd-g2nosojrdb3bwq",
+      "name": "Duronto TV",
+      "title": "Duronto TV",
+      "category": "Bangladesh Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://tvsen6.aynaott.com/6xyZ3N4oHv2KBJdB6W4p/index.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "bd"
+    },
+    {
+      "id": "tv-bd-lq7zgbuz74iicx",
+      "name": "Ekattor TV",
+      "title": "Ekattor TV",
+      "category": "Bangladesh Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://www.youtube-nocookie.com/embed/Z7R3s-KVg60",
+      "streamType": "youtube",
+      "badge": "LIVE",
+      "country": "bd"
+    },
+    {
+      "id": "tv-bd-su2edwmfyqsemr",
+      "name": "Ekhon TV",
+      "title": "Ekhon TV",
+      "category": "Bangladesh Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://www.youtube-nocookie.com/embed/gh_DJW0hB8w",
+      "streamType": "youtube",
+      "badge": "LIVE",
+      "country": "bd"
+    },
+    {
+      "id": "tv-bd-kfm0ndzdja9viz",
+      "name": "Gazi TV",
+      "title": "Gazi TV",
+      "category": "Bangladesh Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://app.ncare.live/c3VydmVyX8RpbEU9Mi8xNy8yMDE0GIDU6RgzQ6NTAgdEoaeFzbF92YWxIZTO0U0ezN1IzMyfvcGVMZEJCTEFWeVN3PTOmdFsaWRtaW51aiPhnPTI2/gazibdz.stream/live-orgin/gazibdz.stream/playlist.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "bd"
+    },
+    {
+      "id": "tv-bd-29x0d5l70jxbbr",
+      "name": "Green TV",
+      "title": "Green TV",
+      "category": "Bangladesh Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://app.ncare.live/c3VydmVyX8RpbEU9Mi8xNy8yMDE0GIDU6RgzQ6NTAgdEoaeFzbF92YWxIZTO0U0ezN1IzMyfvcGVMZEJCTEFWeVN3PTOmdFsaWRtaW51aiPhnPTI2/greentv.stream/live-orgin/greentv.stream/playlist.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "bd"
+    },
+    {
+      "id": "tv-bd-mp7j62vty0dqaw",
+      "name": "Independent Television",
+      "title": "Independent Television",
+      "category": "Bangladesh Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://www.youtube-nocookie.com/embed/iWq2kH0iq2Q",
+      "streamType": "youtube",
+      "badge": "LIVE",
+      "country": "bd"
+    },
+    {
+      "id": "tv-bd-po6iqaxkiaj3jh",
+      "name": "Jamuna TV",
+      "title": "Jamuna TV",
+      "category": "Bangladesh Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://www.youtube-nocookie.com/embed/slLhIaCPd_E",
+      "streamType": "youtube",
+      "badge": "LIVE",
+      "country": "bd"
+    },
+    {
+      "id": "tv-bd-1sz3d2poiarvia",
+      "name": "Maasranga TV",
+      "title": "Maasranga TV",
+      "category": "Bangladesh Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://tvsen5.aynaott.com/maasrangatv/index.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "bd"
+    },
+    {
+      "id": "tv-bd-4yev6qh62bmcsw",
+      "name": "Madani Channel Bangla",
+      "title": "Madani Channel Bangla",
+      "category": "Bangladesh Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://streaming.madanichannel.tv/static/streaming-playlists/hls/d3e49b76-ac06-4689-a641-9200445b647f/master.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "bd"
+    },
+    {
+      "id": "tv-in-haarmtjtkxbonu",
+      "name": "4 SiDES TV",
+      "title": "4 SiDES TV",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://stream.ottlive.co.in/4sidestv/index.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-wydpdely6tg0hc",
+      "name": "4TV News",
+      "title": "4TV News",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://cdn.pishow.tv/ott/live/1007/master.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-3dmydzsb66kgjg",
+      "name": "6 TV Telugu",
+      "title": "6 TV Telugu",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://mumbai-edge.smartplaytv.in/6TVTelugu/index.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-olgsowznws82o6",
+      "name": "7S Music",
+      "title": "7S Music",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://cdn.pishow.tv/ott/live/1257/master.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-blp6yyzuryfuak",
+      "name": "9X Jalwa",
+      "title": "9X Jalwa",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://wiselp.wiseplayout.com/9X_Jalwa/master.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-yjfgvp98xo19wa",
+      "name": "9X Jhakaas",
+      "title": "9X Jhakaas",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://amg01281-9xmediapvtltd-9xjhakaas-samsungin-ci2cs.amagi.tv/playlist/amg01281-9xmediapvtltd-9xjhakaas-samsungin/playlist.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-py1lqz14oor4j9",
+      "name": "9X Tashan",
+      "title": "9X Tashan",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://amg01281-9xmediapvtltd-9xtashan-samsungin-xz1sd.amagi.tv/playlist/amg01281-9xmediapvtltd-9xtashan-samsungin/playlist.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-7cirmqunuxc7mk",
+      "name": "9XM",
+      "title": "9XM",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://wiselp.wiseplayout.com/9XM/master.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-1ojs44fbwcfcst",
+      "name": "10 TV",
+      "title": "10 TV",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://cdn.pishow.tv/ott/live/391/master.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-7llbt6b7k363af",
+      "name": "10TV News Telugu",
+      "title": "10TV News Telugu",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://www.youtube-nocookie.com/embed/Dad7k52NoTw",
+      "streamType": "youtube",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-ulmi9rrzv9z84b",
+      "name": "22Scope News",
+      "title": "22Scope News",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://thelegitpro.in/HDlive/22scope/index.fmp4.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-swstqbcnatrpak",
+      "name": "24 News",
+      "title": "24 News",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://mumt07.tangotv.in/zHjX9OFlTWENTYFOURNEWS/index.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-mswesfbw9qxmyl",
+      "name": "99TV",
+      "title": "99TV",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://cdn.pishow.tv/ott/live/1211/master.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-v5s3vqc3uyprhf",
+      "name": "99TV Telugu",
+      "title": "99TV Telugu",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://www.youtube-nocookie.com/embed/LbSfwHUi7TY",
+      "streamType": "youtube",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-7gy36budoiesfn",
+      "name": "Aadinath TV",
+      "title": "Aadinath TV",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://mumt01.tangotv.in/O5aw8Zn3AADINATHTV/index.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-nbtziipdopwgqb",
+      "name": "Aaj Ki Khabar",
+      "title": "Aaj Ki Khabar",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://stream.ottlive.co.in/aajkikhabar/index.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-icy3xgo6y92b0g",
+      "name": "Aaj Tak",
+      "title": "Aaj Tak",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://feeds.intoday.in/aajtak/api/aajtakhd/master.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-3mtz5xuhvgxp6f",
+      "name": "Aakaash Aath",
+      "title": "Aakaash Aath",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://tvsen5.aynascope.net/Wm9Lv2RjZGT6/index.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-30pt0oqo7qeueh",
+      "name": "Aamar Bangla",
+      "title": "Aamar Bangla",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://app.ncare.live/c3VydmVyX8RpbEU9Mi8xNy8yMDE0GIDU6RgzQ6NTAgdEoaeFzbF92YWxIZTO0U0ezN1IzMyfvcGVMZEJCTEFWeVN3PTOmdFsaWRtaW51aiPhnPTI/amarbanglatv.stream/playlist.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-akh8avubkxtlm9",
+      "name": "Aaryaa TV",
+      "title": "Aaryaa TV",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://stream.ottlive.co.in/aryatvtamil/index.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-j7kyq0gagpq99e",
+      "name": "Aaseervatham TV",
+      "title": "Aaseervatham TV",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://mumt04.tangotv.in/m18aqlK4AASEERVATHAMTV/index.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-r3w6dvi7djibmx",
+      "name": "Aastha",
+      "title": "Aastha",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://aasthaott.akamaized.net/110923/smil:aasthatv.smil/index.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-o1s6m9zki1nr1k",
+      "name": "Aastha Bhajan",
+      "title": "Aastha Bhajan",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://mumt05.tangotv.in/87NeALx2AASTHABHAJAN/index.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-bzntkfshc2qucw",
+      "name": "Aastha Gujarati",
+      "title": "Aastha Gujarati",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://aasthaott.akamaized.net/110923/smil:aasthagujrati.smil/playlist.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-yinpcjyjzgh0fp",
+      "name": "Aastha Kannada",
+      "title": "Aastha Kannada",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://cdn.pishow.tv/ott/live/234/master.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-6luvnhu1flwhhq",
+      "name": "Aastha Prime 1",
+      "title": "Aastha Prime 1",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://aasthaott.akamaized.net/110923/smil:aasthaprime1.smil/master.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-6o1jygw0bjfxrx",
+      "name": "Aastha Tamil",
+      "title": "Aastha Tamil",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://aasthaott.akamaized.net/110923/smil:aasthatamil.smil/playlist.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-czghevlffxw2wp",
+      "name": "Aastha Telugu",
+      "title": "Aastha Telugu",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://cdn.pishow.tv/ott/live/262/master.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-gtjm8m5tn99chw",
+      "name": "ABN Andhra Jyoti",
+      "title": "ABN Andhra Jyoti",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://cdn.pishow.tv/ott/live/407/master.m3u8",
+      "streamType": "hls",
+      "badge": "LIVE",
+      "country": "in"
+    },
+    {
+      "id": "tv-in-8axm6uithii9dp",
+      "name": "ABN Telugu",
+      "title": "ABN Telugu",
+      "category": "Indian Live TV",
+      "logo": "",
+      "poster": "",
+      "streamUrl": "https://www.youtube-nocookie.com/embed/HoYsWagMFfE",
+      "streamType": "youtube",
+      "badge": "LIVE",
+      "country": "in"
+    }
+  ]
 }

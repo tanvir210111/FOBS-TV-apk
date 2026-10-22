@@ -1190,7 +1190,7 @@ video:-webkit-full-screen,
   height: 100% !important;
   max-width: 100% !important;
   max-height: 100% !important;
-  object-fit: cover !important; /* Edge-to-edge full bleed */
+  object-fit: contain !important; /* Default fit to screen without cropping */
   background-color: #000 !important;
   border: none !important;
   outline: none !important;
@@ -1198,10 +1198,12 @@ video:-webkit-full-screen,
   padding: 0 !important;
 }
 
-/* User toggle for original aspect ratio */
-body.is-fullscreen .video-container video.fit-contain,
-.player-view-overlay.is-fullscreen .video-container video.fit-contain {
-  object-fit: contain !important;
+/* User toggle to fill edge-to-edge / zoom fill */
+body.is-fullscreen .video-container video.scale-fill,
+.player-view-overlay.is-fullscreen .video-container video.scale-fill,
+body.is-fullscreen .video-container video.fit-cover,
+.player-view-overlay.is-fullscreen .video-container video.fit-cover {
+  object-fit: cover !important;
 }
 
 /* Fullscreen Top Header Overlay */
@@ -1506,6 +1508,17 @@ body.is-fullscreen .player-top-header.controls-hidden,
 .action-strip-btn:active {
   background: var(--bg-elevated);
   color: #fff;
+}
+
+.views-counter-btn {
+  background: rgba(0, 242, 254, 0.08);
+  border-color: rgba(0, 242, 254, 0.25);
+  color: #00f2fe;
+}
+
+.views-counter-btn span {
+  font-weight: 600;
+  color: #e6e6e6;
 }
 
 /* Resources Section & Dub Dropdown */
@@ -2834,7 +2847,7 @@ video::-webkit-media-controls-panel {
   transform: translateY(-50%);
   z-index: 6;
   pointer-events: auto;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
 }
 
 .ls-lock-pill-btn {
@@ -3328,11 +3341,17 @@ body.is-fullscreen .ls-bottom-bar {
 /* Inactivity Auto-hide */
 .ls-player-ui.controls-hidden .ls-top-header,
 .ls-player-ui.controls-hidden .ls-center-controls,
-.ls-player-ui.controls-hidden .ls-bottom-bar,
+.ls-player-ui.controls-hidden .ls-bottom-bar {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
 .ls-player-ui.controls-hidden .ls-lock-wrapper {
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
+  transform: translateY(-50%) scale(0.85);
 }
 
 /* Empty Category Coming Soon Placeholder */

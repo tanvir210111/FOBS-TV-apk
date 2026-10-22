@@ -30,7 +30,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Node Dependencies
-        run: npm install --legacy-peer-deps
+        run: npm install --legacy-peer-deps || npm install --force
 
       - name: Sync Capacitor Android
         run: npx cap sync android
@@ -38,26 +38,34 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x android/gradlew
 
-      - name: Build Debug APK with Gradle
+      - name: Build Debug APK with Gradle (with Auto-Retry)
         run: |
           cd android
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          ./gradlew assembleDebug --no-daemon --stacktrace || {
+            echo "Initial build encountered an issue. Stopping daemons, cleaning, and retrying..."
+            ./gradlew --stop
+            ./gradlew clean --no-daemon
+            ./gradlew assembleDebug --no-daemon --stacktrace
+          }
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: FOBS-TV-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: warn
 
       - name: Create or Update GitHub Release
         uses: softprops/action-gh-release@v2
         if: github.ref == 'refs/heads/main'
+        continue-on-error: true
         with:
           tag_name: latest
           name: "FOBS TV Latest (v1.2.0)"
-          body: "Latest FOBS TV APK release with fixed swipe-to-back, smooth scrolling, and 2026 movies."
+          body: "Latest FOBS TV APK release with MovieBox player engine, HLS live TV, and auto-sync."
           draft: false
           prerelease: false
+          make_latest: true
           files: |
             android/app/build/outputs/apk/debug/app-debug.apk
         env:

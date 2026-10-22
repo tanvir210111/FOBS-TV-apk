@@ -143,11 +143,22 @@
           </div>
         </div>
 
+        <!-- Section: Anime (Hindi Dubbed) -->
+        <div class="content-section" id="homeAnimeSection">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-dragon" style="color: #ff4757; margin-right: 6px;"></i> Anime (Hindi Dubbed)</h2>
+            <span class="section-more" onclick="openSectionDetail('anime', 'Anime (Hindi Dubbed)')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="homeAnimeList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
         <!-- Section: Live TV -->
         <div class="content-section">
           <div class="section-header">
             <h2 class="section-title">Live TV</h2>
-            <span class="section-more" onclick="switchMainTab('livetv')">Coming Soon <i
+            <span class="section-more" onclick="switchMainTab('livetv')">All <i
                 class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="homeLiveTvList">
@@ -258,6 +269,17 @@
           </div>
         </div>
 
+        <!-- Section: Anime Movies (Hindi Dub) -->
+        <div class="content-section" id="movieAnimeSection">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-dragon" style="color: #ff4757; margin-right: 6px;"></i> Anime Movies (Hindi Dub)</h2>
+            <span class="section-more" onclick="openSectionDetail('movie-anime', 'Anime Movies (Hindi Dub)')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="movieAnimeList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
         <!-- Section: Others (Dubbed) -->
         <div class="content-section">
           <div class="section-header">
@@ -345,6 +367,17 @@
             <span class="section-more" onclick="openSectionDetail('series-japanese', 'Japanese (Dubbed) Series')">All <i class="fa-solid fa-chevron-right"></i></span>
           </div>
           <div class="horizontal-scroll" id="seriesJapaneseList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Anime Series (Hindi Dub) -->
+        <div class="content-section" id="seriesAnimeSection">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-dragon" style="color: #ff4757; margin-right: 6px;"></i> Anime Series (Hindi Dub)</h2>
+            <span class="section-more" onclick="openSectionDetail('series-anime', 'Anime Series (Hindi Dub)')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="seriesAnimeList">
             <!-- Populated via JS -->
           </div>
         </div>
@@ -741,10 +774,10 @@
             <i class="fa-solid fa-download"></i>
             <span>Download</span>
           </button>
-          <button class="action-strip-btn" onclick="openDownloadsView()" title="View downloads">
-            <i class="fa-solid fa-folder-open"></i>
-            <span>View downloads</span>
-          </button>
+          <div class="action-strip-btn views-counter-btn" id="mediaViewsBadge" title="Real-time Views">
+            <i class="fa-solid fa-eye" style="color: #00f2fe;"></i>
+            <span id="mediaViewsCount">...</span>
+          </div>
         </div>
 
         <!-- Resources Section with Dub Selector -->

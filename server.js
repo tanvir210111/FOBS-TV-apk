@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 const movieboxService = require('./services/movieboxService');
 const liveTvService = require('./services/liveTvService');
+const syncService = require('./services/syncService');
 
 app.use(cors());
 app.use(express.json());
@@ -1085,6 +1086,26 @@ app.get('/api/tmdb-details', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// Real-Time Views API
+app.get('/api/views/:id', (req, res) => {
+  const views = syncService.getMediaViews(req.params.id);
+  res.json({ id: req.params.id, views });
+});
+
+app.post('/api/views/:id/increment', (req, res) => {
+  const views = syncService.incrementMediaViews(req.params.id);
+  res.json({ id: req.params.id, views });
+});
+
+// Manual MovieBox Sync trigger
+app.post('/api/moviebox/sync', async (req, res) => {
+  syncService.runMovieBoxSync().catch(() => {});
+  res.json({ success: true, message: 'MovieBox hourly sync initiated' });
+});
+
+// Start Automated 1-Hour MovieBox Sync Engine
+syncService.startHourlySyncTimer();
 
 app.listen(PORT, () => {
   console.log(`🎬 FOBS TV Streaming App running at http://localhost:${PORT}`);

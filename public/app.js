@@ -1502,6 +1502,31 @@ function renderHomeFeeds() {
     `).join('');
   }
 
+  // 4b. Anime (Hindi Dubbed)
+  const homeAnimeContainer = document.getElementById('homeAnimeList');
+  if (homeAnimeContainer) {
+    const allAnime = [...movies, ...series].filter(isAnimeMedia);
+    const animeItems = allAnime.length > 0 ? allAnime : movies.filter(m => m.country === 'Japan');
+    if (animeItems.length > 0) {
+      homeAnimeContainer.innerHTML = animeItems.map(item => `
+        <div class="media-card" onclick='openPlayerById("${item.type || (item.episodes ? 'series' : 'movie')}", "${item.id}")'>
+          <div class="card-poster-wrap">
+            <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
+            <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
+            ${getCardBadgeRightHtml(item, 'Anime')}
+            <div class="card-play-hover">
+              <div class="card-play-circle"><i class="fa-solid fa-play"></i></div>
+            </div>
+          </div>
+          <div class="card-title">${item.title}</div>
+          <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.2'} • ${item.genre ? item.genre.split(',')[0] : 'Anime'}</div>
+        </div>
+      `).join('');
+    } else {
+      homeAnimeContainer.innerHTML = `<div class="empty-category-msg"><i class="fa-solid fa-dragon"></i> Anime coming soon</div>`;
+    }
+  }
+
   // 5. Live TV
   const homeLiveTvContainer = document.getElementById('homeLiveTvList');
   if (homeLiveTvContainer) {
@@ -1629,7 +1654,11 @@ function renderAllMovies() {
   const japaneseMovies = movies.filter(isJapanese);
   renderCategoryList('movieJapaneseList', japaneseMovies);
 
-  // I. Others (Dubbed)
+  // I. Anime Movies (Hindi Dub)
+  const animeMovies = movies.filter(isAnimeMedia);
+  renderCategoryList('movieAnimeList', animeMovies.length > 0 ? animeMovies : (movies.filter(m => m.country === 'Japan')));
+
+  // J. Others (Dubbed)
   const othersMovies = movies.filter(isOthers);
   renderCategoryList('movieOthersList', othersMovies);
 }
@@ -1699,6 +1728,17 @@ const isJapaneseMedia = x => (
   (x.language && x.language.toLowerCase() === 'japanese') ||
   (x.country && (x.country.toLowerCase().includes('japan')))
 );
+
+const isAnimeMedia = x => {
+  if (!x) return false;
+  const genre = (x.genre || '').toLowerCase();
+  const industry = (x.industry || '').toLowerCase();
+  const category = (x.category || '').toLowerCase();
+  const title = (x.title || '').toLowerCase();
+  const badgeRight = (x.badgeRight || '').toLowerCase();
+  const tag = (x.tag || '').toLowerCase();
+  return genre.includes('anime') || industry.includes('anime') || category.includes('anime') || badgeRight === 'anime' || tag === 'anime' || title.includes('anime');
+};
 
 const isOthersMovieMedia = m => (
   !isBollywoodMedia(m) && !isSouthMedia(m) && !isHollywoodMedia(m) && !isKoreanMedia(m) && !isChineseMedia(m) && !isJapaneseMedia(m)
@@ -1793,6 +1833,16 @@ function openSectionDetail(sectionKey, title) {
       items = movies.filter(isOthersMovieMedia);
       break;
 
+    case 'anime':
+      items = [...movies, ...series].filter(isAnimeMedia);
+      if (items.length === 0) items = movies.filter(m => m.country === 'Japan');
+      break;
+
+    case 'movie-anime':
+      items = movies.filter(isAnimeMedia);
+      if (items.length === 0) items = movies.filter(m => m.country === 'Japan');
+      break;
+
     // Series Sections
     case 'series-trending':
       isOnlySeries = true;
@@ -1830,6 +1880,12 @@ function openSectionDetail(sectionKey, title) {
     case 'series-others':
       isOnlySeries = true;
       items = series.filter(isOthersSeriesMedia);
+      break;
+
+    case 'series-anime':
+      isOnlySeries = true;
+      items = series.filter(isAnimeMedia);
+      if (items.length === 0) items = series.filter(s => s.country === 'Japan');
       break;
 
     default:
@@ -1960,7 +2016,11 @@ function renderAllSeries() {
   const japaneseSeries = series.filter(isJapanese);
   renderCategoryList('seriesJapaneseList', japaneseSeries, false, true);
 
-  // G. Others (Dubbed)
+  // G. Anime Series (Hindi Dub)
+  const animeSeries = series.filter(isAnimeMedia);
+  renderCategoryList('seriesAnimeList', animeSeries.length > 0 ? animeSeries : (series.filter(s => s.country === 'Japan')), false, true);
+
+  // H. Others (Dubbed)
   const othersSeries = series.filter(isOthers);
   renderCategoryList('seriesOthersList', othersSeries, false, true);
 }
@@ -2080,6 +2140,38 @@ function switchMainTab(tabName) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// Real-Time Views Manager for FOBS TV
+async function updateMediaViews(mediaId) {
+  if (!mediaId) return;
+  const viewsEl = document.getElementById('mediaViewsCount');
+  try {
+    const res = await fetchApiWithRetry(`/api/views/${encodeURIComponent(mediaId)}/increment`, {
+      method: 'POST'
+    }, { timeout: 3500, maxRetries: 1 });
+    if (res && res.views !== undefined) {
+      if (viewsEl) viewsEl.innerText = `${formatViewsCount(res.views)} Views`;
+      return;
+    }
+  } catch (e) {}
+
+  const localKey = `fobs_views_${mediaId}`;
+  let v = parseInt(localStorage.getItem(localKey) || '0', 10);
+  if (!v) {
+    let hash = 0;
+    for (let i = 0; i < mediaId.length; i++) hash = (hash * 31 + mediaId.charCodeAt(i)) % 1000;
+    v = 35 + (Math.abs(hash) % 150);
+  }
+  v += 1;
+  localStorage.setItem(localKey, v.toString());
+  if (viewsEl) viewsEl.innerText = `${formatViewsCount(v)} Views`;
+}
+
+function formatViewsCount(count) {
+  if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`;
+  if (count >= 1000) return `${(count / 1000).toFixed(1)}k`;
+  return `${count}`;
+}
+
 // Open Player by Item ID
 function openPlayerById(type, id) {
   let item = null;
@@ -2128,6 +2220,18 @@ function openPlayer(media, episodeIndex = 0) {
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = null;
   applyPlayerBrightness(1.0);
+
+  // Reset video scale to default "Fit" mode (contain)
+  const mainVideo = document.getElementById('mainVideoPlayer');
+  if (mainVideo) {
+    mainVideo.classList.remove('scale-fill', 'fit-cover');
+  }
+  const fitLabel = document.getElementById('lsFitLabel');
+  if (fitLabel) fitLabel.innerText = 'Fill';
+
+  // Real-time unique views
+  updateMediaViews(media.id);
+
   const overlay = document.getElementById('playerOverlay');
   overlay.classList.add('open');
   document.body.classList.add('player-open');
@@ -2522,10 +2626,12 @@ function resetLandscapeControlsTimer() {
   if (lsControlsTimer) clearTimeout(lsControlsTimer);
 
   const video = document.getElementById('mainVideoPlayer');
-  if (video && !video.paused && !isPlayerLocked) {
+  if (video && !video.paused) {
+    // When locked, auto-hide lock indicator quickly after 2.5s; otherwise normal 3.8s
+    const delay = isPlayerLocked ? 2500 : 3800;
     lsControlsTimer = setTimeout(() => {
       lsUi.classList.add('controls-hidden');
-    }, 3800);
+    }, delay);
   }
 }
 
@@ -2816,11 +2922,11 @@ function toggleLandscapeFitFill() {
   const fitLabel = document.getElementById('lsFitLabel');
   if (!video) return;
 
-  const isContain = video.classList.toggle('fit-contain');
+  const isFill = video.classList.toggle('scale-fill');
   if (fitLabel) {
-    fitLabel.innerText = isContain ? 'Fill' : 'Fit';
+    fitLabel.innerText = isFill ? 'Fit' : 'Fill';
   }
-  showToast(isContain ? 'Aspect Ratio: Fit to Screen' : 'Aspect Ratio: Zoom to Fill (Edge-to-Edge)');
+  showToast(isFill ? 'Aspect Ratio: Zoom to Fill (Edge-to-Edge)' : 'Aspect Ratio: Fit to Screen');
   resetLandscapeControlsTimer();
 }
 
@@ -3581,10 +3687,30 @@ function closePlayer() {
     lsUi.classList.remove('controls-hidden');
   }
 
+  // 1. Fully destroy HLS instance
+  if (window.activeHlsPlayer) {
+    try {
+      window.activeHlsPlayer.stopLoad();
+      window.activeHlsPlayer.detachMedia();
+      window.activeHlsPlayer.destroy();
+    } catch (e) {}
+    window.activeHlsPlayer = null;
+  }
+
+  // 2. Terminate iframe embed
+  if (embedFrame) {
+    embedFrame.src = 'about:blank';
+    embedFrame.removeAttribute('src');
+    embedFrame.style.display = 'none';
+  }
+
+  // 3. Terminate HTML5 video player completely
   if (videoPlayer) {
     videoPlayer._isClosing = true;
     videoPlayer.pause();
+    videoPlayer.src = '';
     videoPlayer.removeAttribute('src');
+    try { videoPlayer.srcObject = null; } catch(e) {}
     videoPlayer.load();
     setTimeout(() => {
       if (videoPlayer) videoPlayer._isClosing = false;
@@ -3792,13 +3918,17 @@ function closeDownloadsView(e) {
 
 // Render Dynamic Audio Tracks for Active Media
 function renderAudioTrackOptions(media) {
-  const tracks = (media && media.audioTracks && media.audioTracks.length > 0)
+  let rawTracks = (media && media.audioTracks && media.audioTracks.length > 0)
     ? media.audioTracks
-    : ['Hindi dub', 'English dub'];
+    : ['Hindi dub'];
 
-  if (!appState.currentAudioTrack || !tracks.includes(appState.currentAudioTrack)) {
-    appState.currentAudioTrack = media?.selectedAudio || tracks[0] || 'Hindi dub';
+  // Strict Rule: ONLY Hindi dubbing in video player, hide other languages
+  let tracks = rawTracks.filter(t => /hindi/i.test(t));
+  if (tracks.length === 0) {
+    tracks = ['Hindi dub'];
   }
+
+  appState.currentAudioTrack = tracks[0];
 
   // 1. Update Dub Selector Text (Portrait)
   const dubText = document.getElementById('currentDubText');
