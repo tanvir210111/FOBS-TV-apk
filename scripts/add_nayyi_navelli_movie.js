@@ -5,20 +5,12 @@ const TMDB_API_KEY = '6e766190399843a3e1d85b68eaa3de69';
 
 const servers = [
   {
-    name: 'Server 1 (Fast HD - StreamIMDb)',
-    url: 'https://streamimdb.ru/embed/movie/tt40855841'
-  },
-  {
-    name: 'Server 2 (HD Player - Irada)',
+    name: 'Server 1 (HD Player - HDFriday)',
     url: 'https://irada438esc.com/play/tt40855841'
   },
   {
-    name: 'Server 3 (HDFriday Direct)',
-    url: 'https://hdfriday2.casa/movies/nayyi-navelli-2026-watch-online-and-download/'
-  },
-  {
-    name: 'Server 4 (Watch-Movies Direct)',
-    url: 'https://www.watch-movies.com.pk/nayyi-navelli-2026-hindi-full-movie-watch-online-hd-print-free-download/'
+    name: 'Server 2 (Super Player - HDFriday)',
+    url: 'https://streamimdb.ru/embed/movie/tt40855841'
   }
 ];
 
@@ -45,7 +37,7 @@ async function addNayyiNavelli() {
   const movie = {
     id: 'tmdb-m-1654581',
     title: 'Nayyi Navelli (2026)',
-    originalTitle: tmdb.original_title || 'नय্যী नवेल्ली',
+    originalTitle: tmdb.original_title || 'नय्यी नवेल्ली',
     language: 'Hindi',
     dubLanguage: 'Hindi (Original)',
     badgeLeft: 'Hindi',
@@ -91,7 +83,7 @@ async function addNayyiNavelli() {
     // Add to the very top of movies list
     data.movies.unshift(movie);
 
-    // Also update featured if applicable
+    // Also update featured
     data.featured = movie;
 
     fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');

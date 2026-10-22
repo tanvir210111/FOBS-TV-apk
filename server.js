@@ -330,6 +330,49 @@ async function resolveStreamUrl(rawUrl) {
       }
     }
   }
+  else if (rawUrl.includes('irada438esc.com') || rawUrl.includes('hdfriday')) {
+    try {
+      const pageUrl = rawUrl.includes('irada438esc.com') ? rawUrl : 'https://irada438esc.com/play/tt40855841';
+      const r = await axios.get(pageUrl, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)', 'Referer': 'https://hdfriday2.casa/' },
+        timeout: 8000
+      });
+      const m = r.data.match(/let p3 = (\{[\s\S]*?\});/);
+      if (m) {
+        const p3 = JSON.parse(m[1]);
+        const post1 = await axios.post(p3.file, null, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+            'Referer': pageUrl,
+            'Origin': 'https://irada438esc.com',
+            'X-CSRF-TOKEN': p3.key,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          timeout: 8000
+        });
+        if (post1.data && post1.data[0] && post1.data[0].file) {
+          const t = post1.data[0].file;
+          const fileUrl = 'https://krico443jez.com/playlist/' + t.substr(1) + '.txt';
+          const post2 = await axios.post(fileUrl, null, {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+              'Referer': pageUrl,
+              'Origin': 'https://irada438esc.com',
+              'X-CSRF-TOKEN': p3.key,
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            timeout: 8000
+          });
+          if (typeof post2.data === 'string' && post2.data.startsWith('http')) {
+            resolved = post2.data.trim();
+          }
+        }
+      }
+    } catch (e) {
+      console.error('HDFriday / Irada stream resolve error:', e.message);
+    }
+  }
+
 
   // Only cache if successfully resolved to a real stream URL (not raw fallback)
   if (resolved && resolved !== rawUrl) {
@@ -544,6 +587,8 @@ app.all('/api/stream', async (req, res) => {
       refererHeader = 'Referer: https://pkembed.site/\r\n';
     } else if (resolvedUrl.includes('kisscloud.online') || targetUrl.includes('kisscloud')) {
       refererHeader = 'Referer: https://kisscloud.online/\r\n';
+    } else if (resolvedUrl.includes('krico443jez.com') || targetUrl.includes('irada438esc.com') || targetUrl.includes('hdfriday')) {
+      refererHeader = 'Referer: https://irada438esc.com/\r\n';
     }
 
     const ffmpegArgs = [

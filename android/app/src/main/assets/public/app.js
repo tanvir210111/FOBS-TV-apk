@@ -2262,7 +2262,8 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
 
   // Handle direct iframe player embeds only for dedicated embed players (not blocked ones)
   const isIframeEmbed = (
-    url.includes('nextgencloudfabric')
+    url.includes('nextgencloudfabric') ||
+    url.includes('streamimdb.ru')
   );
 
   if (isIframeEmbed && embedFrame) {
@@ -2304,7 +2305,9 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     url.includes('vcloud.you') ||
     url.includes('fast-dl.one') ||
     url.includes('dailymotion.com') ||
-    url.includes('dai.ly')
+    url.includes('dai.ly') ||
+    url.includes('irada438esc.com') ||
+    url.includes('hdfriday')
   );
 
   if (isEmbedOrIndirect) {

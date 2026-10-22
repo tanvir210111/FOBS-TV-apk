@@ -42,23 +42,15 @@
       "Hindi (Original)"
     ],
     "selectedAudio": "Hindi (Original)",
-    "streamUrl": "https://streamimdb.ru/embed/movie/tt40855841",
+    "streamUrl": "https://irada438esc.com/play/tt40855841",
     "servers": [
       {
-        "name": "Server 1 (Fast HD - StreamIMDb)",
-        "url": "https://streamimdb.ru/embed/movie/tt40855841"
-      },
-      {
-        "name": "Server 2 (HD Player - Irada)",
+        "name": "Server 1 (HD Player - HDFriday)",
         "url": "https://irada438esc.com/play/tt40855841"
       },
       {
-        "name": "Server 3 (HDFriday Direct)",
-        "url": "https://hdfriday2.casa/movies/nayyi-navelli-2026-watch-online-and-download/"
-      },
-      {
-        "name": "Server 4 (Watch-Movies Direct)",
-        "url": "https://www.watch-movies.com.pk/nayyi-navelli-2026-hindi-full-movie-watch-online-hd-print-free-download/"
+        "name": "Server 2 (Super Player - HDFriday)",
+        "url": "https://streamimdb.ru/embed/movie/tt40855841"
       }
     ],
     "cast": [
@@ -141,31 +133,15 @@
         "Hindi (Original)"
       ],
       "selectedAudio": "Hindi (Original)",
-      "streamUrl": "https://ok.ru/videoembed/16206412843605?nochat=1",
+      "streamUrl": "https://irada438esc.com/play/tt40855841",
       "servers": [
         {
-          "name": "Server 1 (Fast HD - OK.ru)",
-          "url": "https://ok.ru/videoembed/16206412843605?nochat=1"
+          "name": "Server 1 (HD Player - HDFriday)",
+          "url": "https://irada438esc.com/play/tt40855841"
         },
         {
-          "name": "Server 2 (PkSpeed 720p)",
-          "url": "https://pkembed.site/embed-89cilaulgils.html"
-        },
-        {
-          "name": "Server 3 (PkSpeed 360p)",
-          "url": "https://pkembed.site/embed-3tygggkh875e.html"
-        },
-        {
-          "name": "Server 4 (CloudVideo 720p)",
-          "url": "https://do7go.com/e/9g57tf02ojn6"
-        },
-        {
-          "name": "Server 5 (Streamtape 720p)",
-          "url": "https://streamtape.to/e/VYDk6k8zWPCKrX2"
-        },
-        {
-          "name": "Server 6 (MixDrop 720p)",
-          "url": "https://mxdrop.to/e/9wwpjngxsppp06"
+          "name": "Server 2 (Super Player - HDFriday)",
+          "url": "https://streamimdb.ru/embed/movie/tt40855841"
         }
       ],
       "cast": [
