@@ -36,6 +36,117 @@
   },
   "movies": [
     {
+      "id": "tmdb-m-1423191",
+      "title": "Resident Evil (2026)",
+      "originalTitle": "Resident Evil",
+      "language": "English",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Hallprint",
+      "tag": "Hallprint",
+      "quality": "Hallprint",
+      "industry": "Hollywood",
+      "year": "2026",
+      "country": "USA",
+      "genre": "Horror, Science Fiction, Adventure",
+      "duration": "1h 35m",
+      "category": "Trending Movies",
+      "rating": "7.3",
+      "imdbRating": "7.3",
+      "poster": "https://image.tmdb.org/t/p/w500/i7UyjfPio0VFHB9rBUZSFyhOoM8.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/3icyRAqgakNcQn6aDVz9libFmBA.jpg",
+      "description": "Medical courier Bryan unwittingly finds himself fighting for survival as one fateful, horrifying night collapses around him in chaos.",
+      "audioTracks": [
+        "Hindi dub",
+        "English (Original)"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://ok.ru/videoembed/16206540245589?nochat=1",
+      "servers": [
+        {
+          "name": "Server 1 (Fast HD - OK.ru)",
+          "url": "https://ok.ru/videoembed/16206540245589?nochat=1"
+        },
+        {
+          "name": "Server 2 (PkSpeed 720p)",
+          "url": "https://pkembed.site/embed-qcpchuu6qgrb.html"
+        },
+        {
+          "name": "Server 3 (PkSpeed 360p)",
+          "url": "https://pkembed.site/embed-5jqvj9nynvps.html"
+        },
+        {
+          "name": "Server 4 (CloudVideo 720p)",
+          "url": "https://do7go.com/e/xsx9mb5u9i2r"
+        },
+        {
+          "name": "Server 5 (CloudVideo 360p)",
+          "url": "https://do7go.com/e/rwsw0dxu4ym3"
+        },
+        {
+          "name": "Server 6 (Streamtape 720p)",
+          "url": "https://streamtape.to/e/z696Q4BaXYsYPVj"
+        },
+        {
+          "name": "Server 7 (MixDrop 720p)",
+          "url": "https://mxdrop.to/e/4ddk04nka9l8jo"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Austin Abrams",
+          "character": "Bryan",
+          "photo": "https://image.tmdb.org/t/p/w185/nvbJNwyhIICUFcS4lhxj9mGvL5z.jpg"
+        },
+        {
+          "name": "Paul Walter Hauser",
+          "character": "Paul",
+          "photo": "https://image.tmdb.org/t/p/w185/hXjjbYg1Ah8mFf5ZcaakyXzDKMx.jpg"
+        },
+        {
+          "name": "Kali Reis",
+          "character": "Maxine",
+          "photo": "https://image.tmdb.org/t/p/w185/ruLDXHnKA4aHEQCcFGDAJ7bLTdt.jpg"
+        },
+        {
+          "name": "Zach Cherry",
+          "character": "Carl",
+          "photo": "https://image.tmdb.org/t/p/w185/fT3Wv8ef0Vn0daHWAObCp2Bd4Y.jpg"
+        },
+        {
+          "name": "Johnno Wilson",
+          "character": "Officer Wilson",
+          "photo": "https://image.tmdb.org/t/p/w185/eZtBoBE0F7Qb9ZyNpacMOQtmWnM.jpg"
+        },
+        {
+          "name": "Shaun W. Loeser",
+          "character": "Puker",
+          "photo": "https://image.tmdb.org/t/p/w185/pMV7kzy7OHk4X93uRGbrdvuFgQB.jpg"
+        },
+        {
+          "name": "Zach Cregger",
+          "character": "Intercom (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/bpFGFfWYIrZVK7WjwkVLwIoMKEb.jpg"
+        },
+        {
+          "name": "Emily Piggford",
+          "character": "Dr. Maria Stokes",
+          "photo": "https://image.tmdb.org/t/p/w185/ruijvaNNXzGXqGphQXsoHts1Ovc.jpg"
+        },
+        {
+          "name": "Will Merrick",
+          "character": "Dave",
+          "photo": "https://image.tmdb.org/t/p/w185/zqyH01TJ9WW6TaAULCG2ChSbNwI.jpg"
+        },
+        {
+          "name": "Zoé Bellas",
+          "character": "Birdie",
+          "photo": "https://image.tmdb.org/t/p/w185/3nw4EhStA4IcJQxz4Yevm25u5ov.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
       "id": "tmdb-m-1153576",
       "title": "Street Fighter (2026)",
       "originalTitle": "Street Fighter",
