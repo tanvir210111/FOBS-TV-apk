@@ -8,23 +8,23 @@ const targetFiles = [
 ];
 
 const nayyiNavelliUpdate = {
-  streamUrl: 'https://pub-4179591129284219ab297f131533b4e5.r2.dev/Nayyi%20Navelli%20(2026)%20Hindi%20HDTC%20%5Bwww.hdmovie4.com%5D%20-%201080P.mkv',
+  streamUrl: 'https://vidlink.pro/movie/1654581',
   servers: [
     {
       name: 'Server 1 (Fast HD - 1080p)',
-      url: 'https://pub-4179591129284219ab297f131533b4e5.r2.dev/Nayyi%20Navelli%20(2026)%20Hindi%20HDTC%20%5Bwww.hdmovie4.com%5D%20-%201080P.mkv'
-    },
-    {
-      name: 'Server 2 (Fast HD - 720p)',
-      url: 'https://pub-4179591129284219ab297f131533b4e5.r2.dev/Nayyi%20Navelli%20(2026)%20Hindi%20HDTC%20%5Bwww.hdmovie4.com%5D%20-%20720P.mkv'
-    },
-    {
-      name: 'Server 3 (HD Player)',
       url: 'https://vidlink.pro/movie/1654581'
     },
     {
-      name: 'Server 4 (Super Player)',
+      name: 'Server 2 (HD Player)',
       url: 'https://autoembed.co/movie/imdb/tt40855841'
+    },
+    {
+      name: 'Server 3 (Super Player)',
+      url: 'https://vidsrc.to/embed/movie/1654581'
+    },
+    {
+      name: 'Server 4 (Direct Stream)',
+      url: 'https://pub-4179591129284219ab297f131533b4e5.r2.dev/Nayyi%20Navelli%20(2026)%20Hindi%20HDTC%20%5Bwww.hdmovie4.com%5D%20-%201080P.mkv'
     }
   ],
   badgeRight: 'Hallprint',

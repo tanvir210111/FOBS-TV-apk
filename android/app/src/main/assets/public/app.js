@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v46';
+const CACHE_KEY = 'fobs_tv_content_cache_v47';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -3208,6 +3208,7 @@ function setupVideoListeners() {
   const videoPlayer = document.getElementById('mainVideoPlayer');
   const videoContainer = document.getElementById('videoContainer');
   const loader = document.getElementById('videoLoader');
+  const embedFrame = document.getElementById('mainEmbedPlayer');
   if (!videoPlayer) return;
 
   // Initialize Gesture Engine on the tap detector
