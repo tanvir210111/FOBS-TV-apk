@@ -74,9 +74,19 @@ class MovieBoxService {
   async search(query) {
     if (!query) return [];
     try {
-      const res = await axios.get(`${BASE_URL}/wefeed-h5-bff/web/subject/search`, {
-        params: { keyword: query, page: 1, perPage: 20 },
-        headers: HEADERS,
+      const res = await axios.post('https://h5-api.aoneroom.com/wefeed-h5api-bff/subject/search', {
+        keyword: query,
+        page: 1,
+        perPage: 20,
+        subjectType: 0
+      }, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'User-Agent': HEADERS['User-Agent'],
+          'Origin': BASE_URL,
+          'Referer': `${BASE_URL}/`
+        },
         timeout: 10000
       });
       const items = res.data?.data?.items || [];
@@ -95,6 +105,7 @@ class MovieBoxService {
       return [];
     }
   }
+
 
   /**
    * Resolves direct playable video stream links for a movie or series episode

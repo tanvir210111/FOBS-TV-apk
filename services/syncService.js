@@ -480,7 +480,7 @@ async function runMovieBoxSync() {
       { title: 'Diriliş: Ertuğrul', searchName: 'Dirilis: Ertugrul', type: 'series', eps: 20 },
       { title: 'Kuruluş: Osman', searchName: 'Kurulus: Osman', type: 'series', eps: 20 },
       { title: 'Golden Boy (Yalı Çapkını)', searchName: 'Golden Boy', type: 'series', eps: 16 },
-      { title: 'Sen Çal Kapımı (Love is in the Air)', searchName: 'Sen Cal Kapimi', type: 'series', eps: 16 },
+      { title: 'Sen Çal Kapımı (Love is in the Air)', searchName: 'Sen Cal Kapimi', type: 'series', eps: 140 },
       { title: 'Hercai', searchName: 'Hercai', type: 'series', eps: 16 },
       { title: 'Arafta', searchName: 'Arafta', type: 'series', eps: 16 },
       { title: 'Şahmaran', searchName: 'Sahmaran', type: 'series', eps: 8 },

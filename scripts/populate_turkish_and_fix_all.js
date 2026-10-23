@@ -211,8 +211,8 @@ async function main() {
       badgeLeft: 'Hindi',
       dubLanguage: 'Hindi',
       tmdbId: 104877,
-      poster: 'https://image.tmdb.org/t/p/w500/aW9k5N2s1xG0k4lP5g0g4L3sL2s.jpg',
-      totalEps: 16
+      poster: 'https://image.tmdb.org/t/p/w500/bE71f9A3eztjcd5JT3MmHB8MbzA.jpg',
+      totalEps: 140
     },
     {
       title: 'Hercai [Hindi]',

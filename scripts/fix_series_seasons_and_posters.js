@@ -95,29 +95,20 @@ async function fixSeries() {
     if (!fs.existsSync(fPath)) continue;
     const content = JSON.parse(fs.readFileSync(fPath, 'utf8'));
 
-    // 1. Fix Sen Çal Kapımı
-    const sck = content.series.find(s => s.id === 'turkish-s-104877' || s.title.includes('Sen Çal Kapımı'));
-    if (sck) {
-      sck.seasonsCount = 2;
+    // 1. Fix Sen Çal Kapımı (Preserve 140 full episodes if present)
+    const sck = content.series.find(s => s.id === 'mb-s-7315143878922094712' || s.id === 'turkish-s-104877' || s.title.includes('Sen Çal Kapımı'));
+    if (sck && (!sck.episodes || sck.episodes.length < 100)) {
+      sck.seasonsCount = 1;
       sck.seasons = [
         {
           seasonNumber: 1,
-          name: 'Season 1 (39 Eps)',
-          episodeCount: sckSeason1Episodes.length,
-          episodes: sckSeason1Episodes
-        },
-        {
-          seasonNumber: 2,
-          name: 'Season 2 (13 Eps)',
-          episodeCount: sckSeason2Episodes.length,
-          episodes: sckSeason2Episodes
+          name: 'Season 1 (140 Eps)',
+          episodeCount: 140,
+          episodes: sck.episodes
         }
       ];
-      sck.episodes = sckSeason1Episodes; // Default to Season 1
-      sck.streamUrl = sckSeason1Episodes[0].streamUrl;
-      sck.servers = sckSeason1Episodes[0].servers;
-      console.log(`Updated Sen Çal Kapımı in ${path.basename(fPath)}`);
     }
+
 
     // 2. Fix Rana Naidu
     const rn = content.series.find(s => s.id === 'mb-s-south-rananaidu' || s.title.includes('Rana Naidu'));
