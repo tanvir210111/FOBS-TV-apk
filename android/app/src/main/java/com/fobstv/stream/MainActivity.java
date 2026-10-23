@@ -165,15 +165,14 @@ public class MainActivity extends BridgeActivity {
         public void close() throws java.io.IOException {
             if (isClosed) return;
             isClosed = true;
+            if (conn != null) {
+                try {
+                    conn.disconnect();
+                } catch (Exception ignored) {}
+            }
             try {
                 in.close();
-            } finally {
-                if (conn != null) {
-                    try {
-                        conn.disconnect();
-                    } catch (Exception ignored) {}
-                }
-            }
+            } catch (Exception ignored) {}
         }
     }
 

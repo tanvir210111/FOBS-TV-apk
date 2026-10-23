@@ -784,7 +784,7 @@ app.all('/api/stream', async (req, res) => {
   );
 
   // Fast CDNs support native HTTP byte-range streaming without FFmpeg
-  const isMkvOrEac3 = !isDirectFastCdn && ((seekTime > 0) || (
+  const isMkvOrEac3 = !isDirectFastCdn && (
     targetUrl.includes('vcloud.you') || 
     targetUrl.includes('fast-dl') || 
     targetUrl.includes('.mkv') || 
@@ -794,7 +794,7 @@ app.all('/api/stream', async (req, res) => {
     targetUrl.includes('upbolt') || 
     targetUrl.includes('it2k1jyiil2q') || 
     (req.query.audio !== undefined && parseInt(req.query.audio, 10) > 0)
-  ));
+  );
 
   if (isMkvOrEac3 && ffmpegPath) {
     res.writeHead(200, {
@@ -887,14 +887,14 @@ app.all('/api/stream', async (req, res) => {
     } catch (e) {}
   }
 
-  // Fast path: if requested byte range is already saved on local disk, serve immediately!
+  // Fast path: if complete video is already saved on local disk, serve immediately!
   if (cachedMeta && fs.existsSync(cacheFilePath)) {
     try {
       const stat = fs.statSync(cacheFilePath);
       const totalLength = cachedMeta.totalLength;
       const contentType = cachedMeta.contentType || 'video/mp4';
 
-      if (range) {
+      if (stat.size >= totalLength && totalLength > 0 && range) {
         const parts = range.replace(/bytes=/, '').split('-');
         const start = parseInt(parts[0], 10) || 0;
         const end = parts[1] ? parseInt(parts[1], 10) : totalLength - 1;

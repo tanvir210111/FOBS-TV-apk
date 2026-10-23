@@ -3321,12 +3321,6 @@ function seekToAbsoluteTime(targetSeconds) {
   const duration = getMediaTotalDurationSeconds();
   const safeTarget = Math.max(0, Math.min(duration, Math.floor(targetSeconds)));
 
-  // If already at or very close to target (< 0.25s), simply resume playback
-  if (Math.abs((video.currentTime || 0) - safeTarget) < 0.25) {
-    video.play().catch(() => {});
-    return;
-  }
-
   // Immediate UI feedback on progress bar and time labels
   const curEl = document.getElementById('lsCurrentTime');
   const durEl = document.getElementById('lsTotalDuration');
@@ -3353,13 +3347,19 @@ function seekToAbsoluteTime(targetSeconds) {
   // Dismiss gesture seek HUD immediately
   hideSeekGestureHud();
 
+  // If already at or very close to target (< 0.25s), simply resume playback
+  if (Math.abs((video.currentTime || 0) - safeTarget) < 0.25) {
+    video.play().catch(() => {});
+    return;
+  }
+
   // Clear any existing seek timers
   if (window.seekLoaderDebounceTimer) clearTimeout(window.seekLoaderDebounceTimer);
   if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
   if (window.seekStallRecoveryTimeout) clearTimeout(window.seekStallRecoveryTimeout);
   if (window.seekFallbackTimeout) clearTimeout(window.seekFallbackTimeout);
 
-  // Show subtle loader spinner ONLY if decoding keyframe takes longer than 180ms
+  // Show subtle loader spinner ONLY if decoding keyframe takes longer than 150ms
   const loader = document.getElementById('videoLoader');
   window.seekLoaderDebounceTimer = setTimeout(() => {
     if (video.seeking || video.readyState < 3) {
@@ -3369,40 +3369,67 @@ function seekToAbsoluteTime(targetSeconds) {
         if (loaderText) loaderText.innerText = 'Loading...';
       }
     }
-  }, 180);
+  }, 150);
 
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = safeTarget;
 
-  const onSeekReady = () => {
+  // Check if current source is an FFmpeg transcoded stream (/api/stream) that doesn't support native byte ranges
+  const currentSrc = video.currentSrc || video.src || '';
+  const isTranscodedStream = currentSrc.includes('/api/stream?') && (
+    currentSrc.includes('&audio=') || 
+    currentSrc.includes('.mkv') || 
+    (appState.selectedAudioIndex !== undefined && appState.selectedAudioIndex > 0)
+  );
+
+  if (isTranscodedStream) {
+    // Restart stream at safeTarget via &t= parameter
+    let baseStreamUrl = currentSrc.replace(/[?&]t=[^&]*/g, '');
+    const joinChar = baseStreamUrl.includes('?') ? '&' : '?';
+    const newStreamUrl = `${baseStreamUrl}${joinChar}t=${safeTarget}`;
+    appState.streamSeekOffset = safeTarget;
+    console.log('Seeking transcoded stream via server offset:', newStreamUrl);
+    video.src = newStreamUrl;
+    video.load();
+    video.play().catch(() => {});
+    return;
+  }
+
+  // For native HTML5 / MP4 / HLS streams: pause decoder while jumping timestamp to avoid pipeline deadlocks
+  const wasPlaying = !video.paused;
+  if (wasPlaying) {
+    try { video.pause(); } catch (e) {}
+  }
+
+  let seekSettled = false;
+  const finishSeek = () => {
+    if (seekSettled) return;
+    seekSettled = true;
     if (window.seekLoaderDebounceTimer) clearTimeout(window.seekLoaderDebounceTimer);
     if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
     if (loader) loader.classList.remove('active');
     appState.pendingSeekTime = null;
     updateLandscapeProgress();
     syncPlayPauseIcons();
-    video.play().catch(() => {});
+    if (wasPlaying) {
+      video.play().catch(() => {});
+    }
   };
 
-  video.addEventListener('seeked', onSeekReady, { once: true });
-  video.addEventListener('canplay', onSeekReady, { once: true });
+  video.addEventListener('seeked', finishSeek, { once: true });
+  video.addEventListener('canplay', finishSeek, { once: true });
+  video.addEventListener('playing', finishSeek, { once: true });
 
-  // Long safety watchdog (7.5s): only for complete network blackout
+  // 2.2-second safety watchdog: unfreezes and resumes playback if seek event was swallowed by WebView
   window.seekSafetyTimeout = setTimeout(() => {
-    onSeekReady();
-  }, 7500);
+    finishSeek();
+  }, 2200);
 
-  // Apply seek to video element
+  // Apply seek to video element directly via currentTime (never fastSeek which stalls in WebViews)
   try {
-    if (typeof video.fastSeek === 'function') {
-      video.fastSeek(safeTarget);
-    } else {
-      video.currentTime = safeTarget;
-    }
-  } catch (e) {
-    try {
-      video.currentTime = safeTarget;
-    } catch (err) {}
+    video.currentTime = safeTarget;
+  } catch (err) {
+    finishSeek();
   }
 }
 
@@ -3447,9 +3474,7 @@ function setupLandscapeProgressScrubbing() {
     };
 
     const commitSeek = (clientX) => {
-      const now = Date.now();
-      if (now - lastSeekCommitTime < 250) return; // Prevent duplicate seek commit from pointerup + touchend
-      lastSeekCommitTime = now;
+      if (!isScrubbingProgress) return;
       isScrubbingProgress = false;
 
       let finalPos = lastScrubPos;
@@ -4491,6 +4516,27 @@ function setupVideoListeners() {
     }
   });
 
+  let stallRecoveryTimer = null;
+  const triggerStallRecovery = () => {
+    if (stallRecoveryTimer) clearTimeout(stallRecoveryTimer);
+    stallRecoveryTimer = setTimeout(() => {
+      if (videoPlayer && !videoPlayer.paused && (videoPlayer.seeking || videoPlayer.readyState < 3)) {
+        console.warn('Playback stalled, attempting auto-recovery...');
+        try {
+          if (videoPlayer.readyState >= 2) {
+            videoPlayer.play().catch(() => {});
+          } else {
+            const t = videoPlayer.currentTime;
+            if (t > 0) {
+              videoPlayer.currentTime = t + 0.05;
+            }
+            videoPlayer.play().catch(() => {});
+          }
+        } catch (e) {}
+      }
+    }, 2000);
+  };
+
   videoPlayer.addEventListener('waiting', () => {
     if (waitLoaderTimer) clearTimeout(waitLoaderTimer);
     waitLoaderTimer = setTimeout(() => {
@@ -4498,6 +4544,7 @@ function setupVideoListeners() {
         if (loader) loader.classList.add('active');
       }
     }, 200);
+    triggerStallRecovery();
   });
 
   videoPlayer.addEventListener('stalled', () => {
@@ -4505,6 +4552,7 @@ function setupVideoListeners() {
     if (!videoPlayer.paused && videoPlayer.readyState < 3) {
       if (loader) loader.classList.add('active');
     }
+    triggerStallRecovery();
   });
 
   videoPlayer.addEventListener('seeking', () => {
@@ -4517,6 +4565,7 @@ function setupVideoListeners() {
 
   videoPlayer.addEventListener('seeked', () => {
     if (waitLoaderTimer) clearTimeout(waitLoaderTimer);
+    if (stallRecoveryTimer) clearTimeout(stallRecoveryTimer);
     if (window.seekLoaderTimeout) clearTimeout(window.seekLoaderTimeout);
     if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
     appState.pendingSeekTime = null;
