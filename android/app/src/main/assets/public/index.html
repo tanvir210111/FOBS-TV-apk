@@ -973,10 +973,10 @@
           </button>
         </div>
 
-        <!-- Tabs: For You vs Coming Soon -->
+        <!-- Tabs: For You vs Comments -->
         <div class="sub-tabs-header">
           <button class="sub-tab-btn active" id="forYouTabBtn" onclick="switchSubTab('foryou')">For you</button>
-          <button class="sub-tab-btn" id="comingSoonTabBtn" onclick="switchSubTab('comingsoon')">Coming Soon</button>
+          <button class="sub-tab-btn" id="commentsTabBtn" onclick="switchSubTab('comments')">Comments</button>
         </div>
 
         <div id="forYouView" class="sub-tab-content active">
@@ -985,9 +985,14 @@
           </div>
         </div>
 
-        <div id="comingSoonView" class="sub-tab-content">
-          <div class="grid-3-col" id="comingSoonSubTabGrid">
-            <!-- 3-column Coming Soon cards -->
+        <div id="commentsView" class="sub-tab-content">
+          <div class="comments-coming-soon-wrapper">
+            <div class="comments-cs-icon">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <div class="comments-cs-badge">COMING SOON</div>
+            <h3 class="comments-cs-title">Coming Soon</h3>
+            <p class="comments-cs-desc">Comments & reviews feature is currently in progress and will be available soon!</p>
           </div>
         </div>
 

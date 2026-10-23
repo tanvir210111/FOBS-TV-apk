@@ -4516,23 +4516,19 @@ function renderComingSoonSubTab() {
   `).join('');
 }
 
-// Sub-tabs (For you vs Coming Soon)
+// Sub-tabs (For you vs Comments)
 function switchSubTab(subTab) {
   const isForYou = (subTab === 'foryou');
   const forYouBtn = document.getElementById('forYouTabBtn');
-  const csBtn = document.getElementById('comingSoonTabBtn') || document.getElementById('commentsTabBtn');
+  const commentsBtn = document.getElementById('commentsTabBtn') || document.getElementById('comingSoonTabBtn');
   const forYouView = document.getElementById('forYouView');
-  const csView = document.getElementById('comingSoonView') || document.getElementById('commentsView');
+  const commentsView = document.getElementById('commentsView') || document.getElementById('comingSoonView');
 
   if (forYouBtn) forYouBtn.classList.toggle('active', isForYou);
-  if (csBtn) csBtn.classList.toggle('active', !isForYou);
+  if (commentsBtn) commentsBtn.classList.toggle('active', !isForYou);
 
   if (forYouView) forYouView.classList.toggle('active', isForYou);
-  if (csView) csView.classList.toggle('active', !isForYou);
-
-  if (!isForYou) {
-    renderComingSoonSubTab();
-  }
+  if (commentsView) commentsView.classList.toggle('active', !isForYou);
 }
 
 // Trigger Video Download Popup

@@ -3644,6 +3644,60 @@ body.is-fullscreen .ls-bottom-bar {
   font-size: 14px;
 }
 
+/* Comments Coming Soon Placeholder in Player Sub-tab */
+.comments-coming-soon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 44px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  margin: 16px 0 32px 0;
+}
+
+.comments-cs-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(0, 210, 106, 0.12);
+  border: 1px solid rgba(0, 210, 106, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: var(--accent-green);
+  margin-bottom: 12px;
+}
+
+.comments-cs-badge {
+  background: rgba(0, 210, 106, 0.15);
+  color: #00d26a;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(0, 210, 106, 0.35);
+}
+
+.comments-cs-title {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.comments-cs-desc {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  max-width: 320px;
+  line-height: 1.5;
+}
+
 /* ============================================================
    MX PLAYER / YOUTUBE STYLE GESTURES & HUD (BRIGHTNESS, SOUND, DOUBLE TAP)
    ============================================================ */
