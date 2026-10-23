@@ -1588,24 +1588,34 @@ body.is-fullscreen .player-top-header.controls-hidden,
   border-color: rgba(0, 242, 254, 0.25);
   color: #00f2fe;
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+}
+
+.views-icon-wrap {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
 }
 
 .views-live-dot {
-  width: 6px;
-  height: 6px;
-  background-color: #00ff88;
-  border-radius: 50%;
-  display: inline-block;
-  box-shadow: 0 0 6px #00ff88;
-  animation: viewsLivePulse 1.8s infinite;
+  width: 7px !important;
+  height: 7px !important;
+  background-color: #00ff88 !important;
+  border-radius: 50% !important;
+  display: inline-block !important;
+  flex-shrink: 0 !important;
+  box-shadow: 0 0 6px #00ff88, 0 0 12px rgba(0, 255, 136, 0.8) !important;
+  animation: viewsLivePulse 1.6s infinite !important;
 }
 
 @keyframes viewsLivePulse {
   0% { transform: scale(0.9); opacity: 0.7; }
-  50% { transform: scale(1.3); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 1; }
   100% { transform: scale(0.9); opacity: 0.7; }
 }
 
@@ -2127,14 +2137,16 @@ body.is-fullscreen .player-top-header.controls-hidden,
   transform: translateY(0);
 }
 
-/* Center Language Selection Modal in the middle of the screen */
-#languageSheetOverlay {
+/* Center Language & Season Selection Modal in the middle of the screen */
+#languageSheetOverlay,
+#seasonSheetOverlay {
   align-items: center;
   justify-content: center;
   padding: 20px;
 }
 
-#languageSheetOverlay .bottom-sheet-container {
+#languageSheetOverlay .bottom-sheet-container,
+#seasonSheetOverlay .bottom-sheet-container {
   width: 90%;
   max-width: 360px;
   border-radius: 18px;
@@ -2146,7 +2158,8 @@ body.is-fullscreen .player-top-header.controls-hidden,
   padding: 18px;
 }
 
-#languageSheetOverlay.open .bottom-sheet-container {
+#languageSheetOverlay.open .bottom-sheet-container,
+#seasonSheetOverlay.open .bottom-sheet-container {
   transform: scale(1);
   opacity: 1;
 }

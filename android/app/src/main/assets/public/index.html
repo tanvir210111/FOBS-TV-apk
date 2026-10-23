@@ -977,8 +977,10 @@
             <span>Download</span>
           </button>
           <div class="action-strip-btn views-counter-btn" id="mediaViewsBadge" title="Real-time Views">
-            <span class="views-live-dot"></span>
-            <i class="fa-solid fa-eye" style="color: #00f2fe;"></i>
+            <div class="views-icon-wrap">
+              <span class="views-live-dot"></span>
+              <i class="fa-solid fa-eye" style="color: #00f2fe;"></i>
+            </div>
             <span id="mediaViewsCount">...</span>
           </div>
         </div>
@@ -996,13 +998,12 @@
               <i class="fa-solid fa-chevron-down"></i>
             </button>
 
-            <!-- Season Selector Dropdown (Right side of Hindi Dub dropdown) -->
+            <!-- Season Selector Dropdown (Right side of Hindi Dub dropdown - Matches Select Language design) -->
             <div class="season-selector-container" id="seasonSelectorContainer" style="display: none;">
-              <button class="dub-dropdown-btn season-dropdown-btn" id="seasonDropdownBtn" onclick="toggleSeasonDropdown(event)">
+              <button class="dub-dropdown-btn season-dropdown-btn" id="seasonDropdownBtn" onclick="openSeasonSheet()">
                 <span id="currentSeasonText">Season 1</span>
                 <i class="fa-solid fa-chevron-down"></i>
               </button>
-              <div class="season-dropdown-menu" id="seasonDropdownMenu" style="display: none;"></div>
             </div>
           </div>
 
@@ -1245,6 +1246,21 @@
         </div>
         <div class="sheet-options-list" id="languageOptionsList">
           <button class="sheet-option-btn selected" onclick="selectLanguage('Hindi dub')">Hindi dub</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- SEASON SELECTOR BOTTOM SHEET MODAL (Matches Select language modal) -->
+    <!-- ============================================== -->
+    <div class="bottom-sheet-overlay" id="seasonSheetOverlay" onclick="closeSeasonSheet(event)">
+      <div class="bottom-sheet-container" onclick="event.stopPropagation()">
+        <div class="sheet-header">
+          <h3>Select season</h3>
+          <button class="sheet-close-btn" onclick="closeSeasonSheet()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="sheet-options-list" id="seasonOptionsList">
+          <!-- Dynamically populated season options with checkmarks -->
         </div>
       </div>
     </div>

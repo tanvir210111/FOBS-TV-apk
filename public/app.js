@@ -2403,12 +2403,12 @@ function getActiveSeasonEpisodes(media) {
   return media.episodes || [];
 }
 
-// Render Season Dropdown next to Dub dropdown
+// Render Season Dropdown next to Dub dropdown (Matching Select Language Modal)
 function renderSeasonDropdown(media) {
   const container = document.getElementById('seasonSelectorContainer');
   const textEl = document.getElementById('currentSeasonText');
-  const menu = document.getElementById('seasonDropdownMenu');
-  if (!container || !textEl || !menu) return;
+  const sheetList = document.getElementById('seasonOptionsList');
+  if (!container || !textEl) return;
 
   const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.seasons && media.seasons.length > 0) || (media.id && media.id.startsWith('mb-s-'));
   if (!isSeries) {
@@ -2432,33 +2432,49 @@ function renderSeasonDropdown(media) {
   const activeSeasonObj = seasonsList.find(s => s.seasonNumber === appState.currentSeason) || seasonsList[0];
   textEl.innerText = activeSeasonObj.name || `Season ${activeSeasonObj.seasonNumber}`;
 
-  menu.innerHTML = seasonsList.map(s => {
-    const sNum = s.seasonNumber || 1;
-    const isActive = sNum === appState.currentSeason;
-    const epCountText = s.episodes ? ` (${s.episodes.length} Eps)` : '';
-    return `
-      <div class="season-dropdown-item ${isActive ? 'active' : ''}" onclick="switchSeason(${sNum})">
-        <span>${s.name || `Season ${sNum}`}${epCountText}</span>
-        ${isActive ? '<i class="fa-solid fa-check" style="color: #00f2fe; font-size: 11px;"></i>' : ''}
-      </div>
-    `;
-  }).join('');
+  if (sheetList) {
+    sheetList.innerHTML = seasonsList.map(s => {
+      const sNum = s.seasonNumber || 1;
+      const isActive = sNum === appState.currentSeason;
+      const epCountText = s.episodes && s.episodes.length > 0 ? ` (${s.episodes.length} Episodes)` : '';
+      const seasonLabel = s.name || `Season ${sNum}`;
+      return `
+        <button class="sheet-option-btn ${isActive ? 'selected' : ''}" onclick="selectSeason(${sNum})">
+          ${seasonLabel}${epCountText}
+        </button>
+      `;
+    }).join('');
+  }
 }
 
-// Toggle Season Dropdown open/close
+// Season Bottom Sheet Modal (Matches Select language modal)
+function openSeasonSheet() {
+  const el = document.getElementById('seasonSheetOverlay');
+  if (el) el.classList.add('open');
+}
+
+function closeSeasonSheet(event) {
+  if (event && event.target !== event.currentTarget && !event.target.closest('.sheet-close-btn')) return;
+  const el = document.getElementById('seasonSheetOverlay');
+  if (el) el.classList.remove('open');
+}
+
+function selectSeason(seasonNumber) {
+  switchSeason(seasonNumber);
+  const el = document.getElementById('seasonSheetOverlay');
+  if (el) el.classList.remove('open');
+}
+
 function toggleSeasonDropdown(event) {
   if (event) event.stopPropagation();
-  const menu = document.getElementById('seasonDropdownMenu');
-  if (!menu) return;
-  const isHidden = menu.style.display === 'none' || !menu.style.display;
-  menu.style.display = isHidden ? 'block' : 'none';
+  openSeasonSheet();
 }
 
 // Switch Active Season (Season 1 / Season 2)
 function switchSeason(seasonNumber) {
   appState.currentSeason = seasonNumber;
-  const menu = document.getElementById('seasonDropdownMenu');
-  if (menu) menu.style.display = 'none';
+  const sheet = document.getElementById('seasonSheetOverlay');
+  if (sheet) sheet.classList.remove('open');
 
   if (!appState.currentMedia) return;
   renderSeasonDropdown(appState.currentMedia);
@@ -2477,15 +2493,6 @@ function switchSeason(seasonNumber) {
     playStreamUrl(activeEpStream);
   }
 }
-
-// Global click listener to close season dropdown when clicking outside
-document.addEventListener('click', (e) => {
-  const container = document.getElementById('seasonSelectorContainer');
-  const menu = document.getElementById('seasonDropdownMenu');
-  if (menu && container && !container.contains(e.target)) {
-    menu.style.display = 'none';
-  }
-});
 
 // Open Player by Item ID
 function openPlayerById(type, id) {
