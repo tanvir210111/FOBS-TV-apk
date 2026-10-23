@@ -4017,6 +4017,22 @@ function formatPlayerTime(sec) {
   return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
 }
 
+function show2xSpeedHud(show) {
+  const hud = document.getElementById('playerSpeedHud');
+  if (!hud) return;
+  if (show) {
+    hud.style.display = 'flex';
+    hud.classList.add('visible');
+  } else {
+    hud.classList.remove('visible');
+    setTimeout(() => {
+      if (!hud.classList.contains('visible')) {
+        hud.style.display = 'none';
+      }
+    }, 180);
+  }
+}
+
 function setupPlayerGestures() {
   const detectors = [
     document.getElementById('playerTapDetector'),
@@ -4037,6 +4053,9 @@ function setupPlayerGestures() {
   let startVideoTime = 0;
   let targetSeekTime = 0;
   let currentDetector = null;
+  let longPressTimer = null;
+  let is2xSpeedActive = false;
+  let originalPlaybackRate = 1.0;
 
   const onPointerDown = (e) => {
     if (e.button !== 0 && e.pointerType === 'mouse') return;
@@ -4066,6 +4085,23 @@ function setupPlayerGestures() {
     startVolume = (video && video.muted) ? 0 : (playerSoundLevel !== undefined ? playerSoundLevel : (video ? video.volume : 1.0));
     startVideoTime = video ? video.currentTime : 0;
     targetSeekTime = startVideoTime;
+
+    // Press & Hold 2X Speed feature (activates after 420ms without dragging)
+    if (longPressTimer) clearTimeout(longPressTimer);
+    is2xSpeedActive = false;
+    if (video && !video.paused) {
+      longPressTimer = setTimeout(() => {
+        if (isPointerDown && !isDragging) {
+          is2xSpeedActive = true;
+          originalPlaybackRate = video.playbackRate || 1.0;
+          video.playbackRate = 2.0;
+          show2xSpeedHud(true);
+          try {
+            if (navigator.vibrate) navigator.vibrate(30);
+          } catch (err) {}
+        }
+      }, 420);
+    }
   };
 
   const onPointerMove = (e) => {
@@ -4077,8 +4113,16 @@ function setupPlayerGestures() {
     const isLandscape = document.body.classList.contains('is-fullscreen') || 
                         (window.innerWidth > window.innerHeight);
 
+    // Cancel 2X speed long-press if movement occurs
+    if (Math.hypot(deltaX, deltaY) > 12) {
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+      }
+    }
+
     if (!isDragging) {
-      const hThreshold = isLandscape ? 24 : 32;
+      const hThreshold = isLandscape ? 22 : 30;
       if (Math.abs(deltaX) > hThreshold && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
         isDragging = true;
         dragType = 'horizontal-seek';
@@ -4086,7 +4130,7 @@ function setupPlayerGestures() {
           clearTimeout(singleTapTimer);
           singleTapTimer = null;
         }
-      } else if (isLandscape && Math.abs(deltaY) > 24 && Math.abs(deltaY) > Math.abs(deltaX) * 1.2) {
+      } else if (isLandscape && Math.abs(deltaY) > 22 && Math.abs(deltaY) > Math.abs(deltaX) * 1.2) {
         isDragging = true;
         dragType = 'vertical';
         if (singleTapTimer) {
@@ -4103,10 +4147,13 @@ function setupPlayerGestures() {
         const video = document.getElementById('mainVideoPlayer');
         if (video) {
           const duration = getMediaTotalDurationSeconds();
-          // Proportional scrub: swiping across 75% of screen width covers total duration
-          const sweepScale = Math.max(300, duration);
-          const deltaRatio = deltaX / (rect.width * 0.75);
-          const seekDelta = Math.round(deltaRatio * sweepScale);
+          // Step sequentially by 10s: 10, 20, 30, 40, 50, 60, 70, 80...
+          const pixelsPerStep = 18;
+          let stepCount = Math.trunc(deltaX / pixelsPerStep);
+          if (stepCount === 0) {
+            stepCount = deltaX > 0 ? 1 : (deltaX < 0 ? -1 : 0);
+          }
+          const seekDelta = stepCount * 10;
           targetSeekTime = Math.max(0, Math.min(duration, startVideoTime + seekDelta));
           showSeekGestureHud(seekDelta, targetSeekTime, duration);
 
@@ -4134,9 +4181,11 @@ function setupPlayerGestures() {
         const deltaRatio = -deltaY / sensitivityRange;
 
         if (activeSide === 'left') {
+          // Left side: Brightness up to 100%
           const newBrightness = applyPlayerBrightness(startBrightness + deltaRatio);
           showGestureHud('brightness', newBrightness);
         } else {
+          // Right side: Volume up to 200% (with sound boost mode)
           const newVolume = applyPlayerVolume(startVolume + deltaRatio * 1.6);
           showGestureHud('volume', newVolume);
         }
@@ -4148,9 +4197,28 @@ function setupPlayerGestures() {
     if (!isPointerDown) return;
     isPointerDown = false;
 
+    // Clear long-press timer
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      longPressTimer = null;
+    }
+
+    // Release 2X Speed when finger is lifted
+    if (is2xSpeedActive) {
+      is2xSpeedActive = false;
+      const video = document.getElementById('mainVideoPlayer');
+      if (video) {
+        video.playbackRate = originalPlaybackRate || 1.0;
+      }
+      show2xSpeedHud(false);
+      isDragging = false;
+      dragType = null;
+      return;
+    }
+
     const moveDist = Math.hypot(e.clientX - startX, e.clientY - startY);
 
-    if (isDragging && moveDist > 20) {
+    if (isDragging && moveDist > 18) {
       if (dragType === 'horizontal-seek') {
         const video = document.getElementById('mainVideoPlayer');
         if (video && !isNaN(targetSeekTime)) {
@@ -4197,8 +4265,10 @@ function setupPlayerGestures() {
       lastTapInfo.time = 0; // reset
 
       if (currentSide === 'left') {
+        // Left double tap: -10s rewind
         triggerDoubleTapSeek(-10);
       } else {
+        // Right double tap: +10s forward
         triggerDoubleTapSeek(10);
       }
     } else {
