@@ -1589,7 +1589,7 @@ function renderHomeFeeds() {
       homeLiveTvContainer.innerHTML = liveTv.map(item => `
         <div class="media-card" onclick='openLiveTvPlayer("${item.id}")'>
           <div class="card-poster-wrap" style="height: 120px; display: flex; align-items: center; justify-content: center; background: #1c1d27;">
-            <img src="${item.logo}" alt="${item.title}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+            <img src="${item.logo || 'assets/fobs_logo.png'}" alt="${item.title}" class="channel-logo-img" style="width: 52px; height: 52px; margin-bottom: 0;" data-name="${encodeURIComponent(item.title || '')}" onerror="handleLiveChannelImgError(this)">
             <span class="card-badge-top" style="background: #ff3b30;">LIVE</span>
           </div>
           <div class="card-title">${item.title}</div>
@@ -2138,16 +2138,31 @@ function filterLiveTvCategory(cat) {
   renderLiveTv();
 }
 
+// Branded channel logo fallback handler: Replaces broken images with a stylish gradient badge
+function handleLiveChannelImgError(img) {
+  if (!img) return;
+  img.onerror = null;
+  const rawName = decodeURIComponent(img.getAttribute('data-name') || '') || 'TV';
+  const cleanName = rawName.replace(/HD|Live|TV|Channel/gi, '').trim() || rawName;
+  const words = cleanName.split(/\s+/).filter(Boolean);
+  let initials = words.length >= 2 ? (words[0][0] + words[1][0]).toUpperCase() : cleanName.slice(0, 3).toUpperCase();
+
+  let hash = 0;
+  for (let i = 0; i < rawName.length; i++) hash = (hash * 31 + rawName.charCodeAt(i)) & 0xffffff;
+  const hue = Math.abs(hash) % 360;
+
+  const badge = document.createElement('div');
+  badge.className = (img.className || 'channel-logo-img') + ' channel-logo-badge';
+  badge.style.background = `linear-gradient(135deg, hsl(${hue}, 70%, 42%), hsl(${(hue + 45) % 360}, 80%, 25%))`;
+  badge.innerText = initials;
+  img.replaceWith(badge);
+}
+
 // Generate branded distinct SVG initials badge for live TV channels
 function getChannelLogoFallback(name) {
   const cleanName = (name || 'TV').replace(/HD|Live|TV|Channel/gi, '').trim() || name || 'TV';
   const words = cleanName.split(/\s+/).filter(Boolean);
-  let initials = '';
-  if (words.length >= 2) {
-    initials = (words[0][0] + words[1][0]).toUpperCase();
-  } else {
-    initials = cleanName.slice(0, 3).toUpperCase();
-  }
+  let initials = words.length >= 2 ? (words[0][0] + words[1][0]).toUpperCase() : cleanName.slice(0, 3).toUpperCase();
   let hash = 0;
   for (let i = 0; i < (name || '').length; i++) hash = (hash * 31 + name.charCodeAt(i)) & 0xffffff;
   const hue = Math.abs(hash) % 360;
@@ -2184,12 +2199,11 @@ function renderLiveTv() {
 
   if (filtered.length > 0) {
     grid.innerHTML = filtered.map(item => {
-      const fallbackSvg = getChannelLogoFallback(item.title);
-      const logoUrl = item.logo || item.poster || fallbackSvg;
+      const logoUrl = item.logo || item.poster || 'assets/fobs_logo.png';
       return `
         <div class="live-channel-card" onclick='openLiveTvPlayer("${item.id}")'>
           <span class="live-tag-pill">● LIVE</span>
-          <img src="${logoUrl}" alt="${item.title}" class="channel-logo-img" loading="lazy" onerror="this.onerror=null; this.src='${fallbackSvg}';">
+          <img src="${logoUrl}" alt="${item.title}" class="channel-logo-img" loading="lazy" data-name="${encodeURIComponent(item.title || '')}" onerror="handleLiveChannelImgError(this)">
           <div class="channel-title">${item.title}</div>
           <div class="channel-sub">${item.category || 'Live TV'} • ${item.language || 'HD'}</div>
         </div>
@@ -4881,12 +4895,11 @@ function handleSearch(customQuery = null) {
       `;
     }
     if (item.type === 'liveTv') {
-      const fallbackSvg = getChannelLogoFallback(item.title);
-      const logoUrl = item.logo || item.poster || fallbackSvg;
+      const logoUrl = item.logo || item.poster || 'assets/fobs_logo.png';
       return `
         <div class="live-channel-card" onclick='openLiveTvPlayer("${item.id}")'>
           <span class="live-tag-pill">● LIVE</span>
-          <img src="${logoUrl}" alt="${item.title}" class="channel-logo-img" loading="lazy" onerror="this.onerror=null; this.src='${fallbackSvg}';">
+          <img src="${logoUrl}" alt="${item.title}" class="channel-logo-img" loading="lazy" data-name="${encodeURIComponent(item.title || '')}" onerror="handleLiveChannelImgError(this)">
           <div class="channel-title">${item.title}</div>
           <div class="channel-sub">${item.category || 'Live TV'}</div>
         </div>

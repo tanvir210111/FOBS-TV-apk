@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+  <rect width="160" height="160" rx="32" fill="url(#bg)"/>
+  <circle cx="80" cy="80" r="64" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="3"/>
+  <text x="80" y="85" font-family="Plus Jakarta Sans, -apple-system, sans-serif" font-weight="900" font-size="28" fill="#ffffff" text-anchor="middle" filter="url(#shadow)">MYTV</text>
+  <text x="80" y="112" font-family="Plus Jakarta Sans, -apple-system, sans-serif" font-weight="700" font-size="12" fill="rgba(255,255,255,0.85)" text-anchor="middle" letter-spacing="2">HD LIVE</text>
+</svg>
