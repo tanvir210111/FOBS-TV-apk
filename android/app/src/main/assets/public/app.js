@@ -3377,7 +3377,23 @@ function toggleLandscapeDrawer(drawerName) {
 
   if (willOpen) {
     target.classList.add('open');
+    const lsUi = document.getElementById('landscapePlayerUI');
+    if (lsUi) {
+      lsUi.classList.add('has-drawer-open');
+    }
+    const container = document.getElementById('videoContainer');
+    if (container) {
+      container.classList.add('has-drawer-open');
+    }
+    const hud = document.getElementById('playerGestureHud');
+    if (hud) hud.classList.remove('visible');
+    const seekHud = document.getElementById('playerSeekHud');
+    if (seekHud) {
+      seekHud.classList.remove('visible');
+      seekHud.style.display = 'none';
+    }
     if (lsControlsTimer) clearTimeout(lsControlsTimer);
+    if (playerControlsTimer) clearTimeout(playerControlsTimer);
   } else {
     resetLandscapeControlsTimer();
   }
@@ -3385,6 +3401,19 @@ function toggleLandscapeDrawer(drawerName) {
 
 function closeLandscapeDrawers() {
   document.querySelectorAll('.ls-side-drawer').forEach(d => d.classList.remove('open'));
+  const lsUi = document.getElementById('landscapePlayerUI');
+  if (lsUi) {
+    lsUi.classList.remove('has-drawer-open');
+    lsUi.classList.remove('controls-hidden');
+  }
+  const container = document.getElementById('videoContainer');
+  if (container) {
+    container.classList.remove('has-drawer-open');
+  }
+  const topHeader = document.getElementById('playerTopHeader');
+  if (topHeader) {
+    topHeader.classList.remove('controls-hidden');
+  }
 }
 
 function setLandscapeSpeed(rate) {
@@ -3603,6 +3632,12 @@ function toggleVideoScaling() {
 }
 
 function handlePlayerBackClick() {
+  const openLsDrawer = document.querySelector('.ls-side-drawer.open');
+  if (openLsDrawer) {
+    closeLandscapeDrawers();
+    resetLandscapeControlsTimer();
+    return;
+  }
   if (document.body.classList.contains('is-fullscreen')) {
     exitFullscreenMode({ skipRotate: false });
     return;
@@ -3749,6 +3784,13 @@ function handleSinglePlayerTap() {
   const topHeader = document.getElementById('playerTopHeader');
   if (!lsUi && !topHeader) return;
 
+  const openDrawer = document.querySelector('.ls-side-drawer.open');
+  if (openDrawer) {
+    closeLandscapeDrawers();
+    resetLandscapeControlsTimer();
+    return;
+  }
+
   if (isPlayerLocked) {
     if (lsUi) lsUi.classList.remove('controls-hidden');
     if (topHeader) topHeader.classList.remove('controls-hidden');
@@ -3842,6 +3884,12 @@ function setupPlayerGestures() {
 
   tapDetector.addEventListener('pointerdown', (e) => {
     if (e.button !== 0 && e.pointerType === 'mouse') return;
+
+    if (document.querySelector('.ls-side-drawer.open')) {
+      closeLandscapeDrawers();
+      resetLandscapeControlsTimer();
+      return;
+    }
 
     const rect = tapDetector.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return;

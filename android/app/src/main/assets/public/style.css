@@ -3297,19 +3297,41 @@ body.is-fullscreen .ls-bottom-bar {
   letter-spacing: 0.5px;
 }
 
+/* Drawer Backdrop Overlay: dims screen behind side drawers & intercepts taps outside to close */
+.ls-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 2000005 !important;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.ls-player-ui.has-drawer-open .ls-drawer-backdrop {
+  opacity: 1;
+  pointer-events: auto !important;
+  visibility: visible;
+}
+
 /* Side Drawers (Screenshot 3, 4, 5) */
 .ls-side-drawer {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
-  z-index: 10;
-  background: rgba(12, 14, 20, 0.95);
-  backdrop-filter: blur(18px);
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 2000010 !important;
+  background: rgba(12, 14, 20, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: -15px 0 35px rgba(0, 0, 0, 0.85);
   transform: translateX(100%);
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  pointer-events: auto;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto !important;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -3566,6 +3588,21 @@ body.is-fullscreen .ls-bottom-bar {
   pointer-events: none;
   visibility: hidden;
   transform: translateY(-50%) scale(0.85);
+}
+
+/* Auto-minimize / completely hide all video player controls when any side drawer (Language, Speed, Quality, Settings) is open */
+.ls-player-ui.has-drawer-open .ls-top-header,
+.ls-player-ui.has-drawer-open .ls-center-controls,
+.ls-player-ui.has-drawer-open .ls-bottom-bar,
+.ls-player-ui.has-drawer-open .ls-lock-wrapper,
+.video-container.has-drawer-open .player-top-header,
+.video-container.has-drawer-open .player-gesture-hud,
+.video-container.has-drawer-open .player-seek-hud,
+.video-container.has-drawer-open .player-double-tap-indicator {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  transition: opacity 0.2s ease, visibility 0.2s ease !important;
 }
 
 /* Empty Category Coming Soon Placeholder */
