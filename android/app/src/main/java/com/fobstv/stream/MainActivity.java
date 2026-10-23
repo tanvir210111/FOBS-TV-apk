@@ -152,7 +152,7 @@ public class MainActivity extends BridgeActivity {
                         }
 
                         InputStream is = (statusCode >= 400) ? conn.getErrorStream() : conn.getInputStream();
-                        return new WebResourceResponse(mimeType, "UTF-8", statusCode, reason, resHeaders, is);
+                        return new WebResourceResponse(mimeType, null, statusCode, reason, resHeaders, new java.io.BufferedInputStream(is, 65536));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

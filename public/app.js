@@ -3233,15 +3233,27 @@ function seekToAbsoluteTime(targetSeconds) {
     rawUrl.includes('.m3u8')
   );
 
-  // Standard MP4 streams (e.g. Koyeb / Telegram bot, KMDL, MP4 CDNs):
-  // Support native HTTP 206 byte-range seeking to ANY timestamp without reloading player or restarting
+  // Standard MP4 & direct CDN streams (MovieBox, KMDL, Koyeb, etc.):
+  // Support ultra-fast native HTTP 206 byte-range seeking directly in browser/WebView
   if (!isTranscodedStream) {
     appState.pendingSeekTime = safeTarget;
-    const loader = document.getElementById('videoLoader');
-    if (loader) loader.classList.add('active');
+
+    // Only show loader if seek takes longer than 350ms to prevent visual freezes
+    if (window.seekLoaderTimeout) clearTimeout(window.seekLoaderTimeout);
+    window.seekLoaderTimeout = setTimeout(() => {
+      if (appState.pendingSeekTime !== null) {
+        const loader = document.getElementById('videoLoader');
+        if (loader) loader.classList.add('active');
+      }
+    }, 350);
 
     try {
-      video.currentTime = safeTarget;
+      if ('fastSeek' in video && typeof video.fastSeek === 'function') {
+        video.fastSeek(safeTarget);
+      } else {
+        video.currentTime = safeTarget;
+      }
+      video.play().catch(() => {});
     } catch (e) {
       console.warn('Native seek error:', e);
       appState.pendingSeekTime = null;
@@ -3254,7 +3266,12 @@ function seekToAbsoluteTime(targetSeconds) {
   if (relTime >= 0 && isTimeBuffered(video, relTime)) {
     appState.pendingSeekTime = safeTarget;
     try {
-      video.currentTime = relTime;
+      if ('fastSeek' in video && typeof video.fastSeek === 'function') {
+        video.fastSeek(relTime);
+      } else {
+        video.currentTime = relTime;
+      }
+      video.play().catch(() => {});
     } catch (e) {
       appState.pendingSeekTime = null;
     }
@@ -4083,11 +4100,17 @@ function setupVideoListeners() {
     if (loader) loader.classList.add('active');
   });
 
+  let seekingLoaderTimer = null;
   videoPlayer.addEventListener('seeking', () => {
-    if (loader) loader.classList.add('active');
+    if (seekingLoaderTimer) clearTimeout(seekingLoaderTimer);
+    seekingLoaderTimer = setTimeout(() => {
+      if (loader && videoPlayer.seeking) loader.classList.add('active');
+    }, 350);
   });
 
   videoPlayer.addEventListener('seeked', () => {
+    if (seekingLoaderTimer) clearTimeout(seekingLoaderTimer);
+    if (window.seekLoaderTimeout) clearTimeout(window.seekLoaderTimeout);
     appState.pendingSeekTime = null;
     if (loader) loader.classList.remove('active');
     updateLandscapeProgress();

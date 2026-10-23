@@ -691,9 +691,20 @@ app.all('/api/stream', async (req, res) => {
     targetUrl.includes('royalfiletolink')
   );
 
-  // Telegram bot / Koyeb streams are pure H.264 + AAC MP4s that support native byte-range seeking
-  // Only route through FFmpeg if NOT Koyeb/Telegram AND (seeking transcode or MKV/EAC3/HLS format)
-  const isMkvOrEac3 = !isKoyebOrTelegram && (
+  const isDirectFastCdn = (
+    isKoyebOrTelegram ||
+    targetUrl.includes('hakunaymatata') || 
+    targetUrl.includes('bcdnxw') || 
+    targetUrl.includes('haildrop') || 
+    targetUrl.includes('fogtwist') || 
+    targetUrl.includes('sunburst') || 
+    targetUrl.includes('stormshade') ||
+    targetUrl.includes('kmdl.eu.org')
+  );
+
+  // Direct MP4 CDNs support fast native byte-range seeking without CPU-intensive FFmpeg
+  // Only route through FFmpeg if NOT a direct fast CDN AND format requires remuxing/transcoding
+  const isMkvOrEac3 = !isDirectFastCdn && (
     seekTime > 0 ||
     targetUrl.includes('vcloud.you') || 
     targetUrl.includes('fast-dl') || 
