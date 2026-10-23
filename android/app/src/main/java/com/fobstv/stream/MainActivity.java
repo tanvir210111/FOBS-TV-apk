@@ -120,11 +120,42 @@ public class MainActivity extends BridgeActivity {
             if (limit >= 0 && bytesRead + len > limit) {
                 len = (int) (limit - bytesRead);
             }
+            if (len <= 0) {
+                return -1;
+            }
             int count = in.read(b, off, len);
             if (count > 0) {
                 bytesRead += count;
             }
             return count;
+        }
+
+        @Override
+        public long skip(long n) throws java.io.IOException {
+            if (n <= 0) return 0;
+            long toSkip = n;
+            if (limit >= 0 && bytesRead + toSkip > limit) {
+                toSkip = limit - bytesRead;
+            }
+            if (toSkip <= 0) return 0;
+            long actual = in.skip(toSkip);
+            if (actual > 0) {
+                bytesRead += actual;
+            }
+            return actual;
+        }
+
+        @Override
+        public int available() throws java.io.IOException {
+            if (limit >= 0 && bytesRead >= limit) {
+                return 0;
+            }
+            int avail = in.available();
+            if (limit >= 0) {
+                long remaining = limit - bytesRead;
+                return (int) Math.min(avail, Math.max(0, remaining));
+            }
+            return avail;
         }
 
         @Override
@@ -151,26 +182,49 @@ public class MainActivity extends BridgeActivity {
                     host.contains("stormshade")
                 )) {
                     try {
-                        URL targetUrl = new URL(request.getUrl().toString());
-                        HttpURLConnection conn = (HttpURLConnection) targetUrl.openConnection();
-                        conn.setRequestMethod(request.getMethod());
-                        conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
-                        conn.setRequestProperty("Referer", "https://movieboxapp.in/");
+                        URL currentUrl = new URL(request.getUrl().toString());
+                        HttpURLConnection conn = null;
+                        int redirects = 0;
+                        int statusCode = 200;
 
-                        Map<String, String> reqHeaders = request.getRequestHeaders();
-                        if (reqHeaders != null) {
-                            for (Map.Entry<String, String> entry : reqHeaders.entrySet()) {
-                                if (!"Referer".equalsIgnoreCase(entry.getKey()) && !"User-Agent".equalsIgnoreCase(entry.getKey())) {
-                                    conn.setRequestProperty(entry.getKey(), entry.getValue());
+                        while (redirects < 5) {
+                            conn = (HttpURLConnection) currentUrl.openConnection();
+                            conn.setInstanceFollowRedirects(false);
+                            conn.setRequestMethod(request.getMethod());
+                            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36");
+                            conn.setRequestProperty("Referer", "https://movieboxapp.in/");
+
+                            Map<String, String> reqHeaders = request.getRequestHeaders();
+                            if (reqHeaders != null) {
+                                for (Map.Entry<String, String> entry : reqHeaders.entrySet()) {
+                                    String k = entry.getKey();
+                                    if (k != null && !"Referer".equalsIgnoreCase(k) && !"User-Agent".equalsIgnoreCase(k) && !"Host".equalsIgnoreCase(k)) {
+                                        conn.setRequestProperty(k, entry.getValue());
+                                    }
                                 }
                             }
+
+                            conn.setConnectTimeout(12000);
+                            conn.setReadTimeout(18000);
+                            conn.connect();
+
+                            statusCode = conn.getResponseCode();
+                            if (statusCode == 301 || statusCode == 302 || statusCode == 303 || statusCode == 307 || statusCode == 308) {
+                                String location = conn.getHeaderField("Location");
+                                if (location != null && !location.trim().isEmpty()) {
+                                    currentUrl = new URL(currentUrl, location);
+                                    conn.disconnect();
+                                    redirects++;
+                                    continue;
+                                }
+                            }
+                            break;
                         }
 
-                        conn.setConnectTimeout(15000);
-                        conn.setReadTimeout(20000);
-                        conn.connect();
+                        if (conn == null) {
+                            return super.shouldInterceptRequest(view, request);
+                        }
 
-                        int statusCode = conn.getResponseCode();
                         String reason = conn.getResponseMessage();
                         if (reason == null || reason.trim().isEmpty()) {
                             reason = (statusCode == 206) ? "Partial Content" : "OK";
@@ -184,12 +238,23 @@ public class MainActivity extends BridgeActivity {
                             } catch (Exception ignored) {}
                         }
 
+                        // Collect and sanitize response headers, strictly avoiding duplicate keys (which crash Chromium media pipeline)
                         Map<String, String> resHeaders = new HashMap<>();
                         for (Map.Entry<String, List<String>> header : conn.getHeaderFields().entrySet()) {
-                            if (header.getKey() != null && !header.getValue().isEmpty()) {
-                                resHeaders.put(header.getKey(), header.getValue().get(0));
+                            String key = header.getKey();
+                            if (key != null && !header.getValue().isEmpty()) {
+                                String lk = key.toLowerCase();
+                                // Exclude hop-by-hop and headers we will explicitly canonicalize
+                                if (lk.equals("connection") || lk.equals("keep-alive") || lk.equals("transfer-encoding") ||
+                                    lk.equals("content-length") || lk.equals("content-range") || lk.equals("accept-ranges") ||
+                                    lk.startsWith("access-control-")) {
+                                    continue;
+                                }
+                                resHeaders.put(key, header.getValue().get(0));
                             }
                         }
+
+                        // Add standardized CORS and Range headers
                         resHeaders.put("Access-Control-Allow-Origin", "*");
                         resHeaders.put("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS");
                         resHeaders.put("Access-Control-Allow-Headers", "*");
@@ -197,10 +262,10 @@ public class MainActivity extends BridgeActivity {
                         resHeaders.put("Accept-Ranges", "bytes");
 
                         String contentRange = conn.getHeaderField("Content-Range");
-                        if (contentRange != null) {
+                        if (contentRange != null && !contentRange.trim().isEmpty()) {
                             resHeaders.put("Content-Range", contentRange);
                         }
-                        if (clStr != null) {
+                        if (clStr != null && !clStr.trim().isEmpty()) {
                             resHeaders.put("Content-Length", clStr);
                         }
 

@@ -3357,6 +3357,9 @@ function seekToAbsoluteTime(targetSeconds) {
     rawUrl.includes('.m3u8')
   ));
 
+  // Dismiss gesture seek HUD immediately
+  hideSeekGestureHud();
+
   // Immediately show solid loader while video seeks
   const loader = document.getElementById('videoLoader');
   if (loader) {
@@ -3370,6 +3373,8 @@ function seekToAbsoluteTime(targetSeconds) {
 
   const onSeekFinished = () => {
     if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
+    if (window.seekStallRecoveryTimeout) clearTimeout(window.seekStallRecoveryTimeout);
+    if (window.seekFallbackTimeout) clearTimeout(window.seekFallbackTimeout);
     const l = document.getElementById('videoLoader');
     if (l) l.classList.remove('active');
     appState.pendingSeekTime = null;
@@ -3388,6 +3393,29 @@ function seekToAbsoluteTime(targetSeconds) {
   window.seekSafetyTimeout = setTimeout(() => {
     onSeekFinished();
   }, 2500);
+
+  // Active Stall Recovery Watchdog: if playback freezes on seek frame
+  if (window.seekStallRecoveryTimeout) clearTimeout(window.seekStallRecoveryTimeout);
+  window.seekStallRecoveryTimeout = setTimeout(() => {
+    if (video.seeking || video.readyState < 2) {
+      console.warn('Seek stall detected at', safeTarget, '— nudging hardware decoder to nearest keyframe');
+      try {
+        video.currentTime = Math.min(duration, safeTarget + 0.5);
+        video.play().catch(() => {});
+      } catch (err) {}
+    }
+  }, 3200);
+
+  // Fallback recovery if stream is permanently stuck (e.g. Range request drop)
+  if (window.seekFallbackTimeout) clearTimeout(window.seekFallbackTimeout);
+  window.seekFallbackTimeout = setTimeout(() => {
+    if (video.seeking || video.readyState < 2) {
+      console.warn('Persistent seek freeze, falling back to server proxy at', safeTarget);
+      if (rawUrl && !video.src.includes('/api/stream?url=')) {
+        playStreamUrl(rawUrl, null, safeTarget);
+      }
+    }
+  }, 5000);
 
   try {
     video.currentTime = safeTarget;
@@ -4053,18 +4081,20 @@ function showSeekGestureHud(seekDelta, targetTime, duration) {
     timeEl.innerText = `${formatPlayerTime(targetTime)} / ${formatPlayerTime(duration)}`;
   }
   if (seekHudTimer) clearTimeout(seekHudTimer);
+  seekHudTimer = setTimeout(() => {
+    hideSeekGestureHud();
+  }, 1200);
 }
 
 function hideSeekGestureHud() {
   const hud = document.getElementById('playerSeekHud');
   if (!hud) return;
   if (seekHudTimer) clearTimeout(seekHudTimer);
-  seekHudTimer = setTimeout(() => {
-    hud.classList.remove('visible');
-    setTimeout(() => {
-      if (!hud.classList.contains('visible')) hud.style.display = 'none';
-    }, 200);
-  }, 350);
+  seekHudTimer = null;
+  hud.classList.remove('visible');
+  setTimeout(() => {
+    if (!hud.classList.contains('visible')) hud.style.display = 'none';
+  }, 180);
 }
 
 function formatPlayerTime(sec) {
@@ -4285,9 +4315,7 @@ function setupPlayerGestures() {
       return;
     }
 
-    const moveDist = Math.hypot(e.clientX - startX, e.clientY - startY);
-
-    if (isDragging && moveDist > 16) {
+    if (isDragging) {
       if (dragType === 'horizontal-seek') {
         const video = document.getElementById('mainVideoPlayer');
         if (video && !isNaN(targetSeekTime)) {
@@ -4306,6 +4334,7 @@ function setupPlayerGestures() {
       return;
     }
 
+    hideSeekGestureHud();
     isDragging = false;
     dragType = null;
 
@@ -4473,6 +4502,13 @@ function setupVideoListeners() {
 
   videoPlayer.addEventListener('waiting', () => {
     if (loader) loader.classList.add('active');
+  });
+
+  videoPlayer.addEventListener('stalled', () => {
+    console.warn('Video stream playback stalled');
+    if (!videoPlayer.paused && videoPlayer.readyState < 3) {
+      if (loader) loader.classList.add('active');
+    }
   });
 
   videoPlayer.addEventListener('seeking', () => {
