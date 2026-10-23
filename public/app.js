@@ -2643,8 +2643,10 @@ function formatCleanMediaTitle(rawTitle, dubLanguage = 'Hindi') {
     playStreamUrl(initialUrl);
   }
 
-  // Populate "For You" recommendations
+  // Populate "For You" & "Coming Soon" recommendations
   renderForYouRecommendations();
+  renderComingSoonSubTab();
+  switchSubTab('foryou');
 
   // Setup MovieBox Subtitles and Quality options
   setupSubtitlesForMedia(media);
@@ -4420,13 +4422,55 @@ function renderForYouRecommendations() {
   `).join('');
 }
 
-// Sub-tabs (For you vs Comments)
-function switchSubTab(subTab) {
-  document.getElementById('forYouTabBtn').classList.toggle('active', subTab === 'foryou');
-  document.getElementById('commentsTabBtn').classList.toggle('active', subTab === 'comments');
+// Render Coming Soon Sub-Tab inside player
+function renderComingSoonSubTab() {
+  const container = document.getElementById('comingSoonSubTabGrid');
+  if (!container) return;
+  const upcomingItems = appState.content.upcoming || [];
 
-  document.getElementById('forYouView').classList.toggle('active', subTab === 'foryou');
-  document.getElementById('commentsView').classList.toggle('active', subTab === 'comments');
+  if (upcomingItems.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 40px 16px; color: var(--text-muted);">
+        <i class="fa-solid fa-clock-rotate-left" style="font-size: 28px; margin-bottom: 10px; color: #ffaa00;"></i>
+        <p style="font-size: 13px;">No upcoming titles scheduled right now.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = upcomingItems.map(item => `
+    <div class="media-card" onclick='openUpcomingBookingModal("${item.id}")'>
+      <div class="card-poster-wrap">
+        <img src="${item.poster || item.cover || 'assets/fobs_logo.png'}" alt="${item.title}" class="card-poster-img" loading="lazy">
+        <span class="card-badge-left">${item.releaseDate ? item.releaseDate.substring(0, 7) : (item.year || '2026')}</span>
+        <span class="card-badge-right badge-upcoming"><i class="fa-solid fa-clock"></i> SOON</span>
+        <div class="card-play-hover">
+          <div class="card-play-circle" style="background: rgba(255, 170, 0, 0.9);"><i class="fa-solid fa-bell"></i></div>
+        </div>
+      </div>
+      <div class="card-title">${item.title}</div>
+      <div class="card-meta" style="color: #ffaa00; font-size: 11px;">Pre-Book Available</div>
+    </div>
+  `).join('');
+}
+
+// Sub-tabs (For you vs Coming Soon)
+function switchSubTab(subTab) {
+  const isForYou = (subTab === 'foryou');
+  const forYouBtn = document.getElementById('forYouTabBtn');
+  const csBtn = document.getElementById('comingSoonTabBtn') || document.getElementById('commentsTabBtn');
+  const forYouView = document.getElementById('forYouView');
+  const csView = document.getElementById('comingSoonView') || document.getElementById('commentsView');
+
+  if (forYouBtn) forYouBtn.classList.toggle('active', isForYou);
+  if (csBtn) csBtn.classList.toggle('active', !isForYou);
+
+  if (forYouView) forYouView.classList.toggle('active', isForYou);
+  if (csView) csView.classList.toggle('active', !isForYou);
+
+  if (!isForYou) {
+    renderComingSoonSubTab();
+  }
 }
 
 // Trigger Video Download Popup
