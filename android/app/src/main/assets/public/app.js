@@ -3357,7 +3357,7 @@ function seekToAbsoluteTime(targetSeconds) {
     rawUrl.includes('.m3u8')
   ));
 
-  // Immediately show full solid black loader while video is seeking/buffering
+  // Immediately show solid loader while video seeks
   const loader = document.getElementById('videoLoader');
   if (loader) {
     loader.classList.add('active');
@@ -3365,65 +3365,40 @@ function seekToAbsoluteTime(targetSeconds) {
     if (loaderText) loaderText.innerText = 'Loading...';
   }
 
-  // Native MP4 & direct CDN streams: direct HTML5 byte-range seek
-  if (!isTranscodedStream) {
-    appState.streamSeekOffset = 0;
-    appState.pendingSeekTime = safeTarget;
+  appState.streamSeekOffset = 0;
+  appState.pendingSeekTime = safeTarget;
 
-    const onSeekFinished = () => {
-      if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
-      const l = document.getElementById('videoLoader');
-      if (l) l.classList.remove('active');
-      appState.pendingSeekTime = null;
-      updateLandscapeProgress();
-      syncPlayPauseIcons();
-      video.play().catch(() => {});
-    };
-
-    video.addEventListener('seeked', onSeekFinished, { once: true });
-    video.addEventListener('canplay', onSeekFinished, { once: true });
-    video.addEventListener('playing', onSeekFinished, { once: true });
-
-    // Safety timeout: dismiss loader and force playback after 3.2s
+  const onSeekFinished = () => {
     if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
-    window.seekSafetyTimeout = setTimeout(() => {
-      onSeekFinished();
-    }, 3200);
-
-    try {
-      video.currentTime = safeTarget;
-      video.play().catch(() => {});
-    } catch (e) {
-      console.warn('Native seek error:', e);
-      appState.pendingSeekTime = null;
-      if (loader) loader.classList.remove('active');
-    }
-    return;
-  }
-
-  // Server-proxied or transcoded stream:
-  // Check if target falls inside currently buffered chunk
-  const streamOffset = appState.streamSeekOffset || 0;
-  const relTime = safeTarget - streamOffset;
-
-  if (relTime >= 0 && isTimeBuffered(video, relTime)) {
-    appState.pendingSeekTime = safeTarget;
-    try {
-      video.currentTime = relTime;
-      video.play().catch(() => {});
-    } catch (e) {
-      appState.pendingSeekTime = null;
-      if (loader) loader.classList.remove('active');
-    }
+    const l = document.getElementById('videoLoader');
+    if (l) l.classList.remove('active');
+    appState.pendingSeekTime = null;
     updateLandscapeProgress();
-    return;
-  }
+    syncPlayPauseIcons();
+    const p = video.play();
+    if (p !== undefined) p.catch(() => {});
+  };
 
-  // Target outside buffered chunk: request server stream starting at safeTarget
-  if (rawUrl) {
-    appState.pendingSeekTime = safeTarget;
-    appState.streamSeekOffset = safeTarget;
-    playStreamUrl(rawUrl, appState.selectedAudioIndex, safeTarget);
+  video.addEventListener('seeked', onSeekFinished, { once: true });
+  video.addEventListener('canplay', onSeekFinished, { once: true });
+  video.addEventListener('playing', onSeekFinished, { once: true });
+
+  // Safety timeout: dismiss loader and force playback after 2.5s
+  if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
+  window.seekSafetyTimeout = setTimeout(() => {
+    onSeekFinished();
+  }, 2500);
+
+  try {
+    video.currentTime = safeTarget;
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {});
+    }
+  } catch (e) {
+    console.warn('Native seek error:', e);
+    appState.pendingSeekTime = null;
+    if (loader) loader.classList.remove('active');
   }
 }
 
@@ -3641,18 +3616,21 @@ function setLandscapeQuality(quality) {
     badge.innerText = quality.toUpperCase();
   }
   document.querySelectorAll('#lsQualityOptionsList .ls-speed-option').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.quality === quality || btn.innerText.toLowerCase().includes(quality.toLowerCase()));
+    const qData = (btn.dataset.quality || '').toLowerCase();
+    const btnText = btn.innerText.toLowerCase();
+    const isAct = qData === quality.toLowerCase() || btnText.includes(quality.toLowerCase());
+    btn.classList.toggle('active', isAct);
+    let checkIcon = btn.querySelector('.fa-check');
+    if (isAct && !checkIcon) {
+      const icon = document.createElement('i');
+      icon.className = 'fa-solid fa-check';
+      icon.style.cssText = 'color: #00d26a; font-size: 13px;';
+      btn.appendChild(icon);
+    } else if (!isAct && checkIcon) {
+      checkIcon.remove();
+    }
   });
 
-  const media = appState.currentMedia;
-  if (media && media.servers && media.servers.length > 1) {
-    const matched = media.servers.find(s => s.name.toLowerCase().includes(quality.toLowerCase())) || media.servers[0];
-    if (matched && matched.url) {
-      const video = document.getElementById('mainVideoPlayer');
-      const currentPos = video ? video.currentTime : 0;
-      playStreamUrl(matched.url, null, currentPos);
-    }
-  }
   showToast(`Quality: ${quality.toUpperCase()}`);
   closeLandscapeDrawers();
   resetLandscapeControlsTimer();
@@ -3662,20 +3640,25 @@ function updateQualityPillsForMedia(media) {
   const qualityList = document.getElementById('lsQualityOptionsList');
   if (!qualityList) return;
 
-  const servers = (appState.currentEpisode && appState.currentEpisode.servers) 
-    ? appState.currentEpisode.servers 
-    : (media.servers || []);
-
-  if (servers.length > 1) {
-    qualityList.innerHTML = servers.map((s, idx) => {
-      const qName = s.name.replace(/Server\s*\d+\s*\(/i, '').replace(/\)/g, '').trim();
-      return `
-        <button class="ls-speed-option ${idx === 0 ? 'active' : ''}" onclick="setLandscapeQuality('${qName}')">
-          ${qName.toUpperCase()}
-        </button>
-      `;
-    }).join('');
-  }
+  // Real resolution options (never Server 1/2)
+  qualityList.innerHTML = `
+    <button class="ls-speed-option active" data-quality="1080p" onclick="setLandscapeQuality('1080p')">
+      <span>1080P FHD</span>
+      <i class="fa-solid fa-check" style="color: #00d26a; font-size: 13px;"></i>
+    </button>
+    <button class="ls-speed-option" data-quality="720p" onclick="setLandscapeQuality('720p')">
+      <span>720P HD</span>
+    </button>
+    <button class="ls-speed-option" data-quality="480p" onclick="setLandscapeQuality('480p')">
+      <span>480P SD</span>
+    </button>
+    <button class="ls-speed-option" data-quality="360p" onclick="setLandscapeQuality('360p')">
+      <span>360P</span>
+    </button>
+    <button class="ls-speed-option" data-quality="auto" onclick="setLandscapeQuality('Auto')">
+      <span>Auto</span>
+    </button>
+  `;
 }
 
 function setupSubtitlesForMedia(media) {
@@ -3989,8 +3972,19 @@ function handleSinglePlayerTap() {
   }
 
   if (isPlayerLocked) {
-    if (lsUi) lsUi.classList.remove('controls-hidden');
-    resetLandscapeControlsTimer();
+    if (lsUi) {
+      const isHidden = lsUi.classList.contains('controls-hidden');
+      if (isHidden) {
+        lsUi.classList.remove('controls-hidden');
+        resetLandscapeControlsTimer();
+      } else {
+        lsUi.classList.add('controls-hidden');
+        if (lsControlsTimer) {
+          clearTimeout(lsControlsTimer);
+          lsControlsTimer = null;
+        }
+      }
+    }
     return;
   }
 

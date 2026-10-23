@@ -423,10 +423,14 @@ async function resolveStreamUrl(rawUrl) {
     if (rawUrl.includes('/api/moviebox/stream')) {
       try {
         const urlObj = new URL(rawUrl, 'http://localhost:5000');
-        const id = urlObj.searchParams.get('id');
-        const detailPath = urlObj.searchParams.get('path') || '';
+        let id = urlObj.searchParams.get('id');
+        let detailPath = urlObj.searchParams.get('path') || '';
         const se = parseInt(urlObj.searchParams.get('se') || '0', 10);
         const ep = parseInt(urlObj.searchParams.get('ep') || '0', 10);
+        if (id === '3908280950886646112') {
+          id = '2985939316620284696';
+          detailPath = 'wandavision-EU8Y28iDzy3';
+        }
         if (id) {
           const media = await movieboxService.resolveMedia(id, detailPath, se, ep);
           if (media && media.streamUrl) {
@@ -583,8 +587,11 @@ app.get('/api/moviebox/stream', async (req, res) => {
       else if (id === '4505435294245733456') resolvedPath = 'golden-boy-WbL89VmWOm5';
       else if (id === '3929372124917419816') resolvedPath = 'golden-boy-GZ4ZlM5zgG4';
       else if (id === '9098837809229611984') resolvedPath = 'golden-boy-english-CJH7T5YL8Qa';
-      // VisionQuest
-      else if (id === '3908280950886646112') resolvedPath = 'visionquest-hindi-q437Vd';
+      // VisionQuest (Marvel Vision series) -> streams WandaVision (Vision's series)
+      else if (id === '3908280950886646112') {
+        id = '2985939316620284696';
+        resolvedPath = 'wandavision-EU8Y28iDzy3';
+      }
       // Masterplan [Hindi]
       else if (id === '5774857026010610896') resolvedPath = 'masterplan-hindi-C51IrncUAS6';
       // Arafta [Hindi] - Turkish series
@@ -776,9 +783,8 @@ app.all('/api/stream', async (req, res) => {
     resolvedUrl.includes('stormshade')
   );
 
-  // If seeking requested (seekTime > 0), route through FFmpeg -ss to start stream at exact seek timestamp
-  // Otherwise direct MP4 CDNs support fast native byte-range streaming without FFmpeg
-  const isMkvOrEac3 = (seekTime > 0) || (!isDirectFastCdn && (
+  // Fast CDNs support native HTTP byte-range streaming without FFmpeg
+  const isMkvOrEac3 = !isDirectFastCdn && ((seekTime > 0) || (
     targetUrl.includes('vcloud.you') || 
     targetUrl.includes('fast-dl') || 
     targetUrl.includes('.mkv') || 

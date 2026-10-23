@@ -3587,7 +3587,11 @@ body.is-fullscreen .ls-bottom-bar {
   cursor: pointer;
 }
 
-/* Speed Drawer (Screenshot 4) */
+/* Quality & Speed Drawer */
+.ls-quality-drawer {
+  width: 250px;
+}
+
 .ls-speed-drawer {
   width: 220px;
 }
