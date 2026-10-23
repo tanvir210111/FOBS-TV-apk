@@ -5179,6 +5179,13 @@ async function triggerKmdlSync() {
 function openExternalUrl(url) {
   if (!url) return;
   try {
+    if (window.AndroidApp && typeof window.AndroidApp.openExternalUrl === 'function') {
+      window.AndroidApp.openExternalUrl(url);
+      return;
+    }
+  } catch (e) {}
+
+  try {
     if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
       window.open(url, '_system');
     } else {

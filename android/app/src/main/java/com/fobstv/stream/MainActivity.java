@@ -324,6 +324,21 @@ public class MainActivity extends BridgeActivity {
             });
         }
 
+        @JavascriptInterface
+        public void openExternalUrl(String url) {
+            runOnUiThread(() -> {
+                try {
+                    if (url != null && !url.trim().isEmpty()) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url.trim()));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
         private final ExecutorService updateExecutor = Executors.newSingleThreadExecutor();
 
         @JavascriptInterface

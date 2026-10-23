@@ -1958,6 +1958,7 @@ body.is-fullscreen .player-top-header.controls-hidden,
 .fb-page-card .comm-icon-box { background: rgba(24, 119, 242, 0.15); color: #1877f2; }
 .fb-group-card .comm-icon-box { background: rgba(24, 119, 242, 0.2); color: #4294ff; }
 .whatsapp-card .comm-icon-box { background: rgba(37, 211, 102, 0.15); color: #25d366; }
+.admin-whatsapp-card .comm-icon-box { background: linear-gradient(135deg, rgba(37, 211, 102, 0.25), rgba(0, 242, 254, 0.25)); color: #25d366; box-shadow: 0 0 10px rgba(37, 211, 102, 0.3); }
 .telegram-channel-card .comm-icon-box { background: rgba(0, 136, 204, 0.15); color: #0088cc; }
 .telegram-group-card .comm-icon-box { background: rgba(0, 172, 237, 0.15); color: #00aced; }
 
