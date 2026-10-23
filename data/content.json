@@ -1,18 +1,20 @@
 {
   "appUpdate": {
     "enabled": true,
-    "latestVersionCode": 6,
-    "latestVersionName": "1.5.0",
+    "latestVersionCode": 7,
+    "latestVersionName": "1.6.0",
     "minVersionCode": 1,
     "forceUpdate": true,
-    "title": "New FOBS TV Update (v1.5.0) Available!",
-    "message": "A new version of FOBS TV (v1.5.0) is available with fixed portrait player alignment, tap-to-show video controls, smooth auto-minimize, and VisionQuest streaming. Update now for the best experience.",
+    "title": "New FOBS TV Update (v1.6.0) Available!",
+    "message": "FOBS TV v1.6.0: Turkish drama titles fixed (Kuruluş: Osman, Diriliş: Ertuğrul, Hercai, Masterplan, Arafta), Hindi dubbed streaming improved via MovieBox, Golden Boy complete series added. Update now!",
     "releaseNotes": [
-      "Fixed portrait player top status bar alignment",
-      "Tap video to show/hide player controls (portrait & landscape)",
-      "Smooth auto-minimize video controls after 3.5 seconds",
-      "VisionQuest series playback via MovieBox live streaming",
-      "Direct 1-Click APK Download link"
+      "Fixed all Turkish drama original titles and metadata",
+      "Masterplan originalTitle fixed",
+      "Arafta Hindi dub now streams via MovieBox",
+      "Miracle in Cell No. 7 (Turkish 2019) streaming via MovieBox",
+      "Golden Boy full 3-season series (371 Episodes from MovieBox)",
+      "Improved portrait & landscape video player controls",
+      "Direct 1-Click APK Download"
     ],
     "downloadUrl": "https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk",
     "fallbackUrl": "https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk",
@@ -120,7 +122,7 @@
     {
       "id": "mb-m-5774857026010610896",
       "title": "Masterplan [Hindi]",
-      "originalTitle": "Masterplan [Hindi]",
+      "originalTitle": "Masterplan",
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
@@ -142,15 +144,11 @@
         "Hindi dub"
       ],
       "selectedAudio": "Hindi dub",
-      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/a4d41c3d105102713e3d756b5cb9db8b.mp4?sign=37c401a88963547c8f2bce61048dc47e&t=1792681587",
+      "streamUrl": "/api/moviebox/stream?id=5774857026010610896&path=masterplan-hindi-C51IrncUAS6",
       "servers": [
         {
-          "name": "Server 1",
-          "url": "https://bcdnxw.hakunaymatata.com/cms/a4d41c3d105102713e3d756b5cb9db8b.mp4?sign=37c401a88963547c8f2bce61048dc47e&t=1792681587"
-        },
-        {
-          "name": "Server 2",
-          "url": "https://bcdnxw.hakunaymatata.com/bt/e68330436adb028466b58900cf518d7a.mp4?sign=153bb8955fb6bc2d6b1d1c97ed2bbcec&t=1792681705"
+          "name": "MovieBox (Hindi HD)",
+          "url": "/api/moviebox/stream?id=5774857026010610896&path=masterplan-hindi-C51IrncUAS6"
         }
       ],
       "cast": [
@@ -197,7 +195,9 @@
       ],
       "type": "movie",
       "tmdbId": 1561726,
-      "releaseDate": "2026-10-16"
+      "releaseDate": "2026-10-16",
+      "mbSubjectId": "5774857026010610896",
+      "mbDetailPath": "masterplan-hindi-C51IrncUAS6"
     },
     {
       "id": "mb-m-4393216074666474704",
@@ -3598,7 +3598,10 @@
           "url": "https://bcdnxw.hakunaymatata.com/resource/675051aaf636dd907b38655c8718ca89.mp4?sign=f287a61bf61431bff4e2c18e2fc35aad&t=1792684000"
         }
       ],
-      "type": "movie"
+      "type": "movie",
+      "originalTitle": "Kağıt Hayatlar",
+      "mbSubjectId": "331534456928489048",
+      "mbDetailPath": "paper-lives-MOrS12Kquo"
     },
     {
       "id": "mb-m-anime-mugentrain",
@@ -3713,18 +3716,21 @@
       "poster": "https://image.tmdb.org/t/p/w500/bOth4QmNyEkalwahfPCfiXjNh1r.jpg",
       "backdrop": "https://image.tmdb.org/t/p/original/inEy3A5OPgeYW4rjRiGycfEeQzA.jpg",
       "description": "Separated from his daughter, a father with an intellectual disability must prove his innocence when he is jailed for the death of a commander's child.",
-      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/6c20a0232ed1e1cfa6c904a510da566c.mp4?sign=cd41298cf0881133faeb05230f4a5ac5&t=1792681988",
+      "streamUrl": "/api/moviebox/stream?id=2593580836368859088&path=miracle-in-cell-no-7-CpdPy3VCA53",
       "servers": [
         {
-          "name": "Server 1",
-          "url": "https://bcdnxw.hakunaymatata.com/cms/6c20a0232ed1e1cfa6c904a510da566c.mp4?sign=cd41298cf0881133faeb05230f4a5ac5&t=1792681988"
+          "name": "MovieBox (HD)",
+          "url": "/api/moviebox/stream?id=2593580836368859088&path=miracle-in-cell-no-7-CpdPy3VCA53"
         },
         {
-          "name": "Server 2",
-          "url": "https://bcdnxw.hakunaymatata.com/resource/ca545ed90a0f2634d5e5f096f1f08ce4.mp4?sign=206ebc29872421678796f2dc1077a2cd&t=1792681525"
+          "name": "Backup Server",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/6c20a0232ed1e1cfa6c904a510da566c.mp4"
         }
       ],
-      "type": "movie"
+      "type": "movie",
+      "originalTitle": "7. Koğuştaki Mucize",
+      "mbSubjectId": "2593580836368859088",
+      "mbDetailPath": "miracle-in-cell-no-7-CpdPy3VCA53"
     },
     {
       "id": "mb-m-c-wanderingearth",
@@ -3885,7 +3891,8 @@
           "url": "https://bcdnxw.hakunaymatata.com/vegamovies/eae033c1d9435290b8c441f545f6ab49.mp4?sign=eb4cfe641b8e5c283c03e32aa3db2acb&t=1792682108"
         }
       ],
-      "type": "movie"
+      "type": "movie",
+      "originalTitle": "Delibal"
     },
     {
       "id": "tmdb-m-269494",
@@ -12781,9 +12788,9 @@
       "badgeRight": "Turkish",
       "badgeLeft": "Hindi",
       "dubLanguage": "Hindi",
-      "rating": "9.1",
+      "rating": "6.1",
       "imdbRating": "9.1",
-      "poster": "https://image.tmdb.org/t/p/w500/4yYZoYgeNshoS2aODwUvCXIa8yn.jpg",
+      "poster": "https://pbcdnw.aoneroom.com/image/2025/11/24/06ce1018e2757aa2b51fa6b2e56d5bb9.jpg",
       "backdrop": "https://image.tmdb.org/t/p/original/wuHqvkUVc5jVbeVnTw37Oe8ikC7.jpg",
       "description": "Ateş, a man haunted by childhood scars and consumed by rage, returns to destroy the family that shattered his life years ago. His weapon is not a sword, but a marriage: 187 days with Mercan, the daughter of his enemy. Mercan, already promised to Nezir, is thrust into a battle she never chose, while Ateş binds her to him believing she is the key to his revenge. Yet the woman he intends to destroy becomes the one who threatens to undo him. And in the shadows, Aslı – driven by jealousy, seizes every chance to tear them apart.",
       "seasonsCount": 1,
@@ -12796,7 +12803,7 @@
               "number": "01",
               "title": "Episode 1",
               "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=306118&tmdb=1&s=1&e=1",
+              "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=1",
               "servers": [
                 {
                   "name": "Server 1 (Fast HD)",
@@ -12815,7 +12822,7 @@
               "number": "02",
               "title": "Episode 2",
               "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=306118&tmdb=1&s=1&e=2",
+              "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=2",
               "servers": [
                 {
                   "name": "Server 1 (Fast HD)",
@@ -12834,7 +12841,7 @@
               "number": "03",
               "title": "Episode 3",
               "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=306118&tmdb=1&s=1&e=3",
+              "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=3",
               "servers": [
                 {
                   "name": "Server 1 (Fast HD)",
@@ -12853,7 +12860,7 @@
               "number": "04",
               "title": "Episode 4",
               "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=306118&tmdb=1&s=1&e=4",
+              "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=4",
               "servers": [
                 {
                   "name": "Server 1 (Fast HD)",
@@ -12872,7 +12879,7 @@
               "number": "05",
               "title": "Episode 5",
               "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=306118&tmdb=1&s=1&e=5",
+              "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=5",
               "servers": [
                 {
                   "name": "Server 1 (Fast HD)",
@@ -12891,7 +12898,7 @@
               "number": "06",
               "title": "Episode 6",
               "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=306118&tmdb=1&s=1&e=6",
+              "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=6",
               "servers": [
                 {
                   "name": "Server 1 (Fast HD)",
@@ -12910,7 +12917,7 @@
               "number": "07",
               "title": "Episode 7",
               "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=306118&tmdb=1&s=1&e=7",
+              "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=7",
               "servers": [
                 {
                   "name": "Server 1 (Fast HD)",
@@ -12929,7 +12936,7 @@
               "number": "08",
               "title": "Episode 8",
               "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=306118&tmdb=1&s=1&e=8",
+              "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=8",
               "servers": [
                 {
                   "name": "Server 1 (Fast HD)",
@@ -12948,7 +12955,7 @@
               "number": "09",
               "title": "Episode 9",
               "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=306118&tmdb=1&s=1&e=9",
+              "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=9",
               "servers": [
                 {
                   "name": "Server 1 (Fast HD)",
@@ -12967,7 +12974,7 @@
               "number": "10",
               "title": "Episode 10",
               "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=306118&tmdb=1&s=1&e=10",
+              "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=10",
               "servers": [
                 {
                   "name": "Server 1 (Fast HD)",
@@ -12986,7 +12993,7 @@
               "number": "11",
               "title": "Episode 11",
               "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=306118&tmdb=1&s=1&e=11",
+              "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=11",
               "servers": [
                 {
                   "name": "Server 1 (Fast HD)",
@@ -13005,7 +13012,7 @@
               "number": "12",
               "title": "Episode 12",
               "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=306118&tmdb=1&s=1&e=12",
+              "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=12",
               "servers": [
                 {
                   "name": "Server 1 (Fast HD)",
@@ -13024,7 +13031,7 @@
               "number": "13",
               "title": "Episode 13",
               "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=306118&tmdb=1&s=1&e=13",
+              "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=13",
               "servers": [
                 {
                   "name": "Server 1 (Fast HD)",
@@ -13043,7 +13050,7 @@
               "number": "14",
               "title": "Episode 14",
               "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=306118&tmdb=1&s=1&e=14",
+              "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=14",
               "servers": [
                 {
                   "name": "Server 1 (Fast HD)",
@@ -13062,7 +13069,7 @@
               "number": "15",
               "title": "Episode 15",
               "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=306118&tmdb=1&s=1&e=15",
+              "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=15",
               "servers": [
                 {
                   "name": "Server 1 (Fast HD)",
@@ -13081,7 +13088,7 @@
               "number": "16",
               "title": "Episode 16",
               "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=306118&tmdb=1&s=1&e=16",
+              "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=16",
               "servers": [
                 {
                   "name": "Server 1 (Fast HD)",
@@ -13406,7 +13413,7 @@
         }
       ],
       "type": "series",
-      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/791e67cc257fc3526f48f14de7028f43.mp4?sign=fa8b3e2bb51007a8438c31cc2b2554fd&t=1792693008",
+      "streamUrl": "/api/moviebox/stream?id=7818895120744824984&path=arafta-hindi-0y70kiBCAj9&s=1&e=1",
       "servers": [
         {
           "name": "Server 1",
@@ -13416,7 +13423,10 @@
           "name": "Server 2",
           "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
         }
-      ]
+      ],
+      "originalTitle": "Arafta",
+      "mbSubjectId": "7818895120744824984",
+      "mbDetailPath": "arafta-hindi-0y70kiBCAj9"
     },
     {
       "id": "mb-s-1042151586308440096",
@@ -47764,7 +47774,9 @@
         }
       ],
       "type": "series",
-      "streamUrl": "/api/moviebox/stream?id=2706073799983877168&path=golden-boy-hindi-84Y8uLuQTd3&se=1&ep=1"
+      "streamUrl": "/api/moviebox/stream?id=2706073799983877168&path=golden-boy-hindi-84Y8uLuQTd3&se=1&ep=1",
+      "mbSubjectId": "2706073799983877168",
+      "mbDetailPath": "golden-boy-hindi-84Y8uLuQTd3"
     },
     {
       "id": "mb-s-7658459104725665256",
@@ -60727,7 +60739,8 @@
           "name": "Server 4 (Vidlink Fast)",
           "url": "https://vidlink.pro/tv/104877/1/1"
         }
-      ]
+      ],
+      "altTitle": "Love is in the Air"
     },
     {
       "id": "turkish-s-95603",
@@ -61530,7 +61543,11 @@
           "name": "Server 2",
           "url": "https://bcdnxw.hakunaymatata.com/convert-h264/1cf7b2c5c4c3113bedbd12f5ac16c225.mp4?sign=aa1e72deca34747c5040dd4fe1a747f7&t=1792687643"
         }
-      ]
+      ],
+      "originalTitle": "Kuruluş: Osman",
+      "altTitle": "Establishment: Osman",
+      "mbSubjectId": "9012855174766968784",
+      "mbDetailPath": "establishment-osman-GtoO3BhYMJa"
     },
     {
       "id": "mb-s-7967254200902451552",
@@ -65368,7 +65385,11 @@
           "name": "Server 2",
           "url": "https://bcdnxw.hakunaymatata.com/resource/7ced8b92ddb1e469f07a35dfb1148b54.mp4?sign=56507f682bb6070a993b876cab9f7eb0&t=1792687460"
         }
-      ]
+      ],
+      "originalTitle": "Hercai",
+      "altTitle": "Inconstant Love",
+      "mbSubjectId": "6103563625468182480",
+      "mbDetailPath": "inconstant-love-SdnProWnSg7"
     },
     {
       "id": "mb-s-368113073112187200",
@@ -74729,7 +74750,11 @@
           "name": "Server 2",
           "url": "https://bcdnxw.hakunaymatata.com/cms/73b107b83c18a6c77125219ffe349aec.mp4?sign=7ee9228879b4885ee01d0f6a09fba56a&t=1792687850"
         }
-      ]
+      ],
+      "originalTitle": "Diriliş: Ertuğrul",
+      "altTitle": "Resurrection: Ertugrul",
+      "mbSubjectId": "8690954071785752632",
+      "mbDetailPath": "resurrection-ertugrul-AARn8a2F0ma"
     },
     {
       "id": "mb-s-3814452171920267928",
