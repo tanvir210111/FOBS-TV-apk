@@ -23,8 +23,8 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
 
 // App Versioning & In-App Force Update Configuration
-const CURRENT_APP_VERSION_CODE = 5;
-const CURRENT_APP_VERSION_NAME = '1.4.0';
+const CURRENT_APP_VERSION_CODE = 6;
+const CURRENT_APP_VERSION_NAME = '1.5.0';
 window.CURRENT_APP_VERSION_CODE = CURRENT_APP_VERSION_CODE;
 window.CURRENT_APP_VERSION_NAME = CURRENT_APP_VERSION_NAME;
 let currentAppUpdateConfig = null;
@@ -4096,6 +4096,26 @@ function setupVideoListeners() {
   // Initialize Gesture Engine on the tap detector
   setupPlayerGestures();
 
+  // Portrait tap detector — shows/hides playerTopHeader on tap (portrait only)
+  // In landscape/fullscreen the lsTapDetector handles all gestures instead.
+  const portraitTapDetector = document.getElementById('portraitTapDetector');
+  if (portraitTapDetector) {
+    let portraitTapTimer = null;
+    const onPortraitTap = (e) => {
+      // Skip if in fullscreen/landscape — lsTapDetector handles it there
+      if (document.body.classList.contains('is-fullscreen')) return;
+      // Skip if an iframe embed is active (iframe handles its own UI)
+      if (videoContainer && videoContainer.classList.contains('has-iframe-active')) return;
+      e.stopPropagation();
+      if (portraitTapTimer) clearTimeout(portraitTapTimer);
+      portraitTapTimer = setTimeout(() => {
+        handleSinglePlayerTap();
+      }, 260);
+    };
+    portraitTapDetector.addEventListener('click', onPortraitTap);
+    portraitTapDetector.addEventListener('touchend', onPortraitTap, { passive: true });
+  }
+
   setupLandscapeProgressScrubbing();
 
   // Explicit back button event listeners with event stopPropagation to prevent any overlay interception
@@ -5445,11 +5465,12 @@ function checkAppUpdate(data) {
     const sizeTag = document.getElementById('updateFileSize');
     if (sizeTag && updateInfo.fileSize) sizeTag.textContent = updateInfo.fileSize;
 
+    const updateDownloadUrl = updateInfo.downloadUrl || `${API_BASE_URL}/download/apk`;
+    const resolvedDownloadUrl = updateDownloadUrl.startsWith('http') ? updateDownloadUrl : `${API_BASE_URL}${updateDownloadUrl}`;
     const browserLink = document.getElementById('btnBrowserDownload');
-    if (browserLink) {
-      const url = updateInfo.downloadUrl || `${API_BASE_URL}/download/apk`;
-      browserLink.href = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
-    }
+    if (browserLink) browserLink.href = resolvedDownloadUrl;
+    const browserLinkFallback = document.getElementById('btnBrowserDownloadFallback');
+    if (browserLinkFallback) browserLinkFallback.href = resolvedDownloadUrl;
 
     if (Array.isArray(updateInfo.releaseNotes) && updateInfo.releaseNotes.length > 0) {
       const notesList = document.getElementById('updateNotesList');

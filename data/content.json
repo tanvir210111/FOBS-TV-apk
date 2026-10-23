@@ -1,17 +1,18 @@
 {
   "appUpdate": {
     "enabled": true,
-    "latestVersionCode": 5,
-    "latestVersionName": "1.4.0",
-    "minVersionCode": 5,
+    "latestVersionCode": 6,
+    "latestVersionName": "1.5.0",
+    "minVersionCode": 1,
     "forceUpdate": true,
-    "title": "New FOBS TV Update (v1.4.0) Available!",
-    "message": "A new version of FOBS TV (v1.4.0) is available with complete 140 episodes of Sen Çal Kapımı, MovieBox 1080p catalog, and instant playback stability. Please update now to continue.",
+    "title": "New FOBS TV Update (v1.5.0) Available!",
+    "message": "A new version of FOBS TV (v1.5.0) is available with fixed portrait player alignment, tap-to-show video controls, smooth auto-minimize, and VisionQuest streaming. Update now for the best experience.",
     "releaseNotes": [
-      "Sen Çal Kapımı (Love Is in the Air): Complete 140 Episodes in Hindi Dub",
-      "MovieBox 1080p Engine & Real-time Search Integration",
-      "Fixed aspect ratio, centered video playback and smooth seeking",
-      "Direct 1-Click APK Download (15.4 MB)"
+      "Fixed portrait player top status bar alignment",
+      "Tap video to show/hide player controls (portrait & landscape)",
+      "Smooth auto-minimize video controls after 3.5 seconds",
+      "VisionQuest series playback via MovieBox live streaming",
+      "Direct 1-Click APK Download link"
     ],
     "downloadUrl": "https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk",
     "fallbackUrl": "https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk",
@@ -4672,22 +4673,18 @@
       "category": "Hollywood Series",
       "rating": "8.7",
       "imdbRating": "8.7",
-      "poster": "https://image.tmdb.org/t/p/w500/WGyAyBPncfuu8MZhLY9RtfZPM0.jpg",
+      "poster": "https://image.tmdb.org/t/p/w500/ajbVvETMM7NMq4Gc5FauOoyeEnu.jpg",
       "backdrop": "https://image.tmdb.org/t/p/original/uoXXbN2PrOxH6UKyP7kYwmGpAAP.jpg",
       "description": "With a bounty on his head, Vision must confront his nature and resist Ultron's influence to survive.",
       "audioTracks": [
         "Hindi dub"
       ],
       "selectedAudio": "Hindi dub",
-      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516",
+      "streamUrl": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=1",
       "servers": [
         {
-          "name": "Server 1",
-          "url": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
-        },
-        {
-          "name": "Server 2",
-          "url": "https://bcdnxw.hakunaymatata.com/cms/bee77e50b0fe083abe875351e5bf174b.mp4?sign=1eed7933c15859bb219c5fb40f055f13&t=1792694700"
+          "name": "Server 1 (MovieBox HD)",
+          "url": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=1"
         }
       ],
       "cast": [
@@ -4737,18 +4734,14 @@
           "number": 1,
           "season": 1,
           "title": "Episode 1",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516",
+          "streamUrl": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=1",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
+            "Hindi dub": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=1"
           },
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/cms/bee77e50b0fe083abe875351e5bf174b.mp4?sign=1eed7933c15859bb219c5fb40f055f13&t=1792694700"
+              "name": "Server 1 (MovieBox HD)",
+              "url": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=1"
             }
           ]
         },
@@ -4756,18 +4749,14 @@
           "number": 2,
           "season": 1,
           "title": "Episode 2",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516",
+          "streamUrl": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=2",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
+            "Hindi dub": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=2"
           },
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/cms/bee77e50b0fe083abe875351e5bf174b.mp4?sign=1eed7933c15859bb219c5fb40f055f13&t=1792694700"
+              "name": "Server 1 (MovieBox HD)",
+              "url": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=2"
             }
           ]
         },
@@ -4775,18 +4764,14 @@
           "number": 3,
           "season": 1,
           "title": "Episode 3",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516",
+          "streamUrl": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=3",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
+            "Hindi dub": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=3"
           },
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/cms/bee77e50b0fe083abe875351e5bf174b.mp4?sign=1eed7933c15859bb219c5fb40f055f13&t=1792694700"
+              "name": "Server 1 (MovieBox HD)",
+              "url": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=3"
             }
           ]
         },
@@ -4794,18 +4779,14 @@
           "number": 4,
           "season": 1,
           "title": "Episode 4",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516",
+          "streamUrl": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=4",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
+            "Hindi dub": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=4"
           },
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/cms/bee77e50b0fe083abe875351e5bf174b.mp4?sign=1eed7933c15859bb219c5fb40f055f13&t=1792694700"
+              "name": "Server 1 (MovieBox HD)",
+              "url": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=4"
             }
           ]
         },
@@ -4813,18 +4794,14 @@
           "number": 5,
           "season": 1,
           "title": "Episode 5",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516",
+          "streamUrl": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=5",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
+            "Hindi dub": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=5"
           },
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/cms/bee77e50b0fe083abe875351e5bf174b.mp4?sign=1eed7933c15859bb219c5fb40f055f13&t=1792694700"
+              "name": "Server 1 (MovieBox HD)",
+              "url": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=5"
             }
           ]
         },
@@ -4832,18 +4809,14 @@
           "number": 6,
           "season": 1,
           "title": "Episode 6",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516",
+          "streamUrl": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=6",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
+            "Hindi dub": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=6"
           },
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/cms/bee77e50b0fe083abe875351e5bf174b.mp4?sign=1eed7933c15859bb219c5fb40f055f13&t=1792694700"
+              "name": "Server 1 (MovieBox HD)",
+              "url": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=6"
             }
           ]
         },
@@ -4851,18 +4824,14 @@
           "number": 7,
           "season": 1,
           "title": "Episode 7",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516",
+          "streamUrl": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=7",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
+            "Hindi dub": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=7"
           },
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/cms/bee77e50b0fe083abe875351e5bf174b.mp4?sign=1eed7933c15859bb219c5fb40f055f13&t=1792694700"
+              "name": "Server 1 (MovieBox HD)",
+              "url": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=7"
             }
           ]
         },
@@ -4870,18 +4839,14 @@
           "number": 8,
           "season": 1,
           "title": "Episode 8",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516",
+          "streamUrl": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=8",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
+            "Hindi dub": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=8"
           },
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/7658be12e275485a8dccd5d1cd3d5762.mp4?sign=9f0e9201aa95b7ef8b287fa1a762c32f&t=1792692516"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/cms/bee77e50b0fe083abe875351e5bf174b.mp4?sign=1eed7933c15859bb219c5fb40f055f13&t=1792694700"
+              "name": "Server 1 (MovieBox HD)",
+              "url": "https://fobs-tv-apk.onrender.com/api/moviebox/stream?id=3908280950886646112&se=1&ep=8"
             }
           ]
         }

@@ -610,6 +610,8 @@
       <div class="video-container" id="videoContainer">
         <video id="mainVideoPlayer" playsinline webkit-playsinline x5-playsinline preload="metadata"></video>
         <iframe id="mainEmbedPlayer" style="display:none; width:100%; height:100%; border:none; position:absolute; top:0; left:0; z-index:5; background:#000;" allowfullscreen allow="autoplay; encrypted-media; fullscreen; picture-in-picture" referrerpolicy="origin"></iframe>
+        <!-- Portrait Tap Detector: toggles playerTopHeader controls on tap (hidden in landscape/fullscreen) -->
+        <div class="portrait-tap-detector" id="portraitTapDetector"></div>
         <div class="video-loader" id="videoLoader">
           <div class="spinner"></div>
           <div class="loader-text">Loading...</div>
@@ -1323,6 +1325,9 @@
             <i class="fa-solid fa-circle-arrow-down"></i>
             <span>Update Now (15.4 MB)</span>
           </button>
+          <a href="https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk" class="btn-update-browser" id="btnBrowserDownload" target="_blank" rel="noopener">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Direct APK Download
+          </a>
         </div>
 
         <!-- Error & Fallback Container (Hidden by default) -->
@@ -1332,7 +1337,7 @@
             <button class="btn-update-retry" onclick="startAppUpdate()">
               <i class="fa-solid fa-rotate-right"></i> Retry
             </button>
-            <a href="#" class="btn-update-browser" id="btnBrowserDownload" target="_blank" rel="noopener">
+            <a href="#" class="btn-update-browser" id="btnBrowserDownloadFallback" target="_blank" rel="noopener">
               <i class="fa-solid fa-arrow-up-right-from-square"></i> Download via Browser
             </a>
           </div>

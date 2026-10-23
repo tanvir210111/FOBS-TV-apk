@@ -535,7 +535,7 @@ app.get('/api/moviebox/search', async (req, res) => {
   }
 });
 
-// API: MovieBox Media Stream Resolver
+// API: MovieBox Media Stream Resolver (JSON)
 app.get('/api/moviebox/resolve', async (req, res) => {
   const { id, path, se, ep } = req.query;
   if (!id) return res.status(400).json({ error: 'Missing id parameter' });
@@ -550,6 +550,34 @@ app.get('/api/moviebox/resolve', async (req, res) => {
     res.json({ ok: true, media });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// API: MovieBox Stream Redirect — resolves CDN URL and redirects to it
+// Use this as a direct video src: /api/moviebox/stream?id=X&se=1&ep=1
+// The video player follows the 302 redirect to the real CDN mp4/hls stream
+app.get('/api/moviebox/stream', async (req, res) => {
+  const { id, path: detailPath, se, ep } = req.query;
+  if (!id) return res.status(400).send('Missing id parameter');
+  try {
+    const seNum = parseInt(se || '1', 10);
+    const epNum = parseInt(ep || '1', 10);
+    // Try requested se/ep first, then fallbacks
+    let media = await movieboxService.resolveMedia(id, detailPath || '', seNum, epNum);
+    if (!media || !media.streamUrl) {
+      media = await movieboxService.resolveMedia(id, detailPath || '', 0, epNum);
+    }
+    if (!media || !media.streamUrl) {
+      media = await movieboxService.resolveMedia(id, detailPath || '', 0, 0);
+    }
+    if (!media || !media.streamUrl) {
+      return res.status(404).send('Stream not available for this episode yet');
+    }
+    // Redirect to the actual CDN video URL (video player follows the redirect)
+    res.redirect(302, media.streamUrl);
+  } catch (err) {
+    console.error('MovieBox stream redirect error:', err.message);
+    res.status(500).send('Stream resolution failed');
   }
 });
 
@@ -569,17 +597,18 @@ app.get('/api/app-update', (req, res) => {
   const data = getContentData();
   const defaultUpdate = {
     enabled: true,
-    latestVersionCode: 5,
-    latestVersionName: '1.4.0',
-    minVersionCode: 5,
+    latestVersionCode: 6,
+    latestVersionName: '1.5.0',
+    minVersionCode: 1,
     forceUpdate: true,
-    title: 'New FOBS TV Update (v1.4.0) Available!',
-    message: 'A new version of FOBS TV (v1.4.0) is available with complete 140 episodes of Sen Çal Kapımı, MovieBox 1080p catalog, and instant playback stability. Please update now to continue.',
+    title: 'New FOBS TV Update (v1.5.0) Available!',
+    message: 'A new version of FOBS TV (v1.5.0) is available with fixed portrait player alignment, tap-to-show video controls, smooth auto-minimize, and VisionQuest streaming. Update now for the best experience.',
     releaseNotes: [
-      'Sen Çal Kapımı (Love Is in the Air): Complete 140 Episodes in Hindi Dub',
-      'MovieBox 1080p Engine & Real-time Search Integration',
-      'Fixed aspect ratio, centered video playback and smooth seeking',
-      'Direct 1-Click APK Download (15.4 MB)'
+      'Fixed portrait player top status bar alignment',
+      'Tap video to show/hide player controls (portrait & landscape)',
+      'Smooth auto-minimize video controls after 3.5 seconds',
+      'VisionQuest series playback via MovieBox live streaming',
+      'Direct 1-Click APK Download link'
     ],
     downloadUrl: 'https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk',
     fallbackUrl: 'https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk',

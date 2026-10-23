@@ -1082,13 +1082,33 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: max(32px, env(safe-area-inset-top, 32px)) !important;
-  padding-right: max(14px, env(safe-area-inset-right, 14px)) !important;
-  padding-bottom: 10px !important;
-  padding-left: max(14px, env(safe-area-inset-left, 14px)) !important;
+  padding: max(10px, env(safe-area-inset-top, 10px)) 14px 8px 14px !important;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.88) 0%, transparent 100%);
   pointer-events: auto !important;
   transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Portrait video player tap detector (shows/hides top controls on tap) */
+.portrait-tap-detector {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: auto;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Hide portrait tap detector in fullscreen/landscape — lsTapDetector handles it there */
+body.is-fullscreen .portrait-tap-detector,
+.player-view-overlay.is-fullscreen .portrait-tap-detector {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+/* When ls-player-ui is active (iframe hidden), also hide portrait detector */
+.video-container.has-iframe-active .portrait-tap-detector {
+  pointer-events: none !important;
 }
 
 .player-top-header.controls-hidden {
@@ -2852,17 +2872,47 @@ body.is-fullscreen .player-top-header.controls-hidden,
   opacity: 0 !important;
 }
 
-/* In portrait mode, hide landscape top header and lock wrapper */
+/* In portrait mode, hide landscape top header (playerTopHeader with back button is used) and lock button */
 body:not(.is-fullscreen) .ls-top-header,
-body:not(.is-fullscreen) .ls-lock-wrapper,
-body:not(.is-fullscreen) .ls-side-drawer {
+body:not(.is-fullscreen) .ls-lock-wrapper {
   display: none !important;
 }
 
-/* In portrait mode, hide secondary bottom pills to keep scrubber wide and clean */
-body:not(.is-fullscreen) .ls-bottom-actions .ls-action-pill:not(.ls-fullscreen-pill),
+/* In portrait mode, keep all bottom action pills (Fit, Language/Subtitle, Speed, Quality, Fullscreen) compact, accessible and functional */
+body:not(.is-fullscreen) .ls-bottom-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  flex-wrap: nowrap !important;
+}
+
+body:not(.is-fullscreen) .ls-bottom-actions .ls-action-pill {
+  padding: 4px 7px !important;
+  font-size: 11px !important;
+  gap: 3px !important;
+  border-radius: 6px !important;
+  height: 28px !important;
+  white-space: nowrap !important;
+}
+
+body:not(.is-fullscreen) .ls-bottom-actions .ls-action-pill i {
+  font-size: 11px !important;
+}
+
 body:not(.is-fullscreen) .ls-quality-pill {
-  display: none !important;
+  padding: 3px 6px !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+}
+
+/* In portrait mode, side drawer slides out cleanly over the player */
+body:not(.is-fullscreen) .ls-side-drawer {
+  width: min(320px, 85%) !important;
+  max-width: 85% !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  z-index: 2000010 !important;
 }
 
 /* In fullscreen mode, hide redundant fullscreen toggle pill matching MovieBox screenshot */
