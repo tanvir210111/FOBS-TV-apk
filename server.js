@@ -562,13 +562,21 @@ app.get('/api/moviebox/stream', async (req, res) => {
   try {
     const seNum = parseInt(se || '1', 10);
     const epNum = parseInt(ep || '1', 10);
+    let resolvedPath = detailPath;
+    if (!resolvedPath) {
+      if (id === '2706073799983877168') resolvedPath = 'golden-boy-hindi-84Y8uLuQTd3';
+      else if (id === '4505435294245733456') resolvedPath = 'golden-boy-WbL89VmWOm5';
+      else if (id === '3929372124917419816') resolvedPath = 'golden-boy-GZ4ZlM5zgG4';
+      else if (id === '9098837809229611984') resolvedPath = 'golden-boy-english-CJH7T5YL8Qa';
+      else if (id === '3908280950886646112') resolvedPath = 'visionquest-hindi-q437Vd';
+    }
     // Try requested se/ep first, then fallbacks
-    let media = await movieboxService.resolveMedia(id, detailPath || '', seNum, epNum);
+    let media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);
     if (!media || !media.streamUrl) {
-      media = await movieboxService.resolveMedia(id, detailPath || '', 0, epNum);
+      media = await movieboxService.resolveMedia(id, resolvedPath || '', 0, epNum);
     }
     if (!media || !media.streamUrl) {
-      media = await movieboxService.resolveMedia(id, detailPath || '', 0, 0);
+      media = await movieboxService.resolveMedia(id, resolvedPath || '', 0, 0);
     }
     if (!media || !media.streamUrl) {
       return res.status(404).send('Stream not available for this episode yet');

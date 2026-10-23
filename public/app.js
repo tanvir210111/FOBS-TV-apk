@@ -2900,6 +2900,26 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     return;
   }
 
+  // MovieBox dynamic stream redirect handler
+  if (playableUrl.includes('/api/moviebox/stream')) {
+    const fullUrl = playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`;
+    videoPlayer.src = fullUrl;
+    videoPlayer.load();
+    if (seekTime && seekTime > 0) {
+      const applySeek = () => { try { videoPlayer.currentTime = seekTime; } catch(e) {} };
+      if (videoPlayer.readyState >= 1) applySeek();
+      else {
+        videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
+        videoPlayer.addEventListener('canplay', applySeek, { once: true });
+      }
+    }
+    videoPlayer.play().catch(err => {
+      console.log('Autoplay deferred until user taps video controls:', err.message);
+      if (loader) loader.classList.remove('active');
+    });
+    return;
+  }
+
   // Direct play for sources that provide CORS headers and fast direct CDN edge delivery without IP restrictions
   const isDirectMp4Source = (
     playableUrl.includes('hakunaymatata') ||
