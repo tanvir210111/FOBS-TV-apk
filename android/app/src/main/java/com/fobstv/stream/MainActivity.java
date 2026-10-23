@@ -193,19 +193,21 @@ public class MainActivity extends BridgeActivity {
                             conn.setRequestMethod(request.getMethod());
                             conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36");
                             conn.setRequestProperty("Referer", "https://movieboxapp.in/");
+                            conn.setRequestProperty("Accept-Encoding", "identity");
+                            conn.setRequestProperty("Connection", "keep-alive");
 
                             Map<String, String> reqHeaders = request.getRequestHeaders();
                             if (reqHeaders != null) {
                                 for (Map.Entry<String, String> entry : reqHeaders.entrySet()) {
                                     String k = entry.getKey();
-                                    if (k != null && !"Referer".equalsIgnoreCase(k) && !"User-Agent".equalsIgnoreCase(k) && !"Host".equalsIgnoreCase(k)) {
+                                    if (k != null && !"Referer".equalsIgnoreCase(k) && !"User-Agent".equalsIgnoreCase(k) && !"Host".equalsIgnoreCase(k) && !"Accept-Encoding".equalsIgnoreCase(k)) {
                                         conn.setRequestProperty(k, entry.getValue());
                                     }
                                 }
                             }
 
-                            conn.setConnectTimeout(12000);
-                            conn.setReadTimeout(18000);
+                            conn.setConnectTimeout(6000);
+                            conn.setReadTimeout(10000);
                             conn.connect();
 
                             statusCode = conn.getResponseCode();
@@ -278,9 +280,9 @@ public class MainActivity extends BridgeActivity {
 
                         InputStream is = (statusCode >= 400) ? conn.getErrorStream() : conn.getInputStream();
                         if (contentLength > 0 && statusCode == 206) {
-                            is = new LimitedInputStream(new java.io.BufferedInputStream(is, 65536), contentLength);
+                            is = new LimitedInputStream(new java.io.BufferedInputStream(is, 262144), contentLength);
                         } else {
-                            is = new java.io.BufferedInputStream(is, 65536);
+                            is = new java.io.BufferedInputStream(is, 262144);
                         }
                         return new WebResourceResponse(mimeType, null, statusCode, reason, resHeaders, is);
                     } catch (Exception e) {
@@ -668,6 +670,12 @@ public class MainActivity extends BridgeActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // Optimize HTTP connection pooling for ultra-fast video chunk streaming
+        try {
+            System.setProperty("http.keepAlive", "true");
+            System.setProperty("http.maxConnections", "20");
+        } catch (Exception ignored) {}
+
         super.onCreate(savedInstanceState);
         
         // Force hardware acceleration at window level

@@ -1402,11 +1402,12 @@ body.is-fullscreen .player-top-header.controls-hidden,
   }
 }
 
-/* Video Loader - Full Pure Black Screen while loading */
+/* Video Loader - Centered Transparent Spinner Overlay (Doesn't blackout whole video) */
 .video-loader {
   position: absolute !important;
   inset: 0 !important;
-  background: #000000 !important;
+  background: rgba(0, 0, 0, 0.45) !important;
+  backdrop-filter: blur(2px) !important;
   display: none;
   flex-direction: column !important;
   align-items: center !important;
@@ -2966,6 +2967,7 @@ body:not(.is-fullscreen) #playerTopHeader.controls-hidden {
   padding: 6px 12px 10px 12px !important;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.45) 60%, transparent 100%) !important;
   pointer-events: auto !important;
+  touch-action: none !important;
   transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease !important;
 }
 
@@ -3046,7 +3048,7 @@ body.is-fullscreen #playerTopHeader {
   height: 3px !important;
   border-radius: 2px !important;
   background: rgba(255, 255, 255, 0.45) !important;
-  width: 0% !important;
+  width: 0%;
 }
 
 .pt-progress-filled {
@@ -3057,12 +3059,12 @@ body.is-fullscreen #playerTopHeader {
   height: 3px !important;
   border-radius: 2px !important;
   background: #2dd4bf !important; /* Turquoise / Cyan matching Screenshot 1 */
-  width: 0% !important;
+  width: 0%;
 }
 
 .pt-progress-thumb {
   position: absolute !important;
-  left: 0% !important;
+  left: 0%;
   top: 50% !important;
   transform: translate(-50%, -50%) !important;
   width: 12px !important;

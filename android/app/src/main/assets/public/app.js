@@ -2568,7 +2568,18 @@ function openPlayer(media, episodeIndex = 0) {
   appState.currentMedia = media;
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = null;
-  applyPlayerBrightness(1.0);
+
+  // Preserve user's system device brightness — do NOT force 100%
+  playerBrightness = 1.0;
+  const brOverlay = document.getElementById('playerBrightnessOverlay');
+  if (brOverlay) brOverlay.style.backgroundColor = 'transparent';
+  try {
+    if (window.AndroidApp && typeof window.AndroidApp.resetWindowBrightness === 'function') {
+      window.AndroidApp.resetWindowBrightness();
+    } else if (window.AndroidApp && typeof window.AndroidApp.setWindowBrightness === 'function') {
+      window.AndroidApp.setWindowBrightness(-1);
+    }
+  } catch (e) {}
 
   // Reset video scale to default "Fit" mode (contain, perfectly centered without crop)
   const mainVideo = document.getElementById('mainVideoPlayer');
@@ -3300,7 +3311,7 @@ function seekRelative(offsetSeconds) {
   seekDebounceTimer = setTimeout(() => {
     const finalTarget = appState.pendingSeekTime !== null ? appState.pendingSeekTime : target;
     seekToAbsoluteTime(finalTarget);
-  }, 220);
+  }, 120);
 }
 
 function seekToAbsoluteTime(targetSeconds) {
@@ -3360,18 +3371,24 @@ function seekToAbsoluteTime(targetSeconds) {
   // Dismiss gesture seek HUD immediately
   hideSeekGestureHud();
 
-  // Immediately show solid loader while video seeks
-  const loader = document.getElementById('videoLoader');
-  if (loader) {
-    loader.classList.add('active');
-    const loaderText = loader.querySelector('.loader-text');
-    if (loaderText) loaderText.innerText = 'Loading...';
-  }
+  // Fast seek: only display loader if stream buffering takes > 180ms (eliminates flashing spinner)
+  if (window.seekLoaderDebounceTimer) clearTimeout(window.seekLoaderDebounceTimer);
+  window.seekLoaderDebounceTimer = setTimeout(() => {
+    if (video.seeking || video.readyState < 3) {
+      const loader = document.getElementById('videoLoader');
+      if (loader) {
+        loader.classList.add('active');
+        const loaderText = loader.querySelector('.loader-text');
+        if (loaderText) loaderText.innerText = 'Loading...';
+      }
+    }
+  }, 180);
 
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = safeTarget;
 
   const onSeekFinished = () => {
+    if (window.seekLoaderDebounceTimer) clearTimeout(window.seekLoaderDebounceTimer);
     if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
     if (window.seekStallRecoveryTimeout) clearTimeout(window.seekStallRecoveryTimeout);
     if (window.seekFallbackTimeout) clearTimeout(window.seekFallbackTimeout);
@@ -3388,11 +3405,11 @@ function seekToAbsoluteTime(targetSeconds) {
   video.addEventListener('canplay', onSeekFinished, { once: true });
   video.addEventListener('playing', onSeekFinished, { once: true });
 
-  // Safety timeout: dismiss loader and force playback after 2.5s
+  // Safety timeout: dismiss loader and force playback after 1.8s
   if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
   window.seekSafetyTimeout = setTimeout(() => {
     onSeekFinished();
-  }, 2500);
+  }, 1800);
 
   // Active Stall Recovery Watchdog: if playback freezes on seek frame
   if (window.seekStallRecoveryTimeout) clearTimeout(window.seekStallRecoveryTimeout);
@@ -3400,11 +3417,11 @@ function seekToAbsoluteTime(targetSeconds) {
     if (video.seeking || video.readyState < 2) {
       console.warn('Seek stall detected at', safeTarget, '— nudging hardware decoder to nearest keyframe');
       try {
-        video.currentTime = Math.min(duration, safeTarget + 0.5);
+        video.currentTime = Math.min(duration, safeTarget + 0.3);
         video.play().catch(() => {});
       } catch (err) {}
     }
-  }, 3200);
+  }, 2200);
 
   // Fallback recovery if stream is permanently stuck (e.g. Range request drop)
   if (window.seekFallbackTimeout) clearTimeout(window.seekFallbackTimeout);
@@ -3415,18 +3432,23 @@ function seekToAbsoluteTime(targetSeconds) {
         playStreamUrl(rawUrl, null, safeTarget);
       }
     }
-  }, 5000);
+  }, 4200);
 
   try {
-    video.currentTime = safeTarget;
+    if (typeof video.fastSeek === 'function') {
+      video.fastSeek(safeTarget);
+    } else {
+      video.currentTime = safeTarget;
+    }
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise.catch(() => {});
     }
   } catch (e) {
-    console.warn('Native seek error:', e);
-    appState.pendingSeekTime = null;
-    if (loader) loader.classList.remove('active');
+    try {
+      video.currentTime = safeTarget;
+      video.play().catch(() => {});
+    } catch (err) {}
   }
 }
 
@@ -3510,6 +3532,7 @@ function setupLandscapeProgressScrubbing() {
     // Bulletproof touch listeners for mobile
     wrapper.addEventListener('touchstart', (e) => {
       if (e.touches && e.touches[0]) {
+        e.preventDefault();
         e.stopPropagation();
         isScrubbingProgress = true;
         handleScrub(e.touches[0].clientX);
@@ -3519,6 +3542,7 @@ function setupLandscapeProgressScrubbing() {
 
     wrapper.addEventListener('touchmove', (e) => {
       if (isScrubbingProgress && e.touches && e.touches[0]) {
+        e.preventDefault();
         e.stopPropagation();
         handleScrub(e.touches[0].clientX);
         resetLandscapeControlsTimer();
@@ -3527,6 +3551,7 @@ function setupLandscapeProgressScrubbing() {
 
     wrapper.addEventListener('touchend', (e) => {
       if (isScrubbingProgress) {
+        e.preventDefault();
         e.stopPropagation();
         isScrubbingProgress = false;
         const duration = getMediaTotalDurationSeconds();
@@ -4472,6 +4497,9 @@ function setupVideoListeners() {
   });
 
   videoPlayer.addEventListener('timeupdate', () => {
+    if (loader && loader.classList.contains('active') && videoPlayer.currentTime > 0 && !videoPlayer.seeking) {
+      loader.classList.remove('active');
+    }
     if (appState.pendingSeekTime !== null && appState.pendingSeekTime !== undefined) {
       const streamOffset = appState.streamSeekOffset || 0;
       const current = (videoPlayer.currentTime || 0) + streamOffset;
@@ -4486,7 +4514,10 @@ function setupVideoListeners() {
     updateLandscapeProgress();
   });
 
+  let waitLoaderTimer = null;
+
   videoPlayer.addEventListener('playing', () => {
+    if (waitLoaderTimer) clearTimeout(waitLoaderTimer);
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
     if (loader) loader.classList.remove('active');
     appState.pendingSeekTime = null;
@@ -4501,7 +4532,12 @@ function setupVideoListeners() {
   });
 
   videoPlayer.addEventListener('waiting', () => {
-    if (loader) loader.classList.add('active');
+    if (waitLoaderTimer) clearTimeout(waitLoaderTimer);
+    waitLoaderTimer = setTimeout(() => {
+      if (videoPlayer.paused || videoPlayer.seeking || videoPlayer.readyState < 3) {
+        if (loader) loader.classList.add('active');
+      }
+    }, 200);
   });
 
   videoPlayer.addEventListener('stalled', () => {
@@ -4512,22 +4548,26 @@ function setupVideoListeners() {
   });
 
   videoPlayer.addEventListener('seeking', () => {
-    if (loader) loader.classList.add('active');
+    // Only show loader if seek takes more than a split second
+    if (waitLoaderTimer) clearTimeout(waitLoaderTimer);
+    waitLoaderTimer = setTimeout(() => {
+      if (videoPlayer.seeking && loader) loader.classList.add('active');
+    }, 150);
   });
 
   videoPlayer.addEventListener('seeked', () => {
+    if (waitLoaderTimer) clearTimeout(waitLoaderTimer);
     if (window.seekLoaderTimeout) clearTimeout(window.seekLoaderTimeout);
     if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
     appState.pendingSeekTime = null;
-    if (videoPlayer.readyState >= 3) {
-      if (loader) loader.classList.remove('active');
-    }
+    if (loader) loader.classList.remove('active');
     updateLandscapeProgress();
     syncPlayPauseIcons();
     videoPlayer.play().catch(() => {});
   });
 
   videoPlayer.addEventListener('canplay', () => {
+    if (waitLoaderTimer) clearTimeout(waitLoaderTimer);
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
     videoPlayer._retryCount = 0;
     appState.pendingSeekTime = null;
