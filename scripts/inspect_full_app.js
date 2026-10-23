@@ -73,11 +73,13 @@ async function inspectFullApp() {
   const currentVerCode = matchVerCode ? parseInt(matchVerCode[1], 10) : null;
   console.log(`- Current Client Code in app.js: CURRENT_APP_VERSION_CODE = ${currentVerCode}`);
 
-  if (appUpdate?.latestVersionCode <= currentVerCode) {
-    console.warn(`⚠️ WARNING: latestVersionCode (${appUpdate?.latestVersionCode}) is NOT greater than CURRENT_APP_VERSION_CODE (${currentVerCode}). Older apps running code ${currentVerCode} will NOT trigger the update popup!`);
+  if (appUpdate?.latestVersionCode === currentVerCode) {
+    console.log(`✅ Current client versionCode (${currentVerCode}) matches latestVersionCode (${appUpdate?.latestVersionCode}). The latest app will NOT show unwanted update popup!`);
+  } else if (appUpdate?.latestVersionCode > currentVerCode) {
+    console.warn(`⚠️ WARNING: client versionCode (${currentVerCode}) is lower than latestVersionCode (${appUpdate?.latestVersionCode}). The latest app would falsely show update popup!`);
     totalIssues++;
   } else {
-    console.log(`✅ latestVersionCode (${appUpdate?.latestVersionCode}) > client versionCode (${currentVerCode}). Update popup triggers properly!`);
+    console.log(`ℹ️ Client versionCode (${currentVerCode}) > latestVersionCode (${appUpdate?.latestVersionCode}).`);
   }
 
   // 3. Inspect Live TV Assets

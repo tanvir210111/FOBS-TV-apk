@@ -23,8 +23,8 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
 
 // App Versioning & In-App Force Update Configuration
-const CURRENT_APP_VERSION_CODE = 6;
-const CURRENT_APP_VERSION_NAME = '1.5.0';
+const CURRENT_APP_VERSION_CODE = 7;
+const CURRENT_APP_VERSION_NAME = '1.6.0';
 window.CURRENT_APP_VERSION_CODE = CURRENT_APP_VERSION_CODE;
 window.CURRENT_APP_VERSION_NAME = CURRENT_APP_VERSION_NAME;
 let currentAppUpdateConfig = null;
@@ -5427,6 +5427,20 @@ function checkAppUpdate(data) {
   }
 
   currentAppUpdateConfig = updateInfo;
+
+  // Detect whether running in native Android / Capacitor environment
+  const isNative = (typeof window.Capacitor !== 'undefined' && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) ||
+                   window.location.protocol === 'capacitor:' ||
+                   window.location.protocol === 'ionic:' ||
+                   (window.location.hostname === 'localhost' && !window.location.port);
+
+  // If in a regular web browser, do not show blocking APK update modal
+  if (!isNative) {
+    const headerBtn = document.getElementById('headerUpdateBtn');
+    if (headerBtn) headerBtn.classList.add('hidden');
+    return;
+  }
+
   const isOutdated = updateInfo.latestVersionCode > CURRENT_APP_VERSION_CODE;
 
   const headerBtn = document.getElementById('headerUpdateBtn');
