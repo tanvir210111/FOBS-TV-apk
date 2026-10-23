@@ -46154,782 +46154,104 @@
   ],
   "upcoming": [
     {
-      "id": "mb-up-5837916216886820048",
-      "title": "Dhoom:4 [Hindi]",
-      "year": "2027",
-      "genre": "Action, Drama",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "6.2",
-      "imdbRating": "6.2",
-      "poster": "https://pbcdnw.aoneroom.com/image/2026/09/23/700765979360f717166154b5d83ccbc1.jpg",
-      "backdrop": "https://pbcdnw.aoneroom.com/image/2026/09/23/700765979360f717166154b5d83ccbc1.jpg",
-      "description": "Upcoming Hindi dubbed release coming soon exclusively on FOBS TV.",
-      "cast": [],
-      "type": "movie"
-    },
-    {
-      "id": "mb-up-6624920251769814224",
-      "title": "Dead-End Job [Hindi]",
+      "id": "mb-up-2300409812770776784",
+      "subjectId": "2300409812770776784",
+      "title": "Final Table [Hindi]",
       "year": "2026",
-      "genre": "Mystery, Sci-Fi & Fantasy",
+      "genre": "Reality",
       "language": "Hindi",
-      "dubLanguage": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
       "badgeLeft": "Hindi",
       "badgeRight": "Coming Soon",
-      "rating": "7.8",
-      "imdbRating": "7.8",
-      "poster": "https://image.tmdb.org/t/p/w500/1yobke0bpfNOazuF9wW7QbM2GER.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/gWedDgBsZkuOho2qe3q2sTQmbpO.jpg",
-      "description": "When a debtor is lured by a strange agency with the promise of lucrative gigs, he is soon thrust into a hellish world of terror and unpredictability.",
+      "releaseMonth": "Nov",
+      "releaseDay": "20",
+      "rating": "6.7",
+      "imdbRating": "6.7",
+      "poster": "https://image.tmdb.org/t/p/w500/hJ6ODwOzGMquw2pCcuhve7D6tkg.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/vfk4f1EYgKcrRbfhYfwwzA6mKvD.jpg",
+      "description": "Team of chefs vie to impress some of the world's toughest palates as they whip up iconic dishes from different nations in this fast-paced competition.",
       "cast": [
         {
-          "name": "Lee Jae-wook",
-          "character": "Byeon Hyuk-joon",
-          "photo": "https://image.tmdb.org/t/p/w185/9dsWM2kiXO4utrg4GctdXDvhOKD.jpg"
-        },
-        {
-          "name": "Go Min-si",
-          "character": "Yeon-joo",
-          "photo": "https://image.tmdb.org/t/p/w185/tgBb9dDyewLlautcmJH9KSXZz1O.jpg"
-        },
-        {
-          "name": "Kim Min-ha",
-          "character": "Byeon Ji-yoon",
-          "photo": "https://image.tmdb.org/t/p/w185/zPNNamrJLWoXADXALQmuTdo6zBS.jpg"
-        },
-        {
-          "name": "Lee Hee-jun",
-          "character": "Kang-joon / Mr. S",
-          "photo": "https://image.tmdb.org/t/p/w185/4slyXnHbKgzmeyJNetBSORgDDEF.jpg"
-        },
-        {
-          "name": "Yoon Byung-hee",
-          "character": "Special appearance",
-          "photo": "https://image.tmdb.org/t/p/w185/77HOYpL0BI6BN4kaTYUMNIlnLM0.jpg"
-        },
-        {
-          "name": "Cho Hyun-chul",
-          "character": "Special appearance",
-          "photo": "https://image.tmdb.org/t/p/w185/i1yEjtwITyedbFCealmBfuaAn3M.jpg"
-        },
-        {
-          "name": "Choi Hyun-wook",
-          "character": "Special appearance",
-          "photo": "https://image.tmdb.org/t/p/w185/2s3xxkSPJMy8WFeyRd1lyFLYofk.jpg"
-        },
-        {
-          "name": "Yoon Kyung-ho",
-          "character": "Special appearance",
-          "photo": "https://image.tmdb.org/t/p/w185/217cVZqyvJypi4OR1uvxoaJxvLm.jpg"
-        }
-      ],
-      "type": "series"
-    },
-    {
-      "id": "mb-up-2289924869888305376",
-      "title": "The Perfect Lie [Hindi]",
-      "year": "2026",
-      "genre": "Drama",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "6.5",
-      "imdbRating": "6.5",
-      "poster": "https://image.tmdb.org/t/p/w500/a8qjbVX7lo1v7m5Awzhx7Ptk8gO.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/vYO9OkYHSNfYuqz6VMS4aCCfRb8.jpg",
-      "description": "When one of their own is killed in a house fire, four picture-perfect couples are forced to question everything they thought they knew about each other.",
-      "cast": [
-        {
-          "name": "Loes Haverkort",
-          "character": "Karen van der Made",
-          "photo": "https://image.tmdb.org/t/p/w185/7Mz5pEkDGCXWY5nhiwSn8yWDFjx.jpg"
-        },
-        {
-          "name": "Remko Vrijdag",
-          "character": "Ivo Smit",
-          "photo": "https://image.tmdb.org/t/p/w185/g6KW48DqW8kcd2JkKRdUDyMrerk.jpg"
-        },
-        {
-          "name": "Noortje Herlaar",
-          "character": "Babette Struyck",
-          "photo": "https://image.tmdb.org/t/p/w185/9UupimmSLCQ7uoLCg2wDOcmTjAJ.jpg"
-        },
-        {
-          "name": "Edwin Jonker",
-          "character": "Evert Struyck",
-          "photo": "https://image.tmdb.org/t/p/w185/6oTvPHOxmwMVoZp6sCb6xzo3wNk.jpg"
-        },
-        {
-          "name": "Rifka Lodeizen",
-          "character": "Hanneke Lemstra",
-          "photo": "https://image.tmdb.org/t/p/w185/l5hLOMTloXy9WKSX3WNA5MyXnfk.jpg"
-        },
-        {
-          "name": "Matthijs van de Sande Bakhuyzen",
-          "character": "Simon de Jager",
-          "photo": "https://image.tmdb.org/t/p/w185/yNhTWoImNo9JInAYkfEQngHI4z.jpg"
-        },
-        {
-          "name": "Charlie Dagelet",
-          "character": "Patricia de Jager",
-          "photo": "https://image.tmdb.org/t/p/w185/9PkrramaZKhm6agGOk99G6gf049.jpg"
-        },
-        {
-          "name": "Teun Luijkx",
-          "character": "Michel van der Made / Michel Brouwers",
-          "photo": "https://image.tmdb.org/t/p/w185/wOQZpDsOVgNOJbQ2FgqY3gRoQ6J.jpg"
-        }
-      ],
-      "type": "series"
-    },
-    {
-      "id": "mb-up-2200978777247829384",
-      "title": "Nocturne [Hindi]",
-      "year": "2026",
-      "genre": "Crime, Mystery",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "7.8",
-      "imdbRating": "7.8",
-      "poster": "https://image.tmdb.org/t/p/w500/nyvXVcPnHEwVmqCdzjjCsu1jqhm.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/DCSa6Fd3NN075JOqcJqO3VU6fM.jpg",
-      "description": "When a victim of notorious serial killer Jurek Walter unexpectedly turns up alive, detective Jonah Lynn races against time to find the one person still missing, while his protégé Saga Bauer goes undercover to get answers from the killer himself.",
-      "cast": [
-        {
-          "name": "Liev Schreiber",
-          "character": "Jonah Lynn",
-          "photo": "https://image.tmdb.org/t/p/w185/26G7QjSb5ZazgWb9XB2X6SwcILQ.jpg"
-        },
-        {
-          "name": "Zazie Beetz",
-          "character": "FBI Agent Saga Bauer",
-          "photo": "https://image.tmdb.org/t/p/w185/sgxzT54GnvgeMnOZgpQQx9csAdd.jpg"
-        },
-        {
-          "name": "Stephen Graham",
-          "character": "Jurek Walter",
-          "photo": "https://image.tmdb.org/t/p/w185/yguEO9zFvuccq87kOJpFLsmUgvs.jpg"
-        },
-        {
-          "name": "Bill Camp",
-          "character": "Chief Dave Ellison",
-          "photo": "https://image.tmdb.org/t/p/w185/wxYyJSltCHwU0MTg838SllOlvNT.jpg"
-        },
-        {
-          "name": "Rory Culkin",
-          "character": "Karl Anders",
-          "photo": "https://image.tmdb.org/t/p/w185/6SkUiLHFlPEEFtKpLc7VrczaqDx.jpg"
-        },
-        {
-          "name": "Chrissy Metz",
-          "character": "Ida Frost",
-          "photo": "https://image.tmdb.org/t/p/w185/d1qBoF1JQdLI8OF99sVeNQqjXZG.jpg"
-        },
-        {
-          "name": "Poorna Jagannathan",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/o2BQX1tAgo47GGvpBy1k4LQLRs6.jpg"
-        },
-        {
-          "name": "Gary Carr",
-          "character": "Nathan Pollock",
-          "photo": "https://image.tmdb.org/t/p/w185/nY9pVfJG70QojfwgCiW5Kja4HjU.jpg"
-        }
-      ],
-      "type": "series"
-    },
-    {
-      "id": "mb-up-6630269010766617880",
-      "title": "LOL: Last One Laughing Philippines [Hindi]",
-      "year": "2024",
-      "genre": "Reality, Comedy",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "6.0",
-      "imdbRating": "6.0",
-      "poster": "https://image.tmdb.org/t/p/w500/5v6xysCUVEDfcfiPSU2OMCFZl9Q.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/zyUpRvjs1OPyGkWHqoTws1GFy35.jpg",
-      "description": "“LOL” or “Last One Laughing” is a reality show where ten comedians battle it out to make each other laugh. With no smiles allowed, they unleash their best jokes and antics, aiming to make each other crack up for six hours. It’s a hilarious battle of wit and self-control, where the last one laughing wins ONE MILLION PESOS!",
-      "cast": [
-        {
-          "name": "Vice Ganda",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/bqaoLgLzvX87gxCN6iksEKX59CK.jpg"
-        },
-        {
-          "name": "Epy Quizon",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/7eS7NWjtkAuOEjZexdAaJhVYEV7.jpg"
-        },
-        {
-          "name": "Chariz Solomon",
-          "character": "Cast",
-          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
-        },
-        {
-          "name": "Candy Pangilinan",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/fbvy4o5JERdPhg4PGHW4Y6te3uV.jpg"
-        },
-        {
-          "name": "Donna Cariaga",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/mqAziN0aLyVINTyO2eA4p5OxkEi.jpg"
-        },
-        {
-          "name": "Esnyr Ranollo",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/i3xMfmPCsDuk7pULlVt4O24By1C.jpg"
-        },
-        {
-          "name": "James Caraan",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/u6wDpi2wzmt7mXrGnIe4G1jVjUl.jpg"
-        },
-        {
-          "name": "Ethel Booba",
-          "character": "Cast",
+          "name": "Andrew Knowlton",
+          "character": "Self - Host",
           "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
         }
       ],
-      "type": "series"
+      "type": "upcoming"
     },
     {
-      "id": "mb-up-2879333471120509368",
-      "title": "Gudang Merica [Hindi]",
+      "id": "mb-up-9174873168975128800",
+      "subjectId": "9174873168975128800",
+      "title": "Oh! My Guard [Hindi]",
       "year": "2026",
-      "genre": "Comedy, Horror, Mystery",
+      "genre": "Drama, Comedy, Sci-Fi & Fantasy",
       "language": "Hindi",
-      "dubLanguage": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
       "badgeLeft": "Hindi",
       "badgeRight": "Coming Soon",
-      "rating": "5.5",
-      "imdbRating": "5.5",
-      "poster": "https://image.tmdb.org/t/p/w500/mhAp8VzvFMn1wP8Z1gZd5iFzLVM.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/ymyCANhZD7Bhuvbc2KQeB3sEqwI.jpg",
-      "description": "At the quiet Harapan Ayah Hospital, Razi blends in with three medical students undergoing their clinical rotations. What initially seems like routine night shifts gradually turns into a series of terrifying experiences after an unidentified patient dies under their care. Strange occurrences begin to emerge—shadows, unsettling sounds, and the presence of a horrifying figure. The situation reaches its peak when the patient’s body mysteriously disappears from their watch. Caught between medical logic and the fear of the unexplainable, they are forced to confront a mystery that slowly reveals a truth far greater than they ever imagined.",
+      "releaseMonth": "Oct",
+      "releaseDay": "24",
+      "rating": "8.0",
+      "imdbRating": "8.0",
+      "poster": "https://image.tmdb.org/t/p/w500/dg4IIruyBEtSgjW5fdXi46xrSzC.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/jFpUscK4vAj2F6pZH1ZT20cO6sw.jpg",
+      "description": "A wildly unpredictable romance begins when a flawed “master of melodrama” actor encounters a mysterious woman who believes she is the female lead of a TV drama.",
       "cast": [
         {
-          "name": "Ardhito Pramono",
-          "character": "Razi",
-          "photo": "https://image.tmdb.org/t/p/w185/5wJDh9KPUaKD4U260PUzBvAOGJ3.jpg"
+          "name": "Jung Yong-hwa",
+          "character": "Um Tae-bong",
+          "photo": "https://image.tmdb.org/t/p/w185/pxxZ2G17NI5L8MP0dNMiRDuUg2Z.jpg"
         },
         {
-          "name": "Arla Ailani",
-          "character": "Rindu",
-          "photo": "https://image.tmdb.org/t/p/w185/aGUWD0jst9DmOBBVEBV35OhEv6i.jpg"
+          "name": "Hong Seung-hee",
+          "character": "Oh Hae-ra / Cha Hong-do",
+          "photo": "https://image.tmdb.org/t/p/w185/iF8vAp98sUh0CQ07mhrCB4euHPR.jpg"
         },
         {
-          "name": "Fatih Unru",
-          "character": "Adit",
-          "photo": "https://image.tmdb.org/t/p/w185/8smQ1Ymhr1gCYXrN8sIvSHRQUYY.jpg"
+          "name": "Lee Yi-kyung",
+          "character": "Han Jeong-woo",
+          "photo": "https://image.tmdb.org/t/p/w185/rAH9iQ6olF5cyVKkVQuoGyaFxK.jpg"
         },
         {
-          "name": "Zulfa Maharani",
-          "character": "Tanti",
-          "photo": "https://image.tmdb.org/t/p/w185/bqHdour1CH2adzNqY3KgorxBc3A.jpg"
+          "name": "Park You-na",
+          "character": "Song Na-ri",
+          "photo": "https://image.tmdb.org/t/p/w185/6MawaOrDuD5R40ufBf0uDU0Wq0p.jpg"
         },
         {
-          "name": "Benidictus Siregar",
-          "character": "Sidik",
-          "photo": "https://image.tmdb.org/t/p/w185/syoUo25hvxWmqUYMSM0OuclGx8n.jpg"
+          "name": "Han Chae-a",
+          "character": "So Hyeon-ju",
+          "photo": "https://image.tmdb.org/t/p/w185/ymEg1gkzA6mc3KU9j1DlrrXQNPz.jpg"
         },
         {
-          "name": "Rizky Inggar",
-          "character": "Suster Ella",
-          "photo": "https://image.tmdb.org/t/p/w185/a4aBVbcT6NTtCY9u4ZoxVYONRiP.jpg"
-        },
-        {
-          "name": "Angga Nggok",
-          "character": "Tukang Bubur",
-          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
-        },
-        {
-          "name": "Melly Manuhutu",
-          "character": "Nenek",
-          "photo": "https://image.tmdb.org/t/p/w185/gDM2lqp9DgnyBxy2NbS39JvxXif.jpg"
-        }
-      ],
-      "type": "movie"
-    },
-    {
-      "id": "mb-up-2790387378479848728",
-      "title": "Dexter: Resurrection [Hindi]",
-      "year": "2025",
-      "genre": "Crime, Drama, Mystery",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "8.5",
-      "imdbRating": "8.5",
-      "poster": "https://image.tmdb.org/t/p/w500/o2Oyi3boT100bY5kCP4MBiTeetO.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/vcpj6rRDS93ImHCLPY8bwBuFGjR.jpg",
-      "description": "Dexter Morgan awakens from a coma and sets out for New York City, determined to find Harrison and make things right. But when Miami Metro's Angel Batista arrives with questions, Dexter realizes his past is catching up to him fast.",
-      "cast": [
-        {
-          "name": "Michael C. Hall",
-          "character": "Dexter Morgan",
-          "photo": "https://image.tmdb.org/t/p/w185/7zUMGoujuev5PUwwv4Gl6ikB50k.jpg"
-        },
-        {
-          "name": "Uma Thurman",
-          "character": "Charley Brown",
-          "photo": "https://image.tmdb.org/t/p/w185/sBgAZWi3o4FsnaTvnTNtK6jpQcF.jpg"
-        },
-        {
-          "name": "Jack Alcott",
-          "character": "Harrison Morgan",
-          "photo": "https://image.tmdb.org/t/p/w185/65KEuv3LIBEaeIkqhyps6heZ9aa.jpg"
-        },
-        {
-          "name": "Ntare Guma Mbaho Mwine",
-          "character": "Blessing Kamara",
-          "photo": "https://image.tmdb.org/t/p/w185/nmwMBGmrqVgeAOdWJJJJi9A2l7C.jpg"
-        },
-        {
-          "name": "Kadia Saraf",
-          "character": "Claudette Wallace",
-          "photo": "https://image.tmdb.org/t/p/w185/lHaOGTMcq4SQeaHxC2BSeAwony9.jpg"
-        },
-        {
-          "name": "Dominic Fumusa",
-          "character": "Melvin Oliva",
-          "photo": "https://image.tmdb.org/t/p/w185/1wgHvqNM0LisAhkInYDD9JIGPJ0.jpg"
-        },
-        {
-          "name": "James Remar",
-          "character": "Harry Morgan",
-          "photo": "https://image.tmdb.org/t/p/w185/ctMVpFDKKWCty60lLORf3IoJcv9.jpg"
-        },
-        {
-          "name": "Brian Cox",
-          "character": "The New York Ripper",
-          "photo": "https://image.tmdb.org/t/p/w185/scSjbFCTRngXlkJRoKptM5kQGw7.jpg"
-        }
-      ],
-      "type": "series"
-    },
-    {
-      "id": "mb-up-6890914839200685336",
-      "title": "Christmas at the Kringles [Hindi]",
-      "year": "2026",
-      "genre": "Action, Horror, Comedy",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "7.8",
-      "imdbRating": "7.8",
-      "poster": "https://image.tmdb.org/t/p/w500/oVxkhheRVWSacimUZBuMemQX85E.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/7lEFPOUwk3H1aLx1UqGafAXRUPY.jpg",
-      "description": "The Severson family move to a suburban neighborhood where their next-door neighbors, the Kringles, celebrate Christmas year-round. But when their son becomes increasingly attached to the unusual family, Mark and Julie begin to suspect that their neighbors aren't quite what they seem.",
-      "cast": [
-        {
-          "name": "Ron Livingston",
-          "character": "Mark Severson",
-          "photo": "https://image.tmdb.org/t/p/w185/pr5CjWnkaf5WKTIYh8wtNufjmyb.jpg"
-        },
-        {
-          "name": "Rachel Bilson",
-          "character": "Julie Severson",
-          "photo": "https://image.tmdb.org/t/p/w185/jlacH60rFke82EfuvFqgjcxPIx0.jpg"
-        },
-        {
-          "name": "Rob Riggle",
-          "character": "Drunk Santa",
-          "photo": "https://image.tmdb.org/t/p/w185/hQgOp8vWxl6KPZbqzKSSL4k6G1j.jpg"
-        },
-        {
-          "name": "Arden Myrin",
-          "character": "Carol Kringle",
-          "photo": "https://image.tmdb.org/t/p/w185/zJ0CqYNRWIcfZedYjYj1oRiBUov.jpg"
-        },
-        {
-          "name": "Thomas Lennon",
-          "character": "Nick Kringle",
-          "photo": "https://image.tmdb.org/t/p/w185/s8pw7BfuMxN7P0p5XJ9POfod7zW.jpg"
-        },
-        {
-          "name": "Beverly D'Angelo",
+          "name": "Hwang Tae-kwang",
           "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/8fYQIA8dAaA4GOTxOFSKIvTqzi.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/ySOF1TSNiYIlSJdaqwlUz9WEsNi.jpg"
         },
         {
-          "name": "Donald Faison",
-          "character": "Daryl",
-          "photo": "https://image.tmdb.org/t/p/w185/gNwWP1CHob9Y8fjY69w7EwGxMoz.jpg"
-        },
-        {
-          "name": "David Wain",
-          "character": "Noel Tannebaum",
-          "photo": "https://image.tmdb.org/t/p/w185/yh4AtjuNvBwca8HvzIXjo1Y1Nwf.jpg"
-        }
-      ],
-      "type": "movie"
-    },
-    {
-      "id": "mb-up-733649723655179656",
-      "title": "Wicker [Hindi]",
-      "year": "2026",
-      "genre": "Romance, Fantasy, Comedy",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "6.2",
-      "imdbRating": "6.2",
-      "poster": "https://image.tmdb.org/t/p/w500/6FcBZOKvyrLCKGCyBG0ySCR4okt.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/xVh1ypMoVkMf5IB7y3hnRplJ14c.jpg",
-      "description": "On the outskirts of a village by the sea, lives a Fisherwoman; smelly, single and perpetually ridiculed. One day, fed up with her stuffy, small-minded neighbours, she commissions herself a husband to be made from wicker. In an otherwise conservative town, this unconventional romance sparks outrage, jealousy and chaos.",
-      "cast": [
-        {
-          "name": "Olivia Colman",
-          "character": "Fisherwoman",
-          "photo": "https://image.tmdb.org/t/p/w185/lawJUdbLb1YW0niaYjiVGR9IBG8.jpg"
-        },
-        {
-          "name": "Alexander Skarsgård",
-          "character": "Wicker Husband",
-          "photo": "https://image.tmdb.org/t/p/w185/6VNNddrSrIVgdzhXr4Zg89gmOzY.jpg"
-        },
-        {
-          "name": "Peter Dinklage",
-          "character": "Basket Weaver",
-          "photo": "https://image.tmdb.org/t/p/w185/9CAd7wr8QZyIN0E7nm8v1B6WkGn.jpg"
-        },
-        {
-          "name": "Elizabeth Debicki",
-          "character": "Tailor’s Wife",
-          "photo": "https://image.tmdb.org/t/p/w185/nTTnQVTn13Ve4ifjRY9v8kVc99w.jpg"
-        },
-        {
-          "name": "Marli Siu",
-          "character": "Basket Weaver's Sister",
-          "photo": "https://image.tmdb.org/t/p/w185/pNi3TfnnJuDz25m93Nr2AKIYV4R.jpg"
-        },
-        {
-          "name": "Nabhaan Rizwan",
-          "character": "Tailor",
-          "photo": "https://image.tmdb.org/t/p/w185/ljDpNmRnx9Mxe6DZbOMVZlGVXAN.jpg"
-        },
-        {
-          "name": "Richard E. Grant",
-          "character": "Doctor",
-          "photo": "https://image.tmdb.org/t/p/w185/92oaBntIXhndCxUXaGywUyILIIE.jpg"
-        },
-        {
-          "name": "Kiell Smith-Bynoe",
-          "character": "Innkeeper",
-          "photo": "https://image.tmdb.org/t/p/w185/6pVa2SEgMfR2u7E3xfIUGZSqinh.jpg"
-        }
-      ],
-      "type": "movie"
-    },
-    {
-      "id": "mb-up-5496206329599478200",
-      "title": "The Mongoose [Hindi]",
-      "year": "2026",
-      "genre": "Action, Thriller",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "7.8",
-      "imdbRating": "7.8",
-      "poster": "https://image.tmdb.org/t/p/w500/eSS5mvSG84UUuvtbHel5Yu3Wik4.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/iRIhPqqoUHiFBxn8oYf3gCQnaKk.jpg",
-      "description": "A falsely accused war hero with nothing to lose leads police on an epic televised cross-country car chase, helped by members of his former Special Forces Army battalion and closely monitored by a fascinated public rooting for his safe getaway.",
-      "cast": [
-        {
-          "name": "Liam Neeson",
-          "character": "Ryan 'Fang' Flanagan",
-          "photo": "https://image.tmdb.org/t/p/w185/sRLev3wJioBgun3ZoeAUFpkLy0D.jpg"
-        },
-        {
-          "name": "Marisa Tomei",
-          "character": "Tara",
-          "photo": "https://image.tmdb.org/t/p/w185/vAQ10fvGfVyuJdMNKVMA4ZkacWL.jpg"
-        },
-        {
-          "name": "Ving Rhames",
-          "character": "Tanker",
-          "photo": "https://image.tmdb.org/t/p/w185/tOVDvu1EQP78AwaUw6uh1wN818E.jpg"
-        },
-        {
-          "name": "Michael Chiklis",
-          "character": "Major Walter Pope",
-          "photo": "https://image.tmdb.org/t/p/w185/pAkKjbzxP6Z6Y5zAGpwmWQo1iji.jpg"
-        },
-        {
-          "name": "Brett Tucker",
-          "character": "Todd",
-          "photo": "https://image.tmdb.org/t/p/w185/6IUQyy2pA8PRXX1MEx088JH6pcu.jpg"
-        },
-        {
-          "name": "Stella Stocker",
-          "character": "Helene (voice)",
-          "photo": "https://image.tmdb.org/t/p/w185/ilRVeYRcQrAeHYLMOPPzLzZMJcC.jpg"
-        },
-        {
-          "name": "Hamish Michael",
-          "character": "Captain Parks",
-          "photo": "https://image.tmdb.org/t/p/w185/4O0WjvxElALgMFIiX19RJJbJM7B.jpg"
-        },
-        {
-          "name": "Toby Truslove",
-          "character": "Captain McBride",
-          "photo": "https://image.tmdb.org/t/p/w185/17AaSGRY0RyJBFbdj0uSLK7n5wV.jpg"
-        }
-      ],
-      "type": "movie"
-    },
-    {
-      "id": "mb-up-568529383837815064",
-      "title": "Balaraw: Blood Island [Hindi]",
-      "year": "2026",
-      "genre": "Mystery, Drama",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "7.8",
-      "imdbRating": "7.8",
-      "poster": "https://image.tmdb.org/t/p/w500/s1A6UOu8IOmw0kJXohlitMRiwQb.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/hmdREhKDHJaMXOk8y2nuLDldDbn.jpg",
-      "description": "Years after her mother vanished, Sabina follows a mysterious clue to an uncharted island, where she confronts hidden dark secrets within her own family.",
-      "cast": [
-        {
-          "name": "Janine Gutierrez",
-          "character": "Sabina Tejeros",
-          "photo": "https://image.tmdb.org/t/p/w185/6TQI03vvaY4Am2reUC3HNsNvtfQ.jpg"
-        },
-        {
-          "name": "Charlie Dizon",
-          "character": "Bulak Bernabe",
-          "photo": "https://image.tmdb.org/t/p/w185/ubucChuTyf5BBmvgUqbO5QUpIhL.jpg"
-        },
-        {
-          "name": "Agot Isidro",
+          "name": "Kwak Min-seok",
           "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/dOOKYxGJIGJMq9xkfgzDmpbmwCS.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/jShebpoVSfChQZ0drJWy7dOend5.jpg"
         },
         {
-          "name": "Ronnie Lazaro",
+          "name": "Choi Dae-sung",
           "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/7faCmRBH2912iXtCn4cDojOAVr4.jpg"
+          "photo": "https://image.tmdb.org/t/p/w185/yCahIo38xjsXOSRyLPY5oIlqFg9.jpg"
         }
       ],
-      "type": "series"
-    },
-    {
-      "id": "mb-up-3497733994953821576",
-      "title": "Teka Teki Tika [Hindi]",
-      "year": "2021",
-      "genre": "Comedy, Mystery, Thriller",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "6.0",
-      "imdbRating": "6.0",
-      "poster": "https://image.tmdb.org/t/p/w500/pgbDs1l0fDbTAYq2JXxYjQrxKyE.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/5FjcRoqQDnYArjUdOdqveTmRhMM.jpg",
-      "description": "A happy family whose lives complement each other. While celebrating his wedding anniversary with his family, a rich businessman was suddenly surprised by the appearance of a mysterious woman who claimed to be his biological child, Tika. Until finally the division in the family was inevitable. Behind all that, there is a big secret about Tika's identity.",
-      "cast": [
-        {
-          "name": "Sheila Dara Aisha",
-          "character": "Tika",
-          "photo": "https://image.tmdb.org/t/p/w185/bnCnmSsqW6nKz4LhoEKknQMJ52H.jpg"
-        },
-        {
-          "name": "Dion Wiyoko",
-          "character": "Arnold Limanto",
-          "photo": "https://image.tmdb.org/t/p/w185/xWz4rgxMGkuJAG9d2q0rp2XSQfD.jpg"
-        },
-        {
-          "name": "Morgan Oey",
-          "character": "Andre Limanto",
-          "photo": "https://image.tmdb.org/t/p/w185/fa2IjUgmUrFLxGXkemSrl92r7J2.jpg"
-        },
-        {
-          "name": "Ferry Salim",
-          "character": "Budiman Limanto",
-          "photo": "https://image.tmdb.org/t/p/w185/hw6a3N6DsXENVHAH9FJtA538r79.jpg"
-        },
-        {
-          "name": "Jenny Zhang",
-          "character": "Sherly Winata",
-          "photo": "https://image.tmdb.org/t/p/w185/uMYGUAiXlDY8GUmIfsUQ5bn6Aac.jpg"
-        },
-        {
-          "name": "Eriska Rein",
-          "character": "Laura Wilona",
-          "photo": "https://image.tmdb.org/t/p/w185/mBvYavx9RIOGI0dBlRR9DTcu8fM.jpg"
-        },
-        {
-          "name": "Tansri Kemala",
-          "character": "Jane Mikaila",
-          "photo": "https://image.tmdb.org/t/p/w185/jNb3JvmiZpevmwJ1SehyKc2PlMg.jpg"
-        },
-        {
-          "name": "Ayu Laksmi",
-          "character": "Sri Marwati",
-          "photo": "https://image.tmdb.org/t/p/w185/6Ij0ul9puMjFwioSYkvbmJbFUid.jpg"
-        }
-      ],
-      "type": "movie"
-    },
-    {
-      "id": "mb-up-3466771747515555096",
-      "title": "Warkop DKI: ViRaLiN dOoOoNg..!! [Hindi]",
-      "year": "2026",
-      "genre": "Comedy",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "5.5",
-      "imdbRating": "5.5",
-      "poster": "https://image.tmdb.org/t/p/w500/w9B66TqXL0WGw2roQOk3ohxJQWM.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/dyBfej8BJJe2XHWGnYCmHNA9uyi.jpg",
-      "description": "Three best friends, Dono, Kasino, and Indro, want to get quickly rich by becoming content creators. After numerous failed attempts, they try making a horror-drama video in a remote village. However, their fake plan turns into reality when they are actually haunted by vengeful spirits. To survive, they must uncover the spirits' tragic pasts and help them get justice. Although their horror project fails, their hilarious failed videos make them viral and famous.",
-      "cast": [
-        {
-          "name": "Deddy Mahendra Desta",
-          "character": "Dono",
-          "photo": "https://image.tmdb.org/t/p/w185/gPyyAJrZsdqR9EumAF77i6AakjK.jpg"
-        },
-        {
-          "name": "Vino G. Bastian",
-          "character": "Kasino",
-          "photo": "https://image.tmdb.org/t/p/w185/c3QxAW2JOjX7plgQPAFbgYogvAH.jpg"
-        },
-        {
-          "name": "Tora Sudiro",
-          "character": "Indro",
-          "photo": "https://image.tmdb.org/t/p/w185/iDiIkJd3ZJh0NN8IahI6QeZ4NRB.jpg"
-        },
-        {
-          "name": "Indro",
-          "character": "Papi Yulia",
-          "photo": "https://image.tmdb.org/t/p/w185/54LwiUhsGogWfIGINeLr4eGjSPk.jpg"
-        },
-        {
-          "name": "Marsha Timothy",
-          "character": "Yulia",
-          "photo": "https://image.tmdb.org/t/p/w185/o1egclqHgdiyp5QJ333Hgk5AyMJ.jpg"
-        },
-        {
-          "name": "Asri Welas",
-          "character": "Nenek Yulia / Tante Hotel / Mayat Nenek",
-          "photo": "https://image.tmdb.org/t/p/w185/vhFQbWx3LIZNITGgHAASQRj0aDr.jpg"
-        },
-        {
-          "name": "Indy Barends",
-          "character": "Mami Yulia",
-          "photo": "https://image.tmdb.org/t/p/w185/8cueK736vUjJEn1T6Bl5L7bslyI.jpg"
-        },
-        {
-          "name": "Ivan Gunawan",
-          "character": "Pablo",
-          "photo": "https://image.tmdb.org/t/p/w185/17Z0TvdGIA7ygrCulPkGwSIJUqg.jpg"
-        }
-      ],
-      "type": "movie"
-    },
-    {
-      "id": "mb-up-6490938897294936504",
-      "title": "Summer Vacation [Hindi]",
-      "year": "2026",
-      "genre": "Drama, Sci-Fi & Fantasy, Mystery",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "7.8",
-      "imdbRating": "7.8",
-      "poster": "https://image.tmdb.org/t/p/w500/ru4oyTVoPVQZPUE5rI3YPMgLHBY.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/tXSbEP4vGLOBpJtFg2Vsmm6aStx.jpg",
-      "description": "An ordinary teen girl longs for something new – will meeting a handsome boy in a countryside village change her life?",
-      "cast": [
-        {
-          "name": "Cho Yi-hyun",
-          "character": "Kim Ha-yeon",
-          "photo": "https://image.tmdb.org/t/p/w185/cWCNUAyQ9AFUDBfEskZou4eVbEH.jpg"
-        },
-        {
-          "name": "Jung Jin-young",
-          "character": "Jo Yoo-gyeom",
-          "photo": "https://image.tmdb.org/t/p/w185/8NHVBNi1Jb7f0RujRLtjD2i05tc.jpg"
-        },
-        {
-          "name": "Ryu Hae-jun",
-          "character": "Kim Jeong-yeon",
-          "photo": "https://image.tmdb.org/t/p/w185/fbIujzRO7dBvO93WmDsF3kzzOTI.jpg"
-        },
-        {
-          "name": "Hong Ye-ji",
-          "character": "Seong Sae-ryeong",
-          "photo": "https://image.tmdb.org/t/p/w185/5BoA7ZE5v1fTAmDgCotMrGxaFa0.jpg"
-        },
-        {
-          "name": "Seo Ji-young",
-          "character": "Yoo-gyeom's mother",
-          "photo": "https://image.tmdb.org/t/p/w185/xjKNPKUBjGhKIF5eT0KiPqsYMJR.jpg"
-        },
-        {
-          "name": "Kang Ji-eun",
-          "character": "Sin Hye-jin",
-          "photo": "https://image.tmdb.org/t/p/w185/2godIG1dfY3T1akTDsstvStYPh4.jpg"
-        },
-        {
-          "name": "Kim Bo-young",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/7bkTIOSKICJcATCcRTPY9BdTJSa.jpg"
-        },
-        {
-          "name": "Shin Hyeon-jong",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/usKoh1MeD97Ja4caRe8hD7yPWQQ.jpg"
-        }
-      ],
-      "type": "series"
-    },
-    {
-      "id": "mb-up-8424109037343628216",
-      "title": "Jangan Buang Ibu [Hindi]",
-      "year": "2023",
-      "genre": "Action, Drama",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "6.5",
-      "imdbRating": "6.5",
-      "poster": "https://pbcdnw.aoneroom.com/image/2026/02/04/e291df6ccd53e9a9cf480850bfcbe4fe.jpeg",
-      "backdrop": "https://pbcdnw.aoneroom.com/image/2026/02/04/e291df6ccd53e9a9cf480850bfcbe4fe.jpeg",
-      "description": "Upcoming Hindi dubbed release coming soon exclusively on FOBS TV.",
-      "cast": [],
-      "type": "movie"
+      "type": "upcoming"
     },
     {
       "id": "mb-up-8872217200267086264",
+      "subjectId": "8872217200267086264",
       "title": "Spinners [Hindi]",
       "year": "2023",
       "genre": "Crime, Drama",
       "language": "Hindi",
-      "dubLanguage": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
       "badgeLeft": "Hindi",
       "badgeRight": "Coming Soon",
+      "releaseMonth": "Nov",
+      "releaseDay": "08",
       "rating": "8.4",
       "imdbRating": "8.4",
       "poster": "https://image.tmdb.org/t/p/w500/uwiVqtc7NKIl61hVT4enJOxV9tW.jpg",
@@ -46977,661 +46299,905 @@
           "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
         }
       ],
-      "type": "series"
+      "type": "upcoming"
     },
     {
-      "id": "mb-up-9174873168975128800",
-      "title": "Oh! My Guard [Hindi]",
-      "year": "2026",
-      "genre": "Drama, Comedy, Sci-Fi & Fantasy",
+      "id": "mb-up-8424109037343628216",
+      "subjectId": "8424109037343628216",
+      "title": "Jangan Buang Ibu [Hindi]",
+      "year": "2023",
+      "genre": "Drama, Family",
       "language": "Hindi",
-      "dubLanguage": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
       "badgeLeft": "Hindi",
       "badgeRight": "Coming Soon",
-      "rating": "7.8",
-      "imdbRating": "7.8",
-      "poster": "https://image.tmdb.org/t/p/w500/dg4IIruyBEtSgjW5fdXi46xrSzC.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/jFpUscK4vAj2F6pZH1ZT20cO6sw.jpg",
-      "description": "A wildly unpredictable romance begins when a flawed “master of melodrama” actor encounters a mysterious woman who believes she is the female lead of a TV drama.",
+      "releaseMonth": "Jun",
+      "releaseDay": "25",
+      "rating": "7.2",
+      "imdbRating": "7.2",
+      "poster": "https://image.tmdb.org/t/p/w500/zGcRp2tNTn6fwW8vK4cIUkHop42.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/sBwhJiHNOssdvQ4BFoAEh0zq9oI.jpg",
+      "description": "Ristiana, a single mother, struggles to raise her three children after her husband left her with significant debt. Her decisions strain her relationship with her children. Despite the distance and longing, her three children remain devoted to their mother and strive to repair their relationship before it's too late.",
       "cast": [
         {
-          "name": "Jung Yong-hwa",
-          "character": "Um Tae-bong",
-          "photo": "https://image.tmdb.org/t/p/w185/pxxZ2G17NI5L8MP0dNMiRDuUg2Z.jpg"
+          "name": "Nirina Zubir",
+          "character": "Ristiana",
+          "photo": "https://image.tmdb.org/t/p/w185/eyvYKplctTTZHJkDhkzAL3u8iVt.jpg"
         },
         {
-          "name": "Hong Seung-hee",
-          "character": "Oh Hae-ra / Cha Hong-do",
-          "photo": "https://image.tmdb.org/t/p/w185/iF8vAp98sUh0CQ07mhrCB4euHPR.jpg"
+          "name": "Refal Hady",
+          "character": "Tama",
+          "photo": "https://image.tmdb.org/t/p/w185/5EzHYzTCCrSI6eflhjKYc7mNl4k.jpg"
         },
         {
-          "name": "Lee Yi-kyung",
-          "character": "Han Jeong-woo",
-          "photo": "https://image.tmdb.org/t/p/w185/rAH9iQ6olF5cyVKkVQuoGyaFxK.jpg"
+          "name": "Amanda Manopo",
+          "character": "Dewi",
+          "photo": "https://image.tmdb.org/t/p/w185/2SpBWxcL0kmlfvy4LnMixRLEMFv.jpg"
         },
         {
-          "name": "Park You-na",
-          "character": "Song Na-ri",
-          "photo": "https://image.tmdb.org/t/p/w185/6MawaOrDuD5R40ufBf0uDU0Wq0p.jpg"
+          "name": "Saputra Kori",
+          "character": "Tria",
+          "photo": "https://image.tmdb.org/t/p/w185/e7LjIdwdxUlhH8oW969A7XTktO8.jpg"
         },
         {
-          "name": "Han Chae-a",
-          "character": "So Hyeon-ju",
-          "photo": "https://image.tmdb.org/t/p/w185/ymEg1gkzA6mc3KU9j1DlrrXQNPz.jpg"
+          "name": "Dwi Sasono",
+          "character": "Ridho",
+          "photo": "https://image.tmdb.org/t/p/w185/3l5aJxHeDI2wMajtZJEzLXRFPES.jpg"
         },
         {
-          "name": "Hwang Tae-kwang",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/ySOF1TSNiYIlSJdaqwlUz9WEsNi.jpg"
+          "name": "Fadly Faisal",
+          "character": "Hanif",
+          "photo": "https://image.tmdb.org/t/p/w185/gt0ONcChRMpNR13YpEoSfAFXNva.jpg"
         },
         {
-          "name": "Kwak Min-seok",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/jShebpoVSfChQZ0drJWy7dOend5.jpg"
+          "name": "Saskia Chadwick",
+          "character": "Rani",
+          "photo": "https://image.tmdb.org/t/p/w185/lvJxM178aTVjzmMv0lhHNDPPN2Z.jpg"
         },
         {
-          "name": "Choi Dae-sung",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/yCahIo38xjsXOSRyLPY5oIlqFg9.jpg"
+          "name": "Erika Carlina",
+          "character": "Asti",
+          "photo": "https://image.tmdb.org/t/p/w185/aretQEax2TdtnAxUrSkW8t3nxU6.jpg"
         }
       ],
-      "type": "series"
+      "type": "upcoming"
     },
     {
-      "id": "mb-up-2300409812770776784",
-      "title": "Final Table [Hindi]",
+      "id": "mb-up-6490938897294936504",
+      "subjectId": "6490938897294936504",
+      "title": "Summer Vacation [Hindi]",
+      "year": "2026",
+      "genre": "Animation, Comedy, Family, Fantasy",
+      "language": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "releaseMonth": "Jun",
+      "releaseDay": "28",
+      "rating": "6.8",
+      "imdbRating": "6.8",
+      "poster": "https://image.tmdb.org/t/p/w500/lzE5BwGQea1nek7TPXUuC5AZ6rq.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/gvUYIHWzq7r3KuzAaKvly2h0SjM.jpg",
+      "description": "Dracula, Mavis, Johnny and the rest of the Drac Pack take a vacation on a luxury Monster Cruise Ship, where Dracula falls in love with the ship’s captain, Ericka, who’s secretly a descendant of Abraham Van Helsing, the notorious monster slayer.",
+      "cast": [
+        {
+          "name": "Adam Sandler",
+          "character": "Dracula (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/iTMnXrPfC1rmom6a9q4hy6YSJWG.jpg"
+        },
+        {
+          "name": "Kathryn Hahn",
+          "character": "Ericka (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/9sVllAKfEls3SJD3GoPm2JEZoa5.jpg"
+        },
+        {
+          "name": "Selena Gomez",
+          "character": "Mavis (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/fLjGtchxniZtAxnZsFzDn2lsWmY.jpg"
+        },
+        {
+          "name": "Jim Gaffigan",
+          "character": "Van Helsing (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/dhguhHxIrb26jvPznBt8y25Fb2U.jpg"
+        },
+        {
+          "name": "Andy Samberg",
+          "character": "Jonathan (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/jMXU5oG3i93SH1yhkpbBGskFiJl.jpg"
+        },
+        {
+          "name": "Kevin James",
+          "character": "Frankenstein (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/dqyUARUWykoMT3eRDgy7vmQY5PG.jpg"
+        },
+        {
+          "name": "Fran Drescher",
+          "character": "Eunice (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/6IQlygYDyxuIRD5j9lPluknYoJp.jpg"
+        },
+        {
+          "name": "Steve Buscemi",
+          "character": "Wayne (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/n0pZumkrcZrAPMoPq684RhYnjPV.jpg"
+        }
+      ],
+      "type": "upcoming"
+    },
+    {
+      "id": "mb-up-3466771747515555096",
+      "subjectId": "3466771747515555096",
+      "title": "Warkop DKI: ViRaLiN dOoOoNg..!! [Hindi]",
+      "year": "2026",
+      "genre": "Comedy",
+      "language": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "releaseMonth": "Jun",
+      "releaseDay": "11",
+      "rating": "5.5",
+      "imdbRating": "5.5",
+      "poster": "https://image.tmdb.org/t/p/w500/w9B66TqXL0WGw2roQOk3ohxJQWM.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/dyBfej8BJJe2XHWGnYCmHNA9uyi.jpg",
+      "description": "Three best friends, Dono, Kasino, and Indro, want to get quickly rich by becoming content creators. After numerous failed attempts, they try making a horror-drama video in a remote village. However, their fake plan turns into reality when they are actually haunted by vengeful spirits. To survive, they must uncover the spirits' tragic pasts and help them get justice. Although their horror project fails, their hilarious failed videos make them viral and famous.",
+      "cast": [
+        {
+          "name": "Deddy Mahendra Desta",
+          "character": "Dono",
+          "photo": "https://image.tmdb.org/t/p/w185/gPyyAJrZsdqR9EumAF77i6AakjK.jpg"
+        },
+        {
+          "name": "Vino G. Bastian",
+          "character": "Kasino",
+          "photo": "https://image.tmdb.org/t/p/w185/c3QxAW2JOjX7plgQPAFbgYogvAH.jpg"
+        },
+        {
+          "name": "Tora Sudiro",
+          "character": "Indro",
+          "photo": "https://image.tmdb.org/t/p/w185/iDiIkJd3ZJh0NN8IahI6QeZ4NRB.jpg"
+        },
+        {
+          "name": "Indro",
+          "character": "Papi Yulia",
+          "photo": "https://image.tmdb.org/t/p/w185/54LwiUhsGogWfIGINeLr4eGjSPk.jpg"
+        },
+        {
+          "name": "Marsha Timothy",
+          "character": "Yulia",
+          "photo": "https://image.tmdb.org/t/p/w185/o1egclqHgdiyp5QJ333Hgk5AyMJ.jpg"
+        },
+        {
+          "name": "Asri Welas",
+          "character": "Nenek Yulia / Tante Hotel / Mayat Nenek",
+          "photo": "https://image.tmdb.org/t/p/w185/vhFQbWx3LIZNITGgHAASQRj0aDr.jpg"
+        },
+        {
+          "name": "Indy Barends",
+          "character": "Mami Yulia",
+          "photo": "https://image.tmdb.org/t/p/w185/8cueK736vUjJEn1T6Bl5L7bslyI.jpg"
+        },
+        {
+          "name": "Ivan Gunawan",
+          "character": "Pablo",
+          "photo": "https://image.tmdb.org/t/p/w185/17Z0TvdGIA7ygrCulPkGwSIJUqg.jpg"
+        }
+      ],
+      "type": "upcoming"
+    },
+    {
+      "id": "mb-up-3497733994953821576",
+      "subjectId": "3497733994953821576",
+      "title": "Teka Teki Tika [Hindi]",
+      "year": "2021",
+      "genre": "Comedy, Mystery, Thriller",
+      "language": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "releaseMonth": "Dec",
+      "releaseDay": "23",
+      "rating": "6.0",
+      "imdbRating": "6.0",
+      "poster": "https://image.tmdb.org/t/p/w500/pgbDs1l0fDbTAYq2JXxYjQrxKyE.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/5FjcRoqQDnYArjUdOdqveTmRhMM.jpg",
+      "description": "A happy family whose lives complement each other. While celebrating his wedding anniversary with his family, a rich businessman was suddenly surprised by the appearance of a mysterious woman who claimed to be his biological child, Tika. Until finally the division in the family was inevitable. Behind all that, there is a big secret about Tika's identity.",
+      "cast": [
+        {
+          "name": "Sheila Dara Aisha",
+          "character": "Tika",
+          "photo": "https://image.tmdb.org/t/p/w185/bnCnmSsqW6nKz4LhoEKknQMJ52H.jpg"
+        },
+        {
+          "name": "Dion Wiyoko",
+          "character": "Arnold Limanto",
+          "photo": "https://image.tmdb.org/t/p/w185/xWz4rgxMGkuJAG9d2q0rp2XSQfD.jpg"
+        },
+        {
+          "name": "Morgan Oey",
+          "character": "Andre Limanto",
+          "photo": "https://image.tmdb.org/t/p/w185/fa2IjUgmUrFLxGXkemSrl92r7J2.jpg"
+        },
+        {
+          "name": "Ferry Salim",
+          "character": "Budiman Limanto",
+          "photo": "https://image.tmdb.org/t/p/w185/hw6a3N6DsXENVHAH9FJtA538r79.jpg"
+        },
+        {
+          "name": "Jenny Zhang",
+          "character": "Sherly Winata",
+          "photo": "https://image.tmdb.org/t/p/w185/uMYGUAiXlDY8GUmIfsUQ5bn6Aac.jpg"
+        },
+        {
+          "name": "Eriska Rein",
+          "character": "Laura Wilona",
+          "photo": "https://image.tmdb.org/t/p/w185/mBvYavx9RIOGI0dBlRR9DTcu8fM.jpg"
+        },
+        {
+          "name": "Tansri Kemala",
+          "character": "Jane Mikaila",
+          "photo": "https://image.tmdb.org/t/p/w185/jNb3JvmiZpevmwJ1SehyKc2PlMg.jpg"
+        },
+        {
+          "name": "Ayu Laksmi",
+          "character": "Sri Marwati",
+          "photo": "https://image.tmdb.org/t/p/w185/6Ij0ul9puMjFwioSYkvbmJbFUid.jpg"
+        }
+      ],
+      "type": "upcoming"
+    },
+    {
+      "id": "mb-up-568529383837815064",
+      "subjectId": "568529383837815064",
+      "title": "Balaraw: Blood Island [Hindi]",
+      "year": "2026",
+      "genre": "Mystery, Drama",
+      "language": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "releaseMonth": "Oct",
+      "releaseDay": "29",
+      "rating": "8.0",
+      "imdbRating": "8.0",
+      "poster": "https://image.tmdb.org/t/p/w500/s1A6UOu8IOmw0kJXohlitMRiwQb.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/hmdREhKDHJaMXOk8y2nuLDldDbn.jpg",
+      "description": "Years after her mother vanished, Sabina follows a mysterious clue to an uncharted island, where she confronts hidden dark secrets within her own family.",
+      "cast": [
+        {
+          "name": "Janine Gutierrez",
+          "character": "Sabina Tejeros",
+          "photo": "https://image.tmdb.org/t/p/w185/6TQI03vvaY4Am2reUC3HNsNvtfQ.jpg"
+        },
+        {
+          "name": "Charlie Dizon",
+          "character": "Bulak Bernabe",
+          "photo": "https://image.tmdb.org/t/p/w185/ubucChuTyf5BBmvgUqbO5QUpIhL.jpg"
+        },
+        {
+          "name": "Agot Isidro",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/dOOKYxGJIGJMq9xkfgzDmpbmwCS.jpg"
+        },
+        {
+          "name": "Ronnie Lazaro",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/7faCmRBH2912iXtCn4cDojOAVr4.jpg"
+        }
+      ],
+      "type": "upcoming"
+    },
+    {
+      "id": "mb-up-5496206329599478200",
+      "subjectId": "5496206329599478200",
+      "title": "The Mongoose [Hindi]",
+      "year": "2026",
+      "genre": "Action, Thriller",
+      "language": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "releaseMonth": "Oct",
+      "releaseDay": "29",
+      "rating": "8.0",
+      "imdbRating": "8.0",
+      "poster": "https://image.tmdb.org/t/p/w500/eSS5mvSG84UUuvtbHel5Yu3Wik4.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/iRIhPqqoUHiFBxn8oYf3gCQnaKk.jpg",
+      "description": "A falsely accused war hero with nothing to lose leads police on an epic televised cross-country car chase, helped by members of his former Special Forces Army battalion and closely monitored by a fascinated public rooting for his safe getaway.",
+      "cast": [
+        {
+          "name": "Liam Neeson",
+          "character": "Ryan 'Fang' Flanagan",
+          "photo": "https://image.tmdb.org/t/p/w185/sRLev3wJioBgun3ZoeAUFpkLy0D.jpg"
+        },
+        {
+          "name": "Marisa Tomei",
+          "character": "Tara",
+          "photo": "https://image.tmdb.org/t/p/w185/vAQ10fvGfVyuJdMNKVMA4ZkacWL.jpg"
+        },
+        {
+          "name": "Ving Rhames",
+          "character": "Tanker",
+          "photo": "https://image.tmdb.org/t/p/w185/tOVDvu1EQP78AwaUw6uh1wN818E.jpg"
+        },
+        {
+          "name": "Michael Chiklis",
+          "character": "Major Walter Pope",
+          "photo": "https://image.tmdb.org/t/p/w185/pAkKjbzxP6Z6Y5zAGpwmWQo1iji.jpg"
+        },
+        {
+          "name": "Brett Tucker",
+          "character": "Todd",
+          "photo": "https://image.tmdb.org/t/p/w185/6IUQyy2pA8PRXX1MEx088JH6pcu.jpg"
+        },
+        {
+          "name": "Stella Stocker",
+          "character": "Helene (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/ilRVeYRcQrAeHYLMOPPzLzZMJcC.jpg"
+        },
+        {
+          "name": "Hamish Michael",
+          "character": "Captain Parks",
+          "photo": "https://image.tmdb.org/t/p/w185/4O0WjvxElALgMFIiX19RJJbJM7B.jpg"
+        },
+        {
+          "name": "Toby Truslove",
+          "character": "Captain McBride",
+          "photo": "https://image.tmdb.org/t/p/w185/17AaSGRY0RyJBFbdj0uSLK7n5wV.jpg"
+        }
+      ],
+      "type": "upcoming"
+    },
+    {
+      "id": "mb-up-733649723655179656",
+      "subjectId": "733649723655179656",
+      "title": "Wicker [Hindi]",
+      "year": "2026",
+      "genre": "Romance, Fantasy, Comedy",
+      "language": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "releaseMonth": "Oct",
+      "releaseDay": "21",
+      "rating": "6.3",
+      "imdbRating": "6.3",
+      "poster": "https://image.tmdb.org/t/p/w500/6FcBZOKvyrLCKGCyBG0ySCR4okt.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/xVh1ypMoVkMf5IB7y3hnRplJ14c.jpg",
+      "description": "On the outskirts of a village by the sea, lives a Fisherwoman; smelly, single and perpetually ridiculed. One day, fed up with her stuffy, small-minded neighbours, she commissions herself a husband to be made from wicker. In an otherwise conservative town, this unconventional romance sparks outrage, jealousy and chaos.",
+      "cast": [
+        {
+          "name": "Olivia Colman",
+          "character": "Fisherwoman",
+          "photo": "https://image.tmdb.org/t/p/w185/lawJUdbLb1YW0niaYjiVGR9IBG8.jpg"
+        },
+        {
+          "name": "Alexander Skarsgård",
+          "character": "Wicker Husband",
+          "photo": "https://image.tmdb.org/t/p/w185/6VNNddrSrIVgdzhXr4Zg89gmOzY.jpg"
+        },
+        {
+          "name": "Peter Dinklage",
+          "character": "Basket Weaver",
+          "photo": "https://image.tmdb.org/t/p/w185/9CAd7wr8QZyIN0E7nm8v1B6WkGn.jpg"
+        },
+        {
+          "name": "Elizabeth Debicki",
+          "character": "Tailor’s Wife",
+          "photo": "https://image.tmdb.org/t/p/w185/nTTnQVTn13Ve4ifjRY9v8kVc99w.jpg"
+        },
+        {
+          "name": "Marli Siu",
+          "character": "Basket Weaver's Sister",
+          "photo": "https://image.tmdb.org/t/p/w185/pNi3TfnnJuDz25m93Nr2AKIYV4R.jpg"
+        },
+        {
+          "name": "Nabhaan Rizwan",
+          "character": "Tailor",
+          "photo": "https://image.tmdb.org/t/p/w185/ljDpNmRnx9Mxe6DZbOMVZlGVXAN.jpg"
+        },
+        {
+          "name": "Richard E. Grant",
+          "character": "Doctor",
+          "photo": "https://image.tmdb.org/t/p/w185/92oaBntIXhndCxUXaGywUyILIIE.jpg"
+        },
+        {
+          "name": "Kiell Smith-Bynoe",
+          "character": "Innkeeper",
+          "photo": "https://image.tmdb.org/t/p/w185/6pVa2SEgMfR2u7E3xfIUGZSqinh.jpg"
+        }
+      ],
+      "type": "upcoming"
+    },
+    {
+      "id": "mb-up-6890914839200685336",
+      "subjectId": "6890914839200685336",
+      "title": "Christmas at the Kringles [Hindi]",
+      "year": "2026",
+      "genre": "Action, Horror, Comedy",
+      "language": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "releaseMonth": "Oct",
+      "releaseDay": "30",
+      "rating": "8.0",
+      "imdbRating": "8.0",
+      "poster": "https://image.tmdb.org/t/p/w500/oVxkhheRVWSacimUZBuMemQX85E.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/7lEFPOUwk3H1aLx1UqGafAXRUPY.jpg",
+      "description": "The Severson family move to a suburban neighborhood where their next-door neighbors, the Kringles, celebrate Christmas year-round. But when their son becomes increasingly attached to the unusual family, Mark and Julie begin to suspect that their neighbors aren't quite what they seem.",
+      "cast": [
+        {
+          "name": "Ron Livingston",
+          "character": "Mark Severson",
+          "photo": "https://image.tmdb.org/t/p/w185/pr5CjWnkaf5WKTIYh8wtNufjmyb.jpg"
+        },
+        {
+          "name": "Rachel Bilson",
+          "character": "Julie Severson",
+          "photo": "https://image.tmdb.org/t/p/w185/jlacH60rFke82EfuvFqgjcxPIx0.jpg"
+        },
+        {
+          "name": "Rob Riggle",
+          "character": "Drunk Santa",
+          "photo": "https://image.tmdb.org/t/p/w185/hQgOp8vWxl6KPZbqzKSSL4k6G1j.jpg"
+        },
+        {
+          "name": "Arden Myrin",
+          "character": "Carol Kringle",
+          "photo": "https://image.tmdb.org/t/p/w185/zJ0CqYNRWIcfZedYjYj1oRiBUov.jpg"
+        },
+        {
+          "name": "Thomas Lennon",
+          "character": "Nick Kringle",
+          "photo": "https://image.tmdb.org/t/p/w185/s8pw7BfuMxN7P0p5XJ9POfod7zW.jpg"
+        },
+        {
+          "name": "Beverly D'Angelo",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/8fYQIA8dAaA4GOTxOFSKIvTqzi.jpg"
+        },
+        {
+          "name": "Donald Faison",
+          "character": "Daryl",
+          "photo": "https://image.tmdb.org/t/p/w185/gNwWP1CHob9Y8fjY69w7EwGxMoz.jpg"
+        },
+        {
+          "name": "David Wain",
+          "character": "Noel Tannebaum",
+          "photo": "https://image.tmdb.org/t/p/w185/yh4AtjuNvBwca8HvzIXjo1Y1Nwf.jpg"
+        }
+      ],
+      "type": "upcoming"
+    },
+    {
+      "id": "mb-up-2790387378479848728",
+      "subjectId": "2790387378479848728",
+      "title": "Dexter: Resurrection [Hindi]",
+      "year": "2025",
+      "genre": "Crime, Drama, Mystery",
+      "language": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "releaseMonth": "Jul",
+      "releaseDay": "13",
+      "rating": "8.5",
+      "imdbRating": "8.5",
+      "poster": "https://image.tmdb.org/t/p/w500/o2Oyi3boT100bY5kCP4MBiTeetO.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/vcpj6rRDS93ImHCLPY8bwBuFGjR.jpg",
+      "description": "Dexter Morgan awakens from a coma and sets out for New York City, determined to find Harrison and make things right. But when Miami Metro's Angel Batista arrives with questions, Dexter realizes his past is catching up to him fast.",
+      "cast": [
+        {
+          "name": "Michael C. Hall",
+          "character": "Dexter Morgan",
+          "photo": "https://image.tmdb.org/t/p/w185/7zUMGoujuev5PUwwv4Gl6ikB50k.jpg"
+        },
+        {
+          "name": "Uma Thurman",
+          "character": "Charley Brown",
+          "photo": "https://image.tmdb.org/t/p/w185/sBgAZWi3o4FsnaTvnTNtK6jpQcF.jpg"
+        },
+        {
+          "name": "Jack Alcott",
+          "character": "Harrison Morgan",
+          "photo": "https://image.tmdb.org/t/p/w185/65KEuv3LIBEaeIkqhyps6heZ9aa.jpg"
+        },
+        {
+          "name": "Ntare Guma Mbaho Mwine",
+          "character": "Blessing Kamara",
+          "photo": "https://image.tmdb.org/t/p/w185/nmwMBGmrqVgeAOdWJJJJi9A2l7C.jpg"
+        },
+        {
+          "name": "Kadia Saraf",
+          "character": "Claudette Wallace",
+          "photo": "https://image.tmdb.org/t/p/w185/lHaOGTMcq4SQeaHxC2BSeAwony9.jpg"
+        },
+        {
+          "name": "Dominic Fumusa",
+          "character": "Melvin Oliva",
+          "photo": "https://image.tmdb.org/t/p/w185/1wgHvqNM0LisAhkInYDD9JIGPJ0.jpg"
+        },
+        {
+          "name": "James Remar",
+          "character": "Harry Morgan",
+          "photo": "https://image.tmdb.org/t/p/w185/ctMVpFDKKWCty60lLORf3IoJcv9.jpg"
+        },
+        {
+          "name": "Brian Cox",
+          "character": "The New York Ripper",
+          "photo": "https://image.tmdb.org/t/p/w185/scSjbFCTRngXlkJRoKptM5kQGw7.jpg"
+        }
+      ],
+      "type": "upcoming"
+    },
+    {
+      "id": "mb-up-2879333471120509368",
+      "subjectId": "2879333471120509368",
+      "title": "Gudang Merica [Hindi]",
+      "year": "2026",
+      "genre": "Comedy, Horror, Mystery",
+      "language": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "releaseMonth": "May",
+      "releaseDay": "21",
+      "rating": "5.5",
+      "imdbRating": "5.5",
+      "poster": "https://image.tmdb.org/t/p/w500/mhAp8VzvFMn1wP8Z1gZd5iFzLVM.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/ymyCANhZD7Bhuvbc2KQeB3sEqwI.jpg",
+      "description": "At the quiet Harapan Ayah Hospital, Razi blends in with three medical students undergoing their clinical rotations. What initially seems like routine night shifts gradually turns into a series of terrifying experiences after an unidentified patient dies under their care. Strange occurrences begin to emerge—shadows, unsettling sounds, and the presence of a horrifying figure. The situation reaches its peak when the patient’s body mysteriously disappears from their watch. Caught between medical logic and the fear of the unexplainable, they are forced to confront a mystery that slowly reveals a truth far greater than they ever imagined.",
+      "cast": [
+        {
+          "name": "Ardhito Pramono",
+          "character": "Razi",
+          "photo": "https://image.tmdb.org/t/p/w185/5wJDh9KPUaKD4U260PUzBvAOGJ3.jpg"
+        },
+        {
+          "name": "Arla Ailani",
+          "character": "Rindu",
+          "photo": "https://image.tmdb.org/t/p/w185/aGUWD0jst9DmOBBVEBV35OhEv6i.jpg"
+        },
+        {
+          "name": "Fatih Unru",
+          "character": "Adit",
+          "photo": "https://image.tmdb.org/t/p/w185/8smQ1Ymhr1gCYXrN8sIvSHRQUYY.jpg"
+        },
+        {
+          "name": "Zulfa Maharani",
+          "character": "Tanti",
+          "photo": "https://image.tmdb.org/t/p/w185/bqHdour1CH2adzNqY3KgorxBc3A.jpg"
+        },
+        {
+          "name": "Benidictus Siregar",
+          "character": "Sidik",
+          "photo": "https://image.tmdb.org/t/p/w185/syoUo25hvxWmqUYMSM0OuclGx8n.jpg"
+        },
+        {
+          "name": "Rizky Inggar",
+          "character": "Suster Ella",
+          "photo": "https://image.tmdb.org/t/p/w185/a4aBVbcT6NTtCY9u4ZoxVYONRiP.jpg"
+        },
+        {
+          "name": "Angga Nggok",
+          "character": "Tukang Bubur",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Melly Manuhutu",
+          "character": "Nenek",
+          "photo": "https://image.tmdb.org/t/p/w185/gDM2lqp9DgnyBxy2NbS39JvxXif.jpg"
+        }
+      ],
+      "type": "upcoming"
+    },
+    {
+      "id": "mb-up-6630269010766617880",
+      "subjectId": "6630269010766617880",
+      "title": "LOL: Last One Laughing Philippines [Hindi]",
+      "year": "2024",
+      "genre": "Reality, Comedy",
+      "language": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "releaseMonth": "Jul",
+      "releaseDay": "04",
+      "rating": "6.0",
+      "imdbRating": "6.0",
+      "poster": "https://image.tmdb.org/t/p/w500/5v6xysCUVEDfcfiPSU2OMCFZl9Q.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/zyUpRvjs1OPyGkWHqoTws1GFy35.jpg",
+      "description": "“LOL” or “Last One Laughing” is a reality show where ten comedians battle it out to make each other laugh. With no smiles allowed, they unleash their best jokes and antics, aiming to make each other crack up for six hours. It’s a hilarious battle of wit and self-control, where the last one laughing wins ONE MILLION PESOS!",
+      "cast": [
+        {
+          "name": "Vice Ganda",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/bqaoLgLzvX87gxCN6iksEKX59CK.jpg"
+        },
+        {
+          "name": "Epy Quizon",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/7eS7NWjtkAuOEjZexdAaJhVYEV7.jpg"
+        },
+        {
+          "name": "Chariz Solomon",
+          "character": "Cast",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        },
+        {
+          "name": "Candy Pangilinan",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/fbvy4o5JERdPhg4PGHW4Y6te3uV.jpg"
+        },
+        {
+          "name": "Donna Cariaga",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/mqAziN0aLyVINTyO2eA4p5OxkEi.jpg"
+        },
+        {
+          "name": "Esnyr Ranollo",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/i3xMfmPCsDuk7pULlVt4O24By1C.jpg"
+        },
+        {
+          "name": "James Caraan",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/u6wDpi2wzmt7mXrGnIe4G1jVjUl.jpg"
+        },
+        {
+          "name": "Ethel Booba",
+          "character": "Cast",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        }
+      ],
+      "type": "upcoming"
+    },
+    {
+      "id": "mb-up-2200978777247829384",
+      "subjectId": "2200978777247829384",
+      "title": "Nocturne [Hindi]",
+      "year": "2026",
+      "genre": "Crime, Mystery",
+      "language": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "releaseMonth": "Oct",
+      "releaseDay": "29",
+      "rating": "8.0",
+      "imdbRating": "8.0",
+      "poster": "https://image.tmdb.org/t/p/w500/nyvXVcPnHEwVmqCdzjjCsu1jqhm.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/DCSa6Fd3NN075JOqcJqO3VU6fM.jpg",
+      "description": "When a victim of notorious serial killer Jurek Walter unexpectedly turns up alive, detective Jonah Lynn races against time to find the one person still missing, while his protégé Saga Bauer goes undercover to get answers from the killer himself.",
+      "cast": [
+        {
+          "name": "Liev Schreiber",
+          "character": "Jonah Lynn",
+          "photo": "https://image.tmdb.org/t/p/w185/26G7QjSb5ZazgWb9XB2X6SwcILQ.jpg"
+        },
+        {
+          "name": "Zazie Beetz",
+          "character": "FBI Agent Saga Bauer",
+          "photo": "https://image.tmdb.org/t/p/w185/sgxzT54GnvgeMnOZgpQQx9csAdd.jpg"
+        },
+        {
+          "name": "Stephen Graham",
+          "character": "Jurek Walter",
+          "photo": "https://image.tmdb.org/t/p/w185/yguEO9zFvuccq87kOJpFLsmUgvs.jpg"
+        },
+        {
+          "name": "Bill Camp",
+          "character": "Chief Dave Ellison",
+          "photo": "https://image.tmdb.org/t/p/w185/wxYyJSltCHwU0MTg838SllOlvNT.jpg"
+        },
+        {
+          "name": "Rory Culkin",
+          "character": "Karl Anders",
+          "photo": "https://image.tmdb.org/t/p/w185/6SkUiLHFlPEEFtKpLc7VrczaqDx.jpg"
+        },
+        {
+          "name": "Chrissy Metz",
+          "character": "Ida Frost",
+          "photo": "https://image.tmdb.org/t/p/w185/d1qBoF1JQdLI8OF99sVeNQqjXZG.jpg"
+        },
+        {
+          "name": "Poorna Jagannathan",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/o2BQX1tAgo47GGvpBy1k4LQLRs6.jpg"
+        },
+        {
+          "name": "Gary Carr",
+          "character": "Nathan Pollock",
+          "photo": "https://image.tmdb.org/t/p/w185/nY9pVfJG70QojfwgCiW5Kja4HjU.jpg"
+        }
+      ],
+      "type": "upcoming"
+    },
+    {
+      "id": "mb-up-2289924869888305376",
+      "subjectId": "2289924869888305376",
+      "title": "The Perfect Lie [Hindi]",
       "year": "2026",
       "genre": "Drama",
       "language": "Hindi",
-      "dubLanguage": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
       "badgeLeft": "Hindi",
       "badgeRight": "Coming Soon",
-      "rating": "7.8",
-      "imdbRating": "7.8",
-      "poster": "https://image.tmdb.org/t/p/w500/uaMjtALuvZC7dGkYllGKKWEWW1J.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/anwMEnTDkhv5qJ8wXSRieCvFHGs.jpg",
-      "description": "The Table: K-Chef 2026 brings together Korea's top chefs to compete for the title of the country's best chef. Mysterious world-renowned chef Chris K., also known as Kang Han, Song-yi, who is fighting to save her restaurant, perfectionist star chef Woo-jin, and chefs with stories of their own face off in a fierce culinary battle. More than a competition, they find comfort in food and one another.",
-      "cast": [
-        {
-          "name": "Ahn Hyo-seop",
-          "character": "Kang Han / Chris K",
-          "photo": "https://image.tmdb.org/t/p/w185/hVnKQ5WO8MGFrm6ShPmL90NZloV.jpg"
-        },
-        {
-          "name": "Hong Hwa-yeon",
-          "character": "Choi Song-i",
-          "photo": "https://image.tmdb.org/t/p/w185/XzUpzJuGHsghd1ZolrFU7JIXOV.jpg"
-        },
-        {
-          "name": "Chang Ryul",
-          "character": "Cha Woo-jin",
-          "photo": "https://image.tmdb.org/t/p/w185/ad3JzZUeo9jj3UpRK4NoYioCIxQ.jpg"
-        },
-        {
-          "name": "Eugene Jung",
-          "character": "Seon Jeong-won",
-          "photo": "https://image.tmdb.org/t/p/w185/iiY8UUU93EjutlfRrTZTPm566d6.jpg"
-        },
-        {
-          "name": "Jang Young-nam",
-          "character": "Moon Hae-seon",
-          "photo": "https://image.tmdb.org/t/p/w185/u0hl8WSswFhKVaKwaMAERU0xUJk.jpg"
-        },
-        {
-          "name": "Cha Ji-yeon",
-          "character": "Baek Hyeon-ju",
-          "photo": "https://image.tmdb.org/t/p/w185/6ntm2nrIvIcb8ifMpyalDNaUVoF.jpg"
-        },
-        {
-          "name": "Lee Je-hyeong",
-          "character": "Hall staff 2",
-          "photo": "https://image.tmdb.org/t/p/w185/6uHH9mvl3l1yysO8yvOcaT05YSS.jpg"
-        },
-        {
-          "name": "Bret Allan Lindquist",
-          "character": "Belgium - Chef A",
-          "photo": "https://image.tmdb.org/t/p/w185/9K51gOdC3OU1SPmIiwvrgshOPQn.jpg"
-        }
-      ],
-      "type": "series"
-    },
-    {
-      "id": "mb-up-8865013454558612496",
-      "title": "Happy's Place [Hindi]",
-      "year": "2024",
-      "genre": "Comedy",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "6.7",
-      "imdbRating": "6.7",
-      "poster": "https://image.tmdb.org/t/p/w500/3dehoKPCwLwKTWATfzGqoJ2Psdl.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/lQ9Yun6lMNNcQWFM0r2iKReKQeO.jpg",
-      "description": "Bobbie inherits her father's restaurant and is less than thrilled to discover that she has a new business partner in the half-sister she never knew she had.",
-      "cast": [
-        {
-          "name": "Reba McEntire",
-          "character": "Bobbie",
-          "photo": "https://image.tmdb.org/t/p/w185/q4T5XDHzVepqQi4NoqI9GKJcD3s.jpg"
-        },
-        {
-          "name": "Belissa Escobedo",
-          "character": "Isabella",
-          "photo": "https://image.tmdb.org/t/p/w185/584tOsPVFbzq7GJxET5diOGZ8p0.jpg"
-        },
-        {
-          "name": "Melissa Peterman",
-          "character": "Gabby",
-          "photo": "https://image.tmdb.org/t/p/w185/dyWRlAOJnSGzRwhVVfMIkYC4cp7.jpg"
-        },
-        {
-          "name": "Rex Linn",
-          "character": "Emmett",
-          "photo": "https://image.tmdb.org/t/p/w185/dY8x6OrmS0dBdogxeF2QALrCvpI.jpg"
-        },
-        {
-          "name": "Pablo Castelblanco",
-          "character": "Steve",
-          "photo": "https://image.tmdb.org/t/p/w185/10RmdpGNsEF51OAn7ZZS1CgnZyl.jpg"
-        },
-        {
-          "name": "Tokala Black Elk",
-          "character": "Takoda",
-          "photo": "https://image.tmdb.org/t/p/w185/fZ4wmUVQdyfRCHpcWKeAyyvdc9g.jpg"
-        }
-      ],
-      "type": "series"
-    },
-    {
-      "id": "mb-up-601426853345348024",
-      "title": "Switzerland [Hindi]",
-      "year": "2023",
-      "genre": "Comedy",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "6.9",
-      "imdbRating": "6.9",
-      "poster": "https://image.tmdb.org/t/p/w500/yjVWlezdAQY3mfOinNC7dCo5PG9.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/ozjvm9t1q6BWeWeEDhCu0J5izzZ.jpg",
-      "description": "A crazy referendum throws Switzerland into a state of emergency. By the acceptance of the initiative “No Bilangue” there should be from now on only one national language: French. Many German-speaking Swiss are therefore having a crisis.",
-      "cast": [
-        {
-          "name": "Beat Schlatter",
-          "character": "Walter Egli / Jeannot Bachmann",
-          "photo": "https://image.tmdb.org/t/p/w185/aT8gAQIwk3AnoSUHrVg9wVs0Znx.jpg"
-        },
-        {
-          "name": "Vincent Kucholl",
-          "character": "Jonas Bornand",
-          "photo": "https://image.tmdb.org/t/p/w185/jm9nyZa1AZLzeoRposKtzPWZRil.jpg"
-        },
-        {
-          "name": "Catherine Pagani",
-          "character": "Francesca Gamboni",
-          "photo": "https://image.tmdb.org/t/p/w185/c9jcwGkYOqkAtRdcTDwL9Aj2TjK.jpg"
-        },
-        {
-          "name": "Leonardo Nigro",
-          "character": "Enzo Castani",
-          "photo": "https://image.tmdb.org/t/p/w185/gnuUdxZdZzxowKSQAgfoMNGfdVt.jpg"
-        },
-        {
-          "name": "Silvia Jost",
-          "character": "Rosemarie Egli",
-          "photo": "https://image.tmdb.org/t/p/w185/sA6NFl1rxvQyvk5sSsgVrF7Z03h.jpg"
-        },
-        {
-          "name": "Pascal Ulli",
-          "character": "Ivan Keller",
-          "photo": "https://image.tmdb.org/t/p/w185/bgNfJQI6TM3a7pFCIvpsiLJl08B.jpg"
-        },
-        {
-          "name": "Sandro Brotz",
-          "character": "Presenter of “Arena”",
-          "photo": "https://image.tmdb.org/t/p/w185/b8UOlYpacELYJDzLCq1GwnjjOMb.jpg"
-        },
-        {
-          "name": "Urs Gredig",
-          "character": "Presenter of “Gredig Direkt”",
-          "photo": "https://image.tmdb.org/t/p/w185/iqWpxtvm16QTGZNJ2CROkFeaRAq.jpg"
-        }
-      ],
-      "type": "movie"
-    },
-    {
-      "id": "mb-up-6404314973212138776",
-      "title": "The Only Living Pickpocket in New York [Hindi]",
-      "year": "2026",
-      "genre": "Crime, Drama, Thriller",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
+      "releaseMonth": "Sep",
+      "releaseDay": "10",
       "rating": "6.5",
       "imdbRating": "6.5",
-      "poster": "https://image.tmdb.org/t/p/w500/pNdB9va2AEPQe9UfhKAdIt8nus9.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/nZLt2sLZTEOyK50TjwNlGqzWsp5.jpg",
-      "description": "Harry Lehman is an aging pickpocket who plies his trade with ever-diminishing returns in a drastically changed New York. Wallets stuffed with cash have been replaced by easily cancelled credit cards, and Harry struggles to make ends meet as he cares for his disabled wife, Rosie. When he unwittingly purloins and fences a valuable USB stick, Harry finds himself in a race against time to return the loot or face the rage of a vengeful crime family.",
+      "poster": "https://image.tmdb.org/t/p/w500/a8qjbVX7lo1v7m5Awzhx7Ptk8gO.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/vYO9OkYHSNfYuqz6VMS4aCCfRb8.jpg",
+      "description": "When one of their own is killed in a house fire, four picture-perfect couples are forced to question everything they thought they knew about each other.",
       "cast": [
         {
-          "name": "John Turturro",
-          "character": "Harry",
-          "photo": "https://image.tmdb.org/t/p/w185/6O9W9cJW0kCqMzYeLupV9oH0ftn.jpg"
+          "name": "Loes Haverkort",
+          "character": "Karen van der Made",
+          "photo": "https://image.tmdb.org/t/p/w185/7Mz5pEkDGCXWY5nhiwSn8yWDFjx.jpg"
         },
         {
-          "name": "Giancarlo Esposito",
-          "character": "Detective Warren",
-          "photo": "https://image.tmdb.org/t/p/w185/MJOo4QZgMAb3y8QzOUDVFQusQZ.jpg"
+          "name": "Remko Vrijdag",
+          "character": "Ivo Smit",
+          "photo": "https://image.tmdb.org/t/p/w185/g6KW48DqW8kcd2JkKRdUDyMrerk.jpg"
         },
         {
-          "name": "Will Price",
-          "character": "Dylan",
-          "photo": "https://image.tmdb.org/t/p/w185/7Gv2bTLOxuPSkcIMRuPpEXcHFn4.jpg"
+          "name": "Noortje Herlaar",
+          "character": "Babette Struyck",
+          "photo": "https://image.tmdb.org/t/p/w185/9UupimmSLCQ7uoLCg2wDOcmTjAJ.jpg"
         },
         {
-          "name": "Tatiana Maslany",
-          "character": "Kelly",
-          "photo": "https://image.tmdb.org/t/p/w185/pdoZ5tgZt1IdBXckGtyqRJ9DoJB.jpg"
+          "name": "Edwin Jonker",
+          "character": "Evert Struyck",
+          "photo": "https://image.tmdb.org/t/p/w185/6oTvPHOxmwMVoZp6sCb6xzo3wNk.jpg"
         },
         {
-          "name": "Victoria Moroles",
-          "character": "Eve",
-          "photo": "https://image.tmdb.org/t/p/w185/ihnzexDHpbzBToHbT3U5LHckTcK.jpg"
+          "name": "Rifka Lodeizen",
+          "character": "Hanneke Lemstra",
+          "photo": "https://image.tmdb.org/t/p/w185/l5hLOMTloXy9WKSX3WNA5MyXnfk.jpg"
         },
         {
-          "name": "Steve Buscemi",
-          "character": "Ben",
-          "photo": "https://image.tmdb.org/t/p/w185/n0pZumkrcZrAPMoPq684RhYnjPV.jpg"
+          "name": "Matthijs van de Sande Bakhuyzen",
+          "character": "Simon de Jager",
+          "photo": "https://image.tmdb.org/t/p/w185/yNhTWoImNo9JInAYkfEQngHI4z.jpg"
         },
         {
-          "name": "Delaney Grace Coyle",
-          "character": "Cast",
-          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+          "name": "Charlie Dagelet",
+          "character": "Patricia de Jager",
+          "photo": "https://image.tmdb.org/t/p/w185/9PkrramaZKhm6agGOk99G6gf049.jpg"
         },
         {
-          "name": "Rob Brown",
-          "character": "Sammy, An Orderly",
-          "photo": "https://image.tmdb.org/t/p/w185/jVevsp9OsdImQ8YxNjdG3KLYket.jpg"
+          "name": "Teun Luijkx",
+          "character": "Michel van der Made / Michel Brouwers",
+          "photo": "https://image.tmdb.org/t/p/w185/wOQZpDsOVgNOJbQ2FgqY3gRoQ6J.jpg"
         }
       ],
-      "type": "movie"
+      "type": "upcoming"
     },
     {
-      "id": "mb-up-103356882055843208",
-      "title": "Clayface [Hindi]",
+      "id": "mb-up-6624920251769814224",
+      "subjectId": "6624920251769814224",
+      "title": "Dead-End Job [Hindi]",
       "year": "2026",
-      "genre": "Horror, Thriller, Science Fiction",
+      "genre": "Mystery, Sci-Fi & Fantasy",
       "language": "Hindi",
-      "dubLanguage": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
       "badgeLeft": "Hindi",
       "badgeRight": "Coming Soon",
-      "rating": "7.2",
-      "imdbRating": "7.2",
-      "poster": "https://image.tmdb.org/t/p/w500/5jCpQnWPikggmQZoDp1eAi6BI6w.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/uL4cIrNi2uaUnWIOQQ28EVnkETG.jpg",
-      "description": "Matt Hagen's meteoric rise from Gotham street kid to Hollywood leading man is tragically cut short when a local crime boss's actions leave him horribly disfigured. Abandoned by his team and with nothing left, Matt seeks out a cutting edge treatment that miraculously returns him to his former self… but also unexpectedly affects his grip on reality, spiraling him down a destructive path of all-consuming revenge.",
+      "releaseMonth": "Oct",
+      "releaseDay": "30",
+      "rating": "8.0",
+      "imdbRating": "8.0",
+      "poster": "https://image.tmdb.org/t/p/w500/1yobke0bpfNOazuF9wW7QbM2GER.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/gWedDgBsZkuOho2qe3q2sTQmbpO.jpg",
+      "description": "When a debtor is lured by a strange agency with the promise of lucrative gigs, he is soon thrust into a hellish world of terror and unpredictability.",
       "cast": [
         {
-          "name": "Tom Rhys Harries",
-          "character": "Matt Hagen / Clayface",
-          "photo": "https://image.tmdb.org/t/p/w185/elxvpHPqOxGcKe6U2hcArIcpyWo.jpg"
+          "name": "Lee Jae-wook",
+          "character": "Byeon Hyuk-joon",
+          "photo": "https://image.tmdb.org/t/p/w185/9dsWM2kiXO4utrg4GctdXDvhOKD.jpg"
         },
         {
-          "name": "Naomi Ackie",
-          "character": "Caitlyn Corr",
-          "photo": "https://image.tmdb.org/t/p/w185/dijwuTAEZUzQtoJfK49S4X80fQw.jpg"
+          "name": "Go Min-si",
+          "character": "Yeon-joo",
+          "photo": "https://image.tmdb.org/t/p/w185/tgBb9dDyewLlautcmJH9KSXZz1O.jpg"
         },
         {
-          "name": "Eddie Marsan",
-          "character": "Frank Fitzpatrick",
-          "photo": "https://image.tmdb.org/t/p/w185/9atfOgIxhfOKvv2be8HEp6SzOct.jpg"
+          "name": "Kim Min-ha",
+          "character": "Byeon Ji-yoon",
+          "photo": "https://image.tmdb.org/t/p/w185/zPNNamrJLWoXADXALQmuTdo6zBS.jpg"
         },
         {
-          "name": "Max Minghella",
-          "character": "John Borrelli",
-          "photo": "https://image.tmdb.org/t/p/w185/AhVDxsOOoAnwwVBL7ZY8W0mGsYJ.jpg"
+          "name": "Lee Hee-jun",
+          "character": "Kang-joon / Mr. S",
+          "photo": "https://image.tmdb.org/t/p/w185/4slyXnHbKgzmeyJNetBSORgDDEF.jpg"
         },
         {
-          "name": "David Dencik",
-          "character": "Marcos Jabo",
-          "photo": "https://image.tmdb.org/t/p/w185/q5wLADc6yYd3owxSEG8VKbf7YWV.jpg"
+          "name": "Yoon Byung-hee",
+          "character": "Special appearance",
+          "photo": "https://image.tmdb.org/t/p/w185/77HOYpL0BI6BN4kaTYUMNIlnLM0.jpg"
         },
         {
-          "name": "Francesca Corney",
-          "character": "Rosie",
-          "photo": "https://image.tmdb.org/t/p/w185/p2B2dYAvl0TMUtbrZxzOdNgBbSE.jpg"
+          "name": "Cho Hyun-chul",
+          "character": "Special appearance",
+          "photo": "https://image.tmdb.org/t/p/w185/i1yEjtwITyedbFCealmBfuaAn3M.jpg"
         },
         {
-          "name": "Ruby Sear",
-          "character": "Theresa",
-          "photo": "https://image.tmdb.org/t/p/w185/hNlLm6NaHPjakDJhPEY1suGcxKi.jpg"
+          "name": "Choi Hyun-wook",
+          "character": "Special appearance",
+          "photo": "https://image.tmdb.org/t/p/w185/2s3xxkSPJMy8WFeyRd1lyFLYofk.jpg"
         },
         {
-          "name": "Wil Coban",
-          "character": "Bones",
-          "photo": "https://image.tmdb.org/t/p/w185/73REwJckTBMNJoiGIrrGhcCdTqf.jpg"
+          "name": "Yoon Kyung-ho",
+          "character": "Special appearance",
+          "photo": "https://image.tmdb.org/t/p/w185/217cVZqyvJypi4OR1uvxoaJxvLm.jpg"
         }
       ],
-      "type": "movie"
+      "type": "upcoming"
     },
     {
-      "id": "mb-up-1632328955548125624",
-      "title": "Wildwood [Hindi]",
-      "year": "2026",
-      "genre": "Animation, Adventure, Fantasy",
+      "id": "mb-up-5837916216886820048",
+      "subjectId": "5837916216886820048",
+      "title": "Dhoom:4 [Hindi]",
+      "year": "2027",
+      "genre": "Action, Comedy",
       "language": "Hindi",
-      "dubLanguage": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
       "badgeLeft": "Hindi",
       "badgeRight": "Coming Soon",
-      "rating": "9.0",
-      "imdbRating": "9.0",
-      "poster": "https://image.tmdb.org/t/p/w500/snFM00mpNAfUzUtkdEW0uDEvXA0.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/sl5NJ1vtyhP9Vr88bB4blULsJYp.jpg",
-      "description": "Prue and her classmate Curtis are drawn into a magical forest filled with enchanted creatures, loyal allies, and formidable adversaries as they embark on a desperate quest to rescue Prue's abducted baby brother from a murder of crows led by a mysterious woman named Alexandra.",
+      "releaseMonth": "Nov",
+      "releaseDay": "15",
+      "rating": "8.0",
+      "imdbRating": "8.0",
+      "poster": "https://pbcdnw.aoneroom.com/image/2026/09/23/700765979360f717166154b5d83ccbc1.jpg",
+      "backdrop": "https://pbcdnw.aoneroom.com/image/2026/09/23/700765979360f717166154b5d83ccbc1.jpg",
+      "description": "Watch Dhoom:4 [Hindi] upcoming release in Hindi audio exclusively on FOBS TV. Pre-book your ticket now to receive real-time release notifications.",
       "cast": [
         {
-          "name": "Peyton Elizabeth Lee",
-          "character": "Prue McKeel (voice)",
-          "photo": "https://image.tmdb.org/t/p/w185/hnEl4HxqGNGHCJ7Y8l3dJ21WHeG.jpg"
-        },
-        {
-          "name": "Jacob Tremblay",
-          "character": "Curtis Mehlberg (voice)",
-          "photo": "https://image.tmdb.org/t/p/w185/h8CXDp86Y36CUENF4SXJq5ZRTsf.jpg"
-        },
-        {
-          "name": "Carey Mulligan",
-          "character": "Alexandra (voice)",
-          "photo": "https://image.tmdb.org/t/p/w185/iwVHhqoz5b62FR0SDpZ7wfsuTBI.jpg"
-        },
-        {
-          "name": "Mahershala Ali",
-          "character": "Brenden (voice)",
-          "photo": "https://image.tmdb.org/t/p/w185/9ZmSejm5lnUVY5IJ1iNx2QEjnHb.jpg"
-        },
-        {
-          "name": "Angela Bassett",
-          "character": "The General (voice)",
-          "photo": "https://image.tmdb.org/t/p/w185/tKnuviliyeKNGlo26IU5gIrJAtd.jpg"
-        },
-        {
-          "name": "Awkwafina",
-          "character": "Septima (voice)",
-          "photo": "https://image.tmdb.org/t/p/w185/l5AKkg3H1QhMuXmTTmq1EyjyiRb.jpg"
-        },
-        {
-          "name": "Jake Johnson",
-          "character": "Mr. McKeel (voice)",
-          "photo": "https://image.tmdb.org/t/p/w185/3UNfW2qZgRkW81neNVfQvaRC92K.jpg"
-        },
-        {
-          "name": "Charlie Day",
-          "character": "Dmitri (voice)",
-          "photo": "https://image.tmdb.org/t/p/w185/c0HNhjChGybnHa4eoLyqO4dDu1j.jpg"
-        }
-      ],
-      "type": "movie"
-    },
-    {
-      "id": "mb-up-7686292754640821176",
-      "title": "Klara and the Sun [Hindi]",
-      "year": "2026",
-      "genre": "Science Fiction, Drama",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "6.2",
-      "imdbRating": "6.2",
-      "poster": "https://image.tmdb.org/t/p/w500/xqovj2p6HRsgHxN81qYAYF4StgM.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/s4E7NDJCOG3wqc5psv2RLr9QfUm.jpg",
-      "description": "An Artificial Friend named Klara finds a deep bond with a troubled young girl, bringing light and hope to a grieving family through her unwavering devotion and innocent wonder.",
-      "cast": [
-        {
-          "name": "Jenna Ortega",
-          "character": "Klara",
-          "photo": "https://image.tmdb.org/t/p/w185/cV4x7jNmsGLdKZn5I6xVF3Ltnmg.jpg"
-        },
-        {
-          "name": "Mia Tharia",
-          "character": "Josie",
-          "photo": "https://image.tmdb.org/t/p/w185/oHb6lb5swU8U4JPEGfbUY5vkW5y.jpg"
-        },
-        {
-          "name": "Amy Adams",
-          "character": "Chrissie",
-          "photo": "https://image.tmdb.org/t/p/w185/gn0K6c6d1L6qQrRc86iL8uyIqiF.jpg"
-        },
-        {
-          "name": "Natasha Lyonne",
-          "character": "Manager",
-          "photo": "https://image.tmdb.org/t/p/w185/2QJoTBEIeYyjGSDot9qxv2ayPH3.jpg"
-        },
-        {
-          "name": "Aran Murphy",
-          "character": "Rick",
-          "photo": "https://image.tmdb.org/t/p/w185/gXwVwAY791aYZXkdSjLaRwYY37l.jpg"
-        },
-        {
-          "name": "Rachel House",
-          "character": "Melania",
-          "photo": "https://image.tmdb.org/t/p/w185/2LCQF7Bn0I91o17GGkox0ZhhbE7.jpg"
-        },
-        {
-          "name": "Steve Buscemi",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/n0pZumkrcZrAPMoPq684RhYnjPV.jpg"
-        },
-        {
-          "name": "Davida McKenzie",
-          "character": "Simone",
-          "photo": "https://image.tmdb.org/t/p/w185/2BqQHNNIXbUYSWbUk6UMrG7dwYu.jpg"
-        }
-      ],
-      "type": "movie"
-    },
-    {
-      "id": "mb-up-622396739110201040",
-      "title": "Love Language [Hindi]",
-      "year": "2026",
-      "genre": "Romance, Comedy",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "7.8",
-      "imdbRating": "7.8",
-      "poster": "https://image.tmdb.org/t/p/w500/sCQde3BSMpDgA1qpE0zzboFdwl0.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/2reWDfgqvrUmA05y6UCKb2UXNvP.jpg",
-      "description": "Following a failed engagement, Lou discovers she has a talent for writing other people’s wedding vows. Word spreads across Chicago’s wedding scene and Lou’s services are in high demand. She even has a new admirer in Dash. But everything changes when she’s asked to write vows for Olivia, who’s marrying Warren, Lou’s old college flame.",
-      "cast": [
-        {
-          "name": "Chloë Grace Moretz",
-          "character": "Lou",
-          "photo": "https://image.tmdb.org/t/p/w185/yq4rYmaTRC5degaOYmJQFpaiho1.jpg"
-        },
-        {
-          "name": "Anthony Ramos",
-          "character": "Dash",
-          "photo": "https://image.tmdb.org/t/p/w185/gCeRfH3aetIpZwKxe8Wl4ZYcQg5.jpg"
-        },
-        {
-          "name": "Manny Jacinto",
-          "character": "Warren",
-          "photo": "https://image.tmdb.org/t/p/w185/jMbNV4nr5647r6CZJbT6nsnspMz.jpg"
-        },
-        {
-          "name": "Isabel May",
-          "character": "Olivia",
-          "photo": "https://image.tmdb.org/t/p/w185/RJ4djIbfvUHXCCgniiAi0ebhED.jpg"
-        },
-        {
-          "name": "Lukas Gage",
-          "character": "Gus",
-          "photo": "https://image.tmdb.org/t/p/w185/xXknCnXtRBmqg38TkMuPFtugt5s.jpg"
-        },
-        {
-          "name": "Billie Lourd",
-          "character": "Tilda",
-          "photo": "https://image.tmdb.org/t/p/w185/1u8bZL6ZXu5iDbPO3Z0Spetyt34.jpg"
-        },
-        {
-          "name": "Chloe Fineman",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/pzGIb2jkjeXGhOJryPf2n2w13lI.jpg"
-        },
-        {
-          "name": "Bobbi Althoff",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/3paiMEXfQXBsEWLbo44K3GKeoP4.jpg"
-        }
-      ],
-      "type": "movie"
-    },
-    {
-      "id": "mb-up-316996389379230136",
-      "title": "Yaga [Hindi]",
-      "year": "2026",
-      "genre": "Drama, Sci-Fi & Fantasy",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "7.8",
-      "imdbRating": "7.8",
-      "poster": "https://image.tmdb.org/t/p/w500/2kxIViR7g3e08ZHLlvNFFJkgJtI.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/owhTL4n2r9ryfxyYlhHKt97ogVk.jpg",
-      "description": "While a private investigator probes the disappearance of the young heir to a powerful fishery, he finds himself at odds with an apprehensive local detective, a charismatic university professor with a taste for younger men, and a labyrinth of enigmatic suspects, secret lives, and ancient magic.",
-      "cast": [
-        {
-          "name": "Carrie-Anne Moss",
-          "character": "Katherine",
-          "photo": "https://image.tmdb.org/t/p/w185/9zya72vRZYBQILfetACsnmCBgdj.jpg"
-        },
-        {
-          "name": "Clark Backo",
-          "character": "Carson",
-          "photo": "https://image.tmdb.org/t/p/w185/d24KKFxfoql6PBsBPsejFgzhSlH.jpg"
-        },
-        {
-          "name": "Noah Reid",
-          "character": "Rapp",
-          "photo": "https://image.tmdb.org/t/p/w185/fMIRF0rPO7orxBSAAVhjJ5TAmBS.jpg"
-        },
-        {
-          "name": "Hudson Williams",
-          "character": "Henry Park",
-          "photo": "https://image.tmdb.org/t/p/w185/aUvrPx2xOqnPVpjiKGESCUItj85.jpg"
-        },
-        {
-          "name": "Ezra Franky",
-          "character": "Pam",
-          "photo": "https://image.tmdb.org/t/p/w185/rPUN92bJFlwtJ7jEPsV4A4fwKcY.jpg"
-        },
-        {
-          "name": "Patrick Gilmore",
-          "character": "Eckert",
-          "photo": "https://image.tmdb.org/t/p/w185/9jcnrVixk0KCIL4NB66ayMdGEfv.jpg"
-        }
-      ],
-      "type": "series"
-    },
-    {
-      "id": "mb-up-238604873925804384",
-      "title": "Pehla Pyaar Doosri Baar [Hindi]",
-      "year": "2026",
-      "genre": "Romance, Comedy, Drama",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "7.8",
-      "imdbRating": "7.8",
-      "poster": "https://image.tmdb.org/t/p/w500/tGS4b47RIpF3DTAkezHBqfYNTm2.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/iaVcws1W3owTlRSI8GKcov95UHS.jpg",
-      "description": "Three friends attend their school reunion and enter into different relationships, discovering the trials, tribulations, allure, and absurdities of love.",
-      "cast": [
-        {
-          "name": "Alisha Chopra",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/yCwCE8vPAzVQjRCG5dOKWH8GxMn.jpg"
-        },
-        {
-          "name": "Sparsh Walia",
-          "character": "Cast",
-          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
-        },
-        {
-          "name": "Sakshi Vaidya",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/mjxptpTIascHLZkcXXHZ3VKKId5.jpg"
-        },
-        {
-          "name": "Kunal Vaid",
-          "character": "Cast",
-          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
-        },
-        {
-          "name": "Sargun Kaur Luthra",
-          "character": "Cast",
-          "photo": "https://image.tmdb.org/t/p/w185/49aUdW0f1EjKrntB82qHooy7eDx.jpg"
-        },
-        {
-          "name": "Tushar Chhibber",
-          "character": "Cast",
+          "name": "Lead Actor",
+          "character": "Protagonist",
           "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
         }
       ],
-      "type": "movie"
-    },
-    {
-      "id": "mb-up-6164881272604084120",
-      "title": "Lupin [Hindi]",
-      "year": "2021",
-      "genre": "Crime, Drama, Mystery",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Coming Soon",
-      "rating": "7.7",
-      "imdbRating": "7.7",
-      "poster": "https://image.tmdb.org/t/p/w500/h6Z2oogE4mJk2uffdtIlLhb0EHx.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/aY7zv2pfk9H0QxaaL3PBjvalbKQ.jpg",
-      "description": "Inspired by the adventures of Arsène Lupin, gentleman thief Assane Diop sets out to avenge his father for an injustice inflicted by a wealthy family.",
-      "cast": [
-        {
-          "name": "Omar Sy",
-          "character": "Assane Diop",
-          "photo": "https://image.tmdb.org/t/p/w185/Uuy6WuizieB4fOIGFp0gY90Yq2.jpg"
-        }
-      ],
-      "type": "series"
+      "type": "upcoming"
     },
     {
       "id": "upcoming-avengers-doomsday",
-      "title": "Avengers: Doomsday",
-      "language": "English",
-      "dubLanguage": "Hindi",
+      "title": "Avengers: Doomsday [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
       "year": "2026",
       "country": "USA",
       "genre": "Action, Adventure, Sci-Fi",
-      "releaseDate": "May 01, 2026",
       "releaseMonth": "May",
       "releaseDay": "01",
-      "booked": "210.5k",
-      "rating": "9.4",
-      "imdbRating": "9.4",
+      "rating": "9.5",
+      "imdbRating": "9.5",
       "poster": "https://image.tmdb.org/t/p/w500/jzPwsojjFStf5lR5Nm07w2hH56G.jpg",
       "backdrop": "https://image.tmdb.org/t/p/original/g3gpP5YDbA85DsA0bt5mgGQIe5q.jpg",
       "description": "Beloved heroes from distinct universes are set on a deadly collision course and face an existential threat unlike anything they've ever encountered.",
-      "audioTracks": [
-        "Hindi dub",
-        "English (Original)"
-      ],
-      "type": "movie"
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "type": "upcoming"
+    },
+    {
+      "id": "upcoming-war-2",
+      "title": "War 2 [Hindi]",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "year": "2026",
+      "country": "India",
+      "genre": "Action, Thriller",
+      "releaseMonth": "Aug",
+      "releaseDay": "14",
+      "rating": "9.2",
+      "imdbRating": "9.2",
+      "poster": "https://image.tmdb.org/t/p/w500/pEFRgdfijIPjQZ6uLVTJ96bg4Cd.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/mXLOH94s7A1i1o5KkX9aUq8bM5.jpg",
+      "description": "The second installment in the War franchise bringing together India's biggest action superstars in a high-octane espionage thriller.",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Coming Soon",
+      "type": "upcoming"
     }
   ],
   "liveTv": [

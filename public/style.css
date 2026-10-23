@@ -1069,6 +1069,14 @@ body {
   padding-left: max(14px, env(safe-area-inset-left, 14px)) !important;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.88) 0%, transparent 100%);
   pointer-events: auto !important;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.player-top-header.controls-hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  transform: translateY(-8px) !important;
 }
 
 .player-nav-btn, .player-icon-btn {
@@ -4714,6 +4722,15 @@ body.is-fullscreen .ls-bottom-bar {
 /* ==============================================
    COMING SOON PRE-BOOKING MODAL SHEET (NO PLAYER CONTROLS)
    ============================================== */
+#comingSoonBookingModal {
+  z-index: 1000001 !important;
+}
+
+#comingSoonBookingModal.open {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
 .booking-modal-sheet {
   position: absolute;
   bottom: 0;

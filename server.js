@@ -467,36 +467,42 @@ app.get('/api/resolve', async (req, res) => {
 
 // API: Get all contents
 app.get('/api/content', async (req, res) => {
-  const sortByRelease = (list) => {
-    if (!Array.isArray(list)) return [];
-    return list.sort((a, b) => {
-      const dateA = a.releaseDate || (a.year ? `${a.year}-01-01` : '2000-01-01');
-      const dateB = b.releaseDate || (b.year ? `${b.year}-01-01` : '2000-01-01');
-      return dateB.localeCompare(dateA);
-    });
-  };
-  if (data.movies) {
-    data.movies.forEach(m => m.type = 'movie');
-    data.movies = sortByRelease(data.movies);
-  }
-  if (data.series) {
-    data.series.forEach(s => s.type = 'series');
-    data.series = sortByRelease(data.series);
-  }
-  if (data.upcoming) data.upcoming.forEach(u => u.type = u.type || 'series');
+  try {
+    const data = getContentData();
+    const sortByRelease = (list) => {
+      if (!Array.isArray(list)) return [];
+      return list.sort((a, b) => {
+        const dateA = String(a.releaseDate || (a.year ? `${a.year}-01-01` : '2000-01-01'));
+        const dateB = String(b.releaseDate || (b.year ? `${b.year}-01-01` : '2000-01-01'));
+        return dateB.localeCompare(dateA);
+      });
+    };
+    if (data.movies) {
+      data.movies.forEach(m => m.type = 'movie');
+      data.movies = sortByRelease(data.movies);
+    }
+    if (data.series) {
+      data.series.forEach(s => s.type = 'series');
+      data.series = sortByRelease(data.series);
+    }
+    if (data.upcoming) data.upcoming.forEach(u => u.type = u.type || 'series');
 
-  // If liveTv is empty in local content.json, load working BD live TV channels
-  if (!data.liveTv || data.liveTv.length === 0) {
-    try {
-      const bdChannels = await liveTvService.getChannelsByCountry('bd');
-      if (bdChannels && bdChannels.length > 0) {
-        data.liveTv = bdChannels;
-      }
-    } catch (e) {}
-  }
-  if (data.liveTv) data.liveTv.forEach(t => t.type = 'liveTv');
+    // If liveTv is empty in local content.json, load working BD live TV channels
+    if (!data.liveTv || data.liveTv.length === 0) {
+      try {
+        const bdChannels = await liveTvService.getChannelsByCountry('bd');
+        if (bdChannels && bdChannels.length > 0) {
+          data.liveTv = bdChannels;
+        }
+      } catch (e) {}
+    }
+    if (data.liveTv) data.liveTv.forEach(t => t.type = 'liveTv');
 
-  res.json(data);
+    res.json(data);
+  } catch (err) {
+    console.error('Error serving /api/content:', err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // API: MovieBox Trending & Categories
@@ -1138,8 +1144,9 @@ app.post('/api/moviebox/sync', async (req, res) => {
   res.json({ success: true, message: 'MovieBox hourly sync initiated' });
 });
 
-// Start Automated 1-Hour MovieBox Sync Engine
-syncService.startHourlySyncTimer();
+// Automated 1-Hour MovieBox Sync Engine is disabled as requested by user
+// Content will only be synced when explicitly requested
+// syncService.startHourlySyncTimer();
 
 app.listen(PORT, () => {
   console.log(`🎬 FOBS TV Streaming App running at http://localhost:${PORT}`);

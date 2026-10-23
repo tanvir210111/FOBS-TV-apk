@@ -2992,8 +2992,7 @@ function resetPlayerControlsTimer() {
   if (playerControlsTimer) clearTimeout(playerControlsTimer);
 
   const videoPlayer = document.getElementById('mainVideoPlayer');
-  const isFs = document.body.classList.contains('is-fullscreen');
-  if (isFs && videoPlayer && !videoPlayer.paused) {
+  if (videoPlayer && !videoPlayer.paused) {
     playerControlsTimer = setTimeout(() => {
       topHeader.classList.add('controls-hidden');
     }, 3500);
@@ -3022,17 +3021,21 @@ function formatPlayerTime(seconds) {
 
 function resetLandscapeControlsTimer() {
   const lsUi = document.getElementById('landscapePlayerUI');
-  if (!lsUi) return;
+  const topHeader = document.getElementById('playerTopHeader');
 
-  lsUi.classList.remove('controls-hidden');
+  if (lsUi) lsUi.classList.remove('controls-hidden');
+  if (topHeader) topHeader.classList.remove('controls-hidden');
+
   if (lsControlsTimer) clearTimeout(lsControlsTimer);
+  if (playerControlsTimer) clearTimeout(playerControlsTimer);
 
   const video = document.getElementById('mainVideoPlayer');
   if (video && !video.paused) {
-    // When locked, auto-hide lock indicator quickly after 2.5s; otherwise normal 3.8s
-    const delay = isPlayerLocked ? 2500 : 3800;
+    // When locked, auto-hide lock indicator quickly after 2.5s; otherwise normal 3.5s
+    const delay = isPlayerLocked ? 2500 : 3500;
     lsControlsTimer = setTimeout(() => {
-      lsUi.classList.add('controls-hidden');
+      if (lsUi) lsUi.classList.add('controls-hidden');
+      if (topHeader) topHeader.classList.add('controls-hidden');
     }, delay);
   }
 }
@@ -3636,45 +3639,6 @@ function applyPlayerBrightness(val) {
 }
 
 let playerSoundLevel = 1.0; // 0.0 to 2.0 (0% to 200% sound boost)
-let webAudioBoostCtx = null;
-let webAudioBoostGain = null;
-let webAudioBoostSource = null;
-let webAudioBoostCompressor = null;
-
-function ensureWebAudioBoost(video) {
-  if (!video) return;
-  if (webAudioBoostCtx) {
-    if (webAudioBoostCtx.state === 'suspended') {
-      webAudioBoostCtx.resume().catch(() => {});
-    }
-    return;
-  }
-  try {
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContextClass) return;
-
-    // Connect Web Audio safely
-    const isCorsFriendly = !video.src || video.src.startsWith(window.location.origin) || video.src.includes('/api/stream') || video.src.startsWith('blob:');
-    if (isCorsFriendly) {
-      webAudioBoostCtx = new AudioContextClass();
-      webAudioBoostSource = webAudioBoostCtx.createMediaElementSource(video);
-      webAudioBoostGain = webAudioBoostCtx.createGain();
-
-      webAudioBoostCompressor = webAudioBoostCtx.createDynamicsCompressor();
-      webAudioBoostCompressor.threshold.setValueAtTime(-12, webAudioBoostCtx.currentTime);
-      webAudioBoostCompressor.knee.setValueAtTime(30, webAudioBoostCtx.currentTime);
-      webAudioBoostCompressor.ratio.setValueAtTime(12, webAudioBoostCtx.currentTime);
-      webAudioBoostCompressor.attack.setValueAtTime(0.003, webAudioBoostCtx.currentTime);
-      webAudioBoostCompressor.release.setValueAtTime(0.25, webAudioBoostCtx.currentTime);
-
-      webAudioBoostSource.connect(webAudioBoostGain);
-      webAudioBoostGain.connect(webAudioBoostCompressor);
-      webAudioBoostCompressor.connect(webAudioBoostCtx.destination);
-    }
-  } catch (err) {
-    console.warn('Web Audio Boost init:', err.message);
-  }
-}
 
 function applyPlayerVolume(val) {
   const video = document.getElementById('mainVideoPlayer');
@@ -3682,23 +3646,14 @@ function applyPlayerVolume(val) {
   playerSoundLevel = safeVol;
 
   if (video) {
-    // HTML5 standard volume caps at 1.0
-    video.volume = Math.min(1.0, safeVol);
-    if (safeVol > 0 && video.muted) {
-      video.muted = false;
-    }
-
-    // Web Audio Gain Node Boost for web browsers (100% to 200%)
-    ensureWebAudioBoost(video);
-    if (webAudioBoostGain && webAudioBoostCtx) {
-      try {
-        const gainVal = safeVol <= 1.0 ? 1.0 : safeVol;
-        webAudioBoostGain.gain.setValueAtTime(gainVal, webAudioBoostCtx.currentTime);
-      } catch (e) {}
-    }
+    // HTML5 native video volume: 0.0 to 1.0
+    // Always keep video.volume at direct ratio without Web Audio hijacking
+    const nativeVol = Math.max(0, Math.min(1.0, safeVol <= 1.0 ? safeVol : 1.0));
+    video.volume = nativeVol;
+    video.muted = (safeVol <= 0);
   }
 
-  // Native Android hardware volume + LoudnessEnhancer (MovieBox style up to 200%)
+  // Native Android hardware volume adjustment (MovieBox style)
   try {
     if (window.AndroidApp && typeof window.AndroidApp.setAudioBoost === 'function') {
       window.AndroidApp.setAudioBoost(Math.round(safeVol * 100));
@@ -3771,15 +3726,33 @@ function triggerDoubleTapSeek(offsetSeconds) {
 
 function handleSinglePlayerTap() {
   const lsUi = document.getElementById('landscapePlayerUI');
-  if (!lsUi) return;
+  const topHeader = document.getElementById('playerTopHeader');
+  if (!lsUi && !topHeader) return;
+
   if (isPlayerLocked) {
-    lsUi.classList.remove('controls-hidden');
+    if (lsUi) lsUi.classList.remove('controls-hidden');
+    if (topHeader) topHeader.classList.remove('controls-hidden');
     resetLandscapeControlsTimer();
     return;
   }
+
   closeLandscapeDrawers();
-  const isHidden = lsUi.classList.toggle('controls-hidden');
-  if (!isHidden) resetLandscapeControlsTimer();
+
+  const isCurrentlyHidden = (lsUi && lsUi.classList.contains('controls-hidden')) ||
+                            (topHeader && topHeader.classList.contains('controls-hidden'));
+
+  if (isCurrentlyHidden) {
+    // Reveal buttons
+    if (lsUi) lsUi.classList.remove('controls-hidden');
+    if (topHeader) topHeader.classList.remove('controls-hidden');
+    resetLandscapeControlsTimer();
+  } else {
+    // Minimize / hide buttons
+    if (lsUi) lsUi.classList.add('controls-hidden');
+    if (topHeader) topHeader.classList.add('controls-hidden');
+    if (lsControlsTimer) clearTimeout(lsControlsTimer);
+    if (playerControlsTimer) clearTimeout(playerControlsTimer);
+  }
 }
 
 let seekHudTimer = null;
@@ -4985,13 +4958,17 @@ let bookingPollingTimer = null;
 async function openUpcomingBookingModal(itemOrId) {
   let item = null;
   if (typeof itemOrId === 'string') {
-    item = (appState.content.upcoming || []).find(u => u.id === itemOrId)
-      || (appState.content.movies || []).find(m => m.id === itemOrId)
-      || (appState.content.series || []).find(s => s.id === itemOrId);
-  } else {
+    const cleanId = String(itemOrId).trim();
+    item = (appState.content.upcoming || []).find(u => String(u.id) === cleanId)
+      || (appState.content.movies || []).find(m => String(m.id) === cleanId)
+      || (appState.content.series || []).find(s => String(s.id) === cleanId);
+  } else if (itemOrId && typeof itemOrId === 'object') {
     item = itemOrId;
   }
-  if (!item) return;
+  if (!item) {
+    console.warn('Booking modal: item not found for id', itemOrId);
+    return;
+  }
 
   appState.currentBookingMedia = item;
 
@@ -5007,8 +4984,8 @@ async function openUpcomingBookingModal(itemOrId) {
   const btn = document.getElementById('csPreBookBtn');
   const btnText = document.getElementById('csPreBookBtnText');
 
-  if (poster) poster.src = item.poster;
-  if (title) title.innerText = item.title;
+  if (poster) poster.src = item.poster || item.cover || 'assets/fobs_logo.png';
+  if (title) title.innerText = item.title || 'Coming Soon';
   if (year) year.innerText = item.year || '2026';
   if (dub) dub.innerText = item.dubLanguage || 'Hindi Dubbed';
   if (genre) genre.innerText = item.genre || 'Action, Thriller';
@@ -5033,8 +5010,12 @@ async function openUpcomingBookingModal(itemOrId) {
     }
   }
 
-  // Display modal
-  if (modal) modal.style.display = 'flex';
+  // Display modal & add .open for smooth animation and visibility
+  if (modal) {
+    modal.style.display = 'flex';
+    modal.offsetHeight; // Force reflow
+    modal.classList.add('open');
+  }
 
   // Push history state so Android back button closes this modal
   try {
@@ -5079,12 +5060,22 @@ function closeUpcomingBookingModal(e) {
     return;
   }
   const modal = document.getElementById('comingSoonBookingModal');
-  if (modal) modal.style.display = 'none';
+  if (modal) {
+    modal.classList.remove('open');
+    setTimeout(() => {
+      if (!modal.classList.contains('open')) {
+        modal.style.display = 'none';
+      }
+    }, 250);
+  }
   if (bookingPollingTimer) {
     clearInterval(bookingPollingTimer);
     bookingPollingTimer = null;
   }
 }
+
+window.openUpcomingBookingModal = openUpcomingBookingModal;
+window.closeUpcomingBookingModal = closeUpcomingBookingModal;
 
 async function submitBooking() {
   const item = appState.currentBookingMedia;

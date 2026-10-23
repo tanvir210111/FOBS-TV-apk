@@ -631,18 +631,9 @@ async function runMovieBoxSync() {
   }
 }
 
-// Start recurring 1-hour cron interval
+// Recurring cron interval disabled as requested by user
 function startHourlySyncTimer() {
-  console.log('⏰ [MovieBox Sync Engine] Scheduling automated sync every 1 hour (3600000ms)...');
-  // Run once shortly after startup (after 10 seconds)
-  setTimeout(() => {
-    runMovieBoxSync().catch(e => console.error('Initial sync error:', e.message));
-  }, 10000);
-
-  // Every 1 hour
-  setInterval(() => {
-    runMovieBoxSync().catch(e => console.error('Hourly sync error:', e.message));
-  }, 60 * 60 * 1000);
+  console.log('🛑 [MovieBox Sync Engine] Automatic sync is DISABLED as requested by user. Sync will only occur manually.');
 }
 
 module.exports = {
