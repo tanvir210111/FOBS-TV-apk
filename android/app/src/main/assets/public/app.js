@@ -1399,22 +1399,21 @@ function setupPlayerSwipeToClose() {
   }, { passive: true });
 }
 
-// Card Badge Helpers for Ongoing, Language & Year
+// Card Badge Helpers: Movie & Series posters always display "Hindi" on right badge (never "Movie" or "Series")
 function getCardBadgeLeft(item) {
-  if (item.badgeLeft) return item.badgeLeft;
-  if (item.dubLanguage && item.dubLanguage.includes('Fan')) return 'Fan Dub';
-  return item.dubLanguage || 'Hindi';
+  // Left badge omitted so only right-side "Hindi" badge appears (matching reference screenshot)
+  return '';
 }
 
 function getCardBadgeRightHtml(item, fallback = '') {
-  if (item.badgeRight === 'ONGOING' || item.isOngoing || item.status === 'Ongoing') {
+  if (item && (item.badgeRight === 'ONGOING' || item.isOngoing || item.status === 'Ongoing')) {
     return `<span class="card-badge-right badge-ongoing">ONGOING</span>`;
   }
-  if (item.badgeRight === 'Hallprint' || item.tag === 'Hallprint') {
+  if (item && (item.badgeRight === 'Hallprint' || item.tag === 'Hallprint')) {
     return `<span class="card-badge-right badge-hallprint">Hallprint</span>`;
   }
-  const text = item.badgeRight || item.year || fallback;
-  return `<span class="card-badge-right">${text}</span>`;
+  // Always display "Hindi" on the right side badge, never "Movie" or "Series"
+  return `<span class="card-badge-right">Hindi</span>`;
 }
 
 // Render Home Carousels

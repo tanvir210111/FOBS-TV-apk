@@ -823,6 +823,10 @@ body {
   z-index: 2;
 }
 
+.card-badge-left:empty {
+  display: none !important;
+}
+
 /* Big Stylized Rank Numbers (1, 2, 3) like Screenshot 1 */
 .card-rank-number {
   position: absolute;
