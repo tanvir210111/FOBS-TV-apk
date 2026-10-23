@@ -2758,8 +2758,13 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       videoPlayer.removeAttribute('src');
       videoPlayer.load();
     }
+    const videoContainer = document.getElementById('videoContainer');
+    if (videoContainer) videoContainer.classList.add('has-iframe-active');
     const lsUi = document.getElementById('landscapePlayerUI');
-    if (lsUi) lsUi.style.display = 'none';
+    if (lsUi) {
+      lsUi.classList.add('is-iframe-hidden');
+      lsUi.style.display = 'none';
+    }
     const gestureHud = document.getElementById('playerGestureHud');
     if (gestureHud) gestureHud.style.display = 'none';
     const dtLeft = document.getElementById('doubleTapLeft');
@@ -2786,12 +2791,18 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     topHeader.classList.remove('controls-hidden');
   }
 
+  const videoContainer = document.getElementById('videoContainer');
+  if (videoContainer) videoContainer.classList.remove('has-iframe-active');
+
   if (embedFrame) {
     embedFrame.src = '';
     embedFrame.style.display = 'none';
   }
   const lsUi = document.getElementById('landscapePlayerUI');
-  if (lsUi) lsUi.style.display = 'flex';
+  if (lsUi) {
+    lsUi.classList.remove('is-iframe-hidden');
+    lsUi.style.display = 'flex';
+  }
   if (videoPlayer) {
     videoPlayer.style.display = 'block';
   }
@@ -2893,6 +2904,17 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
      !playableUrl.includes('vkcdn'))
   );
   if (isDirectMp4Source && !playableUrl.includes('googleusercontent.com') && audioIndex === null) {
+    // If running in a browser outside Android APK, route hakunaymatata through proxy to include Referer
+    if (!window.AndroidApp && (playableUrl.includes('hakunaymatata') || playableUrl.includes('bcdnxw') || playableUrl.includes('haildrop') || playableUrl.includes('fogtwist'))) {
+      const proxyUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(playableUrl)}`;
+      console.log('Playing MovieBox stream via server proxy (browser):', proxyUrl);
+      videoPlayer.src = proxyUrl;
+      videoPlayer.load();
+      if (seekTime && seekTime > 0) videoPlayer.currentTime = seekTime;
+      videoPlayer.play().catch(() => {});
+      return;
+    }
+
     console.log('Playing direct CDN stream:', playableUrl);
     videoPlayer.src = playableUrl;
     videoPlayer.load();
@@ -4160,23 +4182,9 @@ function setupVideoListeners() {
       return;
     }
 
-    // Automatic bulletproof fallback to MultiEmbed streaming server if direct link fails
-    const tmdbId = appState.currentMedia?.tmdbId;
-    if (tmdbId && !videoPlayer._hasTriedMultiEmbed) {
-      videoPlayer._hasTriedMultiEmbed = true;
-      const isSeries = appState.currentMedia.type === 'series' || (appState.currentMedia.episodes && appState.currentMedia.episodes.length > 0);
-      const epNum = curEp?.episode || 1;
-      const seasonNum = appState.currentSeason || 1;
-      const fallbackUrl = isSeries
-        ? `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1&s=${seasonNum}&e=${epNum}`
-        : `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1`;
-      console.warn(`Direct stream failed. Auto-switching to MultiEmbed backup: ${fallbackUrl}`);
-      showToast('Switched to backup video stream...');
-      playStreamUrl(fallbackUrl);
-      return;
-    }
-
     if (loader) loader.classList.remove('active');
+    console.warn('Stream failed after retries.');
+    showToast('Playback error. Please try Server 2 or check internet connection.');
   });
 
   // Handle native HTML5 bottom control bar fullscreen button events

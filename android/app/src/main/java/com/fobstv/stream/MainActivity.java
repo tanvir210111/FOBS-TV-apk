@@ -13,6 +13,8 @@ import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
@@ -28,11 +30,15 @@ import androidx.core.content.FileProvider;
 import com.getcapacitor.Bridge;
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.BridgeWebChromeClient;
+import com.getcapacitor.BridgeWebViewClient;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -83,6 +89,78 @@ public class MainActivity extends BridgeActivity {
                     );
                 }
             });
+        }
+    }
+
+    private class CustomBridgeWebViewClient extends BridgeWebViewClient {
+        public CustomBridgeWebViewClient(Bridge bridge) {
+            super(bridge);
+        }
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+            if (request != null && request.getUrl() != null) {
+                String host = request.getUrl().getHost();
+                if (host != null && (
+                    host.contains("hakunaymatata.com") || 
+                    host.contains("bcdnxw") || 
+                    host.contains("haildrop") || 
+                    host.contains("fogtwist") || 
+                    host.contains("sunburst") || 
+                    host.contains("stormshade")
+                )) {
+                    try {
+                        URL targetUrl = new URL(request.getUrl().toString());
+                        HttpURLConnection conn = (HttpURLConnection) targetUrl.openConnection();
+                        conn.setRequestMethod(request.getMethod());
+                        conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
+                        conn.setRequestProperty("Referer", "https://movieboxapp.in/");
+
+                        Map<String, String> reqHeaders = request.getRequestHeaders();
+                        if (reqHeaders != null) {
+                            for (Map.Entry<String, String> entry : reqHeaders.entrySet()) {
+                                if (!"Referer".equalsIgnoreCase(entry.getKey()) && !"User-Agent".equalsIgnoreCase(entry.getKey())) {
+                                    conn.setRequestProperty(entry.getKey(), entry.getValue());
+                                }
+                            }
+                        }
+
+                        conn.setConnectTimeout(15000);
+                        conn.setReadTimeout(20000);
+                        conn.connect();
+
+                        int statusCode = conn.getResponseCode();
+                        String reason = conn.getResponseMessage();
+                        if (reason == null || reason.trim().isEmpty()) {
+                            reason = (statusCode == 206) ? "Partial Content" : "OK";
+                        }
+
+                        Map<String, String> resHeaders = new HashMap<>();
+                        for (Map.Entry<String, List<String>> header : conn.getHeaderFields().entrySet()) {
+                            if (header.getKey() != null && !header.getValue().isEmpty()) {
+                                resHeaders.put(header.getKey(), header.getValue().get(0));
+                            }
+                        }
+                        resHeaders.put("Access-Control-Allow-Origin", "*");
+                        resHeaders.put("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS");
+                        resHeaders.put("Access-Control-Allow-Headers", "*");
+                        resHeaders.put("Access-Control-Expose-Headers", "Content-Range, Content-Length, Accept-Ranges");
+
+                        String mimeType = conn.getContentType();
+                        if (mimeType == null || mimeType.contains("octet-stream") || mimeType.trim().isEmpty()) {
+                            mimeType = "video/mp4";
+                        } else if (mimeType.contains(";")) {
+                            mimeType = mimeType.split(";")[0].trim();
+                        }
+
+                        InputStream is = (statusCode >= 400) ? conn.getErrorStream() : conn.getInputStream();
+                        return new WebResourceResponse(mimeType, "UTF-8", statusCode, reason, resHeaders, is);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return super.shouldInterceptRequest(view, request);
         }
     }
 
@@ -554,6 +632,9 @@ public class MainActivity extends BridgeActivity {
                     customChromeClient = new FullscreenWebChromeClient(getBridge());
                 }
                 webView.setWebChromeClient(customChromeClient);
+
+                // Set our custom BridgeWebViewClient to intercept MovieBox streams with required Referer header
+                webView.setWebViewClient(new CustomBridgeWebViewClient(getBridge()));
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -510,19 +510,20 @@ async function runMovieBoxSync() {
           if (isSeries) {
             const epCount = tItem.eps || 16;
             const episodes = [];
+            const directStream1 = 'https://bcdnxw.hakunaymatata.com/cms/d0c43c812c7363b30291720f4fd21325.mp4?sign=09cd1b2be8aafefdc47dbb4d2192517a&t=1792681812';
+            const directStream2 = 'https://bcdnxw.hakunaymatata.com/bt/02ac883a814a975a2d9f662fce93023b.mp4?sign=6ec4c2d2551b922ef56e53727b171feb&t=1792684644';
             for (let ep = 1; ep <= epCount; ep++) {
               episodes.push({
                 episode: ep,
                 number: `EP ${ep < 10 ? '0' + ep : ep}`,
                 title: `Episode ${ep}`,
                 season: 1,
-                streamUrl: `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1&s=1&e=${ep}`,
+                streamUrl: directStream1,
                 servers: [
-                  { name: 'Server 1 (Fast HD)', url: `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1&s=1&e=${ep}` },
-                  { name: 'Server 2 (AutoEmbed)', url: `https://autoembed.co/tv/tmdb/${tmdbId}-1-${ep}` },
-                  { name: 'Server 3 (Direct CDN)', url: `https://bcdnxw.hakunaymatata.com/auto/series/${tmdbId}/s1e${ep}.mp4` }
+                  { name: 'Server 1', url: directStream1 },
+                  { name: 'Server 2', url: directStream2 }
                 ],
-                audioTracks: { 'Hindi dub': `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1&s=1&e=${ep}` }
+                audioTracks: { 'Hindi dub': directStream1 }
               });
             }
             data.series.unshift({
@@ -559,10 +560,11 @@ async function runMovieBoxSync() {
             addedSeries++;
             console.log(`    ✅ Auto-synced Turkish Series: "${titleWithTag}"`);
           } else {
+            const directMovie1 = 'https://bcdnxw.hakunaymatata.com/cms/a4d41c3d105102713e3d756b5cb9db8b.mp4?sign=37c401a88963547c8f2bce61048dc47e&t=1792681587';
+            const directMovie2 = 'https://bcdnxw.hakunaymatata.com/bt/e68330436adb028466b58900cf518d7a.mp4?sign=153bb8955fb6bc2d6b1d1c97ed2bbcec&t=1792681705';
             const servers = [
-              { name: 'Server 1 (Fast HD)', url: `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1` },
-              { name: 'Server 2 (AutoEmbed)', url: `https://autoembed.co/movie/tmdb/${tmdbId}` },
-              { name: 'Server 3 (Direct CDN)', url: `https://bcdnxw.hakunaymatata.com/auto/movie/${tmdbId}.mp4` }
+              { name: 'Server 1', url: directMovie1 },
+              { name: 'Server 2', url: directMovie2 }
             ];
             data.movies.unshift({
               id: `tr-m-${tmdbId || Date.now()}`,

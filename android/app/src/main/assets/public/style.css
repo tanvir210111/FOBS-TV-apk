@@ -69,7 +69,10 @@ body {
   z-index: 40;
   background-color: rgba(15, 16, 21, 0.95);
   backdrop-filter: blur(12px);
-  padding: 10px 14px 6px 14px;
+  padding-top: max(34px, env(safe-area-inset-top, 34px));
+  padding-right: max(14px, env(safe-area-inset-right, 14px));
+  padding-bottom: 8px;
+  padding-left: max(14px, env(safe-area-inset-left, 14px));
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -281,7 +284,10 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 14px;
+  padding-top: max(32px, env(safe-area-inset-top, 32px));
+  padding-right: max(14px, env(safe-area-inset-right, 14px));
+  padding-bottom: 12px;
+  padding-left: max(14px, env(safe-area-inset-left, 14px));
   background: rgba(13, 14, 20, 0.96);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -1057,8 +1063,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
+  padding-top: max(32px, env(safe-area-inset-top, 32px)) !important;
+  padding-right: max(14px, env(safe-area-inset-right, 14px)) !important;
+  padding-bottom: 10px !important;
+  padding-left: max(14px, env(safe-area-inset-left, 14px)) !important;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.88) 0%, transparent 100%);
   pointer-events: auto !important;
 }
 
@@ -1243,8 +1252,11 @@ body.is-fullscreen .player-top-header,
   left: 0 !important;
   right: 0 !important;
   z-index: 1000002 !important;
-  padding: 14px 20px !important;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, transparent 100%) !important;
+  padding-top: max(14px, env(safe-area-inset-top, 14px)) !important;
+  padding-right: max(20px, env(safe-area-inset-right, 20px)) !important;
+  padding-bottom: 14px !important;
+  padding-left: max(20px, env(safe-area-inset-left, 20px)) !important;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.88) 0%, transparent 100%) !important;
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
@@ -2792,13 +2804,25 @@ body.is-fullscreen .player-top-header.controls-hidden,
 
 /* MovieBox Custom Player Overlay - Active in both Portrait and Landscape */
 .ls-player-ui {
-  display: flex !important;
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: 1000005 !important;
-  flex-direction: column !important;
-  justify-content: space-between !important;
+  display: flex;
+  position: absolute;
+  inset: 0;
+  z-index: 1000005;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.ls-player-ui.is-iframe-hidden,
+.video-container.has-iframe-active .ls-player-ui,
+.video-container.has-iframe-active .player-gesture-hud,
+.video-container.has-iframe-active .player-double-tap-indicator,
+.video-container.has-iframe-active .player-brightness-overlay,
+.video-container.has-iframe-active .player-seek-hud {
+  display: none !important;
   pointer-events: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }
 
 /* In portrait mode, hide landscape top header and lock wrapper */
@@ -2864,7 +2888,7 @@ video::-webkit-media-controls-panel {
 }
 
 @media (orientation: landscape) {
-  body.player-open .ls-player-ui {
+  body.player-open .ls-player-ui:not(.is-iframe-hidden) {
     display: flex !important;
     position: absolute !important;
     inset: 0 !important;
@@ -2905,7 +2929,10 @@ video::-webkit-media-controls-panel {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 28px;
+  padding-top: max(14px, env(safe-area-inset-top, 14px));
+  padding-right: max(28px, env(safe-area-inset-right, 28px));
+  padding-bottom: 14px;
+  padding-left: max(28px, env(safe-area-inset-left, 28px));
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.88) 0%, transparent 100%);
   pointer-events: auto !important;
   transition: opacity 0.3s ease, visibility 0.3s ease;
