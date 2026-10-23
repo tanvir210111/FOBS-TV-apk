@@ -3420,10 +3420,10 @@ function seekToAbsoluteTime(targetSeconds) {
   video.addEventListener('canplay', finishSeek, { once: true });
   video.addEventListener('playing', finishSeek, { once: true });
 
-  // 2.2-second safety watchdog: unfreezes and resumes playback if seek event was swallowed by WebView
+  // 12-second safety watchdog: unfreezes and resumes playback if seek event was swallowed by WebView
   window.seekSafetyTimeout = setTimeout(() => {
     finishSeek();
-  }, 2200);
+  }, 12000);
 
   // Apply seek to video element directly via currentTime (never fastSeek which stalls in WebViews)
   try {
@@ -4519,22 +4519,19 @@ function setupVideoListeners() {
   let stallRecoveryTimer = null;
   const triggerStallRecovery = () => {
     if (stallRecoveryTimer) clearTimeout(stallRecoveryTimer);
+    // Never interrupt if user or player is actively seeking or within a pending seek!
+    if (!videoPlayer || videoPlayer.seeking || appState.pendingSeekTime !== null) {
+      return;
+    }
     stallRecoveryTimer = setTimeout(() => {
-      if (videoPlayer && !videoPlayer.paused && (videoPlayer.seeking || videoPlayer.readyState < 3)) {
-        console.warn('Playback stalled, attempting auto-recovery...');
-        try {
-          if (videoPlayer.readyState >= 2) {
-            videoPlayer.play().catch(() => {});
-          } else {
-            const t = videoPlayer.currentTime;
-            if (t > 0) {
-              videoPlayer.currentTime = t + 0.05;
-            }
-            videoPlayer.play().catch(() => {});
-          }
-        } catch (e) {}
+      if (!videoPlayer || videoPlayer.seeking || appState.pendingSeekTime !== null) {
+        return;
       }
-    }, 2000);
+      // If video has sufficient buffered data to resume, unpause it cleanly
+      if (!videoPlayer.paused && videoPlayer.readyState >= 2) {
+        videoPlayer.play().catch(() => {});
+      }
+    }, 3500);
   };
 
   videoPlayer.addEventListener('waiting', () => {

@@ -165,14 +165,18 @@ public class MainActivity extends BridgeActivity {
         public void close() throws java.io.IOException {
             if (isClosed) return;
             isClosed = true;
-            if (conn != null) {
-                try {
-                    conn.disconnect();
-                } catch (Exception ignored) {}
-            }
             try {
                 in.close();
             } catch (Exception ignored) {}
+            if (conn != null) {
+                try {
+                    new Thread(() -> {
+                        try { conn.disconnect(); } catch (Exception ignored) {}
+                    }).start();
+                } catch (Exception e) {
+                    try { conn.disconnect(); } catch (Exception ignored) {}
+                }
+            }
         }
     }
 
@@ -219,8 +223,8 @@ public class MainActivity extends BridgeActivity {
                                 }
                             }
 
-                            conn.setConnectTimeout(6000);
-                            conn.setReadTimeout(10000);
+                            conn.setConnectTimeout(12000);
+                            conn.setReadTimeout(25000);
                             conn.connect();
 
                             statusCode = conn.getResponseCode();
@@ -292,7 +296,7 @@ public class MainActivity extends BridgeActivity {
                         }
 
                         InputStream rawStream = (statusCode >= 400) ? conn.getErrorStream() : conn.getInputStream();
-                        InputStream bufferedStream = new java.io.BufferedInputStream(rawStream, 32768);
+                        InputStream bufferedStream = new java.io.BufferedInputStream(rawStream, 262144);
                         InputStream is = new DisconnectingInputStream(bufferedStream, conn, (statusCode == 206) ? contentLength : -1);
                         return new WebResourceResponse(mimeType, null, statusCode, reason, resHeaders, is);
                     } catch (Exception e) {
