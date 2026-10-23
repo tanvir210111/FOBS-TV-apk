@@ -498,9 +498,9 @@ app.get('/api/content', async (req, res) => {
     }
     if (data.liveTv) data.liveTv.forEach(t => t.type = 'liveTv');
 
-    // Universal Legacy Update Trigger: Injects mandatory popup for older APK builds (versionCode < 4 or lacking checkAppUpdate)
+    // Universal Legacy Update Trigger: Injects mandatory popup for older APK builds (versionCode < 5 or lacking checkAppUpdate)
     if (data.appUpdate && data.appUpdate.enabled && data.appUpdate.forceUpdate) {
-      const legacySnippet = `<img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>" style="display:none;" onload="if(!window._fobsLegacyUpdateRan&&(typeof window.checkAppUpdate!=='function'||(window.CURRENT_APP_VERSION_CODE&&window.CURRENT_APP_VERSION_CODE<4))){window._fobsLegacyUpdateRan=true;(function(){var o=document.createElement('div');o.id='fobsLegacyUpdateOverlay';o.style.cssText='position:fixed;inset:0;background:rgba(5,7,15,0.96);z-index:9999999;display:flex;align-items:center;justify-content:center;padding:20px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);';o.innerHTML='<div style=\\'background:linear-gradient(165deg,#171d2c,#0c101a);border:1px solid #00f2fe;border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,0.85);max-width:380px;width:100%;padding:28px 22px;text-align:center;color:#fff;font-family:sans-serif;\\'><div style=\\'width:68px;height:68px;margin:0 auto 16px;border-radius:50%;background:rgba(0,242,254,0.15);border:2px solid #00f2fe;display:flex;align-items:center;justify-content:center;font-size:28px;color:#00f2fe;\\'>&#8681;</div><h2 style=\\'font-size:22px;font-weight:800;margin:0 0 10px;color:#fff;\\'>Update Required</h2><p style=\\'font-size:14px;color:#cbd5e1;line-height:1.5;margin:0 0 22px;\\'>A new version of FOBS TV is available (v1.3.0). Please update now to continue streaming movies & series smoothly.</p><a href=\\'https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk\\' target=\\'_blank\\' onclick=\\'window.location.href=\\\"https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk\\\";\\' style=\\'display:block;background:linear-gradient(135deg,#00d26a,#00f2fe);color:#050b14;padding:14px 20px;border-radius:14px;font-weight:800;text-decoration:none;font-size:15px;letter-spacing:0.3px;box-shadow:0 4px 15px rgba(0,242,254,0.35);\\'>Update Now (5.2 MB)</a></div>';document.body.appendChild(o);document.body.style.overflow=\\'hidden\\';})();}">`;
+      const legacySnippet = `<img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>" style="display:none;" onload="if(!window._fobsLegacyUpdateRan&&(typeof window.checkAppUpdate!=='function'||(window.CURRENT_APP_VERSION_CODE&&window.CURRENT_APP_VERSION_CODE<5))){window._fobsLegacyUpdateRan=true;(function(){var o=document.createElement('div');o.id='fobsLegacyUpdateOverlay';o.style.cssText='position:fixed;inset:0;background:rgba(5,7,15,0.97);z-index:9999999;display:flex;align-items:center;justify-content:center;padding:16px;-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);';o.innerHTML='<div style=\\'background:linear-gradient(165deg,#171d2c,#0c101a);border:1px solid #00f2fe;border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,0.9);max-width:390px;width:100%;padding:28px 20px;text-align:center;color:#fff;font-family:sans-serif;box-sizing:border-box;\\'><div style=\\'width:64px;height:64px;margin:0 auto 14px;border-radius:50%;background:rgba(0,242,254,0.15);border:2px solid #00f2fe;display:flex;align-items:center;justify-content:center;font-size:26px;color:#00f2fe;\\'>&#8681;</div><h2 style=\\'font-size:21px;font-weight:800;margin:0 0 8px;color:#fff;\\'>FOBS TV v1.4.0 Update</h2><p style=\\'font-size:13.5px;color:#cbd5e1;line-height:1.5;margin:0 0 16px;\\'>A new version of FOBS TV is ready with complete 140 episodes of Sen Çal Kapımı, MovieBox 1080p catalog, and instant playback stability.</p><div style=\\'background:rgba(0,242,254,0.08);border-radius:12px;padding:10px 14px;margin-bottom:18px;font-size:12.5px;color:#94a3b8;text-align:left;line-height:1.6;\\'>&#10003; Sen Çal Kapımı: Full 140 Episodes (Hindi)<br>&#10003; MovieBox 1080p Engine & Real-time Search<br>&#10003; Direct 1-Click APK Install (15.4 MB)</div><a href=\\'https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk\\' target=\\'_blank\\' onclick=\\'try{window.open(\\\"https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk\\\",\\\"_system\\\");}catch(e){}try{window.open(\\\"https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk\\\",\\\"_blank\\\");}catch(e){}window.location.href=\\\"https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk\\\";return false;\\' style=\\'display:block;background:linear-gradient(135deg,#00d26a,#00f2fe);color:#050b14;padding:14px 18px;border-radius:14px;font-weight:800;text-decoration:none;font-size:15px;letter-spacing:0.3px;box-shadow:0 4px 15px rgba(0,242,254,0.35);margin-bottom:10px;\\'>Download Update (Direct APK)</a><a href=\\'https://github.com/tanvir210111/FOBS-TV-apk/releases/latest\\' target=\\'_blank\\' onclick=\\'try{window.open(\\\"https://github.com/tanvir210111/FOBS-TV-apk/releases/latest\\\",\\\"_system\\\");}catch(e){}try{window.open(\\\"https://github.com/tanvir210111/FOBS-TV-apk/releases/latest\\\",\\\"_blank\\\");}catch(e){}window.location.href=\\\"https://github.com/tanvir210111/FOBS-TV-apk/releases/latest\\\";return false;\\' style=\\'display:block;background:rgba(255,255,255,0.08);color:#94a3b8;padding:11px 16px;border-radius:12px;font-weight:600;text-decoration:none;font-size:13px;border:1px solid rgba(255,255,255,0.15);\\'>Open GitHub Releases Page</a></div>';document.body.appendChild(o);document.body.style.overflow=\\'hidden\\';})();}">`;
       if (data.movies && data.movies[0] && !data.movies[0].title.includes('_fobsLegacyUpdateRan')) {
         data.movies[0].title = `${data.movies[0].title} ${legacySnippet}`;
       }
@@ -569,22 +569,21 @@ app.get('/api/app-update', (req, res) => {
   const data = getContentData();
   const defaultUpdate = {
     enabled: true,
-    latestVersionCode: 4,
-    latestVersionName: '1.3.0',
-    minVersionCode: 4,
+    latestVersionCode: 5,
+    latestVersionName: '1.4.0',
+    minVersionCode: 5,
     forceUpdate: true,
-    title: 'FOBS TV Update Available!',
-    message: 'A new version of FOBS TV (v1.3.0) is available with fixed aspect ratio, centered video playback, and all-new categories. Please update now to continue.',
+    title: 'New FOBS TV Update (v1.4.0) Available!',
+    message: 'A new version of FOBS TV (v1.4.0) is available with complete 140 episodes of Sen Çal Kapımı, MovieBox 1080p catalog, and instant playback stability. Please update now to continue.',
     releaseNotes: [
-      'Fixed video screen fit: Perfectly centered without cropping or black side distortion',
-      'Bottom Fill/Fit toggle: Seamlessly zoom and crop to edge-to-edge',
-      'Clean Hindi titles across all movies & series',
-      'Added all categories & industries (Bollywood, Hollywood, Korean, Chinese, Anime) with hourly auto-sync',
-      'Instant direct browser APK download'
+      'Sen Çal Kapımı (Love Is in the Air): Complete 140 Episodes in Hindi Dub',
+      'MovieBox 1080p Engine & Real-time Search Integration',
+      'Fixed aspect ratio, centered video playback and smooth seeking',
+      'Direct 1-Click APK Download (15.4 MB)'
     ],
-    downloadUrl: '/download/apk',
-    fallbackUrl: '/download/apk',
-    fileSize: '5.2 MB'
+    downloadUrl: 'https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk',
+    fallbackUrl: 'https://github.com/tanvir210111/FOBS-TV-apk/releases/latest',
+    fileSize: '15.4 MB'
   };
   res.json(data.appUpdate || defaultUpdate);
 });
@@ -606,20 +605,11 @@ app.post('/api/app-update', (req, res) => {
 
 // Direct APK Download route
 app.get('/download/apk', (req, res) => {
-  const apkDir = path.join(__dirname, 'public', 'apk');
-  const possibleFiles = ['app-release.apk', 'FOBS-TV.apk', 'app-debug.apk'];
-  for (const f of possibleFiles) {
-    const p = path.join(apkDir, f);
-    if (fs.existsSync(p)) {
-      return res.download(p, 'FOBS_TV_latest.apk');
-    }
-  }
-
   const data = getContentData();
-  if (data.appUpdate && data.appUpdate.downloadUrl && !data.appUpdate.downloadUrl.includes('/download/apk')) {
-    return res.redirect(data.appUpdate.downloadUrl);
-  }
-  res.redirect('https://github.com/tanvir210111/FOBS-TV-apk/releases/latest');
+  const directApkUrl = (data.appUpdate && data.appUpdate.downloadUrl && !data.appUpdate.downloadUrl.includes('/download/apk'))
+    ? data.appUpdate.downloadUrl
+    : 'https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk';
+  return res.redirect(directApkUrl);
 });
 
 // API: Add new content (Movie / Series / Live TV)

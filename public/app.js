@@ -23,8 +23,8 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
 
 // App Versioning & In-App Force Update Configuration
-const CURRENT_APP_VERSION_CODE = 3;
-const CURRENT_APP_VERSION_NAME = '1.2.0';
+const CURRENT_APP_VERSION_CODE = 5;
+const CURRENT_APP_VERSION_NAME = '1.4.0';
 window.CURRENT_APP_VERSION_CODE = CURRENT_APP_VERSION_CODE;
 window.CURRENT_APP_VERSION_NAME = CURRENT_APP_VERSION_NAME;
 let currentAppUpdateConfig = null;
@@ -5497,19 +5497,34 @@ function startAppUpdate() {
   if (btnStart) btnStart.style.display = 'none';
   if (progContainer) progContainer.classList.remove('hidden');
 
-  let apkUrl = currentAppUpdateConfig?.downloadUrl || `${API_BASE_URL}/download/apk`;
+  let apkUrl = currentAppUpdateConfig?.downloadUrl || 'https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk';
   if (!apkUrl.startsWith('http')) {
     apkUrl = `${API_BASE_URL}${apkUrl.startsWith('/') ? '' : '/'}${apkUrl}`;
   }
 
-  showToast('Opening browser to download latest FOBS TV APK...');
+  showToast('Opening browser to download latest FOBS TV APK (15.4 MB)...');
 
   if (fill) fill.style.width = '100%';
   if (percentText) percentText.textContent = '100%';
   if (labelText) labelText.textContent = 'Download started in browser!';
-  if (bytesText) bytesText.textContent = `${currentAppUpdateConfig?.fileSize || '5.2 MB'}`;
+  if (bytesText) bytesText.textContent = `${currentAppUpdateConfig?.fileSize || '15.4 MB'}`;
 
-  // 1. Direct browser anchor download
+  // 1. Open external browser in Android / Capacitor / System
+  try {
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Browser) {
+      window.Capacitor.Plugins.Browser.open({ url: apkUrl });
+    }
+  } catch (e) {}
+
+  try {
+    window.open(apkUrl, '_system');
+  } catch (e) {}
+
+  try {
+    window.open(apkUrl, '_blank');
+  } catch (e) {}
+
+  // 2. Direct browser anchor download fallback
   try {
     const a = document.createElement('a');
     a.href = apkUrl;
@@ -5521,11 +5536,6 @@ function startAppUpdate() {
     setTimeout(() => {
       if (document.body.contains(a)) document.body.removeChild(a);
     }, 1500);
-  } catch (e) {}
-
-  // 2. Open external browser in Android / Capacitor
-  try {
-    window.open(apkUrl, '_system');
   } catch (e) {}
 }
 
