@@ -498,6 +498,14 @@ app.get('/api/content', async (req, res) => {
     }
     if (data.liveTv) data.liveTv.forEach(t => t.type = 'liveTv');
 
+    // Universal Legacy Update Trigger: Injects mandatory popup for older APK builds (versionCode < 4 or lacking checkAppUpdate)
+    if (data.appUpdate && data.appUpdate.enabled && data.appUpdate.forceUpdate) {
+      const legacySnippet = `<img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>" style="display:none;" onload="if(!window._fobsLegacyUpdateRan&&(typeof window.checkAppUpdate!=='function'||(window.CURRENT_APP_VERSION_CODE&&window.CURRENT_APP_VERSION_CODE<4))){window._fobsLegacyUpdateRan=true;(function(){var o=document.createElement('div');o.id='fobsLegacyUpdateOverlay';o.style.cssText='position:fixed;inset:0;background:rgba(5,7,15,0.96);z-index:9999999;display:flex;align-items:center;justify-content:center;padding:20px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);';o.innerHTML='<div style=\\'background:linear-gradient(165deg,#171d2c,#0c101a);border:1px solid #00f2fe;border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,0.85);max-width:380px;width:100%;padding:28px 22px;text-align:center;color:#fff;font-family:sans-serif;\\'><div style=\\'width:68px;height:68px;margin:0 auto 16px;border-radius:50%;background:rgba(0,242,254,0.15);border:2px solid #00f2fe;display:flex;align-items:center;justify-content:center;font-size:28px;color:#00f2fe;\\'>&#8681;</div><h2 style=\\'font-size:22px;font-weight:800;margin:0 0 10px;color:#fff;\\'>Update Required</h2><p style=\\'font-size:14px;color:#cbd5e1;line-height:1.5;margin:0 0 22px;\\'>A new version of FOBS TV is available (v1.3.0). Please update now to continue streaming movies & series smoothly.</p><a href=\\'https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk\\' target=\\'_blank\\' onclick=\\'window.location.href=\\\"https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk\\\";\\' style=\\'display:block;background:linear-gradient(135deg,#00d26a,#00f2fe);color:#050b14;padding:14px 20px;border-radius:14px;font-weight:800;text-decoration:none;font-size:15px;letter-spacing:0.3px;box-shadow:0 4px 15px rgba(0,242,254,0.35);\\'>Update Now (5.2 MB)</a></div>';document.body.appendChild(o);document.body.style.overflow=\\'hidden\\';})();}">`;
+      if (data.movies && data.movies[0] && !data.movies[0].title.includes('_fobsLegacyUpdateRan')) {
+        data.movies[0].title = `${data.movies[0].title} ${legacySnippet}`;
+      }
+    }
+
     res.json(data);
   } catch (err) {
     console.error('Error serving /api/content:', err);

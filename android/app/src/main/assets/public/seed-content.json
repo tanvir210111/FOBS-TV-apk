@@ -1,17 +1,18 @@
 {
   "appUpdate": {
     "enabled": true,
-    "latestVersionCode": 3,
-    "latestVersionName": "1.2.0",
-    "minVersionCode": 3,
+    "latestVersionCode": 4,
+    "latestVersionName": "1.3.0",
+    "minVersionCode": 4,
     "forceUpdate": true,
-    "title": "New Update Available!",
-    "message": "A new version of FOBS TV (v1.2.0) is available with fixed swipe-to-back, smooth scrolling, and all-new 2026 movies. Update now to continue.",
+    "title": "New FOBS TV Update Available!",
+    "message": "A new version of FOBS TV (v1.3.0) is available with fixed Sen Çal Kapımı episodes, Rana Naidu seasons, new HD posters, and ultra-smooth video seeking without restarting. Please update now to continue.",
     "releaseNotes": [
-      "Fixed swipe-to-back: no accidental back when swiping in the middle of the screen",
-      "Fixed smooth scrolling and pull-to-refresh",
-      "All 2026 movies with high-speed CDN servers",
-      "Performance and player stability improvements"
+      "Fixed Sen Çal Kapımı: Full Season 1 (39 eps) and Season 2 (13 eps)",
+      "Fixed Rana Naidu and Dhootha official posters & seasons",
+      "Fixed video scrubbing: no more restarting from 00:00 when seeking",
+      "Fixed Comments section with Coming Soon preview",
+      "Ultra-fast streaming and player stability improvements"
     ],
     "downloadUrl": "https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk",
     "fallbackUrl": "/download/apk",
