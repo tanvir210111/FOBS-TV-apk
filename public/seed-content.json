@@ -7326,7 +7326,34 @@
       ],
       "type": "series",
       "tmdbId": 313172,
-      "releaseDate": "2026-09-10"
+      "releaseDate": "2026-09-10",
+      "seasons": [
+        {
+          "seasonNumber": 1,
+          "name": "Season 1 (1 Eps)",
+          "episodeCount": 1,
+          "episodes": [
+            {
+              "number": 1,
+              "title": "Episode 1",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/ee9c4523c4d5822138d1c3b8d441bb07.mp4?sign=6457bda75154143f373029be627e57df&t=1792693298",
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/cms/ee9c4523c4d5822138d1c3b8d441bb07.mp4?sign=6457bda75154143f373029be627e57df&t=1792693298"
+              },
+              "servers": [
+                {
+                  "name": "Server 1",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/ee9c4523c4d5822138d1c3b8d441bb07.mp4?sign=6457bda75154143f373029be627e57df&t=1792693298"
+                },
+                {
+                  "name": "Server 2",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/ee9c4523c4d5822138d1c3b8d441bb07.mp4?sign=6457bda75154143f373029be627e57df&t=1792693298"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "mb-s-742546769883585176",
@@ -19951,8 +19978,8 @@
       "category": "Chinese (C-Drama)",
       "rating": "8.4",
       "imdbRating": "8.4",
-      "poster": "https://image.tmdb.org/t/p/w500/placeholder.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/placeholder.jpg",
+      "poster": "https://image.tmdb.org/t/p/w500/b52ToaPKbhB4egJVfzAW3TRJsaH.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/UF63Lldx2GBx7d83CuD3rXzDgG.jpg",
       "description": "Watch So I Love You Very Much Hindi dubbed complete series online in high definition on FOBS TV.",
       "audioTracks": [
         "Hindi dub"
@@ -20968,22 +20995,26 @@
       "category": "South Indian Series",
       "rating": "8.4",
       "imdbRating": "8.4",
-      "poster": "https://image.tmdb.org/t/p/w500/r5iXqGjCjT21a9uGgZ8b3L1fQYV.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/r5iXqGjCjT21a9uGgZ8b3L1fQYV.jpg",
+      "poster": "https://image.tmdb.org/t/p/w500/jMegWqCj8z58na8RG8ytlPJ7gGm.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/n2Z999X8wW3a2K5jV1hE5v6q2Yn.jpg",
       "description": "Suspended journalist Sagar uncovers terrifying predictions printed on newspaper scraps that foreshadow deadly accidents.",
       "audioTracks": [
         "Hindi dub"
       ],
       "selectedAudio": "Hindi dub",
-      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
+      "streamUrl": "https://vidlink.pro/tv/200946/1/1",
       "servers": [
         {
-          "name": "Server 1",
-          "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+          "name": "Server 1 (Vidlink Fast)",
+          "url": "https://vidlink.pro/tv/200946/1/1"
         },
         {
-          "name": "Server 2",
-          "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
+          "name": "Server 2 (Multiembed HD)",
+          "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=1"
+        },
+        {
+          "name": "Server 3 (VidSrc)",
+          "url": "https://vidsrc.to/embed/tv/200946/1/1"
         }
       ],
       "cast": [
@@ -21002,312 +21033,417 @@
       "episodes": [
         {
           "number": "01",
-          "title": "Episode 1",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
+          "season": 1,
+          "title": "The Puzzle",
+          "duration": "43m",
+          "streamUrl": "https://vidlink.pro/tv/200946/1/1",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/200946/1/1"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=1"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/200946/1/1"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/200946/1/1",
+            "Original Audio": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=1"
           }
         },
         {
           "number": "02",
-          "title": "Episode 2",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
+          "season": 1,
+          "title": "Editorial Cartoon",
+          "duration": "42m",
+          "streamUrl": "https://vidlink.pro/tv/200946/1/2",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/200946/1/2"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=2"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/200946/1/2"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/200946/1/2",
+            "Original Audio": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=2"
           }
         },
         {
           "number": "03",
-          "title": "Episode 3",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
+          "season": 1,
+          "title": "Horoscope",
+          "duration": "38m",
+          "streamUrl": "https://vidlink.pro/tv/200946/1/3",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/200946/1/3"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=3"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/200946/1/3"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/200946/1/3",
+            "Original Audio": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=3"
           }
         },
         {
           "number": "04",
-          "title": "Episode 4",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
+          "season": 1,
+          "title": "Crime Report",
+          "duration": "45m",
+          "streamUrl": "https://vidlink.pro/tv/200946/1/4",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/200946/1/4"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=4"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/200946/1/4"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/200946/1/4",
+            "Original Audio": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=4"
           }
         },
         {
           "number": "05",
-          "title": "Episode 5",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
+          "season": 1,
+          "title": "Page 3",
+          "duration": "38m",
+          "streamUrl": "https://vidlink.pro/tv/200946/1/5",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/200946/1/5"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=5"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/200946/1/5"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/200946/1/5",
+            "Original Audio": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=5"
           }
         },
         {
           "number": "06",
-          "title": "Episode 6",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
+          "season": 1,
+          "title": "This Day, That Year",
+          "duration": "58m",
+          "streamUrl": "https://vidlink.pro/tv/200946/1/6",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/200946/1/6"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=6"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/200946/1/6"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/200946/1/6",
+            "Original Audio": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=6"
           }
         },
         {
           "number": "07",
-          "title": "Episode 7",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
+          "season": 1,
+          "title": "Continued on Page 6",
+          "duration": "41m",
+          "streamUrl": "https://vidlink.pro/tv/200946/1/7",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/200946/1/7"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=7"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/200946/1/7"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/200946/1/7",
+            "Original Audio": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=7"
           }
         },
         {
           "number": "08",
-          "title": "Episode 8",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
+          "season": 1,
+          "title": "Headlines",
+          "duration": "43m",
+          "streamUrl": "https://vidlink.pro/tv/200946/1/8",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/200946/1/8"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=8"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/200946/1/8"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
-          }
-        },
-        {
-          "number": "09",
-          "title": "Episode 9",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
-          "servers": [
-            {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
-            }
-          ],
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
-          }
-        },
-        {
-          "number": "10",
-          "title": "Episode 10",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
-          "servers": [
-            {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
-            }
-          ],
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
-          }
-        },
-        {
-          "number": "11",
-          "title": "Episode 11",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
-          "servers": [
-            {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
-            }
-          ],
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
-          }
-        },
-        {
-          "number": "12",
-          "title": "Episode 12",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
-          "servers": [
-            {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
-            }
-          ],
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
-          }
-        },
-        {
-          "number": "13",
-          "title": "Episode 13",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
-          "servers": [
-            {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
-            }
-          ],
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
-          }
-        },
-        {
-          "number": "14",
-          "title": "Episode 14",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
-          "servers": [
-            {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
-            }
-          ],
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
-          }
-        },
-        {
-          "number": "15",
-          "title": "Episode 15",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
-          "servers": [
-            {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
-            }
-          ],
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
-          }
-        },
-        {
-          "number": "16",
-          "title": "Episode 16",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531",
-          "servers": [
-            {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/71d8cce61ff813eddb7d013ef1d65868.mp4?sign=ee38734499586c555ed1e37649f7914a&t=1792689159"
-            }
-          ],
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a9177671362a1f660dca4224d7b954cd.mp4?sign=d2e1eee09ef9dd545cf986c6eaad2179&t=1792688531"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/200946/1/8",
+            "Original Audio": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=8"
           }
         }
       ],
       "type": "series",
       "tmdbId": 200946,
-      "releaseDate": "2023-11-30"
+      "releaseDate": "2023-11-30",
+      "seasons": [
+        {
+          "seasonNumber": 1,
+          "name": "Season 1 (8 Eps)",
+          "episodeCount": 8,
+          "episodes": [
+            {
+              "number": "01",
+              "season": 1,
+              "title": "The Puzzle",
+              "duration": "43m",
+              "streamUrl": "https://vidlink.pro/tv/200946/1/1",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/200946/1/1"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=1"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/200946/1/1"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/200946/1/1",
+                "Original Audio": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=1"
+              }
+            },
+            {
+              "number": "02",
+              "season": 1,
+              "title": "Editorial Cartoon",
+              "duration": "42m",
+              "streamUrl": "https://vidlink.pro/tv/200946/1/2",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/200946/1/2"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=2"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/200946/1/2"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/200946/1/2",
+                "Original Audio": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=2"
+              }
+            },
+            {
+              "number": "03",
+              "season": 1,
+              "title": "Horoscope",
+              "duration": "38m",
+              "streamUrl": "https://vidlink.pro/tv/200946/1/3",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/200946/1/3"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=3"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/200946/1/3"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/200946/1/3",
+                "Original Audio": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=3"
+              }
+            },
+            {
+              "number": "04",
+              "season": 1,
+              "title": "Crime Report",
+              "duration": "45m",
+              "streamUrl": "https://vidlink.pro/tv/200946/1/4",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/200946/1/4"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=4"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/200946/1/4"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/200946/1/4",
+                "Original Audio": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=4"
+              }
+            },
+            {
+              "number": "05",
+              "season": 1,
+              "title": "Page 3",
+              "duration": "38m",
+              "streamUrl": "https://vidlink.pro/tv/200946/1/5",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/200946/1/5"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=5"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/200946/1/5"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/200946/1/5",
+                "Original Audio": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=5"
+              }
+            },
+            {
+              "number": "06",
+              "season": 1,
+              "title": "This Day, That Year",
+              "duration": "58m",
+              "streamUrl": "https://vidlink.pro/tv/200946/1/6",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/200946/1/6"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=6"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/200946/1/6"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/200946/1/6",
+                "Original Audio": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=6"
+              }
+            },
+            {
+              "number": "07",
+              "season": 1,
+              "title": "Continued on Page 6",
+              "duration": "41m",
+              "streamUrl": "https://vidlink.pro/tv/200946/1/7",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/200946/1/7"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=7"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/200946/1/7"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/200946/1/7",
+                "Original Audio": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=7"
+              }
+            },
+            {
+              "number": "08",
+              "season": 1,
+              "title": "Headlines",
+              "duration": "43m",
+              "streamUrl": "https://vidlink.pro/tv/200946/1/8",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/200946/1/8"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=8"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/200946/1/8"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/200946/1/8",
+                "Original Audio": "https://multiembed.mov/?video_id=200946&tmdb=1&s=1&e=8"
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "mb-s-5985714864478734088",
@@ -22379,22 +22515,26 @@
       "category": "South Indian Series",
       "rating": "7.9",
       "imdbRating": "7.9",
-      "poster": "https://image.tmdb.org/t/p/w500/u1i7gHh0Pz7b3b4QeE8K1r1k1k1.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/u1i7gHh0Pz7b3b4QeE8K1r1k1k1.jpg",
+      "poster": "https://image.tmdb.org/t/p/w500/4kUF7cO76W4vEx70KVfwmju6Vud.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/m9m5FpW5q9R37qC8wH5P3A3bQ4z.jpg",
       "description": "Rana Naidu is the go-to problem solver for the rich and famous, until his estranged father is released from prison.",
       "audioTracks": [
         "Hindi dub"
       ],
       "selectedAudio": "Hindi dub",
-      "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
+      "streamUrl": "https://vidlink.pro/tv/203202/1/1",
       "servers": [
         {
-          "name": "Server 1",
-          "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+          "name": "Server 1 (Vidlink Fast)",
+          "url": "https://vidlink.pro/tv/203202/1/1"
         },
         {
-          "name": "Server 2",
-          "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
+          "name": "Server 2 (Multiembed HD)",
+          "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=1"
+        },
+        {
+          "name": "Server 3 (VidSrc)",
+          "url": "https://vidsrc.to/embed/tv/203202/1/1"
         }
       ],
       "cast": [
@@ -22409,316 +22549,728 @@
           "photo": "https://image.tmdb.org/t/p/w185/bN6U3cLrC5rQ6vXw4Y8Z0fA9.jpg"
         }
       ],
-      "seasonsCount": 1,
+      "seasonsCount": 2,
       "episodes": [
         {
           "number": "01",
-          "title": "Episode 1",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
+          "season": 1,
+          "title": "He's back",
+          "duration": "59m",
+          "streamUrl": "https://vidlink.pro/tv/203202/1/1",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/203202/1/1"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=1"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/203202/1/1"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/1",
+            "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=1"
           }
         },
         {
           "number": "02",
-          "title": "Episode 2",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
+          "season": 1,
+          "title": "Teen karod",
+          "duration": "49m",
+          "streamUrl": "https://vidlink.pro/tv/203202/1/2",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/203202/1/2"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=2"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/203202/1/2"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/2",
+            "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=2"
           }
         },
         {
           "number": "03",
-          "title": "Episode 3",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
+          "season": 1,
+          "title": "Koi mar gaya kya?",
+          "duration": "48m",
+          "streamUrl": "https://vidlink.pro/tv/203202/1/3",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/203202/1/3"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=3"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/203202/1/3"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/3",
+            "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=3"
           }
         },
         {
           "number": "04",
-          "title": "Episode 4",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
+          "season": 1,
+          "title": "Baap bete ke rishte",
+          "duration": "41m",
+          "streamUrl": "https://vidlink.pro/tv/203202/1/4",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/203202/1/4"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=4"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/203202/1/4"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/4",
+            "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=4"
           }
         },
         {
           "number": "05",
-          "title": "Episode 5",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
+          "season": 1,
+          "title": "Kitna gurda, kitna goo",
+          "duration": "47m",
+          "streamUrl": "https://vidlink.pro/tv/203202/1/5",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/203202/1/5"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=5"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/203202/1/5"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/5",
+            "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=5"
           }
         },
         {
           "number": "06",
-          "title": "Episode 6",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
+          "season": 1,
+          "title": "Bheje ku light, gote ku tight",
+          "duration": "53m",
+          "streamUrl": "https://vidlink.pro/tv/203202/1/6",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/203202/1/6"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=6"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/203202/1/6"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/6",
+            "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=6"
           }
         },
         {
           "number": "07",
-          "title": "Episode 7",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
+          "season": 1,
+          "title": "Nitya",
+          "duration": "49m",
+          "streamUrl": "https://vidlink.pro/tv/203202/1/7",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/203202/1/7"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=7"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/203202/1/7"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/7",
+            "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=7"
           }
         },
         {
           "number": "08",
-          "title": "Episode 8",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
+          "season": 1,
+          "title": "Tu kya kiya?",
+          "duration": "46m",
+          "streamUrl": "https://vidlink.pro/tv/203202/1/8",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/203202/1/8"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=8"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/203202/1/8"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/8",
+            "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=8"
           }
         },
         {
           "number": "09",
-          "title": "Episode 9",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
+          "season": 1,
+          "title": "Maharaj",
+          "duration": "43m",
+          "streamUrl": "https://vidlink.pro/tv/203202/1/9",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/203202/1/9"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=9"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/203202/1/9"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/9",
+            "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=9"
           }
         },
         {
           "number": "10",
-          "title": "Episode 10",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
+          "season": 1,
+          "title": "Game over g*ndu",
+          "duration": "42m",
+          "streamUrl": "https://vidlink.pro/tv/203202/1/10",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/203202/1/10"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=10"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/203202/1/10"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
-          }
-        },
-        {
-          "number": "11",
-          "title": "Episode 11",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
-          "servers": [
-            {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
-            }
-          ],
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
-          }
-        },
-        {
-          "number": "12",
-          "title": "Episode 12",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
-          "servers": [
-            {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
-            }
-          ],
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
-          }
-        },
-        {
-          "number": "13",
-          "title": "Episode 13",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
-          "servers": [
-            {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
-            }
-          ],
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
-          }
-        },
-        {
-          "number": "14",
-          "title": "Episode 14",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
-          "servers": [
-            {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
-            }
-          ],
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
-          }
-        },
-        {
-          "number": "15",
-          "title": "Episode 15",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
-          "servers": [
-            {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
-            }
-          ],
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
-          }
-        },
-        {
-          "number": "16",
-          "title": "Episode 16",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952",
-          "servers": [
-            {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
-            },
-            {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/426af6f8014a125ed58db1536fe0799a.mp4?sign=45bc180ed5cf997756d393533c3b121d&t=1792689540"
-            }
-          ],
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/10",
+            "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=10"
           }
         }
       ],
       "type": "series",
       "tmdbId": 203202,
-      "releaseDate": "2023-03-10"
+      "releaseDate": "2023-03-10",
+      "seasons": [
+        {
+          "seasonNumber": 1,
+          "name": "Season 1 (10 Eps)",
+          "episodeCount": 10,
+          "episodes": [
+            {
+              "number": "01",
+              "season": 1,
+              "title": "He's back",
+              "duration": "59m",
+              "streamUrl": "https://vidlink.pro/tv/203202/1/1",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/1/1"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=1"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/1/1"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/1",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=1"
+              }
+            },
+            {
+              "number": "02",
+              "season": 1,
+              "title": "Teen karod",
+              "duration": "49m",
+              "streamUrl": "https://vidlink.pro/tv/203202/1/2",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/1/2"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=2"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/1/2"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/2",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=2"
+              }
+            },
+            {
+              "number": "03",
+              "season": 1,
+              "title": "Koi mar gaya kya?",
+              "duration": "48m",
+              "streamUrl": "https://vidlink.pro/tv/203202/1/3",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/1/3"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=3"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/1/3"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/3",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=3"
+              }
+            },
+            {
+              "number": "04",
+              "season": 1,
+              "title": "Baap bete ke rishte",
+              "duration": "41m",
+              "streamUrl": "https://vidlink.pro/tv/203202/1/4",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/1/4"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=4"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/1/4"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/4",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=4"
+              }
+            },
+            {
+              "number": "05",
+              "season": 1,
+              "title": "Kitna gurda, kitna goo",
+              "duration": "47m",
+              "streamUrl": "https://vidlink.pro/tv/203202/1/5",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/1/5"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=5"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/1/5"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/5",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=5"
+              }
+            },
+            {
+              "number": "06",
+              "season": 1,
+              "title": "Bheje ku light, gote ku tight",
+              "duration": "53m",
+              "streamUrl": "https://vidlink.pro/tv/203202/1/6",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/1/6"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=6"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/1/6"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/6",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=6"
+              }
+            },
+            {
+              "number": "07",
+              "season": 1,
+              "title": "Nitya",
+              "duration": "49m",
+              "streamUrl": "https://vidlink.pro/tv/203202/1/7",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/1/7"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=7"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/1/7"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/7",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=7"
+              }
+            },
+            {
+              "number": "08",
+              "season": 1,
+              "title": "Tu kya kiya?",
+              "duration": "46m",
+              "streamUrl": "https://vidlink.pro/tv/203202/1/8",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/1/8"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=8"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/1/8"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/8",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=8"
+              }
+            },
+            {
+              "number": "09",
+              "season": 1,
+              "title": "Maharaj",
+              "duration": "43m",
+              "streamUrl": "https://vidlink.pro/tv/203202/1/9",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/1/9"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=9"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/1/9"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/9",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=9"
+              }
+            },
+            {
+              "number": "10",
+              "season": 1,
+              "title": "Game over g*ndu",
+              "duration": "42m",
+              "streamUrl": "https://vidlink.pro/tv/203202/1/10",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/1/10"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=10"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/1/10"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/1/10",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=1&e=10"
+              }
+            }
+          ]
+        },
+        {
+          "seasonNumber": 2,
+          "name": "Season 2 (8 Eps)",
+          "episodeCount": 8,
+          "episodes": [
+            {
+              "number": "01",
+              "season": 2,
+              "title": "One Last Job",
+              "duration": "53m",
+              "streamUrl": "https://vidlink.pro/tv/203202/2/1",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/2/1"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=2&e=1"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/2/1"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/2/1",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=2&e=1"
+              }
+            },
+            {
+              "number": "02",
+              "season": 2,
+              "title": "Bada Kutta",
+              "duration": "46m",
+              "streamUrl": "https://vidlink.pro/tv/203202/2/2",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/2/2"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=2&e=2"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/2/2"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/2/2",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=2&e=2"
+              }
+            },
+            {
+              "number": "03",
+              "season": 2,
+              "title": "Well Played, Mr Naidu",
+              "duration": "54m",
+              "streamUrl": "https://vidlink.pro/tv/203202/2/3",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/2/3"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=2&e=3"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/2/3"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/2/3",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=2&e=3"
+              }
+            },
+            {
+              "number": "04",
+              "season": 2,
+              "title": "Kacchaa Limbu Saalaa",
+              "duration": "46m",
+              "streamUrl": "https://vidlink.pro/tv/203202/2/4",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/2/4"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=2&e=4"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/2/4"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/2/4",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=2&e=4"
+              }
+            },
+            {
+              "number": "05",
+              "season": 2,
+              "title": "It Will Never Be Okay",
+              "duration": "44m",
+              "streamUrl": "https://vidlink.pro/tv/203202/2/5",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/2/5"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=2&e=5"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/2/5"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/2/5",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=2&e=5"
+              }
+            },
+            {
+              "number": "06",
+              "season": 2,
+              "title": "Double Dholki",
+              "duration": "31m",
+              "streamUrl": "https://vidlink.pro/tv/203202/2/6",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/2/6"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=2&e=6"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/2/6"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/2/6",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=2&e=6"
+              }
+            },
+            {
+              "number": "07",
+              "season": 2,
+              "title": "Sumdi Mein Lomdi",
+              "duration": "41m",
+              "streamUrl": "https://vidlink.pro/tv/203202/2/7",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/2/7"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=2&e=7"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/2/7"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/2/7",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=2&e=7"
+              }
+            },
+            {
+              "number": "08",
+              "season": 2,
+              "title": "One Last Job, Again",
+              "duration": "50m",
+              "streamUrl": "https://vidlink.pro/tv/203202/2/8",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/203202/2/8"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=203202&tmdb=1&s=2&e=8"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/203202/2/8"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/203202/2/8",
+                "Original Audio": "https://multiembed.mov/?video_id=203202&tmdb=1&s=2&e=8"
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "mb-s-760560240680133656",
@@ -28070,314 +28622,1318 @@
       "poster": "https://image.tmdb.org/t/p/w500/bE71f9A3eztjcd5JT3MmHB8MbzA.jpg",
       "backdrop": "https://image.tmdb.org/t/p/original/9qq8LpOoBLYq8MxiMugn0gf9qJd.jpg",
       "description": "Eda, who ties all her hopes to her education, confronts Serkan Bolat, who cuts off her international education scholarship and leaves her with high school diploma. Serkan Bolat offers Eda to give her scholarship back if she pretends to be his fiance for two months. Although Eda rejects the offer of this man as she hates him, she has to accept it when the conditions change. While pretending to be engaged, Serkan and Eda begin to experience a passionate, challenging relationship that will make them forget all they know right. Because love is difficult. And that's why it's amazing.",
-      "seasonsCount": 1,
+      "seasonsCount": 2,
       "seasons": [
         {
           "seasonNumber": 1,
-          "seasonTitle": "Season 1",
+          "name": "Season 1 (39 Eps)",
+          "episodeCount": 39,
           "episodes": [
             {
               "number": "01",
-              "title": "Episode 1",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=1",
+              "season": 1,
+              "title": "You Knock on My Door (1)",
+              "duration": "129m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/1",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/1"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
                   "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=1"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
-                  "url": "https://autoembed.co/tv/tmdb/104877/1/1"
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/1"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=1"
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/1",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=1"
               }
             },
             {
               "number": "02",
-              "title": "Episode 2",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=2",
+              "season": 1,
+              "title": "You Knock on My Door (2)",
+              "duration": "142m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/2",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/2"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
                   "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=2"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
-                  "url": "https://autoembed.co/tv/tmdb/104877/1/2"
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/2"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=2"
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/2",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=2"
               }
             },
             {
               "number": "03",
-              "title": "Episode 3",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=3",
+              "season": 1,
+              "title": "You Knock on My Door (3)",
+              "duration": "136m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/3",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/3"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
                   "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=3"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
-                  "url": "https://autoembed.co/tv/tmdb/104877/1/3"
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/3"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=3"
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/3",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=3"
               }
             },
             {
               "number": "04",
-              "title": "Episode 4",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=4",
+              "season": 1,
+              "title": "Game of Lovers",
+              "duration": "133m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/4",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/4"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
                   "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=4"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
-                  "url": "https://autoembed.co/tv/tmdb/104877/1/4"
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/4"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=4"
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/4",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=4"
               }
             },
             {
               "number": "05",
-              "title": "Episode 5",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=5",
+              "season": 1,
+              "title": "Love in the Mediterranean",
+              "duration": "120m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/5",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/5"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
                   "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=5"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
-                  "url": "https://autoembed.co/tv/tmdb/104877/1/5"
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/5"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=5"
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/5",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=5"
               }
             },
             {
               "number": "06",
-              "title": "Episode 6",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=6",
+              "season": 1,
+              "title": "Mysterious Day",
+              "duration": "132m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/6",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/6"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
                   "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=6"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
-                  "url": "https://autoembed.co/tv/tmdb/104877/1/6"
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/6"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=6"
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/6",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=6"
               }
             },
             {
               "number": "07",
-              "title": "Episode 7",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=7",
+              "season": 1,
+              "title": "Love is a Game",
+              "duration": "136m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/7",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/7"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
                   "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=7"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
-                  "url": "https://autoembed.co/tv/tmdb/104877/1/7"
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/7"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=7"
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/7",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=7"
               }
             },
             {
               "number": "08",
-              "title": "Episode 8",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=8",
+              "season": 1,
+              "title": "Self-Confidence",
+              "duration": "151m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/8",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/8"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
                   "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=8"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
-                  "url": "https://autoembed.co/tv/tmdb/104877/1/8"
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/8"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=8"
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/8",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=8"
               }
             },
             {
               "number": "09",
-              "title": "Episode 9",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=9",
+              "season": 1,
+              "title": "Pride in Love",
+              "duration": "134m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/9",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/9"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
                   "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=9"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
-                  "url": "https://autoembed.co/tv/tmdb/104877/1/9"
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/9"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=9"
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/9",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=9"
               }
             },
             {
               "number": "10",
-              "title": "Episode 10",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=10",
+              "season": 1,
+              "title": "Surprise in Love",
+              "duration": "136m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/10",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/10"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
                   "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=10"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
-                  "url": "https://autoembed.co/tv/tmdb/104877/1/10"
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/10"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=10"
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/10",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=10"
               }
             },
             {
               "number": "11",
-              "title": "Episode 11",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=11",
+              "season": 1,
+              "title": "Don't Go Eda",
+              "duration": "144m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/11",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/11"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
                   "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=11"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
-                  "url": "https://autoembed.co/tv/tmdb/104877/1/11"
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/11"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=11"
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/11",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=11"
               }
             },
             {
               "number": "12",
-              "title": "Episode 12",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=12",
+              "season": 1,
+              "title": "Don't Break From Love",
+              "duration": "149m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/12",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/12"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
                   "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=12"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
-                  "url": "https://autoembed.co/tv/tmdb/104877/1/12"
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/12"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=12"
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/12",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=12"
               }
             },
             {
               "number": "13",
-              "title": "Episode 13",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=13",
+              "season": 1,
+              "title": "Breathless",
+              "duration": "146m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/13",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/13"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
                   "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=13"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
-                  "url": "https://autoembed.co/tv/tmdb/104877/1/13"
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/13"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=13"
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/13",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=13"
               }
             },
             {
               "number": "14",
-              "title": "Episode 14",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=14",
+              "season": 1,
+              "title": "I'd Like to Forget",
+              "duration": "133m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/14",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/14"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
                   "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=14"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
-                  "url": "https://autoembed.co/tv/tmdb/104877/1/14"
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/14"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=14"
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/14",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=14"
               }
             },
             {
               "number": "15",
-              "title": "Episode 15",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=15",
+              "season": 1,
+              "title": "Soulmate",
+              "duration": "111m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/15",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/15"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
                   "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=15"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
-                  "url": "https://autoembed.co/tv/tmdb/104877/1/15"
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/15"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=15"
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/15",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=15"
               }
             },
             {
               "number": "16",
-              "title": "Episode 16",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=16",
+              "season": 1,
+              "title": "Love is Feeling",
+              "duration": "131m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/16",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/16"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
                   "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=16"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
-                  "url": "https://autoembed.co/tv/tmdb/104877/1/16"
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/16"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=16"
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/16",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=16"
+              }
+            },
+            {
+              "number": "17",
+              "season": 1,
+              "title": "You Knock on My Door (4)",
+              "duration": "128m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/17",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/17"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=17"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/17"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/17",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=17"
+              }
+            },
+            {
+              "number": "18",
+              "season": 1,
+              "title": "Love You So Much",
+              "duration": "133m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/18",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/18"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=18"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/18"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/18",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=18"
+              }
+            },
+            {
+              "number": "19",
+              "season": 1,
+              "title": "You Knock on My Door (5)",
+              "duration": "135m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/19",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/19"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=19"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/19"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/19",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=19"
+              }
+            },
+            {
+              "number": "20",
+              "season": 1,
+              "title": "Two Loving Hearts",
+              "duration": "145m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/20",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/20"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=20"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/20"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/20",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=20"
+              }
+            },
+            {
+              "number": "21",
+              "season": 1,
+              "title": "Feel Us",
+              "duration": "131m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/21",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/21"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=21"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/21"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/21",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=21"
+              }
+            },
+            {
+              "number": "22",
+              "season": 1,
+              "title": "Spoiled Lover",
+              "duration": "139m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/22",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/22"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=22"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/22"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/22",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=22"
+              }
+            },
+            {
+              "number": "23",
+              "season": 1,
+              "title": "Love Has No Language",
+              "duration": "133m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/23",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/23"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=23"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/23"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/23",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=23"
+              }
+            },
+            {
+              "number": "24",
+              "season": 1,
+              "title": "You Became My Heart",
+              "duration": "140m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/24",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/24"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=24"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/24"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/24",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=24"
+              }
+            },
+            {
+              "number": "25",
+              "season": 1,
+              "title": "You’re My Breath",
+              "duration": "130m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/25",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/25"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=25"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/25"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/25",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=25"
+              }
+            },
+            {
+              "number": "26",
+              "season": 1,
+              "title": "I’m Officially in Love",
+              "duration": "128m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/26",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/26"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=26"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/26"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/26",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=26"
+              }
+            },
+            {
+              "number": "27",
+              "season": 1,
+              "title": "Everything is Beautiful With You",
+              "duration": "135m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/27",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/27"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=27"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/27"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/27",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=27"
+              }
+            },
+            {
+              "number": "28",
+              "season": 1,
+              "title": "Eda Bolat",
+              "duration": "143m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/28",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/28"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=28"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/28"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/28",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=28"
+              }
+            },
+            {
+              "number": "29",
+              "season": 1,
+              "title": "Me Before You",
+              "duration": "138m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/29",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/29"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=29"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/29"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/29",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=29"
+              }
+            },
+            {
+              "number": "30",
+              "season": 1,
+              "title": "Heart Doesn’t Forget",
+              "duration": "135m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/30",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/30"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=30"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/30"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/30",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=30"
+              }
+            },
+            {
+              "number": "31",
+              "season": 1,
+              "title": "True Love",
+              "duration": "131m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/31",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/31"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=31"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/31"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/31",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=31"
+              }
+            },
+            {
+              "number": "32",
+              "season": 1,
+              "title": "Love is Forbidden",
+              "duration": "131m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/32",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/32"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=32"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/32"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/32",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=32"
+              }
+            },
+            {
+              "number": "33",
+              "season": 1,
+              "title": "There’s Love in Your Scent",
+              "duration": "129m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/33",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/33"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=33"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/33"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/33",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=33"
+              }
+            },
+            {
+              "number": "34",
+              "season": 1,
+              "title": "You Knock On My Door (6)",
+              "duration": "132m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/34",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/34"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=34"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/34"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/34",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=34"
+              }
+            },
+            {
+              "number": "35",
+              "season": 1,
+              "title": "I Remember",
+              "duration": "132m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/35",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/35"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=35"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/35"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/35",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=35"
+              }
+            },
+            {
+              "number": "36",
+              "season": 1,
+              "title": "Big Love",
+              "duration": "129m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/36",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/36"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=36"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/36"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/36",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=36"
+              }
+            },
+            {
+              "number": "37",
+              "season": 1,
+              "title": "You Are My World",
+              "duration": "141m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/37",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/37"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=37"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/37"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/37",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=37"
+              }
+            },
+            {
+              "number": "38",
+              "season": 1,
+              "title": "The Angels Promised Me",
+              "duration": "124m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/38",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/38"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=38"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/38"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/38",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=38"
+              }
+            },
+            {
+              "number": "39",
+              "season": 1,
+              "title": "We'll Meet Again",
+              "duration": "110m",
+              "streamUrl": "https://vidlink.pro/tv/104877/1/39",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/1/39"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=39"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/1/39"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/39",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=39"
+              }
+            }
+          ]
+        },
+        {
+          "seasonNumber": 2,
+          "name": "Season 2 (13 Eps)",
+          "episodeCount": 13,
+          "episodes": [
+            {
+              "number": "01",
+              "season": 2,
+              "title": "SÇK Once Again!",
+              "duration": "145m",
+              "streamUrl": "https://vidlink.pro/tv/104877/2/1",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/2/1"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=1"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/2/1"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/2/1",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=1"
+              }
+            },
+            {
+              "number": "02",
+              "season": 2,
+              "title": "I'm Still in Love",
+              "duration": "144m",
+              "streamUrl": "https://vidlink.pro/tv/104877/2/2",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/2/2"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=2"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/2/2"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/2/2",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=2"
+              }
+            },
+            {
+              "number": "03",
+              "season": 2,
+              "title": "Don't Run Away From Love",
+              "duration": "135m",
+              "streamUrl": "https://vidlink.pro/tv/104877/2/3",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/2/3"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=3"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/2/3"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/2/3",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=3"
+              }
+            },
+            {
+              "number": "04",
+              "season": 2,
+              "title": "Happy Birthday, my Daughter!",
+              "duration": "131m",
+              "streamUrl": "https://vidlink.pro/tv/104877/2/4",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/2/4"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=4"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/2/4"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/2/4",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=4"
+              }
+            },
+            {
+              "number": "05",
+              "season": 2,
+              "title": "Being a Father",
+              "duration": "138m",
+              "streamUrl": "https://vidlink.pro/tv/104877/2/5",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/2/5"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=5"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/2/5"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/2/5",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=5"
+              }
+            },
+            {
+              "number": "06",
+              "season": 2,
+              "title": "It's Good That You Came Dad",
+              "duration": "135m",
+              "streamUrl": "https://vidlink.pro/tv/104877/2/6",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/2/6"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=6"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/2/6"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/2/6",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=6"
+              }
+            },
+            {
+              "number": "07",
+              "season": 2,
+              "title": "Marry Me?",
+              "duration": "133m",
+              "streamUrl": "https://vidlink.pro/tv/104877/2/7",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/2/7"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=7"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/2/7"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/2/7",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=7"
+              }
+            },
+            {
+              "number": "08",
+              "season": 2,
+              "title": "You Knock On My Door",
+              "duration": "132m",
+              "streamUrl": "https://vidlink.pro/tv/104877/2/8",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/2/8"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=8"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/2/8"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/2/8",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=8"
+              }
+            },
+            {
+              "number": "09",
+              "season": 2,
+              "title": "Love Won",
+              "duration": "123m",
+              "streamUrl": "https://vidlink.pro/tv/104877/2/9",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/2/9"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=9"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/2/9"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/2/9",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=9"
+              }
+            },
+            {
+              "number": "10",
+              "season": 2,
+              "title": "Everything From the Start",
+              "duration": "125m",
+              "streamUrl": "https://vidlink.pro/tv/104877/2/10",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/2/10"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=10"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/2/10"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/2/10",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=10"
+              }
+            },
+            {
+              "number": "11",
+              "season": 2,
+              "title": "Baby Bolat",
+              "duration": "122m",
+              "streamUrl": "https://vidlink.pro/tv/104877/2/11",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/2/11"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=11"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/2/11"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/2/11",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=11"
+              }
+            },
+            {
+              "number": "12",
+              "season": 2,
+              "title": "Happy Birthday Serkan Bolat!",
+              "duration": "115m",
+              "streamUrl": "https://vidlink.pro/tv/104877/2/12",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/2/12"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=12"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/2/12"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/2/12",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=12"
+              }
+            },
+            {
+              "number": "13",
+              "season": 2,
+              "title": "Last Time You Knock on My Door!",
+              "duration": "119m",
+              "streamUrl": "https://vidlink.pro/tv/104877/2/13",
+              "servers": [
+                {
+                  "name": "Server 1 (Vidlink Fast)",
+                  "url": "https://vidlink.pro/tv/104877/2/13"
+                },
+                {
+                  "name": "Server 2 (Multiembed HD)",
+                  "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=13"
+                },
+                {
+                  "name": "Server 3 (VidSrc)",
+                  "url": "https://vidsrc.to/embed/tv/104877/2/13"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/2/13",
+                "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=2&e=13"
               }
             }
           ]
@@ -28386,319 +29942,994 @@
       "episodes": [
         {
           "number": "01",
-          "title": "Episode 1",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+          "season": 1,
+          "title": "You Knock on My Door (1)",
+          "duration": "129m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/1",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/1"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=1"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/1"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/1",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=1"
           }
         },
         {
           "number": "02",
-          "title": "Episode 2",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+          "season": 1,
+          "title": "You Knock on My Door (2)",
+          "duration": "142m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/2",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/2"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=2"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/2"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/2",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=2"
           }
         },
         {
           "number": "03",
-          "title": "Episode 3",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+          "season": 1,
+          "title": "You Knock on My Door (3)",
+          "duration": "136m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/3",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/3"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=3"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/3"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/3",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=3"
           }
         },
         {
           "number": "04",
-          "title": "Episode 4",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+          "season": 1,
+          "title": "Game of Lovers",
+          "duration": "133m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/4",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/4"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=4"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/4"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/4",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=4"
           }
         },
         {
           "number": "05",
-          "title": "Episode 5",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+          "season": 1,
+          "title": "Love in the Mediterranean",
+          "duration": "120m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/5",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/5"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=5"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/5"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/5",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=5"
           }
         },
         {
           "number": "06",
-          "title": "Episode 6",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+          "season": 1,
+          "title": "Mysterious Day",
+          "duration": "132m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/6",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/6"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=6"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/6"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/6",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=6"
           }
         },
         {
           "number": "07",
-          "title": "Episode 7",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+          "season": 1,
+          "title": "Love is a Game",
+          "duration": "136m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/7",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/7"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=7"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/7"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/7",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=7"
           }
         },
         {
           "number": "08",
-          "title": "Episode 8",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+          "season": 1,
+          "title": "Self-Confidence",
+          "duration": "151m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/8",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/8"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=8"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/8"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/8",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=8"
           }
         },
         {
           "number": "09",
-          "title": "Episode 9",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+          "season": 1,
+          "title": "Pride in Love",
+          "duration": "134m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/9",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/9"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=9"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/9"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/9",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=9"
           }
         },
         {
           "number": "10",
-          "title": "Episode 10",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+          "season": 1,
+          "title": "Surprise in Love",
+          "duration": "136m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/10",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/10"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=10"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/10"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/10",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=10"
           }
         },
         {
           "number": "11",
-          "title": "Episode 11",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+          "season": 1,
+          "title": "Don't Go Eda",
+          "duration": "144m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/11",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/11"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=11"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/11"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/11",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=11"
           }
         },
         {
           "number": "12",
-          "title": "Episode 12",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+          "season": 1,
+          "title": "Don't Break From Love",
+          "duration": "149m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/12",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/12"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=12"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/12"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/12",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=12"
           }
         },
         {
           "number": "13",
-          "title": "Episode 13",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+          "season": 1,
+          "title": "Breathless",
+          "duration": "146m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/13",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/13"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=13"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/13"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/13",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=13"
           }
         },
         {
           "number": "14",
-          "title": "Episode 14",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+          "season": 1,
+          "title": "I'd Like to Forget",
+          "duration": "133m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/14",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/14"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=14"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/14"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/14",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=14"
           }
         },
         {
           "number": "15",
-          "title": "Episode 15",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+          "season": 1,
+          "title": "Soulmate",
+          "duration": "111m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/15",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/15"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=15"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/15"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/15",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=15"
           }
         },
         {
           "number": "16",
-          "title": "Episode 16",
-          "duration": "45m-60m",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+          "season": 1,
+          "title": "Love is Feeling",
+          "duration": "131m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/16",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/16"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=16"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/16"
             }
           ],
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/16",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=16"
+          }
+        },
+        {
+          "number": "17",
+          "season": 1,
+          "title": "You Knock on My Door (4)",
+          "duration": "128m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/17",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/17"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=17"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/17"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/17",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=17"
+          }
+        },
+        {
+          "number": "18",
+          "season": 1,
+          "title": "Love You So Much",
+          "duration": "133m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/18",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/18"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=18"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/18"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/18",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=18"
+          }
+        },
+        {
+          "number": "19",
+          "season": 1,
+          "title": "You Knock on My Door (5)",
+          "duration": "135m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/19",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/19"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=19"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/19"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/19",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=19"
+          }
+        },
+        {
+          "number": "20",
+          "season": 1,
+          "title": "Two Loving Hearts",
+          "duration": "145m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/20",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/20"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=20"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/20"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/20",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=20"
+          }
+        },
+        {
+          "number": "21",
+          "season": 1,
+          "title": "Feel Us",
+          "duration": "131m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/21",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/21"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=21"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/21"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/21",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=21"
+          }
+        },
+        {
+          "number": "22",
+          "season": 1,
+          "title": "Spoiled Lover",
+          "duration": "139m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/22",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/22"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=22"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/22"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/22",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=22"
+          }
+        },
+        {
+          "number": "23",
+          "season": 1,
+          "title": "Love Has No Language",
+          "duration": "133m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/23",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/23"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=23"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/23"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/23",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=23"
+          }
+        },
+        {
+          "number": "24",
+          "season": 1,
+          "title": "You Became My Heart",
+          "duration": "140m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/24",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/24"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=24"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/24"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/24",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=24"
+          }
+        },
+        {
+          "number": "25",
+          "season": 1,
+          "title": "You’re My Breath",
+          "duration": "130m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/25",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/25"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=25"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/25"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/25",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=25"
+          }
+        },
+        {
+          "number": "26",
+          "season": 1,
+          "title": "I’m Officially in Love",
+          "duration": "128m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/26",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/26"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=26"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/26"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/26",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=26"
+          }
+        },
+        {
+          "number": "27",
+          "season": 1,
+          "title": "Everything is Beautiful With You",
+          "duration": "135m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/27",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/27"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=27"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/27"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/27",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=27"
+          }
+        },
+        {
+          "number": "28",
+          "season": 1,
+          "title": "Eda Bolat",
+          "duration": "143m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/28",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/28"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=28"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/28"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/28",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=28"
+          }
+        },
+        {
+          "number": "29",
+          "season": 1,
+          "title": "Me Before You",
+          "duration": "138m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/29",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/29"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=29"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/29"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/29",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=29"
+          }
+        },
+        {
+          "number": "30",
+          "season": 1,
+          "title": "Heart Doesn’t Forget",
+          "duration": "135m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/30",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/30"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=30"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/30"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/30",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=30"
+          }
+        },
+        {
+          "number": "31",
+          "season": 1,
+          "title": "True Love",
+          "duration": "131m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/31",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/31"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=31"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/31"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/31",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=31"
+          }
+        },
+        {
+          "number": "32",
+          "season": 1,
+          "title": "Love is Forbidden",
+          "duration": "131m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/32",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/32"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=32"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/32"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/32",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=32"
+          }
+        },
+        {
+          "number": "33",
+          "season": 1,
+          "title": "There’s Love in Your Scent",
+          "duration": "129m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/33",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/33"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=33"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/33"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/33",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=33"
+          }
+        },
+        {
+          "number": "34",
+          "season": 1,
+          "title": "You Knock On My Door (6)",
+          "duration": "132m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/34",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/34"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=34"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/34"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/34",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=34"
+          }
+        },
+        {
+          "number": "35",
+          "season": 1,
+          "title": "I Remember",
+          "duration": "132m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/35",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/35"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=35"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/35"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/35",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=35"
+          }
+        },
+        {
+          "number": "36",
+          "season": 1,
+          "title": "Big Love",
+          "duration": "129m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/36",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/36"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=36"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/36"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/36",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=36"
+          }
+        },
+        {
+          "number": "37",
+          "season": 1,
+          "title": "You Are My World",
+          "duration": "141m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/37",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/37"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=37"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/37"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/37",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=37"
+          }
+        },
+        {
+          "number": "38",
+          "season": 1,
+          "title": "The Angels Promised Me",
+          "duration": "124m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/38",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/38"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=38"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/38"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/38",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=38"
+          }
+        },
+        {
+          "number": "39",
+          "season": 1,
+          "title": "We'll Meet Again",
+          "duration": "110m",
+          "streamUrl": "https://vidlink.pro/tv/104877/1/39",
+          "servers": [
+            {
+              "name": "Server 1 (Vidlink Fast)",
+              "url": "https://vidlink.pro/tv/104877/1/39"
+            },
+            {
+              "name": "Server 2 (Multiembed HD)",
+              "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=39"
+            },
+            {
+              "name": "Server 3 (VidSrc)",
+              "url": "https://vidsrc.to/embed/tv/104877/1/39"
+            }
+          ],
+          "audioTracks": {
+            "Hindi / Multi Audio": "https://vidlink.pro/tv/104877/1/39",
+            "Original Audio": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=39"
           }
         }
       ],
       "type": "series",
-      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827",
+      "streamUrl": "https://vidlink.pro/tv/104877/1/1",
       "servers": [
         {
-          "name": "Server 1",
-          "url": "https://bcdnxw.hakunaymatata.com/resource/811efbbec1b3247ab35029fce145d04f.mp4?sign=9bc185f107b9e3638b9b1401391d2076&t=1792686827"
+          "name": "Server 1 (Vidlink Fast)",
+          "url": "https://vidlink.pro/tv/104877/1/1"
         },
         {
-          "name": "Server 2",
-          "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250604/8292f81f734dd32a8e70dc8c6a2463ae.mp4?sign=d611b9b00280baa38be4f41313cf865f&t=1792689177"
+          "name": "Server 2 (Multiembed HD)",
+          "url": "https://multiembed.mov/?video_id=104877&tmdb=1&s=1&e=1"
+        },
+        {
+          "name": "Server 3 (VidSrc)",
+          "url": "https://vidsrc.to/embed/tv/104877/1/1"
         }
       ]
     },

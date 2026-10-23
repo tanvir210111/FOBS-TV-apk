@@ -2920,13 +2920,24 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
      !playableUrl.includes('vkcdn'))
   );
   if (isDirectMp4Source && !playableUrl.includes('googleusercontent.com') && audioIndex === null) {
+    appState.streamSeekOffset = 0;
     // If running in a browser outside Android APK, route hakunaymatata through proxy to include Referer
     if (!window.AndroidApp && (playableUrl.includes('hakunaymatata') || playableUrl.includes('bcdnxw') || playableUrl.includes('haildrop') || playableUrl.includes('fogtwist'))) {
       const proxyUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(playableUrl)}`;
       console.log('Playing MovieBox stream via server proxy (browser):', proxyUrl);
       videoPlayer.src = proxyUrl;
       videoPlayer.load();
-      if (seekTime && seekTime > 0) videoPlayer.currentTime = seekTime;
+      if (seekTime && seekTime > 0) {
+        const applySeek = () => {
+          try { videoPlayer.currentTime = seekTime; } catch (e) {}
+        };
+        if (videoPlayer.readyState >= 1) {
+          applySeek();
+        } else {
+          videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
+          videoPlayer.addEventListener('canplay', applySeek, { once: true });
+        }
+      }
       videoPlayer.play().catch(() => {});
       return;
     }
@@ -2935,7 +2946,15 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     videoPlayer.src = playableUrl;
     videoPlayer.load();
     if (seekTime && seekTime > 0) {
-      videoPlayer.currentTime = seekTime;
+      const applySeek = () => {
+        try { videoPlayer.currentTime = seekTime; } catch (e) {}
+      };
+      if (videoPlayer.readyState >= 1) {
+        applySeek();
+      } else {
+        videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
+        videoPlayer.addEventListener('canplay', applySeek, { once: true });
+      }
     }
     videoPlayer.play().catch(err => {
       console.log('Autoplay deferred until user taps video controls:', err.message);
@@ -3229,8 +3248,6 @@ function seekToAbsoluteTime(targetSeconds) {
 
   const duration = getMediaTotalDurationSeconds();
   const safeTarget = Math.max(0, Math.min(duration, Math.floor(targetSeconds)));
-  const streamOffset = appState.streamSeekOffset || 0;
-  const relTime = safeTarget - streamOffset;
 
   const curEp = appState.currentEpisode;
   const rawUrl = (curEp?.audioTracks && curEp.audioTracks[appState.currentAudioTrack]) 
@@ -3238,7 +3255,12 @@ function seekToAbsoluteTime(targetSeconds) {
     || appState.currentMedia?.streamUrl 
     || appState.currentMedia?.driveUrl;
 
-  const isTranscodedStream = rawUrl && (
+  const isServerStream = video.src && (
+    video.src.includes('/api/stream') ||
+    video.src.includes('/api/resolve')
+  );
+
+  const isTranscodedStream = isServerStream || (rawUrl && (
     rawUrl.includes('.mkv') ||
     rawUrl.includes('vcloud.you') ||
     rawUrl.includes('fast-dl') ||
@@ -3247,11 +3269,11 @@ function seekToAbsoluteTime(targetSeconds) {
     rawUrl.includes('upbolt') ||
     rawUrl.includes('it2k1jyiil2q') ||
     rawUrl.includes('.m3u8')
-  );
+  ));
 
-  // Standard MP4 & direct CDN streams (MovieBox, KMDL, Koyeb, etc.):
-  // Support ultra-fast native HTTP 206 byte-range seeking directly in browser/WebView
+  // Native MP4 & direct CDN streams: direct HTML5 byte-range seek
   if (!isTranscodedStream) {
+    appState.streamSeekOffset = 0;
     appState.pendingSeekTime = safeTarget;
 
     // Only show loader if seek takes longer than 350ms to prevent visual freezes
@@ -3264,11 +3286,7 @@ function seekToAbsoluteTime(targetSeconds) {
     }, 350);
 
     try {
-      if ('fastSeek' in video && typeof video.fastSeek === 'function') {
-        video.fastSeek(safeTarget);
-      } else {
-        video.currentTime = safeTarget;
-      }
+      video.currentTime = safeTarget;
       video.play().catch(() => {});
     } catch (e) {
       console.warn('Native seek error:', e);
@@ -3278,15 +3296,15 @@ function seekToAbsoluteTime(targetSeconds) {
     return;
   }
 
-  // Transcoded MKV/EAC3 live stream: check if target is inside downloaded buffer
+  // Server-proxied or transcoded stream:
+  // Check if target falls inside currently buffered chunk
+  const streamOffset = appState.streamSeekOffset || 0;
+  const relTime = safeTarget - streamOffset;
+
   if (relTime >= 0 && isTimeBuffered(video, relTime)) {
     appState.pendingSeekTime = safeTarget;
     try {
-      if ('fastSeek' in video && typeof video.fastSeek === 'function') {
-        video.fastSeek(relTime);
-      } else {
-        video.currentTime = relTime;
-      }
+      video.currentTime = relTime;
       video.play().catch(() => {});
     } catch (e) {
       appState.pendingSeekTime = null;
@@ -3295,7 +3313,7 @@ function seekToAbsoluteTime(targetSeconds) {
     return;
   }
 
-  // Transcoded stream outside buffer: request backend remux starting at safeTarget
+  // Target outside buffered chunk: request server stream starting at safeTarget
   if (rawUrl) {
     appState.pendingSeekTime = safeTarget;
     appState.streamSeekOffset = safeTarget;
@@ -4140,6 +4158,13 @@ function setupVideoListeners() {
   });
 
   videoPlayer.addEventListener('timeupdate', () => {
+    if (appState.pendingSeekTime !== null && appState.pendingSeekTime !== undefined) {
+      const streamOffset = appState.streamSeekOffset || 0;
+      const current = (videoPlayer.currentTime || 0) + streamOffset;
+      if (Math.abs(current - appState.pendingSeekTime) <= 2) {
+        appState.pendingSeekTime = null;
+      }
+    }
     updateLandscapeProgress();
   });
 
@@ -4150,6 +4175,7 @@ function setupVideoListeners() {
   videoPlayer.addEventListener('playing', () => {
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
     if (loader) loader.classList.remove('active');
+    appState.pendingSeekTime = null;
     syncPlayPauseIcons();
     resetLandscapeControlsTimer();
 
@@ -4184,6 +4210,7 @@ function setupVideoListeners() {
   videoPlayer.addEventListener('canplay', () => {
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
     videoPlayer._retryCount = 0;
+    appState.pendingSeekTime = null;
     if (loader) loader.classList.remove('active');
     updateLandscapeProgress();
   });

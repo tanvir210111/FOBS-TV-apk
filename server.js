@@ -702,10 +702,9 @@ app.all('/api/stream', async (req, res) => {
     targetUrl.includes('kmdl.eu.org')
   );
 
-  // Direct MP4 CDNs support fast native byte-range seeking without CPU-intensive FFmpeg
-  // Only route through FFmpeg if NOT a direct fast CDN AND format requires remuxing/transcoding
-  const isMkvOrEac3 = !isDirectFastCdn && (
-    seekTime > 0 ||
+  // If seeking requested (seekTime > 0), route through FFmpeg -ss to start stream at exact seek timestamp
+  // Otherwise direct MP4 CDNs support fast native byte-range streaming without FFmpeg
+  const isMkvOrEac3 = (seekTime > 0) || (!isDirectFastCdn && (
     targetUrl.includes('vcloud.you') || 
     targetUrl.includes('fast-dl') || 
     targetUrl.includes('.mkv') || 
@@ -715,7 +714,7 @@ app.all('/api/stream', async (req, res) => {
     targetUrl.includes('upbolt') || 
     targetUrl.includes('it2k1jyiil2q') || 
     (req.query.audio !== undefined && parseInt(req.query.audio, 10) > 0)
-  );
+  ));
 
   if (isMkvOrEac3 && ffmpegPath) {
     res.writeHead(200, {
@@ -767,8 +766,8 @@ app.all('/api/stream', async (req, res) => {
       '-c:v', 'copy'
     );
 
-    // Fast copy audio without re-encoding for Telegram file-to-link MP4s
-    if (isKoyebOrTelegram) {
+    // Fast copy audio without re-encoding for Telegram file-to-link MP4s or direct CDNs
+    if (isKoyebOrTelegram || isDirectFastCdn) {
       ffmpegArgs.push('-c:a', 'copy');
     } else {
       ffmpegArgs.push('-c:a', 'aac', '-ac', '2', '-b:a', '128k');
