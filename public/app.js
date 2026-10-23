@@ -3074,7 +3074,6 @@ function resetLandscapeControlsTimer() {
 
 function togglePlayerLock() {
   const lsUi = document.getElementById('landscapePlayerUI');
-  const lockIcon = document.getElementById('lsLockIcon');
   const lockIconSvg = document.getElementById('lsLockIconSvg');
   const lockText = document.getElementById('lsLockText');
   const lockBtn = document.getElementById('lsLockBtn');
@@ -3084,20 +3083,16 @@ function togglePlayerLock() {
   lsUi.classList.toggle('is-locked', isPlayerLocked);
 
   if (isPlayerLocked) {
-    if (lockIconSvg) lockIconSvg.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>';
-    if (lockIcon) {
-      lockIcon.className = 'fa-solid fa-lock';
-      lockIcon.classList.remove('hidden');
+    if (lockIconSvg) {
+      lockIconSvg.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>';
     }
     if (lockText) lockText.innerText = 'Tap to Unlock';
     if (lockBtn) lockBtn.classList.add('locked');
     closeLandscapeDrawers();
     showToast('Screen locked');
   } else {
-    if (lockIconSvg) lockIconSvg.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path>';
-    if (lockIcon) {
-      lockIcon.className = 'fa-solid fa-lock-open';
-      lockIcon.classList.remove('hidden');
+    if (lockIconSvg) {
+      lockIconSvg.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path>';
     }
     if (lockText) lockText.innerText = 'Tap to Lock';
     if (lockBtn) lockBtn.classList.remove('locked');
@@ -3967,7 +3962,7 @@ function formatPlayerTime(sec) {
 }
 
 function setupPlayerGestures() {
-  const tapDetector = document.getElementById('lsTapDetector');
+  const tapDetector = document.getElementById('playerTapDetector') || document.getElementById('lsTapDetector');
   if (!tapDetector) return;
 
   let isPointerDown = false;
@@ -4116,7 +4111,7 @@ function setupPlayerGestures() {
     const timeDiff = now - lastTapInfo.time;
     const distDiff = Math.hypot(clickX - lastTapInfo.x, clickY - lastTapInfo.y);
 
-    if (timeDiff < 320 && distDiff < 60 && lastTapInfo.side === currentSide) {
+    if (timeDiff < 280 && distDiff < 50 && lastTapInfo.side === currentSide) {
       // DOUBLE TAP!
       if (singleTapTimer) {
         clearTimeout(singleTapTimer);
@@ -4141,19 +4136,13 @@ function setupPlayerGestures() {
       if (singleTapTimer) clearTimeout(singleTapTimer);
       singleTapTimer = setTimeout(() => {
         handleSinglePlayerTap();
-      }, 240);
+        singleTapTimer = null;
+      }, 190);
     }
   };
 
   tapDetector.addEventListener('pointerup', onPointerEnd);
   tapDetector.addEventListener('pointercancel', onPointerEnd);
-
-  // Direct click fallback for devices where pointerup is swallowed
-  tapDetector.addEventListener('click', (e) => {
-    if (Date.now() - lastTapInfo.time > 350 && !isDragging) {
-      handleSinglePlayerTap();
-    }
-  });
 }
 
 // Setup Video Event Listeners
@@ -4164,16 +4153,8 @@ function setupVideoListeners() {
   const embedFrame = document.getElementById('mainEmbedPlayer');
   if (!videoPlayer) return;
 
-  // Portrait mode tap: clicking anywhere on videoContainer shows/hides controls
-  if (videoContainer) {
-    videoContainer.addEventListener('click', (e) => {
-      // Only handle if not clicking a control button or embed frame
-      const embedFrame = document.getElementById('mainEmbedPlayer');
-      if (embedFrame && embedFrame.style.display === 'block') return;
-      if (e.target.closest('button, .ls-action-pill, .ls-side-drawer, #lsTapDetector, .pt-progress-track-wrapper, .ls-progress-track-wrapper')) return;
-      handleSinglePlayerTap();
-    });
-  }
+  // All tap events (portrait + landscape) are handled by playerTapDetector in setupPlayerGestures()
+  // Do NOT add a second click listener on videoContainer — it causes double-firing.
 
   // Initialize Gesture Engine on the tap detector
   setupPlayerGestures();
