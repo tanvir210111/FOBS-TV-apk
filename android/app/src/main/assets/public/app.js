@@ -3321,7 +3321,13 @@ function seekToAbsoluteTime(targetSeconds) {
   const duration = getMediaTotalDurationSeconds();
   const safeTarget = Math.max(0, Math.min(duration, Math.floor(targetSeconds)));
 
-  // Immediate UI feedback on progress bar and time labels (locks to target immediately)
+  // If already at or very close to target (< 0.25s), simply resume playback
+  if (Math.abs((video.currentTime || 0) - safeTarget) < 0.25) {
+    video.play().catch(() => {});
+    return;
+  }
+
+  // Immediate UI feedback on progress bar and time labels
   const curEl = document.getElementById('lsCurrentTime');
   const durEl = document.getElementById('lsTotalDuration');
   const filledEl = document.getElementById('lsProgressFilled');
@@ -3344,38 +3350,19 @@ function seekToAbsoluteTime(targetSeconds) {
     if (ptThumbEl) ptThumbEl.style.left = `${pct}%`;
   }
 
-  const curEp = appState.currentEpisode;
-  const rawUrl = (curEp?.audioTracks && curEp.audioTracks[appState.currentAudioTrack]) 
-    || (curEp?.servers && curEp.servers.length > 0 && curEp.servers[appState.activeServerIndex || 0]?.url)
-    || curEp?.streamUrl 
-    || (appState.currentMedia?.servers && appState.currentMedia.servers.length > 0 && appState.currentMedia.servers[appState.activeServerIndex || 0]?.url)
-    || appState.currentMedia?.streamUrl 
-    || appState.currentMedia?.driveUrl;
-
-  const isServerStream = video.src && (
-    video.src.includes('/api/stream') ||
-    video.src.includes('/api/resolve')
-  );
-
-  const isTranscodedStream = (isServerStream && !video.src.includes('/api/moviebox/stream')) || (rawUrl && (
-    rawUrl.includes('.mkv') ||
-    rawUrl.includes('vcloud.you') ||
-    rawUrl.includes('fast-dl') ||
-    rawUrl.includes('hindidrama.net') ||
-    rawUrl.includes('luluvido') ||
-    rawUrl.includes('upbolt') ||
-    rawUrl.includes('it2k1jyiil2q') ||
-    rawUrl.includes('.m3u8')
-  ));
-
   // Dismiss gesture seek HUD immediately
   hideSeekGestureHud();
 
-  // Fast seek: only display loader if stream buffering takes > 180ms (eliminates flashing spinner)
+  // Clear any existing seek timers
   if (window.seekLoaderDebounceTimer) clearTimeout(window.seekLoaderDebounceTimer);
+  if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
+  if (window.seekStallRecoveryTimeout) clearTimeout(window.seekStallRecoveryTimeout);
+  if (window.seekFallbackTimeout) clearTimeout(window.seekFallbackTimeout);
+
+  // Show subtle loader spinner ONLY if decoding keyframe takes longer than 180ms
+  const loader = document.getElementById('videoLoader');
   window.seekLoaderDebounceTimer = setTimeout(() => {
     if (video.seeking || video.readyState < 3) {
-      const loader = document.getElementById('videoLoader');
       if (loader) {
         loader.classList.add('active');
         const loaderText = loader.querySelector('.loader-text');
@@ -3387,67 +3374,34 @@ function seekToAbsoluteTime(targetSeconds) {
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = safeTarget;
 
-  const onSeekFinished = () => {
+  const onSeekReady = () => {
     if (window.seekLoaderDebounceTimer) clearTimeout(window.seekLoaderDebounceTimer);
     if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
-    if (window.seekStallRecoveryTimeout) clearTimeout(window.seekStallRecoveryTimeout);
-    if (window.seekFallbackTimeout) clearTimeout(window.seekFallbackTimeout);
-    const l = document.getElementById('videoLoader');
-    if (l) l.classList.remove('active');
+    if (loader) loader.classList.remove('active');
     appState.pendingSeekTime = null;
     updateLandscapeProgress();
     syncPlayPauseIcons();
-    const p = video.play();
-    if (p !== undefined) p.catch(() => {});
+    video.play().catch(() => {});
   };
 
-  video.addEventListener('seeked', onSeekFinished, { once: true });
-  video.addEventListener('canplay', onSeekFinished, { once: true });
-  video.addEventListener('playing', onSeekFinished, { once: true });
+  video.addEventListener('seeked', onSeekReady, { once: true });
+  video.addEventListener('canplay', onSeekReady, { once: true });
 
-  // Safety timeout: dismiss loader and force playback after 1.8s
-  if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
+  // Long safety watchdog (7.5s): only for complete network blackout
   window.seekSafetyTimeout = setTimeout(() => {
-    onSeekFinished();
-  }, 1800);
+    onSeekReady();
+  }, 7500);
 
-  // Active Stall Recovery Watchdog: if playback freezes on seek frame
-  if (window.seekStallRecoveryTimeout) clearTimeout(window.seekStallRecoveryTimeout);
-  window.seekStallRecoveryTimeout = setTimeout(() => {
-    if (video.seeking || video.readyState < 2) {
-      console.warn('Seek stall detected at', safeTarget, '— nudging hardware decoder to nearest keyframe');
-      try {
-        video.currentTime = Math.min(duration, safeTarget + 0.3);
-        video.play().catch(() => {});
-      } catch (err) {}
-    }
-  }, 2200);
-
-  // Fallback recovery if stream is permanently stuck (e.g. Range request drop)
-  if (window.seekFallbackTimeout) clearTimeout(window.seekFallbackTimeout);
-  window.seekFallbackTimeout = setTimeout(() => {
-    if (video.seeking || video.readyState < 2) {
-      console.warn('Persistent seek freeze, falling back to server proxy at', safeTarget);
-      if (rawUrl && !video.src.includes('/api/stream?url=')) {
-        playStreamUrl(rawUrl, null, safeTarget);
-      }
-    }
-  }, 4200);
-
+  // Apply seek to video element
   try {
     if (typeof video.fastSeek === 'function') {
       video.fastSeek(safeTarget);
     } else {
       video.currentTime = safeTarget;
     }
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {});
-    }
   } catch (e) {
     try {
       video.currentTime = safeTarget;
-      video.play().catch(() => {});
     } catch (err) {}
   }
 }
@@ -3461,6 +3415,7 @@ function setupLandscapeProgressScrubbing() {
     if (!wrapper) return;
 
     let lastScrubPos = 0;
+    let lastSeekCommitTime = 0;
 
     const handleScrub = (clientX) => {
       const rect = wrapper.getBoundingClientRect();
@@ -3491,6 +3446,25 @@ function setupLandscapeProgressScrubbing() {
       }
     };
 
+    const commitSeek = (clientX) => {
+      const now = Date.now();
+      if (now - lastSeekCommitTime < 250) return; // Prevent duplicate seek commit from pointerup + touchend
+      lastSeekCommitTime = now;
+      isScrubbingProgress = false;
+
+      let finalPos = lastScrubPos;
+      if (clientX && clientX > 0) {
+        const rect = wrapper.getBoundingClientRect();
+        if (rect && rect.width > 0) {
+          finalPos = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        }
+      }
+      const duration = getMediaTotalDurationSeconds();
+      const targetTime = Math.floor(finalPos * duration);
+      seekToAbsoluteTime(targetTime);
+      resetLandscapeControlsTimer();
+    };
+
     wrapper.addEventListener('pointerdown', (e) => {
       e.stopPropagation();
       isScrubbingProgress = true;
@@ -3510,19 +3484,8 @@ function setupLandscapeProgressScrubbing() {
     const onPointerUp = (e) => {
       if (isScrubbingProgress) {
         e.stopPropagation();
-        isScrubbingProgress = false;
         try { wrapper.releasePointerCapture(e.pointerId); } catch (err) {}
-        let finalPos = lastScrubPos;
-        if (e.clientX && e.clientX > 0) {
-          const rect = wrapper.getBoundingClientRect();
-          if (rect && rect.width > 0) {
-            finalPos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-          }
-        }
-        const duration = getMediaTotalDurationSeconds();
-        const targetTime = Math.floor(finalPos * duration);
-        seekToAbsoluteTime(targetTime);
-        resetLandscapeControlsTimer();
+        commitSeek(e.clientX);
       }
     };
 
@@ -3553,11 +3516,8 @@ function setupLandscapeProgressScrubbing() {
       if (isScrubbingProgress) {
         e.preventDefault();
         e.stopPropagation();
-        isScrubbingProgress = false;
-        const duration = getMediaTotalDurationSeconds();
-        const targetTime = Math.floor(lastScrubPos * duration);
-        seekToAbsoluteTime(targetTime);
-        resetLandscapeControlsTimer();
+        const clientX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : 0;
+        commitSeek(clientX);
       }
     }, { passive: false });
   };

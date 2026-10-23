@@ -90,19 +90,22 @@ public class MainActivity extends BridgeActivity {
         }
     }
 
-    private static class LimitedInputStream extends java.io.InputStream {
+    private static class DisconnectingInputStream extends java.io.InputStream {
         private final java.io.InputStream in;
+        private final java.net.HttpURLConnection conn;
         private final long limit;
         private long bytesRead = 0;
+        private volatile boolean isClosed = false;
 
-        public LimitedInputStream(java.io.InputStream in, long limit) {
+        public DisconnectingInputStream(java.io.InputStream in, java.net.HttpURLConnection conn, long limit) {
             this.in = in;
+            this.conn = conn;
             this.limit = limit;
         }
 
         @Override
         public int read() throws java.io.IOException {
-            if (limit >= 0 && bytesRead >= limit) {
+            if (isClosed || (limit >= 0 && bytesRead >= limit)) {
                 return -1;
             }
             int result = in.read();
@@ -114,7 +117,7 @@ public class MainActivity extends BridgeActivity {
 
         @Override
         public int read(byte[] b, int off, int len) throws java.io.IOException {
-            if (limit >= 0 && bytesRead >= limit) {
+            if (isClosed || (limit >= 0 && bytesRead >= limit)) {
                 return -1;
             }
             if (limit >= 0 && bytesRead + len > limit) {
@@ -132,7 +135,7 @@ public class MainActivity extends BridgeActivity {
 
         @Override
         public long skip(long n) throws java.io.IOException {
-            if (n <= 0) return 0;
+            if (isClosed || n <= 0) return 0;
             long toSkip = n;
             if (limit >= 0 && bytesRead + toSkip > limit) {
                 toSkip = limit - bytesRead;
@@ -147,7 +150,7 @@ public class MainActivity extends BridgeActivity {
 
         @Override
         public int available() throws java.io.IOException {
-            if (limit >= 0 && bytesRead >= limit) {
+            if (isClosed || (limit >= 0 && bytesRead >= limit)) {
                 return 0;
             }
             int avail = in.available();
@@ -160,9 +163,20 @@ public class MainActivity extends BridgeActivity {
 
         @Override
         public void close() throws java.io.IOException {
-            in.close();
+            if (isClosed) return;
+            isClosed = true;
+            try {
+                in.close();
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.disconnect();
+                    } catch (Exception ignored) {}
+                }
+            }
         }
     }
+
 
     private class CustomBridgeWebViewClient extends BridgeWebViewClient {
         public CustomBridgeWebViewClient(Bridge bridge) {
@@ -278,12 +292,9 @@ public class MainActivity extends BridgeActivity {
                             mimeType = mimeType.split(";")[0].trim();
                         }
 
-                        InputStream is = (statusCode >= 400) ? conn.getErrorStream() : conn.getInputStream();
-                        if (contentLength > 0 && statusCode == 206) {
-                            is = new LimitedInputStream(new java.io.BufferedInputStream(is, 262144), contentLength);
-                        } else {
-                            is = new java.io.BufferedInputStream(is, 262144);
-                        }
+                        InputStream rawStream = (statusCode >= 400) ? conn.getErrorStream() : conn.getInputStream();
+                        InputStream bufferedStream = new java.io.BufferedInputStream(rawStream, 32768);
+                        InputStream is = new DisconnectingInputStream(bufferedStream, conn, (statusCode == 206) ? contentLength : -1);
                         return new WebResourceResponse(mimeType, null, statusCode, reason, resHeaders, is);
                     } catch (Exception e) {
                         e.printStackTrace();
