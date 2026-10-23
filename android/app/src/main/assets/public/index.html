@@ -589,23 +589,6 @@
     <!-- PLAYER & DETAILS VIEW (SCREENSHOT 2,3,4,6,7 MATCH) -->
     <!-- ============================================== -->
     <div class="player-view-overlay" id="playerOverlay">
-      <!-- Player Top Bar Overlay -->
-      <div class="player-top-header" id="playerTopHeader">
-        <button class="player-nav-btn" id="playerBackBtn" onclick="handlePlayerBackClick()">
-          <i class="fa-solid fa-chevron-left"></i>
-        </button>
-        <div class="player-header-actions">
-          <button class="player-icon-btn" id="playerFullscreenBtn" title="Fullscreen" onclick="togglePlayerFullscreen()">
-            <i class="fa-solid fa-expand"></i>
-          </button>
-          <button class="player-icon-btn" id="playerScaleToggleBtn" title="Zoom to fill / Fit screen" onclick="toggleVideoScaling()">
-            <i class="fa-solid fa-arrows-left-right-to-line"></i>
-          </button>
-          <button class="player-icon-btn" title="Cast to TV"><i class="fa-solid fa-tv"></i></button>
-          <button class="player-icon-btn" title="Help"><i class="fa-regular fa-circle-question"></i></button>
-        </div>
-      </div>
-
       <!-- Embedded Video Player -->
       <div class="video-container" id="videoContainer">
         <video id="mainVideoPlayer" playsinline webkit-playsinline x5-playsinline preload="metadata"></video>
@@ -613,6 +596,57 @@
         <div class="video-loader" id="videoLoader">
           <div class="spinner"></div>
           <div class="loader-text">Loading...</div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PORTRAIT MODE VIDEO PLAYER OVERLAYS (MATCHES PHOTO 1)        -->
+        <!-- Top Header & Bottom Bar inside video container                -->
+        <!-- ============================================================ -->
+        <div class="player-top-header" id="playerTopHeader">
+          <button class="player-nav-btn" id="playerBackBtn" onclick="handlePlayerBackClick()" title="Back">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <div class="player-header-actions">
+            <button class="player-header-action-btn" title="Cast to TV" onclick="showToast('Searching for TV devices...')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="13" rx="2"></rect>
+                <path d="M8 20h8M12 17v3"></path>
+              </svg>
+              <span>TV</span>
+            </button>
+            <button class="player-header-action-btn" title="Help" onclick="showToast('Help & feedback: support@fobstv.com')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              <span>Help</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Portrait Single-Row Bottom Control Bar (Screenshot 1) -->
+        <div class="portrait-bottom-bar" id="portraitBottomBar">
+          <button class="pt-mini-play-btn" id="portraitPlayBtn" onclick="togglePlayPauseVideo()" title="Play / Pause">
+            <i class="fa-solid fa-pause" id="portraitPlayIcon"></i>
+          </button>
+          <div class="pt-progress-track-wrapper" id="portraitProgressWrapper">
+            <div class="pt-progress-buffered" id="portraitProgressBuffered"></div>
+            <div class="pt-progress-filled" id="portraitProgressFilled"></div>
+            <div class="pt-progress-thumb" id="portraitProgressThumb"></div>
+          </div>
+          <span class="pt-time-display" id="portraitTimeDisplay">00:00/00:00</span>
+          <button class="pt-action-btn" id="portraitPipBtn" onclick="togglePictureInPicture()" title="Picture-in-Picture">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="15" rx="2"></rect>
+              <rect x="12" y="10" width="8" height="7" rx="1" fill="currentColor"></rect>
+            </svg>
+          </button>
+          <button class="pt-action-btn" id="portraitFullscreenBtn" onclick="togglePlayerFullscreen()" title="Fullscreen">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+            </svg>
+          </button>
         </div>
 
         <!-- Coming Soon Overlay inside Video Container (MovieBox Signature) -->
@@ -661,42 +695,56 @@
         </div>
 
         <!-- ============================================================ -->
-        <!-- MOVIEBOX SIGNATURE LANDSCAPE FULLSCREEN PLAYER UI -->
-        <!-- Matches Screenshots 1, 3, 4, 5 -->
-        <!-- Hidden completely in Portrait; Shown only in Landscape Fullscreen -->
+        <!-- MOVIEBOX SIGNATURE LANDSCAPE FULLSCREEN PLAYER UI            -->
+        <!-- Matches Screenshot 2 (Photo 2)                               -->
+        <!-- Shown only in Landscape Fullscreen                           -->
         <!-- ============================================================ -->
         <div class="ls-player-ui" id="landscapePlayerUI">
           <!-- Screen Tap Overlay to Toggle Controls & Detect Gestures -->
           <div class="ls-tap-detector" id="lsTapDetector"></div>
 
-          <!-- Top Header (Screenshot 4) -->
+          <!-- Top Header (Screenshot 2) -->
           <div class="ls-top-header" id="lsTopHeader">
             <div class="ls-top-left">
-              <button class="ls-icon-btn ls-back-btn" id="lsBackBtn" onclick="handlePlayerBackClick()">
+              <button class="ls-icon-btn ls-back-btn" id="lsBackBtn" onclick="handlePlayerBackClick()" title="Back">
                 <i class="fa-solid fa-chevron-left"></i>
               </button>
               <span class="ls-video-title" id="lsVideoTitle">FOBS TV</span>
             </div>
             <div class="ls-top-right">
               <button class="ls-header-action-btn" title="Cast to TV" onclick="showToast('Searching for TV devices...')">
-                <i class="fa-solid fa-tv"></i>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="13" rx="2"></rect>
+                  <path d="M8 20h8M12 17v3"></path>
+                </svg>
                 <span>TV</span>
               </button>
               <button class="ls-header-action-btn" title="Help" onclick="showToast('Help & feedback: support@fobstv.com')">
-                <i class="fa-regular fa-circle-question"></i>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
                 <span>Help</span>
               </button>
               <button class="ls-header-action-btn" id="lsSettingToggleBtn" title="Setting" onclick="toggleLandscapeDrawer('setting')">
-                <i class="fa-solid fa-gear"></i>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
                 <span>Setting</span>
               </button>
             </div>
           </div>
 
-          <!-- Left Side Screen Lock Control (Screenshot 1 & 4) -->
+          <!-- Left Side Screen Lock Control (Screenshot 2: Tap to Lock) -->
           <div class="ls-lock-wrapper" id="lsLockWrapper">
             <button class="ls-lock-pill-btn" id="lsLockBtn" onclick="togglePlayerLock()">
-              <i class="fa-solid fa-lock-open" id="lsLockIcon"></i>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="lsLockIconSvg">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+              </svg>
+              <i class="fa-solid fa-lock hidden" id="lsLockIcon"></i>
               <span id="lsLockText">Tap to Lock</span>
             </button>
           </div>
@@ -704,64 +752,68 @@
           <!-- Center Controls: MovieBox Signature 3-button layout (-10s, Play/Pause, +10s) -->
           <div class="ls-center-controls" id="lsCenterControls">
             <button class="ls-center-btn ls-seek-btn" onclick="seekRelative(-10)" title="Rewind 10s">
-              <svg class="ls-10s-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg class="ls-10s-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
                 <path d="M3 3v5h5"/>
-                <text x="12" y="15" font-size="8" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" fill="currentColor" text-anchor="middle" stroke="none">10</text>
+                <text x="12" y="15.5" font-size="8.5" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" fill="currentColor" text-anchor="middle" stroke="none">10</text>
               </svg>
             </button>
             <button class="ls-center-btn ls-play-pause-btn" id="lsCenterPlayPauseBtn" onclick="togglePlayPauseVideo()" title="Play / Pause">
               <i class="fa-solid fa-pause" id="lsCenterPlayIcon"></i>
             </button>
             <button class="ls-center-btn ls-seek-btn" onclick="seekRelative(10)" title="Forward 10s">
-              <svg class="ls-10s-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg class="ls-10s-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 12a9 9 0 1 1-9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
                 <path d="M21 3v5h-5"/>
-                <text x="12" y="15" font-size="8" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" fill="currentColor" text-anchor="middle" stroke="none">10</text>
+                <text x="12" y="15.5" font-size="8.5" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" fill="currentColor" text-anchor="middle" stroke="none">10</text>
               </svg>
             </button>
           </div>
 
-          <!-- Bottom Control Bar (v1.0.0 Signature) -->
+          <!-- Bottom Control Bar (Matches Screenshot 2: 2 Rows) -->
           <div class="ls-bottom-bar" id="lsBottomBar">
-            <div class="ls-bottom-row">
-              <button class="ls-icon-btn ls-mini-play-btn" id="lsBottomPlayBtn" onclick="togglePlayPauseVideo()" title="Play / Pause">
-                <i class="fa-solid fa-pause" id="lsBottomPlayIcon"></i>
-              </button>
-
+            <!-- Row 1: Time & Seekbar Track -->
+            <div class="ls-progress-row">
               <span class="ls-time-display" id="lsCurrentTime">00:00</span>
-
-              <!-- Interactive Progress Slider -->
               <div class="ls-progress-track-wrapper" id="lsProgressWrapper">
                 <div class="ls-progress-buffered" id="lsProgressBuffered"></div>
                 <div class="ls-progress-filled" id="lsProgressFilled"></div>
                 <div class="ls-progress-thumb" id="lsProgressThumb"></div>
               </div>
-
               <span class="ls-time-display ls-duration-display" id="lsTotalDuration">00:00</span>
+            </div>
 
-              <!-- Right Bottom Action Pills -->
+            <!-- Row 2: Controls & Action Pills -->
+            <div class="ls-actions-row">
+              <button class="ls-mini-play-btn" id="lsBottomPlayBtn" onclick="togglePlayPauseVideo()" title="Play / Pause">
+                <i class="fa-solid fa-pause" id="lsBottomPlayIcon"></i>
+              </button>
+
               <div class="ls-bottom-actions">
                 <button class="ls-action-pill" id="lsFitToggleBtn" onclick="toggleLandscapeFitFill()" title="Fit / Fill Aspect Ratio">
-                  <i class="fa-solid fa-arrows-left-right-to-line" id="lsFitIcon"></i>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                  </svg>
                   <span id="lsFitLabel">Fit</span>
                 </button>
 
                 <button class="ls-action-pill" id="lsLanguageToggleBtn" onclick="toggleLandscapeDrawer('language')" title="Audio & Subtitles">
-                  <i class="fa-regular fa-comment-dots"></i>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="14" rx="2"></rect>
+                    <path d="M7 9h10M7 13h6"></path>
+                  </svg>
                   <span>Language</span>
                 </button>
 
                 <button class="ls-action-pill" id="lsSpeedToggleBtn" onclick="toggleLandscapeDrawer('speed')" title="Playback Speed">
-                  <i class="fa-regular fa-clock"></i>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M12 7v5l3 3"></path>
+                  </svg>
                   <span id="lsSpeedLabel">1x</span>
                 </button>
 
-                <button class="ls-action-pill ls-quality-pill" id="lsQualityBadge" onclick="toggleLandscapeDrawer('quality')" title="Quality Selection">720P</button>
-
-                <button class="ls-action-pill ls-fullscreen-pill" id="lsFullscreenToggleBtn" onclick="togglePlayerFullscreen()" title="Fullscreen">
-                  <i class="fa-solid fa-expand"></i>
-                </button>
+                <button class="ls-action-pill ls-quality-pill" id="lsQualityBadge" onclick="toggleLandscapeDrawer('quality')" title="Quality Selection">1080P</button>
               </div>
             </div>
           </div>

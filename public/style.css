@@ -2849,100 +2849,223 @@ body.is-fullscreen .player-top-header.controls-hidden,
   opacity: 0 !important;
 }
 
-/* In portrait mode, hide landscape top header (playerTopHeader with back button is used) and lock button */
-body:not(.is-fullscreen) .ls-top-header,
-body:not(.is-fullscreen) .ls-lock-wrapper {
+/* ============================================================ */
+/* PORTRAIT & LANDSCAPE PLAYER VIEW MODES (PHOTO 1 & 2 MATCH)   */
+/* ============================================================ */
+
+/* In portrait mode: Show portrait top header & bottom bar; HIDE landscape UI completely */
+body:not(.is-fullscreen) #landscapePlayerUI {
   display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }
 
-/* Bottom bar in portrait (v1.0.0 Signature single-row layout) */
-body:not(.is-fullscreen) .ls-bottom-bar {
-  padding: 6px 10px 8px 10px !important;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.45) 60%, transparent 100%) !important;
+body:not(.is-fullscreen) #playerTopHeader {
+  display: flex !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 2000000 !important;
+  padding: 10px 14px !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.35) 65%, transparent 100%) !important;
+  pointer-events: auto !important;
+  transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease !important;
 }
 
-.ls-bottom-row {
+body:not(.is-fullscreen) #playerTopHeader.controls-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(-6px) !important;
+}
+
+/* Portrait Top Header Actions (TV & Help with vertical text underneath) */
+.player-header-actions {
   display: flex !important;
   align-items: center !important;
-  gap: 6px !important;
-  width: 100% !important;
+  gap: 16px !important;
 }
 
-body:not(.is-fullscreen) .ls-mini-play-btn {
-  font-size: 16px !important;
-  padding: 4px !important;
-  color: #fff !important;
-}
-
-body:not(.is-fullscreen) .ls-time-display {
-  font-size: 11px !important;
-  min-width: 32px !important;
-  color: #e5e7eb !important;
-}
-
-body:not(.is-fullscreen) .ls-progress-track-wrapper {
-  flex: 1 !important;
-  min-width: 50px !important;
-  margin: 0 2px !important;
-}
-
-body:not(.is-fullscreen) .ls-bottom-actions {
+.player-header-action-btn {
+  background: transparent !important;
+  border: none !important;
+  color: #ffffff !important;
   display: flex !important;
-  align-items: center !important;
-  gap: 4px !important;
-  margin-left: auto !important;
-}
-
-body:not(.is-fullscreen) .ls-bottom-actions .ls-action-pill {
-  display: inline-flex !important;
+  flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: 3px 6px !important;
-  font-size: 10.5px !important;
-  font-weight: 600 !important;
   gap: 3px !important;
-  border-radius: 5px !important;
-  height: 24px !important;
-  background: rgba(255, 255, 255, 0.12) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  color: #fff !important;
-  white-space: nowrap !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
   cursor: pointer !important;
+  padding: 4px 6px !important;
+  min-width: 38px !important;
+  transition: opacity 0.15s ease, transform 0.12s ease !important;
 }
 
-body:not(.is-fullscreen) .ls-quality-pill {
-  font-size: 9.5px !important;
-  padding: 2px 5px !important;
-  font-weight: 700 !important;
+.player-header-action-btn:active {
+  transform: scale(0.92) !important;
+  opacity: 0.8 !important;
 }
 
-/* In portrait mode, side drawer slides out cleanly over the player */
-body:not(.is-fullscreen) .ls-side-drawer {
-  width: min(320px, 85%) !important;
-  max-width: 85% !important;
-  top: 0 !important;
+.player-header-action-btn svg,
+.player-header-action-btn i {
+  color: #ffffff !important;
+  font-size: 18px !important;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6)) !important;
+}
+
+/* Portrait Bottom Bar - Matches Screenshot 1 (Photo 1) */
+.portrait-bottom-bar {
+  position: absolute !important;
   bottom: 0 !important;
+  left: 0 !important;
   right: 0 !important;
-  z-index: 2000010 !important;
+  z-index: 2000000 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  padding: 6px 12px 10px 12px !important;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.45) 60%, transparent 100%) !important;
+  pointer-events: auto !important;
+  transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease !important;
 }
 
-/* Center controls styling in portrait mode */
-body:not(.is-fullscreen) .ls-center-controls {
-  gap: 32px !important;
+.portrait-bottom-bar.controls-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(6px) !important;
 }
 
-body:not(.is-fullscreen) .ls-play-pause-btn {
-  font-size: 32px !important;
+body.is-fullscreen .portrait-bottom-bar,
+body.is-fullscreen #playerTopHeader {
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }
 
-body:not(.is-fullscreen) .ls-seek-btn {
-  width: 36px !important;
-  height: 36px !important;
+/* Portrait Play Button */
+.pt-mini-play-btn {
+  background: transparent !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-size: 18px !important;
+  cursor: pointer !important;
+  padding: 4px 6px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5)) !important;
+  transition: transform 0.12s ease !important;
 }
 
-body:not(.is-fullscreen) .ls-10s-svg {
-  width: 32px !important;
-  height: 32px !important;
+.pt-mini-play-btn:active {
+  transform: scale(0.9) !important;
+}
+
+/* Portrait Time Display: 01:05/2:11:31 */
+.pt-time-display {
+  color: #ffffff !important;
+  font-size: 11.5px !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  font-variant-numeric: tabular-nums !important;
+  letter-spacing: 0.2px !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6)) !important;
+}
+
+/* Portrait Progress Slider (cyan turquoise active line) */
+.pt-progress-track-wrapper {
+  flex: 1 !important;
+  height: 22px !important;
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
+  cursor: pointer !important;
+  margin: 0 4px !important;
+  touch-action: none !important;
+}
+
+.pt-progress-track-wrapper::before {
+  content: '' !important;
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  height: 3px !important;
+  border-radius: 2px !important;
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.pt-progress-buffered {
+  position: absolute !important;
+  left: 0 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  height: 3px !important;
+  border-radius: 2px !important;
+  background: rgba(255, 255, 255, 0.45) !important;
+  width: 0% !important;
+}
+
+.pt-progress-filled {
+  position: absolute !important;
+  left: 0 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  height: 3px !important;
+  border-radius: 2px !important;
+  background: #2dd4bf !important; /* Turquoise / Cyan matching Screenshot 1 */
+  width: 0% !important;
+}
+
+.pt-progress-thumb {
+  position: absolute !important;
+  left: 0% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7) !important;
+  pointer-events: none !important;
+  transition: transform 0.1s ease !important;
+}
+
+.pt-progress-track-wrapper:active .pt-progress-thumb {
+  transform: translate(-50%, -50%) scale(1.3) !important;
+}
+
+/* Portrait PiP and Fullscreen Action Buttons */
+.pt-action-btn {
+  background: transparent !important;
+  border: none !important;
+  color: #ffffff !important;
+  cursor: pointer !important;
+  padding: 4px 6px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6)) !important;
+  transition: transform 0.12s ease !important;
+}
+
+.pt-action-btn:active {
+  transform: scale(0.9) !important;
+}
+
+.pt-action-btn svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
 }
 
 .video-container:fullscreen,
@@ -2979,7 +3102,8 @@ video::-webkit-media-controls-panel {
     pointer-events: none !important;
   }
 
-  body.player-open #playerTopHeader {
+  body.player-open #playerTopHeader,
+  body.player-open .portrait-bottom-bar {
     display: none !important;
   }
 
@@ -3278,7 +3402,7 @@ body.is-fullscreen .ls-bottom-bar {
   transform: translateY(-50%);
   height: 3px;
   border-radius: 2px;
-  background: #ffffff;
+  background: #2dd4bf;
   width: 0%;
 }
 

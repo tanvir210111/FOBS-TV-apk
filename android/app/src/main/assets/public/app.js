@@ -2536,6 +2536,21 @@ function openLiveTvPlayer(id) {
   openPlayer(mockMedia);
 }
 
+function formatCleanMediaTitle(rawTitle, dubLanguage = 'Hindi') {
+  if (!rawTitle) return '';
+  let clean = rawTitle
+    .replace(/\[\s*hindi\s*dub(bed)?\s*\]/gi, '')
+    .replace(/\(\s*hindi\s*dub(bed)?\s*\)/gi, '')
+    .replace(/\[\s*hindi\s*\]/gi, '')
+    .replace(/\(\s*hindi\s*\)/gi, '')
+    .replace(/\[\s*fan\s*dub(bed)?\s*\]/gi, '')
+    .replace(/\(\s*fan\s*dub(bed)?\s*\)/gi, '')
+    .trim();
+  clean = clean.replace(/\s+/g, ' ').trim();
+  const tag = (dubLanguage && dubLanguage.toLowerCase().includes('fan')) ? '[Fan Dubbed]' : '[Hindi]';
+  return `${clean} ${tag}`;
+}
+
 // Open Player & Details Overlay
 function openPlayer(media, episodeIndex = 0) {
   if (!media) return;
@@ -2601,21 +2616,6 @@ function openPlayer(media, episodeIndex = 0) {
   try {
     history.pushState({ screen: 'player' }, '');
   } catch (e) {}
-
-function formatCleanMediaTitle(rawTitle, dubLanguage = 'Hindi') {
-  if (!rawTitle) return '';
-  let clean = rawTitle
-    .replace(/\[\s*hindi\s*dub(bed)?\s*\]/gi, '')
-    .replace(/\(\s*hindi\s*dub(bed)?\s*\)/gi, '')
-    .replace(/\[\s*hindi\s*\]/gi, '')
-    .replace(/\(\s*hindi\s*\)/gi, '')
-    .replace(/\[\s*fan\s*dub(bed)?\s*\]/gi, '')
-    .replace(/\(\s*fan\s*dub(bed)?\s*\)/gi, '')
-    .trim();
-  clean = clean.replace(/\s+/g, ' ').trim();
-  const tag = (dubLanguage && dubLanguage.toLowerCase().includes('fan')) ? '[Fan Dubbed]' : '[Hindi]';
-  return `${clean} ${tag}`;
-}
 
   const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-')) || (media.seasons && media.seasons.length > 0);
 
@@ -3051,9 +3051,11 @@ function formatPlayerTime(seconds) {
 function resetLandscapeControlsTimer() {
   const lsUi = document.getElementById('landscapePlayerUI');
   const topHeader = document.getElementById('playerTopHeader');
+  const ptBottom = document.getElementById('portraitBottomBar');
 
   if (lsUi) lsUi.classList.remove('controls-hidden');
   if (topHeader) topHeader.classList.remove('controls-hidden');
+  if (ptBottom) ptBottom.classList.remove('controls-hidden');
 
   if (lsControlsTimer) clearTimeout(lsControlsTimer);
   if (playerControlsTimer) clearTimeout(playerControlsTimer);
@@ -3065,6 +3067,7 @@ function resetLandscapeControlsTimer() {
     lsControlsTimer = setTimeout(() => {
       if (lsUi) lsUi.classList.add('controls-hidden');
       if (topHeader) topHeader.classList.add('controls-hidden');
+      if (ptBottom) ptBottom.classList.add('controls-hidden');
     }, delay);
   }
 }
@@ -3072,6 +3075,7 @@ function resetLandscapeControlsTimer() {
 function togglePlayerLock() {
   const lsUi = document.getElementById('landscapePlayerUI');
   const lockIcon = document.getElementById('lsLockIcon');
+  const lockIconSvg = document.getElementById('lsLockIconSvg');
   const lockText = document.getElementById('lsLockText');
   const lockBtn = document.getElementById('lsLockBtn');
   if (!lsUi) return;
@@ -3080,13 +3084,21 @@ function togglePlayerLock() {
   lsUi.classList.toggle('is-locked', isPlayerLocked);
 
   if (isPlayerLocked) {
-    if (lockIcon) lockIcon.className = 'fa-solid fa-lock';
+    if (lockIconSvg) lockIconSvg.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>';
+    if (lockIcon) {
+      lockIcon.className = 'fa-solid fa-lock';
+      lockIcon.classList.remove('hidden');
+    }
     if (lockText) lockText.innerText = 'Tap to Unlock';
     if (lockBtn) lockBtn.classList.add('locked');
     closeLandscapeDrawers();
     showToast('Screen locked');
   } else {
-    if (lockIcon) lockIcon.className = 'fa-solid fa-lock-open';
+    if (lockIconSvg) lockIconSvg.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path>';
+    if (lockIcon) {
+      lockIcon.className = 'fa-solid fa-lock-open';
+      lockIcon.classList.remove('hidden');
+    }
     if (lockText) lockText.innerText = 'Tap to Lock';
     if (lockBtn) lockBtn.classList.remove('locked');
     showToast('Screen unlocked');
@@ -3112,14 +3124,30 @@ function syncPlayPauseIcons() {
   const video = document.getElementById('mainVideoPlayer');
   const centerIcon = document.getElementById('lsCenterPlayIcon');
   const bottomIcon = document.getElementById('lsBottomPlayIcon');
+  const ptIcon = document.getElementById('portraitPlayIcon');
   if (!video) return;
 
   const isPaused = video.paused;
-  if (centerIcon) {
-    centerIcon.className = isPaused ? 'fa-solid fa-play' : 'fa-solid fa-pause';
-  }
-  if (bottomIcon) {
-    bottomIcon.className = isPaused ? 'fa-solid fa-play' : 'fa-solid fa-pause';
+  const iconClass = isPaused ? 'fa-solid fa-play' : 'fa-solid fa-pause';
+  if (centerIcon) centerIcon.className = iconClass;
+  if (bottomIcon) bottomIcon.className = iconClass;
+  if (ptIcon) ptIcon.className = iconClass;
+}
+
+async function togglePictureInPicture() {
+  const video = document.getElementById('mainVideoPlayer');
+  if (!video) return;
+  try {
+    if (document.pictureInPictureElement) {
+      await document.exitPictureInPicture();
+    } else if (document.pictureInPictureEnabled && video.requestPictureInPicture) {
+      await video.requestPictureInPicture();
+    } else {
+      showToast('Picture-in-Picture not supported on this device');
+    }
+  } catch (err) {
+    console.warn('PiP error:', err);
+    showToast('Picture-in-Picture unavailable');
   }
 }
 
@@ -3141,7 +3169,6 @@ function getMediaTotalDurationSeconds() {
     }
   }
 
-
   // If native video.duration reports an artificially small chunked value (< 180s), return the actual media runtime
   if (parsedSec > 0 && (!duration || duration < 180)) {
     return parsedSec;
@@ -3160,25 +3187,39 @@ function updateLandscapeProgress() {
   const current = (video.currentTime || 0) + streamOffset;
   const duration = getMediaTotalDurationSeconds();
 
+  // Landscape elements
   const curEl = document.getElementById('lsCurrentTime');
   const durEl = document.getElementById('lsTotalDuration');
   const filledEl = document.getElementById('lsProgressFilled');
   const thumbEl = document.getElementById('lsProgressThumb');
   const bufEl = document.getElementById('lsProgressBuffered');
 
-  if (curEl) curEl.innerText = formatPlayerTime(current);
-  if (durEl) durEl.innerText = formatPlayerTime(duration);
+  // Portrait elements (Photo 1 match)
+  const ptTimeEl = document.getElementById('portraitTimeDisplay');
+  const ptFilledEl = document.getElementById('portraitProgressFilled');
+  const ptThumbEl = document.getElementById('portraitProgressThumb');
+  const ptBufEl = document.getElementById('portraitProgressBuffered');
+
+  const curFormatted = formatPlayerTime(current);
+  const durFormatted = formatPlayerTime(duration);
+
+  if (curEl) curEl.innerText = curFormatted;
+  if (durEl) durEl.innerText = durFormatted;
+  if (ptTimeEl) ptTimeEl.innerText = `${curFormatted}/${durFormatted}`;
 
   if (duration > 0) {
     const pct = Math.min(100, Math.max(0, (current / duration) * 100));
     if (filledEl) filledEl.style.width = `${pct}%`;
     if (thumbEl) thumbEl.style.left = `${pct}%`;
+    if (ptFilledEl) ptFilledEl.style.width = `${pct}%`;
+    if (ptThumbEl) ptThumbEl.style.left = `${pct}%`;
 
-    if (bufEl && video.buffered && video.buffered.length > 0) {
+    if (video.buffered && video.buffered.length > 0) {
       try {
         const bufEnd = video.buffered.end(video.buffered.length - 1) + streamOffset;
         const bufPct = Math.min(100, Math.max(0, (bufEnd / duration) * 100));
-        bufEl.style.width = `${bufPct}%`;
+        if (bufEl) bufEl.style.width = `${bufPct}%`;
+        if (ptBufEl) ptBufEl.style.width = `${bufPct}%`;
       } catch (e) {}
     }
   }
@@ -3219,11 +3260,21 @@ function seekRelative(offsetSeconds) {
   const curEl = document.getElementById('lsCurrentTime');
   const filledEl = document.getElementById('lsProgressFilled');
   const thumbEl = document.getElementById('lsProgressThumb');
-  if (curEl) curEl.innerText = formatPlayerTime(target);
+  const ptTimeEl = document.getElementById('portraitTimeDisplay');
+  const ptFilledEl = document.getElementById('portraitProgressFilled');
+  const ptThumbEl = document.getElementById('portraitProgressThumb');
+
+  const curFormatted = formatPlayerTime(target);
+  const durFormatted = formatPlayerTime(duration);
+  if (curEl) curEl.innerText = curFormatted;
+  if (ptTimeEl) ptTimeEl.innerText = `${curFormatted}/${durFormatted}`;
+
   if (duration > 0) {
     const pct = Math.min(100, Math.max(0, (target / duration) * 100));
     if (filledEl) filledEl.style.width = `${pct}%`;
     if (thumbEl) thumbEl.style.left = `${pct}%`;
+    if (ptFilledEl) ptFilledEl.style.width = `${pct}%`;
+    if (ptThumbEl) ptThumbEl.style.left = `${pct}%`;
   }
 
   showToast(offsetSeconds > 0 ? '+10s' : '-10s');
@@ -3316,55 +3367,73 @@ function seekToAbsoluteTime(targetSeconds) {
 }
 
 function setupLandscapeProgressScrubbing() {
-  const wrapper = document.getElementById('lsProgressWrapper');
   const video = document.getElementById('mainVideoPlayer');
-  if (!wrapper || !video) return;
+  if (!video) return;
 
-  const handleScrub = (clientX) => {
-    const rect = wrapper.getBoundingClientRect();
-    const pos = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-    const duration = getMediaTotalDurationSeconds();
-    if (duration > 0) {
-      const targetTime = Math.floor(pos * duration);
-      const percent = pos * 100;
-      const filledEl = document.getElementById('lsProgressFilled');
-      const thumbEl = document.getElementById('lsProgressThumb');
-      const curTimeEl = document.getElementById('lsCurrentTime');
-      if (filledEl) filledEl.style.width = `${percent}%`;
-      if (thumbEl) thumbEl.style.left = `${percent}%`;
-      if (curTimeEl) curTimeEl.innerText = formatPlayerTime(targetTime);
-    }
-  };
+  const bindScrubber = (wrapperId, filledId, thumbId, timeDisplayId, isCombinedTime) => {
+    const wrapper = document.getElementById(wrapperId);
+    if (!wrapper) return;
 
-  wrapper.addEventListener('pointerdown', (e) => {
-    isScrubbingProgress = true;
-    wrapper.setPointerCapture(e.pointerId);
-    handleScrub(e.clientX);
-    resetLandscapeControlsTimer();
-  });
+    const handleScrub = (clientX) => {
+      const rect = wrapper.getBoundingClientRect();
+      const pos = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      const duration = getMediaTotalDurationSeconds();
+      if (duration > 0) {
+        const targetTime = Math.floor(pos * duration);
+        const percent = pos * 100;
+        const filledEl = document.getElementById(filledId);
+        const thumbEl = document.getElementById(thumbId);
+        if (filledEl) filledEl.style.width = `${percent}%`;
+        if (thumbEl) thumbEl.style.left = `${percent}%`;
+        
+        const curFormatted = formatPlayerTime(targetTime);
+        const durFormatted = formatPlayerTime(duration);
+        if (isCombinedTime) {
+          const timeEl = document.getElementById(timeDisplayId);
+          if (timeEl) timeEl.innerText = `${curFormatted}/${durFormatted}`;
+        } else {
+          const timeEl = document.getElementById(timeDisplayId);
+          if (timeEl) timeEl.innerText = curFormatted;
+        }
+      }
+    };
 
-  wrapper.addEventListener('pointermove', (e) => {
-    if (isScrubbingProgress) {
+    wrapper.addEventListener('pointerdown', (e) => {
+      e.stopPropagation();
+      isScrubbingProgress = true;
+      try { wrapper.setPointerCapture(e.pointerId); } catch (err) {}
       handleScrub(e.clientX);
       resetLandscapeControlsTimer();
-    }
-  });
+    });
 
-  const onPointerUp = (e) => {
-    if (isScrubbingProgress) {
-      isScrubbingProgress = false;
-      try { wrapper.releasePointerCapture(e.pointerId); } catch (err) {}
-      const rect = wrapper.getBoundingClientRect();
-      const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-      const duration = getMediaTotalDurationSeconds();
-      const targetTime = Math.floor(pos * duration);
-      seekToAbsoluteTime(targetTime);
-      resetLandscapeControlsTimer();
-    }
+    wrapper.addEventListener('pointermove', (e) => {
+      if (isScrubbingProgress) {
+        e.stopPropagation();
+        handleScrub(e.clientX);
+        resetLandscapeControlsTimer();
+      }
+    });
+
+    const onPointerUp = (e) => {
+      if (isScrubbingProgress) {
+        e.stopPropagation();
+        isScrubbingProgress = false;
+        try { wrapper.releasePointerCapture(e.pointerId); } catch (err) {}
+        const rect = wrapper.getBoundingClientRect();
+        const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        const duration = getMediaTotalDurationSeconds();
+        const targetTime = Math.floor(pos * duration);
+        seekToAbsoluteTime(targetTime);
+        resetLandscapeControlsTimer();
+      }
+    };
+
+    wrapper.addEventListener('pointerup', onPointerUp);
+    wrapper.addEventListener('pointercancel', onPointerUp);
   };
 
-  wrapper.addEventListener('pointerup', onPointerUp);
-  wrapper.addEventListener('pointercancel', onPointerUp);
+  bindScrubber('lsProgressWrapper', 'lsProgressFilled', 'lsProgressThumb', 'lsCurrentTime', false);
+  bindScrubber('portraitProgressWrapper', 'portraitProgressFilled', 'portraitProgressThumb', 'portraitTimeDisplay', true);
 }
 
 function toggleLandscapeFitFill() {
@@ -3808,7 +3877,8 @@ function triggerDoubleTapSeek(offsetSeconds) {
 function handleSinglePlayerTap() {
   const lsUi = document.getElementById('landscapePlayerUI');
   const topHeader = document.getElementById('playerTopHeader');
-  if (!lsUi && !topHeader) return;
+  const ptBottom = document.getElementById('portraitBottomBar');
+  if (!lsUi && !topHeader && !ptBottom) return;
 
   const openDrawer = document.querySelector('.ls-side-drawer.open');
   if (openDrawer) {
@@ -3819,25 +3889,28 @@ function handleSinglePlayerTap() {
 
   if (isPlayerLocked) {
     if (lsUi) lsUi.classList.remove('controls-hidden');
-    if (topHeader) topHeader.classList.remove('controls-hidden');
     resetLandscapeControlsTimer();
     return;
   }
 
   closeLandscapeDrawers();
 
-  const isCurrentlyHidden = (lsUi && lsUi.classList.contains('controls-hidden')) ||
-                            (topHeader && topHeader.classList.contains('controls-hidden'));
+  const isFullscreen = document.body.classList.contains('is-fullscreen');
+  const isCurrentlyHidden = isFullscreen
+    ? (lsUi && lsUi.classList.contains('controls-hidden'))
+    : ((topHeader && topHeader.classList.contains('controls-hidden')) || (ptBottom && ptBottom.classList.contains('controls-hidden')));
 
   if (isCurrentlyHidden) {
     // Reveal buttons
     if (lsUi) lsUi.classList.remove('controls-hidden');
     if (topHeader) topHeader.classList.remove('controls-hidden');
+    if (ptBottom) ptBottom.classList.remove('controls-hidden');
     resetLandscapeControlsTimer();
   } else {
     // Minimize / hide buttons
     if (lsUi) lsUi.classList.add('controls-hidden');
     if (topHeader) topHeader.classList.add('controls-hidden');
+    if (ptBottom) ptBottom.classList.add('controls-hidden');
     if (lsControlsTimer) clearTimeout(lsControlsTimer);
     if (playerControlsTimer) clearTimeout(playerControlsTimer);
   }
@@ -4097,7 +4170,7 @@ function setupVideoListeners() {
       // Only handle if not clicking a control button or embed frame
       const embedFrame = document.getElementById('mainEmbedPlayer');
       if (embedFrame && embedFrame.style.display === 'block') return;
-      if (e.target.closest('button, .ls-action-pill, .ls-side-drawer, #lsTapDetector')) return;
+      if (e.target.closest('button, .ls-action-pill, .ls-side-drawer, #lsTapDetector, .pt-progress-track-wrapper, .ls-progress-track-wrapper')) return;
       handleSinglePlayerTap();
     });
   }
@@ -4365,6 +4438,10 @@ function closePlayer() {
     lsUi.classList.remove('is-locked');
     lsUi.classList.remove('controls-hidden');
   }
+  const topHeader = document.getElementById('playerTopHeader');
+  if (topHeader) topHeader.classList.remove('controls-hidden');
+  const ptBottom = document.getElementById('portraitBottomBar');
+  if (ptBottom) ptBottom.classList.remove('controls-hidden');
 
   // 1. Fully destroy HLS instance
   if (window.activeHlsPlayer) {
