@@ -722,42 +722,42 @@
             </button>
           </div>
 
-          <!-- Bottom Control Bar (MovieBox Signature 2-Row Layout) -->
+          <!-- Bottom Control Bar (v1.0.0 Signature) -->
           <div class="ls-bottom-bar" id="lsBottomBar">
-            <!-- Row 1: Full-width Scrubber with Timestamps -->
-            <div class="ls-progress-row">
+            <div class="ls-bottom-row">
+              <button class="ls-icon-btn ls-mini-play-btn" id="lsBottomPlayBtn" onclick="togglePlayPauseVideo()" title="Play / Pause">
+                <i class="fa-solid fa-pause" id="lsBottomPlayIcon"></i>
+              </button>
+
               <span class="ls-time-display" id="lsCurrentTime">00:00</span>
+
+              <!-- Interactive Progress Slider -->
               <div class="ls-progress-track-wrapper" id="lsProgressWrapper">
                 <div class="ls-progress-buffered" id="lsProgressBuffered"></div>
                 <div class="ls-progress-filled" id="lsProgressFilled"></div>
                 <div class="ls-progress-thumb" id="lsProgressThumb"></div>
               </div>
+
               <span class="ls-time-display ls-duration-display" id="lsTotalDuration">00:00</span>
-            </div>
 
-            <!-- Row 2: Play/Pause on Left, Action Pills on Right -->
-            <div class="ls-actions-row">
-              <button class="ls-icon-btn ls-mini-play-btn" id="lsBottomPlayBtn" onclick="togglePlayPauseVideo()" title="Play / Pause">
-                <i class="fa-solid fa-pause" id="lsBottomPlayIcon"></i>
-              </button>
-
+              <!-- Right Bottom Action Pills -->
               <div class="ls-bottom-actions">
-                <button class="ls-action-pill" id="lsFitToggleBtn" onclick="toggleLandscapeFitFill()" title="Aspect Ratio">
+                <button class="ls-action-pill" id="lsFitToggleBtn" onclick="toggleLandscapeFitFill()" title="Fit / Fill Aspect Ratio">
                   <i class="fa-solid fa-arrows-left-right-to-line" id="lsFitIcon"></i>
                   <span id="lsFitLabel">Fit</span>
                 </button>
 
-                <button class="ls-action-pill" id="lsLanguageToggleBtn" onclick="toggleLandscapeDrawer('language')" title="Language / Audio">
+                <button class="ls-action-pill" id="lsLanguageToggleBtn" onclick="toggleLandscapeDrawer('language')" title="Audio & Subtitles">
                   <i class="fa-regular fa-comment-dots"></i>
                   <span>Language</span>
                 </button>
 
-                <button class="ls-action-pill" id="lsSpeedToggleBtn" onclick="toggleLandscapeDrawer('speed')" title="Speed">
+                <button class="ls-action-pill" id="lsSpeedToggleBtn" onclick="toggleLandscapeDrawer('speed')" title="Playback Speed">
                   <i class="fa-regular fa-clock"></i>
                   <span id="lsSpeedLabel">1x</span>
                 </button>
 
-                <button class="ls-action-pill ls-quality-pill" id="lsQualityBadge" onclick="toggleLandscapeDrawer('quality')" title="Quality">720P</button>
+                <button class="ls-action-pill ls-quality-pill" id="lsQualityBadge" onclick="toggleLandscapeDrawer('quality')" title="Quality Selection">720P</button>
 
                 <button class="ls-action-pill ls-fullscreen-pill" id="lsFullscreenToggleBtn" onclick="togglePlayerFullscreen()" title="Fullscreen">
                   <i class="fa-solid fa-expand"></i>
@@ -955,11 +955,7 @@
             </div>
           </div>
 
-          <!-- Movie Servers / Backup Links Row -->
-          <div class="movie-servers-wrapper" id="movieServersWrapper" style="display: none;">
-            <div class="servers-label"><i class="fa-solid fa-server" style="color: #60a5fa;"></i> <span>Select Server / Backup Stream:</span></div>
-            <div class="servers-scroll-row" id="serversListRow"></div>
-          </div>
+
         </div>
 
         <!-- Prominent Full-Width Cyan Join FOBS Community Button (In all Movies & Series) -->

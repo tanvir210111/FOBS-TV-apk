@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v53';
+const CACHE_KEY = 'fobs_tv_content_cache_v55';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -93,8 +93,20 @@ function normalizeContentData(data) {
   if (!data) return;
   const sanitizeItem = (item) => {
     if (!item) return;
-    if (typeof item.title === 'string' && (item.title.includes('<') || item.title.includes('document.bod') || item.title.includes('_fobsLegacyUpdateRan'))) {
-      item.title = item.title.replace(/<[^>]*>?/gm, '').replace(/_fobsLegacyUpdateRan.*/g, '').replace(/['";\s]*document\.body[\s\S]*/g, '').trim();
+    if (typeof item.title === 'string' && (
+      item.title.includes('<') || item.title.includes('"') ||
+      item.title.includes('style=') || item.title.includes('onload=') ||
+      item.title.includes('src=') || item.title.includes('document.bod') ||
+      item.title.includes('_fobsLegacyUpdateRan')
+    )) {
+      item.title = item.title
+        .replace(/<[^>]*>?/gm, '')
+        .replace(/\s*style=["'][^"']*["']/gi, '')
+        .replace(/\s*onload=["'][^"']*["']/gi, '')
+        .replace(/\s*src=["'][^"']*["']/gi, '')
+        .replace(/_fobsLegacyUpdateRan.*/g, '')
+        .replace(/['";\s]*document\.body[\s\S]*/g, '')
+        .trim();
     }
   };
   if (data.featured) sanitizeItem(data.featured);
@@ -2667,42 +2679,15 @@ function formatCleanMediaTitle(rawTitle, dubLanguage = 'Hindi') {
   updateQualityPillsForMedia(media);
 }
 
-// Render Server Pills for Movies/Series with Multiple Sources
+// Render Server Pills — always hidden (single MovieBox server only)
 function renderServerPills(media) {
   const wrapper = document.getElementById('movieServersWrapper');
-  const row = document.getElementById('serversListRow');
-  if (!wrapper || !row) return;
-
-  const currentServers = (appState.currentEpisode && appState.currentEpisode.servers && appState.currentEpisode.servers.length > 0)
-    ? appState.currentEpisode.servers
-    : (media && media.servers && media.servers.length > 0 ? media.servers : null);
-
-  if (currentServers && currentServers.length > 0) {
-    wrapper.style.display = 'block';
-    const activeIdx = appState.activeServerIndex !== undefined ? appState.activeServerIndex : 0;
-    row.innerHTML = currentServers.map((s, idx) => `
-      <button class="server-pill ${idx === activeIdx ? 'active' : ''}" onclick="selectServer(${idx})">
-        <i class="fa-solid fa-play" style="font-size: 8px; opacity: 0.8;"></i> Server ${idx + 1}
-      </button>
-    `).join('');
-  } else {
-    wrapper.style.display = 'none';
-  }
+  if (wrapper) wrapper.style.display = 'none';
 }
 
-// Select Server Manually (Movie or Series Episode)
+// Select Server Manually (no-op — single server mode)
 function selectServer(idx) {
-  const currentServers = (appState.currentEpisode && appState.currentEpisode.servers && appState.currentEpisode.servers.length > 0)
-    ? appState.currentEpisode.servers
-    : (appState.currentMedia && appState.currentMedia.servers ? appState.currentMedia.servers : null);
-  if (!currentServers || !currentServers[idx]) return;
-  appState.activeServerIndex = idx;
-  const srv = currentServers[idx];
-  renderServerPills(appState.currentMedia);
-  showToast(`Switched to: Server ${idx + 1}`);
-  appState.streamSeekOffset = 0;
-  appState.pendingSeekTime = null;
-  playStreamUrl(srv.url);
+  // Server selection disabled: app uses single MovieBox stream
 }
 
 // Render Episode Pills
@@ -4106,6 +4091,17 @@ function setupVideoListeners() {
   const embedFrame = document.getElementById('mainEmbedPlayer');
   if (!videoPlayer) return;
 
+  // Portrait mode tap: clicking anywhere on videoContainer shows/hides controls
+  if (videoContainer) {
+    videoContainer.addEventListener('click', (e) => {
+      // Only handle if not clicking a control button or embed frame
+      const embedFrame = document.getElementById('mainEmbedPlayer');
+      if (embedFrame && embedFrame.style.display === 'block') return;
+      if (e.target.closest('button, .ls-action-pill, .ls-side-drawer, #lsTapDetector')) return;
+      handleSinglePlayerTap();
+    });
+  }
+
   // Initialize Gesture Engine on the tap detector
   setupPlayerGestures();
 
@@ -4246,24 +4242,6 @@ function setupVideoListeners() {
     const curEp = appState.currentEpisode;
     const rawUrl = (curEp?.audioTracks && curEp.audioTracks[appState.currentAudioTrack]) || curEp?.streamUrl || appState.currentMedia?.streamUrl || appState.currentMedia?.driveUrl;
 
-    // Automatic server failover if media/episode has backup servers
-    const activeServers = (curEp && curEp.servers && curEp.servers.length > 0)
-      ? curEp.servers
-      : (appState.currentMedia && appState.currentMedia.servers ? appState.currentMedia.servers : null);
-
-    if (activeServers && activeServers.length > 1) {
-      const curIdx = appState.activeServerIndex !== undefined ? appState.activeServerIndex : 0;
-      if (curIdx + 1 < activeServers.length) {
-        appState.activeServerIndex = curIdx + 1;
-        const nextServer = activeServers[appState.activeServerIndex];
-        console.warn(`Stream failed on current server. Auto-switching to: Server ${appState.activeServerIndex + 1}...`);
-        showToast(`Auto-switching to Server ${appState.activeServerIndex + 1}...`);
-        renderServerPills(appState.currentMedia);
-        playStreamUrl(nextServer.url);
-        return;
-      }
-    }
-
     if (!videoPlayer._retryCount) videoPlayer._retryCount = 0;
     if (videoPlayer._retryCount < 1 && rawUrl && !rawUrl.includes('/api/stream?url=')) {
       videoPlayer._retryCount++;
@@ -4285,7 +4263,7 @@ function setupVideoListeners() {
 
     if (loader) loader.classList.remove('active');
     console.warn('Stream failed after retries.');
-    showToast('Playback error. Please try Server 2 or check internet connection.');
+    showToast('Playback error. Please check your internet connection and try again.');
   });
 
   // Handle native HTML5 bottom control bar fullscreen button events
