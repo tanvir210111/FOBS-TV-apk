@@ -63835,9 +63835,9 @@
     },
     {
       "id": "turkish-s-95603",
-      "title": "Kuruluş: Osman [Hindi]",
+      "title": "Kuruluş: Osman [Hindi / Urdu]",
       "language": "Hindi",
-      "tag": "HD",
+      "tag": "1080p HD",
       "year": "2019",
       "releaseDate": "2019-11-20",
       "country": "Turkey",
@@ -63845,8 +63845,8 @@
       "category": "Turkish Series",
       "genre": "Action, War, History",
       "badgeRight": "Turkish",
-      "badgeLeft": "Hindi",
-      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi / Urdu",
+      "dubLanguage": "Hindi / Urdu",
       "rating": "8.0",
       "imdbRating": "8.0",
       "poster": "https://image.tmdb.org/t/p/w500/tu4BWsGFHcYDWulZwHxylA91vo0.jpg",
@@ -63856,386 +63856,3258 @@
       "seasons": [
         {
           "seasonNumber": 1,
-          "seasonTitle": "Season 1",
+          "season": 1,
+          "name": "Season 1 (27 Episodes)",
+          "episodeCount": 27,
           "episodes": [
             {
               "number": "01",
+              "episode": 1,
+              "season": 1,
+              "overallEpisode": 1,
               "title": "Episode 1",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=1",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 1 (Overall Ep 1). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/c95e00158477e1d81b1067429673947c.mp4?sign=34d9dd5cad6a76cf8d670fe730bccba0&t=1792767951",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/c95e00158477e1d81b1067429673947c.mp4?sign=34d9dd5cad6a76cf8d670fe730bccba0&t=1792767951"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=1"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/1"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/1"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=1"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/c95e00158477e1d81b1067429673947c.mp4?sign=34d9dd5cad6a76cf8d670fe730bccba0&t=1792767951",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/1"
               }
             },
             {
               "number": "02",
+              "episode": 2,
+              "season": 1,
+              "overallEpisode": 2,
               "title": "Episode 2",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=2",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 2 (Overall Ep 2). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/84ee449c3abf1a2f95a0ce1456f5b9bc.mp4?sign=ac5aabc80745f5b9fbfa0b77b62b5a28&t=1792768013",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/84ee449c3abf1a2f95a0ce1456f5b9bc.mp4?sign=ac5aabc80745f5b9fbfa0b77b62b5a28&t=1792768013"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=2"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/2"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/2"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=2"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/84ee449c3abf1a2f95a0ce1456f5b9bc.mp4?sign=ac5aabc80745f5b9fbfa0b77b62b5a28&t=1792768013",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/2"
               }
             },
             {
               "number": "03",
+              "episode": 3,
+              "season": 1,
+              "overallEpisode": 3,
               "title": "Episode 3",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=3",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 3 (Overall Ep 3). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/9343dfa77ff25b93651aa0207066ab99.mp4?sign=3e136dcdc4aff4d39685317c7849163a&t=1792771823",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/9343dfa77ff25b93651aa0207066ab99.mp4?sign=3e136dcdc4aff4d39685317c7849163a&t=1792771823"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=3"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/3"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/3"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=3"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/9343dfa77ff25b93651aa0207066ab99.mp4?sign=3e136dcdc4aff4d39685317c7849163a&t=1792771823",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/3"
               }
             },
             {
               "number": "04",
+              "episode": 4,
+              "season": 1,
+              "overallEpisode": 4,
               "title": "Episode 4",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=4",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 4 (Overall Ep 4). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/3a17feb91118fe9d58736f5635379e63.mp4?sign=37a6ceca67c457fc9d520fe603708cd0&t=1792771824",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/3a17feb91118fe9d58736f5635379e63.mp4?sign=37a6ceca67c457fc9d520fe603708cd0&t=1792771824"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=4"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/4"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/4"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=4"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/3a17feb91118fe9d58736f5635379e63.mp4?sign=37a6ceca67c457fc9d520fe603708cd0&t=1792771824",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/4"
               }
             },
             {
               "number": "05",
+              "episode": 5,
+              "season": 1,
+              "overallEpisode": 5,
               "title": "Episode 5",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=5",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 5 (Overall Ep 5). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/50d65ae69973c48fe8c45a2a8850c927.mp4?sign=29f9f5ea28801b7c07b769a73e47bf65&t=1792771824",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/50d65ae69973c48fe8c45a2a8850c927.mp4?sign=29f9f5ea28801b7c07b769a73e47bf65&t=1792771824"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=5"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/5"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/5"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=5"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/50d65ae69973c48fe8c45a2a8850c927.mp4?sign=29f9f5ea28801b7c07b769a73e47bf65&t=1792771824",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/5"
               }
             },
             {
               "number": "06",
+              "episode": 6,
+              "season": 1,
+              "overallEpisode": 6,
               "title": "Episode 6",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=6",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 6 (Overall Ep 6). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "/api/moviebox/stream?id=9012855174766968784&path=establishment-osman-GtoO3BhYMJa&se=1&ep=6",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "/api/moviebox/stream?id=9012855174766968784&path=establishment-osman-GtoO3BhYMJa&se=1&ep=6"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=6"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/6"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/6"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=6"
+                "Hindi / Urdu Dub": "/api/moviebox/stream?id=9012855174766968784&path=establishment-osman-GtoO3BhYMJa&se=1&ep=6",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/6"
               }
             },
             {
               "number": "07",
+              "episode": 7,
+              "season": 1,
+              "overallEpisode": 7,
               "title": "Episode 7",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=7",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 7 (Overall Ep 7). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/db663ece13b83a33796086ab2960f7a1.mp4?sign=d9a2d7e06a5e34882cfa48cad181404d&t=1792771826",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/db663ece13b83a33796086ab2960f7a1.mp4?sign=d9a2d7e06a5e34882cfa48cad181404d&t=1792771826"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=7"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/7"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/7"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=7"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/db663ece13b83a33796086ab2960f7a1.mp4?sign=d9a2d7e06a5e34882cfa48cad181404d&t=1792771826",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/7"
               }
             },
             {
               "number": "08",
+              "episode": 8,
+              "season": 1,
+              "overallEpisode": 8,
               "title": "Episode 8",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=8",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 8 (Overall Ep 8). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/e0e9f264a229e379b51023fb188077bf.mp4?sign=5676c8ca663fdbd5a528a71a367b1c60&t=1792771826",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/e0e9f264a229e379b51023fb188077bf.mp4?sign=5676c8ca663fdbd5a528a71a367b1c60&t=1792771826"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=8"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/8"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/8"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=8"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/e0e9f264a229e379b51023fb188077bf.mp4?sign=5676c8ca663fdbd5a528a71a367b1c60&t=1792771826",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/8"
               }
             },
             {
               "number": "09",
+              "episode": 9,
+              "season": 1,
+              "overallEpisode": 9,
               "title": "Episode 9",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=9",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 9 (Overall Ep 9). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/94f936c3c4f7e108b87c956898f609ef.mp4?sign=30709d4b4b064acf99c6c79de9691e42&t=1792771827",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/94f936c3c4f7e108b87c956898f609ef.mp4?sign=30709d4b4b064acf99c6c79de9691e42&t=1792771827"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=9"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/9"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/9"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=9"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/94f936c3c4f7e108b87c956898f609ef.mp4?sign=30709d4b4b064acf99c6c79de9691e42&t=1792771827",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/9"
               }
             },
             {
               "number": "10",
+              "episode": 10,
+              "season": 1,
+              "overallEpisode": 10,
               "title": "Episode 10",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=10",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 10 (Overall Ep 10). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/e0744876d3af9ac727236f1021181932.mp4?sign=5ad4b951c523d222db215c26a9fd87d2&t=1792771717",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/e0744876d3af9ac727236f1021181932.mp4?sign=5ad4b951c523d222db215c26a9fd87d2&t=1792771717"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=10"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/10"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/10"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=10"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/e0744876d3af9ac727236f1021181932.mp4?sign=5ad4b951c523d222db215c26a9fd87d2&t=1792771717",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/10"
               }
             },
             {
               "number": "11",
+              "episode": 11,
+              "season": 1,
+              "overallEpisode": 11,
               "title": "Episode 11",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=11",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 11 (Overall Ep 11). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/1df0a0b93ad0ce275e31a2f524b54ae9.mp4?sign=dd6bcadbdfc02955f4e77765158ed5d8&t=1792771828",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/1df0a0b93ad0ce275e31a2f524b54ae9.mp4?sign=dd6bcadbdfc02955f4e77765158ed5d8&t=1792771828"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=11"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/11"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/11"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=11"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/1df0a0b93ad0ce275e31a2f524b54ae9.mp4?sign=dd6bcadbdfc02955f4e77765158ed5d8&t=1792771828",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/11"
               }
             },
             {
               "number": "12",
+              "episode": 12,
+              "season": 1,
+              "overallEpisode": 12,
               "title": "Episode 12",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=12",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 12 (Overall Ep 12). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/f4b41e9d3b395ea84055ca77031a8ec3.mp4?sign=f669b470ded108ed0711dca738562fdb&t=1792771829",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/f4b41e9d3b395ea84055ca77031a8ec3.mp4?sign=f669b470ded108ed0711dca738562fdb&t=1792771829"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=12"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/12"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/12"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=12"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/f4b41e9d3b395ea84055ca77031a8ec3.mp4?sign=f669b470ded108ed0711dca738562fdb&t=1792771829",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/12"
               }
             },
             {
               "number": "13",
+              "episode": 13,
+              "season": 1,
+              "overallEpisode": 13,
               "title": "Episode 13",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=13",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 13 (Overall Ep 13). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/fb0abe29df8806ccb770c4f4135a8aa6.mp4?sign=b210fba2476cd214ed4001d5c92b37b1&t=1792771829",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/fb0abe29df8806ccb770c4f4135a8aa6.mp4?sign=b210fba2476cd214ed4001d5c92b37b1&t=1792771829"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=13"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/13"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/13"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=13"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/fb0abe29df8806ccb770c4f4135a8aa6.mp4?sign=b210fba2476cd214ed4001d5c92b37b1&t=1792771829",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/13"
               }
             },
             {
               "number": "14",
+              "episode": 14,
+              "season": 1,
+              "overallEpisode": 14,
               "title": "Episode 14",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=14",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 14 (Overall Ep 14). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a80ccb4bfb1725ab73e77ebaccdf983d.mp4?sign=760a32d34603fba7dea83588faf114d2&t=1792771830",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a80ccb4bfb1725ab73e77ebaccdf983d.mp4?sign=760a32d34603fba7dea83588faf114d2&t=1792771830"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=14"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/14"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/14"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=14"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/a80ccb4bfb1725ab73e77ebaccdf983d.mp4?sign=760a32d34603fba7dea83588faf114d2&t=1792771830",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/14"
               }
             },
             {
               "number": "15",
+              "episode": 15,
+              "season": 1,
+              "overallEpisode": 15,
               "title": "Episode 15",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=15",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 15 (Overall Ep 15). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/8166dd6492c16e4cd0cb0b74fbf59705.mp4?sign=88de75dbc3b5c05446ba0228808a751a&t=1792771830",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/8166dd6492c16e4cd0cb0b74fbf59705.mp4?sign=88de75dbc3b5c05446ba0228808a751a&t=1792771830"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=15"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/15"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/15"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=15"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/8166dd6492c16e4cd0cb0b74fbf59705.mp4?sign=88de75dbc3b5c05446ba0228808a751a&t=1792771830",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/15"
               }
             },
             {
               "number": "16",
+              "episode": 16,
+              "season": 1,
+              "overallEpisode": 16,
               "title": "Episode 16",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=16",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 16 (Overall Ep 16). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/bdf69a2b320c6faefa01612d1c46ff88.mp4?sign=ce18b848253de186f92d6f07052b5b64&t=1792771831",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/bdf69a2b320c6faefa01612d1c46ff88.mp4?sign=ce18b848253de186f92d6f07052b5b64&t=1792771831"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=16"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/16"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/16"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=16"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/bdf69a2b320c6faefa01612d1c46ff88.mp4?sign=ce18b848253de186f92d6f07052b5b64&t=1792771831",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/16"
               }
             },
             {
               "number": "17",
+              "episode": 17,
+              "season": 1,
+              "overallEpisode": 17,
               "title": "Episode 17",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=17",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 17 (Overall Ep 17). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/905f0cf48df08993ecd6ce809755de68.mp4?sign=e9fad2016647f442a78daba4f59a1eb0&t=1792771831",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/905f0cf48df08993ecd6ce809755de68.mp4?sign=e9fad2016647f442a78daba4f59a1eb0&t=1792771831"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=17"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/17"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/17"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=17"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/905f0cf48df08993ecd6ce809755de68.mp4?sign=e9fad2016647f442a78daba4f59a1eb0&t=1792771831",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/17"
               }
             },
             {
               "number": "18",
+              "episode": 18,
+              "season": 1,
+              "overallEpisode": 18,
               "title": "Episode 18",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=18",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 18 (Overall Ep 18). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/53de9e6015932e4c2137c9f8dd636d61.mp4?sign=768fdfcb9397f02c0d205e628e776579&t=1792771832",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/53de9e6015932e4c2137c9f8dd636d61.mp4?sign=768fdfcb9397f02c0d205e628e776579&t=1792771832"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=18"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/18"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/18"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=18"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/53de9e6015932e4c2137c9f8dd636d61.mp4?sign=768fdfcb9397f02c0d205e628e776579&t=1792771832",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/18"
               }
             },
             {
               "number": "19",
+              "episode": 19,
+              "season": 1,
+              "overallEpisode": 19,
               "title": "Episode 19",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=19",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 19 (Overall Ep 19). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/309c8c6d7b134f95931710edaa43787c.mp4?sign=3f6534df9a7174120edeca7db0e1c6b4&t=1792771833",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/309c8c6d7b134f95931710edaa43787c.mp4?sign=3f6534df9a7174120edeca7db0e1c6b4&t=1792771833"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=19"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/19"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/19"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=19"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/309c8c6d7b134f95931710edaa43787c.mp4?sign=3f6534df9a7174120edeca7db0e1c6b4&t=1792771833",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/19"
               }
             },
             {
               "number": "20",
+              "episode": 20,
+              "season": 1,
+              "overallEpisode": 20,
               "title": "Episode 20",
-              "duration": "45m-60m",
-              "streamUrl": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=20",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 20 (Overall Ep 20). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a673fd14cee115888687e3d4dd74c21c.mp4?sign=5a3a1a90fd8724ecce25d92c67cabf72&t=1792771717",
               "servers": [
                 {
-                  "name": "Server 1 (Fast HD)",
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a673fd14cee115888687e3d4dd74c21c.mp4?sign=5a3a1a90fd8724ecce25d92c67cabf72&t=1792771717"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
                   "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=20"
                 },
                 {
-                  "name": "Server 2 (AutoEmbed)",
+                  "name": "Server 3 (AutoEmbed)",
                   "url": "https://autoembed.co/tv/tmdb/95603/1/20"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/20"
                 }
               ],
               "audioTracks": {
-                "Hindi dub": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=20"
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/a673fd14cee115888687e3d4dd74c21c.mp4?sign=5a3a1a90fd8724ecce25d92c67cabf72&t=1792771717",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/20"
+              }
+            },
+            {
+              "number": "21",
+              "episode": 21,
+              "season": 1,
+              "overallEpisode": 21,
+              "title": "Episode 21",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 21 (Overall Ep 21). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/979940d9d046c711f0351173c10187ef.mp4?sign=e8379edf8d8d062c6293de7460d83e8f&t=1792771834",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/979940d9d046c711f0351173c10187ef.mp4?sign=e8379edf8d8d062c6293de7460d83e8f&t=1792771834"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=21"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/1/21"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/21"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/979940d9d046c711f0351173c10187ef.mp4?sign=e8379edf8d8d062c6293de7460d83e8f&t=1792771834",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/21"
+              }
+            },
+            {
+              "number": "22",
+              "episode": 22,
+              "season": 1,
+              "overallEpisode": 22,
+              "title": "Episode 22",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 22 (Overall Ep 22). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/2374b0a0f269cf6b93b1d006f56731c1.mp4?sign=880118226a33d770d033c176d2373bab&t=1792771834",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/2374b0a0f269cf6b93b1d006f56731c1.mp4?sign=880118226a33d770d033c176d2373bab&t=1792771834"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=22"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/1/22"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/22"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/2374b0a0f269cf6b93b1d006f56731c1.mp4?sign=880118226a33d770d033c176d2373bab&t=1792771834",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/22"
+              }
+            },
+            {
+              "number": "23",
+              "episode": 23,
+              "season": 1,
+              "overallEpisode": 23,
+              "title": "Episode 23",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 23 (Overall Ep 23). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/4fc9b42bc620121449e663260dc29b12.mp4?sign=792bf92511e3b982f9aa0d8a017b88bd&t=1792771835",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/4fc9b42bc620121449e663260dc29b12.mp4?sign=792bf92511e3b982f9aa0d8a017b88bd&t=1792771835"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=23"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/1/23"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/23"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/4fc9b42bc620121449e663260dc29b12.mp4?sign=792bf92511e3b982f9aa0d8a017b88bd&t=1792771835",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/23"
+              }
+            },
+            {
+              "number": "24",
+              "episode": 24,
+              "season": 1,
+              "overallEpisode": 24,
+              "title": "Episode 24",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 24 (Overall Ep 24). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/470936d50811632d18ad1f76019070be.mp4?sign=08d0db90b470ea1aaf640459970d54f1&t=1792771836",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/470936d50811632d18ad1f76019070be.mp4?sign=08d0db90b470ea1aaf640459970d54f1&t=1792771836"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=24"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/1/24"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/24"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/470936d50811632d18ad1f76019070be.mp4?sign=08d0db90b470ea1aaf640459970d54f1&t=1792771836",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/24"
+              }
+            },
+            {
+              "number": "25",
+              "episode": 25,
+              "season": 1,
+              "overallEpisode": 25,
+              "title": "Episode 25",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 25 (Overall Ep 25). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/e65e398d6f32a6ce000036338e34571f.mp4?sign=e1548b52300b72497fed8623c9cd0ee2&t=1792771836",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/e65e398d6f32a6ce000036338e34571f.mp4?sign=e1548b52300b72497fed8623c9cd0ee2&t=1792771836"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=25"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/1/25"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/25"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/e65e398d6f32a6ce000036338e34571f.mp4?sign=e1548b52300b72497fed8623c9cd0ee2&t=1792771836",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/25"
+              }
+            },
+            {
+              "number": "26",
+              "episode": 26,
+              "season": 1,
+              "overallEpisode": 26,
+              "title": "Episode 26",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 26 (Overall Ep 26). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7d9f0b95c9a505297c2e31d441578342.mp4?sign=2555ea96fda381dc5f09bb39216ff606&t=1792771837",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/7d9f0b95c9a505297c2e31d441578342.mp4?sign=2555ea96fda381dc5f09bb39216ff606&t=1792771837"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=26"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/1/26"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/26"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/7d9f0b95c9a505297c2e31d441578342.mp4?sign=2555ea96fda381dc5f09bb39216ff606&t=1792771837",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/26"
+              }
+            },
+            {
+              "number": "27",
+              "episode": 27,
+              "season": 1,
+              "overallEpisode": 27,
+              "title": "Episode 27",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 1 Episode 27 (Overall Ep 27). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/3c66c04cf77fb7afbc7054bbd9f7c7a5.mp4?sign=7b40e895889f2cbd32fb5372126ee040&t=1792771837",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/3c66c04cf77fb7afbc7054bbd9f7c7a5.mp4?sign=7b40e895889f2cbd32fb5372126ee040&t=1792771837"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=1&e=27"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/1/27"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/1/27"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/3c66c04cf77fb7afbc7054bbd9f7c7a5.mp4?sign=7b40e895889f2cbd32fb5372126ee040&t=1792771837",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/1/27"
+              }
+            }
+          ]
+        },
+        {
+          "seasonNumber": 2,
+          "season": 2,
+          "name": "Season 2 (37 Episodes)",
+          "episodeCount": 37,
+          "episodes": [
+            {
+              "number": "01",
+              "episode": 1,
+              "season": 2,
+              "overallEpisode": 28,
+              "title": "Episode 1",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 1 (Overall Ep 28). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/5061c58a360146179eff505e8314d6cb.mp4?sign=4696584a5ffb9a6d34870fb4e8b41f3b&t=1792771838",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/5061c58a360146179eff505e8314d6cb.mp4?sign=4696584a5ffb9a6d34870fb4e8b41f3b&t=1792771838"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=1"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/1"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/1"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/5061c58a360146179eff505e8314d6cb.mp4?sign=4696584a5ffb9a6d34870fb4e8b41f3b&t=1792771838",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/1"
+              }
+            },
+            {
+              "number": "02",
+              "episode": 2,
+              "season": 2,
+              "overallEpisode": 29,
+              "title": "Episode 2",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 2 (Overall Ep 29). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/9464097b8db7ba177e79fcd7a212220f.mp4?sign=0d2d141b3df5c9761bdf5e2d87bd3f20&t=1792771838",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/9464097b8db7ba177e79fcd7a212220f.mp4?sign=0d2d141b3df5c9761bdf5e2d87bd3f20&t=1792771838"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=2"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/2"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/2"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/9464097b8db7ba177e79fcd7a212220f.mp4?sign=0d2d141b3df5c9761bdf5e2d87bd3f20&t=1792771838",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/2"
+              }
+            },
+            {
+              "number": "03",
+              "episode": 3,
+              "season": 2,
+              "overallEpisode": 30,
+              "title": "Episode 3",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 3 (Overall Ep 30). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/159f1980b7850895debb58dffbd21bfc.mp4?sign=32e28758d5e556e91a456ea355d1a764&t=1792771839",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/159f1980b7850895debb58dffbd21bfc.mp4?sign=32e28758d5e556e91a456ea355d1a764&t=1792771839"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=3"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/3"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/3"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/159f1980b7850895debb58dffbd21bfc.mp4?sign=32e28758d5e556e91a456ea355d1a764&t=1792771839",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/3"
+              }
+            },
+            {
+              "number": "04",
+              "episode": 4,
+              "season": 2,
+              "overallEpisode": 31,
+              "title": "Episode 4",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 4 (Overall Ep 31). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/160d96d639801185796e071a10e3a9f9.mp4?sign=1fa3d64ba25f883bb7c6908dc43a012f&t=1792771840",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/160d96d639801185796e071a10e3a9f9.mp4?sign=1fa3d64ba25f883bb7c6908dc43a012f&t=1792771840"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=4"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/4"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/4"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/160d96d639801185796e071a10e3a9f9.mp4?sign=1fa3d64ba25f883bb7c6908dc43a012f&t=1792771840",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/4"
+              }
+            },
+            {
+              "number": "05",
+              "episode": 5,
+              "season": 2,
+              "overallEpisode": 32,
+              "title": "Episode 5",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 5 (Overall Ep 32). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a1176688164683b98c118093e2873164.mp4?sign=06ef5208132a5833bbab4c20b5886010&t=1792771840",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a1176688164683b98c118093e2873164.mp4?sign=06ef5208132a5833bbab4c20b5886010&t=1792771840"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=5"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/5"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/5"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/a1176688164683b98c118093e2873164.mp4?sign=06ef5208132a5833bbab4c20b5886010&t=1792771840",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/5"
+              }
+            },
+            {
+              "number": "06",
+              "episode": 6,
+              "season": 2,
+              "overallEpisode": 33,
+              "title": "Episode 6",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 6 (Overall Ep 33). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/578956081fd2a2eef3f7b33bc829f617.mp4?sign=51cb43069a3487c5127f04ad5d59a930&t=1792771841",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/578956081fd2a2eef3f7b33bc829f617.mp4?sign=51cb43069a3487c5127f04ad5d59a930&t=1792771841"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=6"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/6"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/6"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/578956081fd2a2eef3f7b33bc829f617.mp4?sign=51cb43069a3487c5127f04ad5d59a930&t=1792771841",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/6"
+              }
+            },
+            {
+              "number": "07",
+              "episode": 7,
+              "season": 2,
+              "overallEpisode": 34,
+              "title": "Episode 7",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 7 (Overall Ep 34). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/98f20bbacc3da4e5b1674fd5fccb3809.mp4?sign=97351b5d290ee3a4bfe6d46bf6972534&t=1792771841",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/98f20bbacc3da4e5b1674fd5fccb3809.mp4?sign=97351b5d290ee3a4bfe6d46bf6972534&t=1792771841"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=7"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/7"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/7"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/98f20bbacc3da4e5b1674fd5fccb3809.mp4?sign=97351b5d290ee3a4bfe6d46bf6972534&t=1792771841",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/7"
+              }
+            },
+            {
+              "number": "08",
+              "episode": 8,
+              "season": 2,
+              "overallEpisode": 35,
+              "title": "Episode 8",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 8 (Overall Ep 35). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/aa769f68818b533e14a81094e0bf7197.mp4?sign=e8b80ff0cff5688b806132fc66804b6a&t=1792771842",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/aa769f68818b533e14a81094e0bf7197.mp4?sign=e8b80ff0cff5688b806132fc66804b6a&t=1792771842"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=8"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/8"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/8"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/aa769f68818b533e14a81094e0bf7197.mp4?sign=e8b80ff0cff5688b806132fc66804b6a&t=1792771842",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/8"
+              }
+            },
+            {
+              "number": "09",
+              "episode": 9,
+              "season": 2,
+              "overallEpisode": 36,
+              "title": "Episode 9",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 9 (Overall Ep 36). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/72a52e26e457e23e8fcf79a6c8361631.mp4?sign=1d3b3984878c7579b6d1b10d36ccd3c3&t=1792771843",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/72a52e26e457e23e8fcf79a6c8361631.mp4?sign=1d3b3984878c7579b6d1b10d36ccd3c3&t=1792771843"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=9"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/9"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/9"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/72a52e26e457e23e8fcf79a6c8361631.mp4?sign=1d3b3984878c7579b6d1b10d36ccd3c3&t=1792771843",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/9"
+              }
+            },
+            {
+              "number": "10",
+              "episode": 10,
+              "season": 2,
+              "overallEpisode": 37,
+              "title": "Episode 10",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 10 (Overall Ep 37). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/8f325eed42e3489cddd3352f8cc50ca7.mp4?sign=17198835e59e4e4ed297df098288a4aa&t=1792771843",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/8f325eed42e3489cddd3352f8cc50ca7.mp4?sign=17198835e59e4e4ed297df098288a4aa&t=1792771843"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=10"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/10"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/10"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/8f325eed42e3489cddd3352f8cc50ca7.mp4?sign=17198835e59e4e4ed297df098288a4aa&t=1792771843",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/10"
+              }
+            },
+            {
+              "number": "11",
+              "episode": 11,
+              "season": 2,
+              "overallEpisode": 38,
+              "title": "Episode 11",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 11 (Overall Ep 38). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/5cf586b62c22288f03e972b49d1bf8de.mp4?sign=0a77f68ca30b3f82cada969bbc5deb8a&t=1792771844",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/5cf586b62c22288f03e972b49d1bf8de.mp4?sign=0a77f68ca30b3f82cada969bbc5deb8a&t=1792771844"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=11"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/11"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/11"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/5cf586b62c22288f03e972b49d1bf8de.mp4?sign=0a77f68ca30b3f82cada969bbc5deb8a&t=1792771844",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/11"
+              }
+            },
+            {
+              "number": "12",
+              "episode": 12,
+              "season": 2,
+              "overallEpisode": 39,
+              "title": "Episode 12",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 12 (Overall Ep 39). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/07a5ad0e1de9023cab923e48f3c2087e.mp4?sign=7be195f33071ec5143d012ced987469e&t=1792771844",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/07a5ad0e1de9023cab923e48f3c2087e.mp4?sign=7be195f33071ec5143d012ced987469e&t=1792771844"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=12"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/12"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/12"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/07a5ad0e1de9023cab923e48f3c2087e.mp4?sign=7be195f33071ec5143d012ced987469e&t=1792771844",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/12"
+              }
+            },
+            {
+              "number": "13",
+              "episode": 13,
+              "season": 2,
+              "overallEpisode": 40,
+              "title": "Episode 13",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 13 (Overall Ep 40). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/5664816110a0fc38802736c973e80b08.mp4?sign=34e735215275809899ec3921c6dfd0b0&t=1792771845",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/5664816110a0fc38802736c973e80b08.mp4?sign=34e735215275809899ec3921c6dfd0b0&t=1792771845"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=13"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/13"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/13"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/5664816110a0fc38802736c973e80b08.mp4?sign=34e735215275809899ec3921c6dfd0b0&t=1792771845",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/13"
+              }
+            },
+            {
+              "number": "14",
+              "episode": 14,
+              "season": 2,
+              "overallEpisode": 41,
+              "title": "Episode 14",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 14 (Overall Ep 41). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/44c474af322c09c50fe7b389f0ecfd11.mp4?sign=a0fde8d0e954aa54ff432724ec2bc7ee&t=1792771845",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/44c474af322c09c50fe7b389f0ecfd11.mp4?sign=a0fde8d0e954aa54ff432724ec2bc7ee&t=1792771845"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=14"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/14"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/14"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/44c474af322c09c50fe7b389f0ecfd11.mp4?sign=a0fde8d0e954aa54ff432724ec2bc7ee&t=1792771845",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/14"
+              }
+            },
+            {
+              "number": "15",
+              "episode": 15,
+              "season": 2,
+              "overallEpisode": 42,
+              "title": "Episode 15",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 15 (Overall Ep 42). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/73e1ffcf6f528f7842cde4a2b98b6a61.mp4?sign=abdcacf5077c87795a0442424d8fcaf5&t=1792771846",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/73e1ffcf6f528f7842cde4a2b98b6a61.mp4?sign=abdcacf5077c87795a0442424d8fcaf5&t=1792771846"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=15"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/15"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/15"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/73e1ffcf6f528f7842cde4a2b98b6a61.mp4?sign=abdcacf5077c87795a0442424d8fcaf5&t=1792771846",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/15"
+              }
+            },
+            {
+              "number": "16",
+              "episode": 16,
+              "season": 2,
+              "overallEpisode": 43,
+              "title": "Episode 16",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 16 (Overall Ep 43). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/785e59c00a29a8f66d13c213b76c8a22.mp4?sign=2d51e3366ef2acb32cffdc2ee5f19dd1&t=1792771847",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/785e59c00a29a8f66d13c213b76c8a22.mp4?sign=2d51e3366ef2acb32cffdc2ee5f19dd1&t=1792771847"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=16"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/16"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/16"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/785e59c00a29a8f66d13c213b76c8a22.mp4?sign=2d51e3366ef2acb32cffdc2ee5f19dd1&t=1792771847",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/16"
+              }
+            },
+            {
+              "number": "17",
+              "episode": 17,
+              "season": 2,
+              "overallEpisode": 44,
+              "title": "Episode 17",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 17 (Overall Ep 44). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/fdd08e6e63fe24183ef375472e50acde.mp4?sign=15cc8b0814408bea2f471a10f4aaab82&t=1792771847",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/fdd08e6e63fe24183ef375472e50acde.mp4?sign=15cc8b0814408bea2f471a10f4aaab82&t=1792771847"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=17"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/17"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/17"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/fdd08e6e63fe24183ef375472e50acde.mp4?sign=15cc8b0814408bea2f471a10f4aaab82&t=1792771847",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/17"
+              }
+            },
+            {
+              "number": "18",
+              "episode": 18,
+              "season": 2,
+              "overallEpisode": 45,
+              "title": "Episode 18",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 18 (Overall Ep 45). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/913ff4199047dd421c319d6ffcf4679c.mp4?sign=9b9fdd601a9ace783a829050a7278b0a&t=1792771848",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/913ff4199047dd421c319d6ffcf4679c.mp4?sign=9b9fdd601a9ace783a829050a7278b0a&t=1792771848"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=18"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/18"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/18"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/913ff4199047dd421c319d6ffcf4679c.mp4?sign=9b9fdd601a9ace783a829050a7278b0a&t=1792771848",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/18"
+              }
+            },
+            {
+              "number": "19",
+              "episode": 19,
+              "season": 2,
+              "overallEpisode": 46,
+              "title": "Episode 19",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 19 (Overall Ep 46). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/2ebba94e4eede5232cef2b580cecbf6f.mp4?sign=21090eef6b1e5976d581c6eb791f3dc3&t=1792771848",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/2ebba94e4eede5232cef2b580cecbf6f.mp4?sign=21090eef6b1e5976d581c6eb791f3dc3&t=1792771848"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=19"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/19"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/19"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/2ebba94e4eede5232cef2b580cecbf6f.mp4?sign=21090eef6b1e5976d581c6eb791f3dc3&t=1792771848",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/19"
+              }
+            },
+            {
+              "number": "20",
+              "episode": 20,
+              "season": 2,
+              "overallEpisode": 47,
+              "title": "Episode 20",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 20 (Overall Ep 47). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/84247d65286613f4d1aa87ed09057a7c.mp4?sign=5ca6b009d824cbf1406d37d079688800&t=1792771849",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/84247d65286613f4d1aa87ed09057a7c.mp4?sign=5ca6b009d824cbf1406d37d079688800&t=1792771849"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=20"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/20"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/20"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/84247d65286613f4d1aa87ed09057a7c.mp4?sign=5ca6b009d824cbf1406d37d079688800&t=1792771849",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/20"
+              }
+            },
+            {
+              "number": "21",
+              "episode": 21,
+              "season": 2,
+              "overallEpisode": 48,
+              "title": "Episode 21",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 21 (Overall Ep 48). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7e1976f3b9f1f83b759ab208b176c5f6.mp4?sign=1c04515f987e0c25577fdef897aa6e40&t=1792771850",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/7e1976f3b9f1f83b759ab208b176c5f6.mp4?sign=1c04515f987e0c25577fdef897aa6e40&t=1792771850"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=21"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/21"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/21"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/7e1976f3b9f1f83b759ab208b176c5f6.mp4?sign=1c04515f987e0c25577fdef897aa6e40&t=1792771850",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/21"
+              }
+            },
+            {
+              "number": "22",
+              "episode": 22,
+              "season": 2,
+              "overallEpisode": 49,
+              "title": "Episode 22",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 22 (Overall Ep 49). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/6cd6e23220a9f992276044542b86eb30.mp4?sign=e568901f73c66cd6fc7dead3871d8afb&t=1792771850",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/6cd6e23220a9f992276044542b86eb30.mp4?sign=e568901f73c66cd6fc7dead3871d8afb&t=1792771850"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=22"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/22"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/22"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/6cd6e23220a9f992276044542b86eb30.mp4?sign=e568901f73c66cd6fc7dead3871d8afb&t=1792771850",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/22"
+              }
+            },
+            {
+              "number": "23",
+              "episode": 23,
+              "season": 2,
+              "overallEpisode": 50,
+              "title": "Episode 23",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 23 (Overall Ep 50). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/f1951a3fe105d247ec693887c441fa51.mp4?sign=a42c8ae6e6af8a54c2212d9c612e3f2f&t=1792771851",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/f1951a3fe105d247ec693887c441fa51.mp4?sign=a42c8ae6e6af8a54c2212d9c612e3f2f&t=1792771851"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=23"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/23"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/23"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/f1951a3fe105d247ec693887c441fa51.mp4?sign=a42c8ae6e6af8a54c2212d9c612e3f2f&t=1792771851",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/23"
+              }
+            },
+            {
+              "number": "24",
+              "episode": 24,
+              "season": 2,
+              "overallEpisode": 51,
+              "title": "Episode 24",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 24 (Overall Ep 51). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/11e302f08f5c700843570c5d39d71c28.mp4?sign=de3e2e4415ac9f4eb97058faed9a7dc0&t=1792771851",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/11e302f08f5c700843570c5d39d71c28.mp4?sign=de3e2e4415ac9f4eb97058faed9a7dc0&t=1792771851"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=24"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/24"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/24"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/11e302f08f5c700843570c5d39d71c28.mp4?sign=de3e2e4415ac9f4eb97058faed9a7dc0&t=1792771851",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/24"
+              }
+            },
+            {
+              "number": "25",
+              "episode": 25,
+              "season": 2,
+              "overallEpisode": 52,
+              "title": "Episode 25",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 25 (Overall Ep 52). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/2b2e5bdd5d230483fb8cc98c6cd42e0a.mp4?sign=9d8933384d978d3305e93c03437fedcc&t=1792771852",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/2b2e5bdd5d230483fb8cc98c6cd42e0a.mp4?sign=9d8933384d978d3305e93c03437fedcc&t=1792771852"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=25"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/25"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/25"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/2b2e5bdd5d230483fb8cc98c6cd42e0a.mp4?sign=9d8933384d978d3305e93c03437fedcc&t=1792771852",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/25"
+              }
+            },
+            {
+              "number": "26",
+              "episode": 26,
+              "season": 2,
+              "overallEpisode": 53,
+              "title": "Episode 26",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 26 (Overall Ep 53). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d6eeecc1924bb89a7f45febe19fb2bd4.mp4?sign=3ef4cf72ce5fbcef4e71fd08d571f820&t=1792771852",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/d6eeecc1924bb89a7f45febe19fb2bd4.mp4?sign=3ef4cf72ce5fbcef4e71fd08d571f820&t=1792771852"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=26"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/26"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/26"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/d6eeecc1924bb89a7f45febe19fb2bd4.mp4?sign=3ef4cf72ce5fbcef4e71fd08d571f820&t=1792771852",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/26"
+              }
+            },
+            {
+              "number": "27",
+              "episode": 27,
+              "season": 2,
+              "overallEpisode": 54,
+              "title": "Episode 27",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 27 (Overall Ep 54). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/42e22c6e6e661a64f9f35026ed292f68.mp4?sign=fa5a5e9f8f684dd33d85def03b5bd78d&t=1792771853",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/42e22c6e6e661a64f9f35026ed292f68.mp4?sign=fa5a5e9f8f684dd33d85def03b5bd78d&t=1792771853"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=27"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/27"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/27"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/42e22c6e6e661a64f9f35026ed292f68.mp4?sign=fa5a5e9f8f684dd33d85def03b5bd78d&t=1792771853",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/27"
+              }
+            },
+            {
+              "number": "28",
+              "episode": 28,
+              "season": 2,
+              "overallEpisode": 55,
+              "title": "Episode 28",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 28 (Overall Ep 55). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/35813cd73a4928ce9ad4af5916318874.mp4?sign=47b1f7d913bf09c89b30c8dde83eefa8&t=1792771854",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/35813cd73a4928ce9ad4af5916318874.mp4?sign=47b1f7d913bf09c89b30c8dde83eefa8&t=1792771854"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=28"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/28"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/28"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/35813cd73a4928ce9ad4af5916318874.mp4?sign=47b1f7d913bf09c89b30c8dde83eefa8&t=1792771854",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/28"
+              }
+            },
+            {
+              "number": "29",
+              "episode": 29,
+              "season": 2,
+              "overallEpisode": 56,
+              "title": "Episode 29",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 29 (Overall Ep 56). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/e3f42ac6b443e0229f4acb43623af182.mp4?sign=1f691951e601c3d3914a368f9f5f5afc&t=1792771854",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/e3f42ac6b443e0229f4acb43623af182.mp4?sign=1f691951e601c3d3914a368f9f5f5afc&t=1792771854"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=29"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/29"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/29"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/e3f42ac6b443e0229f4acb43623af182.mp4?sign=1f691951e601c3d3914a368f9f5f5afc&t=1792771854",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/29"
+              }
+            },
+            {
+              "number": "30",
+              "episode": 30,
+              "season": 2,
+              "overallEpisode": 57,
+              "title": "Episode 30",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 30 (Overall Ep 57). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/dcf99f73cc8328dbfaa021586ae7a7d4.mp4?sign=92d804a1e485846eeb25a4d31373d01c&t=1792771855",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/dcf99f73cc8328dbfaa021586ae7a7d4.mp4?sign=92d804a1e485846eeb25a4d31373d01c&t=1792771855"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=30"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/30"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/30"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/dcf99f73cc8328dbfaa021586ae7a7d4.mp4?sign=92d804a1e485846eeb25a4d31373d01c&t=1792771855",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/30"
+              }
+            },
+            {
+              "number": "31",
+              "episode": 31,
+              "season": 2,
+              "overallEpisode": 58,
+              "title": "Episode 31",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 31 (Overall Ep 58). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/adbc8b81ce0a000695c43f79969d83c2.mp4?sign=c65f7281af0951dfb18a763e87d3fc52&t=1792771855",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/adbc8b81ce0a000695c43f79969d83c2.mp4?sign=c65f7281af0951dfb18a763e87d3fc52&t=1792771855"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=31"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/31"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/31"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/adbc8b81ce0a000695c43f79969d83c2.mp4?sign=c65f7281af0951dfb18a763e87d3fc52&t=1792771855",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/31"
+              }
+            },
+            {
+              "number": "32",
+              "episode": 32,
+              "season": 2,
+              "overallEpisode": 59,
+              "title": "Episode 32",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 32 (Overall Ep 59). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/b360112c493a743e1987519d669cbb5c.mp4?sign=9920d5e70befdef63a29d8cc10b0204c&t=1792771856",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/b360112c493a743e1987519d669cbb5c.mp4?sign=9920d5e70befdef63a29d8cc10b0204c&t=1792771856"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=32"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/32"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/32"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/b360112c493a743e1987519d669cbb5c.mp4?sign=9920d5e70befdef63a29d8cc10b0204c&t=1792771856",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/32"
+              }
+            },
+            {
+              "number": "33",
+              "episode": 33,
+              "season": 2,
+              "overallEpisode": 60,
+              "title": "Episode 33",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 33 (Overall Ep 60). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/6cac86bce37dce2c0fdb698a14d4630b.mp4?sign=1d9901599f538378554a52794df0d5ec&t=1792771856",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/6cac86bce37dce2c0fdb698a14d4630b.mp4?sign=1d9901599f538378554a52794df0d5ec&t=1792771856"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=33"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/33"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/33"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/6cac86bce37dce2c0fdb698a14d4630b.mp4?sign=1d9901599f538378554a52794df0d5ec&t=1792771856",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/33"
+              }
+            },
+            {
+              "number": "34",
+              "episode": 34,
+              "season": 2,
+              "overallEpisode": 61,
+              "title": "Episode 34",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 34 (Overall Ep 61). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/6d923ce30b15c4e6d7223084b6b5a671.mp4?sign=bb8d765ed4b84b0a4d9875d36b713e6d&t=1792771857",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/6d923ce30b15c4e6d7223084b6b5a671.mp4?sign=bb8d765ed4b84b0a4d9875d36b713e6d&t=1792771857"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=34"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/34"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/34"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/6d923ce30b15c4e6d7223084b6b5a671.mp4?sign=bb8d765ed4b84b0a4d9875d36b713e6d&t=1792771857",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/34"
+              }
+            },
+            {
+              "number": "35",
+              "episode": 35,
+              "season": 2,
+              "overallEpisode": 62,
+              "title": "Episode 35",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 35 (Overall Ep 62). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/8933469a6f63059591a8a1d5045ce929.mp4?sign=99415d605fead7727fb11852697c005f&t=1792771858",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/8933469a6f63059591a8a1d5045ce929.mp4?sign=99415d605fead7727fb11852697c005f&t=1792771858"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=35"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/35"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/35"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/8933469a6f63059591a8a1d5045ce929.mp4?sign=99415d605fead7727fb11852697c005f&t=1792771858",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/35"
+              }
+            },
+            {
+              "number": "36",
+              "episode": 36,
+              "season": 2,
+              "overallEpisode": 63,
+              "title": "Episode 36",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 36 (Overall Ep 63). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/8f4a564132f94e0a7e1b0560cdd53cfe.mp4?sign=c9d4bea04c044305c5688c8a7fc7f57a&t=1792771858",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/8f4a564132f94e0a7e1b0560cdd53cfe.mp4?sign=c9d4bea04c044305c5688c8a7fc7f57a&t=1792771858"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=36"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/36"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/36"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/8f4a564132f94e0a7e1b0560cdd53cfe.mp4?sign=c9d4bea04c044305c5688c8a7fc7f57a&t=1792771858",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/36"
+              }
+            },
+            {
+              "number": "37",
+              "episode": 37,
+              "season": 2,
+              "overallEpisode": 64,
+              "title": "Episode 37",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 2 Episode 37 (Overall Ep 64). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/b773d60823d2b1e78e824ba66a56171f.mp4?sign=da4d4172ec9298cd67d6306ff813cbd8&t=1792771776",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/b773d60823d2b1e78e824ba66a56171f.mp4?sign=da4d4172ec9298cd67d6306ff813cbd8&t=1792771776"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=2&e=37"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/2/37"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/2/37"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/b773d60823d2b1e78e824ba66a56171f.mp4?sign=da4d4172ec9298cd67d6306ff813cbd8&t=1792771776",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/2/37"
+              }
+            }
+          ]
+        },
+        {
+          "seasonNumber": 3,
+          "season": 3,
+          "name": "Season 3 (34 Episodes)",
+          "episodeCount": 34,
+          "episodes": [
+            {
+              "number": "01",
+              "episode": 1,
+              "season": 3,
+              "overallEpisode": 65,
+              "title": "Episode 1",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 1 (Overall Ep 65). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/451d63711307747f74eb95b13e19557a.mp4?sign=102e5dfe1d116a6b33d14315b93b6d9d&t=1792771777",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/451d63711307747f74eb95b13e19557a.mp4?sign=102e5dfe1d116a6b33d14315b93b6d9d&t=1792771777"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=1"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/1"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/1"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/451d63711307747f74eb95b13e19557a.mp4?sign=102e5dfe1d116a6b33d14315b93b6d9d&t=1792771777",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/1"
+              }
+            },
+            {
+              "number": "02",
+              "episode": 2,
+              "season": 3,
+              "overallEpisode": 66,
+              "title": "Episode 2",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 2 (Overall Ep 66). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/8ae4390b680894bed1fd5d68f672ac6d.mp4?sign=1c828c3f3f7f0f8da36bd6c98b4e70df&t=1792771860",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/8ae4390b680894bed1fd5d68f672ac6d.mp4?sign=1c828c3f3f7f0f8da36bd6c98b4e70df&t=1792771860"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=2"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/2"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/2"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/8ae4390b680894bed1fd5d68f672ac6d.mp4?sign=1c828c3f3f7f0f8da36bd6c98b4e70df&t=1792771860",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/2"
+              }
+            },
+            {
+              "number": "03",
+              "episode": 3,
+              "season": 3,
+              "overallEpisode": 67,
+              "title": "Episode 3",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 3 (Overall Ep 67). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/4519bae6981eee24867099f416d887f0.mp4?sign=15530f92a3d349f10cde65400eac347d&t=1792771860",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/4519bae6981eee24867099f416d887f0.mp4?sign=15530f92a3d349f10cde65400eac347d&t=1792771860"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=3"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/3"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/3"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/4519bae6981eee24867099f416d887f0.mp4?sign=15530f92a3d349f10cde65400eac347d&t=1792771860",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/3"
+              }
+            },
+            {
+              "number": "04",
+              "episode": 4,
+              "season": 3,
+              "overallEpisode": 68,
+              "title": "Episode 4",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 4 (Overall Ep 68). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7c72558b19f7d365e02c02974c4c8357.mp4?sign=c468275935dccc948b59490ee4662ee5&t=1792771861",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/7c72558b19f7d365e02c02974c4c8357.mp4?sign=c468275935dccc948b59490ee4662ee5&t=1792771861"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=4"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/4"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/4"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/7c72558b19f7d365e02c02974c4c8357.mp4?sign=c468275935dccc948b59490ee4662ee5&t=1792771861",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/4"
+              }
+            },
+            {
+              "number": "05",
+              "episode": 5,
+              "season": 3,
+              "overallEpisode": 69,
+              "title": "Episode 5",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 5 (Overall Ep 69). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/366bba349237a8af2befe68467021031.mp4?sign=ff70531dffa5691abd6c68f398e0da70&t=1792771862",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/366bba349237a8af2befe68467021031.mp4?sign=ff70531dffa5691abd6c68f398e0da70&t=1792771862"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=5"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/5"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/5"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/366bba349237a8af2befe68467021031.mp4?sign=ff70531dffa5691abd6c68f398e0da70&t=1792771862",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/5"
+              }
+            },
+            {
+              "number": "06",
+              "episode": 6,
+              "season": 3,
+              "overallEpisode": 70,
+              "title": "Episode 6",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 6 (Overall Ep 70). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/00eb65a87e13e9ac5f4384b277311299.mp4?sign=250958108e46b0b38efe46c28db988b5&t=1792771862",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/00eb65a87e13e9ac5f4384b277311299.mp4?sign=250958108e46b0b38efe46c28db988b5&t=1792771862"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=6"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/6"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/6"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/00eb65a87e13e9ac5f4384b277311299.mp4?sign=250958108e46b0b38efe46c28db988b5&t=1792771862",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/6"
+              }
+            },
+            {
+              "number": "07",
+              "episode": 7,
+              "season": 3,
+              "overallEpisode": 71,
+              "title": "Episode 7",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 7 (Overall Ep 71). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/dbdedc462d47437408480716f01e735e.mp4?sign=5b5ce7c65f76b2b01a7aaa5084310403&t=1792771863",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/dbdedc462d47437408480716f01e735e.mp4?sign=5b5ce7c65f76b2b01a7aaa5084310403&t=1792771863"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=7"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/7"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/7"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/dbdedc462d47437408480716f01e735e.mp4?sign=5b5ce7c65f76b2b01a7aaa5084310403&t=1792771863",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/7"
+              }
+            },
+            {
+              "number": "08",
+              "episode": 8,
+              "season": 3,
+              "overallEpisode": 72,
+              "title": "Episode 8",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 8 (Overall Ep 72). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/822bc15974e8c6cc59bcd69e65bb71ff.mp4?sign=39edc8d8df4b2c4c87dd36da7aeaaf9b&t=1792771863",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/822bc15974e8c6cc59bcd69e65bb71ff.mp4?sign=39edc8d8df4b2c4c87dd36da7aeaaf9b&t=1792771863"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=8"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/8"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/8"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/822bc15974e8c6cc59bcd69e65bb71ff.mp4?sign=39edc8d8df4b2c4c87dd36da7aeaaf9b&t=1792771863",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/8"
+              }
+            },
+            {
+              "number": "09",
+              "episode": 9,
+              "season": 3,
+              "overallEpisode": 73,
+              "title": "Episode 9",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 9 (Overall Ep 73). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/6b1b6ac9ae4ff335fa045f16cc2078c0.mp4?sign=2959ebb68b253d0b770c41bc03d394df&t=1792771864",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/6b1b6ac9ae4ff335fa045f16cc2078c0.mp4?sign=2959ebb68b253d0b770c41bc03d394df&t=1792771864"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=9"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/9"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/9"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/6b1b6ac9ae4ff335fa045f16cc2078c0.mp4?sign=2959ebb68b253d0b770c41bc03d394df&t=1792771864",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/9"
+              }
+            },
+            {
+              "number": "10",
+              "episode": 10,
+              "season": 3,
+              "overallEpisode": 74,
+              "title": "Episode 10",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 10 (Overall Ep 74). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/f77ae62f0c3a9e4e75d35f066089c219.mp4?sign=a3c04a5f43ee7523bc78736bdb0dfc61&t=1792771864",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/f77ae62f0c3a9e4e75d35f066089c219.mp4?sign=a3c04a5f43ee7523bc78736bdb0dfc61&t=1792771864"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=10"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/10"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/10"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/f77ae62f0c3a9e4e75d35f066089c219.mp4?sign=a3c04a5f43ee7523bc78736bdb0dfc61&t=1792771864",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/10"
+              }
+            },
+            {
+              "number": "11",
+              "episode": 11,
+              "season": 3,
+              "overallEpisode": 75,
+              "title": "Episode 11",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 11 (Overall Ep 75). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a6b0a99c1ae3b1e3c12f47da32bb29aa.mp4?sign=33dfa75d007cd1e757384747a81ffacf&t=1792771865",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a6b0a99c1ae3b1e3c12f47da32bb29aa.mp4?sign=33dfa75d007cd1e757384747a81ffacf&t=1792771865"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=11"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/11"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/11"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/a6b0a99c1ae3b1e3c12f47da32bb29aa.mp4?sign=33dfa75d007cd1e757384747a81ffacf&t=1792771865",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/11"
+              }
+            },
+            {
+              "number": "12",
+              "episode": 12,
+              "season": 3,
+              "overallEpisode": 76,
+              "title": "Episode 12",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 12 (Overall Ep 76). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/959274f79b769f2c02c3d84f9fe8c46e.mp4?sign=ba0a323bb6d9967a511a4795b8ccb149&t=1792771866",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/959274f79b769f2c02c3d84f9fe8c46e.mp4?sign=ba0a323bb6d9967a511a4795b8ccb149&t=1792771866"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=12"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/12"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/12"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/959274f79b769f2c02c3d84f9fe8c46e.mp4?sign=ba0a323bb6d9967a511a4795b8ccb149&t=1792771866",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/12"
+              }
+            },
+            {
+              "number": "13",
+              "episode": 13,
+              "season": 3,
+              "overallEpisode": 77,
+              "title": "Episode 13",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 13 (Overall Ep 77). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/f334865f9f0ae02344ffb65e8987ef18.mp4?sign=14fa909813acaaad5524cd1a7e701f3d&t=1792771866",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/f334865f9f0ae02344ffb65e8987ef18.mp4?sign=14fa909813acaaad5524cd1a7e701f3d&t=1792771866"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=13"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/13"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/13"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/f334865f9f0ae02344ffb65e8987ef18.mp4?sign=14fa909813acaaad5524cd1a7e701f3d&t=1792771866",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/13"
+              }
+            },
+            {
+              "number": "14",
+              "episode": 14,
+              "season": 3,
+              "overallEpisode": 78,
+              "title": "Episode 14",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 14 (Overall Ep 78). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/590b6ca26fab6c4ea2be5c86f13fb658.mp4?sign=65f45f6bfa684b71f2bc1394f80d0b68&t=1792771867",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/590b6ca26fab6c4ea2be5c86f13fb658.mp4?sign=65f45f6bfa684b71f2bc1394f80d0b68&t=1792771867"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=14"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/14"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/14"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/590b6ca26fab6c4ea2be5c86f13fb658.mp4?sign=65f45f6bfa684b71f2bc1394f80d0b68&t=1792771867",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/14"
+              }
+            },
+            {
+              "number": "15",
+              "episode": 15,
+              "season": 3,
+              "overallEpisode": 79,
+              "title": "Episode 15",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 15 (Overall Ep 79). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/11f19497f3731f69700dd12d5d9ed8cc.mp4?sign=7b2d0e6997dde44ec16762eb6814fc37&t=1792771867",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/11f19497f3731f69700dd12d5d9ed8cc.mp4?sign=7b2d0e6997dde44ec16762eb6814fc37&t=1792771867"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=15"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/15"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/15"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/11f19497f3731f69700dd12d5d9ed8cc.mp4?sign=7b2d0e6997dde44ec16762eb6814fc37&t=1792771867",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/15"
+              }
+            },
+            {
+              "number": "16",
+              "episode": 16,
+              "season": 3,
+              "overallEpisode": 80,
+              "title": "Episode 16",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 16 (Overall Ep 80). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/e3238c8741ae69740c7accc688a7a962.mp4?sign=0617dd781fdd6b4bfafdc2b71c108d5c&t=1792771868",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/e3238c8741ae69740c7accc688a7a962.mp4?sign=0617dd781fdd6b4bfafdc2b71c108d5c&t=1792771868"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=16"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/16"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/16"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/e3238c8741ae69740c7accc688a7a962.mp4?sign=0617dd781fdd6b4bfafdc2b71c108d5c&t=1792771868",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/16"
+              }
+            },
+            {
+              "number": "17",
+              "episode": 17,
+              "season": 3,
+              "overallEpisode": 81,
+              "title": "Episode 17",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 17 (Overall Ep 81). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/578a9b3857f057a29ce53af7cbe4e441.mp4?sign=6c3184cf33fc8d6d21ee3c540bf2f67c&t=1792771868",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/578a9b3857f057a29ce53af7cbe4e441.mp4?sign=6c3184cf33fc8d6d21ee3c540bf2f67c&t=1792771868"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=17"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/17"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/17"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/578a9b3857f057a29ce53af7cbe4e441.mp4?sign=6c3184cf33fc8d6d21ee3c540bf2f67c&t=1792771868",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/17"
+              }
+            },
+            {
+              "number": "18",
+              "episode": 18,
+              "season": 3,
+              "overallEpisode": 82,
+              "title": "Episode 18",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 18 (Overall Ep 82). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/05eb4e0fd7e73a04522cde6153754a61.mp4?sign=35ecaaa3d4de61ba3f479863b7a42196&t=1792771869",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/05eb4e0fd7e73a04522cde6153754a61.mp4?sign=35ecaaa3d4de61ba3f479863b7a42196&t=1792771869"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=18"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/18"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/18"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/05eb4e0fd7e73a04522cde6153754a61.mp4?sign=35ecaaa3d4de61ba3f479863b7a42196&t=1792771869",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/18"
+              }
+            },
+            {
+              "number": "19",
+              "episode": 19,
+              "season": 3,
+              "overallEpisode": 83,
+              "title": "Episode 19",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 19 (Overall Ep 83). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/0b9701811f5638c65047681043d94dd8.mp4?sign=357743f5ec8b98af733542a9f88d32a7&t=1792771870",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/0b9701811f5638c65047681043d94dd8.mp4?sign=357743f5ec8b98af733542a9f88d32a7&t=1792771870"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=19"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/19"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/19"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/0b9701811f5638c65047681043d94dd8.mp4?sign=357743f5ec8b98af733542a9f88d32a7&t=1792771870",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/19"
+              }
+            },
+            {
+              "number": "20",
+              "episode": 20,
+              "season": 3,
+              "overallEpisode": 84,
+              "title": "Episode 20",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 20 (Overall Ep 84). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/6914e34eff15309e4205c696ae76ff94.mp4?sign=54c4495522b423afce07e63868a50230&t=1792771870",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/6914e34eff15309e4205c696ae76ff94.mp4?sign=54c4495522b423afce07e63868a50230&t=1792771870"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=20"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/20"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/20"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/6914e34eff15309e4205c696ae76ff94.mp4?sign=54c4495522b423afce07e63868a50230&t=1792771870",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/20"
+              }
+            },
+            {
+              "number": "21",
+              "episode": 21,
+              "season": 3,
+              "overallEpisode": 85,
+              "title": "Episode 21",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 21 (Overall Ep 85). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d8bf9a07a0d6f2a2bb76a4438dea5a97.mp4?sign=02d72ecece5e41dcb05ba212de2e4395&t=1792771871",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/d8bf9a07a0d6f2a2bb76a4438dea5a97.mp4?sign=02d72ecece5e41dcb05ba212de2e4395&t=1792771871"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=21"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/21"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/21"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/d8bf9a07a0d6f2a2bb76a4438dea5a97.mp4?sign=02d72ecece5e41dcb05ba212de2e4395&t=1792771871",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/21"
+              }
+            },
+            {
+              "number": "22",
+              "episode": 22,
+              "season": 3,
+              "overallEpisode": 86,
+              "title": "Episode 22",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 22 (Overall Ep 86). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/cc361785f1774ce0028202e9d2c50f14.mp4?sign=4b88ccb116aa60bb28d9e2b779a8c394&t=1792771871",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/cc361785f1774ce0028202e9d2c50f14.mp4?sign=4b88ccb116aa60bb28d9e2b779a8c394&t=1792771871"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=22"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/22"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/22"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/cc361785f1774ce0028202e9d2c50f14.mp4?sign=4b88ccb116aa60bb28d9e2b779a8c394&t=1792771871",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/22"
+              }
+            },
+            {
+              "number": "23",
+              "episode": 23,
+              "season": 3,
+              "overallEpisode": 87,
+              "title": "Episode 23",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 23 (Overall Ep 87). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/f20170ee40d69e8038bb19fddcb276de.mp4?sign=9126b12b31baa867821af5a8e67f91fb&t=1792771872",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/f20170ee40d69e8038bb19fddcb276de.mp4?sign=9126b12b31baa867821af5a8e67f91fb&t=1792771872"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=23"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/23"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/23"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/f20170ee40d69e8038bb19fddcb276de.mp4?sign=9126b12b31baa867821af5a8e67f91fb&t=1792771872",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/23"
+              }
+            },
+            {
+              "number": "24",
+              "episode": 24,
+              "season": 3,
+              "overallEpisode": 88,
+              "title": "Episode 24",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 24 (Overall Ep 88). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/5196558355580c702b0e59a7c252a535.mp4?sign=a6c1d5e718ae216ef855adb15ecf3a61&t=1792771872",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/5196558355580c702b0e59a7c252a535.mp4?sign=a6c1d5e718ae216ef855adb15ecf3a61&t=1792771872"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=24"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/24"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/24"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/5196558355580c702b0e59a7c252a535.mp4?sign=a6c1d5e718ae216ef855adb15ecf3a61&t=1792771872",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/24"
+              }
+            },
+            {
+              "number": "25",
+              "episode": 25,
+              "season": 3,
+              "overallEpisode": 89,
+              "title": "Episode 25",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 25 (Overall Ep 89). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/592a2cb395c5a3a6fc9747ecab4cbebd.mp4?sign=10d84ec0228266088844ac94ee70e5a9&t=1792771873",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/592a2cb395c5a3a6fc9747ecab4cbebd.mp4?sign=10d84ec0228266088844ac94ee70e5a9&t=1792771873"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=25"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/25"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/25"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/592a2cb395c5a3a6fc9747ecab4cbebd.mp4?sign=10d84ec0228266088844ac94ee70e5a9&t=1792771873",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/25"
+              }
+            },
+            {
+              "number": "26",
+              "episode": 26,
+              "season": 3,
+              "overallEpisode": 90,
+              "title": "Episode 26",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 26 (Overall Ep 90). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/668d7c02df5bf17ebd4de9ecbe06f8d9.mp4?sign=851a02a87d334bb5e4ea63cfd2a90377&t=1792771874",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/668d7c02df5bf17ebd4de9ecbe06f8d9.mp4?sign=851a02a87d334bb5e4ea63cfd2a90377&t=1792771874"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=26"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/26"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/26"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/668d7c02df5bf17ebd4de9ecbe06f8d9.mp4?sign=851a02a87d334bb5e4ea63cfd2a90377&t=1792771874",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/26"
+              }
+            },
+            {
+              "number": "27",
+              "episode": 27,
+              "season": 3,
+              "overallEpisode": 91,
+              "title": "Episode 27",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 27 (Overall Ep 91). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a0fc93dd4a4c234976b63365650485c2.mp4?sign=91ae214532603bf5cb0ced95d0946f20&t=1792771874",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a0fc93dd4a4c234976b63365650485c2.mp4?sign=91ae214532603bf5cb0ced95d0946f20&t=1792771874"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=27"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/27"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/27"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/a0fc93dd4a4c234976b63365650485c2.mp4?sign=91ae214532603bf5cb0ced95d0946f20&t=1792771874",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/27"
+              }
+            },
+            {
+              "number": "28",
+              "episode": 28,
+              "season": 3,
+              "overallEpisode": 92,
+              "title": "Episode 28",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 28 (Overall Ep 92). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/851c63776234e04cf776347f1da38467.mp4?sign=1476abfa22848237b923cb72684158bb&t=1792771875",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/851c63776234e04cf776347f1da38467.mp4?sign=1476abfa22848237b923cb72684158bb&t=1792771875"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=28"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/28"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/28"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/851c63776234e04cf776347f1da38467.mp4?sign=1476abfa22848237b923cb72684158bb&t=1792771875",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/28"
+              }
+            },
+            {
+              "number": "29",
+              "episode": 29,
+              "season": 3,
+              "overallEpisode": 93,
+              "title": "Episode 29",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 29 (Overall Ep 93). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d6e7a796ea6a36e50cc437f1e0644559.mp4?sign=b916aaa060494b510bd7f574aeee1f72&t=1792771875",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/d6e7a796ea6a36e50cc437f1e0644559.mp4?sign=b916aaa060494b510bd7f574aeee1f72&t=1792771875"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=29"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/29"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/29"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/d6e7a796ea6a36e50cc437f1e0644559.mp4?sign=b916aaa060494b510bd7f574aeee1f72&t=1792771875",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/29"
+              }
+            },
+            {
+              "number": "30",
+              "episode": 30,
+              "season": 3,
+              "overallEpisode": 94,
+              "title": "Episode 30",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 30 (Overall Ep 94). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d5a9ce43358b54f8fb1026af54c4410d.mp4?sign=fe725286bc9df551870a34569e573d8a&t=1792771876",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/d5a9ce43358b54f8fb1026af54c4410d.mp4?sign=fe725286bc9df551870a34569e573d8a&t=1792771876"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=30"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/30"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/30"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/d5a9ce43358b54f8fb1026af54c4410d.mp4?sign=fe725286bc9df551870a34569e573d8a&t=1792771876",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/30"
+              }
+            },
+            {
+              "number": "31",
+              "episode": 31,
+              "season": 3,
+              "overallEpisode": 95,
+              "title": "Episode 31",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 31 (Overall Ep 95). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d77db9d4f5bc156e3d2bacb7e394cd29.mp4?sign=b7a2eaf83a1d1d0ee7277e61fb85ca97&t=1792771877",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/d77db9d4f5bc156e3d2bacb7e394cd29.mp4?sign=b7a2eaf83a1d1d0ee7277e61fb85ca97&t=1792771877"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=31"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/31"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/31"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/d77db9d4f5bc156e3d2bacb7e394cd29.mp4?sign=b7a2eaf83a1d1d0ee7277e61fb85ca97&t=1792771877",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/31"
+              }
+            },
+            {
+              "number": "32",
+              "episode": 32,
+              "season": 3,
+              "overallEpisode": 96,
+              "title": "Episode 32",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 32 (Overall Ep 96). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/60752e430d3169d1392d20d2b8f1ef92.mp4?sign=4a869cc80f2411f0e658f4e1c3a86b90&t=1792771877",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/60752e430d3169d1392d20d2b8f1ef92.mp4?sign=4a869cc80f2411f0e658f4e1c3a86b90&t=1792771877"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=32"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/32"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/32"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/60752e430d3169d1392d20d2b8f1ef92.mp4?sign=4a869cc80f2411f0e658f4e1c3a86b90&t=1792771877",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/32"
+              }
+            },
+            {
+              "number": "33",
+              "episode": 33,
+              "season": 3,
+              "overallEpisode": 97,
+              "title": "Episode 33",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 33 (Overall Ep 97). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/99e03927bac496e9fb37b9090dd548a7.mp4?sign=67d3093c26f0f09736d4b8b48454fc05&t=1792771878",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/99e03927bac496e9fb37b9090dd548a7.mp4?sign=67d3093c26f0f09736d4b8b48454fc05&t=1792771878"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=33"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/33"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/33"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/99e03927bac496e9fb37b9090dd548a7.mp4?sign=67d3093c26f0f09736d4b8b48454fc05&t=1792771878",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/33"
+              }
+            },
+            {
+              "number": "34",
+              "episode": 34,
+              "season": 3,
+              "overallEpisode": 98,
+              "title": "Episode 34",
+              "duration": "110m-130m",
+              "overview": "Kuruluş: Osman Season 3 Episode 34 (Overall Ep 98). Hindi / Urdu Dubbed.",
+              "still": "https://image.tmdb.org/t/p/w500/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/4cff76a272465864ce77749096f876b8.mp4?sign=ec35ac5de4db64e93a74eb18c5cdcbc1&t=1792771718",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox Hindi/Urdu 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/4cff76a272465864ce77749096f876b8.mp4?sign=ec35ac5de4db64e93a74eb18c5cdcbc1&t=1792771718"
+                },
+                {
+                  "name": "Server 2 (Multiembed)",
+                  "url": "https://multiembed.mov/?video_id=95603&tmdb=1&s=3&e=34"
+                },
+                {
+                  "name": "Server 3 (AutoEmbed)",
+                  "url": "https://autoembed.co/tv/tmdb/95603/3/34"
+                },
+                {
+                  "name": "Server 4 (Vidlink)",
+                  "url": "https://vidlink.pro/tv/95603/3/34"
+                }
+              ],
+              "audioTracks": {
+                "Hindi / Urdu Dub": "https://bcdnxw.hakunaymatata.com/resource/4cff76a272465864ce77749096f876b8.mp4?sign=ec35ac5de4db64e93a74eb18c5cdcbc1&t=1792771718",
+                "Original / Multi Audio": "https://autoembed.co/tv/tmdb/95603/3/34"
               }
             }
           ]
@@ -64638,7 +67510,12 @@
       "originalTitle": "Kuruluş: Osman",
       "altTitle": "Establishment: Osman",
       "mbSubjectId": "9012855174766968784",
-      "mbDetailPath": "establishment-osman-GtoO3BhYMJa"
+      "mbDetailPath": "establishment-osman-GtoO3BhYMJa",
+      "subjectId": "9012855174766968784",
+      "detailPath": "establishment-osman-GtoO3BhYMJa",
+      "movieboxDetailPath": "establishment-osman-GtoO3BhYMJa",
+      "tmdbId": "95603",
+      "totalEpisodes": 98
     },
     {
       "id": "mb-s-7967254200902451552",
