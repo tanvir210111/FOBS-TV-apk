@@ -2907,6 +2907,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
 
   // Direct play for sources that provide CORS headers and fast direct CDN edge delivery without IP restrictions
   const isDirectMp4Source = (
+    playableUrl.includes('/api/moviebox/stream') ||
     playableUrl.includes('hakunaymatata') ||
     playableUrl.includes('bcdnxw') ||
     playableUrl.includes('haildrop') ||
@@ -2924,7 +2925,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
      !playableUrl.includes('vkpluscdn') &&
      !playableUrl.includes('vkcdn'))
   );
-  if (isDirectMp4Source && !playableUrl.includes('googleusercontent.com') && audioIndex === null) {
+  if (isDirectMp4Source && !playableUrl.includes('googleusercontent.com') && (audioIndex === null || audioIndex === 0 || audioIndex === undefined)) {
     appState.streamSeekOffset = 0;
     // If running in a browser outside Android APK, route hakunaymatata through proxy to include Referer
     if (!window.AndroidApp && (playableUrl.includes('hakunaymatata') || playableUrl.includes('bcdnxw') || playableUrl.includes('haildrop') || playableUrl.includes('fogtwist'))) {
@@ -3148,27 +3149,41 @@ async function togglePictureInPicture() {
 
 function getMediaTotalDurationSeconds() {
   const video = document.getElementById('mainVideoPlayer');
-  const duration = video?.duration || 0;
+  const duration = (video && isFinite(video.duration) && video.duration > 0) ? video.duration : 0;
   const epDur = appState.currentEpisode?.duration || appState.currentMedia?.duration;
   let parsedSec = 0;
+
   if (epDur && typeof epDur === 'string') {
-    if (epDur.includes('h') || epDur.includes('m')) {
-      const hMatch = epDur.match(/(\d+)\s*h/);
-      const mMatch = epDur.match(/(\d+)\s*m/);
-      const hrs = hMatch ? parseInt(hMatch[1], 10) : 0;
-      const mins = mMatch ? parseInt(mMatch[1], 10) : 0;
-      parsedSec = hrs * 3600 + mins * 60;
-    } else {
-      const num = parseInt(epDur, 10);
-      if (num > 0) parsedSec = num * 60;
+    // Only parse actual time strings (e.g., "2h 15m", "45m", "1h 30m"); skip episode count strings like "2 Episodes"
+    if (!epDur.toLowerCase().includes('episode')) {
+      if (epDur.includes('h') || epDur.includes('m')) {
+        const hMatch = epDur.match(/(\d+)\s*h/);
+        const mMatch = epDur.match(/(\d+)\s*m/);
+        const hrs = hMatch ? parseInt(hMatch[1], 10) : 0;
+        const mins = mMatch ? parseInt(mMatch[1], 10) : 0;
+        parsedSec = hrs * 3600 + mins * 60;
+      } else {
+        const num = parseInt(epDur, 10);
+        if (num > 0) parsedSec = num * 60;
+      }
     }
   }
 
-  // If native video.duration reports an artificially small chunked value (< 180s), return the actual media runtime
-  if (parsedSec > 0 && (!duration || duration < 180)) {
+  // If video element has an active finite duration (> 60s), that is the most accurate duration
+  if (duration > 60) {
+    return duration;
+  }
+
+  if (parsedSec > 0) {
     return parsedSec;
   }
-  return duration > 0 ? duration : (parsedSec > 0 ? parsedSec : 3600);
+
+  // If it's a series episode without explicit duration, standard episode is ~45 minutes (2700s)
+  if (appState.currentEpisode) {
+    return 2700;
+  }
+
+  return duration > 0 ? duration : 3600;
 }
 
 function updateLandscapeProgress() {
@@ -3314,7 +3329,9 @@ function seekToAbsoluteTime(targetSeconds) {
 
   const curEp = appState.currentEpisode;
   const rawUrl = (curEp?.audioTracks && curEp.audioTracks[appState.currentAudioTrack]) 
+    || (curEp?.servers && curEp.servers.length > 0 && curEp.servers[appState.activeServerIndex || 0]?.url)
     || curEp?.streamUrl 
+    || (appState.currentMedia?.servers && appState.currentMedia.servers.length > 0 && appState.currentMedia.servers[appState.activeServerIndex || 0]?.url)
     || appState.currentMedia?.streamUrl 
     || appState.currentMedia?.driveUrl;
 
@@ -3323,7 +3340,7 @@ function seekToAbsoluteTime(targetSeconds) {
     video.src.includes('/api/resolve')
   );
 
-  const isTranscodedStream = isServerStream || (rawUrl && (
+  const isTranscodedStream = (isServerStream && !video.src.includes('/api/moviebox/stream')) || (rawUrl && (
     rawUrl.includes('.mkv') ||
     rawUrl.includes('vcloud.you') ||
     rawUrl.includes('fast-dl') ||
@@ -3348,7 +3365,6 @@ function seekToAbsoluteTime(targetSeconds) {
     appState.pendingSeekTime = safeTarget;
 
     const onSeekFinished = () => {
-      if (window.seekLoaderTimeout) clearTimeout(window.seekLoaderTimeout);
       if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
       const l = document.getElementById('videoLoader');
       if (l) l.classList.remove('active');
@@ -3413,9 +3429,13 @@ function setupLandscapeProgressScrubbing() {
     const wrapper = document.getElementById(wrapperId);
     if (!wrapper) return;
 
+    let lastScrubPos = 0;
+
     const handleScrub = (clientX) => {
       const rect = wrapper.getBoundingClientRect();
+      if (!rect || rect.width <= 0) return;
       const pos = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      lastScrubPos = pos;
       const duration = getMediaTotalDurationSeconds();
       if (duration > 0) {
         const targetTime = Math.floor(pos * duration);
@@ -3461,10 +3481,15 @@ function setupLandscapeProgressScrubbing() {
         e.stopPropagation();
         isScrubbingProgress = false;
         try { wrapper.releasePointerCapture(e.pointerId); } catch (err) {}
-        const rect = wrapper.getBoundingClientRect();
-        const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        let finalPos = lastScrubPos;
+        if (e.clientX && e.clientX > 0) {
+          const rect = wrapper.getBoundingClientRect();
+          if (rect && rect.width > 0) {
+            finalPos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+          }
+        }
         const duration = getMediaTotalDurationSeconds();
-        const targetTime = Math.floor(pos * duration);
+        const targetTime = Math.floor(finalPos * duration);
         seekToAbsoluteTime(targetTime);
         resetLandscapeControlsTimer();
       }
@@ -3472,6 +3497,35 @@ function setupLandscapeProgressScrubbing() {
 
     wrapper.addEventListener('pointerup', onPointerUp);
     wrapper.addEventListener('pointercancel', onPointerUp);
+
+    // Bulletproof touch listeners for mobile
+    wrapper.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches[0]) {
+        e.stopPropagation();
+        isScrubbingProgress = true;
+        handleScrub(e.touches[0].clientX);
+        resetLandscapeControlsTimer();
+      }
+    }, { passive: false });
+
+    wrapper.addEventListener('touchmove', (e) => {
+      if (isScrubbingProgress && e.touches && e.touches[0]) {
+        e.stopPropagation();
+        handleScrub(e.touches[0].clientX);
+        resetLandscapeControlsTimer();
+      }
+    }, { passive: false });
+
+    wrapper.addEventListener('touchend', (e) => {
+      if (isScrubbingProgress) {
+        e.stopPropagation();
+        isScrubbingProgress = false;
+        const duration = getMediaTotalDurationSeconds();
+        const targetTime = Math.floor(lastScrubPos * duration);
+        seekToAbsoluteTime(targetTime);
+        resetLandscapeControlsTimer();
+      }
+    }, { passive: false });
   };
 
   bindScrubber('lsProgressWrapper');
@@ -4392,7 +4446,7 @@ function setupVideoListeners() {
     if (appState.pendingSeekTime !== null && appState.pendingSeekTime !== undefined) {
       const streamOffset = appState.streamSeekOffset || 0;
       const current = (videoPlayer.currentTime || 0) + streamOffset;
-      if (Math.abs(current - appState.pendingSeekTime) <= 2) {
+      if (Math.abs(current - appState.pendingSeekTime) <= 4 || !videoPlayer.seeking) {
         appState.pendingSeekTime = null;
       }
     }

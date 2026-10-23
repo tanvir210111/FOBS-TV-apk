@@ -409,8 +409,9 @@ async function resolveStreamUrl(rawUrl) {
     }
   }
 
-  // 11. Check MovieBox CDNs (Hakunaymatata, BCDN, Haildrop, Fogtwist, Sunburst, Stormshade)
+  // 11. Check MovieBox CDNs & /api/moviebox/stream redirect routes
   else if (
+    rawUrl.includes('/api/moviebox/stream') ||
     rawUrl.includes('movieboxapp.in') ||
     rawUrl.includes('hakunaymatata') ||
     rawUrl.includes('bcdnxw') ||
@@ -419,7 +420,26 @@ async function resolveStreamUrl(rawUrl) {
     rawUrl.includes('sunburst') ||
     rawUrl.includes('stormshade')
   ) {
-    resolved = rawUrl;
+    if (rawUrl.includes('/api/moviebox/stream')) {
+      try {
+        const urlObj = new URL(rawUrl, 'http://localhost:5000');
+        const id = urlObj.searchParams.get('id');
+        const detailPath = urlObj.searchParams.get('path') || '';
+        const se = parseInt(urlObj.searchParams.get('se') || '0', 10);
+        const ep = parseInt(urlObj.searchParams.get('ep') || '0', 10);
+        if (id) {
+          const media = await movieboxService.resolveMedia(id, detailPath, se, ep);
+          if (media && media.streamUrl) {
+            resolved = media.streamUrl;
+          }
+        }
+      } catch (err) {
+        console.error('MovieBox route resolve error:', err.message);
+      }
+    }
+    if (!resolved || resolved === rawUrl) {
+      resolved = rawUrl;
+    }
   }
 
 
@@ -740,13 +760,20 @@ app.all('/api/stream', async (req, res) => {
 
   const isDirectFastCdn = (
     isKoyebOrTelegram ||
+    targetUrl.includes('/api/moviebox/stream') ||
     targetUrl.includes('hakunaymatata') || 
     targetUrl.includes('bcdnxw') || 
     targetUrl.includes('haildrop') || 
     targetUrl.includes('fogtwist') || 
     targetUrl.includes('sunburst') || 
     targetUrl.includes('stormshade') ||
-    targetUrl.includes('kmdl.eu.org')
+    targetUrl.includes('kmdl.eu.org') ||
+    resolvedUrl.includes('hakunaymatata') ||
+    resolvedUrl.includes('bcdnxw') ||
+    resolvedUrl.includes('haildrop') ||
+    resolvedUrl.includes('fogtwist') ||
+    resolvedUrl.includes('sunburst') ||
+    resolvedUrl.includes('stormshade')
   );
 
   // If seeking requested (seekTime > 0), route through FFmpeg -ss to start stream at exact seek timestamp
