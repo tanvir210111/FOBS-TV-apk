@@ -3020,18 +3020,7 @@ function setVideoOrientationPortrait() {
 let playerControlsTimer = null;
 
 function resetPlayerControlsTimer() {
-  const topHeader = document.getElementById('playerTopHeader');
-  if (!topHeader) return;
-
-  topHeader.classList.remove('controls-hidden');
-  if (playerControlsTimer) clearTimeout(playerControlsTimer);
-
-  const videoPlayer = document.getElementById('mainVideoPlayer');
-  if (videoPlayer && !videoPlayer.paused) {
-    playerControlsTimer = setTimeout(() => {
-      topHeader.classList.add('controls-hidden');
-    }, 3500);
-  }
+  resetLandscapeControlsTimer();
 }
 
 // ============================================================
@@ -3908,6 +3897,7 @@ function setupPlayerGestures() {
   let dragType = null; // 'horizontal-seek' or 'vertical'
   let startX = 0;
   let startY = 0;
+  let startTime = 0;
   let activeSide = null; // 'left' or 'right'
   let startBrightness = 1.0;
   let startVolume = 1.0;
@@ -3931,6 +3921,7 @@ function setupPlayerGestures() {
     dragType = null;
     startX = e.clientX;
     startY = e.clientY;
+    startTime = Date.now();
 
     const relX = startX - rect.left;
     activeSide = relX < (rect.width / 2) ? 'left' : 'right';
@@ -3940,10 +3931,6 @@ function setupPlayerGestures() {
     startVolume = (video && video.muted) ? 0 : (playerSoundLevel !== undefined ? playerSoundLevel : (video ? video.volume : 1.0));
     startVideoTime = video ? video.currentTime : 0;
     targetSeekTime = startVideoTime;
-
-    try {
-      tapDetector.setPointerCapture(e.pointerId);
-    } catch (err) {}
   });
 
   tapDetector.addEventListener('pointermove', (e) => {
@@ -3952,19 +3939,20 @@ function setupPlayerGestures() {
 
     const deltaX = e.clientX - startX;
     const deltaY = e.clientY - startY;
+    const isFullscreen = document.body.classList.contains('is-fullscreen');
 
     if (!isDragging) {
-      // 1. Detect Horizontal Swipe Seek (Right-to-Left or Left-to-Right like MovieBox)
-      if (Math.abs(deltaX) > 12 && Math.abs(deltaX) > Math.abs(deltaY) * 1.1) {
+      // In landscape/fullscreen, allow horizontal seek (>28px) or vertical drag (>28px)
+      // In portrait, only allow horizontal seek if movement is deliberate (>36px)
+      const hThreshold = isFullscreen ? 28 : 36;
+      if (Math.abs(deltaX) > hThreshold && Math.abs(deltaX) > Math.abs(deltaY) * 1.3) {
         isDragging = true;
         dragType = 'horizontal-seek';
         if (singleTapTimer) {
           clearTimeout(singleTapTimer);
           singleTapTimer = null;
         }
-      }
-      // 2. Detect Vertical Drag (Brightness on Left, Volume on Right)
-      else if (Math.abs(deltaY) > 12 && Math.abs(deltaY) > Math.abs(deltaX) * 1.1) {
+      } else if (isFullscreen && Math.abs(deltaY) > 28 && Math.abs(deltaY) > Math.abs(deltaX) * 1.3) {
         isDragging = true;
         dragType = 'vertical';
         if (singleTapTimer) {
@@ -3981,7 +3969,6 @@ function setupPlayerGestures() {
         const video = document.getElementById('mainVideoPlayer');
         if (video) {
           const duration = video.duration || 3600;
-          // MovieBox Style Stepping: Every ~20px horizontal drag = 10s step (+10s, +20s, +30s, +40s, +50s, +60s, +70s, +80s...)
           const pixelsPerTenSeconds = 20;
           let stepCount = Math.trunc(deltaX / pixelsPerTenSeconds);
           if (stepCount === 0) {
@@ -3996,11 +3983,9 @@ function setupPlayerGestures() {
         const deltaRatio = -deltaY / sensitivityRange;
 
         if (activeSide === 'left') {
-          // Left side swipe: Brightness (Up = brighter, Down = dimmer)
           const newBrightness = applyPlayerBrightness(startBrightness + deltaRatio);
           showGestureHud('brightness', newBrightness);
         } else {
-          // Right side swipe: Volume / Sound (Up = louder up to 200%, Down = quieter down to 0%)
           const newVolume = applyPlayerVolume(startVolume + deltaRatio * 1.6);
           showGestureHud('volume', newVolume);
         }
@@ -4012,11 +3997,9 @@ function setupPlayerGestures() {
     if (!isPointerDown) return;
     isPointerDown = false;
 
-    try {
-      tapDetector.releasePointerCapture(e.pointerId);
-    } catch (err) {}
+    const moveDist = Math.hypot(e.clientX - startX, e.clientY - startY);
 
-    if (isDragging) {
+    if (isDragging && moveDist > 22) {
       if (dragType === 'horizontal-seek') {
         const video = document.getElementById('mainVideoPlayer');
         if (video && !isNaN(targetSeekTime)) {
@@ -4035,6 +4018,9 @@ function setupPlayerGestures() {
       dragType = null;
       return;
     }
+
+    isDragging = false;
+    dragType = null;
 
     // --- Tap / Double-Tap detection ---
     if (isPlayerLocked) {
@@ -4077,12 +4063,19 @@ function setupPlayerGestures() {
       if (singleTapTimer) clearTimeout(singleTapTimer);
       singleTapTimer = setTimeout(() => {
         handleSinglePlayerTap();
-      }, 260);
+      }, 240);
     }
   };
 
   tapDetector.addEventListener('pointerup', onPointerEnd);
   tapDetector.addEventListener('pointercancel', onPointerEnd);
+
+  // Direct click fallback for devices where pointerup is swallowed
+  tapDetector.addEventListener('click', (e) => {
+    if (Date.now() - lastTapInfo.time > 350 && !isDragging) {
+      handleSinglePlayerTap();
+    }
+  });
 }
 
 // Setup Video Event Listeners
@@ -4095,26 +4088,6 @@ function setupVideoListeners() {
 
   // Initialize Gesture Engine on the tap detector
   setupPlayerGestures();
-
-  // Portrait tap detector — shows/hides playerTopHeader on tap (portrait only)
-  // In landscape/fullscreen the lsTapDetector handles all gestures instead.
-  const portraitTapDetector = document.getElementById('portraitTapDetector');
-  if (portraitTapDetector) {
-    let portraitTapTimer = null;
-    const onPortraitTap = (e) => {
-      // Skip if in fullscreen/landscape — lsTapDetector handles it there
-      if (document.body.classList.contains('is-fullscreen')) return;
-      // Skip if an iframe embed is active (iframe handles its own UI)
-      if (videoContainer && videoContainer.classList.contains('has-iframe-active')) return;
-      e.stopPropagation();
-      if (portraitTapTimer) clearTimeout(portraitTapTimer);
-      portraitTapTimer = setTimeout(() => {
-        handleSinglePlayerTap();
-      }, 260);
-    };
-    portraitTapDetector.addEventListener('click', onPortraitTap);
-    portraitTapDetector.addEventListener('touchend', onPortraitTap, { passive: true });
-  }
 
   setupLandscapeProgressScrubbing();
 
