@@ -3334,25 +3334,24 @@ function seekToAbsoluteTime(targetSeconds) {
     rawUrl.includes('.m3u8')
   ));
 
+  // Immediately show full solid black loader while video is seeking/buffering
+  const loader = document.getElementById('videoLoader');
+  if (loader) {
+    loader.classList.add('active');
+    const loaderText = loader.querySelector('.loader-text');
+    if (loaderText) loaderText.innerText = 'Loading...';
+  }
+
   // Native MP4 & direct CDN streams: direct HTML5 byte-range seek
   if (!isTranscodedStream) {
     appState.streamSeekOffset = 0;
     appState.pendingSeekTime = safeTarget;
 
-    // Only show loader if seek takes longer than 300ms to prevent visual freezes
-    if (window.seekLoaderTimeout) clearTimeout(window.seekLoaderTimeout);
-    window.seekLoaderTimeout = setTimeout(() => {
-      if (appState.pendingSeekTime !== null) {
-        const loader = document.getElementById('videoLoader');
-        if (loader) loader.classList.add('active');
-      }
-    }, 300);
-
     const onSeekFinished = () => {
       if (window.seekLoaderTimeout) clearTimeout(window.seekLoaderTimeout);
       if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
-      const loader = document.getElementById('videoLoader');
-      if (loader) loader.classList.remove('active');
+      const l = document.getElementById('videoLoader');
+      if (l) l.classList.remove('active');
       appState.pendingSeekTime = null;
       updateLandscapeProgress();
       syncPlayPauseIcons();
@@ -3361,6 +3360,7 @@ function seekToAbsoluteTime(targetSeconds) {
 
     video.addEventListener('seeked', onSeekFinished, { once: true });
     video.addEventListener('canplay', onSeekFinished, { once: true });
+    video.addEventListener('playing', onSeekFinished, { once: true });
 
     // Safety timeout: dismiss loader and force playback after 3.2s
     if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
@@ -3374,7 +3374,6 @@ function seekToAbsoluteTime(targetSeconds) {
     } catch (e) {
       console.warn('Native seek error:', e);
       appState.pendingSeekTime = null;
-      const loader = document.getElementById('videoLoader');
       if (loader) loader.classList.remove('active');
     }
     return;
@@ -3392,6 +3391,7 @@ function seekToAbsoluteTime(targetSeconds) {
       video.play().catch(() => {});
     } catch (e) {
       appState.pendingSeekTime = null;
+      if (loader) loader.classList.remove('active');
     }
     updateLandscapeProgress();
     return;
@@ -3541,7 +3541,6 @@ function closeLandscapeDrawers() {
   const lsUi = document.getElementById('landscapePlayerUI');
   if (lsUi) {
     lsUi.classList.remove('has-drawer-open');
-    lsUi.classList.remove('controls-hidden');
   }
   const container = document.getElementById('videoContainer');
   if (container) {
@@ -3549,7 +3548,7 @@ function closeLandscapeDrawers() {
   }
   const topHeader = document.getElementById('playerTopHeader');
   if (topHeader) {
-    topHeader.classList.remove('controls-hidden');
+    topHeader.classList.remove('has-drawer-open');
   }
 }
 
@@ -3935,25 +3934,34 @@ function handleSinglePlayerTap() {
     return;
   }
 
-  closeLandscapeDrawers();
-
   const isLandscape = document.body.classList.contains('is-fullscreen') || 
-                      (window.innerWidth > window.innerHeight) ||
-                      (lsUi && window.getComputedStyle(lsUi).display !== 'none');
+                      (window.innerWidth > window.innerHeight);
 
-  const isCurrentlyHidden = isLandscape
-    ? (lsUi && lsUi.classList.contains('controls-hidden'))
-    : ((topHeader && topHeader.classList.contains('controls-hidden')) || (ptBottom && ptBottom.classList.contains('controls-hidden')));
+  if (isLandscape && lsUi) {
+    const isHidden = lsUi.classList.contains('controls-hidden');
+    if (isHidden) {
+      // Reveal all controls (Matches Screenshot 1 / Photo 1)
+      lsUi.classList.remove('controls-hidden');
+      resetLandscapeControlsTimer();
+    } else {
+      // Hide all controls (Matches Screenshot 2 / Photo 2)
+      lsUi.classList.add('controls-hidden');
+      if (lsControlsTimer) {
+        clearTimeout(lsControlsTimer);
+        lsControlsTimer = null;
+      }
+    }
+    return;
+  }
 
-  if (isCurrentlyHidden) {
-    // Reveal buttons (Matches Photo 1)
-    if (lsUi) lsUi.classList.remove('controls-hidden');
+  // Portrait mode toggle
+  const isPtHidden = (topHeader && topHeader.classList.contains('controls-hidden')) || 
+                     (ptBottom && ptBottom.classList.contains('controls-hidden'));
+  if (isPtHidden) {
     if (topHeader) topHeader.classList.remove('controls-hidden');
     if (ptBottom) ptBottom.classList.remove('controls-hidden');
     resetLandscapeControlsTimer();
   } else {
-    // Minimize / hide buttons (Matches Photo 2)
-    if (lsUi) lsUi.classList.add('controls-hidden');
     if (topHeader) topHeader.classList.add('controls-hidden');
     if (ptBottom) ptBottom.classList.add('controls-hidden');
     if (lsControlsTimer) {
@@ -4070,6 +4078,10 @@ function setupPlayerGestures() {
     const rect = currentDetector.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return;
 
+    try {
+      currentDetector.setPointerCapture(e.pointerId);
+    } catch (err) {}
+
     isPointerDown = true;
     isDragging = false;
     dragType = null;
@@ -4086,7 +4098,7 @@ function setupPlayerGestures() {
     startVideoTime = video ? video.currentTime : 0;
     targetSeekTime = startVideoTime;
 
-    // Press & Hold 2X Speed feature (activates after 420ms without dragging)
+    // Press & Hold 2X Speed feature (activates after 400ms without dragging)
     if (longPressTimer) clearTimeout(longPressTimer);
     is2xSpeedActive = false;
     if (video && !video.paused) {
@@ -4100,7 +4112,7 @@ function setupPlayerGestures() {
             if (navigator.vibrate) navigator.vibrate(30);
           } catch (err) {}
         }
-      }, 420);
+      }, 400);
     }
   };
 
@@ -4110,8 +4122,6 @@ function setupPlayerGestures() {
 
     const deltaX = e.clientX - startX;
     const deltaY = e.clientY - startY;
-    const isLandscape = document.body.classList.contains('is-fullscreen') || 
-                        (window.innerWidth > window.innerHeight);
 
     // Cancel 2X speed long-press if movement occurs
     if (Math.hypot(deltaX, deltaY) > 12) {
@@ -4122,15 +4132,16 @@ function setupPlayerGestures() {
     }
 
     if (!isDragging) {
-      const hThreshold = isLandscape ? 22 : 30;
-      if (Math.abs(deltaX) > hThreshold && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
+      const hThreshold = 18;
+      const vThreshold = 16;
+      if (Math.abs(deltaX) > hThreshold && Math.abs(deltaX) > Math.abs(deltaY) * 1.1) {
         isDragging = true;
         dragType = 'horizontal-seek';
         if (singleTapTimer) {
           clearTimeout(singleTapTimer);
           singleTapTimer = null;
         }
-      } else if (isLandscape && Math.abs(deltaY) > 22 && Math.abs(deltaY) > Math.abs(deltaX) * 1.2) {
+      } else if (Math.abs(deltaY) > vThreshold && Math.abs(deltaY) > Math.abs(deltaX) * 1.1) {
         isDragging = true;
         dragType = 'vertical';
         if (singleTapTimer) {
@@ -4177,7 +4188,7 @@ function setupPlayerGestures() {
           if (ptTimeEl) ptTimeEl.innerText = `${curFormatted}/${durFormatted}`;
         }
       } else if (dragType === 'vertical') {
-        const sensitivityRange = rect.height * 0.65;
+        const sensitivityRange = (rect.height || 220) * 0.65;
         const deltaRatio = -deltaY / sensitivityRange;
 
         if (activeSide === 'left') {
@@ -4196,6 +4207,10 @@ function setupPlayerGestures() {
   const onPointerEnd = (e) => {
     if (!isPointerDown) return;
     isPointerDown = false;
+
+    try {
+      if (currentDetector) currentDetector.releasePointerCapture(e.pointerId);
+    } catch (err) {}
 
     // Clear long-press timer
     if (longPressTimer) {
@@ -4218,7 +4233,7 @@ function setupPlayerGestures() {
 
     const moveDist = Math.hypot(e.clientX - startX, e.clientY - startY);
 
-    if (isDragging && moveDist > 18) {
+    if (isDragging && moveDist > 16) {
       if (dragType === 'horizontal-seek') {
         const video = document.getElementById('mainVideoPlayer');
         if (video && !isNaN(targetSeekTime)) {
@@ -4406,20 +4421,17 @@ function setupVideoListeners() {
     if (loader) loader.classList.add('active');
   });
 
-  let seekingLoaderTimer = null;
   videoPlayer.addEventListener('seeking', () => {
-    if (seekingLoaderTimer) clearTimeout(seekingLoaderTimer);
-    seekingLoaderTimer = setTimeout(() => {
-      if (loader && videoPlayer.seeking) loader.classList.add('active');
-    }, 350);
+    if (loader) loader.classList.add('active');
   });
 
   videoPlayer.addEventListener('seeked', () => {
-    if (seekingLoaderTimer) clearTimeout(seekingLoaderTimer);
     if (window.seekLoaderTimeout) clearTimeout(window.seekLoaderTimeout);
     if (window.seekSafetyTimeout) clearTimeout(window.seekSafetyTimeout);
     appState.pendingSeekTime = null;
-    if (loader) loader.classList.remove('active');
+    if (videoPlayer.readyState >= 3) {
+      if (loader) loader.classList.remove('active');
+    }
     updateLandscapeProgress();
     syncPlayPauseIcons();
     videoPlayer.play().catch(() => {});

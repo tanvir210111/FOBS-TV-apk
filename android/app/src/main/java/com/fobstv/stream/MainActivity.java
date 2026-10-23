@@ -284,10 +284,10 @@ public class MainActivity extends BridgeActivity {
                     Window window = getWindow();
                     if (window != null) {
                         WindowManager.LayoutParams lp = window.getAttributes();
-                        if (brightness < 0 || brightness >= 1.0f) {
+                        if (brightness < 0) {
                             lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
                         } else {
-                            lp.screenBrightness = Math.max(0.05f, Math.min(1.0f, brightness));
+                            lp.screenBrightness = Math.max(0.01f, Math.min(1.0f, brightness));
                         }
                         window.setAttributes(lp);
                     }

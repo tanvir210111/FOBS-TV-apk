@@ -1153,6 +1153,7 @@ body.is-fullscreen .player-view-overlay.open {
   align-items: center !important;
   justify-content: center !important;
   overflow: hidden;
+  touch-action: none !important;
 }
 
 .video-container video {
@@ -1397,21 +1398,21 @@ body.is-fullscreen .player-top-header.controls-hidden,
   }
 }
 
-/* Video Loader */
+/* Video Loader - Full Pure Black Screen while loading */
 .video-loader {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
+  position: absolute !important;
+  inset: 0 !important;
+  background: #000000 !important;
   display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 5;
-  pointer-events: none;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
 }
 
 .video-loader.active {
-  display: flex;
+  display: flex !important;
 }
 
 .spinner {
@@ -2851,14 +2852,16 @@ body.is-fullscreen .player-top-header.controls-hidden,
 /* ============================================================ */
 
 /* In portrait mode: Show portrait top header & bottom bar; HIDE landscape UI completely */
-body:not(.is-fullscreen) #landscapePlayerUI {
-  display: none !important;
-  pointer-events: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
+@media (orientation: portrait) {
+  body:not(.is-fullscreen) #landscapePlayerUI {
+    display: none !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
 }
 
-/* Universal Tap Detector Overlay */
+/* Universal Tap Detector Overlay (Works for all gestures in Portrait and Landscape) */
 .player-tap-detector {
   position: absolute !important;
   inset: 0 !important;
@@ -2866,9 +2869,10 @@ body:not(.is-fullscreen) #landscapePlayerUI {
   height: 100% !important;
   z-index: 15 !important;  /* above video (z:1) but below controls (z:2000000) */
   pointer-events: auto !important;
-  touch-action: manipulation !important;
+  touch-action: none !important;
   user-select: none !important;
   -webkit-user-select: none !important;
+  -webkit-touch-callout: none !important;
   -webkit-tap-highlight-color: transparent !important;
   background: transparent !important;
 }
@@ -3784,16 +3788,34 @@ body.is-fullscreen .ls-bottom-bar {
 .ls-player-ui.controls-hidden .ls-top-header,
 .ls-player-ui.controls-hidden .ls-center-controls,
 .ls-player-ui.controls-hidden .ls-bottom-bar {
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 
 .ls-player-ui.controls-hidden .ls-lock-wrapper {
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
   transform: translateY(-50%) scale(0.85);
+  transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
+}
+
+/* Explicit Controls Visible State (Screenshot 1 & Photo 1) */
+.ls-player-ui:not(.controls-hidden):not(.has-drawer-open) .ls-top-header,
+.ls-player-ui:not(.controls-hidden):not(.has-drawer-open):not(.is-locked) .ls-center-controls,
+.ls-player-ui:not(.controls-hidden):not(.has-drawer-open):not(.is-locked) .ls-bottom-bar {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+}
+
+.ls-player-ui:not(.controls-hidden):not(.has-drawer-open) .ls-lock-wrapper {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+  transform: translateY(-50%) scale(1) !important;
 }
 
 /* Auto-minimize / completely hide all video player controls when any side drawer (Language, Speed, Quality, Settings) is open */
