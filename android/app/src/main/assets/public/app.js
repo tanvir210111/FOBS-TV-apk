@@ -3586,6 +3586,7 @@ function toggleVideoScaling() {
 function handlePlayerBackClick() {
   if (document.body.classList.contains('is-fullscreen')) {
     exitFullscreenMode({ skipRotate: false });
+    return;
   }
   closePlayer();
 }
@@ -5139,6 +5140,13 @@ window.handleAndroidBack = function() {
   const bookingModal = document.getElementById('comingSoonBookingModal');
   if (bookingModal && bookingModal.style.display !== 'none' && bookingModal.style.display !== '') {
     closeUpcomingBookingModal();
+    return true;
+  }
+
+  // -0.2. Close MovieBox side drawer in fullscreen if open
+  const openLsDrawer = document.querySelector('.ls-side-drawer.open');
+  if (openLsDrawer) {
+    closeLandscapeDrawers();
     return true;
   }
 

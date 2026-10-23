@@ -722,42 +722,42 @@
             </button>
           </div>
 
-          <!-- Bottom Control Bar (Screenshot 4) -->
+          <!-- Bottom Control Bar (MovieBox Signature 2-Row Layout) -->
           <div class="ls-bottom-bar" id="lsBottomBar">
-            <div class="ls-bottom-row">
-              <button class="ls-icon-btn ls-mini-play-btn" id="lsBottomPlayBtn" onclick="togglePlayPauseVideo()">
-                <i class="fa-solid fa-pause" id="lsBottomPlayIcon"></i>
-              </button>
-
+            <!-- Row 1: Full-width Scrubber with Timestamps -->
+            <div class="ls-progress-row">
               <span class="ls-time-display" id="lsCurrentTime">00:00</span>
-
-              <!-- Interactive Progress Slider -->
               <div class="ls-progress-track-wrapper" id="lsProgressWrapper">
                 <div class="ls-progress-buffered" id="lsProgressBuffered"></div>
                 <div class="ls-progress-filled" id="lsProgressFilled"></div>
                 <div class="ls-progress-thumb" id="lsProgressThumb"></div>
               </div>
-
               <span class="ls-time-display ls-duration-display" id="lsTotalDuration">00:00</span>
+            </div>
 
-              <!-- Right Bottom Action Pills -->
+            <!-- Row 2: Play/Pause on Left, Action Pills on Right -->
+            <div class="ls-actions-row">
+              <button class="ls-icon-btn ls-mini-play-btn" id="lsBottomPlayBtn" onclick="togglePlayPauseVideo()" title="Play / Pause">
+                <i class="fa-solid fa-pause" id="lsBottomPlayIcon"></i>
+              </button>
+
               <div class="ls-bottom-actions">
-                <button class="ls-action-pill" id="lsFitToggleBtn" onclick="toggleLandscapeFitFill()" title="Fit / Fill Aspect Ratio">
+                <button class="ls-action-pill" id="lsFitToggleBtn" onclick="toggleLandscapeFitFill()" title="Aspect Ratio">
                   <i class="fa-solid fa-arrows-left-right-to-line" id="lsFitIcon"></i>
                   <span id="lsFitLabel">Fit</span>
                 </button>
 
-                <button class="ls-action-pill" id="lsLanguageToggleBtn" onclick="toggleLandscapeDrawer('language')" title="Audio & Subtitles">
-                  <i class="fa-solid fa-closed-captioning"></i>
+                <button class="ls-action-pill" id="lsLanguageToggleBtn" onclick="toggleLandscapeDrawer('language')" title="Language / Audio">
+                  <i class="fa-regular fa-comment-dots"></i>
                   <span>Language</span>
                 </button>
 
-                <button class="ls-action-pill" id="lsSpeedToggleBtn" onclick="toggleLandscapeDrawer('speed')" title="Playback Speed">
-                  <i class="fa-solid fa-gauge-high"></i>
+                <button class="ls-action-pill" id="lsSpeedToggleBtn" onclick="toggleLandscapeDrawer('speed')" title="Speed">
+                  <i class="fa-regular fa-clock"></i>
                   <span id="lsSpeedLabel">1x</span>
                 </button>
 
-                <button class="ls-action-pill ls-quality-pill" id="lsQualityBadge" onclick="toggleLandscapeDrawer('quality')" title="Video Quality">1080P</button>
+                <button class="ls-action-pill ls-quality-pill" id="lsQualityBadge" onclick="toggleLandscapeDrawer('quality')" title="Quality">720P</button>
 
                 <button class="ls-action-pill ls-fullscreen-pill" id="lsFullscreenToggleBtn" onclick="togglePlayerFullscreen()" title="Fullscreen">
                   <i class="fa-solid fa-expand"></i>
