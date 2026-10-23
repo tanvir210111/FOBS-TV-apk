@@ -90,6 +90,49 @@ public class MainActivity extends BridgeActivity {
         }
     }
 
+    private static class LimitedInputStream extends java.io.InputStream {
+        private final java.io.InputStream in;
+        private final long limit;
+        private long bytesRead = 0;
+
+        public LimitedInputStream(java.io.InputStream in, long limit) {
+            this.in = in;
+            this.limit = limit;
+        }
+
+        @Override
+        public int read() throws java.io.IOException {
+            if (limit >= 0 && bytesRead >= limit) {
+                return -1;
+            }
+            int result = in.read();
+            if (result != -1) {
+                bytesRead++;
+            }
+            return result;
+        }
+
+        @Override
+        public int read(byte[] b, int off, int len) throws java.io.IOException {
+            if (limit >= 0 && bytesRead >= limit) {
+                return -1;
+            }
+            if (limit >= 0 && bytesRead + len > limit) {
+                len = (int) (limit - bytesRead);
+            }
+            int count = in.read(b, off, len);
+            if (count > 0) {
+                bytesRead += count;
+            }
+            return count;
+        }
+
+        @Override
+        public void close() throws java.io.IOException {
+            in.close();
+        }
+    }
+
     private class CustomBridgeWebViewClient extends BridgeWebViewClient {
         public CustomBridgeWebViewClient(Bridge bridge) {
             super(bridge);
@@ -133,6 +176,14 @@ public class MainActivity extends BridgeActivity {
                             reason = (statusCode == 206) ? "Partial Content" : "OK";
                         }
 
+                        long contentLength = -1;
+                        String clStr = conn.getHeaderField("Content-Length");
+                        if (clStr != null) {
+                            try {
+                                contentLength = Long.parseLong(clStr.trim());
+                            } catch (Exception ignored) {}
+                        }
+
                         Map<String, String> resHeaders = new HashMap<>();
                         for (Map.Entry<String, List<String>> header : conn.getHeaderFields().entrySet()) {
                             if (header.getKey() != null && !header.getValue().isEmpty()) {
@@ -143,6 +194,15 @@ public class MainActivity extends BridgeActivity {
                         resHeaders.put("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS");
                         resHeaders.put("Access-Control-Allow-Headers", "*");
                         resHeaders.put("Access-Control-Expose-Headers", "Content-Range, Content-Length, Accept-Ranges");
+                        resHeaders.put("Accept-Ranges", "bytes");
+
+                        String contentRange = conn.getHeaderField("Content-Range");
+                        if (contentRange != null) {
+                            resHeaders.put("Content-Range", contentRange);
+                        }
+                        if (clStr != null) {
+                            resHeaders.put("Content-Length", clStr);
+                        }
 
                         String mimeType = conn.getContentType();
                         if (mimeType == null || mimeType.contains("octet-stream") || mimeType.trim().isEmpty()) {
@@ -152,7 +212,12 @@ public class MainActivity extends BridgeActivity {
                         }
 
                         InputStream is = (statusCode >= 400) ? conn.getErrorStream() : conn.getInputStream();
-                        return new WebResourceResponse(mimeType, null, statusCode, reason, resHeaders, new java.io.BufferedInputStream(is, 65536));
+                        if (contentLength > 0 && statusCode == 206) {
+                            is = new LimitedInputStream(new java.io.BufferedInputStream(is, 65536), contentLength);
+                        } else {
+                            is = new java.io.BufferedInputStream(is, 65536);
+                        }
+                        return new WebResourceResponse(mimeType, null, statusCode, reason, resHeaders, is);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
