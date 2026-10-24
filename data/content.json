@@ -21,140 +21,933 @@
     "fileSize": "15.4 MB"
   },
   "featured": {
-    "id": "mb-m-803658983365039832",
-    "subjectId": "803658983365039832",
-    "detailPath": "vishwanath-and-sons-hindi-OVyMV4xLmX",
-    "tmdbId": 1408162,
-    "title": "Vishwanath and Sons [Hindi]",
-    "originalTitle": "விஸ்வநாத் & சன்ஸ்",
-    "language": "Tamil",
-    "dubLanguage": "Hindi",
-    "badgeLeft": "Suriya",
-    "badgeRight": "1080p Full HD",
-    "industry": "South Indian",
-    "country": "India",
-    "category": "South (Dubbed) Movies",
-    "genre": "Drama, Romance, Comedy",
+    "id": "mb-s-4332534660363340496",
+    "subjectId": "4332534660363340496",
+    "detailPath": "our-universe-hindi-ez8xLio33a5",
+    "tmdbId": 297424,
+    "title": "Our Universe [Hindi]",
+    "originalTitle": "우주를 줄게",
     "year": "2026",
-    "releaseDate": "2026-08-14",
-    "duration": "2h 41m",
-    "rating": "7.1",
-    "imdbRating": "7.1",
-    "poster": "https://image.tmdb.org/t/p/w500/mLsvCffzpxxDwC7yVLJSLLjgzoq.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/original/nfNaAiiILjYRc2CKkId1ZfPTtlh.jpg",
-    "cover": "https://image.tmdb.org/t/p/original/nfNaAiiILjYRc2CKkId1ZfPTtlh.jpg",
-    "description": "A celebrated Olympian shooter travels to America looking for a donor to help his sick child — but unexpected romance complicates his search.",
-    "audioTracks": [
-      "Hindi dub",
-      "Tamil (Original)"
-    ],
-    "selectedAudio": "Hindi dub",
-    "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/bbb4a9921a0ba2535f35a564fa1fad46.mp4?sign=a081db0b90c4f3fb93610e82f9ce9f38&t=1792829743",
-    "servers": [
-      {
-        "name": "Server 1 (MovieBox 1080p Hindi Direct - 2648MB)",
-        "url": "https://bcdnxw.hakunaymatata.com/resource/bbb4a9921a0ba2535f35a564fa1fad46.mp4?sign=a081db0b90c4f3fb93610e82f9ce9f38&t=1792829743",
-        "isDirect": true,
-        "quality": "1080p"
-      },
-      {
-        "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-        "url": "/api/moviebox/stream?id=803658983365039832&path=vishwanath-and-sons-hindi-OVyMV4xLmX&se=0&ep=0",
-        "isDirect": true,
-        "quality": "1080p"
-      },
-      {
-        "name": "Server 3 (MovieBox 720p - 1842MB)",
-        "url": "https://bcdnxw.hakunaymatata.com/resource/b19b46798ffd26efd55919b54f84ca33.mp4?sign=3b75d22dd86f31ee0eeded38de7318a3&t=1792829743",
-        "isDirect": true,
-        "quality": "720p"
-      },
-      {
-        "name": "Server 4 (MovieBox 480p - 1027MB)",
-        "url": "https://bcdnxw.hakunaymatata.com/bt/91d86e90ac9325c57d0e1519880dcb53.mp4?sign=0735346394927c63b95dc65a0a70e196&t=1792829743",
-        "isDirect": true,
-        "quality": "480p"
-      },
-      {
-        "name": "Server 5 (MovieBox 360p - 737MB)",
-        "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/d28b0ec210d9e9002b8c21aed3ecd516.mp4?sign=4f3684e040286ed864df719f3131b901&t=1792829743",
-        "isDirect": true,
-        "quality": "360p"
-      },
-      {
-        "name": "Server 6 (MultiEmbed HD Failover)",
-        "url": "https://multiembed.mov/?video_id=1408162&tmdb=1",
-        "isDirect": false,
-        "quality": "1080p"
-      },
-      {
-        "name": "Server 6 (AutoEmbed HD)",
-        "url": "https://player.autoembed.cc/embed/movie/1408162",
-        "isDirect": false,
-        "quality": "1080p"
-      },
-      {
-        "name": "Server 6 (Vidlink Fast HD)",
-        "url": "https://vidlink.pro/movie/1408162",
-        "isDirect": false,
-        "quality": "1080p"
-      }
-    ],
+    "releaseDate": "2026-02-04",
+    "rating": "8.2",
+    "votes": "84",
+    "duration": "1 Season (12 Episodes)",
+    "category": "Korean (Dubbed) Series",
+    "industry": "Korean",
+    "country": "South Korea",
+    "badgeLeft": "Bae In-hyuk",
+    "badgeRight": "1080p Hindi Dub",
+    "poster": "https://image.tmdb.org/t/p/w500/d0ZW2r5L8Ma50gvkvSY7BZSE6fb.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/original/bHv9tTPd0dxpV2OD3WeDoZOFzPQ.jpg",
+    "cover": "https://image.tmdb.org/t/p/original/bHv9tTPd0dxpV2OD3WeDoZOFzPQ.jpg",
+    "description": "Two in-laws forced to raise their orphaned nephew together slowly overcome their misunderstandings, finding personal growth and an unexpected romance through co-parenting under one roof.",
+    "overview": "Two in-laws forced to raise their orphaned nephew together slowly overcome their misunderstandings, finding personal growth and an unexpected romance through co-parenting under one roof.",
+    "genre": "Comedy, Drama",
+    "genres": "Comedy, Drama",
     "cast": [
       {
-        "name": "Suriya",
-        "character": "Sanjay 'Sanju' Vishwanath",
-        "photo": "https://image.tmdb.org/t/p/w185/tgHFBhOfaV0Wck48y8BFhAlVvQx.jpg"
+        "name": "Bae In-hyuk",
+        "character": "Sun Tae-hyung",
+        "photo": "https://image.tmdb.org/t/p/w185/8UOUm9lQEOD1vBHZwbtP7IiARhU.jpg"
       },
       {
-        "name": "Mamitha Baiju",
-        "character": "Madanakameshwari 'Maddy Jay' Jothilingam",
-        "photo": "https://image.tmdb.org/t/p/w185/9ySiE3j7ep16fhKi3u5iq5rbOk6.jpg"
+        "name": "Roh Jeong-eui",
+        "character": "Woo Hyeon-jin",
+        "photo": "https://image.tmdb.org/t/p/w185/pYFgOVsNxI1fIHuPWtuaSgojMCP.jpg"
       },
       {
-        "name": "Radhika Sarathkumar",
-        "character": "Nirmala Devi",
-        "photo": "https://image.tmdb.org/t/p/w185/kEKzT8HAJw8lfFUtWWd0SoQ9kC9.jpg"
+        "name": "Park Seo-ham",
+        "character": "Park Yun-seong",
+        "photo": "https://image.tmdb.org/t/p/w185/vndtKSldmy4keg1NQx3wU0kqP2m.jpg"
       },
       {
-        "name": "Raveena Tandon",
-        "character": "Anjali Devi",
-        "photo": "https://image.tmdb.org/t/p/w185/4z0X9ZMgyNZRHfJG4G2Z10rhLpu.jpg"
+        "name": "Ku Sung-hwan",
+        "character": "Jo Mu-saeng",
+        "photo": "https://image.tmdb.org/t/p/w185/9oSGpqUOVVtL9vsAxZNWdsaKQM9.jpg"
       },
       {
-        "name": "Sunil",
-        "character": "Ramu",
-        "photo": "https://image.tmdb.org/t/p/w185/w92Vawfw4DcLYSLtUeFTm46KNIe.jpg"
+        "name": "Choi Gyu-ri",
+        "character": "Baek Se-yeon",
+        "photo": "https://image.tmdb.org/t/p/w185/a8rHzs04QqTBGG0Q2BTnPPULpFc.jpg"
       },
       {
-        "name": "Harika",
-        "character": "Sireesha Ramalingam",
-        "photo": "https://image.tmdb.org/t/p/w185/y7ujuzC4nXWrYcUnHNVDtwOG2JQ.jpg"
+        "name": "Oh Hyun-joong",
+        "character": "Kim Hee-jun",
+        "photo": "https://image.tmdb.org/t/p/w185/3G2Ishrvz0gDm8MFcAyB8s4WzC.jpg"
       },
       {
-        "name": "Nassar",
-        "character": "Ramanadhan",
-        "photo": "https://image.tmdb.org/t/p/w185/p3I0tSQY3C5qZW3NzFfbpjKPNL6.jpg"
+        "name": "Park Yoo-ho",
+        "character": "Sun Woo-Joo",
+        "photo": "https://image.tmdb.org/t/p/w185/pBYClXkanI03UNMS6L6YRAht3RQ.jpg"
       },
       {
-        "name": "Harsha Chemudu",
-        "character": "Kishore",
-        "photo": "https://image.tmdb.org/t/p/w185/be0atwoQTudy7WaVCNwWbQuxjvG.jpg"
-      },
-      {
-        "name": "Bhavani Sre",
-        "character": "Meghana",
-        "photo": "https://image.tmdb.org/t/p/w185/jpSwJEKKmCoaQZOOG6ofppNHdGQ.jpg"
-      },
-      {
-        "name": "V.J. Pappu",
-        "character": "Prakash",
-        "photo": "https://image.tmdb.org/t/p/w185/sH9wQiBcFCh3wgw97RuyscEYSzP.jpg"
+        "name": "Cheon Yi-seul",
+        "character": "Kim So-hee",
+        "photo": "https://image.tmdb.org/t/p/w185/gaYMpVnVaAc86z8uNw0wvTAVYix.jpg"
       }
     ],
-    "type": "movie"
+    "isOngoing": false,
+    "seasonsCount": 1,
+    "seasons": [
+      {
+        "seasonNumber": 1,
+        "title": "Season 1",
+        "name": "Season 1",
+        "year": "2026",
+        "episodesCount": 12,
+        "poster": "https://image.tmdb.org/t/p/w500/d0ZW2r5L8Ma50gvkvSY7BZSE6fb.jpg",
+        "episodes": [
+          {
+            "number": 1,
+            "episode": 1,
+            "season": 1,
+            "title": "Episode 1",
+            "duration": "60m",
+            "overview": "Hyun-jin and Tae-hyung are at odds from the moment they meet, only to discover that they will soon be in-laws.",
+            "still": "https://image.tmdb.org/t/p/w500/cTFXG7pRHswDDUXBUzbcFkiwowD.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/a35cad5d817504dac4925a5a8977d8d9.mp4?sign=92e94a8620892a3880aec742869e09df&t=1792828760",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 762MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/a35cad5d817504dac4925a5a8977d8d9.mp4?sign=92e94a8620892a3880aec742869e09df&t=1792828760",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=1",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox SD - 480p - 273MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/9b19b95e209d521c601333aa30cac023.mp4?sign=6854952eb751ce07361eccad3d8b4720&t=1792828760",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=297424&s=1&e=1",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/297424/1/1",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/297424/1/1",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": [
+              {
+                "language": "en",
+                "url": "https://cacdn.hakunaymatata.com/subtitle/cc2b1ec1cc43c2cbcedc894ab6b72393.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzA4fX19XX0_&Signature=Bl2QzBP5demwgDHcVQLDhSATiCzlAwKZuP6BNUzQRwW2KuD3XUFr~~UA8rttFabijrYdQD1IJ60~t5X1~Z3INXc4kIA5jji8ENkYOeAErcv0B57k-QV4RghAC-FE98d69CFVoTnbhUadLsvevPPPm~Rtgy6DUNo4MfjMsUHeFy~MXM0g3Su~KDBq84I4dgvjIy3XuEFZvITJl0Nf6zMuApbizKV9rhS6cOy4MOkO9vU6UAn0xihe2zEV20KGaX31muPHI--OIUe102gXHVzqWkVlHFOhmqWlgqJOHHzZZNhJmtewGCgGCyjfgZR~XVD0QaDBc5eCyG3ghiKcHu4yZA__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "episode": 2,
+            "season": 1,
+            "title": "Episode 2",
+            "duration": "57m",
+            "overview": "The in-laws who have been at odds are forced to live together with their orphaned nephew, Woo-joo.",
+            "still": "https://image.tmdb.org/t/p/w500/iGgs8n4n38bTvKyLgcs82Fe50fi.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/2ebe9290e8a1bc24cef91d58897f7db6.mp4?sign=844d176cb783c4113d529044fb1c6169&t=1792830957",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 757MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/2ebe9290e8a1bc24cef91d58897f7db6.mp4?sign=844d176cb783c4113d529044fb1c6169&t=1792830957",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=2",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox SD - 480p - 259MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/7c45b0b61cec1d63d9bb894817da3c29.mp4?sign=3a6fa758fc5998634142a1b078d99bcb&t=1792830957",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=297424&s=1&e=2",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/297424/1/2",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/297424/1/2",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": [
+              {
+                "language": "en",
+                "url": "https://cacdn.hakunaymatata.com/subtitle/f1fdc91298ddf8e3cd4e6acbf45b005f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM0MzM2fX19XX0_&Signature=nHJ8g1H1SxrLpEoBntsfmVZ4VQOEjr1A1xRMby7PzxH1KPjNV9CC1ALB6FyorYaaHMVw0wiynSGRX6Jd4XxOOqc7-4Kqr4lxA2~nOaGt2QmfUAkW18K0UJm5Ha1IEnTZIrjpLrd1znIzMV7j-dmg1DXLaiVoEJQCeSdICyP-Kj3iWlmTlq-GrRdZ10c1nWN9GOOSroTuKKA4UqWQu-c4UWNEZEXA5aKp2lD51FZyfVk-OKMsJtvT9xxmwu3A2IAGogZ0-V~lq1C~Ffschc1So15ptagIN4Oa2-IT4ZFphaH9HxRx-QyapQRX180uO-Q6OSWfuVhyaJ7JIVX8Q0Fzug__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              }
+            ]
+          },
+          {
+            "number": 3,
+            "episode": 3,
+            "season": 1,
+            "title": "Episode 3",
+            "duration": "58m",
+            "overview": "As they navigate caring for Woo-joo, Tae-hyung makes an irresistible proposition to Hyun-jin and proposes cohabitating for a month.",
+            "still": "https://image.tmdb.org/t/p/w500/Ahr48jwzPqr2WPTYCY1yYMJN0cf.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/529632db509cc94e4a70f8eecf27d2bf.mp4?sign=6778e837b8815de5752c6df381145bf6&t=1792828241",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 668MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/529632db509cc94e4a70f8eecf27d2bf.mp4?sign=6778e837b8815de5752c6df381145bf6&t=1792828241",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=3",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox SD - 480p - 262MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/0327e3ff90d7a516af8e60cdf9e6ec69.mp4?sign=85e8864a443dc5354af538e76d43ab67&t=1792829719",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=297424&s=1&e=3",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/297424/1/3",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/297424/1/3",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": [
+              {
+                "language": "en",
+                "url": "https://cacdn.hakunaymatata.com/subtitle/4bb10189e2611be5f4966700b7b0dbde.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzA4fX19XX0_&Signature=Bl2QzBP5demwgDHcVQLDhSATiCzlAwKZuP6BNUzQRwW2KuD3XUFr~~UA8rttFabijrYdQD1IJ60~t5X1~Z3INXc4kIA5jji8ENkYOeAErcv0B57k-QV4RghAC-FE98d69CFVoTnbhUadLsvevPPPm~Rtgy6DUNo4MfjMsUHeFy~MXM0g3Su~KDBq84I4dgvjIy3XuEFZvITJl0Nf6zMuApbizKV9rhS6cOy4MOkO9vU6UAn0xihe2zEV20KGaX31muPHI--OIUe102gXHVzqWkVlHFOhmqWlgqJOHHzZZNhJmtewGCgGCyjfgZR~XVD0QaDBc5eCyG3ghiKcHu4yZA__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              }
+            ]
+          },
+          {
+            "number": 4,
+            "episode": 4,
+            "season": 1,
+            "title": "Episode 4",
+            "duration": "60m",
+            "overview": "As Hyun-jin and Tae-hyung's relationship deepens, Hyun-jin hides their living arrangement from her first love, Yoon-seong.",
+            "still": "https://image.tmdb.org/t/p/w500/dafJHVR2hZloGWVD9QnqsLZAlm1.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/ef568c89e5a3f0c2174c3d0e454e8a8c.mp4?sign=1c129856765de1e3fdb750be914d9a19&t=1792828300",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 650MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/ef568c89e5a3f0c2174c3d0e454e8a8c.mp4?sign=1c129856765de1e3fdb750be914d9a19&t=1792828300",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=4",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox SD - 480p - 273MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/3735ca75129506aaabb3b5ea996c1a3b.mp4?sign=1c759ca63236907c830753b975ec9bb0&t=1792828300",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=297424&s=1&e=4",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/297424/1/4",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/297424/1/4",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": [
+              {
+                "language": "en",
+                "url": "https://cacdn.hakunaymatata.com/subtitle/5ba93e357d86126a173a4b094ecc0b6b.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM0MzM2fX19XX0_&Signature=nHJ8g1H1SxrLpEoBntsfmVZ4VQOEjr1A1xRMby7PzxH1KPjNV9CC1ALB6FyorYaaHMVw0wiynSGRX6Jd4XxOOqc7-4Kqr4lxA2~nOaGt2QmfUAkW18K0UJm5Ha1IEnTZIrjpLrd1znIzMV7j-dmg1DXLaiVoEJQCeSdICyP-Kj3iWlmTlq-GrRdZ10c1nWN9GOOSroTuKKA4UqWQu-c4UWNEZEXA5aKp2lD51FZyfVk-OKMsJtvT9xxmwu3A2IAGogZ0-V~lq1C~Ffschc1So15ptagIN4Oa2-IT4ZFphaH9HxRx-QyapQRX180uO-Q6OSWfuVhyaJ7JIVX8Q0Fzug__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              }
+            ]
+          },
+          {
+            "number": 5,
+            "episode": 5,
+            "season": 1,
+            "title": "Episode 5",
+            "duration": "59m",
+            "overview": "As Yoon-seong discovers Hyun-jin's secret, Tae-hyung learns that Yoon-seong was her first love.",
+            "still": "https://image.tmdb.org/t/p/w500/8zX9nPU0mXr1smHRECGwdfAMNjH.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/7d79078e968af3216c82da42ba43b1cf.mp4?sign=d40a7efb61a1416c61c41575e98cd1ee&t=1792829472",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 733MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/7d79078e968af3216c82da42ba43b1cf.mp4?sign=d40a7efb61a1416c61c41575e98cd1ee&t=1792829472",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=5",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox SD - 480p - 268MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/e21ee1ec7ab1d711d800b68bd3c28a8a.mp4?sign=1f180d1bf67b2bcf42d06c3d68408cbc&t=1792829472",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=297424&s=1&e=5",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/297424/1/5",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/297424/1/5",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": [
+              {
+                "language": "en",
+                "url": "https://cacdn.hakunaymatata.com/subtitle/bff83b32686f4ee1157514bbf870b755.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzMwfX19XX0_&Signature=LBg3gNqzNeC0WQLBCbIBUZk5XfQHKZQC1ABA3qPPk2oUWCx4ylJhb6DGRk0L6TYuchBDDFwXiGqFbqcs~oKrfhwmwL0Pax4QjUr~APqh4AnGATFE-B8XmLKi6frU1~kJlEjvqvfYm9hEm8V-aYd4K42XkL1CZCL1OrXvRhlTmrUkuU3vhAvpJGUqia21EHOIknPe8gRUs8IPt-ZhS1XQPYV38dJFchxwPxfrZLVwtkJB7UOhV4WPpa46YaI-qWMozzaznRgW1SotC4eln0T7r4oOYLTkLilkxod8ULohqDz-0NTCI~bGh5bL~JM7ckQFgF4mS1crbPg6zqW~w-6dbA__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              }
+            ]
+          },
+          {
+            "number": 6,
+            "episode": 6,
+            "season": 1,
+            "title": "Episode 6",
+            "duration": "60m",
+            "overview": "Tae-hyung gets assigned to work with Hyun-jin and Yoon-seong, while Hyun-jin learns of Tae-hyung's true feelings.",
+            "still": "https://image.tmdb.org/t/p/w500/we9ExudgEDTdqnrdjF9gN7okFQC.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/7524a31b026c5d0a3ce5faa053e251ad.mp4?sign=f0a1a1c22b9da54d6bff8e06ae9b79b4&t=1792829733",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 722MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/7524a31b026c5d0a3ce5faa053e251ad.mp4?sign=f0a1a1c22b9da54d6bff8e06ae9b79b4&t=1792829733",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=6",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox SD - 480p - 273MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/474b749c8cc0a3a4561b4d286b8b1af5.mp4?sign=723df0e95c6f35ed5bb899ea5736434f&t=1792829733",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=297424&s=1&e=6",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/297424/1/6",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/297424/1/6",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": [
+              {
+                "language": "en",
+                "url": "https://cacdn.hakunaymatata.com/subtitle/817ada1cb58b290572f0b2868cc3ad31.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM0MzM2fX19XX0_&Signature=nHJ8g1H1SxrLpEoBntsfmVZ4VQOEjr1A1xRMby7PzxH1KPjNV9CC1ALB6FyorYaaHMVw0wiynSGRX6Jd4XxOOqc7-4Kqr4lxA2~nOaGt2QmfUAkW18K0UJm5Ha1IEnTZIrjpLrd1znIzMV7j-dmg1DXLaiVoEJQCeSdICyP-Kj3iWlmTlq-GrRdZ10c1nWN9GOOSroTuKKA4UqWQu-c4UWNEZEXA5aKp2lD51FZyfVk-OKMsJtvT9xxmwu3A2IAGogZ0-V~lq1C~Ffschc1So15ptagIN4Oa2-IT4ZFphaH9HxRx-QyapQRX180uO-Q6OSWfuVhyaJ7JIVX8Q0Fzug__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              }
+            ]
+          },
+          {
+            "number": 7,
+            "episode": 7,
+            "season": 1,
+            "title": "Episode 7",
+            "duration": "61m",
+            "overview": "Tae-hyung is shaken by the sudden appearance of his estranged father. Meanwhile, Hyun-jin struggles at work.",
+            "still": "https://image.tmdb.org/t/p/w500/oz3rkF0rGiUymDL31RKOzxtB7aI.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/7898ca179b15372d9125a5f0c261423b.mp4?sign=6c264e76b9f76c05d31afe304157eeae&t=1792828331",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 716MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/7898ca179b15372d9125a5f0c261423b.mp4?sign=6c264e76b9f76c05d31afe304157eeae&t=1792828331",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=7",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox SD - 480p - 281MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/1beb767698cf0fa217c66c7f18d8777a.mp4?sign=753edbb68cc91b53bf4b6827478b39ee&t=1792828331",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=297424&s=1&e=7",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/297424/1/7",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/297424/1/7",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": [
+              {
+                "language": "en",
+                "url": "https://cacdn.hakunaymatata.com/subtitle/2cee52141390bf2fd29fcbe53a3be606.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzA4fX19XX0_&Signature=Bl2QzBP5demwgDHcVQLDhSATiCzlAwKZuP6BNUzQRwW2KuD3XUFr~~UA8rttFabijrYdQD1IJ60~t5X1~Z3INXc4kIA5jji8ENkYOeAErcv0B57k-QV4RghAC-FE98d69CFVoTnbhUadLsvevPPPm~Rtgy6DUNo4MfjMsUHeFy~MXM0g3Su~KDBq84I4dgvjIy3XuEFZvITJl0Nf6zMuApbizKV9rhS6cOy4MOkO9vU6UAn0xihe2zEV20KGaX31muPHI--OIUe102gXHVzqWkVlHFOhmqWlgqJOHHzZZNhJmtewGCgGCyjfgZR~XVD0QaDBc5eCyG3ghiKcHu4yZA__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              }
+            ]
+          },
+          {
+            "number": 8,
+            "episode": 8,
+            "season": 1,
+            "title": "Episode 8",
+            "duration": "61m",
+            "overview": "Hyun-jin finds herself torn between Yoon-seong and Tae-hyung.",
+            "still": "https://image.tmdb.org/t/p/w500/AjBku15o2EfnLu4NYH39lC17ALh.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7da435eb5f0ef2a863f1bc4edb91d8b1.mp4?sign=818f9a64fbec0cea9531435fa05350ea&t=1792831913",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 720p Direct - 401MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/resource/7da435eb5f0ef2a863f1bc4edb91d8b1.mp4?sign=818f9a64fbec0cea9531435fa05350ea&t=1792831913",
+                "isDirect": true,
+                "quality": "720p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=6415467904841960144&path=our-universe-I87DR8uUUD7&se=1&ep=8",
+                "isDirect": true,
+                "quality": "720p"
+              },
+              {
+                "name": "Server 3 (MovieBox SD - 360p - 170MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/e0d8a28485979c87c0a26618f73bbdc4.mp4?sign=8326acfb2cc71f7f14bcf264c4ceb7b4&t=1792831913",
+                "isDirect": true,
+                "quality": "360p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=297424&s=1&e=8",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/297424/1/8",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/297424/1/8",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": [
+              {
+                "language": "ar",
+                "url": "https://cacdn.hakunaymatata.com/subtitle/1ba77cc62d0cf532794477d8ff279aa5.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=KBOOu8MR2zFOvgXkj7R1-xVt8bWJJmVnjCf~p9vk3q9wKcbvCf6I87cPSLCe3ul2p5svhvBli~V5Akrww8dM0PM~0omJI3UnWTgArt~Ebb9AMlQzRKmogNp4h6ymGuFHRO5VLo5NcuwQ3C-MDc5~AOZYxTFfq4jlAbLA8zJxt9ojvinUWJI-D2gbxM2ZKyHEityYhgWrH53RKCZFGVO1PNV1aNN4rdUUK-nNT4u-foQWFtdu7p61bHEZwYLGq2a3UceUvRMq6isuhro1VjNS0~Riv4cQcDkPKvOajLwzTwWJgNGjUXTYGQTUnfkw5AZZZvjhGPJP6zIUSHbc2BsugQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              },
+              {
+                "language": "bn",
+                "url": "https://cacdn.hakunaymatata.com/msubt/6baa847d5a78259bc56bab008ead166f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9tc3VidC8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=VNlDEWMDRTrxzIehDMq7UzfPr1vMDhb580UTyaF3i52LmnuS2PXbNLQjytEcdQNNCcJrWqdNLUfjYikOKEubE-5lhMIMlEKc3mHEJGS5FjgOpoJiTAyyZb864yM7l2nH19OSFa49WeltcAOwwqWOmYdHiwSnu2DbXOSP~OjMr5Rf2~t3ReRIyaC4szzjAYiBffhza1IUmIW4gHbLdKQXFtPjb0hB9qP4rPwcVFAa3HocuTjswyRWvtTjJ2eiOcvWStaG1JKvkOaKHW4SlDVMmq2c2hV4-NNHLkeJWsA0yPTBi-sdrwsEpfYqrb66ujhI3Lup0kjYSMBxJJY0vpmCoQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              },
+              {
+                "language": "en",
+                "url": "https://cacdn.hakunaymatata.com/subtitle/f0f98602914862aea7261a35936964e6.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=KBOOu8MR2zFOvgXkj7R1-xVt8bWJJmVnjCf~p9vk3q9wKcbvCf6I87cPSLCe3ul2p5svhvBli~V5Akrww8dM0PM~0omJI3UnWTgArt~Ebb9AMlQzRKmogNp4h6ymGuFHRO5VLo5NcuwQ3C-MDc5~AOZYxTFfq4jlAbLA8zJxt9ojvinUWJI-D2gbxM2ZKyHEityYhgWrH53RKCZFGVO1PNV1aNN4rdUUK-nNT4u-foQWFtdu7p61bHEZwYLGq2a3UceUvRMq6isuhro1VjNS0~Riv4cQcDkPKvOajLwzTwWJgNGjUXTYGQTUnfkw5AZZZvjhGPJP6zIUSHbc2BsugQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              },
+              {
+                "language": "fil",
+                "url": "https://cacdn.hakunaymatata.com/msubt/de9218d9ccd21143ba16598b9456ad76.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9tc3VidC8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=VNlDEWMDRTrxzIehDMq7UzfPr1vMDhb580UTyaF3i52LmnuS2PXbNLQjytEcdQNNCcJrWqdNLUfjYikOKEubE-5lhMIMlEKc3mHEJGS5FjgOpoJiTAyyZb864yM7l2nH19OSFa49WeltcAOwwqWOmYdHiwSnu2DbXOSP~OjMr5Rf2~t3ReRIyaC4szzjAYiBffhza1IUmIW4gHbLdKQXFtPjb0hB9qP4rPwcVFAa3HocuTjswyRWvtTjJ2eiOcvWStaG1JKvkOaKHW4SlDVMmq2c2hV4-NNHLkeJWsA0yPTBi-sdrwsEpfYqrb66ujhI3Lup0kjYSMBxJJY0vpmCoQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              },
+              {
+                "language": "fr",
+                "url": "https://cacdn.hakunaymatata.com/msubt/4b639c5dfcd7fdbe7498125a14a5f1a3.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9tc3VidC8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=VNlDEWMDRTrxzIehDMq7UzfPr1vMDhb580UTyaF3i52LmnuS2PXbNLQjytEcdQNNCcJrWqdNLUfjYikOKEubE-5lhMIMlEKc3mHEJGS5FjgOpoJiTAyyZb864yM7l2nH19OSFa49WeltcAOwwqWOmYdHiwSnu2DbXOSP~OjMr5Rf2~t3ReRIyaC4szzjAYiBffhza1IUmIW4gHbLdKQXFtPjb0hB9qP4rPwcVFAa3HocuTjswyRWvtTjJ2eiOcvWStaG1JKvkOaKHW4SlDVMmq2c2hV4-NNHLkeJWsA0yPTBi-sdrwsEpfYqrb66ujhI3Lup0kjYSMBxJJY0vpmCoQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              },
+              {
+                "language": "in_id",
+                "url": "https://cacdn.hakunaymatata.com/subtitle/8e53c8218b3b3a30450efa8cd04dc55d.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=KBOOu8MR2zFOvgXkj7R1-xVt8bWJJmVnjCf~p9vk3q9wKcbvCf6I87cPSLCe3ul2p5svhvBli~V5Akrww8dM0PM~0omJI3UnWTgArt~Ebb9AMlQzRKmogNp4h6ymGuFHRO5VLo5NcuwQ3C-MDc5~AOZYxTFfq4jlAbLA8zJxt9ojvinUWJI-D2gbxM2ZKyHEityYhgWrH53RKCZFGVO1PNV1aNN4rdUUK-nNT4u-foQWFtdu7p61bHEZwYLGq2a3UceUvRMq6isuhro1VjNS0~Riv4cQcDkPKvOajLwzTwWJgNGjUXTYGQTUnfkw5AZZZvjhGPJP6zIUSHbc2BsugQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              },
+              {
+                "language": "km",
+                "url": "https://cacdn.hakunaymatata.com/subtitle/93d28f738f7f168259ba7d015f569056.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=KBOOu8MR2zFOvgXkj7R1-xVt8bWJJmVnjCf~p9vk3q9wKcbvCf6I87cPSLCe3ul2p5svhvBli~V5Akrww8dM0PM~0omJI3UnWTgArt~Ebb9AMlQzRKmogNp4h6ymGuFHRO5VLo5NcuwQ3C-MDc5~AOZYxTFfq4jlAbLA8zJxt9ojvinUWJI-D2gbxM2ZKyHEityYhgWrH53RKCZFGVO1PNV1aNN4rdUUK-nNT4u-foQWFtdu7p61bHEZwYLGq2a3UceUvRMq6isuhro1VjNS0~Riv4cQcDkPKvOajLwzTwWJgNGjUXTYGQTUnfkw5AZZZvjhGPJP6zIUSHbc2BsugQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              },
+              {
+                "language": "ms",
+                "url": "https://cacdn.hakunaymatata.com/subtitle/7873f7efe7b741e04b5f7b3b3e5dd93e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=KBOOu8MR2zFOvgXkj7R1-xVt8bWJJmVnjCf~p9vk3q9wKcbvCf6I87cPSLCe3ul2p5svhvBli~V5Akrww8dM0PM~0omJI3UnWTgArt~Ebb9AMlQzRKmogNp4h6ymGuFHRO5VLo5NcuwQ3C-MDc5~AOZYxTFfq4jlAbLA8zJxt9ojvinUWJI-D2gbxM2ZKyHEityYhgWrH53RKCZFGVO1PNV1aNN4rdUUK-nNT4u-foQWFtdu7p61bHEZwYLGq2a3UceUvRMq6isuhro1VjNS0~Riv4cQcDkPKvOajLwzTwWJgNGjUXTYGQTUnfkw5AZZZvjhGPJP6zIUSHbc2BsugQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              }
+            ]
+          },
+          {
+            "number": 9,
+            "episode": 9,
+            "season": 1,
+            "title": "Episode 9",
+            "duration": "64m",
+            "overview": "Having learned the truth about his past, Tae-hyung decides to leave Hyun-jin and Woo-joo for their safety.",
+            "still": "https://image.tmdb.org/t/p/w500/qRjmNjK76b6K41szVeejdfg8bBd.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/e425f7a3c31d18140a3e783aae6ee425.mp4?sign=9f0e49c9cd0e553c47a5cdb01713391e&t=1792830877",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 706MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/e425f7a3c31d18140a3e783aae6ee425.mp4?sign=9f0e49c9cd0e553c47a5cdb01713391e&t=1792830877",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=9",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox SD - 480p - 295MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/1af582509d1024504afb53445c35491e.mp4?sign=f16b332e9fc6c59f2ec4f31d7ae9741d&t=1792830877",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=297424&s=1&e=9",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/297424/1/9",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/297424/1/9",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": [
+              {
+                "language": "en",
+                "url": "https://cacdn.hakunaymatata.com/subtitle/9fe2dcbb7dd88b9464a29f71ce5c9657.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=KBOOu8MR2zFOvgXkj7R1-xVt8bWJJmVnjCf~p9vk3q9wKcbvCf6I87cPSLCe3ul2p5svhvBli~V5Akrww8dM0PM~0omJI3UnWTgArt~Ebb9AMlQzRKmogNp4h6ymGuFHRO5VLo5NcuwQ3C-MDc5~AOZYxTFfq4jlAbLA8zJxt9ojvinUWJI-D2gbxM2ZKyHEityYhgWrH53RKCZFGVO1PNV1aNN4rdUUK-nNT4u-foQWFtdu7p61bHEZwYLGq2a3UceUvRMq6isuhro1VjNS0~Riv4cQcDkPKvOajLwzTwWJgNGjUXTYGQTUnfkw5AZZZvjhGPJP6zIUSHbc2BsugQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              }
+            ]
+          },
+          {
+            "number": 10,
+            "episode": 10,
+            "season": 1,
+            "title": "Episode 10",
+            "duration": "60m",
+            "overview": "As Hyun-jin grows closer to Yoon-seong, Tae-hyung keeps his distance and decides to move abroad.",
+            "still": "https://image.tmdb.org/t/p/w500/bNW9ufAfXEwJX3KxAel94GoDcXb.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/d955b9b6112a63f7b22660b41408b7b8.mp4?sign=948e17ae3fb193c044d1727c1edbb4c3&t=1792829475",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 749MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/d955b9b6112a63f7b22660b41408b7b8.mp4?sign=948e17ae3fb193c044d1727c1edbb4c3&t=1792829475",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=10",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox SD - 480p - 276MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/0128abd116f78ceae1b8cba47bc41a86.mp4?sign=6c6b9793173dea463a51169b2b80b5cf&t=1792829475",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=297424&s=1&e=10",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/297424/1/10",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/297424/1/10",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": [
+              {
+                "language": "en",
+                "url": "https://cacdn.hakunaymatata.com/subtitle/feda0b91dc719d36f0143fa65c0a86ed.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzMwfX19XX0_&Signature=LBg3gNqzNeC0WQLBCbIBUZk5XfQHKZQC1ABA3qPPk2oUWCx4ylJhb6DGRk0L6TYuchBDDFwXiGqFbqcs~oKrfhwmwL0Pax4QjUr~APqh4AnGATFE-B8XmLKi6frU1~kJlEjvqvfYm9hEm8V-aYd4K42XkL1CZCL1OrXvRhlTmrUkuU3vhAvpJGUqia21EHOIknPe8gRUs8IPt-ZhS1XQPYV38dJFchxwPxfrZLVwtkJB7UOhV4WPpa46YaI-qWMozzaznRgW1SotC4eln0T7r4oOYLTkLilkxod8ULohqDz-0NTCI~bGh5bL~JM7ckQFgF4mS1crbPg6zqW~w-6dbA__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              }
+            ]
+          },
+          {
+            "number": 11,
+            "episode": 11,
+            "season": 1,
+            "title": "Episode 11",
+            "duration": "59m",
+            "overview": "Hyun-jin reunites with Tae-hyung after realizing her feelings for him, but their day out is disrupted when Woo-joo goes missing.",
+            "still": "https://image.tmdb.org/t/p/w500/rT2NmtB5KKvpuYwiOQ3OVWyrZdv.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/31276cd99a0462992d2763b3e1aa0a4f.mp4?sign=58ed26b6b6ac598dff344f8bae02eafa&t=1792830133",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 747MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/31276cd99a0462992d2763b3e1aa0a4f.mp4?sign=58ed26b6b6ac598dff344f8bae02eafa&t=1792830133",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=11",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox SD - 480p - 268MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/17954c75076723c2c514784fbdb31174.mp4?sign=d47876bf6caeae2a141e8492f79854d2&t=1792830133",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=297424&s=1&e=11",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/297424/1/11",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/297424/1/11",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": [
+              {
+                "language": "en",
+                "url": "https://cacdn.hakunaymatata.com/subtitle/2aabe063b4f10bbdd2fa831589ca2261.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDMzNjUwfX19XX0_&Signature=wIrHZcAWgrzA4rbQpL9FEGTAjczlpgVgmTalNhlkO4Kd3wrbwGjwBMDrtRU0bH2u~xRqC4uIvcyw~w-~u-uFDLKlP2JDG4VPj7XY21bRfLb0rebORywdbtQ0ezXp2pfZbsyRPsXv0FxnFw9VGx-dn8rE~TAFi~HtIVw7ajurHDvIc8Uqd76DvvJ6d16M~PUTV5oLeTnHdWz9m4DQa8fOs-i3AWhRe6DmhfiEWJuIL1pnBa8QHQLEGQlCAX5pamBX3EakOCObAYWLdgKAE~nG5tkEX5tYvzMHTLZCne5h14kIpTH-3fx-SZGr1DBu9yJ~ruS97p8aaJksMFXA0XHymg__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              }
+            ]
+          },
+          {
+            "number": 12,
+            "episode": 12,
+            "season": 1,
+            "title": "Episode 12",
+            "duration": "61m",
+            "overview": "As Woo-joo's guardianship hearing approaches, an unexpected incident threatens to tear the family apart.",
+            "still": "https://image.tmdb.org/t/p/w500/AqVKkXhfUfKrMMtAd97XIQLCJs0.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/e5aff4f601264355e8a0f0c8cee09fba.mp4?sign=9f93ed9c8cfea4e0914dfc4fa8ee91c8&t=1792830992",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 749MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/e5aff4f601264355e8a0f0c8cee09fba.mp4?sign=9f93ed9c8cfea4e0914dfc4fa8ee91c8&t=1792830992",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=12",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox SD - 480p - 279MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/f1628a3d87c3f7c221168f996a30a22a.mp4?sign=59f2ff6550343684666972fe59c44eea&t=1792830992",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=297424&s=1&e=12",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/297424/1/12",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/297424/1/12",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": [
+              {
+                "language": "en",
+                "url": "https://cacdn.hakunaymatata.com/subtitle/8b0c8fa7586ea297c4140f45ce14688a.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzMwfX19XX0_&Signature=LBg3gNqzNeC0WQLBCbIBUZk5XfQHKZQC1ABA3qPPk2oUWCx4ylJhb6DGRk0L6TYuchBDDFwXiGqFbqcs~oKrfhwmwL0Pax4QjUr~APqh4AnGATFE-B8XmLKi6frU1~kJlEjvqvfYm9hEm8V-aYd4K42XkL1CZCL1OrXvRhlTmrUkuU3vhAvpJGUqia21EHOIknPe8gRUs8IPt-ZhS1XQPYV38dJFchxwPxfrZLVwtkJB7UOhV4WPpa46YaI-qWMozzaznRgW1SotC4eln0T7r4oOYLTkLilkxod8ULohqDz-0NTCI~bGh5bL~JM7ckQFgF4mS1crbPg6zqW~w-6dbA__&Key-Pair-Id=KMHN1LQ1HEUPL"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   "movies": [
+    {
+      "id": "mb-m-2833795268615856792",
+      "subjectId": "2833795268615856792",
+      "detailPath": "the-death-of-robin-hood-hindi-IimpoQmOkn3",
+      "tmdbId": 1284465,
+      "title": "The Death of Robin Hood [Hindi]",
+      "originalTitle": "The Death of Robin Hood",
+      "language": "English",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hugh Jackman",
+      "badgeRight": "1080p Full HD",
+      "industry": "Hollywood",
+      "country": "United States",
+      "category": "Hollywood (Dubbed) Movies",
+      "genre": "Adventure, Drama, Action",
+      "year": "2026",
+      "releaseDate": "2026-06-18",
+      "duration": "2h 03m",
+      "rating": "6.7",
+      "imdbRating": "6.7",
+      "poster": "https://image.tmdb.org/t/p/w500/13MmRwmG5NmaMfU8qNrtgGXisiD.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/lh3BDkmWJh998n4fQcHYcVi7dpm.jpg",
+      "cover": "https://image.tmdb.org/t/p/original/lh3BDkmWJh998n4fQcHYcVi7dpm.jpg",
+      "description": "Grappling with his past after a life of crime and murder, Robin Hood finds himself gravely injured after a battle he thought would be his last. In the hands of a mysterious woman, he is offered a chance at salvation.",
+      "audioTracks": [
+        "Hindi dub",
+        "English (Original)"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/37158639beb0a246a6c6eea9e3022343.mp4?sign=8010137d1918a850420e1f22ac57e1f7&t=1792827409",
+      "servers": [
+        {
+          "name": "Server 1 (MovieBox 1080p Hindi Direct - 2155MB)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/37158639beb0a246a6c6eea9e3022343.mp4?sign=8010137d1918a850420e1f22ac57e1f7&t=1792827409",
+          "isDirect": true,
+          "quality": "1080p"
+        },
+        {
+          "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+          "url": "/api/moviebox/stream?id=2833795268615856792&path=the-death-of-robin-hood-hindi-IimpoQmOkn3&se=0&ep=0",
+          "isDirect": true,
+          "quality": "1080p"
+        },
+        {
+          "name": "Server 3 (MovieBox 720p - 1302MB)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/d9d8160766fa9ddb9fc5a6f998e4c904.mp4?sign=1f6206aabc2e09befe31da1081c7ff03&t=1792831254",
+          "isDirect": true,
+          "quality": "720p"
+        },
+        {
+          "name": "Server 4 (MovieBox 480p - 786MB)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/e2523effaaf018dd870ed08dcd102aa3.mp4?sign=2a32c57a2c6d4fa814f17041a80d5f45&t=1792831254",
+          "isDirect": true,
+          "quality": "480p"
+        },
+        {
+          "name": "Server 5 (MovieBox 360p - 455MB)",
+          "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/3ea7e711e4902b7ea63efef14cf393ff.mp4?sign=7d61dbe966d0453629cd3ebe49c097e5&t=1792831254",
+          "isDirect": true,
+          "quality": "360p"
+        },
+        {
+          "name": "Server 6 (MultiEmbed HD Failover)",
+          "url": "https://multiembed.mov/?video_id=1284465&tmdb=1",
+          "isDirect": false,
+          "quality": "1080p"
+        },
+        {
+          "name": "Server 7 (AutoEmbed HD)",
+          "url": "https://player.autoembed.cc/embed/movie/1284465",
+          "isDirect": false,
+          "quality": "1080p"
+        },
+        {
+          "name": "Server 8 (Vidlink Fast HD)",
+          "url": "https://vidlink.pro/movie/1284465",
+          "isDirect": false,
+          "quality": "1080p"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Hugh Jackman",
+          "character": "Robin Hood",
+          "photo": "https://image.tmdb.org/t/p/w185/4Xujtewxqt6aU0Y81tsS9gkjizk.jpg"
+        },
+        {
+          "name": "Jodie Comer",
+          "character": "Sister Brigid",
+          "photo": "https://image.tmdb.org/t/p/w185/AfsBpnfw0E2h8NZK4zkFcOjYlEb.jpg"
+        },
+        {
+          "name": "Bill Skarsgård",
+          "character": "Little John",
+          "photo": "https://image.tmdb.org/t/p/w185/xBXLx1m0uzhXIbY3wN8lmPGeUHl.jpg"
+        },
+        {
+          "name": "Murray Bartlett",
+          "character": "The Leper",
+          "photo": "https://image.tmdb.org/t/p/w185/eN20zfcRB2F51bmUbTK9byQCpb9.jpg"
+        },
+        {
+          "name": "Noah Jupe",
+          "character": "Arthur / Godwyn",
+          "photo": "https://image.tmdb.org/t/p/w185/cBhJisZrIsZzamiUCVjOZODcqOK.jpg"
+        },
+        {
+          "name": "Jade Croot",
+          "character": "Wainwright",
+          "photo": "https://image.tmdb.org/t/p/w185/j4DuuFPDdnEcDWFWCyBUuhhHkxg.jpg"
+        },
+        {
+          "name": "Faith Delaney",
+          "character": "Little Margaret",
+          "photo": "https://image.tmdb.org/t/p/w185/jIKjTzr4dCoybQgNhyREahh9Aym.jpg"
+        },
+        {
+          "name": "Tabitha Smyth",
+          "character": "Sarah",
+          "photo": "https://image.tmdb.org/t/p/w185/uREVbfIi4rD2W29zWbtzNqIhP4u.jpg"
+        },
+        {
+          "name": "Beau Thompson",
+          "character": "Hob",
+          "photo": "https://image.tmdb.org/t/p/w185/9mGiYt7w8YqsqM6TLoGqYV9SvFY.jpg"
+        },
+        {
+          "name": "Alfie Lawless",
+          "character": "Hendrie",
+          "photo": "https://image.tmdb.org/t/p/w185/761sH9H88m86M3iUuxMJpLQ2GE2.jpg"
+        }
+      ],
+      "type": "movie"
+    },
     {
       "id": "mb-m-803658983365039832",
       "subjectId": "803658983365039832",
@@ -3831,6 +4624,799 @@
     }
   ],
   "series": [
+    {
+      "id": "mb-s-4332534660363340496",
+      "subjectId": "4332534660363340496",
+      "detailPath": "our-universe-hindi-ez8xLio33a5",
+      "tmdbId": 297424,
+      "title": "Our Universe [Hindi]",
+      "originalTitle": "우주를 줄게",
+      "year": "2026",
+      "releaseDate": "2026-02-04",
+      "rating": "8.2",
+      "votes": "84",
+      "duration": "1 Season (12 Episodes)",
+      "category": "Korean (Dubbed) Series",
+      "industry": "Korean",
+      "country": "South Korea",
+      "badgeLeft": "Bae In-hyuk",
+      "badgeRight": "1080p Hindi Dub",
+      "poster": "https://image.tmdb.org/t/p/w500/d0ZW2r5L8Ma50gvkvSY7BZSE6fb.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/bHv9tTPd0dxpV2OD3WeDoZOFzPQ.jpg",
+      "cover": "https://image.tmdb.org/t/p/original/bHv9tTPd0dxpV2OD3WeDoZOFzPQ.jpg",
+      "description": "Two in-laws forced to raise their orphaned nephew together slowly overcome their misunderstandings, finding personal growth and an unexpected romance through co-parenting under one roof.",
+      "overview": "Two in-laws forced to raise their orphaned nephew together slowly overcome their misunderstandings, finding personal growth and an unexpected romance through co-parenting under one roof.",
+      "genre": "Comedy, Drama",
+      "genres": "Comedy, Drama",
+      "cast": [
+        {
+          "name": "Bae In-hyuk",
+          "character": "Sun Tae-hyung",
+          "photo": "https://image.tmdb.org/t/p/w185/8UOUm9lQEOD1vBHZwbtP7IiARhU.jpg"
+        },
+        {
+          "name": "Roh Jeong-eui",
+          "character": "Woo Hyeon-jin",
+          "photo": "https://image.tmdb.org/t/p/w185/pYFgOVsNxI1fIHuPWtuaSgojMCP.jpg"
+        },
+        {
+          "name": "Park Seo-ham",
+          "character": "Park Yun-seong",
+          "photo": "https://image.tmdb.org/t/p/w185/vndtKSldmy4keg1NQx3wU0kqP2m.jpg"
+        },
+        {
+          "name": "Ku Sung-hwan",
+          "character": "Jo Mu-saeng",
+          "photo": "https://image.tmdb.org/t/p/w185/9oSGpqUOVVtL9vsAxZNWdsaKQM9.jpg"
+        },
+        {
+          "name": "Choi Gyu-ri",
+          "character": "Baek Se-yeon",
+          "photo": "https://image.tmdb.org/t/p/w185/a8rHzs04QqTBGG0Q2BTnPPULpFc.jpg"
+        },
+        {
+          "name": "Oh Hyun-joong",
+          "character": "Kim Hee-jun",
+          "photo": "https://image.tmdb.org/t/p/w185/3G2Ishrvz0gDm8MFcAyB8s4WzC.jpg"
+        },
+        {
+          "name": "Park Yoo-ho",
+          "character": "Sun Woo-Joo",
+          "photo": "https://image.tmdb.org/t/p/w185/pBYClXkanI03UNMS6L6YRAht3RQ.jpg"
+        },
+        {
+          "name": "Cheon Yi-seul",
+          "character": "Kim So-hee",
+          "photo": "https://image.tmdb.org/t/p/w185/gaYMpVnVaAc86z8uNw0wvTAVYix.jpg"
+        }
+      ],
+      "isOngoing": false,
+      "seasonsCount": 1,
+      "seasons": [
+        {
+          "seasonNumber": 1,
+          "title": "Season 1",
+          "name": "Season 1",
+          "year": "2026",
+          "episodesCount": 12,
+          "poster": "https://image.tmdb.org/t/p/w500/d0ZW2r5L8Ma50gvkvSY7BZSE6fb.jpg",
+          "episodes": [
+            {
+              "number": 1,
+              "episode": 1,
+              "season": 1,
+              "title": "Episode 1",
+              "duration": "60m",
+              "overview": "Hyun-jin and Tae-hyung are at odds from the moment they meet, only to discover that they will soon be in-laws.",
+              "still": "https://image.tmdb.org/t/p/w500/cTFXG7pRHswDDUXBUzbcFkiwowD.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/a35cad5d817504dac4925a5a8977d8d9.mp4?sign=92e94a8620892a3880aec742869e09df&t=1792828760",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 762MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/a35cad5d817504dac4925a5a8977d8d9.mp4?sign=92e94a8620892a3880aec742869e09df&t=1792828760",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=1",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox SD - 480p - 273MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/9b19b95e209d521c601333aa30cac023.mp4?sign=6854952eb751ce07361eccad3d8b4720&t=1792828760",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=297424&s=1&e=1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/297424/1/1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/297424/1/1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/cc2b1ec1cc43c2cbcedc894ab6b72393.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzA4fX19XX0_&Signature=Bl2QzBP5demwgDHcVQLDhSATiCzlAwKZuP6BNUzQRwW2KuD3XUFr~~UA8rttFabijrYdQD1IJ60~t5X1~Z3INXc4kIA5jji8ENkYOeAErcv0B57k-QV4RghAC-FE98d69CFVoTnbhUadLsvevPPPm~Rtgy6DUNo4MfjMsUHeFy~MXM0g3Su~KDBq84I4dgvjIy3XuEFZvITJl0Nf6zMuApbizKV9rhS6cOy4MOkO9vU6UAn0xihe2zEV20KGaX31muPHI--OIUe102gXHVzqWkVlHFOhmqWlgqJOHHzZZNhJmtewGCgGCyjfgZR~XVD0QaDBc5eCyG3ghiKcHu4yZA__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "episode": 2,
+              "season": 1,
+              "title": "Episode 2",
+              "duration": "57m",
+              "overview": "The in-laws who have been at odds are forced to live together with their orphaned nephew, Woo-joo.",
+              "still": "https://image.tmdb.org/t/p/w500/iGgs8n4n38bTvKyLgcs82Fe50fi.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/2ebe9290e8a1bc24cef91d58897f7db6.mp4?sign=844d176cb783c4113d529044fb1c6169&t=1792830957",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 757MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/2ebe9290e8a1bc24cef91d58897f7db6.mp4?sign=844d176cb783c4113d529044fb1c6169&t=1792830957",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=2",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox SD - 480p - 259MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/7c45b0b61cec1d63d9bb894817da3c29.mp4?sign=3a6fa758fc5998634142a1b078d99bcb&t=1792830957",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=297424&s=1&e=2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/297424/1/2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/297424/1/2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/f1fdc91298ddf8e3cd4e6acbf45b005f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM0MzM2fX19XX0_&Signature=nHJ8g1H1SxrLpEoBntsfmVZ4VQOEjr1A1xRMby7PzxH1KPjNV9CC1ALB6FyorYaaHMVw0wiynSGRX6Jd4XxOOqc7-4Kqr4lxA2~nOaGt2QmfUAkW18K0UJm5Ha1IEnTZIrjpLrd1znIzMV7j-dmg1DXLaiVoEJQCeSdICyP-Kj3iWlmTlq-GrRdZ10c1nWN9GOOSroTuKKA4UqWQu-c4UWNEZEXA5aKp2lD51FZyfVk-OKMsJtvT9xxmwu3A2IAGogZ0-V~lq1C~Ffschc1So15ptagIN4Oa2-IT4ZFphaH9HxRx-QyapQRX180uO-Q6OSWfuVhyaJ7JIVX8Q0Fzug__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "episode": 3,
+              "season": 1,
+              "title": "Episode 3",
+              "duration": "58m",
+              "overview": "As they navigate caring for Woo-joo, Tae-hyung makes an irresistible proposition to Hyun-jin and proposes cohabitating for a month.",
+              "still": "https://image.tmdb.org/t/p/w500/Ahr48jwzPqr2WPTYCY1yYMJN0cf.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/529632db509cc94e4a70f8eecf27d2bf.mp4?sign=6778e837b8815de5752c6df381145bf6&t=1792828241",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 668MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/529632db509cc94e4a70f8eecf27d2bf.mp4?sign=6778e837b8815de5752c6df381145bf6&t=1792828241",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=3",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox SD - 480p - 262MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/0327e3ff90d7a516af8e60cdf9e6ec69.mp4?sign=85e8864a443dc5354af538e76d43ab67&t=1792829719",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=297424&s=1&e=3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/297424/1/3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/297424/1/3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/4bb10189e2611be5f4966700b7b0dbde.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzA4fX19XX0_&Signature=Bl2QzBP5demwgDHcVQLDhSATiCzlAwKZuP6BNUzQRwW2KuD3XUFr~~UA8rttFabijrYdQD1IJ60~t5X1~Z3INXc4kIA5jji8ENkYOeAErcv0B57k-QV4RghAC-FE98d69CFVoTnbhUadLsvevPPPm~Rtgy6DUNo4MfjMsUHeFy~MXM0g3Su~KDBq84I4dgvjIy3XuEFZvITJl0Nf6zMuApbizKV9rhS6cOy4MOkO9vU6UAn0xihe2zEV20KGaX31muPHI--OIUe102gXHVzqWkVlHFOhmqWlgqJOHHzZZNhJmtewGCgGCyjfgZR~XVD0QaDBc5eCyG3ghiKcHu4yZA__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "episode": 4,
+              "season": 1,
+              "title": "Episode 4",
+              "duration": "60m",
+              "overview": "As Hyun-jin and Tae-hyung's relationship deepens, Hyun-jin hides their living arrangement from her first love, Yoon-seong.",
+              "still": "https://image.tmdb.org/t/p/w500/dafJHVR2hZloGWVD9QnqsLZAlm1.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/ef568c89e5a3f0c2174c3d0e454e8a8c.mp4?sign=1c129856765de1e3fdb750be914d9a19&t=1792828300",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 650MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/ef568c89e5a3f0c2174c3d0e454e8a8c.mp4?sign=1c129856765de1e3fdb750be914d9a19&t=1792828300",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=4",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox SD - 480p - 273MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/3735ca75129506aaabb3b5ea996c1a3b.mp4?sign=1c759ca63236907c830753b975ec9bb0&t=1792828300",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=297424&s=1&e=4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/297424/1/4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/297424/1/4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/5ba93e357d86126a173a4b094ecc0b6b.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM0MzM2fX19XX0_&Signature=nHJ8g1H1SxrLpEoBntsfmVZ4VQOEjr1A1xRMby7PzxH1KPjNV9CC1ALB6FyorYaaHMVw0wiynSGRX6Jd4XxOOqc7-4Kqr4lxA2~nOaGt2QmfUAkW18K0UJm5Ha1IEnTZIrjpLrd1znIzMV7j-dmg1DXLaiVoEJQCeSdICyP-Kj3iWlmTlq-GrRdZ10c1nWN9GOOSroTuKKA4UqWQu-c4UWNEZEXA5aKp2lD51FZyfVk-OKMsJtvT9xxmwu3A2IAGogZ0-V~lq1C~Ffschc1So15ptagIN4Oa2-IT4ZFphaH9HxRx-QyapQRX180uO-Q6OSWfuVhyaJ7JIVX8Q0Fzug__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "episode": 5,
+              "season": 1,
+              "title": "Episode 5",
+              "duration": "59m",
+              "overview": "As Yoon-seong discovers Hyun-jin's secret, Tae-hyung learns that Yoon-seong was her first love.",
+              "still": "https://image.tmdb.org/t/p/w500/8zX9nPU0mXr1smHRECGwdfAMNjH.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/7d79078e968af3216c82da42ba43b1cf.mp4?sign=d40a7efb61a1416c61c41575e98cd1ee&t=1792829472",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 733MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/7d79078e968af3216c82da42ba43b1cf.mp4?sign=d40a7efb61a1416c61c41575e98cd1ee&t=1792829472",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=5",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox SD - 480p - 268MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/e21ee1ec7ab1d711d800b68bd3c28a8a.mp4?sign=1f180d1bf67b2bcf42d06c3d68408cbc&t=1792829472",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=297424&s=1&e=5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/297424/1/5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/297424/1/5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/bff83b32686f4ee1157514bbf870b755.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzMwfX19XX0_&Signature=LBg3gNqzNeC0WQLBCbIBUZk5XfQHKZQC1ABA3qPPk2oUWCx4ylJhb6DGRk0L6TYuchBDDFwXiGqFbqcs~oKrfhwmwL0Pax4QjUr~APqh4AnGATFE-B8XmLKi6frU1~kJlEjvqvfYm9hEm8V-aYd4K42XkL1CZCL1OrXvRhlTmrUkuU3vhAvpJGUqia21EHOIknPe8gRUs8IPt-ZhS1XQPYV38dJFchxwPxfrZLVwtkJB7UOhV4WPpa46YaI-qWMozzaznRgW1SotC4eln0T7r4oOYLTkLilkxod8ULohqDz-0NTCI~bGh5bL~JM7ckQFgF4mS1crbPg6zqW~w-6dbA__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "episode": 6,
+              "season": 1,
+              "title": "Episode 6",
+              "duration": "60m",
+              "overview": "Tae-hyung gets assigned to work with Hyun-jin and Yoon-seong, while Hyun-jin learns of Tae-hyung's true feelings.",
+              "still": "https://image.tmdb.org/t/p/w500/we9ExudgEDTdqnrdjF9gN7okFQC.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/7524a31b026c5d0a3ce5faa053e251ad.mp4?sign=f0a1a1c22b9da54d6bff8e06ae9b79b4&t=1792829733",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 722MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/7524a31b026c5d0a3ce5faa053e251ad.mp4?sign=f0a1a1c22b9da54d6bff8e06ae9b79b4&t=1792829733",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=6",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox SD - 480p - 273MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/474b749c8cc0a3a4561b4d286b8b1af5.mp4?sign=723df0e95c6f35ed5bb899ea5736434f&t=1792829733",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=297424&s=1&e=6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/297424/1/6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/297424/1/6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/817ada1cb58b290572f0b2868cc3ad31.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM0MzM2fX19XX0_&Signature=nHJ8g1H1SxrLpEoBntsfmVZ4VQOEjr1A1xRMby7PzxH1KPjNV9CC1ALB6FyorYaaHMVw0wiynSGRX6Jd4XxOOqc7-4Kqr4lxA2~nOaGt2QmfUAkW18K0UJm5Ha1IEnTZIrjpLrd1znIzMV7j-dmg1DXLaiVoEJQCeSdICyP-Kj3iWlmTlq-GrRdZ10c1nWN9GOOSroTuKKA4UqWQu-c4UWNEZEXA5aKp2lD51FZyfVk-OKMsJtvT9xxmwu3A2IAGogZ0-V~lq1C~Ffschc1So15ptagIN4Oa2-IT4ZFphaH9HxRx-QyapQRX180uO-Q6OSWfuVhyaJ7JIVX8Q0Fzug__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "episode": 7,
+              "season": 1,
+              "title": "Episode 7",
+              "duration": "61m",
+              "overview": "Tae-hyung is shaken by the sudden appearance of his estranged father. Meanwhile, Hyun-jin struggles at work.",
+              "still": "https://image.tmdb.org/t/p/w500/oz3rkF0rGiUymDL31RKOzxtB7aI.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/7898ca179b15372d9125a5f0c261423b.mp4?sign=6c264e76b9f76c05d31afe304157eeae&t=1792828331",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 716MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/7898ca179b15372d9125a5f0c261423b.mp4?sign=6c264e76b9f76c05d31afe304157eeae&t=1792828331",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=7",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox SD - 480p - 281MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/1beb767698cf0fa217c66c7f18d8777a.mp4?sign=753edbb68cc91b53bf4b6827478b39ee&t=1792828331",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=297424&s=1&e=7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/297424/1/7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/297424/1/7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/2cee52141390bf2fd29fcbe53a3be606.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzA4fX19XX0_&Signature=Bl2QzBP5demwgDHcVQLDhSATiCzlAwKZuP6BNUzQRwW2KuD3XUFr~~UA8rttFabijrYdQD1IJ60~t5X1~Z3INXc4kIA5jji8ENkYOeAErcv0B57k-QV4RghAC-FE98d69CFVoTnbhUadLsvevPPPm~Rtgy6DUNo4MfjMsUHeFy~MXM0g3Su~KDBq84I4dgvjIy3XuEFZvITJl0Nf6zMuApbizKV9rhS6cOy4MOkO9vU6UAn0xihe2zEV20KGaX31muPHI--OIUe102gXHVzqWkVlHFOhmqWlgqJOHHzZZNhJmtewGCgGCyjfgZR~XVD0QaDBc5eCyG3ghiKcHu4yZA__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "episode": 8,
+              "season": 1,
+              "title": "Episode 8",
+              "duration": "61m",
+              "overview": "Hyun-jin finds herself torn between Yoon-seong and Tae-hyung.",
+              "still": "https://image.tmdb.org/t/p/w500/AjBku15o2EfnLu4NYH39lC17ALh.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7da435eb5f0ef2a863f1bc4edb91d8b1.mp4?sign=818f9a64fbec0cea9531435fa05350ea&t=1792831913",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Direct - 401MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/7da435eb5f0ef2a863f1bc4edb91d8b1.mp4?sign=818f9a64fbec0cea9531435fa05350ea&t=1792831913",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=6415467904841960144&path=our-universe-I87DR8uUUD7&se=1&ep=8",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 3 (MovieBox SD - 360p - 170MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/e0d8a28485979c87c0a26618f73bbdc4.mp4?sign=8326acfb2cc71f7f14bcf264c4ceb7b4&t=1792831913",
+                  "isDirect": true,
+                  "quality": "360p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=297424&s=1&e=8",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/297424/1/8",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/297424/1/8",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "language": "ar",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/1ba77cc62d0cf532794477d8ff279aa5.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=KBOOu8MR2zFOvgXkj7R1-xVt8bWJJmVnjCf~p9vk3q9wKcbvCf6I87cPSLCe3ul2p5svhvBli~V5Akrww8dM0PM~0omJI3UnWTgArt~Ebb9AMlQzRKmogNp4h6ymGuFHRO5VLo5NcuwQ3C-MDc5~AOZYxTFfq4jlAbLA8zJxt9ojvinUWJI-D2gbxM2ZKyHEityYhgWrH53RKCZFGVO1PNV1aNN4rdUUK-nNT4u-foQWFtdu7p61bHEZwYLGq2a3UceUvRMq6isuhro1VjNS0~Riv4cQcDkPKvOajLwzTwWJgNGjUXTYGQTUnfkw5AZZZvjhGPJP6zIUSHbc2BsugQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                },
+                {
+                  "language": "bn",
+                  "url": "https://cacdn.hakunaymatata.com/msubt/6baa847d5a78259bc56bab008ead166f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9tc3VidC8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=VNlDEWMDRTrxzIehDMq7UzfPr1vMDhb580UTyaF3i52LmnuS2PXbNLQjytEcdQNNCcJrWqdNLUfjYikOKEubE-5lhMIMlEKc3mHEJGS5FjgOpoJiTAyyZb864yM7l2nH19OSFa49WeltcAOwwqWOmYdHiwSnu2DbXOSP~OjMr5Rf2~t3ReRIyaC4szzjAYiBffhza1IUmIW4gHbLdKQXFtPjb0hB9qP4rPwcVFAa3HocuTjswyRWvtTjJ2eiOcvWStaG1JKvkOaKHW4SlDVMmq2c2hV4-NNHLkeJWsA0yPTBi-sdrwsEpfYqrb66ujhI3Lup0kjYSMBxJJY0vpmCoQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                },
+                {
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/f0f98602914862aea7261a35936964e6.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=KBOOu8MR2zFOvgXkj7R1-xVt8bWJJmVnjCf~p9vk3q9wKcbvCf6I87cPSLCe3ul2p5svhvBli~V5Akrww8dM0PM~0omJI3UnWTgArt~Ebb9AMlQzRKmogNp4h6ymGuFHRO5VLo5NcuwQ3C-MDc5~AOZYxTFfq4jlAbLA8zJxt9ojvinUWJI-D2gbxM2ZKyHEityYhgWrH53RKCZFGVO1PNV1aNN4rdUUK-nNT4u-foQWFtdu7p61bHEZwYLGq2a3UceUvRMq6isuhro1VjNS0~Riv4cQcDkPKvOajLwzTwWJgNGjUXTYGQTUnfkw5AZZZvjhGPJP6zIUSHbc2BsugQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                },
+                {
+                  "language": "fil",
+                  "url": "https://cacdn.hakunaymatata.com/msubt/de9218d9ccd21143ba16598b9456ad76.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9tc3VidC8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=VNlDEWMDRTrxzIehDMq7UzfPr1vMDhb580UTyaF3i52LmnuS2PXbNLQjytEcdQNNCcJrWqdNLUfjYikOKEubE-5lhMIMlEKc3mHEJGS5FjgOpoJiTAyyZb864yM7l2nH19OSFa49WeltcAOwwqWOmYdHiwSnu2DbXOSP~OjMr5Rf2~t3ReRIyaC4szzjAYiBffhza1IUmIW4gHbLdKQXFtPjb0hB9qP4rPwcVFAa3HocuTjswyRWvtTjJ2eiOcvWStaG1JKvkOaKHW4SlDVMmq2c2hV4-NNHLkeJWsA0yPTBi-sdrwsEpfYqrb66ujhI3Lup0kjYSMBxJJY0vpmCoQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                },
+                {
+                  "language": "fr",
+                  "url": "https://cacdn.hakunaymatata.com/msubt/4b639c5dfcd7fdbe7498125a14a5f1a3.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9tc3VidC8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=VNlDEWMDRTrxzIehDMq7UzfPr1vMDhb580UTyaF3i52LmnuS2PXbNLQjytEcdQNNCcJrWqdNLUfjYikOKEubE-5lhMIMlEKc3mHEJGS5FjgOpoJiTAyyZb864yM7l2nH19OSFa49WeltcAOwwqWOmYdHiwSnu2DbXOSP~OjMr5Rf2~t3ReRIyaC4szzjAYiBffhza1IUmIW4gHbLdKQXFtPjb0hB9qP4rPwcVFAa3HocuTjswyRWvtTjJ2eiOcvWStaG1JKvkOaKHW4SlDVMmq2c2hV4-NNHLkeJWsA0yPTBi-sdrwsEpfYqrb66ujhI3Lup0kjYSMBxJJY0vpmCoQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                },
+                {
+                  "language": "in_id",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/8e53c8218b3b3a30450efa8cd04dc55d.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=KBOOu8MR2zFOvgXkj7R1-xVt8bWJJmVnjCf~p9vk3q9wKcbvCf6I87cPSLCe3ul2p5svhvBli~V5Akrww8dM0PM~0omJI3UnWTgArt~Ebb9AMlQzRKmogNp4h6ymGuFHRO5VLo5NcuwQ3C-MDc5~AOZYxTFfq4jlAbLA8zJxt9ojvinUWJI-D2gbxM2ZKyHEityYhgWrH53RKCZFGVO1PNV1aNN4rdUUK-nNT4u-foQWFtdu7p61bHEZwYLGq2a3UceUvRMq6isuhro1VjNS0~Riv4cQcDkPKvOajLwzTwWJgNGjUXTYGQTUnfkw5AZZZvjhGPJP6zIUSHbc2BsugQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                },
+                {
+                  "language": "km",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/93d28f738f7f168259ba7d015f569056.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=KBOOu8MR2zFOvgXkj7R1-xVt8bWJJmVnjCf~p9vk3q9wKcbvCf6I87cPSLCe3ul2p5svhvBli~V5Akrww8dM0PM~0omJI3UnWTgArt~Ebb9AMlQzRKmogNp4h6ymGuFHRO5VLo5NcuwQ3C-MDc5~AOZYxTFfq4jlAbLA8zJxt9ojvinUWJI-D2gbxM2ZKyHEityYhgWrH53RKCZFGVO1PNV1aNN4rdUUK-nNT4u-foQWFtdu7p61bHEZwYLGq2a3UceUvRMq6isuhro1VjNS0~Riv4cQcDkPKvOajLwzTwWJgNGjUXTYGQTUnfkw5AZZZvjhGPJP6zIUSHbc2BsugQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                },
+                {
+                  "language": "ms",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/7873f7efe7b741e04b5f7b3b3e5dd93e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=KBOOu8MR2zFOvgXkj7R1-xVt8bWJJmVnjCf~p9vk3q9wKcbvCf6I87cPSLCe3ul2p5svhvBli~V5Akrww8dM0PM~0omJI3UnWTgArt~Ebb9AMlQzRKmogNp4h6ymGuFHRO5VLo5NcuwQ3C-MDc5~AOZYxTFfq4jlAbLA8zJxt9ojvinUWJI-D2gbxM2ZKyHEityYhgWrH53RKCZFGVO1PNV1aNN4rdUUK-nNT4u-foQWFtdu7p61bHEZwYLGq2a3UceUvRMq6isuhro1VjNS0~Riv4cQcDkPKvOajLwzTwWJgNGjUXTYGQTUnfkw5AZZZvjhGPJP6zIUSHbc2BsugQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "episode": 9,
+              "season": 1,
+              "title": "Episode 9",
+              "duration": "64m",
+              "overview": "Having learned the truth about his past, Tae-hyung decides to leave Hyun-jin and Woo-joo for their safety.",
+              "still": "https://image.tmdb.org/t/p/w500/qRjmNjK76b6K41szVeejdfg8bBd.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/e425f7a3c31d18140a3e783aae6ee425.mp4?sign=9f0e49c9cd0e553c47a5cdb01713391e&t=1792830877",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 706MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/e425f7a3c31d18140a3e783aae6ee425.mp4?sign=9f0e49c9cd0e553c47a5cdb01713391e&t=1792830877",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=9",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox SD - 480p - 295MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/1af582509d1024504afb53445c35491e.mp4?sign=f16b332e9fc6c59f2ec4f31d7ae9741d&t=1792830877",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=297424&s=1&e=9",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/297424/1/9",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/297424/1/9",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/9fe2dcbb7dd88b9464a29f71ce5c9657.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzE5fX19XX0_&Signature=KBOOu8MR2zFOvgXkj7R1-xVt8bWJJmVnjCf~p9vk3q9wKcbvCf6I87cPSLCe3ul2p5svhvBli~V5Akrww8dM0PM~0omJI3UnWTgArt~Ebb9AMlQzRKmogNp4h6ymGuFHRO5VLo5NcuwQ3C-MDc5~AOZYxTFfq4jlAbLA8zJxt9ojvinUWJI-D2gbxM2ZKyHEityYhgWrH53RKCZFGVO1PNV1aNN4rdUUK-nNT4u-foQWFtdu7p61bHEZwYLGq2a3UceUvRMq6isuhro1VjNS0~Riv4cQcDkPKvOajLwzTwWJgNGjUXTYGQTUnfkw5AZZZvjhGPJP6zIUSHbc2BsugQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "episode": 10,
+              "season": 1,
+              "title": "Episode 10",
+              "duration": "60m",
+              "overview": "As Hyun-jin grows closer to Yoon-seong, Tae-hyung keeps his distance and decides to move abroad.",
+              "still": "https://image.tmdb.org/t/p/w500/bNW9ufAfXEwJX3KxAel94GoDcXb.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/d955b9b6112a63f7b22660b41408b7b8.mp4?sign=948e17ae3fb193c044d1727c1edbb4c3&t=1792829475",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 749MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/d955b9b6112a63f7b22660b41408b7b8.mp4?sign=948e17ae3fb193c044d1727c1edbb4c3&t=1792829475",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=10",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox SD - 480p - 276MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/0128abd116f78ceae1b8cba47bc41a86.mp4?sign=6c6b9793173dea463a51169b2b80b5cf&t=1792829475",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=297424&s=1&e=10",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/297424/1/10",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/297424/1/10",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/feda0b91dc719d36f0143fa65c0a86ed.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzMwfX19XX0_&Signature=LBg3gNqzNeC0WQLBCbIBUZk5XfQHKZQC1ABA3qPPk2oUWCx4ylJhb6DGRk0L6TYuchBDDFwXiGqFbqcs~oKrfhwmwL0Pax4QjUr~APqh4AnGATFE-B8XmLKi6frU1~kJlEjvqvfYm9hEm8V-aYd4K42XkL1CZCL1OrXvRhlTmrUkuU3vhAvpJGUqia21EHOIknPe8gRUs8IPt-ZhS1XQPYV38dJFchxwPxfrZLVwtkJB7UOhV4WPpa46YaI-qWMozzaznRgW1SotC4eln0T7r4oOYLTkLilkxod8ULohqDz-0NTCI~bGh5bL~JM7ckQFgF4mS1crbPg6zqW~w-6dbA__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": 11,
+              "episode": 11,
+              "season": 1,
+              "title": "Episode 11",
+              "duration": "59m",
+              "overview": "Hyun-jin reunites with Tae-hyung after realizing her feelings for him, but their day out is disrupted when Woo-joo goes missing.",
+              "still": "https://image.tmdb.org/t/p/w500/rT2NmtB5KKvpuYwiOQ3OVWyrZdv.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/31276cd99a0462992d2763b3e1aa0a4f.mp4?sign=58ed26b6b6ac598dff344f8bae02eafa&t=1792830133",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 747MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/31276cd99a0462992d2763b3e1aa0a4f.mp4?sign=58ed26b6b6ac598dff344f8bae02eafa&t=1792830133",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=11",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox SD - 480p - 268MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/17954c75076723c2c514784fbdb31174.mp4?sign=d47876bf6caeae2a141e8492f79854d2&t=1792830133",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=297424&s=1&e=11",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/297424/1/11",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/297424/1/11",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/2aabe063b4f10bbdd2fa831589ca2261.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDMzNjUwfX19XX0_&Signature=wIrHZcAWgrzA4rbQpL9FEGTAjczlpgVgmTalNhlkO4Kd3wrbwGjwBMDrtRU0bH2u~xRqC4uIvcyw~w-~u-uFDLKlP2JDG4VPj7XY21bRfLb0rebORywdbtQ0ezXp2pfZbsyRPsXv0FxnFw9VGx-dn8rE~TAFi~HtIVw7ajurHDvIc8Uqd76DvvJ6d16M~PUTV5oLeTnHdWz9m4DQa8fOs-i3AWhRe6DmhfiEWJuIL1pnBa8QHQLEGQlCAX5pamBX3EakOCObAYWLdgKAE~nG5tkEX5tYvzMHTLZCne5h14kIpTH-3fx-SZGr1DBu9yJ~ruS97p8aaJksMFXA0XHymg__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": 12,
+              "episode": 12,
+              "season": 1,
+              "title": "Episode 12",
+              "duration": "61m",
+              "overview": "As Woo-joo's guardianship hearing approaches, an unexpected incident threatens to tear the family apart.",
+              "still": "https://image.tmdb.org/t/p/w500/AqVKkXhfUfKrMMtAd97XIQLCJs0.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/e5aff4f601264355e8a0f0c8cee09fba.mp4?sign=9f93ed9c8cfea4e0914dfc4fa8ee91c8&t=1792830992",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 749MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/e5aff4f601264355e8a0f0c8cee09fba.mp4?sign=9f93ed9c8cfea4e0914dfc4fa8ee91c8&t=1792830992",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=12",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox SD - 480p - 279MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/f1628a3d87c3f7c221168f996a30a22a.mp4?sign=59f2ff6550343684666972fe59c44eea&t=1792830992",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=297424&s=1&e=12",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/297424/1/12",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/297424/1/12",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/8b0c8fa7586ea297c4140f45ce14688a.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM1NzMwfX19XX0_&Signature=LBg3gNqzNeC0WQLBCbIBUZk5XfQHKZQC1ABA3qPPk2oUWCx4ylJhb6DGRk0L6TYuchBDDFwXiGqFbqcs~oKrfhwmwL0Pax4QjUr~APqh4AnGATFE-B8XmLKi6frU1~kJlEjvqvfYm9hEm8V-aYd4K42XkL1CZCL1OrXvRhlTmrUkuU3vhAvpJGUqia21EHOIknPe8gRUs8IPt-ZhS1XQPYV38dJFchxwPxfrZLVwtkJB7UOhV4WPpa46YaI-qWMozzaznRgW1SotC4eln0T7r4oOYLTkLilkxod8ULohqDz-0NTCI~bGh5bL~JM7ckQFgF4mS1crbPg6zqW~w-6dbA__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
     {
       "id": "mb-s-3908280950886646112",
       "subjectId": "3908280950886646112",
