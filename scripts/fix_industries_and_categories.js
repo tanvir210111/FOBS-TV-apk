@@ -52,6 +52,15 @@ function classifyMovie(m) {
     return;
   }
 
+  // Japanese Live-Action Movies
+  if (title.includes('demon city')) {
+    m.industry = 'Japanese';
+    m.country = 'Japan';
+    m.category = 'Japanese Movies';
+    m.badgeLeft = 'Hindi Dub';
+    return;
+  }
+
   // Japanese / Anime movies
   if (title.includes('anime') || m.country === 'Japan' || (m.language && m.language.toLowerCase() === 'japanese')) {
     m.industry = 'Japanese';
@@ -97,7 +106,7 @@ function classifySeries(s) {
 
   // Chinese Series (C-Drama)
   const chineseSeries = [
-    'so i love you very much', 'early spring'
+    'so i love you very much', 'early spring', 'crush'
   ];
   if (chineseSeries.some(t => title.includes(t)) || s.country === 'China' || s.industry === 'Chinese') {
     s.industry = 'Chinese';

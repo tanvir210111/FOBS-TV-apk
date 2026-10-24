@@ -610,6 +610,12 @@ app.get('/api/moviebox/stream', async (req, res) => {
       else if (id === '2819564323977289192') resolvedPath = 'viral-hit-hindi-CT6Pd5lDhm3';
       // Sins of Kujo [Hindi] (2026 Japanese Series)
       else if (id === '1986985589031195976') resolvedPath = 'sins-of-kujo-hindi-uNxjKyJpMm2';
+      // Demon City [Hindi] (Japanese Movie)
+      else if (id === '8768845011485083816') resolvedPath = 'demon-city-hindi-i5IiSPZoLra';
+      // A Shop for Killers [Hindi] (Korean Series - Season 1 & 2)
+      else if (id === '8475210957663488472') resolvedPath = 'a-shop-for-killers-hindi-GLJXzEty46a';
+      // Crush (So I Love You Very Much) [Hindi] (Chinese Series)
+      else if (id === '5698833987452421616') resolvedPath = 'so-i-love-you-very-much-hindi-caElq9EIYM6';
     }
     // Try requested se/ep first, then fallbacks
     let media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);

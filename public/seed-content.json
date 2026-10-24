@@ -120,6 +120,114 @@
   },
   "movies": [
     {
+      "id": "mb-m-8768845011485083816",
+      "subjectId": "8768845011485083816",
+      "detailPath": "demon-city-hindi-i5IiSPZoLra",
+      "tmdbId": 1405338,
+      "title": "Demon City (2025) [Hindi]",
+      "originalTitle": "Demon City 鬼ゴロシ (Onigoroshi)",
+      "language": "Japanese",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi Dub",
+      "badgeRight": "1080p Full HD",
+      "industry": "Japanese",
+      "country": "Japan",
+      "category": "Japanese Movies",
+      "genre": "Action, Crime, Thriller, Martial Arts",
+      "year": "2025",
+      "duration": "1h 46m",
+      "rating": "7.5",
+      "imdbRating": "7.5",
+      "poster": "https://image.tmdb.org/t/p/w500/fQ9hzto0cUuxjfzqNAiAnNJo8O7.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/hD2SN5bbqxk0kcRmsATJkXObgnZ.jpg",
+      "description": "Framed for his family's murder and left for dead, an ex-hitman will stop at nothing to exact revenge on the masked \"demons\" who have taken over his city.",
+      "audioTracks": [
+        "Hindi dub",
+        "Original Audio"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250601/79e58a07b71144bd13293a5e7a512d2e.mp4?sign=d3bf2d5212eefa1d4ed157c30ae737fe&t=1792806244",
+      "servers": [
+        {
+          "name": "Server 1 (MovieBox 1080p Direct)",
+          "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250601/79e58a07b71144bd13293a5e7a512d2e.mp4?sign=d3bf2d5212eefa1d4ed157c30ae737fe&t=1792806244"
+        },
+        {
+          "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+          "url": "/api/moviebox/stream?id=8768845011485083816&path=demon-city-hindi-i5IiSPZoLra&se=0&ep=0"
+        },
+        {
+          "name": "Server 3 (MovieBox Fast SD)",
+          "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250601/e46e8daf81aa195cee61fc43cb36b454.mp4?sign=b7be7b5c0ef9c5ac7bce0e952a5aad60&t=1792806244"
+        },
+        {
+          "name": "Server 4 (MultiEmbed HD Failover)",
+          "url": "https://multiembed.mov/?video_id=1405338&tmdb=1"
+        },
+        {
+          "name": "Server 5 (AutoEmbed HD)",
+          "url": "https://autoembed.co/movie/tmdb/1405338"
+        },
+        {
+          "name": "Server 6 (Vidlink Fast HD)",
+          "url": "https://vidlink.pro/movie/1405338"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Toma Ikuta",
+          "character": "Shuhei Sakata",
+          "photo": "https://image.tmdb.org/t/p/w185/3tDQDEbG1XdPtp8N9oxw53rWw3o.jpg"
+        },
+        {
+          "name": "Masahiro Higashide",
+          "character": "Kanta Fase",
+          "photo": "https://image.tmdb.org/t/p/w185/6YOBIQ22Y7ZCkuk50QRotvUAl7v.jpg"
+        },
+        {
+          "name": "Miou Tanaka",
+          "character": "Homare Takemoto",
+          "photo": "https://image.tmdb.org/t/p/w185/4dXKZqcF1K6n6yVAGVVRlsc1RU0.jpg"
+        },
+        {
+          "name": "Ami Touma",
+          "character": "Ryo",
+          "photo": "https://image.tmdb.org/t/p/w185/kOAysqB1LlWAHwpSxUbcWs3WqBx.jpg"
+        },
+        {
+          "name": "Taro Suruga",
+          "character": "Akira Fujita",
+          "photo": "https://image.tmdb.org/t/p/w185/4ev9icsBZQrbSDP5YLfW1H2nhRd.jpg"
+        },
+        {
+          "name": "Mai Kiryu",
+          "character": "Aoi",
+          "photo": "https://image.tmdb.org/t/p/w185/2NsaouRvBljwKh0XWhbhfJ5T41V.jpg"
+        },
+        {
+          "name": "Naoto Takenaka",
+          "character": "Haruo Kawano",
+          "photo": "https://image.tmdb.org/t/p/w185/4adcQdMnaqOnl1rtOVUqGp1flvo.jpg"
+        },
+        {
+          "name": "Takuma Otoo",
+          "character": "Yoshihito Takigawa",
+          "photo": "https://image.tmdb.org/t/p/w185/vVWVFV8JJjQuLOdotFTAgGdFsEp.jpg"
+        },
+        {
+          "name": "Matsuya Onoe",
+          "character": "Ryu Sunohara",
+          "photo": "https://image.tmdb.org/t/p/w185/r1zRd6cvIZPYjOcau5pdpZU6DYN.jpg"
+        },
+        {
+          "name": "Masanobu Takashima",
+          "character": "Kotaro Shinozuka",
+          "photo": "https://image.tmdb.org/t/p/w185/eaTpDsH031VVmgzdxg8lTntVSQB.jpg"
+        }
+      ],
+      "type": "movie"
+    },
+    {
       "id": "mb-m-4393216074666474704",
       "title": "Pooja Meri Jaan [Hindi]",
       "originalTitle": "Pooja Meri Jaan [Hindi]",
@@ -23832,37 +23940,63 @@
     },
     {
       "id": "mb-s-8475210957663488472",
+      "subjectId": "8475210957663488472",
+      "detailPath": "a-shop-for-killers-hindi-GLJXzEty46a",
+      "tmdbId": 215072,
       "title": "A Shop for Killers [Hindi]",
-      "originalTitle": "A Shop for Killers [Hindi]",
-      "language": "Hindi",
+      "originalTitle": "킬러들의 쇼핑몰 (A Shop for Killers)",
+      "language": "Korean",
       "dubLanguage": "Hindi",
       "badgeLeft": "K-Drama",
-      "badgeRight": "1 Eps",
+      "badgeRight": "2 Seasons",
       "tag": "Full Series",
+      "isFullSeries": true,
+      "isTrending": true,
+      "status": "Completed",
       "industry": "Korean",
-      "year": "2024",
       "country": "Korea",
-      "genre": "Drama, Action & Adventure, Mystery",
-      "duration": "1 Episodes",
-      "category": "Korean (K-Drama)",
+      "category": "Korean (Dubbed) Series",
+      "genre": "Drama, Action & Adventure, Mystery, Crime",
+      "year": "2024",
+      "duration": "2 Seasons (16 Episodes)",
+      "seasonsCount": 2,
+      "releasedEpisodes": 16,
+      "totalEpisodes": 16,
       "rating": "8.5",
       "imdbRating": "8.5",
       "poster": "https://image.tmdb.org/t/p/w500/7yUY1HUyQuybbvkAAhLzQ7x1l9g.jpg",
       "backdrop": "https://image.tmdb.org/t/p/original/lg134VJrvY3ZdOlP4lTu1onOhcf.jpg",
       "description": "A niece who lost her parents and grew up in the hands of an uncle who runs a shopping mall faces a new truth after her uncle's sudden death.",
       "audioTracks": [
-        "Hindi dub"
+        "Hindi dub",
+        "Original Audio"
       ],
       "selectedAudio": "Hindi dub",
-      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/c725c30d12e9bbe7cda1e6d82d214e06.mp4?sign=a8999db80dcf00b1a79d714bba6dd88d&t=1792803091",
       "servers": [
         {
-          "name": "Server 1",
-          "url": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
+          "name": "Server 1 (MovieBox 1080p Direct)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/c725c30d12e9bbe7cda1e6d82d214e06.mp4?sign=a8999db80dcf00b1a79d714bba6dd88d&t=1792803091"
         },
         {
-          "name": "Server 2",
-          "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+          "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+          "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=1"
+        },
+        {
+          "name": "Server 3 (MovieBox Fast SD)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/d658077b6aa3d517d8c364599bdfebd0.mp4?sign=b908e01398bc66c1d921ad8f9292b30a&t=1792803091"
+        },
+        {
+          "name": "Server 4 (MultiEmbed HD Failover)",
+          "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=1"
+        },
+        {
+          "name": "Server 5 (AutoEmbed HD)",
+          "url": "https://autoembed.co/tv/tmdb/215072/1/1"
+        },
+        {
+          "name": "Server 6 (Vidlink Fast HD)",
+          "url": "https://vidlink.pro/tv/215072/1/1"
         }
       ],
       "cast": [
@@ -23905,396 +24039,936 @@
           "name": "Jung Yun-ha",
           "character": "Kusanagi Jin",
           "photo": "https://image.tmdb.org/t/p/w185/j9JxgFjiDhuO98eWjYULoZMLt94.jpg"
+        },
+        {
+          "name": "Hyunri",
+          "character": "Q",
+          "photo": "https://image.tmdb.org/t/p/w185/u7st8OeVA4E1i20Q9PlN43Keeuf.jpg"
+        },
+        {
+          "name": "Masaki Okada",
+          "character": "J",
+          "photo": "https://image.tmdb.org/t/p/w185/5eP3OovRGR229Ney2jUZ39Vr4QW.jpg"
+        }
+      ],
+      "seasons": [
+        {
+          "seasonNumber": 1,
+          "name": "Season 1 (8 Episodes)",
+          "episodes": [
+            {
+              "number": "01",
+              "episode": 1,
+              "season": 1,
+              "title": "Episode 1 - Murthehelp",
+              "duration": "50m",
+              "overview": "Jian, who is helplessly attacked in her own home, dodges the flying bullets.",
+              "still": "https://image.tmdb.org/t/p/original/1hk530lm0hGK2Rcq5byyhcYpneH.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/c725c30d12e9bbe7cda1e6d82d214e06.mp4?sign=a8999db80dcf00b1a79d714bba6dd88d&t=1792803091",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/c725c30d12e9bbe7cda1e6d82d214e06.mp4?sign=a8999db80dcf00b1a79d714bba6dd88d&t=1792803091"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=1"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/d658077b6aa3d517d8c364599bdfebd0.mp4?sign=b908e01398bc66c1d921ad8f9292b30a&t=1792803091"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=1"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/215072/1/1"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/215072/1/1"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/c725c30d12e9bbe7cda1e6d82d214e06.mp4?sign=a8999db80dcf00b1a79d714bba6dd88d&t=1792803091",
+                "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=1"
+              }
+            },
+            {
+              "number": "02",
+              "episode": 2,
+              "season": 1,
+              "title": "Episode 2 - Jeong Jinman, Jeong Jinman, Jeong Jinman",
+              "duration": "54m",
+              "overview": "Jinman receives an unexpected call. Jian, who is alone at home, is pursued by unidentified men.",
+              "still": "https://image.tmdb.org/t/p/original/mHAgYtfgpIhleENgK8rmLVqYf78.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/0bb2d13d0e578ae107e23a5d14181b9f.mp4?sign=cf974ab71a825919d6d07e85777b6687&t=1792806535",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/0bb2d13d0e578ae107e23a5d14181b9f.mp4?sign=cf974ab71a825919d6d07e85777b6687&t=1792806535"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=2"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/630334bb58bd5829c711a84d563219d3.mp4?sign=96a48b9eb9894f9b914f488c026b59b5&t=1792806535"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=2"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/215072/1/2"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/215072/1/2"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/0bb2d13d0e578ae107e23a5d14181b9f.mp4?sign=cf974ab71a825919d6d07e85777b6687&t=1792806535",
+                "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=2"
+              }
+            },
+            {
+              "number": "03",
+              "episode": 3,
+              "season": 1,
+              "title": "Episode 3 - The Strong Don't Howl",
+              "duration": "45m",
+              "overview": "Jian finds herself in danger as she searches for a rescue phone in the mountains to save Jinman.",
+              "still": "https://image.tmdb.org/t/p/original/epKF2bGAwRTqBurTwORG4dIHTkE.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/5e17868f012293a24372ad9043af3fc2.mp4?sign=5027dbcdc669a569ed5731eee40d4c05&t=1792803153",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/5e17868f012293a24372ad9043af3fc2.mp4?sign=5027dbcdc669a569ed5731eee40d4c05&t=1792803153"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=3"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/436a13fbf24440e48928495360dc7cbf.mp4?sign=b8128329aa4cd9326e1545a42a2cdd16&t=1792803153"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=3"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/215072/1/3"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/215072/1/3"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/5e17868f012293a24372ad9043af3fc2.mp4?sign=5027dbcdc669a569ed5731eee40d4c05&t=1792803153",
+                "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=3"
+              }
+            },
+            {
+              "number": "04",
+              "episode": 4,
+              "season": 1,
+              "title": "Episode 4 - The Shopping Mall",
+              "duration": "63m",
+              "overview": "Jian and Jeongmin flee from the killers and meet Brother in the underground shopping mall.",
+              "still": "https://image.tmdb.org/t/p/original/bCypLCpuCUc74UQzasmcjs7XUze.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/c25d491ff14a9b04cb78f753c36149b4.mp4?sign=3ebc0bda2aef2cac56f43476dd6e9b85&t=1792806731",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/c25d491ff14a9b04cb78f753c36149b4.mp4?sign=3ebc0bda2aef2cac56f43476dd6e9b85&t=1792806731"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=4"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/2bda3d8a5b8560085b2c7827fb95c2d1.mp4?sign=195bdab312dd3eb2f5413c6ca1da0c89&t=1792806731"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=4"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/215072/1/4"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/215072/1/4"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/c25d491ff14a9b04cb78f753c36149b4.mp4?sign=3ebc0bda2aef2cac56f43476dd6e9b85&t=1792806731",
+                "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=4"
+              }
+            },
+            {
+              "number": "05",
+              "episode": 5,
+              "season": 1,
+              "title": "Episode 5 - Babylon",
+              "duration": "60m",
+              "overview": "Jian gets angry as she watches Jinman on the screen, and Jeongmin points a gun at Jian's head.",
+              "still": "https://image.tmdb.org/t/p/original/ixAL4FR0CSkgJvJiwFZjWHVzhlB.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/c2e5f160c1d28f79a531f664b305e1b5.mp4?sign=d8befd7ba2af2e02182e66f2fef28301&t=1792806731",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/c2e5f160c1d28f79a531f664b305e1b5.mp4?sign=d8befd7ba2af2e02182e66f2fef28301&t=1792806731"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=5"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a41c1c5843be03e93ebbb85c4a5cba39.mp4?sign=572db5c429cde87e1a6c1fea88081555&t=1792806731"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=5"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/215072/1/5"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/215072/1/5"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/c2e5f160c1d28f79a531f664b305e1b5.mp4?sign=d8befd7ba2af2e02182e66f2fef28301&t=1792806731",
+                "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=5"
+              }
+            },
+            {
+              "number": "06",
+              "episode": 6,
+              "season": 1,
+              "title": "Episode 6 - Jeong Jinman",
+              "duration": "56m",
+              "overview": "Jinman, who was once a mercenary of a large company, Babylon, suffers from the truth he learns.",
+              "still": "https://image.tmdb.org/t/p/original/aZjismOZtSYGPWAnPeXPrrlTChh.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/575add3a3504b9d9e96425e0c6ba5f1f.mp4?sign=9d6fe2d7e374e78829b8938a969fcede&t=1792803194",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/575add3a3504b9d9e96425e0c6ba5f1f.mp4?sign=9d6fe2d7e374e78829b8938a969fcede&t=1792803194"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=6"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a533ffad67693388b0e246026645b59a.mp4?sign=efdde930b977e8268bbff62df7de69aa&t=1792803194"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=6"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/215072/1/6"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/215072/1/6"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/575add3a3504b9d9e96425e0c6ba5f1f.mp4?sign=9d6fe2d7e374e78829b8938a969fcede&t=1792803194",
+                "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=6"
+              }
+            },
+            {
+              "number": "07",
+              "episode": 7,
+              "season": 1,
+              "title": "Episode 7 - Trap",
+              "duration": "61m",
+              "overview": "Bale, who was presumed to be dead, begins his revenge, and Jinman fights back to protect Jian.",
+              "still": "https://image.tmdb.org/t/p/original/vShumXtxMoyjcJbaPXkeNQ5PmDj.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d97a4c10e446698e3d4a90abd3adbcd7.mp4?sign=5fa3c25f4070288c3622f81991ea10fa&t=1792803205",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/d97a4c10e446698e3d4a90abd3adbcd7.mp4?sign=5fa3c25f4070288c3622f81991ea10fa&t=1792803205"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=7"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/be26ad6cbf32ad523f63cb6a35afdc9c.mp4?sign=9522c4c037e4ac35a905408a2a0aee4b&t=1792803205"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=7"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/215072/1/7"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/215072/1/7"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/d97a4c10e446698e3d4a90abd3adbcd7.mp4?sign=5fa3c25f4070288c3622f81991ea10fa&t=1792803205",
+                "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=7"
+              }
+            },
+            {
+              "number": "08",
+              "episode": 8,
+              "season": 1,
+              "title": "Episode 8 - Listen Up, Jian",
+              "duration": "61m",
+              "overview": "Killers close in on Jinman's house. Jian prepares for the final duel on her own.",
+              "still": "https://image.tmdb.org/t/p/original/vRhL2p6Ac7qvVyXZz967bBqB0p6.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/27ebfcb6e5a5e6124aa0b8fb8e8b2ccf.mp4?sign=a9d5819c4e4befd2e967c4f7cbb3d2fa&t=1792806547",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/27ebfcb6e5a5e6124aa0b8fb8e8b2ccf.mp4?sign=a9d5819c4e4befd2e967c4f7cbb3d2fa&t=1792806547"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=8"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/e68a84fc84d9f553385d3ca3e7fbbbc3.mp4?sign=aaa977d94162374e86dacc166c2a4736&t=1792806547"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=8"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/215072/1/8"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/215072/1/8"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/27ebfcb6e5a5e6124aa0b8fb8e8b2ccf.mp4?sign=a9d5819c4e4befd2e967c4f7cbb3d2fa&t=1792806547",
+                "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=8"
+              }
+            }
+          ]
+        },
+        {
+          "seasonNumber": 2,
+          "name": "Season 2 (8 Episodes)",
+          "episodes": [
+            {
+              "number": "01",
+              "episode": 1,
+              "season": 2,
+              "title": "Episode 1 - Jinman, That Same Day",
+              "duration": "60m",
+              "overview": "Jinman returns and the truth behind the day he faked his death begins to emerge.",
+              "still": "https://image.tmdb.org/t/p/original/8qNlSvr4jWr1JeM8oJnbk8Ke866.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/dbe1112e1295c365e0cf08267cca1dca.mp4?sign=74c842d5c8d43a117b0b3f0974349776&t=1792806535",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/dbe1112e1295c365e0cf08267cca1dca.mp4?sign=74c842d5c8d43a117b0b3f0974349776&t=1792806535"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=2&ep=1"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=1"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/215072/2/1"
+                },
+                {
+                  "name": "Server 5 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/215072/2/1"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/dbe1112e1295c365e0cf08267cca1dca.mp4?sign=74c842d5c8d43a117b0b3f0974349776&t=1792806535",
+                "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=1"
+              }
+            },
+            {
+              "number": "02",
+              "episode": 2,
+              "season": 2,
+              "title": "Episode 2 - Recluse",
+              "duration": "54m",
+              "overview": "A new adversary appears, disrupting the balance and challenging the murthehelp team.",
+              "still": "https://image.tmdb.org/t/p/original/nZks2gUMq633SYxGNB8ySChb617.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/89373b9545d331d90259841157f5d7be.mp4?sign=86b08487df7eb8d6aac7bf708794ae8c&t=1792803240",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/89373b9545d331d90259841157f5d7be.mp4?sign=86b08487df7eb8d6aac7bf708794ae8c&t=1792803240"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=2&ep=2"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=2"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/215072/2/2"
+                },
+                {
+                  "name": "Server 5 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/215072/2/2"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/89373b9545d331d90259841157f5d7be.mp4?sign=86b08487df7eb8d6aac7bf708794ae8c&t=1792803240",
+                "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=2"
+              }
+            },
+            {
+              "number": "03",
+              "episode": 3,
+              "season": 2,
+              "title": "Episode 3 - Past Is Past, Present Is Present",
+              "duration": "67m",
+              "overview": "Jinman's past and the history Jian tried to erase resurface, placing them both in danger.",
+              "still": "https://image.tmdb.org/t/p/original/1SNTAlUJu0Wd1BnpRNbvp5TTZUH.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/4744e4400cb802d0306faf2ab57f319f.mp4?sign=9a273125a0064abb0b7d6de3fde4cb72&t=1792803255",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/4744e4400cb802d0306faf2ab57f319f.mp4?sign=9a273125a0064abb0b7d6de3fde4cb72&t=1792803255"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=2&ep=3"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=3"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/215072/2/3"
+                },
+                {
+                  "name": "Server 5 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/215072/2/3"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/4744e4400cb802d0306faf2ab57f319f.mp4?sign=9a273125a0064abb0b7d6de3fde4cb72&t=1792803255",
+                "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=3"
+              }
+            },
+            {
+              "number": "04",
+              "episode": 4,
+              "season": 2,
+              "title": "Episode 4 - Raid",
+              "duration": "56m",
+              "overview": "Jian faces a harsh reality, while Jinman confronts a long-standing enemy.",
+              "still": "https://image.tmdb.org/t/p/original/qSSquXBYe6LoV1hHPxP4DZzcZz6.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/b62a25e397095cbb0115be1084bd79e0.mp4?sign=9221e67b787ed927cd7f81a626aaa6b0&t=1792806548",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/b62a25e397095cbb0115be1084bd79e0.mp4?sign=9221e67b787ed927cd7f81a626aaa6b0&t=1792806548"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=2&ep=4"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=4"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/215072/2/4"
+                },
+                {
+                  "name": "Server 5 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/215072/2/4"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/b62a25e397095cbb0115be1084bd79e0.mp4?sign=9221e67b787ed927cd7f81a626aaa6b0&t=1792806548",
+                "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=4"
+              }
+            },
+            {
+              "number": "05",
+              "episode": 5,
+              "season": 2,
+              "title": "Episode 5 - Negotiation",
+              "duration": "65m",
+              "overview": "Accepting her fate, Jian takes a unique stand against Babylon.",
+              "still": "https://image.tmdb.org/t/p/original/v0GDavWxyoCER24eLQNOATo1Wcw.jpg",
+              "streamUrl": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=5",
+              "servers": [
+                {
+                  "name": "Server 1 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=5"
+                },
+                {
+                  "name": "Server 2 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/215072/2/5"
+                },
+                {
+                  "name": "Server 3 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/215072/2/5"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=5",
+                "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=5"
+              }
+            },
+            {
+              "number": "06",
+              "episode": 6,
+              "season": 2,
+              "title": "Episode 6 - The Trojan Horse",
+              "duration": "57m",
+              "overview": "An unexpected crisis puts the murthehelp team at risk, forcing Jinman to try and resolve it.",
+              "still": "https://image.tmdb.org/t/p/original/dBowBmyi5dsmvdBdENLyjPVZkBT.jpg",
+              "streamUrl": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=6",
+              "servers": [
+                {
+                  "name": "Server 1 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=6"
+                },
+                {
+                  "name": "Server 2 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/215072/2/6"
+                },
+                {
+                  "name": "Server 3 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/215072/2/6"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=6",
+                "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=6"
+              }
+            },
+            {
+              "number": "07",
+              "episode": 7,
+              "season": 2,
+              "title": "Episode 7 - The Enemy of My Enemy",
+              "duration": "58m",
+              "overview": "Facing their most difficult challenge yet, Jian and the team struggle to hold on.",
+              "still": "https://image.tmdb.org/t/p/original/fV9dwN7x7fgaKaA4UEcrGcx1fHo.jpg",
+              "streamUrl": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=7",
+              "servers": [
+                {
+                  "name": "Server 1 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=7"
+                },
+                {
+                  "name": "Server 2 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/215072/2/7"
+                },
+                {
+                  "name": "Server 3 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/215072/2/7"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=7",
+                "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=7"
+              }
+            },
+            {
+              "number": "08",
+              "episode": 8,
+              "season": 2,
+              "title": "Episode 8 - Listen Up, Jinman",
+              "duration": "61m",
+              "overview": "Murthehelp and Babylon face off in a final battle.",
+              "still": "https://image.tmdb.org/t/p/original/iLBCClEwhYK3q3Z0bCDW1HbmUmT.jpg",
+              "streamUrl": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=8",
+              "servers": [
+                {
+                  "name": "Server 1 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=8"
+                },
+                {
+                  "name": "Server 2 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/215072/2/8"
+                },
+                {
+                  "name": "Server 3 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/215072/2/8"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=8",
+                "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=2&e=8"
+              }
+            }
+          ]
         }
       ],
       "episodes": [
         {
-          "number": 1,
+          "number": "01",
+          "episode": 1,
           "season": 1,
-          "title": "Episode 1",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759",
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
-          },
+          "title": "Episode 1 - Murthehelp",
+          "duration": "50m",
+          "overview": "Jian, who is helplessly attacked in her own home, dodges the flying bullets.",
+          "still": "https://image.tmdb.org/t/p/original/1hk530lm0hGK2Rcq5byyhcYpneH.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/c725c30d12e9bbe7cda1e6d82d214e06.mp4?sign=a8999db80dcf00b1a79d714bba6dd88d&t=1792803091",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/c725c30d12e9bbe7cda1e6d82d214e06.mp4?sign=a8999db80dcf00b1a79d714bba6dd88d&t=1792803091"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=1"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/d658077b6aa3d517d8c364599bdfebd0.mp4?sign=b908e01398bc66c1d921ad8f9292b30a&t=1792803091"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=1"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/215072/1/1"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/215072/1/1"
             }
-          ]
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/c725c30d12e9bbe7cda1e6d82d214e06.mp4?sign=a8999db80dcf00b1a79d714bba6dd88d&t=1792803091",
+            "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=1"
+          }
         },
         {
-          "number": 2,
+          "number": "02",
+          "episode": 2,
           "season": 1,
-          "title": "Episode 2",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759",
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
-          },
+          "title": "Episode 2 - Jeong Jinman, Jeong Jinman, Jeong Jinman",
+          "duration": "54m",
+          "overview": "Jinman receives an unexpected call. Jian, who is alone at home, is pursued by unidentified men.",
+          "still": "https://image.tmdb.org/t/p/original/mHAgYtfgpIhleENgK8rmLVqYf78.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/0bb2d13d0e578ae107e23a5d14181b9f.mp4?sign=cf974ab71a825919d6d07e85777b6687&t=1792806535",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/0bb2d13d0e578ae107e23a5d14181b9f.mp4?sign=cf974ab71a825919d6d07e85777b6687&t=1792806535"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=2"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/630334bb58bd5829c711a84d563219d3.mp4?sign=96a48b9eb9894f9b914f488c026b59b5&t=1792806535"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=2"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/215072/1/2"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/215072/1/2"
             }
-          ]
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/0bb2d13d0e578ae107e23a5d14181b9f.mp4?sign=cf974ab71a825919d6d07e85777b6687&t=1792806535",
+            "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=2"
+          }
         },
         {
-          "number": 3,
+          "number": "03",
+          "episode": 3,
           "season": 1,
-          "title": "Episode 3",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759",
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
-          },
+          "title": "Episode 3 - The Strong Don't Howl",
+          "duration": "45m",
+          "overview": "Jian finds herself in danger as she searches for a rescue phone in the mountains to save Jinman.",
+          "still": "https://image.tmdb.org/t/p/original/epKF2bGAwRTqBurTwORG4dIHTkE.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/5e17868f012293a24372ad9043af3fc2.mp4?sign=5027dbcdc669a569ed5731eee40d4c05&t=1792803153",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/5e17868f012293a24372ad9043af3fc2.mp4?sign=5027dbcdc669a569ed5731eee40d4c05&t=1792803153"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=3"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/436a13fbf24440e48928495360dc7cbf.mp4?sign=b8128329aa4cd9326e1545a42a2cdd16&t=1792803153"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=3"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/215072/1/3"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/215072/1/3"
             }
-          ]
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/5e17868f012293a24372ad9043af3fc2.mp4?sign=5027dbcdc669a569ed5731eee40d4c05&t=1792803153",
+            "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=3"
+          }
         },
         {
-          "number": 4,
+          "number": "04",
+          "episode": 4,
           "season": 1,
-          "title": "Episode 4",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759",
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
-          },
+          "title": "Episode 4 - The Shopping Mall",
+          "duration": "63m",
+          "overview": "Jian and Jeongmin flee from the killers and meet Brother in the underground shopping mall.",
+          "still": "https://image.tmdb.org/t/p/original/bCypLCpuCUc74UQzasmcjs7XUze.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/c25d491ff14a9b04cb78f753c36149b4.mp4?sign=3ebc0bda2aef2cac56f43476dd6e9b85&t=1792806731",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/c25d491ff14a9b04cb78f753c36149b4.mp4?sign=3ebc0bda2aef2cac56f43476dd6e9b85&t=1792806731"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=4"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/2bda3d8a5b8560085b2c7827fb95c2d1.mp4?sign=195bdab312dd3eb2f5413c6ca1da0c89&t=1792806731"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=4"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/215072/1/4"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/215072/1/4"
             }
-          ]
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/c25d491ff14a9b04cb78f753c36149b4.mp4?sign=3ebc0bda2aef2cac56f43476dd6e9b85&t=1792806731",
+            "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=4"
+          }
         },
         {
-          "number": 5,
+          "number": "05",
+          "episode": 5,
           "season": 1,
-          "title": "Episode 5",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759",
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
-          },
+          "title": "Episode 5 - Babylon",
+          "duration": "60m",
+          "overview": "Jian gets angry as she watches Jinman on the screen, and Jeongmin points a gun at Jian's head.",
+          "still": "https://image.tmdb.org/t/p/original/ixAL4FR0CSkgJvJiwFZjWHVzhlB.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/c2e5f160c1d28f79a531f664b305e1b5.mp4?sign=d8befd7ba2af2e02182e66f2fef28301&t=1792806731",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/c2e5f160c1d28f79a531f664b305e1b5.mp4?sign=d8befd7ba2af2e02182e66f2fef28301&t=1792806731"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=5"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/a41c1c5843be03e93ebbb85c4a5cba39.mp4?sign=572db5c429cde87e1a6c1fea88081555&t=1792806731"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=5"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/215072/1/5"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/215072/1/5"
             }
-          ]
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/c2e5f160c1d28f79a531f664b305e1b5.mp4?sign=d8befd7ba2af2e02182e66f2fef28301&t=1792806731",
+            "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=5"
+          }
         },
         {
-          "number": 6,
+          "number": "06",
+          "episode": 6,
           "season": 1,
-          "title": "Episode 6",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759",
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
-          },
+          "title": "Episode 6 - Jeong Jinman",
+          "duration": "56m",
+          "overview": "Jinman, who was once a mercenary of a large company, Babylon, suffers from the truth he learns.",
+          "still": "https://image.tmdb.org/t/p/original/aZjismOZtSYGPWAnPeXPrrlTChh.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/575add3a3504b9d9e96425e0c6ba5f1f.mp4?sign=9d6fe2d7e374e78829b8938a969fcede&t=1792803194",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/575add3a3504b9d9e96425e0c6ba5f1f.mp4?sign=9d6fe2d7e374e78829b8938a969fcede&t=1792803194"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=6"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/a533ffad67693388b0e246026645b59a.mp4?sign=efdde930b977e8268bbff62df7de69aa&t=1792803194"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=6"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/215072/1/6"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/215072/1/6"
             }
-          ]
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/575add3a3504b9d9e96425e0c6ba5f1f.mp4?sign=9d6fe2d7e374e78829b8938a969fcede&t=1792803194",
+            "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=6"
+          }
         },
         {
-          "number": 7,
+          "number": "07",
+          "episode": 7,
           "season": 1,
-          "title": "Episode 7",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759",
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
-          },
+          "title": "Episode 7 - Trap",
+          "duration": "61m",
+          "overview": "Bale, who was presumed to be dead, begins his revenge, and Jinman fights back to protect Jian.",
+          "still": "https://image.tmdb.org/t/p/original/vShumXtxMoyjcJbaPXkeNQ5PmDj.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d97a4c10e446698e3d4a90abd3adbcd7.mp4?sign=5fa3c25f4070288c3622f81991ea10fa&t=1792803205",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/d97a4c10e446698e3d4a90abd3adbcd7.mp4?sign=5fa3c25f4070288c3622f81991ea10fa&t=1792803205"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=7"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/be26ad6cbf32ad523f63cb6a35afdc9c.mp4?sign=9522c4c037e4ac35a905408a2a0aee4b&t=1792803205"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=7"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/215072/1/7"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/215072/1/7"
             }
-          ]
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/d97a4c10e446698e3d4a90abd3adbcd7.mp4?sign=5fa3c25f4070288c3622f81991ea10fa&t=1792803205",
+            "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=7"
+          }
         },
         {
-          "number": 8,
+          "number": "08",
+          "episode": 8,
           "season": 1,
-          "title": "Episode 8",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759",
-          "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
-          },
+          "title": "Episode 8 - Listen Up, Jian",
+          "duration": "61m",
+          "overview": "Killers close in on Jinman's house. Jian prepares for the final duel on her own.",
+          "still": "https://image.tmdb.org/t/p/original/vRhL2p6Ac7qvVyXZz967bBqB0p6.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/27ebfcb6e5a5e6124aa0b8fb8e8b2ccf.mp4?sign=a9d5819c4e4befd2e967c4f7cbb3d2fa&t=1792806547",
           "servers": [
             {
-              "name": "Server 1",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/74d6c001b324e4563e5b6b44a08059f8.mp4?sign=0c6a7a1632d71b6869b5716a07240497&t=1792691759"
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/27ebfcb6e5a5e6124aa0b8fb8e8b2ccf.mp4?sign=a9d5819c4e4befd2e967c4f7cbb3d2fa&t=1792806547"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/965bd18845f34b4adc5042de1ba69ed4.mp4?sign=64c7b554a78b2f211bad5ffa9afa6b76&t=1792686952"
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=8475210957663488472&path=a-shop-for-killers-hindi-GLJXzEty46a&se=1&ep=8"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/e68a84fc84d9f553385d3ca3e7fbbbc3.mp4?sign=aaa977d94162374e86dacc166c2a4736&t=1792806547"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=8"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/215072/1/8"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/215072/1/8"
             }
-          ]
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/27ebfcb6e5a5e6124aa0b8fb8e8b2ccf.mp4?sign=a9d5819c4e4befd2e967c4f7cbb3d2fa&t=1792806547",
+            "Original Audio": "https://multiembed.mov/?video_id=215072&tmdb=1&s=1&e=8"
+          }
         }
       ],
-      "type": "series",
-      "seasons": [
-        {
-          "seasonNumber": 1,
-          "name": "Season 1",
-          "episodeCount": 8,
-          "episodes": [
-            {
-              "number": 1,
-              "season": 1,
-              "title": "Episode 1",
-              "streamUrl": "https://vidlink.pro/tv/215072/1/1",
-              "audioTracks": {
-                "Hindi dub": "https://vidlink.pro/tv/215072/1/1",
-                "Original Audio": "https://vidsrc.to/embed/tv/215072/1/1"
-              },
-              "servers": [
-                {
-                  "name": "Server 1 (Fast HD - 1080p)",
-                  "url": "https://vidlink.pro/tv/215072/1/1",
-                  "isDirect": false
-                },
-                {
-                  "name": "Server 2 (Super Player)",
-                  "url": "https://vidsrc.to/embed/tv/215072/1/1",
-                  "isDirect": false
-                },
-                {
-                  "name": "Server 3 (HD Player)",
-                  "url": "https://autoembed.co/tv/imdb/tt26541018-1-1",
-                  "isDirect": false
-                }
-              ]
-            },
-            {
-              "number": 2,
-              "season": 1,
-              "title": "Episode 2",
-              "streamUrl": "https://vidlink.pro/tv/215072/1/2",
-              "audioTracks": {
-                "Hindi dub": "https://vidlink.pro/tv/215072/1/2",
-                "Original Audio": "https://vidsrc.to/embed/tv/215072/1/2"
-              },
-              "servers": [
-                {
-                  "name": "Server 1 (Fast HD - 1080p)",
-                  "url": "https://vidlink.pro/tv/215072/1/2",
-                  "isDirect": false
-                },
-                {
-                  "name": "Server 2 (Super Player)",
-                  "url": "https://vidsrc.to/embed/tv/215072/1/2",
-                  "isDirect": false
-                },
-                {
-                  "name": "Server 3 (HD Player)",
-                  "url": "https://autoembed.co/tv/imdb/tt26541018-1-2",
-                  "isDirect": false
-                }
-              ]
-            },
-            {
-              "number": 3,
-              "season": 1,
-              "title": "Episode 3",
-              "streamUrl": "https://vidlink.pro/tv/215072/1/3",
-              "audioTracks": {
-                "Hindi dub": "https://vidlink.pro/tv/215072/1/3",
-                "Original Audio": "https://vidsrc.to/embed/tv/215072/1/3"
-              },
-              "servers": [
-                {
-                  "name": "Server 1 (Fast HD - 1080p)",
-                  "url": "https://vidlink.pro/tv/215072/1/3",
-                  "isDirect": false
-                },
-                {
-                  "name": "Server 2 (Super Player)",
-                  "url": "https://vidsrc.to/embed/tv/215072/1/3",
-                  "isDirect": false
-                },
-                {
-                  "name": "Server 3 (HD Player)",
-                  "url": "https://autoembed.co/tv/imdb/tt26541018-1-3",
-                  "isDirect": false
-                }
-              ]
-            },
-            {
-              "number": 4,
-              "season": 1,
-              "title": "Episode 4",
-              "streamUrl": "https://vidlink.pro/tv/215072/1/4",
-              "audioTracks": {
-                "Hindi dub": "https://vidlink.pro/tv/215072/1/4",
-                "Original Audio": "https://vidsrc.to/embed/tv/215072/1/4"
-              },
-              "servers": [
-                {
-                  "name": "Server 1 (Fast HD - 1080p)",
-                  "url": "https://vidlink.pro/tv/215072/1/4",
-                  "isDirect": false
-                },
-                {
-                  "name": "Server 2 (Super Player)",
-                  "url": "https://vidsrc.to/embed/tv/215072/1/4",
-                  "isDirect": false
-                },
-                {
-                  "name": "Server 3 (HD Player)",
-                  "url": "https://autoembed.co/tv/imdb/tt26541018-1-4",
-                  "isDirect": false
-                }
-              ]
-            },
-            {
-              "number": 5,
-              "season": 1,
-              "title": "Episode 5",
-              "streamUrl": "https://vidlink.pro/tv/215072/1/5",
-              "audioTracks": {
-                "Hindi dub": "https://vidlink.pro/tv/215072/1/5",
-                "Original Audio": "https://vidsrc.to/embed/tv/215072/1/5"
-              },
-              "servers": [
-                {
-                  "name": "Server 1 (Fast HD - 1080p)",
-                  "url": "https://vidlink.pro/tv/215072/1/5",
-                  "isDirect": false
-                },
-                {
-                  "name": "Server 2 (Super Player)",
-                  "url": "https://vidsrc.to/embed/tv/215072/1/5",
-                  "isDirect": false
-                },
-                {
-                  "name": "Server 3 (HD Player)",
-                  "url": "https://autoembed.co/tv/imdb/tt26541018-1-5",
-                  "isDirect": false
-                }
-              ]
-            },
-            {
-              "number": 6,
-              "season": 1,
-              "title": "Episode 6",
-              "streamUrl": "https://vidlink.pro/tv/215072/1/6",
-              "audioTracks": {
-                "Hindi dub": "https://vidlink.pro/tv/215072/1/6",
-                "Original Audio": "https://vidsrc.to/embed/tv/215072/1/6"
-              },
-              "servers": [
-                {
-                  "name": "Server 1 (Fast HD - 1080p)",
-                  "url": "https://vidlink.pro/tv/215072/1/6",
-                  "isDirect": false
-                },
-                {
-                  "name": "Server 2 (Super Player)",
-                  "url": "https://vidsrc.to/embed/tv/215072/1/6",
-                  "isDirect": false
-                },
-                {
-                  "name": "Server 3 (HD Player)",
-                  "url": "https://autoembed.co/tv/imdb/tt26541018-1-6",
-                  "isDirect": false
-                }
-              ]
-            },
-            {
-              "number": 7,
-              "season": 1,
-              "title": "Episode 7",
-              "streamUrl": "https://vidlink.pro/tv/215072/1/7",
-              "audioTracks": {
-                "Hindi dub": "https://vidlink.pro/tv/215072/1/7",
-                "Original Audio": "https://vidsrc.to/embed/tv/215072/1/7"
-              },
-              "servers": [
-                {
-                  "name": "Server 1 (Fast HD - 1080p)",
-                  "url": "https://vidlink.pro/tv/215072/1/7",
-                  "isDirect": false
-                },
-                {
-                  "name": "Server 2 (Super Player)",
-                  "url": "https://vidsrc.to/embed/tv/215072/1/7",
-                  "isDirect": false
-                },
-                {
-                  "name": "Server 3 (HD Player)",
-                  "url": "https://autoembed.co/tv/imdb/tt26541018-1-7",
-                  "isDirect": false
-                }
-              ]
-            },
-            {
-              "number": 8,
-              "season": 1,
-              "title": "Episode 8",
-              "streamUrl": "https://vidlink.pro/tv/215072/1/8",
-              "audioTracks": {
-                "Hindi dub": "https://vidlink.pro/tv/215072/1/8",
-                "Original Audio": "https://vidsrc.to/embed/tv/215072/1/8"
-              },
-              "servers": [
-                {
-                  "name": "Server 1 (Fast HD - 1080p)",
-                  "url": "https://vidlink.pro/tv/215072/1/8",
-                  "isDirect": false
-                },
-                {
-                  "name": "Server 2 (Super Player)",
-                  "url": "https://vidsrc.to/embed/tv/215072/1/8",
-                  "isDirect": false
-                },
-                {
-                  "name": "Server 3 (HD Player)",
-                  "url": "https://autoembed.co/tv/imdb/tt26541018-1-8",
-                  "isDirect": false
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "seasonsCount": 1,
-      "tmdbId": 215072,
-      "releaseDate": "2024-01-17"
+      "type": "series"
     },
     {
       "id": "mb-s-5698833987452421616",
-      "title": "So I Love You Very Much [Hindi]",
-      "originalTitle": "So I Love You Very Much [Hindi]",
+      "title": "Crush [Hindi]",
+      "originalTitle": "原来我很爱你 (Crush / So I Love You Very Much)",
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "C-Drama",
@@ -24308,9 +24982,9 @@
       "category": "Chinese (C-Drama)",
       "rating": "8.4",
       "imdbRating": "8.4",
-      "poster": "https://image.tmdb.org/t/p/w500/b52ToaPKbhB4egJVfzAW3TRJsaH.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/UF63Lldx2GBx7d83CuD3rXzDgG.jpg",
-      "description": "Watch So I Love You Very Much Hindi dubbed complete series online in high definition on FOBS TV.",
+      "poster": "https://image.tmdb.org/t/p/w500/fXbuAVAn5ITohJG145BDoGJHO2W.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+      "description": "Sang Wu Yan, a college senior who dreams of becoming a broadcaster, falls in love at first sight with Su Nian Qin, a talented visually impaired songwriter. Watch Crush (So I Love You Very Much) Hindi dubbed complete series online on FOBS TV.",
       "audioTracks": [
         "Hindi dub"
       ],
@@ -24328,9 +25002,34 @@
       ],
       "cast": [
         {
-          "name": "Lead Actor",
-          "character": "Main Role",
-          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+          "name": "Lin Yanjun",
+          "character": "Su Nianqin",
+          "photo": "https://image.tmdb.org/t/p/w185/52VctBgken0e1zbnSCfdgALyiCQ.jpg"
+        },
+        {
+          "name": "Wan Peng",
+          "character": "Sang Wuyan",
+          "photo": "https://image.tmdb.org/t/p/w185/swgC6JHDJbvmTl4JoRdbfqf2hF.jpg"
+        },
+        {
+          "name": "Li Jiahao",
+          "character": "Wei Hao",
+          "photo": "https://image.tmdb.org/t/p/w185/1RP0ZwHzHRO6DdProTAAkNCcRxG.jpg"
+        },
+        {
+          "name": "Chen Meiyi",
+          "character": "Cheng Yin",
+          "photo": "https://image.tmdb.org/t/p/w185/lCzCrR0pmh2l1NgkvqpgomGQrCu.jpg"
+        },
+        {
+          "name": "Niu Yukun",
+          "character": "Xu Qian",
+          "photo": "https://image.tmdb.org/t/p/w185/l9kvAlxp3zED1XDf647It3lRe0M.jpg"
+        },
+        {
+          "name": "Jiaqi Li",
+          "character": "Yu Xiaolu",
+          "photo": "https://image.tmdb.org/t/p/w185/hMInFVSTBJmu3JIUt9Ji1RNIiX0.jpg"
         }
       ],
       "episodes": [
@@ -24340,18 +25039,29 @@
           "title": "Episode 1",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=1"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=1"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=1"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/1"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 1 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 2,
@@ -24359,18 +25069,29 @@
           "title": "Episode 2",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/4e8114b2df57ab2b28912b384cf779df.mp4?sign=6f4fdbb373086bf967ab563c244b9c0d&t=1792687845",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/4e8114b2df57ab2b28912b384cf779df.mp4?sign=6f4fdbb373086bf967ab563c244b9c0d&t=1792687845"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/4e8114b2df57ab2b28912b384cf779df.mp4?sign=6f4fdbb373086bf967ab563c244b9c0d&t=1792687845",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=2"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/4e8114b2df57ab2b28912b384cf779df.mp4?sign=6f4fdbb373086bf967ab563c244b9c0d&t=1792687845"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=2"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=2"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/2"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 2 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 3,
@@ -24378,18 +25099,29 @@
           "title": "Episode 3",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/c2f1f7226f5e52041e214269a6e28bd8.mp4?sign=2ed7a8c84f28140a5abefee9692e8b05&t=1792689432",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/c2f1f7226f5e52041e214269a6e28bd8.mp4?sign=2ed7a8c84f28140a5abefee9692e8b05&t=1792689432"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/c2f1f7226f5e52041e214269a6e28bd8.mp4?sign=2ed7a8c84f28140a5abefee9692e8b05&t=1792689432",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=3"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/c2f1f7226f5e52041e214269a6e28bd8.mp4?sign=2ed7a8c84f28140a5abefee9692e8b05&t=1792689432"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=3"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=3"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/3"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 3 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 4,
@@ -24397,18 +25129,29 @@
           "title": "Episode 4",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/1199b76acb424034d6d404865a501f93.mp4?sign=e4dfa195a800f88de85eafa5a6320b6b&t=1792690515",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/1199b76acb424034d6d404865a501f93.mp4?sign=e4dfa195a800f88de85eafa5a6320b6b&t=1792690515"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/1199b76acb424034d6d404865a501f93.mp4?sign=e4dfa195a800f88de85eafa5a6320b6b&t=1792690515",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=4"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/1199b76acb424034d6d404865a501f93.mp4?sign=e4dfa195a800f88de85eafa5a6320b6b&t=1792690515"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=4"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=4"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/4"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 4 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 5,
@@ -24416,18 +25159,29 @@
           "title": "Episode 5",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/a7d8d3b1135931d4a196005bcb20afb1.mp4?sign=20160ae7b9c6b42e7554005e5caf3220&t=1792689816",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/a7d8d3b1135931d4a196005bcb20afb1.mp4?sign=20160ae7b9c6b42e7554005e5caf3220&t=1792689816"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/a7d8d3b1135931d4a196005bcb20afb1.mp4?sign=20160ae7b9c6b42e7554005e5caf3220&t=1792689816",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=5"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/a7d8d3b1135931d4a196005bcb20afb1.mp4?sign=20160ae7b9c6b42e7554005e5caf3220&t=1792689816"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=5"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=5"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/5"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 5 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 6,
@@ -24435,18 +25189,29 @@
           "title": "Episode 6",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/29543705cdbd05e214833ee818778bdd.mp4?sign=f48b41a27cc9ec6c495d3592be08fac8&t=1792690516",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/29543705cdbd05e214833ee818778bdd.mp4?sign=f48b41a27cc9ec6c495d3592be08fac8&t=1792690516"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/29543705cdbd05e214833ee818778bdd.mp4?sign=f48b41a27cc9ec6c495d3592be08fac8&t=1792690516",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=6"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/29543705cdbd05e214833ee818778bdd.mp4?sign=f48b41a27cc9ec6c495d3592be08fac8&t=1792690516"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=6"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=6"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/6"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 6 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 7,
@@ -24454,18 +25219,29 @@
           "title": "Episode 7",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/010b129c662b7de72e099044d59ada2d.mp4?sign=f2af46dfde1a1b65d485c7b75002f2e0&t=1792690516",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/010b129c662b7de72e099044d59ada2d.mp4?sign=f2af46dfde1a1b65d485c7b75002f2e0&t=1792690516"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/010b129c662b7de72e099044d59ada2d.mp4?sign=f2af46dfde1a1b65d485c7b75002f2e0&t=1792690516",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=7"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/010b129c662b7de72e099044d59ada2d.mp4?sign=f2af46dfde1a1b65d485c7b75002f2e0&t=1792690516"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=7"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=7"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/7"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 7 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 8,
@@ -24473,18 +25249,29 @@
           "title": "Episode 8",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/6ade5a7cd34e04c2ba3e9c3fb8c1024d.mp4?sign=3a5a250651310403f54df1fde52179c3&t=1792690516",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/6ade5a7cd34e04c2ba3e9c3fb8c1024d.mp4?sign=3a5a250651310403f54df1fde52179c3&t=1792690516"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/6ade5a7cd34e04c2ba3e9c3fb8c1024d.mp4?sign=3a5a250651310403f54df1fde52179c3&t=1792690516",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=8"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/6ade5a7cd34e04c2ba3e9c3fb8c1024d.mp4?sign=3a5a250651310403f54df1fde52179c3&t=1792690516"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=8"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=8"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/8"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 8 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 9,
@@ -24492,18 +25279,29 @@
           "title": "Episode 9",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/ecc101bb6dc26ba8b9e6a1de66d0d5bc.mp4?sign=426169c5445ecab7ecc69e5c3a221564&t=1792690517",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/ecc101bb6dc26ba8b9e6a1de66d0d5bc.mp4?sign=426169c5445ecab7ecc69e5c3a221564&t=1792690517"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/ecc101bb6dc26ba8b9e6a1de66d0d5bc.mp4?sign=426169c5445ecab7ecc69e5c3a221564&t=1792690517",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=9"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/ecc101bb6dc26ba8b9e6a1de66d0d5bc.mp4?sign=426169c5445ecab7ecc69e5c3a221564&t=1792690517"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=9"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=9"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/9"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 9 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 10,
@@ -24511,18 +25309,29 @@
           "title": "Episode 10",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/8403abb9bd855846840a114cc8957b16.mp4?sign=e3dff6aa087b8d92b6c91a00b8d45427&t=1792686826",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/8403abb9bd855846840a114cc8957b16.mp4?sign=e3dff6aa087b8d92b6c91a00b8d45427&t=1792686826"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/8403abb9bd855846840a114cc8957b16.mp4?sign=e3dff6aa087b8d92b6c91a00b8d45427&t=1792686826",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=10"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/8403abb9bd855846840a114cc8957b16.mp4?sign=e3dff6aa087b8d92b6c91a00b8d45427&t=1792686826"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=10"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=10"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/10"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 10 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 11,
@@ -24530,18 +25339,29 @@
           "title": "Episode 11",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/6c5c360533dd41d03d06c048ce27b7a1.mp4?sign=9f48dbfa811809be8c4939b1397a14fc&t=1792689102",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/6c5c360533dd41d03d06c048ce27b7a1.mp4?sign=9f48dbfa811809be8c4939b1397a14fc&t=1792689102"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/6c5c360533dd41d03d06c048ce27b7a1.mp4?sign=9f48dbfa811809be8c4939b1397a14fc&t=1792689102",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=11"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/6c5c360533dd41d03d06c048ce27b7a1.mp4?sign=9f48dbfa811809be8c4939b1397a14fc&t=1792689102"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=11"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=11"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/11"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 11 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 12,
@@ -24549,18 +25369,29 @@
           "title": "Episode 12",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/cfe20b41b0c0c5e73e45b2f42f6d1e08.mp4?sign=4c5c8f7280fe1b18aba53860d06463f4&t=1792690332",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/cfe20b41b0c0c5e73e45b2f42f6d1e08.mp4?sign=4c5c8f7280fe1b18aba53860d06463f4&t=1792690332"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/cfe20b41b0c0c5e73e45b2f42f6d1e08.mp4?sign=4c5c8f7280fe1b18aba53860d06463f4&t=1792690332",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=12"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/cfe20b41b0c0c5e73e45b2f42f6d1e08.mp4?sign=4c5c8f7280fe1b18aba53860d06463f4&t=1792690332"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=12"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=12"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/12"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 12 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 13,
@@ -24568,18 +25399,29 @@
           "title": "Episode 13",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/7003377a3e7532afec442119e9160f73.mp4?sign=4a3cc1fb2f5f4c5b8ddd4f83016de807&t=1792690518",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/7003377a3e7532afec442119e9160f73.mp4?sign=4a3cc1fb2f5f4c5b8ddd4f83016de807&t=1792690518"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/7003377a3e7532afec442119e9160f73.mp4?sign=4a3cc1fb2f5f4c5b8ddd4f83016de807&t=1792690518",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=13"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/7003377a3e7532afec442119e9160f73.mp4?sign=4a3cc1fb2f5f4c5b8ddd4f83016de807&t=1792690518"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=13"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=13"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/13"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 13 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 14,
@@ -24587,18 +25429,29 @@
           "title": "Episode 14",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/868224862ddf6c41e210e14b6c6d385e.mp4?sign=e361e141f866af5b6f9a497831e4983b&t=1792690519",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/868224862ddf6c41e210e14b6c6d385e.mp4?sign=e361e141f866af5b6f9a497831e4983b&t=1792690519"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/868224862ddf6c41e210e14b6c6d385e.mp4?sign=e361e141f866af5b6f9a497831e4983b&t=1792690519",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=14"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/868224862ddf6c41e210e14b6c6d385e.mp4?sign=e361e141f866af5b6f9a497831e4983b&t=1792690519"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=14"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=14"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/14"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 14 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 15,
@@ -24606,18 +25459,29 @@
           "title": "Episode 15",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/57f10b0875af73e4d6a17928dd6a4468.mp4?sign=b6c4c0cfdba1c5b4b785325c813a2b0e&t=1792686801",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/57f10b0875af73e4d6a17928dd6a4468.mp4?sign=b6c4c0cfdba1c5b4b785325c813a2b0e&t=1792686801"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/57f10b0875af73e4d6a17928dd6a4468.mp4?sign=b6c4c0cfdba1c5b4b785325c813a2b0e&t=1792686801",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=15"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/57f10b0875af73e4d6a17928dd6a4468.mp4?sign=b6c4c0cfdba1c5b4b785325c813a2b0e&t=1792686801"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=15"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=15"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/15"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 15 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 16,
@@ -24625,18 +25489,29 @@
           "title": "Episode 16",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/bcc4a1906df007e7bcbf86ef4b96763e.mp4?sign=17f5d2f68831876d96fdcfd9fca4e227&t=1792687916",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/bcc4a1906df007e7bcbf86ef4b96763e.mp4?sign=17f5d2f68831876d96fdcfd9fca4e227&t=1792687916"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/bcc4a1906df007e7bcbf86ef4b96763e.mp4?sign=17f5d2f68831876d96fdcfd9fca4e227&t=1792687916",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=16"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/bcc4a1906df007e7bcbf86ef4b96763e.mp4?sign=17f5d2f68831876d96fdcfd9fca4e227&t=1792687916"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=16"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=16"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/16"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 16 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 17,
@@ -24644,18 +25519,29 @@
           "title": "Episode 17",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/28090f492dd502993b94596a15f0098f.mp4?sign=2dcfffcf9a679a1bf202cf7947a7bd3e&t=1792690520",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/28090f492dd502993b94596a15f0098f.mp4?sign=2dcfffcf9a679a1bf202cf7947a7bd3e&t=1792690520"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/28090f492dd502993b94596a15f0098f.mp4?sign=2dcfffcf9a679a1bf202cf7947a7bd3e&t=1792690520",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=17"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/28090f492dd502993b94596a15f0098f.mp4?sign=2dcfffcf9a679a1bf202cf7947a7bd3e&t=1792690520"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=17"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=17"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/17"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 17 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 18,
@@ -24663,18 +25549,29 @@
           "title": "Episode 18",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/2f0927da0b9fb7908e0959681eaf69b8.mp4?sign=47a739044e97ff253563a866a1851515&t=1792690324",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/2f0927da0b9fb7908e0959681eaf69b8.mp4?sign=47a739044e97ff253563a866a1851515&t=1792690324"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/2f0927da0b9fb7908e0959681eaf69b8.mp4?sign=47a739044e97ff253563a866a1851515&t=1792690324",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=18"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/2f0927da0b9fb7908e0959681eaf69b8.mp4?sign=47a739044e97ff253563a866a1851515&t=1792690324"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=18"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=18"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/18"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 18 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 19,
@@ -24682,18 +25579,29 @@
           "title": "Episode 19",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/cc6df048e0062fccdcb94f1484f1e4c3.mp4?sign=0c6dd9f91780b88f4b8da955d9fc41c1&t=1792690521",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/cc6df048e0062fccdcb94f1484f1e4c3.mp4?sign=0c6dd9f91780b88f4b8da955d9fc41c1&t=1792690521"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/cc6df048e0062fccdcb94f1484f1e4c3.mp4?sign=0c6dd9f91780b88f4b8da955d9fc41c1&t=1792690521",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=19"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/cc6df048e0062fccdcb94f1484f1e4c3.mp4?sign=0c6dd9f91780b88f4b8da955d9fc41c1&t=1792690521"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=19"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=19"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/19"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 19 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 20,
@@ -24701,18 +25609,29 @@
           "title": "Episode 20",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/efba344d97691a9e493421f392f75cc8.mp4?sign=35c23c5f6d507adb489cb4e286c1c924&t=1792690521",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/efba344d97691a9e493421f392f75cc8.mp4?sign=35c23c5f6d507adb489cb4e286c1c924&t=1792690521"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/efba344d97691a9e493421f392f75cc8.mp4?sign=35c23c5f6d507adb489cb4e286c1c924&t=1792690521",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=20"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/efba344d97691a9e493421f392f75cc8.mp4?sign=35c23c5f6d507adb489cb4e286c1c924&t=1792690521"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=20"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=20"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/20"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 20 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 21,
@@ -24720,18 +25639,29 @@
           "title": "Episode 21",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/60829b4d74076d979722f1867e16d3e6.mp4?sign=17df8d1e099f5d94fe9c0ace57321abb&t=1792690521",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/60829b4d74076d979722f1867e16d3e6.mp4?sign=17df8d1e099f5d94fe9c0ace57321abb&t=1792690521"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/60829b4d74076d979722f1867e16d3e6.mp4?sign=17df8d1e099f5d94fe9c0ace57321abb&t=1792690521",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=21"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/60829b4d74076d979722f1867e16d3e6.mp4?sign=17df8d1e099f5d94fe9c0ace57321abb&t=1792690521"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=21"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=21"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/21"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 21 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 22,
@@ -24739,18 +25669,29 @@
           "title": "Episode 22",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/6ed0b36c0da179541f56ec95873f3182.mp4?sign=9281e1d18503881ef7e4a42fd03d057b&t=1792689497",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/6ed0b36c0da179541f56ec95873f3182.mp4?sign=9281e1d18503881ef7e4a42fd03d057b&t=1792689497"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/6ed0b36c0da179541f56ec95873f3182.mp4?sign=9281e1d18503881ef7e4a42fd03d057b&t=1792689497",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=22"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/6ed0b36c0da179541f56ec95873f3182.mp4?sign=9281e1d18503881ef7e4a42fd03d057b&t=1792689497"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=22"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=22"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/22"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 22 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 23,
@@ -24758,18 +25699,29 @@
           "title": "Episode 23",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/80ed3f22b20e0bb7897635a414772d1f.mp4?sign=e56865d97ecfeeea47eda42654ab0830&t=1792690522",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/80ed3f22b20e0bb7897635a414772d1f.mp4?sign=e56865d97ecfeeea47eda42654ab0830&t=1792690522"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/80ed3f22b20e0bb7897635a414772d1f.mp4?sign=e56865d97ecfeeea47eda42654ab0830&t=1792690522",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=23"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/80ed3f22b20e0bb7897635a414772d1f.mp4?sign=e56865d97ecfeeea47eda42654ab0830&t=1792690522"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=23"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=23"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/23"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 23 of Crush (原来我很爱你) in Hindi Dubbed."
         },
         {
           "number": 24,
@@ -24777,18 +25729,29 @@
           "title": "Episode 24",
           "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/ad5b52be3c5d1cd7d3d40d3c25b9830e.mp4?sign=ca648a030d226669aeb68becbb000498&t=1792689704",
           "audioTracks": {
-            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/ad5b52be3c5d1cd7d3d40d3c25b9830e.mp4?sign=ca648a030d226669aeb68becbb000498&t=1792689704"
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/ad5b52be3c5d1cd7d3d40d3c25b9830e.mp4?sign=ca648a030d226669aeb68becbb000498&t=1792689704",
+            "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=24"
           },
           "servers": [
             {
-              "name": "Server 1",
+              "name": "Server 1 (MovieBox Direct)",
               "url": "https://bcdnxw.hakunaymatata.com/convert-h264/ad5b52be3c5d1cd7d3d40d3c25b9830e.mp4?sign=ca648a030d226669aeb68becbb000498&t=1792689704"
             },
             {
-              "name": "Server 2",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+              "name": "Server 2 (Auto-Renewing Stream)",
+              "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=24"
+            },
+            {
+              "name": "Server 3 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=24"
+            },
+            {
+              "name": "Server 4 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/129053/1/24"
             }
-          ]
+          ],
+          "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+          "overview": "Episode 24 of Crush (原来我很爱你) in Hindi Dubbed."
         }
       ],
       "type": "series",
@@ -24804,20 +25767,29 @@
               "title": "Episode 1",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=1"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81d78ca9f04f644595516a6e2146f2a2.mp4?sign=8fe85375d5a25f798e6687bae28ce515&t=1792687606",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=1"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=1"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/1"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 1 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 2,
@@ -24825,20 +25797,29 @@
               "title": "Episode 2",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/4e8114b2df57ab2b28912b384cf779df.mp4?sign=6f4fdbb373086bf967ab563c244b9c0d&t=1792687845",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/4e8114b2df57ab2b28912b384cf779df.mp4?sign=6f4fdbb373086bf967ab563c244b9c0d&t=1792687845"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/4e8114b2df57ab2b28912b384cf779df.mp4?sign=6f4fdbb373086bf967ab563c244b9c0d&t=1792687845",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=2"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/4e8114b2df57ab2b28912b384cf779df.mp4?sign=6f4fdbb373086bf967ab563c244b9c0d&t=1792687845",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/4e8114b2df57ab2b28912b384cf779df.mp4?sign=6f4fdbb373086bf967ab563c244b9c0d&t=1792687845"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/4e8114b2df57ab2b28912b384cf779df.mp4?sign=6f4fdbb373086bf967ab563c244b9c0d&t=1792687845",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=2"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=2"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/2"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 2 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 3,
@@ -24846,20 +25827,29 @@
               "title": "Episode 3",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/c2f1f7226f5e52041e214269a6e28bd8.mp4?sign=2ed7a8c84f28140a5abefee9692e8b05&t=1792689432",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/c2f1f7226f5e52041e214269a6e28bd8.mp4?sign=2ed7a8c84f28140a5abefee9692e8b05&t=1792689432"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/c2f1f7226f5e52041e214269a6e28bd8.mp4?sign=2ed7a8c84f28140a5abefee9692e8b05&t=1792689432",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=3"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/c2f1f7226f5e52041e214269a6e28bd8.mp4?sign=2ed7a8c84f28140a5abefee9692e8b05&t=1792689432",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/c2f1f7226f5e52041e214269a6e28bd8.mp4?sign=2ed7a8c84f28140a5abefee9692e8b05&t=1792689432"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/c2f1f7226f5e52041e214269a6e28bd8.mp4?sign=2ed7a8c84f28140a5abefee9692e8b05&t=1792689432",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=3"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=3"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/3"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 3 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 4,
@@ -24867,20 +25857,29 @@
               "title": "Episode 4",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/1199b76acb424034d6d404865a501f93.mp4?sign=e4dfa195a800f88de85eafa5a6320b6b&t=1792690515",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/1199b76acb424034d6d404865a501f93.mp4?sign=e4dfa195a800f88de85eafa5a6320b6b&t=1792690515"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/1199b76acb424034d6d404865a501f93.mp4?sign=e4dfa195a800f88de85eafa5a6320b6b&t=1792690515",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=4"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/1199b76acb424034d6d404865a501f93.mp4?sign=e4dfa195a800f88de85eafa5a6320b6b&t=1792690515",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/1199b76acb424034d6d404865a501f93.mp4?sign=e4dfa195a800f88de85eafa5a6320b6b&t=1792690515"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/1199b76acb424034d6d404865a501f93.mp4?sign=e4dfa195a800f88de85eafa5a6320b6b&t=1792690515",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=4"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=4"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/4"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 4 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 5,
@@ -24888,20 +25887,29 @@
               "title": "Episode 5",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/a7d8d3b1135931d4a196005bcb20afb1.mp4?sign=20160ae7b9c6b42e7554005e5caf3220&t=1792689816",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/a7d8d3b1135931d4a196005bcb20afb1.mp4?sign=20160ae7b9c6b42e7554005e5caf3220&t=1792689816"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/a7d8d3b1135931d4a196005bcb20afb1.mp4?sign=20160ae7b9c6b42e7554005e5caf3220&t=1792689816",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=5"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/a7d8d3b1135931d4a196005bcb20afb1.mp4?sign=20160ae7b9c6b42e7554005e5caf3220&t=1792689816",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/a7d8d3b1135931d4a196005bcb20afb1.mp4?sign=20160ae7b9c6b42e7554005e5caf3220&t=1792689816"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/a7d8d3b1135931d4a196005bcb20afb1.mp4?sign=20160ae7b9c6b42e7554005e5caf3220&t=1792689816",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=5"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=5"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/5"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 5 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 6,
@@ -24909,20 +25917,29 @@
               "title": "Episode 6",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/29543705cdbd05e214833ee818778bdd.mp4?sign=f48b41a27cc9ec6c495d3592be08fac8&t=1792690516",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/29543705cdbd05e214833ee818778bdd.mp4?sign=f48b41a27cc9ec6c495d3592be08fac8&t=1792690516"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/29543705cdbd05e214833ee818778bdd.mp4?sign=f48b41a27cc9ec6c495d3592be08fac8&t=1792690516",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=6"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/29543705cdbd05e214833ee818778bdd.mp4?sign=f48b41a27cc9ec6c495d3592be08fac8&t=1792690516",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/29543705cdbd05e214833ee818778bdd.mp4?sign=f48b41a27cc9ec6c495d3592be08fac8&t=1792690516"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/29543705cdbd05e214833ee818778bdd.mp4?sign=f48b41a27cc9ec6c495d3592be08fac8&t=1792690516",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=6"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=6"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/6"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 6 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 7,
@@ -24930,20 +25947,29 @@
               "title": "Episode 7",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/010b129c662b7de72e099044d59ada2d.mp4?sign=f2af46dfde1a1b65d485c7b75002f2e0&t=1792690516",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/010b129c662b7de72e099044d59ada2d.mp4?sign=f2af46dfde1a1b65d485c7b75002f2e0&t=1792690516"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/010b129c662b7de72e099044d59ada2d.mp4?sign=f2af46dfde1a1b65d485c7b75002f2e0&t=1792690516",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=7"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/010b129c662b7de72e099044d59ada2d.mp4?sign=f2af46dfde1a1b65d485c7b75002f2e0&t=1792690516",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/010b129c662b7de72e099044d59ada2d.mp4?sign=f2af46dfde1a1b65d485c7b75002f2e0&t=1792690516"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/010b129c662b7de72e099044d59ada2d.mp4?sign=f2af46dfde1a1b65d485c7b75002f2e0&t=1792690516",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=7"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=7"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/7"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 7 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 8,
@@ -24951,20 +25977,29 @@
               "title": "Episode 8",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/6ade5a7cd34e04c2ba3e9c3fb8c1024d.mp4?sign=3a5a250651310403f54df1fde52179c3&t=1792690516",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/6ade5a7cd34e04c2ba3e9c3fb8c1024d.mp4?sign=3a5a250651310403f54df1fde52179c3&t=1792690516"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/6ade5a7cd34e04c2ba3e9c3fb8c1024d.mp4?sign=3a5a250651310403f54df1fde52179c3&t=1792690516",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=8"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/6ade5a7cd34e04c2ba3e9c3fb8c1024d.mp4?sign=3a5a250651310403f54df1fde52179c3&t=1792690516",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/6ade5a7cd34e04c2ba3e9c3fb8c1024d.mp4?sign=3a5a250651310403f54df1fde52179c3&t=1792690516"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/6ade5a7cd34e04c2ba3e9c3fb8c1024d.mp4?sign=3a5a250651310403f54df1fde52179c3&t=1792690516",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=8"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=8"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/8"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 8 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 9,
@@ -24972,20 +26007,29 @@
               "title": "Episode 9",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/ecc101bb6dc26ba8b9e6a1de66d0d5bc.mp4?sign=426169c5445ecab7ecc69e5c3a221564&t=1792690517",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/ecc101bb6dc26ba8b9e6a1de66d0d5bc.mp4?sign=426169c5445ecab7ecc69e5c3a221564&t=1792690517"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/ecc101bb6dc26ba8b9e6a1de66d0d5bc.mp4?sign=426169c5445ecab7ecc69e5c3a221564&t=1792690517",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=9"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/ecc101bb6dc26ba8b9e6a1de66d0d5bc.mp4?sign=426169c5445ecab7ecc69e5c3a221564&t=1792690517",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/ecc101bb6dc26ba8b9e6a1de66d0d5bc.mp4?sign=426169c5445ecab7ecc69e5c3a221564&t=1792690517"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/ecc101bb6dc26ba8b9e6a1de66d0d5bc.mp4?sign=426169c5445ecab7ecc69e5c3a221564&t=1792690517",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=9"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=9"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/9"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 9 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 10,
@@ -24993,20 +26037,29 @@
               "title": "Episode 10",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/8403abb9bd855846840a114cc8957b16.mp4?sign=e3dff6aa087b8d92b6c91a00b8d45427&t=1792686826",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/8403abb9bd855846840a114cc8957b16.mp4?sign=e3dff6aa087b8d92b6c91a00b8d45427&t=1792686826"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/8403abb9bd855846840a114cc8957b16.mp4?sign=e3dff6aa087b8d92b6c91a00b8d45427&t=1792686826",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=10"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/8403abb9bd855846840a114cc8957b16.mp4?sign=e3dff6aa087b8d92b6c91a00b8d45427&t=1792686826",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/8403abb9bd855846840a114cc8957b16.mp4?sign=e3dff6aa087b8d92b6c91a00b8d45427&t=1792686826"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/8403abb9bd855846840a114cc8957b16.mp4?sign=e3dff6aa087b8d92b6c91a00b8d45427&t=1792686826",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=10"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=10"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/10"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 10 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 11,
@@ -25014,20 +26067,29 @@
               "title": "Episode 11",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/6c5c360533dd41d03d06c048ce27b7a1.mp4?sign=9f48dbfa811809be8c4939b1397a14fc&t=1792689102",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/6c5c360533dd41d03d06c048ce27b7a1.mp4?sign=9f48dbfa811809be8c4939b1397a14fc&t=1792689102"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/6c5c360533dd41d03d06c048ce27b7a1.mp4?sign=9f48dbfa811809be8c4939b1397a14fc&t=1792689102",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=11"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/6c5c360533dd41d03d06c048ce27b7a1.mp4?sign=9f48dbfa811809be8c4939b1397a14fc&t=1792689102",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/6c5c360533dd41d03d06c048ce27b7a1.mp4?sign=9f48dbfa811809be8c4939b1397a14fc&t=1792689102"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/6c5c360533dd41d03d06c048ce27b7a1.mp4?sign=9f48dbfa811809be8c4939b1397a14fc&t=1792689102",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=11"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=11"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/11"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 11 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 12,
@@ -25035,20 +26097,29 @@
               "title": "Episode 12",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/cfe20b41b0c0c5e73e45b2f42f6d1e08.mp4?sign=4c5c8f7280fe1b18aba53860d06463f4&t=1792690332",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/cfe20b41b0c0c5e73e45b2f42f6d1e08.mp4?sign=4c5c8f7280fe1b18aba53860d06463f4&t=1792690332"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/cfe20b41b0c0c5e73e45b2f42f6d1e08.mp4?sign=4c5c8f7280fe1b18aba53860d06463f4&t=1792690332",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=12"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/cfe20b41b0c0c5e73e45b2f42f6d1e08.mp4?sign=4c5c8f7280fe1b18aba53860d06463f4&t=1792690332",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/cfe20b41b0c0c5e73e45b2f42f6d1e08.mp4?sign=4c5c8f7280fe1b18aba53860d06463f4&t=1792690332"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/cfe20b41b0c0c5e73e45b2f42f6d1e08.mp4?sign=4c5c8f7280fe1b18aba53860d06463f4&t=1792690332",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=12"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=12"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/12"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 12 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 13,
@@ -25056,20 +26127,29 @@
               "title": "Episode 13",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/7003377a3e7532afec442119e9160f73.mp4?sign=4a3cc1fb2f5f4c5b8ddd4f83016de807&t=1792690518",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/7003377a3e7532afec442119e9160f73.mp4?sign=4a3cc1fb2f5f4c5b8ddd4f83016de807&t=1792690518"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/7003377a3e7532afec442119e9160f73.mp4?sign=4a3cc1fb2f5f4c5b8ddd4f83016de807&t=1792690518",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=13"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/7003377a3e7532afec442119e9160f73.mp4?sign=4a3cc1fb2f5f4c5b8ddd4f83016de807&t=1792690518",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/7003377a3e7532afec442119e9160f73.mp4?sign=4a3cc1fb2f5f4c5b8ddd4f83016de807&t=1792690518"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/7003377a3e7532afec442119e9160f73.mp4?sign=4a3cc1fb2f5f4c5b8ddd4f83016de807&t=1792690518",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=13"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=13"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/13"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 13 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 14,
@@ -25077,20 +26157,29 @@
               "title": "Episode 14",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/868224862ddf6c41e210e14b6c6d385e.mp4?sign=e361e141f866af5b6f9a497831e4983b&t=1792690519",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/868224862ddf6c41e210e14b6c6d385e.mp4?sign=e361e141f866af5b6f9a497831e4983b&t=1792690519"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/868224862ddf6c41e210e14b6c6d385e.mp4?sign=e361e141f866af5b6f9a497831e4983b&t=1792690519",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=14"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/868224862ddf6c41e210e14b6c6d385e.mp4?sign=e361e141f866af5b6f9a497831e4983b&t=1792690519",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/868224862ddf6c41e210e14b6c6d385e.mp4?sign=e361e141f866af5b6f9a497831e4983b&t=1792690519"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/868224862ddf6c41e210e14b6c6d385e.mp4?sign=e361e141f866af5b6f9a497831e4983b&t=1792690519",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=14"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=14"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/14"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 14 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 15,
@@ -25098,20 +26187,29 @@
               "title": "Episode 15",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/57f10b0875af73e4d6a17928dd6a4468.mp4?sign=b6c4c0cfdba1c5b4b785325c813a2b0e&t=1792686801",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/57f10b0875af73e4d6a17928dd6a4468.mp4?sign=b6c4c0cfdba1c5b4b785325c813a2b0e&t=1792686801"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/57f10b0875af73e4d6a17928dd6a4468.mp4?sign=b6c4c0cfdba1c5b4b785325c813a2b0e&t=1792686801",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=15"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/57f10b0875af73e4d6a17928dd6a4468.mp4?sign=b6c4c0cfdba1c5b4b785325c813a2b0e&t=1792686801",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/57f10b0875af73e4d6a17928dd6a4468.mp4?sign=b6c4c0cfdba1c5b4b785325c813a2b0e&t=1792686801"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/57f10b0875af73e4d6a17928dd6a4468.mp4?sign=b6c4c0cfdba1c5b4b785325c813a2b0e&t=1792686801",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=15"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=15"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/15"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 15 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 16,
@@ -25119,20 +26217,29 @@
               "title": "Episode 16",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/bcc4a1906df007e7bcbf86ef4b96763e.mp4?sign=17f5d2f68831876d96fdcfd9fca4e227&t=1792687916",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/bcc4a1906df007e7bcbf86ef4b96763e.mp4?sign=17f5d2f68831876d96fdcfd9fca4e227&t=1792687916"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/bcc4a1906df007e7bcbf86ef4b96763e.mp4?sign=17f5d2f68831876d96fdcfd9fca4e227&t=1792687916",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=16"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/bcc4a1906df007e7bcbf86ef4b96763e.mp4?sign=17f5d2f68831876d96fdcfd9fca4e227&t=1792687916",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/bcc4a1906df007e7bcbf86ef4b96763e.mp4?sign=17f5d2f68831876d96fdcfd9fca4e227&t=1792687916"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/bcc4a1906df007e7bcbf86ef4b96763e.mp4?sign=17f5d2f68831876d96fdcfd9fca4e227&t=1792687916",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=16"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=16"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/16"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 16 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 17,
@@ -25140,20 +26247,29 @@
               "title": "Episode 17",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/28090f492dd502993b94596a15f0098f.mp4?sign=2dcfffcf9a679a1bf202cf7947a7bd3e&t=1792690520",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/28090f492dd502993b94596a15f0098f.mp4?sign=2dcfffcf9a679a1bf202cf7947a7bd3e&t=1792690520"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/28090f492dd502993b94596a15f0098f.mp4?sign=2dcfffcf9a679a1bf202cf7947a7bd3e&t=1792690520",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=17"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/28090f492dd502993b94596a15f0098f.mp4?sign=2dcfffcf9a679a1bf202cf7947a7bd3e&t=1792690520",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/28090f492dd502993b94596a15f0098f.mp4?sign=2dcfffcf9a679a1bf202cf7947a7bd3e&t=1792690520"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/28090f492dd502993b94596a15f0098f.mp4?sign=2dcfffcf9a679a1bf202cf7947a7bd3e&t=1792690520",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=17"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=17"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/17"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 17 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 18,
@@ -25161,20 +26277,29 @@
               "title": "Episode 18",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/2f0927da0b9fb7908e0959681eaf69b8.mp4?sign=47a739044e97ff253563a866a1851515&t=1792690324",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/2f0927da0b9fb7908e0959681eaf69b8.mp4?sign=47a739044e97ff253563a866a1851515&t=1792690324"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/2f0927da0b9fb7908e0959681eaf69b8.mp4?sign=47a739044e97ff253563a866a1851515&t=1792690324",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=18"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/2f0927da0b9fb7908e0959681eaf69b8.mp4?sign=47a739044e97ff253563a866a1851515&t=1792690324",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/2f0927da0b9fb7908e0959681eaf69b8.mp4?sign=47a739044e97ff253563a866a1851515&t=1792690324"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/2f0927da0b9fb7908e0959681eaf69b8.mp4?sign=47a739044e97ff253563a866a1851515&t=1792690324",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=18"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=18"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/18"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 18 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 19,
@@ -25182,20 +26307,29 @@
               "title": "Episode 19",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/cc6df048e0062fccdcb94f1484f1e4c3.mp4?sign=0c6dd9f91780b88f4b8da955d9fc41c1&t=1792690521",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/cc6df048e0062fccdcb94f1484f1e4c3.mp4?sign=0c6dd9f91780b88f4b8da955d9fc41c1&t=1792690521"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/cc6df048e0062fccdcb94f1484f1e4c3.mp4?sign=0c6dd9f91780b88f4b8da955d9fc41c1&t=1792690521",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=19"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/cc6df048e0062fccdcb94f1484f1e4c3.mp4?sign=0c6dd9f91780b88f4b8da955d9fc41c1&t=1792690521",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/cc6df048e0062fccdcb94f1484f1e4c3.mp4?sign=0c6dd9f91780b88f4b8da955d9fc41c1&t=1792690521"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/cc6df048e0062fccdcb94f1484f1e4c3.mp4?sign=0c6dd9f91780b88f4b8da955d9fc41c1&t=1792690521",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=19"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=19"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/19"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 19 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 20,
@@ -25203,20 +26337,29 @@
               "title": "Episode 20",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/efba344d97691a9e493421f392f75cc8.mp4?sign=35c23c5f6d507adb489cb4e286c1c924&t=1792690521",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/efba344d97691a9e493421f392f75cc8.mp4?sign=35c23c5f6d507adb489cb4e286c1c924&t=1792690521"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/efba344d97691a9e493421f392f75cc8.mp4?sign=35c23c5f6d507adb489cb4e286c1c924&t=1792690521",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=20"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/efba344d97691a9e493421f392f75cc8.mp4?sign=35c23c5f6d507adb489cb4e286c1c924&t=1792690521",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/efba344d97691a9e493421f392f75cc8.mp4?sign=35c23c5f6d507adb489cb4e286c1c924&t=1792690521"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/efba344d97691a9e493421f392f75cc8.mp4?sign=35c23c5f6d507adb489cb4e286c1c924&t=1792690521",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=20"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=20"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/20"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 20 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 21,
@@ -25224,20 +26367,29 @@
               "title": "Episode 21",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/60829b4d74076d979722f1867e16d3e6.mp4?sign=17df8d1e099f5d94fe9c0ace57321abb&t=1792690521",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/60829b4d74076d979722f1867e16d3e6.mp4?sign=17df8d1e099f5d94fe9c0ace57321abb&t=1792690521"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/60829b4d74076d979722f1867e16d3e6.mp4?sign=17df8d1e099f5d94fe9c0ace57321abb&t=1792690521",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=21"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/60829b4d74076d979722f1867e16d3e6.mp4?sign=17df8d1e099f5d94fe9c0ace57321abb&t=1792690521",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/60829b4d74076d979722f1867e16d3e6.mp4?sign=17df8d1e099f5d94fe9c0ace57321abb&t=1792690521"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/60829b4d74076d979722f1867e16d3e6.mp4?sign=17df8d1e099f5d94fe9c0ace57321abb&t=1792690521",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=21"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=21"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/21"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 21 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 22,
@@ -25245,20 +26397,29 @@
               "title": "Episode 22",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/6ed0b36c0da179541f56ec95873f3182.mp4?sign=9281e1d18503881ef7e4a42fd03d057b&t=1792689497",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/6ed0b36c0da179541f56ec95873f3182.mp4?sign=9281e1d18503881ef7e4a42fd03d057b&t=1792689497"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/6ed0b36c0da179541f56ec95873f3182.mp4?sign=9281e1d18503881ef7e4a42fd03d057b&t=1792689497",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=22"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/6ed0b36c0da179541f56ec95873f3182.mp4?sign=9281e1d18503881ef7e4a42fd03d057b&t=1792689497",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/6ed0b36c0da179541f56ec95873f3182.mp4?sign=9281e1d18503881ef7e4a42fd03d057b&t=1792689497"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/6ed0b36c0da179541f56ec95873f3182.mp4?sign=9281e1d18503881ef7e4a42fd03d057b&t=1792689497",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=22"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=22"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/22"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 22 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 23,
@@ -25266,20 +26427,29 @@
               "title": "Episode 23",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/80ed3f22b20e0bb7897635a414772d1f.mp4?sign=e56865d97ecfeeea47eda42654ab0830&t=1792690522",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/80ed3f22b20e0bb7897635a414772d1f.mp4?sign=e56865d97ecfeeea47eda42654ab0830&t=1792690522"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/80ed3f22b20e0bb7897635a414772d1f.mp4?sign=e56865d97ecfeeea47eda42654ab0830&t=1792690522",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=23"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/80ed3f22b20e0bb7897635a414772d1f.mp4?sign=e56865d97ecfeeea47eda42654ab0830&t=1792690522",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/80ed3f22b20e0bb7897635a414772d1f.mp4?sign=e56865d97ecfeeea47eda42654ab0830&t=1792690522"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/80ed3f22b20e0bb7897635a414772d1f.mp4?sign=e56865d97ecfeeea47eda42654ab0830&t=1792690522",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=23"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=23"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/23"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 23 of Crush (原来我很爱你) in Hindi Dubbed."
             },
             {
               "number": 24,
@@ -25287,26 +26457,38 @@
               "title": "Episode 24",
               "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/ad5b52be3c5d1cd7d3d40d3c25b9830e.mp4?sign=ca648a030d226669aeb68becbb000498&t=1792689704",
               "audioTracks": {
-                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/ad5b52be3c5d1cd7d3d40d3c25b9830e.mp4?sign=ca648a030d226669aeb68becbb000498&t=1792689704"
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/convert-h264/ad5b52be3c5d1cd7d3d40d3c25b9830e.mp4?sign=ca648a030d226669aeb68becbb000498&t=1792689704",
+                "Original Audio": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=24"
               },
               "servers": [
                 {
-                  "name": "Server 1 (HD Hindi)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/ad5b52be3c5d1cd7d3d40d3c25b9830e.mp4?sign=ca648a030d226669aeb68becbb000498&t=1792689704",
-                  "isDirect": true
+                  "name": "Server 1 (MovieBox Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/ad5b52be3c5d1cd7d3d40d3c25b9830e.mp4?sign=ca648a030d226669aeb68becbb000498&t=1792689704"
                 },
                 {
-                  "name": "Server 2 (Fast CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/ad5b52be3c5d1cd7d3d40d3c25b9830e.mp4?sign=ca648a030d226669aeb68becbb000498&t=1792689704",
-                  "isDirect": true
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5698833987452421616&path=so-i-love-you-very-much-hindi-caElq9EIYM6&se=1&ep=24"
+                },
+                {
+                  "name": "Server 3 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=129053&tmdb=1&s=1&e=24"
+                },
+                {
+                  "name": "Server 4 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/129053/1/24"
                 }
-              ]
+              ],
+              "still": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
+              "overview": "Episode 24 of Crush (原来我很爱你) in Hindi Dubbed."
             }
           ]
         }
       ],
       "seasonsCount": 1,
-      "releaseDate": "2024-01-01"
+      "releaseDate": "2024-01-01",
+      "subjectId": "5698833987452421616",
+      "detailPath": "so-i-love-you-very-much-hindi-caElq9EIYM6",
+      "tmdbId": 129053
     },
     {
       "id": "mb-s-south-dhootha",

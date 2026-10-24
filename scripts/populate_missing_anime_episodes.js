@@ -17,7 +17,8 @@ const SHOWS_TO_EXPAND = [
     tmdbId: 215072,
     imdbId: 'tt26541018',
     seasons: [
-      { seasonNumber: 1, name: 'Season 1', eps: 8 }
+      { seasonNumber: 1, name: 'Season 1', eps: 8 },
+      { seasonNumber: 2, name: 'Season 2', eps: 8 }
     ]
   },
   {
