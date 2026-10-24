@@ -4793,11 +4793,25 @@ function openDetailsSheet(customMedia = null) {
     { name: "Kim Sung-kyun", character: "Kim Jun-yeop", photo: "https://image.tmdb.org/t/p/w185/hKF1uh0iEfuZlBE79CXPw415qyn.jpg" }
   ];
 
-  const cast = (media.cast && media.cast.length > 0) ? media.cast : defaultCast;
+  let cast = [];
+  if (Array.isArray(media.cast) && media.cast.length > 0) {
+    cast = media.cast;
+  } else if (typeof media.cast === 'string' && media.cast.trim()) {
+    cast = media.cast.split(',').map(name => ({
+      name: name.trim(),
+      character: 'Cast',
+      photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
+    }));
+  } else {
+    cast = defaultCast;
+  }
+
   const rating = media.imdbRating || media.rating || '8.1';
-  const genre = media.genre ? media.genre.split(',')[0].trim() : 'Drama';
-  const country = media.country || 'Korea';
-  const year = media.year || '2023';
+  const genre = media.genre ? media.genre.split(',')[0].trim() : (media.genres ? media.genres.split(',')[0].trim() : 'Drama');
+  const country = media.country || 'United States';
+  const year = media.year || '2026';
+  const descriptionText = media.description || media.overview || 'Full movie & TV series details fetched from TMDB database.';
+  const displayTitle = (media.title || '').includes('[Hindi]') ? media.title : `${media.title || 'Untitled'} [Hindi]`;
 
   content.innerHTML = `
     <div class="details-media-head">
@@ -4806,7 +4820,7 @@ function openDetailsSheet(customMedia = null) {
         <div class="poster-zoom-btn"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
       </div>
       <div class="details-media-meta-wrap">
-        <div class="details-media-title">${media.title} [Hindi]</div>
+        <div class="details-media-title">${displayTitle}</div>
         <div class="details-meta-line">
           <i class="fa-solid fa-film"></i>
           <span class="star-rating"><i class="fa-solid fa-star"></i> ${rating}</span>
@@ -4820,7 +4834,7 @@ function openDetailsSheet(customMedia = null) {
 
     <div class="details-section-label">Info</div>
     <div class="details-overview-text">
-      ${media.description || 'Full movie & TV series details fetched from TMDB database.'}
+      ${descriptionText}
     </div>
 
     <div class="details-section-label">Starring (${cast.length})</div>
@@ -4831,7 +4845,7 @@ function openDetailsSheet(customMedia = null) {
             <img src="${c.photo}" alt="${c.name}" class="cast-photo-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'">
           </div>
           <div class="cast-actor-name">${c.name}</div>
-          <div class="cast-character-name">${c.character || 'Extra'}</div>
+          <div class="cast-character-name">${c.character || 'Cast'}</div>
         </div>
       `).join('')}
     </div>

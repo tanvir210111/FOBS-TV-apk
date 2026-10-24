@@ -3853,7 +3853,48 @@
       "overview": "With a bounty on his head, Vision must confront his nature and resist Ultron's influence to survive.",
       "genres": "Sci-Fi & Fantasy, Drama",
       "director": "Terry Matalas",
-      "cast": "Paul Bettany, James Spader, Ruaridh Mollica, Todd Stashwick, Lauren Morais, Orla Brady",
+      "cast": [
+        {
+          "name": "Paul Bettany",
+          "character": "Vision",
+          "photo": "https://image.tmdb.org/t/p/w185/awlH20l93cgHOIDPNP6FCnGuIJy.jpg"
+        },
+        {
+          "name": "James Spader",
+          "character": "Ultron",
+          "photo": "https://image.tmdb.org/t/p/w185/3gurW3OgDOD4hcqDfgcqUnoNg34.jpg"
+        },
+        {
+          "name": "Ruaridh Mollica",
+          "character": "Thomas",
+          "photo": "https://image.tmdb.org/t/p/w185/wiSim6nG9TSY4AO8KOwsaaPJ0EH.jpg"
+        },
+        {
+          "name": "Todd Stashwick",
+          "character": "Paladin",
+          "photo": "https://image.tmdb.org/t/p/w185/seKRXV2HMS36ip4SfQq6PLRiLL2.jpg"
+        },
+        {
+          "name": "Lauren Morais",
+          "character": "Lisa Molinari",
+          "photo": "https://image.tmdb.org/t/p/w185/7Eur3EddzlvXTYzKAGkRmo87xcS.jpg"
+        },
+        {
+          "name": "Orla Brady",
+          "character": "F.R.I.D.A.Y.",
+          "photo": "https://image.tmdb.org/t/p/w185/wjo8xposTE0HenFopy6KELCWoD0.jpg"
+        },
+        {
+          "name": "Diane Morgan",
+          "character": "Handler",
+          "photo": "https://image.tmdb.org/t/p/w185/46Mdcr9ycOaLCKApoj101Cx1c1S.jpg"
+        },
+        {
+          "name": "Polly Frame",
+          "character": "Fiona Guthrie",
+          "photo": "https://image.tmdb.org/t/p/w185/m1u1jCvYeaqbzJijlavj2wKXIK2.jpg"
+        }
+      ],
       "isOngoing": true,
       "seasonsCount": 1,
       "seasons": [
@@ -4095,7 +4136,9 @@
             }
           ]
         }
-      ]
+      ],
+      "description": "With a bounty on his head, Vision must confront his nature and resist Ultron's influence to survive.",
+      "genre": "Sci-Fi & Fantasy, Drama"
     },
     {
       "id": "mb-s-637731293849080088",
@@ -4118,7 +4161,48 @@
       "overview": "A TV producer discovers a secret supernatural world as she becomes entangled with a former deity who's spent centuries searching for his lost lover.",
       "genres": "Sci-Fi & Fantasy, Drama, Comedy, Mystery",
       "director": "Kang Shin-hyo, Jo Nam-hyung",
-      "cast": "Lee Dong-wook, Cho Bo-ah, Kim Bum, Kim Yong-ji, Hwang Hee, Kim Jung-nan",
+      "cast": [
+        {
+          "name": "Lee Dong-wook",
+          "character": "Lee Yeon",
+          "photo": "https://image.tmdb.org/t/p/w185/bsLXIwLRNYkGim6RrLuo45OWB06.jpg"
+        },
+        {
+          "name": "Cho Bo-ah",
+          "character": "Nam Ji-a",
+          "photo": "https://image.tmdb.org/t/p/w185/iKQfzbWKfhAlcS4dglxwU3xNUUf.jpg"
+        },
+        {
+          "name": "Kim Bum",
+          "character": "Lee Rang",
+          "photo": "https://image.tmdb.org/t/p/w185/4b8xrQOvAyWgbBhE38nAOYktETq.jpg"
+        },
+        {
+          "name": "Kim Yong-ji",
+          "character": "Ki Yu-ri",
+          "photo": "https://image.tmdb.org/t/p/w185/tW1Pp84uSieixUlKw0iRPiX8UFV.jpg"
+        },
+        {
+          "name": "Hwang Hee",
+          "character": "Gu Shin-ju",
+          "photo": "https://image.tmdb.org/t/p/w185/jbsK0zA0ujSGtnAuhK7VKh4UsXc.jpg"
+        },
+        {
+          "name": "Kim Jung-nan",
+          "character": "Taluipa",
+          "photo": "https://image.tmdb.org/t/p/w185/guaDtVcObvkRj2Jmku4kGw1HOVD.jpg"
+        },
+        {
+          "name": "Ahn Kil-kang",
+          "character": "Hyun Ui-ong",
+          "photo": "https://image.tmdb.org/t/p/w185/oxCE74vQ0HgN3Z4ChEEnqk1Dxve.jpg"
+        },
+        {
+          "name": "Kim Hee-jung",
+          "character": "Ji-a's mother",
+          "photo": "https://image.tmdb.org/t/p/w185/5Rj388i8PVKYRn4DhlDJPgzspSz.jpg"
+        }
+      ],
       "seasonsCount": 2,
       "seasons": [
         {
@@ -5538,7 +5622,9 @@
           ]
         }
       ],
-      "cover": "https://image.tmdb.org/t/p/original/oPJQvS8Xyg7chAX0jQoC2smqMxv.jpg"
+      "cover": "https://image.tmdb.org/t/p/original/oPJQvS8Xyg7chAX0jQoC2smqMxv.jpg",
+      "description": "A TV producer discovers a secret supernatural world as she becomes entangled with a former deity who's spent centuries searching for his lost lover.",
+      "genre": "Sci-Fi & Fantasy, Drama, Comedy, Mystery"
     },
     {
       "id": "mb-s-1395930250630021944",
@@ -5561,7 +5647,48 @@
       "overview": "When Kang Bok-Soo was a high school student, he was falsely accused of committing violence and kicked out of school. This was caused by his first love Son Soo-Jung and a male student Oh Se-Ho. Kang Bok-Soo is a now an adult, but his life has not gone smoothly. To get revenge on Son Soo-Jung and Oh Se-Ho, he returns to the same high school as a student. The environment at the school has changed and Kang Bok-Soo gets involved in unexpected cases.",
       "genres": "Drama, Comedy, Mystery",
       "director": "Ham Joon-ho",
-      "cast": "Yoo Seung-ho, Cho Bo-ah, Kwak Dong-yeon, Kim Dong-young, Park Ah-in, Cheon Ho-jin",
+      "cast": [
+        {
+          "name": "Yoo Seung-ho",
+          "character": "Kang Bok-Soo",
+          "photo": "https://image.tmdb.org/t/p/w185/cDkIwmfjChprlO7qaoDQl1Em54P.jpg"
+        },
+        {
+          "name": "Cho Bo-ah",
+          "character": "Son Soo-Jung",
+          "photo": "https://image.tmdb.org/t/p/w185/iKQfzbWKfhAlcS4dglxwU3xNUUf.jpg"
+        },
+        {
+          "name": "Kwak Dong-yeon",
+          "character": "Oh Se-Ho",
+          "photo": "https://image.tmdb.org/t/p/w185/klgX8YheSFFXqEdjuCQY5rxTTGa.jpg"
+        },
+        {
+          "name": "Kim Dong-young",
+          "character": "Lee Kyung-Hyun",
+          "photo": "https://image.tmdb.org/t/p/w185/7y3B0CvOB61EIGMMRx1oM7tlRL5.jpg"
+        },
+        {
+          "name": "Park Ah-in",
+          "character": "Yang Min-Ji",
+          "photo": "https://image.tmdb.org/t/p/w185/ox6FlVKrHHp0Ndr7SAADtEYySEC.jpg"
+        },
+        {
+          "name": "Cheon Ho-jin",
+          "character": "Teacher Park",
+          "photo": "https://image.tmdb.org/t/p/w185/eS5jGpHrBDu3wtHHEfUNkwnZ0uE.jpg"
+        },
+        {
+          "name": "Kim Mi-kyung",
+          "character": "Lee Jung-Sun",
+          "photo": "https://image.tmdb.org/t/p/w185/bJLkarteB2O0duu5ABvM5QFRuax.jpg"
+        },
+        {
+          "name": "Lee Kang-min",
+          "character": "Yoon Seung-Woo",
+          "photo": "https://image.tmdb.org/t/p/w185/8plPWJm2XkVJt8kV7555cAqcaSY.jpg"
+        }
+      ],
       "seasonsCount": 1,
       "seasons": [
         {
@@ -6311,7 +6438,9 @@
           ]
         }
       ],
-      "cover": "https://image.tmdb.org/t/p/original/mjMkTMbWxma8A2Z9OFhTbvetOLO.jpg"
+      "cover": "https://image.tmdb.org/t/p/original/mjMkTMbWxma8A2Z9OFhTbvetOLO.jpg",
+      "description": "When Kang Bok-Soo was a high school student, he was falsely accused of committing violence and kicked out of school. This was caused by his first love Son Soo-Jung and a male student Oh Se-Ho. Kang Bok-Soo is a now an adult, but his life has not gone smoothly. To get revenge on Son Soo-Jung and Oh Se-Ho, he returns to the same high school as a student. The environment at the school has changed and Kang Bok-Soo gets involved in unexpected cases.",
+      "genre": "Drama, Comedy, Mystery"
     },
     {
       "id": "mb-s-2154607436987001256",
@@ -6334,7 +6463,48 @@
       "overview": "Evil took its first step to destroy the world. On the mysterious island of Jeju Island, the gateway to this, \"Van,\" a mix of human and monster, \"Won Mi-ho,\" the one in the center of fate, and \"Johan,\" the one who exercises God’s power, come together. A strange, yet captivating, action-packed exorcism fantasy in which they fight evil, share the fate of saving the world, and defy their own...",
       "genres": "Sci-Fi & Fantasy, Action & Adventure, Drama",
       "director": "Bae Jong",
-      "cast": "Kim Nam-gil, Lee Da-hee, Cha Eun-woo, Sung Joon, Heo Jung-hee, Goh Doo-shim",
+      "cast": [
+        {
+          "name": "Kim Nam-gil",
+          "character": "Van",
+          "photo": "https://image.tmdb.org/t/p/w185/jTMr4gpGMXfHZUeoPyaa2Rq9ZU4.jpg"
+        },
+        {
+          "name": "Lee Da-hee",
+          "character": "Won Mi-ho",
+          "photo": "https://image.tmdb.org/t/p/w185/uaZ0kMQOEKxxtfH9IWecBZ8c4DI.jpg"
+        },
+        {
+          "name": "Cha Eun-woo",
+          "character": "Kang Chan-hyuk / Johan",
+          "photo": "https://image.tmdb.org/t/p/w185/kZUO2s2ZsBRYZ8acu0wMzlGHpRS.jpg"
+        },
+        {
+          "name": "Sung Joon",
+          "character": "Goongtan",
+          "photo": "https://image.tmdb.org/t/p/w185/375rx6041ov9kLc6G36CGf4kwx4.jpg"
+        },
+        {
+          "name": "Heo Jung-hee",
+          "character": "Boo Yeom-ji",
+          "photo": "https://image.tmdb.org/t/p/w185/m4K83QXRLt0XFXwUE1BbiTppUek.jpg"
+        },
+        {
+          "name": "Goh Doo-shim",
+          "character": "Geum Baek-joo",
+          "photo": "https://image.tmdb.org/t/p/w185/kp93ShpiupK6A9c0eLyQVmFHt2m.jpg"
+        },
+        {
+          "name": "Oh Kwang-rok",
+          "character": "Butler Jang",
+          "photo": "https://image.tmdb.org/t/p/w185/t7Yltcz3OFproWSWcPLav61LgK0.jpg"
+        },
+        {
+          "name": "Chung Su-bin",
+          "character": "Lee Su-ryun",
+          "photo": "https://image.tmdb.org/t/p/w185/tUZ3nSbdHxOTTx8GGkOmaTzMUyB.jpg"
+        }
+      ],
       "seasonsCount": 1,
       "seasons": [
         {
@@ -7690,7 +7860,9 @@
           ]
         }
       ],
-      "cover": "https://image.tmdb.org/t/p/original/vtdpgm0QR4RDB3tQFIdpYG4QE16.jpg"
+      "cover": "https://image.tmdb.org/t/p/original/vtdpgm0QR4RDB3tQFIdpYG4QE16.jpg",
+      "description": "Evil took its first step to destroy the world. On the mysterious island of Jeju Island, the gateway to this, \"Van,\" a mix of human and monster, \"Won Mi-ho,\" the one in the center of fate, and \"Johan,\" the one who exercises God’s power, come together. A strange, yet captivating, action-packed exorcism fantasy in which they fight evil, share the fate of saving the world, and defy their own...",
+      "genre": "Sci-Fi & Fantasy, Action & Adventure, Drama"
     },
     {
       "id": "mb-s-1932866268428649968",
@@ -7713,7 +7885,28 @@
       "overview": "An actress and her twin brother slip through time – and swap bodies – to save their friend's life.",
       "genres": "Comedy, Drama, Sci-Fi & Fantasy",
       "director": "Kim Jin-min",
-      "cast": "Bona, Park Seo-ham, Jang Se-hyuk, Moon Seung-you",
+      "cast": [
+        {
+          "name": "Bona",
+          "character": "Yoon Ha-na",
+          "photo": "https://image.tmdb.org/t/p/w185/zXVHkg4CxGjDGK6N4SIwZERmbhc.jpg"
+        },
+        {
+          "name": "Park Seo-ham",
+          "character": "Jeong Woo-jae",
+          "photo": "https://image.tmdb.org/t/p/w185/vndtKSldmy4keg1NQx3wU0kqP2m.jpg"
+        },
+        {
+          "name": "Jang Se-hyuk",
+          "character": "Yoon Ha-ru",
+          "photo": "https://image.tmdb.org/t/p/w185/ykRH93PNSuX3GxaxO3QuyCEdQqW.jpg"
+        },
+        {
+          "name": "Moon Seung-you",
+          "character": "Seo Ye-rang",
+          "photo": "https://image.tmdb.org/t/p/w185/iakMVmUvYtUq4iaqe5BmQSS02h5.jpg"
+        }
+      ],
       "seasonsCount": 1,
       "seasons": [
         {
@@ -8479,7 +8672,9 @@
           ]
         }
       ],
-      "cover": "https://image.tmdb.org/t/p/original/jseW3HucgNjN2CwJa3MiOlF4xMO.jpg"
+      "cover": "https://image.tmdb.org/t/p/original/jseW3HucgNjN2CwJa3MiOlF4xMO.jpg",
+      "description": "An actress and her twin brother slip through time – and swap bodies – to save their friend's life.",
+      "genre": "Comedy, Drama, Sci-Fi & Fantasy"
     },
     {
       "id": "mb-s-2206443205082733056",
@@ -8502,7 +8697,48 @@
       "overview": "A plastic-spoon man is on his way to becoming a legendary army cook—uncovering dark secrets within the base through his cooking skills.",
       "genres": "Sci-Fi & Fantasy, Comedy, Drama",
       "director": "Kim Jin-woo",
-      "cast": "Park Ji-hoon, Yoon Kyung-ho, Han Dong-hee, Lee Hong-nae, Lee Sang-yi, Jung Woong-in",
+      "cast": [
+        {
+          "name": "Park Ji-hoon",
+          "character": "Kang Sung-jae",
+          "photo": "https://image.tmdb.org/t/p/w185/zbNZZ8o6qF3gaDndsq76h19Pe33.jpg"
+        },
+        {
+          "name": "Yoon Kyung-ho",
+          "character": "Park Jae-young",
+          "photo": "https://image.tmdb.org/t/p/w185/217cVZqyvJypi4OR1uvxoaJxvLm.jpg"
+        },
+        {
+          "name": "Han Dong-hee",
+          "character": "Cho Ye-rin",
+          "photo": "https://image.tmdb.org/t/p/w185/nltWyQ738gemdw2ghC4aebzGMXD.jpg"
+        },
+        {
+          "name": "Lee Hong-nae",
+          "character": "Yoon Dong-hyun",
+          "photo": "https://image.tmdb.org/t/p/w185/fZTSESUAmiyl6w5GutEhwtpwxv6.jpg"
+        },
+        {
+          "name": "Lee Sang-yi",
+          "character": "Hwang Seok-ho",
+          "photo": "https://image.tmdb.org/t/p/w185/4OSOux7D8ZIbNsA7eINSwmHM9nb.jpg"
+        },
+        {
+          "name": "Jung Woong-in",
+          "character": "Baek Chun-ik",
+          "photo": "https://image.tmdb.org/t/p/w185/8chD5NkFYH5glIqBt6zyevoQRhK.jpg"
+        },
+        {
+          "name": "Kang Ha-kyung",
+          "character": "Kim Kwan-chul / Bitter Kwanchul",
+          "photo": "https://image.tmdb.org/t/p/w185/nFHW4I2IX5F0ycHXE3qD2SWgTwe.jpg"
+        },
+        {
+          "name": "Lim Ji-ho",
+          "character": "Tak Mun-ik / Sweet Munik",
+          "photo": "https://image.tmdb.org/t/p/w185/h7ZuVcGattczne2aKj6Anuik2Yd.jpg"
+        }
+      ],
       "seasonsCount": 1,
       "seasons": [
         {
@@ -9250,7 +9486,9 @@
           ]
         }
       ],
-      "cover": "https://image.tmdb.org/t/p/original/9lQZ18CYk5n3YNbOfmSjkiBrfrk.jpg"
+      "cover": "https://image.tmdb.org/t/p/original/9lQZ18CYk5n3YNbOfmSjkiBrfrk.jpg",
+      "description": "A plastic-spoon man is on his way to becoming a legendary army cook—uncovering dark secrets within the base through his cooking skills.",
+      "genre": "Sci-Fi & Fantasy, Comedy, Drama"
     },
     {
       "id": "mb-s-7384944248602723992",
@@ -9273,7 +9511,48 @@
       "overview": "A famous celebrity is about to lose her lucrative video game brand deal. Will her former crush help her become a gaming champion – and might this lead them to romance?",
       "genres": "Comedy, Drama",
       "director": "Wang Zhi",
-      "cast": "Dilraba Dilmurat, Yang Yang, Pan Yueming, Hu Ke, Wang Yanlin, Sun Yali",
+      "cast": [
+        {
+          "name": "Dilraba Dilmurat",
+          "character": "Qiao Jingjing",
+          "photo": "https://image.tmdb.org/t/p/w185/vrgYSOBnySesIUS5XvyjSYz7qZ0.jpg"
+        },
+        {
+          "name": "Yang Yang",
+          "character": "Yu Tu",
+          "photo": "https://image.tmdb.org/t/p/w185/lEBuoN1XItYMLpgsMmtORrEx1BY.jpg"
+        },
+        {
+          "name": "Pan Yueming",
+          "character": "Guan Zai",
+          "photo": "https://image.tmdb.org/t/p/w185/xxFTAdA2Nsiz5YRCwGer6MVXOzT.jpg"
+        },
+        {
+          "name": "Hu Ke",
+          "character": "Sister Ling",
+          "photo": "https://image.tmdb.org/t/p/w185/3LMCJlrifOO1Me47sjeQ3xAu22o.jpg"
+        },
+        {
+          "name": "Wang Yanlin",
+          "character": "Cui Liang",
+          "photo": "https://image.tmdb.org/t/p/w185/bl4wKqUhYdPNVg0p4rXJ2ZVO3T0.jpg"
+        },
+        {
+          "name": "Sun Yali",
+          "character": "Xiao Zhu",
+          "photo": "https://image.tmdb.org/t/p/w185/9P9o7eh4lE3AhLk2XNH4DEDQTGv.jpg"
+        },
+        {
+          "name": "Zhao Yingzi",
+          "character": "Cast",
+          "photo": "https://image.tmdb.org/t/p/w185/91eFPEQyGaKrGtty22ISjy1nrwL.jpg"
+        },
+        {
+          "name": "Zheng Hehuizi",
+          "character": "Pei Pei",
+          "photo": "https://image.tmdb.org/t/p/w185/q9dHA42JLYCaC7JEe2KyRRcL2wJ.jpg"
+        }
+      ],
       "seasonsCount": 1,
       "seasons": [
         {
@@ -10951,7 +11230,9 @@
           ]
         }
       ],
-      "cover": "https://image.tmdb.org/t/p/original/vuzbhOIQ1Y2wCB0HmhD2Hq5VxkE.jpg"
+      "cover": "https://image.tmdb.org/t/p/original/vuzbhOIQ1Y2wCB0HmhD2Hq5VxkE.jpg",
+      "description": "A famous celebrity is about to lose her lucrative video game brand deal. Will her former crush help her become a gaming champion – and might this lead them to romance?",
+      "genre": "Comedy, Drama"
     },
     {
       "id": "mb-s-7573592610930312192",
@@ -10974,7 +11255,48 @@
       "overview": "A psychopath's ruthless serial murders have left the entire nation gripped by fear and chaos. An honest, justice-seeking rookie police officer and a veteran detective with a tragic past, face off against the killer. After their encounter with the psychopath, their lives change completely.",
       "genres": "Crime, Mystery",
       "director": "Choi Joon-bae, Kang Cheol-woo",
-      "cast": "Lee Seung-gi, Lee Hee-jun, Park Ju-hyun, Kyung Soo-jin, Ahn Jae-wook",
+      "cast": [
+        {
+          "name": "Lee Seung-gi",
+          "character": "Jung Ba-reum",
+          "photo": "https://image.tmdb.org/t/p/w185/urz7CEh9rpC9GFqh5ht8R65dY9w.jpg"
+        },
+        {
+          "name": "Lee Hee-jun",
+          "character": "Go Moo-chi",
+          "photo": "https://image.tmdb.org/t/p/w185/4slyXnHbKgzmeyJNetBSORgDDEF.jpg"
+        },
+        {
+          "name": "Park Ju-hyun",
+          "character": "Oh Bong-yi",
+          "photo": "https://image.tmdb.org/t/p/w185/2xfmCqWWNE3wLAUg2WlByP9kvMP.jpg"
+        },
+        {
+          "name": "Kwon Hwa-woon",
+          "character": "Sung Yo-han",
+          "photo": "https://image.tmdb.org/t/p/w185/oLyUb2lIGY9o0IdjarcYIsNRkCu.jpg"
+        },
+        {
+          "name": "Gyeong Su-jin",
+          "character": "Choi Hong-ju",
+          "photo": "https://image.tmdb.org/t/p/w185/5gdThWkpzuNkNyQ6Cw29oOefvXO.jpg"
+        },
+        {
+          "name": "Woo Ji-hyun",
+          "character": "Koo Dong-koo",
+          "photo": "https://image.tmdb.org/t/p/w185/7Q5mTHP6VTHkvazJDh44TNtPk9a.jpg"
+        },
+        {
+          "name": "Jo Jae-yun",
+          "character": "Daniel Lee",
+          "photo": "https://image.tmdb.org/t/p/w185/eFAeusBo0tXQ1Ul596YKl5dV4Rv.jpg"
+        },
+        {
+          "name": "Kim Young-jae",
+          "character": "Go Moo-won",
+          "photo": "https://image.tmdb.org/t/p/w185/wSgDPw6fSGgrwJLO0QaITbS758L.jpg"
+        }
+      ],
       "seasonsCount": 1,
       "seasons": [
         {
@@ -13208,7 +13530,9 @@
           ]
         }
       ],
-      "cover": "https://image.tmdb.org/t/p/original/ikU9een11dr6UFy0XzQMJv3YJQq.jpg"
+      "cover": "https://image.tmdb.org/t/p/original/ikU9een11dr6UFy0XzQMJv3YJQq.jpg",
+      "description": "A psychopath's ruthless serial murders have left the entire nation gripped by fear and chaos. An honest, justice-seeking rookie police officer and a veteran detective with a tragic past, face off against the killer. After their encounter with the psychopath, their lives change completely.",
+      "genre": "Crime, Mystery"
     },
     {
       "id": "mb-s-1986985589031195976",

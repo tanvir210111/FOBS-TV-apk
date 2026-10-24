@@ -180,7 +180,13 @@ async function run() {
   }
 
   // Cast
-  const castList = (tv.credits?.cast || []).slice(0, 6).map(c => c.name).join(', ') || 'Paul Bettany, James Spader, Ruaridh Mollica, Todd Stashwick, Lauren Morais, Orla Brady';
+  const castList = (tv.credits?.cast || []).slice(0, 10).map(c => ({
+    name: c.name,
+    character: c.character || 'Cast',
+    photo: c.profile_path
+      ? `https://image.tmdb.org/t/p/w185${c.profile_path}`
+      : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
+  }));
 
   // TMDB high-res backdrop/cover
   const backdropUrl = tv.backdrop_path
@@ -210,7 +216,9 @@ async function run() {
     poster: posterUrl,
     backdrop: backdropUrl,
     cover: backdropUrl,
+    description: tv.overview || "With a bounty on his head, Vision must confront his nature and resist Ultron's influence as he searches for a new purpose in the world.",
     overview: tv.overview || "With a bounty on his head, Vision must confront his nature and resist Ultron's influence as he searches for a new purpose in the world.",
+    genre: (tv.genres || []).map(g => g.name).join(', ') || 'Sci-Fi & Fantasy, Action, Drama',
     genres: (tv.genres || []).map(g => g.name).join(', ') || 'Sci-Fi & Fantasy, Action, Drama',
     director: 'Terry Matalas',
     cast: castList,
