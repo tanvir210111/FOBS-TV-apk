@@ -11,7 +11,7 @@ const API_BASE_URL = (() => {
                             window.location.port && 
                             window.location.port !== '80' && 
                             window.location.port !== '443';
-  if (isCustomLocalPort || window.location.hostname.includes('onrender.com')) {
+  if (isCustomLocalPort || window.location.hostname.includes('onrender.com') || window.location.hostname.includes('koyeb.app')) {
     return '';
   }
   return BACKEND_URL;
@@ -2396,7 +2396,7 @@ async function loadMediaViews(mediaId) {
         if (el) el.innerText = `${formatViewsCount(currentViews)} Views`;
       }
     } catch (e) {}
-  }, 10000);
+  }, 60000);
 }
 
 // Increment Real-Time View count ONLY when played directly from FOBS TV app

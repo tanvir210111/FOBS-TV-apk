@@ -8,6 +8,8 @@ const crypto = require('crypto');
 const { spawn } = require('child_process');
 const ffmpegPath = require('ffmpeg-static');
 
+const compression = require('compression');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -16,8 +18,17 @@ const liveTvService = require('./services/liveTvService');
 const syncService = require('./services/syncService');
 
 app.use(cors());
+app.use(compression({
+  threshold: 1024,
+  level: 6
+}));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Health check endpoint for Koyeb, Render, and monitors
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', service: 'FOBS TV', uptime: Math.round(process.uptime()) });
+});
 
 const DATA_FILE = path.join(__dirname, 'data', 'content.json');
 const STREAM_CACHE_DIR = path.join(__dirname, 'data', 'stream_cache');
@@ -1094,17 +1105,6 @@ app.all('/api/stream', async (req, res) => {
       if (isHead) return res.end();
 
       if (start === 0 && end === totalLength - 1) {
-        // Cache to disk while streaming start=0
-        try {
-          const writeStream = fs.createWriteStream(cacheFilePath, { flags: 'a' });
-          response.data.on('data', chunk => {
-            writeStream.write(chunk);
-          });
-          response.data.on('end', () => {
-            writeStream.end();
-          });
-        } catch (e) {}
-
         response.data.pipe(res);
       } else {
         const slicer = createRangeSlicer(start, end);
