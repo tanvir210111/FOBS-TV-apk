@@ -747,7 +747,9 @@ app.post('/api/content', (req, res) => {
     year: year || '2025',
     streamUrl,
     tag: 'HD',
-    audioTracks: ['Hindi dub', 'Original Audio']
+    audioTracks: ['Hindi dub', 'Original Audio'],
+    addedAt: new Date().toISOString(),
+    createdAt: new Date().toISOString()
   };
 
   if (type === 'series') {
