@@ -6108,6 +6108,1646 @@
   ],
   "series": [
     {
+      "id": "mb-s-1986985589031195976",
+      "subjectId": "1986985589031195976",
+      "detailPath": "sins-of-kujo-hindi-uNxjKyJpMm2",
+      "tmdbId": 303405,
+      "title": "Sins of Kujo (2026) [Hindi]",
+      "originalTitle": "九条の大罪 (Kujo no Taizai)",
+      "language": "Japanese",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi Dub",
+      "badgeRight": "2026 Full HD",
+      "tag": "Full Series",
+      "isFullSeries": true,
+      "isTrending": true,
+      "status": "Completed",
+      "industry": "Japanese",
+      "country": "Japan",
+      "category": "Japanese Series",
+      "genre": "Crime, Drama, Thriller, Legal",
+      "year": "2026",
+      "duration": "10 Episodes",
+      "seasonsCount": 1,
+      "releasedEpisodes": 10,
+      "totalEpisodes": 10,
+      "rating": "8.4",
+      "imdbRating": "8.4",
+      "poster": "https://image.tmdb.org/t/p/w500/jgmYNLdKLNBN5p2vPKuqlpLfeDS.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/m2px7CZWxArlG8Lyld1XKIkD5aA.jpg",
+      "description": "From thugs to yakuza, Taiza Kujo wields the law to defend society's worst. Fellow lawyer, Karasuma doubts his ethics but joins him in facing the abyss.",
+      "audioTracks": [
+        "Hindi dub",
+        "Original Audio"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a5a2ab242d470e75dd8fe5b696e61680.mp4?sign=c1d5266328761f57787e654a7728fb2b&t=1792806070",
+      "servers": [
+        {
+          "name": "Server 1 (MovieBox 1080p Direct)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/a5a2ab242d470e75dd8fe5b696e61680.mp4?sign=c1d5266328761f57787e654a7728fb2b&t=1792806070"
+        },
+        {
+          "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+          "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=1"
+        },
+        {
+          "name": "Server 3 (MovieBox Fast SD)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/135254d5ba06fb36035fa08a9c1b2693.mp4?sign=a5cec1c80541a1fc01fcecb0557caa7b&t=1792806070"
+        },
+        {
+          "name": "Server 4 (MultiEmbed HD Failover)",
+          "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=1"
+        },
+        {
+          "name": "Server 5 (AutoEmbed HD)",
+          "url": "https://autoembed.co/tv/tmdb/303405/1/1"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Yuya Yagira",
+          "character": "Taiza Kujo",
+          "photo": "https://image.tmdb.org/t/p/w185/7gk7OBP0r51M897sRZseU7n3OMm.jpg"
+        },
+        {
+          "name": "Hokuto Matsumura",
+          "character": "Shinji Karasuma",
+          "photo": "https://image.tmdb.org/t/p/w185/rtdHPwvoSel4m4CbJwZgcfnFsA0.jpg"
+        },
+        {
+          "name": "Elaiza Ikeda",
+          "character": "Hitomi Yakushimae",
+          "photo": "https://image.tmdb.org/t/p/w185/9O5oVUq06ao6MXbYxQ93y8MwTMP.jpg"
+        },
+        {
+          "name": "Keita Machida",
+          "character": "Kengo Mibu",
+          "photo": "https://image.tmdb.org/t/p/w185/a4aTIpAFyXXzmhDMZ56kV29s8kU.jpg"
+        }
+      ],
+      "seasons": [
+        {
+          "seasonNumber": 1,
+          "name": "Season 1 (10 Episodes)",
+          "episodes": [
+            {
+              "number": "01",
+              "episode": 1,
+              "season": 1,
+              "title": "Episode 1 - The Worth of a Leg",
+              "duration": "40m",
+              "overview": "At Kujo Law Office, an eccentric attorney takes on a hit-and-run case as a favor to gang leader Mibu — raising questions from his curious new partner.",
+              "still": "https://image.tmdb.org/t/p/original/bSy0btBJLcXKjTJSz6jsJ11olWg.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a5a2ab242d470e75dd8fe5b696e61680.mp4?sign=c1d5266328761f57787e654a7728fb2b&t=1792806070",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a5a2ab242d470e75dd8fe5b696e61680.mp4?sign=c1d5266328761f57787e654a7728fb2b&t=1792806070"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=1"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/135254d5ba06fb36035fa08a9c1b2693.mp4?sign=a5cec1c80541a1fc01fcecb0557caa7b&t=1792806070"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=1"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/303405/1/1"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a5a2ab242d470e75dd8fe5b696e61680.mp4?sign=c1d5266328761f57787e654a7728fb2b&t=1792806070",
+                "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=1"
+              },
+              "captions": [
+                {
+                  "label": "English",
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/faf722c8498b2977b60b4ad59b4d96df.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTA4fX19XX0_&Signature=aQbqXRENVsMYniPbDHKHMWVa2yPKzgoEdPpOEkWuKr3OZTnaDjnLDVf8zqFMRrplsksxA04eclb-aSFu9JSqb2rR1P-D3-Pdvlyn8qZLrCtlRJ~oF4yV3uxkqr8kfzlBKHIu1IjMi83AesabchiMP3H0Q95Ia-o~qvzySe3HBHKfKjyc3aAEVJljC6wn0-3lVKpD7cw8WRtNXBh~UfITaTM4UGRAyuOtx-UcgcwVffyYz4vgZ-vvkM4oL5HNlMT68~IDqvfRpdq-JhPQ~J8ZTcee5LOXCXiFKT4ADZ7pcNPWis2daQNBz0--JZC6RtJOmjUVkPcl2Uyca4D1LwzYOQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": "02",
+              "episode": 2,
+              "season": 1,
+              "title": "Episode 2 - The Dignity of the Vulnerable",
+              "duration": "40m",
+              "overview": "A flashback reveals a past connection between the two lawyers. Kujo proposes a risky strategy that gives a client confidence to break his negative cycle.",
+              "still": "https://image.tmdb.org/t/p/original/yCAetHZn7U5C7lxelRGKSlGV2Bw.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/04c78325952c74eb27395dc3f69ebc68.mp4?sign=1e420db046869ff26ed8bcc1dc634fc3&t=1792806070",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/04c78325952c74eb27395dc3f69ebc68.mp4?sign=1e420db046869ff26ed8bcc1dc634fc3&t=1792806070"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=2"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/c909bcdb3c871208f1c898f73b168d79.mp4?sign=ced27ecb579ef9236d7b169a3d3af02b&t=1792806070"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=2"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/303405/1/2"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/04c78325952c74eb27395dc3f69ebc68.mp4?sign=1e420db046869ff26ed8bcc1dc634fc3&t=1792806070",
+                "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=2"
+              },
+              "captions": [
+                {
+                  "label": "English",
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/53311e8ec83c70029f16526c991684d0.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTMwfX19XX0_&Signature=gDUvrJYqhZfRRaV50kgM1Ge5gAYnZX1BF6T2oUMpZragQcB4jZbyISnxjSDPWnO6YlFHvgAvQYIcZUmJbeBIWp9XGn2vMBLSMjlshabfBbx0CZnqbGzZc1gOdcL8TrwHgMVCVl1zZ3sBhLujYaPIrllwSbjCTXDhnWvoUVA6oNK-SAKKIHqyM6oT~L0lYRa46Ul81hH0tPMetFU36jRoJvI26QsezCYpF7TSRmNaOoLiJjk279mhnykPNelooKOS6wyaC6gglh1ZX4~YdsVRUx~cn82rxqym1JgvTAjfxn~LH2M-PEWLP0hjr4Ez0FRfuaAu2GSwq6BWgZlvAT8OCQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": "03",
+              "episode": 3,
+              "season": 1,
+              "title": "Episode 3 - The Dignity of the Vulnerable 2",
+              "duration": "44m",
+              "overview": "Sogabe makes a firm decision to break his situation — and goes to prison. After a run-in with his estranged brother, Kujo meets with a suspicious CEO.",
+              "still": "https://image.tmdb.org/t/p/original/gX4LdOtsbDic2PaImjHaSbehVrY.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d9ff1272a7766458b40f1dc6c7ad07b0.mp4?sign=047fdbee4c5c40ec96c9932417ccd940&t=1792806146",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/d9ff1272a7766458b40f1dc6c7ad07b0.mp4?sign=047fdbee4c5c40ec96c9932417ccd940&t=1792806146"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=3"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/db30e37247f9d1d3c64fddf6304e6115.mp4?sign=544464e025647b7764e4d90c394a6c56&t=1792806146"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=3"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/303405/1/3"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/d9ff1272a7766458b40f1dc6c7ad07b0.mp4?sign=047fdbee4c5c40ec96c9932417ccd940&t=1792806146",
+                "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=3"
+              },
+              "captions": [
+                {
+                  "label": "English",
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/84c0e4014e24c4afdff7a55f64bfac2b.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTMwfX19XX0_&Signature=gDUvrJYqhZfRRaV50kgM1Ge5gAYnZX1BF6T2oUMpZragQcB4jZbyISnxjSDPWnO6YlFHvgAvQYIcZUmJbeBIWp9XGn2vMBLSMjlshabfBbx0CZnqbGzZc1gOdcL8TrwHgMVCVl1zZ3sBhLujYaPIrllwSbjCTXDhnWvoUVA6oNK-SAKKIHqyM6oT~L0lYRa46Ul81hH0tPMetFU36jRoJvI26QsezCYpF7TSRmNaOoLiJjk279mhnykPNelooKOS6wyaC6gglh1ZX4~YdsVRUx~cn82rxqym1JgvTAjfxn~LH2M-PEWLP0hjr4Ez0FRfuaAu2GSwq6BWgZlvAT8OCQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": "04",
+              "episode": 4,
+              "season": 1,
+              "title": "Episode 4 - Family Ties",
+              "duration": "42m",
+              "overview": "A disturbing case of fraud and coercion at a nursing home leads Kujo to confront his former mentor, Yamashiro, in a bid to stop his reckless actions.",
+              "still": "https://image.tmdb.org/t/p/original/pOSDQ1JuxcCG8H4dwM2VEWAq4Qa.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/f9ef75055559f61756c8faecd0589656.mp4?sign=28e1d80f87663ef7bbe9c605a182acb1&t=1792806071",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/f9ef75055559f61756c8faecd0589656.mp4?sign=28e1d80f87663ef7bbe9c605a182acb1&t=1792806071"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=4"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/eef0e3d6a7cb06cdd5ff526887ae6d4f.mp4?sign=0189f554d9d38f507c60b8402ff65d97&t=1792806071"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=4"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/303405/1/4"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/f9ef75055559f61756c8faecd0589656.mp4?sign=28e1d80f87663ef7bbe9c605a182acb1&t=1792806071",
+                "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=4"
+              },
+              "captions": [
+                {
+                  "label": "English",
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/35bff96b29a119345dc646530a5ec9c0.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTA4fX19XX0_&Signature=aQbqXRENVsMYniPbDHKHMWVa2yPKzgoEdPpOEkWuKr3OZTnaDjnLDVf8zqFMRrplsksxA04eclb-aSFu9JSqb2rR1P-D3-Pdvlyn8qZLrCtlRJ~oF4yV3uxkqr8kfzlBKHIu1IjMi83AesabchiMP3H0Q95Ia-o~qvzySe3HBHKfKjyc3aAEVJljC6wn0-3lVKpD7cw8WRtNXBh~UfITaTM4UGRAyuOtx-UcgcwVffyYz4vgZ-vvkM4oL5HNlMT68~IDqvfRpdq-JhPQ~J8ZTcee5LOXCXiFKT4ADZ7pcNPWis2daQNBz0--JZC6RtJOmjUVkPcl2Uyca4D1LwzYOQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": "05",
+              "episode": 5,
+              "season": 1,
+              "title": "Episode 5 - Family Ties 2",
+              "duration": "44m",
+              "overview": "Kujo takes on a new request where a past conflict between Mibu and his boss Kyogoku, the young leader of the Kyogoku gang, comes to light.",
+              "still": "https://image.tmdb.org/t/p/original/8PGatAqPsfjA1cefOjgk4MYQFwp.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/b7530f9ccd3adfcb3046f8c083d9b963.mp4?sign=d7899eaf56a426bc1de5501f5b7bda17&t=1792806071",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/b7530f9ccd3adfcb3046f8c083d9b963.mp4?sign=d7899eaf56a426bc1de5501f5b7bda17&t=1792806071"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=5"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/ff6d33eb5ba8155850bbd3715170a5fe.mp4?sign=253d208abff855d9ec4aa11137fd789f&t=1792806071"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=5"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/303405/1/5"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/b7530f9ccd3adfcb3046f8c083d9b963.mp4?sign=d7899eaf56a426bc1de5501f5b7bda17&t=1792806071",
+                "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=5"
+              },
+              "captions": [
+                {
+                  "label": "English",
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/ba13510986b10bfdc8ada23833dc19f3.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDA5MTM2fX19XX0_&Signature=GKuvOc0rg0RtaR3-YN923MwRORlfuQAHQDXWTDuuWcO05crUZ6d97nIHPuDCCKrgPecLBv~8LsM1292N3kdwmDavP72uhv1HH9dpp-mOx3Tep0pu6R1uZGdDriZPixz-GmTssBdEa~yhm75cRqWXlsQWsujUcsrR89WuOa-0TRdDZxNV8Y5whSu5T8zzMkJlXzmetD~LnRqoXQE9TgH248x4-ATixoxGRq-JAtymWtoqC-B7KDEIgHnqJ0FzJi4VCnDO7MbSJjCbcdxyh98NXLjlr8Qg2KRNCz5H07W3YDhNQdaNF4jVuCJOCxK4TUaWFc4Olpu61eB87HhYa9XzwA__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": "06",
+              "episode": 6,
+              "season": 1,
+              "title": "Episode 6 - Remnants of Consumption",
+              "duration": "46m",
+              "overview": "Kujo agrees to defend Kyogoku's associate in a case fronted by his former classmate. Meanwhile, a troubled girl tries to enter the adult video industry.",
+              "still": "https://image.tmdb.org/t/p/original/fhztzD1SdfF61rbWIUlPGo48SVb.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/8dff4ed15fc80cc2ffbe65f4ed003ae5.mp4?sign=ed30d714f59c64522ec6971c419a839d&t=1792806148",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/8dff4ed15fc80cc2ffbe65f4ed003ae5.mp4?sign=ed30d714f59c64522ec6971c419a839d&t=1792806148"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=6"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/70a7d7ab7e47a2f7f022e05417a8d350.mp4?sign=fc6726dc7ce69795c84800d9d5fdb0f1&t=1792806148"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=6"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/303405/1/6"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/8dff4ed15fc80cc2ffbe65f4ed003ae5.mp4?sign=ed30d714f59c64522ec6971c419a839d&t=1792806148",
+                "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=6"
+              },
+              "captions": [
+                {
+                  "label": "English",
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/0d84d014159c32558dfd99c985b80ca1.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTE5fX19XX0_&Signature=HUSl0qN~ldqUau4ya9nS02qbhF1ylztudxYDatQMIPTbnt1xDrHMA8SE3vyB0eEjRkwS6MXgFwVllbmmXFldt88Eqo29wWL36O2~U9qFnFXGkKH~menoGBXKreUxzL5yfql-VoTbvwzZjZVtDBm78pC6gBAlsC2EjyxtOQe6PDt7w9iUMLy5bsZ~85IxPKmaukKxcttmiLnPkaDjhF6kMfSXU-nFFrY8~kpY0iwds5jG~9nsskQNPCZsOZ0w3EbBZrxaCavDOI1~R9trRDK69oJNPpcchbusVZofRO8ETNk~s8D0uklHe6afS~Hju8bbursX9QWS6oW4meJypTpHjw__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": "07",
+              "episode": 7,
+              "season": 1,
+              "title": "Episode 7 - Remnants of Consumption 2",
+              "duration": "40m",
+              "overview": "After her parents' selfish actions, Shizuku turns to Shuto for support but instead finds more manipulation, pushing her to the edge as tragedy strikes.",
+              "still": "https://image.tmdb.org/t/p/original/4k5RjwYyirJrmBEonEZWP6mPh9u.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/79d13122f9f587a9b3dd06db36df75c7.mp4?sign=bc6e5a364d93af53ebe5f92b916bc72c&t=1792806149",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/79d13122f9f587a9b3dd06db36df75c7.mp4?sign=bc6e5a364d93af53ebe5f92b916bc72c&t=1792806149"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=7"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/79d13122f9f587a9b3dd06db36df75c7.mp4?sign=bc6e5a364d93af53ebe5f92b916bc72c&t=1792806149"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=7"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/303405/1/7"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/79d13122f9f587a9b3dd06db36df75c7.mp4?sign=bc6e5a364d93af53ebe5f92b916bc72c&t=1792806149",
+                "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=7"
+              },
+              "captions": [
+                {
+                  "label": "English",
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/ddf83c77883a250e41f335b1aff3ac71.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTE5fX19XX0_&Signature=HUSl0qN~ldqUau4ya9nS02qbhF1ylztudxYDatQMIPTbnt1xDrHMA8SE3vyB0eEjRkwS6MXgFwVllbmmXFldt88Eqo29wWL36O2~U9qFnFXGkKH~menoGBXKreUxzL5yfql-VoTbvwzZjZVtDBm78pC6gBAlsC2EjyxtOQe6PDt7w9iUMLy5bsZ~85IxPKmaukKxcttmiLnPkaDjhF6kMfSXU-nFFrY8~kpY0iwds5jG~9nsskQNPCZsOZ0w3EbBZrxaCavDOI1~R9trRDK69oJNPpcchbusVZofRO8ETNk~s8D0uklHe6afS~Hju8bbursX9QWS6oW4meJypTpHjw__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": "08",
+              "episode": 8,
+              "season": 1,
+              "title": "Episode 8 - The Undetected Truth",
+              "duration": "39m",
+              "overview": "Karasuma presses Mibu about his connection to Detective Arashiyama's case and goes out of his way to protect Kujo from any further involvement.",
+              "still": "https://image.tmdb.org/t/p/original/1IXFlHASTOiK8jCCYD5k60Xm7kE.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/bf28507fa68eb9cd645ef3fa371b213e.mp4?sign=5ea404da0b5d1c57947788d4cde1bb9c&t=1792806150",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/bf28507fa68eb9cd645ef3fa371b213e.mp4?sign=5ea404da0b5d1c57947788d4cde1bb9c&t=1792806150"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=8"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/602bc12dd4ea884cdf652dbb797e179b.mp4?sign=f2e62ede7ef4bfa0eeda8eef0f937e74&t=1792806150"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=8"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/303405/1/8"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/bf28507fa68eb9cd645ef3fa371b213e.mp4?sign=5ea404da0b5d1c57947788d4cde1bb9c&t=1792806150",
+                "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=8"
+              },
+              "captions": [
+                {
+                  "label": "English",
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/7bbd5b3a03c69b840b1a809fa9d0dfb6.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTA4fX19XX0_&Signature=aQbqXRENVsMYniPbDHKHMWVa2yPKzgoEdPpOEkWuKr3OZTnaDjnLDVf8zqFMRrplsksxA04eclb-aSFu9JSqb2rR1P-D3-Pdvlyn8qZLrCtlRJ~oF4yV3uxkqr8kfzlBKHIu1IjMi83AesabchiMP3H0Q95Ia-o~qvzySe3HBHKfKjyc3aAEVJljC6wn0-3lVKpD7cw8WRtNXBh~UfITaTM4UGRAyuOtx-UcgcwVffyYz4vgZ-vvkM4oL5HNlMT68~IDqvfRpdq-JhPQ~J8ZTcee5LOXCXiFKT4ADZ7pcNPWis2daQNBz0--JZC6RtJOmjUVkPcl2Uyca4D1LwzYOQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": "09",
+              "episode": 9,
+              "season": 1,
+              "title": "Episode 9 - The Undetected Truth 2",
+              "duration": "40m",
+              "overview": "After Arashiyama questions Koyama about a past murder case, Kujo comes under fire from the detective who threatens to take him down, along with Mibu.",
+              "still": "https://image.tmdb.org/t/p/original/jyuhluQMkGMBGOsOwd0A26LOTZe.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/2c352788c1c72e6026cba168a536b84a.mp4?sign=91b915cbbdec02fc6a429c45e597a6f3&t=1792806072",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/2c352788c1c72e6026cba168a536b84a.mp4?sign=91b915cbbdec02fc6a429c45e597a6f3&t=1792806072"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=9"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/c64fa3e3745b5008a44d60bcc3415ef2.mp4?sign=2d5badad06e633a18d6c8994a1e61412&t=1792806072"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=9"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/303405/1/9"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/2c352788c1c72e6026cba168a536b84a.mp4?sign=91b915cbbdec02fc6a429c45e597a6f3&t=1792806072",
+                "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=9"
+              },
+              "captions": [
+                {
+                  "label": "English",
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/f007b47ce33d29ee0fb7c651a309a987.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTE5fX19XX0_&Signature=HUSl0qN~ldqUau4ya9nS02qbhF1ylztudxYDatQMIPTbnt1xDrHMA8SE3vyB0eEjRkwS6MXgFwVllbmmXFldt88Eqo29wWL36O2~U9qFnFXGkKH~menoGBXKreUxzL5yfql-VoTbvwzZjZVtDBm78pC6gBAlsC2EjyxtOQe6PDt7w9iUMLy5bsZ~85IxPKmaukKxcttmiLnPkaDjhF6kMfSXU-nFFrY8~kpY0iwds5jG~9nsskQNPCZsOZ0w3EbBZrxaCavDOI1~R9trRDK69oJNPpcchbusVZofRO8ETNk~s8D0uklHe6afS~Hju8bbursX9QWS6oW4meJypTpHjw__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": "10",
+              "episode": 10,
+              "season": 1,
+              "title": "Episode 10 - Chain of Violence",
+              "duration": "69m",
+              "overview": "Karasuma and Kujo contemplate their partnership as their future hangs in the balance. Inukai's actions draw Mibu and Kyogoku into a risky situation.",
+              "still": "https://image.tmdb.org/t/p/original/cD2kZj0TBzxa3QXuactXF7qngxB.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d78b4e480ef726752d6f7fb9248c456e.mp4?sign=2bf9a6aa3d58212a70f33fe7646593cc&t=1792806152",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/d78b4e480ef726752d6f7fb9248c456e.mp4?sign=2bf9a6aa3d58212a70f33fe7646593cc&t=1792806152"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=10"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/27c5165de151c3806a007ec852f3da8c.mp4?sign=d1b68c248786a24cc0e7ab1a91ff388a&t=1792806152"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=10"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/303405/1/10"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/d78b4e480ef726752d6f7fb9248c456e.mp4?sign=2bf9a6aa3d58212a70f33fe7646593cc&t=1792806152",
+                "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=10"
+              },
+              "captions": [
+                {
+                  "label": "English",
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/13cafad8db390707a49caa3cb16d47f3.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTMwfX19XX0_&Signature=gDUvrJYqhZfRRaV50kgM1Ge5gAYnZX1BF6T2oUMpZragQcB4jZbyISnxjSDPWnO6YlFHvgAvQYIcZUmJbeBIWp9XGn2vMBLSMjlshabfBbx0CZnqbGzZc1gOdcL8TrwHgMVCVl1zZ3sBhLujYaPIrllwSbjCTXDhnWvoUVA6oNK-SAKKIHqyM6oT~L0lYRa46Ul81hH0tPMetFU36jRoJvI26QsezCYpF7TSRmNaOoLiJjk279mhnykPNelooKOS6wyaC6gglh1ZX4~YdsVRUx~cn82rxqym1JgvTAjfxn~LH2M-PEWLP0hjr4Ez0FRfuaAu2GSwq6BWgZlvAT8OCQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "episodes": [
+        {
+          "number": "01",
+          "episode": 1,
+          "season": 1,
+          "title": "Episode 1 - The Worth of a Leg",
+          "duration": "40m",
+          "overview": "At Kujo Law Office, an eccentric attorney takes on a hit-and-run case as a favor to gang leader Mibu — raising questions from his curious new partner.",
+          "still": "https://image.tmdb.org/t/p/original/bSy0btBJLcXKjTJSz6jsJ11olWg.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a5a2ab242d470e75dd8fe5b696e61680.mp4?sign=c1d5266328761f57787e654a7728fb2b&t=1792806070",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/a5a2ab242d470e75dd8fe5b696e61680.mp4?sign=c1d5266328761f57787e654a7728fb2b&t=1792806070"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=1"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/135254d5ba06fb36035fa08a9c1b2693.mp4?sign=a5cec1c80541a1fc01fcecb0557caa7b&t=1792806070"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=1"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/303405/1/1"
+            }
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/a5a2ab242d470e75dd8fe5b696e61680.mp4?sign=c1d5266328761f57787e654a7728fb2b&t=1792806070",
+            "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=1"
+          },
+          "captions": [
+            {
+              "label": "English",
+              "language": "en",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/faf722c8498b2977b60b4ad59b4d96df.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTA4fX19XX0_&Signature=aQbqXRENVsMYniPbDHKHMWVa2yPKzgoEdPpOEkWuKr3OZTnaDjnLDVf8zqFMRrplsksxA04eclb-aSFu9JSqb2rR1P-D3-Pdvlyn8qZLrCtlRJ~oF4yV3uxkqr8kfzlBKHIu1IjMi83AesabchiMP3H0Q95Ia-o~qvzySe3HBHKfKjyc3aAEVJljC6wn0-3lVKpD7cw8WRtNXBh~UfITaTM4UGRAyuOtx-UcgcwVffyYz4vgZ-vvkM4oL5HNlMT68~IDqvfRpdq-JhPQ~J8ZTcee5LOXCXiFKT4ADZ7pcNPWis2daQNBz0--JZC6RtJOmjUVkPcl2Uyca4D1LwzYOQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+            }
+          ]
+        },
+        {
+          "number": "02",
+          "episode": 2,
+          "season": 1,
+          "title": "Episode 2 - The Dignity of the Vulnerable",
+          "duration": "40m",
+          "overview": "A flashback reveals a past connection between the two lawyers. Kujo proposes a risky strategy that gives a client confidence to break his negative cycle.",
+          "still": "https://image.tmdb.org/t/p/original/yCAetHZn7U5C7lxelRGKSlGV2Bw.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/04c78325952c74eb27395dc3f69ebc68.mp4?sign=1e420db046869ff26ed8bcc1dc634fc3&t=1792806070",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/04c78325952c74eb27395dc3f69ebc68.mp4?sign=1e420db046869ff26ed8bcc1dc634fc3&t=1792806070"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=2"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/c909bcdb3c871208f1c898f73b168d79.mp4?sign=ced27ecb579ef9236d7b169a3d3af02b&t=1792806070"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=2"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/303405/1/2"
+            }
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/04c78325952c74eb27395dc3f69ebc68.mp4?sign=1e420db046869ff26ed8bcc1dc634fc3&t=1792806070",
+            "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=2"
+          },
+          "captions": [
+            {
+              "label": "English",
+              "language": "en",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/53311e8ec83c70029f16526c991684d0.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTMwfX19XX0_&Signature=gDUvrJYqhZfRRaV50kgM1Ge5gAYnZX1BF6T2oUMpZragQcB4jZbyISnxjSDPWnO6YlFHvgAvQYIcZUmJbeBIWp9XGn2vMBLSMjlshabfBbx0CZnqbGzZc1gOdcL8TrwHgMVCVl1zZ3sBhLujYaPIrllwSbjCTXDhnWvoUVA6oNK-SAKKIHqyM6oT~L0lYRa46Ul81hH0tPMetFU36jRoJvI26QsezCYpF7TSRmNaOoLiJjk279mhnykPNelooKOS6wyaC6gglh1ZX4~YdsVRUx~cn82rxqym1JgvTAjfxn~LH2M-PEWLP0hjr4Ez0FRfuaAu2GSwq6BWgZlvAT8OCQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+            }
+          ]
+        },
+        {
+          "number": "03",
+          "episode": 3,
+          "season": 1,
+          "title": "Episode 3 - The Dignity of the Vulnerable 2",
+          "duration": "44m",
+          "overview": "Sogabe makes a firm decision to break his situation — and goes to prison. After a run-in with his estranged brother, Kujo meets with a suspicious CEO.",
+          "still": "https://image.tmdb.org/t/p/original/gX4LdOtsbDic2PaImjHaSbehVrY.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d9ff1272a7766458b40f1dc6c7ad07b0.mp4?sign=047fdbee4c5c40ec96c9932417ccd940&t=1792806146",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/d9ff1272a7766458b40f1dc6c7ad07b0.mp4?sign=047fdbee4c5c40ec96c9932417ccd940&t=1792806146"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=3"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/db30e37247f9d1d3c64fddf6304e6115.mp4?sign=544464e025647b7764e4d90c394a6c56&t=1792806146"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=3"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/303405/1/3"
+            }
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/d9ff1272a7766458b40f1dc6c7ad07b0.mp4?sign=047fdbee4c5c40ec96c9932417ccd940&t=1792806146",
+            "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=3"
+          },
+          "captions": [
+            {
+              "label": "English",
+              "language": "en",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/84c0e4014e24c4afdff7a55f64bfac2b.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTMwfX19XX0_&Signature=gDUvrJYqhZfRRaV50kgM1Ge5gAYnZX1BF6T2oUMpZragQcB4jZbyISnxjSDPWnO6YlFHvgAvQYIcZUmJbeBIWp9XGn2vMBLSMjlshabfBbx0CZnqbGzZc1gOdcL8TrwHgMVCVl1zZ3sBhLujYaPIrllwSbjCTXDhnWvoUVA6oNK-SAKKIHqyM6oT~L0lYRa46Ul81hH0tPMetFU36jRoJvI26QsezCYpF7TSRmNaOoLiJjk279mhnykPNelooKOS6wyaC6gglh1ZX4~YdsVRUx~cn82rxqym1JgvTAjfxn~LH2M-PEWLP0hjr4Ez0FRfuaAu2GSwq6BWgZlvAT8OCQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+            }
+          ]
+        },
+        {
+          "number": "04",
+          "episode": 4,
+          "season": 1,
+          "title": "Episode 4 - Family Ties",
+          "duration": "42m",
+          "overview": "A disturbing case of fraud and coercion at a nursing home leads Kujo to confront his former mentor, Yamashiro, in a bid to stop his reckless actions.",
+          "still": "https://image.tmdb.org/t/p/original/pOSDQ1JuxcCG8H4dwM2VEWAq4Qa.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/f9ef75055559f61756c8faecd0589656.mp4?sign=28e1d80f87663ef7bbe9c605a182acb1&t=1792806071",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/f9ef75055559f61756c8faecd0589656.mp4?sign=28e1d80f87663ef7bbe9c605a182acb1&t=1792806071"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=4"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/eef0e3d6a7cb06cdd5ff526887ae6d4f.mp4?sign=0189f554d9d38f507c60b8402ff65d97&t=1792806071"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=4"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/303405/1/4"
+            }
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/f9ef75055559f61756c8faecd0589656.mp4?sign=28e1d80f87663ef7bbe9c605a182acb1&t=1792806071",
+            "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=4"
+          },
+          "captions": [
+            {
+              "label": "English",
+              "language": "en",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/35bff96b29a119345dc646530a5ec9c0.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTA4fX19XX0_&Signature=aQbqXRENVsMYniPbDHKHMWVa2yPKzgoEdPpOEkWuKr3OZTnaDjnLDVf8zqFMRrplsksxA04eclb-aSFu9JSqb2rR1P-D3-Pdvlyn8qZLrCtlRJ~oF4yV3uxkqr8kfzlBKHIu1IjMi83AesabchiMP3H0Q95Ia-o~qvzySe3HBHKfKjyc3aAEVJljC6wn0-3lVKpD7cw8WRtNXBh~UfITaTM4UGRAyuOtx-UcgcwVffyYz4vgZ-vvkM4oL5HNlMT68~IDqvfRpdq-JhPQ~J8ZTcee5LOXCXiFKT4ADZ7pcNPWis2daQNBz0--JZC6RtJOmjUVkPcl2Uyca4D1LwzYOQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+            }
+          ]
+        },
+        {
+          "number": "05",
+          "episode": 5,
+          "season": 1,
+          "title": "Episode 5 - Family Ties 2",
+          "duration": "44m",
+          "overview": "Kujo takes on a new request where a past conflict between Mibu and his boss Kyogoku, the young leader of the Kyogoku gang, comes to light.",
+          "still": "https://image.tmdb.org/t/p/original/8PGatAqPsfjA1cefOjgk4MYQFwp.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/b7530f9ccd3adfcb3046f8c083d9b963.mp4?sign=d7899eaf56a426bc1de5501f5b7bda17&t=1792806071",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/b7530f9ccd3adfcb3046f8c083d9b963.mp4?sign=d7899eaf56a426bc1de5501f5b7bda17&t=1792806071"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=5"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/ff6d33eb5ba8155850bbd3715170a5fe.mp4?sign=253d208abff855d9ec4aa11137fd789f&t=1792806071"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=5"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/303405/1/5"
+            }
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/b7530f9ccd3adfcb3046f8c083d9b963.mp4?sign=d7899eaf56a426bc1de5501f5b7bda17&t=1792806071",
+            "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=5"
+          },
+          "captions": [
+            {
+              "label": "English",
+              "language": "en",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/ba13510986b10bfdc8ada23833dc19f3.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDA5MTM2fX19XX0_&Signature=GKuvOc0rg0RtaR3-YN923MwRORlfuQAHQDXWTDuuWcO05crUZ6d97nIHPuDCCKrgPecLBv~8LsM1292N3kdwmDavP72uhv1HH9dpp-mOx3Tep0pu6R1uZGdDriZPixz-GmTssBdEa~yhm75cRqWXlsQWsujUcsrR89WuOa-0TRdDZxNV8Y5whSu5T8zzMkJlXzmetD~LnRqoXQE9TgH248x4-ATixoxGRq-JAtymWtoqC-B7KDEIgHnqJ0FzJi4VCnDO7MbSJjCbcdxyh98NXLjlr8Qg2KRNCz5H07W3YDhNQdaNF4jVuCJOCxK4TUaWFc4Olpu61eB87HhYa9XzwA__&Key-Pair-Id=KMHN1LQ1HEUPL"
+            }
+          ]
+        },
+        {
+          "number": "06",
+          "episode": 6,
+          "season": 1,
+          "title": "Episode 6 - Remnants of Consumption",
+          "duration": "46m",
+          "overview": "Kujo agrees to defend Kyogoku's associate in a case fronted by his former classmate. Meanwhile, a troubled girl tries to enter the adult video industry.",
+          "still": "https://image.tmdb.org/t/p/original/fhztzD1SdfF61rbWIUlPGo48SVb.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/8dff4ed15fc80cc2ffbe65f4ed003ae5.mp4?sign=ed30d714f59c64522ec6971c419a839d&t=1792806148",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/8dff4ed15fc80cc2ffbe65f4ed003ae5.mp4?sign=ed30d714f59c64522ec6971c419a839d&t=1792806148"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=6"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/70a7d7ab7e47a2f7f022e05417a8d350.mp4?sign=fc6726dc7ce69795c84800d9d5fdb0f1&t=1792806148"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=6"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/303405/1/6"
+            }
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/8dff4ed15fc80cc2ffbe65f4ed003ae5.mp4?sign=ed30d714f59c64522ec6971c419a839d&t=1792806148",
+            "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=6"
+          },
+          "captions": [
+            {
+              "label": "English",
+              "language": "en",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/0d84d014159c32558dfd99c985b80ca1.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTE5fX19XX0_&Signature=HUSl0qN~ldqUau4ya9nS02qbhF1ylztudxYDatQMIPTbnt1xDrHMA8SE3vyB0eEjRkwS6MXgFwVllbmmXFldt88Eqo29wWL36O2~U9qFnFXGkKH~menoGBXKreUxzL5yfql-VoTbvwzZjZVtDBm78pC6gBAlsC2EjyxtOQe6PDt7w9iUMLy5bsZ~85IxPKmaukKxcttmiLnPkaDjhF6kMfSXU-nFFrY8~kpY0iwds5jG~9nsskQNPCZsOZ0w3EbBZrxaCavDOI1~R9trRDK69oJNPpcchbusVZofRO8ETNk~s8D0uklHe6afS~Hju8bbursX9QWS6oW4meJypTpHjw__&Key-Pair-Id=KMHN1LQ1HEUPL"
+            }
+          ]
+        },
+        {
+          "number": "07",
+          "episode": 7,
+          "season": 1,
+          "title": "Episode 7 - Remnants of Consumption 2",
+          "duration": "40m",
+          "overview": "After her parents' selfish actions, Shizuku turns to Shuto for support but instead finds more manipulation, pushing her to the edge as tragedy strikes.",
+          "still": "https://image.tmdb.org/t/p/original/4k5RjwYyirJrmBEonEZWP6mPh9u.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/79d13122f9f587a9b3dd06db36df75c7.mp4?sign=bc6e5a364d93af53ebe5f92b916bc72c&t=1792806149",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/79d13122f9f587a9b3dd06db36df75c7.mp4?sign=bc6e5a364d93af53ebe5f92b916bc72c&t=1792806149"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=7"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/79d13122f9f587a9b3dd06db36df75c7.mp4?sign=bc6e5a364d93af53ebe5f92b916bc72c&t=1792806149"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=7"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/303405/1/7"
+            }
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/79d13122f9f587a9b3dd06db36df75c7.mp4?sign=bc6e5a364d93af53ebe5f92b916bc72c&t=1792806149",
+            "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=7"
+          },
+          "captions": [
+            {
+              "label": "English",
+              "language": "en",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/ddf83c77883a250e41f335b1aff3ac71.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTE5fX19XX0_&Signature=HUSl0qN~ldqUau4ya9nS02qbhF1ylztudxYDatQMIPTbnt1xDrHMA8SE3vyB0eEjRkwS6MXgFwVllbmmXFldt88Eqo29wWL36O2~U9qFnFXGkKH~menoGBXKreUxzL5yfql-VoTbvwzZjZVtDBm78pC6gBAlsC2EjyxtOQe6PDt7w9iUMLy5bsZ~85IxPKmaukKxcttmiLnPkaDjhF6kMfSXU-nFFrY8~kpY0iwds5jG~9nsskQNPCZsOZ0w3EbBZrxaCavDOI1~R9trRDK69oJNPpcchbusVZofRO8ETNk~s8D0uklHe6afS~Hju8bbursX9QWS6oW4meJypTpHjw__&Key-Pair-Id=KMHN1LQ1HEUPL"
+            }
+          ]
+        },
+        {
+          "number": "08",
+          "episode": 8,
+          "season": 1,
+          "title": "Episode 8 - The Undetected Truth",
+          "duration": "39m",
+          "overview": "Karasuma presses Mibu about his connection to Detective Arashiyama's case and goes out of his way to protect Kujo from any further involvement.",
+          "still": "https://image.tmdb.org/t/p/original/1IXFlHASTOiK8jCCYD5k60Xm7kE.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/bf28507fa68eb9cd645ef3fa371b213e.mp4?sign=5ea404da0b5d1c57947788d4cde1bb9c&t=1792806150",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/bf28507fa68eb9cd645ef3fa371b213e.mp4?sign=5ea404da0b5d1c57947788d4cde1bb9c&t=1792806150"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=8"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/602bc12dd4ea884cdf652dbb797e179b.mp4?sign=f2e62ede7ef4bfa0eeda8eef0f937e74&t=1792806150"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=8"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/303405/1/8"
+            }
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/bf28507fa68eb9cd645ef3fa371b213e.mp4?sign=5ea404da0b5d1c57947788d4cde1bb9c&t=1792806150",
+            "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=8"
+          },
+          "captions": [
+            {
+              "label": "English",
+              "language": "en",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/7bbd5b3a03c69b840b1a809fa9d0dfb6.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTA4fX19XX0_&Signature=aQbqXRENVsMYniPbDHKHMWVa2yPKzgoEdPpOEkWuKr3OZTnaDjnLDVf8zqFMRrplsksxA04eclb-aSFu9JSqb2rR1P-D3-Pdvlyn8qZLrCtlRJ~oF4yV3uxkqr8kfzlBKHIu1IjMi83AesabchiMP3H0Q95Ia-o~qvzySe3HBHKfKjyc3aAEVJljC6wn0-3lVKpD7cw8WRtNXBh~UfITaTM4UGRAyuOtx-UcgcwVffyYz4vgZ-vvkM4oL5HNlMT68~IDqvfRpdq-JhPQ~J8ZTcee5LOXCXiFKT4ADZ7pcNPWis2daQNBz0--JZC6RtJOmjUVkPcl2Uyca4D1LwzYOQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+            }
+          ]
+        },
+        {
+          "number": "09",
+          "episode": 9,
+          "season": 1,
+          "title": "Episode 9 - The Undetected Truth 2",
+          "duration": "40m",
+          "overview": "After Arashiyama questions Koyama about a past murder case, Kujo comes under fire from the detective who threatens to take him down, along with Mibu.",
+          "still": "https://image.tmdb.org/t/p/original/jyuhluQMkGMBGOsOwd0A26LOTZe.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/2c352788c1c72e6026cba168a536b84a.mp4?sign=91b915cbbdec02fc6a429c45e597a6f3&t=1792806072",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/2c352788c1c72e6026cba168a536b84a.mp4?sign=91b915cbbdec02fc6a429c45e597a6f3&t=1792806072"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=9"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/c64fa3e3745b5008a44d60bcc3415ef2.mp4?sign=2d5badad06e633a18d6c8994a1e61412&t=1792806072"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=9"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/303405/1/9"
+            }
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/2c352788c1c72e6026cba168a536b84a.mp4?sign=91b915cbbdec02fc6a429c45e597a6f3&t=1792806072",
+            "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=9"
+          },
+          "captions": [
+            {
+              "label": "English",
+              "language": "en",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/f007b47ce33d29ee0fb7c651a309a987.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTE5fX19XX0_&Signature=HUSl0qN~ldqUau4ya9nS02qbhF1ylztudxYDatQMIPTbnt1xDrHMA8SE3vyB0eEjRkwS6MXgFwVllbmmXFldt88Eqo29wWL36O2~U9qFnFXGkKH~menoGBXKreUxzL5yfql-VoTbvwzZjZVtDBm78pC6gBAlsC2EjyxtOQe6PDt7w9iUMLy5bsZ~85IxPKmaukKxcttmiLnPkaDjhF6kMfSXU-nFFrY8~kpY0iwds5jG~9nsskQNPCZsOZ0w3EbBZrxaCavDOI1~R9trRDK69oJNPpcchbusVZofRO8ETNk~s8D0uklHe6afS~Hju8bbursX9QWS6oW4meJypTpHjw__&Key-Pair-Id=KMHN1LQ1HEUPL"
+            }
+          ]
+        },
+        {
+          "number": "10",
+          "episode": 10,
+          "season": 1,
+          "title": "Episode 10 - Chain of Violence",
+          "duration": "69m",
+          "overview": "Karasuma and Kujo contemplate their partnership as their future hangs in the balance. Inukai's actions draw Mibu and Kyogoku into a risky situation.",
+          "still": "https://image.tmdb.org/t/p/original/cD2kZj0TBzxa3QXuactXF7qngxB.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d78b4e480ef726752d6f7fb9248c456e.mp4?sign=2bf9a6aa3d58212a70f33fe7646593cc&t=1792806152",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/d78b4e480ef726752d6f7fb9248c456e.mp4?sign=2bf9a6aa3d58212a70f33fe7646593cc&t=1792806152"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1986985589031195976&path=sins-of-kujo-hindi-uNxjKyJpMm2&se=1&ep=10"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/27c5165de151c3806a007ec852f3da8c.mp4?sign=d1b68c248786a24cc0e7ab1a91ff388a&t=1792806152"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=10"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/303405/1/10"
+            }
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/d78b4e480ef726752d6f7fb9248c456e.mp4?sign=2bf9a6aa3d58212a70f33fe7646593cc&t=1792806152",
+            "Original Audio": "https://multiembed.mov/?video_id=303405&tmdb=1&s=1&e=10"
+          },
+          "captions": [
+            {
+              "label": "English",
+              "language": "en",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/13cafad8db390707a49caa3cb16d47f3.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTMwfX19XX0_&Signature=gDUvrJYqhZfRRaV50kgM1Ge5gAYnZX1BF6T2oUMpZragQcB4jZbyISnxjSDPWnO6YlFHvgAvQYIcZUmJbeBIWp9XGn2vMBLSMjlshabfBbx0CZnqbGzZc1gOdcL8TrwHgMVCVl1zZ3sBhLujYaPIrllwSbjCTXDhnWvoUVA6oNK-SAKKIHqyM6oT~L0lYRa46Ul81hH0tPMetFU36jRoJvI26QsezCYpF7TSRmNaOoLiJjk279mhnykPNelooKOS6wyaC6gglh1ZX4~YdsVRUx~cn82rxqym1JgvTAjfxn~LH2M-PEWLP0hjr4Ez0FRfuaAu2GSwq6BWgZlvAT8OCQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+            }
+          ]
+        }
+      ],
+      "type": "series"
+    },
+    {
+      "id": "mb-s-2819564323977289192",
+      "subjectId": "2819564323977289192",
+      "detailPath": "viral-hit-hindi-CT6Pd5lDhm3",
+      "tmdbId": 312493,
+      "title": "Viral Hit (2026) [Hindi]",
+      "originalTitle": "喧嘩独学 (Kenka Dokugaku)",
+      "language": "Japanese",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi Dub",
+      "badgeRight": "2026 Full HD",
+      "tag": "Full Series",
+      "isFullSeries": true,
+      "isTrending": true,
+      "status": "Completed",
+      "industry": "Japanese",
+      "country": "Japan",
+      "category": "Japanese Series",
+      "genre": "Drama, Action, Martial Arts, High School",
+      "year": "2026",
+      "duration": "6 Episodes",
+      "seasonsCount": 1,
+      "releasedEpisodes": 6,
+      "totalEpisodes": 6,
+      "rating": "8.5",
+      "imdbRating": "8.5",
+      "poster": "https://image.tmdb.org/t/p/w500/kllmJ1DdzuRszNNwFFu0M7V55Fg.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/cUNHl2RBFO7qNoAhmRyML0BdWsY.jpg",
+      "description": "A bullied high schooler becomes an overnight sensation after a viral video. But when his newfound fame turns sour, he must learn to fight for himself.",
+      "audioTracks": [
+        "Hindi dub",
+        "Original Audio"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/6dfa507d59289531e806fff6610e3694.mp4?sign=2bb2ba1baed728a5d342df6bdf8dd0c2&t=1792805493",
+      "servers": [
+        {
+          "name": "Server 1 (MovieBox 1080p Direct)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/6dfa507d59289531e806fff6610e3694.mp4?sign=2bb2ba1baed728a5d342df6bdf8dd0c2&t=1792805493"
+        },
+        {
+          "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+          "url": "/api/moviebox/stream?id=2819564323977289192&path=viral-hit-hindi-CT6Pd5lDhm3&se=1&ep=1"
+        },
+        {
+          "name": "Server 3 (MovieBox 720p HD)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/cf12456d20e54edbd85ab18e70d5e576.mp4?sign=fb7976fd6fa2844d2dfd817fc7c2feb3&t=1792805493"
+        },
+        {
+          "name": "Server 4 (MovieBox 480p SD)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/2824e23b2fed13f99306e4af320a27b5.mp4?sign=07958b30e56edbe09cb7d12e3c9aeb5a&t=1792805493"
+        },
+        {
+          "name": "Server 5 (MultiEmbed HD Failover)",
+          "url": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=1"
+        },
+        {
+          "name": "Server 6 (AutoEmbed HD)",
+          "url": "https://autoembed.co/tv/tmdb/312493/1/1"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Ouji Suzuka",
+          "character": "Kota Shimura",
+          "photo": "https://image.tmdb.org/t/p/w185/k5hKLBwSvxcwfSxetS4uo60Knx.jpg"
+        },
+        {
+          "name": "Ai Mikami",
+          "character": "Aki Yashio",
+          "photo": "https://image.tmdb.org/t/p/w185/rj9P9XKrsW8n9ECX7HyaiwezmdU.jpg"
+        },
+        {
+          "name": "Araki Sugou",
+          "character": "Toru Kaneko / \"Kanegon\"",
+          "photo": "https://image.tmdb.org/t/p/w185/yP7JVXBsBRJJGPJBQeyRddtenj5.jpg"
+        },
+        {
+          "name": "Meru Nukumi",
+          "character": "Kaho Asamiya",
+          "photo": "https://image.tmdb.org/t/p/w185/bZjwmpUt9J3GtRLzNH5LUNDu29s.jpg"
+        },
+        {
+          "name": "Noritaka Hamao",
+          "character": "Tatsuya Ogi",
+          "photo": "https://image.tmdb.org/t/p/w185/qkWQn0zyeg967iWzPXEDo8BvK7P.jpg"
+        },
+        {
+          "name": "Nana Asakawa",
+          "character": "Rumi",
+          "photo": "https://image.tmdb.org/t/p/w185/76HE0B6fm7QLClZdlcEaNzbRxnn.jpg"
+        },
+        {
+          "name": "Kentaro Maeda",
+          "character": "Reo Shinjo",
+          "photo": "https://image.tmdb.org/t/p/w185/lBE7Qh9Qujba1R1A73cj3XdBu9n.jpg"
+        },
+        {
+          "name": "Takuro Osada",
+          "character": "Hamaken",
+          "photo": "https://image.tmdb.org/t/p/w185/2jVBSJDCtHDHQoWxuczmJztbz5J.jpg"
+        },
+        {
+          "name": "Yusuke Iseya",
+          "character": "Yugo Kuwata",
+          "photo": "https://image.tmdb.org/t/p/w185/Api6CNgxMxoR4BBmvwptZeDfoeQ.jpg"
+        },
+        {
+          "name": "Mieko Harada",
+          "character": "Miyuki Shimura",
+          "photo": "https://image.tmdb.org/t/p/w185/iONtBVZuIz8xh6IT3TmSqeDxt0q.jpg"
+        }
+      ],
+      "seasons": [
+        {
+          "seasonNumber": 1,
+          "name": "Season 1 (6 Episodes)",
+          "episodes": [
+            {
+              "number": "01",
+              "episode": 1,
+              "season": 1,
+              "title": "Episode 1 - Do You Want to Become Stronger?",
+              "duration": "45m",
+              "overview": "Shimura endures daily torment from school tyrant Hamaken. But his luck changes when a scuffle with bootlicker Kanegon accidentally goes live — and viral.",
+              "still": "https://image.tmdb.org/t/p/original/x2Uv1Sk1SIFTyuHat7THqa4Vymq.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/6dfa507d59289531e806fff6610e3694.mp4?sign=2bb2ba1baed728a5d342df6bdf8dd0c2&t=1792805493",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/6dfa507d59289531e806fff6610e3694.mp4?sign=2bb2ba1baed728a5d342df6bdf8dd0c2&t=1792805493"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=2819564323977289192&path=viral-hit-hindi-CT6Pd5lDhm3&se=1&ep=1"
+                },
+                {
+                  "name": "Server 3 (MovieBox 720p HD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/cf12456d20e54edbd85ab18e70d5e576.mp4?sign=fb7976fd6fa2844d2dfd817fc7c2feb3&t=1792805493"
+                },
+                {
+                  "name": "Server 4 (MovieBox 480p SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/2824e23b2fed13f99306e4af320a27b5.mp4?sign=07958b30e56edbe09cb7d12e3c9aeb5a&t=1792805493"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=1"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/312493/1/1"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/6dfa507d59289531e806fff6610e3694.mp4?sign=2bb2ba1baed728a5d342df6bdf8dd0c2&t=1792805493",
+                "Original Audio": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=1"
+              },
+              "captions": [
+                {
+                  "label": "English",
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/1a8e3cca7f3a9fd07d04d32b3ef423b6.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTMwfX19XX0_&Signature=gDUvrJYqhZfRRaV50kgM1Ge5gAYnZX1BF6T2oUMpZragQcB4jZbyISnxjSDPWnO6YlFHvgAvQYIcZUmJbeBIWp9XGn2vMBLSMjlshabfBbx0CZnqbGzZc1gOdcL8TrwHgMVCVl1zZ3sBhLujYaPIrllwSbjCTXDhnWvoUVA6oNK-SAKKIHqyM6oT~L0lYRa46Ul81hH0tPMetFU36jRoJvI26QsezCYpF7TSRmNaOoLiJjk279mhnykPNelooKOS6wyaC6gglh1ZX4~YdsVRUx~cn82rxqym1JgvTAjfxn~LH2M-PEWLP0hjr4Ez0FRfuaAu2GSwq6BWgZlvAT8OCQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": "02",
+              "episode": 2,
+              "season": 1,
+              "title": "Episode 2 - Fan the Flames of Anger",
+              "duration": "41m",
+              "overview": "Mugged by delinquents, Shimura follows TOU-KEI's teachings to fight back. Later, despite landing a blow on Hamaken, Shimura lands in even deeper trouble.",
+              "still": "https://image.tmdb.org/t/p/original/owp6VOSWy5pdi7L5Ko8mfb2CK5O.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/fea3e2a3070a212d0b03304e87f66e65.mp4?sign=e35eb7c340a45b0c3bbbee353610d767&t=1792805773",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/fea3e2a3070a212d0b03304e87f66e65.mp4?sign=e35eb7c340a45b0c3bbbee353610d767&t=1792805773"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=2819564323977289192&path=viral-hit-hindi-CT6Pd5lDhm3&se=1&ep=2"
+                },
+                {
+                  "name": "Server 3 (MovieBox 720p HD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/8241ceb05d1ecc0dbb2f52c50dec3e8c.mp4?sign=9771dfa4fae5dc62da085d9f7180d564&t=1792805773"
+                },
+                {
+                  "name": "Server 4 (MovieBox 480p SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/812d187fb24a7faaf1006920f5cd406c.mp4?sign=b5be4ae7a629523621472c36b107ac24&t=1792805773"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=2"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/312493/1/2"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/fea3e2a3070a212d0b03304e87f66e65.mp4?sign=e35eb7c340a45b0c3bbbee353610d767&t=1792805773",
+                "Original Audio": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=2"
+              },
+              "captions": [
+                {
+                  "label": "English",
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/99bae64cb1a8a5abe257abb1086f6160.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTE5fX19XX0_&Signature=HUSl0qN~ldqUau4ya9nS02qbhF1ylztudxYDatQMIPTbnt1xDrHMA8SE3vyB0eEjRkwS6MXgFwVllbmmXFldt88Eqo29wWL36O2~U9qFnFXGkKH~menoGBXKreUxzL5yfql-VoTbvwzZjZVtDBm78pC6gBAlsC2EjyxtOQe6PDt7w9iUMLy5bsZ~85IxPKmaukKxcttmiLnPkaDjhF6kMfSXU-nFFrY8~kpY0iwds5jG~9nsskQNPCZsOZ0w3EbBZrxaCavDOI1~R9trRDK69oJNPpcchbusVZofRO8ETNk~s8D0uklHe6afS~Hju8bbursX9QWS6oW4meJypTpHjw__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": "03",
+              "episode": 3,
+              "season": 1,
+              "title": "Episode 3 - I'm Not a Loser!",
+              "duration": "50m",
+              "overview": "Humiliated in front of his crush, Shimura disappears. As everyone searches desperately for him, Kanegon endures brutal violence from Hamaken.",
+              "still": "https://image.tmdb.org/t/p/original/x8cyPfgUdrEpWWbzOyhsyU8tKGi.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/94c647a033dbe7e4819fe5aa87d9f3e8.mp4?sign=35e0da0679549aff7a332aab9cf68255&t=1792805773",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/94c647a033dbe7e4819fe5aa87d9f3e8.mp4?sign=35e0da0679549aff7a332aab9cf68255&t=1792805773"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=2819564323977289192&path=viral-hit-hindi-CT6Pd5lDhm3&se=1&ep=3"
+                },
+                {
+                  "name": "Server 3 (MovieBox 720p HD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/91c7b97c2a6bd15d3f328e941b9d0765.mp4?sign=5f22dd8ea2fa9089797d6866514166b0&t=1792805773"
+                },
+                {
+                  "name": "Server 4 (MovieBox 480p SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/21e1c42b2966a5c5b379eebb0b594daf.mp4?sign=0710a0761c082c9f79c520182095782e&t=1792805773"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=3"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/312493/1/3"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/94c647a033dbe7e4819fe5aa87d9f3e8.mp4?sign=35e0da0679549aff7a332aab9cf68255&t=1792805773",
+                "Original Audio": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=3"
+              },
+              "captions": [
+                {
+                  "label": "English",
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/e5a34fdeb97cefab2d4b15144d087d48.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTA4fX19XX0_&Signature=aQbqXRENVsMYniPbDHKHMWVa2yPKzgoEdPpOEkWuKr3OZTnaDjnLDVf8zqFMRrplsksxA04eclb-aSFu9JSqb2rR1P-D3-Pdvlyn8qZLrCtlRJ~oF4yV3uxkqr8kfzlBKHIu1IjMi83AesabchiMP3H0Q95Ia-o~qvzySe3HBHKfKjyc3aAEVJljC6wn0-3lVKpD7cw8WRtNXBh~UfITaTM4UGRAyuOtx-UcgcwVffyYz4vgZ-vvkM4oL5HNlMT68~IDqvfRpdq-JhPQ~J8ZTcee5LOXCXiFKT4ADZ7pcNPWis2daQNBz0--JZC6RtJOmjUVkPcl2Uyca4D1LwzYOQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": "04",
+              "episode": 4,
+              "season": 1,
+              "title": "Episode 4 - Well Then, My Friend",
+              "duration": "49m",
+              "overview": "Viral Hit faces its first crisis and Shimura must take on multiple opponents. Later, ex-taekwondo champ Shinjo targets them and attacks Kanegon.",
+              "still": "https://image.tmdb.org/t/p/original/2Z6TcclOuArLLDa0IaWJzLvdHLr.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/90920ab5bf677f6db253206dccc2e094.mp4?sign=fe2dbe9ad1efc99e2bd55a2348cd75e4&t=1792803712",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/90920ab5bf677f6db253206dccc2e094.mp4?sign=fe2dbe9ad1efc99e2bd55a2348cd75e4&t=1792803712"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=2819564323977289192&path=viral-hit-hindi-CT6Pd5lDhm3&se=1&ep=4"
+                },
+                {
+                  "name": "Server 3 (MovieBox 720p HD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/300a3d98d901d798017d729c05d9fbd6.mp4?sign=7991d5bcdeb54de6816346b49d2ba086&t=1792803712"
+                },
+                {
+                  "name": "Server 4 (MovieBox 480p SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/982078430507189bf5a7ef13a3562dab.mp4?sign=e30a01ac1801006dd671893ba6b6a53d&t=1792803712"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=4"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/312493/1/4"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/90920ab5bf677f6db253206dccc2e094.mp4?sign=fe2dbe9ad1efc99e2bd55a2348cd75e4&t=1792803712",
+                "Original Audio": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=4"
+              },
+              "captions": [
+                {
+                  "label": "English",
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/34a5401e3b9c5f7984d0141dc470bc69.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTA4fX19XX0_&Signature=aQbqXRENVsMYniPbDHKHMWVa2yPKzgoEdPpOEkWuKr3OZTnaDjnLDVf8zqFMRrplsksxA04eclb-aSFu9JSqb2rR1P-D3-Pdvlyn8qZLrCtlRJ~oF4yV3uxkqr8kfzlBKHIu1IjMi83AesabchiMP3H0Q95Ia-o~qvzySe3HBHKfKjyc3aAEVJljC6wn0-3lVKpD7cw8WRtNXBh~UfITaTM4UGRAyuOtx-UcgcwVffyYz4vgZ-vvkM4oL5HNlMT68~IDqvfRpdq-JhPQ~J8ZTcee5LOXCXiFKT4ADZ7pcNPWis2daQNBz0--JZC6RtJOmjUVkPcl2Uyca4D1LwzYOQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": "05",
+              "episode": 5,
+              "season": 1,
+              "title": "Episode 5 - The Original Viral Hit",
+              "duration": "59m",
+              "overview": "The Shimura vs. Shinjo fight reaches a shocking conclusion. Viral Hit reaches 1M subscribers, and the head of BAD FELLOWS approaches with a proposition.",
+              "still": "https://image.tmdb.org/t/p/original/uyHN8fw6uFMeIvkvrCdBeMKv1o6.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/69550af8a763dd04dd34c897fadac298.mp4?sign=69df8d7770c61d710c024bda7cf9050a&t=1792805967",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/69550af8a763dd04dd34c897fadac298.mp4?sign=69df8d7770c61d710c024bda7cf9050a&t=1792805967"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=2819564323977289192&path=viral-hit-hindi-CT6Pd5lDhm3&se=1&ep=5"
+                },
+                {
+                  "name": "Server 3 (MovieBox 720p HD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/4be81791baa79008f9c128f6a2a8f15b.mp4?sign=ab66843f30f952a73cee1c533e9962d0&t=1792805967"
+                },
+                {
+                  "name": "Server 4 (MovieBox 480p SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/9622d15a2844ada6add4161f3e752660.mp4?sign=600b34f5fa0285bf791da957d7c4a328&t=1792805967"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=5"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/312493/1/5"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/69550af8a763dd04dd34c897fadac298.mp4?sign=69df8d7770c61d710c024bda7cf9050a&t=1792805967",
+                "Original Audio": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=5"
+              },
+              "captions": [
+                {
+                  "label": "English",
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/f1ad413de994fbdaa6b15fb640e2ca66.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTMwfX19XX0_&Signature=gDUvrJYqhZfRRaV50kgM1Ge5gAYnZX1BF6T2oUMpZragQcB4jZbyISnxjSDPWnO6YlFHvgAvQYIcZUmJbeBIWp9XGn2vMBLSMjlshabfBbx0CZnqbGzZc1gOdcL8TrwHgMVCVl1zZ3sBhLujYaPIrllwSbjCTXDhnWvoUVA6oNK-SAKKIHqyM6oT~L0lYRa46Ul81hH0tPMetFU36jRoJvI26QsezCYpF7TSRmNaOoLiJjk279mhnykPNelooKOS6wyaC6gglh1ZX4~YdsVRUx~cn82rxqym1JgvTAjfxn~LH2M-PEWLP0hjr4Ez0FRfuaAu2GSwq6BWgZlvAT8OCQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            },
+            {
+              "number": "06",
+              "episode": 6,
+              "season": 1,
+              "title": "Episode 6 - This is My Youth",
+              "duration": "53m",
+              "overview": "As the final battle nears, Shimura's group face mounting challenges. TOU-KEI's secret emerges and their last fight begins — for friends, family and love.",
+              "still": "https://image.tmdb.org/t/p/original/lFLj89Yjn0HHRdjsulwmHxxxkQH.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/53b1a344b0a59fcd832d677c8faa7737.mp4?sign=597e4637ee0b4cd9bfd305a7b102022b&t=1792802101",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/53b1a344b0a59fcd832d677c8faa7737.mp4?sign=597e4637ee0b4cd9bfd305a7b102022b&t=1792802101"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=2819564323977289192&path=viral-hit-hindi-CT6Pd5lDhm3&se=1&ep=6"
+                },
+                {
+                  "name": "Server 3 (MovieBox 720p HD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/c6e2970bd793fa1401d988442d019e95.mp4?sign=e6591112f3f63d119afff0d7b4a2d471&t=1792802101"
+                },
+                {
+                  "name": "Server 4 (MovieBox 480p SD)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/f55da512a952f6c461d9d98e4858da5e.mp4?sign=ca49f91867582bf015e4209bf6a09c78&t=1792802101"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=6"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://autoembed.co/tv/tmdb/312493/1/6"
+                }
+              ],
+              "audioTracks": {
+                "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/53b1a344b0a59fcd832d677c8faa7737.mp4?sign=597e4637ee0b4cd9bfd305a7b102022b&t=1792802101",
+                "Original Audio": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=6"
+              },
+              "captions": [
+                {
+                  "label": "English",
+                  "language": "en",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/30352818e82f2b896dc39a63b521bea1.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTA4fX19XX0_&Signature=aQbqXRENVsMYniPbDHKHMWVa2yPKzgoEdPpOEkWuKr3OZTnaDjnLDVf8zqFMRrplsksxA04eclb-aSFu9JSqb2rR1P-D3-Pdvlyn8qZLrCtlRJ~oF4yV3uxkqr8kfzlBKHIu1IjMi83AesabchiMP3H0Q95Ia-o~qvzySe3HBHKfKjyc3aAEVJljC6wn0-3lVKpD7cw8WRtNXBh~UfITaTM4UGRAyuOtx-UcgcwVffyYz4vgZ-vvkM4oL5HNlMT68~IDqvfRpdq-JhPQ~J8ZTcee5LOXCXiFKT4ADZ7pcNPWis2daQNBz0--JZC6RtJOmjUVkPcl2Uyca4D1LwzYOQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "episodes": [
+        {
+          "number": "01",
+          "episode": 1,
+          "season": 1,
+          "title": "Episode 1 - Do You Want to Become Stronger?",
+          "duration": "45m",
+          "overview": "Shimura endures daily torment from school tyrant Hamaken. But his luck changes when a scuffle with bootlicker Kanegon accidentally goes live — and viral.",
+          "still": "https://image.tmdb.org/t/p/original/x2Uv1Sk1SIFTyuHat7THqa4Vymq.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/6dfa507d59289531e806fff6610e3694.mp4?sign=2bb2ba1baed728a5d342df6bdf8dd0c2&t=1792805493",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/6dfa507d59289531e806fff6610e3694.mp4?sign=2bb2ba1baed728a5d342df6bdf8dd0c2&t=1792805493"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=2819564323977289192&path=viral-hit-hindi-CT6Pd5lDhm3&se=1&ep=1"
+            },
+            {
+              "name": "Server 3 (MovieBox 720p HD)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/cf12456d20e54edbd85ab18e70d5e576.mp4?sign=fb7976fd6fa2844d2dfd817fc7c2feb3&t=1792805493"
+            },
+            {
+              "name": "Server 4 (MovieBox 480p SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/2824e23b2fed13f99306e4af320a27b5.mp4?sign=07958b30e56edbe09cb7d12e3c9aeb5a&t=1792805493"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=1"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/312493/1/1"
+            }
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/6dfa507d59289531e806fff6610e3694.mp4?sign=2bb2ba1baed728a5d342df6bdf8dd0c2&t=1792805493",
+            "Original Audio": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=1"
+          },
+          "captions": [
+            {
+              "label": "English",
+              "language": "en",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/1a8e3cca7f3a9fd07d04d32b3ef423b6.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTMwfX19XX0_&Signature=gDUvrJYqhZfRRaV50kgM1Ge5gAYnZX1BF6T2oUMpZragQcB4jZbyISnxjSDPWnO6YlFHvgAvQYIcZUmJbeBIWp9XGn2vMBLSMjlshabfBbx0CZnqbGzZc1gOdcL8TrwHgMVCVl1zZ3sBhLujYaPIrllwSbjCTXDhnWvoUVA6oNK-SAKKIHqyM6oT~L0lYRa46Ul81hH0tPMetFU36jRoJvI26QsezCYpF7TSRmNaOoLiJjk279mhnykPNelooKOS6wyaC6gglh1ZX4~YdsVRUx~cn82rxqym1JgvTAjfxn~LH2M-PEWLP0hjr4Ez0FRfuaAu2GSwq6BWgZlvAT8OCQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+            }
+          ]
+        },
+        {
+          "number": "02",
+          "episode": 2,
+          "season": 1,
+          "title": "Episode 2 - Fan the Flames of Anger",
+          "duration": "41m",
+          "overview": "Mugged by delinquents, Shimura follows TOU-KEI's teachings to fight back. Later, despite landing a blow on Hamaken, Shimura lands in even deeper trouble.",
+          "still": "https://image.tmdb.org/t/p/original/owp6VOSWy5pdi7L5Ko8mfb2CK5O.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/fea3e2a3070a212d0b03304e87f66e65.mp4?sign=e35eb7c340a45b0c3bbbee353610d767&t=1792805773",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/fea3e2a3070a212d0b03304e87f66e65.mp4?sign=e35eb7c340a45b0c3bbbee353610d767&t=1792805773"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=2819564323977289192&path=viral-hit-hindi-CT6Pd5lDhm3&se=1&ep=2"
+            },
+            {
+              "name": "Server 3 (MovieBox 720p HD)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/8241ceb05d1ecc0dbb2f52c50dec3e8c.mp4?sign=9771dfa4fae5dc62da085d9f7180d564&t=1792805773"
+            },
+            {
+              "name": "Server 4 (MovieBox 480p SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/812d187fb24a7faaf1006920f5cd406c.mp4?sign=b5be4ae7a629523621472c36b107ac24&t=1792805773"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=2"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/312493/1/2"
+            }
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/fea3e2a3070a212d0b03304e87f66e65.mp4?sign=e35eb7c340a45b0c3bbbee353610d767&t=1792805773",
+            "Original Audio": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=2"
+          },
+          "captions": [
+            {
+              "label": "English",
+              "language": "en",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/99bae64cb1a8a5abe257abb1086f6160.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTE5fX19XX0_&Signature=HUSl0qN~ldqUau4ya9nS02qbhF1ylztudxYDatQMIPTbnt1xDrHMA8SE3vyB0eEjRkwS6MXgFwVllbmmXFldt88Eqo29wWL36O2~U9qFnFXGkKH~menoGBXKreUxzL5yfql-VoTbvwzZjZVtDBm78pC6gBAlsC2EjyxtOQe6PDt7w9iUMLy5bsZ~85IxPKmaukKxcttmiLnPkaDjhF6kMfSXU-nFFrY8~kpY0iwds5jG~9nsskQNPCZsOZ0w3EbBZrxaCavDOI1~R9trRDK69oJNPpcchbusVZofRO8ETNk~s8D0uklHe6afS~Hju8bbursX9QWS6oW4meJypTpHjw__&Key-Pair-Id=KMHN1LQ1HEUPL"
+            }
+          ]
+        },
+        {
+          "number": "03",
+          "episode": 3,
+          "season": 1,
+          "title": "Episode 3 - I'm Not a Loser!",
+          "duration": "50m",
+          "overview": "Humiliated in front of his crush, Shimura disappears. As everyone searches desperately for him, Kanegon endures brutal violence from Hamaken.",
+          "still": "https://image.tmdb.org/t/p/original/x8cyPfgUdrEpWWbzOyhsyU8tKGi.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/94c647a033dbe7e4819fe5aa87d9f3e8.mp4?sign=35e0da0679549aff7a332aab9cf68255&t=1792805773",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/94c647a033dbe7e4819fe5aa87d9f3e8.mp4?sign=35e0da0679549aff7a332aab9cf68255&t=1792805773"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=2819564323977289192&path=viral-hit-hindi-CT6Pd5lDhm3&se=1&ep=3"
+            },
+            {
+              "name": "Server 3 (MovieBox 720p HD)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/91c7b97c2a6bd15d3f328e941b9d0765.mp4?sign=5f22dd8ea2fa9089797d6866514166b0&t=1792805773"
+            },
+            {
+              "name": "Server 4 (MovieBox 480p SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/21e1c42b2966a5c5b379eebb0b594daf.mp4?sign=0710a0761c082c9f79c520182095782e&t=1792805773"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=3"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/312493/1/3"
+            }
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/94c647a033dbe7e4819fe5aa87d9f3e8.mp4?sign=35e0da0679549aff7a332aab9cf68255&t=1792805773",
+            "Original Audio": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=3"
+          },
+          "captions": [
+            {
+              "label": "English",
+              "language": "en",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/e5a34fdeb97cefab2d4b15144d087d48.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTA4fX19XX0_&Signature=aQbqXRENVsMYniPbDHKHMWVa2yPKzgoEdPpOEkWuKr3OZTnaDjnLDVf8zqFMRrplsksxA04eclb-aSFu9JSqb2rR1P-D3-Pdvlyn8qZLrCtlRJ~oF4yV3uxkqr8kfzlBKHIu1IjMi83AesabchiMP3H0Q95Ia-o~qvzySe3HBHKfKjyc3aAEVJljC6wn0-3lVKpD7cw8WRtNXBh~UfITaTM4UGRAyuOtx-UcgcwVffyYz4vgZ-vvkM4oL5HNlMT68~IDqvfRpdq-JhPQ~J8ZTcee5LOXCXiFKT4ADZ7pcNPWis2daQNBz0--JZC6RtJOmjUVkPcl2Uyca4D1LwzYOQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+            }
+          ]
+        },
+        {
+          "number": "04",
+          "episode": 4,
+          "season": 1,
+          "title": "Episode 4 - Well Then, My Friend",
+          "duration": "49m",
+          "overview": "Viral Hit faces its first crisis and Shimura must take on multiple opponents. Later, ex-taekwondo champ Shinjo targets them and attacks Kanegon.",
+          "still": "https://image.tmdb.org/t/p/original/2Z6TcclOuArLLDa0IaWJzLvdHLr.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/90920ab5bf677f6db253206dccc2e094.mp4?sign=fe2dbe9ad1efc99e2bd55a2348cd75e4&t=1792803712",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/90920ab5bf677f6db253206dccc2e094.mp4?sign=fe2dbe9ad1efc99e2bd55a2348cd75e4&t=1792803712"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=2819564323977289192&path=viral-hit-hindi-CT6Pd5lDhm3&se=1&ep=4"
+            },
+            {
+              "name": "Server 3 (MovieBox 720p HD)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/300a3d98d901d798017d729c05d9fbd6.mp4?sign=7991d5bcdeb54de6816346b49d2ba086&t=1792803712"
+            },
+            {
+              "name": "Server 4 (MovieBox 480p SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/982078430507189bf5a7ef13a3562dab.mp4?sign=e30a01ac1801006dd671893ba6b6a53d&t=1792803712"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=4"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/312493/1/4"
+            }
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/90920ab5bf677f6db253206dccc2e094.mp4?sign=fe2dbe9ad1efc99e2bd55a2348cd75e4&t=1792803712",
+            "Original Audio": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=4"
+          },
+          "captions": [
+            {
+              "label": "English",
+              "language": "en",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/34a5401e3b9c5f7984d0141dc470bc69.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTA4fX19XX0_&Signature=aQbqXRENVsMYniPbDHKHMWVa2yPKzgoEdPpOEkWuKr3OZTnaDjnLDVf8zqFMRrplsksxA04eclb-aSFu9JSqb2rR1P-D3-Pdvlyn8qZLrCtlRJ~oF4yV3uxkqr8kfzlBKHIu1IjMi83AesabchiMP3H0Q95Ia-o~qvzySe3HBHKfKjyc3aAEVJljC6wn0-3lVKpD7cw8WRtNXBh~UfITaTM4UGRAyuOtx-UcgcwVffyYz4vgZ-vvkM4oL5HNlMT68~IDqvfRpdq-JhPQ~J8ZTcee5LOXCXiFKT4ADZ7pcNPWis2daQNBz0--JZC6RtJOmjUVkPcl2Uyca4D1LwzYOQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+            }
+          ]
+        },
+        {
+          "number": "05",
+          "episode": 5,
+          "season": 1,
+          "title": "Episode 5 - The Original Viral Hit",
+          "duration": "59m",
+          "overview": "The Shimura vs. Shinjo fight reaches a shocking conclusion. Viral Hit reaches 1M subscribers, and the head of BAD FELLOWS approaches with a proposition.",
+          "still": "https://image.tmdb.org/t/p/original/uyHN8fw6uFMeIvkvrCdBeMKv1o6.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/69550af8a763dd04dd34c897fadac298.mp4?sign=69df8d7770c61d710c024bda7cf9050a&t=1792805967",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/69550af8a763dd04dd34c897fadac298.mp4?sign=69df8d7770c61d710c024bda7cf9050a&t=1792805967"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=2819564323977289192&path=viral-hit-hindi-CT6Pd5lDhm3&se=1&ep=5"
+            },
+            {
+              "name": "Server 3 (MovieBox 720p HD)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/4be81791baa79008f9c128f6a2a8f15b.mp4?sign=ab66843f30f952a73cee1c533e9962d0&t=1792805967"
+            },
+            {
+              "name": "Server 4 (MovieBox 480p SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/9622d15a2844ada6add4161f3e752660.mp4?sign=600b34f5fa0285bf791da957d7c4a328&t=1792805967"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=5"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/312493/1/5"
+            }
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/69550af8a763dd04dd34c897fadac298.mp4?sign=69df8d7770c61d710c024bda7cf9050a&t=1792805967",
+            "Original Audio": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=5"
+          },
+          "captions": [
+            {
+              "label": "English",
+              "language": "en",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/f1ad413de994fbdaa6b15fb640e2ca66.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTMwfX19XX0_&Signature=gDUvrJYqhZfRRaV50kgM1Ge5gAYnZX1BF6T2oUMpZragQcB4jZbyISnxjSDPWnO6YlFHvgAvQYIcZUmJbeBIWp9XGn2vMBLSMjlshabfBbx0CZnqbGzZc1gOdcL8TrwHgMVCVl1zZ3sBhLujYaPIrllwSbjCTXDhnWvoUVA6oNK-SAKKIHqyM6oT~L0lYRa46Ul81hH0tPMetFU36jRoJvI26QsezCYpF7TSRmNaOoLiJjk279mhnykPNelooKOS6wyaC6gglh1ZX4~YdsVRUx~cn82rxqym1JgvTAjfxn~LH2M-PEWLP0hjr4Ez0FRfuaAu2GSwq6BWgZlvAT8OCQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+            }
+          ]
+        },
+        {
+          "number": "06",
+          "episode": 6,
+          "season": 1,
+          "title": "Episode 6 - This is My Youth",
+          "duration": "53m",
+          "overview": "As the final battle nears, Shimura's group face mounting challenges. TOU-KEI's secret emerges and their last fight begins — for friends, family and love.",
+          "still": "https://image.tmdb.org/t/p/original/lFLj89Yjn0HHRdjsulwmHxxxkQH.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/53b1a344b0a59fcd832d677c8faa7737.mp4?sign=597e4637ee0b4cd9bfd305a7b102022b&t=1792802101",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/53b1a344b0a59fcd832d677c8faa7737.mp4?sign=597e4637ee0b4cd9bfd305a7b102022b&t=1792802101"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=2819564323977289192&path=viral-hit-hindi-CT6Pd5lDhm3&se=1&ep=6"
+            },
+            {
+              "name": "Server 3 (MovieBox 720p HD)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/c6e2970bd793fa1401d988442d019e95.mp4?sign=e6591112f3f63d119afff0d7b4a2d471&t=1792802101"
+            },
+            {
+              "name": "Server 4 (MovieBox 480p SD)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/f55da512a952f6c461d9d98e4858da5e.mp4?sign=ca49f91867582bf015e4209bf6a09c78&t=1792802101"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=6"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://autoembed.co/tv/tmdb/312493/1/6"
+            }
+          ],
+          "audioTracks": {
+            "Hindi dub": "https://bcdnxw.hakunaymatata.com/resource/53b1a344b0a59fcd832d677c8faa7737.mp4?sign=597e4637ee0b4cd9bfd305a7b102022b&t=1792802101",
+            "Original Audio": "https://multiembed.mov/?video_id=312493&tmdb=1&s=1&e=6"
+          },
+          "captions": [
+            {
+              "label": "English",
+              "language": "en",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/30352818e82f2b896dc39a63b521bea1.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDEwNTA4fX19XX0_&Signature=aQbqXRENVsMYniPbDHKHMWVa2yPKzgoEdPpOEkWuKr3OZTnaDjnLDVf8zqFMRrplsksxA04eclb-aSFu9JSqb2rR1P-D3-Pdvlyn8qZLrCtlRJ~oF4yV3uxkqr8kfzlBKHIu1IjMi83AesabchiMP3H0Q95Ia-o~qvzySe3HBHKfKjyc3aAEVJljC6wn0-3lVKpD7cw8WRtNXBh~UfITaTM4UGRAyuOtx-UcgcwVffyYz4vgZ-vvkM4oL5HNlMT68~IDqvfRpdq-JhPQ~J8ZTcee5LOXCXiFKT4ADZ7pcNPWis2daQNBz0--JZC6RtJOmjUVkPcl2Uyca4D1LwzYOQ__&Key-Pair-Id=KMHN1LQ1HEUPL"
+            }
+          ]
+        }
+      ],
+      "type": "series"
+    },
+    {
       "id": "mb-s-7315143878922094712",
       "subjectId": "7315143878922094712",
       "detailPath": "love-is-in-the-air-hindi-EMidHb4rnI8",

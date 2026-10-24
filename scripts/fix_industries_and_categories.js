@@ -107,6 +107,15 @@ function classifySeries(s) {
     return;
   }
 
+  // Japanese Live-Action Series
+  if (title.includes('viral hit') || title.includes('sins of kujo') || title.includes('kujo')) {
+    s.industry = 'Japanese';
+    s.country = 'Japan';
+    s.category = 'Japanese Series';
+    s.badgeLeft = 'Hindi Dub';
+    return;
+  }
+
   // Anime / Japanese Series
   const animeSeries = [
     'detective is already dead', 'laid-off cheat', 'grand blue', 'arifureta', 'ramparts of ice',

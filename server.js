@@ -606,6 +606,10 @@ app.get('/api/moviebox/stream', async (req, res) => {
       else if (id === '6103563625468182480') resolvedPath = 'inconstant-love-SdnProWnSg7';
       // Diriliş: Ertuğrul (Resurrection: Ertugrul)
       else if (id === '8690954071785752632') resolvedPath = 'resurrection-ertugrul-AARn8a2F0ma';
+      // Viral Hit [Hindi] (2026 Japanese Series)
+      else if (id === '2819564323977289192') resolvedPath = 'viral-hit-hindi-CT6Pd5lDhm3';
+      // Sins of Kujo [Hindi] (2026 Japanese Series)
+      else if (id === '1986985589031195976') resolvedPath = 'sins-of-kujo-hindi-uNxjKyJpMm2';
     }
     // Try requested se/ep first, then fallbacks
     let media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);
