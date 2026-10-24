@@ -285,7 +285,6 @@ async function run() {
     originalTitle: tv.original_name || '구미호뎐',
     year: tv.first_air_date ? tv.first_air_date.substring(0, 4) : '2020',
     releaseDate: tv.first_air_date || '2020-10-07',
-    addedAt: new Date().toISOString(),
     rating: String(tv.vote_average ? tv.vote_average.toFixed(1) : '8.4'),
     votes: String(tv.vote_count || '210'),
     duration: '2 Seasons (28 Episodes)',

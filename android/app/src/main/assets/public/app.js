@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v57';
+const CACHE_KEY = 'fobs_tv_content_cache_v56';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -1457,12 +1457,14 @@ function renderHomeFeeds() {
     `;
   }).join('');
 
-  // 1. Latest Movies & Series (Strictly by upload order - recently added items first)
+  // 1. Latest Movies & Series (Strictly by upload order)
   const latestContainer = document.getElementById('latestList');
   if (latestContainer) {
-    const latestItems = getRecentlyAddedItems(15);
+    const rawMovies = appState.content.movies || [];
+    const rawSeries = appState.content.series || [];
+    const latestItems = [...rawMovies.slice(0, 6), ...rawSeries.slice(0, 4)];
     latestContainer.innerHTML = latestItems.map(item => {
-      const isSeries = !!item.episodes || item.type === 'series' || item._mediaType === 'series';
+      const isSeries = !!item.episodes || item.type === 'series';
       return `
         <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
           <div class="card-poster-wrap">
@@ -1650,31 +1652,6 @@ function renderMovieCardItem(item, rank = null) {
       <div class="card-meta">⭐ ${item.imdbRating || item.rating || '8.0'} • ${item.year || '2024'}</div>
     </div>
   `;
-}
-
-// Recently Added Sorter (Newest additions strictly first, taking both movies and series)
-function getRecentlyAddedItems(limit) {
-  const rawMovies = appState.content.movies || [];
-  const rawSeries = appState.content.series || [];
-
-  const allItems = [
-    ...rawMovies.map((m, idx) => ({ ...m, _mediaType: 'movie', _origIdx: idx })),
-    ...rawSeries.map((s, idx) => ({ ...s, _mediaType: 'series', _origIdx: idx }))
-  ];
-
-  allItems.sort((a, b) => {
-    const timeA = a.addedAt ? new Date(a.addedAt).getTime() : (a.createdAt ? new Date(a.createdAt).getTime() : 0);
-    const timeB = b.addedAt ? new Date(b.addedAt).getTime() : (b.createdAt ? new Date(b.createdAt).getTime() : 0);
-    if (timeA && timeB && timeA !== timeB) {
-      return timeB - timeA;
-    }
-    if (timeA && !timeB) return -1;
-    if (!timeA && timeB) return 1;
-    // Fallback to array unshift position (0 = most recently added)
-    return a._origIdx - b._origIdx;
-  });
-
-  return typeof limit === 'number' ? allItems.slice(0, limit) : allItems;
 }
 
 // Release Date Descending Sorter (Latest Releases Strictly First)
@@ -1911,7 +1888,7 @@ function openSectionDetail(sectionKey, title) {
       break;
 
     case 'latest':
-      items = getRecentlyAddedItems();
+      items = [...movies, ...series];
       break;
 
     case 'upcoming':
