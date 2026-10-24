@@ -36,7 +36,7 @@
     "category": "South (Dubbed) Movies",
     "genre": "Action, Drama",
     "year": "2026",
-    "releaseDate": "2026-07-22",
+    "releaseDate": "2026-10-24T09:17:14.000Z",
     "duration": "3h 03m",
     "rating": "5.2",
     "imdbRating": "5.2",
@@ -141,7 +141,8 @@
       }
     ],
     "type": "movie",
-    "addedAt": "2026-10-24T09:17:14.000Z"
+    "addedAt": "2026-10-24T09:17:14.000Z",
+    "originalReleaseDate": "2026-07-22"
   },
   "movies": [
     {
@@ -160,7 +161,7 @@
       "category": "South (Dubbed) Movies",
       "genre": "Action, Drama",
       "year": "2026",
-      "releaseDate": "2026-07-22",
+      "releaseDate": "2026-10-24T09:17:14.000Z",
       "duration": "3h 03m",
       "rating": "5.2",
       "imdbRating": "5.2",
@@ -265,7 +266,8 @@
         }
       ],
       "type": "movie",
-      "addedAt": "2026-10-24T09:17:14.000Z"
+      "addedAt": "2026-10-24T09:17:14.000Z",
+      "originalReleaseDate": "2026-07-22"
     },
     {
       "id": "mb-m-2833795268615856792",
@@ -283,7 +285,7 @@
       "category": "Hollywood (Dubbed) Movies",
       "genre": "Adventure, Drama, Action",
       "year": "2026",
-      "releaseDate": "2026-06-18",
+      "releaseDate": "2026-10-24T08:53:34.000Z",
       "duration": "2h 03m",
       "rating": "6.7",
       "imdbRating": "6.7",
@@ -400,7 +402,8 @@
         }
       ],
       "type": "movie",
-      "addedAt": "2026-10-24T08:53:34.000Z"
+      "addedAt": "2026-10-24T08:53:34.000Z",
+      "originalReleaseDate": "2026-06-18"
     },
     {
       "id": "mb-m-803658983365039832",
@@ -418,7 +421,7 @@
       "category": "South (Dubbed) Movies",
       "genre": "Drama, Romance, Comedy",
       "year": "2026",
-      "releaseDate": "2026-08-14",
+      "releaseDate": "2026-10-24T08:29:58.000Z",
       "duration": "2h 41m",
       "rating": "7.1",
       "imdbRating": "7.1",
@@ -535,7 +538,8 @@
         }
       ],
       "type": "movie",
-      "addedAt": "2026-10-24T08:29:58.000Z"
+      "addedAt": "2026-10-24T08:29:58.000Z",
+      "originalReleaseDate": "2026-08-14"
     },
     {
       "id": "mb-m-8768845011485083816",
@@ -645,7 +649,8 @@
       ],
       "type": "movie",
       "cover": "https://image.tmdb.org/t/p/original/hD2SN5bbqxk0kcRmsATJkXObgnZ.jpg",
-      "addedAt": "2026-10-24T01:55:56.000Z"
+      "addedAt": "2026-10-24T01:55:56.000Z",
+      "releaseDate": "2026-10-24T01:55:56.000Z"
     },
     {
       "id": "tmdb-m-1375646",
@@ -734,9 +739,10 @@
       "type": "movie",
       "industry": "Hollywood",
       "tmdbId": 1375646,
-      "releaseDate": "2026-05-21",
+      "releaseDate": "2026-10-21T17:13:53.000Z",
       "cover": "https://image.tmdb.org/t/p/original/pGxUbJ1vKuMYeEjKDokFI7DNbSG.jpg",
-      "addedAt": "2026-10-21T17:13:53.000Z"
+      "addedAt": "2026-10-21T17:13:53.000Z",
+      "originalReleaseDate": "2026-05-21"
     },
     {
       "id": "tmdb-m-1654581",
@@ -827,9 +833,10 @@
         }
       ],
       "type": "movie",
-      "releaseDate": "2026-01-01",
+      "releaseDate": "2026-10-22T10:16:25.000Z",
       "cover": "https://image.tmdb.org/t/p/original/3aXMkyp0Pv2WGyvm2NUdtMXwY2P.jpg",
-      "addedAt": "2026-10-22T10:16:25.000Z"
+      "addedAt": "2026-10-22T10:16:25.000Z",
+      "originalReleaseDate": "2026-01-01"
     },
     {
       "id": "tmdb-m-1451944",
@@ -919,9 +926,10 @@
         }
       ],
       "type": "movie",
-      "releaseDate": "2026-01-01",
+      "releaseDate": "2026-10-22T07:31:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/jRtR4aTq4vmxRg9ah60R5i1kkQ7.jpg",
-      "addedAt": "2026-10-22T07:31:47.000Z"
+      "addedAt": "2026-10-22T07:31:47.000Z",
+      "originalReleaseDate": "2026-01-01"
     },
     {
       "id": "tmdb-m-1423191",
@@ -1012,9 +1020,10 @@
         }
       ],
       "type": "movie",
-      "releaseDate": "2026-01-01",
+      "releaseDate": "2026-10-22T07:01:14.000Z",
       "cover": "https://image.tmdb.org/t/p/original/3icyRAqgakNcQn6aDVz9libFmBA.jpg",
-      "addedAt": "2026-10-22T07:01:14.000Z"
+      "addedAt": "2026-10-22T07:01:14.000Z",
+      "originalReleaseDate": "2026-01-01"
     },
     {
       "id": "tmdb-m-1234139",
@@ -1106,9 +1115,10 @@
         }
       ],
       "type": "movie",
-      "releaseDate": "2026-01-01",
+      "releaseDate": "2026-10-22T06:52:17.000Z",
       "cover": "https://image.tmdb.org/t/p/original/zpHTOdRl7GEPqFsDGqsN6Hi9Ylt.jpg",
-      "addedAt": "2026-10-22T06:52:17.000Z"
+      "addedAt": "2026-10-22T06:52:17.000Z",
+      "originalReleaseDate": "2026-01-01"
     },
     {
       "id": "mb-m-4393216074666474704",
@@ -1190,9 +1200,10 @@
       ],
       "type": "movie",
       "tmdbId": 1220538,
-      "releaseDate": "2026-10-02",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/anwB9RlA2haerdblfBcl5OH9gtr.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-10-02"
     },
     {
       "id": "mb-m-7908270876544975128",
@@ -1274,9 +1285,10 @@
       ],
       "type": "movie",
       "tmdbId": 1376856,
-      "releaseDate": "2026-09-23",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/7AcH5TFppoMusNkCBLaQP6UOODp.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-09-23"
     },
     {
       "id": "mb-m-6714742242860745056",
@@ -1358,9 +1370,10 @@
       ],
       "type": "movie",
       "tmdbId": 1317872,
-      "releaseDate": "2026-09-10",
+      "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/zNghOXSvoex2wHx88skt5wGEzPd.jpg",
-      "addedAt": "2026-10-22T18:58:59.000Z"
+      "addedAt": "2026-10-22T18:58:59.000Z",
+      "originalReleaseDate": "2026-09-10"
     },
     {
       "id": "mb-m-4151920426815471968",
@@ -1442,9 +1455,10 @@
       ],
       "type": "movie",
       "tmdbId": 1465943,
-      "releaseDate": "2026-09-10",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/dJ4sqrmX2KviF8HBKlLrDedUhnh.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-09-10"
     },
     {
       "id": "mb-m-5349301616099452064",
@@ -1526,9 +1540,10 @@
       ],
       "type": "movie",
       "tmdbId": 1355228,
-      "releaseDate": "2026-09-03",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/sT5WVT8LzvDwIbfy9BGXK0fvf3s.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-09-03"
     },
     {
       "id": "mb-m-3136667368668152832",
@@ -1610,9 +1625,10 @@
       ],
       "type": "movie",
       "tmdbId": 1654516,
-      "releaseDate": "2026-08-28",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/o80iCzo1zqSt4zx9SZkCsjgxzvi.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-08-28"
     },
     {
       "id": "mb-m-6800165531384434648",
@@ -1694,9 +1710,10 @@
       ],
       "type": "movie",
       "tmdbId": 1213243,
-      "releaseDate": "2026-08-26",
+      "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/tBRSSfgqOAq7YlG8udcoJIBm2FG.jpg",
-      "addedAt": "2026-10-22T18:58:59.000Z"
+      "addedAt": "2026-10-22T18:58:59.000Z",
+      "originalReleaseDate": "2026-08-26"
     },
     {
       "id": "mb-m-2355442796397591760",
@@ -1778,9 +1795,10 @@
       ],
       "type": "movie",
       "tmdbId": 1508168,
-      "releaseDate": "2026-08-21",
+      "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/zms3m4kVz7RXmobU1B0nhrvUEmP.jpg",
-      "addedAt": "2026-10-22T18:58:59.000Z"
+      "addedAt": "2026-10-22T18:58:59.000Z",
+      "originalReleaseDate": "2026-08-21"
     },
     {
       "id": "mb-m-5268394138868805864",
@@ -1862,9 +1880,10 @@
       ],
       "type": "movie",
       "tmdbId": 1441228,
-      "releaseDate": "2026-08-20",
+      "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/578jrGVEN4a5rxJGtkt9sMI2w6c.jpg",
-      "addedAt": "2026-10-22T18:58:59.000Z"
+      "addedAt": "2026-10-22T18:58:59.000Z",
+      "originalReleaseDate": "2026-08-20"
     },
     {
       "id": "mb-m-2785754964193329504",
@@ -1946,9 +1965,10 @@
       ],
       "type": "movie",
       "tmdbId": 1036081,
-      "releaseDate": "2026-08-20",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/6Jz7rnnZrSkgs9ySWUxewpcxr7Q.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-08-20"
     },
     {
       "id": "mb-m-8826677989518759008",
@@ -2030,9 +2050,10 @@
       ],
       "type": "movie",
       "tmdbId": 1444466,
-      "releaseDate": "2026-08-14",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/qrYsuB5kPCw0y7IVIuOyEAI1GXh.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-08-14"
     },
     {
       "id": "mb-m-1492986236347339808",
@@ -2114,9 +2135,10 @@
       ],
       "type": "movie",
       "tmdbId": 1727563,
-      "releaseDate": "2026-08-07",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/nOQYly08Rv5fepk67i4wy43Oyyf.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-08-07"
     },
     {
       "id": "mb-m-9107376937579734040",
@@ -2198,9 +2220,10 @@
       ],
       "type": "movie",
       "tmdbId": 1479832,
-      "releaseDate": "2026-08-06",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/v7kqufGRDotShPCw53SM7m8t6oc.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-08-06"
     },
     {
       "id": "mb-m-132035362238649848",
@@ -2277,9 +2300,10 @@
       ],
       "type": "movie",
       "tmdbId": 1741770,
-      "releaseDate": "2026-07-31",
+      "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/pZWvngm47TEmrnV6xDAoiIc16gP.jpg",
-      "addedAt": "2026-10-22T18:58:59.000Z"
+      "addedAt": "2026-10-22T18:58:59.000Z",
+      "originalReleaseDate": "2026-07-31"
     },
     {
       "id": "tmdb-m-969681",
@@ -2368,9 +2392,10 @@
       "type": "movie",
       "badgeLeft": "Hindi",
       "tmdbId": 969681,
-      "releaseDate": "2026-07-29",
+      "releaseDate": "2026-10-22T03:41:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/r08LxMJCbf1SiJIWeyH9aJmdqwC.jpg",
-      "addedAt": "2026-10-22T03:41:10.000Z"
+      "addedAt": "2026-10-22T03:41:10.000Z",
+      "originalReleaseDate": "2026-07-29"
     },
     {
       "id": "mb-m-8499680477270401976",
@@ -2452,9 +2477,10 @@
       ],
       "type": "movie",
       "tmdbId": 1682974,
-      "releaseDate": "2026-07-24",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/4TtfVgg7GHiYFtlIiEjZ3JHTz4S.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-07-24"
     },
     {
       "id": "mb-m-3383785055142172048",
@@ -2536,9 +2562,10 @@
       ],
       "type": "movie",
       "tmdbId": 1303331,
-      "releaseDate": "2026-07-10",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/95sjD0dRajtU6SKD6Gq6PtrGoGY.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-07-10"
     },
     {
       "id": "mb-m-6242809544159155600",
@@ -2620,9 +2647,10 @@
       ],
       "type": "movie",
       "tmdbId": 1108427,
-      "releaseDate": "2026-07-08",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/c6BPbkO5Npt1OdwttAxCFo06wtH.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-07-08"
     },
     {
       "id": "mb-m-5078903437354494336",
@@ -2704,9 +2732,10 @@
       ],
       "type": "movie",
       "tmdbId": 1512084,
-      "releaseDate": "2026-07-03",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/l2TgHsg445CPwSGtg30I0GmoFtG.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-07-03"
     },
     {
       "id": "mb-m-8195040886506541968",
@@ -2788,9 +2817,10 @@
       ],
       "type": "movie",
       "tmdbId": 1122030,
-      "releaseDate": "2026-07-02",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/b4WXm5ahmtubYXy3wqHUG2nUKoM.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-07-02"
     },
     {
       "id": "mb-m-2897664112366868144",
@@ -2872,9 +2902,10 @@
       ],
       "type": "movie",
       "tmdbId": 1392469,
-      "releaseDate": "2026-06-19",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/7CJQvCO8aNKEewAFw90qvQ7fr1T.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-06-19"
     },
     {
       "id": "mb-m-8175753992266569024",
@@ -2956,9 +2987,10 @@
       ],
       "type": "movie",
       "tmdbId": 1351908,
-      "releaseDate": "2026-06-12",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/vnEdyQ0XL325M4jd1prEMNo4xlL.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-06-12"
     },
     {
       "id": "mb-m-5127954970351917664",
@@ -3040,9 +3072,10 @@
       ],
       "type": "movie",
       "tmdbId": 1293550,
-      "releaseDate": "2026-06-04",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/xS8tsJ8IvNkzBMu3kq3gZFReh7j.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-06-04"
     },
     {
       "id": "mb-m-4323176914467930864",
@@ -3124,9 +3157,10 @@
       ],
       "type": "movie",
       "tmdbId": 1653208,
-      "releaseDate": "2026-05-28",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/2Lu1jb8kv93ciXYhmUlsj0E2RK1.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-05-28"
     },
     {
       "id": "mb-m-5481474927855289304",
@@ -3208,9 +3242,10 @@
       ],
       "type": "movie",
       "tmdbId": 1600771,
-      "releaseDate": "2026-05-15",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/akZ9jTTzvBOx3CeTVCo9WyhxL5q.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-05-15"
     },
     {
       "id": "mb-m-5244918809701544168",
@@ -3292,9 +3327,10 @@
       ],
       "type": "movie",
       "tmdbId": 1284186,
-      "releaseDate": "2026-04-09",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/oAUf1pvGlafCZVlEuPt1JyONHR1.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2026-04-09"
     },
     {
       "id": "tmdb-m-1153576",
@@ -3385,9 +3421,10 @@
         }
       ],
       "type": "movie",
-      "releaseDate": "2026-01-01",
+      "releaseDate": "2026-10-22T06:57:16.000Z",
       "cover": "https://image.tmdb.org/t/p/original/qRN8eqYwG6HPSy0i3fKzuLrUOhp.jpg",
-      "addedAt": "2026-10-22T06:57:16.000Z"
+      "addedAt": "2026-10-22T06:57:16.000Z",
+      "originalReleaseDate": "2026-01-01"
     },
     {
       "id": "tmdb-m-1101383",
@@ -3477,9 +3514,10 @@
         }
       ],
       "type": "movie",
-      "releaseDate": "2026-01-01",
+      "releaseDate": "2026-10-22T07:22:04.000Z",
       "cover": "https://image.tmdb.org/t/p/original/b9q9VmbXDvJmTziRqkwdEmFdwhr.jpg",
-      "addedAt": "2026-10-22T07:22:04.000Z"
+      "addedAt": "2026-10-22T07:22:04.000Z",
+      "originalReleaseDate": "2026-01-01"
     },
     {
       "id": "mb-m-3532379387301615648",
@@ -3561,9 +3599,10 @@
       ],
       "type": "movie",
       "tmdbId": 1372059,
-      "releaseDate": "2024-10-18",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/87HrTwoaRMgNUIbIKIABd2L8cu5.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2024-10-18"
     },
     {
       "id": "mb-m-3245114829035696656",
@@ -3645,9 +3684,10 @@
       ],
       "type": "movie",
       "tmdbId": 1277236,
-      "releaseDate": "2024-04-26",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/yXvVIZCIitmt8SeGAoSuEn8Z6Mi.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2024-04-26"
     },
     {
       "id": "mb-m-920251265093878016",
@@ -3729,9 +3769,10 @@
       ],
       "type": "movie",
       "tmdbId": 804150,
-      "releaseDate": "2023-02-22",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/a2tys4sD7xzVaogPntGsT1ypVoT.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2023-02-22"
     },
     {
       "id": "mb-m-anime-suzume",
@@ -3778,9 +3819,10 @@
       ],
       "type": "movie",
       "tmdbId": 916224,
-      "releaseDate": "2022-11-11",
+      "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/4tdV5AeojEdbvn6VpeQrbuDlmzs.jpg",
-      "addedAt": "2026-10-22T18:58:59.000Z"
+      "addedAt": "2026-10-22T18:58:59.000Z",
+      "originalReleaseDate": "2022-11-11"
     },
     {
       "id": "turkish-m-785534",
@@ -3788,7 +3830,7 @@
       "language": "Hindi",
       "tag": "HD",
       "year": "2021",
-      "releaseDate": "2021-03-12",
+      "releaseDate": "2026-10-22T23:52:06.000Z",
       "country": "India",
       "industry": "Bollywood",
       "category": "Bollywood Movies",
@@ -3817,7 +3859,8 @@
       "mbSubjectId": "331534456928489048",
       "mbDetailPath": "paper-lives-MOrS12Kquo",
       "cover": "https://image.tmdb.org/t/p/original/ctckqAvz9aTZDtfXLmDUdMflesU.jpg",
-      "addedAt": "2026-10-22T23:52:06.000Z"
+      "addedAt": "2026-10-22T23:52:06.000Z",
+      "originalReleaseDate": "2021-03-12"
     },
     {
       "id": "mb-m-anime-mugentrain",
@@ -3864,9 +3907,10 @@
       ],
       "type": "movie",
       "tmdbId": 635302,
-      "releaseDate": "2020-10-16",
+      "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/qjGrUmKW78MCFG8PTLDBp67S27p.jpg",
-      "addedAt": "2026-10-22T18:58:59.000Z"
+      "addedAt": "2026-10-22T18:58:59.000Z",
+      "originalReleaseDate": "2020-10-16"
     },
     {
       "id": "mb-m-c-ipman4",
@@ -3913,9 +3957,10 @@
       ],
       "type": "movie",
       "tmdbId": 449924,
-      "releaseDate": "2019-12-19",
+      "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/jZDudPPIV4lSxEVgzfK9Z6nHdhi.jpg",
-      "addedAt": "2026-10-22T18:58:59.000Z"
+      "addedAt": "2026-10-22T18:58:59.000Z",
+      "originalReleaseDate": "2019-12-19"
     },
     {
       "id": "turkish-m-637920",
@@ -3923,7 +3968,7 @@
       "language": "Hindi",
       "tag": "HD",
       "year": "2019",
-      "releaseDate": "2019-10-10",
+      "releaseDate": "2026-10-22T23:52:06.000Z",
       "country": "India",
       "industry": "Bollywood",
       "category": "Bollywood Movies",
@@ -3952,7 +3997,8 @@
       "mbSubjectId": "2593580836368859088",
       "mbDetailPath": "miracle-in-cell-no-7-CpdPy3VCA53",
       "cover": "https://image.tmdb.org/t/p/original/inEy3A5OPgeYW4rjRiGycfEeQzA.jpg",
-      "addedAt": "2026-10-22T23:52:06.000Z"
+      "addedAt": "2026-10-22T23:52:06.000Z",
+      "originalReleaseDate": "2019-10-10"
     },
     {
       "id": "mb-m-c-wanderingearth",
@@ -3999,9 +4045,10 @@
       ],
       "type": "movie",
       "tmdbId": 535167,
-      "releaseDate": "2019-02-05",
+      "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/wIrqeoJHYtZmneqIufPtcOHMjOg.jpg",
-      "addedAt": "2026-10-22T18:58:59.000Z"
+      "addedAt": "2026-10-22T18:58:59.000Z",
+      "originalReleaseDate": "2019-02-05"
     },
     {
       "id": "mb-m-5091094358426900488",
@@ -4083,9 +4130,10 @@
       ],
       "type": "movie",
       "tmdbId": 353486,
-      "releaseDate": "2017-12-20",
+      "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/zZKmEmRDc7ZjFucPm2UGNgDRlDc.jpg",
-      "addedAt": "2026-10-22T16:03:10.000Z"
+      "addedAt": "2026-10-22T16:03:10.000Z",
+      "originalReleaseDate": "2017-12-20"
     },
     {
       "id": "turkish-m-375784",
@@ -4093,7 +4141,7 @@
       "language": "Hindi",
       "tag": "HD",
       "year": "2015",
-      "releaseDate": "2015-12-25",
+      "releaseDate": "2026-10-22T23:52:06.000Z",
       "country": "India",
       "industry": "Bollywood",
       "category": "Bollywood Movies",
@@ -4120,7 +4168,8 @@
       "type": "movie",
       "originalTitle": "Delibal",
       "cover": "https://image.tmdb.org/t/p/original/kFM4V6E2zMlggAF7NRM8CGA1Erw.jpg",
-      "addedAt": "2026-10-22T23:52:06.000Z"
+      "addedAt": "2026-10-22T23:52:06.000Z",
+      "originalReleaseDate": "2015-12-25"
     }
   ],
   "series": [
@@ -4132,7 +4181,7 @@
       "title": "Lanterns [Hindi]",
       "originalTitle": "Lanterns",
       "year": "2026",
-      "releaseDate": "2026-08-16",
+      "releaseDate": "2026-10-24T09:04:19.000Z",
       "rating": "8.2",
       "votes": "803",
       "duration": "1 Season (8 Episodes)",
@@ -4721,7 +4770,8 @@
           ]
         }
       ],
-      "addedAt": "2026-10-24T09:04:19.000Z"
+      "addedAt": "2026-10-24T09:04:19.000Z",
+      "originalReleaseDate": "2026-08-16"
     },
     {
       "id": "mb-s-4332534660363340496",
@@ -4731,7 +4781,7 @@
       "title": "Our Universe [Hindi]",
       "originalTitle": "우주를 줄게",
       "year": "2026",
-      "releaseDate": "2026-02-04",
+      "releaseDate": "2026-10-24T08:53:34.000Z",
       "rating": "8.2",
       "votes": "84",
       "duration": "1 Season (12 Episodes)",
@@ -5515,7 +5565,8 @@
           ]
         }
       ],
-      "addedAt": "2026-10-24T08:53:34.000Z"
+      "addedAt": "2026-10-24T08:53:34.000Z",
+      "originalReleaseDate": "2026-02-04"
     },
     {
       "id": "mb-s-3908280950886646112",
@@ -5524,7 +5575,7 @@
       "title": "VisionQuest [Hindi]",
       "originalTitle": "VisionQuest",
       "year": "2026",
-      "releaseDate": "2026-10-13",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "rating": "8.8",
       "votes": "168",
       "duration": "1 Season (4 Episodes)",
@@ -5825,7 +5876,8 @@
       ],
       "description": "With a bounty on his head, Vision must confront his nature and resist Ultron's influence to survive.",
       "genre": "Sci-Fi & Fantasy, Drama",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2026-10-13"
     },
     {
       "id": "mb-s-637731293849080088",
@@ -5834,7 +5886,7 @@
       "title": "Tale of the Nine Tailed [Hindi]",
       "originalTitle": "구미호뎐",
       "year": "2020",
-      "releaseDate": "2020-10-07",
+      "releaseDate": "2026-10-24T07:12:44.000Z",
       "rating": "8.4",
       "votes": "504",
       "duration": "2 Seasons (28 Episodes)",
@@ -7312,7 +7364,8 @@
       "cover": "https://image.tmdb.org/t/p/original/oPJQvS8Xyg7chAX0jQoC2smqMxv.jpg",
       "description": "A TV producer discovers a secret supernatural world as she becomes entangled with a former deity who's spent centuries searching for his lost lover.",
       "genre": "Sci-Fi & Fantasy, Drama, Comedy, Mystery",
-      "addedAt": "2026-10-24T07:12:44.000Z"
+      "addedAt": "2026-10-24T07:12:44.000Z",
+      "originalReleaseDate": "2020-10-07"
     },
     {
       "id": "mb-s-1395930250630021944",
@@ -7321,7 +7374,7 @@
       "title": "My Strange Hero [Hindi]",
       "originalTitle": "복수가 돌아왔다",
       "year": "2018",
-      "releaseDate": "2018-12-10",
+      "releaseDate": "2026-10-24T07:12:44.000Z",
       "rating": "7.5",
       "votes": "57",
       "duration": "16 Episodes",
@@ -8129,7 +8182,8 @@
       "cover": "https://image.tmdb.org/t/p/original/mjMkTMbWxma8A2Z9OFhTbvetOLO.jpg",
       "description": "When Kang Bok-Soo was a high school student, he was falsely accused of committing violence and kicked out of school. This was caused by his first love Son Soo-Jung and a male student Oh Se-Ho. Kang Bok-Soo is a now an adult, but his life has not gone smoothly. To get revenge on Son Soo-Jung and Oh Se-Ho, he returns to the same high school as a student. The environment at the school has changed and Kang Bok-Soo gets involved in unexpected cases.",
       "genre": "Drama, Comedy, Mystery",
-      "addedAt": "2026-10-24T07:12:44.000Z"
+      "addedAt": "2026-10-24T07:12:44.000Z",
+      "originalReleaseDate": "2018-12-10"
     },
     {
       "id": "mb-s-2154607436987001256",
@@ -8138,7 +8192,7 @@
       "title": "Island [Hindi]",
       "originalTitle": "아일랜드",
       "year": "2022",
-      "releaseDate": "2022-12-30",
+      "releaseDate": "2026-10-24T07:12:44.000Z",
       "rating": "8.1",
       "votes": "251",
       "duration": "12 Episodes",
@@ -9552,7 +9606,8 @@
       "cover": "https://image.tmdb.org/t/p/original/vtdpgm0QR4RDB3tQFIdpYG4QE16.jpg",
       "description": "Evil took its first step to destroy the world. On the mysterious island of Jeju Island, the gateway to this, \"Van,\" a mix of human and monster, \"Won Mi-ho,\" the one in the center of fate, and \"Johan,\" the one who exercises God’s power, come together. A strange, yet captivating, action-packed exorcism fantasy in which they fight evil, share the fate of saving the world, and defy their own...",
       "genre": "Sci-Fi & Fantasy, Action & Adventure, Drama",
-      "addedAt": "2026-10-24T07:12:44.000Z"
+      "addedAt": "2026-10-24T07:12:44.000Z",
+      "originalReleaseDate": "2022-12-30"
     },
     {
       "id": "mb-s-1932866268428649968",
@@ -9561,7 +9616,7 @@
       "title": "Dive to You [Hindi]",
       "originalTitle": "너에게 다이브",
       "year": "2026",
-      "releaseDate": "2026-09-26",
+      "releaseDate": "2026-10-24T06:56:47.000Z",
       "rating": "9.0",
       "votes": "2",
       "duration": "8 Episodes",
@@ -10365,7 +10420,8 @@
       "cover": "https://image.tmdb.org/t/p/original/jseW3HucgNjN2CwJa3MiOlF4xMO.jpg",
       "description": "An actress and her twin brother slip through time – and swap bodies – to save their friend's life.",
       "genre": "Comedy, Drama, Sci-Fi & Fantasy",
-      "addedAt": "2026-10-24T06:56:47.000Z"
+      "addedAt": "2026-10-24T06:56:47.000Z",
+      "originalReleaseDate": "2026-09-26"
     },
     {
       "id": "mb-s-2206443205082733056",
@@ -10374,7 +10430,7 @@
       "title": "The Legend of Kitchen Soldier [Hindi]",
       "originalTitle": "취사병 전설이 되다",
       "year": "2026",
-      "releaseDate": "2026-05-11",
+      "releaseDate": "2026-10-24T06:56:47.000Z",
       "rating": "8.5",
       "votes": "27",
       "duration": "12 Episodes",
@@ -11180,7 +11236,8 @@
       "cover": "https://image.tmdb.org/t/p/original/9lQZ18CYk5n3YNbOfmSjkiBrfrk.jpg",
       "description": "A plastic-spoon man is on his way to becoming a legendary army cook—uncovering dark secrets within the base through his cooking skills.",
       "genre": "Sci-Fi & Fantasy, Comedy, Drama",
-      "addedAt": "2026-10-24T06:56:47.000Z"
+      "addedAt": "2026-10-24T06:56:47.000Z",
+      "originalReleaseDate": "2026-05-11"
     },
     {
       "id": "mb-s-7384944248602723992",
@@ -11189,7 +11246,7 @@
       "title": "You Are My Glory [Hindi]",
       "originalTitle": "你是我的荣耀",
       "year": "2021",
-      "releaseDate": "2021-07-26",
+      "releaseDate": "2026-10-24T06:56:47.000Z",
       "rating": "8.2",
       "votes": "74",
       "duration": "32 Episodes",
@@ -12925,7 +12982,8 @@
       "cover": "https://image.tmdb.org/t/p/original/vuzbhOIQ1Y2wCB0HmhD2Hq5VxkE.jpg",
       "description": "A famous celebrity is about to lose her lucrative video game brand deal. Will her former crush help her become a gaming champion – and might this lead them to romance?",
       "genre": "Comedy, Drama",
-      "addedAt": "2026-10-24T06:56:47.000Z"
+      "addedAt": "2026-10-24T06:56:47.000Z",
+      "originalReleaseDate": "2021-07-26"
     },
     {
       "id": "mb-s-7573592610930312192",
@@ -12934,7 +12992,7 @@
       "title": "Mouse (Mousetrap) [Hindi]",
       "originalTitle": "마우스",
       "year": "2021",
-      "releaseDate": "2021-03-03",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "rating": "8.3",
       "votes": "343",
       "duration": "20 Episodes",
@@ -15226,7 +15284,8 @@
       "cover": "https://image.tmdb.org/t/p/original/ikU9een11dr6UFy0XzQMJv3YJQq.jpg",
       "description": "A psychopath's ruthless serial murders have left the entire nation gripped by fear and chaos. An honest, justice-seeking rookie police officer and a veteran detective with a tragic past, face off against the killer. After their encounter with the psychopath, their lives change completely.",
       "genre": "Crime, Mystery",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2021-03-03"
     },
     {
       "id": "mb-s-1986985589031195976",
@@ -16179,7 +16238,8 @@
       ],
       "type": "series",
       "cover": "https://image.tmdb.org/t/p/original/m2px7CZWxArlG8Lyld1XKIkD5aA.jpg",
-      "addedAt": "2026-10-24T01:43:25.000Z"
+      "addedAt": "2026-10-24T01:43:25.000Z",
+      "releaseDate": "2026-10-24T01:43:25.000Z"
     },
     {
       "id": "mb-s-2819564323977289192",
@@ -16870,7 +16930,8 @@
       ],
       "type": "series",
       "cover": "https://image.tmdb.org/t/p/original/cUNHl2RBFO7qNoAhmRyML0BdWsY.jpg",
-      "addedAt": "2026-10-24T01:43:25.000Z"
+      "addedAt": "2026-10-24T01:43:25.000Z",
+      "releaseDate": "2026-10-24T01:43:25.000Z"
     },
     {
       "id": "mb-s-7315143878922094712",
@@ -16882,7 +16943,7 @@
       "language": "Hindi",
       "tag": "1080p HD",
       "year": "2020",
-      "releaseDate": "2020-07-08",
+      "releaseDate": "2026-10-23T03:48:30.000Z",
       "country": "Turkey",
       "industry": "Others",
       "category": "Others (Dubbed) Series",
@@ -24070,7 +24131,8 @@
       "altTitle": "Love is in the Air",
       "movieboxDetailPath": "love-is-in-the-air-hindi-EMidHb4rnI8",
       "cover": "https://image.tmdb.org/t/p/original/9qq8LpOoBLYq8MxiMugn0gf9qJd.jpg",
-      "addedAt": "2026-10-23T03:48:30.000Z"
+      "addedAt": "2026-10-23T03:48:30.000Z",
+      "originalReleaseDate": "2020-07-08"
     },
     {
       "id": "mb-s-1295982060779237904",
@@ -24243,9 +24305,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 303745,
-      "releaseDate": "2026-10-19",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/32g5MD6eHPAZ5NAgkNAURb4eupm.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2026-10-19"
     },
     {
       "id": "mb-s-1131798723912254248",
@@ -24498,9 +24561,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 311648,
-      "releaseDate": "2026-10-15",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/voAufY8Jv3AVfG15sxY5H6XWFKr.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2026-10-15"
     },
     {
       "id": "mb-s-7956543182215725408",
@@ -24968,9 +25032,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 289423,
-      "releaseDate": "2026-10-09",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/rN9xHDp83kZ3cOr82JR1b4rFIFk.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2026-10-09"
     },
     {
       "id": "mb-s-4163992514732639728",
@@ -25183,9 +25248,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 313346,
-      "releaseDate": "2026-10-07",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/msusxF6ZPGnQmTGXU9iC4UJOohs.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2026-10-07"
     },
     {
       "id": "mb-s-1819272685621345488",
@@ -25598,9 +25664,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 288673,
-      "releaseDate": "2026-10-07",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/9yCJtipMeDe8uAdSJKvw8BnYfRz.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2026-10-07"
     },
     {
       "id": "mb-s-8458814937190780632",
@@ -25853,9 +25920,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 324502,
-      "releaseDate": "2026-10-02",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/745xqHbiUWwO51TM60MXRCR4Onm.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2026-10-02"
     },
     {
       "id": "mb-s-6067650409777220448",
@@ -26318,9 +26386,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 314939,
-      "releaseDate": "2026-09-12",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/moUjiEzpJVNZc7hyNRBbLPt0CPX.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2026-09-12"
     },
     {
       "id": "mb-s-7598175474724358640",
@@ -26620,9 +26689,10 @@
       ],
       "type": "series",
       "tmdbId": 331932,
-      "releaseDate": "2026-09-11",
+      "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/3gcA80UNEO6pAgpTUf7RFS13KPa.jpg",
-      "addedAt": "2026-10-22T18:58:59.000Z"
+      "addedAt": "2026-10-22T18:58:59.000Z",
+      "originalReleaseDate": "2026-09-11"
     },
     {
       "id": "mb-s-7332036005161487320",
@@ -26724,7 +26794,7 @@
       ],
       "type": "series",
       "tmdbId": 313172,
-      "releaseDate": "2026-09-10",
+      "releaseDate": "2026-10-22T18:58:59.000Z",
       "seasons": [
         {
           "seasonNumber": 1,
@@ -26753,7 +26823,8 @@
         }
       ],
       "cover": "https://image.tmdb.org/t/p/original/2N1kH7314XUfMw80iLZh1d2UoHY.jpg",
-      "addedAt": "2026-10-22T18:58:59.000Z"
+      "addedAt": "2026-10-22T18:58:59.000Z",
+      "originalReleaseDate": "2026-09-10"
     },
     {
       "id": "mb-s-742546769883585176",
@@ -27246,9 +27317,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 294636,
-      "releaseDate": "2026-09-10",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/oxJIuxIWiBEcIBRDdu48vTwQcJZ.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2026-09-10"
     },
     {
       "id": "mb-s-2344383564848037072",
@@ -27871,9 +27943,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 299952,
-      "releaseDate": "2026-08-26",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/oUFUvEMCBP80e4eYsfVfxC8n7ih.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2026-08-26"
     },
     {
       "id": "mb-s-3642928735944335256",
@@ -28446,9 +28519,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 291496,
-      "releaseDate": "2026-08-07",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/mp2AFsWsuyxCzenJh3DTKw7z4jG.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2026-08-07"
     },
     {
       "id": "mb-s-4258766710490154968",
@@ -29021,9 +29095,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 296140,
-      "releaseDate": "2026-08-03",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/eBD46F44qKGPZiRLffO4q3JF8Hc.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2026-08-03"
     },
     {
       "id": "mb-s-542646768450818704",
@@ -29663,9 +29738,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 302051,
-      "releaseDate": "2026-07-06",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/ttcHr50V6A4JNKUlkIhhLsX9c04.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2026-07-06"
     },
     {
       "id": "mb-s-2551537104618775712",
@@ -30310,9 +30386,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 285993,
-      "releaseDate": "2026-07-04",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/ceirDIa8QgeeiFKFnLcQpfAH5V7.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2026-07-04"
     },
     {
       "id": "mb-s-1418810570597357232",
@@ -30915,9 +30992,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 270603,
-      "releaseDate": "2026-07-03",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/rQmzx7qyoK5YiXJHnv0jdgVlKyl.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2026-07-03"
     },
     {
       "id": "mb-s-8386834503314067800",
@@ -31490,9 +31568,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 297640,
-      "releaseDate": "2026-04-25",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/xrzle63zw2MduVGmTFeKNXKqUla.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2026-04-25"
     },
     {
       "id": "mb-s-6446851041895370536",
@@ -32216,9 +32295,10 @@
       ],
       "seasonsCount": 2,
       "tmdbId": 283428,
-      "releaseDate": "2026-04-02",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/ht6WUmez8cFbwlrFmGdjbYyn3RG.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2026-04-02"
     },
     {
       "id": "turkish-s-306118",
@@ -32226,7 +32306,7 @@
       "language": "Hindi",
       "tag": "HD",
       "year": "2025",
-      "releaseDate": "2025-11-21",
+      "releaseDate": "2026-10-22T23:52:06.000Z",
       "country": "Turkey",
       "industry": "Others",
       "category": "Others (Dubbed) Series",
@@ -36743,7 +36823,8 @@
       "tmdbId": "306118",
       "totalEpisodes": 126,
       "cover": "https://image.tmdb.org/t/p/original/wuHqvkUVc5jVbeVnTw37Oe8ikC7.jpg",
-      "addedAt": "2026-10-22T23:52:06.000Z"
+      "addedAt": "2026-10-22T23:52:06.000Z",
+      "originalReleaseDate": "2025-11-21"
     },
     {
       "id": "mb-s-1042151586308440096",
@@ -37334,9 +37415,10 @@
       ],
       "seasonsCount": 2,
       "tmdbId": 280042,
-      "releaseDate": "2025-10-04",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/gNYmU3RUlCb6dVqkiPCT7vglMfg.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2025-10-04"
     },
     {
       "id": "mb-s-1880138457100470096",
@@ -37665,9 +37747,10 @@
       ],
       "type": "series",
       "tmdbId": 300081,
-      "releaseDate": "2025-09-06",
+      "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/oE2X7HuKpCJE5hCzTMPKdxJY5vW.jpg",
-      "addedAt": "2026-10-22T18:58:59.000Z"
+      "addedAt": "2026-10-22T18:58:59.000Z",
+      "originalReleaseDate": "2025-09-06"
     },
     {
       "id": "mb-s-2449209778300666432",
@@ -38400,9 +38483,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 231280,
-      "releaseDate": "2025-05-31",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/8l1BN0IIjHmRyW0oDfUfs3F6F4N.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2025-05-31"
     },
     {
       "id": "mb-s-7326680523467114264",
@@ -38915,9 +38999,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 224819,
-      "releaseDate": "2025-05-16",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/w500/ueyjrFrgvFOAW1sZkgsTtSEj82I.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2025-05-16"
     },
     {
       "id": "mb-s-4424066505852289304",
@@ -39287,9 +39372,10 @@
       ],
       "type": "series",
       "tmdbId": 249755,
-      "releaseDate": "2025-03-07",
+      "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/rmZh9TkQIZ9XfTjniUyLGIIACLG.jpg",
-      "addedAt": "2026-10-22T18:58:59.000Z"
+      "addedAt": "2026-10-22T18:58:59.000Z",
+      "originalReleaseDate": "2025-03-07"
     },
     {
       "id": "mb-s-869682023798037784",
@@ -39862,9 +39948,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 259015,
-      "releaseDate": "2025-02-17",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/4Xer0oaXautbLRfJQOrlmPSCfN1.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2025-02-17"
     },
     {
       "id": "mb-s-3997659161797476824",
@@ -40741,9 +40828,10 @@
       ],
       "seasonsCount": 3,
       "tmdbId": 259140,
-      "releaseDate": "2024-10-06",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/xvD9urN8lUtWw5fm4a87Rl3dCZn.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2024-10-06"
     },
     {
       "id": "mb-s-2225435141369905464",
@@ -41881,9 +41969,10 @@
       ],
       "seasonsCount": 2,
       "tmdbId": 207347,
-      "releaseDate": "2024-10-03",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/8p39Ud6ZKMixBQ7R4frg2o3idzc.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2024-10-03"
     },
     {
       "id": "mb-s-3015067308617353456",
@@ -42806,9 +42895,10 @@
       ],
       "seasonsCount": 3,
       "tmdbId": 237150,
-      "releaseDate": "2024-04-07",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/n493br0MLJHASsqEsUwG5PvxDkN.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2024-04-07"
     },
     {
       "id": "mb-s-8475210957663488472",
@@ -43837,7 +43927,8 @@
       ],
       "type": "series",
       "cover": "https://image.tmdb.org/t/p/original/lg134VJrvY3ZdOlP4lTu1onOhcf.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "releaseDate": "2026-10-22T16:39:47.000Z"
     },
     {
       "id": "mb-s-5698833987452421616",
@@ -45359,12 +45450,13 @@
         }
       ],
       "seasonsCount": 1,
-      "releaseDate": "2024-01-01",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "subjectId": "5698833987452421616",
       "detailPath": "so-i-love-you-very-much-hindi-caElq9EIYM6",
       "tmdbId": 129053,
       "cover": "https://image.tmdb.org/t/p/original/oosMlnURVl08jWTqd6iWPqljhmV.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2024-01-01"
     },
     {
       "id": "mb-s-5564284041047803440",
@@ -46311,7 +46403,8 @@
       ],
       "type": "series",
       "cover": "https://image.tmdb.org/t/p/original/bF4B3ZbA9yRLBGaEpzLkcqzi4a1.jpg",
-      "addedAt": "2026-10-24T02:14:01.000Z"
+      "addedAt": "2026-10-24T02:14:01.000Z",
+      "releaseDate": "2026-10-24T02:14:01.000Z"
     },
     {
       "id": "mb-s-5985714864478734088",
@@ -47364,9 +47457,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 195459,
-      "releaseDate": "2023-10-01",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/8Tv140K71PVsiU5z0vRNrgZpKAM.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2023-10-01"
     },
     {
       "id": "mb-s-8653275235304834096",
@@ -48693,7 +48787,8 @@
       ],
       "type": "series",
       "cover": "https://image.tmdb.org/t/p/original/cLQZv8KxWVrsSgm4sbuQSixPgH9.jpg",
-      "addedAt": "2026-10-24T02:14:01.000Z"
+      "addedAt": "2026-10-24T02:14:01.000Z",
+      "releaseDate": "2026-10-24T02:14:01.000Z"
     },
     {
       "id": "mb-s-760560240680133656",
@@ -49426,9 +49521,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 153496,
-      "releaseDate": "2022-11-18",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/clGOzO82lN4gPI4Fon7wNVXS90i.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2022-11-18"
     },
     {
       "id": "turkish-s-210865",
@@ -49440,7 +49536,7 @@
       "language": "Hindi",
       "tag": "1080p HD",
       "year": "2022",
-      "releaseDate": "2022-09-23",
+      "releaseDate": "2026-10-22T23:52:06.000Z",
       "country": "Turkey",
       "industry": "Others",
       "category": "Others (Dubbed) Series",
@@ -73604,7 +73700,8 @@
       "movieboxDetailPath": "golden-boy-hindi-84Y8uLuQTd3",
       "totalEpisodes": 371,
       "cover": "https://image.tmdb.org/t/p/original/vDqCoaMU5FUAuUs0EvL4OAUCxJk.jpg",
-      "addedAt": "2026-10-22T23:52:06.000Z"
+      "addedAt": "2026-10-22T23:52:06.000Z",
+      "originalReleaseDate": "2022-09-23"
     },
     {
       "id": "mb-s-7658459104725665256",
@@ -74157,9 +74254,10 @@
       ],
       "seasonsCount": 2,
       "tmdbId": 120911,
-      "releaseDate": "2022-06-30",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/eqLwFXX0R7U0crdgQcj0Rxjb9uc.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2022-06-30"
     },
     {
       "id": "mb-s-4913967391899615376",
@@ -74732,9 +74830,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 117061,
-      "releaseDate": "2021-07-04",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/aqETSDXdeYqcD1PPd2WBfeWtoct.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2021-07-04"
     },
     {
       "id": "mb-s-7175789760341232656",
@@ -75462,9 +75561,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 119769,
-      "releaseDate": "2021-04-09",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/i1SyUHsi45psSH1xy9sM0in8FKJ.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2021-04-09"
     },
     {
       "id": "mb-s-1046337672425472216",
@@ -77229,9 +77329,10 @@
       ],
       "seasonsCount": 2,
       "tmdbId": 94664,
-      "releaseDate": "2021-01-11",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://pbcdn.aoneroom.com/image/2026/06/29/165b9b02ef1077859684cc7e985f93c9.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2021-01-11"
     },
     {
       "id": "mb-s-7945411914401042712",
@@ -77559,9 +77660,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 328203,
-      "releaseDate": "2020-07-28",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/8vTKWj8J6Z9YtsDbN038CWMadKp.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2020-07-28"
     },
     {
       "id": "turkish-s-95603",
@@ -77569,7 +77671,7 @@
       "language": "Urdu",
       "tag": "1080p HD",
       "year": "2019",
-      "releaseDate": "2019-11-20",
+      "releaseDate": "2026-10-22T23:52:06.000Z",
       "country": "Turkey",
       "industry": "Others",
       "category": "Others (Dubbed) Series",
@@ -80241,7 +80343,8 @@
       "tmdbId": "95603",
       "totalEpisodes": 68,
       "cover": "https://image.tmdb.org/t/p/original/puLaqdcTRwFxwv9S3PO6jA3ep7J.jpg",
-      "addedAt": "2026-10-22T23:52:06.000Z"
+      "addedAt": "2026-10-22T23:52:06.000Z",
+      "originalReleaseDate": "2019-11-20"
     },
     {
       "id": "mb-s-7967254200902451552",
@@ -82150,9 +82253,10 @@
       ],
       "seasonsCount": 3,
       "tmdbId": 91801,
-      "releaseDate": "2019-10-05",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/d8bAI2EDM7L2q94wDZfjb82KRoh.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2019-10-05"
     },
     {
       "id": "mb-s-5663438161238710152",
@@ -83430,9 +83534,10 @@
       ],
       "seasonsCount": 3,
       "tmdbId": 86034,
-      "releaseDate": "2019-07-08",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/1lL1ts7dzTUp0eOTHvMqfw6zFJn.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2019-07-08"
     },
     {
       "id": "turkish-s-87623",
@@ -83440,7 +83545,7 @@
       "language": "Hindi",
       "tag": "1080p HD",
       "year": "2019",
-      "releaseDate": "2019-03-15",
+      "releaseDate": "2026-10-22T23:52:06.000Z",
       "country": "Turkey",
       "industry": "Others",
       "category": "Others (Dubbed) Series",
@@ -89946,7 +90051,8 @@
       "tmdbId": "87623",
       "totalEpisodes": 186,
       "cover": "https://image.tmdb.org/t/p/original/pcZUSUH31odGlq41XktxLVmjNSm.jpg",
-      "addedAt": "2026-10-22T23:52:06.000Z"
+      "addedAt": "2026-10-22T23:52:06.000Z",
+      "originalReleaseDate": "2019-03-15"
     },
     {
       "id": "mb-s-368113073112187200",
@@ -92428,9 +92534,10 @@
       ],
       "seasonsCount": 4,
       "tmdbId": 82684,
-      "releaseDate": "2018-10-02",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://pbcdnw.aoneroom.com/image/2026/10/20/b2e7840254eb5be358f2c7f498040a5d.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2018-10-02"
     },
     {
       "id": "mb-s-2338717329384787360",
@@ -93396,9 +93503,10 @@
       ],
       "seasonsCount": 3,
       "tmdbId": 79166,
-      "releaseDate": "2018-07-14",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://pbcdnw.aoneroom.com/image/2026/07/31/c4dc317f4865dde97758460526adff54.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2018-07-14"
     },
     {
       "id": "mb-s-3000423889278234856",
@@ -94291,9 +94399,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 75123,
-      "releaseDate": "2017-12-23",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/6oxQe4fyYJQT77NBNLQzbW7pf4Z.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2017-12-23"
     },
     {
       "id": "mb-s-2288089881081512944",
@@ -96647,9 +96756,10 @@
       ],
       "seasonsCount": 3,
       "tmdbId": 65942,
-      "releaseDate": "2016-04-04",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/7ZruEnSnHD6Jx5mF0hBt1E306Vt.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2016-04-04"
     },
     {
       "id": "mb-s-7097651204503001752",
@@ -97619,9 +97729,10 @@
       ],
       "seasonsCount": 3,
       "tmdbId": 65844,
-      "releaseDate": "2016-01-14",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://image.tmdb.org/t/p/original/rvZJxD36tKoglL8fXoMMWKGQfM.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2016-01-14"
     },
     {
       "id": "mb-s-8891128203264291048",
@@ -98514,9 +98625,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 64010,
-      "releaseDate": "2015-11-06",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/wgmikRStgBbrzjxFVe5rhFlpL2R.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2015-11-06"
     },
     {
       "id": "turkish-s-66017",
@@ -98524,7 +98636,7 @@
       "language": "Hindi",
       "tag": "1080p HD",
       "year": "2014",
-      "releaseDate": "2014-12-11",
+      "releaseDate": "2026-10-22T23:52:06.000Z",
       "country": "Turkey",
       "industry": "Others",
       "category": "Others (Dubbed) Series",
@@ -108851,7 +108963,8 @@
       "tmdbId": "66017",
       "totalEpisodes": 299,
       "cover": "https://image.tmdb.org/t/p/original/xTwCPMFshsjtA0firQMe3GapQz9.jpg",
-      "addedAt": "2026-10-22T23:52:06.000Z"
+      "addedAt": "2026-10-22T23:52:06.000Z",
+      "originalReleaseDate": "2014-12-11"
     },
     {
       "id": "mb-s-3814452171920267928",
@@ -109744,9 +109857,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 61613,
-      "releaseDate": "2014-10-18",
+      "releaseDate": "2026-10-22T16:39:47.000Z",
       "cover": "https://image.tmdb.org/t/p/original/uH4HaYhGoZ3pBZxwTeGwGJ6Lc8M.jpg",
-      "addedAt": "2026-10-22T16:39:47.000Z"
+      "addedAt": "2026-10-22T16:39:47.000Z",
+      "originalReleaseDate": "2014-10-18"
     },
     {
       "id": "mb-s-4681337201345660416",
@@ -110998,9 +111112,10 @@
       ],
       "seasonsCount": 1,
       "tmdbId": 31910,
-      "releaseDate": "2007-02-15",
+      "releaseDate": "2026-10-22T16:28:51.000Z",
       "cover": "https://pbcdnw.aoneroom.com/image/2026/08/30/b91b67b6bece84f546f8a2a01dc712b8.jpg",
-      "addedAt": "2026-10-22T16:28:51.000Z"
+      "addedAt": "2026-10-22T16:28:51.000Z",
+      "originalReleaseDate": "2007-02-15"
     },
     {
       "id": "mb-s-8182411463231952776",
@@ -111300,9 +111415,10 @@
       ],
       "type": "series",
       "tmdbId": 341,
-      "releaseDate": "2006-09-24",
+      "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/vOXCP8gDeChnUyDVro0jUaT7Acr.jpg",
-      "addedAt": "2026-10-22T18:58:59.000Z"
+      "addedAt": "2026-10-22T18:58:59.000Z",
+      "originalReleaseDate": "2006-09-24"
     },
     {
       "id": "mb-s-3929372124917419816",
@@ -111313,7 +111429,7 @@
       "language": "Japanese / English",
       "tag": "1080p HD",
       "year": "1995",
-      "releaseDate": "1995-10-27",
+      "releaseDate": "2026-10-23T05:42:34.000Z",
       "country": "Japan",
       "industry": "Japanese",
       "category": "Anime Series (Hindi Dub)",
@@ -111616,7 +111732,8 @@
       "type": "series",
       "streamUrl": "/api/moviebox/stream?id=3929372124917419816&path=golden-boy-GZ4ZlM5zgG4&se=1&ep=1",
       "cover": "https://pbcdnw.aoneroom.com/image/2026/01/27/c97ed57e1a8e22db2963e1a9324d16a6.jpg",
-      "addedAt": "2026-10-23T05:42:34.000Z"
+      "addedAt": "2026-10-23T05:42:34.000Z",
+      "originalReleaseDate": "1995-10-27"
     }
   ],
   "upcoming": [

@@ -502,12 +502,20 @@ app.get('/api/content', async (req, res) => {
       data.movies.forEach(m => {
         m.type = 'movie';
         if (!m.cover) m.cover = m.backdrop || m.poster;
+        if (m.addedAt) {
+          m.originalReleaseDate = m.originalReleaseDate || m.releaseDate;
+          m.releaseDate = m.addedAt;
+        }
       });
     }
     if (data.series) {
       data.series.forEach(s => {
         s.type = 'series';
         if (!s.cover) s.cover = s.backdrop || s.poster;
+        if (s.addedAt) {
+          s.originalReleaseDate = s.originalReleaseDate || s.releaseDate;
+          s.releaseDate = s.addedAt;
+        }
       });
     }
     if (data.upcoming) data.upcoming.forEach(u => u.type = u.type || 'series');
