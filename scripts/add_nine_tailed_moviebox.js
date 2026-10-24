@@ -295,6 +295,7 @@ async function run() {
     badgeRight: 'Hindi Dub',
     poster: tv.poster_path ? `https://image.tmdb.org/t/p/w500${tv.poster_path}` : 'https://image.tmdb.org/t/p/w500/v7VEIX1yOcFWY17eUprNhAS9xEp.jpg',
     backdrop: tv.backdrop_path ? `https://image.tmdb.org/t/p/original${tv.backdrop_path}` : 'https://image.tmdb.org/t/p/original/oPJQvS8Xyg7chAX0jQoC2smqMxv.jpg',
+    cover: tv.backdrop_path ? `https://image.tmdb.org/t/p/original${tv.backdrop_path}` : 'https://image.tmdb.org/t/p/original/oPJQvS8Xyg7chAX0jQoC2smqMxv.jpg',
     overview: tv.overview || "A TV producer discovers a secret supernatural world as she becomes entangled with a former mountain deity who's spent centuries searching for the reincarnation of his lost first love.",
     genres: (tv.genres || []).map(g => g.name).join(', ') || 'Drama, Fantasy, Romance, K-Drama',
     director: 'Kang Shin-hyo, Jo Nam-hyung',
@@ -334,6 +335,9 @@ async function run() {
     });
 
     content.series.unshift(seriesObj);
+
+    // Also update featured spotlight to Tale of the Nine Tailed with TMDB cover photo
+    content.featured = seriesObj;
 
     fs.writeFileSync(filePath, JSON.stringify(content, null, 2), 'utf8');
     console.log(`💾 Replaced entry in: ${filePath}`);

@@ -630,10 +630,20 @@ function renderHeroBanner() {
   const movies = appState.content.movies || [];
   const series = appState.content.series || [];
   
-  // Home hero: 2 most recent movies + 3 most recent series (always latest uploads)
+  // Home hero: Featured item first (with TMDB cover photo), then recent movies + series
+  const featured = appState.content.featured;
   const recentMovies = movies.slice(0, 2);
   const recentSeries = series.slice(0, 3);
-  heroItems = [...recentMovies, ...recentSeries];
+  const rawHeroList = featured && featured.id
+    ? [featured, ...recentMovies, ...recentSeries]
+    : [...recentMovies, ...recentSeries];
+
+  const seenIds = new Set();
+  heroItems = rawHeroList.filter(item => {
+    if (!item || !item.id || seenIds.has(item.id)) return false;
+    seenIds.add(item.id);
+    return true;
+  }).slice(0, 5);
 
   if (heroItems.length === 0) return;
 
@@ -645,7 +655,7 @@ function renderHeroBanner() {
 
   if (backdropTrack) {
     backdropTrack.innerHTML = heroItems.map((slide, idx) => {
-      const bgUrl = slide.backdrop || slide.poster;
+      const bgUrl = slide.cover || slide.backdrop || slide.poster;
       return `<div class="hero-backdrop-slide ${idx === 0 ? 'active' : ''}" style="background-image: url('${bgUrl}')"></div>`;
     }).join('');
   }
@@ -895,7 +905,7 @@ function renderMovieHeroBanner() {
 
   if (backdropTrack) {
     backdropTrack.innerHTML = movieHeroItems.map((slide, idx) => {
-      const bgUrl = slide.backdrop || slide.poster;
+      const bgUrl = slide.cover || slide.backdrop || slide.poster;
       return `<div class="hero-backdrop-slide ${idx === 0 ? 'active' : ''}" style="background-image: url('${bgUrl}')"></div>`;
     }).join('');
   }
@@ -1126,7 +1136,7 @@ function renderSeriesHeroBanner() {
 
   if (backdropTrack) {
     backdropTrack.innerHTML = seriesHeroItems.map((slide, idx) => {
-      const bgUrl = slide.backdrop || slide.poster;
+      const bgUrl = slide.cover || slide.backdrop || slide.poster;
       return `<div class="hero-backdrop-slide ${idx === 0 ? 'active' : ''}" style="background-image: url('${bgUrl}')"></div>`;
     }).join('');
   }

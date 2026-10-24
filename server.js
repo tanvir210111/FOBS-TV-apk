@@ -517,6 +517,15 @@ app.get('/api/content', async (req, res) => {
     }
     if (data.upcoming) data.upcoming.forEach(u => u.type = u.type || 'series');
 
+    // Ensure featured spotlight has official TMDB cover photo and latest title
+    if (!data.featured || !data.featured.id || (data.featured.title && data.featured.title.includes('Sen Çal'))) {
+      data.featured = (data.series && data.series[0]) || (data.movies && data.movies[0]);
+    }
+    if (data.featured) {
+      data.featured.cover = data.featured.cover || data.featured.backdrop || data.featured.poster;
+      data.featured.backdrop = data.featured.backdrop || data.featured.cover;
+    }
+
     // If liveTv is empty in local content.json, load working BD live TV channels
     if (!data.liveTv || data.liveTv.length === 0) {
       try {
