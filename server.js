@@ -671,6 +671,9 @@ app.get('/api/moviebox/stream', async (req, res) => {
       // Love Next Door [Hindi] (Korean Series - Season 1)
       else if (id === '1332900149030438936') resolvedPath = 'love-next-door-hindi-A2MLzAcHsA1';
       else if (id === '900420217287968016') resolvedPath = 'love-next-door-21sWBRUVv41';
+      // High School Return of a Gangster [Hindi] (Korean Series - Season 1)
+      else if (id === '3622255521824228456') resolvedPath = 'high-school-return-of-a-gangster-hindi-GFI0WK3Yzj4';
+      else if (id === '6930023915360583800') resolvedPath = 'high-school-return-of-a-gangster-8ydAeg9AVf8';
     }
     // Try requested se/ep first, then fallbacks
     let media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);

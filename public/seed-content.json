@@ -4825,6 +4825,1267 @@
   ],
   "series": [
     {
+      "id": "mb-s-3622255521824228456",
+      "subjectId": "3622255521824228456",
+      "tmdbId": 224030,
+      "title": "High School Return of a Gangster [Hindi]",
+      "originalTitle": "조폭인 내가 고등학생이 되었습니다",
+      "year": "2024",
+      "releaseDate": "2026-10-24T12:36:19.302Z",
+      "originalReleaseDate": "2024-05-29",
+      "addedAt": "2026-10-24T12:36:19.302Z",
+      "rating": "8.5",
+      "votes": "116",
+      "duration": "1 Season (8 Episodes)",
+      "category": "Korean (Dubbed) Series",
+      "industry": "Korean",
+      "country": "Korea",
+      "badgeLeft": "K-Drama",
+      "badgeRight": "Hindi Dub",
+      "poster": "https://image.tmdb.org/t/p/w500/bK5kGsWq9vGALbDgPmNiLFNFVI1.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/d5XO4xMMYukfDgcuAe4IBQ7MBmY.jpg",
+      "cover": "https://image.tmdb.org/t/p/original/d5XO4xMMYukfDgcuAe4IBQ7MBmY.jpg",
+      "overview": "A spirit of a middle school dropout gangster who accidentally possesses an 18-year-old boy’s body who killed himself, goes back to high school to take a revenge against the bullies with his gangster skills and encounters unexpected relationship.",
+      "description": "A spirit of a middle school dropout gangster who accidentally possesses an 18-year-old boy’s body who killed himself, goes back to high school to take a revenge against the bullies with his gangster skills and encounters unexpected relationship.",
+      "genres": "Sci-Fi & Fantasy, Drama",
+      "genre": "Sci-Fi & Fantasy, Drama",
+      "director": "Ho Rol, Lee Seong-taek",
+      "cast": [
+        {
+          "name": "Yoon Chan-young",
+          "character": "Yi-heon/Kim Deuk-pal",
+          "photo": "https://image.tmdb.org/t/p/w185/7Al19wuV9XnjIiiPlsor3MK84Kx.jpg"
+        },
+        {
+          "name": "Bong Jae-hyun",
+          "character": "Choi Se-kyung",
+          "photo": "https://image.tmdb.org/t/p/w185/bd8mwD455WlaNSKsTcszZbh0GRC.jpg"
+        },
+        {
+          "name": "Won Tae-min",
+          "character": "Kim Dong-soo",
+          "photo": "https://image.tmdb.org/t/p/w185/2EIKENQ94mb0POjHpp2KLToSuSv.jpg"
+        },
+        {
+          "name": "Lee Seo-jin",
+          "character": "Kim Deuk-pal",
+          "photo": "https://image.tmdb.org/t/p/w185/s5KginY3G9ZmqsgiOKmx9mto6Vx.jpg"
+        },
+        {
+          "name": "Seo Tae-hwa",
+          "character": "Choi Myung-hyun",
+          "photo": "https://image.tmdb.org/t/p/w185/h92LydZOY6e82OGaKCViOYtoroA.jpg"
+        },
+        {
+          "name": "Kim Se-won",
+          "character": "Kim Yeon-ji",
+          "photo": "https://image.tmdb.org/t/p/w185/dNeH2k2LfbO1mn0JUTCkVOh70BF.jpg"
+        },
+        {
+          "name": "Joo Yoon-chan",
+          "character": "Hong Jae-min",
+          "photo": "https://image.tmdb.org/t/p/w185/n3PiyWtabvKOTPDpD2cRjiwoXAe.jpg"
+        },
+        {
+          "name": "Lee Kyung-young",
+          "character": "The Boss",
+          "photo": "https://image.tmdb.org/t/p/w185/aDNcLCWs7KHToiXxfG7ACwvne3l.jpg"
+        },
+        {
+          "name": "Shin Min-jae",
+          "character": "Mathematics Lecturer",
+          "photo": "https://image.tmdb.org/t/p/w185/rTnK1g6ZCGab4qd0iN6uIwyTGsT.jpg"
+        },
+        {
+          "name": "Lee Hee-jin",
+          "character": "Song Min-seo",
+          "photo": "https://image.tmdb.org/t/p/w185/hStmRxn4XWXr45rFq7cTk8owQa0.jpg"
+        }
+      ],
+      "seasonsCount": 1,
+      "seasons": [
+        {
+          "seasonNumber": 1,
+          "title": "Season 1",
+          "name": "Season 1",
+          "year": "2024",
+          "poster": "https://image.tmdb.org/t/p/w500/bK5kGsWq9vGALbDgPmNiLFNFVI1.jpg",
+          "episodes": [
+            {
+              "number": 1,
+              "episode": 1,
+              "season": 1,
+              "title": "Deuk Pal Goes to High School",
+              "duration": "53 min",
+              "overview": "Deuk Pal is about to become the boss of the Chilsung Gang. While mulling over giving up his dream of going to university, he tries to save Yi Heon from jumping off a bridge. Unfortunately, Deuk Pal loses his life but takes over Yi Heon's body. He learns of Yi Heon's misfortunes and resolves to avenge his suffering as a victim of bullying.",
+              "still": "https://image.tmdb.org/t/p/w500/yxmvOKRomGbCNUWrqB0OEOBQ1IO.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/63fcba5aa80fc61c92ae8a1d9110a875.mp4?sign=3ad48f83cbcba56ed7b8afceb50886f9&t=1792844023",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 613MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/63fcba5aa80fc61c92ae8a1d9110a875.mp4?sign=3ad48f83cbcba56ed7b8afceb50886f9&t=1792844023",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=3622255521824228456&se=1&ep=1",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 720p - 319MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/67fe16c2c11cd2f562e3d30c221d61ac.mp4?sign=713d64a7c130bcb3b1f1130cad5f9f08&t=1792844023",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Full HD Backup 1080p - 1353MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/fd8c7e5716ee7248aa940300beb3ec50.mp4?sign=9f2c9349c9886946e2df39750e2a6067&t=1792841544",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=6930023915360583800&se=1&ep=1",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=224030&s=1&e=1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/224030/1/1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/224030/1/1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "3687988999857098592",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/27a3cc116f8ecd81a53ed256c3ef194d.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDUwMTA4fX19XX0_&Signature=TWm9YDLO6VJN4cdwTeVFf9lM771HfBsq7ZX8qwq-jaG55rQQoyTk28PgGlzRdW0gvI6zl2jq6zHG9ki18yIu3dFoFI2oRVEwjz~IjMeaUmr8Qx5fjwgpTT~FdKdME~2l1vZibuWNJ7KW7tuCCztBnargWcy6Bbyb1FcV5T8tBnUYXmkutdgiFdqts1olTBJPLjcfkXqaZJNHaDR3P9bNesES3R3HQ0uFg5OIR4fhTT4srPKcApd4Cr1ndjb7s6NqwkK0VQYaX6XybvJ8EsG4~yA~K-h1JLS~gMRSJoUH82zo1NKtm10CAXvGnAQnAXyMXrYDO0JQcNdi33PccLwWEg__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "47877",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "episode": 2,
+              "season": 1,
+              "title": "You Are Not Song Yi Heon",
+              "duration": "54 min",
+              "overview": "Deuk Pal, now inhabiting Yi Heon’s body, arouses suspicion from Se Kyung due to his noticeable deviation from his usual self. Despite Deuk Pal's attempts to mimic Yi Heon's behaviour, the other kids begin to question the sudden change in him. Particularly with Jae Min persisting in ridiculing Yi Heon, Deuk Pal plots a subtle revenge for him.",
+              "still": "https://image.tmdb.org/t/p/w500/coVgQjhCISejXKVuQNg9RiZ0TKx.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/426ad54851ff632b0046d18085efcfd0.mp4?sign=2b03291f06923266af2f6c0a64c58dfb&t=1792844202",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 589MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/426ad54851ff632b0046d18085efcfd0.mp4?sign=2b03291f06923266af2f6c0a64c58dfb&t=1792844202",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=3622255521824228456&se=1&ep=2",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 720p - 289MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/3ac1d08ac0a061e56b1ec97bbab8d024.mp4?sign=f0bb4a7888a953feb7f4f0033536cd2c&t=1792844202",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Full HD Backup 1080p - 1382MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/b363d9b5e4e82fdaa111e88dcc8bb5f3.mp4?sign=4bb87a20b503158853d127f189a11b2a&t=1792845375",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=6930023915360583800&se=1&ep=2",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=224030&s=1&e=2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/224030/1/2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/224030/1/2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "1153306834577542160",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/d10339a02832e918f9ec155b8466c9f5.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDUwMTA4fX19XX0_&Signature=TWm9YDLO6VJN4cdwTeVFf9lM771HfBsq7ZX8qwq-jaG55rQQoyTk28PgGlzRdW0gvI6zl2jq6zHG9ki18yIu3dFoFI2oRVEwjz~IjMeaUmr8Qx5fjwgpTT~FdKdME~2l1vZibuWNJ7KW7tuCCztBnargWcy6Bbyb1FcV5T8tBnUYXmkutdgiFdqts1olTBJPLjcfkXqaZJNHaDR3P9bNesES3R3HQ0uFg5OIR4fhTT4srPKcApd4Cr1ndjb7s6NqwkK0VQYaX6XybvJ8EsG4~yA~K-h1JLS~gMRSJoUH82zo1NKtm10CAXvGnAQnAXyMXrYDO0JQcNdi33PccLwWEg__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "52198",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "episode": 3,
+              "season": 1,
+              "title": "Deuk Pal Takes Charge",
+              "duration": "54 min",
+              "overview": "Deuk Pal proves he can fight in Yi Heon's body and gains control over Jae Min and his underlings. The kids at school can't believe how different Yi Heon is and are shocked. Se Kyung gets DNA testing done to see if Yi Heon is still the Yi Heon he knows, and Deuk Pal focuses on his studies and setting things right for Yi Heon. Meanwhile, Deuk Pal learns about what happened the night before Yi Heon died from Se Kyung as they become closer.",
+              "still": "https://image.tmdb.org/t/p/w500/gRBaAGX80Tz42C7TWArNFbRExjP.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/42f46abedb98b894c6d10eb7acbb7251.mp4?sign=b5f7458761b07bf4ccfd0f21e9a4e966&t=1792843211",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 540MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/42f46abedb98b894c6d10eb7acbb7251.mp4?sign=b5f7458761b07bf4ccfd0f21e9a4e966&t=1792843211",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=3622255521824228456&se=1&ep=3",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 720p - 275MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/ef683632e8dccb0add2c8602f05a0fd9.mp4?sign=9be2e713e5b04e2fa34f9db713e9f8a2&t=1792843211",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Full HD Backup 1080p - 400MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/26fe071ae313d7bb312fd09a87b219d6.mp4?sign=f837eec56f4d67d7e55495b40bb35dee&t=1792843402",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=6930023915360583800&se=1&ep=3",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=224030&s=1&e=3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/224030/1/3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/224030/1/3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "455248892335115280",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/4721a16b7df63c0a0f5017ef68600faf.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDUwMTMwfX19XX0_&Signature=DoV2LbjXdDeiF1wY4BRr~2oek2yV21vY3qqg0sZMoiIJO7~lnuRwb97mGOn-n-3Mrn4tZlRbqCjg7Ao3fwNB41t8rZ2-IPQxtWhaJOWt7BA2rL2jz9kQmtSVbrTeV2r1GgwZo6L7~h3jgDtZjQAtEv3A1aKxUZB8KMq5fy5Dd99Lg2RwAqetK2GizLDzDC0caNiKwpBSNYP09kEY~~4BsgSyVC8gx8VOPle7qVpLD5z1f7PSBMRorDcW1vilZu6L2K0Oq-wLbHX4KARgSfE5HIyxaqIo35vyDuC9YQcCuM45MEKF6Yo2Smrv1mK5-et~UOnLny~LRCB~Uqx~rii9Pw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "60283",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "episode": 4,
+              "season": 1,
+              "title": "Yi Heon's Mom Kidnapping",
+              "duration": "51 min",
+              "overview": "Deuk Pal and Se Kyung save Yi Heon's mom from getting kidnapped. Luckily, she was unharmed. Although he has a hunch about who might be responsible, Deuk Pal vows to protect Yi Heon and his family without the police involved. Meanwhile, Jae Min approaches Deuk Pal to find out if the police are looking for him, but Se Kyung confronts him about his involvement in the attempted kidnapping.",
+              "still": "https://image.tmdb.org/t/p/w500/hUvJURUj0dPPazEZmXW5U0xHdE.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/0e775b0456ba0ab4074119116ade87f0.mp4?sign=cc6883e792acf893c1ceb3803ba9305e&t=1792844195",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 471MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/0e775b0456ba0ab4074119116ade87f0.mp4?sign=cc6883e792acf893c1ceb3803ba9305e&t=1792844195",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=3622255521824228456&se=1&ep=4",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 720p - 236MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/3ab8baf213f0683917dbeacf3badc913.mp4?sign=02572caea962ed07f0284e747ead48d7&t=1792844195",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Full HD Backup 1080p - 339MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/d67e8a66adb24560001beacee7399c72.mp4?sign=35b99bac675338c3dad766e13bd0c3a7&t=1792845375",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=6930023915360583800&se=1&ep=4",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=224030&s=1&e=4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/224030/1/4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/224030/1/4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "3614524030935617376",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/eea13e5848ec748c8c1a846d92e98721.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDUwMTA4fX19XX0_&Signature=TWm9YDLO6VJN4cdwTeVFf9lM771HfBsq7ZX8qwq-jaG55rQQoyTk28PgGlzRdW0gvI6zl2jq6zHG9ki18yIu3dFoFI2oRVEwjz~IjMeaUmr8Qx5fjwgpTT~FdKdME~2l1vZibuWNJ7KW7tuCCztBnargWcy6Bbyb1FcV5T8tBnUYXmkutdgiFdqts1olTBJPLjcfkXqaZJNHaDR3P9bNesES3R3HQ0uFg5OIR4fhTT4srPKcApd4Cr1ndjb7s6NqwkK0VQYaX6XybvJ8EsG4~yA~K-h1JLS~gMRSJoUH82zo1NKtm10CAXvGnAQnAXyMXrYDO0JQcNdi33PccLwWEg__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "54674",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "episode": 5,
+              "season": 1,
+              "title": "Yi Heon Warns Dong Soo",
+              "duration": "52 min",
+              "overview": "Se Kyung witnesses Yi Heon getting abducted but can't do anything about it because he remembers Yi Heon telling him not to call the police about anything. He asks Jae Min for help, but Jae Min cowards out. Meanwhile, Yi Heon deals with the gangsters and tells them things that shock them.",
+              "still": "https://image.tmdb.org/t/p/w500/clgPjvlj90Nfec5weQt2TGBLB4w.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/d93bb94d3b543ec59d80fbe8467c3a89.mp4?sign=8dbe2970bc94d33618c5b4bba65caea6&t=1792845301",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 488MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/d93bb94d3b543ec59d80fbe8467c3a89.mp4?sign=8dbe2970bc94d33618c5b4bba65caea6&t=1792845301",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=3622255521824228456&se=1&ep=5",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 720p - 245MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/fbfe710875bed7fc7dc70f2c2a91d15e.mp4?sign=b28f82056075fbe0c51564cf02d0cc2d&t=1792844223",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Full HD Backup 1080p - 349MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/2a8f2a27bfa0d31ed841582527dec5de.mp4?sign=d00d25b681bf57e6dfed5494368f267e&t=1792845376",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=6930023915360583800&se=1&ep=5",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=224030&s=1&e=5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/224030/1/5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/224030/1/5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "4717905939641387904",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/7e36760d79fbe03297d522ad8e9a6495.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4NzM2fX19XX0_&Signature=obfinNVrNuNGokV8M~5UcxoHX8H8icR0C9CKgv~j6N-9BOB066ZgLvF9Odrn3DqhBXH6DX2BlGgtRvkXdekSQD5OOTKsha63o0iwxnxAZjZQTlgHqNGXByNfNf-zFODIw5UQoK6ruHE9UxOkWUCH2X2UWkHDiqa545gHT-ubiIJ1ZQTTw8pTQfmxzMT76GakHGPG~uP9tYBP3pJmEWwdK2Q0nvJbyLccXa1E7RafTgc7wCHojgwNX2hBKj7jLKhvhZC7iLjyESSEQ6Uym62YGqXjkoJSB-zEa2twcK5esjxpN1qEfl6g7lhlpuDb5J3~28hpqmBJIBfoLPN4FhUxxg__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "60903",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "episode": 6,
+              "season": 1,
+              "title": "Reach Out",
+              "duration": "55 min",
+              "overview": "Deuk Pal and Se Kyung go to see the ocean and have a day off. Se Kyung talks about his father who’s been trying to control him since young and how it made him stressed and suffocating. Se Kyung’s father comes to school and calls for the violence committee. Meanwhile, Deuk Pal finds out that Yi Heon’s mother has been taking addictive medicine.",
+              "still": "https://image.tmdb.org/t/p/w500/7qvc3St6GqPsg6bvLCH1P4RXjPT.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/35e83066f8babee17f889b7d5b18df68.mp4?sign=47d0ecaf1b5aa376303b40b181d69cc4&t=1792844507",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 514MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/35e83066f8babee17f889b7d5b18df68.mp4?sign=47d0ecaf1b5aa376303b40b181d69cc4&t=1792844507",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=3622255521824228456&se=1&ep=6",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 720p - 508MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/mkvcnimas/39eafc20dca4b9d521fca29db20e9c2d.mp4?sign=c756addcf85c438660fb6cc5c887f482&t=1792845376",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Full HD Backup 1080p - 382MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/c47ffe8dc024c05e0c61a2b4f33f2b27.mp4?sign=59fca35c7b7f21e3d4a83d6c7cde67f6&t=1792845303",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=6930023915360583800&se=1&ep=6",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=224030&s=1&e=6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/224030/1/6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/224030/1/6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "5486649285410279264",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/6068c09784c158669348b7d585ac1f1e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4NzM2fX19XX0_&Signature=obfinNVrNuNGokV8M~5UcxoHX8H8icR0C9CKgv~j6N-9BOB066ZgLvF9Odrn3DqhBXH6DX2BlGgtRvkXdekSQD5OOTKsha63o0iwxnxAZjZQTlgHqNGXByNfNf-zFODIw5UQoK6ruHE9UxOkWUCH2X2UWkHDiqa545gHT-ubiIJ1ZQTTw8pTQfmxzMT76GakHGPG~uP9tYBP3pJmEWwdK2Q0nvJbyLccXa1E7RafTgc7wCHojgwNX2hBKj7jLKhvhZC7iLjyESSEQ6Uym62YGqXjkoJSB-zEa2twcK5esjxpN1qEfl6g7lhlpuDb5J3~28hpqmBJIBfoLPN4FhUxxg__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "58620",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "episode": 7,
+              "season": 1,
+              "title": "This Is Your Last Chance",
+              "duration": "53 min",
+              "overview": "Deuk Pal found out that the school bullies reported Yi Heon for school violence. He orders Dong Soo and the gang to get Lee Mi Kyung since she is the one behind them. Byung Chul tells Jae Min to join him and report Yi Heon as well. Jae Min feels guilty about falsely charging Yi Heon, but he's also scared that he might end up going to the juvie if the truth is revealed.",
+              "still": "https://image.tmdb.org/t/p/w500/qQaoe8dF4y6njdrn6gwEMtpxBQS.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/87d803819b11e500b119943d77466b74.mp4?sign=3cffe56d6517b5dac27f9023c0079238&t=1792844168",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 481MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/87d803819b11e500b119943d77466b74.mp4?sign=3cffe56d6517b5dac27f9023c0079238&t=1792844168",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=3622255521824228456&se=1&ep=7",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 720p - 237MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/6a12f6752dc64b766617caf85fb2767d.mp4?sign=bcabfc17997ebe499a16ce2ac9c903cb&t=1792844168",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Full HD Backup 1080p - 106MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/7d30db95006d917650a8f0bcadbbb436.mp4?sign=a22e1296a035ae2adbc48b0b0bb3c453&t=1792845263",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=6930023915360583800&se=1&ep=7",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=224030&s=1&e=7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/224030/1/7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/224030/1/7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "6917668067007155624",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/e8f643be6ed116b358f503bcdf532a97.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4MDUwfX19XX0_&Signature=YsT~0vxgVE7bKHNeM7fOqHV4~SU-i4WN1VHRbiKHyxc466QmHPAzjvpfvbHK4RiKj7LKjEzHGd0zZ-m9HX6RQw-BbPHikeP59pYJF591y2MBbeOJzJ97EsXh0DLvWWkJjEp0BueYsCDSzE7~tWNz0duAhBSqqIW79G26qmWqpYFns1b7ciSZt7WVLZ9QOEI88rQC-YPDNI8gvJKdUWKc~-OkepUj-FS0P03ihFrsivDqvcTTFLkcyAsKVFhPEoQJuiH0JQCqR4ium1OEnxPoPEPF4hjlCzFGzNuUsWxiHDKKQnxyyk83Om98w4UM64eP2bpJUXrEizw3Qxci5Q6ByQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "62606",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "episode": 8,
+              "season": 1,
+              "title": "Goodbye",
+              "duration": "66 min",
+              "overview": "Jae Min confesses to bullying Yi Heon and other kids at school. Thanks to Jae Min, the charges are dropped, but Deuk Pal still needs to find Mi Kyung so that she won't come back to threaten Yi Heon and his mother again. He decides to meet Chairman Bae and set everything right. Meanwhile, Yi Heon's soul returns and tells Deuk Pal that he does not have much time left.",
+              "still": "https://image.tmdb.org/t/p/w500/u8Guv7ez5VY9jU3jCGJwjWKDFUj.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/cc6bc68f8e7e4e7c51fd0576b5ebf10c.mp4?sign=41ab29cd448c41c6ccfe8cf010b2a908&t=1792844649",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 560MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/cc6bc68f8e7e4e7c51fd0576b5ebf10c.mp4?sign=41ab29cd448c41c6ccfe8cf010b2a908&t=1792844649",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=3622255521824228456&se=1&ep=8",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 360p - 184MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/c8cefb5b3eea9d8e6e58d59945eaca08.mp4?sign=b51540fef60a1067530daea6408635ec&t=1792844649",
+                  "isDirect": true,
+                  "quality": "360p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Full HD Backup 1080p - 126MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/b59181fa66e5885fbcb553f7c5c285b0.mp4?sign=38d533b931534a57c08790bd07f6a410&t=1792844651",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=6930023915360583800&se=1&ep=8",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=224030&s=1&e=8",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/224030/1/8",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/224030/1/8",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "5002758616072570632",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/073a15b241b8fbe4e5392018e646787d.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4MDUwfX19XX0_&Signature=YsT~0vxgVE7bKHNeM7fOqHV4~SU-i4WN1VHRbiKHyxc466QmHPAzjvpfvbHK4RiKj7LKjEzHGd0zZ-m9HX6RQw-BbPHikeP59pYJF591y2MBbeOJzJ97EsXh0DLvWWkJjEp0BueYsCDSzE7~tWNz0duAhBSqqIW79G26qmWqpYFns1b7ciSZt7WVLZ9QOEI88rQC-YPDNI8gvJKdUWKc~-OkepUj-FS0P03ihFrsivDqvcTTFLkcyAsKVFhPEoQJuiH0JQCqR4ium1OEnxPoPEPF4hjlCzFGzNuUsWxiHDKKQnxyyk83Om98w4UM64eP2bpJUXrEizw3Qxci5Q6ByQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "59768",
+                  "delay": 0
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "episode": 1,
+          "season": 1,
+          "title": "Deuk Pal Goes to High School",
+          "duration": "53 min",
+          "overview": "Deuk Pal is about to become the boss of the Chilsung Gang. While mulling over giving up his dream of going to university, he tries to save Yi Heon from jumping off a bridge. Unfortunately, Deuk Pal loses his life but takes over Yi Heon's body. He learns of Yi Heon's misfortunes and resolves to avenge his suffering as a victim of bullying.",
+          "still": "https://image.tmdb.org/t/p/w500/yxmvOKRomGbCNUWrqB0OEOBQ1IO.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/63fcba5aa80fc61c92ae8a1d9110a875.mp4?sign=3ad48f83cbcba56ed7b8afceb50886f9&t=1792844023",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 613MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/63fcba5aa80fc61c92ae8a1d9110a875.mp4?sign=3ad48f83cbcba56ed7b8afceb50886f9&t=1792844023",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=3622255521824228456&se=1&ep=1",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 720p - 319MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/67fe16c2c11cd2f562e3d30c221d61ac.mp4?sign=713d64a7c130bcb3b1f1130cad5f9f08&t=1792844023",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 4 (MovieBox Full HD Backup 1080p - 1353MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/fd8c7e5716ee7248aa940300beb3ec50.mp4?sign=9f2c9349c9886946e2df39750e2a6067&t=1792841544",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=6930023915360583800&se=1&ep=1",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=224030&s=1&e=1",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/224030/1/1",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/224030/1/1",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "3687988999857098592",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/27a3cc116f8ecd81a53ed256c3ef194d.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDUwMTA4fX19XX0_&Signature=TWm9YDLO6VJN4cdwTeVFf9lM771HfBsq7ZX8qwq-jaG55rQQoyTk28PgGlzRdW0gvI6zl2jq6zHG9ki18yIu3dFoFI2oRVEwjz~IjMeaUmr8Qx5fjwgpTT~FdKdME~2l1vZibuWNJ7KW7tuCCztBnargWcy6Bbyb1FcV5T8tBnUYXmkutdgiFdqts1olTBJPLjcfkXqaZJNHaDR3P9bNesES3R3HQ0uFg5OIR4fhTT4srPKcApd4Cr1ndjb7s6NqwkK0VQYaX6XybvJ8EsG4~yA~K-h1JLS~gMRSJoUH82zo1NKtm10CAXvGnAQnAXyMXrYDO0JQcNdi33PccLwWEg__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "47877",
+              "delay": 0
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "episode": 2,
+          "season": 1,
+          "title": "You Are Not Song Yi Heon",
+          "duration": "54 min",
+          "overview": "Deuk Pal, now inhabiting Yi Heon’s body, arouses suspicion from Se Kyung due to his noticeable deviation from his usual self. Despite Deuk Pal's attempts to mimic Yi Heon's behaviour, the other kids begin to question the sudden change in him. Particularly with Jae Min persisting in ridiculing Yi Heon, Deuk Pal plots a subtle revenge for him.",
+          "still": "https://image.tmdb.org/t/p/w500/coVgQjhCISejXKVuQNg9RiZ0TKx.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/426ad54851ff632b0046d18085efcfd0.mp4?sign=2b03291f06923266af2f6c0a64c58dfb&t=1792844202",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 589MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/426ad54851ff632b0046d18085efcfd0.mp4?sign=2b03291f06923266af2f6c0a64c58dfb&t=1792844202",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=3622255521824228456&se=1&ep=2",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 720p - 289MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/3ac1d08ac0a061e56b1ec97bbab8d024.mp4?sign=f0bb4a7888a953feb7f4f0033536cd2c&t=1792844202",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 4 (MovieBox Full HD Backup 1080p - 1382MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/b363d9b5e4e82fdaa111e88dcc8bb5f3.mp4?sign=4bb87a20b503158853d127f189a11b2a&t=1792845375",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=6930023915360583800&se=1&ep=2",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=224030&s=1&e=2",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/224030/1/2",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/224030/1/2",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "1153306834577542160",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/d10339a02832e918f9ec155b8466c9f5.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDUwMTA4fX19XX0_&Signature=TWm9YDLO6VJN4cdwTeVFf9lM771HfBsq7ZX8qwq-jaG55rQQoyTk28PgGlzRdW0gvI6zl2jq6zHG9ki18yIu3dFoFI2oRVEwjz~IjMeaUmr8Qx5fjwgpTT~FdKdME~2l1vZibuWNJ7KW7tuCCztBnargWcy6Bbyb1FcV5T8tBnUYXmkutdgiFdqts1olTBJPLjcfkXqaZJNHaDR3P9bNesES3R3HQ0uFg5OIR4fhTT4srPKcApd4Cr1ndjb7s6NqwkK0VQYaX6XybvJ8EsG4~yA~K-h1JLS~gMRSJoUH82zo1NKtm10CAXvGnAQnAXyMXrYDO0JQcNdi33PccLwWEg__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "52198",
+              "delay": 0
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "episode": 3,
+          "season": 1,
+          "title": "Deuk Pal Takes Charge",
+          "duration": "54 min",
+          "overview": "Deuk Pal proves he can fight in Yi Heon's body and gains control over Jae Min and his underlings. The kids at school can't believe how different Yi Heon is and are shocked. Se Kyung gets DNA testing done to see if Yi Heon is still the Yi Heon he knows, and Deuk Pal focuses on his studies and setting things right for Yi Heon. Meanwhile, Deuk Pal learns about what happened the night before Yi Heon died from Se Kyung as they become closer.",
+          "still": "https://image.tmdb.org/t/p/w500/gRBaAGX80Tz42C7TWArNFbRExjP.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/42f46abedb98b894c6d10eb7acbb7251.mp4?sign=b5f7458761b07bf4ccfd0f21e9a4e966&t=1792843211",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 540MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/42f46abedb98b894c6d10eb7acbb7251.mp4?sign=b5f7458761b07bf4ccfd0f21e9a4e966&t=1792843211",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=3622255521824228456&se=1&ep=3",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 720p - 275MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/ef683632e8dccb0add2c8602f05a0fd9.mp4?sign=9be2e713e5b04e2fa34f9db713e9f8a2&t=1792843211",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 4 (MovieBox Full HD Backup 1080p - 400MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/26fe071ae313d7bb312fd09a87b219d6.mp4?sign=f837eec56f4d67d7e55495b40bb35dee&t=1792843402",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=6930023915360583800&se=1&ep=3",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=224030&s=1&e=3",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/224030/1/3",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/224030/1/3",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "455248892335115280",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/4721a16b7df63c0a0f5017ef68600faf.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDUwMTMwfX19XX0_&Signature=DoV2LbjXdDeiF1wY4BRr~2oek2yV21vY3qqg0sZMoiIJO7~lnuRwb97mGOn-n-3Mrn4tZlRbqCjg7Ao3fwNB41t8rZ2-IPQxtWhaJOWt7BA2rL2jz9kQmtSVbrTeV2r1GgwZo6L7~h3jgDtZjQAtEv3A1aKxUZB8KMq5fy5Dd99Lg2RwAqetK2GizLDzDC0caNiKwpBSNYP09kEY~~4BsgSyVC8gx8VOPle7qVpLD5z1f7PSBMRorDcW1vilZu6L2K0Oq-wLbHX4KARgSfE5HIyxaqIo35vyDuC9YQcCuM45MEKF6Yo2Smrv1mK5-et~UOnLny~LRCB~Uqx~rii9Pw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "60283",
+              "delay": 0
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "episode": 4,
+          "season": 1,
+          "title": "Yi Heon's Mom Kidnapping",
+          "duration": "51 min",
+          "overview": "Deuk Pal and Se Kyung save Yi Heon's mom from getting kidnapped. Luckily, she was unharmed. Although he has a hunch about who might be responsible, Deuk Pal vows to protect Yi Heon and his family without the police involved. Meanwhile, Jae Min approaches Deuk Pal to find out if the police are looking for him, but Se Kyung confronts him about his involvement in the attempted kidnapping.",
+          "still": "https://image.tmdb.org/t/p/w500/hUvJURUj0dPPazEZmXW5U0xHdE.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/0e775b0456ba0ab4074119116ade87f0.mp4?sign=cc6883e792acf893c1ceb3803ba9305e&t=1792844195",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 471MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/0e775b0456ba0ab4074119116ade87f0.mp4?sign=cc6883e792acf893c1ceb3803ba9305e&t=1792844195",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=3622255521824228456&se=1&ep=4",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 720p - 236MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/3ab8baf213f0683917dbeacf3badc913.mp4?sign=02572caea962ed07f0284e747ead48d7&t=1792844195",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 4 (MovieBox Full HD Backup 1080p - 339MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/d67e8a66adb24560001beacee7399c72.mp4?sign=35b99bac675338c3dad766e13bd0c3a7&t=1792845375",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=6930023915360583800&se=1&ep=4",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=224030&s=1&e=4",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/224030/1/4",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/224030/1/4",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "3614524030935617376",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/eea13e5848ec748c8c1a846d92e98721.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDUwMTA4fX19XX0_&Signature=TWm9YDLO6VJN4cdwTeVFf9lM771HfBsq7ZX8qwq-jaG55rQQoyTk28PgGlzRdW0gvI6zl2jq6zHG9ki18yIu3dFoFI2oRVEwjz~IjMeaUmr8Qx5fjwgpTT~FdKdME~2l1vZibuWNJ7KW7tuCCztBnargWcy6Bbyb1FcV5T8tBnUYXmkutdgiFdqts1olTBJPLjcfkXqaZJNHaDR3P9bNesES3R3HQ0uFg5OIR4fhTT4srPKcApd4Cr1ndjb7s6NqwkK0VQYaX6XybvJ8EsG4~yA~K-h1JLS~gMRSJoUH82zo1NKtm10CAXvGnAQnAXyMXrYDO0JQcNdi33PccLwWEg__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "54674",
+              "delay": 0
+            }
+          ]
+        },
+        {
+          "number": 5,
+          "episode": 5,
+          "season": 1,
+          "title": "Yi Heon Warns Dong Soo",
+          "duration": "52 min",
+          "overview": "Se Kyung witnesses Yi Heon getting abducted but can't do anything about it because he remembers Yi Heon telling him not to call the police about anything. He asks Jae Min for help, but Jae Min cowards out. Meanwhile, Yi Heon deals with the gangsters and tells them things that shock them.",
+          "still": "https://image.tmdb.org/t/p/w500/clgPjvlj90Nfec5weQt2TGBLB4w.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/d93bb94d3b543ec59d80fbe8467c3a89.mp4?sign=8dbe2970bc94d33618c5b4bba65caea6&t=1792845301",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 488MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/d93bb94d3b543ec59d80fbe8467c3a89.mp4?sign=8dbe2970bc94d33618c5b4bba65caea6&t=1792845301",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=3622255521824228456&se=1&ep=5",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 720p - 245MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/fbfe710875bed7fc7dc70f2c2a91d15e.mp4?sign=b28f82056075fbe0c51564cf02d0cc2d&t=1792844223",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 4 (MovieBox Full HD Backup 1080p - 349MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/2a8f2a27bfa0d31ed841582527dec5de.mp4?sign=d00d25b681bf57e6dfed5494368f267e&t=1792845376",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=6930023915360583800&se=1&ep=5",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=224030&s=1&e=5",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/224030/1/5",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/224030/1/5",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "4717905939641387904",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/7e36760d79fbe03297d522ad8e9a6495.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4NzM2fX19XX0_&Signature=obfinNVrNuNGokV8M~5UcxoHX8H8icR0C9CKgv~j6N-9BOB066ZgLvF9Odrn3DqhBXH6DX2BlGgtRvkXdekSQD5OOTKsha63o0iwxnxAZjZQTlgHqNGXByNfNf-zFODIw5UQoK6ruHE9UxOkWUCH2X2UWkHDiqa545gHT-ubiIJ1ZQTTw8pTQfmxzMT76GakHGPG~uP9tYBP3pJmEWwdK2Q0nvJbyLccXa1E7RafTgc7wCHojgwNX2hBKj7jLKhvhZC7iLjyESSEQ6Uym62YGqXjkoJSB-zEa2twcK5esjxpN1qEfl6g7lhlpuDb5J3~28hpqmBJIBfoLPN4FhUxxg__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "60903",
+              "delay": 0
+            }
+          ]
+        },
+        {
+          "number": 6,
+          "episode": 6,
+          "season": 1,
+          "title": "Reach Out",
+          "duration": "55 min",
+          "overview": "Deuk Pal and Se Kyung go to see the ocean and have a day off. Se Kyung talks about his father who’s been trying to control him since young and how it made him stressed and suffocating. Se Kyung’s father comes to school and calls for the violence committee. Meanwhile, Deuk Pal finds out that Yi Heon’s mother has been taking addictive medicine.",
+          "still": "https://image.tmdb.org/t/p/w500/7qvc3St6GqPsg6bvLCH1P4RXjPT.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/35e83066f8babee17f889b7d5b18df68.mp4?sign=47d0ecaf1b5aa376303b40b181d69cc4&t=1792844507",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 514MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/35e83066f8babee17f889b7d5b18df68.mp4?sign=47d0ecaf1b5aa376303b40b181d69cc4&t=1792844507",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=3622255521824228456&se=1&ep=6",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 720p - 508MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/mkvcnimas/39eafc20dca4b9d521fca29db20e9c2d.mp4?sign=c756addcf85c438660fb6cc5c887f482&t=1792845376",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 4 (MovieBox Full HD Backup 1080p - 382MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/c47ffe8dc024c05e0c61a2b4f33f2b27.mp4?sign=59fca35c7b7f21e3d4a83d6c7cde67f6&t=1792845303",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=6930023915360583800&se=1&ep=6",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=224030&s=1&e=6",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/224030/1/6",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/224030/1/6",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "5486649285410279264",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/6068c09784c158669348b7d585ac1f1e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4NzM2fX19XX0_&Signature=obfinNVrNuNGokV8M~5UcxoHX8H8icR0C9CKgv~j6N-9BOB066ZgLvF9Odrn3DqhBXH6DX2BlGgtRvkXdekSQD5OOTKsha63o0iwxnxAZjZQTlgHqNGXByNfNf-zFODIw5UQoK6ruHE9UxOkWUCH2X2UWkHDiqa545gHT-ubiIJ1ZQTTw8pTQfmxzMT76GakHGPG~uP9tYBP3pJmEWwdK2Q0nvJbyLccXa1E7RafTgc7wCHojgwNX2hBKj7jLKhvhZC7iLjyESSEQ6Uym62YGqXjkoJSB-zEa2twcK5esjxpN1qEfl6g7lhlpuDb5J3~28hpqmBJIBfoLPN4FhUxxg__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "58620",
+              "delay": 0
+            }
+          ]
+        },
+        {
+          "number": 7,
+          "episode": 7,
+          "season": 1,
+          "title": "This Is Your Last Chance",
+          "duration": "53 min",
+          "overview": "Deuk Pal found out that the school bullies reported Yi Heon for school violence. He orders Dong Soo and the gang to get Lee Mi Kyung since she is the one behind them. Byung Chul tells Jae Min to join him and report Yi Heon as well. Jae Min feels guilty about falsely charging Yi Heon, but he's also scared that he might end up going to the juvie if the truth is revealed.",
+          "still": "https://image.tmdb.org/t/p/w500/qQaoe8dF4y6njdrn6gwEMtpxBQS.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/87d803819b11e500b119943d77466b74.mp4?sign=3cffe56d6517b5dac27f9023c0079238&t=1792844168",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 481MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/87d803819b11e500b119943d77466b74.mp4?sign=3cffe56d6517b5dac27f9023c0079238&t=1792844168",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=3622255521824228456&se=1&ep=7",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 720p - 237MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/6a12f6752dc64b766617caf85fb2767d.mp4?sign=bcabfc17997ebe499a16ce2ac9c903cb&t=1792844168",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 4 (MovieBox Full HD Backup 1080p - 106MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/7d30db95006d917650a8f0bcadbbb436.mp4?sign=a22e1296a035ae2adbc48b0b0bb3c453&t=1792845263",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=6930023915360583800&se=1&ep=7",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=224030&s=1&e=7",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/224030/1/7",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/224030/1/7",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "6917668067007155624",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/e8f643be6ed116b358f503bcdf532a97.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4MDUwfX19XX0_&Signature=YsT~0vxgVE7bKHNeM7fOqHV4~SU-i4WN1VHRbiKHyxc466QmHPAzjvpfvbHK4RiKj7LKjEzHGd0zZ-m9HX6RQw-BbPHikeP59pYJF591y2MBbeOJzJ97EsXh0DLvWWkJjEp0BueYsCDSzE7~tWNz0duAhBSqqIW79G26qmWqpYFns1b7ciSZt7WVLZ9QOEI88rQC-YPDNI8gvJKdUWKc~-OkepUj-FS0P03ihFrsivDqvcTTFLkcyAsKVFhPEoQJuiH0JQCqR4ium1OEnxPoPEPF4hjlCzFGzNuUsWxiHDKKQnxyyk83Om98w4UM64eP2bpJUXrEizw3Qxci5Q6ByQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "62606",
+              "delay": 0
+            }
+          ]
+        },
+        {
+          "number": 8,
+          "episode": 8,
+          "season": 1,
+          "title": "Goodbye",
+          "duration": "66 min",
+          "overview": "Jae Min confesses to bullying Yi Heon and other kids at school. Thanks to Jae Min, the charges are dropped, but Deuk Pal still needs to find Mi Kyung so that she won't come back to threaten Yi Heon and his mother again. He decides to meet Chairman Bae and set everything right. Meanwhile, Yi Heon's soul returns and tells Deuk Pal that he does not have much time left.",
+          "still": "https://image.tmdb.org/t/p/w500/u8Guv7ez5VY9jU3jCGJwjWKDFUj.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/cc6bc68f8e7e4e7c51fd0576b5ebf10c.mp4?sign=41ab29cd448c41c6ccfe8cf010b2a908&t=1792844649",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 560MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/cc6bc68f8e7e4e7c51fd0576b5ebf10c.mp4?sign=41ab29cd448c41c6ccfe8cf010b2a908&t=1792844649",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=3622255521824228456&se=1&ep=8",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 360p - 184MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/c8cefb5b3eea9d8e6e58d59945eaca08.mp4?sign=b51540fef60a1067530daea6408635ec&t=1792844649",
+              "isDirect": true,
+              "quality": "360p"
+            },
+            {
+              "name": "Server 4 (MovieBox Full HD Backup 1080p - 126MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/b59181fa66e5885fbcb553f7c5c285b0.mp4?sign=38d533b931534a57c08790bd07f6a410&t=1792844651",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=6930023915360583800&se=1&ep=8",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=224030&s=1&e=8",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/224030/1/8",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/224030/1/8",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "5002758616072570632",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/073a15b241b8fbe4e5392018e646787d.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4MDUwfX19XX0_&Signature=YsT~0vxgVE7bKHNeM7fOqHV4~SU-i4WN1VHRbiKHyxc466QmHPAzjvpfvbHK4RiKj7LKjEzHGd0zZ-m9HX6RQw-BbPHikeP59pYJF591y2MBbeOJzJ97EsXh0DLvWWkJjEp0BueYsCDSzE7~tWNz0duAhBSqqIW79G26qmWqpYFns1b7ciSZt7WVLZ9QOEI88rQC-YPDNI8gvJKdUWKc~-OkepUj-FS0P03ihFrsivDqvcTTFLkcyAsKVFhPEoQJuiH0JQCqR4ium1OEnxPoPEPF4hjlCzFGzNuUsWxiHDKKQnxyyk83Om98w4UM64eP2bpJUXrEizw3Qxci5Q6ByQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "59768",
+              "delay": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "mb-s-1332900149030438936",
       "subjectId": "1332900149030438936",
       "tmdbId": 241454,
