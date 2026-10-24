@@ -25,7 +25,7 @@ app.use(compression({
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Health check endpoint for Koyeb, Render, and monitors
+// Health check endpoint for Hostinger KVM 8 VPS and monitors
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', service: 'FOBS TV', uptime: Math.round(process.uptime()) });
 });
@@ -604,7 +604,7 @@ app.get('/api/moviebox/resolve', async (req, res) => {
 // Use this as a direct video src: /api/moviebox/stream?id=X&se=1&ep=1
 // The video player follows the 302 redirect to the real CDN mp4/hls stream
 app.get('/api/moviebox/stream', async (req, res) => {
-  const { id, path: detailPath, se, ep } = req.query;
+  let { id, path: detailPath, se, ep } = req.query;
   if (!id) return res.status(400).send('Missing id parameter');
   try {
     const seNum = parseInt(se || '1', 10);
@@ -629,12 +629,18 @@ app.get('/api/moviebox/stream', async (req, res) => {
       else if (id === '2593580836368859088') resolvedPath = 'miracle-in-cell-no-7-CpdPy3VCA53';
       // Paper Lives (Turkish)
       else if (id === '331534456928489048') resolvedPath = 'paper-lives-MOrS12Kquo';
+      // Sen Çal Kapımı (Love Is in the Air) [Hindi]
+      else if (id === '7315143878922094712') resolvedPath = 'love-is-in-the-air-hindi-EMidHb4rnI8';
+      // Lanterns [Hindi]
+      else if (id === '7992739293980674584') resolvedPath = 'lanterns-hindi-ciMc9svPqw9';
+      // Our Universe [Hindi]
+      else if (id === '4332534660363340496') resolvedPath = 'our-universe-hindi-39lYgY80Kq4';
       // Kuruluş: Osman (Establishment: Osman)
-      else if (id === '9012855174766968784') resolvedPath = 'establishment-osman-GtoO3BhYMJa';
+      else if (id === '9012855174766968784' || id === '3929428694468545232') resolvedPath = 'establishment-osman-GtoO3BhYMJa';
       // Hercai (Inconstant Love)
-      else if (id === '6103563625468182480') resolvedPath = 'inconstant-love-SdnProWnSg7';
+      else if (id === '6103563625468182480' || id === '68551662163608792') resolvedPath = 'inconstant-love-hindi-YstIcsYX35';
       // Diriliş: Ertuğrul (Resurrection: Ertugrul)
-      else if (id === '8690954071785752632') resolvedPath = 'resurrection-ertugrul-AARn8a2F0ma';
+      else if (id === '8690954071785752632' || id === '8218095022726677576') resolvedPath = 'resurrection-ertugrul-AARn8a2F0ma';
       // Viral Hit [Hindi] (2026 Japanese Series)
       else if (id === '2819564323977289192') resolvedPath = 'viral-hit-hindi-CT6Pd5lDhm3';
       // Sins of Kujo [Hindi] (2026 Japanese Series)

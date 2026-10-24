@@ -193,15 +193,15 @@ async function fetchApiWithRetry(endpoint, options = {}, { timeout = 25000, maxR
       clearTimeout(timeoutId);
 
       const contentType = res.headers.get('content-type') || '';
-      // Verify response is valid JSON and not a Render proxy HTML spin-up page
+      // Verify response is valid JSON from Hostinger VPS backend
       if (res.ok && contentType.includes('application/json')) {
         return await res.json();
       }
 
-      // If status indicates server waking (502, 503, 504) or HTML was returned, retry
+      // If status indicates server error (502, 503, 504), retry
       if (attempt <= maxRetries) {
-        console.warn(`Server waking up (status ${res.status}). Retrying attempt ${attempt}/${maxRetries}...`);
-        updateServerStatus('Waking up server, please wait...', 'waking');
+        console.warn(`Connection retry (status ${res.status}). Retrying attempt ${attempt}/${maxRetries}...`);
+        updateServerStatus('Connecting to FOBS TV...', 'waking');
         await new Promise(r => setTimeout(r, delay));
         continue;
       }
@@ -211,7 +211,7 @@ async function fetchApiWithRetry(endpoint, options = {}, { timeout = 25000, maxR
       clearTimeout(timeoutId);
       if (attempt <= maxRetries) {
         console.warn(`Fetch error (${err.message}). Retrying in ${delay / 1000}s...`);
-        updateServerStatus('Waking up server, please wait...', 'waking');
+        updateServerStatus('Connecting to FOBS TV...', 'waking');
         await new Promise(r => setTimeout(r, delay));
         continue;
       }
@@ -244,11 +244,11 @@ async function syncContentWithBackend({ force = false, isBackground = false, isI
   if (isInitial) {
     showFobsLoadingScreen('Loading FOBS TV...');
     slowWarningTimer = setTimeout(() => {
-      updateFobsLoadingMsg('Starting instance & waking up server...');
+      updateFobsLoadingMsg('Connecting to high-speed server...');
     }, 3000);
   } else if (isBackground) {
     slowWarningTimer = setTimeout(() => {
-      updateServerStatus('Server waking up...', 'waking');
+      updateServerStatus('Connecting...', 'waking');
     }, 2500);
   } else {
     updateServerStatus('Connecting to server...', 'waking');
