@@ -1,6 +1,6 @@
 // FOBS TV Mobile Application Client Logic
 
-const BACKEND_URL = 'https://fobs-tv-apk.onrender.com';
+const BACKEND_URL = 'https://fobs-tv-apk-i1tf.onrender.com';
 
 // Dynamically determine the backend API base URL
 // - If running on localhost with a custom port (e.g. node dev server localhost:3000), use ''
@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v58';
+const CACHE_KEY = 'fobs_tv_content_cache_v59';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
