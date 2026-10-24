@@ -1457,10 +1457,12 @@ function renderHomeFeeds() {
     `;
   }).join('');
 
-  // 1. Latest Movies & Series
+  // 1. Latest Movies & Series (Strictly by upload order)
   const latestContainer = document.getElementById('latestList');
   if (latestContainer) {
-    const latestItems = [...movies.slice(0, 6), ...series.slice(0, 4)];
+    const rawMovies = appState.content.movies || [];
+    const rawSeries = appState.content.series || [];
+    const latestItems = [...rawMovies.slice(0, 6), ...rawSeries.slice(0, 4)];
     latestContainer.innerHTML = latestItems.map(item => {
       const isSeries = !!item.episodes || item.type === 'series';
       return `
@@ -1772,13 +1774,13 @@ function renderAllMovies() {
   const isJapanese = isJapaneseMedia;
   const isOthers = isOthersMovieMedia;
 
-  // A. Trending Movies
+  // A. Trending Movies (Strictly sorted by release date / year)
   const trendingMovies = movies.filter(m => m.category === 'Trending Movies' || parseFloat(m.imdbRating || m.rating || 0) >= 7.8);
   renderCategoryList('movieTrendingList', sortByReleaseDateDesc(trendingMovies.length > 0 ? trendingMovies : movies), true);
 
-  // B. Recently Added
-  const recentMovies = movies.filter(m => m.category === 'Recently Added' || m.category === 'Trending Movies');
-  renderCategoryList('movieRecentList', sortByReleaseDateDesc(recentMovies.length > 0 ? recentMovies : movies));
+  // B. Recently Added (Strictly sorted by upload order)
+  const rawMovies = appState.content.movies || [];
+  renderCategoryList('movieRecentList', rawMovies);
 
   // C. Bollywood
   const bollywoodMovies = movies.filter(isBollywood);
@@ -1900,8 +1902,7 @@ function openSectionDetail(sectionKey, title) {
       break;
 
     case 'movie-recent':
-      items = movies.filter(m => m.category === 'Recently Added' || m.category === 'Trending Movies');
-      if (items.length === 0) items = movies;
+      items = [...(appState.content.movies || [])];
       break;
 
     case 'movie-bollywood':
@@ -1952,8 +1953,7 @@ function openSectionDetail(sectionKey, title) {
 
     case 'series-recent':
       isOnlySeries = true;
-      items = series.filter(s => s.category === 'Recently Added' || s.category === 'Trending Series');
-      if (items.length === 0) items = series;
+      items = [...(appState.content.series || [])];
       break;
 
     case 'series-bollywood':
@@ -2015,8 +2015,9 @@ function openSectionDetail(sectionKey, title) {
       items = [...movies, ...series];
   }
 
-  // Strictly sort newest releases first by TMDB release date
-  if (sectionKey !== 'upcoming') {
+  // Strictly sort newest releases first by TMDB release date (EXCEPT for recently added / latest sections which preserve upload order)
+  const isRecentSection = sectionKey === 'movie-recent' || sectionKey === 'series-recent' || sectionKey === 'latest';
+  if (sectionKey !== 'upcoming' && !isRecentSection) {
     items = sortByReleaseDateDesc(items);
   }
 
@@ -2104,13 +2105,13 @@ function renderAllSeries() {
   const isJapanese = isJapaneseMedia;
   const isOthers = isOthersSeriesMedia;
 
-  // A. Trending Series
+  // A. Trending Series (Strictly sorted by release date / year)
   const trendingSeries = series.filter(s => s.category === 'Trending Series' || parseFloat(s.imdbRating || s.rating || 0) >= 7.8);
   renderCategoryList('seriesTrendingList', sortByReleaseDateDesc(trendingSeries.length > 0 ? trendingSeries : series), true, true);
 
-  // B. Recently Added
-  const recentSeries = series.filter(s => s.category === 'Recently Added' || s.category === 'Trending Series');
-  renderCategoryList('seriesRecentList', sortByReleaseDateDesc(recentSeries.length > 0 ? recentSeries : series), false, true);
+  // B. Recently Added (Strictly sorted by upload order)
+  const rawSeries = appState.content.series || [];
+  renderCategoryList('seriesRecentList', rawSeries, false, true);
 
   // C. Bollywood Series
   const bollywoodSeries = series.filter(isBollywood);
