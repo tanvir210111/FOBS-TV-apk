@@ -662,6 +662,9 @@ app.get('/api/moviebox/stream', async (req, res) => {
       else if (id === '4720961996777219576') resolvedPath = 'musafir-cafe-hindi-MStiLnt3KC5';
       // Adarsh Baal Vidyalaya [Hindi] (Bollywood Series)
       else if (id === '3604422232421843392') resolvedPath = 'adarsh-baal-vidyalaya-hindi-UKlobH6igi4';
+      // Sweet Home [Hindi] (Korean Series - Seasons 1, 2, 3)
+      else if (id === '8445472975083767584') resolvedPath = 'sweet-home-hindi-QYdKgN3mS3a';
+      else if (id === '6640253389706330592') resolvedPath = 'sweet-home-hindi-IumHTEIqwU7';
     }
     // Try requested se/ep first, then fallbacks
     let media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);
