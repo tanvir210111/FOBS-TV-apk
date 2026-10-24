@@ -11,7 +11,7 @@ const API_BASE_URL = (() => {
                             window.location.port && 
                             window.location.port !== '80' && 
                             window.location.port !== '443';
-  if (isCustomLocalPort || window.location.hostname.includes('187.127.114.52') || window.location.hostname.includes('onrender.com') || window.location.hostname.includes('koyeb.app')) {
+  if (isCustomLocalPort || window.location.hostname.includes('187.127.114.52')) {
     return '';
   }
   return BACKEND_URL;

@@ -7,7 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const BACKEND_URL = 'https://fobs-tv-apk.onrender.com';
+const BACKEND_URL = 'http://187.127.114.52';
 const VQ_SUBJECT_ID = '3908280950886646112';
 const VQ_TOTAL_EPISODES = 6; // freeNum=6 from API
 
