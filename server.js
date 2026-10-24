@@ -665,6 +665,9 @@ app.get('/api/moviebox/stream', async (req, res) => {
       // Sweet Home [Hindi] (Korean Series - Seasons 1, 2, 3)
       else if (id === '8445472975083767584') resolvedPath = 'sweet-home-hindi-QYdKgN3mS3a';
       else if (id === '6640253389706330592') resolvedPath = 'sweet-home-hindi-IumHTEIqwU7';
+      // Gyeongseong Creature [Hindi] (Korean Series - Seasons 1 & 2)
+      else if (id === '341274161781817952') resolvedPath = 'gyeongseong-creature-hindi-cwXnUZq2dp';
+      else if (id === '8749727399622889296') resolvedPath = 'gyeongseong-creature-2nf2FylQlqa';
     }
     // Try requested se/ep first, then fallbacks
     let media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);

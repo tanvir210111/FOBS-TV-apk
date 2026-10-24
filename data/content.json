@@ -4825,6 +4825,2044 @@
   ],
   "series": [
     {
+      "id": "mb-s-341274161781817952",
+      "subjectId": "341274161781817952",
+      "tmdbId": 135238,
+      "title": "Gyeongseong Creature [Hindi]",
+      "originalTitle": "경성크리처",
+      "year": "2023",
+      "releaseDate": "2026-10-24T12:31:41.372Z",
+      "originalReleaseDate": "2023-12-22",
+      "addedAt": "2026-10-24T12:31:41.372Z",
+      "rating": "7.9",
+      "votes": "337",
+      "duration": "2 Seasons (17 Episodes)",
+      "category": "Korean (Dubbed) Series",
+      "industry": "Korean",
+      "country": "Korea",
+      "badgeLeft": "K-Drama",
+      "badgeRight": "Hindi Dub",
+      "poster": "https://image.tmdb.org/t/p/w500/5wliFAD8Pjjj0YYSmupqjOldnWt.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/peVe0NQNdZMXwtTohnv8iwJQb2d.jpg",
+      "cover": "https://image.tmdb.org/t/p/original/peVe0NQNdZMXwtTohnv8iwJQb2d.jpg",
+      "overview": "Gyeongseong, 1945. In Seoul's grim era under colonial rule, an entrepreneur and a sleuth fight for survival and face a monster born out of human greed.",
+      "description": "Gyeongseong, 1945. In Seoul's grim era under colonial rule, an entrepreneur and a sleuth fight for survival and face a monster born out of human greed.",
+      "genres": "Sci-Fi & Fantasy, Mystery, Action & Adventure, Drama",
+      "genre": "Sci-Fi & Fantasy, Mystery, Action & Adventure, Drama",
+      "director": "Kang Eun-kyung",
+      "cast": [
+        {
+          "name": "Park Seo-jun",
+          "character": "Jang Ho-jae",
+          "photo": "https://image.tmdb.org/t/p/w185/k1ALgZkOApYt7PIUBkUitmknXQC.jpg"
+        },
+        {
+          "name": "Han So-hee",
+          "character": "Yoon Chae-ok",
+          "photo": "https://image.tmdb.org/t/p/w185/hOVKA03jcKft8iWRyi4pl7SSgc1.jpg"
+        },
+        {
+          "name": "Lee Chan-yang",
+          "character": "Young Korean Man",
+          "photo": "https://image.tmdb.org/t/p/w185/myYb08yxlgMC2H032XfSAGB1BeO.jpg"
+        }
+      ],
+      "seasonsCount": 2,
+      "seasons": [
+        {
+          "seasonNumber": 1,
+          "title": "Season 1",
+          "name": "Season 1",
+          "year": "2023",
+          "poster": "https://image.tmdb.org/t/p/w500/1qxRfQq9BI9dZ1nOztEtTkqNgea.jpg",
+          "episodes": [
+            {
+              "number": 1,
+              "episode": 1,
+              "season": 1,
+              "title": "Najin",
+              "duration": "68 min",
+              "overview": "Facing financial ruin, Jang Tae-sang agrees to track down a missing person — but two figures trail him. Meanwhile, sinister operations occur underground.",
+              "still": "https://image.tmdb.org/t/p/w500/ormRRPmSdaxTc6fpLsfEyjV0R6v.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/cb14813fa1b477a7ff779823364e8b5e.mp4?sign=ae0219fa3da2f9ca27c73dfff55d70a2&t=1792843432",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 724MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/cb14813fa1b477a7ff779823364e8b5e.mp4?sign=ae0219fa3da2f9ca27c73dfff55d70a2&t=1792843432",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=1",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 480p - 599MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/aaf265b4a89354b3a57d336482985d9c.mp4?sign=cf2e7b8e0939166f695cf5070c862a5c&t=1792843432",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 462MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250724/be9ee647157d74fd6fcf28cd36412a82.mp4?sign=695b7ef7dd417f3bc5516c2eaf946e8d&t=1792842172",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=1",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=1&e=1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/1/1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/1/1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "832649245424584304",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/229843aee2c206af963d700038263782.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4MDUwfX19XX0_&Signature=YsT~0vxgVE7bKHNeM7fOqHV4~SU-i4WN1VHRbiKHyxc466QmHPAzjvpfvbHK4RiKj7LKjEzHGd0zZ-m9HX6RQw-BbPHikeP59pYJF591y2MBbeOJzJ97EsXh0DLvWWkJjEp0BueYsCDSzE7~tWNz0duAhBSqqIW79G26qmWqpYFns1b7ciSZt7WVLZ9QOEI88rQC-YPDNI8gvJKdUWKc~-OkepUj-FS0P03ihFrsivDqvcTTFLkcyAsKVFhPEoQJuiH0JQCqR4ium1OEnxPoPEPF4hjlCzFGzNuUsWxiHDKKQnxyyk83Om98w4UM64eP2bpJUXrEizw3Qxci5Q6ByQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "42756",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "episode": 2,
+              "season": 1,
+              "title": "Mother",
+              "duration": "69 min",
+              "overview": "Yoon Chae-ok and Yoon Jung-won find a lead on Myeong-ja, leading them to a hospital. Soon, a calamity traps the two inside, leaving Tae-sang concerned.",
+              "still": "https://image.tmdb.org/t/p/w500/mJWRkFdg1o6dEjEYjSAD2IxYX4F.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/2d6794a8bc54013c5a4c12cbf7f67b97.mp4?sign=8b3ecaaa683246d841c23f89f7f0c9c4&t=1792843095",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 728MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/2d6794a8bc54013c5a4c12cbf7f67b97.mp4?sign=8b3ecaaa683246d841c23f89f7f0c9c4&t=1792843095",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=2",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 480p - 604MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/40facc0f8d865a91ad954eb591f9b438.mp4?sign=57721ae8cef6edd8d39b55be6a314b49&t=1792843095",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 467MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250724/d187218b1a058b9f73a577169a6c2020.mp4?sign=4365d57345d73e3f14d6b8fb07220ed5&t=1792843095",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=2",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=1&e=2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/1/2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/1/2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "2146292961733133024",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/e330c5ecef191b947e9521aca56e6c06.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4NzM2fX19XX0_&Signature=obfinNVrNuNGokV8M~5UcxoHX8H8icR0C9CKgv~j6N-9BOB066ZgLvF9Odrn3DqhBXH6DX2BlGgtRvkXdekSQD5OOTKsha63o0iwxnxAZjZQTlgHqNGXByNfNf-zFODIw5UQoK6ruHE9UxOkWUCH2X2UWkHDiqa545gHT-ubiIJ1ZQTTw8pTQfmxzMT76GakHGPG~uP9tYBP3pJmEWwdK2Q0nvJbyLccXa1E7RafTgc7wCHojgwNX2hBKj7jLKhvhZC7iLjyESSEQ6Uym62YGqXjkoJSB-zEa2twcK5esjxpN1qEfl6g7lhlpuDb5J3~28hpqmBJIBfoLPN4FhUxxg__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "47756",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "episode": 3,
+              "season": 1,
+              "title": "Signal",
+              "duration": "74 min",
+              "overview": "Tae-sang decides to reenter the hospital, but discovers that Ryu Sachimoto is nearby. At the hospital, Chae-ok and Jung-won devise a risky rescue plan.",
+              "still": "https://image.tmdb.org/t/p/w500/lt6G704DKPRHSR6c3ekWsf39Ge8.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/cc563f5d12f5aa93320880ae5b7c13af.mp4?sign=748f8697f24dbef3313c1326da3631b2&t=1792845091",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 666MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/cc563f5d12f5aa93320880ae5b7c13af.mp4?sign=748f8697f24dbef3313c1326da3631b2&t=1792845091",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=3",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 480p - 647MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/8dedc3eac5993af7a95b9a2228c52c9c.mp4?sign=6d7441cb44fe974afdc6cdf9f94d4889&t=1792845091",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 490MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250724/6d6ec8ea8636018ebebc4afcb7ab2e00.mp4?sign=18d2f16f772b71ec2310c40ada0e6fa8&t=1792843644",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=3",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=1&e=3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/1/3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/1/3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "8156909614412562752",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/7095114a135eb87b8beaafa8c3097f97.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4MDUwfX19XX0_&Signature=YsT~0vxgVE7bKHNeM7fOqHV4~SU-i4WN1VHRbiKHyxc466QmHPAzjvpfvbHK4RiKj7LKjEzHGd0zZ-m9HX6RQw-BbPHikeP59pYJF591y2MBbeOJzJ97EsXh0DLvWWkJjEp0BueYsCDSzE7~tWNz0duAhBSqqIW79G26qmWqpYFns1b7ciSZt7WVLZ9QOEI88rQC-YPDNI8gvJKdUWKc~-OkepUj-FS0P03ihFrsivDqvcTTFLkcyAsKVFhPEoQJuiH0JQCqR4ium1OEnxPoPEPF4hjlCzFGzNuUsWxiHDKKQnxyyk83Om98w4UM64eP2bpJUXrEizw3Qxci5Q6ByQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "34865",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "episode": 4,
+              "season": 1,
+              "title": "Imprinting",
+              "duration": "66 min",
+              "overview": "Reunited in their search for Myeong-ja, Tae-sang and Chae-ok attempt to also save other survivors. But soon, the monster makes itself known.",
+              "still": "https://image.tmdb.org/t/p/w500/77AjDw34uFNJzX0TYMM5jGiKDSl.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/4a4189321ad2a9c05cda5b3b39c5396e.mp4?sign=1ca5effcaba0af7b379e41a2ab146425&t=1792845030",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 540MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/4a4189321ad2a9c05cda5b3b39c5396e.mp4?sign=1ca5effcaba0af7b379e41a2ab146425&t=1792845030",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=4",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 480p - 580MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/47a9cca7c9fad52e4708afc9f3b5e3fe.mp4?sign=b4f1b15604a1bcbf7cdedde423ac1a3a&t=1792845030",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 375MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/20f200a1a02b1b7b4003added34f946e.mp4?sign=5c44bbfa5fd988931caa20db2f536cb3&t=1792845091",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=4",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=1&e=4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/1/4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/1/4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "4605793949289252296",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/338862749bc080b17d13e7a856c326a6.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ2NTA4fX19XX0_&Signature=5Yx0lo1BtL0IMf-EdKHaTSWUHfGgGlSb4jt6egcj4qAMxWp5v5qOHK1rF~7WrnaPBSe7cd6Jgt9BpR~Y1n7AP~ODXljS~F81TkTcZ6MfGPZ4Aonel-Z7RxwMRRZh23b~FC4uYes3f94Qj24LyYl1UtEtf7RUWNmtGm9FYHVCc76IVelRdKiTelIeTrZk1HOdJ5spdMAPkY~kcXVWxlB9SoRRQpNCrlsKTNyj6zcNS5oVoaMMLesX-hIKJFWSjZla~4FtmcoJxlaTGHmMICLeS7uBIPHCRChsDjigXyDGwp9lctOZOj2-W401lw-YGVNa4acTuK2F6LcnoZJvUZSZ1A__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "36889",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "episode": 5,
+              "season": 1,
+              "title": "Desperation",
+              "duration": "68 min",
+              "overview": "After coming face to face with the creature, Tae-sang and Chae-ok get captured. But as one plans his escape, the other stays to find a person dear to her.",
+              "still": "https://image.tmdb.org/t/p/w500/qEao47ad8eVDs5rOESeGvwaRWiw.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/ab96004cc9513581eab21dd645aceff8.mp4?sign=a6c630d3087709387c7ec8497ac54534&t=1792841656",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 573MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/ab96004cc9513581eab21dd645aceff8.mp4?sign=a6c630d3087709387c7ec8497ac54534&t=1792841656",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=5",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 480p - 598MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/f7b8497e1dac26e8dc73a3e4064c4d17.mp4?sign=5d3ecd8c2adf9d60f4f7b85d83acde81&t=1792841656",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 438MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250724/d12fa6697ea0490013771f10ffad9088.mp4?sign=447a84b99ad2d6235e7500d2ecd33ce1&t=1792845092",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=5",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=1&e=5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/1/5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/1/5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "7080971515936081520",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/07992fa79fe84804ff6985c8b5601eb7.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ2NTMwfX19XX0_&Signature=Lx1e25a00FpbOjEJLahKCPI8NwohjIFgdl~k67fuRTbHu7KNCwriorm~Abf~zo4ObISVQJKg~X~JakToAkdgOv1pyYqJQQumpFLPHnozIFCsFhu12K8jfIIMsC45BiYQAItVqWY98ZfKLLLilYXe4PsiLUblmf8S3hx~9B2KsLukMCajMj-Mw4g9qALm64~NWGELAQjWsNRddLh3Ds63dR8tPh9LHOzfVjCN5Pr6modGJogOMIsho~OqJqpHVGpN393d7n5QYjexJuNJsMUL~c8LQhLXY-hGwFLD~d3w~i6ALyKHnwdUfcNPq9m6wc9P3qYIPe8~RHr7fPiwGZCv1w__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "35662",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "episode": 6,
+              "season": 1,
+              "title": "Chaos",
+              "duration": "69 min",
+              "overview": "Tae-sang steadfastly remains to save Chae-ok and the captives. On a mission to find her mother, Chae-ok learns the grisly truth — and confronts the beast.",
+              "still": "https://image.tmdb.org/t/p/w500/e6qAh7Y2Nk1i49wE7BS08kdUAZH.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/0ff6e15ff9b0e669792adca3cb77c1f8.mp4?sign=2230f8224f30e21ac09941327d4362bb&t=1792841761",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 628MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/0ff6e15ff9b0e669792adca3cb77c1f8.mp4?sign=2230f8224f30e21ac09941327d4362bb&t=1792841761",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=6",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 480p - 611MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/cdaaed1ae40ab1c74db0ab34259d02ef.mp4?sign=3f2f01e22b416bb129dce695c087b211&t=1792841761",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 445MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250724/a3c5997746b0d224d9f0c9aa96188f94.mp4?sign=41d2f011ee9960e9d2cc3d193c21a707&t=1792845092",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=6",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=1&e=6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/1/6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/1/6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "3280496380388721376",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/29c44565f3f655cb82676b4ce304b263.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ2NTE5fX19XX0_&Signature=QhbC5BE5pOVuME-OZtqAPxD4wgRMzD7L28jWvloj~qcU~Et9PhBsBHQI74fabVbEqQWFvLU-efI2rwF2QUyfSqtCU5193rNm3wGP2afOjqIp0maymXyy74TuxNNlNKMwqLCqOPeUlJfJw516wqn4vGf7a8gRsK~0m3dbtAsiihCN2DwsLAH-0SQeKqbhR9rR3gCZvdyZtnEEjMOIb4iCikYPmSJlR~Jx~0lwVzRHRMQnsA7-6GWicpX3NSFBjhbKpaNWjOUe7jy9gCy6xUgi0exghdzeVep6phmLfXa9Dup5ym2iCJ88IpsLKG4IpP-9cGgz1uV2TLdRrTlnzZwIrA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "31652",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "episode": 7,
+              "season": 1,
+              "title": "Chase",
+              "duration": "65 min",
+              "overview": "With only 10 minutes to act, Tae-sang and Chae-ok risk it all to get everyone to safety. But just as all goes to plan, one of them may not get out alive.",
+              "still": "https://image.tmdb.org/t/p/w500/AfHcsfPdJ1k7gj1NgidCc4t2z70.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/7226f7faa9aca081f8c96a48c59f7e5d.mp4?sign=cc3b7b1d64f4fc9ad68b7f2f6b3a1721&t=1792843505",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 638MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/7226f7faa9aca081f8c96a48c59f7e5d.mp4?sign=cc3b7b1d64f4fc9ad68b7f2f6b3a1721&t=1792843505",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=7",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 480p - 571MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/9a2ce6e6fe7590938102b7226397d286.mp4?sign=15640322188dc415184dc6548bc329e4&t=1792843505",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 421MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/2c1e6223650a7f7f38520fed90f4da49.mp4?sign=56b4dbad24784da5f3e1321017ea0051&t=1792845093",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=7",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=1&e=7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/1/7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/1/7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "8287091791141241152",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/c46bd931312b156e40ef2b6bbb9586d1.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4NzM2fX19XX0_&Signature=obfinNVrNuNGokV8M~5UcxoHX8H8icR0C9CKgv~j6N-9BOB066ZgLvF9Odrn3DqhBXH6DX2BlGgtRvkXdekSQD5OOTKsha63o0iwxnxAZjZQTlgHqNGXByNfNf-zFODIw5UQoK6ruHE9UxOkWUCH2X2UWkHDiqa545gHT-ubiIJ1ZQTTw8pTQfmxzMT76GakHGPG~uP9tYBP3pJmEWwdK2Q0nvJbyLccXa1E7RafTgc7wCHojgwNX2hBKj7jLKhvhZC7iLjyESSEQ6Uym62YGqXjkoJSB-zEa2twcK5esjxpN1qEfl6g7lhlpuDb5J3~28hpqmBJIBfoLPN4FhUxxg__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "24456",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 8,
+              "episode": 8,
+              "season": 1,
+              "title": "Awakening",
+              "duration": "65 min",
+              "overview": "An unlikely acquaintance becomes Tae-sang's ticket out of the hospital. After a touching reunion, Tae-sang and Chae-ok encounter a transformed Myeong-ja.",
+              "still": "https://image.tmdb.org/t/p/w500/eSWZzsNBM0hss2CNq79KujuY8ws.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/149527269d8e7968cc64e2c5ac3b3f39.mp4?sign=c72ebb653f5f2f33db96d8730ed84d30&t=1792845095",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 627MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/149527269d8e7968cc64e2c5ac3b3f39.mp4?sign=c72ebb653f5f2f33db96d8730ed84d30&t=1792845095",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=8",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 480p - 573MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250602/8388e67d5cf6e6880c1c1612d9edc1ea.mp4?sign=cbe3f8eda5199ab8157c9ad565cc06f8&t=1792845095",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 401MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250724/c8acd4b8f4f4983b3af252dc56c8c2e5.mp4?sign=9ea947502fffdcdd53d5868557d81957&t=1792845095",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=8",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=1&e=8",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/1/8",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/1/8",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "7569620115684558472",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/703f7d0c19bd6021a642562f3e889299.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4MDUwfX19XX0_&Signature=YsT~0vxgVE7bKHNeM7fOqHV4~SU-i4WN1VHRbiKHyxc466QmHPAzjvpfvbHK4RiKj7LKjEzHGd0zZ-m9HX6RQw-BbPHikeP59pYJF591y2MBbeOJzJ97EsXh0DLvWWkJjEp0BueYsCDSzE7~tWNz0duAhBSqqIW79G26qmWqpYFns1b7ciSZt7WVLZ9QOEI88rQC-YPDNI8gvJKdUWKc~-OkepUj-FS0P03ihFrsivDqvcTTFLkcyAsKVFhPEoQJuiH0JQCqR4ium1OEnxPoPEPF4hjlCzFGzNuUsWxiHDKKQnxyyk83Om98w4UM64eP2bpJUXrEizw3Qxci5Q6ByQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "28958",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 9,
+              "episode": 9,
+              "season": 1,
+              "title": "Atrocity",
+              "duration": "70 min",
+              "overview": "After a series of grisly deaths, Ishikawa finds Myeong-ja in her new state. Tae-sang shares a tender moment with Chae-ok, unaware of her hidden plan.",
+              "still": "https://image.tmdb.org/t/p/w500/vwYouok2Sq6yKhRiEbPvI5ArLHL.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/7b4b393d9b43d4b17772392150cda277.mp4?sign=38f0274ce9b98d51ed286d8f529b695b&t=1792843462",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 658MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/7b4b393d9b43d4b17772392150cda277.mp4?sign=38f0274ce9b98d51ed286d8f529b695b&t=1792843462",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=9",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 480p - 616MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/624ead0e8cf91a7d0d2238ef2837a6fd.mp4?sign=80843c0932f249be9196d746636d44dd&t=1792843462",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 419MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250724/274fda900dc21df85907a97641243e9b.mp4?sign=8adc90a0dfe7d5be2e8741ceceb8707b&t=1792845095",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=9",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=1&e=9",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/1/9",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/1/9",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "251839718474875200",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/5aaefce6d54ac8483962b09427b4a665.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ2NTMwfX19XX0_&Signature=Lx1e25a00FpbOjEJLahKCPI8NwohjIFgdl~k67fuRTbHu7KNCwriorm~Abf~zo4ObISVQJKg~X~JakToAkdgOv1pyYqJQQumpFLPHnozIFCsFhu12K8jfIIMsC45BiYQAItVqWY98ZfKLLLilYXe4PsiLUblmf8S3hx~9B2KsLukMCajMj-Mw4g9qALm64~NWGELAQjWsNRddLh3Ds63dR8tPh9LHOzfVjCN5Pr6modGJogOMIsho~OqJqpHVGpN393d7n5QYjexJuNJsMUL~c8LQhLXY-hGwFLD~d3w~i6ALyKHnwdUfcNPq9m6wc9P3qYIPe8~RHr7fPiwGZCv1w__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "38112",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 10,
+              "episode": 10,
+              "season": 1,
+              "title": "Tear",
+              "duration": "78 min",
+              "overview": "In order to rescue Chae-ok and stop the atrocity, Tae-sang and Jung-won forge a plan. But just as the coast seems clear, Yukiko Maeda stands in the way.",
+              "still": "https://image.tmdb.org/t/p/w500/rpIS5XGSQIUXNBuKYL5WbhKr5sC.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/b7fae3c166dd27db7746e906ca318d2b.mp4?sign=de053a89ba852c37a1d875c90b9e96f9&t=1792841728",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 791MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/b7fae3c166dd27db7746e906ca318d2b.mp4?sign=de053a89ba852c37a1d875c90b9e96f9&t=1792841728",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=10",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 480p - 690MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/11e44ead5b7ba632450f24e2550d82fb.mp4?sign=0fc0143573fbc3889cb814aa0a2268dd&t=1792841728",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 574MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250724/93e773a6f98b2462926b64281e2985fd.mp4?sign=49256e37074dde7e143d4d5b26ca5839&t=1792841728",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=10",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=1&e=10",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/1/10",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/1/10",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "8392345084330739312",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/c3c65607084d01b3e87e42779a60f8cf.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4MDUwfX19XX0_&Signature=YsT~0vxgVE7bKHNeM7fOqHV4~SU-i4WN1VHRbiKHyxc466QmHPAzjvpfvbHK4RiKj7LKjEzHGd0zZ-m9HX6RQw-BbPHikeP59pYJF591y2MBbeOJzJ97EsXh0DLvWWkJjEp0BueYsCDSzE7~tWNz0duAhBSqqIW79G26qmWqpYFns1b7ciSZt7WVLZ9QOEI88rQC-YPDNI8gvJKdUWKc~-OkepUj-FS0P03ihFrsivDqvcTTFLkcyAsKVFhPEoQJuiH0JQCqR4ium1OEnxPoPEPF4hjlCzFGzNuUsWxiHDKKQnxyyk83Om98w4UM64eP2bpJUXrEizw3Qxci5Q6ByQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "28063",
+                  "delay": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "seasonNumber": 2,
+          "title": "Season 2",
+          "name": "Season 2",
+          "year": "2024",
+          "poster": "https://image.tmdb.org/t/p/w500/9i7c3TYwJpjlWF3uoLMA09BrrDS.jpg",
+          "episodes": [
+            {
+              "number": 1,
+              "episode": 1,
+              "season": 2,
+              "title": "Ho-jae",
+              "duration": "47 min",
+              "overview": "On a mission to clear his name, Jang Ho-jae searches for a mysterious woman. On the job, Chae-ok encounters a familiar person from decades ago.",
+              "still": "https://image.tmdb.org/t/p/w500/jBjo2HOI9Gh4MYKMsi7WYVWivvx.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/8026649a782a12bf9e2938c4f49ca765.mp4?sign=5c5495f09dd3cc0b6b0bc679570d389b&t=1792843890",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 479MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/8026649a782a12bf9e2938c4f49ca765.mp4?sign=5c5495f09dd3cc0b6b0bc679570d389b&t=1792843890",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=2&ep=1",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 720p - 412MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/304b47423c8f738369f82c9b56657eda.mp4?sign=85ccf057bb993b0e58f7a2630804a857&t=1792843890",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 479MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/151256bb4f6ab417ff8aeacd73f64951.mp4?sign=76026be6fbd0bc820d8873e0a8e323a3&t=1792845097",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=2&ep=1",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=2&e=1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/2/1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/2/1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "1745118002397201824",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/28afa3eb9ceabb3b60ae98bcd5c82c8a.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ2NTE5fX19XX0_&Signature=QhbC5BE5pOVuME-OZtqAPxD4wgRMzD7L28jWvloj~qcU~Et9PhBsBHQI74fabVbEqQWFvLU-efI2rwF2QUyfSqtCU5193rNm3wGP2afOjqIp0maymXyy74TuxNNlNKMwqLCqOPeUlJfJw516wqn4vGf7a8gRsK~0m3dbtAsiihCN2DwsLAH-0SQeKqbhR9rR3gCZvdyZtnEEjMOIb4iCikYPmSJlR~Jx~0lwVzRHRMQnsA7-6GWicpX3NSFBjhbKpaNWjOUe7jy9gCy6xUgi0exghdzeVep6phmLfXa9Dup5ym2iCJ88IpsLKG4IpP-9cGgz1uV2TLdRrTlnzZwIrA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "25392",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 2,
+              "episode": 2,
+              "season": 2,
+              "title": "Sign",
+              "duration": "50 min",
+              "overview": "While looking for the same person, Ho-jae ends up saving Chae-ok, who's being chased by a mysterious being. Ho-jae begins to wonder more about his past.",
+              "still": "https://image.tmdb.org/t/p/w500/axihAJpJtfLgddH3MYfmJSIH8rF.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/317134cff9fe5df39563d85718c1812f.mp4?sign=b4b2ccf35ee2295318cc3fbfec59a6c4&t=1792845097",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 521MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/317134cff9fe5df39563d85718c1812f.mp4?sign=b4b2ccf35ee2295318cc3fbfec59a6c4&t=1792845097",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=2&ep=2",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 720p - 438MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/b08033d19ad47b8f979b2dd3ff6af475.mp4?sign=c5ca60f0210906ddbd6981bb07ca4a37&t=1792845097",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 521MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/550cc7fae3b8ffe1ee2de378f7c780bb.mp4?sign=740112ece578646c585bfcecf86bf27b&t=1792845097",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=2&ep=2",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=2&e=2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/2/2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/2/2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "6976881025012433704",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/7bc6b6e6982495a11c9ebfca38c0e650.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ2NTE5fX19XX0_&Signature=QhbC5BE5pOVuME-OZtqAPxD4wgRMzD7L28jWvloj~qcU~Et9PhBsBHQI74fabVbEqQWFvLU-efI2rwF2QUyfSqtCU5193rNm3wGP2afOjqIp0maymXyy74TuxNNlNKMwqLCqOPeUlJfJw516wqn4vGf7a8gRsK~0m3dbtAsiihCN2DwsLAH-0SQeKqbhR9rR3gCZvdyZtnEEjMOIb4iCikYPmSJlR~Jx~0lwVzRHRMQnsA7-6GWicpX3NSFBjhbKpaNWjOUe7jy9gCy6xUgi0exghdzeVep6phmLfXa9Dup5ym2iCJ88IpsLKG4IpP-9cGgz1uV2TLdRrTlnzZwIrA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "33302",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 3,
+              "episode": 3,
+              "season": 2,
+              "title": "Pieces of Memories",
+              "duration": "43 min",
+              "overview": "Chae-ok agrees to work with Ho-jae to find Seung-jo, but they soon find themselves in peril. Meanwhile, Chae-ok's monstrous instincts begin to surface.",
+              "still": "https://image.tmdb.org/t/p/w500/cPzrwUVxlecLXPe7t0sMaHHEMt2.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/5eb507d43324eb860b939ad4f251bd4d.mp4?sign=976976bbceeec593548a951fc6f1a665&t=1792845097",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 393MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/5eb507d43324eb860b939ad4f251bd4d.mp4?sign=976976bbceeec593548a951fc6f1a665&t=1792845097",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=2&ep=3",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 720p - 381MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/fac6212b4a64c7d358b09b815d239269.mp4?sign=b94828ec5616138289c48263ac33329b&t=1792845097",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 393MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/f67f4675423f76c43ec0c37df2bb5e8f.mp4?sign=460efb30cf7b818370123902033684b8&t=1792845097",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=2&ep=3",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=2&e=3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/2/3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/2/3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "1246050499183477544",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/44eb62754d358ae5835ba364e7b28694.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4MDUwfX19XX0_&Signature=YsT~0vxgVE7bKHNeM7fOqHV4~SU-i4WN1VHRbiKHyxc466QmHPAzjvpfvbHK4RiKj7LKjEzHGd0zZ-m9HX6RQw-BbPHikeP59pYJF591y2MBbeOJzJ97EsXh0DLvWWkJjEp0BueYsCDSzE7~tWNz0duAhBSqqIW79G26qmWqpYFns1b7ciSZt7WVLZ9QOEI88rQC-YPDNI8gvJKdUWKc~-OkepUj-FS0P03ihFrsivDqvcTTFLkcyAsKVFhPEoQJuiH0JQCqR4ium1OEnxPoPEPF4hjlCzFGzNuUsWxiHDKKQnxyyk83Om98w4UM64eP2bpJUXrEizw3Qxci5Q6ByQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "23382",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 4,
+              "episode": 4,
+              "season": 2,
+              "title": "The Other Side",
+              "duration": "46 min",
+              "overview": "Ho-jae tries to piece together everything that has been hidden from him. Chae-ok discovers that the atrocities of the past continue to the present day.",
+              "still": "https://image.tmdb.org/t/p/w500/dNiK2XN0gWE4WUlr6K5l5OsLYtS.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/a0ad49e3dc2b0716cb25dbeb934227bc.mp4?sign=66895bf3c4c0f11284523d580f6c8290&t=1792845099",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 434MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/a0ad49e3dc2b0716cb25dbeb934227bc.mp4?sign=66895bf3c4c0f11284523d580f6c8290&t=1792845099",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=2&ep=4",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 720p - 405MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/ea2192941fd88cba8aa6ab58a4ba0964.mp4?sign=d38bf73529e3c5fd398fe999d360deeb&t=1792845099",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 434MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/6c5de1bd3a608ef9a20dd0edb2935ad6.mp4?sign=5a786b23d9f3563af84e98e83f5d9c23&t=1792841514",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=2&ep=4",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=2&e=4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/2/4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/2/4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "5172357318826148416",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/d0cc92d1b0b13d4cfcef420ccbb4785e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ2NTA4fX19XX0_&Signature=5Yx0lo1BtL0IMf-EdKHaTSWUHfGgGlSb4jt6egcj4qAMxWp5v5qOHK1rF~7WrnaPBSe7cd6Jgt9BpR~Y1n7AP~ODXljS~F81TkTcZ6MfGPZ4Aonel-Z7RxwMRRZh23b~FC4uYes3f94Qj24LyYl1UtEtf7RUWNmtGm9FYHVCc76IVelRdKiTelIeTrZk1HOdJ5spdMAPkY~kcXVWxlB9SoRRQpNCrlsKTNyj6zcNS5oVoaMMLesX-hIKJFWSjZla~4FtmcoJxlaTGHmMICLeS7uBIPHCRChsDjigXyDGwp9lctOZOj2-W401lw-YGVNa4acTuK2F6LcnoZJvUZSZ1A__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "24203",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 5,
+              "episode": 5,
+              "season": 2,
+              "title": "The Creature",
+              "duration": "51 min",
+              "overview": "In his effort to save Chae-ok, Ho-jae makes a momentous decision. Having sustained severe injuries, they must battle through a treacherous escape.",
+              "still": "https://image.tmdb.org/t/p/w500/ny5dgoRfXbsWp9IjCLJ8mkZkDG8.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/9e7672d7080d538b770e5b8599a78042.mp4?sign=55c0f0f0233a87876b84b317678f055f&t=1792845033",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 1718MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/9e7672d7080d538b770e5b8599a78042.mp4?sign=55c0f0f0233a87876b84b317678f055f&t=1792845033",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=2&ep=5",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 720p - 414MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/25337afd412348f197777950071eb490.mp4?sign=efe2ae0a866f75fd9425ba15075cb34f&t=1792845033",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 535MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/fc41fc00ed62937510b779ff02e38e71.mp4?sign=2689bc0a979955e7e77e6110c35cce8a&t=1792845099",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=2&ep=5",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=2&e=5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/2/5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/2/5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "7447507186072650536",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/b63bb9aab771baa404f063f7ba95dd08.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ2NTMwfX19XX0_&Signature=Lx1e25a00FpbOjEJLahKCPI8NwohjIFgdl~k67fuRTbHu7KNCwriorm~Abf~zo4ObISVQJKg~X~JakToAkdgOv1pyYqJQQumpFLPHnozIFCsFhu12K8jfIIMsC45BiYQAItVqWY98ZfKLLLilYXe4PsiLUblmf8S3hx~9B2KsLukMCajMj-Mw4g9qALm64~NWGELAQjWsNRddLh3Ds63dR8tPh9LHOzfVjCN5Pr6modGJogOMIsho~OqJqpHVGpN393d7n5QYjexJuNJsMUL~c8LQhLXY-hGwFLD~d3w~i6ALyKHnwdUfcNPq9m6wc9P3qYIPe8~RHr7fPiwGZCv1w__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "23341",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 6,
+              "episode": 6,
+              "season": 2,
+              "title": "Bait",
+              "duration": "48 min",
+              "overview": "After a test subject wreaks havoc in public, Jeonseung Biotech goes into damage control. Fate drives Ho-jae and Chae-ok to confront the company head-on.",
+              "still": "https://image.tmdb.org/t/p/w500/eKQHMiLAit6yFdBToxUXEVtt0zY.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/038493ebd5c7109eee5c2c7967c7b13e.mp4?sign=65318cefbae0621ee6870b4b79199ecc&t=1792845100",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 459MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/038493ebd5c7109eee5c2c7967c7b13e.mp4?sign=65318cefbae0621ee6870b4b79199ecc&t=1792845100",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=2&ep=6",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 720p - 424MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250602/3513796ba1e6a023fdb477efaa15e965.mp4?sign=0a4ffff4652e990d5f7748fafde31335&t=1792845100",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 459MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/99b19de0d985a019a051b3508561d495.mp4?sign=567c7af1cf3f2f3c40e19887971f44de&t=1792845100",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=2&ep=6",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=2&e=6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/2/6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/2/6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "6481039626353477360",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/2516b6c53d450a9dbd209db38684283b.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ2NTMwfX19XX0_&Signature=Lx1e25a00FpbOjEJLahKCPI8NwohjIFgdl~k67fuRTbHu7KNCwriorm~Abf~zo4ObISVQJKg~X~JakToAkdgOv1pyYqJQQumpFLPHnozIFCsFhu12K8jfIIMsC45BiYQAItVqWY98ZfKLLLilYXe4PsiLUblmf8S3hx~9B2KsLukMCajMj-Mw4g9qALm64~NWGELAQjWsNRddLh3Ds63dR8tPh9LHOzfVjCN5Pr6modGJogOMIsho~OqJqpHVGpN393d7n5QYjexJuNJsMUL~c8LQhLXY-hGwFLD~d3w~i6ALyKHnwdUfcNPq9m6wc9P3qYIPe8~RHr7fPiwGZCv1w__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "34006",
+                  "delay": 0
+                }
+              ]
+            },
+            {
+              "number": 7,
+              "episode": 7,
+              "season": 2,
+              "title": "Marginal Man",
+              "duration": "57 min",
+              "overview": "As Ho-jae's enemy threatens to hurt those closest to him, he risks everything to protect them. Will he survive the ferocious beasts and save Chae-ok?",
+              "still": "https://image.tmdb.org/t/p/w500/l0ukajEYsY2NPNRSJRDWaA5qGlT.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/2b5c9dcecf2fc90d90fb11e686d4adee.mp4?sign=1a10e8c29589a3c0bb02e2b6a51d805f&t=1792844997",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Hindi Direct - 535MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/2b5c9dcecf2fc90d90fb11e686d4adee.mp4?sign=1a10e8c29589a3c0bb02e2b6a51d805f&t=1792844997",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=341274161781817952&se=2&ep=7",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 720p - 501MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/690a58c1f7cb0e32c3be100bb0108e56.mp4?sign=96add16882ff1d41f7df5ea463e1bf9c&t=1792844997",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Backup 1080p - 535MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/c31203053ffc05ec5b9800907b94196b.mp4?sign=8198b2eecaeff02c110a7ded353468dd&t=1792845100",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=8749727399622889296&se=2&ep=7",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=135238&s=2&e=7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/135238/2/7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/135238/2/7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": [
+                {
+                  "id": "5117281407001314264",
+                  "lan": "en",
+                  "lanName": "English",
+                  "url": "https://cacdn.hakunaymatata.com/subtitle/9e57bef8cdd31ed5df099235ea790596.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ2NTMwfX19XX0_&Signature=Lx1e25a00FpbOjEJLahKCPI8NwohjIFgdl~k67fuRTbHu7KNCwriorm~Abf~zo4ObISVQJKg~X~JakToAkdgOv1pyYqJQQumpFLPHnozIFCsFhu12K8jfIIMsC45BiYQAItVqWY98ZfKLLLilYXe4PsiLUblmf8S3hx~9B2KsLukMCajMj-Mw4g9qALm64~NWGELAQjWsNRddLh3Ds63dR8tPh9LHOzfVjCN5Pr6modGJogOMIsho~OqJqpHVGpN393d7n5QYjexJuNJsMUL~c8LQhLXY-hGwFLD~d3w~i6ALyKHnwdUfcNPq9m6wc9P3qYIPe8~RHr7fPiwGZCv1w__&Key-Pair-Id=KMHN1LQ1HEUPL",
+                  "size": "28017",
+                  "delay": 0
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "episode": 1,
+          "season": 1,
+          "title": "Najin",
+          "duration": "68 min",
+          "overview": "Facing financial ruin, Jang Tae-sang agrees to track down a missing person — but two figures trail him. Meanwhile, sinister operations occur underground.",
+          "still": "https://image.tmdb.org/t/p/w500/ormRRPmSdaxTc6fpLsfEyjV0R6v.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/cb14813fa1b477a7ff779823364e8b5e.mp4?sign=ae0219fa3da2f9ca27c73dfff55d70a2&t=1792843432",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 724MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/cb14813fa1b477a7ff779823364e8b5e.mp4?sign=ae0219fa3da2f9ca27c73dfff55d70a2&t=1792843432",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=1",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 480p - 599MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/aaf265b4a89354b3a57d336482985d9c.mp4?sign=cf2e7b8e0939166f695cf5070c862a5c&t=1792843432",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MovieBox Backup 1080p - 462MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250724/be9ee647157d74fd6fcf28cd36412a82.mp4?sign=695b7ef7dd417f3bc5516c2eaf946e8d&t=1792842172",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=1",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=135238&s=1&e=1",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/135238/1/1",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/135238/1/1",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "832649245424584304",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/229843aee2c206af963d700038263782.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4MDUwfX19XX0_&Signature=YsT~0vxgVE7bKHNeM7fOqHV4~SU-i4WN1VHRbiKHyxc466QmHPAzjvpfvbHK4RiKj7LKjEzHGd0zZ-m9HX6RQw-BbPHikeP59pYJF591y2MBbeOJzJ97EsXh0DLvWWkJjEp0BueYsCDSzE7~tWNz0duAhBSqqIW79G26qmWqpYFns1b7ciSZt7WVLZ9QOEI88rQC-YPDNI8gvJKdUWKc~-OkepUj-FS0P03ihFrsivDqvcTTFLkcyAsKVFhPEoQJuiH0JQCqR4ium1OEnxPoPEPF4hjlCzFGzNuUsWxiHDKKQnxyyk83Om98w4UM64eP2bpJUXrEizw3Qxci5Q6ByQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "42756",
+              "delay": 0
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "episode": 2,
+          "season": 1,
+          "title": "Mother",
+          "duration": "69 min",
+          "overview": "Yoon Chae-ok and Yoon Jung-won find a lead on Myeong-ja, leading them to a hospital. Soon, a calamity traps the two inside, leaving Tae-sang concerned.",
+          "still": "https://image.tmdb.org/t/p/w500/mJWRkFdg1o6dEjEYjSAD2IxYX4F.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/2d6794a8bc54013c5a4c12cbf7f67b97.mp4?sign=8b3ecaaa683246d841c23f89f7f0c9c4&t=1792843095",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 728MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/2d6794a8bc54013c5a4c12cbf7f67b97.mp4?sign=8b3ecaaa683246d841c23f89f7f0c9c4&t=1792843095",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=2",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 480p - 604MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/40facc0f8d865a91ad954eb591f9b438.mp4?sign=57721ae8cef6edd8d39b55be6a314b49&t=1792843095",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MovieBox Backup 1080p - 467MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250724/d187218b1a058b9f73a577169a6c2020.mp4?sign=4365d57345d73e3f14d6b8fb07220ed5&t=1792843095",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=2",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=135238&s=1&e=2",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/135238/1/2",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/135238/1/2",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "2146292961733133024",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/e330c5ecef191b947e9521aca56e6c06.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4NzM2fX19XX0_&Signature=obfinNVrNuNGokV8M~5UcxoHX8H8icR0C9CKgv~j6N-9BOB066ZgLvF9Odrn3DqhBXH6DX2BlGgtRvkXdekSQD5OOTKsha63o0iwxnxAZjZQTlgHqNGXByNfNf-zFODIw5UQoK6ruHE9UxOkWUCH2X2UWkHDiqa545gHT-ubiIJ1ZQTTw8pTQfmxzMT76GakHGPG~uP9tYBP3pJmEWwdK2Q0nvJbyLccXa1E7RafTgc7wCHojgwNX2hBKj7jLKhvhZC7iLjyESSEQ6Uym62YGqXjkoJSB-zEa2twcK5esjxpN1qEfl6g7lhlpuDb5J3~28hpqmBJIBfoLPN4FhUxxg__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "47756",
+              "delay": 0
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "episode": 3,
+          "season": 1,
+          "title": "Signal",
+          "duration": "74 min",
+          "overview": "Tae-sang decides to reenter the hospital, but discovers that Ryu Sachimoto is nearby. At the hospital, Chae-ok and Jung-won devise a risky rescue plan.",
+          "still": "https://image.tmdb.org/t/p/w500/lt6G704DKPRHSR6c3ekWsf39Ge8.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/cc563f5d12f5aa93320880ae5b7c13af.mp4?sign=748f8697f24dbef3313c1326da3631b2&t=1792845091",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 666MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/cc563f5d12f5aa93320880ae5b7c13af.mp4?sign=748f8697f24dbef3313c1326da3631b2&t=1792845091",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=3",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 480p - 647MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/8dedc3eac5993af7a95b9a2228c52c9c.mp4?sign=6d7441cb44fe974afdc6cdf9f94d4889&t=1792845091",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MovieBox Backup 1080p - 490MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250724/6d6ec8ea8636018ebebc4afcb7ab2e00.mp4?sign=18d2f16f772b71ec2310c40ada0e6fa8&t=1792843644",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=3",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=135238&s=1&e=3",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/135238/1/3",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/135238/1/3",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "8156909614412562752",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/7095114a135eb87b8beaafa8c3097f97.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4MDUwfX19XX0_&Signature=YsT~0vxgVE7bKHNeM7fOqHV4~SU-i4WN1VHRbiKHyxc466QmHPAzjvpfvbHK4RiKj7LKjEzHGd0zZ-m9HX6RQw-BbPHikeP59pYJF591y2MBbeOJzJ97EsXh0DLvWWkJjEp0BueYsCDSzE7~tWNz0duAhBSqqIW79G26qmWqpYFns1b7ciSZt7WVLZ9QOEI88rQC-YPDNI8gvJKdUWKc~-OkepUj-FS0P03ihFrsivDqvcTTFLkcyAsKVFhPEoQJuiH0JQCqR4ium1OEnxPoPEPF4hjlCzFGzNuUsWxiHDKKQnxyyk83Om98w4UM64eP2bpJUXrEizw3Qxci5Q6ByQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "34865",
+              "delay": 0
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "episode": 4,
+          "season": 1,
+          "title": "Imprinting",
+          "duration": "66 min",
+          "overview": "Reunited in their search for Myeong-ja, Tae-sang and Chae-ok attempt to also save other survivors. But soon, the monster makes itself known.",
+          "still": "https://image.tmdb.org/t/p/w500/77AjDw34uFNJzX0TYMM5jGiKDSl.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/4a4189321ad2a9c05cda5b3b39c5396e.mp4?sign=1ca5effcaba0af7b379e41a2ab146425&t=1792845030",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 540MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/4a4189321ad2a9c05cda5b3b39c5396e.mp4?sign=1ca5effcaba0af7b379e41a2ab146425&t=1792845030",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=4",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 480p - 580MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/47a9cca7c9fad52e4708afc9f3b5e3fe.mp4?sign=b4f1b15604a1bcbf7cdedde423ac1a3a&t=1792845030",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MovieBox Backup 1080p - 375MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/20f200a1a02b1b7b4003added34f946e.mp4?sign=5c44bbfa5fd988931caa20db2f536cb3&t=1792845091",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=4",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=135238&s=1&e=4",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/135238/1/4",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/135238/1/4",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "4605793949289252296",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/338862749bc080b17d13e7a856c326a6.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ2NTA4fX19XX0_&Signature=5Yx0lo1BtL0IMf-EdKHaTSWUHfGgGlSb4jt6egcj4qAMxWp5v5qOHK1rF~7WrnaPBSe7cd6Jgt9BpR~Y1n7AP~ODXljS~F81TkTcZ6MfGPZ4Aonel-Z7RxwMRRZh23b~FC4uYes3f94Qj24LyYl1UtEtf7RUWNmtGm9FYHVCc76IVelRdKiTelIeTrZk1HOdJ5spdMAPkY~kcXVWxlB9SoRRQpNCrlsKTNyj6zcNS5oVoaMMLesX-hIKJFWSjZla~4FtmcoJxlaTGHmMICLeS7uBIPHCRChsDjigXyDGwp9lctOZOj2-W401lw-YGVNa4acTuK2F6LcnoZJvUZSZ1A__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "36889",
+              "delay": 0
+            }
+          ]
+        },
+        {
+          "number": 5,
+          "episode": 5,
+          "season": 1,
+          "title": "Desperation",
+          "duration": "68 min",
+          "overview": "After coming face to face with the creature, Tae-sang and Chae-ok get captured. But as one plans his escape, the other stays to find a person dear to her.",
+          "still": "https://image.tmdb.org/t/p/w500/qEao47ad8eVDs5rOESeGvwaRWiw.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/ab96004cc9513581eab21dd645aceff8.mp4?sign=a6c630d3087709387c7ec8497ac54534&t=1792841656",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 573MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/ab96004cc9513581eab21dd645aceff8.mp4?sign=a6c630d3087709387c7ec8497ac54534&t=1792841656",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=5",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 480p - 598MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/f7b8497e1dac26e8dc73a3e4064c4d17.mp4?sign=5d3ecd8c2adf9d60f4f7b85d83acde81&t=1792841656",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MovieBox Backup 1080p - 438MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250724/d12fa6697ea0490013771f10ffad9088.mp4?sign=447a84b99ad2d6235e7500d2ecd33ce1&t=1792845092",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=5",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=135238&s=1&e=5",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/135238/1/5",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/135238/1/5",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "7080971515936081520",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/07992fa79fe84804ff6985c8b5601eb7.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ2NTMwfX19XX0_&Signature=Lx1e25a00FpbOjEJLahKCPI8NwohjIFgdl~k67fuRTbHu7KNCwriorm~Abf~zo4ObISVQJKg~X~JakToAkdgOv1pyYqJQQumpFLPHnozIFCsFhu12K8jfIIMsC45BiYQAItVqWY98ZfKLLLilYXe4PsiLUblmf8S3hx~9B2KsLukMCajMj-Mw4g9qALm64~NWGELAQjWsNRddLh3Ds63dR8tPh9LHOzfVjCN5Pr6modGJogOMIsho~OqJqpHVGpN393d7n5QYjexJuNJsMUL~c8LQhLXY-hGwFLD~d3w~i6ALyKHnwdUfcNPq9m6wc9P3qYIPe8~RHr7fPiwGZCv1w__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "35662",
+              "delay": 0
+            }
+          ]
+        },
+        {
+          "number": 6,
+          "episode": 6,
+          "season": 1,
+          "title": "Chaos",
+          "duration": "69 min",
+          "overview": "Tae-sang steadfastly remains to save Chae-ok and the captives. On a mission to find her mother, Chae-ok learns the grisly truth — and confronts the beast.",
+          "still": "https://image.tmdb.org/t/p/w500/e6qAh7Y2Nk1i49wE7BS08kdUAZH.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/0ff6e15ff9b0e669792adca3cb77c1f8.mp4?sign=2230f8224f30e21ac09941327d4362bb&t=1792841761",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 628MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/0ff6e15ff9b0e669792adca3cb77c1f8.mp4?sign=2230f8224f30e21ac09941327d4362bb&t=1792841761",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=6",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 480p - 611MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/cdaaed1ae40ab1c74db0ab34259d02ef.mp4?sign=3f2f01e22b416bb129dce695c087b211&t=1792841761",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MovieBox Backup 1080p - 445MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250724/a3c5997746b0d224d9f0c9aa96188f94.mp4?sign=41d2f011ee9960e9d2cc3d193c21a707&t=1792845092",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=6",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=135238&s=1&e=6",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/135238/1/6",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/135238/1/6",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "3280496380388721376",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/29c44565f3f655cb82676b4ce304b263.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ2NTE5fX19XX0_&Signature=QhbC5BE5pOVuME-OZtqAPxD4wgRMzD7L28jWvloj~qcU~Et9PhBsBHQI74fabVbEqQWFvLU-efI2rwF2QUyfSqtCU5193rNm3wGP2afOjqIp0maymXyy74TuxNNlNKMwqLCqOPeUlJfJw516wqn4vGf7a8gRsK~0m3dbtAsiihCN2DwsLAH-0SQeKqbhR9rR3gCZvdyZtnEEjMOIb4iCikYPmSJlR~Jx~0lwVzRHRMQnsA7-6GWicpX3NSFBjhbKpaNWjOUe7jy9gCy6xUgi0exghdzeVep6phmLfXa9Dup5ym2iCJ88IpsLKG4IpP-9cGgz1uV2TLdRrTlnzZwIrA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "31652",
+              "delay": 0
+            }
+          ]
+        },
+        {
+          "number": 7,
+          "episode": 7,
+          "season": 1,
+          "title": "Chase",
+          "duration": "65 min",
+          "overview": "With only 10 minutes to act, Tae-sang and Chae-ok risk it all to get everyone to safety. But just as all goes to plan, one of them may not get out alive.",
+          "still": "https://image.tmdb.org/t/p/w500/AfHcsfPdJ1k7gj1NgidCc4t2z70.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/7226f7faa9aca081f8c96a48c59f7e5d.mp4?sign=cc3b7b1d64f4fc9ad68b7f2f6b3a1721&t=1792843505",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 638MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/7226f7faa9aca081f8c96a48c59f7e5d.mp4?sign=cc3b7b1d64f4fc9ad68b7f2f6b3a1721&t=1792843505",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=7",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 480p - 571MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/9a2ce6e6fe7590938102b7226397d286.mp4?sign=15640322188dc415184dc6548bc329e4&t=1792843505",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MovieBox Backup 1080p - 421MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/2c1e6223650a7f7f38520fed90f4da49.mp4?sign=56b4dbad24784da5f3e1321017ea0051&t=1792845093",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=7",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=135238&s=1&e=7",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/135238/1/7",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/135238/1/7",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "8287091791141241152",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/c46bd931312b156e40ef2b6bbb9586d1.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4NzM2fX19XX0_&Signature=obfinNVrNuNGokV8M~5UcxoHX8H8icR0C9CKgv~j6N-9BOB066ZgLvF9Odrn3DqhBXH6DX2BlGgtRvkXdekSQD5OOTKsha63o0iwxnxAZjZQTlgHqNGXByNfNf-zFODIw5UQoK6ruHE9UxOkWUCH2X2UWkHDiqa545gHT-ubiIJ1ZQTTw8pTQfmxzMT76GakHGPG~uP9tYBP3pJmEWwdK2Q0nvJbyLccXa1E7RafTgc7wCHojgwNX2hBKj7jLKhvhZC7iLjyESSEQ6Uym62YGqXjkoJSB-zEa2twcK5esjxpN1qEfl6g7lhlpuDb5J3~28hpqmBJIBfoLPN4FhUxxg__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "24456",
+              "delay": 0
+            }
+          ]
+        },
+        {
+          "number": 8,
+          "episode": 8,
+          "season": 1,
+          "title": "Awakening",
+          "duration": "65 min",
+          "overview": "An unlikely acquaintance becomes Tae-sang's ticket out of the hospital. After a touching reunion, Tae-sang and Chae-ok encounter a transformed Myeong-ja.",
+          "still": "https://image.tmdb.org/t/p/w500/eSWZzsNBM0hss2CNq79KujuY8ws.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/149527269d8e7968cc64e2c5ac3b3f39.mp4?sign=c72ebb653f5f2f33db96d8730ed84d30&t=1792845095",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 627MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/149527269d8e7968cc64e2c5ac3b3f39.mp4?sign=c72ebb653f5f2f33db96d8730ed84d30&t=1792845095",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=8",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 480p - 573MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250602/8388e67d5cf6e6880c1c1612d9edc1ea.mp4?sign=cbe3f8eda5199ab8157c9ad565cc06f8&t=1792845095",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MovieBox Backup 1080p - 401MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250724/c8acd4b8f4f4983b3af252dc56c8c2e5.mp4?sign=9ea947502fffdcdd53d5868557d81957&t=1792845095",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=8",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=135238&s=1&e=8",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/135238/1/8",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/135238/1/8",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "7569620115684558472",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/703f7d0c19bd6021a642562f3e889299.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4MDUwfX19XX0_&Signature=YsT~0vxgVE7bKHNeM7fOqHV4~SU-i4WN1VHRbiKHyxc466QmHPAzjvpfvbHK4RiKj7LKjEzHGd0zZ-m9HX6RQw-BbPHikeP59pYJF591y2MBbeOJzJ97EsXh0DLvWWkJjEp0BueYsCDSzE7~tWNz0duAhBSqqIW79G26qmWqpYFns1b7ciSZt7WVLZ9QOEI88rQC-YPDNI8gvJKdUWKc~-OkepUj-FS0P03ihFrsivDqvcTTFLkcyAsKVFhPEoQJuiH0JQCqR4ium1OEnxPoPEPF4hjlCzFGzNuUsWxiHDKKQnxyyk83Om98w4UM64eP2bpJUXrEizw3Qxci5Q6ByQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "28958",
+              "delay": 0
+            }
+          ]
+        },
+        {
+          "number": 9,
+          "episode": 9,
+          "season": 1,
+          "title": "Atrocity",
+          "duration": "70 min",
+          "overview": "After a series of grisly deaths, Ishikawa finds Myeong-ja in her new state. Tae-sang shares a tender moment with Chae-ok, unaware of her hidden plan.",
+          "still": "https://image.tmdb.org/t/p/w500/vwYouok2Sq6yKhRiEbPvI5ArLHL.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/7b4b393d9b43d4b17772392150cda277.mp4?sign=38f0274ce9b98d51ed286d8f529b695b&t=1792843462",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 658MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/7b4b393d9b43d4b17772392150cda277.mp4?sign=38f0274ce9b98d51ed286d8f529b695b&t=1792843462",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=9",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 480p - 616MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/624ead0e8cf91a7d0d2238ef2837a6fd.mp4?sign=80843c0932f249be9196d746636d44dd&t=1792843462",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MovieBox Backup 1080p - 419MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250724/274fda900dc21df85907a97641243e9b.mp4?sign=8adc90a0dfe7d5be2e8741ceceb8707b&t=1792845095",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=9",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=135238&s=1&e=9",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/135238/1/9",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/135238/1/9",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "251839718474875200",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/5aaefce6d54ac8483962b09427b4a665.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ2NTMwfX19XX0_&Signature=Lx1e25a00FpbOjEJLahKCPI8NwohjIFgdl~k67fuRTbHu7KNCwriorm~Abf~zo4ObISVQJKg~X~JakToAkdgOv1pyYqJQQumpFLPHnozIFCsFhu12K8jfIIMsC45BiYQAItVqWY98ZfKLLLilYXe4PsiLUblmf8S3hx~9B2KsLukMCajMj-Mw4g9qALm64~NWGELAQjWsNRddLh3Ds63dR8tPh9LHOzfVjCN5Pr6modGJogOMIsho~OqJqpHVGpN393d7n5QYjexJuNJsMUL~c8LQhLXY-hGwFLD~d3w~i6ALyKHnwdUfcNPq9m6wc9P3qYIPe8~RHr7fPiwGZCv1w__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "38112",
+              "delay": 0
+            }
+          ]
+        },
+        {
+          "number": 10,
+          "episode": 10,
+          "season": 1,
+          "title": "Tear",
+          "duration": "78 min",
+          "overview": "In order to rescue Chae-ok and stop the atrocity, Tae-sang and Jung-won forge a plan. But just as the coast seems clear, Yukiko Maeda stands in the way.",
+          "still": "https://image.tmdb.org/t/p/w500/rpIS5XGSQIUXNBuKYL5WbhKr5sC.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/b7fae3c166dd27db7746e906ca318d2b.mp4?sign=de053a89ba852c37a1d875c90b9e96f9&t=1792841728",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Hindi Direct - 791MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/b7fae3c166dd27db7746e906ca318d2b.mp4?sign=de053a89ba852c37a1d875c90b9e96f9&t=1792841728",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=341274161781817952&se=1&ep=10",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 480p - 690MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/11e44ead5b7ba632450f24e2550d82fb.mp4?sign=0fc0143573fbc3889cb814aa0a2268dd&t=1792841728",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MovieBox Backup 1080p - 574MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250724/93e773a6f98b2462926b64281e2985fd.mp4?sign=49256e37074dde7e143d4d5b26ca5839&t=1792841728",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=8749727399622889296&se=1&ep=10",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=135238&s=1&e=10",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/135238/1/10",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/135238/1/10",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": [
+            {
+              "id": "8392345084330739312",
+              "lan": "en",
+              "lanName": "English",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/c3c65607084d01b3e87e42779a60f8cf.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDQ4MDUwfX19XX0_&Signature=YsT~0vxgVE7bKHNeM7fOqHV4~SU-i4WN1VHRbiKHyxc466QmHPAzjvpfvbHK4RiKj7LKjEzHGd0zZ-m9HX6RQw-BbPHikeP59pYJF591y2MBbeOJzJ97EsXh0DLvWWkJjEp0BueYsCDSzE7~tWNz0duAhBSqqIW79G26qmWqpYFns1b7ciSZt7WVLZ9QOEI88rQC-YPDNI8gvJKdUWKc~-OkepUj-FS0P03ihFrsivDqvcTTFLkcyAsKVFhPEoQJuiH0JQCqR4ium1OEnxPoPEPF4hjlCzFGzNuUsWxiHDKKQnxyyk83Om98w4UM64eP2bpJUXrEizw3Qxci5Q6ByQ__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "size": "28063",
+              "delay": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "mb-s-8445472975083767584",
       "subjectId": "8445472975083767584",
       "tmdbId": 96648,
