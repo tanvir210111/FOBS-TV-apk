@@ -419,7 +419,8 @@ async function runMovieBoxSync() {
             seasonsCount: seasons.length > 0 ? seasons.length : 1,
             seasons: seasons.length > 0 ? seasons : undefined,
             episodes: allEpisodes,
-            type: 'series'
+            type: 'series',
+            addedAt: new Date().toISOString()
           };
           data.series.unshift(seriesObj);
           addedSeries++;
@@ -466,7 +467,8 @@ async function runMovieBoxSync() {
             streamUrl: media.streamUrl,
             servers,
             cast: tmdb?.cast || [],
-            type: 'movie'
+            type: 'movie',
+            addedAt: new Date().toISOString()
           };
           data.movies.unshift(movieObj);
           addedMovies++;
