@@ -668,6 +668,9 @@ app.get('/api/moviebox/stream', async (req, res) => {
       // Gyeongseong Creature [Hindi] (Korean Series - Seasons 1 & 2)
       else if (id === '341274161781817952') resolvedPath = 'gyeongseong-creature-hindi-cwXnUZq2dp';
       else if (id === '8749727399622889296') resolvedPath = 'gyeongseong-creature-2nf2FylQlqa';
+      // Love Next Door [Hindi] (Korean Series - Season 1)
+      else if (id === '1332900149030438936') resolvedPath = 'love-next-door-hindi-A2MLzAcHsA1';
+      else if (id === '900420217287968016') resolvedPath = 'love-next-door-21sWBRUVv41';
     }
     // Try requested se/ep first, then fallbacks
     let media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);

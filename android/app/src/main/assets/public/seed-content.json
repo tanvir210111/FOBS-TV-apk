@@ -4825,6 +4825,2015 @@
   ],
   "series": [
     {
+      "id": "mb-s-1332900149030438936",
+      "subjectId": "1332900149030438936",
+      "tmdbId": 241454,
+      "title": "Love Next Door [Hindi]",
+      "originalTitle": "엄마친구아들",
+      "year": "2024",
+      "releaseDate": "2026-10-24T12:33:59.435Z",
+      "originalReleaseDate": "2024-08-17",
+      "addedAt": "2026-10-24T12:33:59.435Z",
+      "rating": "7.9",
+      "votes": "293",
+      "duration": "1 Season (16 Episodes)",
+      "category": "Korean (Dubbed) Series",
+      "industry": "Korean",
+      "country": "Korea",
+      "badgeLeft": "K-Drama",
+      "badgeRight": "Hindi Dub",
+      "poster": "https://image.tmdb.org/t/p/w500/hikbLeofw2epfaEJptSkQ6b22IV.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/blNanzce8lKnrfjDqWLdPNPy7mo.jpg",
+      "cover": "https://image.tmdb.org/t/p/original/blNanzce8lKnrfjDqWLdPNPy7mo.jpg",
+      "overview": "A woman attempting to reboot her life returns to Korea and becomes entangled with her childhood friend — with whom she shares a complicated history.",
+      "description": "A woman attempting to reboot her life returns to Korea and becomes entangled with her childhood friend — with whom she shares a complicated history.",
+      "genres": "Drama, Comedy",
+      "genre": "Drama, Comedy",
+      "director": "Yoo Je-won",
+      "cast": [
+        {
+          "name": "Jung Hae-in",
+          "character": "Choi Seung-hyo",
+          "photo": "https://image.tmdb.org/t/p/w185/7ZMUHR2q0XTWMxuqijWSVfWQv14.jpg"
+        },
+        {
+          "name": "Jung So-min",
+          "character": "Bae Seok-ryu",
+          "photo": "https://image.tmdb.org/t/p/w185/cv8i4ALEabYkwnu68p5AdRTrMG9.jpg"
+        },
+        {
+          "name": "Kim Ji-eun",
+          "character": "Jeong Mo-eum",
+          "photo": "https://image.tmdb.org/t/p/w185/eKDb8JtrO4SPySd0OwzttW1uvVw.jpg"
+        },
+        {
+          "name": "Yun Ji-on",
+          "character": "Kang Dan-ho",
+          "photo": "https://image.tmdb.org/t/p/w185/lm6SziV6Mm954EW32xyiSc5jzif.jpg"
+        },
+        {
+          "name": "Park Ji-young",
+          "character": "Na Mi-suk",
+          "photo": "https://image.tmdb.org/t/p/w185/mwIZ7JjkELclzNERSHe9pFHR24U.jpg"
+        },
+        {
+          "name": "Cho Han-chul",
+          "character": "Bae Geun-sik",
+          "photo": "https://image.tmdb.org/t/p/w185/58DGEXFyWfaFdqL7yKKW0VdEg3R.jpg"
+        },
+        {
+          "name": "Jang Young-nam",
+          "character": "Seo Hye-suk",
+          "photo": "https://image.tmdb.org/t/p/w185/u0hl8WSswFhKVaKwaMAERU0xUJk.jpg"
+        },
+        {
+          "name": "Lee Seung-joon",
+          "character": "Choi Kyung-jong",
+          "photo": "https://image.tmdb.org/t/p/w185/qWfiZhhJaXo0fegGPlChelFkoN6.jpg"
+        },
+        {
+          "name": "Jun Seok-ho",
+          "character": "Yoon Myeong-u",
+          "photo": "https://image.tmdb.org/t/p/w185/xMUCuermXrjVNOWDV3gIfpP5yhF.jpg"
+        },
+        {
+          "name": "Kim Keum-soon",
+          "character": "Do Jae-suk",
+          "photo": "https://image.tmdb.org/t/p/w185/jzMDWmOfa87MOQe84BXBqDYa97X.jpg"
+        }
+      ],
+      "seasonsCount": 1,
+      "seasons": [
+        {
+          "seasonNumber": 1,
+          "title": "Season 1",
+          "name": "Season 1",
+          "year": "2024",
+          "poster": "https://image.tmdb.org/t/p/w500/hikbLeofw2epfaEJptSkQ6b22IV.jpg",
+          "episodes": [
+            {
+              "number": 1,
+              "episode": 1,
+              "season": 1,
+              "title": "Comeback",
+              "duration": "65 min",
+              "overview": "Soon-to-be-wed Bae Seok-ryu returns to Korea and runs into her old friend Choi Seung-hyo. But she acts strangely around him, hiding a secret.",
+              "still": "https://image.tmdb.org/t/p/w500/lygWzI87b3tweRfUJlOgMcow6De.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7003c8e4a06994c2c6447abd7fe33ab3.mp4?sign=0e9c0d712601f89b7e06597ab6fcea8a&t=1792844467",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Hindi Direct - 810MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/7003c8e4a06994c2c6447abd7fe33ab3.mp4?sign=0e9c0d712601f89b7e06597ab6fcea8a&t=1792844467",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=1",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Full HD Backup 1080p - 704MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/5138b821fd068b040248af96763c328a.mp4?sign=5d62604094d97b0a92693277ca9a83f0&t=1792842784",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 4 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=1",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=241454&s=1&e=1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/241454/1/1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/241454/1/1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 2,
+              "episode": 2,
+              "season": 1,
+              "title": "Hate",
+              "duration": "75 min",
+              "overview": "Even as her loved ones ask for an explanation, Seok-ryu hides her vulnerabilities until a confrontation with her mom forces Seung-hyo to come to her aid.",
+              "still": "https://image.tmdb.org/t/p/w500/ckcwSEmcmuPu295HVoAOnI9ZsxF.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/df82fbedbdb5361d77430727fe4bc9cc.mp4?sign=9ff8c9e806833ab0bd6c79d57628ff75&t=1792844531",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Hindi Direct - 847MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/df82fbedbdb5361d77430727fe4bc9cc.mp4?sign=9ff8c9e806833ab0bd6c79d57628ff75&t=1792844531",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=2",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Full HD Backup 720p - 333MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/fb9cff90829f8a6d98bc0969889917ee.mp4?sign=a08b643114b0c359943051cb133bcf2c&t=1792843030",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 4 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=2",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=241454&s=1&e=2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/241454/1/2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/241454/1/2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 3,
+              "episode": 3,
+              "season": 1,
+              "title": "Stop Line",
+              "duration": "77 min",
+              "overview": "As Seok-ryu adjusts to unemployment, she faces anxiety about her stagnant life. Seung-hyo clashes with his partner after a tense business meeting.",
+              "still": "https://image.tmdb.org/t/p/w500/2G922AmCcogbtfKXeb93AtvEwmt.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/5a25f3d59a163515a1065d0d4c3a0b55.mp4?sign=a8843ecc186bb18be5da31a12ea687f3&t=1792844207",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Hindi Direct - 983MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/5a25f3d59a163515a1065d0d4c3a0b55.mp4?sign=a8843ecc186bb18be5da31a12ea687f3&t=1792844207",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=3",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Full HD Backup 1080p - 741MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/76e4fdcd4d04ba80d3e203df59fff739.mp4?sign=4525e1a75e643fb615d18e29ca1c46df&t=1792843309",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 4 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=3",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=241454&s=1&e=3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/241454/1/3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/241454/1/3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 4,
+              "episode": 4,
+              "season": 1,
+              "title": "Past Perfect",
+              "duration": "78 min",
+              "overview": "When Seok-ryu's old company presents a promising opportunity, she and Seung-hyo collaborate. Later, an unsettling encounter leaves Seok-ryu rattled.",
+              "still": "https://image.tmdb.org/t/p/w500/bp7HRFHNvEuX1g3dwKmPEFo7TqG.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/5ecd9d2579621425c8a7ab0a598f5965.mp4?sign=5c732a3962609f8b2976a517232fd512&t=1792845226",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Hindi Direct - 520MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/5ecd9d2579621425c8a7ab0a598f5965.mp4?sign=5c732a3962609f8b2976a517232fd512&t=1792845226",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=4",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Full HD Backup 1080p - 683MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/ef782539fff9e1d1e213b8018077e9ce.mp4?sign=221bacaff89f5d419165a06dc2af869d&t=1792844579",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 4 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=4",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=241454&s=1&e=4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/241454/1/4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/241454/1/4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 5,
+              "episode": 5,
+              "season": 1,
+              "title": "Go Back",
+              "duration": "79 min",
+              "overview": "Seung-hyo starts acting awkwardly around Seok-ryu as old feelings resurface. To complicate things further, he faces a delicate situation at work.",
+              "still": "https://image.tmdb.org/t/p/w500/kkCQKLYKnlMHDPYpiV0h0CQhEi7.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/bdfa477610b8b614b5abdc05f975d0a6.mp4?sign=403291e5ac5abd1f6d1cc8e99e288554&t=1792845227",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Hindi Direct - 898MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/bdfa477610b8b614b5abdc05f975d0a6.mp4?sign=403291e5ac5abd1f6d1cc8e99e288554&t=1792845227",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=5",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Full HD Backup 1080p - 777MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/11266c52866daa486214f30bebbe6f2a.mp4?sign=379e94b6b1b0967daaece4a9899156ed&t=1792841883",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 4 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=5",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=241454&s=1&e=5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/241454/1/5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/241454/1/5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 6,
+              "episode": 6,
+              "season": 1,
+              "title": "Your First",
+              "duration": "82 min",
+              "overview": "Seok-ryu explores a new career path, tapping into a childhood passion. However, her family faces a crisis when her father's secret comes to light.",
+              "still": "https://image.tmdb.org/t/p/w500/68Qn9zpmlIYsJWqu8BKvonW5bl9.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/15420dfdd85fd43106e19cf14c247531.mp4?sign=0db9141a59c46a59c65f2c705518bd21&t=1792845227",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Hindi Direct - 874MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/15420dfdd85fd43106e19cf14c247531.mp4?sign=0db9141a59c46a59c65f2c705518bd21&t=1792845227",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=6",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Full HD Backup 1080p - 748MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/dd81ddc8533916f2b242da2c127ad9bc.mp4?sign=00d95a49e287e412ac0039f95814a519&t=1792843161",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 4 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=6",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=241454&s=1&e=6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/241454/1/6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/241454/1/6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 7,
+              "episode": 7,
+              "season": 1,
+              "title": "Love Is All About Timing",
+              "duration": "78 min",
+              "overview": "A figure from Seok-ryu's past appears, leaving those around her looking for clarity — including Seung-hyo, who navigates his own complicated feelings.",
+              "still": "https://image.tmdb.org/t/p/w500/xl1lGphdYeeTg58HVTmkzvXY889.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/852a4022f6f99a0543cf7f9b51d1ecd2.mp4?sign=26d3c591dee6468a370a2e68872c8f58&t=1792845227",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Hindi Direct - 810MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/852a4022f6f99a0543cf7f9b51d1ecd2.mp4?sign=26d3c591dee6468a370a2e68872c8f58&t=1792845227",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=7",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Full HD Backup 1080p - 668MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/e9842ee437ef32c01291e703eb3cfab9.mp4?sign=d937efa83f2855c5b26c3ff2cef19617&t=1792845159",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 4 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=7",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=241454&s=1&e=7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/241454/1/7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/241454/1/7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 8,
+              "episode": 8,
+              "season": 1,
+              "title": "His Secret",
+              "duration": "80 min",
+              "overview": "As the truth finally comes out, Seung-hyo waits for Seok-ryu's response. Meanwhile, Seok-ryu's parents discover her new endeavor, sparking their fury.",
+              "still": "https://image.tmdb.org/t/p/w500/iMnpNhVBs0aWgYhDK3D4ywmbBia.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/32a22298913cf7bd38b719123b82fb5c.mp4?sign=c9897e2f6c773e8837542f3703468f1a&t=1792845228",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Hindi Direct - 843MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/32a22298913cf7bd38b719123b82fb5c.mp4?sign=c9897e2f6c773e8837542f3703468f1a&t=1792845228",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=8",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Full HD Backup 1080p - 1121MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/f5adcee9c81086c117cf4e4a87378272.mp4?sign=4d91e9e841891c4f8bf9a11a070fc9fa&t=1792844078",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 4 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=8",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=241454&s=1&e=8",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/241454/1/8",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/241454/1/8",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 9,
+              "episode": 9,
+              "season": 1,
+              "title": "Darkness in Life",
+              "duration": "87 min",
+              "overview": "As Seok-ryu deals with an ailment, Seung-hyo and Song Hyeon-jun compete for her affection. But soon, Seung-hyo discovers the real reason for her return.",
+              "still": "https://image.tmdb.org/t/p/w500/6BO86hJIqHfW9BpdCGl1eiJaHtV.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/ef96653ce422a84815236ffaeef4cedf.mp4?sign=9d8a6f80112c6630ee535d191bdcbf69&t=1792845155",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 480p Hindi Direct - 393MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/ef96653ce422a84815236ffaeef4cedf.mp4?sign=9d8a6f80112c6630ee535d191bdcbf69&t=1792845155",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=9",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Full HD Backup 1080p - 595MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/cf56bea24f29f7e14fae264c7b97e73d.mp4?sign=da1814d9570b13087fa750543e5183a9&t=1792842523",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 4 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=9",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=241454&s=1&e=9",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/241454/1/9",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/241454/1/9",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 10,
+              "episode": 10,
+              "season": 1,
+              "title": "Bear in the Cave",
+              "duration": "91 min",
+              "overview": "Seok-ryu's secret comes to light, leaving her loved ones struggling with the shock. When she goes missing, Seung-hyo desperately sets out to find her.",
+              "still": "https://image.tmdb.org/t/p/w500/vsA4v6g4rUpQmKoJrBB2Le27PhL.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/ce261f8907d9a26daa33e7cdd0f828cf.mp4?sign=3b40cf6deb732809f0235d6b756373f9&t=1792845155",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Hindi Direct - 959MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/ce261f8907d9a26daa33e7cdd0f828cf.mp4?sign=3b40cf6deb732809f0235d6b756373f9&t=1792845155",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=10",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Full HD Backup 1080p - 658MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/837ec7dc9ca392d40e606d7da6dc8458.mp4?sign=555ec87d8d1646cf8b1557a0b55438c1&t=1792842299",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 4 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=10",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=241454&s=1&e=10",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/241454/1/10",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/241454/1/10",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 11,
+              "episode": 11,
+              "season": 1,
+              "title": "Belated",
+              "duration": "90 min",
+              "overview": "Seung-hyo awaits Seok-ryu's genuine response as time passes since his confession. But suddenly, he receives a shocking announcement from his parents.",
+              "still": "https://image.tmdb.org/t/p/w500/fooECTcapeyzM4TSH6rEU8hoOHq.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/82dab2fba940a5dd48d2894bb2cf562e.mp4?sign=049ff44f124dd659ac33a39dcc5177c8&t=1792845231",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Hindi Direct - 1004MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/82dab2fba940a5dd48d2894bb2cf562e.mp4?sign=049ff44f124dd659ac33a39dcc5177c8&t=1792845231",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=11",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Full HD Backup 1080p - 748MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/1420459a39ba52939e7ad4a24dcf4e1d.mp4?sign=f29af97de15a6f7b18b4b8c5c1def4f4&t=1792845230",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 4 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=11",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=241454&s=1&e=11",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/241454/1/11",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/241454/1/11",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 12,
+              "episode": 12,
+              "season": 1,
+              "title": "Puppy Love",
+              "duration": "84 min",
+              "overview": "Seung-hyo and Seok-ryu try to navigate their relationship dynamic. Soon, feelings of jealousy arise, and they struggle to resolve a fight.",
+              "still": "https://image.tmdb.org/t/p/w500/z8JQabyrbRs2kBIFK7qkFyBqR84.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/6df14783dd13280215337428b6629fbf.mp4?sign=097a495dfe9f0d11f1a4ff0f14d74c78&t=1792845232",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Hindi Direct - 862MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/6df14783dd13280215337428b6629fbf.mp4?sign=097a495dfe9f0d11f1a4ff0f14d74c78&t=1792845232",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=12",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 480p - 398MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/f48302bd7f25d54fd905091b984863f0.mp4?sign=ad9fbd27036c5f054c1ca25886ef8207&t=1792845232",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Full HD Backup 1080p - 723MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/ab0074e2e1f991bb923aba4ab52cbf61.mp4?sign=68b406e6d233b037597739a7f294049b&t=1792845232",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=12",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=241454&s=1&e=12",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/241454/1/12",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/241454/1/12",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 13,
+              "episode": 13,
+              "season": 1,
+              "title": "Love",
+              "duration": "83 min",
+              "overview": "As their relationship blooms, Seung-hyo and Seok-ryu struggle to keep their status a secret. Jung Mo-eum finds out what's behind Kang Dan-ho's coldness.",
+              "still": "https://image.tmdb.org/t/p/w500/IB1xYwAQmXbtsBPE820HJVlD4.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/04b254273d0864d17508fd6d0e541fcc.mp4?sign=eaeea18f645c56be3499e0cf9ea5a436&t=1792845232",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Hindi Direct - 822MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/04b254273d0864d17508fd6d0e541fcc.mp4?sign=eaeea18f645c56be3499e0cf9ea5a436&t=1792845232",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=13",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 480p - 398MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/adff78c97c7cb36db748cd9372969ba0.mp4?sign=bdf0f12571965b4e59e6a8d33fc15ae8&t=1792845232",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Full HD Backup 1080p - 686MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/b998b4759e2c92a656bdc0d021ff8392.mp4?sign=001652c4f829790a26275e1418242813&t=1792845161",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=13",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=241454&s=1&e=13",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/241454/1/13",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/241454/1/13",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 14,
+              "episode": 14,
+              "season": 1,
+              "title": "Sweet Love",
+              "duration": "80 min",
+              "overview": "Seung-hyo takes it into his own hands to encourage Seok-ryu's cooking ambitions. Convinced it's the right moment, he asks her an important question.",
+              "still": "https://image.tmdb.org/t/p/w500/z9pgS4C3kfdr9u5IQU0kVsUT9Z1.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/328abb09b43d3846701dad7123492fd9.mp4?sign=43f05f0a1265538785037b7f6e31a804&t=1792845233",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Hindi Direct - 791MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/328abb09b43d3846701dad7123492fd9.mp4?sign=43f05f0a1265538785037b7f6e31a804&t=1792845233",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=14",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 480p - 382MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/700a8d918ec44ad17b440266a8cba205.mp4?sign=4f2371403c712e41ee02e7952baf231a&t=1792845233",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Full HD Backup 1080p - 647MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/f003a1b743ad2b2ceed7522b45f7bfcc.mp4?sign=fbeb66c7841c9d51705adeb5829932cb&t=1792845161",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=14",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=241454&s=1&e=14",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/241454/1/14",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/241454/1/14",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 15,
+              "episode": 15,
+              "season": 1,
+              "title": "Bravo, My Life",
+              "duration": "77 min",
+              "overview": "Seung-hyo and Seok-ryu face their parents' wrath after their secret is revealed — pushing the tension between their mothers to a boiling point.",
+              "still": "https://image.tmdb.org/t/p/w500/rnu2hHILin7pUakjYEnLbntwpKk.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a214287fe959d377b19605d64872e353.mp4?sign=30c3d83d1c3f7651816a8207361c33a4&t=1792845157",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Hindi Direct - 867MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a214287fe959d377b19605d64872e353.mp4?sign=30c3d83d1c3f7651816a8207361c33a4&t=1792845157",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=15",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 480p - 376MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/989c6a6c337440f7e825fb244e277982.mp4?sign=0768cf68089e82a462cf7c1b2a26b39e&t=1792845157",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Full HD Backup 1080p - 660MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/afd0fd14c519201dccd9ccdca8219c7c.mp4?sign=654fc2486ace1863b4fe7c39cc7b4a34&t=1792845237",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=15",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=241454&s=1&e=15",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/241454/1/15",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/241454/1/15",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 16,
+              "episode": 16,
+              "season": 1,
+              "title": "The End",
+              "duration": "73 min",
+              "overview": "Seung-hyo and Seok-ryu, happy in their relationship, prepare for a lifetime together. They inspire each other as they work toward their personal goals.",
+              "still": "https://image.tmdb.org/t/p/w500/88NTlxtsqVsccFAoM3dfVm0hmQN.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d2815c671d303c15a486d407d7c185f9.mp4?sign=810444e450e7bc12f1176ce94d8c15f1&t=1792845157",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 720p Hindi Direct - 889MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/d2815c671d303c15a486d407d7c185f9.mp4?sign=810444e450e7bc12f1176ce94d8c15f1&t=1792845157",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=16",
+                  "isDirect": true,
+                  "quality": "720p"
+                },
+                {
+                  "name": "Server 3 (MovieBox Fast SD - 480p - 356MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/7b235c448cadc36ed1ac0c8c2b6e1c41.mp4?sign=bd6419e866eb557c871de02bb360fd6b&t=1792845157",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MovieBox Full HD Backup 1080p - 705MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/93e62f25f37f98f3390f54a26428211a.mp4?sign=c846d97f4f42f3c3389dd729382bffb3&t=1792841200",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (Auto-Renewing Backup Stream)",
+                  "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=16",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=241454&s=1&e=16",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 7 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/241454/1/16",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 8 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/241454/1/16",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            }
+          ]
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "episode": 1,
+          "season": 1,
+          "title": "Comeback",
+          "duration": "65 min",
+          "overview": "Soon-to-be-wed Bae Seok-ryu returns to Korea and runs into her old friend Choi Seung-hyo. But she acts strangely around him, hiding a secret.",
+          "still": "https://image.tmdb.org/t/p/w500/lygWzI87b3tweRfUJlOgMcow6De.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7003c8e4a06994c2c6447abd7fe33ab3.mp4?sign=0e9c0d712601f89b7e06597ab6fcea8a&t=1792844467",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 720p Hindi Direct - 810MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/7003c8e4a06994c2c6447abd7fe33ab3.mp4?sign=0e9c0d712601f89b7e06597ab6fcea8a&t=1792844467",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=1",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 3 (MovieBox Full HD Backup 1080p - 704MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/5138b821fd068b040248af96763c328a.mp4?sign=5d62604094d97b0a92693277ca9a83f0&t=1792842784",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 4 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=1",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=241454&s=1&e=1",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/241454/1/1",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/241454/1/1",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 2,
+          "episode": 2,
+          "season": 1,
+          "title": "Hate",
+          "duration": "75 min",
+          "overview": "Even as her loved ones ask for an explanation, Seok-ryu hides her vulnerabilities until a confrontation with her mom forces Seung-hyo to come to her aid.",
+          "still": "https://image.tmdb.org/t/p/w500/ckcwSEmcmuPu295HVoAOnI9ZsxF.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/df82fbedbdb5361d77430727fe4bc9cc.mp4?sign=9ff8c9e806833ab0bd6c79d57628ff75&t=1792844531",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 720p Hindi Direct - 847MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/df82fbedbdb5361d77430727fe4bc9cc.mp4?sign=9ff8c9e806833ab0bd6c79d57628ff75&t=1792844531",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=2",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 3 (MovieBox Full HD Backup 720p - 333MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/fb9cff90829f8a6d98bc0969889917ee.mp4?sign=a08b643114b0c359943051cb133bcf2c&t=1792843030",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 4 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=2",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=241454&s=1&e=2",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/241454/1/2",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/241454/1/2",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 3,
+          "episode": 3,
+          "season": 1,
+          "title": "Stop Line",
+          "duration": "77 min",
+          "overview": "As Seok-ryu adjusts to unemployment, she faces anxiety about her stagnant life. Seung-hyo clashes with his partner after a tense business meeting.",
+          "still": "https://image.tmdb.org/t/p/w500/2G922AmCcogbtfKXeb93AtvEwmt.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/5a25f3d59a163515a1065d0d4c3a0b55.mp4?sign=a8843ecc186bb18be5da31a12ea687f3&t=1792844207",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 720p Hindi Direct - 983MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/5a25f3d59a163515a1065d0d4c3a0b55.mp4?sign=a8843ecc186bb18be5da31a12ea687f3&t=1792844207",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=3",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 3 (MovieBox Full HD Backup 1080p - 741MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/76e4fdcd4d04ba80d3e203df59fff739.mp4?sign=4525e1a75e643fb615d18e29ca1c46df&t=1792843309",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 4 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=3",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=241454&s=1&e=3",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/241454/1/3",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/241454/1/3",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 4,
+          "episode": 4,
+          "season": 1,
+          "title": "Past Perfect",
+          "duration": "78 min",
+          "overview": "When Seok-ryu's old company presents a promising opportunity, she and Seung-hyo collaborate. Later, an unsettling encounter leaves Seok-ryu rattled.",
+          "still": "https://image.tmdb.org/t/p/w500/bp7HRFHNvEuX1g3dwKmPEFo7TqG.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/5ecd9d2579621425c8a7ab0a598f5965.mp4?sign=5c732a3962609f8b2976a517232fd512&t=1792845226",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 720p Hindi Direct - 520MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/5ecd9d2579621425c8a7ab0a598f5965.mp4?sign=5c732a3962609f8b2976a517232fd512&t=1792845226",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=4",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 3 (MovieBox Full HD Backup 1080p - 683MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/ef782539fff9e1d1e213b8018077e9ce.mp4?sign=221bacaff89f5d419165a06dc2af869d&t=1792844579",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 4 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=4",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=241454&s=1&e=4",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/241454/1/4",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/241454/1/4",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 5,
+          "episode": 5,
+          "season": 1,
+          "title": "Go Back",
+          "duration": "79 min",
+          "overview": "Seung-hyo starts acting awkwardly around Seok-ryu as old feelings resurface. To complicate things further, he faces a delicate situation at work.",
+          "still": "https://image.tmdb.org/t/p/w500/kkCQKLYKnlMHDPYpiV0h0CQhEi7.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/bdfa477610b8b614b5abdc05f975d0a6.mp4?sign=403291e5ac5abd1f6d1cc8e99e288554&t=1792845227",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 720p Hindi Direct - 898MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/bdfa477610b8b614b5abdc05f975d0a6.mp4?sign=403291e5ac5abd1f6d1cc8e99e288554&t=1792845227",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=5",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 3 (MovieBox Full HD Backup 1080p - 777MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/11266c52866daa486214f30bebbe6f2a.mp4?sign=379e94b6b1b0967daaece4a9899156ed&t=1792841883",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 4 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=5",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=241454&s=1&e=5",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/241454/1/5",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/241454/1/5",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 6,
+          "episode": 6,
+          "season": 1,
+          "title": "Your First",
+          "duration": "82 min",
+          "overview": "Seok-ryu explores a new career path, tapping into a childhood passion. However, her family faces a crisis when her father's secret comes to light.",
+          "still": "https://image.tmdb.org/t/p/w500/68Qn9zpmlIYsJWqu8BKvonW5bl9.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/15420dfdd85fd43106e19cf14c247531.mp4?sign=0db9141a59c46a59c65f2c705518bd21&t=1792845227",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 720p Hindi Direct - 874MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/15420dfdd85fd43106e19cf14c247531.mp4?sign=0db9141a59c46a59c65f2c705518bd21&t=1792845227",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=6",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 3 (MovieBox Full HD Backup 1080p - 748MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/dd81ddc8533916f2b242da2c127ad9bc.mp4?sign=00d95a49e287e412ac0039f95814a519&t=1792843161",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 4 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=6",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=241454&s=1&e=6",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/241454/1/6",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/241454/1/6",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 7,
+          "episode": 7,
+          "season": 1,
+          "title": "Love Is All About Timing",
+          "duration": "78 min",
+          "overview": "A figure from Seok-ryu's past appears, leaving those around her looking for clarity — including Seung-hyo, who navigates his own complicated feelings.",
+          "still": "https://image.tmdb.org/t/p/w500/xl1lGphdYeeTg58HVTmkzvXY889.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/852a4022f6f99a0543cf7f9b51d1ecd2.mp4?sign=26d3c591dee6468a370a2e68872c8f58&t=1792845227",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 720p Hindi Direct - 810MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/852a4022f6f99a0543cf7f9b51d1ecd2.mp4?sign=26d3c591dee6468a370a2e68872c8f58&t=1792845227",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=7",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 3 (MovieBox Full HD Backup 1080p - 668MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/e9842ee437ef32c01291e703eb3cfab9.mp4?sign=d937efa83f2855c5b26c3ff2cef19617&t=1792845159",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 4 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=7",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=241454&s=1&e=7",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/241454/1/7",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/241454/1/7",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 8,
+          "episode": 8,
+          "season": 1,
+          "title": "His Secret",
+          "duration": "80 min",
+          "overview": "As the truth finally comes out, Seung-hyo waits for Seok-ryu's response. Meanwhile, Seok-ryu's parents discover her new endeavor, sparking their fury.",
+          "still": "https://image.tmdb.org/t/p/w500/iMnpNhVBs0aWgYhDK3D4ywmbBia.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/32a22298913cf7bd38b719123b82fb5c.mp4?sign=c9897e2f6c773e8837542f3703468f1a&t=1792845228",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 720p Hindi Direct - 843MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/32a22298913cf7bd38b719123b82fb5c.mp4?sign=c9897e2f6c773e8837542f3703468f1a&t=1792845228",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=8",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 3 (MovieBox Full HD Backup 1080p - 1121MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/f5adcee9c81086c117cf4e4a87378272.mp4?sign=4d91e9e841891c4f8bf9a11a070fc9fa&t=1792844078",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 4 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=8",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=241454&s=1&e=8",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/241454/1/8",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/241454/1/8",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 9,
+          "episode": 9,
+          "season": 1,
+          "title": "Darkness in Life",
+          "duration": "87 min",
+          "overview": "As Seok-ryu deals with an ailment, Seung-hyo and Song Hyeon-jun compete for her affection. But soon, Seung-hyo discovers the real reason for her return.",
+          "still": "https://image.tmdb.org/t/p/w500/6BO86hJIqHfW9BpdCGl1eiJaHtV.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/ef96653ce422a84815236ffaeef4cedf.mp4?sign=9d8a6f80112c6630ee535d191bdcbf69&t=1792845155",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 480p Hindi Direct - 393MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/ef96653ce422a84815236ffaeef4cedf.mp4?sign=9d8a6f80112c6630ee535d191bdcbf69&t=1792845155",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=9",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 3 (MovieBox Full HD Backup 1080p - 595MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/cf56bea24f29f7e14fae264c7b97e73d.mp4?sign=da1814d9570b13087fa750543e5183a9&t=1792842523",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 4 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=9",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=241454&s=1&e=9",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/241454/1/9",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/241454/1/9",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 10,
+          "episode": 10,
+          "season": 1,
+          "title": "Bear in the Cave",
+          "duration": "91 min",
+          "overview": "Seok-ryu's secret comes to light, leaving her loved ones struggling with the shock. When she goes missing, Seung-hyo desperately sets out to find her.",
+          "still": "https://image.tmdb.org/t/p/w500/vsA4v6g4rUpQmKoJrBB2Le27PhL.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/ce261f8907d9a26daa33e7cdd0f828cf.mp4?sign=3b40cf6deb732809f0235d6b756373f9&t=1792845155",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 720p Hindi Direct - 959MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/ce261f8907d9a26daa33e7cdd0f828cf.mp4?sign=3b40cf6deb732809f0235d6b756373f9&t=1792845155",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=10",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 3 (MovieBox Full HD Backup 1080p - 658MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/837ec7dc9ca392d40e606d7da6dc8458.mp4?sign=555ec87d8d1646cf8b1557a0b55438c1&t=1792842299",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 4 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=10",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=241454&s=1&e=10",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/241454/1/10",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/241454/1/10",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 11,
+          "episode": 11,
+          "season": 1,
+          "title": "Belated",
+          "duration": "90 min",
+          "overview": "Seung-hyo awaits Seok-ryu's genuine response as time passes since his confession. But suddenly, he receives a shocking announcement from his parents.",
+          "still": "https://image.tmdb.org/t/p/w500/fooECTcapeyzM4TSH6rEU8hoOHq.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/82dab2fba940a5dd48d2894bb2cf562e.mp4?sign=049ff44f124dd659ac33a39dcc5177c8&t=1792845231",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 720p Hindi Direct - 1004MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/82dab2fba940a5dd48d2894bb2cf562e.mp4?sign=049ff44f124dd659ac33a39dcc5177c8&t=1792845231",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=11",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 3 (MovieBox Full HD Backup 1080p - 748MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/1420459a39ba52939e7ad4a24dcf4e1d.mp4?sign=f29af97de15a6f7b18b4b8c5c1def4f4&t=1792845230",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 4 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=11",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=241454&s=1&e=11",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/241454/1/11",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/241454/1/11",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 12,
+          "episode": 12,
+          "season": 1,
+          "title": "Puppy Love",
+          "duration": "84 min",
+          "overview": "Seung-hyo and Seok-ryu try to navigate their relationship dynamic. Soon, feelings of jealousy arise, and they struggle to resolve a fight.",
+          "still": "https://image.tmdb.org/t/p/w500/z8JQabyrbRs2kBIFK7qkFyBqR84.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/6df14783dd13280215337428b6629fbf.mp4?sign=097a495dfe9f0d11f1a4ff0f14d74c78&t=1792845232",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 720p Hindi Direct - 862MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/6df14783dd13280215337428b6629fbf.mp4?sign=097a495dfe9f0d11f1a4ff0f14d74c78&t=1792845232",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=12",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 480p - 398MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/f48302bd7f25d54fd905091b984863f0.mp4?sign=ad9fbd27036c5f054c1ca25886ef8207&t=1792845232",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MovieBox Full HD Backup 1080p - 723MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/ab0074e2e1f991bb923aba4ab52cbf61.mp4?sign=68b406e6d233b037597739a7f294049b&t=1792845232",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=12",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=241454&s=1&e=12",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/241454/1/12",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/241454/1/12",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 13,
+          "episode": 13,
+          "season": 1,
+          "title": "Love",
+          "duration": "83 min",
+          "overview": "As their relationship blooms, Seung-hyo and Seok-ryu struggle to keep their status a secret. Jung Mo-eum finds out what's behind Kang Dan-ho's coldness.",
+          "still": "https://image.tmdb.org/t/p/w500/IB1xYwAQmXbtsBPE820HJVlD4.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/04b254273d0864d17508fd6d0e541fcc.mp4?sign=eaeea18f645c56be3499e0cf9ea5a436&t=1792845232",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 720p Hindi Direct - 822MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/04b254273d0864d17508fd6d0e541fcc.mp4?sign=eaeea18f645c56be3499e0cf9ea5a436&t=1792845232",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=13",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 480p - 398MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/adff78c97c7cb36db748cd9372969ba0.mp4?sign=bdf0f12571965b4e59e6a8d33fc15ae8&t=1792845232",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MovieBox Full HD Backup 1080p - 686MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/b998b4759e2c92a656bdc0d021ff8392.mp4?sign=001652c4f829790a26275e1418242813&t=1792845161",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=13",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=241454&s=1&e=13",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/241454/1/13",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/241454/1/13",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 14,
+          "episode": 14,
+          "season": 1,
+          "title": "Sweet Love",
+          "duration": "80 min",
+          "overview": "Seung-hyo takes it into his own hands to encourage Seok-ryu's cooking ambitions. Convinced it's the right moment, he asks her an important question.",
+          "still": "https://image.tmdb.org/t/p/w500/z9pgS4C3kfdr9u5IQU0kVsUT9Z1.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/328abb09b43d3846701dad7123492fd9.mp4?sign=43f05f0a1265538785037b7f6e31a804&t=1792845233",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 720p Hindi Direct - 791MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/328abb09b43d3846701dad7123492fd9.mp4?sign=43f05f0a1265538785037b7f6e31a804&t=1792845233",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=14",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 480p - 382MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/700a8d918ec44ad17b440266a8cba205.mp4?sign=4f2371403c712e41ee02e7952baf231a&t=1792845233",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MovieBox Full HD Backup 1080p - 647MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/f003a1b743ad2b2ceed7522b45f7bfcc.mp4?sign=fbeb66c7841c9d51705adeb5829932cb&t=1792845161",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=14",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=241454&s=1&e=14",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/241454/1/14",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/241454/1/14",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 15,
+          "episode": 15,
+          "season": 1,
+          "title": "Bravo, My Life",
+          "duration": "77 min",
+          "overview": "Seung-hyo and Seok-ryu face their parents' wrath after their secret is revealed — pushing the tension between their mothers to a boiling point.",
+          "still": "https://image.tmdb.org/t/p/w500/rnu2hHILin7pUakjYEnLbntwpKk.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a214287fe959d377b19605d64872e353.mp4?sign=30c3d83d1c3f7651816a8207361c33a4&t=1792845157",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 720p Hindi Direct - 867MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/a214287fe959d377b19605d64872e353.mp4?sign=30c3d83d1c3f7651816a8207361c33a4&t=1792845157",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=15",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 480p - 376MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/989c6a6c337440f7e825fb244e277982.mp4?sign=0768cf68089e82a462cf7c1b2a26b39e&t=1792845157",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MovieBox Full HD Backup 1080p - 660MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/afd0fd14c519201dccd9ccdca8219c7c.mp4?sign=654fc2486ace1863b4fe7c39cc7b4a34&t=1792845237",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=15",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=241454&s=1&e=15",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/241454/1/15",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/241454/1/15",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 16,
+          "episode": 16,
+          "season": 1,
+          "title": "The End",
+          "duration": "73 min",
+          "overview": "Seung-hyo and Seok-ryu, happy in their relationship, prepare for a lifetime together. They inspire each other as they work toward their personal goals.",
+          "still": "https://image.tmdb.org/t/p/w500/88NTlxtsqVsccFAoM3dfVm0hmQN.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d2815c671d303c15a486d407d7c185f9.mp4?sign=810444e450e7bc12f1176ce94d8c15f1&t=1792845157",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 720p Hindi Direct - 889MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/d2815c671d303c15a486d407d7c185f9.mp4?sign=810444e450e7bc12f1176ce94d8c15f1&t=1792845157",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=1332900149030438936&se=1&ep=16",
+              "isDirect": true,
+              "quality": "720p"
+            },
+            {
+              "name": "Server 3 (MovieBox Fast SD - 480p - 356MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/7b235c448cadc36ed1ac0c8c2b6e1c41.mp4?sign=bd6419e866eb557c871de02bb360fd6b&t=1792845157",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MovieBox Full HD Backup 1080p - 705MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/93e62f25f37f98f3390f54a26428211a.mp4?sign=c846d97f4f42f3c3389dd729382bffb3&t=1792841200",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (Auto-Renewing Backup Stream)",
+              "url": "/api/moviebox/stream?id=900420217287968016&se=1&ep=16",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=241454&s=1&e=16",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 7 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/241454/1/16",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 8 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/241454/1/16",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        }
+      ]
+    },
+    {
       "id": "mb-s-341274161781817952",
       "subjectId": "341274161781817952",
       "tmdbId": 135238,
