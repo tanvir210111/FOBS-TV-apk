@@ -616,6 +616,14 @@ app.get('/api/moviebox/stream', async (req, res) => {
       else if (id === '8475210957663488472') resolvedPath = 'a-shop-for-killers-hindi-GLJXzEty46a';
       // Crush (So I Love You Very Much) [Hindi] (Chinese Series)
       else if (id === '5698833987452421616') resolvedPath = 'so-i-love-you-very-much-hindi-caElq9EIYM6';
+      // Dhootha [Hindi] (South Indian Series)
+      else if (id === '5564284041047803440') resolvedPath = 'dhootha-hindi-StflkTKt2D6';
+      // Rana Naidu [Hindi] (Action Crime Series - Season 1 & 2)
+      else if (id === '8653275235304834096') resolvedPath = 'rana-naidu-hindi-q987i7J5eja';
+      // Mouse / Mousetrap [Hindi] (Korean Series)
+      else if (id === '7573592610930312192') resolvedPath = 'mousetrap-hindi-CXwu23l8t19';
+      else if (id === '1694621778766643152') resolvedPath = 'mouse-i3rX9JUnb12';
+      else if (id === '4938138970698960008') resolvedPath = 'mouse-o2BOtNbJMS5';
     }
     // Try requested se/ep first, then fallbacks
     let media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);

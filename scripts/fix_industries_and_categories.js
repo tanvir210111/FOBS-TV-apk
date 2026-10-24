@@ -92,7 +92,7 @@ function classifySeries(s) {
   // Korean Series (K-Drama)
   const koreanSeries = [
     'taxi driver', 'reply 1988', 'shop for killers', 'reborn rich', 'korean odyssey',
-    'good boy', 'hongrang', 'karma', 'mouse', 'modern farmer', 'my bias', 'ordinary jackpot',
+    'good boy', 'hongrang', 'karma', 'mouse', 'mousetrap', 'modern farmer', 'my bias', 'ordinary jackpot',
     'love in disguise', 'make me tingle', 'take charge of my heart', 'my dearest nemesis',
     'love other than yours', 'our sticky love', 'filing for love'
   ];
@@ -137,6 +137,15 @@ function classifySeries(s) {
     s.country = 'Japan';
     s.category = 'Anime Series (Hindi Dub)';
     s.badgeLeft = 'Anime';
+    return;
+  }
+
+  // South Indian Series
+  if (title.includes('dhootha') || title.includes('rana naidu') || ['telugu', 'tamil', 'kannada', 'malayalam'].includes((s.language || '').toLowerCase()) || s.industry === 'South Indian') {
+    s.industry = 'South Indian';
+    s.country = 'India';
+    s.category = 'South Indian Series';
+    s.badgeLeft = 'South Dub';
     return;
   }
 
