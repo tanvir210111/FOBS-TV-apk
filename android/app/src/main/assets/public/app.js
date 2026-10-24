@@ -1,23 +1,23 @@
 // FOBS TV Mobile Application Client Logic
 
-const BACKEND_URL = 'https://fobs-tv-apk-i1tf.onrender.com';
+const BACKEND_URL = 'http://187.127.114.52';
 
 // Dynamically determine the backend API base URL
 // - If running on localhost with a custom port (e.g. node dev server localhost:3000), use ''
-// - If running on remote render server in a web browser, use ''
-// - If running inside Capacitor APK on mobile (origin is localhost without port, or capacitor://), point to Render backend
+// - If running on remote server in a web browser, use ''
+// - If running inside Capacitor APK on mobile (origin is localhost without port, or capacitor://), point to VPS backend
 const API_BASE_URL = (() => {
   const isCustomLocalPort = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && 
                             window.location.port && 
                             window.location.port !== '80' && 
                             window.location.port !== '443';
-  if (isCustomLocalPort || window.location.hostname.includes('onrender.com') || window.location.hostname.includes('koyeb.app')) {
+  if (isCustomLocalPort || window.location.hostname.includes('187.127.114.52') || window.location.hostname.includes('onrender.com') || window.location.hostname.includes('koyeb.app')) {
     return '';
   }
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v59';
+const CACHE_KEY = 'fobs_tv_content_cache_v60';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
