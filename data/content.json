@@ -1,24 +1,21 @@
 {
   "appUpdate": {
     "enabled": true,
-    "latestVersionCode": 7,
-    "latestVersionName": "1.6.0",
+    "latestVersionCode": 8,
+    "latestVersionName": "2.0.0",
     "minVersionCode": 1,
     "forceUpdate": true,
-    "title": "New FOBS TV Update (v1.6.0) Available!",
-    "message": "FOBS TV v1.6.0: Turkish drama titles fixed (Kuruluş: Osman, Diriliş: Ertuğrul, Hercai, Masterplan, Arafta), Hindi dubbed streaming improved via MovieBox, Golden Boy complete series added. Update now!",
+    "title": "New FOBS TV Update (v2.0.0) Available!",
+    "message": "FOBS TV v2.0.0 is now live with dedicated high-speed 8-core servers and zero buffering! Please update to continue watching.",
     "releaseNotes": [
-      "Fixed all Turkish drama original titles and metadata",
-      "Masterplan originalTitle fixed",
-      "Arafta Hindi dub now streams via MovieBox",
-      "Miracle in Cell No. 7 (Turkish 2019) streaming via MovieBox",
-      "Golden Boy full 3-season series (371 Episodes from MovieBox)",
-      "Improved portrait & landscape video player controls",
-      "Direct 1-Click APK Download"
+      "Brand New Dedicated 8-Core Streaming Server (Hostinger KVM 8)",
+      "Instant Video Playback & Zero Downtime",
+      "Fixed all previous streaming errors",
+      "Click Update Now to install FOBS TV v2.0.0"
     ],
-    "downloadUrl": "https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk",
-    "fallbackUrl": "https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk",
-    "fileSize": "15.4 MB"
+    "downloadUrl": "https://fobs-apk-download.vercel.app/",
+    "fallbackUrl": "https://fobs-apk-download.vercel.app/",
+    "fileSize": "6.1 MB"
   },
   "featured": {
     "id": "mb-s-3604422232421843392",

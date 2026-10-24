@@ -23,8 +23,8 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
 
 // App Versioning & In-App Force Update Configuration
-const CURRENT_APP_VERSION_CODE = 7;
-const CURRENT_APP_VERSION_NAME = '1.6.0';
+const CURRENT_APP_VERSION_CODE = 8;
+const CURRENT_APP_VERSION_NAME = '2.0.0';
 window.CURRENT_APP_VERSION_CODE = CURRENT_APP_VERSION_CODE;
 window.CURRENT_APP_VERSION_NAME = CURRENT_APP_VERSION_NAME;
 let currentAppUpdateConfig = null;
@@ -5929,12 +5929,12 @@ function startAppUpdate() {
   if (btnStart) btnStart.style.display = 'none';
   if (progContainer) progContainer.classList.remove('hidden');
 
-  let apkUrl = currentAppUpdateConfig?.downloadUrl || 'https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk';
+  let apkUrl = currentAppUpdateConfig?.downloadUrl || 'https://fobs-apk-download.vercel.app/';
   if (!apkUrl.startsWith('http')) {
     apkUrl = `${API_BASE_URL}${apkUrl.startsWith('/') ? '' : '/'}${apkUrl}`;
   }
 
-  showToast('Opening browser to download latest FOBS TV APK (15.4 MB)...');
+  showToast('Opening browser to download FOBS TV v2.0.0 (6.1 MB)...');
 
   if (fill) fill.style.width = '100%';
   if (percentText) percentText.textContent = '100%';
