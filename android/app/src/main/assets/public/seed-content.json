@@ -21,34 +21,34 @@
     "fileSize": "15.4 MB"
   },
   "featured": {
-    "id": "mb-s-4720961996777219576",
-    "subjectId": "4720961996777219576",
-    "detailPath": "musafir-cafe-hindi-MStiLnt3KC5",
-    "tmdbId": 313101,
-    "title": "Musafir Cafe [Hindi]",
-    "originalTitle": "मुसाफ़िर कैफ़े",
+    "id": "mb-s-3604422232421843392",
+    "subjectId": "3604422232421843392",
+    "detailPath": "adarsh-baal-vidyalaya-hindi-UKlobH6igi4",
+    "tmdbId": 328402,
+    "title": "Adarsh Baal Vidyalaya [Hindi]",
+    "originalTitle": "आदर्श बाल विद्यालय",
     "year": "2026",
-    "releaseDate": "2026-10-24T12:16:30.345Z",
+    "releaseDate": "2026-10-24T12:19:30.759Z",
     "originalReleaseDate": "2026-07-24",
-    "addedAt": "2026-10-24T12:16:30.345Z",
-    "rating": "7.1",
-    "imdbRating": "7.1",
-    "votes": "15",
-    "duration": "1 Season (8 Episodes)",
+    "addedAt": "2026-10-24T12:19:30.759Z",
+    "rating": "8.0",
+    "imdbRating": "8.0",
+    "votes": "14",
+    "duration": "1 Season (7 Episodes)",
     "category": "Trending Series",
     "industry": "Bollywood",
     "country": "India",
     "badgeLeft": "Hindi",
     "badgeRight": "1080p Full HD",
-    "poster": "https://image.tmdb.org/t/p/w500/1SbKjtoRKIpVQG5iYnumnfQIqhd.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/original/2C15EiKyfLrWAWbjqpHvumgOtNk.jpg",
-    "cover": "https://image.tmdb.org/t/p/original/2C15EiKyfLrWAWbjqpHvumgOtNk.jpg",
-    "description": "Chander feels an undeniable connection with Sudha. Years later, he builds a new life in the hills with Preeti, but memories of the past linger.",
-    "overview": "Chander feels an undeniable connection with Sudha. Years later, he builds a new life in the hills with Preeti, but memories of the past linger.",
-    "genres": "Drama",
-    "genre": "Drama",
-    "director": "Imtiaz Ali",
-    "cast": "Vikrant Massey, Vedika Pinto, Mahima Makwana, Rajeev Siddhartha, Anubha Fatehpuria",
+    "poster": "https://image.tmdb.org/t/p/w500/1XbcSqURUvhgu2nnoQRZ7cXmTsJ.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/original/ollKqYShmjhBOKsV60pmPP9ara3.jpg",
+    "cover": "https://image.tmdb.org/t/p/original/ollKqYShmjhBOKsV60pmPP9ara3.jpg",
+    "description": "A relaxed principal tries to reform a failing public school, triggering a messy transformation as misfit teachers work to repair the system one lesson at a time.",
+    "overview": "A relaxed principal tries to reform a failing public school, triggering a messy transformation as misfit teachers work to repair the system one lesson at a time.",
+    "genres": "Drama, Comedy",
+    "genre": "Drama, Comedy",
+    "director": "Karan Sharma",
+    "cast": "Kay Kay Menon, Archana Puran Singh, Naveen Kasturia, Abhimanyu Singh, Deven Bhojani, Prasanna Bisht",
     "seasonsCount": 1,
     "seasons": [
       {
@@ -56,52 +56,52 @@
         "title": "Season 1",
         "name": "Season 1",
         "year": "2026",
-        "episodesCount": 8,
-        "poster": "https://image.tmdb.org/t/p/w500/1SbKjtoRKIpVQG5iYnumnfQIqhd.jpg",
+        "episodesCount": 7,
+        "poster": "https://image.tmdb.org/t/p/w500/1XbcSqURUvhgu2nnoQRZ7cXmTsJ.jpg",
         "episodes": [
           {
             "number": 1,
             "episode": 1,
             "season": 1,
-            "title": "Arrival",
-            "duration": "30 min",
-            "overview": "Sudha sweeps Chander off his feet, but they choose to stay friends. Now, he runs a hilltop café with Preeti by his side.",
-            "still": "https://image.tmdb.org/t/p/w500/oaJXllZ9ZF7wQRPVycI8P2sm0Tc.jpg",
-            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/05bf5f673452419782226732d566f9ea.mp4?sign=11dc55d2b7f34dd110cdf51945233f9b&t=1792840949",
+            "title": "Illiterate Goldy",
+            "duration": "37 min",
+            "overview": "Headmaster Gyaneshwar Tripathi can go to the UK if the Class 10 students ace the board exams. The only problem is that the students don't attend school. Meanwhile, the idealistic Kanchan arrives to fix a system that resists change.",
+            "still": "https://image.tmdb.org/t/p/w500/be9OTtr5IQ3A3oIFG9x1NanzU8v.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/fbfd40f336540a99c73355cf96868963.mp4?sign=f7de9ca75ae018436a5f1cae8f980ee6&t=1792842206",
             "servers": [
               {
-                "name": "Server 1 (MovieBox 1080p Direct - 347MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/cms/05bf5f673452419782226732d566f9ea.mp4?sign=11dc55d2b7f34dd110cdf51945233f9b&t=1792840949",
+                "name": "Server 1 (MovieBox 1080p Direct - 551MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/resource/fbfd40f336540a99c73355cf96868963.mp4?sign=f7de9ca75ae018436a5f1cae8f980ee6&t=1792842206",
                 "isDirect": true,
                 "quality": "1080p"
               },
               {
                 "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-                "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=1",
+                "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=1",
                 "isDirect": true,
                 "quality": "1080p"
               },
               {
-                "name": "Server 3 (MovieBox 480p - 118MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/bt/59c1b57a810ac5b87c8bb230fd646121.mp4?sign=9728a2ed05de0610ddc41b375a0e1b1a&t=1792841182",
+                "name": "Server 3 (MovieBox 480p - 181MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/ac5682731d5a641dc3de558a0db0fcd1.mp4?sign=f2ca2572d214a4336c2ccde389f637cf&t=1792842307",
                 "isDirect": true,
                 "quality": "480p"
               },
               {
                 "name": "Server 4 (MultiEmbed HD Failover)",
-                "url": "https://multiembed.mov/?video_id=313101&s=1&e=1",
+                "url": "https://multiembed.mov/?video_id=328402&s=1&e=1",
                 "isDirect": false,
                 "quality": "1080p"
               },
               {
                 "name": "Server 5 (AutoEmbed HD)",
-                "url": "https://player.autoembed.cc/embed/tv/313101/1/1",
+                "url": "https://player.autoembed.cc/embed/tv/328402/1/1",
                 "isDirect": false,
                 "quality": "1080p"
               },
               {
                 "name": "Server 6 (Vidlink Fast HD)",
-                "url": "https://vidlink.pro/tv/313101/1/1",
+                "url": "https://vidlink.pro/tv/328402/1/1",
                 "isDirect": false,
                 "quality": "1080p"
               }
@@ -115,45 +115,45 @@
             "number": 2,
             "episode": 2,
             "season": 1,
-            "title": "Stay",
-            "duration": "34 min",
-            "overview": "While living with Chander, Sudha grows closer to him, but an opportunity in Mumbai may reshape their future. Preeti reveals her plans to expand the café.",
-            "still": "https://image.tmdb.org/t/p/w500/2LpxnhvUDDsNhgTFTp3ByV6BqO0.jpg",
-            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/78fdfb80cadf361a6b29e6d38f43572e.mp4?sign=8a9c0033b79aa21bf4246aa4447c1bc0&t=1792844082",
+            "title": "Ideal Role Model",
+            "duration": "33 min",
+            "overview": "As Gyaneshwar searches for the perfect role model to motivate clueless students, Kanchan plays detective over a missing confiscated watch.",
+            "still": "https://image.tmdb.org/t/p/w500/wNRundU6CtfRQcrgLBAdYMA5BkO.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/f3b9a9c17381d0e79e761c5928509226.mp4?sign=67eb62cff455094313bcb68e05db0cf6&t=1792841962",
             "servers": [
               {
-                "name": "Server 1 (MovieBox 1080p Direct - 418MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/cms/78fdfb80cadf361a6b29e6d38f43572e.mp4?sign=8a9c0033b79aa21bf4246aa4447c1bc0&t=1792844082",
+                "name": "Server 1 (MovieBox 1080p Direct - 533MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/resource/f3b9a9c17381d0e79e761c5928509226.mp4?sign=67eb62cff455094313bcb68e05db0cf6&t=1792841962",
                 "isDirect": true,
                 "quality": "1080p"
               },
               {
                 "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-                "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=2",
+                "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=2",
                 "isDirect": true,
                 "quality": "1080p"
               },
               {
-                "name": "Server 3 (MovieBox 480p - 136MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/bt/08b386e76d554cee57e9fa42d7356011.mp4?sign=9600a36ab0d67655b3929d42541ed03a&t=1792844082",
+                "name": "Server 3 (MovieBox 480p - 163MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/c576594f7d1dcdaac8c875ec7729d211.mp4?sign=e4631414af69f4f0795c0b83b1e3cb56&t=1792844296",
                 "isDirect": true,
                 "quality": "480p"
               },
               {
                 "name": "Server 4 (MultiEmbed HD Failover)",
-                "url": "https://multiembed.mov/?video_id=313101&s=1&e=2",
+                "url": "https://multiembed.mov/?video_id=328402&s=1&e=2",
                 "isDirect": false,
                 "quality": "1080p"
               },
               {
                 "name": "Server 5 (AutoEmbed HD)",
-                "url": "https://player.autoembed.cc/embed/tv/313101/1/2",
+                "url": "https://player.autoembed.cc/embed/tv/328402/1/2",
                 "isDirect": false,
                 "quality": "1080p"
               },
               {
                 "name": "Server 6 (Vidlink Fast HD)",
-                "url": "https://vidlink.pro/tv/313101/1/2",
+                "url": "https://vidlink.pro/tv/328402/1/2",
                 "isDirect": false,
                 "quality": "1080p"
               }
@@ -167,45 +167,45 @@
             "number": 3,
             "episode": 3,
             "season": 1,
-            "title": "Choice",
-            "duration": "30 min",
-            "overview": "Sudha grapples with a difficult choice between her career and love life, as Chander opens up about his plans for the future.",
-            "still": "https://image.tmdb.org/t/p/w500/xY5UQNNaENFrUu6r33ctDCTQ0eG.jpg",
-            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/d007934496e59f69ec657d12d44c262a.mp4?sign=5acc49ba1dae866dcfdd8459a063dc19&t=1792841688",
+            "title": "Teacher's Tribute",
+            "duration": "34 min",
+            "overview": "When teachers demand a water filter, cash-strapped Gyaneshwar must choose between basic facilities and the students' beloved kheer.",
+            "still": "https://image.tmdb.org/t/p/w500/6txnTw4KwyraUu7b19LcSb2ZsNg.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/cc87bf3564e1acb30274c9ce078c561e.mp4?sign=b6d50df6482a2b0db29eeb836b298f9d&t=1792841157",
             "servers": [
               {
-                "name": "Server 1 (MovieBox 1080p Direct - 359MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/cms/d007934496e59f69ec657d12d44c262a.mp4?sign=5acc49ba1dae866dcfdd8459a063dc19&t=1792841688",
+                "name": "Server 1 (MovieBox 1080p Direct - 549MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/resource/cc87bf3564e1acb30274c9ce078c561e.mp4?sign=b6d50df6482a2b0db29eeb836b298f9d&t=1792841157",
                 "isDirect": true,
                 "quality": "1080p"
               },
               {
                 "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-                "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=3",
+                "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=3",
                 "isDirect": true,
                 "quality": "1080p"
               },
               {
-                "name": "Server 3 (MovieBox 480p - 118MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/bt/4554efbce9854b285547371f69a534e9.mp4?sign=9a9b00a4511d7897c4e3a86c4b64b033&t=1792841688",
+                "name": "Server 3 (MovieBox 480p - 166MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/4ee12bde94fb66e6f4a0ea5cab6c472b.mp4?sign=fb0174098ec40c5438d4502a760e285c&t=1792841157",
                 "isDirect": true,
                 "quality": "480p"
               },
               {
                 "name": "Server 4 (MultiEmbed HD Failover)",
-                "url": "https://multiembed.mov/?video_id=313101&s=1&e=3",
+                "url": "https://multiembed.mov/?video_id=328402&s=1&e=3",
                 "isDirect": false,
                 "quality": "1080p"
               },
               {
                 "name": "Server 5 (AutoEmbed HD)",
-                "url": "https://player.autoembed.cc/embed/tv/313101/1/3",
+                "url": "https://player.autoembed.cc/embed/tv/328402/1/3",
                 "isDirect": false,
                 "quality": "1080p"
               },
               {
                 "name": "Server 6 (Vidlink Fast HD)",
-                "url": "https://vidlink.pro/tv/313101/1/3",
+                "url": "https://vidlink.pro/tv/328402/1/3",
                 "isDirect": false,
                 "quality": "1080p"
               }
@@ -219,45 +219,45 @@
             "number": 4,
             "episode": 4,
             "season": 1,
-            "title": "Trip",
-            "duration": "29 min",
-            "overview": "Rahil plants seeds of doubt in Preeti's mind, leading her to question Chander about his past. Sudha and Chander take a major step in their relationship.",
-            "still": "https://image.tmdb.org/t/p/w500/h0GdD6NfAZYQN4UMZ2tZ36YVrVZ.jpg",
-            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/63306ee954595e21339799f5dce65eda.mp4?sign=b712ab09841bf25255254573a93157f8&t=1792844082",
+            "title": "Dear Daughter",
+            "duration": "32 min",
+            "overview": "A spelling error gives Purva's award to Purav, sparking a gender revolt that Mukul must handle. Meanwhile, Gyaneshwar chases funds, and Kanchan and Hansraj try to stop a student's marriage.",
+            "still": "https://image.tmdb.org/t/p/w500/dLezNoe2nUXE8ofIF7zzVIWhvS7.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/478a9c445440cd8351ef015d78756b26.mp4?sign=879d97f2ad29ec5246de2b49a4461f52&t=1792842698",
             "servers": [
               {
-                "name": "Server 1 (MovieBox 1080p Direct - 347MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/cms/63306ee954595e21339799f5dce65eda.mp4?sign=b712ab09841bf25255254573a93157f8&t=1792844082",
+                "name": "Server 1 (MovieBox 1080p Direct - 542MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/resource/478a9c445440cd8351ef015d78756b26.mp4?sign=879d97f2ad29ec5246de2b49a4461f52&t=1792842698",
                 "isDirect": true,
                 "quality": "1080p"
               },
               {
                 "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-                "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=4",
+                "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=4",
                 "isDirect": true,
                 "quality": "1080p"
               },
               {
-                "name": "Server 3 (MovieBox 480p - 111MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/bt/c24affb04e99393ca7b32581cf942fd8.mp4?sign=a3e8dfcaddc559dc9b6cb692593ee3f8&t=1792844082",
+                "name": "Server 3 (MovieBox 480p - 158MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/93e4adf58f111c72af0041182eca4d29.mp4?sign=77b74276b61f2ecb1d0b65b17b4a6bfd&t=1792842698",
                 "isDirect": true,
                 "quality": "480p"
               },
               {
                 "name": "Server 4 (MultiEmbed HD Failover)",
-                "url": "https://multiembed.mov/?video_id=313101&s=1&e=4",
+                "url": "https://multiembed.mov/?video_id=328402&s=1&e=4",
                 "isDirect": false,
                 "quality": "1080p"
               },
               {
                 "name": "Server 5 (AutoEmbed HD)",
-                "url": "https://player.autoembed.cc/embed/tv/313101/1/4",
+                "url": "https://player.autoembed.cc/embed/tv/328402/1/4",
                 "isDirect": false,
                 "quality": "1080p"
               },
               {
                 "name": "Server 6 (Vidlink Fast HD)",
-                "url": "https://vidlink.pro/tv/313101/1/4",
+                "url": "https://vidlink.pro/tv/328402/1/4",
                 "isDirect": false,
                 "quality": "1080p"
               }
@@ -271,45 +271,45 @@
             "number": 5,
             "episode": 5,
             "season": 1,
-            "title": "Surprise",
-            "duration": "28 min",
-            "overview": "When his mother arrives unexpectedly, Chander scrambles to hide his relationship. Meanwhile, Rahil and Chander look back on how far they've come.",
-            "still": "https://image.tmdb.org/t/p/w500/b2wg7qWwgMZohIK2sQStqbll7mv.jpg",
-            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/7dca4f8878153655e5db6b31bacec630.mp4?sign=2ff4da806c9530a9b835d2265d73640b&t=1792843076",
+            "title": "Child Safety",
+            "duration": "33 min",
+            "overview": "Under Urmila's pressure, Gyaneshwar teaches fake history to influence votes, triggering chaos in class. Meanwhile, Kanchan pushes for Ramesh Kaka's retirement.",
+            "still": "https://image.tmdb.org/t/p/w500/wnmVAeGuS5nV53q6DyyBUITSVkC.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/646d993aeef4a92a9ea97240b1d1f909.mp4?sign=4879b98cad4845ed73c43388c585a4f4&t=1792842679",
             "servers": [
               {
-                "name": "Server 1 (MovieBox 1080p Direct - 282MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/cms/7dca4f8878153655e5db6b31bacec630.mp4?sign=2ff4da806c9530a9b835d2265d73640b&t=1792843076",
+                "name": "Server 1 (MovieBox 1080p Direct - 519MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/resource/646d993aeef4a92a9ea97240b1d1f909.mp4?sign=4879b98cad4845ed73c43388c585a4f4&t=1792842679",
                 "isDirect": true,
                 "quality": "1080p"
               },
               {
                 "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-                "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=5",
+                "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=5",
                 "isDirect": true,
                 "quality": "1080p"
               },
               {
-                "name": "Server 3 (MovieBox 480p - 107MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/bt/8bcb37536bfa3b4267157b1688bfc18d.mp4?sign=744dbc36b4a4f0c27e2044327227efba&t=1792841128",
+                "name": "Server 3 (MovieBox 480p - 163MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/65bc3d766a6c33668eb292cec795f1c2.mp4?sign=0c2c9df9bdfbbc27cf6929ee8e42979c&t=1792842679",
                 "isDirect": true,
                 "quality": "480p"
               },
               {
                 "name": "Server 4 (MultiEmbed HD Failover)",
-                "url": "https://multiembed.mov/?video_id=313101&s=1&e=5",
+                "url": "https://multiembed.mov/?video_id=328402&s=1&e=5",
                 "isDirect": false,
                 "quality": "1080p"
               },
               {
                 "name": "Server 5 (AutoEmbed HD)",
-                "url": "https://player.autoembed.cc/embed/tv/313101/1/5",
+                "url": "https://player.autoembed.cc/embed/tv/328402/1/5",
                 "isDirect": false,
                 "quality": "1080p"
               },
               {
                 "name": "Server 6 (Vidlink Fast HD)",
-                "url": "https://vidlink.pro/tv/313101/1/5",
+                "url": "https://vidlink.pro/tv/328402/1/5",
                 "isDirect": false,
                 "quality": "1080p"
               }
@@ -323,45 +323,45 @@
             "number": 6,
             "episode": 6,
             "season": 1,
-            "title": "Truth",
-            "duration": "26 min",
-            "overview": "Preeti and Chander receive a surprising offer for the café. A conversation with her mother leaves Sudha reflecting on an important choice.",
-            "still": "https://image.tmdb.org/t/p/w500/isPVzujhIaeqs0PdeDRjhbwps5f.jpg",
-            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/562dcc48a0b25a36256d5cba7a501b3a.mp4?sign=aa6d1d32396ab02b478060e415a58ff3&t=1792844188",
+            "title": "Candle in the Wind",
+            "duration": "37 min",
+            "overview": "As Gyaneshwar's UK plan gets revealed to the staff, alumnus Deepak's Olympic gold suddenly puts the school under an unforgiving media spotlight.",
+            "still": "https://image.tmdb.org/t/p/w500/4qSZkElkMjs5E3L7eLwMtNw4sA1.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/1cbf7c3908e4cc43523cba7fb7bada68.mp4?sign=59b1ef434fbf58f2431b53568bd01051&t=1792842734",
             "servers": [
               {
-                "name": "Server 1 (MovieBox 1080p Direct - 287MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/cms/562dcc48a0b25a36256d5cba7a501b3a.mp4?sign=aa6d1d32396ab02b478060e415a58ff3&t=1792844188",
+                "name": "Server 1 (MovieBox 1080p Direct - 603MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/resource/1cbf7c3908e4cc43523cba7fb7bada68.mp4?sign=59b1ef434fbf58f2431b53568bd01051&t=1792842734",
                 "isDirect": true,
                 "quality": "1080p"
               },
               {
                 "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-                "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=6",
+                "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=6",
                 "isDirect": true,
                 "quality": "1080p"
               },
               {
-                "name": "Server 3 (MovieBox 480p - 98MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/bt/1a233aa188f85f7eb1ef7883d973e1e1.mp4?sign=1fc0eba45e49578ab97e8b889b5c6a2e&t=1792840212",
+                "name": "Server 3 (MovieBox 480p - 181MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/2c68e0fdbf8a0ebfc788500c6fcbfb4d.mp4?sign=feae1f3df9d1205a4ae44d482040da7c&t=1792842734",
                 "isDirect": true,
                 "quality": "480p"
               },
               {
                 "name": "Server 4 (MultiEmbed HD Failover)",
-                "url": "https://multiembed.mov/?video_id=313101&s=1&e=6",
+                "url": "https://multiembed.mov/?video_id=328402&s=1&e=6",
                 "isDirect": false,
                 "quality": "1080p"
               },
               {
                 "name": "Server 5 (AutoEmbed HD)",
-                "url": "https://player.autoembed.cc/embed/tv/313101/1/6",
+                "url": "https://player.autoembed.cc/embed/tv/328402/1/6",
                 "isDirect": false,
                 "quality": "1080p"
               },
               {
                 "name": "Server 6 (Vidlink Fast HD)",
-                "url": "https://vidlink.pro/tv/313101/1/6",
+                "url": "https://vidlink.pro/tv/328402/1/6",
                 "isDirect": false,
                 "quality": "1080p"
               }
@@ -375,97 +375,45 @@
             "number": 7,
             "episode": 7,
             "season": 1,
-            "title": "Distance",
-            "duration": "31 min",
-            "overview": "While vacationing at a homestay, Sudha and Chander scout locations for the café, but a decision creates tension. Mark gives Chander a ring for Preeti.",
-            "still": "https://image.tmdb.org/t/p/w500/sbJAk2GJHtHQimzy9PuXHDYZtIL.jpg",
-            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/d7335410a08045f7098d7c1d428bc91b.mp4?sign=4dfbbd08565875aa9b8092a82409ed2a&t=1792841032",
-            "servers": [
-              {
-                "name": "Server 1 (MovieBox 1080p Direct - 381MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/cms/d7335410a08045f7098d7c1d428bc91b.mp4?sign=4dfbbd08565875aa9b8092a82409ed2a&t=1792841032",
-                "isDirect": true,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-                "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=7",
-                "isDirect": true,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 3 (MovieBox 480p - 123MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/bt/e8b5e5a3e9b46d7b30588b77cc487ed6.mp4?sign=1b5a6e0276f144d25758bf8ec428b208&t=1792842872",
-                "isDirect": true,
-                "quality": "480p"
-              },
-              {
-                "name": "Server 4 (MultiEmbed HD Failover)",
-                "url": "https://multiembed.mov/?video_id=313101&s=1&e=7",
-                "isDirect": false,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 5 (AutoEmbed HD)",
-                "url": "https://player.autoembed.cc/embed/tv/313101/1/7",
-                "isDirect": false,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 6 (Vidlink Fast HD)",
-                "url": "https://vidlink.pro/tv/313101/1/7",
-                "isDirect": false,
-                "quality": "1080p"
-              }
-            ],
-            "audioTracks": [
-              "Hindi"
-            ],
-            "captions": []
-          },
-          {
-            "number": 8,
-            "episode": 8,
-            "season": 1,
-            "title": "Arrival",
+            "title": "Trial by Fire",
             "duration": "42 min",
-            "overview": "A surprise guest unsettles Preeti, while Chander finds his past unexpectedly colliding with the present.",
-            "still": "https://image.tmdb.org/t/p/w500/la9xuctBaFqVDCZjQmCbeFpSY5n.jpg",
-            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/bd47a4f798ebbd226e566b5f65e0476e.mp4?sign=f0e6535734c803682ef237054a915775&t=1792844083",
+            "overview": "To boost results, Gyaneshwar considers withholding hall tickets of the weak students, risking their future for his dream. Meanwhile, Kanchan refuses to give up on them.",
+            "still": "https://image.tmdb.org/t/p/w500/omF26UjtawIX50crgV8DxJNNdZj.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/e0e06f3ed6735db9d3876b8a3f673b8f.mp4?sign=c66c360376e24ad327aba4d6f207eb5c&t=1792844281",
             "servers": [
               {
-                "name": "Server 1 (MovieBox 1080p Direct - 503MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/cms/bd47a4f798ebbd226e566b5f65e0476e.mp4?sign=f0e6535734c803682ef237054a915775&t=1792844083",
+                "name": "Server 1 (MovieBox 1080p Direct - 603MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/resource/e0e06f3ed6735db9d3876b8a3f673b8f.mp4?sign=c66c360376e24ad327aba4d6f207eb5c&t=1792844281",
                 "isDirect": true,
                 "quality": "1080p"
               },
               {
                 "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-                "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=8",
+                "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=7",
                 "isDirect": true,
                 "quality": "1080p"
               },
               {
-                "name": "Server 3 (MovieBox 480p - 167MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/bt/b224f44fe1404220ef44ad46c0bbef43.mp4?sign=0641f9a12e55d9a7a1e2a85cd2d55084&t=1792844083",
+                "name": "Server 3 (MovieBox 480p - 205MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/1e63d376206ebaf62f172ed67f98791d.mp4?sign=432c80547042120423bb4bfe42857e7c&t=1792840347",
                 "isDirect": true,
                 "quality": "480p"
               },
               {
                 "name": "Server 4 (MultiEmbed HD Failover)",
-                "url": "https://multiembed.mov/?video_id=313101&s=1&e=8",
+                "url": "https://multiembed.mov/?video_id=328402&s=1&e=7",
                 "isDirect": false,
                 "quality": "1080p"
               },
               {
                 "name": "Server 5 (AutoEmbed HD)",
-                "url": "https://player.autoembed.cc/embed/tv/313101/1/8",
+                "url": "https://player.autoembed.cc/embed/tv/328402/1/7",
                 "isDirect": false,
                 "quality": "1080p"
               },
               {
                 "name": "Server 6 (Vidlink Fast HD)",
-                "url": "https://vidlink.pro/tv/313101/1/8",
+                "url": "https://vidlink.pro/tv/328402/1/7",
                 "isDirect": false,
                 "quality": "1080p"
               }
@@ -483,45 +431,45 @@
         "number": 1,
         "episode": 1,
         "season": 1,
-        "title": "Arrival",
-        "duration": "30 min",
-        "overview": "Sudha sweeps Chander off his feet, but they choose to stay friends. Now, he runs a hilltop café with Preeti by his side.",
-        "still": "https://image.tmdb.org/t/p/w500/oaJXllZ9ZF7wQRPVycI8P2sm0Tc.jpg",
-        "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/05bf5f673452419782226732d566f9ea.mp4?sign=11dc55d2b7f34dd110cdf51945233f9b&t=1792840949",
+        "title": "Illiterate Goldy",
+        "duration": "37 min",
+        "overview": "Headmaster Gyaneshwar Tripathi can go to the UK if the Class 10 students ace the board exams. The only problem is that the students don't attend school. Meanwhile, the idealistic Kanchan arrives to fix a system that resists change.",
+        "still": "https://image.tmdb.org/t/p/w500/be9OTtr5IQ3A3oIFG9x1NanzU8v.jpg",
+        "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/fbfd40f336540a99c73355cf96868963.mp4?sign=f7de9ca75ae018436a5f1cae8f980ee6&t=1792842206",
         "servers": [
           {
-            "name": "Server 1 (MovieBox 1080p Direct - 347MB)",
-            "url": "https://bcdnxw.hakunaymatata.com/cms/05bf5f673452419782226732d566f9ea.mp4?sign=11dc55d2b7f34dd110cdf51945233f9b&t=1792840949",
+            "name": "Server 1 (MovieBox 1080p Direct - 551MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/resource/fbfd40f336540a99c73355cf96868963.mp4?sign=f7de9ca75ae018436a5f1cae8f980ee6&t=1792842206",
             "isDirect": true,
             "quality": "1080p"
           },
           {
             "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-            "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=1",
+            "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=1",
             "isDirect": true,
             "quality": "1080p"
           },
           {
-            "name": "Server 3 (MovieBox 480p - 118MB)",
-            "url": "https://bcdnxw.hakunaymatata.com/bt/59c1b57a810ac5b87c8bb230fd646121.mp4?sign=9728a2ed05de0610ddc41b375a0e1b1a&t=1792841182",
+            "name": "Server 3 (MovieBox 480p - 181MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/bt/ac5682731d5a641dc3de558a0db0fcd1.mp4?sign=f2ca2572d214a4336c2ccde389f637cf&t=1792842307",
             "isDirect": true,
             "quality": "480p"
           },
           {
             "name": "Server 4 (MultiEmbed HD Failover)",
-            "url": "https://multiembed.mov/?video_id=313101&s=1&e=1",
+            "url": "https://multiembed.mov/?video_id=328402&s=1&e=1",
             "isDirect": false,
             "quality": "1080p"
           },
           {
             "name": "Server 5 (AutoEmbed HD)",
-            "url": "https://player.autoembed.cc/embed/tv/313101/1/1",
+            "url": "https://player.autoembed.cc/embed/tv/328402/1/1",
             "isDirect": false,
             "quality": "1080p"
           },
           {
             "name": "Server 6 (Vidlink Fast HD)",
-            "url": "https://vidlink.pro/tv/313101/1/1",
+            "url": "https://vidlink.pro/tv/328402/1/1",
             "isDirect": false,
             "quality": "1080p"
           }
@@ -535,45 +483,45 @@
         "number": 2,
         "episode": 2,
         "season": 1,
-        "title": "Stay",
-        "duration": "34 min",
-        "overview": "While living with Chander, Sudha grows closer to him, but an opportunity in Mumbai may reshape their future. Preeti reveals her plans to expand the café.",
-        "still": "https://image.tmdb.org/t/p/w500/2LpxnhvUDDsNhgTFTp3ByV6BqO0.jpg",
-        "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/78fdfb80cadf361a6b29e6d38f43572e.mp4?sign=8a9c0033b79aa21bf4246aa4447c1bc0&t=1792844082",
+        "title": "Ideal Role Model",
+        "duration": "33 min",
+        "overview": "As Gyaneshwar searches for the perfect role model to motivate clueless students, Kanchan plays detective over a missing confiscated watch.",
+        "still": "https://image.tmdb.org/t/p/w500/wNRundU6CtfRQcrgLBAdYMA5BkO.jpg",
+        "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/f3b9a9c17381d0e79e761c5928509226.mp4?sign=67eb62cff455094313bcb68e05db0cf6&t=1792841962",
         "servers": [
           {
-            "name": "Server 1 (MovieBox 1080p Direct - 418MB)",
-            "url": "https://bcdnxw.hakunaymatata.com/cms/78fdfb80cadf361a6b29e6d38f43572e.mp4?sign=8a9c0033b79aa21bf4246aa4447c1bc0&t=1792844082",
+            "name": "Server 1 (MovieBox 1080p Direct - 533MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/resource/f3b9a9c17381d0e79e761c5928509226.mp4?sign=67eb62cff455094313bcb68e05db0cf6&t=1792841962",
             "isDirect": true,
             "quality": "1080p"
           },
           {
             "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-            "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=2",
+            "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=2",
             "isDirect": true,
             "quality": "1080p"
           },
           {
-            "name": "Server 3 (MovieBox 480p - 136MB)",
-            "url": "https://bcdnxw.hakunaymatata.com/bt/08b386e76d554cee57e9fa42d7356011.mp4?sign=9600a36ab0d67655b3929d42541ed03a&t=1792844082",
+            "name": "Server 3 (MovieBox 480p - 163MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/bt/c576594f7d1dcdaac8c875ec7729d211.mp4?sign=e4631414af69f4f0795c0b83b1e3cb56&t=1792844296",
             "isDirect": true,
             "quality": "480p"
           },
           {
             "name": "Server 4 (MultiEmbed HD Failover)",
-            "url": "https://multiembed.mov/?video_id=313101&s=1&e=2",
+            "url": "https://multiembed.mov/?video_id=328402&s=1&e=2",
             "isDirect": false,
             "quality": "1080p"
           },
           {
             "name": "Server 5 (AutoEmbed HD)",
-            "url": "https://player.autoembed.cc/embed/tv/313101/1/2",
+            "url": "https://player.autoembed.cc/embed/tv/328402/1/2",
             "isDirect": false,
             "quality": "1080p"
           },
           {
             "name": "Server 6 (Vidlink Fast HD)",
-            "url": "https://vidlink.pro/tv/313101/1/2",
+            "url": "https://vidlink.pro/tv/328402/1/2",
             "isDirect": false,
             "quality": "1080p"
           }
@@ -587,45 +535,45 @@
         "number": 3,
         "episode": 3,
         "season": 1,
-        "title": "Choice",
-        "duration": "30 min",
-        "overview": "Sudha grapples with a difficult choice between her career and love life, as Chander opens up about his plans for the future.",
-        "still": "https://image.tmdb.org/t/p/w500/xY5UQNNaENFrUu6r33ctDCTQ0eG.jpg",
-        "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/d007934496e59f69ec657d12d44c262a.mp4?sign=5acc49ba1dae866dcfdd8459a063dc19&t=1792841688",
+        "title": "Teacher's Tribute",
+        "duration": "34 min",
+        "overview": "When teachers demand a water filter, cash-strapped Gyaneshwar must choose between basic facilities and the students' beloved kheer.",
+        "still": "https://image.tmdb.org/t/p/w500/6txnTw4KwyraUu7b19LcSb2ZsNg.jpg",
+        "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/cc87bf3564e1acb30274c9ce078c561e.mp4?sign=b6d50df6482a2b0db29eeb836b298f9d&t=1792841157",
         "servers": [
           {
-            "name": "Server 1 (MovieBox 1080p Direct - 359MB)",
-            "url": "https://bcdnxw.hakunaymatata.com/cms/d007934496e59f69ec657d12d44c262a.mp4?sign=5acc49ba1dae866dcfdd8459a063dc19&t=1792841688",
+            "name": "Server 1 (MovieBox 1080p Direct - 549MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/resource/cc87bf3564e1acb30274c9ce078c561e.mp4?sign=b6d50df6482a2b0db29eeb836b298f9d&t=1792841157",
             "isDirect": true,
             "quality": "1080p"
           },
           {
             "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-            "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=3",
+            "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=3",
             "isDirect": true,
             "quality": "1080p"
           },
           {
-            "name": "Server 3 (MovieBox 480p - 118MB)",
-            "url": "https://bcdnxw.hakunaymatata.com/bt/4554efbce9854b285547371f69a534e9.mp4?sign=9a9b00a4511d7897c4e3a86c4b64b033&t=1792841688",
+            "name": "Server 3 (MovieBox 480p - 166MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/bt/4ee12bde94fb66e6f4a0ea5cab6c472b.mp4?sign=fb0174098ec40c5438d4502a760e285c&t=1792841157",
             "isDirect": true,
             "quality": "480p"
           },
           {
             "name": "Server 4 (MultiEmbed HD Failover)",
-            "url": "https://multiembed.mov/?video_id=313101&s=1&e=3",
+            "url": "https://multiembed.mov/?video_id=328402&s=1&e=3",
             "isDirect": false,
             "quality": "1080p"
           },
           {
             "name": "Server 5 (AutoEmbed HD)",
-            "url": "https://player.autoembed.cc/embed/tv/313101/1/3",
+            "url": "https://player.autoembed.cc/embed/tv/328402/1/3",
             "isDirect": false,
             "quality": "1080p"
           },
           {
             "name": "Server 6 (Vidlink Fast HD)",
-            "url": "https://vidlink.pro/tv/313101/1/3",
+            "url": "https://vidlink.pro/tv/328402/1/3",
             "isDirect": false,
             "quality": "1080p"
           }
@@ -639,45 +587,45 @@
         "number": 4,
         "episode": 4,
         "season": 1,
-        "title": "Trip",
-        "duration": "29 min",
-        "overview": "Rahil plants seeds of doubt in Preeti's mind, leading her to question Chander about his past. Sudha and Chander take a major step in their relationship.",
-        "still": "https://image.tmdb.org/t/p/w500/h0GdD6NfAZYQN4UMZ2tZ36YVrVZ.jpg",
-        "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/63306ee954595e21339799f5dce65eda.mp4?sign=b712ab09841bf25255254573a93157f8&t=1792844082",
+        "title": "Dear Daughter",
+        "duration": "32 min",
+        "overview": "A spelling error gives Purva's award to Purav, sparking a gender revolt that Mukul must handle. Meanwhile, Gyaneshwar chases funds, and Kanchan and Hansraj try to stop a student's marriage.",
+        "still": "https://image.tmdb.org/t/p/w500/dLezNoe2nUXE8ofIF7zzVIWhvS7.jpg",
+        "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/478a9c445440cd8351ef015d78756b26.mp4?sign=879d97f2ad29ec5246de2b49a4461f52&t=1792842698",
         "servers": [
           {
-            "name": "Server 1 (MovieBox 1080p Direct - 347MB)",
-            "url": "https://bcdnxw.hakunaymatata.com/cms/63306ee954595e21339799f5dce65eda.mp4?sign=b712ab09841bf25255254573a93157f8&t=1792844082",
+            "name": "Server 1 (MovieBox 1080p Direct - 542MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/resource/478a9c445440cd8351ef015d78756b26.mp4?sign=879d97f2ad29ec5246de2b49a4461f52&t=1792842698",
             "isDirect": true,
             "quality": "1080p"
           },
           {
             "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-            "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=4",
+            "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=4",
             "isDirect": true,
             "quality": "1080p"
           },
           {
-            "name": "Server 3 (MovieBox 480p - 111MB)",
-            "url": "https://bcdnxw.hakunaymatata.com/bt/c24affb04e99393ca7b32581cf942fd8.mp4?sign=a3e8dfcaddc559dc9b6cb692593ee3f8&t=1792844082",
+            "name": "Server 3 (MovieBox 480p - 158MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/bt/93e4adf58f111c72af0041182eca4d29.mp4?sign=77b74276b61f2ecb1d0b65b17b4a6bfd&t=1792842698",
             "isDirect": true,
             "quality": "480p"
           },
           {
             "name": "Server 4 (MultiEmbed HD Failover)",
-            "url": "https://multiembed.mov/?video_id=313101&s=1&e=4",
+            "url": "https://multiembed.mov/?video_id=328402&s=1&e=4",
             "isDirect": false,
             "quality": "1080p"
           },
           {
             "name": "Server 5 (AutoEmbed HD)",
-            "url": "https://player.autoembed.cc/embed/tv/313101/1/4",
+            "url": "https://player.autoembed.cc/embed/tv/328402/1/4",
             "isDirect": false,
             "quality": "1080p"
           },
           {
             "name": "Server 6 (Vidlink Fast HD)",
-            "url": "https://vidlink.pro/tv/313101/1/4",
+            "url": "https://vidlink.pro/tv/328402/1/4",
             "isDirect": false,
             "quality": "1080p"
           }
@@ -691,45 +639,45 @@
         "number": 5,
         "episode": 5,
         "season": 1,
-        "title": "Surprise",
-        "duration": "28 min",
-        "overview": "When his mother arrives unexpectedly, Chander scrambles to hide his relationship. Meanwhile, Rahil and Chander look back on how far they've come.",
-        "still": "https://image.tmdb.org/t/p/w500/b2wg7qWwgMZohIK2sQStqbll7mv.jpg",
-        "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/7dca4f8878153655e5db6b31bacec630.mp4?sign=2ff4da806c9530a9b835d2265d73640b&t=1792843076",
+        "title": "Child Safety",
+        "duration": "33 min",
+        "overview": "Under Urmila's pressure, Gyaneshwar teaches fake history to influence votes, triggering chaos in class. Meanwhile, Kanchan pushes for Ramesh Kaka's retirement.",
+        "still": "https://image.tmdb.org/t/p/w500/wnmVAeGuS5nV53q6DyyBUITSVkC.jpg",
+        "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/646d993aeef4a92a9ea97240b1d1f909.mp4?sign=4879b98cad4845ed73c43388c585a4f4&t=1792842679",
         "servers": [
           {
-            "name": "Server 1 (MovieBox 1080p Direct - 282MB)",
-            "url": "https://bcdnxw.hakunaymatata.com/cms/7dca4f8878153655e5db6b31bacec630.mp4?sign=2ff4da806c9530a9b835d2265d73640b&t=1792843076",
+            "name": "Server 1 (MovieBox 1080p Direct - 519MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/resource/646d993aeef4a92a9ea97240b1d1f909.mp4?sign=4879b98cad4845ed73c43388c585a4f4&t=1792842679",
             "isDirect": true,
             "quality": "1080p"
           },
           {
             "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-            "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=5",
+            "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=5",
             "isDirect": true,
             "quality": "1080p"
           },
           {
-            "name": "Server 3 (MovieBox 480p - 107MB)",
-            "url": "https://bcdnxw.hakunaymatata.com/bt/8bcb37536bfa3b4267157b1688bfc18d.mp4?sign=744dbc36b4a4f0c27e2044327227efba&t=1792841128",
+            "name": "Server 3 (MovieBox 480p - 163MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/bt/65bc3d766a6c33668eb292cec795f1c2.mp4?sign=0c2c9df9bdfbbc27cf6929ee8e42979c&t=1792842679",
             "isDirect": true,
             "quality": "480p"
           },
           {
             "name": "Server 4 (MultiEmbed HD Failover)",
-            "url": "https://multiembed.mov/?video_id=313101&s=1&e=5",
+            "url": "https://multiembed.mov/?video_id=328402&s=1&e=5",
             "isDirect": false,
             "quality": "1080p"
           },
           {
             "name": "Server 5 (AutoEmbed HD)",
-            "url": "https://player.autoembed.cc/embed/tv/313101/1/5",
+            "url": "https://player.autoembed.cc/embed/tv/328402/1/5",
             "isDirect": false,
             "quality": "1080p"
           },
           {
             "name": "Server 6 (Vidlink Fast HD)",
-            "url": "https://vidlink.pro/tv/313101/1/5",
+            "url": "https://vidlink.pro/tv/328402/1/5",
             "isDirect": false,
             "quality": "1080p"
           }
@@ -743,45 +691,45 @@
         "number": 6,
         "episode": 6,
         "season": 1,
-        "title": "Truth",
-        "duration": "26 min",
-        "overview": "Preeti and Chander receive a surprising offer for the café. A conversation with her mother leaves Sudha reflecting on an important choice.",
-        "still": "https://image.tmdb.org/t/p/w500/isPVzujhIaeqs0PdeDRjhbwps5f.jpg",
-        "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/562dcc48a0b25a36256d5cba7a501b3a.mp4?sign=aa6d1d32396ab02b478060e415a58ff3&t=1792844188",
+        "title": "Candle in the Wind",
+        "duration": "37 min",
+        "overview": "As Gyaneshwar's UK plan gets revealed to the staff, alumnus Deepak's Olympic gold suddenly puts the school under an unforgiving media spotlight.",
+        "still": "https://image.tmdb.org/t/p/w500/4qSZkElkMjs5E3L7eLwMtNw4sA1.jpg",
+        "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/1cbf7c3908e4cc43523cba7fb7bada68.mp4?sign=59b1ef434fbf58f2431b53568bd01051&t=1792842734",
         "servers": [
           {
-            "name": "Server 1 (MovieBox 1080p Direct - 287MB)",
-            "url": "https://bcdnxw.hakunaymatata.com/cms/562dcc48a0b25a36256d5cba7a501b3a.mp4?sign=aa6d1d32396ab02b478060e415a58ff3&t=1792844188",
+            "name": "Server 1 (MovieBox 1080p Direct - 603MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/resource/1cbf7c3908e4cc43523cba7fb7bada68.mp4?sign=59b1ef434fbf58f2431b53568bd01051&t=1792842734",
             "isDirect": true,
             "quality": "1080p"
           },
           {
             "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-            "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=6",
+            "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=6",
             "isDirect": true,
             "quality": "1080p"
           },
           {
-            "name": "Server 3 (MovieBox 480p - 98MB)",
-            "url": "https://bcdnxw.hakunaymatata.com/bt/1a233aa188f85f7eb1ef7883d973e1e1.mp4?sign=1fc0eba45e49578ab97e8b889b5c6a2e&t=1792840212",
+            "name": "Server 3 (MovieBox 480p - 181MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/bt/2c68e0fdbf8a0ebfc788500c6fcbfb4d.mp4?sign=feae1f3df9d1205a4ae44d482040da7c&t=1792842734",
             "isDirect": true,
             "quality": "480p"
           },
           {
             "name": "Server 4 (MultiEmbed HD Failover)",
-            "url": "https://multiembed.mov/?video_id=313101&s=1&e=6",
+            "url": "https://multiembed.mov/?video_id=328402&s=1&e=6",
             "isDirect": false,
             "quality": "1080p"
           },
           {
             "name": "Server 5 (AutoEmbed HD)",
-            "url": "https://player.autoembed.cc/embed/tv/313101/1/6",
+            "url": "https://player.autoembed.cc/embed/tv/328402/1/6",
             "isDirect": false,
             "quality": "1080p"
           },
           {
             "name": "Server 6 (Vidlink Fast HD)",
-            "url": "https://vidlink.pro/tv/313101/1/6",
+            "url": "https://vidlink.pro/tv/328402/1/6",
             "isDirect": false,
             "quality": "1080p"
           }
@@ -795,97 +743,45 @@
         "number": 7,
         "episode": 7,
         "season": 1,
-        "title": "Distance",
-        "duration": "31 min",
-        "overview": "While vacationing at a homestay, Sudha and Chander scout locations for the café, but a decision creates tension. Mark gives Chander a ring for Preeti.",
-        "still": "https://image.tmdb.org/t/p/w500/sbJAk2GJHtHQimzy9PuXHDYZtIL.jpg",
-        "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/d7335410a08045f7098d7c1d428bc91b.mp4?sign=4dfbbd08565875aa9b8092a82409ed2a&t=1792841032",
-        "servers": [
-          {
-            "name": "Server 1 (MovieBox 1080p Direct - 381MB)",
-            "url": "https://bcdnxw.hakunaymatata.com/cms/d7335410a08045f7098d7c1d428bc91b.mp4?sign=4dfbbd08565875aa9b8092a82409ed2a&t=1792841032",
-            "isDirect": true,
-            "quality": "1080p"
-          },
-          {
-            "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-            "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=7",
-            "isDirect": true,
-            "quality": "1080p"
-          },
-          {
-            "name": "Server 3 (MovieBox 480p - 123MB)",
-            "url": "https://bcdnxw.hakunaymatata.com/bt/e8b5e5a3e9b46d7b30588b77cc487ed6.mp4?sign=1b5a6e0276f144d25758bf8ec428b208&t=1792842872",
-            "isDirect": true,
-            "quality": "480p"
-          },
-          {
-            "name": "Server 4 (MultiEmbed HD Failover)",
-            "url": "https://multiembed.mov/?video_id=313101&s=1&e=7",
-            "isDirect": false,
-            "quality": "1080p"
-          },
-          {
-            "name": "Server 5 (AutoEmbed HD)",
-            "url": "https://player.autoembed.cc/embed/tv/313101/1/7",
-            "isDirect": false,
-            "quality": "1080p"
-          },
-          {
-            "name": "Server 6 (Vidlink Fast HD)",
-            "url": "https://vidlink.pro/tv/313101/1/7",
-            "isDirect": false,
-            "quality": "1080p"
-          }
-        ],
-        "audioTracks": [
-          "Hindi"
-        ],
-        "captions": []
-      },
-      {
-        "number": 8,
-        "episode": 8,
-        "season": 1,
-        "title": "Arrival",
+        "title": "Trial by Fire",
         "duration": "42 min",
-        "overview": "A surprise guest unsettles Preeti, while Chander finds his past unexpectedly colliding with the present.",
-        "still": "https://image.tmdb.org/t/p/w500/la9xuctBaFqVDCZjQmCbeFpSY5n.jpg",
-        "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/bd47a4f798ebbd226e566b5f65e0476e.mp4?sign=f0e6535734c803682ef237054a915775&t=1792844083",
+        "overview": "To boost results, Gyaneshwar considers withholding hall tickets of the weak students, risking their future for his dream. Meanwhile, Kanchan refuses to give up on them.",
+        "still": "https://image.tmdb.org/t/p/w500/omF26UjtawIX50crgV8DxJNNdZj.jpg",
+        "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/e0e06f3ed6735db9d3876b8a3f673b8f.mp4?sign=c66c360376e24ad327aba4d6f207eb5c&t=1792844281",
         "servers": [
           {
-            "name": "Server 1 (MovieBox 1080p Direct - 503MB)",
-            "url": "https://bcdnxw.hakunaymatata.com/cms/bd47a4f798ebbd226e566b5f65e0476e.mp4?sign=f0e6535734c803682ef237054a915775&t=1792844083",
+            "name": "Server 1 (MovieBox 1080p Direct - 603MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/resource/e0e06f3ed6735db9d3876b8a3f673b8f.mp4?sign=c66c360376e24ad327aba4d6f207eb5c&t=1792844281",
             "isDirect": true,
             "quality": "1080p"
           },
           {
             "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-            "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=8",
+            "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=7",
             "isDirect": true,
             "quality": "1080p"
           },
           {
-            "name": "Server 3 (MovieBox 480p - 167MB)",
-            "url": "https://bcdnxw.hakunaymatata.com/bt/b224f44fe1404220ef44ad46c0bbef43.mp4?sign=0641f9a12e55d9a7a1e2a85cd2d55084&t=1792844083",
+            "name": "Server 3 (MovieBox 480p - 205MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/bt/1e63d376206ebaf62f172ed67f98791d.mp4?sign=432c80547042120423bb4bfe42857e7c&t=1792840347",
             "isDirect": true,
             "quality": "480p"
           },
           {
             "name": "Server 4 (MultiEmbed HD Failover)",
-            "url": "https://multiembed.mov/?video_id=313101&s=1&e=8",
+            "url": "https://multiembed.mov/?video_id=328402&s=1&e=7",
             "isDirect": false,
             "quality": "1080p"
           },
           {
             "name": "Server 5 (AutoEmbed HD)",
-            "url": "https://player.autoembed.cc/embed/tv/313101/1/8",
+            "url": "https://player.autoembed.cc/embed/tv/328402/1/7",
             "isDirect": false,
             "quality": "1080p"
           },
           {
             "name": "Server 6 (Vidlink Fast HD)",
-            "url": "https://vidlink.pro/tv/313101/1/8",
+            "url": "https://vidlink.pro/tv/328402/1/7",
             "isDirect": false,
             "quality": "1080p"
           }
@@ -4928,6 +4824,780 @@
     }
   ],
   "series": [
+    {
+      "id": "mb-s-3604422232421843392",
+      "subjectId": "3604422232421843392",
+      "detailPath": "adarsh-baal-vidyalaya-hindi-UKlobH6igi4",
+      "tmdbId": 328402,
+      "title": "Adarsh Baal Vidyalaya [Hindi]",
+      "originalTitle": "आदर्श बाल विद्यालय",
+      "year": "2026",
+      "releaseDate": "2026-10-24T12:19:30.759Z",
+      "originalReleaseDate": "2026-07-24",
+      "addedAt": "2026-10-24T12:19:30.759Z",
+      "rating": "8.0",
+      "imdbRating": "8.0",
+      "votes": "14",
+      "duration": "1 Season (7 Episodes)",
+      "category": "Trending Series",
+      "industry": "Bollywood",
+      "country": "India",
+      "badgeLeft": "Hindi",
+      "badgeRight": "1080p Full HD",
+      "poster": "https://image.tmdb.org/t/p/w500/1XbcSqURUvhgu2nnoQRZ7cXmTsJ.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/ollKqYShmjhBOKsV60pmPP9ara3.jpg",
+      "cover": "https://image.tmdb.org/t/p/original/ollKqYShmjhBOKsV60pmPP9ara3.jpg",
+      "description": "A relaxed principal tries to reform a failing public school, triggering a messy transformation as misfit teachers work to repair the system one lesson at a time.",
+      "overview": "A relaxed principal tries to reform a failing public school, triggering a messy transformation as misfit teachers work to repair the system one lesson at a time.",
+      "genres": "Drama, Comedy",
+      "genre": "Drama, Comedy",
+      "director": "Karan Sharma",
+      "cast": "Kay Kay Menon, Archana Puran Singh, Naveen Kasturia, Abhimanyu Singh, Deven Bhojani, Prasanna Bisht",
+      "seasonsCount": 1,
+      "seasons": [
+        {
+          "seasonNumber": 1,
+          "title": "Season 1",
+          "name": "Season 1",
+          "year": "2026",
+          "episodesCount": 7,
+          "poster": "https://image.tmdb.org/t/p/w500/1XbcSqURUvhgu2nnoQRZ7cXmTsJ.jpg",
+          "episodes": [
+            {
+              "number": 1,
+              "episode": 1,
+              "season": 1,
+              "title": "Illiterate Goldy",
+              "duration": "37 min",
+              "overview": "Headmaster Gyaneshwar Tripathi can go to the UK if the Class 10 students ace the board exams. The only problem is that the students don't attend school. Meanwhile, the idealistic Kanchan arrives to fix a system that resists change.",
+              "still": "https://image.tmdb.org/t/p/w500/be9OTtr5IQ3A3oIFG9x1NanzU8v.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/fbfd40f336540a99c73355cf96868963.mp4?sign=f7de9ca75ae018436a5f1cae8f980ee6&t=1792842206",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 551MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/fbfd40f336540a99c73355cf96868963.mp4?sign=f7de9ca75ae018436a5f1cae8f980ee6&t=1792842206",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=1",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox 480p - 181MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/ac5682731d5a641dc3de558a0db0fcd1.mp4?sign=f2ca2572d214a4336c2ccde389f637cf&t=1792842307",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=328402&s=1&e=1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/328402/1/1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/328402/1/1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 2,
+              "episode": 2,
+              "season": 1,
+              "title": "Ideal Role Model",
+              "duration": "33 min",
+              "overview": "As Gyaneshwar searches for the perfect role model to motivate clueless students, Kanchan plays detective over a missing confiscated watch.",
+              "still": "https://image.tmdb.org/t/p/w500/wNRundU6CtfRQcrgLBAdYMA5BkO.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/f3b9a9c17381d0e79e761c5928509226.mp4?sign=67eb62cff455094313bcb68e05db0cf6&t=1792841962",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 533MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/f3b9a9c17381d0e79e761c5928509226.mp4?sign=67eb62cff455094313bcb68e05db0cf6&t=1792841962",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=2",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox 480p - 163MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/c576594f7d1dcdaac8c875ec7729d211.mp4?sign=e4631414af69f4f0795c0b83b1e3cb56&t=1792844296",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=328402&s=1&e=2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/328402/1/2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/328402/1/2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 3,
+              "episode": 3,
+              "season": 1,
+              "title": "Teacher's Tribute",
+              "duration": "34 min",
+              "overview": "When teachers demand a water filter, cash-strapped Gyaneshwar must choose between basic facilities and the students' beloved kheer.",
+              "still": "https://image.tmdb.org/t/p/w500/6txnTw4KwyraUu7b19LcSb2ZsNg.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/cc87bf3564e1acb30274c9ce078c561e.mp4?sign=b6d50df6482a2b0db29eeb836b298f9d&t=1792841157",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 549MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/cc87bf3564e1acb30274c9ce078c561e.mp4?sign=b6d50df6482a2b0db29eeb836b298f9d&t=1792841157",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=3",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox 480p - 166MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/4ee12bde94fb66e6f4a0ea5cab6c472b.mp4?sign=fb0174098ec40c5438d4502a760e285c&t=1792841157",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=328402&s=1&e=3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/328402/1/3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/328402/1/3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 4,
+              "episode": 4,
+              "season": 1,
+              "title": "Dear Daughter",
+              "duration": "32 min",
+              "overview": "A spelling error gives Purva's award to Purav, sparking a gender revolt that Mukul must handle. Meanwhile, Gyaneshwar chases funds, and Kanchan and Hansraj try to stop a student's marriage.",
+              "still": "https://image.tmdb.org/t/p/w500/dLezNoe2nUXE8ofIF7zzVIWhvS7.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/478a9c445440cd8351ef015d78756b26.mp4?sign=879d97f2ad29ec5246de2b49a4461f52&t=1792842698",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 542MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/478a9c445440cd8351ef015d78756b26.mp4?sign=879d97f2ad29ec5246de2b49a4461f52&t=1792842698",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=4",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox 480p - 158MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/93e4adf58f111c72af0041182eca4d29.mp4?sign=77b74276b61f2ecb1d0b65b17b4a6bfd&t=1792842698",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=328402&s=1&e=4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/328402/1/4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/328402/1/4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 5,
+              "episode": 5,
+              "season": 1,
+              "title": "Child Safety",
+              "duration": "33 min",
+              "overview": "Under Urmila's pressure, Gyaneshwar teaches fake history to influence votes, triggering chaos in class. Meanwhile, Kanchan pushes for Ramesh Kaka's retirement.",
+              "still": "https://image.tmdb.org/t/p/w500/wnmVAeGuS5nV53q6DyyBUITSVkC.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/646d993aeef4a92a9ea97240b1d1f909.mp4?sign=4879b98cad4845ed73c43388c585a4f4&t=1792842679",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 519MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/646d993aeef4a92a9ea97240b1d1f909.mp4?sign=4879b98cad4845ed73c43388c585a4f4&t=1792842679",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=5",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox 480p - 163MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/65bc3d766a6c33668eb292cec795f1c2.mp4?sign=0c2c9df9bdfbbc27cf6929ee8e42979c&t=1792842679",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=328402&s=1&e=5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/328402/1/5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/328402/1/5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 6,
+              "episode": 6,
+              "season": 1,
+              "title": "Candle in the Wind",
+              "duration": "37 min",
+              "overview": "As Gyaneshwar's UK plan gets revealed to the staff, alumnus Deepak's Olympic gold suddenly puts the school under an unforgiving media spotlight.",
+              "still": "https://image.tmdb.org/t/p/w500/4qSZkElkMjs5E3L7eLwMtNw4sA1.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/1cbf7c3908e4cc43523cba7fb7bada68.mp4?sign=59b1ef434fbf58f2431b53568bd01051&t=1792842734",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 603MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/1cbf7c3908e4cc43523cba7fb7bada68.mp4?sign=59b1ef434fbf58f2431b53568bd01051&t=1792842734",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=6",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox 480p - 181MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/2c68e0fdbf8a0ebfc788500c6fcbfb4d.mp4?sign=feae1f3df9d1205a4ae44d482040da7c&t=1792842734",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=328402&s=1&e=6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/328402/1/6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/328402/1/6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 7,
+              "episode": 7,
+              "season": 1,
+              "title": "Trial by Fire",
+              "duration": "42 min",
+              "overview": "To boost results, Gyaneshwar considers withholding hall tickets of the weak students, risking their future for his dream. Meanwhile, Kanchan refuses to give up on them.",
+              "still": "https://image.tmdb.org/t/p/w500/omF26UjtawIX50crgV8DxJNNdZj.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/e0e06f3ed6735db9d3876b8a3f673b8f.mp4?sign=c66c360376e24ad327aba4d6f207eb5c&t=1792844281",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 603MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/e0e06f3ed6735db9d3876b8a3f673b8f.mp4?sign=c66c360376e24ad327aba4d6f207eb5c&t=1792844281",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=7",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox 480p - 205MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/1e63d376206ebaf62f172ed67f98791d.mp4?sign=432c80547042120423bb4bfe42857e7c&t=1792840347",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=328402&s=1&e=7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/328402/1/7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/328402/1/7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            }
+          ]
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "episode": 1,
+          "season": 1,
+          "title": "Illiterate Goldy",
+          "duration": "37 min",
+          "overview": "Headmaster Gyaneshwar Tripathi can go to the UK if the Class 10 students ace the board exams. The only problem is that the students don't attend school. Meanwhile, the idealistic Kanchan arrives to fix a system that resists change.",
+          "still": "https://image.tmdb.org/t/p/w500/be9OTtr5IQ3A3oIFG9x1NanzU8v.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/fbfd40f336540a99c73355cf96868963.mp4?sign=f7de9ca75ae018436a5f1cae8f980ee6&t=1792842206",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct - 551MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/fbfd40f336540a99c73355cf96868963.mp4?sign=f7de9ca75ae018436a5f1cae8f980ee6&t=1792842206",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=1",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox 480p - 181MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/ac5682731d5a641dc3de558a0db0fcd1.mp4?sign=f2ca2572d214a4336c2ccde389f637cf&t=1792842307",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=328402&s=1&e=1",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/328402/1/1",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/328402/1/1",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 2,
+          "episode": 2,
+          "season": 1,
+          "title": "Ideal Role Model",
+          "duration": "33 min",
+          "overview": "As Gyaneshwar searches for the perfect role model to motivate clueless students, Kanchan plays detective over a missing confiscated watch.",
+          "still": "https://image.tmdb.org/t/p/w500/wNRundU6CtfRQcrgLBAdYMA5BkO.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/f3b9a9c17381d0e79e761c5928509226.mp4?sign=67eb62cff455094313bcb68e05db0cf6&t=1792841962",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct - 533MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/f3b9a9c17381d0e79e761c5928509226.mp4?sign=67eb62cff455094313bcb68e05db0cf6&t=1792841962",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=2",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox 480p - 163MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/c576594f7d1dcdaac8c875ec7729d211.mp4?sign=e4631414af69f4f0795c0b83b1e3cb56&t=1792844296",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=328402&s=1&e=2",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/328402/1/2",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/328402/1/2",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 3,
+          "episode": 3,
+          "season": 1,
+          "title": "Teacher's Tribute",
+          "duration": "34 min",
+          "overview": "When teachers demand a water filter, cash-strapped Gyaneshwar must choose between basic facilities and the students' beloved kheer.",
+          "still": "https://image.tmdb.org/t/p/w500/6txnTw4KwyraUu7b19LcSb2ZsNg.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/cc87bf3564e1acb30274c9ce078c561e.mp4?sign=b6d50df6482a2b0db29eeb836b298f9d&t=1792841157",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct - 549MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/cc87bf3564e1acb30274c9ce078c561e.mp4?sign=b6d50df6482a2b0db29eeb836b298f9d&t=1792841157",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=3",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox 480p - 166MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/4ee12bde94fb66e6f4a0ea5cab6c472b.mp4?sign=fb0174098ec40c5438d4502a760e285c&t=1792841157",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=328402&s=1&e=3",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/328402/1/3",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/328402/1/3",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 4,
+          "episode": 4,
+          "season": 1,
+          "title": "Dear Daughter",
+          "duration": "32 min",
+          "overview": "A spelling error gives Purva's award to Purav, sparking a gender revolt that Mukul must handle. Meanwhile, Gyaneshwar chases funds, and Kanchan and Hansraj try to stop a student's marriage.",
+          "still": "https://image.tmdb.org/t/p/w500/dLezNoe2nUXE8ofIF7zzVIWhvS7.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/478a9c445440cd8351ef015d78756b26.mp4?sign=879d97f2ad29ec5246de2b49a4461f52&t=1792842698",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct - 542MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/478a9c445440cd8351ef015d78756b26.mp4?sign=879d97f2ad29ec5246de2b49a4461f52&t=1792842698",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=4",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox 480p - 158MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/93e4adf58f111c72af0041182eca4d29.mp4?sign=77b74276b61f2ecb1d0b65b17b4a6bfd&t=1792842698",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=328402&s=1&e=4",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/328402/1/4",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/328402/1/4",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 5,
+          "episode": 5,
+          "season": 1,
+          "title": "Child Safety",
+          "duration": "33 min",
+          "overview": "Under Urmila's pressure, Gyaneshwar teaches fake history to influence votes, triggering chaos in class. Meanwhile, Kanchan pushes for Ramesh Kaka's retirement.",
+          "still": "https://image.tmdb.org/t/p/w500/wnmVAeGuS5nV53q6DyyBUITSVkC.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/646d993aeef4a92a9ea97240b1d1f909.mp4?sign=4879b98cad4845ed73c43388c585a4f4&t=1792842679",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct - 519MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/646d993aeef4a92a9ea97240b1d1f909.mp4?sign=4879b98cad4845ed73c43388c585a4f4&t=1792842679",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=5",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox 480p - 163MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/65bc3d766a6c33668eb292cec795f1c2.mp4?sign=0c2c9df9bdfbbc27cf6929ee8e42979c&t=1792842679",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=328402&s=1&e=5",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/328402/1/5",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/328402/1/5",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 6,
+          "episode": 6,
+          "season": 1,
+          "title": "Candle in the Wind",
+          "duration": "37 min",
+          "overview": "As Gyaneshwar's UK plan gets revealed to the staff, alumnus Deepak's Olympic gold suddenly puts the school under an unforgiving media spotlight.",
+          "still": "https://image.tmdb.org/t/p/w500/4qSZkElkMjs5E3L7eLwMtNw4sA1.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/1cbf7c3908e4cc43523cba7fb7bada68.mp4?sign=59b1ef434fbf58f2431b53568bd01051&t=1792842734",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct - 603MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/1cbf7c3908e4cc43523cba7fb7bada68.mp4?sign=59b1ef434fbf58f2431b53568bd01051&t=1792842734",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=6",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox 480p - 181MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/2c68e0fdbf8a0ebfc788500c6fcbfb4d.mp4?sign=feae1f3df9d1205a4ae44d482040da7c&t=1792842734",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=328402&s=1&e=6",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/328402/1/6",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/328402/1/6",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 7,
+          "episode": 7,
+          "season": 1,
+          "title": "Trial by Fire",
+          "duration": "42 min",
+          "overview": "To boost results, Gyaneshwar considers withholding hall tickets of the weak students, risking their future for his dream. Meanwhile, Kanchan refuses to give up on them.",
+          "still": "https://image.tmdb.org/t/p/w500/omF26UjtawIX50crgV8DxJNNdZj.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/e0e06f3ed6735db9d3876b8a3f673b8f.mp4?sign=c66c360376e24ad327aba4d6f207eb5c&t=1792844281",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct - 603MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/resource/e0e06f3ed6735db9d3876b8a3f673b8f.mp4?sign=c66c360376e24ad327aba4d6f207eb5c&t=1792844281",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=7",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox 480p - 205MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/1e63d376206ebaf62f172ed67f98791d.mp4?sign=432c80547042120423bb4bfe42857e7c&t=1792840347",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=328402&s=1&e=7",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/328402/1/7",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/328402/1/7",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        }
+      ],
+      "type": "series"
+    },
     {
       "id": "mb-s-4720961996777219576",
       "subjectId": "4720961996777219576",

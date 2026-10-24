@@ -660,6 +660,8 @@ app.get('/api/moviebox/stream', async (req, res) => {
       else if (id === '3104610972405746824') resolvedPath = 'tale-of-the-nine-tailed-S9Jo5bn9lH3';
       // Musafir Cafe [Hindi] (Bollywood Series)
       else if (id === '4720961996777219576') resolvedPath = 'musafir-cafe-hindi-MStiLnt3KC5';
+      // Adarsh Baal Vidyalaya [Hindi] (Bollywood Series)
+      else if (id === '3604422232421843392') resolvedPath = 'adarsh-baal-vidyalaya-hindi-UKlobH6igi4';
     }
     // Try requested se/ep first, then fallbacks
     let media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);
