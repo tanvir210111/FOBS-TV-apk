@@ -502,8 +502,9 @@ app.get('/api/content', async (req, res) => {
       data.movies.forEach(m => {
         m.type = 'movie';
         if (!m.cover) m.cover = m.backdrop || m.poster;
-        if (m.originalReleaseDate) {
-          m.releaseDate = m.originalReleaseDate;
+        if (m.addedAt) {
+          if (!m.originalReleaseDate) m.originalReleaseDate = m.releaseDate;
+          m.releaseDate = m.addedAt;
         }
       });
     }
@@ -511,8 +512,9 @@ app.get('/api/content', async (req, res) => {
       data.series.forEach(s => {
         s.type = 'series';
         if (!s.cover) s.cover = s.backdrop || s.poster;
-        if (s.originalReleaseDate) {
-          s.releaseDate = s.originalReleaseDate;
+        if (s.addedAt) {
+          if (!s.originalReleaseDate) s.originalReleaseDate = s.releaseDate;
+          s.releaseDate = s.addedAt;
         }
       });
     }
