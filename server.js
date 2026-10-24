@@ -493,21 +493,27 @@ app.get('/api/resolve', async (req, res) => {
 app.get('/api/content', async (req, res) => {
   try {
     const data = getContentData();
-    const sortByRelease = (list) => {
+    // Ensure newest added items always rank strictly first in all client APKs (without requiring an APK update)
+    const assignRecencyTimestamps = (list, type) => {
       if (!Array.isArray(list)) return [];
-      return list.sort((a, b) => {
-        const dateA = String(a.releaseDate || (a.year ? `${a.year}-01-01` : '2000-01-01'));
-        const dateB = String(b.releaseDate || (b.year ? `${b.year}-01-01` : '2000-01-01'));
-        return dateB.localeCompare(dateA);
+      const baseYear = 2030;
+      return list.map((item, idx) => {
+        item.type = type;
+        if (!item.originalReleaseDate) {
+          item.originalReleaseDate = item.releaseDate || (item.year ? `${item.year}-01-01` : '2020-01-01');
+        }
+        // Descending timestamp: index 0 gets 2030-01-01T00:00:00Z, index 1 gets 2029-12-31T23:59:00Z, etc.
+        const d = new Date(Date.UTC(baseYear, 0, 1) - idx * 60000);
+        item.releaseDate = d.toISOString();
+        return item;
       });
     };
+
     if (data.movies) {
-      data.movies.forEach(m => m.type = 'movie');
-      data.movies = sortByRelease(data.movies);
+      data.movies = assignRecencyTimestamps(data.movies, 'movie');
     }
     if (data.series) {
-      data.series.forEach(s => s.type = 'series');
-      data.series = sortByRelease(data.series);
+      data.series = assignRecencyTimestamps(data.series, 'series');
     }
     if (data.upcoming) data.upcoming.forEach(u => u.type = u.type || 'series');
 

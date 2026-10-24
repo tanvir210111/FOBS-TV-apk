@@ -2827,6 +2827,459 @@
       "type": "movie"
     },
     {
+      "id": "tmdb-m-1375646",
+      "title": "Colony [Hindi]",
+      "originalTitle": "군체",
+      "language": "Korean",
+      "dubLanguage": "Hindi",
+      "year": "2026",
+      "country": "USA",
+      "genre": "Horror, Action, Science Fiction",
+      "duration": "2h 03m",
+      "category": "Hollywood (Dubbed) Movies",
+      "rating": "8.1",
+      "imdbRating": "8.1",
+      "poster": "https://image.tmdb.org/t/p/w500/enz3WLx5QU1FUyhXZld04QWIc6N.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/pGxUbJ1vKuMYeEjKDokFI7DNbSG.jpg",
+      "description": "Professor Se-jeong is thrust into a bloody nightmare when a rapidly mutating virus is released during a biotech conference causing authorities to seal the facility. Trapped inside with no escape, Se-jeong along with a small group of survivors must fight to stay alive while the infected undergo horrific transformations.",
+      "audioTracks": [
+        "Hindi dub",
+        "Original Audio"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/020a5fc2c6a91d4e44e1808ffbfba13d.mp4?sign=992b33cf340106187299c0e32e79e306&t=1792691202",
+      "servers": [
+        {
+          "name": "Server 1",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/020a5fc2c6a91d4e44e1808ffbfba13d.mp4?sign=992b33cf340106187299c0e32e79e306&t=1792691202"
+        },
+        {
+          "name": "Server 2",
+          "url": "https://bcdnxw.hakunaymatata.com/convert-h264/ac9f58a37684580a2dfd0a615beeac16.mp4?sign=b6c5bbceee35ec4b5c696a236f087a8f&t=1792693575"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Gianna Jun",
+          "character": "Kwon Se-jeong",
+          "photo": "https://image.tmdb.org/t/p/w185/qejOQBdIzN18e69yRcsiD0JQi4c.jpg"
+        },
+        {
+          "name": "Koo Kyo-hwan",
+          "character": "Seo Young-cheol",
+          "photo": "https://image.tmdb.org/t/p/w185/aFwCpSKPGFqoiTStY6ljXnD5CwH.jpg"
+        },
+        {
+          "name": "Ji Chang-wook",
+          "character": "Choi Hyun-seok",
+          "photo": "https://image.tmdb.org/t/p/w185/sBmHrO5Tn27Ot5hy0yAKniROmNb.jpg"
+        },
+        {
+          "name": "Kim Shin-rock",
+          "character": "Choi Hyun-hee",
+          "photo": "https://image.tmdb.org/t/p/w185/x4zo2mSbehnQY80PbuldAZ7ruGm.jpg"
+        },
+        {
+          "name": "Shin Hyun-been",
+          "character": "Kong Seol-hee",
+          "photo": "https://image.tmdb.org/t/p/w185/lU0yMFh5KgOEWZRThLYbB6ZI1hE.jpg"
+        },
+        {
+          "name": "Go Soo",
+          "character": "Han Kyu-seong",
+          "photo": "https://image.tmdb.org/t/p/w185/77209yRtUHOEk3ILJY1rG3X3VUj.jpg"
+        },
+        {
+          "name": "Lee Joong-ok",
+          "character": "Lee Bong-seok",
+          "photo": "https://image.tmdb.org/t/p/w185/fMkBpHRElwNatevfGinSv248bYg.jpg"
+        },
+        {
+          "name": "Kim Jong-tae",
+          "character": "Kang Woo-cheol",
+          "photo": "https://image.tmdb.org/t/p/w185/vf3R5QU7UCVEr3dOGt3bdFbypzu.jpg"
+        },
+        {
+          "name": "Hwang Jae-yeol",
+          "character": "Citizen",
+          "photo": "https://image.tmdb.org/t/p/w185/cyEibdvqNRurcNC63gqDSvX1qzE.jpg"
+        },
+        {
+          "name": "Lee Dam-hee",
+          "character": "Lee So-eun",
+          "photo": "https://image.tmdb.org/t/p/w185/wGiJAT7w7r3VBZdTXClfEQZ9IOV.jpg"
+        }
+      ],
+      "type": "movie",
+      "industry": "Hollywood",
+      "tmdbId": 1375646,
+      "releaseDate": "2026-05-21"
+    },
+    {
+      "id": "tmdb-m-1654581",
+      "title": "Nayyi Navelli (2026) [Hindi]",
+      "originalTitle": "नय्यी नवेल्ली",
+      "language": "Hindi",
+      "dubLanguage": "Hindi (Original)",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Hallprint",
+      "tag": "Hallprint",
+      "quality": "Hallprint",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Adventure, Fantasy, Comedy, Drama",
+      "duration": "2h 13m",
+      "category": "Bollywood Movies",
+      "rating": "8.2",
+      "imdbRating": "8.2",
+      "poster": "https://image.tmdb.org/t/p/w500/aZEKuzGt7ObqoKjTM4kcMd0klYy.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/3aXMkyp0Pv2WGyvm2NUdtMXwY2P.jpg",
+      "description": "A new bride's arrival turns a turbulent household in Meerut into a picture of domestic harmony, until her brother-in-law grows convinced that his seemingly perfect sister-in-law is secretly a witch.",
+      "audioTracks": [
+        "Hindi (Original)"
+      ],
+      "selectedAudio": "Hindi (Original)",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/675051aaf636dd907b38655c8718ca89.mp4?sign=f287a61bf61431bff4e2c18e2fc35aad&t=1792684000",
+      "servers": [
+        {
+          "name": "Server 1",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/675051aaf636dd907b38655c8718ca89.mp4?sign=f287a61bf61431bff4e2c18e2fc35aad&t=1792684000"
+        },
+        {
+          "name": "Server 2",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/ff97693db8197cc8631437ad603c69b5.mp4?sign=7ecdcbd9f95741a87b82ef94e50dab9f&t=1792686242"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Yami Gautam Dhar",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/wQwYuofypdW7JnglmyFbeWKu33j.jpg"
+        },
+        {
+          "name": "Anurag Thakur",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/3uhvhOTAVFsSVRVR41rjILq9Fcn.jpg"
+        },
+        {
+          "name": "Adinath Kothare",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/mqvDNAFiy2kkFZZUJCyIgM46nm1.jpg"
+        },
+        {
+          "name": "Sushmita Mukherjee",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/hFgWE0QLZHvdt0gJ3kR734H0ZBR.jpg"
+        },
+        {
+          "name": "Prateek Pachori",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/xGcckOmsmQ3zplHWEgp1l4gIVdT.jpg"
+        },
+        {
+          "name": "Rajesh Dubeay",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/5Aae30mTpyAoddcaY9Nu2mT54LX.jpg"
+        },
+        {
+          "name": "Suneel Sinha",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/bSJ46KQ1A8XiBltj7rg3yEFI9QQ.jpg"
+        },
+        {
+          "name": "Sunita Rajwar",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/cEhnGiU6arxA4vxZCUspFWDP76F.jpg"
+        },
+        {
+          "name": "Mita Vashisht",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/mcnaQTCmuz3lXNotFFdkwCO7FTY.jpg"
+        },
+        {
+          "name": "Aditya Kulshreshtha",
+          "character": "",
+          "photo": "https://image.tmdb.org/t/p/w185/2uRhfyh58LbAmE7BEUuq6yUo4uv.jpg"
+        }
+      ],
+      "type": "movie",
+      "releaseDate": "2026-01-01"
+    },
+    {
+      "id": "tmdb-m-1451944",
+      "title": "Lust Stories 3 (2026) [Hindi]",
+      "originalTitle": "लस्ट स्टोरीज़ ३",
+      "language": "Hindi",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "tag": "HD",
+      "quality": "HD",
+      "industry": "Bollywood",
+      "year": "2026",
+      "country": "India",
+      "genre": "Romance, Drama",
+      "duration": "2h 45m",
+      "category": "Bollywood Movies",
+      "rating": "6.3",
+      "imdbRating": "6.3",
+      "poster": "https://image.tmdb.org/t/p/w500/cLA83DD1qMEBwbRIYXf29RKjMja.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/jRtR4aTq4vmxRg9ah60R5i1kkQ7.jpg",
+      "description": "Through four bite-sized yet emotionally resonant films, the anthology once again explores lust, love, relationships, and repressed desire, offering fresh perspectives on intimacy, longing, and human connection in all their complexity.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/6c20a0232ed1e1cfa6c904a510da566c.mp4?sign=cd41298cf0881133faeb05230f4a5ac5&t=1792681988",
+      "servers": [
+        {
+          "name": "Server 1",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/6c20a0232ed1e1cfa6c904a510da566c.mp4?sign=cd41298cf0881133faeb05230f4a5ac5&t=1792681988"
+        },
+        {
+          "name": "Server 2",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/7f7d45e04bc4a042aba8db6fe5cc4b49.mp4?sign=d756c32443d63994bbf6f76bf7f05ae8&t=1792681988"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Radhika Apte",
+          "character": "Padma",
+          "photo": "https://image.tmdb.org/t/p/w185/wKPybRcSYcbgDiJZwELudrRNf0r.jpg"
+        },
+        {
+          "name": "Konkona Sen Sharma",
+          "character": "Shonali Ghosh",
+          "photo": "https://image.tmdb.org/t/p/w185/i538HToMEGR6J2OVmOGX3GfWcQC.jpg"
+        },
+        {
+          "name": "Vijay Varma",
+          "character": "Hemant",
+          "photo": "https://image.tmdb.org/t/p/w185/A46ekiPFC3vA1442FJmiIudpxX1.jpg"
+        },
+        {
+          "name": "Abhishek Banerjee",
+          "character": "Debendu",
+          "photo": "https://image.tmdb.org/t/p/w185/cfyRkFBFfodBbNKbsTc8eG9YtVj.jpg"
+        },
+        {
+          "name": "Ali Fazal",
+          "character": "Varun Apte",
+          "photo": "https://image.tmdb.org/t/p/w185/lLDmx3RDuMXObASvdFXeUh1GOgd.jpg"
+        },
+        {
+          "name": "Radhikka Madan",
+          "character": "Sailee Vaidya",
+          "photo": "https://image.tmdb.org/t/p/w185/xX6h0GMgJ1jLJdA5lHrFwZcjEIz.jpg"
+        },
+        {
+          "name": "Aditi Rao Hydari",
+          "character": "Saira",
+          "photo": "https://image.tmdb.org/t/p/w185/iVbsdPXzs4CjlG98qIxG2lsQl31.jpg"
+        },
+        {
+          "name": "Siddharth",
+          "character": "Badru / Hero Badru",
+          "photo": "https://image.tmdb.org/t/p/w185/9XrTuJp9lnB1rsBPzTaoXdp1ig8.jpg"
+        },
+        {
+          "name": "Gurfateh Pirzada",
+          "character": "Karan / Arjun",
+          "photo": "https://image.tmdb.org/t/p/w185/gfeOmcTUCPoAJytEjxo5SvkKObb.jpg"
+        },
+        {
+          "name": "Sana Thampi",
+          "character": "Lisa",
+          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+        }
+      ],
+      "type": "movie",
+      "releaseDate": "2026-01-01"
+    },
+    {
+      "id": "tmdb-m-1423191",
+      "title": "Resident Evil (2026) [Hindi]",
+      "originalTitle": "Resident Evil",
+      "language": "English",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Hallprint",
+      "tag": "Hallprint",
+      "quality": "Hallprint",
+      "industry": "Hollywood",
+      "year": "2026",
+      "country": "USA",
+      "genre": "Horror, Science Fiction, Adventure",
+      "duration": "1h 35m",
+      "category": "Hollywood (Dubbed) Movies",
+      "rating": "7.3",
+      "imdbRating": "7.3",
+      "poster": "https://image.tmdb.org/t/p/w500/i7UyjfPio0VFHB9rBUZSFyhOoM8.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/3icyRAqgakNcQn6aDVz9libFmBA.jpg",
+      "description": "Medical courier Bryan unwittingly finds himself fighting for survival as one fateful, horrifying night collapses around him in chaos.",
+      "audioTracks": [
+        "Hindi dub"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/onetamilmv/94c9a1f2d70e4ee89b4d82e9f724976f.mp4?sign=622388b42934e2c21e6f9cefd226f942&t=1792687358",
+      "servers": [
+        {
+          "name": "Server 1",
+          "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/94c9a1f2d70e4ee89b4d82e9f724976f.mp4?sign=622388b42934e2c21e6f9cefd226f942&t=1792687358"
+        },
+        {
+          "name": "Server 2",
+          "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/b2125fcc443aacaea342541d84970cad.mp4?sign=a979f384111c322f37ae6d5b61bd50b6&t=1792684795"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Austin Abrams",
+          "character": "Bryan",
+          "photo": "https://image.tmdb.org/t/p/w185/nvbJNwyhIICUFcS4lhxj9mGvL5z.jpg"
+        },
+        {
+          "name": "Paul Walter Hauser",
+          "character": "Paul",
+          "photo": "https://image.tmdb.org/t/p/w185/hXjjbYg1Ah8mFf5ZcaakyXzDKMx.jpg"
+        },
+        {
+          "name": "Kali Reis",
+          "character": "Maxine",
+          "photo": "https://image.tmdb.org/t/p/w185/ruLDXHnKA4aHEQCcFGDAJ7bLTdt.jpg"
+        },
+        {
+          "name": "Zach Cherry",
+          "character": "Carl",
+          "photo": "https://image.tmdb.org/t/p/w185/fT3Wv8ef0Vn0daHWAObCp2Bd4Y.jpg"
+        },
+        {
+          "name": "Johnno Wilson",
+          "character": "Officer Wilson",
+          "photo": "https://image.tmdb.org/t/p/w185/eZtBoBE0F7Qb9ZyNpacMOQtmWnM.jpg"
+        },
+        {
+          "name": "Shaun W. Loeser",
+          "character": "Puker",
+          "photo": "https://image.tmdb.org/t/p/w185/pMV7kzy7OHk4X93uRGbrdvuFgQB.jpg"
+        },
+        {
+          "name": "Zach Cregger",
+          "character": "Intercom (voice)",
+          "photo": "https://image.tmdb.org/t/p/w185/bpFGFfWYIrZVK7WjwkVLwIoMKEb.jpg"
+        },
+        {
+          "name": "Emily Piggford",
+          "character": "Dr. Maria Stokes",
+          "photo": "https://image.tmdb.org/t/p/w185/ruijvaNNXzGXqGphQXsoHts1Ovc.jpg"
+        },
+        {
+          "name": "Will Merrick",
+          "character": "Dave",
+          "photo": "https://image.tmdb.org/t/p/w185/zqyH01TJ9WW6TaAULCG2ChSbNwI.jpg"
+        },
+        {
+          "name": "Zoé Bellas",
+          "character": "Birdie",
+          "photo": "https://image.tmdb.org/t/p/w185/3nw4EhStA4IcJQxz4Yevm25u5ov.jpg"
+        }
+      ],
+      "type": "movie",
+      "releaseDate": "2026-01-01"
+    },
+    {
+      "id": "tmdb-m-1234139",
+      "title": "Jailer 2 (2026) [Hindi]",
+      "originalTitle": "ஜெயிலர் 2",
+      "language": "Tamil",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Hindi",
+      "badgeRight": "Hallprint",
+      "tag": "Hallprint",
+      "quality": "Hallprint",
+      "industry": "South Indian",
+      "year": "2026",
+      "country": "India",
+      "genre": "Action, Comedy",
+      "duration": "2h 43m",
+      "category": "South (Dubbed) Movies",
+      "rating": "8.0",
+      "imdbRating": "8.0",
+      "poster": "https://image.tmdb.org/t/p/w500/upwdEyhhYZ7pT2hD535fr2MGfpx.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/zpHTOdRl7GEPqFsDGqsN6Hi9Ylt.jpg",
+      "description": "When a dangerous syndicate expands its reach to threaten his family's peace, retired jailer Tiger Muthuvel Pandian goes undercover as a driver. Operating from the shadows, he takes on ruthless new enemies to protect his home.",
+      "audioTracks": [
+        "Hindi dub",
+        "Tamil (Original)"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/ca545ed90a0f2634d5e5f096f1f08ce4.mp4?sign=206ebc29872421678796f2dc1077a2cd&t=1792681525",
+      "servers": [
+        {
+          "name": "Server 1",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/ca545ed90a0f2634d5e5f096f1f08ce4.mp4?sign=206ebc29872421678796f2dc1077a2cd&t=1792681525"
+        },
+        {
+          "name": "Server 2",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/efe68efc6c387dd8249c25723df7988f.mp4?sign=b7eb172766a3c7b19b141329cc5fcfb4&t=1792680422"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Rajinikanth",
+          "character": "Muthuvel 'Tiger' Pandian",
+          "photo": "https://image.tmdb.org/t/p/w185/cQBcrXqcQPfXOQfNfgO3slJM2xi.jpg"
+        },
+        {
+          "name": "S. J. Suryah",
+          "character": "Bodhi Kalpak",
+          "photo": "https://image.tmdb.org/t/p/w185/7Q8510XwxPU1193cteaFQsiq2rv.jpg"
+        },
+        {
+          "name": "Suraj Venjaramoodu",
+          "character": "Dileep",
+          "photo": "https://image.tmdb.org/t/p/w185/2FUs0wmR3eHBd8g4GVbCmhkUzeI.jpg"
+        },
+        {
+          "name": "Ramya Krishnan",
+          "character": "Vijayalakshmi 'Viji' Pandian",
+          "photo": "https://image.tmdb.org/t/p/w185/7C1bj7z3XhqxjDIGoCs6MFJdSVa.jpg"
+        },
+        {
+          "name": "Vidya Balan",
+          "character": "Kantha Kalpak",
+          "photo": "https://image.tmdb.org/t/p/w185/m4bnX5VQs2DfvQsLmfbKbBxUkC9.jpg"
+        },
+        {
+          "name": "Namo Narayana",
+          "character": "Moorthi",
+          "photo": "https://image.tmdb.org/t/p/w185/jE3oslL16GYDBjmER7zkdeTVyK8.jpg"
+        },
+        {
+          "name": "Yogi Babu",
+          "character": "Vimal",
+          "photo": "https://image.tmdb.org/t/p/w185/4UMOPd8NqGfKp19VQHsnIzlSRUl.jpg"
+        },
+        {
+          "name": "Mirnaa",
+          "character": "Swetha Pandian",
+          "photo": "https://image.tmdb.org/t/p/w185/l4bmtLBuBPEE2Pg3qh5NTdmKFYP.jpg"
+        },
+        {
+          "name": "Rithvik",
+          "character": "Rithvik 'Rithu' Pandian",
+          "photo": "https://image.tmdb.org/t/p/w185/9j9GPeTCDcqBW5TMDoQwz30usT7.jpg"
+        },
+        {
+          "name": "Hakkim Shajahan",
+          "character": "Sharva Kalpak",
+          "photo": "https://image.tmdb.org/t/p/w185/reEowrr3Gw4vKFfVUOhIT4EM4Es.jpg"
+        }
+      ],
+      "type": "movie",
+      "releaseDate": "2026-01-01"
+    },
+    {
       "id": "mb-m-4393216074666474704",
       "title": "Pooja Meri Jaan [Hindi]",
       "originalTitle": "Pooja Meri Jaan [Hindi]",
@@ -4797,95 +5250,6 @@
       "releaseDate": "2026-05-28"
     },
     {
-      "id": "tmdb-m-1375646",
-      "title": "Colony [Hindi]",
-      "originalTitle": "군체",
-      "language": "Korean",
-      "dubLanguage": "Hindi",
-      "year": "2026",
-      "country": "USA",
-      "genre": "Horror, Action, Science Fiction",
-      "duration": "2h 03m",
-      "category": "Hollywood (Dubbed) Movies",
-      "rating": "8.1",
-      "imdbRating": "8.1",
-      "poster": "https://image.tmdb.org/t/p/w500/enz3WLx5QU1FUyhXZld04QWIc6N.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/pGxUbJ1vKuMYeEjKDokFI7DNbSG.jpg",
-      "description": "Professor Se-jeong is thrust into a bloody nightmare when a rapidly mutating virus is released during a biotech conference causing authorities to seal the facility. Trapped inside with no escape, Se-jeong along with a small group of survivors must fight to stay alive while the infected undergo horrific transformations.",
-      "audioTracks": [
-        "Hindi dub",
-        "Original Audio"
-      ],
-      "selectedAudio": "Hindi dub",
-      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/020a5fc2c6a91d4e44e1808ffbfba13d.mp4?sign=992b33cf340106187299c0e32e79e306&t=1792691202",
-      "servers": [
-        {
-          "name": "Server 1",
-          "url": "https://bcdnxw.hakunaymatata.com/cms/020a5fc2c6a91d4e44e1808ffbfba13d.mp4?sign=992b33cf340106187299c0e32e79e306&t=1792691202"
-        },
-        {
-          "name": "Server 2",
-          "url": "https://bcdnxw.hakunaymatata.com/convert-h264/ac9f58a37684580a2dfd0a615beeac16.mp4?sign=b6c5bbceee35ec4b5c696a236f087a8f&t=1792693575"
-        }
-      ],
-      "cast": [
-        {
-          "name": "Gianna Jun",
-          "character": "Kwon Se-jeong",
-          "photo": "https://image.tmdb.org/t/p/w185/qejOQBdIzN18e69yRcsiD0JQi4c.jpg"
-        },
-        {
-          "name": "Koo Kyo-hwan",
-          "character": "Seo Young-cheol",
-          "photo": "https://image.tmdb.org/t/p/w185/aFwCpSKPGFqoiTStY6ljXnD5CwH.jpg"
-        },
-        {
-          "name": "Ji Chang-wook",
-          "character": "Choi Hyun-seok",
-          "photo": "https://image.tmdb.org/t/p/w185/sBmHrO5Tn27Ot5hy0yAKniROmNb.jpg"
-        },
-        {
-          "name": "Kim Shin-rock",
-          "character": "Choi Hyun-hee",
-          "photo": "https://image.tmdb.org/t/p/w185/x4zo2mSbehnQY80PbuldAZ7ruGm.jpg"
-        },
-        {
-          "name": "Shin Hyun-been",
-          "character": "Kong Seol-hee",
-          "photo": "https://image.tmdb.org/t/p/w185/lU0yMFh5KgOEWZRThLYbB6ZI1hE.jpg"
-        },
-        {
-          "name": "Go Soo",
-          "character": "Han Kyu-seong",
-          "photo": "https://image.tmdb.org/t/p/w185/77209yRtUHOEk3ILJY1rG3X3VUj.jpg"
-        },
-        {
-          "name": "Lee Joong-ok",
-          "character": "Lee Bong-seok",
-          "photo": "https://image.tmdb.org/t/p/w185/fMkBpHRElwNatevfGinSv248bYg.jpg"
-        },
-        {
-          "name": "Kim Jong-tae",
-          "character": "Kang Woo-cheol",
-          "photo": "https://image.tmdb.org/t/p/w185/vf3R5QU7UCVEr3dOGt3bdFbypzu.jpg"
-        },
-        {
-          "name": "Hwang Jae-yeol",
-          "character": "Citizen",
-          "photo": "https://image.tmdb.org/t/p/w185/cyEibdvqNRurcNC63gqDSvX1qzE.jpg"
-        },
-        {
-          "name": "Lee Dam-hee",
-          "character": "Lee So-eun",
-          "photo": "https://image.tmdb.org/t/p/w185/wGiJAT7w7r3VBZdTXClfEQZ9IOV.jpg"
-        }
-      ],
-      "type": "movie",
-      "industry": "Hollywood",
-      "tmdbId": 1375646,
-      "releaseDate": "2026-05-21"
-    },
-    {
       "id": "mb-m-5481474927855289304",
       "title": "Aakhri Sawal [Hindi]",
       "originalTitle": "Aakhri Sawal [Hindi]",
@@ -5048,370 +5412,6 @@
       "type": "movie",
       "tmdbId": 1284186,
       "releaseDate": "2026-04-09"
-    },
-    {
-      "id": "tmdb-m-1654581",
-      "title": "Nayyi Navelli (2026) [Hindi]",
-      "originalTitle": "नय्यी नवेल्ली",
-      "language": "Hindi",
-      "dubLanguage": "Hindi (Original)",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Hallprint",
-      "tag": "Hallprint",
-      "quality": "Hallprint",
-      "industry": "Bollywood",
-      "year": "2026",
-      "country": "India",
-      "genre": "Adventure, Fantasy, Comedy, Drama",
-      "duration": "2h 13m",
-      "category": "Bollywood Movies",
-      "rating": "8.2",
-      "imdbRating": "8.2",
-      "poster": "https://image.tmdb.org/t/p/w500/aZEKuzGt7ObqoKjTM4kcMd0klYy.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/3aXMkyp0Pv2WGyvm2NUdtMXwY2P.jpg",
-      "description": "A new bride's arrival turns a turbulent household in Meerut into a picture of domestic harmony, until her brother-in-law grows convinced that his seemingly perfect sister-in-law is secretly a witch.",
-      "audioTracks": [
-        "Hindi (Original)"
-      ],
-      "selectedAudio": "Hindi (Original)",
-      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/675051aaf636dd907b38655c8718ca89.mp4?sign=f287a61bf61431bff4e2c18e2fc35aad&t=1792684000",
-      "servers": [
-        {
-          "name": "Server 1",
-          "url": "https://bcdnxw.hakunaymatata.com/resource/675051aaf636dd907b38655c8718ca89.mp4?sign=f287a61bf61431bff4e2c18e2fc35aad&t=1792684000"
-        },
-        {
-          "name": "Server 2",
-          "url": "https://bcdnxw.hakunaymatata.com/resource/ff97693db8197cc8631437ad603c69b5.mp4?sign=7ecdcbd9f95741a87b82ef94e50dab9f&t=1792686242"
-        }
-      ],
-      "cast": [
-        {
-          "name": "Yami Gautam Dhar",
-          "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/wQwYuofypdW7JnglmyFbeWKu33j.jpg"
-        },
-        {
-          "name": "Anurag Thakur",
-          "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/3uhvhOTAVFsSVRVR41rjILq9Fcn.jpg"
-        },
-        {
-          "name": "Adinath Kothare",
-          "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/mqvDNAFiy2kkFZZUJCyIgM46nm1.jpg"
-        },
-        {
-          "name": "Sushmita Mukherjee",
-          "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/hFgWE0QLZHvdt0gJ3kR734H0ZBR.jpg"
-        },
-        {
-          "name": "Prateek Pachori",
-          "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/xGcckOmsmQ3zplHWEgp1l4gIVdT.jpg"
-        },
-        {
-          "name": "Rajesh Dubeay",
-          "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/5Aae30mTpyAoddcaY9Nu2mT54LX.jpg"
-        },
-        {
-          "name": "Suneel Sinha",
-          "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/bSJ46KQ1A8XiBltj7rg3yEFI9QQ.jpg"
-        },
-        {
-          "name": "Sunita Rajwar",
-          "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/cEhnGiU6arxA4vxZCUspFWDP76F.jpg"
-        },
-        {
-          "name": "Mita Vashisht",
-          "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/mcnaQTCmuz3lXNotFFdkwCO7FTY.jpg"
-        },
-        {
-          "name": "Aditya Kulshreshtha",
-          "character": "",
-          "photo": "https://image.tmdb.org/t/p/w185/2uRhfyh58LbAmE7BEUuq6yUo4uv.jpg"
-        }
-      ],
-      "type": "movie",
-      "releaseDate": "2026-01-01"
-    },
-    {
-      "id": "tmdb-m-1451944",
-      "title": "Lust Stories 3 (2026) [Hindi]",
-      "originalTitle": "लस्ट स्टोरीज़ ३",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "tag": "HD",
-      "quality": "HD",
-      "industry": "Bollywood",
-      "year": "2026",
-      "country": "India",
-      "genre": "Romance, Drama",
-      "duration": "2h 45m",
-      "category": "Bollywood Movies",
-      "rating": "6.3",
-      "imdbRating": "6.3",
-      "poster": "https://image.tmdb.org/t/p/w500/cLA83DD1qMEBwbRIYXf29RKjMja.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/jRtR4aTq4vmxRg9ah60R5i1kkQ7.jpg",
-      "description": "Through four bite-sized yet emotionally resonant films, the anthology once again explores lust, love, relationships, and repressed desire, offering fresh perspectives on intimacy, longing, and human connection in all their complexity.",
-      "audioTracks": [
-        "Hindi dub"
-      ],
-      "selectedAudio": "Hindi dub",
-      "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/6c20a0232ed1e1cfa6c904a510da566c.mp4?sign=cd41298cf0881133faeb05230f4a5ac5&t=1792681988",
-      "servers": [
-        {
-          "name": "Server 1",
-          "url": "https://bcdnxw.hakunaymatata.com/cms/6c20a0232ed1e1cfa6c904a510da566c.mp4?sign=cd41298cf0881133faeb05230f4a5ac5&t=1792681988"
-        },
-        {
-          "name": "Server 2",
-          "url": "https://bcdnxw.hakunaymatata.com/bt/7f7d45e04bc4a042aba8db6fe5cc4b49.mp4?sign=d756c32443d63994bbf6f76bf7f05ae8&t=1792681988"
-        }
-      ],
-      "cast": [
-        {
-          "name": "Radhika Apte",
-          "character": "Padma",
-          "photo": "https://image.tmdb.org/t/p/w185/wKPybRcSYcbgDiJZwELudrRNf0r.jpg"
-        },
-        {
-          "name": "Konkona Sen Sharma",
-          "character": "Shonali Ghosh",
-          "photo": "https://image.tmdb.org/t/p/w185/i538HToMEGR6J2OVmOGX3GfWcQC.jpg"
-        },
-        {
-          "name": "Vijay Varma",
-          "character": "Hemant",
-          "photo": "https://image.tmdb.org/t/p/w185/A46ekiPFC3vA1442FJmiIudpxX1.jpg"
-        },
-        {
-          "name": "Abhishek Banerjee",
-          "character": "Debendu",
-          "photo": "https://image.tmdb.org/t/p/w185/cfyRkFBFfodBbNKbsTc8eG9YtVj.jpg"
-        },
-        {
-          "name": "Ali Fazal",
-          "character": "Varun Apte",
-          "photo": "https://image.tmdb.org/t/p/w185/lLDmx3RDuMXObASvdFXeUh1GOgd.jpg"
-        },
-        {
-          "name": "Radhikka Madan",
-          "character": "Sailee Vaidya",
-          "photo": "https://image.tmdb.org/t/p/w185/xX6h0GMgJ1jLJdA5lHrFwZcjEIz.jpg"
-        },
-        {
-          "name": "Aditi Rao Hydari",
-          "character": "Saira",
-          "photo": "https://image.tmdb.org/t/p/w185/iVbsdPXzs4CjlG98qIxG2lsQl31.jpg"
-        },
-        {
-          "name": "Siddharth",
-          "character": "Badru / Hero Badru",
-          "photo": "https://image.tmdb.org/t/p/w185/9XrTuJp9lnB1rsBPzTaoXdp1ig8.jpg"
-        },
-        {
-          "name": "Gurfateh Pirzada",
-          "character": "Karan / Arjun",
-          "photo": "https://image.tmdb.org/t/p/w185/gfeOmcTUCPoAJytEjxo5SvkKObb.jpg"
-        },
-        {
-          "name": "Sana Thampi",
-          "character": "Lisa",
-          "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
-        }
-      ],
-      "type": "movie",
-      "releaseDate": "2026-01-01"
-    },
-    {
-      "id": "tmdb-m-1423191",
-      "title": "Resident Evil (2026) [Hindi]",
-      "originalTitle": "Resident Evil",
-      "language": "English",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Hallprint",
-      "tag": "Hallprint",
-      "quality": "Hallprint",
-      "industry": "Hollywood",
-      "year": "2026",
-      "country": "USA",
-      "genre": "Horror, Science Fiction, Adventure",
-      "duration": "1h 35m",
-      "category": "Hollywood (Dubbed) Movies",
-      "rating": "7.3",
-      "imdbRating": "7.3",
-      "poster": "https://image.tmdb.org/t/p/w500/i7UyjfPio0VFHB9rBUZSFyhOoM8.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/3icyRAqgakNcQn6aDVz9libFmBA.jpg",
-      "description": "Medical courier Bryan unwittingly finds himself fighting for survival as one fateful, horrifying night collapses around him in chaos.",
-      "audioTracks": [
-        "Hindi dub"
-      ],
-      "selectedAudio": "Hindi dub",
-      "streamUrl": "https://bcdnxw.hakunaymatata.com/onetamilmv/94c9a1f2d70e4ee89b4d82e9f724976f.mp4?sign=622388b42934e2c21e6f9cefd226f942&t=1792687358",
-      "servers": [
-        {
-          "name": "Server 1",
-          "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/94c9a1f2d70e4ee89b4d82e9f724976f.mp4?sign=622388b42934e2c21e6f9cefd226f942&t=1792687358"
-        },
-        {
-          "name": "Server 2",
-          "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/b2125fcc443aacaea342541d84970cad.mp4?sign=a979f384111c322f37ae6d5b61bd50b6&t=1792684795"
-        }
-      ],
-      "cast": [
-        {
-          "name": "Austin Abrams",
-          "character": "Bryan",
-          "photo": "https://image.tmdb.org/t/p/w185/nvbJNwyhIICUFcS4lhxj9mGvL5z.jpg"
-        },
-        {
-          "name": "Paul Walter Hauser",
-          "character": "Paul",
-          "photo": "https://image.tmdb.org/t/p/w185/hXjjbYg1Ah8mFf5ZcaakyXzDKMx.jpg"
-        },
-        {
-          "name": "Kali Reis",
-          "character": "Maxine",
-          "photo": "https://image.tmdb.org/t/p/w185/ruLDXHnKA4aHEQCcFGDAJ7bLTdt.jpg"
-        },
-        {
-          "name": "Zach Cherry",
-          "character": "Carl",
-          "photo": "https://image.tmdb.org/t/p/w185/fT3Wv8ef0Vn0daHWAObCp2Bd4Y.jpg"
-        },
-        {
-          "name": "Johnno Wilson",
-          "character": "Officer Wilson",
-          "photo": "https://image.tmdb.org/t/p/w185/eZtBoBE0F7Qb9ZyNpacMOQtmWnM.jpg"
-        },
-        {
-          "name": "Shaun W. Loeser",
-          "character": "Puker",
-          "photo": "https://image.tmdb.org/t/p/w185/pMV7kzy7OHk4X93uRGbrdvuFgQB.jpg"
-        },
-        {
-          "name": "Zach Cregger",
-          "character": "Intercom (voice)",
-          "photo": "https://image.tmdb.org/t/p/w185/bpFGFfWYIrZVK7WjwkVLwIoMKEb.jpg"
-        },
-        {
-          "name": "Emily Piggford",
-          "character": "Dr. Maria Stokes",
-          "photo": "https://image.tmdb.org/t/p/w185/ruijvaNNXzGXqGphQXsoHts1Ovc.jpg"
-        },
-        {
-          "name": "Will Merrick",
-          "character": "Dave",
-          "photo": "https://image.tmdb.org/t/p/w185/zqyH01TJ9WW6TaAULCG2ChSbNwI.jpg"
-        },
-        {
-          "name": "Zoé Bellas",
-          "character": "Birdie",
-          "photo": "https://image.tmdb.org/t/p/w185/3nw4EhStA4IcJQxz4Yevm25u5ov.jpg"
-        }
-      ],
-      "type": "movie",
-      "releaseDate": "2026-01-01"
-    },
-    {
-      "id": "tmdb-m-1234139",
-      "title": "Jailer 2 (2026) [Hindi]",
-      "originalTitle": "ஜெயிலர் 2",
-      "language": "Tamil",
-      "dubLanguage": "Hindi",
-      "badgeLeft": "Hindi",
-      "badgeRight": "Hallprint",
-      "tag": "Hallprint",
-      "quality": "Hallprint",
-      "industry": "South Indian",
-      "year": "2026",
-      "country": "India",
-      "genre": "Action, Comedy",
-      "duration": "2h 43m",
-      "category": "South (Dubbed) Movies",
-      "rating": "8.0",
-      "imdbRating": "8.0",
-      "poster": "https://image.tmdb.org/t/p/w500/upwdEyhhYZ7pT2hD535fr2MGfpx.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/original/zpHTOdRl7GEPqFsDGqsN6Hi9Ylt.jpg",
-      "description": "When a dangerous syndicate expands its reach to threaten his family's peace, retired jailer Tiger Muthuvel Pandian goes undercover as a driver. Operating from the shadows, he takes on ruthless new enemies to protect his home.",
-      "audioTracks": [
-        "Hindi dub",
-        "Tamil (Original)"
-      ],
-      "selectedAudio": "Hindi dub",
-      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/ca545ed90a0f2634d5e5f096f1f08ce4.mp4?sign=206ebc29872421678796f2dc1077a2cd&t=1792681525",
-      "servers": [
-        {
-          "name": "Server 1",
-          "url": "https://bcdnxw.hakunaymatata.com/resource/ca545ed90a0f2634d5e5f096f1f08ce4.mp4?sign=206ebc29872421678796f2dc1077a2cd&t=1792681525"
-        },
-        {
-          "name": "Server 2",
-          "url": "https://bcdnxw.hakunaymatata.com/resource/efe68efc6c387dd8249c25723df7988f.mp4?sign=b7eb172766a3c7b19b141329cc5fcfb4&t=1792680422"
-        }
-      ],
-      "cast": [
-        {
-          "name": "Rajinikanth",
-          "character": "Muthuvel 'Tiger' Pandian",
-          "photo": "https://image.tmdb.org/t/p/w185/cQBcrXqcQPfXOQfNfgO3slJM2xi.jpg"
-        },
-        {
-          "name": "S. J. Suryah",
-          "character": "Bodhi Kalpak",
-          "photo": "https://image.tmdb.org/t/p/w185/7Q8510XwxPU1193cteaFQsiq2rv.jpg"
-        },
-        {
-          "name": "Suraj Venjaramoodu",
-          "character": "Dileep",
-          "photo": "https://image.tmdb.org/t/p/w185/2FUs0wmR3eHBd8g4GVbCmhkUzeI.jpg"
-        },
-        {
-          "name": "Ramya Krishnan",
-          "character": "Vijayalakshmi 'Viji' Pandian",
-          "photo": "https://image.tmdb.org/t/p/w185/7C1bj7z3XhqxjDIGoCs6MFJdSVa.jpg"
-        },
-        {
-          "name": "Vidya Balan",
-          "character": "Kantha Kalpak",
-          "photo": "https://image.tmdb.org/t/p/w185/m4bnX5VQs2DfvQsLmfbKbBxUkC9.jpg"
-        },
-        {
-          "name": "Namo Narayana",
-          "character": "Moorthi",
-          "photo": "https://image.tmdb.org/t/p/w185/jE3oslL16GYDBjmER7zkdeTVyK8.jpg"
-        },
-        {
-          "name": "Yogi Babu",
-          "character": "Vimal",
-          "photo": "https://image.tmdb.org/t/p/w185/4UMOPd8NqGfKp19VQHsnIzlSRUl.jpg"
-        },
-        {
-          "name": "Mirnaa",
-          "character": "Swetha Pandian",
-          "photo": "https://image.tmdb.org/t/p/w185/l4bmtLBuBPEE2Pg3qh5NTdmKFYP.jpg"
-        },
-        {
-          "name": "Rithvik",
-          "character": "Rithvik 'Rithu' Pandian",
-          "photo": "https://image.tmdb.org/t/p/w185/9j9GPeTCDcqBW5TMDoQwz30usT7.jpg"
-        },
-        {
-          "name": "Hakkim Shajahan",
-          "character": "Sharva Kalpak",
-          "photo": "https://image.tmdb.org/t/p/w185/reEowrr3Gw4vKFfVUOhIT4EM4Es.jpg"
-        }
-      ],
-      "type": "movie",
-      "releaseDate": "2026-01-01"
     },
     {
       "id": "tmdb-m-1153576",
