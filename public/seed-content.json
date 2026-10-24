@@ -21,272 +21,274 @@
     "fileSize": "15.4 MB"
   },
   "featured": {
-    "id": "mb-s-3908280950886646112",
-    "subjectId": "3908280950886646112",
-    "tmdbId": 213375,
-    "title": "VisionQuest [Hindi]",
-    "originalTitle": "VisionQuest",
+    "id": "mb-m-803658983365039832",
+    "subjectId": "803658983365039832",
+    "detailPath": "vishwanath-and-sons-hindi-OVyMV4xLmX",
+    "tmdbId": 1408162,
+    "title": "Vishwanath and Sons [Hindi]",
+    "originalTitle": "விஸ்வநாத் & சன்ஸ்",
+    "language": "Tamil",
+    "dubLanguage": "Hindi",
+    "badgeLeft": "Suriya",
+    "badgeRight": "1080p Full HD",
+    "industry": "South Indian",
+    "country": "India",
+    "category": "South (Dubbed) Movies",
+    "genre": "Drama, Romance, Comedy",
     "year": "2026",
-    "releaseDate": "2026-10-13",
-    "rating": "8.8",
-    "votes": "168",
-    "duration": "1 Season (4 Episodes)",
-    "category": "Hollywood (Dubbed) Series",
-    "industry": "Hollywood",
-    "country": "United States",
-    "badgeLeft": "Marvel",
-    "badgeRight": "Hindi Dub",
-    "poster": "https://image.tmdb.org/t/p/w500/xK27l5uwaVyZSlENWnmLlWwDQNS.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/original/uoXXbN2PrOxH6UKyP7kYwmGpAAP.jpg",
-    "cover": "https://image.tmdb.org/t/p/original/uoXXbN2PrOxH6UKyP7kYwmGpAAP.jpg",
-    "overview": "With a bounty on his head, Vision must confront his nature and resist Ultron's influence to survive.",
-    "genres": "Sci-Fi & Fantasy, Drama",
-    "director": "Terry Matalas",
-    "cast": "Paul Bettany, James Spader, Ruaridh Mollica, Todd Stashwick, Lauren Morais, Orla Brady",
-    "isOngoing": true,
-    "seasonsCount": 1,
-    "seasons": [
+    "releaseDate": "2026-08-14",
+    "duration": "2h 41m",
+    "rating": "7.1",
+    "imdbRating": "7.1",
+    "poster": "https://image.tmdb.org/t/p/w500/mLsvCffzpxxDwC7yVLJSLLjgzoq.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/original/nfNaAiiILjYRc2CKkId1ZfPTtlh.jpg",
+    "cover": "https://image.tmdb.org/t/p/original/nfNaAiiILjYRc2CKkId1ZfPTtlh.jpg",
+    "description": "A celebrated Olympian shooter travels to America looking for a donor to help his sick child — but unexpected romance complicates his search.",
+    "audioTracks": [
+      "Hindi dub",
+      "Tamil (Original)"
+    ],
+    "selectedAudio": "Hindi dub",
+    "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/bbb4a9921a0ba2535f35a564fa1fad46.mp4?sign=a081db0b90c4f3fb93610e82f9ce9f38&t=1792829743",
+    "servers": [
       {
-        "seasonNumber": 1,
-        "title": "Season 1",
-        "name": "Season 1",
-        "year": "2026",
-        "episodesCount": 4,
-        "poster": "https://image.tmdb.org/t/p/w500/xK27l5uwaVyZSlENWnmLlWwDQNS.jpg",
-        "episodes": [
-          {
-            "number": 1,
-            "episode": 1,
-            "season": 1,
-            "title": "No Strings",
-            "duration": "56 min",
-            "overview": "Vision embarks on a journey of self-discovery and finds himself haunted by a deadly force.",
-            "still": "https://image.tmdb.org/t/p/w500/zNV1OOF71fzTYand5duFx3uaWlE.jpg",
-            "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/88af3d2e06b66f5b24510765de38d1a6.mp4?sign=ebcb0e1706ec4a0e864f68af8e53e21f&t=1792828121",
-            "servers": [
-              {
-                "name": "Server 1 (MovieBox 1080p Hindi Direct - 1333MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/resource/88af3d2e06b66f5b24510765de38d1a6.mp4?sign=ebcb0e1706ec4a0e864f68af8e53e21f&t=1792828121",
-                "isDirect": true,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-                "url": "/api/moviebox/stream?id=3908280950886646112&se=1&ep=1",
-                "isDirect": true,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 3 (MovieBox SD - 480p - 338MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/bt/31241f42b016e1c1238acdf02050c4a9.mp4?sign=0a484b3f4a6bc9413a6ad9be434cf4f3&t=1792828121",
-                "isDirect": true,
-                "quality": "480p"
-              },
-              {
-                "name": "Server 4 (MultiEmbed HD Failover)",
-                "url": "https://multiembed.mov/?video_id=213375&s=1&e=1",
-                "isDirect": false,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 5 (AutoEmbed HD)",
-                "url": "https://player.autoembed.cc/embed/tv/213375/1/1",
-                "isDirect": false,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 6 (Vidlink Fast HD)",
-                "url": "https://vidlink.pro/tv/213375/1/1",
-                "isDirect": false,
-                "quality": "1080p"
-              }
-            ],
-            "audioTracks": [
-              "Hindi"
-            ],
-            "captions": [
-              {
-                "language": "en",
-                "url": "https://cacdn.hakunaymatata.com/subtitle/cc5c4f074c476dcfa4198578aaa03497.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDMyMTA4fX19XX0_&Signature=c9j55cvmxOzNZl1quW7aWEVzuNJySB-dzRh6eDsOQY6evlZYGiKk2lFIZryrhjn4WEVIMjc3xQb9Kak153qmeAzNhNyWEL9fwKVDu8RBzNek05bsW0pvZg0o6R9FL6AIG5hbRwiU5D23D6jf5RPeFYYzj2-8Xsxgi50wq-Ri-GpRtVDAKgjZtwdbHrvJdrea~g2EvGWh63WDZmlTdp5VQtF84RQDzNAbkMhO0sNqim1LTS2jEE2lWnsyrOjbL5nLFQvqu3hZCK3gQCmpLWsulHLQbvOZfT3LUGey09M4KEBPHGlfmo7poTt-A9PHASMUqFxZesv6tQagY8x-xhe11w__&Key-Pair-Id=KMHN1LQ1HEUPL"
-              }
-            ]
-          },
-          {
-            "number": 2,
-            "episode": 2,
-            "season": 1,
-            "title": "Theseus",
-            "duration": "48 min",
-            "overview": "Vision comes face to face with his assailant while investigating whether Tommy Shepherd is his son.",
-            "still": "https://image.tmdb.org/t/p/w500/sPFlMWA0YzOfuwys7BumrOJP5HR.jpg",
-            "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7854d4026d37d1fcdf3df6b92f09a667.mp4?sign=5eda475ed53823ff565bfed1558738c6&t=1792827772",
-            "servers": [
-              {
-                "name": "Server 1 (MovieBox 1080p Hindi Direct - 1124MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/resource/7854d4026d37d1fcdf3df6b92f09a667.mp4?sign=5eda475ed53823ff565bfed1558738c6&t=1792827772",
-                "isDirect": true,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-                "url": "/api/moviebox/stream?id=3908280950886646112&se=1&ep=2",
-                "isDirect": true,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 3 (MovieBox SD - 480p - 285MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/bt/7ab8a1d02ef78c8b910c3f5e102667eb.mp4?sign=53cdf278c7465ef924c6c95236b16a80&t=1792827772",
-                "isDirect": true,
-                "quality": "480p"
-              },
-              {
-                "name": "Server 4 (MultiEmbed HD Failover)",
-                "url": "https://multiembed.mov/?video_id=213375&s=1&e=2",
-                "isDirect": false,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 5 (AutoEmbed HD)",
-                "url": "https://player.autoembed.cc/embed/tv/213375/1/2",
-                "isDirect": false,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 6 (Vidlink Fast HD)",
-                "url": "https://vidlink.pro/tv/213375/1/2",
-                "isDirect": false,
-                "quality": "1080p"
-              }
-            ],
-            "audioTracks": [
-              "Hindi"
-            ],
-            "captions": [
-              {
-                "language": "en",
-                "url": "https://cacdn.hakunaymatata.com/subtitle/3180e4ace9b1246a91483114e464e425.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDMyMTA4fX19XX0_&Signature=c9j55cvmxOzNZl1quW7aWEVzuNJySB-dzRh6eDsOQY6evlZYGiKk2lFIZryrhjn4WEVIMjc3xQb9Kak153qmeAzNhNyWEL9fwKVDu8RBzNek05bsW0pvZg0o6R9FL6AIG5hbRwiU5D23D6jf5RPeFYYzj2-8Xsxgi50wq-Ri-GpRtVDAKgjZtwdbHrvJdrea~g2EvGWh63WDZmlTdp5VQtF84RQDzNAbkMhO0sNqim1LTS2jEE2lWnsyrOjbL5nLFQvqu3hZCK3gQCmpLWsulHLQbvOZfT3LUGey09M4KEBPHGlfmo7poTt-A9PHASMUqFxZesv6tQagY8x-xhe11w__&Key-Pair-Id=KMHN1LQ1HEUPL"
-              }
-            ]
-          },
-          {
-            "number": 3,
-            "episode": 3,
-            "season": 1,
-            "title": "Reboot",
-            "duration": "54 min",
-            "overview": "Vision and Tommy Shepherd join forces in order to survive while a terrifying killer strikes again.",
-            "still": "https://image.tmdb.org/t/p/w500/u2YwlI82Nm6pM3jFijt00lxY2Be.jpg",
-            "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/b175f54c7ed0b845dc3df6a25435ca8a.mp4?sign=a7aadc76598221d8e6ac11eda2d9c62b&t=1792826391",
-            "servers": [
-              {
-                "name": "Server 1 (MovieBox 1080p Hindi Direct - 1266MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/resource/b175f54c7ed0b845dc3df6a25435ca8a.mp4?sign=a7aadc76598221d8e6ac11eda2d9c62b&t=1792826391",
-                "isDirect": true,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-                "url": "/api/moviebox/stream?id=3908280950886646112&se=1&ep=3",
-                "isDirect": true,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 3 (MovieBox SD - 480p - 331MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/bt/35764870cc8487681f6adc21cd32a370.mp4?sign=cec0728498a39627930dca27698c696e&t=1792826391",
-                "isDirect": true,
-                "quality": "480p"
-              },
-              {
-                "name": "Server 4 (MultiEmbed HD Failover)",
-                "url": "https://multiembed.mov/?video_id=213375&s=1&e=3",
-                "isDirect": false,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 5 (AutoEmbed HD)",
-                "url": "https://player.autoembed.cc/embed/tv/213375/1/3",
-                "isDirect": false,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 6 (Vidlink Fast HD)",
-                "url": "https://vidlink.pro/tv/213375/1/3",
-                "isDirect": false,
-                "quality": "1080p"
-              }
-            ],
-            "audioTracks": [
-              "Hindi"
-            ],
-            "captions": [
-              {
-                "language": "en",
-                "url": "https://cacdn.hakunaymatata.com/subtitle/fa20fd5e1be0a09b4ce6d58114e00237.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDMyMTA4fX19XX0_&Signature=c9j55cvmxOzNZl1quW7aWEVzuNJySB-dzRh6eDsOQY6evlZYGiKk2lFIZryrhjn4WEVIMjc3xQb9Kak153qmeAzNhNyWEL9fwKVDu8RBzNek05bsW0pvZg0o6R9FL6AIG5hbRwiU5D23D6jf5RPeFYYzj2-8Xsxgi50wq-Ri-GpRtVDAKgjZtwdbHrvJdrea~g2EvGWh63WDZmlTdp5VQtF84RQDzNAbkMhO0sNqim1LTS2jEE2lWnsyrOjbL5nLFQvqu3hZCK3gQCmpLWsulHLQbvOZfT3LUGey09M4KEBPHGlfmo7poTt-A9PHASMUqFxZesv6tQagY8x-xhe11w__&Key-Pair-Id=KMHN1LQ1HEUPL"
-              }
-            ]
-          },
-          {
-            "number": 4,
-            "episode": 4,
-            "season": 1,
-            "title": "Malware",
-            "duration": "51 min",
-            "overview": "As Vision confronts a new enemy, Ultron and Tommy Shepherd come face to face.",
-            "still": "https://image.tmdb.org/t/p/w500/6eVHqUOPEe1CIbvg4Dx6H4awFBR.jpg",
-            "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d0a1012f1876226ff7662b9e494da451.mp4?sign=c83feaf2cb49847e34ff52c769e1836e&t=1792829914",
-            "servers": [
-              {
-                "name": "Server 1 (MovieBox 1080p Hindi Direct - 1196MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/resource/d0a1012f1876226ff7662b9e494da451.mp4?sign=c83feaf2cb49847e34ff52c769e1836e&t=1792829914",
-                "isDirect": true,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-                "url": "/api/moviebox/stream?id=3908280950886646112&se=1&ep=4",
-                "isDirect": true,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 3 (MovieBox SD - 480p - 306MB)",
-                "url": "https://bcdnxw.hakunaymatata.com/bt/1a7751c76dc3f5cc33a245047a81a43e.mp4?sign=7b3657780d56bc3718f17487eacb46b0&t=1792829914",
-                "isDirect": true,
-                "quality": "480p"
-              },
-              {
-                "name": "Server 4 (MultiEmbed HD Failover)",
-                "url": "https://multiembed.mov/?video_id=213375&s=1&e=4",
-                "isDirect": false,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 5 (AutoEmbed HD)",
-                "url": "https://player.autoembed.cc/embed/tv/213375/1/4",
-                "isDirect": false,
-                "quality": "1080p"
-              },
-              {
-                "name": "Server 6 (Vidlink Fast HD)",
-                "url": "https://vidlink.pro/tv/213375/1/4",
-                "isDirect": false,
-                "quality": "1080p"
-              }
-            ],
-            "audioTracks": [
-              "Hindi"
-            ],
-            "captions": [
-              {
-                "language": "en",
-                "url": "https://cacdn.hakunaymatata.com/subtitle/96590d9e2ad959d98ca7065e987c7366.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNDM0MzM2fX19XX0_&Signature=nHJ8g1H1SxrLpEoBntsfmVZ4VQOEjr1A1xRMby7PzxH1KPjNV9CC1ALB6FyorYaaHMVw0wiynSGRX6Jd4XxOOqc7-4Kqr4lxA2~nOaGt2QmfUAkW18K0UJm5Ha1IEnTZIrjpLrd1znIzMV7j-dmg1DXLaiVoEJQCeSdICyP-Kj3iWlmTlq-GrRdZ10c1nWN9GOOSroTuKKA4UqWQu-c4UWNEZEXA5aKp2lD51FZyfVk-OKMsJtvT9xxmwu3A2IAGogZ0-V~lq1C~Ffschc1So15ptagIN4Oa2-IT4ZFphaH9HxRx-QyapQRX180uO-Q6OSWfuVhyaJ7JIVX8Q0Fzug__&Key-Pair-Id=KMHN1LQ1HEUPL"
-              }
-            ]
-          }
-        ]
+        "name": "Server 1 (MovieBox 1080p Hindi Direct - 2648MB)",
+        "url": "https://bcdnxw.hakunaymatata.com/resource/bbb4a9921a0ba2535f35a564fa1fad46.mp4?sign=a081db0b90c4f3fb93610e82f9ce9f38&t=1792829743",
+        "isDirect": true,
+        "quality": "1080p"
+      },
+      {
+        "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+        "url": "/api/moviebox/stream?id=803658983365039832&path=vishwanath-and-sons-hindi-OVyMV4xLmX&se=0&ep=0",
+        "isDirect": true,
+        "quality": "1080p"
+      },
+      {
+        "name": "Server 3 (MovieBox 720p - 1842MB)",
+        "url": "https://bcdnxw.hakunaymatata.com/resource/b19b46798ffd26efd55919b54f84ca33.mp4?sign=3b75d22dd86f31ee0eeded38de7318a3&t=1792829743",
+        "isDirect": true,
+        "quality": "720p"
+      },
+      {
+        "name": "Server 4 (MovieBox 480p - 1027MB)",
+        "url": "https://bcdnxw.hakunaymatata.com/bt/91d86e90ac9325c57d0e1519880dcb53.mp4?sign=0735346394927c63b95dc65a0a70e196&t=1792829743",
+        "isDirect": true,
+        "quality": "480p"
+      },
+      {
+        "name": "Server 5 (MovieBox 360p - 737MB)",
+        "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/d28b0ec210d9e9002b8c21aed3ecd516.mp4?sign=4f3684e040286ed864df719f3131b901&t=1792829743",
+        "isDirect": true,
+        "quality": "360p"
+      },
+      {
+        "name": "Server 6 (MultiEmbed HD Failover)",
+        "url": "https://multiembed.mov/?video_id=1408162&tmdb=1",
+        "isDirect": false,
+        "quality": "1080p"
+      },
+      {
+        "name": "Server 6 (AutoEmbed HD)",
+        "url": "https://player.autoembed.cc/embed/movie/1408162",
+        "isDirect": false,
+        "quality": "1080p"
+      },
+      {
+        "name": "Server 6 (Vidlink Fast HD)",
+        "url": "https://vidlink.pro/movie/1408162",
+        "isDirect": false,
+        "quality": "1080p"
       }
-    ]
+    ],
+    "cast": [
+      {
+        "name": "Suriya",
+        "character": "Sanjay 'Sanju' Vishwanath",
+        "photo": "https://image.tmdb.org/t/p/w185/tgHFBhOfaV0Wck48y8BFhAlVvQx.jpg"
+      },
+      {
+        "name": "Mamitha Baiju",
+        "character": "Madanakameshwari 'Maddy Jay' Jothilingam",
+        "photo": "https://image.tmdb.org/t/p/w185/9ySiE3j7ep16fhKi3u5iq5rbOk6.jpg"
+      },
+      {
+        "name": "Radhika Sarathkumar",
+        "character": "Nirmala Devi",
+        "photo": "https://image.tmdb.org/t/p/w185/kEKzT8HAJw8lfFUtWWd0SoQ9kC9.jpg"
+      },
+      {
+        "name": "Raveena Tandon",
+        "character": "Anjali Devi",
+        "photo": "https://image.tmdb.org/t/p/w185/4z0X9ZMgyNZRHfJG4G2Z10rhLpu.jpg"
+      },
+      {
+        "name": "Sunil",
+        "character": "Ramu",
+        "photo": "https://image.tmdb.org/t/p/w185/w92Vawfw4DcLYSLtUeFTm46KNIe.jpg"
+      },
+      {
+        "name": "Harika",
+        "character": "Sireesha Ramalingam",
+        "photo": "https://image.tmdb.org/t/p/w185/y7ujuzC4nXWrYcUnHNVDtwOG2JQ.jpg"
+      },
+      {
+        "name": "Nassar",
+        "character": "Ramanadhan",
+        "photo": "https://image.tmdb.org/t/p/w185/p3I0tSQY3C5qZW3NzFfbpjKPNL6.jpg"
+      },
+      {
+        "name": "Harsha Chemudu",
+        "character": "Kishore",
+        "photo": "https://image.tmdb.org/t/p/w185/be0atwoQTudy7WaVCNwWbQuxjvG.jpg"
+      },
+      {
+        "name": "Bhavani Sre",
+        "character": "Meghana",
+        "photo": "https://image.tmdb.org/t/p/w185/jpSwJEKKmCoaQZOOG6ofppNHdGQ.jpg"
+      },
+      {
+        "name": "V.J. Pappu",
+        "character": "Prakash",
+        "photo": "https://image.tmdb.org/t/p/w185/sH9wQiBcFCh3wgw97RuyscEYSzP.jpg"
+      }
+    ],
+    "type": "movie"
   },
   "movies": [
+    {
+      "id": "mb-m-803658983365039832",
+      "subjectId": "803658983365039832",
+      "detailPath": "vishwanath-and-sons-hindi-OVyMV4xLmX",
+      "tmdbId": 1408162,
+      "title": "Vishwanath and Sons [Hindi]",
+      "originalTitle": "விஸ்வநாத் & சன்ஸ்",
+      "language": "Tamil",
+      "dubLanguage": "Hindi",
+      "badgeLeft": "Suriya",
+      "badgeRight": "1080p Full HD",
+      "industry": "South Indian",
+      "country": "India",
+      "category": "South (Dubbed) Movies",
+      "genre": "Drama, Romance, Comedy",
+      "year": "2026",
+      "releaseDate": "2026-08-14",
+      "duration": "2h 41m",
+      "rating": "7.1",
+      "imdbRating": "7.1",
+      "poster": "https://image.tmdb.org/t/p/w500/mLsvCffzpxxDwC7yVLJSLLjgzoq.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/nfNaAiiILjYRc2CKkId1ZfPTtlh.jpg",
+      "cover": "https://image.tmdb.org/t/p/original/nfNaAiiILjYRc2CKkId1ZfPTtlh.jpg",
+      "description": "A celebrated Olympian shooter travels to America looking for a donor to help his sick child — but unexpected romance complicates his search.",
+      "audioTracks": [
+        "Hindi dub",
+        "Tamil (Original)"
+      ],
+      "selectedAudio": "Hindi dub",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/bbb4a9921a0ba2535f35a564fa1fad46.mp4?sign=a081db0b90c4f3fb93610e82f9ce9f38&t=1792829743",
+      "servers": [
+        {
+          "name": "Server 1 (MovieBox 1080p Hindi Direct - 2648MB)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/bbb4a9921a0ba2535f35a564fa1fad46.mp4?sign=a081db0b90c4f3fb93610e82f9ce9f38&t=1792829743",
+          "isDirect": true,
+          "quality": "1080p"
+        },
+        {
+          "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+          "url": "/api/moviebox/stream?id=803658983365039832&path=vishwanath-and-sons-hindi-OVyMV4xLmX&se=0&ep=0",
+          "isDirect": true,
+          "quality": "1080p"
+        },
+        {
+          "name": "Server 3 (MovieBox 720p - 1842MB)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/b19b46798ffd26efd55919b54f84ca33.mp4?sign=3b75d22dd86f31ee0eeded38de7318a3&t=1792829743",
+          "isDirect": true,
+          "quality": "720p"
+        },
+        {
+          "name": "Server 4 (MovieBox 480p - 1027MB)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/91d86e90ac9325c57d0e1519880dcb53.mp4?sign=0735346394927c63b95dc65a0a70e196&t=1792829743",
+          "isDirect": true,
+          "quality": "480p"
+        },
+        {
+          "name": "Server 5 (MovieBox 360p - 737MB)",
+          "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/d28b0ec210d9e9002b8c21aed3ecd516.mp4?sign=4f3684e040286ed864df719f3131b901&t=1792829743",
+          "isDirect": true,
+          "quality": "360p"
+        },
+        {
+          "name": "Server 6 (MultiEmbed HD Failover)",
+          "url": "https://multiembed.mov/?video_id=1408162&tmdb=1",
+          "isDirect": false,
+          "quality": "1080p"
+        },
+        {
+          "name": "Server 6 (AutoEmbed HD)",
+          "url": "https://player.autoembed.cc/embed/movie/1408162",
+          "isDirect": false,
+          "quality": "1080p"
+        },
+        {
+          "name": "Server 6 (Vidlink Fast HD)",
+          "url": "https://vidlink.pro/movie/1408162",
+          "isDirect": false,
+          "quality": "1080p"
+        }
+      ],
+      "cast": [
+        {
+          "name": "Suriya",
+          "character": "Sanjay 'Sanju' Vishwanath",
+          "photo": "https://image.tmdb.org/t/p/w185/tgHFBhOfaV0Wck48y8BFhAlVvQx.jpg"
+        },
+        {
+          "name": "Mamitha Baiju",
+          "character": "Madanakameshwari 'Maddy Jay' Jothilingam",
+          "photo": "https://image.tmdb.org/t/p/w185/9ySiE3j7ep16fhKi3u5iq5rbOk6.jpg"
+        },
+        {
+          "name": "Radhika Sarathkumar",
+          "character": "Nirmala Devi",
+          "photo": "https://image.tmdb.org/t/p/w185/kEKzT8HAJw8lfFUtWWd0SoQ9kC9.jpg"
+        },
+        {
+          "name": "Raveena Tandon",
+          "character": "Anjali Devi",
+          "photo": "https://image.tmdb.org/t/p/w185/4z0X9ZMgyNZRHfJG4G2Z10rhLpu.jpg"
+        },
+        {
+          "name": "Sunil",
+          "character": "Ramu",
+          "photo": "https://image.tmdb.org/t/p/w185/w92Vawfw4DcLYSLtUeFTm46KNIe.jpg"
+        },
+        {
+          "name": "Harika",
+          "character": "Sireesha Ramalingam",
+          "photo": "https://image.tmdb.org/t/p/w185/y7ujuzC4nXWrYcUnHNVDtwOG2JQ.jpg"
+        },
+        {
+          "name": "Nassar",
+          "character": "Ramanadhan",
+          "photo": "https://image.tmdb.org/t/p/w185/p3I0tSQY3C5qZW3NzFfbpjKPNL6.jpg"
+        },
+        {
+          "name": "Harsha Chemudu",
+          "character": "Kishore",
+          "photo": "https://image.tmdb.org/t/p/w185/be0atwoQTudy7WaVCNwWbQuxjvG.jpg"
+        },
+        {
+          "name": "Bhavani Sre",
+          "character": "Meghana",
+          "photo": "https://image.tmdb.org/t/p/w185/jpSwJEKKmCoaQZOOG6ofppNHdGQ.jpg"
+        },
+        {
+          "name": "V.J. Pappu",
+          "character": "Prakash",
+          "photo": "https://image.tmdb.org/t/p/w185/sH9wQiBcFCh3wgw97RuyscEYSzP.jpg"
+        }
+      ],
+      "type": "movie"
+    },
     {
       "id": "mb-m-8768845011485083816",
       "subjectId": "8768845011485083816",
