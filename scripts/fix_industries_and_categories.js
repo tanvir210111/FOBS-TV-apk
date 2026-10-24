@@ -92,7 +92,7 @@ function classifySeries(s) {
   // Korean Series (K-Drama)
   const koreanSeries = [
     'taxi driver', 'reply 1988', 'shop for killers', 'reborn rich', 'korean odyssey',
-    'good boy', 'hongrang', 'karma', 'mouse', 'mousetrap', 'modern farmer', 'my bias', 'ordinary jackpot',
+    'good boy', 'hongrang', 'karma', 'mouse', 'mousetrap', 'kitchen soldier', 'dive to you', 'dive into you', 'modern farmer', 'my bias', 'ordinary jackpot',
     'love in disguise', 'make me tingle', 'take charge of my heart', 'my dearest nemesis',
     'love other than yours', 'our sticky love', 'filing for love'
   ];
@@ -106,7 +106,7 @@ function classifySeries(s) {
 
   // Chinese Series (C-Drama)
   const chineseSeries = [
-    'so i love you very much', 'early spring', 'crush'
+    'so i love you very much', 'early spring', 'crush', 'you are my glory', 'glory'
   ];
   if (chineseSeries.some(t => title.includes(t)) || s.country === 'China' || s.industry === 'Chinese') {
     s.industry = 'Chinese';

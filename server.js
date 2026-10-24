@@ -624,6 +624,13 @@ app.get('/api/moviebox/stream', async (req, res) => {
       else if (id === '7573592610930312192') resolvedPath = 'mousetrap-hindi-CXwu23l8t19';
       else if (id === '1694621778766643152') resolvedPath = 'mouse-i3rX9JUnb12';
       else if (id === '4938138970698960008') resolvedPath = 'mouse-o2BOtNbJMS5';
+      // You Are My Glory [Hindi] (Chinese Series)
+      else if (id === '7384944248602723992') resolvedPath = 'you-are-my-glory-hindi-IIrH3QC7xN8';
+      // The Legend of Kitchen Soldier [Hindi] (Korean Series)
+      else if (id === '2206443205082733056') resolvedPath = 'the-legend-of-kitchen-soldier-hindi-cO6WrX3xZC2';
+      // Dive to You [Hindi] (Korean Series)
+      else if (id === '1932866268428649968') resolvedPath = 'dive-to-you-hindi-mHK7tzYxMi2';
+      else if (id === '3870036899930730728') resolvedPath = 'dive-to-you-G56UVRdOSB4';
     }
     // Try requested se/ep first, then fallbacks
     let media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);
