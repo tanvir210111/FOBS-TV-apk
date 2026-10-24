@@ -631,6 +631,15 @@ app.get('/api/moviebox/stream', async (req, res) => {
       // Dive to You [Hindi] (Korean Series)
       else if (id === '1932866268428649968') resolvedPath = 'dive-to-you-hindi-mHK7tzYxMi2';
       else if (id === '3870036899930730728') resolvedPath = 'dive-to-you-G56UVRdOSB4';
+      // Island [Hindi] (Korean Series)
+      else if (id === '2154607436987001256') resolvedPath = 'island-hindi-ws8SXbK7az2';
+      else if (id === '5551081490894708744') resolvedPath = 'island-UgoeMAK04C6';
+      // My Strange Hero [Hindi] (Korean Series)
+      else if (id === '1395930250630021944') resolvedPath = 'my-strange-hero-hindi-MsGxeSgn7F1';
+      else if (id === '1581778075774271440') resolvedPath = 'my-strange-hero-Ac9ev3KyQS1';
+      // Tale of the Nine Tailed [Hindi] (Korean Series - Season 1 & 2)
+      else if (id === '637731293849080088') resolvedPath = 'tale-of-the-nine-tailed-hindi-GfVHu3BO6L';
+      else if (id === '3104610972405746824') resolvedPath = 'tale-of-the-nine-tailed-S9Jo5bn9lH3';
     }
     // Try requested se/ep first, then fallbacks
     let media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);
