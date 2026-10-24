@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v57';
+const CACHE_KEY = 'fobs_tv_content_cache_v58';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -63,6 +63,16 @@ async function initApp() {
   setupPullToRefresh();
   setupAppUpdateModal();
   setupSearchInputListener();
+
+  // Clear all stale/legacy cache versions immediately
+  try {
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+      const k = localStorage.key(i);
+      if (k && (k.startsWith('fobs_tv_content_cache_') || k === 'fobs_tv_last_sync_time') && k !== CACHE_KEY) {
+        localStorage.removeItem(k);
+      }
+    }
+  } catch (e) {}
 
   // Step 1: Immediate local render from localStorage cache (0ms delay)
   const hasCache = loadCachedContent();
@@ -245,7 +255,7 @@ async function syncContentWithBackend({ force = false, isBackground = false, isI
   }
 
   try {
-    const data = await fetchApiWithRetry('/api/content', {}, {
+    const data = await fetchApiWithRetry(`/api/content?_t=${Date.now()}`, {}, {
       timeout: 25000,
       maxRetries: 2,
       delay: 3000

@@ -492,6 +492,11 @@ app.get('/api/resolve', async (req, res) => {
 // API: Get all contents
 app.get('/api/content', async (req, res) => {
   try {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.setHeader('Surrogate-Control', 'no-store');
+
     const data = getContentData();
     if (data.movies) {
       data.movies.forEach(m => {
