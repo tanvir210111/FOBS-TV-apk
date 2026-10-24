@@ -21,128 +21,882 @@
     "fileSize": "15.4 MB"
   },
   "featured": {
-    "id": "mb-m-7667495250449297640",
-    "subjectId": "7667495250449297640",
-    "detailPath": "jan-neta-hindi-KLK6XFZcp89",
-    "tmdbId": 1235877,
-    "title": "Jana Nayagan [Hindi]",
-    "originalTitle": "ஜன நாயகன் (Jan Neta)",
-    "language": "Tamil",
-    "dubLanguage": "Hindi",
-    "badgeLeft": "Thalapathy Vijay",
-    "badgeRight": "1080p Full HD",
-    "industry": "South Indian",
-    "country": "India",
-    "category": "South (Dubbed) Movies",
-    "genre": "Action, Drama",
+    "id": "mb-s-4720961996777219576",
+    "subjectId": "4720961996777219576",
+    "detailPath": "musafir-cafe-hindi-MStiLnt3KC5",
+    "tmdbId": 313101,
+    "title": "Musafir Cafe [Hindi]",
+    "originalTitle": "मुसाफ़िर कैफ़े",
     "year": "2026",
-    "releaseDate": "2026-10-24T09:17:14.000Z",
-    "duration": "3h 03m",
-    "rating": "5.2",
-    "imdbRating": "5.2",
-    "poster": "https://image.tmdb.org/t/p/w500/jt8pfSIdi47YpFMMWVRr8w5u2S0.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/original/v3lNH2gCojWYXVuXcT9FZLBxcSq.jpg",
-    "cover": "https://image.tmdb.org/t/p/original/v3lNH2gCojWYXVuXcT9FZLBxcSq.jpg",
-    "description": "A clash of ideologies. One stands for the people, the other feeds on control. Their paths collided once before. Years later, a child’s silent fear ignites the past, drawing a former police officer into a battle far bigger than personal revenge.",
-    "audioTracks": [
-      "Hindi dub",
-      "Tamil (Original)"
-    ],
-    "selectedAudio": "Hindi dub",
-    "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/eaf011c9d8ce37be3256889b20f8f97a.mp4?sign=c0ae45f7af96f5b730d9ff0364365dad&t=1792829135",
-    "servers": [
+    "releaseDate": "2026-10-24T12:16:30.345Z",
+    "originalReleaseDate": "2026-07-24",
+    "addedAt": "2026-10-24T12:16:30.345Z",
+    "rating": "7.1",
+    "imdbRating": "7.1",
+    "votes": "15",
+    "duration": "1 Season (8 Episodes)",
+    "category": "Trending Series",
+    "industry": "Bollywood",
+    "country": "India",
+    "badgeLeft": "Hindi",
+    "badgeRight": "1080p Full HD",
+    "poster": "https://image.tmdb.org/t/p/w500/1SbKjtoRKIpVQG5iYnumnfQIqhd.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/original/2C15EiKyfLrWAWbjqpHvumgOtNk.jpg",
+    "cover": "https://image.tmdb.org/t/p/original/2C15EiKyfLrWAWbjqpHvumgOtNk.jpg",
+    "description": "Chander feels an undeniable connection with Sudha. Years later, he builds a new life in the hills with Preeti, but memories of the past linger.",
+    "overview": "Chander feels an undeniable connection with Sudha. Years later, he builds a new life in the hills with Preeti, but memories of the past linger.",
+    "genres": "Drama",
+    "genre": "Drama",
+    "director": "Imtiaz Ali",
+    "cast": "Vikrant Massey, Vedika Pinto, Mahima Makwana, Rajeev Siddhartha, Anubha Fatehpuria",
+    "seasonsCount": 1,
+    "seasons": [
       {
-        "name": "Server 1 (MovieBox 1080p Hindi Direct - 3138MB)",
-        "url": "https://bcdnxw.hakunaymatata.com/resource/eaf011c9d8ce37be3256889b20f8f97a.mp4?sign=c0ae45f7af96f5b730d9ff0364365dad&t=1792829135",
-        "isDirect": true,
-        "quality": "1080p"
-      },
-      {
-        "name": "Server 2 (Auto-Renewing MovieBox Stream)",
-        "url": "/api/moviebox/stream?id=7667495250449297640&path=jan-neta-hindi-KLK6XFZcp89&se=0&ep=0",
-        "isDirect": true,
-        "quality": "1080p"
-      },
-      {
-        "name": "Server 3 (MovieBox 360p - 522MB)",
-        "url": "https://bcdnxw.hakunaymatata.com/onetamilmv/85a06a6f6165a62b8ac23e30b3ebffe6.mp4?sign=1329c5715873b170ddc49885f87605c9&t=1792833229",
-        "isDirect": true,
-        "quality": "360p"
-      },
-      {
-        "name": "Server 4 (MultiEmbed HD Failover)",
-        "url": "https://multiembed.mov/?video_id=1235877&tmdb=1",
-        "isDirect": false,
-        "quality": "1080p"
-      },
-      {
-        "name": "Server 5 (AutoEmbed HD)",
-        "url": "https://player.autoembed.cc/embed/movie/1235877",
-        "isDirect": false,
-        "quality": "1080p"
-      },
-      {
-        "name": "Server 6 (Vidlink Fast HD)",
-        "url": "https://vidlink.pro/movie/1235877",
-        "isDirect": false,
-        "quality": "1080p"
+        "seasonNumber": 1,
+        "title": "Season 1",
+        "name": "Season 1",
+        "year": "2026",
+        "episodesCount": 8,
+        "poster": "https://image.tmdb.org/t/p/w500/1SbKjtoRKIpVQG5iYnumnfQIqhd.jpg",
+        "episodes": [
+          {
+            "number": 1,
+            "episode": 1,
+            "season": 1,
+            "title": "Arrival",
+            "duration": "30 min",
+            "overview": "Sudha sweeps Chander off his feet, but they choose to stay friends. Now, he runs a hilltop café with Preeti by his side.",
+            "still": "https://image.tmdb.org/t/p/w500/oaJXllZ9ZF7wQRPVycI8P2sm0Tc.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/05bf5f673452419782226732d566f9ea.mp4?sign=11dc55d2b7f34dd110cdf51945233f9b&t=1792840949",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 347MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/05bf5f673452419782226732d566f9ea.mp4?sign=11dc55d2b7f34dd110cdf51945233f9b&t=1792840949",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=1",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox 480p - 118MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/59c1b57a810ac5b87c8bb230fd646121.mp4?sign=9728a2ed05de0610ddc41b375a0e1b1a&t=1792841182",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=313101&s=1&e=1",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/313101/1/1",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/313101/1/1",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": []
+          },
+          {
+            "number": 2,
+            "episode": 2,
+            "season": 1,
+            "title": "Stay",
+            "duration": "34 min",
+            "overview": "While living with Chander, Sudha grows closer to him, but an opportunity in Mumbai may reshape their future. Preeti reveals her plans to expand the café.",
+            "still": "https://image.tmdb.org/t/p/w500/2LpxnhvUDDsNhgTFTp3ByV6BqO0.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/78fdfb80cadf361a6b29e6d38f43572e.mp4?sign=8a9c0033b79aa21bf4246aa4447c1bc0&t=1792844082",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 418MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/78fdfb80cadf361a6b29e6d38f43572e.mp4?sign=8a9c0033b79aa21bf4246aa4447c1bc0&t=1792844082",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=2",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox 480p - 136MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/08b386e76d554cee57e9fa42d7356011.mp4?sign=9600a36ab0d67655b3929d42541ed03a&t=1792844082",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=313101&s=1&e=2",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/313101/1/2",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/313101/1/2",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": []
+          },
+          {
+            "number": 3,
+            "episode": 3,
+            "season": 1,
+            "title": "Choice",
+            "duration": "30 min",
+            "overview": "Sudha grapples with a difficult choice between her career and love life, as Chander opens up about his plans for the future.",
+            "still": "https://image.tmdb.org/t/p/w500/xY5UQNNaENFrUu6r33ctDCTQ0eG.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/d007934496e59f69ec657d12d44c262a.mp4?sign=5acc49ba1dae866dcfdd8459a063dc19&t=1792841688",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 359MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/d007934496e59f69ec657d12d44c262a.mp4?sign=5acc49ba1dae866dcfdd8459a063dc19&t=1792841688",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=3",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox 480p - 118MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/4554efbce9854b285547371f69a534e9.mp4?sign=9a9b00a4511d7897c4e3a86c4b64b033&t=1792841688",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=313101&s=1&e=3",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/313101/1/3",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/313101/1/3",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": []
+          },
+          {
+            "number": 4,
+            "episode": 4,
+            "season": 1,
+            "title": "Trip",
+            "duration": "29 min",
+            "overview": "Rahil plants seeds of doubt in Preeti's mind, leading her to question Chander about his past. Sudha and Chander take a major step in their relationship.",
+            "still": "https://image.tmdb.org/t/p/w500/h0GdD6NfAZYQN4UMZ2tZ36YVrVZ.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/63306ee954595e21339799f5dce65eda.mp4?sign=b712ab09841bf25255254573a93157f8&t=1792844082",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 347MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/63306ee954595e21339799f5dce65eda.mp4?sign=b712ab09841bf25255254573a93157f8&t=1792844082",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=4",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox 480p - 111MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/c24affb04e99393ca7b32581cf942fd8.mp4?sign=a3e8dfcaddc559dc9b6cb692593ee3f8&t=1792844082",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=313101&s=1&e=4",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/313101/1/4",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/313101/1/4",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": []
+          },
+          {
+            "number": 5,
+            "episode": 5,
+            "season": 1,
+            "title": "Surprise",
+            "duration": "28 min",
+            "overview": "When his mother arrives unexpectedly, Chander scrambles to hide his relationship. Meanwhile, Rahil and Chander look back on how far they've come.",
+            "still": "https://image.tmdb.org/t/p/w500/b2wg7qWwgMZohIK2sQStqbll7mv.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/7dca4f8878153655e5db6b31bacec630.mp4?sign=2ff4da806c9530a9b835d2265d73640b&t=1792843076",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 282MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/7dca4f8878153655e5db6b31bacec630.mp4?sign=2ff4da806c9530a9b835d2265d73640b&t=1792843076",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=5",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox 480p - 107MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/8bcb37536bfa3b4267157b1688bfc18d.mp4?sign=744dbc36b4a4f0c27e2044327227efba&t=1792841128",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=313101&s=1&e=5",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/313101/1/5",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/313101/1/5",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": []
+          },
+          {
+            "number": 6,
+            "episode": 6,
+            "season": 1,
+            "title": "Truth",
+            "duration": "26 min",
+            "overview": "Preeti and Chander receive a surprising offer for the café. A conversation with her mother leaves Sudha reflecting on an important choice.",
+            "still": "https://image.tmdb.org/t/p/w500/isPVzujhIaeqs0PdeDRjhbwps5f.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/562dcc48a0b25a36256d5cba7a501b3a.mp4?sign=aa6d1d32396ab02b478060e415a58ff3&t=1792844188",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 287MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/562dcc48a0b25a36256d5cba7a501b3a.mp4?sign=aa6d1d32396ab02b478060e415a58ff3&t=1792844188",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=6",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox 480p - 98MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/1a233aa188f85f7eb1ef7883d973e1e1.mp4?sign=1fc0eba45e49578ab97e8b889b5c6a2e&t=1792840212",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=313101&s=1&e=6",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/313101/1/6",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/313101/1/6",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": []
+          },
+          {
+            "number": 7,
+            "episode": 7,
+            "season": 1,
+            "title": "Distance",
+            "duration": "31 min",
+            "overview": "While vacationing at a homestay, Sudha and Chander scout locations for the café, but a decision creates tension. Mark gives Chander a ring for Preeti.",
+            "still": "https://image.tmdb.org/t/p/w500/sbJAk2GJHtHQimzy9PuXHDYZtIL.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/d7335410a08045f7098d7c1d428bc91b.mp4?sign=4dfbbd08565875aa9b8092a82409ed2a&t=1792841032",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 381MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/d7335410a08045f7098d7c1d428bc91b.mp4?sign=4dfbbd08565875aa9b8092a82409ed2a&t=1792841032",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=7",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox 480p - 123MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/e8b5e5a3e9b46d7b30588b77cc487ed6.mp4?sign=1b5a6e0276f144d25758bf8ec428b208&t=1792842872",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=313101&s=1&e=7",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/313101/1/7",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/313101/1/7",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": []
+          },
+          {
+            "number": 8,
+            "episode": 8,
+            "season": 1,
+            "title": "Arrival",
+            "duration": "42 min",
+            "overview": "A surprise guest unsettles Preeti, while Chander finds his past unexpectedly colliding with the present.",
+            "still": "https://image.tmdb.org/t/p/w500/la9xuctBaFqVDCZjQmCbeFpSY5n.jpg",
+            "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/bd47a4f798ebbd226e566b5f65e0476e.mp4?sign=f0e6535734c803682ef237054a915775&t=1792844083",
+            "servers": [
+              {
+                "name": "Server 1 (MovieBox 1080p Direct - 503MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/cms/bd47a4f798ebbd226e566b5f65e0476e.mp4?sign=f0e6535734c803682ef237054a915775&t=1792844083",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=8",
+                "isDirect": true,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 3 (MovieBox 480p - 167MB)",
+                "url": "https://bcdnxw.hakunaymatata.com/bt/b224f44fe1404220ef44ad46c0bbef43.mp4?sign=0641f9a12e55d9a7a1e2a85cd2d55084&t=1792844083",
+                "isDirect": true,
+                "quality": "480p"
+              },
+              {
+                "name": "Server 4 (MultiEmbed HD Failover)",
+                "url": "https://multiembed.mov/?video_id=313101&s=1&e=8",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 5 (AutoEmbed HD)",
+                "url": "https://player.autoembed.cc/embed/tv/313101/1/8",
+                "isDirect": false,
+                "quality": "1080p"
+              },
+              {
+                "name": "Server 6 (Vidlink Fast HD)",
+                "url": "https://vidlink.pro/tv/313101/1/8",
+                "isDirect": false,
+                "quality": "1080p"
+              }
+            ],
+            "audioTracks": [
+              "Hindi"
+            ],
+            "captions": []
+          }
+        ]
       }
     ],
-    "cast": [
+    "episodes": [
       {
-        "name": "Vijay",
-        "character": "Thalapathy Vetri Kondan 'Vetri'",
-        "photo": "https://image.tmdb.org/t/p/w185/zbQ1sDRVRHkroWwvrnqYKMerl66.jpg"
+        "number": 1,
+        "episode": 1,
+        "season": 1,
+        "title": "Arrival",
+        "duration": "30 min",
+        "overview": "Sudha sweeps Chander off his feet, but they choose to stay friends. Now, he runs a hilltop café with Preeti by his side.",
+        "still": "https://image.tmdb.org/t/p/w500/oaJXllZ9ZF7wQRPVycI8P2sm0Tc.jpg",
+        "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/05bf5f673452419782226732d566f9ea.mp4?sign=11dc55d2b7f34dd110cdf51945233f9b&t=1792840949",
+        "servers": [
+          {
+            "name": "Server 1 (MovieBox 1080p Direct - 347MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/cms/05bf5f673452419782226732d566f9ea.mp4?sign=11dc55d2b7f34dd110cdf51945233f9b&t=1792840949",
+            "isDirect": true,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+            "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=1",
+            "isDirect": true,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 3 (MovieBox 480p - 118MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/bt/59c1b57a810ac5b87c8bb230fd646121.mp4?sign=9728a2ed05de0610ddc41b375a0e1b1a&t=1792841182",
+            "isDirect": true,
+            "quality": "480p"
+          },
+          {
+            "name": "Server 4 (MultiEmbed HD Failover)",
+            "url": "https://multiembed.mov/?video_id=313101&s=1&e=1",
+            "isDirect": false,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 5 (AutoEmbed HD)",
+            "url": "https://player.autoembed.cc/embed/tv/313101/1/1",
+            "isDirect": false,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 6 (Vidlink Fast HD)",
+            "url": "https://vidlink.pro/tv/313101/1/1",
+            "isDirect": false,
+            "quality": "1080p"
+          }
+        ],
+        "audioTracks": [
+          "Hindi"
+        ],
+        "captions": []
       },
       {
-        "name": "Pooja Hegde",
-        "character": "Kayal",
-        "photo": "https://image.tmdb.org/t/p/w185/9wdyzZz0Fu81pnKNDBVOcxkPBIp.jpg"
+        "number": 2,
+        "episode": 2,
+        "season": 1,
+        "title": "Stay",
+        "duration": "34 min",
+        "overview": "While living with Chander, Sudha grows closer to him, but an opportunity in Mumbai may reshape their future. Preeti reveals her plans to expand the café.",
+        "still": "https://image.tmdb.org/t/p/w500/2LpxnhvUDDsNhgTFTp3ByV6BqO0.jpg",
+        "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/78fdfb80cadf361a6b29e6d38f43572e.mp4?sign=8a9c0033b79aa21bf4246aa4447c1bc0&t=1792844082",
+        "servers": [
+          {
+            "name": "Server 1 (MovieBox 1080p Direct - 418MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/cms/78fdfb80cadf361a6b29e6d38f43572e.mp4?sign=8a9c0033b79aa21bf4246aa4447c1bc0&t=1792844082",
+            "isDirect": true,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+            "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=2",
+            "isDirect": true,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 3 (MovieBox 480p - 136MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/bt/08b386e76d554cee57e9fa42d7356011.mp4?sign=9600a36ab0d67655b3929d42541ed03a&t=1792844082",
+            "isDirect": true,
+            "quality": "480p"
+          },
+          {
+            "name": "Server 4 (MultiEmbed HD Failover)",
+            "url": "https://multiembed.mov/?video_id=313101&s=1&e=2",
+            "isDirect": false,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 5 (AutoEmbed HD)",
+            "url": "https://player.autoembed.cc/embed/tv/313101/1/2",
+            "isDirect": false,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 6 (Vidlink Fast HD)",
+            "url": "https://vidlink.pro/tv/313101/1/2",
+            "isDirect": false,
+            "quality": "1080p"
+          }
+        ],
+        "audioTracks": [
+          "Hindi"
+        ],
+        "captions": []
       },
       {
-        "name": "Bobby Deol",
-        "character": "John Himler / Amrish Poojari",
-        "photo": "https://image.tmdb.org/t/p/w185/2npVa3PduichY8e7qBiE54m9VVP.jpg"
+        "number": 3,
+        "episode": 3,
+        "season": 1,
+        "title": "Choice",
+        "duration": "30 min",
+        "overview": "Sudha grapples with a difficult choice between her career and love life, as Chander opens up about his plans for the future.",
+        "still": "https://image.tmdb.org/t/p/w500/xY5UQNNaENFrUu6r33ctDCTQ0eG.jpg",
+        "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/d007934496e59f69ec657d12d44c262a.mp4?sign=5acc49ba1dae866dcfdd8459a063dc19&t=1792841688",
+        "servers": [
+          {
+            "name": "Server 1 (MovieBox 1080p Direct - 359MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/cms/d007934496e59f69ec657d12d44c262a.mp4?sign=5acc49ba1dae866dcfdd8459a063dc19&t=1792841688",
+            "isDirect": true,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+            "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=3",
+            "isDirect": true,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 3 (MovieBox 480p - 118MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/bt/4554efbce9854b285547371f69a534e9.mp4?sign=9a9b00a4511d7897c4e3a86c4b64b033&t=1792841688",
+            "isDirect": true,
+            "quality": "480p"
+          },
+          {
+            "name": "Server 4 (MultiEmbed HD Failover)",
+            "url": "https://multiembed.mov/?video_id=313101&s=1&e=3",
+            "isDirect": false,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 5 (AutoEmbed HD)",
+            "url": "https://player.autoembed.cc/embed/tv/313101/1/3",
+            "isDirect": false,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 6 (Vidlink Fast HD)",
+            "url": "https://vidlink.pro/tv/313101/1/3",
+            "isDirect": false,
+            "quality": "1080p"
+          }
+        ],
+        "audioTracks": [
+          "Hindi"
+        ],
+        "captions": []
       },
       {
-        "name": "Mamitha Baiju",
-        "character": "Vijayalakshmi 'Viji'",
-        "photo": "https://image.tmdb.org/t/p/w185/9ySiE3j7ep16fhKi3u5iq5rbOk6.jpg"
+        "number": 4,
+        "episode": 4,
+        "season": 1,
+        "title": "Trip",
+        "duration": "29 min",
+        "overview": "Rahil plants seeds of doubt in Preeti's mind, leading her to question Chander about his past. Sudha and Chander take a major step in their relationship.",
+        "still": "https://image.tmdb.org/t/p/w500/h0GdD6NfAZYQN4UMZ2tZ36YVrVZ.jpg",
+        "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/63306ee954595e21339799f5dce65eda.mp4?sign=b712ab09841bf25255254573a93157f8&t=1792844082",
+        "servers": [
+          {
+            "name": "Server 1 (MovieBox 1080p Direct - 347MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/cms/63306ee954595e21339799f5dce65eda.mp4?sign=b712ab09841bf25255254573a93157f8&t=1792844082",
+            "isDirect": true,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+            "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=4",
+            "isDirect": true,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 3 (MovieBox 480p - 111MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/bt/c24affb04e99393ca7b32581cf942fd8.mp4?sign=a3e8dfcaddc559dc9b6cb692593ee3f8&t=1792844082",
+            "isDirect": true,
+            "quality": "480p"
+          },
+          {
+            "name": "Server 4 (MultiEmbed HD Failover)",
+            "url": "https://multiembed.mov/?video_id=313101&s=1&e=4",
+            "isDirect": false,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 5 (AutoEmbed HD)",
+            "url": "https://player.autoembed.cc/embed/tv/313101/1/4",
+            "isDirect": false,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 6 (Vidlink Fast HD)",
+            "url": "https://vidlink.pro/tv/313101/1/4",
+            "isDirect": false,
+            "quality": "1080p"
+          }
+        ],
+        "audioTracks": [
+          "Hindi"
+        ],
+        "captions": []
       },
       {
-        "name": "Priyamani",
-        "character": "Sheela Rani",
-        "photo": "https://image.tmdb.org/t/p/w185/grcW2eMm77Q2Kj1xX0HvZlRpGRR.jpg"
+        "number": 5,
+        "episode": 5,
+        "season": 1,
+        "title": "Surprise",
+        "duration": "28 min",
+        "overview": "When his mother arrives unexpectedly, Chander scrambles to hide his relationship. Meanwhile, Rahil and Chander look back on how far they've come.",
+        "still": "https://image.tmdb.org/t/p/w500/b2wg7qWwgMZohIK2sQStqbll7mv.jpg",
+        "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/7dca4f8878153655e5db6b31bacec630.mp4?sign=2ff4da806c9530a9b835d2265d73640b&t=1792843076",
+        "servers": [
+          {
+            "name": "Server 1 (MovieBox 1080p Direct - 282MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/cms/7dca4f8878153655e5db6b31bacec630.mp4?sign=2ff4da806c9530a9b835d2265d73640b&t=1792843076",
+            "isDirect": true,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+            "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=5",
+            "isDirect": true,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 3 (MovieBox 480p - 107MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/bt/8bcb37536bfa3b4267157b1688bfc18d.mp4?sign=744dbc36b4a4f0c27e2044327227efba&t=1792841128",
+            "isDirect": true,
+            "quality": "480p"
+          },
+          {
+            "name": "Server 4 (MultiEmbed HD Failover)",
+            "url": "https://multiembed.mov/?video_id=313101&s=1&e=5",
+            "isDirect": false,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 5 (AutoEmbed HD)",
+            "url": "https://player.autoembed.cc/embed/tv/313101/1/5",
+            "isDirect": false,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 6 (Vidlink Fast HD)",
+            "url": "https://vidlink.pro/tv/313101/1/5",
+            "isDirect": false,
+            "quality": "1080p"
+          }
+        ],
+        "audioTracks": [
+          "Hindi"
+        ],
+        "captions": []
       },
       {
-        "name": "Prakash Raj",
-        "character": "Roja Rangasamy",
-        "photo": "https://image.tmdb.org/t/p/w185/dJvFZOXmZdkYCOUcKTXQAhBcAoH.jpg"
+        "number": 6,
+        "episode": 6,
+        "season": 1,
+        "title": "Truth",
+        "duration": "26 min",
+        "overview": "Preeti and Chander receive a surprising offer for the café. A conversation with her mother leaves Sudha reflecting on an important choice.",
+        "still": "https://image.tmdb.org/t/p/w500/isPVzujhIaeqs0PdeDRjhbwps5f.jpg",
+        "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/562dcc48a0b25a36256d5cba7a501b3a.mp4?sign=aa6d1d32396ab02b478060e415a58ff3&t=1792844188",
+        "servers": [
+          {
+            "name": "Server 1 (MovieBox 1080p Direct - 287MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/cms/562dcc48a0b25a36256d5cba7a501b3a.mp4?sign=aa6d1d32396ab02b478060e415a58ff3&t=1792844188",
+            "isDirect": true,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+            "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=6",
+            "isDirect": true,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 3 (MovieBox 480p - 98MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/bt/1a233aa188f85f7eb1ef7883d973e1e1.mp4?sign=1fc0eba45e49578ab97e8b889b5c6a2e&t=1792840212",
+            "isDirect": true,
+            "quality": "480p"
+          },
+          {
+            "name": "Server 4 (MultiEmbed HD Failover)",
+            "url": "https://multiembed.mov/?video_id=313101&s=1&e=6",
+            "isDirect": false,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 5 (AutoEmbed HD)",
+            "url": "https://player.autoembed.cc/embed/tv/313101/1/6",
+            "isDirect": false,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 6 (Vidlink Fast HD)",
+            "url": "https://vidlink.pro/tv/313101/1/6",
+            "isDirect": false,
+            "quality": "1080p"
+          }
+        ],
+        "audioTracks": [
+          "Hindi"
+        ],
+        "captions": []
       },
       {
-        "name": "Gautham Vasudev Menon",
-        "character": "Srikanth",
-        "photo": "https://image.tmdb.org/t/p/w185/qOFycWPpr3Hi4kVXKWnTTKCAnGk.jpg"
+        "number": 7,
+        "episode": 7,
+        "season": 1,
+        "title": "Distance",
+        "duration": "31 min",
+        "overview": "While vacationing at a homestay, Sudha and Chander scout locations for the café, but a decision creates tension. Mark gives Chander a ring for Preeti.",
+        "still": "https://image.tmdb.org/t/p/w500/sbJAk2GJHtHQimzy9PuXHDYZtIL.jpg",
+        "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/d7335410a08045f7098d7c1d428bc91b.mp4?sign=4dfbbd08565875aa9b8092a82409ed2a&t=1792841032",
+        "servers": [
+          {
+            "name": "Server 1 (MovieBox 1080p Direct - 381MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/cms/d7335410a08045f7098d7c1d428bc91b.mp4?sign=4dfbbd08565875aa9b8092a82409ed2a&t=1792841032",
+            "isDirect": true,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+            "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=7",
+            "isDirect": true,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 3 (MovieBox 480p - 123MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/bt/e8b5e5a3e9b46d7b30588b77cc487ed6.mp4?sign=1b5a6e0276f144d25758bf8ec428b208&t=1792842872",
+            "isDirect": true,
+            "quality": "480p"
+          },
+          {
+            "name": "Server 4 (MultiEmbed HD Failover)",
+            "url": "https://multiembed.mov/?video_id=313101&s=1&e=7",
+            "isDirect": false,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 5 (AutoEmbed HD)",
+            "url": "https://player.autoembed.cc/embed/tv/313101/1/7",
+            "isDirect": false,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 6 (Vidlink Fast HD)",
+            "url": "https://vidlink.pro/tv/313101/1/7",
+            "isDirect": false,
+            "quality": "1080p"
+          }
+        ],
+        "audioTracks": [
+          "Hindi"
+        ],
+        "captions": []
       },
       {
-        "name": "Narain",
-        "character": "Kaleel",
-        "photo": "https://image.tmdb.org/t/p/w185/d0ApUGeFuGXpBkODIc6eLbBkb7B.jpg"
-      },
-      {
-        "name": "Nassar",
-        "character": "CM Arivudai Nambi",
-        "photo": "https://image.tmdb.org/t/p/w185/p3I0tSQY3C5qZW3NzFfbpjKPNL6.jpg"
-      },
-      {
-        "name": "Sunil Varma",
-        "character": "Velu",
-        "photo": "https://image.tmdb.org/t/p/w185/2ueRNLlbB8jaivO6yb7zfIlFhh7.jpg"
+        "number": 8,
+        "episode": 8,
+        "season": 1,
+        "title": "Arrival",
+        "duration": "42 min",
+        "overview": "A surprise guest unsettles Preeti, while Chander finds his past unexpectedly colliding with the present.",
+        "still": "https://image.tmdb.org/t/p/w500/la9xuctBaFqVDCZjQmCbeFpSY5n.jpg",
+        "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/bd47a4f798ebbd226e566b5f65e0476e.mp4?sign=f0e6535734c803682ef237054a915775&t=1792844083",
+        "servers": [
+          {
+            "name": "Server 1 (MovieBox 1080p Direct - 503MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/cms/bd47a4f798ebbd226e566b5f65e0476e.mp4?sign=f0e6535734c803682ef237054a915775&t=1792844083",
+            "isDirect": true,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+            "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=8",
+            "isDirect": true,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 3 (MovieBox 480p - 167MB)",
+            "url": "https://bcdnxw.hakunaymatata.com/bt/b224f44fe1404220ef44ad46c0bbef43.mp4?sign=0641f9a12e55d9a7a1e2a85cd2d55084&t=1792844083",
+            "isDirect": true,
+            "quality": "480p"
+          },
+          {
+            "name": "Server 4 (MultiEmbed HD Failover)",
+            "url": "https://multiembed.mov/?video_id=313101&s=1&e=8",
+            "isDirect": false,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 5 (AutoEmbed HD)",
+            "url": "https://player.autoembed.cc/embed/tv/313101/1/8",
+            "isDirect": false,
+            "quality": "1080p"
+          },
+          {
+            "name": "Server 6 (Vidlink Fast HD)",
+            "url": "https://vidlink.pro/tv/313101/1/8",
+            "isDirect": false,
+            "quality": "1080p"
+          }
+        ],
+        "audioTracks": [
+          "Hindi"
+        ],
+        "captions": []
       }
     ],
-    "type": "movie",
-    "addedAt": "2026-10-24T09:17:14.000Z",
-    "originalReleaseDate": "2026-07-22"
+    "type": "series"
   },
   "movies": [
     {
@@ -4174,6 +4928,884 @@
     }
   ],
   "series": [
+    {
+      "id": "mb-s-4720961996777219576",
+      "subjectId": "4720961996777219576",
+      "detailPath": "musafir-cafe-hindi-MStiLnt3KC5",
+      "tmdbId": 313101,
+      "title": "Musafir Cafe [Hindi]",
+      "originalTitle": "मुसाफ़िर कैफ़े",
+      "year": "2026",
+      "releaseDate": "2026-10-24T12:16:30.345Z",
+      "originalReleaseDate": "2026-07-24",
+      "addedAt": "2026-10-24T12:16:30.345Z",
+      "rating": "7.1",
+      "imdbRating": "7.1",
+      "votes": "15",
+      "duration": "1 Season (8 Episodes)",
+      "category": "Trending Series",
+      "industry": "Bollywood",
+      "country": "India",
+      "badgeLeft": "Hindi",
+      "badgeRight": "1080p Full HD",
+      "poster": "https://image.tmdb.org/t/p/w500/1SbKjtoRKIpVQG5iYnumnfQIqhd.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/2C15EiKyfLrWAWbjqpHvumgOtNk.jpg",
+      "cover": "https://image.tmdb.org/t/p/original/2C15EiKyfLrWAWbjqpHvumgOtNk.jpg",
+      "description": "Chander feels an undeniable connection with Sudha. Years later, he builds a new life in the hills with Preeti, but memories of the past linger.",
+      "overview": "Chander feels an undeniable connection with Sudha. Years later, he builds a new life in the hills with Preeti, but memories of the past linger.",
+      "genres": "Drama",
+      "genre": "Drama",
+      "director": "Imtiaz Ali",
+      "cast": "Vikrant Massey, Vedika Pinto, Mahima Makwana, Rajeev Siddhartha, Anubha Fatehpuria",
+      "seasonsCount": 1,
+      "seasons": [
+        {
+          "seasonNumber": 1,
+          "title": "Season 1",
+          "name": "Season 1",
+          "year": "2026",
+          "episodesCount": 8,
+          "poster": "https://image.tmdb.org/t/p/w500/1SbKjtoRKIpVQG5iYnumnfQIqhd.jpg",
+          "episodes": [
+            {
+              "number": 1,
+              "episode": 1,
+              "season": 1,
+              "title": "Arrival",
+              "duration": "30 min",
+              "overview": "Sudha sweeps Chander off his feet, but they choose to stay friends. Now, he runs a hilltop café with Preeti by his side.",
+              "still": "https://image.tmdb.org/t/p/w500/oaJXllZ9ZF7wQRPVycI8P2sm0Tc.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/05bf5f673452419782226732d566f9ea.mp4?sign=11dc55d2b7f34dd110cdf51945233f9b&t=1792840949",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 347MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/05bf5f673452419782226732d566f9ea.mp4?sign=11dc55d2b7f34dd110cdf51945233f9b&t=1792840949",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=1",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox 480p - 118MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/59c1b57a810ac5b87c8bb230fd646121.mp4?sign=9728a2ed05de0610ddc41b375a0e1b1a&t=1792841182",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=313101&s=1&e=1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/313101/1/1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/313101/1/1",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 2,
+              "episode": 2,
+              "season": 1,
+              "title": "Stay",
+              "duration": "34 min",
+              "overview": "While living with Chander, Sudha grows closer to him, but an opportunity in Mumbai may reshape their future. Preeti reveals her plans to expand the café.",
+              "still": "https://image.tmdb.org/t/p/w500/2LpxnhvUDDsNhgTFTp3ByV6BqO0.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/78fdfb80cadf361a6b29e6d38f43572e.mp4?sign=8a9c0033b79aa21bf4246aa4447c1bc0&t=1792844082",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 418MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/78fdfb80cadf361a6b29e6d38f43572e.mp4?sign=8a9c0033b79aa21bf4246aa4447c1bc0&t=1792844082",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=2",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox 480p - 136MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/08b386e76d554cee57e9fa42d7356011.mp4?sign=9600a36ab0d67655b3929d42541ed03a&t=1792844082",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=313101&s=1&e=2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/313101/1/2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/313101/1/2",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 3,
+              "episode": 3,
+              "season": 1,
+              "title": "Choice",
+              "duration": "30 min",
+              "overview": "Sudha grapples with a difficult choice between her career and love life, as Chander opens up about his plans for the future.",
+              "still": "https://image.tmdb.org/t/p/w500/xY5UQNNaENFrUu6r33ctDCTQ0eG.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/d007934496e59f69ec657d12d44c262a.mp4?sign=5acc49ba1dae866dcfdd8459a063dc19&t=1792841688",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 359MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/d007934496e59f69ec657d12d44c262a.mp4?sign=5acc49ba1dae866dcfdd8459a063dc19&t=1792841688",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=3",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox 480p - 118MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/4554efbce9854b285547371f69a534e9.mp4?sign=9a9b00a4511d7897c4e3a86c4b64b033&t=1792841688",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=313101&s=1&e=3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/313101/1/3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/313101/1/3",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 4,
+              "episode": 4,
+              "season": 1,
+              "title": "Trip",
+              "duration": "29 min",
+              "overview": "Rahil plants seeds of doubt in Preeti's mind, leading her to question Chander about his past. Sudha and Chander take a major step in their relationship.",
+              "still": "https://image.tmdb.org/t/p/w500/h0GdD6NfAZYQN4UMZ2tZ36YVrVZ.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/63306ee954595e21339799f5dce65eda.mp4?sign=b712ab09841bf25255254573a93157f8&t=1792844082",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 347MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/63306ee954595e21339799f5dce65eda.mp4?sign=b712ab09841bf25255254573a93157f8&t=1792844082",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=4",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox 480p - 111MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/c24affb04e99393ca7b32581cf942fd8.mp4?sign=a3e8dfcaddc559dc9b6cb692593ee3f8&t=1792844082",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=313101&s=1&e=4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/313101/1/4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/313101/1/4",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 5,
+              "episode": 5,
+              "season": 1,
+              "title": "Surprise",
+              "duration": "28 min",
+              "overview": "When his mother arrives unexpectedly, Chander scrambles to hide his relationship. Meanwhile, Rahil and Chander look back on how far they've come.",
+              "still": "https://image.tmdb.org/t/p/w500/b2wg7qWwgMZohIK2sQStqbll7mv.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/7dca4f8878153655e5db6b31bacec630.mp4?sign=2ff4da806c9530a9b835d2265d73640b&t=1792843076",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 282MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/7dca4f8878153655e5db6b31bacec630.mp4?sign=2ff4da806c9530a9b835d2265d73640b&t=1792843076",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=5",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox 480p - 107MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/8bcb37536bfa3b4267157b1688bfc18d.mp4?sign=744dbc36b4a4f0c27e2044327227efba&t=1792841128",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=313101&s=1&e=5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/313101/1/5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/313101/1/5",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 6,
+              "episode": 6,
+              "season": 1,
+              "title": "Truth",
+              "duration": "26 min",
+              "overview": "Preeti and Chander receive a surprising offer for the café. A conversation with her mother leaves Sudha reflecting on an important choice.",
+              "still": "https://image.tmdb.org/t/p/w500/isPVzujhIaeqs0PdeDRjhbwps5f.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/562dcc48a0b25a36256d5cba7a501b3a.mp4?sign=aa6d1d32396ab02b478060e415a58ff3&t=1792844188",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 287MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/562dcc48a0b25a36256d5cba7a501b3a.mp4?sign=aa6d1d32396ab02b478060e415a58ff3&t=1792844188",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=6",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox 480p - 98MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/1a233aa188f85f7eb1ef7883d973e1e1.mp4?sign=1fc0eba45e49578ab97e8b889b5c6a2e&t=1792840212",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=313101&s=1&e=6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/313101/1/6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/313101/1/6",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 7,
+              "episode": 7,
+              "season": 1,
+              "title": "Distance",
+              "duration": "31 min",
+              "overview": "While vacationing at a homestay, Sudha and Chander scout locations for the café, but a decision creates tension. Mark gives Chander a ring for Preeti.",
+              "still": "https://image.tmdb.org/t/p/w500/sbJAk2GJHtHQimzy9PuXHDYZtIL.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/d7335410a08045f7098d7c1d428bc91b.mp4?sign=4dfbbd08565875aa9b8092a82409ed2a&t=1792841032",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 381MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/d7335410a08045f7098d7c1d428bc91b.mp4?sign=4dfbbd08565875aa9b8092a82409ed2a&t=1792841032",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=7",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox 480p - 123MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/e8b5e5a3e9b46d7b30588b77cc487ed6.mp4?sign=1b5a6e0276f144d25758bf8ec428b208&t=1792842872",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=313101&s=1&e=7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/313101/1/7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/313101/1/7",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            },
+            {
+              "number": 8,
+              "episode": 8,
+              "season": 1,
+              "title": "Arrival",
+              "duration": "42 min",
+              "overview": "A surprise guest unsettles Preeti, while Chander finds his past unexpectedly colliding with the present.",
+              "still": "https://image.tmdb.org/t/p/w500/la9xuctBaFqVDCZjQmCbeFpSY5n.jpg",
+              "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/bd47a4f798ebbd226e566b5f65e0476e.mp4?sign=f0e6535734c803682ef237054a915775&t=1792844083",
+              "servers": [
+                {
+                  "name": "Server 1 (MovieBox 1080p Direct - 503MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/bd47a4f798ebbd226e566b5f65e0476e.mp4?sign=f0e6535734c803682ef237054a915775&t=1792844083",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+                  "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=8",
+                  "isDirect": true,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 3 (MovieBox 480p - 167MB)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/b224f44fe1404220ef44ad46c0bbef43.mp4?sign=0641f9a12e55d9a7a1e2a85cd2d55084&t=1792844083",
+                  "isDirect": true,
+                  "quality": "480p"
+                },
+                {
+                  "name": "Server 4 (MultiEmbed HD Failover)",
+                  "url": "https://multiembed.mov/?video_id=313101&s=1&e=8",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 5 (AutoEmbed HD)",
+                  "url": "https://player.autoembed.cc/embed/tv/313101/1/8",
+                  "isDirect": false,
+                  "quality": "1080p"
+                },
+                {
+                  "name": "Server 6 (Vidlink Fast HD)",
+                  "url": "https://vidlink.pro/tv/313101/1/8",
+                  "isDirect": false,
+                  "quality": "1080p"
+                }
+              ],
+              "audioTracks": [
+                "Hindi"
+              ],
+              "captions": []
+            }
+          ]
+        }
+      ],
+      "episodes": [
+        {
+          "number": 1,
+          "episode": 1,
+          "season": 1,
+          "title": "Arrival",
+          "duration": "30 min",
+          "overview": "Sudha sweeps Chander off his feet, but they choose to stay friends. Now, he runs a hilltop café with Preeti by his side.",
+          "still": "https://image.tmdb.org/t/p/w500/oaJXllZ9ZF7wQRPVycI8P2sm0Tc.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/05bf5f673452419782226732d566f9ea.mp4?sign=11dc55d2b7f34dd110cdf51945233f9b&t=1792840949",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct - 347MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/05bf5f673452419782226732d566f9ea.mp4?sign=11dc55d2b7f34dd110cdf51945233f9b&t=1792840949",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=1",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox 480p - 118MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/59c1b57a810ac5b87c8bb230fd646121.mp4?sign=9728a2ed05de0610ddc41b375a0e1b1a&t=1792841182",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=313101&s=1&e=1",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/313101/1/1",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/313101/1/1",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 2,
+          "episode": 2,
+          "season": 1,
+          "title": "Stay",
+          "duration": "34 min",
+          "overview": "While living with Chander, Sudha grows closer to him, but an opportunity in Mumbai may reshape their future. Preeti reveals her plans to expand the café.",
+          "still": "https://image.tmdb.org/t/p/w500/2LpxnhvUDDsNhgTFTp3ByV6BqO0.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/78fdfb80cadf361a6b29e6d38f43572e.mp4?sign=8a9c0033b79aa21bf4246aa4447c1bc0&t=1792844082",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct - 418MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/78fdfb80cadf361a6b29e6d38f43572e.mp4?sign=8a9c0033b79aa21bf4246aa4447c1bc0&t=1792844082",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=2",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox 480p - 136MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/08b386e76d554cee57e9fa42d7356011.mp4?sign=9600a36ab0d67655b3929d42541ed03a&t=1792844082",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=313101&s=1&e=2",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/313101/1/2",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/313101/1/2",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 3,
+          "episode": 3,
+          "season": 1,
+          "title": "Choice",
+          "duration": "30 min",
+          "overview": "Sudha grapples with a difficult choice between her career and love life, as Chander opens up about his plans for the future.",
+          "still": "https://image.tmdb.org/t/p/w500/xY5UQNNaENFrUu6r33ctDCTQ0eG.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/d007934496e59f69ec657d12d44c262a.mp4?sign=5acc49ba1dae866dcfdd8459a063dc19&t=1792841688",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct - 359MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/d007934496e59f69ec657d12d44c262a.mp4?sign=5acc49ba1dae866dcfdd8459a063dc19&t=1792841688",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=3",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox 480p - 118MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/4554efbce9854b285547371f69a534e9.mp4?sign=9a9b00a4511d7897c4e3a86c4b64b033&t=1792841688",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=313101&s=1&e=3",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/313101/1/3",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/313101/1/3",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 4,
+          "episode": 4,
+          "season": 1,
+          "title": "Trip",
+          "duration": "29 min",
+          "overview": "Rahil plants seeds of doubt in Preeti's mind, leading her to question Chander about his past. Sudha and Chander take a major step in their relationship.",
+          "still": "https://image.tmdb.org/t/p/w500/h0GdD6NfAZYQN4UMZ2tZ36YVrVZ.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/63306ee954595e21339799f5dce65eda.mp4?sign=b712ab09841bf25255254573a93157f8&t=1792844082",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct - 347MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/63306ee954595e21339799f5dce65eda.mp4?sign=b712ab09841bf25255254573a93157f8&t=1792844082",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=4",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox 480p - 111MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/c24affb04e99393ca7b32581cf942fd8.mp4?sign=a3e8dfcaddc559dc9b6cb692593ee3f8&t=1792844082",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=313101&s=1&e=4",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/313101/1/4",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/313101/1/4",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 5,
+          "episode": 5,
+          "season": 1,
+          "title": "Surprise",
+          "duration": "28 min",
+          "overview": "When his mother arrives unexpectedly, Chander scrambles to hide his relationship. Meanwhile, Rahil and Chander look back on how far they've come.",
+          "still": "https://image.tmdb.org/t/p/w500/b2wg7qWwgMZohIK2sQStqbll7mv.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/7dca4f8878153655e5db6b31bacec630.mp4?sign=2ff4da806c9530a9b835d2265d73640b&t=1792843076",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct - 282MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/7dca4f8878153655e5db6b31bacec630.mp4?sign=2ff4da806c9530a9b835d2265d73640b&t=1792843076",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=5",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox 480p - 107MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/8bcb37536bfa3b4267157b1688bfc18d.mp4?sign=744dbc36b4a4f0c27e2044327227efba&t=1792841128",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=313101&s=1&e=5",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/313101/1/5",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/313101/1/5",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 6,
+          "episode": 6,
+          "season": 1,
+          "title": "Truth",
+          "duration": "26 min",
+          "overview": "Preeti and Chander receive a surprising offer for the café. A conversation with her mother leaves Sudha reflecting on an important choice.",
+          "still": "https://image.tmdb.org/t/p/w500/isPVzujhIaeqs0PdeDRjhbwps5f.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/562dcc48a0b25a36256d5cba7a501b3a.mp4?sign=aa6d1d32396ab02b478060e415a58ff3&t=1792844188",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct - 287MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/562dcc48a0b25a36256d5cba7a501b3a.mp4?sign=aa6d1d32396ab02b478060e415a58ff3&t=1792844188",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=6",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox 480p - 98MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/1a233aa188f85f7eb1ef7883d973e1e1.mp4?sign=1fc0eba45e49578ab97e8b889b5c6a2e&t=1792840212",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=313101&s=1&e=6",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/313101/1/6",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/313101/1/6",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 7,
+          "episode": 7,
+          "season": 1,
+          "title": "Distance",
+          "duration": "31 min",
+          "overview": "While vacationing at a homestay, Sudha and Chander scout locations for the café, but a decision creates tension. Mark gives Chander a ring for Preeti.",
+          "still": "https://image.tmdb.org/t/p/w500/sbJAk2GJHtHQimzy9PuXHDYZtIL.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/d7335410a08045f7098d7c1d428bc91b.mp4?sign=4dfbbd08565875aa9b8092a82409ed2a&t=1792841032",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct - 381MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/d7335410a08045f7098d7c1d428bc91b.mp4?sign=4dfbbd08565875aa9b8092a82409ed2a&t=1792841032",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=7",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox 480p - 123MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/e8b5e5a3e9b46d7b30588b77cc487ed6.mp4?sign=1b5a6e0276f144d25758bf8ec428b208&t=1792842872",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=313101&s=1&e=7",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/313101/1/7",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/313101/1/7",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        },
+        {
+          "number": 8,
+          "episode": 8,
+          "season": 1,
+          "title": "Arrival",
+          "duration": "42 min",
+          "overview": "A surprise guest unsettles Preeti, while Chander finds his past unexpectedly colliding with the present.",
+          "still": "https://image.tmdb.org/t/p/w500/la9xuctBaFqVDCZjQmCbeFpSY5n.jpg",
+          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/bd47a4f798ebbd226e566b5f65e0476e.mp4?sign=f0e6535734c803682ef237054a915775&t=1792844083",
+          "servers": [
+            {
+              "name": "Server 1 (MovieBox 1080p Direct - 503MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/bd47a4f798ebbd226e566b5f65e0476e.mp4?sign=f0e6535734c803682ef237054a915775&t=1792844083",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+              "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=8",
+              "isDirect": true,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 3 (MovieBox 480p - 167MB)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/b224f44fe1404220ef44ad46c0bbef43.mp4?sign=0641f9a12e55d9a7a1e2a85cd2d55084&t=1792844083",
+              "isDirect": true,
+              "quality": "480p"
+            },
+            {
+              "name": "Server 4 (MultiEmbed HD Failover)",
+              "url": "https://multiembed.mov/?video_id=313101&s=1&e=8",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 5 (AutoEmbed HD)",
+              "url": "https://player.autoembed.cc/embed/tv/313101/1/8",
+              "isDirect": false,
+              "quality": "1080p"
+            },
+            {
+              "name": "Server 6 (Vidlink Fast HD)",
+              "url": "https://vidlink.pro/tv/313101/1/8",
+              "isDirect": false,
+              "quality": "1080p"
+            }
+          ],
+          "audioTracks": [
+            "Hindi"
+          ],
+          "captions": []
+        }
+      ],
+      "type": "series"
+    },
     {
       "id": "mb-s-7992739293980674584",
       "subjectId": "7992739293980674584",

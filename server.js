@@ -658,6 +658,8 @@ app.get('/api/moviebox/stream', async (req, res) => {
       // Tale of the Nine Tailed [Hindi] (Korean Series - Season 1 & 2)
       else if (id === '637731293849080088') resolvedPath = 'tale-of-the-nine-tailed-hindi-GfVHu3BO6L';
       else if (id === '3104610972405746824') resolvedPath = 'tale-of-the-nine-tailed-S9Jo5bn9lH3';
+      // Musafir Cafe [Hindi] (Bollywood Series)
+      else if (id === '4720961996777219576') resolvedPath = 'musafir-cafe-hindi-MStiLnt3KC5';
     }
     // Try requested se/ep first, then fallbacks
     let media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);
