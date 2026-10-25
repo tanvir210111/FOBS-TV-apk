@@ -12,7 +12,26 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/fobstv
 const REDIS_URI = process.env.REDIS_URI || 'redis://127.0.0.1:6379';
 const BOOKINGS_FILE = path.join(__dirname, '..', 'data', 'bookings.json');
 const COMMENTS_FILE = path.join(__dirname, '..', 'data', 'comments.json');
+const USERS_FILE = path.join(__dirname, '..', 'data', 'users.json');
 
+function getLocalUsersMap() {
+  try {
+    if (fs.existsSync(USERS_FILE)) {
+      return JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
+    }
+  } catch (e) {
+    console.error('Error reading users file:', e.message);
+  }
+  return {};
+}
+
+function saveLocalUsersMap(map) {
+  try {
+    fs.writeFileSync(USERS_FILE, JSON.stringify(map, null, 2), 'utf8');
+  } catch (e) {
+    console.error('Error saving users file:', e.message);
+  }
+}
 
 let isMongoConnected = false;
 let isRedisConnected = false;
@@ -21,6 +40,7 @@ let isRedisConnected = false;
 const memoryActiveViewers = new Map(); // mediaId -> Map(viewerId -> timestamp)
 const memoryTotalViews = new Map();    // mediaId -> count
 const memoryUsers = new Map();         // googleId -> userDoc
+
 
 // ----------------------------------------------------
 // 1. MONGODB CONNECTION & SCHEMAS
@@ -262,86 +282,116 @@ async function findOrCreateUser({ googleId, email, name, picture }) {
   const now = new Date();
 
   if (isMongoConnected && User) {
-    let user = await User.findOne({ googleId });
-    if (!user) {
-      user = new User({
-        googleId,
-        email,
-        name,
-        picture,
-        watchlist: [],
-        history: [],
-        createdAt: now,
-        lastLogin: now
-      });
-      await user.save();
-    } else {
-      user.name = name || user.name;
-      user.picture = picture || user.picture;
-      user.lastLogin = now;
-      await user.save();
+    try {
+      let user = await User.findOne({ googleId });
+      if (!user) {
+        user = new User({
+          googleId,
+          email,
+          name,
+          picture,
+          watchlist: [],
+          history: [],
+          createdAt: now,
+          lastLogin: now
+        });
+        await user.save();
+      } else {
+        user.name = name || user.name;
+        user.picture = picture || user.picture;
+        user.lastLogin = now;
+        await user.save();
+      }
+      return user.toObject();
+    } catch (err) {
+      console.warn('⚠️ MongoDB User error (' + err.message + '). Falling back to resilient disk storage.');
+      isMongoConnected = false;
     }
-    return user.toObject();
   }
 
-  // In-memory fallback
-  let user = memoryUsers.get(googleId);
+  // Resilient JSON Disk & In-Memory Storage
+  const usersMap = getLocalUsersMap();
+  let user = usersMap[googleId] || memoryUsers.get(googleId);
   if (!user) {
     user = {
-      _id: 'mem_' + googleId,
+      _id: 'usr_' + (googleId || Date.now()),
       googleId,
-      email,
-      name,
-      picture,
+      email: (email || '').toLowerCase().trim(),
+      name: name || 'User',
+      picture: picture || '',
       watchlist: [],
       history: [],
       createdAt: now,
       lastLogin: now
     };
-    memoryUsers.set(googleId, user);
   } else {
     user.lastLogin = now;
     if (name) user.name = name;
     if (picture) user.picture = picture;
   }
+  memoryUsers.set(googleId, user);
+  usersMap[googleId] = user;
+  saveLocalUsersMap(usersMap);
   return user;
 }
 
 async function getUserById(googleId) {
   if (isMongoConnected && User) {
-    const user = await User.findOne({ googleId });
-    return user ? user.toObject() : null;
+    try {
+      const user = await User.findOne({ googleId });
+      if (user) return user.toObject();
+    } catch (err) {
+      console.warn('⚠️ MongoDB getUserById error:', err.message);
+      isMongoConnected = false;
+    }
   }
-  return memoryUsers.get(googleId) || null;
+  const usersMap = getLocalUsersMap();
+  return usersMap[googleId] || memoryUsers.get(googleId) || null;
 }
 
 async function toggleWatchlist(googleId, mediaItem) {
   if (isMongoConnected && User) {
-    const user = await User.findOne({ googleId });
-    if (!user) throw new Error('User not found');
-
-    const index = user.watchlist.findIndex(w => w.mediaId === mediaItem.mediaId);
-    let added = false;
-    if (index > -1) {
-      user.watchlist.splice(index, 1); // remove
-    } else {
-      user.watchlist.unshift({
-        mediaId: mediaItem.mediaId,
-        title: mediaItem.title || 'Untitled',
-        poster: mediaItem.poster || '',
-        type: mediaItem.type || 'movie',
-        rating: mediaItem.rating || '',
-        year: mediaItem.year || '',
-        addedAt: new Date()
-      });
-      added = true;
+    try {
+      const user = await User.findOne({ googleId });
+      if (user) {
+        const index = user.watchlist.findIndex(w => w.mediaId === mediaItem.mediaId);
+        let added = false;
+        if (index > -1) {
+          user.watchlist.splice(index, 1); // remove
+        } else {
+          user.watchlist.unshift({
+            mediaId: mediaItem.mediaId,
+            title: mediaItem.title || 'Untitled',
+            poster: mediaItem.poster || '',
+            type: mediaItem.type || 'movie',
+            rating: mediaItem.rating || '',
+            year: mediaItem.year || '',
+            addedAt: new Date()
+          });
+          added = true;
+        }
+        await user.save();
+        return { added, watchlist: user.watchlist };
+      }
+    } catch (err) {
+      console.warn('⚠️ MongoDB toggleWatchlist error:', err.message);
+      isMongoConnected = false;
     }
-    await user.save();
-    return { added, watchlist: user.watchlist };
   }
 
-  const user = memoryUsers.get(googleId);
-  if (!user) throw new Error('User not found');
+  const usersMap = getLocalUsersMap();
+  let user = usersMap[googleId] || memoryUsers.get(googleId);
+  if (!user) {
+    user = {
+      googleId,
+      email: '',
+      name: 'User',
+      watchlist: [],
+      history: []
+    };
+  }
+  if (!Array.isArray(user.watchlist)) user.watchlist = [];
+
   const index = user.watchlist.findIndex(w => w.mediaId === mediaItem.mediaId);
   let added = false;
   if (index > -1) {
@@ -350,6 +400,9 @@ async function toggleWatchlist(googleId, mediaItem) {
     user.watchlist.unshift({ ...mediaItem, addedAt: new Date() });
     added = true;
   }
+  memoryUsers.set(googleId, user);
+  usersMap[googleId] = user;
+  saveLocalUsersMap(usersMap);
   return { added, watchlist: user.watchlist };
 }
 
@@ -368,25 +421,44 @@ async function updateWatchHistory(googleId, historyItem) {
   };
 
   if (isMongoConnected && User) {
-    const user = await User.findOne({ googleId });
-    if (!user) throw new Error('User not found');
-
-    const index = user.history.findIndex(h => h.mediaId === updateData.mediaId);
-    if (index > -1) {
-      user.history.splice(index, 1);
+    try {
+      const user = await User.findOne({ googleId });
+      if (user) {
+        const index = user.history.findIndex(h => h.mediaId === updateData.mediaId);
+        if (index > -1) {
+          user.history.splice(index, 1);
+        }
+        user.history.unshift(updateData);
+        if (user.history.length > 50) user.history.pop(); // Keep top 50
+        await user.save();
+        return user.history;
+      }
+    } catch (err) {
+      console.warn('⚠️ MongoDB updateWatchHistory error:', err.message);
+      isMongoConnected = false;
     }
-    user.history.unshift(updateData);
-    if (user.history.length > 50) user.history.pop(); // Keep top 50
-    await user.save();
-    return user.history;
   }
 
-  const user = memoryUsers.get(googleId);
-  if (!user) throw new Error('User not found');
+  const usersMap = getLocalUsersMap();
+  let user = usersMap[googleId] || memoryUsers.get(googleId);
+  if (!user) {
+    user = {
+      googleId,
+      email: '',
+      name: 'User',
+      watchlist: [],
+      history: []
+    };
+  }
+  if (!Array.isArray(user.history)) user.history = [];
+
   const index = user.history.findIndex(h => h.mediaId === updateData.mediaId);
   if (index > -1) user.history.splice(index, 1);
   user.history.unshift(updateData);
   if (user.history.length > 50) user.history.pop();
+  memoryUsers.set(googleId, user);
+  usersMap[googleId] = user;
+  saveLocalUsersMap(usersMap);
   return user.history;
 }
 
