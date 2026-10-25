@@ -1997,17 +1997,15 @@ app.all('/api/deploy', (req, res) => {
     return res.status(403).json({ success: false, error: 'Unauthorized secret' });
   }
 
-  res.json({ success: true, message: 'Deploy process started on VPS' });
-
   const { exec } = require('child_process');
   console.log('🚀 Triggering automated git pull & PM2 restart...');
-  exec('git stash && git pull origin main && npm install --legacy-peer-deps && pm2 restart all', { cwd: __dirname }, (error, stdout, stderr) => {
+  exec('git reset --hard HEAD && git pull origin main && pm2 restart all', { cwd: __dirname }, (error, stdout, stderr) => {
     if (error) {
       console.error('❌ Deploy execution error:', error.message);
-      return;
+      return res.status(500).json({ success: false, error: error.message, stderr, stdout });
     }
     console.log('✅ Deploy output:\n', stdout);
-    if (stderr) console.warn('Deploy stderr:', stderr);
+    res.json({ success: true, message: 'Deploy completed successfully', stdout, stderr });
   });
 });
 
