@@ -5983,6 +5983,8 @@ function triggerDownload() {
 
   if (modal) {
     modal.style.display = 'flex';
+    modal.offsetHeight; // Force reflow
+    modal.classList.add('open');
   }
 }
 window.triggerDownload = triggerDownload;
@@ -6014,7 +6016,12 @@ function closeDownloadOptionsModal(e) {
     return;
   }
   const modal = document.getElementById('downloadOptionsModal');
-  if (modal) modal.style.display = 'none';
+  if (modal) {
+    modal.classList.remove('open');
+    setTimeout(() => {
+      modal.style.display = 'none';
+    }, 250);
+  }
 }
 window.closeDownloadOptionsModal = closeDownloadOptionsModal;
 
@@ -6074,10 +6081,16 @@ function downloadMedia(url, title, options = {}) {
 
   // Trigger browser / Android download file stream
   const cleanTitle = title.replace(/[^a-zA-Z0-9_\-\u0980-\u09FF\s]/g, '').trim();
-  const baseApi = API_BASE_URL || BACKEND_URL;
-  const downloadUrl = `${baseApi}/api/download?url=${encodeURIComponent(url)}&title=${encodeURIComponent(cleanTitle)}`;
+  const baseApi = 'http://187.127.114.52';
+  let fullStreamUrl = url;
+  if (fullStreamUrl.startsWith('/')) {
+    fullStreamUrl = `${baseApi}${fullStreamUrl}`;
+  }
+  const downloadUrl = `${baseApi}/api/download?url=${encodeURIComponent(fullStreamUrl)}&title=${encodeURIComponent(cleanTitle)}`;
   
-  if (window.AndroidApp && typeof window.AndroidApp.openExternalUrl === 'function') {
+  if (window.AndroidApp && typeof window.AndroidApp.downloadFile === 'function') {
+    window.AndroidApp.downloadFile(downloadUrl, `${cleanTitle}.mp4`);
+  } else if (window.AndroidApp && typeof window.AndroidApp.openExternalUrl === 'function') {
     window.AndroidApp.openExternalUrl(downloadUrl);
   } else {
     // Hand off download request to Android OS / default browser

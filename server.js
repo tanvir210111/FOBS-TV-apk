@@ -87,6 +87,60 @@ function saveContentData(data) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf-8');
 }
 
+// MovieBox Subject ID to detailPath lookup map
+function getMovieBoxDetailPath(id) {
+  if (!id) return '';
+  const sId = String(id).trim();
+  if (sId === '2706073799983877168') return 'golden-boy-hindi-84Y8uLuQTd3';
+  if (sId === '4505435294245733456') return 'golden-boy-WbL89VmWOm5';
+  if (sId === '3929372124917419816') return 'golden-boy-GZ4ZlM5zgG4';
+  if (sId === '9098837809229611984') return 'golden-boy-english-CJH7T5YL8Qa';
+  if (sId === '3908280950886646112' || sId === '2985939316620284696') return 'wandavision-EU8Y28iDzy3';
+  if (sId === '5774857026010610896') return 'masterplan-hindi-C51IrncUAS6';
+  if (sId === '7818895120744824984') return 'arafta-hindi-0y70kiBCAj9';
+  if (sId === '2593580836368859088') return 'miracle-in-cell-no-7-CpdPy3VCA53';
+  if (sId === '331534456928489048') return 'paper-lives-MOrS12Kquo';
+  if (sId === '7315143878922094712') return 'love-is-in-the-air-hindi-EMidHb4rnI8';
+  if (sId === '7992739293980674584') return 'lanterns-hindi-ciMc9svPqw9';
+  if (sId === '4332534660363340496') return 'our-universe-hindi-39lYgY80Kq4';
+  if (sId === '9012855174766968784' || sId === '3929428694468545232') return 'establishment-osman-GtoO3BhYMJa';
+  if (sId === '6103563625468182480' || sId === '68551662163608792') return 'inconstant-love-hindi-YstIcsYX35';
+  if (sId === '8690954071785752632' || sId === '8218095022726677576') return 'resurrection-ertugrul-AARn8a2F0ma';
+  if (sId === '2819564323977289192') return 'viral-hit-hindi-CT6Pd5lDhm3';
+  if (sId === '1986985589031195976') return 'sins-of-kujo-hindi-uNxjKyJpMm2';
+  if (sId === '8768845011485083816') return 'demon-city-hindi-i5IiSPZoLra';
+  if (sId === '8475210957663488472') return 'a-shop-for-killers-hindi-GLJXzEty46a';
+  if (sId === '5698833987452421616') return 'so-i-love-you-very-much-hindi-caElq9EIYM6';
+  if (sId === '5564284041047803440') return 'dhootha-hindi-StflkTKt2D6';
+  if (sId === '8653275235304834096') return 'rana-naidu-hindi-q987i7J5eja';
+  if (sId === '7573592610930312192') return 'mousetrap-hindi-CXwu23l8t19';
+  if (sId === '1694621778766643152') return 'mouse-i3rX9JUnb12';
+  if (sId === '4938138970698960008') return 'mouse-o2BOtNbJMS5';
+  if (sId === '7384944248602723992') return 'you-are-my-glory-hindi-IIrH3QC7xN8';
+  if (sId === '2206443205082733056') return 'the-legend-of-kitchen-soldier-hindi-cO6WrX3xZC2';
+  if (sId === '1932866268428649968') return 'dive-to-you-hindi-mHK7tzYxMi2';
+  if (sId === '3870036899930730728') return 'dive-to-you-G56UVRdOSB4';
+  if (sId === '2154607436987001256') return 'island-hindi-ws8SXbK7az2';
+  if (sId === '5551081490894708744') return 'island-UgoeMAK04C6';
+  if (sId === '1395930250630021944') return 'my-strange-hero-hindi-MsGxeSgn7F1';
+  if (sId === '1581778075774271440') return 'my-strange-hero-Ac9ev3KyQS1';
+  if (sId === '637731293849080088') return 'tale-of-the-nine-tailed-hindi-GfVHu3BO6L';
+  if (sId === '3104610972405746824') return 'tale-of-the-nine-tailed-S9Jo5bn9lH3';
+  if (sId === '4720961996777219576') return 'musafir-cafe-hindi-MStiLnt3KC5';
+  if (sId === '3604422232421843392') return 'adarsh-baal-vidyalaya-hindi-UKlobH6igi4';
+  if (sId === '8445472975083767584') return 'sweet-home-hindi-QYdKgN3mS3a';
+  if (sId === '6640253389706330592') return 'sweet-home-hindi-IumHTEIqwU7';
+  if (sId === '341274161781817952') return 'gyeongseong-creature-hindi-cwXnUZq2dp';
+  if (sId === '8749727399622889296') return 'gyeongseong-creature-2nf2FylQlqa';
+  if (sId === '1332900149030438936') return 'love-next-door-hindi-A2MLzAcHsA1';
+  if (sId === '900420217287968016') return 'love-next-door-21sWBRUVv41';
+  if (sId === '3622255521824228456') return 'high-school-return-of-a-gangster-hindi-GFI0WK3Yzj4';
+  if (sId === '6930023915360583800') return 'high-school-return-of-a-gangster-8ydAeg9AVf8';
+  if (sId === '13309505576601376') return 'crash-landing-on-you-hindi-ad4mbjnXY';
+  if (sId === '8152231361013763208') return 'crash-landing-on-you-M2pZwJYidI9';
+  return '';
+}
+
 // In-memory cache for resolved Google usercontent & direct streams (TTL: 4 hours)
 const streamUrlCache = new Map();
 
@@ -437,23 +491,25 @@ async function resolveStreamUrl(rawUrl) {
   ) {
     if (rawUrl.includes('/api/moviebox/stream')) {
       try {
-        const urlObj = new URL(rawUrl, 'http://localhost:5000');
+        const urlObj = new URL(rawUrl, 'http://187.127.114.52');
         let id = urlObj.searchParams.get('id');
-        let detailPath = urlObj.searchParams.get('path') || '';
-        const se = parseInt(urlObj.searchParams.get('se') || '0', 10);
-        const ep = parseInt(urlObj.searchParams.get('ep') || '0', 10);
-        if (id === '3908280950886646112') {
-          id = '2985939316620284696';
-          detailPath = 'wandavision-EU8Y28iDzy3';
-        }
+        let detailPath = urlObj.searchParams.get('path') || getMovieBoxDetailPath(id) || '';
+        const se = parseInt(urlObj.searchParams.get('se') || '1', 10);
+        const ep = parseInt(urlObj.searchParams.get('ep') || '1', 10);
         if (id) {
-          const media = await movieboxService.resolveMedia(id, detailPath, se, ep);
+          let media = await movieboxService.resolveMedia(id, detailPath, se, ep);
+          if (!media || !media.streamUrl) {
+            media = await movieboxService.resolveMedia(id, detailPath, 0, ep);
+          }
+          if (!media || !media.streamUrl) {
+            media = await movieboxService.resolveMedia(id, detailPath, 0, 0);
+          }
           if (media && media.streamUrl) {
             resolved = media.streamUrl;
           }
         }
       } catch (err) {
-        console.error('MovieBox route resolve error:', err.message);
+        console.error('MovieBox route resolve error in resolveStreamUrl:', err.message);
       }
     }
     if (!resolved || resolved === rawUrl) {
@@ -613,7 +669,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
   try {
     const seNum = parseInt(se || '1', 10);
     const epNum = parseInt(ep || '1', 10);
-    let resolvedPath = detailPath;
+    let resolvedPath = detailPath || getMovieBoxDetailPath(id) || '';
     if (!resolvedPath) {
       // Golden Boy (Yalı Çapkını) - Turkish series
       if (id === '2706073799983877168') resolvedPath = 'golden-boy-hindi-84Y8uLuQTd3';
@@ -1161,14 +1217,45 @@ app.all('/api/stream', async (req, res) => {
 
 // Download endpoint
 app.get('/api/download', async (req, res) => {
-  const targetUrl = req.query.url;
+  let targetUrl = req.query.url;
   const filename = req.query.title ? `${req.query.title.replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_')}.mp4` : 'video.mp4';
 
   if (!targetUrl) {
     return res.status(400).send('Missing video URL parameter');
   }
 
-  const resolvedUrl = await resolveStreamUrl(targetUrl);
+  // If proxy url /api/stream?url=...
+  if (targetUrl.includes('/api/stream?url=')) {
+    try {
+      const urlObj = new URL(targetUrl, 'http://187.127.114.52');
+      targetUrl = decodeURIComponent(urlObj.searchParams.get('url') || targetUrl);
+    } catch(e) {}
+  }
+
+  let resolvedUrl = await resolveStreamUrl(targetUrl);
+
+  // If still wrapped in /api/stream?url=...
+  if (resolvedUrl.includes('/api/stream?url=')) {
+    try {
+      const urlObj = new URL(resolvedUrl, 'http://187.127.114.52');
+      resolvedUrl = decodeURIComponent(urlObj.searchParams.get('url') || resolvedUrl);
+    } catch(e) {}
+  }
+
+  // If still a relative MovieBox route, resolve it directly to the real CDN URL
+  if (resolvedUrl.includes('/api/moviebox/stream')) {
+    try {
+      const urlObj = new URL(resolvedUrl, 'http://187.127.114.52');
+      const id = urlObj.searchParams.get('id');
+      const detailPath = urlObj.searchParams.get('path') || getMovieBoxDetailPath(id) || '';
+      const se = parseInt(urlObj.searchParams.get('se') || '1', 10);
+      const ep = parseInt(urlObj.searchParams.get('ep') || '1', 10);
+      const media = await movieboxService.resolveMedia(id, detailPath, se, ep);
+      if (media && media.streamUrl) {
+        resolvedUrl = media.streamUrl;
+      }
+    } catch(e) {}
+  }
 
   const downloadHeaders = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
@@ -1197,6 +1284,7 @@ app.get('/api/download', async (req, res) => {
       url: resolvedUrl,
       responseType: 'stream',
       maxRedirects: 5,
+      timeout: 30000,
       headers: downloadHeaders
     });
 
@@ -1209,7 +1297,7 @@ app.get('/api/download', async (req, res) => {
     response.data.pipe(res);
   } catch (err) {
     console.error('Download error:', err.message);
-    res.redirect(resolvedUrl);
+    res.redirect(302, resolvedUrl);
   }
 });
 

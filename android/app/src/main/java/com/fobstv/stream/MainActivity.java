@@ -421,6 +421,39 @@ public class MainActivity extends BridgeActivity {
         }
 
         @JavascriptInterface
+        public void downloadFile(String downloadUrl, String filename) {
+            runOnUiThread(() -> {
+                try {
+                    if (downloadUrl == null || downloadUrl.trim().isEmpty()) return;
+                    String safeName = (filename != null && !filename.trim().isEmpty()) ? filename.trim() : "video.mp4";
+                    if (!safeName.toLowerCase().endsWith(".mp4")) {
+                        safeName += ".mp4";
+                    }
+
+                    android.app.DownloadManager dm = (android.app.DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+                    if (dm != null) {
+                        Uri downloadUri = Uri.parse(downloadUrl.trim());
+                        android.app.DownloadManager.Request request = new android.app.DownloadManager.Request(downloadUri);
+                        request.setTitle(safeName);
+                        request.setDescription("FOBS TV Video Download");
+                        request.setNotificationVisibility(android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, safeName);
+                        request.setAllowedOverMetered(true);
+                        request.setAllowedOverRoaming(true);
+                        dm.enqueue(request);
+
+                        Toast.makeText(MainActivity.this, "Downloading " + safeName + " ... Check notification bar 📥", Toast.LENGTH_LONG).show();
+                    } else {
+                        openExternalUrl(downloadUrl);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    openExternalUrl(downloadUrl);
+                }
+            });
+        }
+
+        @JavascriptInterface
         public void shareText(String title, String text) {
             runOnUiThread(() -> {
                 try {
