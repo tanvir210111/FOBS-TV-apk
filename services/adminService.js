@@ -538,60 +538,123 @@ class AdminService {
 
       return { success: true, item: newMovie };
     } else {
-      // Import Series
-      const count = Math.min(Math.max(parseInt(episodesCount, 10) || 1, 1), 50);
+      // Import Series (Full Multi-Season Support)
       const finalTitle = isHindi && !title.toLowerCase().includes('hindi') ? `${title} [Hindi]` : title;
-      const episodes = [];
+      const seasonMode = payload.seasonMode || 'all';
 
-      for (let ep = 1; ep <= count; ep++) {
-        const mb = await movieboxService.resolveMedia(subjectId, detailPath, 1, ep);
-        if (!mb || !mb.streamUrl) break;
+      // Determine seasons to import
+      let targetSeasons = [];
+      if (autoDetail && Array.isArray(autoDetail.seasons) && autoDetail.seasons.length > 0) {
+        if (seasonMode !== 'all') {
+          const seNum = parseInt(seasonMode, 10);
+          const found = autoDetail.seasons.find(s => s.se === seNum);
+          if (found) {
+            targetSeasons = [{ se: found.se, maxEp: episodesCount || found.maxEp }];
+          } else {
+            targetSeasons = [{ se: seNum, maxEp: episodesCount || 10 }];
+          }
+        } else {
+          targetSeasons = autoDetail.seasons.map(s => ({ se: s.se, maxEp: s.maxEp }));
+        }
+      } else {
+        const seNum = seasonMode !== 'all' ? (parseInt(seasonMode, 10) || 1) : 1;
+        targetSeasons = [{ se: seNum, maxEp: episodesCount || 10 }];
+      }
 
-        const epCaptions = (mb.captions || []).map((c, i) => {
-          const l = (c.language || 'en').toLowerCase();
-          const label = l === 'en' ? 'English' : (l === 'hi' ? 'Hindi (हिन्दी)' : (l === 'bn' ? 'Bangla (বাংলা)' : (c.language || 'Subtitle')));
-          return {
-            id: `ep${ep}_sub_${l}_${i}`,
-            label,
-            language: l,
-            srclang: l,
-            src: c.url,
-            url: c.url,
-            format: c.url && c.url.includes('.srt') ? 'srt' : 'vtt'
-          };
-        });
+      const seasons = [];
+      let totalEpisodesImported = 0;
 
-        const res = mb.resolution || 1080;
-        const autoRenewEpUrl = `/api/moviebox/stream?id=${subjectId}&path=${encodeURIComponent(detailPath || '')}&se=1&ep=${ep}`;
-        episodes.push({
-          number: String(ep).padStart(2, '0'),
-          episode: ep,
-          season: 1,
-          title: `Episode ${ep}`,
-          duration: mb.duration || '45 min',
-          still: poster,
-          stillPath: poster,
-          streamUrl: autoRenewEpUrl,
-          servers: [
-            {
-              name: `Server 1 (${isHindi ? 'Hindi Dub' : 'HD'} - Auto-Renewing ${res}p)`,
-              url: autoRenewEpUrl,
-              quality: `${res}p`,
-              audio: isHindi ? 'Hindi dub' : 'Original Audio',
-              isDirect: true
-            },
-            {
-              name: `Server 2 (Direct Fast CDN)`,
-              url: mb.streamUrl,
-              quality: `${res}p`,
-              audio: isHindi ? 'Hindi dub' : 'Original Audio',
-              isDirect: true
+      for (const sInfo of targetSeasons) {
+        const seNum = sInfo.se;
+        const maxEp = Math.min(Math.max(parseInt(sInfo.maxEp, 10) || 1, 1), 150);
+        const seasonEpisodes = [];
+
+        // Pre-resolve episode 1 of this season for resolution, sample duration, and subtitle tracks
+        let sampleRes = 1080;
+        let sampleDuration = '45 min';
+        let sampleCaptions = [];
+        let directSampleUrl = '';
+        try {
+          const sampleMb = await movieboxService.resolveMedia(subjectId, detailPath, seNum, 1);
+          if (sampleMb) {
+            if (sampleMb.resolution) sampleRes = sampleMb.resolution;
+            if (sampleMb.duration) sampleDuration = sampleMb.duration;
+            if (sampleMb.streamUrl) directSampleUrl = sampleMb.streamUrl;
+            if (Array.isArray(sampleMb.captions)) {
+              sampleCaptions = sampleMb.captions.map((c, i) => {
+                const l = (c.language || 'en').toLowerCase();
+                const label = l === 'en' ? 'English' : (l === 'hi' ? 'Hindi (हिन्दी)' : (l === 'bn' ? 'Bangla (বাংলা)' : (c.language || 'Subtitle')));
+                return {
+                  id: `s${seNum}ep1_sub_${l}_${i}`,
+                  label,
+                  language: l,
+                  srclang: l,
+                  src: c.url,
+                  url: c.url,
+                  format: c.url && c.url.includes('.srt') ? 'srt' : 'vtt'
+                };
+              });
             }
-          ],
-          captions: epCaptions,
-          subtitles: epCaptions
+          }
+        } catch (e) {}
+
+        for (let ep = 1; ep <= maxEp; ep++) {
+          const autoRenewEpUrl = `/api/moviebox/stream?id=${subjectId}&path=${encodeURIComponent(detailPath || '')}&se=${seNum}&ep=${ep}`;
+          const epCaptions = sampleCaptions.map((c, idx) => ({
+            ...c,
+            id: `s${seNum}ep${ep}_sub_${c.language}_${idx}`
+          }));
+
+          seasonEpisodes.push({
+            number: String(ep).padStart(2, '0'),
+            episode: ep,
+            season: seNum,
+            title: `Episode ${ep}`,
+            duration: sampleDuration,
+            still: poster,
+            stillPath: poster,
+            streamUrl: autoRenewEpUrl,
+            servers: [
+              {
+                name: `Server 1 (${isHindi ? 'Hindi Dub' : 'HD'} - Auto-Renewing ${sampleRes}p)`,
+                url: autoRenewEpUrl,
+                quality: `${sampleRes}p`,
+                audio: isHindi ? 'Hindi dub' : 'Original Audio',
+                isDirect: true
+              },
+              {
+                name: ep === 1 && directSampleUrl ? 'Server 2 (Direct Fast CDN)' : 'Server 2 (Auto Failover)',
+                url: ep === 1 && directSampleUrl ? directSampleUrl : autoRenewEpUrl,
+                quality: `${sampleRes}p`,
+                audio: isHindi ? 'Hindi dub' : 'Original Audio',
+                isDirect: true
+              }
+            ],
+            captions: epCaptions,
+            subtitles: epCaptions
+          });
+        }
+
+        totalEpisodesImported += seasonEpisodes.length;
+        seasons.push({
+          seasonNumber: seNum,
+          title: `Season ${seNum}`,
+          name: `Season ${seNum}`,
+          year: String(year),
+          episodesCount: seasonEpisodes.length,
+          episodes: seasonEpisodes
         });
       }
+
+      if (seasons.length === 0 || totalEpisodesImported === 0) {
+        throw new Error('No episodes could be imported for this series');
+      }
+
+      const firstSeason = seasons[0];
+      const firstEp = firstSeason.episodes[0];
+      const durationStr = seasons.length > 1
+        ? `${seasons.length} Seasons (${totalEpisodesImported} Episodes)`
+        : `${totalEpisodesImported} Episodes`;
 
       const newSeries = {
         id: `mb-s-${subjectId}`,
@@ -604,15 +667,15 @@ class AdminService {
         poster: optPoster || poster || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80',
         backdrop: payload.cover || optBackdrop || poster,
         cover: payload.cover || optBackdrop || poster,
-        duration: `${episodes.length} Episodes`,
-        streamUrl: `/api/moviebox/stream?id=${subjectId}&path=${encodeURIComponent(detailPath || '')}&se=1&ep=1`,
-        servers: [{ name: 'Fast Server (Auto-Renew)', url: `/api/moviebox/stream?id=${subjectId}&path=${encodeURIComponent(detailPath || '')}&se=1&ep=1` }],
-        episodesCount: episodes.length,
+        duration: durationStr,
+        streamUrl: firstEp.streamUrl,
+        servers: firstEp.servers,
+        episodesCount: totalEpisodesImported,
         category,
         industry,
         language: isHindi ? 'Hindi' : 'English',
         dubLanguage: isHindi ? 'Hindi' : 'Original',
-        seasonsCount: 1,
+        seasonsCount: seasons.length,
         addedAt: new Date().toISOString(),
         createdAt: new Date().toISOString(),
         releaseDate: year ? (year + '-10-25') : new Date().toISOString().split('T')[0],
@@ -620,17 +683,9 @@ class AdminService {
         badgeLeft: 'Trending',
         badgeRight: isHindi ? 'Hindi' : industry,
         views: 1250,
-        seasons: [
-          {
-            seasonNumber: 1,
-            title: 'Season 1',
-            name: 'Season 1',
-            year: String(year),
-            episodesCount: episodes.length,
-            episodes
-          }
-        ],
-        description: `${finalTitle} - Full season streaming on FOBS TV.`
+        seasons,
+        episodes: firstSeason.episodes,
+        description: `${finalTitle} - ${durationStr} streaming in HD on FOBS TV.`
       };
 
       content.series = (content.series || []).filter(s => s.id !== newSeries.id && s.subjectId !== subjectId);

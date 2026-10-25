@@ -1,3 +1,4 @@
+let currentImportSeasons = [];
 /**
  * FOBS TV — Web Admin Panel Client Engine (with Recent Importer)
  */
@@ -235,7 +236,29 @@ function initEventListeners() {
   document.getElementById('imp-type').addEventListener('change', (e) => {
     const isSeries = e.target.value === 'series';
     document.getElementById('series-episodes-row').style.display = isSeries ? 'flex' : 'none';
+    const hintRow = document.getElementById('series-episodes-hint-row');
+    if (hintRow) hintRow.style.display = isSeries ? 'block' : 'none';
   });
+
+  const seasonModeSel = document.getElementById('imp-season-mode');
+  if (seasonModeSel) {
+    seasonModeSel.addEventListener('change', (e) => {
+      const mode = e.target.value;
+      const epInput = document.getElementById('imp-episodes');
+      const epLabel = document.getElementById('imp-episodes-label');
+      if (!epInput) return;
+      if (mode === 'all') {
+        const total = currentImportSeasons.reduce((acc, s) => acc + (s.maxEp || 0), 0) || 10;
+        epInput.value = total;
+        if (epLabel) epLabel.innerHTML = '<i class="fa-solid fa-film text-cyan"></i> Total Episodes';
+      } else {
+        const seNum = parseInt(mode, 10);
+        const found = currentImportSeasons.find(s => s.se === seNum);
+        epInput.value = found ? (found.maxEp || 10) : 10;
+        if (epLabel) epLabel.innerHTML = `<i class="fa-solid fa-film text-cyan"></i> S${seNum} Episodes`;
+      }
+    });
+  }
 }
 
 function switchTab(tabName) {
@@ -482,6 +505,7 @@ async function openImportModal(item) {
   const sId = String(item.subjectId || item.id || '');
   const dPath = item.detailPath || '';
 
+  currentImportSeasons = [];
   document.getElementById('imp-subjectId').value = sId;
   document.getElementById('imp-detailPath').value = dPath;
   document.getElementById('imp-poster').value = item.poster || '';
@@ -490,13 +514,20 @@ async function openImportModal(item) {
   document.getElementById('imp-year').value = item.year || '2026';
   document.getElementById('imp-type').value = isSeries ? 'series' : 'movie';
   document.getElementById('series-episodes-row').style.display = isSeries ? 'flex' : 'none';
+  const hintRow = document.getElementById('series-episodes-hint-row');
+  if (hintRow) hintRow.style.display = isSeries ? 'block' : 'none';
+
+  const seasonSel = document.getElementById('imp-season-mode');
+  if (seasonSel) {
+    seasonSel.innerHTML = '<option value="all">🌟 All Seasons (Auto-Detecting...)</option>';
+  }
 
   const isHindi = (item.title && item.title.toLowerCase().includes('hindi')) || (item.section && item.section.toLowerCase().includes('hindi'));
   document.getElementById('imp-ishindi').checked = isHindi;
 
   const epHint = document.getElementById('imp-episodes-hint');
   if (epHint) {
-    epHint.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detecting uploaded episodes & industry from MovieBox...';
+    epHint.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detecting uploaded seasons & episodes from MovieBox...';
     epHint.style.color = '#3b82f6';
   }
 
@@ -507,12 +538,39 @@ async function openImportModal(item) {
     const data = await apiFetch(`/api/admin/moviebox/detail?subjectId=${encodeURIComponent(sId)}`);
     if (data && data.success && data.detail) {
       const d = data.detail;
-      if (d.totalEpisodes && document.getElementById('imp-episodes')) {
-        document.getElementById('imp-episodes').value = d.totalEpisodes;
-      }
+      currentImportSeasons = d.seasons || [];
+
       if (d.type) {
         document.getElementById('imp-type').value = d.type;
-        document.getElementById('series-episodes-row').style.display = d.type === 'series' ? 'flex' : 'none';
+        const isNowSeries = d.type === 'series';
+        document.getElementById('series-episodes-row').style.display = isNowSeries ? 'flex' : 'none';
+        if (hintRow) hintRow.style.display = isNowSeries ? 'block' : 'none';
+      }
+
+      if (seasonSel) {
+        seasonSel.innerHTML = '';
+        if (d.seasons && d.seasons.length > 0) {
+          const allOpt = document.createElement('option');
+          allOpt.value = 'all';
+          allOpt.textContent = `🌟 All Seasons (${d.seasons.length} Seasons • ${d.totalEpisodes} Eps Total)`;
+          seasonSel.appendChild(allOpt);
+
+          d.seasons.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = String(s.se);
+            opt.textContent = `Season ${s.se} (${s.maxEp || 0} Episodes)`;
+            seasonSel.appendChild(opt);
+          });
+        } else {
+          const opt = document.createElement('option');
+          opt.value = 'all';
+          opt.textContent = `🌟 Season 1 (${d.totalEpisodes || 10} Episodes)`;
+          seasonSel.appendChild(opt);
+        }
+      }
+
+      if (d.totalEpisodes && document.getElementById('imp-episodes')) {
+        document.getElementById('imp-episodes').value = d.totalEpisodes;
       }
       if (d.year && document.getElementById('imp-year')) {
         document.getElementById('imp-year').value = d.year;
@@ -530,7 +588,12 @@ async function openImportModal(item) {
         document.getElementById('imp-cover').value = d.cover;
       }
       if (epHint) {
-        epHint.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Auto-detected: <strong>${d.totalEpisodes} Episodes</strong> uploaded • ${d.industry} (${d.category})`;
+        if (d.seasons && d.seasons.length > 1) {
+          const breakdown = d.seasons.map(s => `S${s.se}: ${s.maxEp} eps`).join(' • ');
+          epHint.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Auto-detected: <strong>${d.seasons.length} Seasons (${d.totalEpisodes} Episodes Total)</strong><br><span style="font-size:11.5px; opacity:0.9;">${breakdown} • ${d.industry} (${d.category})</span>`;
+        } else {
+          epHint.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Auto-detected: <strong>${d.totalEpisodes} Episodes</strong> uploaded • ${d.industry} (${d.category})`;
+        }
         epHint.style.color = '#10b981';
       }
     }
@@ -564,6 +627,7 @@ async function handleImportSubmit(e) {
     industry: document.getElementById('imp-industry').value,
     isHindi: document.getElementById('imp-ishindi').checked,
     isFeatured: !!document.getElementById('imp-featured')?.checked,
+    seasonMode: document.getElementById('imp-season-mode')?.value || 'all',
     episodesCount: parseInt(document.getElementById('imp-episodes').value, 10) || 1
   };
 
