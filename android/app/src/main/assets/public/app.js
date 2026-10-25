@@ -1422,6 +1422,15 @@ function setupPlayerSwipeToClose() {
   }, { passive: true });
 }
 
+// Image Optimization Helper: Convert w500 to w185 for card thumbnails (17 KB vs 98 KB - 6x faster loading)
+function getOptimizedPoster(url, size = 'w185') {
+  if (!url || typeof url !== 'string') return '';
+  if (url.includes('image.tmdb.org/t/p/')) {
+    return url.replace(/\/t\/p\/(?:w\d+|original)\//, `/t/p/${size}/`);
+  }
+  return url;
+}
+
 // Card Badge Helpers: Dynamic right badge representing language/industry (e.g. Hindi, Korean, Chinese, Turkish, Anime)
 function getCardBadgeLeft(item) {
   return '';
@@ -1506,7 +1515,7 @@ function renderHomeFeeds() {
     return `
       <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
         <div class="card-poster-wrap">
-          <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
+          <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" loading="lazy">
           <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
           ${getCardBadgeRightHtml(item, isSeries ? 'Series' : 'Movie')}
           ${idx < 3 ? `<div class="card-rank-number">${idx + 1}</div>` : ''}
@@ -1529,7 +1538,7 @@ function renderHomeFeeds() {
       return `
         <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
           <div class="card-poster-wrap">
-            <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
+            <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" loading="lazy">
             <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
             ${getCardBadgeRightHtml(item, isSeries ? 'Series' : 'Movie')}
             <div class="card-play-hover">
@@ -1558,7 +1567,7 @@ function renderHomeFeeds() {
         return `
           <div class="coming-card" onclick='openUpcomingBookingModal("${item.id}")'>
             <div class="coming-poster-wrap">
-              <img src="${item.poster}" alt="${item.title}" class="coming-poster-img" loading="lazy">
+              <img src="${getOptimizedPoster(item.poster, 'w342')}" alt="${item.title}" class="coming-poster-img" loading="lazy">
               <span class="card-badge-right">${item.year || 'Upcoming'}</span>
               <div class="coming-date-badge">${month}<span>${day}</span></div>
               <div class="coming-booked-tag"><span id="bookedBadge_${item.id}">${booked}</span> booked</div>
@@ -1582,10 +1591,10 @@ function renderHomeFeeds() {
   // 3. Movies
   const homeMoviesContainer = document.getElementById('homeMoviesList');
   if (homeMoviesContainer) {
-    homeMoviesContainer.innerHTML = movies.map(item => `
+    homeMoviesContainer.innerHTML = movies.slice(0, 24).map(item => `
       <div class="media-card" onclick='openPlayerById("movie", "${item.id}")'>
         <div class="card-poster-wrap">
-          <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
+          <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" loading="lazy">
           <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
           ${getCardBadgeRightHtml(item, 'Movie')}
           <div class="card-play-hover">
@@ -1601,10 +1610,10 @@ function renderHomeFeeds() {
   // 4. Series
   const homeSeriesContainer = document.getElementById('homeSeriesList');
   if (homeSeriesContainer) {
-    homeSeriesContainer.innerHTML = series.map(item => `
+    homeSeriesContainer.innerHTML = series.slice(0, 24).map(item => `
       <div class="media-card" onclick='openPlayerById("series", "${item.id}")'>
         <div class="card-poster-wrap">
-          <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
+          <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" loading="lazy">
           <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
           ${getCardBadgeRightHtml(item, 'Series')}
           <div class="card-play-hover">
@@ -1623,12 +1632,12 @@ function renderHomeFeeds() {
     const allTurkish = [...movies, ...series].filter(isTurkishMedia);
     const sortedTurkish = sortByReleaseDateDesc(allTurkish);
     if (sortedTurkish.length > 0) {
-      homeTurkishContainer.innerHTML = sortedTurkish.map(item => {
+      homeTurkishContainer.innerHTML = sortedTurkish.slice(0, 24).map(item => {
         const isSeries = !!item.episodes || item.type === 'series';
         return `
           <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
             <div class="card-poster-wrap">
-              <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
+              <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" loading="lazy">
               <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
               ${getCardBadgeRightHtml(item, isSeries ? 'Series' : 'Movie')}
               <div class="card-play-hover">
@@ -1651,10 +1660,10 @@ function renderHomeFeeds() {
     const allAnime = [...movies, ...series].filter(isAnimeMedia);
     const sortedAnime = sortByReleaseDateDesc(allAnime.length > 0 ? allAnime : movies.filter(m => m.country === 'Japan'));
     if (sortedAnime.length > 0) {
-      homeAnimeContainer.innerHTML = sortedAnime.map(item => `
+      homeAnimeContainer.innerHTML = sortedAnime.slice(0, 24).map(item => `
         <div class="media-card" onclick='openPlayerById("${item.type || (item.episodes ? 'series' : 'movie')}", "${item.id}")'>
           <div class="card-poster-wrap">
-            <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
+            <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" loading="lazy">
             <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
             ${getCardBadgeRightHtml(item, 'Anime')}
             <div class="card-play-hover">
@@ -1705,7 +1714,7 @@ function renderMovieCardItem(item, rank = null) {
   return `
     <div class="media-card" onclick='openPlayerById("movie", "${item.id}")'>
       <div class="card-poster-wrap">
-        <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy" onerror="this.onerror=null; this.src='https://image.tmdb.org/t/p/w500/vy14tKxsbJYdDyFl6kQuVkK2s44.jpg';">
+        <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" loading="lazy" onerror="this.onerror=null; this.src='https://image.tmdb.org/t/p/w185/vy14tKxsbJYdDyFl6kQuVkK2s44.jpg';">
         <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
         ${getCardBadgeRightHtml(item, 'Movie')}
         ${rank ? `<div class="card-rank-number">${rank}</div>` : ''}
@@ -1959,7 +1968,7 @@ function renderSeriesCardItem(item, rank = null) {
   return `
     <div class="media-card" onclick='openPlayerById("series", "${item.id}")'>
       <div class="card-poster-wrap">
-        <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy" onerror="this.onerror=null; this.src='https://image.tmdb.org/t/p/w500/jwrumjdNdtlHRzthQEj9HmxehcR.jpg';">
+        <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" loading="lazy" onerror="this.onerror=null; this.src='https://image.tmdb.org/t/p/w185/jwrumjdNdtlHRzthQEj9HmxehcR.jpg';">
         <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
         ${getCardBadgeRightHtml(item, 'Series')}
         ${rank ? `<div class="card-rank-number">${rank}</div>` : ''}
@@ -5652,7 +5661,7 @@ function renderForYouRecommendations() {
   container.innerHTML = recs.map(item => `
     <div class="media-card" onclick='openPlayerById("${item.type || 'movie'}", "${item.id}")'>
       <div class="card-poster-wrap">
-        <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
+        <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" loading="lazy">
         <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
         ${getCardBadgeRightHtml(item, item.type === 'series' ? 'Series' : 'Movie')}
         <div class="card-play-hover">
@@ -6724,7 +6733,7 @@ function handleSearch(customQuery = null) {
     return `
       <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
         <div class="card-poster-wrap">
-          <img src="${item.poster}" alt="${item.title}" class="card-poster-img" loading="lazy">
+          <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" loading="lazy">
           <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
           ${getCardBadgeRightHtml(item, isSeries ? 'Series' : 'Movie')}
         </div>
