@@ -277,6 +277,7 @@ public class MainActivity extends BridgeActivity {
                                 // Exclude hop-by-hop and headers we will explicitly canonicalize
                                 if (lk.equals("connection") || lk.equals("keep-alive") || lk.equals("transfer-encoding") ||
                                     lk.equals("content-length") || lk.equals("content-range") || lk.equals("accept-ranges") ||
+                                    lk.equals("content-disposition") ||
                                     lk.startsWith("access-control-")) {
                                     continue;
                                 }
@@ -284,12 +285,13 @@ public class MainActivity extends BridgeActivity {
                             }
                         }
 
-                        // Add standardized CORS and Range headers
+                        // Add standardized CORS and Range headers (crucial: enforce inline disposition so video tag plays stream)
                         resHeaders.put("Access-Control-Allow-Origin", "*");
                         resHeaders.put("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS");
                         resHeaders.put("Access-Control-Allow-Headers", "*");
-                        resHeaders.put("Access-Control-Expose-Headers", "Content-Range, Content-Length, Accept-Ranges");
+                        resHeaders.put("Access-Control-Expose-Headers", "Content-Range, Content-Length, Accept-Ranges, Content-Disposition");
                         resHeaders.put("Accept-Ranges", "bytes");
+                        resHeaders.put("Content-Disposition", "inline");
 
                         String contentRange = conn.getHeaderField("Content-Range");
                         if (contentRange != null && !contentRange.trim().isEmpty()) {

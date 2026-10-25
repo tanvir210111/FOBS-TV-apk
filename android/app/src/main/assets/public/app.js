@@ -2959,6 +2959,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
   }
   if (videoPlayer) {
     videoPlayer.style.display = 'block';
+    videoPlayer._retryCount = 0;
   }
 
   if (loader) loader.classList.add('active');
@@ -3073,9 +3074,11 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
   )) {
     console.log('Playing MovieBox stream directly via native Android Bridge (HTTPS):', playableUrl);
     videoPlayer.src = playableUrl;
-    videoPlayer.load();
     if (seekTime && seekTime > 0) {
+      let seekApplied = false;
       const applySeek = () => {
+        if (seekApplied) return;
+        seekApplied = true;
         try { videoPlayer.currentTime = seekTime; } catch (e) {}
       };
       if (videoPlayer.readyState >= 1) {
@@ -5307,6 +5310,12 @@ function setupVideoListeners() {
       return;
     }
 
+    // Ignore aborted streams (e.g., when changing tracks, src or seeking)
+    if (videoPlayer.error && videoPlayer.error.code === 1) {
+      console.log('Video error code 1 (MEDIA_ERR_ABORTED) ignored.');
+      return;
+    }
+
     console.error('Video load error, attempting fallback:', e);
 
     const curEp = appState.currentEpisode;
@@ -6396,6 +6405,14 @@ function switchAudioTrack(lang) {
   });
 
   const videoPlayer = document.getElementById('mainVideoPlayer');
+  if (videoPlayer) {
+    videoPlayer._retryCount = 0;
+    videoPlayer._ignoreErrors = true;
+    try { videoPlayer.pause(); } catch (e) {}
+    setTimeout(() => {
+      if (videoPlayer) videoPlayer._ignoreErrors = false;
+    }, 1500);
+  }
 
   const isOriginal = lang.toLowerCase().includes('original') || lang.toLowerCase().includes('english') || lang.toLowerCase().includes('eng') || lang.toLowerCase().includes('korean') || lang.toLowerCase().includes('orig');
   const targetAudioIndex = isOriginal ? 1 : 0;
