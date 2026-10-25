@@ -262,15 +262,37 @@ async function run() {
   // Cast
   const castList = (tv.credits?.cast || []).slice(0, 6).map(c => c.name).join(', ') || 'Lee Jae-wook, Choi Sung-eun, Hong Kyung';
 
-  // 4. Construct Series Object with both Original Audio and Hindi Dub
-  const seriesObj = {
-    id: `mb-s-${SUBJECT_ID_FULL}`,
-    subjectId: SUBJECT_ID_FULL,
+  // 4. Construct Two Series Objects: One for Hindi Dub and One for Original Korean Audio
+  const hindiEpisodes = episodes.map(ep => ({
+    ...ep,
+    streamUrl: `/api/moviebox/stream?id=${SUBJECT_ID_HINDI}&se=1&ep=${ep.number}`,
+    servers: [
+      {
+        name: 'Server 1 (Hindi Dub - Auto-Renewing 480p SD)',
+        url: `/api/moviebox/stream?id=${SUBJECT_ID_HINDI}&se=1&ep=${ep.number}`,
+        isDirect: true,
+        quality: '480p',
+        audio: 'Hindi dub'
+      },
+      {
+        name: 'Server 2 (Original Audio - Auto-Renewing 1080p HD)',
+        url: `/api/moviebox/stream?id=${SUBJECT_ID_FULL}&se=1&ep=${ep.number}`,
+        isDirect: true,
+        quality: '1080p',
+        audio: 'Original audio'
+      },
+      ...(ep.servers ? ep.servers.filter(s => !s.name.includes('Server 1') && !s.name.includes('Server 2')) : [])
+    ]
+  }));
+
+  const seriesObjHindi = {
+    id: `mb-s-${SUBJECT_ID_HINDI}`,
+    subjectId: SUBJECT_ID_HINDI,
     hindiSubjectId: SUBJECT_ID_HINDI,
     tmdbId: TMDB_TV_ID,
-    title: 'Dive into You',
-    altTitle: 'Dive to You',
-    originalTitle: '너에게 다이브 (Dive to You)',
+    title: 'Dive into You [Hindi]',
+    altTitle: 'Dive to You [Hindi Dub]',
+    originalTitle: '너에게 다이브 (Dive to You - Hindi Dub)',
     year: tv.first_air_date ? tv.first_air_date.substring(0, 4) : '2026',
     releaseDate: tv.first_air_date || '2026-09-26',
     rating: String(tv.vote_average ? tv.vote_average.toFixed(1) : '8.4'),
@@ -280,14 +302,14 @@ async function run() {
     category: 'Korean (Dubbed) Series',
     industry: 'Korean',
     country: 'Korea',
-    badgeLeft: 'Original Audio + Hindi',
+    badgeLeft: 'Hindi Dubbed',
     badgeRight: 'K-Drama',
-    tag: 'Original Audio + Hindi',
-    dubLanguage: 'Original Audio (Korean) + Hindi Dub',
-    audioTracks: ['Original audio', 'Hindi dub'],
-    selectedAudio: 'Original audio',
-    streamUrl: episodes[0].streamUrl,
-    servers: episodes[0].servers,
+    tag: 'Hindi Dub',
+    dubLanguage: 'Hindi Dubbed (Dual Audio)',
+    audioTracks: ['Hindi dub', 'Original audio'],
+    selectedAudio: 'Hindi dub',
+    streamUrl: hindiEpisodes[0].streamUrl,
+    servers: hindiEpisodes[0].servers,
     poster: tv.poster_path ? `https://image.tmdb.org/t/p/w500${tv.poster_path}` : 'https://image.tmdb.org/t/p/w500/6OAuQOGqjYY1JXbkTlWz4Mm2Kmi.jpg',
     backdrop: tv.backdrop_path ? `https://image.tmdb.org/t/p/original${tv.backdrop_path}` : 'https://image.tmdb.org/t/p/original/jseW3HucgNjN2CwJa3MiOlF4xMO.jpg',
     overview: tv.overview || "An actress and her twin brother slip through time – and swap bodies – to save their friend's life.",
@@ -302,12 +324,83 @@ async function run() {
         title: 'Season 1',
         name: 'Season 1',
         year: '2026',
-        episodesCount: episodes.length,
+        episodesCount: hindiEpisodes.length,
         poster: tv.poster_path ? `https://image.tmdb.org/t/p/w500${tv.poster_path}` : 'https://image.tmdb.org/t/p/w500/6OAuQOGqjYY1JXbkTlWz4Mm2Kmi.jpg',
-        episodes
+        episodes: hindiEpisodes
       }
     ],
-    episodes: episodes,
+    episodes: hindiEpisodes,
+    type: 'series',
+    addedAt: new Date().toISOString()
+  };
+
+  const origEpisodes = episodes.map(ep => ({
+    ...ep,
+    streamUrl: `/api/moviebox/stream?id=${SUBJECT_ID_FULL}&se=1&ep=${ep.number}`,
+    servers: [
+      {
+        name: 'Server 1 (Original Audio - Auto-Renewing 1080p HD)',
+        url: `/api/moviebox/stream?id=${SUBJECT_ID_FULL}&se=1&ep=${ep.number}`,
+        isDirect: true,
+        quality: '1080p',
+        audio: 'Original audio'
+      },
+      {
+        name: 'Server 2 (Hindi Dub - Auto-Renewing 480p SD)',
+        url: `/api/moviebox/stream?id=${SUBJECT_ID_HINDI}&se=1&ep=${ep.number}`,
+        isDirect: true,
+        quality: '480p',
+        audio: 'Hindi dub'
+      },
+      ...(ep.servers ? ep.servers.filter(s => !s.name.includes('Server 1') && !s.name.includes('Server 2')) : [])
+    ]
+  }));
+
+  const seriesObjOriginal = {
+    id: `mb-s-${SUBJECT_ID_FULL}`,
+    subjectId: SUBJECT_ID_FULL,
+    hindiSubjectId: SUBJECT_ID_HINDI,
+    tmdbId: TMDB_TV_ID,
+    title: 'Dive into You [Original Audio]',
+    altTitle: 'Dive to You [Korean]',
+    originalTitle: '너에게 다이브 (Dive to You - Original)',
+    year: tv.first_air_date ? tv.first_air_date.substring(0, 4) : '2026',
+    releaseDate: tv.first_air_date || '2026-09-26',
+    rating: String(tv.vote_average ? tv.vote_average.toFixed(1) : '8.4'),
+    imdbRating: String(tv.vote_average ? tv.vote_average.toFixed(1) : '8.4'),
+    votes: String(tv.vote_count || '95'),
+    duration: '8 Episodes',
+    category: 'Korean Series',
+    industry: 'Korean',
+    country: 'Korea',
+    badgeLeft: 'Original Audio',
+    badgeRight: 'Korean HD',
+    tag: 'Original Audio',
+    dubLanguage: 'Original Korean Audio (Dual Audio)',
+    audioTracks: ['Original audio', 'Hindi dub'],
+    selectedAudio: 'Original audio',
+    streamUrl: origEpisodes[0].streamUrl,
+    servers: origEpisodes[0].servers,
+    poster: tv.poster_path ? `https://image.tmdb.org/t/p/w500${tv.poster_path}` : 'https://image.tmdb.org/t/p/w500/6OAuQOGqjYY1JXbkTlWz4Mm2Kmi.jpg',
+    backdrop: tv.backdrop_path ? `https://image.tmdb.org/t/p/original${tv.backdrop_path}` : 'https://image.tmdb.org/t/p/original/jseW3HucgNjN2CwJa3MiOlF4xMO.jpg',
+    overview: tv.overview || "An actress and her twin brother slip through time – and swap bodies – to save their friend's life.",
+    description: tv.overview || "An actress and her twin brother slip through time – and swap bodies – to save their friend's life.",
+    genres: (tv.genres || []).map(g => g.name).join(', ') || 'Comedy, Drama, Sci-Fi & Fantasy, K-Drama',
+    director: 'Kim Jin-min',
+    cast: castList,
+    seasonsCount: 1,
+    seasons: [
+      {
+        seasonNumber: 1,
+        title: 'Season 1',
+        name: 'Season 1',
+        year: '2026',
+        episodesCount: origEpisodes.length,
+        poster: tv.poster_path ? `https://image.tmdb.org/t/p/w500${tv.poster_path}` : 'https://image.tmdb.org/t/p/w500/6OAuQOGqjYY1JXbkTlWz4Mm2Kmi.jpg',
+        episodes: origEpisodes
+      }
+    ],
+    episodes: origEpisodes,
     type: 'series',
     addedAt: new Date().toISOString()
   };
@@ -324,13 +417,14 @@ async function run() {
       return !idMatch && !titleMatch && !origMatch;
     });
 
-    content.series.unshift(seriesObj);
+    content.series.unshift(seriesObjOriginal);
+    content.series.unshift(seriesObjHindi);
 
     fs.writeFileSync(filePath, JSON.stringify(content, null, 2), 'utf8');
     console.log(`💾 Replaced entry in: ${filePath}`);
   }
 
-  console.log('\n🎉 Successfully updated Dive into You with Original Korean Audio and Hindi Dub across all 8 episodes!');
+  console.log('\n🎉 Successfully updated Dive into You with both Hindi Dubbed and Original Audio versions!');
 }
 
 run().catch(err => {

@@ -710,12 +710,17 @@ app.get('/api/moviebox/stream', async (req, res) => {
     if (!media || !media.streamUrl) {
       return res.status(404).send('Stream not available for this episode yet');
     }
+    const host = req.get('x-forwarded-host') || req.get('host') || '187.127.114.52';
+    const proto = req.get('x-forwarded-proto') || req.protocol || 'http';
+    const baseUrl = `${proto}://${host}`;
     const proxiedStreamUrl = `/api/stream?url=${encodeURIComponent(media.streamUrl)}`;
+    const fullProxiedStreamUrl = `${baseUrl}${proxiedStreamUrl}`;
+
     if (req.query.json === '1' || req.headers.accept?.includes('application/json')) {
-      return res.json({ ok: true, streamUrl: proxiedStreamUrl, directCdnUrl: media.streamUrl, resolution: media.resolution });
+      return res.json({ ok: true, streamUrl: fullProxiedStreamUrl, directCdnUrl: media.streamUrl, resolution: media.resolution });
     }
-    // Redirect through proxy so HTTP Referer is attached and byte-range seeking works 100%
-    res.redirect(302, proxiedStreamUrl);
+    // Absolute redirect through proxy so HTTP Referer is attached and byte-range seeking works 100%
+    res.redirect(302, fullProxiedStreamUrl);
   } catch (err) {
     console.error('MovieBox stream redirect error:', err.message);
     res.status(500).send('Stream resolution failed');

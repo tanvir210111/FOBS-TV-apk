@@ -5264,15 +5264,20 @@ function setupVideoListeners() {
     console.error('Video load error, attempting fallback:', e);
 
     const curEp = appState.currentEpisode;
-    const rawUrl = (curEp?.audioTracks && curEp.audioTracks[appState.currentAudioTrack]) || curEp?.streamUrl || appState.currentMedia?.streamUrl || appState.currentMedia?.driveUrl;
+    const rawUrl = getActiveEpisodeStream(curEp, appState.currentAudioTrack) || curEp?.streamUrl || appState.currentMedia?.streamUrl;
 
     if (!videoPlayer._retryCount) videoPlayer._retryCount = 0;
-    if (videoPlayer._retryCount < 1 && rawUrl && !rawUrl.includes('/api/stream?url=')) {
+    if (videoPlayer._retryCount < 2 && rawUrl) {
       videoPlayer._retryCount++;
       const resumeTime = appState.pendingSeekTime || videoPlayer.currentTime || 0;
       console.log(`Retrying stream via proxy at ${resumeTime}s (attempt ${videoPlayer._retryCount})...`);
 
-      videoPlayer.src = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(rawUrl)}`;
+      const targetUrl = rawUrl.startsWith('http') ? rawUrl : `${API_BASE_URL}${rawUrl}`;
+      const proxyUrl = targetUrl.includes('/api/stream') 
+        ? targetUrl 
+        : `${API_BASE_URL}/api/stream?url=${encodeURIComponent(targetUrl)}`;
+
+      videoPlayer.src = proxyUrl;
       videoPlayer.load();
       if (resumeTime > 0) {
         const onLoaded = () => {
