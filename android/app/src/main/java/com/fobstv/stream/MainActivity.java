@@ -190,16 +190,27 @@ public class MainActivity extends BridgeActivity {
         public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
             if (request != null && request.getUrl() != null) {
                 String host = request.getUrl().getHost();
-                if (host != null && (
+                String path = request.getUrl().getPath();
+                boolean isMovieBoxCdn = host != null && (
                     host.contains("hakunaymatata.com") || 
                     host.contains("bcdnxw") || 
                     host.contains("haildrop") || 
                     host.contains("fogtwist") || 
                     host.contains("sunburst") || 
                     host.contains("stormshade")
-                )) {
+                );
+                boolean isVpsProxyStream = host != null && host.contains("187.127.114.52") && path != null && path.contains("/api/stream");
+
+                if (isMovieBoxCdn || isVpsProxyStream) {
                     try {
-                        URL currentUrl = new URL(request.getUrl().toString());
+                        String rawTarget = request.getUrl().toString();
+                        if (isVpsProxyStream) {
+                            String innerUrl = request.getUrl().getQueryParameter("url");
+                            if (innerUrl != null && !innerUrl.trim().isEmpty()) {
+                                rawTarget = innerUrl.trim();
+                            }
+                        }
+                        URL currentUrl = new URL(rawTarget);
                         HttpURLConnection conn = null;
                         int redirects = 0;
                         int statusCode = 200;

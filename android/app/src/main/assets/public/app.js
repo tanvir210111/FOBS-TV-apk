@@ -3045,8 +3045,14 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       const jsonUrl = fullUrl.includes('?') ? `${fullUrl}&json=1` : `${fullUrl}?json=1`;
       const res = await fetch(jsonUrl, { cache: 'no-store' });
       const data = await res.json();
-      if (data && data.ok && data.streamUrl) {
-        playableUrl = data.streamUrl.startsWith('http') ? data.streamUrl : `${API_BASE_URL}${data.streamUrl}`;
+      if (data && data.ok) {
+        if (window.AndroidApp && data.directCdnUrl) {
+          // Native Android APK: CustomBridgeWebViewClient natively intercepts direct HTTPS CDN URLs
+          // with Referer: https://movieboxapp.in/ (no Mixed Content, no cleartext IP blocking!)
+          playableUrl = data.directCdnUrl;
+        } else if (data.streamUrl) {
+          playableUrl = data.streamUrl.startsWith('http') ? data.streamUrl : `${API_BASE_URL}${data.streamUrl}`;
+        }
       }
     } catch (e) {
       console.warn('Pre-resolve MovieBox stream failed, falling back to direct endpoint:', e.message);
@@ -3056,7 +3062,34 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     }
   }
 
-  // If already routed through /api/stream proxy (e.g. from MovieBox resolver)
+  // Direct MovieBox playback inside native Android APK (CustomBridgeWebViewClient handles Referer)
+  if (window.AndroidApp && (
+    playableUrl.includes('hakunaymatata') || 
+    playableUrl.includes('bcdnxw') || 
+    playableUrl.includes('haildrop') || 
+    playableUrl.includes('fogtwist') || 
+    playableUrl.includes('sunburst') || 
+    playableUrl.includes('stormshade')
+  )) {
+    console.log('Playing MovieBox stream directly via native Android Bridge (HTTPS):', playableUrl);
+    videoPlayer.src = playableUrl;
+    videoPlayer.load();
+    if (seekTime && seekTime > 0) {
+      const applySeek = () => {
+        try { videoPlayer.currentTime = seekTime; } catch (e) {}
+      };
+      if (videoPlayer.readyState >= 1) {
+        applySeek();
+      } else {
+        videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
+        videoPlayer.addEventListener('canplay', applySeek, { once: true });
+      }
+    }
+    videoPlayer.play().catch(() => {});
+    return;
+  }
+
+  // If already routed through /api/stream proxy (e.g. from MovieBox resolver in browser)
   if (playableUrl.includes('/api/stream')) {
     const proxyStreamUrl = playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`;
     console.log('Playing stream via server proxy:', proxyStreamUrl);
@@ -5971,21 +6004,45 @@ function triggerDownload() {
 
   if (previewTitle) previewTitle.innerText = activeTitle;
   if (previewPoster) previewPoster.src = activePoster;
-  if (previewMeta) previewMeta.innerText = `${media.dubLanguage || 'Hindi Dubbed'} • Full HD 1080P`;
 
-  currentDownloadQuality = '1080P';
-  currentDownloadSize = '1.1 GB';
-  if (btnText) btnText.innerText = 'Download 1080P Full HD (~1.1 GB)';
+  const isHindi = (
+    activeTitle.toLowerCase().includes('hindi') || 
+    (appState.currentAudioTrack && appState.currentAudioTrack.toLowerCase().includes('hindi'))
+  );
 
-  // Reset quality selector highlight
-  document.querySelectorAll('.dl-quality-item').forEach(item => {
-    const is1080 = item.getAttribute('data-quality') === '1080P';
-    item.classList.toggle('active', is1080);
-    const radio = item.querySelector('.dl-q-radio i');
-    if (radio) {
-      radio.className = is1080 ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle';
-    }
-  });
+  if (isHindi) {
+    if (previewMeta) previewMeta.innerText = 'Hindi Dubbed • 480P SD (~416 MB)';
+    currentDownloadQuality = '480P';
+    currentDownloadSize = '416 MB';
+    if (btnText) btnText.innerText = 'Download 480P SD (~416 MB)';
+
+    document.querySelectorAll('.dl-quality-item').forEach(item => {
+      const is480 = item.getAttribute('data-quality') === '480P';
+      item.classList.toggle('active', is480);
+      const radio = item.querySelector('.dl-q-radio i');
+      if (radio) {
+        radio.className = is480 ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle';
+      }
+      const sizeEl = item.querySelector('.dl-q-size');
+      if (is480 && sizeEl) sizeEl.innerText = '~416 MB';
+    });
+  } else {
+    if (previewMeta) previewMeta.innerText = `${media.dubLanguage || 'Original Audio'} • 1080P Full HD (~1.1 GB)`;
+    currentDownloadQuality = '1080P';
+    currentDownloadSize = '1.1 GB';
+    if (btnText) btnText.innerText = 'Download 1080P Full HD (~1.1 GB)';
+
+    document.querySelectorAll('.dl-quality-item').forEach(item => {
+      const is1080 = item.getAttribute('data-quality') === '1080P';
+      item.classList.toggle('active', is1080);
+      const radio = item.querySelector('.dl-q-radio i');
+      if (radio) {
+        radio.className = is1080 ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle';
+      }
+      const sizeEl = item.querySelector('.dl-q-size');
+      if (item.getAttribute('data-quality') === '480P' && sizeEl) sizeEl.innerText = '~380 MB';
+    });
+  }
 
   appState._pendingDownload = {
     url: targetUrl,
@@ -6046,7 +6103,19 @@ function confirmStartDownload() {
     return;
   }
 
-  downloadMedia(pending.url, pending.title, {
+  let finalDownloadUrl = pending.url;
+  // If user selected 1080P Full HD for Dive into You, guarantee the 1080P stream is used!
+  if (currentDownloadQuality === '1080P' && pending.title && pending.title.toLowerCase().includes('dive into you')) {
+    const epMatch = pending.title.match(/Ep(?:isode)?\s*(\d+)/i);
+    const epNum = epMatch ? epMatch[1] : '1';
+    finalDownloadUrl = `/api/moviebox/stream?id=3870036899930730728&se=1&ep=${epNum}`;
+  } else if (currentDownloadQuality === '480P' && pending.title && pending.title.toLowerCase().includes('dive into you')) {
+    const epMatch = pending.title.match(/Ep(?:isode)?\s*(\d+)/i);
+    const epNum = epMatch ? epMatch[1] : '1';
+    finalDownloadUrl = `/api/moviebox/stream?id=1932866268428649968&se=1&ep=${epNum}`;
+  }
+
+  downloadMedia(finalDownloadUrl, pending.title, {
     quality: currentDownloadQuality,
     size: currentDownloadSize,
     poster: pending.poster,
@@ -6101,7 +6170,7 @@ function downloadMedia(url, title, options = {}) {
   }
   const downloadUrl = `${baseApi}/api/download?url=${encodeURIComponent(fullStreamUrl)}&title=${encodeURIComponent(cleanTitle)}`;
   
-  showToast(`📥 Opening in Chrome / Browser to download...`);
+  showToast(`📥 Opening in Chrome to download (${quality})... Tap "Continue" if prompted.`);
 
   if (window.AndroidApp && typeof window.AndroidApp.openExternalUrl === 'function') {
     window.AndroidApp.openExternalUrl(downloadUrl);
