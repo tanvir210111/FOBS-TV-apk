@@ -142,27 +142,54 @@ class MovieBoxService {
       const country = (sub.countryName || sub.country || '').toLowerCase();
       const genre = (sub.genre || '').toLowerCase();
       const title = sub.title || '';
-      const isHindi = title.toLowerCase().includes('hindi');
+      const desc = (sub.description || '').toLowerCase();
+      const isHindi = title.toLowerCase().includes('hindi') || (sub.postTitle || '').toLowerCase().includes('hindi');
 
-      // Auto-detect Industry & Category intelligently
+      const isAnimeOrAnimation = country.includes('japan') || genre.includes('anime') || genre.includes('animation') ||
+        /\b(naruto|one piece|dragon ball|jujutsu|demon slayer|bleach|attack on titan|anime|manga)\b/i.test(title + ' ' + desc);
+
+      const isChinese = country.includes('china') || country.includes('taiwan') || country.includes('hong kong') ||
+        /\b(chinese|c-drama|cdrama|mandarin|sang zhi|hidden love)\b/i.test(title + ' ' + desc);
+
+      const isKorean = country.includes('korea') || genre.includes('k-drama') || genre.includes('kdrama') ||
+        /\b(k-drama|kdrama|korean|snowdrop)\b/i.test(title + ' ' + desc);
+
+      const isTurkish = country.includes('turk') || genre.includes('turkish') ||
+        /\b(turkish|turkey|dizi)\b/i.test(title + ' ' + desc);
+
+      const isSouthIndian = country.includes('south') ||
+        /\b(tollywood|kollywood|mollywood|sandalwood|telugu|tamil|malayalam|kannada|pushpa|kgf|rrr|salaar|bahubali|jailer|devara)\b/i.test(title + ' ' + desc);
+
+      const isBollywood = country.includes('india') || genre.includes('bollywood') ||
+        /\b(bollywood)\b/i.test(title + ' ' + desc);
+
       let industry = 'Hollywood';
       let category = isSeries ? 'Web Series' : 'Hollywood Movies';
 
-      if (country.includes('korea') || genre.includes('k-drama') || genre.includes('kdrama')) {
-        industry = 'Kdrama';
-        category = 'Korean Drama';
-      } else if (country.includes('turk') || genre.includes('turkish')) {
-        industry = 'Turkish';
-        category = 'Turkish Series';
-      } else if (country.includes('japan') || genre.includes('anime') || genre.includes('animation')) {
-        industry = 'Anime';
-        category = 'Animation & Anime';
-      } else if (country.includes('india') || genre.includes('bollywood') || isHindi) {
-        industry = 'Bollywood';
-        category = isSeries ? 'Web Series' : (isHindi ? 'Bollywood Movies' : 'South Indian Hindi Dubbed');
-      } else if (country.includes('china') || country.includes('taiwan')) {
+      if (isChinese) {
         industry = 'Chinese';
-        category = 'Chinese Drama';
+        category = isSeries ? (isHindi ? 'Chinese (Dubbed) Series' : 'Chinese Series') : (isHindi ? 'Chinese (Dubbed) Movies' : 'Chinese Drama');
+      } else if (isKorean) {
+        industry = 'Korean';
+        category = isSeries ? (isHindi ? 'Korean (Dubbed) Series' : 'Korean Series') : 'Korean Drama';
+      } else if (isTurkish) {
+        industry = 'Turkish';
+        category = isSeries ? 'Turkish Series' : 'Turkish Series';
+      } else if (isAnimeOrAnimation) {
+        industry = 'Anime';
+        category = isSeries ? (isHindi ? 'Anime Series (Hindi Dub)' : 'Japanese Series') : (isHindi ? 'Anime Movies (Hindi Dub)' : 'Animation & Anime');
+      } else if (isSouthIndian) {
+        industry = 'South Indian';
+        category = isSeries ? 'South Indian Series' : (isHindi ? 'South (Dubbed) Movies' : 'South Indian Hindi Dubbed');
+      } else if (isBollywood) {
+        industry = 'Bollywood';
+        category = isSeries ? 'Web Series' : (isHindi ? 'Bollywood Movies' : 'Bollywood Movies');
+      } else if (isHindi) {
+        industry = 'Hollywood';
+        category = isSeries ? 'Hollywood (Dubbed) Series' : 'Hollywood (Dubbed) Movies';
+      } else {
+        industry = 'Hollywood';
+        category = isSeries ? 'Web Series' : 'Hollywood Movies';
       }
 
       const year = sub.releaseDate ? sub.releaseDate.substring(0, 4) : '2026';

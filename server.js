@@ -35,6 +35,16 @@ app.use(compression({
 }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
+// Prevent browser caching for admin panel assets so updates are immediate
+app.use((req, res, next) => {
+  if (req.path.startsWith('/admin') || req.path.endsWith('.html') || req.path.endsWith('.js') || req.path.endsWith('.css')) {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+  }
+  next();
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Health check endpoint for Hostinger KVM 8 VPS and monitors
@@ -2053,6 +2063,7 @@ app.post('/api/moviebox/sync', async (req, res) => {
 
 // Static Admin Entry
 app.get('/admin', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
   res.sendFile(path.join(__dirname, 'public', 'admin', 'index.html'));
 });
 
