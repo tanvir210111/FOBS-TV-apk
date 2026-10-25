@@ -14,6 +14,9 @@ const CONTENT_FILE = path.join(__dirname, '..', 'data', 'content.json');
 const VIEWS_FILE = path.join(__dirname, '..', 'data', 'views.json');
 const REQUESTS_FILE = path.join(__dirname, '..', 'data', 'requests.json');
 const NOTIFICATIONS_FILE = path.join(__dirname, '..', 'data', 'notifications.json');
+const NOTIFICATIONS_LOCAL_FILE = path.join(__dirname, '..', 'data', 'notifications.local.json');
+const REQUESTS_LOCAL_FILE = path.join(__dirname, '..', 'data', 'requests.local.json');
+const VIEWS_LOCAL_FILE = path.join(__dirname, '..', 'data', 'views.local.json');
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'fobs2026admin';
 const JWT_SECRET = process.env.JWT_SECRET || 'fobs_tv_admin_secret_key_2026';
@@ -41,6 +44,12 @@ function writeContent(content) {
 
 function readNotifications() {
   try {
+    if (fs.existsSync(NOTIFICATIONS_LOCAL_FILE)) {
+      const localData = JSON.parse(fs.readFileSync(NOTIFICATIONS_LOCAL_FILE, 'utf8'));
+      if (Array.isArray(localData) && localData.length > 0) return localData;
+    }
+  } catch (e) {}
+  try {
     if (fs.existsSync(NOTIFICATIONS_FILE)) {
       return JSON.parse(fs.readFileSync(NOTIFICATIONS_FILE, 'utf8'));
     }
@@ -51,6 +60,7 @@ function readNotifications() {
 function writeNotifications(list) {
   try {
     fs.writeFileSync(NOTIFICATIONS_FILE, JSON.stringify(list, null, 2), 'utf8');
+    fs.writeFileSync(NOTIFICATIONS_LOCAL_FILE, JSON.stringify(list, null, 2), 'utf8');
     return true;
   } catch (e) {
     console.error('Error writing notifications.json:', e);
@@ -59,6 +69,12 @@ function writeNotifications(list) {
 }
 
 function readRequests() {
+  try {
+    if (fs.existsSync(REQUESTS_LOCAL_FILE)) {
+      const localData = JSON.parse(fs.readFileSync(REQUESTS_LOCAL_FILE, 'utf8'));
+      if (Array.isArray(localData) && localData.length > 0) return localData;
+    }
+  } catch (e) {}
   try {
     if (fs.existsSync(REQUESTS_FILE)) {
       return JSON.parse(fs.readFileSync(REQUESTS_FILE, 'utf8'));
@@ -70,6 +86,7 @@ function readRequests() {
 function writeRequests(list) {
   try {
     fs.writeFileSync(REQUESTS_FILE, JSON.stringify(list, null, 2), 'utf8');
+    fs.writeFileSync(REQUESTS_LOCAL_FILE, JSON.stringify(list, null, 2), 'utf8');
     return true;
   } catch (e) {
     console.error('Error writing requests.json:', e);
