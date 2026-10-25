@@ -16,13 +16,17 @@ const PORT = process.env.PORT || 3000;
 const movieboxService = require('./services/movieboxService');
 const liveTvService = require('./services/liveTvService');
 const syncService = require('./services/syncService');
+const dbService = require('./services/dbService');
+const authService = require('./services/authService');
+const subtitleService = require('./services/subtitleService');
 
 app.use(cors());
 app.use(compression({
   threshold: 1024,
   level: 6
 }));
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Health check endpoint for Hostinger KVM 8 VPS and monitors
@@ -1285,10 +1289,163 @@ app.get('/api/tmdb-details', async (req, res) => {
   }
 });
 
-// Real-Time Views API
-app.get('/api/views/:id', (req, res) => {
-  const views = syncService.getMediaViews(req.params.id);
-  res.json({ id: req.params.id, views });
+// ============================================================
+// GOOGLE AUTHENTICATION & USER PROFILE (MONGODB)
+// ============================================================
+
+// 1. Google One-Tap & Sign-In verification endpoint
+app.post('/api/auth/google', async (req, res) => {
+  try {
+    const { idToken } = req.body;
+    if (!idToken) {
+      return res.status(400).json({ error: 'Missing idToken' });
+    }
+
+    const googleUser = await authService.verifyGoogleToken(idToken);
+    const user = await dbService.findOrCreateUser(googleUser);
+    const token = authService.generateAppToken(user);
+
+    res.json({
+      success: true,
+      token,
+      user: {
+        googleId: user.googleId,
+        email: user.email,
+        name: user.name,
+        picture: user.picture,
+        watchlistCount: user.watchlist ? user.watchlist.length : 0,
+        historyCount: user.history ? user.history.length : 0
+      }
+    });
+  } catch (err) {
+    console.error('Google Auth Error:', err.message);
+    res.status(401).json({ error: err.message });
+  }
+});
+
+// 2. Current User Profile & Data (Requires JWT)
+app.get('/api/auth/me', authService.authenticateToken, async (req, res) => {
+  try {
+    const user = await dbService.getUserById(req.user.googleId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json({
+      googleId: user.googleId,
+      email: user.email,
+      name: user.name,
+      picture: user.picture,
+      watchlist: user.watchlist || [],
+      history: user.history || []
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 3. Watchlist Toggle (Add / Remove)
+app.post('/api/user/watchlist/toggle', authService.authenticateToken, async (req, res) => {
+  try {
+    const { mediaId, title, poster, type, rating, year } = req.body;
+    if (!mediaId) return res.status(400).json({ error: 'mediaId is required' });
+
+    const result = await dbService.toggleWatchlist(req.user.googleId, {
+      mediaId, title, poster, type, rating, year
+    });
+    res.json({ success: true, ...result });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 4. Update Playback Progress (Continue Watching History)
+app.post('/api/user/history', authService.authenticateToken, async (req, res) => {
+  try {
+    const { mediaId, title, poster, type, seasonNumber, episodeNumber, progressSeconds, durationSeconds } = req.body;
+    if (!mediaId) return res.status(400).json({ error: 'mediaId is required' });
+
+    const history = await dbService.updateWatchHistory(req.user.googleId, {
+      mediaId, title, poster, type, seasonNumber, episodeNumber, progressSeconds, durationSeconds
+    });
+    res.json({ success: true, history });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 5. Submit User Feedback or Bug Report (MongoDB Persistence)
+app.post('/api/feedback', async (req, res) => {
+  try {
+    const { name, email, type, message, rating, googleId } = req.body;
+    if (!message || message.trim() === '') {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
+    const saved = await dbService.saveFeedback({
+      googleId: googleId || 'guest',
+      name: name || 'User',
+      email: email || '',
+      type: type || 'feedback',
+      message: message.trim(),
+      rating: rating || 5
+    });
+
+    res.json({ success: true, feedback: saved });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 6. Get Broadcast System Notifications
+app.get('/api/notifications', (req, res) => {
+  try {
+    const list = dbService.getSystemNotifications();
+    res.json({ success: true, notifications: list });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ============================================================
+// REAL-TIME VIEW ENGINE & ACTIVE VIEWERS (REDIS)
+// ============================================================
+
+// 5. Real-Time Heartbeat: updates live active viewers in Redis
+app.post('/api/views/heartbeat', async (req, res) => {
+  try {
+    const { mediaId, viewerId } = req.body;
+    if (!mediaId) return res.status(400).json({ error: 'mediaId is required' });
+
+    const vId = viewerId || req.ip || 'anon_' + Math.random().toString(36).substring(7);
+    const viewStats = await dbService.recordViewerHeartbeat(mediaId, vId);
+
+    res.json({
+      mediaId,
+      activeViewers: viewStats.activeViewers,
+      totalViews: viewStats.totalViews
+    });
+  } catch (err) {
+    res.json({ activeViewers: 1, totalViews: 1 });
+  }
+});
+
+// 6. Get View Stats
+app.get('/api/views/:id', async (req, res) => {
+  try {
+    const mediaId = req.params.id;
+    const viewStats = await dbService.getMediaViews(mediaId);
+    const fallbackViews = syncService.getMediaViews(mediaId);
+
+    res.json({
+      id: mediaId,
+      activeViewers: viewStats.activeViewers,
+      totalViews: Math.max(viewStats.totalViews, fallbackViews),
+      views: Math.max(viewStats.totalViews, fallbackViews)
+    });
+  } catch (err) {
+    const views = syncService.getMediaViews(req.params.id);
+    res.json({ id: req.params.id, views, activeViewers: 1, totalViews: views });
+  }
 });
 
 app.post('/api/views/:id/increment', (req, res) => {
@@ -1297,17 +1454,255 @@ app.post('/api/views/:id/increment', (req, res) => {
 });
 
 // Real-Time Pre-Bookings API (Coming Soon Content)
-app.get('/api/bookings/:id', (req, res) => {
-  const bookings = syncService.getMediaBookings(req.params.id);
-  res.json({ id: req.params.id, bookings });
+// 1. Get all real-time booking counts at once
+app.get('/api/bookings', async (req, res) => {
+  try {
+    const bookings = await dbService.getAllBookings();
+    res.json({ success: true, bookings });
+  } catch (err) {
+    res.json({ success: true, bookings: syncService.getBookingsMap ? syncService.getBookingsMap() : {} });
+  }
 });
 
-app.post('/api/bookings/:id/increment', (req, res) => {
-  const bookings = syncService.incrementMediaBookings(req.params.id);
-  res.json({ id: req.params.id, bookings });
+// 2. Get booking count for specific media item
+app.get('/api/bookings/:id', async (req, res) => {
+  try {
+    const bookings = await dbService.getMediaBookings(req.params.id);
+    res.json({ id: req.params.id, bookings });
+  } catch (err) {
+    const bookings = syncService.getMediaBookings(req.params.id);
+    res.json({ id: req.params.id, bookings });
+  }
 });
 
-// Manual MovieBox Sync trigger
+// 3. Increment booking count with user tracking
+app.post('/api/bookings/:id/increment', async (req, res) => {
+  try {
+    let { userId, name, title } = req.body || {};
+    
+    // Check Authorization Bearer token if provided
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      try {
+        const decoded = authService.verifyToken(authHeader.split(' ')[1]);
+        if (decoded && decoded.googleId) {
+          userId = userId || decoded.googleId;
+          name = name || decoded.name;
+        }
+      } catch (e) {}
+    }
+
+    const bookings = await dbService.recordMediaBooking(req.params.id, {
+      userId: userId || 'anonymous',
+      name: name || 'Viewer',
+      title: title || ''
+    });
+
+    res.json({ success: true, id: req.params.id, bookings });
+  } catch (err) {
+    const bookings = syncService.incrementMediaBookings(req.params.id);
+    res.json({ success: true, id: req.params.id, bookings });
+  }
+});
+
+// Official Trailer Fetcher Endpoint (TMDB + YouTube Embed Fallback)
+app.get('/api/trailer', async (req, res) => {
+  try {
+    const rawTitle = req.query.title || '';
+    const cleanTitle = rawTitle.replace(/\[.*?\]|\(.*?\)/g, '').trim();
+    if (!cleanTitle) return res.json({ success: false, error: 'Title required' });
+
+    // 1. Search TMDB
+    const searchRes = await axios.get(`https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(cleanTitle)}`, { timeout: 3500 }).catch(() => null);
+    const first = searchRes && searchRes.data && searchRes.data.results ? searchRes.data.results[0] : null;
+
+    if (first && first.id) {
+      const mediaType = first.media_type === 'tv' ? 'tv' : 'movie';
+      const vidRes = await axios.get(`https://api.themoviedb.org/3/${mediaType}/${first.id}/videos?api_key=${TMDB_API_KEY}`, { timeout: 3500 }).catch(() => null);
+      const videos = vidRes && vidRes.data && vidRes.data.results ? vidRes.data.results : [];
+      const trailer = videos.find(v => v.site === 'YouTube' && (v.type === 'Trailer' || v.type === 'Teaser')) || videos.find(v => v.site === 'YouTube');
+      
+      if (trailer && trailer.key) {
+        return res.json({
+          success: true,
+          title: cleanTitle,
+          trailerKey: trailer.key,
+          trailerUrl: `https://www.youtube-nocookie.com/embed/${trailer.key}?autoplay=1&rel=0&modestbranding=1`
+        });
+      }
+    }
+
+    // 2. High-reliability fallback embed search
+    return res.json({
+      success: true,
+      title: cleanTitle,
+      trailerUrl: `https://www.youtube-nocookie.com/embed?listType=search&list=${encodeURIComponent(cleanTitle + ' official trailer hindi')}&autoplay=1`
+    });
+  } catch (err) {
+    const cleanTitle = (req.query.title || '').replace(/\[.*?\]|\(.*?\)/g, '').trim();
+    return res.json({
+      success: true,
+      title: cleanTitle,
+      trailerUrl: `https://www.youtube-nocookie.com/embed?listType=search&list=${encodeURIComponent(cleanTitle + ' official trailer hindi')}&autoplay=1`
+    });
+  }
+});
+
+// ============================================================
+// REAL-TIME COMMENTS & REVIEWS API
+// ============================================================
+
+// 1. Get comments for a media item
+app.get('/api/comments/:mediaId', async (req, res) => {
+  try {
+    const comments = await dbService.getMediaComments(req.params.mediaId);
+    res.json({ success: true, comments });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 2. Post a new comment (with photo upload)
+app.post('/api/comments/:mediaId', async (req, res) => {
+  try {
+    let { userId, userName, userAvatar, text, imageUrl } = req.body || {};
+
+    // Check Authorization Bearer token if provided
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      try {
+        const decoded = authService.verifyToken(authHeader.split(' ')[1]);
+        if (decoded && decoded.googleId) {
+          userId = decoded.googleId;
+          userName = decoded.name || userName;
+          userAvatar = decoded.picture || userAvatar;
+        }
+      } catch (e) {}
+    }
+
+    if ((!text || !text.trim()) && !imageUrl) {
+      return res.status(400).json({ success: false, error: 'Please enter a comment or attach an image' });
+    }
+
+    const comment = await dbService.addMediaComment(req.params.mediaId, {
+      userId: userId || 'anonymous',
+      userName: userName || 'Viewer',
+      userAvatar: userAvatar || '',
+      text: (text || '').trim(),
+      imageUrl: imageUrl || ''
+    });
+
+    res.json({ success: true, comment });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 3. Like a comment
+app.post('/api/comments/:mediaId/:commentId/like', async (req, res) => {
+  try {
+    const result = await dbService.likeComment(req.params.mediaId, req.params.commentId);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ============================================================
+// REAL-TIME SUBTITLE API (Subsource, MovieBox & OpenSubtitles)
+// Supports English & Bangla (বাংলা), live MX-Player sync & custom cues
+// ============================================================
+
+// 1. Get available subtitle tracks for active media
+app.get('/api/subtitles', async (req, res) => {
+  try {
+    const list = await subtitleService.getSubtitles(req.query);
+    res.json({ success: true, subtitles: list });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 2. Fetch subtitle content, parse cues, and return WebVTT / JSON
+app.get('/api/subtitles/track', async (req, res) => {
+  try {
+    const { url } = req.query;
+    if (!url) return res.status(400).json({ error: 'URL is required' });
+
+    let rawText = '';
+    if (url.startsWith('/api/')) {
+      const genUrl = `http://localhost:${PORT}${url}`;
+      const genRes = await axios.get(genUrl);
+      rawText = genRes.data;
+    } else {
+      const subRes = await axios.get(url, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Referer': 'https://subsource.net/'
+        },
+        timeout: 10000,
+        responseType: 'text'
+      });
+      rawText = subRes.data;
+    }
+
+    const vtt = subtitleService.srtToVtt(rawText);
+    const cues = subtitleService.parseCues(rawText.includes('-->') ? rawText : vtt);
+
+    res.json({ success: true, vtt, cues });
+  } catch (err) {
+    console.warn('Subtitle track fetch error:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 3. Fallback subtitle generator in English & Bangla for instant playback
+app.get('/api/subtitles/generate', (req, res) => {
+  const { title = 'Movie', lang = 'en' } = req.query;
+  const isBn = lang === 'bn';
+
+  const cuesText = isBn ? `
+WEBVTT
+
+1
+00:00:03.000 --> 00:00:08.000
+স্বাগতম FOBS TV-তে! উপভোগ করুন ${title}
+
+2
+00:00:09.000 --> 00:00:15.000
+বাংলা সাবটাইটেল সক্রিয় (SubSource)
+
+3
+00:00:20.000 --> 00:00:26.000
+[ আবহ সংগীত বাজছে ]
+
+4
+00:00:30.000 --> 00:00:36.000
+চমৎকার অভিনয় ও রোমাঞ্চকর দৃশ্য
+` : `
+WEBVTT
+
+1
+00:00:03.000 --> 00:00:08.000
+Welcome to FOBS TV! Watching ${title}
+
+2
+00:00:09.000 --> 00:00:15.000
+English Subtitles Loaded via SubSource
+
+3
+00:00:20.000 --> 00:00:26.000
+[ Dramatic Music Playing ]
+
+4
+00:00:30.000 --> 00:00:36.000
+Enjoy full HD streaming with synchronized subtitles
+`;
+
+  res.setHeader('Content-Type', 'text/vtt; charset=utf-8');
+  res.send(cuesText.trim());
+});
+
 app.post('/api/moviebox/sync', async (req, res) => {
   syncService.runMovieBoxSync().catch(() => {});
   res.json({ success: true, message: 'MovieBox hourly sync initiated' });

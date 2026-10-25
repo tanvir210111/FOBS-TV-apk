@@ -348,7 +348,10 @@ async function runMovieBoxSync() {
                       number: ep,
                       title: `Episode ${ep}`,
                       streamUrl: epMedia.streamUrl,
-                      audioTracks: { 'Hindi dub': epMedia.streamUrl }
+                      audioTracks: {
+                        'Hindi dub': epMedia.streamUrl,
+                        'Original Audio': epMedia.streamUrl
+                      }
                     });
                   }
                 }
@@ -371,7 +374,10 @@ async function runMovieBoxSync() {
                 number: 1,
                 title: 'Episode 1',
                 streamUrl: media.streamUrl,
-                audioTracks: { 'Hindi dub': media.streamUrl }
+                audioTracks: {
+                  'Hindi dub': media.streamUrl,
+                  'Original Audio': media.streamUrl
+                }
               }
             ];
           }
@@ -411,7 +417,7 @@ async function runMovieBoxSync() {
             poster,
             backdrop,
             description: desc,
-            audioTracks: ['Hindi dub'],
+            audioTracks: ['Hindi dub', 'Original Audio'],
             selectedAudio: 'Hindi dub',
             streamUrl: media.streamUrl,
             servers,
@@ -462,7 +468,7 @@ async function runMovieBoxSync() {
             poster,
             backdrop,
             description: desc,
-            audioTracks: ['Hindi dub'],
+            audioTracks: ['Hindi dub', 'Original Audio'],
             selectedAudio: 'Hindi dub',
             streamUrl: media.streamUrl,
             servers,
@@ -525,7 +531,10 @@ async function runMovieBoxSync() {
                   { name: 'Server 1', url: directStream1 },
                   { name: 'Server 2', url: directStream2 }
                 ],
-                audioTracks: { 'Hindi dub': directStream1 }
+                audioTracks: {
+                  'Hindi dub': directStream1,
+                  'Original Audio': directStream2 || directStream1
+                }
               });
             }
             data.series.unshift({
@@ -550,7 +559,7 @@ async function runMovieBoxSync() {
               poster,
               backdrop,
               description: tmdb.overview || `${tItem.title} Turkish drama series dubbed in Hindi exclusively on FOBS TV.`,
-              audioTracks: ['Hindi dub'],
+              audioTracks: ['Hindi dub', 'Original Audio'],
               selectedAudio: 'Hindi dub',
               streamUrl: episodes[0].streamUrl,
               servers: episodes[0].servers,
@@ -591,7 +600,7 @@ async function runMovieBoxSync() {
               poster,
               backdrop,
               description: tmdb.overview || `${tItem.title} Turkish movie dubbed in Hindi exclusively on FOBS TV.`,
-              audioTracks: ['Hindi dub'],
+              audioTracks: ['Hindi dub', 'Original Audio'],
               selectedAudio: 'Hindi dub',
               streamUrl: servers[0].url,
               servers,

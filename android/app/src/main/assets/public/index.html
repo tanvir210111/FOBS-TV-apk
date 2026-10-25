@@ -14,6 +14,7 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="assets/fobs_logo.png">
   <link rel="stylesheet" href="style.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 
@@ -45,22 +46,6 @@
           <span class="update-pulse-badge"></span>
         </button>
       </div>
-
-      <!-- 4 Main Navigation Tabs: Home, Movie, Series, Live TV -->
-      <nav class="main-tabs-nav">
-        <button class="nav-tab-pill active" data-tab="home" onclick="switchMainTab('home')">
-          <i class="fa-solid fa-house"></i> Home
-        </button>
-        <button class="nav-tab-pill" data-tab="movie" onclick="switchMainTab('movie')">
-          <i class="fa-solid fa-film"></i> Movie
-        </button>
-        <button class="nav-tab-pill" data-tab="series" onclick="switchMainTab('series')">
-          <i class="fa-solid fa-tv"></i> Series
-        </button>
-        <button class="nav-tab-pill" data-tab="livetv" onclick="switchMainTab('livetv')">
-          <i class="fa-solid fa-satellite-dish"></i> Live TV
-        </button>
-      </nav>
     </header>
 
     <!-- Non-intrusive Server Status Bar / Pull To Refresh Bar -->
@@ -563,9 +548,170 @@
         </div>
       </section>
 
+      <!-- ME / USER PROFILE TAB VIEW (CLEAN FOBS TV) -->
+      <section id="meView" class="tab-view me-tab-view mb-me-screen">
+        <!-- User Profile Area -->
+        <div class="mb-profile-header" style="margin-top: 10px;">
+          <div class="mb-avatar-circle" id="meAvatarWrap">
+            <img id="meUserAvatar" class="mb-user-photo" src="" alt="" style="display: none;">
+            <span id="meAvatarInitial" class="mb-avatar-initial">F</span>
+          </div>
+          <div class="mb-profile-info">
+            <div class="mb-name-line">
+              <h3 class="mb-name-text" id="meUserName">FOBS Team</h3>
+            </div>
+            <div class="mb-id-line">
+              <span class="mb-gender-pill"><i class="fa-solid fa-mars"></i></span>
+              <span class="mb-id-pill" id="meUidLabel">ID: 06469277</span>
+            </div>
+          </div>
+          <button id="meLoginCtaBtn" class="mb-header-login-btn hidden" onclick="triggerGoogleLogin()">
+            <svg viewBox="0 0 24 24" width="14" height="14">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>Login</span>
+          </button>
+        </div>
+
+        <!-- Official Website Notice Strip -->
+        <div class="mb-official-strip" onclick="copyWebsiteLink('https://movie-box.co')">
+          <div class="mb-strip-left">
+            <i class="fa-solid fa-bullhorn"></i>
+            <span>Official website: https://movie-box.co</span>
+          </div>
+          <i class="fa-solid fa-chevron-right mb-strip-arrow"></i>
+        </div>
+
+        <!-- Watch History Horizontal Slider Section (Matching Screenshot 1 & 2) -->
+        <div class="mb-history-section">
+          <div class="mb-history-header" onclick="openHistoryModal()">
+            <div class="mb-h-title-wrap">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+              <span>Watch History</span>
+            </div>
+            <i class="fa-solid fa-chevron-right mb-h-arrow"></i>
+          </div>
+
+          <div class="mb-history-slider" id="mbHistorySlider">
+            <!-- Dynamically populated or rendered from user history -->
+          </div>
+        </div>
+
+        <!-- Menu Group 1: My List, Downloads, Messages -->
+        <div class="mb-menu-group">
+          <div class="mb-menu-row" onclick="openWatchlistModal()">
+            <div class="mb-m-left">
+              <i class="fa-solid fa-bookmark"></i>
+              <span>My List</span>
+            </div>
+            <div class="mb-m-right">
+              <span id="meWatchlistCount">28</span>
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+          </div>
+
+          <div class="mb-menu-row" onclick="openDownloadsView()">
+            <div class="mb-m-left">
+              <i class="fa-solid fa-download"></i>
+              <span>Downloads</span>
+            </div>
+            <div class="mb-m-right">
+              <span id="meDownloadsCount">0</span>
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+          </div>
+
+          <div class="mb-menu-row" onclick="openPreBookingsModal()">
+            <div class="mb-m-left">
+              <i class="fa-solid fa-ticket" style="color: #00f2fe;"></i>
+              <span>Pre-Bookings</span>
+            </div>
+            <div class="mb-m-right">
+              <span id="meBookingsCount">0</span>
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+          </div>
+
+          <div class="mb-menu-row" onclick="openMessagesModal()">
+            <div class="mb-m-left">
+              <i class="fa-solid fa-bell"></i>
+              <span>Messages</span>
+            </div>
+            <div class="mb-m-right">
+              <span id="meMessagesCount" class="mb-msg-count-tag">3</span>
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Menu Group 2: Community, My Activity -->
+        <div class="mb-menu-group">
+          <div class="mb-menu-row" onclick="openCommunity()">
+            <div class="mb-m-left">
+              <i class="fa-solid fa-users"></i>
+              <span>Community</span>
+            </div>
+            <div class="mb-m-right">
+              <span id="meCommunityCount">5.2k</span>
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+          </div>
+
+          <div class="mb-menu-row" onclick="openActivityModal()">
+            <div class="mb-m-left">
+              <i class="fa-solid fa-chart-simple"></i>
+              <span>My Activity</span>
+            </div>
+            <div class="mb-m-right">
+              <span id="meActivityCount">0</span>
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Menu Group 3: Settings, Feedback -->
+        <div class="mb-menu-group">
+          <div class="mb-menu-row" onclick="openSettingsModal()">
+            <div class="mb-m-left">
+              <i class="fa-solid fa-gear"></i>
+              <span>Settings</span>
+            </div>
+            <div class="mb-m-right">
+              <span class="mb-highlight-tag">New Version</span>
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+          </div>
+
+          <div class="mb-menu-row" onclick="openFeedbackModal()">
+            <div class="mb-m-left">
+              <i class="fa-solid fa-comment-dots"></i>
+              <span>Feedback</span>
+            </div>
+            <div class="mb-m-right">
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Website Footer -->
+        <div class="mb-official-footer" onclick="copyWebsiteLink('https://movie-box.co')">
+          <span>Official website: movie-box.co</span>
+          <span class="mb-copy-pill">Copy link</span>
+        </div>
+
+        <!-- Sign Out (if logged in) -->
+        <button id="meLogoutBtn" class="mb-signout-row hidden" onclick="handleUserLogout()">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span>Log out</span>
+        </button>
+      </section>
+
     </main>
 
-    <!-- Bottom Navigation Bar -->
+    <!-- Bottom Navigation Bar: Home, Movies, Series, Live TV, Me -->
     <nav class="bottom-tab-bar">
       <button class="bottom-tab-item active" data-tab="home" onclick="switchMainTab('home')">
         <i class="fa-solid fa-house"></i>
@@ -573,15 +719,19 @@
       </button>
       <button class="bottom-tab-item" data-tab="movie" onclick="switchMainTab('movie')">
         <i class="fa-solid fa-film"></i>
-        <span>Movie</span>
+        <span>Movies</span>
       </button>
       <button class="bottom-tab-item" data-tab="series" onclick="switchMainTab('series')">
         <i class="fa-solid fa-tv"></i>
         <span>Series</span>
       </button>
       <button class="bottom-tab-item" data-tab="livetv" onclick="switchMainTab('livetv')">
-        <i class="fa-solid fa-tower-broadcast"></i>
+        <i class="fa-solid fa-satellite-dish"></i>
         <span>Live TV</span>
+      </button>
+      <button class="bottom-tab-item" data-tab="me" onclick="switchMainTab('me')">
+        <i class="fa-solid fa-user"></i>
+        <span>Me</span>
       </button>
     </nav>
 
@@ -703,6 +853,11 @@
             <i class="fa-solid fa-angles-right"></i>
             <span>10 seconds</span>
           </div>
+        </div>
+
+        <!-- Live Custom Subtitle Overlay (SubSource English & Bangla with MX-Player Sync & Color Customization) -->
+        <div class="custom-subtitle-overlay" id="customSubtitleOverlay" style="display: none;">
+          <span class="custom-subtitle-cue" id="customSubtitleCueText"></span>
         </div>
 
         <!-- ============================================================ -->
@@ -902,18 +1057,24 @@
                 </div>
 
                 <div class="ls-lang-items" id="lsSubtitleOptionsList">
-                  <div class="ls-lang-item active" onclick="showToast('Subtitles feature is Coming Soon!')" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                    <span style="display: flex; align-items: center; gap: 8px;">
-                      <i class="fa-solid fa-clock-rotate-left" style="color: #f59e0b;"></i> Coming Soon
-                    </span>
-                    <span style="font-size: 11px; color: #94a3b8; background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 999px;">In Progress</span>
+                  <div class="ls-lang-item active" onclick="selectSubtitleTrack('off')">
+                    <span>Off (None)</span>
+                    <i class="fa-solid fa-check ls-check-icon"></i>
+                  </div>
+                  <div class="ls-lang-item" onclick="selectSubtitleTrack('en')">
+                    <span>English (SubSource)</span>
+                    <i class="fa-solid fa-check ls-check-icon hidden"></i>
+                  </div>
+                  <div class="ls-lang-item" onclick="selectSubtitleTrack('bn')">
+                    <span>Bangla (বাংলা - SubSource)</span>
+                    <i class="fa-solid fa-check ls-check-icon hidden"></i>
                   </div>
                 </div>
 
                 <div class="ls-subtitle-bottom-bar">
-                  <span>Style</span>
+                  <button class="ls-sub-bar-btn" type="button" onclick="openSubtitleModal('style')"><i class="fa-solid fa-palette"></i> Style</button>
                   <span class="ls-divider">|</span>
-                  <span>Delay</span>
+                  <button class="ls-sub-bar-btn" type="button" onclick="openSubtitleModal('sync')"><i class="fa-solid fa-sliders"></i> Delay (Sync)</button>
                 </div>
               </div>
             </div>
@@ -975,6 +1136,10 @@
           <button class="action-strip-btn" onclick="triggerDownload()">
             <i class="fa-solid fa-download"></i>
             <span>Download</span>
+          </button>
+          <button class="action-strip-btn" onclick="openSubtitleModal()" title="Subtitles (English & Bangla)">
+            <i class="fa-solid fa-closed-captioning" id="actionSubIcon"></i>
+            <span id="playerSubtitleBtnLabel">Subtitles</span>
           </button>
           <div class="action-strip-btn views-counter-btn" id="mediaViewsBadge" title="Real-time Views">
             <div class="views-icon-wrap">
@@ -1045,13 +1210,69 @@
         </div>
 
         <div id="commentsView" class="sub-tab-content">
-          <div class="comments-coming-soon-wrapper">
-            <div class="comments-cs-icon">
-              <i class="fa-solid fa-clock-rotate-left"></i>
+          <!-- Comments Section Header -->
+          <div class="comments-section-header">
+            <div class="comments-count-title">
+              <i class="fa-solid fa-comments" style="color: #00f2fe;"></i>
+              <span>Comments</span>
+              <span class="comments-badge-num" id="commentsCountBadge">0</span>
             </div>
-            <div class="comments-cs-badge">COMING SOON</div>
-            <h3 class="comments-cs-title">Coming Soon</h3>
-            <p class="comments-cs-desc">Comments & reviews feature is currently in progress and will be available soon!</p>
+            <div class="comments-sort-wrap">
+              <span class="comments-live-tag"><span class="views-live-dot"></span> Live Discussion</span>
+            </div>
+          </div>
+
+          <!-- Comments Feed List -->
+          <div class="comments-feed-list" id="commentsFeedList">
+            <!-- Dynamically populated comments -->
+          </div>
+
+          <!-- Sticky Comment Input Bar -->
+          <div class="comment-input-bar-wrap" id="commentInputBarWrap">
+            <!-- Image Attachment Preview Box -->
+            <div class="comment-image-preview-box" id="commentImgPreviewBox" style="display: none;">
+              <div class="img-preview-thumb-wrap">
+                <img src="" id="commentImgPreview" alt="Attachment">
+                <button class="img-preview-remove-btn" type="button" onclick="removeCommentImage()"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+              <span class="img-preview-hint">Photo attached • Tap Send to post</span>
+            </div>
+
+            <!-- Login Prompt Notice (shown when guest interacts) -->
+            <div class="comment-login-notice" id="commentLoginNotice" style="display: none;">
+              <i class="fa-solid fa-lock" style="color: #ff9f43;"></i>
+              <span>Sign in with Google to post comments & photos</span>
+              <button class="comment-login-prompt-btn" type="button" onclick="triggerGoogleLogin()">Sign In</button>
+            </div>
+
+            <form class="comment-input-form" id="commentInputForm" onsubmit="handleCommentSubmit(event)">
+              <div class="comment-user-avatar-wrap">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Avatar" id="commentInputUserAvatar">
+              </div>
+
+              <div class="comment-input-wrapper">
+                <input type="text" id="commentTextInput" class="comment-text-input" placeholder="Add a comment... (Photos supported)" autocomplete="off" onfocus="handleCommentInputFocus()">
+                
+                <!-- Photo Upload Attachment Button -->
+                <label for="commentFileInput" class="comment-attach-btn" id="commentAttachLabel" title="Attach picture">
+                  <i class="fa-regular fa-image"></i>
+                  <input type="file" id="commentFileInput" accept="image/*" style="display: none;" onchange="handleCommentImageSelected(event)">
+                </label>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="comment-send-btn" id="commentSendBtn" title="Send Comment">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Comment Image Fullscreen Lightbox Modal -->
+        <div class="bottom-sheet-overlay" id="commentImageLightbox" onclick="closeCommentLightbox(event)" style="display: none; z-index: 9999999;">
+          <div class="comment-lightbox-sheet" onclick="event.stopPropagation()">
+            <button class="sheet-close-btn" style="position: absolute; top: -40px; right: 0;" onclick="closeCommentLightbox()"><i class="fa-solid fa-xmark"></i></button>
+            <img src="" alt="Enlarged Photo" id="commentLightboxImg" class="comment-lightbox-img">
           </div>
         </div>
 
@@ -1139,40 +1360,139 @@
     </div>
 
     <!-- ============================================== -->
-    <!-- DOWNLOADS MODAL SHEET (VIEW DOWNLOADS) -->
+    <!-- DOWNLOADS VIEW (EXACT MOVIEBOX SCREENSHOT 4 MATCH) -->
     <!-- ============================================== -->
-    <div class="bottom-sheet-overlay" id="downloadsOverlay" onclick="closeDownloadsView(event)">
-      <div class="community-sheet" onclick="event.stopPropagation()">
-        <div class="community-sheet-header">
-          <div class="community-header-title">
-            <div class="community-badge-icon" style="background: linear-gradient(135deg, #00875a 0%, #27d988 100%); color: #fff;">
-              <i class="fa-solid fa-download"></i>
-            </div>
-            <div>
-              <h3>Downloads Manager</h3>
-              <p id="downloadsSubText">Your saved movies & series</p>
-            </div>
+    <div class="bottom-sheet-overlay mb-downloads-overlay" id="downloadsOverlay" onclick="closeDownloadsView(event)">
+      <div class="mb-dl-sheet" onclick="event.stopPropagation()">
+        <!-- Header with Speed Up & Transfer badges -->
+        <div class="mb-dl-header">
+          <div class="mb-dl-header-left">
+            <h2 class="mb-dl-title">Downloads</h2>
           </div>
-          <button class="sheet-close-btn" onclick="closeDownloadsView()"><i class="fa-solid fa-xmark"></i></button>
+          <div class="mb-dl-header-actions">
+            <button class="mb-dl-action-pill speed" onclick="runSpeedTest()">
+              <i class="fa-solid fa-crown" style="font-size: 11px;"></i>
+              <span>Speed Up</span>
+            </button>
+            <button class="mb-dl-action-pill transfer" onclick="showToast('Wi-Fi Direct Transfer ready')">
+              <i class="fa-solid fa-arrow-right-arrow-left" style="font-size: 11px;"></i>
+              <span>Transfer</span>
+            </button>
+            <button class="mb-dl-close-btn" onclick="closeDownloadsView()"><i class="fa-solid fa-xmark"></i></button>
+          </div>
         </div>
 
-        <div class="downloads-list" id="downloadsListContainer">
-          <!-- Dynamic Content Rendered in app.js -->
+        <div class="mb-dl-scrollable-body">
+          <!-- Downloaded Section Header & Storage -->
+          <div class="mb-dl-storage-row">
+            <h3 class="mb-dl-sec-title">Downloaded</h3>
+            <span class="mb-dl-storage-stat" id="mbDlStorageText">122.5GB available</span>
+          </div>
+
+          <!-- Filter Pills -->
+          <div class="mb-dl-filter-row">
+            <button class="mb-dl-filter-pill active" onclick="switchDlFilter('fobs')">MovieBox 1</button>
+            <button class="mb-dl-filter-pill" onclick="switchDlFilter('local')">Local files 225</button>
+            <button class="mb-dl-filter-pill" onclick="switchDlFilter('received')">Received</button>
+          </div>
+
+          <!-- Downloaded Dynamic List Container -->
+          <div id="downloadsListContainer" class="mb-dl-list-container"></div>
+
+          <!-- "For You" Section with 3-Column Posters -->
+          <div class="mb-dl-foryou-section">
+            <h3 class="mb-dl-foryou-title">For You</h3>
+            <div class="mb-dl-foryou-grid" id="mbDownloadsForYouGrid">
+              <!-- Dynamically populated or rendered -->
+            </div>
+            <button class="mb-dl-refresh-btn" onclick="refreshDownloadsForYou()">
+              <i class="fa-solid fa-rotate"></i>
+              <span>Refresh new content</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- ============================================== -->
-    <!-- COMING SOON PRE-BOOKING MODAL SHEET (NO PLAYER CONTROLS) -->
+    <!-- VIDEO DOWNLOAD QUALITY & OPTIONS MODAL SHEET   -->
+    <!-- ============================================== -->
+    <div class="bottom-sheet-overlay" id="downloadOptionsModal" onclick="closeDownloadOptionsModal(event)" style="display: none; z-index: 999999;">
+      <div class="download-modal-sheet" onclick="event.stopPropagation()">
+        <div class="download-modal-header">
+          <div class="dl-modal-title-wrap">
+            <i class="fa-solid fa-circle-down" style="color: #00f2fe; font-size: 22px;"></i>
+            <h3>Download Video</h3>
+          </div>
+          <button class="sheet-close-btn" onclick="closeDownloadOptionsModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <div class="download-media-preview">
+          <img src="" alt="Poster" class="dl-preview-poster" id="dlPreviewPoster">
+          <div class="dl-preview-info">
+            <h4 class="dl-preview-title" id="dlPreviewTitle">Title</h4>
+            <div class="dl-preview-meta" id="dlPreviewMeta">Hindi Dubbed • 1080P Full HD</div>
+          </div>
+        </div>
+
+        <div class="download-quality-list">
+          <div class="dl-quality-item active" data-quality="1080P" data-size="1.1 GB" onclick="selectDownloadQuality(this)">
+            <div class="dl-q-left">
+              <div class="dl-q-radio"><i class="fa-solid fa-circle-check"></i></div>
+              <div>
+                <div class="dl-q-name">1080P Full HD <span class="dl-q-rec">Recommended</span></div>
+                <div class="dl-q-desc">Crisp picture quality, rich Dolby audio</div>
+              </div>
+            </div>
+            <div class="dl-q-size">~1.1 GB</div>
+          </div>
+
+          <div class="dl-quality-item" data-quality="720P" data-size="680 MB" onclick="selectDownloadQuality(this)">
+            <div class="dl-q-left">
+              <div class="dl-q-radio"><i class="fa-regular fa-circle"></i></div>
+              <div>
+                <div class="dl-q-name">720P HD</div>
+                <div class="dl-q-desc">Standard high definition, fast download</div>
+              </div>
+            </div>
+            <div class="dl-q-size">~680 MB</div>
+          </div>
+
+          <div class="dl-quality-item" data-quality="480P" data-size="380 MB" onclick="selectDownloadQuality(this)">
+            <div class="dl-q-left">
+              <div class="dl-q-radio"><i class="fa-regular fa-circle"></i></div>
+              <div>
+                <div class="dl-q-name">480P SD <span class="dl-q-saver">Data Saver</span></div>
+                <div class="dl-q-desc">Smaller file size, ideal for mobile data</div>
+              </div>
+            </div>
+            <div class="dl-q-size">~380 MB</div>
+          </div>
+        </div>
+
+        <div class="download-action-wrap">
+          <button class="btn-start-download" id="btnStartDownload" onclick="confirmStartDownload()">
+            <i class="fa-solid fa-arrow-down-to-line"></i>
+            <span id="btnStartDownloadText">Download 1080P Full HD (~1.1 GB)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- COMING SOON PRE-BOOKING MODAL SHEET (ALL FEATURES ON) -->
     <!-- ============================================== -->
     <div class="bottom-sheet-overlay" id="comingSoonBookingModal" onclick="closeUpcomingBookingModal(event)" style="display: none;">
       <div class="booking-modal-sheet" onclick="event.stopPropagation()">
-        <!-- Header Banner with Close Button -->
+        <!-- Header Banner with Close Button & Trailer Trigger -->
         <div class="booking-banner-wrap" id="csBookingBanner">
           <button class="booking-close-btn" onclick="closeUpcomingBookingModal()"><i class="fa-solid fa-xmark"></i></button>
           <div class="booking-backdrop-glow"></div>
-          <div class="booking-poster-container">
+          <div class="booking-poster-container" onclick="openComingSoonTrailer()">
             <img src="" alt="Poster" class="booking-poster-img" id="csBookingPoster">
+            <div class="booking-poster-play-btn" title="Watch Trailer">
+              <i class="fa-solid fa-play"></i>
+            </div>
           </div>
         </div>
 
@@ -1188,6 +1508,26 @@
           <div class="booking-meta-row" id="csBookingMeta">
             <span><i class="fa-solid fa-film"></i> <span id="csBookingGenre">Action, Thriller</span></span>
             <span class="star-rating"><i class="fa-solid fa-star"></i> <span id="csBookingRating">8.5</span></span>
+          </div>
+
+          <!-- Watch Official Trailer Button -->
+          <button class="btn-watch-trailer" id="csTrailerBtn" onclick="openComingSoonTrailer()">
+            <i class="fa-solid fa-play"></i>
+            <span>Watch Official Trailer</span>
+          </button>
+
+          <!-- Live Release Countdown Card -->
+          <div class="booking-countdown-card" id="csCountdownCard">
+            <div class="countdown-header">
+              <span class="cd-title"><i class="fa-solid fa-hourglass-half"></i> RELEASING IN</span>
+              <span class="cd-date" id="csReleaseDateText">Nov 20, 2026</span>
+            </div>
+            <div class="countdown-grid">
+              <div class="cd-unit"><span class="cd-num" id="cdDays">00</span><span class="cd-lbl">DAYS</span></div>
+              <div class="cd-unit"><span class="cd-num" id="cdHours">00</span><span class="cd-lbl">HOURS</span></div>
+              <div class="cd-unit"><span class="cd-num" id="cdMins">00</span><span class="cd-lbl">MINS</span></div>
+              <div class="cd-unit"><span class="cd-num" id="cdSecs">00</span><span class="cd-lbl">SECS</span></div>
+            </div>
           </div>
 
           <!-- Real-Time Booking Counter Widget -->
@@ -1207,17 +1547,67 @@
             <p id="csBookingOverview">Upcoming release...</p>
           </div>
 
-          <!-- Big Action Button (Clean, No download/view/dub/server distractions) -->
+          <!-- Top Cast & Crew -->
+          <div class="booking-cast-wrap" id="csCastWrap" style="display: none;">
+            <h4>Top Cast</h4>
+            <div class="booking-cast-scroll" id="csCastList"></div>
+          </div>
+
+          <!-- Action Buttons (Pre-Book + Remind Me + Share) -->
           <div class="booking-action-wrap">
             <button class="btn-prebook-now" id="csPreBookBtn" onclick="submitBooking()">
               <i class="fa-solid fa-ticket"></i>
               <span id="csPreBookBtnText">Pre-Book Ticket Now (Free)</span>
             </button>
+            <div class="booking-sub-actions">
+              <button class="cs-sub-btn" id="csRemindBtn" onclick="toggleComingSoonReminder()">
+                <i class="fa-regular fa-bell"></i>
+                <span id="csRemindBtnText">Remind Me</span>
+              </button>
+              <button class="cs-sub-btn" onclick="shareComingSoonMovie()">
+                <i class="fa-solid fa-share-nodes"></i>
+                <span>Share</span>
+              </button>
+            </div>
             <p class="booking-note"><i class="fa-solid fa-bell"></i> Instant notification will be sent when released in Hindi.</p>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- ============================================== -->
+    <!-- OFFICIAL TRAILER POPUP PLAYER MODAL -->
+    <!-- ============================================== -->
+    <div class="bottom-sheet-overlay" id="trailerPlayerModal" onclick="closeTrailerModal(event)" style="display: none; z-index: 999999;">
+      <div class="trailer-modal-sheet" onclick="event.stopPropagation()">
+        <div class="trailer-modal-header">
+          <div class="trailer-modal-title">
+            <i class="fa-solid fa-clapperboard" style="color: #00f2fe;"></i>
+            <span id="trailerMovieTitle">Official Trailer</span>
+          </div>
+          <button class="sheet-close-btn" onclick="closeTrailerModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="trailer-iframe-wrap">
+          <iframe id="trailerIframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- MY PRE-BOOKINGS MODAL SHEET -->
+    <!-- ============================================== -->
+    <div class="bottom-sheet-overlay" id="preBookingsModal" onclick="closePreBookingsModal(event)" style="display: none; z-index: 99999;">
+      <div class="watchlist-modal-sheet" onclick="event.stopPropagation()">
+        <div class="watchlist-modal-header">
+          <h3><i class="fa-solid fa-ticket" style="color: #00f2fe;"></i> My Pre-Bookings</h3>
+          <button class="sheet-close-btn" onclick="closePreBookingsModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="watchlist-modal-scroll" id="preBookingsList">
+          <!-- Dynamic Pre-Booked Cards -->
+        </div>
+      </div>
+    </div>
+
 
     <!-- ============================================== -->
     <!-- MORE DETAILS MODAL (SCREENSHOT 2 MATCH) -->
@@ -1326,6 +1716,227 @@
       </div>
     </div>
 
+    <!-- ============================================== -->
+    <!-- MY WATCHLIST MODAL OVERLAY                     -->
+    <!-- ============================================== -->
+    <div class="modal-overlay" id="watchlistModalOverlay" style="display: none;">
+      <div class="modal-box user-list-modal-box">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <i class="fa-solid fa-bookmark" style="color: #ff3366;"></i>
+            <h3>My Watchlist</h3>
+          </div>
+          <button class="modal-close-btn" onclick="closeWatchlistModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="user-modal-content-list" id="watchlistItemsContainer">
+          <!-- Dynamically populated from MongoDB -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- WATCH HISTORY FULL PAGE (EXACT MOVIEBOX SCREENSHOT 3 MATCH) -->
+    <!-- ============================================== -->
+    <div class="modal-overlay mb-fullscreen-page-overlay" id="historyModalOverlay" style="display: none;">
+      <div class="mb-fullscreen-page">
+        <!-- Top bar with Back chevron, Title, and Clear icon -->
+        <div class="mb-page-header">
+          <button class="mb-page-back-btn" onclick="closeHistoryModal()">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <h2 class="mb-page-title">Watch History</h2>
+          <button class="mb-page-action-btn" onclick="clearWatchHistory()" title="Clear History">
+            <i class="fa-solid fa-eraser"></i>
+          </button>
+        </div>
+
+        <!-- Scrollable list of history items grouped by Today / Yesterday -->
+        <div class="mb-history-page-body" id="historyItemsContainer">
+          <!-- Dynamically populated from JS (matching Screenshot 3) -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- APP SETTINGS MODAL (MOVIEBOX STYLE)            -->
+    <!-- ============================================== -->
+    <div class="modal-overlay" id="settingsModalOverlay" style="display: none;">
+      <div class="modal-box user-list-modal-box">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <i class="fa-solid fa-gear" style="color: #00d26a;"></i>
+            <h3>Settings</h3>
+          </div>
+          <button class="modal-close-btn" onclick="closeSettingsModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="user-modal-content-list">
+          <div class="mb-menu-row" onclick="cycleVideoQuality()">
+            <div class="mb-m-left">
+              <i class="fa-solid fa-sliders"></i>
+              <span>Default Quality</span>
+            </div>
+            <div class="mb-m-right">
+              <span class="mb-sub-val" id="settingsQualityLabel">Auto (1080p)</span>
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+          </div>
+          <div class="mb-menu-row" onclick="cycleDefaultAudio()">
+            <div class="mb-m-left">
+              <i class="fa-solid fa-volume-high"></i>
+              <span>Preferred Audio</span>
+            </div>
+            <div class="mb-m-right">
+              <span class="mb-sub-val" id="settingsAudioLabel">Hindi</span>
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+          </div>
+          <div class="mb-menu-row" onclick="runSpeedTest()">
+            <div class="mb-m-left">
+              <i class="fa-solid fa-gauge-high"></i>
+              <span>CDN Speed Test</span>
+            </div>
+            <div class="mb-m-right">
+              <span class="mb-highlight-tag">Fast</span>
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+          </div>
+          <div class="mb-menu-row" onclick="clearAppCache()">
+            <div class="mb-m-left">
+              <i class="fa-solid fa-broom"></i>
+              <span>Clear Cache</span>
+            </div>
+            <div class="mb-m-right">
+              <span class="mb-sub-val" id="settingsCacheLabel">14.2 MB</span>
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+          </div>
+          <div class="mb-menu-row">
+            <div class="mb-m-left">
+              <i class="fa-solid fa-circle-info"></i>
+              <span>Version</span>
+            </div>
+            <div class="mb-m-right">
+              <span class="mb-sub-val">v2.8.5 (Latest)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- REAL-TIME USER FEEDBACK MODAL (MONGODB SYNCED) -->
+    <!-- ============================================== -->
+    <div class="modal-overlay" id="feedbackModalOverlay" style="display: none;">
+      <div class="modal-box user-list-modal-box">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <i class="fa-solid fa-comment-dots" style="color: #00d26a;"></i>
+            <h3>Feedback & Bug Report</h3>
+          </div>
+          <button class="modal-close-btn" onclick="closeFeedbackModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="user-modal-content-list" style="padding: 16px;">
+          <div style="font-size: 13px; color: #94a3b8; margin-bottom: 12px;">
+            Help us improve FOBS TV! Your feedback is directly saved to our database.
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div>
+              <label style="font-size: 12px; color: #cbd5e1; font-weight: 600; display: block; margin-bottom: 4px;">Feedback Category</label>
+              <select id="feedbackCategoryInput" style="width: 100%; background: #141720; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 8px; font-family: inherit;">
+                <option value="feedback">General Feedback</option>
+                <option value="bug">Report a Bug / Stream Issue</option>
+                <option value="request">Movie / Series Request</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 12px; color: #cbd5e1; font-weight: 600; display: block; margin-bottom: 4px;">Rating</label>
+              <div id="feedbackStarWrap" style="display: flex; gap: 8px; font-size: 20px; color: #f59e0b; cursor: pointer;">
+                <i class="fa-solid fa-star" onclick="setFeedbackRating(1)"></i>
+                <i class="fa-solid fa-star" onclick="setFeedbackRating(2)"></i>
+                <i class="fa-solid fa-star" onclick="setFeedbackRating(3)"></i>
+                <i class="fa-solid fa-star" onclick="setFeedbackRating(4)"></i>
+                <i class="fa-solid fa-star" onclick="setFeedbackRating(5)"></i>
+              </div>
+            </div>
+            <div>
+              <label style="font-size: 12px; color: #cbd5e1; font-weight: 600; display: block; margin-bottom: 4px;">Your Message</label>
+              <textarea id="feedbackMessageInput" rows="4" placeholder="Tell us your suggestions, requested movies or any issue you encountered..." style="width: 100%; background: #141720; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 8px; font-family: inherit; resize: none;"></textarea>
+            </div>
+            <button onclick="submitUserFeedback()" style="background: linear-gradient(135deg, #00d26a 0%, #10b981 100%); color: #000; border: none; font-weight: 700; padding: 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 6px;">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Submit to Database</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- REAL-TIME MESSAGES & NOTIFICATIONS MODAL       -->
+    <!-- ============================================== -->
+    <div class="modal-overlay" id="messagesModalOverlay" style="display: none;">
+      <div class="modal-box user-list-modal-box">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <i class="fa-solid fa-bell" style="color: #38bdf8;"></i>
+            <h3>Messages & System Updates</h3>
+          </div>
+          <button class="modal-close-btn" onclick="closeMessagesModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="user-modal-content-list" id="messagesListContainer">
+          <!-- Dynamically populated from /api/notifications -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- REAL-TIME USER ACTIVITY & WATCH STATS MODAL    -->
+    <!-- ============================================== -->
+    <div class="modal-overlay" id="activityModalOverlay" style="display: none;">
+      <div class="modal-box user-list-modal-box">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <i class="fa-solid fa-chart-simple" style="color: #a855f7;"></i>
+            <h3>My Streaming Activity</h3>
+          </div>
+          <button class="modal-close-btn" onclick="closeActivityModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="user-modal-content-list" style="padding: 16px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+            <div style="background: #141720; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 14px; text-align: center;">
+              <div style="font-size: 24px; font-weight: 800; color: #00d26a;" id="actTotalHours">0h</div>
+              <div style="font-size: 11px; color: #8b95a5; margin-top: 4px;">Watch Time</div>
+            </div>
+            <div style="background: #141720; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 14px; text-align: center;">
+              <div style="font-size: 24px; font-weight: 800; color: #38bdf8;" id="actWatchedCount">0</div>
+              <div style="font-size: 11px; color: #8b95a5; margin-top: 4px;">Titles Streamed</div>
+            </div>
+            <div style="background: #141720; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 14px; text-align: center;">
+              <div style="font-size: 24px; font-weight: 800; color: #fbbf24;" id="actWatchlistCount">0</div>
+              <div style="font-size: 11px; color: #8b95a5; margin-top: 4px;">In My List</div>
+            </div>
+            <div style="background: #141720; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 14px; text-align: center;">
+              <div style="font-size: 24px; font-weight: 800; color: #a855f7;" id="actDownloadsCount">0</div>
+              <div style="font-size: 11px; color: #8b95a5; margin-top: 4px;">Downloaded</div>
+            </div>
+          </div>
+          <div style="background: #141720; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i class="fa-solid fa-server" style="color: #00d26a; font-size: 16px;"></i>
+              <div>
+                <div style="font-size: 12.5px; font-weight: 700; color: #fff;">Server Connection</div>
+                <div style="font-size: 11px; color: #8b95a5;">CDN Low-Latency Cluster</div>
+              </div>
+            </div>
+            <span style="font-size: 11px; font-weight: 700; color: #00d26a; background: rgba(0,210,106,0.1); padding: 4px 8px; border-radius: 6px;">Optimal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden Google Sign-In Container -->
+    <div id="googleBtnContainer" style="display: none;"></div>
+
     <!-- Toast Notification -->
     <div class="toast-notification" id="toastNotification">
       <i class="fa-solid fa-circle-check"></i>
@@ -1425,6 +2036,143 @@
           </div>
         </div>
 
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- SUBTITLE SETTINGS, SYNC & CUSTOMIZER MODAL      -->
+    <!-- SubSource (English & Bangla), MX-Player Sync & Color/Border Customizer -->
+    <!-- ============================================== -->
+    <div class="bottom-sheet-overlay" id="subtitleModal" onclick="closeSubtitleModal(event)">
+      <div class="subtitle-modal-container" onclick="event.stopPropagation()">
+        <!-- Header -->
+        <div class="subtitle-modal-header">
+          <div class="sub-modal-title-row">
+            <i class="fa-solid fa-closed-captioning" style="color: #00f2fe; font-size: 18px;"></i>
+            <h3>Subtitle Settings</h3>
+            <span class="sub-provider-badge"><i class="fa-solid fa-bolt"></i> SubSource</span>
+          </div>
+          <button class="sheet-close-btn" onclick="closeSubtitleModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <!-- Subtitle Navigation Tabs -->
+        <div class="subtitle-modal-tabs">
+          <button class="sub-tab-chip active" id="subTabChipLang" onclick="switchSubtitleModalTab('lang')">
+            <i class="fa-solid fa-language"></i> Language
+          </button>
+          <button class="sub-tab-chip" id="subTabChipSync" onclick="switchSubtitleModalTab('sync')">
+            <i class="fa-solid fa-sliders"></i> MX Sync
+          </button>
+          <button class="sub-tab-chip" id="subTabChipStyle" onclick="switchSubtitleModalTab('style')">
+            <i class="fa-solid fa-palette"></i> Style & Colors
+          </button>
+        </div>
+
+        <!-- Tab 1: Language Selection -->
+        <div class="sub-tab-panel active" id="subPanelLang">
+          <div class="sub-panel-title">Choose Subtitle Track</div>
+          <div class="sub-tracks-list" id="subModalTracksList">
+            <!-- Dynamically populated -->
+          </div>
+          <div class="sub-source-credit-note">
+            <i class="fa-solid fa-circle-info"></i> Subtitles are dynamically fetched via SubSource API with Bengali & English precision.
+          </div>
+        </div>
+
+        <!-- Tab 2: MX Player Style Sync / Delay Adjustment -->
+        <div class="sub-tab-panel" id="subPanelSync" style="display: none;">
+          <div class="sub-sync-card">
+            <div class="sub-sync-header">
+              <span class="sub-sync-label">Subtitle Delay Offset</span>
+              <span class="sub-sync-val-badge" id="subSyncValBadge">0.0s</span>
+            </div>
+
+            <!-- Quick Adjust Buttons (Like MX Player) -->
+            <div class="sub-sync-buttons-row">
+              <button class="sub-sync-btn" onclick="adjustSubtitleSync(-1.0)">-1.0s</button>
+              <button class="sub-sync-btn" onclick="adjustSubtitleSync(-0.5)">-0.5s</button>
+              <button class="sub-sync-btn" onclick="adjustSubtitleSync(-0.1)">-0.1s</button>
+              <button class="sub-sync-btn reset" onclick="resetSubtitleSync()">Reset</button>
+              <button class="sub-sync-btn" onclick="adjustSubtitleSync(0.1)">+0.1s</button>
+              <button class="sub-sync-btn" onclick="adjustSubtitleSync(0.5)">+0.5s</button>
+              <button class="sub-sync-btn" onclick="adjustSubtitleSync(1.0)">+1.0s</button>
+            </div>
+
+            <!-- Continuous Range Slider -->
+            <div class="sub-sync-slider-row">
+              <span class="sub-slider-end">-10s</span>
+              <input type="range" class="sub-sync-slider" id="subSyncSlider" min="-10" max="10" step="0.1" value="0" oninput="handleSubtitleSyncSlider(this.value)">
+              <span class="sub-slider-end">+10s</span>
+            </div>
+
+            <p class="sub-sync-hint">
+              <i class="fa-solid fa-circle-question"></i> Dialogue coming earlier or later? Adjust timing in seconds to synchronize dialogue with subtitles in real-time.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tab 3: Text Size, Color & Border Customizer -->
+        <div class="sub-tab-panel" id="subPanelStyle" style="display: none;">
+          <!-- Live Preview Box -->
+          <div class="subtitle-live-preview-box" id="subPreviewBox">
+            <span class="subtitle-preview-text" id="subPreviewText">
+              Hello! স্বাগতম FOBS TV সাবটাইটেলে (Live Preview)
+            </span>
+          </div>
+
+          <!-- 1. Text Size -->
+          <div class="sub-style-group">
+            <span class="sub-style-group-label">Text Size</span>
+            <div class="sub-size-chips">
+              <button class="sub-size-chip" data-size="14" onclick="setSubtitleSize(14)">Small</button>
+              <button class="sub-size-chip active" data-size="18" onclick="setSubtitleSize(18)">Normal</button>
+              <button class="sub-size-chip" data-size="22" onclick="setSubtitleSize(22)">Large</button>
+              <button class="sub-size-chip" data-size="28" onclick="setSubtitleSize(28)">X-Large</button>
+              <button class="sub-size-chip" data-size="34" onclick="setSubtitleSize(34)">Huge</button>
+            </div>
+          </div>
+
+          <!-- 2. Text Color -->
+          <div class="sub-style-group">
+            <span class="sub-style-group-label">Text Color</span>
+            <div class="sub-color-palette" id="subTextColorPalette">
+              <button class="sub-color-circle active" data-color="#ffffff" style="background: #ffffff;" title="White" onclick="setSubtitleTextColor('#ffffff')"></button>
+              <button class="sub-color-circle" data-color="#ffe600" style="background: #ffe600;" title="Yellow" onclick="setSubtitleTextColor('#ffe600')"></button>
+              <button class="sub-color-circle" data-color="#00f2fe" style="background: #00f2fe;" title="Cyan" onclick="setSubtitleTextColor('#00f2fe')"></button>
+              <button class="sub-color-circle" data-color="#00e676" style="background: #00e676;" title="Lime Green" onclick="setSubtitleTextColor('#00e676')"></button>
+              <button class="sub-color-circle" data-color="#ff76ac" style="background: #ff76ac;" title="Soft Pink" onclick="setSubtitleTextColor('#ff76ac')"></button>
+              <button class="sub-color-circle" data-color="#ff9800" style="background: #ff9800;" title="Orange" onclick="setSubtitleTextColor('#ff9800')"></button>
+            </div>
+          </div>
+
+          <!-- 3. Border & Outline Color -->
+          <div class="sub-style-group">
+            <span class="sub-style-group-label">Border / Outline Color</span>
+            <div class="sub-color-palette" id="subBorderColorPalette">
+              <button class="sub-color-circle active" data-border="#000000" style="background: #000000; border: 2px solid #555;" title="Black Outline" onclick="setSubtitleBorderColor('#000000')"></button>
+              <button class="sub-color-circle" data-border="transparent" style="background: repeating-linear-gradient(45deg, #222, #222 5px, #444 5px, #444 10px);" title="No Border" onclick="setSubtitleBorderColor('transparent')"></button>
+              <button class="sub-color-circle" data-border="#0052cc" style="background: #0052cc;" title="Dark Blue" onclick="setSubtitleBorderColor('#0052cc')"></button>
+              <button class="sub-color-circle" data-border="#d63031" style="background: #d63031;" title="Red Outline" onclick="setSubtitleBorderColor('#d63031')"></button>
+              <button class="sub-color-circle" data-border="#00f2fe" style="background: #00f2fe;" title="Cyan Glow" onclick="setSubtitleBorderColor('#00f2fe')"></button>
+              <button class="sub-color-circle" data-border="#6c5ce7" style="background: #6c5ce7;" title="Purple" onclick="setSubtitleBorderColor('#6c5ce7')"></button>
+            </div>
+          </div>
+
+          <!-- 4. Background Pill Style -->
+          <div class="sub-style-group">
+            <span class="sub-style-group-label">Background Box</span>
+            <div class="sub-bg-chips">
+              <button class="sub-bg-chip active" data-bg="transparent" onclick="setSubtitleBgStyle('transparent')">None</button>
+              <button class="sub-bg-chip" data-bg="semi" onclick="setSubtitleBgStyle('semi')">Soft Box</button>
+              <button class="sub-bg-chip" data-bg="solid" onclick="setSubtitleBgStyle('solid')">Solid Box</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer / Apply -->
+        <div class="subtitle-modal-footer">
+          <button class="sub-done-btn" onclick="closeSubtitleModal()">Done</button>
+        </div>
       </div>
     </div>
 
