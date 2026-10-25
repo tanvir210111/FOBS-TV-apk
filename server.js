@@ -2164,7 +2164,7 @@ app.post('/api/admin/media/:id/views', adminService.authenticate, (req, res) => 
 
 // Movie CRUD
 // Featured Spotlight Management
-app.get('/api/admin/featured', verifyAdmin, (req, res) => {
+app.get('/api/admin/featured', adminService.authenticate, (req, res) => {
   try {
     const featured = adminService.getFeatured();
     res.json({ success: true, featured });
@@ -2173,7 +2173,7 @@ app.get('/api/admin/featured', verifyAdmin, (req, res) => {
   }
 });
 
-app.post('/api/admin/featured', verifyAdmin, (req, res) => {
+app.post('/api/admin/featured', adminService.authenticate, (req, res) => {
   try {
     const result = adminService.setFeatured(req.body);
     res.json(result);
