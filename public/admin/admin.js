@@ -226,6 +226,8 @@ function initEventListeners() {
   // Modal Form Submissions
   document.getElementById('import-form').addEventListener('submit', handleImportSubmit);
   document.getElementById('movie-form').addEventListener('submit', handleMovieSubmit);
+  const featForm = document.getElementById('featured-form');
+  if (featForm) featForm.addEventListener('submit', handleFeaturedSubmit);
   document.getElementById('channel-form').addEventListener('submit', handleChannelSubmit);
   document.getElementById('notif-form').addEventListener('submit', handleNotifSubmit);
 
@@ -464,6 +466,7 @@ function openImportModal(item) {
   document.getElementById('imp-subjectId').value = item.subjectId || item.id || '';
   document.getElementById('imp-detailPath').value = item.detailPath || '';
   document.getElementById('imp-poster').value = item.poster || '';
+  if (document.getElementById('imp-cover')) document.getElementById('imp-cover').value = item.backdrop || item.cover || '';
   document.getElementById('imp-title').value = item.title || '';
   document.getElementById('imp-year').value = item.year || '2026';
   document.getElementById('imp-type').value = isSeries ? 'series' : 'movie';
@@ -489,6 +492,7 @@ async function handleImportSubmit(e) {
     subjectId: document.getElementById('imp-subjectId').value,
     detailPath: document.getElementById('imp-detailPath').value,
     poster: document.getElementById('imp-poster').value,
+    cover: document.getElementById('imp-cover')?.value.trim() || undefined,
     title: document.getElementById('imp-title').value.trim(),
     year: document.getElementById('imp-year').value.trim(),
     type: document.getElementById('imp-type').value,
@@ -585,6 +589,7 @@ function renderMoviesTable(movies) {
       <td class="text-right">
         <div class="action-buttons">
           <button class="btn-action-sm" title="Test Stream" onclick="openPlayerModal('${escapeHtml(movie.title)}', '${movie.streamUrl}')"><i class="fa-solid fa-play"></i></button>
+          <button class="btn-action-sm warning" title="Set as Hero Spotlight" onclick="makeFeatured(${escapeJson(movie)})"><i class="fa-solid fa-star text-amber"></i></button>
           <button class="btn-action-sm" title="Edit Movie" onclick="editMovie(${escapeJson(movie)})"><i class="fa-solid fa-pen"></i></button>
           <button class="btn-action-sm danger" title="Delete Movie" onclick="deleteMovie('${movie.id}')"><i class="fa-solid fa-trash"></i></button>
         </div>
@@ -638,6 +643,7 @@ function renderSeriesTable(seriesList) {
       </td>
       <td class="text-right">
         <div class="action-buttons">
+          <button class="btn-action-sm warning" title="Set as Hero Spotlight" onclick="makeFeatured(${escapeJson(series)})"><i class="fa-solid fa-star text-amber"></i></button>
           <button class="btn-action-sm danger" title="Delete Series" onclick="deleteSeries('${series.id}')"><i class="fa-solid fa-trash"></i></button>
         </div>
       </td>
@@ -698,9 +704,93 @@ function filterChannelsGrid(query) {
 // CRUD MODAL HANDLERS
 // ==========================================================================
 
+
+// ==========================================================================
+// FEATURED HERO SPOTLIGHT MANAGEMENT
+// ==========================================================================
+
+function updateFeatCoverPreview(url) {
+  const img = document.getElementById('feat-cover-preview');
+  const ph = document.getElementById('feat-cover-placeholder');
+  if (!img || !ph) return;
+  if (url && url.startsWith('http')) {
+    img.src = url;
+    img.style.display = 'block';
+    ph.style.display = 'none';
+    img.onerror = () => {
+      img.style.display = 'none';
+      ph.style.display = 'block';
+    };
+  } else {
+    img.style.display = 'none';
+    ph.style.display = 'block';
+  }
+}
+
+function openFeaturedModal(item = null) {
+  const modal = document.getElementById('featured-modal');
+  if (!modal) return;
+
+  const target = item || (currentContent && currentContent.featured) || {};
+  document.getElementById('feat-id').value = target.id || '';
+  document.getElementById('feat-title').value = target.title || '';
+  document.getElementById('feat-type').value = target.type || (target.seasons ? 'series' : 'movie');
+  
+  const coverUrl = target.cover || target.backdrop || target.poster || '';
+  document.getElementById('feat-cover').value = coverUrl;
+  document.getElementById('feat-poster').value = target.poster || '';
+  document.getElementById('feat-year').value = target.year || '2026';
+  document.getElementById('feat-stream').value = target.streamUrl || '';
+  document.getElementById('feat-desc').value = target.description || target.overview || '';
+
+  updateFeatCoverPreview(coverUrl);
+  modal.classList.add('active');
+}
+
+function closeFeaturedModal() {
+  const modal = document.getElementById('featured-modal');
+  if (modal) modal.classList.remove('active');
+}
+
+function makeFeatured(item) {
+  openFeaturedModal(item);
+}
+
+async function handleFeaturedSubmit(e) {
+  e.preventDefault();
+  const payload = {
+    id: document.getElementById('feat-id').value,
+    title: document.getElementById('feat-title').value.trim(),
+    type: document.getElementById('feat-type').value,
+    cover: document.getElementById('feat-cover').value.trim(),
+    backdrop: document.getElementById('feat-cover').value.trim(),
+    poster: document.getElementById('feat-poster').value.trim(),
+    year: document.getElementById('feat-year').value.trim(),
+    streamUrl: document.getElementById('feat-stream').value.trim(),
+    description: document.getElementById('feat-desc').value.trim(),
+    badgeLeft: 'Featured',
+    badgeRight: '4K Ultra HD'
+  };
+
+  try {
+    const data = await apiFetch('/api/admin/featured', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    if (data.success) {
+      closeFeaturedModal();
+      showToast('Hero Spotlight banner updated successfully!', 'success');
+      loadContent();
+    }
+  } catch (err) {
+    showToast(`Error saving featured: ${err.message}`, 'error');
+  }
+}
+
 function openMovieModal() {
   document.getElementById('movie-id').value = '';
   document.getElementById('movie-form').reset();
+  if (document.getElementById('movie-cover')) document.getElementById('movie-cover').value = '';
   if (document.getElementById('movie-featured')) document.getElementById('movie-featured').checked = false;
   document.getElementById('movie-modal-title').innerText = 'Add Custom Movie';
   document.getElementById('movie-modal').classList.add('active');
@@ -715,6 +805,7 @@ function editMovie(movie) {
   document.getElementById('movie-industry').value = movie.industry || 'Hollywood';
   document.getElementById('movie-audio').value = movie.selectedAudio || 'Hindi dub';
   document.getElementById('movie-poster').value = movie.poster || '';
+  if (document.getElementById('movie-cover')) document.getElementById('movie-cover').value = movie.cover || movie.backdrop || '';
   document.getElementById('movie-stream').value = movie.streamUrl || '';
   if (document.getElementById('movie-views')) document.getElementById('movie-views').value = movie.views || 0;
   if (document.getElementById('movie-featured')) document.getElementById('movie-featured').checked = !!(appContent.featured && appContent.featured.id === movie.id);
@@ -740,7 +831,8 @@ async function handleMovieSubmit(e) {
     language: document.getElementById('movie-audio').value.trim(),
     selectedAudio: document.getElementById('movie-audio').value.trim(),
     poster: document.getElementById('movie-poster').value.trim(),
-    backdrop: document.getElementById('movie-poster').value.trim(),
+    cover: document.getElementById('movie-cover')?.value.trim() || document.getElementById('movie-poster').value.trim(),
+    backdrop: document.getElementById('movie-cover')?.value.trim() || document.getElementById('movie-poster').value.trim(),
     streamUrl: document.getElementById('movie-stream').value.trim(),
     views: parseInt(document.getElementById('movie-views')?.value, 10) || 1250,
     isFeatured: !!document.getElementById('movie-featured')?.checked,

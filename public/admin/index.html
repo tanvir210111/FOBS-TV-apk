@@ -129,6 +129,10 @@
             <span class="metric-pill"><i class="fa-solid fa-microchip"></i> Node <strong id="node-ver">v22</strong></span>
             <span class="metric-pill"><i class="fa-solid fa-memory"></i> RAM <strong id="ram-usage">-- MB</strong></span>
           </div>
+          <button id="btn-featured-modal" class="btn-secondary" onclick="openFeaturedModal()" title="Manage Hero Spotlight Banner">
+            <i class="fa-solid fa-star text-amber"></i>
+            <span>Hero Spotlight</span>
+          </button>
           <button id="btn-refresh" class="btn-secondary" title="Refresh Data">
             <i class="fa-solid fa-rotate"></i>
             <span>Refresh</span>
@@ -505,6 +509,13 @@
             <label>Title in FOBS TV</label>
             <input type="text" id="imp-title" required>
           </div>
+        </div>
+
+        <div class="input-group">
+          <label><i class="fa-solid fa-image text-cyan"></i> Cover / Landscape Banner URL (16:9 for Featured Hero)</label>
+          <input type="url" id="imp-cover" placeholder="https://image.tmdb.org/t/p/w1280/... (Auto-fetched from TMDB if blank)">
+        </div>
+        <div class="form-row">
           <div class="input-group flex-1">
             <label>Type</label>
             <select id="imp-type">
@@ -618,7 +629,12 @@
         </div>
 
         <div class="input-group">
-          <label>Poster Image URL</label>
+          <label><i class="fa-solid fa-image text-cyan"></i> Cover / Landscape Banner URL (16:9 for Featured Hero Spotlight)</label>
+          <input type="url" id="movie-cover" placeholder="https://image.tmdb.org/t/p/w1280/... (Landscape 16:9)">
+        </div>
+
+        <div class="input-group">
+          <label>Poster Image URL (Vertical 2:3)</label>
           <input type="url" id="movie-poster" placeholder="https://image.tmdb.org/t/p/w500/...">
         </div>
 
@@ -717,5 +733,68 @@
   <div id="toast-container"></div>
 
   <script src="/admin/admin.js"></script>
+
+  <!-- HERO SPOTLIGHT / FEATURED BANNER MODAL -->
+  <div id="featured-modal" class="modal-backdrop">
+    <div class="modal-card glass" style="max-width: 580px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-star text-amber"></i> Hero Spotlight (Featured Banner)</h3>
+        <button class="btn-close" onclick="closeFeaturedModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="featured-form">
+        <input type="hidden" id="feat-id">
+
+        <div class="form-row">
+          <div class="input-group flex-2">
+            <label>Title</label>
+            <input type="text" id="feat-title" required placeholder="e.g. Hope">
+          </div>
+          <div class="input-group flex-1">
+            <label>Type</label>
+            <select id="feat-type">
+              <option value="movie">Movie</option>
+              <option value="series">Series</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label><i class="fa-solid fa-image text-cyan"></i> 16:9 Landscape Cover / Backdrop URL</label>
+          <input type="url" id="feat-cover" required placeholder="https://image.tmdb.org/t/p/w1280/... or https://..." oninput="updateFeatCoverPreview(this.value)">
+          <div id="feat-cover-preview-wrap" style="margin-top: 10px; border-radius: 8px; overflow: hidden; height: 160px; background: #111; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1);">
+            <img id="feat-cover-preview" src="" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+            <span id="feat-cover-placeholder" style="color: var(--text-muted); font-size: 0.85rem;"><i class="fa-solid fa-image"></i> 16:9 Live Banner Preview</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="input-group flex-1">
+            <label>Portrait Poster URL (2:3)</label>
+            <input type="url" id="feat-poster" placeholder="https://image.tmdb.org/t/p/w500/...">
+          </div>
+          <div class="input-group flex-1">
+            <label>Release Year</label>
+            <input type="text" id="feat-year" value="2026">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Direct Stream URL</label>
+          <input type="url" id="feat-stream" placeholder="https://... or /api/moviebox/stream?id=...">
+        </div>
+
+        <div class="input-group">
+          <label>Overview / Synopsis</label>
+          <textarea id="feat-desc" rows="2" placeholder="Synopsis shown on hero banner..."></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeFeaturedModal()">Cancel</button>
+          <button type="submit" class="btn-primary glow"><i class="fa-solid fa-check"></i> Set as Live Hero Spotlight</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </body>
 </html>

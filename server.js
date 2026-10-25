@@ -80,10 +80,18 @@ function createRangeSlicer(start, end) {
 }
 
 // Helper to read data
+let _cachedContentData = null;
+let _cachedMtimeMs = 0;
+
 function getContentData() {
   try {
-    const raw = fs.readFileSync(DATA_FILE, 'utf-8');
-    return JSON.parse(raw);
+    const stat = fs.statSync(DATA_FILE);
+    if (!_cachedContentData || stat.mtimeMs !== _cachedMtimeMs) {
+      const raw = fs.readFileSync(DATA_FILE, 'utf-8');
+      _cachedContentData = JSON.parse(raw);
+      _cachedMtimeMs = stat.mtimeMs;
+    }
+    return JSON.parse(JSON.stringify(_cachedContentData));
   } catch (err) {
     console.error('Error reading data:', err);
     return { featured: {}, movies: [], series: [], liveTv: [] };
@@ -92,7 +100,9 @@ function getContentData() {
 
 // Helper to save data
 function saveContentData(data) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf-8');
+  _cachedContentData = null;
+  _cachedMtimeMs = 0;
+  fs.writeFileSync(DATA_FILE, JSON.stringify(data), 'utf-8');
 }
 
 // MovieBox Subject ID to detailPath lookup map
@@ -575,10 +585,7 @@ app.get('/api/resolve', async (req, res) => {
 // API: Get all contents
 app.get('/api/content', async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
+    res.setHeader('Cache-Control', 'public, max-age=15, stale-while-revalidate=30');
 
     const data = getContentData();
     const nowMs = Date.now();
@@ -2116,6 +2123,25 @@ app.post('/api/admin/media/:id/views', adminService.authenticate, (req, res) => 
 });
 
 // Movie CRUD
+// Featured Spotlight Management
+app.get('/api/admin/featured', verifyAdmin, (req, res) => {
+  try {
+    const featured = adminService.getFeatured();
+    res.json({ success: true, featured });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/admin/featured', verifyAdmin, (req, res) => {
+  try {
+    const result = adminService.setFeatured(req.body);
+    res.json(result);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 app.post('/api/admin/movie', adminService.authenticate, (req, res) => {
   try {
     const result = adminService.saveMovie(req.body);

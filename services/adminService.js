@@ -31,7 +31,7 @@ function readContent() {
 
 function writeContent(content) {
   try {
-    fs.writeFileSync(CONTENT_FILE, JSON.stringify(content, null, 2), 'utf8');
+    fs.writeFileSync(CONTENT_FILE, JSON.stringify(content), 'utf8');
     return true;
   } catch (err) {
     console.error('Error writing content.json in adminService:', err);
@@ -432,7 +432,7 @@ class AdminService {
       const tmdbItem = tmdbRes.data?.results?.[0];
       if (tmdbItem && tmdbItem.poster_path) {
         optPoster = `https://image.tmdb.org/t/p/w500${tmdbItem.poster_path}`;
-        optBackdrop = tmdbItem.backdrop_path ? `https://image.tmdb.org/t/p/w780${tmdbItem.backdrop_path}` : optPoster;
+        optBackdrop = tmdbItem.backdrop_path ? `https://image.tmdb.org/t/p/w1280${tmdbItem.backdrop_path}` : (payload.cover || optPoster);
       }
     } catch (e) {}
 
@@ -464,7 +464,8 @@ class AdminService {
         rating: String(rating),
         imdbRating: String(rating),
         poster: optPoster || poster || mb.poster || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80',
-        backdrop: optBackdrop || poster || mb.poster,
+        backdrop: payload.cover || optBackdrop || poster || mb.poster,
+        cover: payload.cover || optBackdrop || poster || mb.poster,
         genre: 'Action, Thriller',
         duration: '2h 00m',
         category,
@@ -577,7 +578,8 @@ class AdminService {
         rating: String(rating),
         imdbRating: String(rating),
         poster: optPoster || poster || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80',
-        backdrop: optBackdrop || poster,
+        backdrop: payload.cover || optBackdrop || poster,
+        cover: payload.cover || optBackdrop || poster,
         duration: `${episodes.length} Episodes`,
         episodesCount: episodes.length,
         category,
@@ -685,6 +687,8 @@ class AdminService {
     movie.badgeLeft = movie.badgeLeft || 'Trending';
     movie.views = movie.views !== undefined ? parseInt(movie.views, 10) : 1250;
     movie.type = 'movie';
+    movie.cover = movie.cover || movie.backdrop || movie.poster;
+    movie.backdrop = movie.backdrop || movie.cover;
 
     if (movie.views !== undefined) {
       const viewsMap = readViewsMap();
@@ -848,6 +852,61 @@ class AdminService {
     writeNotifications(list);
     return { success: true };
   }
-}
 
+  /**
+   * Get Active Featured Spotlight
+   */
+  getFeatured() {
+    const content = readContent();
+    return content.featured || null;
+  }
+
+  /**
+   * Set or Update Featured Spotlight Banner
+   */
+  setFeatured(payload) {
+    if (!payload) throw new Error('Featured payload is required');
+    const content = readContent();
+
+    let featuredItem = null;
+    if (payload.id) {
+      const movie = (content.movies || []).find(m => m.id === payload.id);
+      const series = (content.series || []).find(s => s.id === payload.id);
+      const base = movie || series;
+      if (base) {
+        featuredItem = {
+          ...base,
+          ...payload,
+          cover: payload.cover || payload.backdrop || base.cover || base.backdrop || base.poster,
+          backdrop: payload.cover || payload.backdrop || base.backdrop || base.cover || base.poster,
+          poster: payload.poster || base.poster
+        };
+      }
+    }
+
+    if (!featuredItem) {
+      if (!payload.title) throw new Error('Title is required for featured item');
+      featuredItem = {
+        id: payload.id || `feat_${Date.now()}`,
+        title: payload.title,
+        type: payload.type || 'movie',
+        year: payload.year || '2026',
+        rating: payload.rating || '8.5',
+        poster: payload.poster || '',
+        cover: payload.cover || payload.backdrop || payload.poster || '',
+        backdrop: payload.cover || payload.backdrop || payload.poster || '',
+        description: payload.description || '',
+        streamUrl: payload.streamUrl || '',
+        badgeLeft: payload.badgeLeft || 'Featured',
+        badgeRight: payload.badgeRight || '4K Ultra HD',
+        servers: payload.servers || (payload.streamUrl ? [{ name: 'Server 1 (Fast HD)', url: payload.streamUrl, isDirect: true }] : [])
+      };
+    }
+
+    content.featured = featuredItem;
+    writeContent(content);
+    return { success: true, featured: featuredItem };
+  }
+
+}
 module.exports = new AdminService();
