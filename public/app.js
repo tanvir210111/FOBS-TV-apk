@@ -3932,7 +3932,11 @@ const subtitleState = {
   fontSize: 18,
   textColor: '#ffffff',
   borderColor: '#000000',
-  bgStyle: 'transparent'
+  bgStyle: 'transparent',
+  position: 'bottom', // 'bottom', 'center', 'top'
+  verticalOffset: 68, // px from bottom
+  activeSubId: null,
+  onlineSubtitles: null
 };
 
 // Restore saved settings from localStorage
@@ -3944,6 +3948,10 @@ function restoreSubtitleSettings() {
     if (saved.borderColor !== undefined) subtitleState.borderColor = saved.borderColor;
     if (saved.bgStyle) subtitleState.bgStyle = saved.bgStyle;
     if (saved.syncOffset !== undefined) subtitleState.syncOffset = saved.syncOffset;
+    if (saved.position) subtitleState.position = saved.position;
+    if (saved.verticalOffset !== undefined) subtitleState.verticalOffset = saved.verticalOffset;
+    applySubtitlePosition();
+    updatePositionUI();
   } catch (e) {}
 }
 
@@ -3955,7 +3963,9 @@ function saveSubtitleSettings() {
       textColor: subtitleState.textColor,
       borderColor: subtitleState.borderColor,
       bgStyle: subtitleState.bgStyle,
-      syncOffset: subtitleState.syncOffset
+      syncOffset: subtitleState.syncOffset,
+      position: subtitleState.position,
+      verticalOffset: subtitleState.verticalOffset
     }));
   } catch (e) {}
 }
@@ -4354,22 +4364,25 @@ function renderActiveSubtitleCue(currentTime) {
     return;
   }
 
-  // Apply MX Player sync offset
-  const syncedTime = currentTime + (subtitleState.syncOffset || 0);
+  // Apply MX Player sync offset & seek offset
+  const syncedTime = (currentTime || 0) + (appState.streamSeekOffset || 0) + (subtitleState.syncOffset || 0);
   const activeCue = subtitleState.cues.find(c => c.startTime <= syncedTime && syncedTime <= c.endTime);
 
   const overlay = document.getElementById('customSubtitleOverlay');
   const cueTextEl = document.getElementById('customSubtitleCueText');
   if (!overlay || !cueTextEl) return;
 
-  if (activeCue && activeCue.text) {
-    cueTextEl.innerText = activeCue.text;
+  if (activeCue && activeCue.text && activeCue.text.trim()) {
+    cueTextEl.innerText = activeCue.text.trim();
     applySubtitleStylesToElement(cueTextEl);
+    applySubtitlePosition();
     overlay.style.display = 'flex';
     overlay.style.visibility = 'visible';
     overlay.style.opacity = '1';
   } else {
     overlay.style.display = 'none';
+    overlay.style.visibility = 'hidden';
+    cueTextEl.innerText = '';
   }
 }
 
@@ -4383,11 +4396,67 @@ function hideSubtitleOverlay() {
   if (cueTextEl) cueTextEl.innerText = '';
 }
 
+// Subtitle Vertical Positioning
+function applySubtitlePosition() {
+  const overlay = document.getElementById('customSubtitleOverlay');
+  if (!overlay) return;
+
+  const pos = subtitleState.position || 'bottom';
+  const offset = subtitleState.verticalOffset !== undefined ? subtitleState.verticalOffset : 68;
+
+  if (pos === 'top') {
+    overlay.style.bottom = 'auto';
+    overlay.style.top = `${Math.max(15, offset)}px`;
+    overlay.style.transform = 'none';
+  } else if (pos === 'center') {
+    overlay.style.bottom = 'auto';
+    overlay.style.top = '48%';
+    overlay.style.transform = 'translateY(-50%)';
+  } else {
+    // bottom
+    overlay.style.top = 'auto';
+    overlay.style.transform = 'none';
+    overlay.style.bottom = `${Math.max(20, offset)}px`;
+  }
+}
+
+function setSubtitlePosition(pos) {
+  subtitleState.position = pos;
+  if (pos === 'top') subtitleState.verticalOffset = 40;
+  else if (pos === 'center') subtitleState.verticalOffset = 0;
+  else subtitleState.verticalOffset = 68;
+
+  saveSubtitleSettings();
+  applySubtitlePosition();
+  updatePositionUI();
+  showToast(`Subtitle Position: ${pos.toUpperCase()}`);
+}
+
+function adjustSubtitlePosition(delta) {
+  subtitleState.verticalOffset = Math.max(10, Math.min(320, (subtitleState.verticalOffset || 68) + delta));
+  subtitleState.position = 'bottom';
+  saveSubtitleSettings();
+  applySubtitlePosition();
+  updatePositionUI();
+  showToast(`Subtitle Offset: ${subtitleState.verticalOffset}px`);
+}
+
+function updatePositionUI() {
+  const pos = subtitleState.position || 'bottom';
+  ['bottom', 'center', 'top'].forEach(p => {
+    const capitalized = p.charAt(0).toUpperCase() + p.slice(1);
+    const lsBtn = document.getElementById(`lsPos${capitalized}`);
+    const ptBtn = document.getElementById(`portraitPos${capitalized}`);
+    if (lsBtn) lsBtn.classList.toggle('active', pos === p);
+    if (ptBtn) ptBtn.classList.toggle('active', pos === p);
+  });
+}
+
 // Apply chosen font size, colors, borders and background
 function applySubtitleStylesToElement(el) {
   if (!el) return;
-  el.style.fontSize = `${subtitleState.fontSize}px`;
-  el.style.color = subtitleState.textColor;
+  el.style.setProperty('font-size', `${subtitleState.fontSize}px`, 'important');
+  el.style.setProperty('color', subtitleState.textColor, 'important');
 
   // Border & Text Outline
   if (subtitleState.borderColor === 'transparent') {
@@ -4435,6 +4504,195 @@ function setSubtitleSize(size) {
     btn.classList.toggle('active', parseInt(btn.dataset.size, 10) === size);
   });
   updateSubtitlePreview();
+  const cueTextEl = document.getElementById('customSubtitleCueText');
+  if (cueTextEl) {
+    applySubtitleStylesToElement(cueTextEl);
+  }
+}
+
+// Toggle and Load Online Subtitles (Subsource / OpenSubtitles)
+function toggleOnlineSubtitleList(target = 'landscape') {
+  const containerId = target === 'portrait' ? 'portraitOnlineSubtitlesContainer' : 'lsOnlineSubtitlesContainer';
+  const chevronId = target === 'portrait' ? 'portraitSubDownloadChevron' : 'lsSubDownloadChevron';
+  const toggleBtnId = target === 'portrait' ? 'portraitSubDownloadToggleBtn' : 'lsSubDownloadToggleBtn';
+
+  const container = document.getElementById(containerId);
+  const chevron = document.getElementById(chevronId);
+  const toggleBtn = document.getElementById(toggleBtnId);
+
+  if (!container) return;
+
+  const isOpen = container.style.display !== 'none';
+  if (isOpen) {
+    container.style.display = 'none';
+    if (toggleBtn) toggleBtn.classList.remove('open');
+  } else {
+    container.style.display = 'flex';
+    if (toggleBtn) toggleBtn.classList.add('open');
+    if (!subtitleState.onlineSubtitles) {
+      loadOnlineSubtitles();
+    }
+  }
+}
+
+async function refreshOnlineSubtitles() {
+  subtitleState.onlineSubtitles = null;
+  await loadOnlineSubtitles();
+}
+
+async function loadOnlineSubtitles() {
+  const lsContent = document.getElementById('lsOnlineSubListContent');
+  const ptContent = document.getElementById('portraitOnlineSubListContent');
+
+  const loadingHtml = `
+    <div style="text-align: center; padding: 14px; color: #00f2fe; font-size: 11.5px;">
+      <i class="fa-solid fa-circle-notch fa-spin" style="margin-right: 6px;"></i> Searching Subsource & OpenSubtitles...
+    </div>
+  `;
+  if (lsContent) lsContent.innerHTML = loadingHtml;
+  if (ptContent) ptContent.innerHTML = loadingHtml;
+
+  const media = appState.currentMedia;
+  const ep = appState.currentEpisode;
+  const seNum = appState.currentSeason || 1;
+  const epNum = ep?.number || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1);
+  const queryTitle = media?.title || '';
+  const subjectId = media?.subjectId || media?.id || '';
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/subtitles/online?title=${encodeURIComponent(queryTitle)}&season=${seNum}&episode=${epNum}&subjectId=${encodeURIComponent(subjectId)}`);
+    const data = await res.json();
+    subtitleState.onlineSubtitles = {
+      english: data.english || [],
+      bangla: data.bangla || []
+    };
+    renderOnlineSubtitlesHtml();
+  } catch (err) {
+    console.error('Failed to load online subtitles:', err);
+    const errHtml = `
+      <div style="text-align: center; padding: 12px; color: #f87171; font-size: 11.5px;">
+        <i class="fa-solid fa-triangle-exclamation"></i> Could not connect to Subsource.
+        <button type="button" onclick="loadOnlineSubtitles()" style="display: block; margin: 6px auto 0; background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 11px;">Retry</button>
+      </div>
+    `;
+    if (lsContent) lsContent.innerHTML = errHtml;
+    if (ptContent) ptContent.innerHTML = errHtml;
+  }
+}
+
+function renderOnlineSubtitlesHtml() {
+  const lsContent = document.getElementById('lsOnlineSubListContent');
+  const ptContent = document.getElementById('portraitOnlineSubListContent');
+  const { english = [], bangla = [] } = subtitleState.onlineSubtitles || {};
+
+  if (english.length === 0 && bangla.length === 0) {
+    const emptyHtml = `
+      <div style="text-align: center; padding: 14px; color: #94a3b8; font-size: 11.5px;">
+        No online subtitles found for this title. You can open a local .srt file using the button below.
+      </div>
+    `;
+    if (lsContent) lsContent.innerHTML = emptyHtml;
+    if (ptContent) ptContent.innerHTML = emptyHtml;
+    return;
+  }
+
+  const renderSection = (title, items, isBn) => {
+    if (!items || items.length === 0) return '';
+    return `
+      <div class="online-sub-section">
+        <div class="online-sub-header" style="${isBn ? 'color: #00ff88;' : ''}">
+          <i class="fa-solid ${isBn ? 'fa-circle-check' : 'fa-flag'}"></i>
+          <span>${title} (${items.length})</span>
+        </div>
+        ${items.map(sub => {
+          const isDownloaded = subtitleState.activeSubId === sub.id;
+          const cleanSubTitle = (sub.title || '').replace(/'/g, "\\'");
+          return `
+            <div class="online-sub-item">
+              <div class="online-sub-info">
+                <span class="online-sub-title" title="${cleanSubTitle}">${sub.title}</span>
+                <span class="online-sub-meta">
+                  <span><i class="fa-solid fa-bolt"></i> ${sub.source}</span>
+                  ${sub.downloadsCount ? `<span><i class="fa-solid fa-download"></i> ${sub.downloadsCount}</span>` : ''}
+                </span>
+              </div>
+              <button class="sub-dl-action-btn ${isDownloaded ? 'downloaded' : ''}" 
+                      id="dlBtn_${sub.id}"
+                      type="button"
+                      title="Download and Apply to Video"
+                      onclick="downloadAndApplySubtitle('${sub.id}', '${encodeURIComponent(sub.downloadUrl)}', '${sub.language}', '${cleanSubTitle}')">
+                <i class="fa-solid ${isDownloaded ? 'fa-check' : 'fa-arrow-down-to-line'}"></i>
+              </button>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  };
+
+  const html = `
+    ${renderSection('বাংলা সাবটাইটেল (Bangla)', bangla, true)}
+    ${renderSection('English Subtitles', english, false)}
+  `;
+
+  if (lsContent) lsContent.innerHTML = html;
+  if (ptContent) ptContent.innerHTML = html;
+}
+
+async function downloadAndApplySubtitle(id, encodedUrl, lang, title) {
+  const btns = document.querySelectorAll(`[id="dlBtn_${id}"]`);
+  btns.forEach(b => {
+    b.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+  });
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/subtitles/download?url=${encodedUrl}`);
+    const data = await res.json();
+
+    if (!data.ok || !Array.isArray(data.cues) || data.cues.length === 0) {
+      throw new Error(data.error || 'No cues found in downloaded subtitle');
+    }
+
+    // Register into subtitleState
+    subtitleState.cues = data.cues;
+    subtitleState.enabled = true;
+    subtitleState.activeSubId = id;
+    subtitleState.currentTrackId = `online_${id}`;
+    localStorage.setItem('fobs_subtitle_enabled', 'true');
+
+    // Add to availableTracks so it appears in track selector with checkmark
+    const newTrack = {
+      id: `online_${id}`,
+      language: `${lang} (Subsource)`,
+      langCode: lang.toLowerCase().includes('bangla') || lang.toLowerCase().includes('bn') ? 'bn' : 'en',
+      source: 'SubSource.net',
+      isCustom: true
+    };
+
+    const existingIdx = subtitleState.availableTracks.findIndex(t => t.id === newTrack.id);
+    if (existingIdx >= 0) {
+      subtitleState.availableTracks[existingIdx] = newTrack;
+    } else {
+      subtitleState.availableTracks.push(newTrack);
+    }
+
+    renderSubtitleLists();
+    renderOnlineSubtitlesHtml();
+
+    // Immediately render cue on video
+    const vp = document.getElementById('mainVideoPlayer');
+    if (vp) {
+      renderActiveSubtitleCue((vp.currentTime || 0) + (appState.streamSeekOffset || 0));
+    }
+
+    showToast(`Downloaded & Added: ${lang} Subtitle (${data.cues.length} cues) 📥`);
+  } catch (err) {
+    console.error('Subtitle download error:', err);
+    btns.forEach(b => {
+      b.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i>';
+    });
+    showToast(`Failed to download subtitle: ${err.message}`);
+  }
 }
 
 // Set Text Color

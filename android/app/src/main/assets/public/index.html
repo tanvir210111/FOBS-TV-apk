@@ -1074,6 +1074,28 @@
                     </label>
                   </div>
 
+                  <!-- Online Subtitles Accordion Button -->
+                  <div class="ls-sub-download-btn" id="lsSubDownloadToggleBtn" onclick="toggleOnlineSubtitleList()">
+                    <div style="display: flex; align-items: center; gap: 7px;">
+                      <i class="fa-solid fa-cloud-arrow-down"></i>
+                      <span>Download (Subsource)</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down" id="lsSubDownloadChevron"></i>
+                  </div>
+
+                  <!-- Container for Online Subtitles (English & Bangla) -->
+                  <div class="ls-online-sub-container" id="lsOnlineSubtitlesContainer" style="display: none;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 5px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                      <span style="font-size: 11px; font-weight: 700; color: #00f2fe;"><i class="fa-solid fa-bolt"></i> Subsource / OpenSub</span>
+                      <button type="button" onclick="refreshOnlineSubtitles()" style="background: transparent; border: none; color: #94a3b8; font-size: 11px; cursor: pointer;"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+                    </div>
+                    <div id="lsOnlineSubListContent">
+                      <div style="text-align: center; padding: 12px; color: #94a3b8; font-size: 11.5px;">
+                        <i class="fa-solid fa-spinner fa-spin" style="margin-right: 6px;"></i> Click to search Subsource...
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="ls-sub-upload-btn" onclick="triggerManualSrtUpload()">
                     <i class="fa-solid fa-folder-open"></i>
                     <span>Open Local .SRT File</span>
@@ -1142,18 +1164,33 @@
                     <button class="ls-sub-back-btn" type="button" onclick="showLandscapeSubView('tracks')">
                       <i class="fa-solid fa-chevron-left"></i> Tracks
                     </button>
-                    <span class="ls-column-title" style="font-size: 13px;"><i class="fa-solid fa-palette" style="color: #00f2fe; margin-right: 4px;"></i> Style</span>
+                    <span class="ls-column-title" style="font-size: 13px;"><i class="fa-solid fa-palette" style="color: #00f2fe; margin-right: 4px;"></i> Style & Position</span>
                   </div>
 
                   <span class="ls-style-label">Font Size</span>
                   <div class="ls-size-row">
                     <button class="ls-size-chip" data-size="14" onclick="setSubtitleSize(14)">Small</button>
                     <button class="ls-size-chip active" data-size="18" onclick="setSubtitleSize(18)">Normal</button>
-                    <button class="ls-size-chip" data-size="22" onclick="setSubtitleSize(22)">Large</button>
-                    <button class="ls-size-chip" data-size="26" onclick="setSubtitleSize(26)">Extra</button>
+                    <button class="ls-size-chip" data-size="23" onclick="setSubtitleSize(23)">Large</button>
+                    <button class="ls-size-chip" data-size="28" onclick="setSubtitleSize(28)">Extra</button>
+                    <button class="ls-size-chip" data-size="34" onclick="setSubtitleSize(34)">Huge</button>
                   </div>
 
-                  <span class="ls-style-label">Text Color</span>
+                  <span class="ls-style-label" style="margin-top: 4px;">Vertical Position</span>
+                  <div class="ls-pos-row">
+                    <button class="ls-pos-chip active" id="lsPosBottom" onclick="setSubtitlePosition('bottom')">Bottom</button>
+                    <button class="ls-pos-chip" id="lsPosCenter" onclick="setSubtitlePosition('center')">Center</button>
+                    <button class="ls-pos-chip" id="lsPosTop" onclick="setSubtitlePosition('top')">Top</button>
+                  </div>
+                  <div class="ls-pos-stepper">
+                    <span style="font-size: 11px; color: #94a3b8;">Fine Tune:</span>
+                    <div style="display: flex; gap: 6px;">
+                      <button class="ls-pos-step-btn" type="button" onclick="adjustSubtitlePosition(15)"><i class="fa-solid fa-arrow-up"></i> Up</button>
+                      <button class="ls-pos-step-btn" type="button" onclick="adjustSubtitlePosition(-15)"><i class="fa-solid fa-arrow-down"></i> Down</button>
+                    </div>
+                  </div>
+
+                  <span class="ls-style-label" style="margin-top: 4px;">Text Color</span>
                   <div class="ls-color-row">
                     <div class="ls-color-dot active" style="background:#ffffff;" onclick="setSubtitleTextColor('#ffffff')"></div>
                     <div class="ls-color-dot" style="background:#ffeb3b;" onclick="setSubtitleTextColor('#ffeb3b')"></div>
@@ -2722,6 +2759,27 @@
 
         <!-- Tab 1: Language Selection -->
         <div class="sub-tab-panel active" id="subPanelLang">
+          <!-- Online Subtitles Accordion Card -->
+          <div class="ls-sub-download-btn" id="portraitSubDownloadToggleBtn" onclick="toggleOnlineSubtitleList('portrait')" style="margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-cloud-arrow-down" style="font-size: 15px;"></i>
+              <span>Download Subtitles (Subsource)</span>
+            </div>
+            <i class="fa-solid fa-chevron-down" id="portraitSubDownloadChevron"></i>
+          </div>
+
+          <div class="ls-online-sub-container" id="portraitOnlineSubtitlesContainer" style="display: none; margin-bottom: 14px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 5px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+              <span style="font-size: 11px; font-weight: 700; color: #00f2fe;"><i class="fa-solid fa-bolt"></i> Subsource / OpenSubtitles</span>
+              <button type="button" onclick="refreshOnlineSubtitles()" style="background: transparent; border: none; color: #94a3b8; font-size: 11px; cursor: pointer;"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+            </div>
+            <div id="portraitOnlineSubListContent">
+              <div style="text-align: center; padding: 12px; color: #94a3b8; font-size: 11.5px;">
+                <i class="fa-solid fa-spinner fa-spin" style="margin-right: 6px;"></i> Click to search Subsource...
+              </div>
+            </div>
+          </div>
+
           <!-- Manual Local SRT Upload Card -->
           <div class="sub-upload-card" onclick="triggerManualSrtUpload()">
             <div class="sub-upload-left">
@@ -2791,9 +2849,26 @@
             <div class="sub-size-chips">
               <button class="sub-size-chip" data-size="14" onclick="setSubtitleSize(14)">Small</button>
               <button class="sub-size-chip active" data-size="18" onclick="setSubtitleSize(18)">Normal</button>
-              <button class="sub-size-chip" data-size="22" onclick="setSubtitleSize(22)">Large</button>
+              <button class="sub-size-chip" data-size="23" onclick="setSubtitleSize(23)">Large</button>
               <button class="sub-size-chip" data-size="28" onclick="setSubtitleSize(28)">X-Large</button>
               <button class="sub-size-chip" data-size="34" onclick="setSubtitleSize(34)">Huge</button>
+            </div>
+          </div>
+
+          <!-- Position Control -->
+          <div class="sub-style-group">
+            <span class="sub-style-group-label">Vertical Position</span>
+            <div class="ls-pos-row">
+              <button class="ls-pos-chip active" id="portraitPosBottom" onclick="setSubtitlePosition('bottom')">Bottom</button>
+              <button class="ls-pos-chip" id="portraitPosCenter" onclick="setSubtitlePosition('center')">Center</button>
+              <button class="ls-pos-chip" id="portraitPosTop" onclick="setSubtitlePosition('top')">Top</button>
+            </div>
+            <div class="ls-pos-stepper">
+              <span style="font-size: 11px; color: #94a3b8;">Fine Tune Height:</span>
+              <div style="display: flex; gap: 6px;">
+                <button class="ls-pos-step-btn" type="button" onclick="adjustSubtitlePosition(15)"><i class="fa-solid fa-arrow-up"></i> Up</button>
+                <button class="ls-pos-step-btn" type="button" onclick="adjustSubtitlePosition(-15)"><i class="fa-solid fa-arrow-down"></i> Down</button>
+              </div>
             </div>
           </div>
 

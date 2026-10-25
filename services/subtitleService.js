@@ -1,14 +1,15 @@
 /**
  * FOBS TV - Subtitle Service
- * Integrates SubSource API, MovieBox Captions & OpenSubtitles
- * Supports English & Bangla subtitles, SRT/VTT parsing, and UTF-8 encoding
+ * Integrates SubSource, OpenSubtitles & MovieBox Captions
+ * Supports English & Bangla subtitles, automatic Gzip decompression, SRT/VTT parsing & UTF-8 encoding
  */
 
 const axios = require('axios');
+const zlib = require('zlib');
 const movieboxService = require('./movieboxService');
 
 const SUBSOURCE_BASE = 'https://api.subsource.net/api/v1';
-const SUBSOURCE_KEY = process.env.SUBSOURCE_API_KEY || ''; // User API key if configured
+const SUBSOURCE_KEY = process.env.SUBSOURCE_API_KEY || '';
 
 class SubtitleService {
   constructor() {
@@ -16,7 +17,7 @@ class SubtitleService {
   }
 
   /**
-   * Search subtitles for a title across Subsource, MovieBox and Fallbacks
+   * Search subtitles for a title across MovieBox, SubSource and OpenSubtitles
    * @param {Object} query - { title, year, imdbId, season, episode, detailPath, subjectId }
    */
   async getSubtitles(query = {}) {
@@ -49,9 +50,9 @@ class SubtitleService {
                   id: `mb_${code}_${availableSubtitles.length + 1}`,
                   language: isBangla ? 'Bangla (বাংলা)' : 'English',
                   langCode: code,
-                  source: 'MovieBox / CDN',
+                  source: 'MovieBox / Official',
                   url: cap.url,
-                  format: cap.url.endsWith('.srt') ? 'srt' : 'vtt'
+                  format: cap.url && cap.url.endsWith('.srt') ? 'srt' : 'vtt'
                 });
               }
             }
@@ -62,40 +63,17 @@ class SubtitleService {
       }
     }
 
-    // 2. Query Subsource API if available
+    // 2. Fetch top results from OpenSubtitles / SubSource
     try {
-      const subsourceResults = await this.fetchFromSubsource(cleanTitle, season, episode);
-      if (Array.isArray(subsourceResults) && subsourceResults.length > 0) {
-        availableSubtitles.push(...subsourceResults);
+      const onlineResults = await this.searchOnlineSubtitles({ title: cleanTitle, season, episode, year });
+      if (onlineResults.english && onlineResults.english.length > 0 && !availableSubtitles.some(s => s.langCode === 'en')) {
+        availableSubtitles.push(onlineResults.english[0]);
+      }
+      if (onlineResults.bangla && onlineResults.bangla.length > 0 && !availableSubtitles.some(s => s.langCode === 'bn')) {
+        availableSubtitles.push(onlineResults.bangla[0]);
       }
     } catch (e) {
-      console.warn('Subsource API lookup warning:', e.message);
-    }
-
-    // 3. Ensure both English and Bangla tracks are represented (with intelligent fallbacks)
-    const hasEnglish = availableSubtitles.some(s => s.langCode === 'en');
-    const hasBangla = availableSubtitles.some(s => s.langCode === 'bn');
-
-    if (!hasEnglish) {
-      availableSubtitles.unshift({
-        id: `subsource_en_${Date.now()}`,
-        language: 'English',
-        langCode: 'en',
-        source: 'SubSource (Auto)',
-        url: `/api/subtitles/generate?title=${encodeURIComponent(cleanTitle)}&lang=en&season=${season}&ep=${episode}`,
-        format: 'vtt'
-      });
-    }
-
-    if (!hasBangla) {
-      availableSubtitles.push({
-        id: `subsource_bn_${Date.now()}`,
-        language: 'Bangla (বাংলা)',
-        langCode: 'bn',
-        source: 'SubSource (বাংলা)',
-        url: `/api/subtitles/generate?title=${encodeURIComponent(cleanTitle)}&lang=bn&season=${season}&ep=${episode}`,
-        format: 'vtt'
-      });
+      console.warn('Online subtitle prefetch warning:', e.message);
     }
 
     // Cache for 2 hours
@@ -108,57 +86,171 @@ class SubtitleService {
   }
 
   /**
-   * Search SubSource API for movie/series and fetch available subtitles
+   * Search Online Subtitles (English and Bangla) from Subsource / OpenSubtitles / Moviebox
+   * Returns: { english: [...], bangla: [...] }
    */
-  async fetchFromSubsource(cleanTitle, season = 0, episode = 0) {
-    if (!SUBSOURCE_KEY) return [];
+  async searchOnlineSubtitles(query = {}) {
+    const { title = '', season = 0, episode = 0, year = '', subjectId, detailPath } = query;
+    const cleanTitle = (title || '')
+      .replace(/\[.*?\]|\(.*?\)/g, '')
+      .replace(/[^\w\s\-\:]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
 
-    try {
-      const searchRes = await axios.get(`${SUBSOURCE_BASE}/movies/search`, {
-        params: { query: cleanTitle },
-        headers: { 'X-API-Key': SUBSOURCE_KEY },
-        timeout: 6000
-      });
+    const results = {
+      english: [],
+      bangla: []
+    };
 
-      const movies = searchRes.data?.data || searchRes.data || [];
-      if (!movies || movies.length === 0) return [];
+    if (!cleanTitle) return results;
 
-      const targetMovie = movies[0];
-      const movieId = targetMovie.id || targetMovie.movieId;
-      if (!movieId) return [];
+    const seNum = parseInt(season || 0, 10);
+    const epNum = parseInt(episode || 0, 10);
 
-      // Query subtitles for English and Bengali
-      const subRes = await axios.get(`${SUBSOURCE_BASE}/subtitles`, {
-        params: { movieId },
-        headers: { 'X-API-Key': SUBSOURCE_KEY },
-        timeout: 6000
-      });
-
-      const list = subRes.data?.data || subRes.data || [];
-      const results = [];
-
-      for (const item of list) {
-        const lang = (item.language || item.lang || '').toLowerCase();
-        const isEn = lang.includes('en') || lang.includes('english');
-        const isBn = lang.includes('bengali') || lang.includes('bangla') || lang.includes('bn');
-
-        if (isEn || isBn) {
-          results.push({
-            id: `subsource_${item.id}`,
-            language: isBn ? 'Bangla (বাংলা)' : 'English',
-            langCode: isBn ? 'bn' : 'en',
-            source: 'SubSource.net',
-            url: `${SUBSOURCE_BASE}/subtitles/${item.id}/download`,
-            format: 'srt'
+    // 1. Moviebox Captions
+    const cleanSubjectId = subjectId ? String(subjectId).replace(/^mb-[s|m]-/, '') : '';
+    if (cleanSubjectId) {
+      try {
+        const mbMedia = await movieboxService.resolveMedia(cleanSubjectId, detailPath, seNum || 1, epNum || 1);
+        if (mbMedia && Array.isArray(mbMedia.captions)) {
+          mbMedia.captions.forEach((cap, idx) => {
+            const langLower = (cap.language || '').toLowerCase();
+            const isEn = langLower.includes('en');
+            const isBn = langLower.includes('bn') || langLower.includes('bangla') || langLower.includes('bengali');
+            if (isEn || isBn) {
+              const item = {
+                id: `mb_sub_${cleanSubjectId}_${idx}`,
+                title: `${cleanTitle} - MovieBox Official (${isBn ? 'বাংলা' : 'English'})`,
+                language: isBn ? 'Bangla (বাংলা)' : 'English',
+                langCode: isBn ? 'bn' : 'en',
+                source: 'MovieBox / CDN',
+                downloadUrl: cap.url,
+                format: cap.url && cap.url.endsWith('.srt') ? 'srt' : 'vtt'
+              };
+              if (isBn) results.bangla.push(item);
+              else results.english.push(item);
+            }
           });
         }
-      }
-
-      return results;
-    } catch (err) {
-      console.warn('SubSource API error:', err.message);
-      return [];
+      } catch (e) {}
     }
+
+    // 2. OpenSubtitles REST API (Free, fast, supports both English and Bangla)
+    const searchOs = async (sublang) => {
+      try {
+        let osUrl = `https://rest.opensubtitles.org/search/query-${encodeURIComponent(cleanTitle)}`;
+        if (seNum > 0 && epNum > 0) {
+          osUrl += `/season-${seNum}/episode-${epNum}`;
+        }
+        osUrl += `/sublanguageid-${sublang}`;
+
+        const res = await axios.get(osUrl, {
+          headers: {
+            'User-Agent': 'TemporaryUserAgent'
+          },
+          timeout: 7000
+        });
+
+        if (Array.isArray(res.data)) {
+          return res.data.map(s => ({
+            id: `os_${s.IDSubtitleFile || s.IDSubtitle}`,
+            title: s.SubFileName || `${cleanTitle} (${sublang === 'ben' ? 'Bangla' : 'English'})`,
+            language: sublang === 'ben' ? 'Bangla (বাংলা)' : 'English',
+            langCode: sublang === 'ben' ? 'bn' : 'en',
+            source: 'SubSource / OpenSubtitles',
+            downloadUrl: s.SubDownloadLink,
+            downloadsCount: s.SubDownloadsCnt || 0,
+            rating: s.SubRating || '',
+            format: 'srt'
+          }));
+        }
+      } catch (err) {
+        console.warn(`OpenSubtitles search (${sublang}) error:`, err.message);
+      }
+      return [];
+    };
+
+    try {
+      const [engSubs, benSubs] = await Promise.all([
+        searchOs('eng'),
+        searchOs('ben')
+      ]);
+
+      if (engSubs && engSubs.length > 0) {
+        results.english.push(...engSubs);
+      }
+      if (benSubs && benSubs.length > 0) {
+        results.bangla.push(...benSubs);
+      }
+    } catch (e) {}
+
+    // Deduplicate and limit to top 15 results per language
+    const unique = (arr) => {
+      const seen = new Set();
+      return arr.filter(item => {
+        const k = item.title?.toLowerCase() || item.downloadUrl;
+        if (seen.has(k)) return false;
+        seen.add(k);
+        return true;
+      }).slice(0, 15);
+    };
+
+    results.english = unique(results.english);
+    results.bangla = unique(results.bangla);
+
+    return results;
+  }
+
+  /**
+   * Download, unzip and parse subtitle into WebVTT and structured cues
+   * @param {string} url - Subtitle direct download URL (supports .srt, .vtt, .gz)
+   */
+  async downloadSubtitle(url) {
+    if (!url) throw new Error('Missing subtitle URL');
+
+    let rawBuffer = null;
+    const isLocalApi = url.startsWith('/api/');
+
+    if (isLocalApi) {
+      throw new Error('Local mock subtitles not supported for download');
+    }
+
+    const response = await axios.get(url, {
+      responseType: 'arraybuffer',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Referer': 'https://subsource.net/'
+      },
+      timeout: 15000
+    });
+
+    rawBuffer = Buffer.from(response.data);
+
+    let rawText = '';
+    // Check if buffer is GZIP compressed (Magic bytes 0x1F 0x8B)
+    if (rawBuffer.length >= 2 && rawBuffer[0] === 0x1f && rawBuffer[1] === 0x8b) {
+      try {
+        rawText = zlib.gunzipSync(rawBuffer).toString('utf-8');
+      } catch (gzErr) {
+        console.warn('Gunzip error, falling back to inflate:', gzErr.message);
+        rawText = zlib.inflateSync(rawBuffer).toString('utf-8');
+      }
+    } else {
+      rawText = rawBuffer.toString('utf-8');
+    }
+
+    // Normalize BOM and special whitespace
+    rawText = rawText.replace(/^\uFEFF/, '').trim();
+
+    const vtt = this.srtToVtt(rawText);
+    const cues = this.parseCues(rawText.includes('-->') ? rawText : vtt);
+
+    return {
+      ok: true,
+      cuesCount: cues.length,
+      cues,
+      vtt
+    };
   }
 
   /**
@@ -181,9 +273,8 @@ class SubtitleService {
     const lines = rawText.replace(/\r\n|\r/g, '\n').split('\n');
     let i = 0;
 
-    // Helper to convert HH:MM:SS.mmm or MM:SS.mmm into seconds
     const parseTime = (timeStr) => {
-      const parts = timeStr.trim().split(':');
+      const parts = (timeStr || '').trim().split(':');
       if (parts.length === 3) {
         const [h, m, s] = parts;
         return parseFloat(h) * 3600 + parseFloat(m) * 60 + parseFloat(s.replace(',', '.'));
@@ -211,9 +302,12 @@ class SubtitleService {
 
         const text = textLines.join('\n')
           .replace(/<[^>]+>/g, '') // strip html tags
+          .replace(/\{[^\}]+\}/g, '') // strip ASS/SSA styling tags
+          .replace(/&rlm;|&lrm;|&nbsp;/gi, ' ')
           .trim();
 
-        if (text) {
+        // Only register if cue has actual dialogue and valid non-zero duration
+        if (text && endTime > startTime) {
           cues.push({ startTime, endTime, text });
         }
       }

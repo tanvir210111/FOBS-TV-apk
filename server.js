@@ -1915,7 +1915,7 @@ app.post('/api/comments/:mediaId/:commentId/like', async (req, res) => {
 // Supports English & Bangla (বাংলা), live MX-Player sync & custom cues
 // ============================================================
 
-// 1. Get available subtitle tracks for active media
+// 1. Get default subtitle tracks for active media
 app.get('/api/subtitles', async (req, res) => {
   try {
     const list = await subtitleService.getSubtitles(req.query);
@@ -1925,33 +1925,38 @@ app.get('/api/subtitles', async (req, res) => {
   }
 });
 
-// 2. Fetch subtitle content, parse cues, and return WebVTT / JSON
+// 2. Search Online Subtitles from Subsource & OpenSubtitles for English and Bangla
+app.get('/api/subtitles/online', async (req, res) => {
+  try {
+    const results = await subtitleService.searchOnlineSubtitles(req.query);
+    res.json({ success: true, ...results });
+  } catch (err) {
+    console.warn('Online subtitle search error:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 3. Download, decompress and parse online subtitle into cues
+app.get('/api/subtitles/download', async (req, res) => {
+  try {
+    const { url } = req.query;
+    if (!url) return res.status(400).json({ success: false, error: 'URL is required' });
+    const result = await subtitleService.downloadSubtitle(url);
+    res.json({ success: true, ...result });
+  } catch (err) {
+    console.warn('Subtitle download error:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 4. Fetch subtitle content, parse cues, and return WebVTT / JSON
 app.get('/api/subtitles/track', async (req, res) => {
   try {
     const { url } = req.query;
     if (!url) return res.status(400).json({ error: 'URL is required' });
 
-    let rawText = '';
-    if (url.startsWith('/api/')) {
-      const genUrl = `http://localhost:${PORT}${url}`;
-      const genRes = await axios.get(genUrl);
-      rawText = genRes.data;
-    } else {
-      const subRes = await axios.get(url, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-          'Referer': 'https://subsource.net/'
-        },
-        timeout: 10000,
-        responseType: 'text'
-      });
-      rawText = subRes.data;
-    }
-
-    const vtt = subtitleService.srtToVtt(rawText);
-    const cues = subtitleService.parseCues(rawText.includes('-->') ? rawText : vtt);
-
-    res.json({ success: true, vtt, cues });
+    const result = await subtitleService.downloadSubtitle(url);
+    res.json({ success: true, vtt: result.vtt, cues: result.cues });
   } catch (err) {
     console.warn('Subtitle track fetch error:', err.message);
     res.status(500).json({ success: false, error: err.message });
