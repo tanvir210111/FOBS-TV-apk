@@ -2052,8 +2052,9 @@ app.get('/api/admin/content', adminService.authenticate, (req, res) => {
 // MovieBox Recent & Trending Live Feed & Importer
 app.get('/api/admin/moviebox/recent', adminService.authenticate, async (req, res) => {
   try {
-    const { filter } = req.query;
-    const result = await adminService.getMovieBoxRecent(filter || 'all');
+    const { filter, hide_imported } = req.query;
+    const hide = hide_imported !== 'false';
+    const result = await adminService.getMovieBoxRecent(filter || 'all', hide);
     res.json(result);
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });

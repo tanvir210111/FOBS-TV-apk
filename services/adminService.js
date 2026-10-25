@@ -236,7 +236,82 @@ class AdminService {
   /**
    * Get Recent & Trending Releases from MovieBox Live Feed
    */
-  async getMovieBoxRecent(filter = 'all') {
+  normTitle(t) {
+    return (t || '').toLowerCase().replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, '').trim();
+  }
+
+  /**
+   * Get Recent & Trending Releases from MovieBox Live Feed (with smart deduplication)
+   */
+  async getMovieBoxRecent(filter = 'all', hideImported = true) {
+    const sections = await movieboxService.getHomepage();
+    const content = readContent();
+
+    const existingIds = new Set([
+      ...(content.movies || []).map(m => String(m.subjectId || m.id)),
+      ...(content.series || []).map(s => String(s.subjectId || s.id))
+    ]);
+
+    const existingTitles = new Set([
+      ...(content.movies || []).map(m => this.normTitle(m.title)),
+      ...(content.series || []).map(s => this.normTitle(s.title))
+    ]);
+
+    const seen = new Set();
+    const allItems = [];
+
+    for (const sec of sections) {
+      for (const it of sec.items) {
+        if (!it.id || seen.has(it.id)) continue;
+        seen.add(it.id);
+
+        const sid = String(it.subjectId || it.id);
+        const titleNorm = this.normTitle(it.title);
+
+        const alreadyImported = existingIds.has(sid) ||
+          existingIds.has('mb-m-' + sid) ||
+          existingIds.has('mb-s-' + sid) ||
+          existingTitles.has(titleNorm);
+
+        allItems.push({
+          ...it,
+          section: sec.title,
+          alreadyImported
+        });
+      }
+    }
+
+    let filtered = allItems;
+    if (filter === 'trending') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('trending') || (i.section || '').toLowerCase().includes('top'));
+    } else if (filter === 'cinema') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('cinema'));
+    } else if (filter === 'bollywood') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('bollywood') || (i.section || '').toLowerCase().includes('south') || (i.title || '').toLowerCase().includes('hindi'));
+    } else if (filter === 'hollywood') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('hollywood') || (i.section || '').toLowerCase().includes('western'));
+    } else if (filter === 'series') {
+      filtered = allItems.filter(i => i.type === 'series' || (i.section || '').toLowerCase().includes('series') || (i.section || '').toLowerCase().includes('drama'));
+    } else if (filter === 'anime') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('anime'));
+    }
+
+    const unimportedCount = filtered.filter(i => !i.alreadyImported).length;
+    const finalItems = hideImported ? filtered.filter(i => !i.alreadyImported) : filtered;
+
+    return {
+      success: true,
+      filter,
+      hideImported,
+      totalCount: allItems.length,
+      filteredCount: filtered.length,
+      unimportedCount,
+      alreadyImportedCount: filtered.length - unimportedCount,
+      items: finalItems
+    };
+  }
+
+  async _old_getMovieBoxRecent(filter = 'all') {
     const sections = await movieboxService.getHomepage();
     const content = readContent();
 

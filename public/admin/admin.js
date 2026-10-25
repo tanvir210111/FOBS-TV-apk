@@ -192,6 +192,13 @@ function initEventListeners() {
   // Batch Auto-Import Top 5 Recent Button
   document.getElementById('btn-batch-import-5').addEventListener('click', handleBatchImportRecent);
 
+  const toggleHide = document.getElementById('toggle-hide-imported');
+  if (toggleHide) {
+    toggleHide.addEventListener('change', () => {
+      loadMovieBoxRecent(currentFeedFilter);
+    });
+  }
+
   // Movies Table Search Filter
   document.getElementById('movies-search').addEventListener('input', (e) => {
     filterMoviesTable(e.target.value.trim().toLowerCase());
@@ -300,7 +307,8 @@ async function loadMovieBoxRecent(filter = 'all') {
   emptyState.style.display = 'none';
 
   try {
-    const data = await apiFetch(`/api/admin/moviebox/recent?filter=${encodeURIComponent(filter)}`);
+    const hideImported = document.getElementById('toggle-hide-imported') ? document.getElementById('toggle-hide-imported').checked : true;
+    const data = await apiFetch(`/api/admin/moviebox/recent?filter=${encodeURIComponent(filter)}&hide_imported=${hideImported}`);
     loading.style.display = 'none';
 
     if (data.success && data.items && data.items.length > 0) {
@@ -308,8 +316,11 @@ async function loadMovieBoxRecent(filter = 'all') {
       document.getElementById('feed-meta-title').innerHTML = `Showing: <strong>${escapeHtml(filter.toUpperCase())} RELEASES</strong> (${data.items.length} titles)`;
       document.getElementById('feed-meta-unimported').innerText = `${data.unimportedCount || 0} Ready to Import`;
 
-      if (data.totalCount && document.getElementById('count-all')) {
-        document.getElementById('count-all').innerText = data.totalCount;
+      if (document.getElementById('count-all')) {
+        document.getElementById('count-all').innerText = data.unimportedCount !== undefined ? data.unimportedCount : data.items.length;
+      }
+      if (document.getElementById('feed-meta-unimported')) {
+        document.getElementById('feed-meta-unimported').innerHTML = `<i class="fa-solid fa-sparkles text-amber"></i> ${data.unimportedCount || data.items.length} New Releases to Import`;
       }
 
       renderMovieBoxResults(data.items);
