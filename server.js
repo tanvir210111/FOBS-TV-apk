@@ -96,6 +96,9 @@ function saveContentData(data) {
 
 // MovieBox Subject ID to detailPath lookup map
 function getMovieBoxDetailPath(id) {
+  const sId = String(id).trim();
+  if (sId === '6040954039821651336') return 'colony-hindi-WrHlMwhDfc7';
+  if (sId === '2966181623634480144') return 'colony-06FbDRS87x3';
   if (!id) return '';
   const sId = String(id).trim();
   if (sId === '2706073799983877168') return 'golden-boy-hindi-84Y8uLuQTd3';
