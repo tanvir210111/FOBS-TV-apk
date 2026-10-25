@@ -1326,6 +1326,44 @@ app.post('/api/auth/google', async (req, res) => {
   }
 });
 
+// Direct Email / Account Login & Registration (Instant sign-in without Google origin_mismatch)
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { email, name } = req.body;
+    if (!email || !email.includes('@')) {
+      return res.status(400).json({ error: 'Valid email address is required' });
+    }
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanName = (name && name.trim()) ? name.trim() : cleanEmail.split('@')[0];
+    const googleId = 'usr_' + crypto.createHash('md5').update(cleanEmail).digest('hex').substring(0, 16);
+    const picture = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(cleanName)}`;
+
+    const user = await dbService.findOrCreateUser({
+      googleId,
+      email: cleanEmail,
+      name: cleanName,
+      picture
+    });
+    const token = authService.generateAppToken(user);
+
+    res.json({
+      success: true,
+      token,
+      user: {
+        googleId: user.googleId,
+        email: user.email,
+        name: user.name,
+        picture: user.picture,
+        watchlistCount: user.watchlist ? user.watchlist.length : 0,
+        historyCount: user.history ? user.history.length : 0
+      }
+    });
+  } catch (err) {
+    console.error('Direct Login Error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // 2. Current User Profile & Data (Requires JWT)
 app.get('/api/auth/me', authService.authenticateToken, async (req, res) => {
   try {

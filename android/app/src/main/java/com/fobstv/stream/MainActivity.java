@@ -420,6 +420,27 @@ public class MainActivity extends BridgeActivity {
             });
         }
 
+        @JavascriptInterface
+        public void shareText(String title, String text) {
+            runOnUiThread(() -> {
+                try {
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    if (title != null && !title.trim().isEmpty()) {
+                        sendIntent.putExtra(Intent.EXTRA_TITLE, title.trim());
+                        sendIntent.putExtra(Intent.EXTRA_SUBJECT, title.trim());
+                    }
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, text != null ? text.trim() : "");
+                    sendIntent.setType("text/plain");
+                    Intent shareIntent = Intent.createChooser(sendIntent, "Share with");
+                    shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(shareIntent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
         private final ExecutorService updateExecutor = Executors.newSingleThreadExecutor();
 
         @JavascriptInterface
@@ -779,6 +800,17 @@ public class MainActivity extends BridgeActivity {
 
                 // Set our custom BridgeWebViewClient to intercept MovieBox streams with required Referer header
                 webView.setWebViewClient(new CustomBridgeWebViewClient(getBridge()));
+
+                // Set download listener so direct download links open native Android download manager
+                webView.setDownloadListener((downloadUrl, userAgent, contentDisposition, mimetype, contentLength) -> {
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    } catch (Exception err) {
+                        err.printStackTrace();
+                    }
+                });
             }
         } catch (Exception e) {
             e.printStackTrace();

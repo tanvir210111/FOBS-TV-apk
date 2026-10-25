@@ -6022,17 +6022,22 @@ function downloadMedia(url, title, options = {}) {
 
   // Trigger browser / Android download file stream
   const cleanTitle = title.replace(/[^a-zA-Z0-9_\-\u0980-\u09FF\s]/g, '').trim();
-  const downloadUrl = `${API_BASE_URL}/api/download?url=${encodeURIComponent(url)}&title=${encodeURIComponent(cleanTitle)}`;
+  const baseApi = API_BASE_URL || BACKEND_URL;
+  const downloadUrl = `${baseApi}/api/download?url=${encodeURIComponent(url)}&title=${encodeURIComponent(cleanTitle)}`;
   
-  const link = document.createElement('a');
-  link.href = downloadUrl;
-  link.setAttribute('download', `${cleanTitle}.mp4`);
-  link.setAttribute('target', '_blank');
-  document.body.appendChild(link);
-  link.click();
-  setTimeout(() => {
-    if (link.parentNode) link.parentNode.removeChild(link);
-  }, 1000);
+  if (window.AndroidApp && typeof window.AndroidApp.openExternalUrl === 'function') {
+    window.AndroidApp.openExternalUrl(downloadUrl);
+  } else {
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.setAttribute('download', `${cleanTitle}.mp4`);
+    link.setAttribute('target', '_blank');
+    document.body.appendChild(link);
+    link.click();
+    setTimeout(() => {
+      if (link.parentNode) link.parentNode.removeChild(link);
+    }, 1000);
+  }
 }
 window.downloadMedia = downloadMedia;
 
@@ -6296,14 +6301,38 @@ function toggleAddToList() {
 
 // Share action
 function shareMedia() {
-  if (navigator.share && appState.currentMedia) {
+  const media = appState.currentMedia;
+  if (!media) return;
+  const shareTitle = media.title || 'FOBS TV';
+  const shareText = `Watch "${shareTitle}" in HD on FOBS TV! Download the app: https://fobs-apk-download.vercel.app/`;
+
+  if (window.AndroidApp && typeof window.AndroidApp.shareText === 'function') {
+    window.AndroidApp.shareText(shareTitle, shareText);
+    return;
+  }
+
+  if (navigator.share) {
     navigator.share({
-      title: appState.currentMedia.title,
-      text: `Watch ${appState.currentMedia.title} on FOBS TV`,
-      url: window.location.href
-    }).catch(() => {});
+      title: shareTitle,
+      text: shareText,
+      url: 'https://fobs-apk-download.vercel.app/'
+    }).catch(() => {
+      copyShareFallback(shareText);
+    });
   } else {
-    showToast('Share link copied to clipboard!');
+    copyShareFallback(shareText);
+  }
+}
+
+function copyShareFallback(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('Share link copied to clipboard! 📋');
+    }).catch(() => {
+      showToast('Share: ' + text);
+    });
+  } else {
+    showToast('Share: ' + text);
   }
 }
 
@@ -7654,29 +7683,118 @@ async function restoreUserSession() {
   }
 }
 
-// Trigger Google Sign-in dialog / One-Tap
+// Trigger Auth Modal (Supports direct Email login and Google Sign-in)
 function triggerGoogleLogin() {
   if (currentUser) {
     toggleProfileMenu();
     return;
   }
+  openAuthModal();
+}
+window.triggerGoogleLogin = triggerGoogleLogin;
 
-  if (window.google && window.google.accounts && window.google.accounts.id) {
-    try {
-      window.google.accounts.id.prompt((notification) => {
-        if (notification.isNotDisplayed() || notification.isSkippedMomentum()) {
-          // Fallback: trigger hidden rendered Google button click
-          const btn = document.querySelector('#googleBtnContainer div[role="button"]');
-          if (btn) btn.click();
-        }
-      });
-    } catch (e) {
-      const btn = document.querySelector('#googleBtnContainer div[role="button"]');
-      if (btn) btn.click();
+function openAuthModal() {
+  const modal = document.getElementById('fobsAuthModal');
+  if (modal) {
+    modal.style.display = 'flex';
+    // Render Google Sign-in button inside modal if Google SDK is loaded
+    if (window.google && window.google.accounts && window.google.accounts.id) {
+      const container = document.getElementById('modalGoogleBtnContainer');
+      if (container && container.children.length === 0) {
+        try {
+          window.google.accounts.id.renderButton(container, {
+            theme: 'filled_blue',
+            size: 'large',
+            type: 'standard',
+            shape: 'pill',
+            width: 280
+          });
+        } catch(e) {}
+      }
     }
-  } else {
-    showToast('Google Sign-In is initializing. Please try again in a moment.');
   }
+}
+window.openAuthModal = openAuthModal;
+
+function closeAuthModal(e) {
+  if (e && e.target !== document.getElementById('fobsAuthModal') && !e.target.closest('.sheet-close-btn')) {
+    return;
+  }
+  const modal = document.getElementById('fobsAuthModal');
+  if (modal) modal.style.display = 'none';
+}
+window.closeAuthModal = closeAuthModal;
+
+// Direct Email Sign-In (Instant access without Google OAuth origin blocks)
+async function handleDirectEmailAuth(event) {
+  if (event) event.preventDefault();
+  const emailInput = document.getElementById('authEmailInput');
+  const nameInput = document.getElementById('authNameInput');
+  const submitBtn = document.getElementById('btnDirectAuthSubmit');
+
+  const email = (emailInput ? emailInput.value : '').trim();
+  const name = (nameInput ? nameInput.value : '').trim();
+
+  if (!email || !email.includes('@')) {
+    showToast('Please enter a valid email address');
+    return;
+  }
+
+  try {
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Signing In...</span>';
+    }
+
+    const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, name })
+    });
+
+    const data = await res.json();
+    if (res.ok && data.success) {
+      localStorage.setItem(AUTH_TOKEN_KEY, data.token);
+      currentUser = data.user;
+
+      // Sync guest watchlist items if any
+      await syncGuestWatchlistToAccount(data.token);
+
+      await restoreUserSession();
+      closeAuthModal();
+      showToast(`Welcome, ${currentUser.name}! 🎉`);
+    } else {
+      showToast(data.error || 'Sign in failed. Please try again.');
+    }
+  } catch (err) {
+    console.error('Email Auth Error:', err);
+    showToast('Sign in failed. Please check network connection.');
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<span>Sign In with Email</span><i class="fa-solid fa-arrow-right"></i>';
+    }
+  }
+}
+window.handleDirectEmailAuth = handleDirectEmailAuth;
+
+async function syncGuestWatchlistToAccount(token) {
+  try {
+    const raw = localStorage.getItem('fobs_guest_watchlist') || '[]';
+    const items = JSON.parse(raw);
+    if (!items || items.length === 0) return;
+    for (const it of items) {
+      await fetch(`${API_BASE_URL}/api/user/watchlist/toggle`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(it)
+      }).catch(() => {});
+    }
+    localStorage.removeItem('fobs_guest_watchlist');
+  } catch (e) {}
 }
 
 // Handle Google ID Token received from Google One-Tap or Sign-In button
@@ -7698,7 +7816,9 @@ async function handleGoogleAuthCredential(response) {
     if (res.ok && data.success) {
       localStorage.setItem(AUTH_TOKEN_KEY, data.token);
       currentUser = data.user;
+      await syncGuestWatchlistToAccount(data.token);
       await restoreUserSession();
+      closeAuthModal();
       showToast(`Welcome back, ${currentUser.name}! 🎉`);
     } else {
       showToast(data.error || 'Google Login verification failed');
@@ -7732,24 +7852,28 @@ function updateAuthUI() {
   const meCommunityCount = document.getElementById('meCommunityCount');
 
   const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
-  if (meDownloadsCount) meDownloadsCount.textContent = downloads.length;
-  if (meWatchlistCount) meWatchlistCount.textContent = (userWatchlist || []).length;
-  if (meHistoryCount) meHistoryCount.textContent = (userHistory || []).length;
-  if (meActivityCount) meActivityCount.textContent = (userHistory || []).length + (userWatchlist || []).length;
-  if (meCommunityCount) meCommunityCount.textContent = '5.2k';
-  if (typeof updateMeBookingsCount === 'function') updateMeBookingsCount();
+  const guestWatchlist = JSON.parse(localStorage.getItem('fobs_guest_watchlist') || '[]');
+  const guestHistory = JSON.parse(localStorage.getItem('fobs_watch_history') || '[]');
+  const effectiveWatchlist = currentUser ? (userWatchlist || []) : guestWatchlist;
+  const effectiveHistory = currentUser ? (userHistory || []) : guestHistory;
 
+  if (meDownloadsCount) meDownloadsCount.textContent = downloads.length;
+  if (meWatchlistCount) meWatchlistCount.textContent = effectiveWatchlist.length;
+  if (meHistoryCount) meHistoryCount.textContent = effectiveHistory.length;
+  if (meActivityCount) meActivityCount.textContent = effectiveHistory.length + effectiveWatchlist.length;
+  if (meCommunityCount) meCommunityCount.textContent = 'Join';
+  if (typeof updateMeBookingsCount === 'function') updateMeBookingsCount();
 
   if (currentUser) {
     if (loginBtn) loginBtn.classList.add('hidden');
     if (profileBox) profileBox.classList.remove('hidden');
     if (avatarImg) {
-      avatarImg.src = currentUser.picture || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80';
+      avatarImg.src = currentUser.picture || 'assets/fobs_logo.png';
     }
     if (nameEl) nameEl.textContent = currentUser.name || 'User';
     if (emailEl) emailEl.textContent = currentUser.email || '';
-    if (watchlistBadge) watchlistBadge.textContent = userWatchlist.length;
-    if (historyBadge) historyBadge.textContent = userHistory.length;
+    if (watchlistBadge) watchlistBadge.textContent = (userWatchlist || []).length;
+    if (historyBadge) historyBadge.textContent = (userHistory || []).length;
 
     // Me Screen Logged In State
     const meInitial = document.getElementById('meAvatarInitial');
@@ -7768,11 +7892,11 @@ function updateAuthUI() {
     if (meLogoutBtn) meLogoutBtn.classList.remove('hidden');
 
     const meUid = document.getElementById('meUidLabel');
-    if (meUid) meUid.textContent = `ID: ${(currentUser.googleId || '06469277').slice(0, 8)}`;
+    if (meUid) meUid.textContent = `ID: ${(currentUser.googleId || '').slice(0, 10)}`;
 
     const commentUserAvatar = document.getElementById('commentInputUserAvatar');
     if (commentUserAvatar) {
-      commentUserAvatar.src = currentUser.picture || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80';
+      commentUserAvatar.src = currentUser.picture || 'assets/fobs_logo.png';
     }
     const commentLoginNotice = document.getElementById('commentLoginNotice');
     if (commentLoginNotice) commentLoginNotice.style.display = 'none';
@@ -7782,7 +7906,7 @@ function updateAuthUI() {
     const menu = document.getElementById('profileDropdownMenu');
     if (menu) menu.classList.add('hidden');
 
-    // Me Screen Logged Out State (Clean MovieBox Reference)
+    // Me Screen Logged Out State
     const meInitial = document.getElementById('meAvatarInitial');
     if (meAvatar) {
       meAvatar.src = '';
@@ -7790,23 +7914,23 @@ function updateAuthUI() {
     }
     if (meInitial) {
       meInitial.style.display = 'block';
-      meInitial.textContent = 'F';
+      meInitial.innerHTML = '<i class="fa-solid fa-user"></i>';
     }
-    if (meName) meName.textContent = 'FOBS Team';
+    if (meName) meName.textContent = 'Guest User';
     if (meStatusPill) meStatusPill.classList.add('hidden');
     if (meLoginBtn) meLoginBtn.classList.remove('hidden');
     if (meLogoutBtn) meLogoutBtn.classList.add('hidden');
 
     const meUid = document.getElementById('meUidLabel');
-    if (meUid) meUid.textContent = 'ID: 06469277';
+    if (meUid) meUid.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket" style="margin-right: 4px;"></i>Tap to Sign In';
 
     const commentUserAvatar = document.getElementById('commentInputUserAvatar');
     if (commentUserAvatar) {
-      commentUserAvatar.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80';
+      commentUserAvatar.src = 'assets/fobs_logo.png';
     }
   }
 
-  // Render MovieBox Watch History Slider
+  // Render Watch History Slider
   if (typeof renderMeHistorySlider === 'function') {
     renderMeHistorySlider();
   }
@@ -7837,8 +7961,11 @@ function handleUserLogout(e) {
 // ============================================================
 
 function isMediaInWatchlist(mediaId) {
-  if (!mediaId || !userWatchlist) return false;
-  return userWatchlist.some(item => item.mediaId === mediaId.toString());
+  if (!mediaId) return false;
+  const list = (currentUser && userWatchlist && userWatchlist.length > 0) 
+    ? userWatchlist 
+    : JSON.parse(localStorage.getItem('fobs_guest_watchlist') || '[]');
+  return list.some(item => item.mediaId === mediaId.toString());
 }
 
 async function toggleCurrentMediaWatchlist() {
@@ -7847,21 +7974,47 @@ async function toggleCurrentMediaWatchlist() {
 }
 
 async function toggleMediaWatchlist(media) {
-  if (!currentUser) {
-    showToast('Please sign in with Google to save to Watchlist');
-    triggerGoogleLogin();
-    return;
-  }
-
-  const token = localStorage.getItem(AUTH_TOKEN_KEY);
-  if (!token) return;
-
   const mediaId = (media.id || media.mediaId || '').toString();
   const title = media.title || 'Untitled';
   const poster = media.poster || '';
   const type = media.type || (media.episodes ? 'series' : 'movie');
   const rating = media.imdbRating || media.rating || '8.0';
   const year = media.year || '2026';
+
+  // Guest Watchlist support (works instantly even without logging in!)
+  if (!currentUser) {
+    let localList = [];
+    try {
+      localList = JSON.parse(localStorage.getItem('fobs_guest_watchlist') || '[]');
+    } catch(e) {
+      localList = [];
+    }
+    const idx = localList.findIndex(item => item.mediaId === mediaId);
+    let added = false;
+    if (idx >= 0) {
+      localList.splice(idx, 1);
+      added = false;
+    } else {
+      localList.unshift({ mediaId, title, poster, type, rating, year, addedAt: new Date() });
+      added = true;
+    }
+    localStorage.setItem('fobs_guest_watchlist', JSON.stringify(localList));
+    updateAuthUI();
+
+    const sheetBtn = document.getElementById('detailsWatchlistBtn');
+    if (sheetBtn) {
+      sheetBtn.innerHTML = `
+        <i class="${added ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'}" style="color: ${added ? '#ff3366' : '#fff'};"></i>
+        <span>${added ? 'Saved' : 'Watchlist'}</span>
+      `;
+    }
+    showToast(added ? `Saved "${title}" to My List ❤️` : `Removed "${title}" from My List`);
+    return;
+  }
+
+  // Logged-in user watchlist (synced to MongoDB)
+  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+  if (!token) return;
 
   try {
     const res = await fetch(`${API_BASE_URL}/api/user/watchlist/toggle`, {
@@ -7889,9 +8042,9 @@ async function toggleMediaWatchlist(media) {
       }
 
       if (data.action === 'added') {
-        showToast(`Saved "${title}" to Watchlist ❤️`);
+        showToast(`Saved "${title}" to My List ❤️`);
       } else {
-        showToast(`Removed "${title}" from Watchlist`);
+        showToast(`Removed "${title}" from My List`);
       }
     } else {
       showToast(data.error || 'Failed to update Watchlist');
@@ -7905,12 +8058,6 @@ function openWatchlistModal(e) {
   if (e) e.stopPropagation();
   const menu = document.getElementById('profileDropdownMenu');
   if (menu) menu.classList.add('hidden');
-
-  if (!currentUser) {
-    showToast('Please sign in to view your Watchlist');
-    triggerGoogleLogin();
-    return;
-  }
 
   const overlay = document.getElementById('watchlistModalOverlay');
   if (overlay) {
@@ -7928,7 +8075,11 @@ function renderWatchlistItems() {
   const container = document.getElementById('watchlistItemsContainer');
   if (!container) return;
 
-  if (!userWatchlist || userWatchlist.length === 0) {
+  const currentList = (currentUser && userWatchlist && userWatchlist.length > 0) 
+    ? userWatchlist 
+    : JSON.parse(localStorage.getItem('fobs_guest_watchlist') || '[]');
+
+  if (!currentList || currentList.length === 0) {
     container.innerHTML = `
       <div class="empty-list-notice">
         <div class="empty-list-icon"><i class="fa-regular fa-bookmark"></i></div>
@@ -7939,7 +8090,7 @@ function renderWatchlistItems() {
     return;
   }
 
-  container.innerHTML = userWatchlist.map(item => `
+  container.innerHTML = currentList.map(item => `
     <div class="user-item-card" onclick="openPlayerById('${item.type || 'movie'}', '${item.mediaId}'); closeWatchlistModal();">
       <img class="user-item-poster" src="${item.poster}" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=200&q=80'">
       <div class="user-item-info">
@@ -7962,51 +8113,38 @@ function renderWatchlistItems() {
 // ============================================================
 // CONTINUE WATCHING (WATCH HISTORY MONGODB SYNCED)
 // ============================================================
-// MOVIEBOX WATCH HISTORY & CONTINUE WATCHING (SCREENSHOT 1, 2, 3 MATCH)
-// ============================================================
-
-const DEFAULT_MB_HISTORY = [
-  { title: 'Hope [Hindi]', tag: 'TV', percent: 74, duration: '02:37:01', poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=300&q=80', mediaId: 'hope_hi', type: 'movie', progressSeconds: 7100 },
-  { title: 'Rana Naidu [Hindi]', tag: 'TV', percent: 1, duration: '58:48', ep: 'S01 E01', poster: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=300&q=80', mediaId: 'rana_naidu', type: 'series', progressSeconds: 35 },
-  { title: 'Viral Hit [Hindi]', tag: 'TV', percent: 1, duration: '45:51', ep: 'S01 E01', poster: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=300&q=80', mediaId: 'viral_hit', type: 'series', progressSeconds: 27 },
-  { title: 'A Shop for Killers', tag: 'TV', percent: 46, duration: '58:28', ep: 'S02 E01', poster: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=300&q=80', mediaId: 'shop_killers', type: 'series', progressSeconds: 1610 }
-];
-
-const DEFAULT_FULL_HISTORY = {
-  today: [
-    { title: 'Hope [Hindi]', ep: '', percent: '74% watched', duration: '02:37:01', percentNum: 74, poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=300&q=80', id: 'hope_hi', type: 'movie', progressSeconds: 7100 },
-    { title: 'Rana Naidu [Hindi] S1', ep: 'S01 E01', percent: '1% watched', duration: '58:48', percentNum: 1, poster: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=300&q=80', id: 'rana_naidu', type: 'series', progressSeconds: 35 },
-    { title: 'Viral Hit [Hindi]', ep: 'S01 E01', percent: '1% watched', duration: '45:51', percentNum: 1, poster: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=300&q=80', id: 'viral_hit', type: 'series', progressSeconds: 27 },
-    { title: 'A Shop for Killers [Hindi]', ep: 'S02 E01', percent: '46% watched', duration: '58:28', percentNum: 46, poster: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=300&q=80', id: 'shop_killers', type: 'series', progressSeconds: 1610 },
-  ],
-  yesterday: [
-    { title: 'Dirilis: Ertugrul [Urdu]', ep: 'S01 E01', percent: '1% watched', duration: '43:41', percentNum: 1, poster: 'https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=300&q=80', id: 'ertugrul', type: 'series', progressSeconds: 26 },
-    { title: 'Hercai [Urdu]', ep: 'S01 E01', percent: '1% watched', duration: '44:19', percentNum: 1, poster: 'https://images.unsplash.com/photo-1509281373149-e957c6296406?auto=format&fit=crop&w=300&q=80', id: 'hercai', type: 'series', progressSeconds: 26 },
-    { title: 'Establishment: Osman [Urdu]', ep: 'S01 E01', percent: '1% watched', duration: '01:33:49', percentNum: 1, poster: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=300&q=80', id: 'osman', type: 'series', progressSeconds: 56 },
-    { title: 'Kurulus: Orhan', ep: 'S01 E01', percent: '1% watched', duration: '02:32:27', percentNum: 1, poster: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=300&q=80', id: 'orhan', type: 'series', progressSeconds: 91 },
-    { title: 'Arafta [Hindi]', ep: 'S01 E01', percent: '1% watched', duration: '01:31:27', percentNum: 1, poster: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=300&q=80', id: 'arafta', type: 'series', progressSeconds: 55 },
-    { title: 'Golden Boy [Hindi]', ep: 'S01 E371', percent: '6% watched', duration: '30:17', percentNum: 6, poster: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=300&q=80', id: 'golden_boy', type: 'series', progressSeconds: 109 }
-  ]
-};
 
 function renderMeHistorySlider() {
   const slider = document.getElementById('mbHistorySlider');
   if (!slider) return;
 
-  const items = (userHistory && userHistory.length > 0) ? userHistory.map(h => ({
+  const localHistory = JSON.parse(localStorage.getItem('fobs_watch_history') || '[]');
+  const activeHistory = (currentUser && userHistory && userHistory.length > 0) ? userHistory : localHistory;
+
+  if (!activeHistory || activeHistory.length === 0) {
+    slider.innerHTML = `
+      <div style="padding: 18px 14px; color: #64748b; font-size: 13px; display: flex; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-clock-rotate-left" style="color: #00f2fe; font-size: 14px;"></i>
+        <span>No watch history yet. Start watching any video!</span>
+      </div>
+    `;
+    return;
+  }
+
+  const items = activeHistory.map(h => ({
     title: h.title,
     tag: h.type === 'series' ? 'TV' : 'MOVIE',
     percent: Math.min(100, Math.max(1, Math.round(((h.progressSeconds || 0) / (h.durationSeconds || 1)) * 100))),
-    poster: h.poster || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=300&q=80',
+    poster: h.poster || 'assets/fobs_logo.png',
     mediaId: h.mediaId,
     type: h.type || 'movie',
     progressSeconds: h.progressSeconds || 0
-  })) : DEFAULT_MB_HISTORY;
+  }));
 
   slider.innerHTML = items.map(item => `
     <div class="mb-h-card" onclick="resumeHistoryItem('${item.mediaId}', '${item.type}', ${item.progressSeconds})">
       <div class="mb-h-thumb-wrap">
-        <img class="mb-h-thumb-img" src="${item.poster}" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=300&q=80'">
+        <img class="mb-h-thumb-img" src="${item.poster}" alt="${item.title}" onerror="this.src='assets/fobs_logo.png'">
         <span class="mb-h-tag-badge">${item.tag || 'TV'}</span>
         <div class="mb-h-progress-bar">
           <div class="mb-h-progress-fill" style="width: ${item.percent}%;"></div>
