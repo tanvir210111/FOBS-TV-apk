@@ -7899,7 +7899,12 @@ body.is-fullscreen .ls-bottom-bar {
 }
 
 body.fullscreen-landscape .custom-subtitle-overlay,
-body.is-fullscreen .custom-subtitle-overlay,
+body.is-fullscreen .custom-subtitle-overlay {
+  bottom: 68px !important;
+  padding: 0 44px !important;
+  z-index: 2000005 !important;
+}
+
 @media (orientation: landscape) {
   .custom-subtitle-overlay {
     bottom: 68px !important;
@@ -8122,7 +8127,20 @@ body.is-fullscreen .custom-subtitle-overlay,
 }
 
 body.fullscreen-landscape #subtitleModal,
-body.is-fullscreen #subtitleModal,
+body.is-fullscreen #subtitleModal {
+  z-index: 2000030 !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+body.fullscreen-landscape #subtitleModal .subtitle-modal-container,
+body.is-fullscreen #subtitleModal .subtitle-modal-container {
+  border-radius: 20px !important;
+  max-height: 90vh !important;
+  margin: auto !important;
+  max-width: 520px !important;
+}
+
 @media (orientation: landscape) {
   #subtitleModal {
     z-index: 2000030 !important;
