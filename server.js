@@ -95,14 +95,13 @@ function saveContentData(data) {
 }
 
 // MovieBox Subject ID to detailPath lookup map
+// MovieBox Subject ID to detailPath lookup map
 function getMovieBoxDetailPath(id) {
-  const sId = String(id).trim();
-  if (sId === '7956543182215725408') return 'take-charge-of-my-heart-hindi-oIO9IBe3Lt9';
-  const sId = String(id).trim();
-  if (sId === '6040954039821651336') return 'colony-hindi-WrHlMwhDfc7';
-  if (sId === '2966181623634480144') return 'colony-06FbDRS87x3';
   if (!id) return '';
   const sId = String(id).trim();
+  if (sId === '7956543182215725408') return 'take-charge-of-my-heart-hindi-oIO9IBe3Lt9';
+  if (sId === '6040954039821651336') return 'colony-hindi-WrHlMwhDfc7';
+  if (sId === '2966181623634480144') return 'colony-06FbDRS87x3';
   if (sId === '2706073799983877168') return 'golden-boy-hindi-84Y8uLuQTd3';
   if (sId === '4505435294245733456') return 'golden-boy-WbL89VmWOm5';
   if (sId === '3929372124917419816') return 'golden-boy-GZ4ZlM5zgG4';
