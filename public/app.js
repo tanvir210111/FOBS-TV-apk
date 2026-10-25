@@ -1422,9 +1422,8 @@ function setupPlayerSwipeToClose() {
   }, { passive: true });
 }
 
-// Card Badge Helpers: Movie & Series posters always display "Hindi" on right badge (never "Movie" or "Series")
+// Card Badge Helpers: Dynamic right badge representing language/industry (e.g. Hindi, Korean, Chinese, Turkish, Anime)
 function getCardBadgeLeft(item) {
-  // Left badge omitted so only right-side "Hindi" badge appears (matching reference screenshot)
   return '';
 }
 
@@ -1435,8 +1434,58 @@ function getCardBadgeRightHtml(item, fallback = '') {
   if (item && (item.badgeRight === 'Hallprint' || item.tag === 'Hallprint')) {
     return `<span class="card-badge-right badge-hallprint">Hallprint</span>`;
   }
-  // Always display "Hindi" on the right side badge, never "Movie" or "Series"
-  return `<span class="card-badge-right">Hindi</span>`;
+
+  const title = (item?.title || '').toLowerCase();
+  const tag = (item?.tag || '').toLowerCase();
+  const dub = (item?.dubLanguage || '').toLowerCase();
+  const cat = (item?.category || '').toLowerCase();
+  const ind = (item?.industry || '').toLowerCase();
+  const country = (item?.country || '').toLowerCase();
+  const badgeRight = (item?.badgeRight || '').toLowerCase();
+
+  const isExplicitOriginal = (
+    title.includes('original audio') || 
+    title.includes('[original') || 
+    tag.includes('original') || 
+    badgeRight.includes('original') ||
+    (item?.selectedAudio && item.selectedAudio.toLowerCase().includes('original'))
+  );
+
+  const isExplicitHindi = (
+    title.includes('[hindi]') || 
+    title.includes('hindi dubbed') || 
+    tag.includes('hindi') || 
+    dub.includes('hindi') || 
+    cat.includes('(dubbed)') || 
+    cat.includes('dubbed')
+  );
+
+  let badgeText = 'Hindi';
+
+  // If it is Original Audio, or not Hindi-dubbed foreign content:
+  if (isExplicitOriginal || (!isExplicitHindi && !ind.includes('bollywood') && !country.includes('india'))) {
+    if (ind.includes('korean') || country.includes('korea') || cat.includes('korean') || cat.includes('k-drama')) {
+      badgeText = 'Korean';
+    } else if (ind.includes('chinese') || country.includes('china') || cat.includes('chinese') || cat.includes('c-drama')) {
+      badgeText = 'Chinese';
+    } else if (cat.includes('anime') || tag.includes('anime')) {
+      badgeText = 'Anime';
+    } else if (ind.includes('japanese') || country.includes('japan') || cat.includes('japanese')) {
+      badgeText = 'Japanese';
+    } else if (ind.includes('turkish') || country.includes('turkey') || cat.includes('turkish')) {
+      badgeText = 'Turkish';
+    } else if (ind.includes('hollywood') || country.includes('usa') || country.includes('uk') || cat.includes('hollywood') || ind.includes('english')) {
+      badgeText = 'English';
+    } else if (ind.includes('bangla') || country.includes('bangladesh') || cat.includes('bangla')) {
+      badgeText = 'Bangla';
+    } else if (ind.includes('south') || country.includes('south')) {
+      badgeText = 'South';
+    } else if (isExplicitOriginal) {
+      badgeText = 'Original';
+    }
+  }
+
+  return `<span class="card-badge-right">${badgeText}</span>`;
 }
 
 // Render Home Carousels
