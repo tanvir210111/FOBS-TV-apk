@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v63';
+const CACHE_KEY = 'fobs_tv_content_cache_v64';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -6767,7 +6767,18 @@ window.closeDownloadsView = closeDownloadsView;
 
 // Render Dynamic Audio Tracks for Active Media
 function renderAudioTrackOptions(media) {
-  let rawTracks = (media && media.audioTracks) ? media.audioTracks : ['Hindi dub', 'Original audio'];
+  if (!media) return;
+
+  const titleLower = (media.title || '').toLowerCase();
+  const isExplicitOriginal = (
+    (media.selectedAudio && /original|korean|japanese|english/i.test(media.selectedAudio)) ||
+    (media.dubLanguage && /original/i.test(media.dubLanguage)) ||
+    (media.isHindi === false) ||
+    titleLower.includes('[original') ||
+    titleLower.includes('(original')
+  );
+
+  let rawTracks = (media && media.audioTracks) ? media.audioTracks : (isExplicitOriginal ? ['Original audio'] : ['Hindi dub', 'Original audio']);
 
   let tracks = [];
   if (Array.isArray(rawTracks)) {
@@ -6776,13 +6787,6 @@ function renderAudioTrackOptions(media) {
     tracks = Object.keys(rawTracks);
   }
 
-  // Always ensure both 'Hindi dub' and 'Original audio' are available for selection
-  const hasHindi = tracks.some(t => /hindi/i.test(t));
-  const hasOriginal = tracks.some(t => /original|english|orig|korean|japanese/i.test(t));
-
-  if (!hasHindi) tracks.unshift('Hindi dub');
-  if (!hasOriginal) tracks.push('Original audio');
-
   // Format clean display names
   tracks = tracks.map(t => {
     if (/hindi/i.test(t)) return 'Hindi dub';
@@ -6790,19 +6794,34 @@ function renderAudioTrackOptions(media) {
     return t;
   });
 
+  // Always ensure Original audio is available
+  if (!tracks.some(t => /original/i.test(t))) {
+    tracks.push('Original audio');
+  }
+
+  // Only add Hindi dub if the media is actually tagged as Hindi or has Hindi dub
+  const hasHindiAudio = (media.isHindi === true) ||
+                        (media.dubLanguage && /hindi/i.test(media.dubLanguage)) ||
+                        titleLower.includes('[hindi') ||
+                        (Array.isArray(media.audioTracks) && media.audioTracks.some(t => /hindi/i.test(t)));
+
+  if (hasHindiAudio && !tracks.some(t => /hindi/i.test(t))) {
+    tracks.unshift('Hindi dub');
+  }
+
   // Remove duplicates
   tracks = [...new Set(tracks)];
 
-  // Respect media.selectedAudio if specified
-  if (media && media.selectedAudio) {
+  // Default track selection:
+  if (isExplicitOriginal) {
+    appState.currentAudioTrack = 'Original audio';
+  } else if (media && media.selectedAudio) {
     const preferred = /original|korean/i.test(media.selectedAudio) ? 'Original audio' : 'Hindi dub';
-    if (tracks.includes(preferred)) {
-      appState.currentAudioTrack = preferred;
-    } else {
-      appState.currentAudioTrack = tracks[0];
-    }
+    appState.currentAudioTrack = tracks.includes(preferred) ? preferred : (tracks[0] || 'Original audio');
+  } else if (hasHindiAudio) {
+    appState.currentAudioTrack = 'Hindi dub';
   } else {
-    appState.currentAudioTrack = tracks[0];
+    appState.currentAudioTrack = tracks[0] || 'Original audio';
   }
 
   // 1. Update Dub Selector Text (Portrait)

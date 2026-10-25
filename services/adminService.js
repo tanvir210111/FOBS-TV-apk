@@ -633,7 +633,7 @@ class AdminService {
             streamUrl: autoRenewEpUrl,
             servers: [
               {
-                name: `Server 1 (${isHindi ? 'Hindi Dub' : 'HD'} - Auto-Renewing ${sampleRes}p)`,
+                name: `Server 1 (${isHindi ? 'Hindi Dub' : 'Original Audio'} - Auto-Renewing ${sampleRes}p)`,
                 url: autoRenewEpUrl,
                 quality: `${sampleRes}p`,
                 audio: isHindi ? 'Hindi dub' : 'Original Audio',
@@ -692,6 +692,8 @@ class AdminService {
         industry,
         language: isHindi ? 'Hindi' : 'English',
         dubLanguage: isHindi ? 'Hindi' : 'Original',
+        audioTracks: isHindi ? ['Hindi dub', 'Original Audio'] : ['Original Audio'],
+        selectedAudio: isHindi ? 'Hindi dub' : 'Original Audio',
         seasonsCount: seasons.length,
         addedAt: new Date().toISOString(),
         createdAt: new Date().toISOString(),
