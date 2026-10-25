@@ -401,7 +401,7 @@ class AdminService {
    * 1-Click Import Movie or Series from Moviebox
    */
   async importFromMovieBox(payload) {
-    const {
+    let {
       subjectId,
       detailPath = '',
       title,
