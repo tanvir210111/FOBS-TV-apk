@@ -1708,6 +1708,27 @@ app.post('/api/moviebox/sync', async (req, res) => {
   res.json({ success: true, message: 'MovieBox hourly sync initiated' });
 });
 
+// One-Click / Webhook Auto-Deploy to VPS
+app.all('/api/deploy', (req, res) => {
+  const secret = req.query.secret || req.body?.secret || req.headers['x-deploy-secret'];
+  if (secret !== 'fobs_deploy_2026') {
+    return res.status(403).json({ success: false, error: 'Unauthorized secret' });
+  }
+
+  res.json({ success: true, message: 'Deploy process started on VPS' });
+
+  const { exec } = require('child_process');
+  console.log('🚀 Triggering automated git pull & PM2 restart...');
+  exec('git pull origin main && npm install --legacy-peer-deps && pm2 restart all', { cwd: __dirname }, (error, stdout, stderr) => {
+    if (error) {
+      console.error('❌ Deploy execution error:', error.message);
+      return;
+    }
+    console.log('✅ Deploy output:\n', stdout);
+    if (stderr) console.warn('Deploy stderr:', stderr);
+  });
+});
+
 // Automated 1-Hour MovieBox Sync Engine is disabled as requested by user
 // Content will only be synced when explicitly requested
 // syncService.startHourlySyncTimer();
