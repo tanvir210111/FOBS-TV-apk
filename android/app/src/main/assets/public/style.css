@@ -9761,3 +9761,9 @@ body.is-fullscreen #subtitleModal .subtitle-modal-container {
 
 
 
+
+
+/* High z-index for Community Modal over Credits & Player */
+#communityOverlay {
+  z-index: 10005 !important;
+}

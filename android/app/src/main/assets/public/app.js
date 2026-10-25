@@ -6948,9 +6948,38 @@ function toggleAddToList() {
 }
 
 // Share action
+
+function shareApp() {
+  const shareTitle = 'FOBS TV — Free Movies, Series & Anime';
+  const shareText = 'Watch trending movies, web series, Korean dramas & Hindi dubbed anime in 1080p Full HD on FOBS TV! Download now: https://fobs-apk-download.vercel.app/';
+
+  try {
+    if (window.AndroidApp && typeof window.AndroidApp.shareText === 'function') {
+      window.AndroidApp.shareText(shareTitle, shareText);
+      return;
+    }
+  } catch (e) {}
+
+  if (navigator.share) {
+    navigator.share({
+      title: shareTitle,
+      text: shareText,
+      url: 'https://fobs-apk-download.vercel.app/'
+    }).catch(() => {
+      copyShareFallback(shareText);
+    });
+  } else {
+    copyShareFallback(shareText);
+  }
+}
+window.shareApp = shareApp;
+
 function shareMedia() {
   const media = appState.currentMedia;
-  if (!media) return;
+  if (!media) {
+    shareApp();
+    return;
+  }
   const shareTitle = media.title || 'FOBS TV';
   const shareText = `Watch "${shareTitle}" in HD on FOBS TV! Download the app: https://fobs-apk-download.vercel.app/`;
 
@@ -7272,7 +7301,10 @@ function openExternalUrl(url) {
 // FOBS Community Modal Handlers
 function openCommunity() {
   const overlay = document.getElementById('communityOverlay');
-  if (overlay) overlay.classList.add('open');
+  if (overlay) {
+    overlay.style.zIndex = '10005';
+    overlay.classList.add('open');
+  }
 }
 
 function closeCommunity(e) {
