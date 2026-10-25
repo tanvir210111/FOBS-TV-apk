@@ -1,3 +1,4 @@
+const axios = require('axios');
 /**
  * FOBS TV - Web Admin Panel Service
  * Secure management for Content, MovieBox Recent Importer, Live TV, Views & User Requests
@@ -421,6 +422,20 @@ class AdminService {
 
     const content = readContent();
 
+    // Fetch optimized lightweight TMDB poster (50-100KB) instead of raw 7.5MB uncompressed images
+    let optPoster = poster;
+    let optBackdrop = poster;
+    try {
+      const cleanName = title.replace(/\[.*?\]|\(.*?\)/g, '').trim();
+      const tmdbType = type === 'series' ? 'tv' : 'movie';
+      const tmdbRes = await axios.get(`https://api.themoviedb.org/3/search/${tmdbType}?api_key=6e766190399843a3e1d85b68eaa3de69&query=${encodeURIComponent(cleanName)}`, { timeout: 3000 });
+      const tmdbItem = tmdbRes.data?.results?.[0];
+      if (tmdbItem && tmdbItem.poster_path) {
+        optPoster = `https://image.tmdb.org/t/p/w500${tmdbItem.poster_path}`;
+        optBackdrop = tmdbItem.backdrop_path ? `https://image.tmdb.org/t/p/w780${tmdbItem.backdrop_path}` : optPoster;
+      }
+    } catch (e) {}
+
     if (type === 'movie') {
       const mb = await movieboxService.resolveMedia(subjectId, detailPath, 0, 0);
       if (!mb || !mb.streamUrl) {
@@ -448,8 +463,8 @@ class AdminService {
         year: String(year),
         rating: String(rating),
         imdbRating: String(rating),
-        poster: poster || mb.poster || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80',
-        backdrop: poster || mb.poster,
+        poster: optPoster || poster || mb.poster || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80',
+        backdrop: optBackdrop || poster || mb.poster,
         genre: 'Action, Thriller',
         duration: '2h 00m',
         category,
@@ -552,8 +567,8 @@ class AdminService {
         year: String(year),
         rating: String(rating),
         imdbRating: String(rating),
-        poster: poster || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80',
-        backdrop: poster,
+        poster: optPoster || poster || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80',
+        backdrop: optBackdrop || poster,
         duration: `${episodes.length} Episodes`,
         episodesCount: episodes.length,
         category,

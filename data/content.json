@@ -793,6 +793,119 @@
   },
   "movies": [
     {
+      "id": "mb-m-8535219140137830216",
+      "subjectId": "8535219140137830216",
+      "detailPath": "hope-qzPZdmrovaa",
+      "title": "Hope",
+      "year": "2026",
+      "rating": "8.0",
+      "imdbRating": "8.0",
+      "poster": "https://image.tmdb.org/t/p/w500/6VY1ZKgpsc8CfGsQcCGiYEgHdH0.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w780/6VY1ZKgpsc8CfGsQcCGiYEgHdH0.jpg",
+      "genre": "Action, Thriller",
+      "duration": "2h 00m",
+      "category": "Hollywood Movies",
+      "industry": "Hollywood",
+      "language": "English",
+      "dubLanguage": "Original",
+      "audioTracks": [
+        "Original Audio"
+      ],
+      "selectedAudio": "Original Audio",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/39073f82f87d9b50a034e73f84816781.mp4?sign=b48cd1fb01cf5304579f628caf33abd7&t=1792929272",
+      "servers": [
+        {
+          "name": "Server 1 (HD - Fast 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/39073f82f87d9b50a034e73f84816781.mp4?sign=b48cd1fb01cf5304579f628caf33abd7&t=1792929272",
+          "quality": "1080p",
+          "audio": "Original Audio",
+          "isDirect": true
+        },
+        {
+          "name": "Server 2 (480p SD)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/1a9a9814f70420a6d0c098fb21695a0a.mp4?sign=aa6f71bbea568adce7fd6586210c1201&t=1792929972",
+          "quality": "480p",
+          "audio": "Original Audio",
+          "isDirect": true
+        },
+        {
+          "name": "Server 3 (360p SD)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/a772fc72e4712afeb7f471c93aacaf25.mp4?sign=b35520385103cea631223a4903a95b64&t=1792929335",
+          "quality": "360p",
+          "audio": "Original Audio",
+          "isDirect": true
+        },
+        {
+          "name": "Server 4 (Auto-Renewing Stream)",
+          "url": "/api/moviebox/stream?id=8535219140137830216&path=hope-qzPZdmrovaa",
+          "quality": "1080p",
+          "audio": "Original Audio",
+          "isDirect": true
+        }
+      ],
+      "captions": [
+        {
+          "id": "mb_sub_en_0",
+          "label": "English",
+          "language": "en",
+          "srclang": "en",
+          "src": "https://cacdn.hakunaymatata.com/subtitle/8f9fac6b9efac94f5bc6213edf6fe7ab.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTM2NTMwfX19XX0_&Signature=baJYMNXx24lfa8hHDleOKWOV-ur8eeqjvULG0P2JESOTN-LHDI-GuWmjb2iK-czez8MJPpzA6wuAqJidvG65pmkiyNEinlIMxjMMf4WQzsztpUSgPr~Pbp6FkfbbJnJ2A5wTfyCfYktiEBQTSPuGpvS9l8Mi8UYPjSJtFcX~AtVFJyE2~ptxElzOIEl-kCHKrn8WqcGuD97HAuDmFYZE8WzMhBjIYcH0iQQvblMI~bycLxWtizq99p3b2dQZErMgQzIuVUMIqhmCOB0jLhG45Lrlnao8jjDP5Qu~tIR5LEcUEfaaSnGvqrurK1hLlCKutPUUlboBinVDEWK8Y3IZ~Q__&Key-Pair-Id=KMHN1LQ1HEUPL",
+          "url": "https://cacdn.hakunaymatata.com/subtitle/8f9fac6b9efac94f5bc6213edf6fe7ab.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTM2NTMwfX19XX0_&Signature=baJYMNXx24lfa8hHDleOKWOV-ur8eeqjvULG0P2JESOTN-LHDI-GuWmjb2iK-czez8MJPpzA6wuAqJidvG65pmkiyNEinlIMxjMMf4WQzsztpUSgPr~Pbp6FkfbbJnJ2A5wTfyCfYktiEBQTSPuGpvS9l8Mi8UYPjSJtFcX~AtVFJyE2~ptxElzOIEl-kCHKrn8WqcGuD97HAuDmFYZE8WzMhBjIYcH0iQQvblMI~bycLxWtizq99p3b2dQZErMgQzIuVUMIqhmCOB0jLhG45Lrlnao8jjDP5Qu~tIR5LEcUEfaaSnGvqrurK1hLlCKutPUUlboBinVDEWK8Y3IZ~Q__&Key-Pair-Id=KMHN1LQ1HEUPL",
+          "format": "srt"
+        },
+        {
+          "id": "mb_sub_fr_1",
+          "label": "fr",
+          "language": "fr",
+          "srclang": "fr",
+          "src": "https://cacdn.hakunaymatata.com/subtitle/fa4ed21fa292520712349eae3d3521a1.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTM2NTMwfX19XX0_&Signature=baJYMNXx24lfa8hHDleOKWOV-ur8eeqjvULG0P2JESOTN-LHDI-GuWmjb2iK-czez8MJPpzA6wuAqJidvG65pmkiyNEinlIMxjMMf4WQzsztpUSgPr~Pbp6FkfbbJnJ2A5wTfyCfYktiEBQTSPuGpvS9l8Mi8UYPjSJtFcX~AtVFJyE2~ptxElzOIEl-kCHKrn8WqcGuD97HAuDmFYZE8WzMhBjIYcH0iQQvblMI~bycLxWtizq99p3b2dQZErMgQzIuVUMIqhmCOB0jLhG45Lrlnao8jjDP5Qu~tIR5LEcUEfaaSnGvqrurK1hLlCKutPUUlboBinVDEWK8Y3IZ~Q__&Key-Pair-Id=KMHN1LQ1HEUPL",
+          "url": "https://cacdn.hakunaymatata.com/subtitle/fa4ed21fa292520712349eae3d3521a1.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTM2NTMwfX19XX0_&Signature=baJYMNXx24lfa8hHDleOKWOV-ur8eeqjvULG0P2JESOTN-LHDI-GuWmjb2iK-czez8MJPpzA6wuAqJidvG65pmkiyNEinlIMxjMMf4WQzsztpUSgPr~Pbp6FkfbbJnJ2A5wTfyCfYktiEBQTSPuGpvS9l8Mi8UYPjSJtFcX~AtVFJyE2~ptxElzOIEl-kCHKrn8WqcGuD97HAuDmFYZE8WzMhBjIYcH0iQQvblMI~bycLxWtizq99p3b2dQZErMgQzIuVUMIqhmCOB0jLhG45Lrlnao8jjDP5Qu~tIR5LEcUEfaaSnGvqrurK1hLlCKutPUUlboBinVDEWK8Y3IZ~Q__&Key-Pair-Id=KMHN1LQ1HEUPL",
+          "format": "srt"
+        },
+        {
+          "id": "mb_sub_in_id_2",
+          "label": "in_id",
+          "language": "in_id",
+          "srclang": "in_id",
+          "src": "https://cacdn.hakunaymatata.com/subtitle/84ec4d71fe9c4c2e7b6b31e93cc2f444.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTM2NTMwfX19XX0_&Signature=baJYMNXx24lfa8hHDleOKWOV-ur8eeqjvULG0P2JESOTN-LHDI-GuWmjb2iK-czez8MJPpzA6wuAqJidvG65pmkiyNEinlIMxjMMf4WQzsztpUSgPr~Pbp6FkfbbJnJ2A5wTfyCfYktiEBQTSPuGpvS9l8Mi8UYPjSJtFcX~AtVFJyE2~ptxElzOIEl-kCHKrn8WqcGuD97HAuDmFYZE8WzMhBjIYcH0iQQvblMI~bycLxWtizq99p3b2dQZErMgQzIuVUMIqhmCOB0jLhG45Lrlnao8jjDP5Qu~tIR5LEcUEfaaSnGvqrurK1hLlCKutPUUlboBinVDEWK8Y3IZ~Q__&Key-Pair-Id=KMHN1LQ1HEUPL",
+          "url": "https://cacdn.hakunaymatata.com/subtitle/84ec4d71fe9c4c2e7b6b31e93cc2f444.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTM2NTMwfX19XX0_&Signature=baJYMNXx24lfa8hHDleOKWOV-ur8eeqjvULG0P2JESOTN-LHDI-GuWmjb2iK-czez8MJPpzA6wuAqJidvG65pmkiyNEinlIMxjMMf4WQzsztpUSgPr~Pbp6FkfbbJnJ2A5wTfyCfYktiEBQTSPuGpvS9l8Mi8UYPjSJtFcX~AtVFJyE2~ptxElzOIEl-kCHKrn8WqcGuD97HAuDmFYZE8WzMhBjIYcH0iQQvblMI~bycLxWtizq99p3b2dQZErMgQzIuVUMIqhmCOB0jLhG45Lrlnao8jjDP5Qu~tIR5LEcUEfaaSnGvqrurK1hLlCKutPUUlboBinVDEWK8Y3IZ~Q__&Key-Pair-Id=KMHN1LQ1HEUPL",
+          "format": "srt"
+        }
+      ],
+      "subtitles": [
+        {
+          "id": "mb_sub_en_0",
+          "label": "English",
+          "language": "en",
+          "srclang": "en",
+          "src": "https://cacdn.hakunaymatata.com/subtitle/8f9fac6b9efac94f5bc6213edf6fe7ab.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTM2NTMwfX19XX0_&Signature=baJYMNXx24lfa8hHDleOKWOV-ur8eeqjvULG0P2JESOTN-LHDI-GuWmjb2iK-czez8MJPpzA6wuAqJidvG65pmkiyNEinlIMxjMMf4WQzsztpUSgPr~Pbp6FkfbbJnJ2A5wTfyCfYktiEBQTSPuGpvS9l8Mi8UYPjSJtFcX~AtVFJyE2~ptxElzOIEl-kCHKrn8WqcGuD97HAuDmFYZE8WzMhBjIYcH0iQQvblMI~bycLxWtizq99p3b2dQZErMgQzIuVUMIqhmCOB0jLhG45Lrlnao8jjDP5Qu~tIR5LEcUEfaaSnGvqrurK1hLlCKutPUUlboBinVDEWK8Y3IZ~Q__&Key-Pair-Id=KMHN1LQ1HEUPL",
+          "url": "https://cacdn.hakunaymatata.com/subtitle/8f9fac6b9efac94f5bc6213edf6fe7ab.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTM2NTMwfX19XX0_&Signature=baJYMNXx24lfa8hHDleOKWOV-ur8eeqjvULG0P2JESOTN-LHDI-GuWmjb2iK-czez8MJPpzA6wuAqJidvG65pmkiyNEinlIMxjMMf4WQzsztpUSgPr~Pbp6FkfbbJnJ2A5wTfyCfYktiEBQTSPuGpvS9l8Mi8UYPjSJtFcX~AtVFJyE2~ptxElzOIEl-kCHKrn8WqcGuD97HAuDmFYZE8WzMhBjIYcH0iQQvblMI~bycLxWtizq99p3b2dQZErMgQzIuVUMIqhmCOB0jLhG45Lrlnao8jjDP5Qu~tIR5LEcUEfaaSnGvqrurK1hLlCKutPUUlboBinVDEWK8Y3IZ~Q__&Key-Pair-Id=KMHN1LQ1HEUPL",
+          "format": "srt"
+        },
+        {
+          "id": "mb_sub_fr_1",
+          "label": "fr",
+          "language": "fr",
+          "srclang": "fr",
+          "src": "https://cacdn.hakunaymatata.com/subtitle/fa4ed21fa292520712349eae3d3521a1.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTM2NTMwfX19XX0_&Signature=baJYMNXx24lfa8hHDleOKWOV-ur8eeqjvULG0P2JESOTN-LHDI-GuWmjb2iK-czez8MJPpzA6wuAqJidvG65pmkiyNEinlIMxjMMf4WQzsztpUSgPr~Pbp6FkfbbJnJ2A5wTfyCfYktiEBQTSPuGpvS9l8Mi8UYPjSJtFcX~AtVFJyE2~ptxElzOIEl-kCHKrn8WqcGuD97HAuDmFYZE8WzMhBjIYcH0iQQvblMI~bycLxWtizq99p3b2dQZErMgQzIuVUMIqhmCOB0jLhG45Lrlnao8jjDP5Qu~tIR5LEcUEfaaSnGvqrurK1hLlCKutPUUlboBinVDEWK8Y3IZ~Q__&Key-Pair-Id=KMHN1LQ1HEUPL",
+          "url": "https://cacdn.hakunaymatata.com/subtitle/fa4ed21fa292520712349eae3d3521a1.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTM2NTMwfX19XX0_&Signature=baJYMNXx24lfa8hHDleOKWOV-ur8eeqjvULG0P2JESOTN-LHDI-GuWmjb2iK-czez8MJPpzA6wuAqJidvG65pmkiyNEinlIMxjMMf4WQzsztpUSgPr~Pbp6FkfbbJnJ2A5wTfyCfYktiEBQTSPuGpvS9l8Mi8UYPjSJtFcX~AtVFJyE2~ptxElzOIEl-kCHKrn8WqcGuD97HAuDmFYZE8WzMhBjIYcH0iQQvblMI~bycLxWtizq99p3b2dQZErMgQzIuVUMIqhmCOB0jLhG45Lrlnao8jjDP5Qu~tIR5LEcUEfaaSnGvqrurK1hLlCKutPUUlboBinVDEWK8Y3IZ~Q__&Key-Pair-Id=KMHN1LQ1HEUPL",
+          "format": "srt"
+        },
+        {
+          "id": "mb_sub_in_id_2",
+          "label": "in_id",
+          "language": "in_id",
+          "srclang": "in_id",
+          "src": "https://cacdn.hakunaymatata.com/subtitle/84ec4d71fe9c4c2e7b6b31e93cc2f444.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTM2NTMwfX19XX0_&Signature=baJYMNXx24lfa8hHDleOKWOV-ur8eeqjvULG0P2JESOTN-LHDI-GuWmjb2iK-czez8MJPpzA6wuAqJidvG65pmkiyNEinlIMxjMMf4WQzsztpUSgPr~Pbp6FkfbbJnJ2A5wTfyCfYktiEBQTSPuGpvS9l8Mi8UYPjSJtFcX~AtVFJyE2~ptxElzOIEl-kCHKrn8WqcGuD97HAuDmFYZE8WzMhBjIYcH0iQQvblMI~bycLxWtizq99p3b2dQZErMgQzIuVUMIqhmCOB0jLhG45Lrlnao8jjDP5Qu~tIR5LEcUEfaaSnGvqrurK1hLlCKutPUUlboBinVDEWK8Y3IZ~Q__&Key-Pair-Id=KMHN1LQ1HEUPL",
+          "url": "https://cacdn.hakunaymatata.com/subtitle/84ec4d71fe9c4c2e7b6b31e93cc2f444.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTM2NTMwfX19XX0_&Signature=baJYMNXx24lfa8hHDleOKWOV-ur8eeqjvULG0P2JESOTN-LHDI-GuWmjb2iK-czez8MJPpzA6wuAqJidvG65pmkiyNEinlIMxjMMf4WQzsztpUSgPr~Pbp6FkfbbJnJ2A5wTfyCfYktiEBQTSPuGpvS9l8Mi8UYPjSJtFcX~AtVFJyE2~ptxElzOIEl-kCHKrn8WqcGuD97HAuDmFYZE8WzMhBjIYcH0iQQvblMI~bycLxWtizq99p3b2dQZErMgQzIuVUMIqhmCOB0jLhG45Lrlnao8jjDP5Qu~tIR5LEcUEfaaSnGvqrurK1hLlCKutPUUlboBinVDEWK8Y3IZ~Q__&Key-Pair-Id=KMHN1LQ1HEUPL",
+          "format": "srt"
+        }
+      ],
+      "description": "Hope - Available in high definition on FOBS TV.",
+      "type": "movie",
+      "cover": "https://image.tmdb.org/t/p/w500/6VY1ZKgpsc8CfGsQcCGiYEgHdH0.jpg"
+    },
+    {
       "id": "mb-m-7667495250449297640",
       "subjectId": "7667495250449297640",
       "detailPath": "jan-neta-hindi-KLK6XFZcp89",
@@ -104753,8 +104866,8 @@
       "category": "Anime Series (Hindi Dub)",
       "rating": "8.2",
       "imdbRating": "8.2",
-      "poster": "https://pbcdn.aoneroom.com/image/2026/06/29/165b9b02ef1077859684cc7e985f93c9.jpg",
-      "backdrop": "https://pbcdn.aoneroom.com/image/2026/06/29/165b9b02ef1077859684cc7e985f93c9.jpg",
+      "poster": "https://image.tmdb.org/t/p/w500/gLKOYIMyKlUHW0SVdskhgf9C0yy.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/w780/gLKOYIMyKlUHW0SVdskhgf9C0yy.jpg",
       "description": "High definition Hindi dubbed stream of Mushoku Tensei: Jobless Reincarnation [Hindi]. Available now on FOBS TV.",
       "audioTracks": [
         "Hindi dub"
@@ -106691,7 +106804,7 @@
       "seasonsCount": 2,
       "tmdbId": 94664,
       "releaseDate": "2026-10-22T16:28:51.000Z",
-      "cover": "https://pbcdn.aoneroom.com/image/2026/06/29/165b9b02ef1077859684cc7e985f93c9.jpg",
+      "cover": "https://image.tmdb.org/t/p/w500/gLKOYIMyKlUHW0SVdskhgf9C0yy.jpg",
       "addedAt": "2026-10-22T16:28:51.000Z",
       "originalReleaseDate": "2021-01-11"
     },
