@@ -488,12 +488,31 @@ async function saveFeedback({ googleId = 'guest', name = 'User', email = '', typ
   return doc;
 }
 
-const memoryMediaRequests = [];
+const REQUESTS_FILE = path.join(__dirname, '..', 'data', 'requests.json');
+
+function readRequestsFile() {
+  try {
+    if (fs.existsSync(REQUESTS_FILE)) {
+      const data = JSON.parse(fs.readFileSync(REQUESTS_FILE, 'utf8'));
+      if (Array.isArray(data)) return data;
+    }
+  } catch (e) {}
+  return [];
+}
+
+function writeRequestsFile(list) {
+  try {
+    fs.writeFileSync(REQUESTS_FILE, JSON.stringify(list, null, 2), 'utf8');
+  } catch (e) {
+    console.error('Error writing requests.json in dbService:', e);
+  }
+}
 
 async function saveMediaRequest(data) {
   const doc = {
     id: `req_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
     googleId: data.googleId || 'guest',
+    userName: data.userName || data.userEmail || 'FOBS TV App User',
     title: data.title,
     type: data.type || 'Movie',
     year: data.year || '',
@@ -503,16 +522,20 @@ async function saveMediaRequest(data) {
     createdAt: new Date().toISOString()
   };
 
-  memoryMediaRequests.unshift(doc);
-  if (memoryMediaRequests.length > 200) memoryMediaRequests.pop();
+  const list = readRequestsFile();
+  list.unshift(doc);
+  if (list.length > 500) list.pop();
+  writeRequestsFile(list);
+
   return doc;
 }
 
 function getMediaRequests(googleId = null) {
+  const list = readRequestsFile();
   if (googleId && googleId !== 'guest') {
-    return memoryMediaRequests.filter(r => r.googleId === googleId);
+    return list.filter(r => r.googleId === googleId);
   }
-  return memoryMediaRequests;
+  return list;
 }
 
 function getSystemNotifications() {

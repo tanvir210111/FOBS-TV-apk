@@ -826,6 +826,26 @@ class AdminService {
   /**
    * Get User Requests
    */
+  saveRequest(req) {
+    if (!req.title) throw new Error('Title is required');
+    const list = readRequests();
+    const newReq = {
+      id: req.id || `req_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+      googleId: req.googleId || 'guest',
+      userName: req.userName || req.userEmail || 'FOBS TV App User',
+      title: req.title.trim(),
+      type: req.type || 'Movie',
+      year: req.year || '',
+      language: req.language || 'Hindi Dubbed',
+      notes: req.notes || '',
+      status: req.status || 'Pending',
+      createdAt: req.createdAt || new Date().toISOString()
+    };
+    list.unshift(newReq);
+    writeRequests(list);
+    return { success: true, request: newReq };
+  }
+
   getRequests() {
     return { success: true, requests: readRequests() };
   }
