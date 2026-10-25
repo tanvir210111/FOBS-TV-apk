@@ -1614,7 +1614,7 @@ app.post('/api/user/watchlist/toggle', authService.authenticateToken, async (req
     const result = await dbService.toggleWatchlist(req.user.googleId, {
       mediaId, title, poster, type, rating, year
     });
-    res.json({ success: true, ...result });
+    res.json({ success: true, ok: true, ...result });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -4117,10 +4117,10 @@ async function setupSubtitlesForMedia(media) {
   const tracks = [];
 
   // 1. Direct embedded captions from active Episode / Media (Instant & 100% Reliable)
-  const directCaps = currentEp?.captions || media.captions || [];
+  const directCaps = currentEp?.captions || currentEp?.subtitles || media.captions || media.subtitles || [];
   if (Array.isArray(directCaps) && directCaps.length > 0) {
     directCaps.forEach((c, idx) => {
-      const langLower = (c.label || c.srclang || '').toLowerCase();
+      const langLower = (c.label || c.srclang || c.language || '').toLowerCase();
       const isEn = langLower.includes('en') || langLower.includes('eng') || langLower.includes('english');
       const isBn = langLower.includes('bn') || langLower.includes('bangla') || langLower.includes('bengali');
 
@@ -4136,8 +4136,8 @@ async function setupSubtitlesForMedia(media) {
           language: displayName,
           langCode: code,
           source: 'MovieBox / CDN',
-          url: c.src,
-          format: c.src && c.src.includes('.srt') ? 'srt' : 'vtt'
+          url: c.src || c.url,
+          format: (c.src || c.url || '').includes('.srt') ? 'srt' : 'vtt'
         });
       }
     });
@@ -4649,7 +4649,7 @@ async function downloadAndApplySubtitle(id, encodedUrl, lang, title) {
     const res = await fetch(`${API_BASE_URL}/api/subtitles/download?url=${encodedUrl}`);
     const data = await res.json();
 
-    if (!data.ok || !Array.isArray(data.cues) || data.cues.length === 0) {
+    if ((!data.ok && !data.success) || !Array.isArray(data.cues) || data.cues.length === 0) {
       throw new Error(data.error || 'No cues found in downloaded subtitle');
     }
 
