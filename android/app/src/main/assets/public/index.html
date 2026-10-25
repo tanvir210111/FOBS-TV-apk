@@ -1436,54 +1436,54 @@
     <!-- ============================================== -->
     <!-- DOWNLOADS VIEW (EXACT MOVIEBOX SCREENSHOT 4 MATCH) -->
     <!-- ============================================== -->
-    <div class="bottom-sheet-overlay mb-downloads-overlay" id="downloadsOverlay" onclick="closeDownloadsView(event)">
-      <div class="mb-dl-sheet" onclick="event.stopPropagation()">
-        <!-- Header with Speed Up & Transfer badges -->
-        <div class="mb-dl-header">
-          <div class="mb-dl-header-left">
-            <h2 class="mb-dl-title">Downloads</h2>
-          </div>
-          <div class="mb-dl-header-actions">
-            <button class="mb-dl-action-pill speed" onclick="runSpeedTest()">
-              <i class="fa-solid fa-crown" style="font-size: 11px;"></i>
-              <span>Speed Up</span>
-            </button>
-            <button class="mb-dl-action-pill transfer" onclick="showToast('Wi-Fi Direct Transfer ready')">
-              <i class="fa-solid fa-arrow-right-arrow-left" style="font-size: 11px;"></i>
-              <span>Transfer</span>
-            </button>
-            <button class="mb-dl-close-btn" onclick="closeDownloadsView()"><i class="fa-solid fa-xmark"></i></button>
-          </div>
+    <!-- ============================================== -->
+    <!-- DOWNLOADS VIEW (CHROME BROWSER POWERED)        -->
+    <!-- ============================================== -->
+    <div class="mb-fullscreen-page-overlay" id="downloadsOverlay" style="display: none; z-index: 10000;">
+      <div class="mb-fullscreen-page">
+        <!-- Top bar with Back chevron, Title, and Clear icon -->
+        <div class="mb-page-header">
+          <button class="mb-page-back-btn" onclick="closeDownloadsView()" aria-label="Go Back">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <h2 class="mb-page-title">Downloads (Chrome)</h2>
+          <button class="mb-page-action-btn" onclick="clearDownloadsHistory()" title="Clear Downloads">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
         </div>
 
-        <div class="mb-dl-scrollable-body">
-          <!-- Downloaded Section Header & Storage -->
-          <div class="mb-dl-storage-row">
-            <h3 class="mb-dl-sec-title">Downloaded</h3>
-            <span class="mb-dl-storage-stat" id="mbDlStorageText">122.5GB available</span>
-          </div>
-
-          <!-- Filter Pills -->
-          <div class="mb-dl-filter-row">
-            <button class="mb-dl-filter-pill active" onclick="switchDlFilter('fobs')">MovieBox 1</button>
-            <button class="mb-dl-filter-pill" onclick="switchDlFilter('local')">Local files 225</button>
-            <button class="mb-dl-filter-pill" onclick="switchDlFilter('received')">Received</button>
-          </div>
-
-          <!-- Downloaded Dynamic List Container -->
-          <div id="downloadsListContainer" class="mb-dl-list-container"></div>
-
-          <!-- "For You" Section with 3-Column Posters -->
-          <div class="mb-dl-foryou-section">
-            <h3 class="mb-dl-foryou-title">For You</h3>
-            <div class="mb-dl-foryou-grid" id="mbDownloadsForYouGrid">
-              <!-- Dynamically populated or rendered -->
+        <!-- Scrollable Body with Chrome Integration Card -->
+        <div class="mb-history-page-body mb-dl-page-body">
+          <!-- Google Chrome Engine Card -->
+          <div class="mb-chrome-dl-banner">
+            <div class="mb-chrome-banner-top">
+              <div class="mb-chrome-icon-box">
+                <i class="fa-brands fa-chrome"></i>
+              </div>
+              <div class="mb-chrome-banner-info">
+                <h4>Google Chrome এ ডাউনলোড হয়</h4>
+                <p>সব মুভি ও সিরিজ সরাসরি Google Chrome দিয়ে ডাউনলোড হয় এবং আপনার ডিভাইসের <b>Download</b> ফোল্ডারে সেভ হয়।</p>
+              </div>
             </div>
-            <button class="mb-dl-refresh-btn" onclick="refreshDownloadsForYou()">
-              <i class="fa-solid fa-rotate"></i>
-              <span>Refresh new content</span>
-            </button>
+            <div class="mb-chrome-banner-actions">
+              <button class="btn-chrome-action" onclick="openChromeDownloadsInfo()">
+                <i class="fa-brands fa-chrome"></i>
+                <span>Open Chrome Downloads</span>
+              </button>
+            </div>
           </div>
+
+          <!-- Downloaded Titles Section Header -->
+          <div class="mb-dl-storage-row">
+            <div class="mb-dl-sec-title-wrap" style="display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-clock-rotate-left" style="color: #00f2fe;"></i>
+              <h3 class="mb-dl-sec-title" style="margin: 0; font-size: 15px; font-weight: 700; color: #fff;">ডাউনলোড হিস্ট্রি</h3>
+            </div>
+            <span class="mb-dl-storage-stat" id="mbDlCountBadge" style="font-size: 12px; color: #8b95a5; font-weight: 600;">0 Files</span>
+          </div>
+
+          <!-- Dynamic Downloaded List -->
+          <div id="downloadsListContainer" class="mb-dl-list-container"></div>
         </div>
       </div>
     </div>
@@ -1500,13 +1500,25 @@
             </div>
             <div>
               <h3 style="margin: 0; font-size: 17px; font-weight: 700; color: #fff;">Sign In to FOBS TV</h3>
-              <p style="margin: 2px 0 0 0; font-size: 12px; color: #8b95a5;">Sync your Watchlist, History, and Pre-Bookings</p>
+              <p style="margin: 2px 0 0 0; font-size: 12px; color: #8b95a5;">Sync Watchlist, Watch History, and Pre-Bookings</p>
             </div>
           </div>
           <button class="sheet-close-btn" onclick="closeAuthModal()"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
         <div style="padding: 18px 20px 28px 20px;">
+          <!-- 1-Tap Quick Instant Sign-In -->
+          <button type="button" onclick="handleQuickGuestAuth()" style="width: 100%; background: linear-gradient(135deg, rgba(0, 242, 254, 0.15) 0%, rgba(79, 172, 254, 0.25) 100%); border: 1px solid rgba(0, 242, 254, 0.4); color: #00f2fe; border-radius: 12px; padding: 13px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px; box-shadow: 0 4px 16px rgba(0, 242, 254, 0.15); transition: transform 0.15s;">
+            <i class="fa-solid fa-bolt" style="color: #ffd700;"></i>
+            <span>1-Tap Instant Sign In (Fast)</span>
+          </button>
+
+          <div style="display: flex; align-items: center; gap: 12px; margin: 0 0 16px 0; color: #64748b; font-size: 11px;">
+            <span style="flex: 1; height: 1px; background: rgba(255, 255, 255, 0.1);"></span>
+            <span>OR SIGN IN WITH EMAIL</span>
+            <span style="flex: 1; height: 1px; background: rgba(255, 255, 255, 0.1);"></span>
+          </div>
+
           <!-- Quick Direct Email Login Form -->
           <form id="directAuthForm" onsubmit="handleDirectEmailAuth(event)" style="margin: 0;">
             <div style="margin-bottom: 12px;">
@@ -1529,18 +1541,12 @@
             </button>
           </form>
 
-          <div style="display: flex; align-items: center; gap: 12px; margin: 18px 0; color: #64748b; font-size: 12px;">
-            <span style="flex: 1; height: 1px; background: rgba(255, 255, 255, 0.1);"></span>
-            <span>OR GOOGLE</span>
-            <span style="flex: 1; height: 1px; background: rgba(255, 255, 255, 0.1);"></span>
-          </div>
-
           <!-- Google One-Tap / Button Wrap -->
-          <div id="modalGoogleBtnWrap" style="display: flex; justify-content: center; width: 100%; min-height: 44px;">
+          <div id="modalGoogleBtnWrap" style="display: flex; justify-content: center; width: 100%; min-height: 44px; margin-top: 14px;">
             <div id="modalGoogleBtnContainer"></div>
           </div>
 
-          <p style="margin: 16px 0 0 0; font-size: 11px; color: #64748b; text-align: center; line-height: 1.5;">
+          <p style="margin: 14px 0 0 0; font-size: 11px; color: #64748b; text-align: center; line-height: 1.5;">
             By signing in, your Watchlist, Watch History, and Pre-Bookings are safely synchronized to FOBS Cloud.
           </p>
         </div>
@@ -1729,13 +1735,16 @@
     <!-- ============================================== -->
     <!-- MY PRE-BOOKINGS MODAL SHEET -->
     <!-- ============================================== -->
-    <div class="bottom-sheet-overlay" id="preBookingsModal" onclick="closePreBookingsModal(event)" style="display: none; z-index: 99999;">
-      <div class="watchlist-modal-sheet" onclick="event.stopPropagation()">
-        <div class="watchlist-modal-header">
-          <h3><i class="fa-solid fa-ticket" style="color: #00f2fe;"></i> My Pre-Bookings</h3>
-          <button class="sheet-close-btn" onclick="closePreBookingsModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="mb-fullscreen-page-overlay" id="preBookingsModal" style="display: none; z-index: 10000;">
+      <div class="mb-fullscreen-page">
+        <div class="mb-page-header">
+          <button class="mb-page-back-btn" onclick="closePreBookingsModal()" aria-label="Go Back">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <h2 class="mb-page-title">My Pre-Bookings</h2>
+          <span class="section-count-badge" id="mePreBookingsHeaderCount">0 Booked</span>
         </div>
-        <div class="watchlist-modal-scroll" id="preBookingsList">
+        <div class="mb-history-page-body" id="preBookingsList">
           <!-- Dynamic Pre-Booked Cards -->
         </div>
       </div>
@@ -1852,29 +1861,32 @@
     <!-- ============================================== -->
     <!-- MY WATCHLIST MODAL OVERLAY                     -->
     <!-- ============================================== -->
-    <div class="modal-overlay" id="watchlistModalOverlay" style="display: none;">
-      <div class="modal-box user-list-modal-box">
-        <div class="modal-header">
-          <div class="modal-title-wrap">
-            <i class="fa-solid fa-bookmark" style="color: #ff3366;"></i>
-            <h3>My Watchlist</h3>
-          </div>
-          <button class="modal-close-btn" onclick="closeWatchlistModal()"><i class="fa-solid fa-xmark"></i></button>
+    <!-- ============================================== -->
+    <!-- MY WATCHLIST DEDICATED PAGE                    -->
+    <!-- ============================================== -->
+    <div class="mb-fullscreen-page-overlay" id="watchlistModalOverlay" style="display: none; z-index: 10000;">
+      <div class="mb-fullscreen-page">
+        <div class="mb-page-header">
+          <button class="mb-page-back-btn" onclick="closeWatchlistModal()" aria-label="Go Back">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <h2 class="mb-page-title">My List</h2>
+          <span class="section-count-badge" id="meWatchlistHeaderCount">0 Titles</span>
         </div>
-        <div class="user-modal-content-list" id="watchlistItemsContainer">
-          <!-- Dynamically populated from MongoDB -->
+        <div class="mb-history-page-body" id="watchlistItemsContainer">
+          <!-- Dynamically populated from MongoDB / LocalStorage -->
         </div>
       </div>
     </div>
 
     <!-- ============================================== -->
-    <!-- WATCH HISTORY FULL PAGE (EXACT MOVIEBOX SCREENSHOT 3 MATCH) -->
+    <!-- WATCH HISTORY FULL PAGE                        -->
     <!-- ============================================== -->
-    <div class="modal-overlay mb-fullscreen-page-overlay" id="historyModalOverlay" style="display: none;">
+    <div class="mb-fullscreen-page-overlay" id="historyModalOverlay" style="display: none; z-index: 10000;">
       <div class="mb-fullscreen-page">
         <!-- Top bar with Back chevron, Title, and Clear icon -->
         <div class="mb-page-header">
-          <button class="mb-page-back-btn" onclick="closeHistoryModal()">
+          <button class="mb-page-back-btn" onclick="closeHistoryModal()" aria-label="Go Back">
             <i class="fa-solid fa-chevron-left"></i>
           </button>
           <h2 class="mb-page-title">Watch History</h2>
@@ -1883,73 +1895,91 @@
           </button>
         </div>
 
-        <!-- Scrollable list of history items grouped by Today / Yesterday -->
+        <!-- Scrollable list of history items -->
         <div class="mb-history-page-body" id="historyItemsContainer">
-          <!-- Dynamically populated from JS (matching Screenshot 3) -->
+          <!-- Dynamically populated from JS -->
         </div>
       </div>
     </div>
 
     <!-- ============================================== -->
-    <!-- APP SETTINGS MODAL (MOVIEBOX STYLE)            -->
+    <!-- APP SETTINGS DEDICATED PAGE                    -->
     <!-- ============================================== -->
-    <div class="modal-overlay" id="settingsModalOverlay" style="display: none;">
-      <div class="modal-box user-list-modal-box">
-        <div class="modal-header">
-          <div class="modal-title-wrap">
-            <i class="fa-solid fa-gear" style="color: #00d26a;"></i>
-            <h3>Settings</h3>
-          </div>
-          <button class="modal-close-btn" onclick="closeSettingsModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="mb-fullscreen-page-overlay" id="settingsModalOverlay" style="display: none; z-index: 10000;">
+      <div class="mb-fullscreen-page">
+        <div class="mb-page-header">
+          <button class="mb-page-back-btn" onclick="closeSettingsModal()" aria-label="Go Back">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <h2 class="mb-page-title">Settings</h2>
+          <div style="width: 36px;"></div>
         </div>
-        <div class="user-modal-content-list">
-          <div class="mb-menu-row" onclick="cycleVideoQuality()">
-            <div class="mb-m-left">
-              <i class="fa-solid fa-sliders"></i>
-              <span>Default Quality</span>
+        <div class="mb-history-page-body" style="gap: 14px;">
+          <div class="mb-menu-group" style="margin: 0;">
+            <div class="mb-menu-row" onclick="cycleVideoQuality()">
+              <div class="mb-m-left">
+                <i class="fa-solid fa-sliders" style="color: #00f2fe;"></i>
+                <span>Default Quality</span>
+              </div>
+              <div class="mb-m-right">
+                <span class="mb-sub-val" id="settingsQualityLabel">Auto (1080p)</span>
+                <i class="fa-solid fa-chevron-right"></i>
+              </div>
             </div>
-            <div class="mb-m-right">
-              <span class="mb-sub-val" id="settingsQualityLabel">Auto (1080p)</span>
-              <i class="fa-solid fa-chevron-right"></i>
-            </div>
-          </div>
-          <div class="mb-menu-row" onclick="cycleDefaultAudio()">
-            <div class="mb-m-left">
-              <i class="fa-solid fa-volume-high"></i>
-              <span>Preferred Audio</span>
-            </div>
-            <div class="mb-m-right">
-              <span class="mb-sub-val" id="settingsAudioLabel">Hindi</span>
-              <i class="fa-solid fa-chevron-right"></i>
-            </div>
-          </div>
-          <div class="mb-menu-row" onclick="runSpeedTest()">
-            <div class="mb-m-left">
-              <i class="fa-solid fa-gauge-high"></i>
-              <span>CDN Speed Test</span>
-            </div>
-            <div class="mb-m-right">
-              <span class="mb-highlight-tag">Fast</span>
-              <i class="fa-solid fa-chevron-right"></i>
+            <div class="mb-menu-row" onclick="cycleDefaultAudio()">
+              <div class="mb-m-left">
+                <i class="fa-solid fa-volume-high" style="color: #a855f7;"></i>
+                <span>Preferred Audio</span>
+              </div>
+              <div class="mb-m-right">
+                <span class="mb-sub-val" id="settingsAudioLabel">Hindi</span>
+                <i class="fa-solid fa-chevron-right"></i>
+              </div>
             </div>
           </div>
-          <div class="mb-menu-row" onclick="clearAppCache()">
-            <div class="mb-m-left">
-              <i class="fa-solid fa-broom"></i>
-              <span>Clear Cache</span>
+
+          <div class="mb-menu-group" style="margin: 0;">
+            <div class="mb-menu-row" onclick="runSpeedTest()">
+              <div class="mb-m-left">
+                <i class="fa-solid fa-gauge-high" style="color: #00d26a;"></i>
+                <span>CDN Speed Test</span>
+              </div>
+              <div class="mb-m-right">
+                <span class="mb-highlight-tag" id="settingsSpeedBadge">Fast</span>
+                <i class="fa-solid fa-chevron-right"></i>
+              </div>
             </div>
-            <div class="mb-m-right">
-              <span class="mb-sub-val" id="settingsCacheLabel">14.2 MB</span>
-              <i class="fa-solid fa-chevron-right"></i>
+            <div class="mb-menu-row" onclick="clearAppCache()">
+              <div class="mb-m-left">
+                <i class="fa-solid fa-broom" style="color: #ff3366;"></i>
+                <span>Clear Cache</span>
+              </div>
+              <div class="mb-m-right">
+                <span class="mb-sub-val" id="settingsCacheLabel">14.2 MB</span>
+                <i class="fa-solid fa-chevron-right"></i>
+              </div>
             </div>
           </div>
-          <div class="mb-menu-row">
-            <div class="mb-m-left">
-              <i class="fa-solid fa-circle-info"></i>
-              <span>Version</span>
+
+          <div class="mb-menu-group" style="margin: 0;">
+            <div class="mb-menu-row">
+              <div class="mb-m-left">
+                <i class="fa-solid fa-circle-info" style="color: #38bdf8;"></i>
+                <span>App Version</span>
+              </div>
+              <div class="mb-m-right">
+                <span class="mb-sub-val">v2.8.5 (Build 8)</span>
+              </div>
             </div>
-            <div class="mb-m-right">
-              <span class="mb-sub-val">v2.8.5 (Latest)</span>
+            <div class="mb-menu-row" onclick="copyWebsiteLink('https://fobs-apk-download.vercel.app/')">
+              <div class="mb-m-left">
+                <i class="fa-solid fa-globe" style="color: #ffd700;"></i>
+                <span>Official App Portal</span>
+              </div>
+              <div class="mb-m-right">
+                <span class="mb-sub-val">fobs-apk-download</span>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </div>
             </div>
           </div>
         </div>
@@ -1957,33 +1987,37 @@
     </div>
 
     <!-- ============================================== -->
-    <!-- REAL-TIME USER FEEDBACK MODAL (MONGODB SYNCED) -->
+    <!-- REAL-TIME USER FEEDBACK DEDICATED PAGE         -->
     <!-- ============================================== -->
-    <div class="modal-overlay" id="feedbackModalOverlay" style="display: none;">
-      <div class="modal-box user-list-modal-box">
-        <div class="modal-header">
-          <div class="modal-title-wrap">
-            <i class="fa-solid fa-comment-dots" style="color: #00d26a;"></i>
-            <h3>Feedback & Bug Report</h3>
-          </div>
-          <button class="modal-close-btn" onclick="closeFeedbackModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="mb-fullscreen-page-overlay" id="feedbackModalOverlay" style="display: none; z-index: 10000;">
+      <div class="mb-fullscreen-page">
+        <div class="mb-page-header">
+          <button class="mb-page-back-btn" onclick="closeFeedbackModal()" aria-label="Go Back">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <h2 class="mb-page-title">Feedback & Bug Report</h2>
+          <div style="width: 36px;"></div>
         </div>
-        <div class="user-modal-content-list" style="padding: 16px;">
-          <div style="font-size: 13px; color: #94a3b8; margin-bottom: 12px;">
-            Help us improve FOBS TV! Your feedback is directly saved to our database.
+        <div class="mb-history-page-body" style="gap: 16px;">
+          <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 14px;">
+            <div style="font-size: 13px; color: #94a3b8; line-height: 1.5;">
+              Help us improve FOBS TV! Send your movie requests, feedback, or report playback issues directly to the development team.
+            </div>
           </div>
-          <div style="display: flex; flex-direction: column; gap: 10px;">
+
+          <div style="display: flex; flex-direction: column; gap: 14px;">
             <div>
-              <label style="font-size: 12px; color: #cbd5e1; font-weight: 600; display: block; margin-bottom: 4px;">Feedback Category</label>
-              <select id="feedbackCategoryInput" style="width: 100%; background: #141720; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 8px; font-family: inherit;">
+              <label style="font-size: 12px; color: #cbd5e1; font-weight: 700; display: block; margin-bottom: 6px;">Category</label>
+              <select id="feedbackCategoryInput" style="width: 100%; box-sizing: border-box; background: #141720; border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 12px; border-radius: 12px; font-family: inherit; font-size: 14px;">
                 <option value="feedback">General Feedback</option>
                 <option value="bug">Report a Bug / Stream Issue</option>
                 <option value="request">Movie / Series Request</option>
+                <option value="audio">Audio / Subtitle Issue</option>
               </select>
             </div>
             <div>
-              <label style="font-size: 12px; color: #cbd5e1; font-weight: 600; display: block; margin-bottom: 4px;">Rating</label>
-              <div id="feedbackStarWrap" style="display: flex; gap: 8px; font-size: 20px; color: #f59e0b; cursor: pointer;">
+              <label style="font-size: 12px; color: #cbd5e1; font-weight: 700; display: block; margin-bottom: 6px;">Rate Experience</label>
+              <div id="feedbackStarWrap" style="display: flex; gap: 10px; font-size: 24px; color: #f59e0b; cursor: pointer; padding: 4px 0;">
                 <i class="fa-solid fa-star" onclick="setFeedbackRating(1)"></i>
                 <i class="fa-solid fa-star" onclick="setFeedbackRating(2)"></i>
                 <i class="fa-solid fa-star" onclick="setFeedbackRating(3)"></i>
@@ -1992,12 +2026,12 @@
               </div>
             </div>
             <div>
-              <label style="font-size: 12px; color: #cbd5e1; font-weight: 600; display: block; margin-bottom: 4px;">Your Message</label>
-              <textarea id="feedbackMessageInput" rows="4" placeholder="Tell us your suggestions, requested movies or any issue you encountered..." style="width: 100%; background: #141720; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 8px; font-family: inherit; resize: none;"></textarea>
+              <label style="font-size: 12px; color: #cbd5e1; font-weight: 700; display: block; margin-bottom: 6px;">Your Message</label>
+              <textarea id="feedbackMessageInput" rows="5" placeholder="Tell us your suggestions, requested movies or any issue you encountered..." style="width: 100%; box-sizing: border-box; background: #141720; border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 12px; border-radius: 12px; font-family: inherit; font-size: 14px; resize: none;"></textarea>
             </div>
-            <button onclick="submitUserFeedback()" style="background: linear-gradient(135deg, #00d26a 0%, #10b981 100%); color: #000; border: none; font-weight: 700; padding: 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 6px;">
+            <button onclick="submitUserFeedback()" style="background: linear-gradient(135deg, #00d26a 0%, #10b981 100%); color: #000; border: none; font-weight: 800; font-size: 15px; padding: 14px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px; box-shadow: 0 4px 18px rgba(0, 210, 106, 0.3);">
               <i class="fa-solid fa-paper-plane"></i>
-              <span>Submit to Database</span>
+              <span>Submit Feedback</span>
             </button>
           </div>
         </div>
@@ -2368,61 +2402,85 @@
     <!-- ============================================== -->
     <!-- REAL-TIME MESSAGES & NOTIFICATIONS MODAL       -->
     <!-- ============================================== -->
-    <div class="modal-overlay" id="messagesModalOverlay" style="display: none;">
-      <div class="modal-box user-list-modal-box">
-        <div class="modal-header">
-          <div class="modal-title-wrap">
-            <i class="fa-solid fa-bell" style="color: #38bdf8;"></i>
-            <h3>Messages & System Updates</h3>
-          </div>
-          <button class="modal-close-btn" onclick="closeMessagesModal()"><i class="fa-solid fa-xmark"></i></button>
+    <!-- ============================================== -->
+    <!-- REAL-TIME MESSAGES & NOTIFICATIONS PAGE        -->
+    <!-- ============================================== -->
+    <div class="mb-fullscreen-page-overlay" id="messagesModalOverlay" style="display: none; z-index: 10000;">
+      <div class="mb-fullscreen-page">
+        <div class="mb-page-header">
+          <button class="mb-page-back-btn" onclick="closeMessagesModal()" aria-label="Go Back">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <h2 class="mb-page-title">Messages</h2>
+          <button class="mb-page-action-btn" onclick="markAllMessagesRead()" title="Mark all read">
+            <i class="fa-solid fa-check-double"></i>
+          </button>
         </div>
-        <div class="user-modal-content-list" id="messagesListContainer">
-          <!-- Dynamically populated from /api/notifications -->
+        <div class="mb-history-page-body" id="messagesListContainer">
+          <!-- Dynamically populated from JS -->
         </div>
       </div>
     </div>
 
     <!-- ============================================== -->
-    <!-- REAL-TIME USER ACTIVITY & WATCH STATS MODAL    -->
+    <!-- REAL-TIME USER ACTIVITY & WATCH STATS PAGE     -->
     <!-- ============================================== -->
-    <div class="modal-overlay" id="activityModalOverlay" style="display: none;">
-      <div class="modal-box user-list-modal-box">
-        <div class="modal-header">
-          <div class="modal-title-wrap">
-            <i class="fa-solid fa-chart-simple" style="color: #a855f7;"></i>
-            <h3>My Streaming Activity</h3>
-          </div>
-          <button class="modal-close-btn" onclick="closeActivityModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="mb-fullscreen-page-overlay" id="activityModalOverlay" style="display: none; z-index: 10000;">
+      <div class="mb-fullscreen-page">
+        <div class="mb-page-header">
+          <button class="mb-page-back-btn" onclick="closeActivityModal()" aria-label="Go Back">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <h2 class="mb-page-title">My Activity</h2>
+          <div style="width: 36px;"></div>
         </div>
-        <div class="user-modal-content-list" style="padding: 16px;">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
-            <div style="background: #141720; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 14px; text-align: center;">
-              <div style="font-size: 24px; font-weight: 800; color: #00d26a;" id="actTotalHours">0h</div>
-              <div style="font-size: 11px; color: #8b95a5; margin-top: 4px;">Watch Time</div>
+        <div class="mb-history-page-body" style="gap: 16px;">
+          <!-- Top 4 stats cards -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 16px; text-align: center;">
+              <div style="font-size: 26px; font-weight: 800; color: #00d26a;" id="actTotalHours">0h</div>
+              <div style="font-size: 11.5px; color: #8b95a5; margin-top: 4px; font-weight: 600;">Watch Time</div>
             </div>
-            <div style="background: #141720; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 14px; text-align: center;">
-              <div style="font-size: 24px; font-weight: 800; color: #38bdf8;" id="actWatchedCount">0</div>
-              <div style="font-size: 11px; color: #8b95a5; margin-top: 4px;">Titles Streamed</div>
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 16px; text-align: center;">
+              <div style="font-size: 26px; font-weight: 800; color: #38bdf8;" id="actWatchedCount">0</div>
+              <div style="font-size: 11.5px; color: #8b95a5; margin-top: 4px; font-weight: 600;">Titles Streamed</div>
             </div>
-            <div style="background: #141720; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 14px; text-align: center;">
-              <div style="font-size: 24px; font-weight: 800; color: #fbbf24;" id="actWatchlistCount">0</div>
-              <div style="font-size: 11px; color: #8b95a5; margin-top: 4px;">In My List</div>
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 16px; text-align: center;">
+              <div style="font-size: 26px; font-weight: 800; color: #fbbf24;" id="actWatchlistCount">0</div>
+              <div style="font-size: 11.5px; color: #8b95a5; margin-top: 4px; font-weight: 600;">In My List</div>
             </div>
-            <div style="background: #141720; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 14px; text-align: center;">
-              <div style="font-size: 24px; font-weight: 800; color: #a855f7;" id="actDownloadsCount">0</div>
-              <div style="font-size: 11px; color: #8b95a5; margin-top: 4px;">Downloaded</div>
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 16px; text-align: center;">
+              <div style="font-size: 26px; font-weight: 800; color: #a855f7;" id="actDownloadsCount">0</div>
+              <div style="font-size: 11.5px; color: #8b95a5; margin-top: 4px; font-weight: 600;">Downloaded</div>
             </div>
           </div>
-          <div style="background: #141720; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <i class="fa-solid fa-server" style="color: #00d26a; font-size: 16px;"></i>
+
+          <!-- Server connection & latency -->
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(0, 210, 106, 0.12); display: flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-server" style="color: #00d26a; font-size: 18px;"></i>
+              </div>
               <div>
-                <div style="font-size: 12.5px; font-weight: 700; color: #fff;">Server Connection</div>
-                <div style="font-size: 11px; color: #8b95a5;">CDN Low-Latency Cluster</div>
+                <div style="font-size: 13.5px; font-weight: 700; color: #fff;">Server Node</div>
+                <div style="font-size: 11px; color: #8b95a5;">VPS Dedicated Cluster (187.127.114.52)</div>
               </div>
             </div>
-            <span style="font-size: 11px; font-weight: 700; color: #00d26a; background: rgba(0,210,106,0.1); padding: 4px 8px; border-radius: 6px;">Optimal</span>
+            <span style="font-size: 11px; font-weight: 700; color: #00d26a; background: rgba(0,210,106,0.12); padding: 4px 10px; border-radius: 8px;">24ms • 100% Online</span>
+          </div>
+
+          <!-- Account Membership Card -->
+          <div style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(0, 242, 254, 0.15); display: flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-crown" style="color: #ffd700; font-size: 18px;"></i>
+              </div>
+              <div>
+                <div style="font-size: 13.5px; font-weight: 700; color: #fff;">Membership Tier</div>
+                <div style="font-size: 11px; color: #8b95a5;">FOBS VIP Unlimited • Lifetime Free</div>
+              </div>
+            </div>
+            <span style="font-size: 11px; font-weight: 700; color: #ffd700; background: rgba(255, 215, 0, 0.15); padding: 4px 10px; border-radius: 8px;">Active</span>
           </div>
         </div>
       </div>

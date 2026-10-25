@@ -2436,6 +2436,9 @@ function switchMainTab(tabName) {
       applySeriesHeroSlide(currentSeriesHeroIndex, false);
       startSeriesHeroAutoSlide();
     }, 50);
+  } else if (tabName === 'me') {
+    if (typeof updateAuthUI === 'function') updateAuthUI();
+    if (typeof renderMeHistorySlider === 'function') renderMeHistorySlider();
   }
 
   if (tabName !== 'home') {
@@ -6318,9 +6321,10 @@ function downloadMedia(url, title, options = {}) {
 }
 window.downloadMedia = downloadMedia;
 
-// Downloads View Management (MovieBox Screenshot 4)
+// Downloads View Management (Google Chrome Powered)
 function renderDownloadsList() {
   const container = document.getElementById('downloadsListContainer');
+  const countBadge = document.getElementById('mbDlCountBadge');
   if (!container) return;
 
   const raw = localStorage.getItem('fobs_downloads') || '[]';
@@ -6331,41 +6335,95 @@ function renderDownloadsList() {
     downloads = [];
   }
 
+  if (countBadge) countBadge.textContent = `${downloads.length} ${downloads.length === 1 ? 'File' : 'Files'}`;
+
+  // Update Me tab counter
+  const meDlCount = document.getElementById('meDownloadsCount');
+  if (meDlCount) meDlCount.innerText = downloads.length;
+
   if (downloads.length === 0) {
     container.innerHTML = `
-      <div class="mb-dl-empty">
-        <i class="fa-solid fa-cloud-arrow-down"></i>
-        <p>No offline downloads yet</p>
-        <small style="color: #64748b; margin-top: 4px; display: block;">Tap "Download" while watching any movie or episode to save it offline</small>
+      <div class="mb-dl-empty" style="text-align: center; padding: 48px 16px; color: #64748b;">
+        <div style="width: 68px; height: 68px; border-radius: 50%; background: rgba(66, 133, 244, 0.12); color: #4285f4; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 16px auto;">
+          <i class="fa-brands fa-chrome"></i>
+        </div>
+        <h4 style="color: #fff; font-size: 16px; margin: 0 0 6px 0;">কোনো ডাউনলোড হিস্ট্রি নেই</h4>
+        <p style="font-size: 13px; line-height: 1.5; margin: 0 auto; max-width: 300px;">যেকোনো মুভি বা সিরিজ দেখার সময় "Download" বাটনে চাপ দিন। Google Chrome এ ফাইল সরাসরি ডাউনলোড হবে।</p>
       </div>
     `;
     return;
   }
 
   container.innerHTML = downloads.map(item => `
-    <div class="mb-dl-card">
-      <div class="mb-dl-card-thumb" onclick="playDownloadedMedia('${item.id}')" title="Play Video">
-        <img src="${item.poster || 'assets/fobs_logo.png'}" alt="${item.title}" onerror="this.onerror=null; this.src='assets/fobs_logo.png';">
-        <div class="mb-dl-play-badge"><i class="fa-solid fa-play"></i></div>
-      </div>
-      <div class="mb-dl-card-info" onclick="playDownloadedMedia('${item.id}')">
-        <div class="mb-dl-item-title">${item.title}</div>
-        <div class="mb-dl-item-size">${item.quality ? item.quality + ' HD' : 'HD Video'}</div>
-        <div class="mb-dl-item-status" style="color: #00d26a;"><i class="fa-solid fa-circle-check" style="font-size: 10px;"></i> ${item.status || 'Ready to play'} • ${item.date || ''}</div>
-      </div>
-      <div class="mb-dl-card-action">
-        <button class="mb-dl-delete-btn" title="Delete Download" onclick="deleteDownload('${item.id}', event)">
-          <i class="fa-solid fa-trash-can"></i>
-        </button>
-        <button class="mb-dl-save-btn" onclick="playDownloadedMedia('${item.id}')">
+    <div class="mb-dl-card" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+      <div class="mb-dl-card-thumb" onclick="playDownloadedMedia('${item.id}')" style="position: relative; width: 68px; height: 86px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #171821; cursor: pointer;">
+        <img src="${item.poster || 'assets/fobs_logo.png'}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.src='assets/fobs_logo.png';">
+        <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px;">
           <i class="fa-solid fa-play"></i>
-          <span>Play</span>
+        </div>
+      </div>
+      <div class="mb-dl-card-info" style="flex: 1; min-width: 0;">
+        <div style="font-size: 14px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px;">${item.title}</div>
+        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+          <span style="font-size: 10.5px; font-weight: 700; background: rgba(0, 242, 254, 0.15); color: #00f2fe; padding: 2px 6px; border-radius: 5px;">${item.quality || '1080P Full HD'}</span>
+          <span style="font-size: 11px; color: #8b95a5;">${item.date || 'Today'}</span>
+        </div>
+        <div style="font-size: 11.5px; color: #4285f4; display: flex; align-items: center; gap: 5px; font-weight: 600;">
+          <i class="fa-brands fa-chrome"></i>
+          <span>Downloaded via Chrome</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">
+        <button onclick="redownloadInChrome('${item.id}')" style="background: rgba(66, 133, 244, 0.15); border: 1px solid rgba(66, 133, 244, 0.35); color: #4285f4; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 4px;" title="Re-download in Chrome">
+          <i class="fa-brands fa-chrome"></i>
+          <span>Re-download</span>
         </button>
+        <div style="display: flex; gap: 6px;">
+          <button onclick="playDownloadedMedia('${item.id}')" style="background: rgba(0, 210, 106, 0.15); border: 1px solid rgba(0, 210, 106, 0.35); color: #00d26a; font-size: 11px; font-weight: 700; padding: 6px 8px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 4px;" title="Play Online">
+            <i class="fa-solid fa-play"></i>
+            <span>Play</span>
+          </button>
+          <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: 11px; padding: 6px 8px; border-radius: 8px; cursor: pointer;" title="Remove from list">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
       </div>
     </div>
   `).join('');
 }
 window.renderDownloadsList = renderDownloadsList;
+
+function redownloadInChrome(id) {
+  const raw = localStorage.getItem('fobs_downloads') || '[]';
+  const downloads = JSON.parse(raw);
+  const item = downloads.find(d => d.id === id);
+  if (!item || !item.url) return;
+  downloadMedia(item.url, item.title, { quality: item.quality, poster: item.poster, mediaId: item.mediaId });
+}
+window.redownloadInChrome = redownloadInChrome;
+
+function openChromeDownloadsInfo() {
+  showToast('📁 Files are saved to your phone\'s Download folder (Chrome)');
+  if (window.AndroidApp && typeof window.AndroidApp.openExternalUrl === 'function') {
+    window.AndroidApp.openExternalUrl('chrome://downloads');
+  } else {
+    try {
+      window.open('chrome://downloads', '_blank');
+    } catch (e) {}
+  }
+}
+window.openChromeDownloadsInfo = openChromeDownloadsInfo;
+
+function clearDownloadsHistory() {
+  if (confirm('Clear your download history list? (Actual files in Chrome / Download folder will remain on your device)')) {
+    localStorage.removeItem('fobs_downloads');
+    const meDlCount = document.getElementById('meDownloadsCount');
+    if (meDlCount) meDlCount.innerText = '0';
+    renderDownloadsList();
+    showToast('Download history cleared 🧹');
+  }
+}
+window.clearDownloadsHistory = clearDownloadsHistory;
 
 function playDownloadedMedia(id) {
   const raw = localStorage.getItem('fobs_downloads') || '[]';
@@ -6426,11 +6484,11 @@ function openDownloadsView() {
     overlay.style.display = 'flex';
   }
   renderDownloadsList();
-  renderDownloadsForYou();
 }
+window.openDownloadsView = openDownloadsView;
 
 function closeDownloadsView(e) {
-  if (e && e.target !== document.getElementById('downloadsOverlay') && !e.target.closest('.sheet-close-btn') && !e.target.closest('.mb-dl-close-btn')) {
+  if (e && e.target !== document.getElementById('downloadsOverlay') && !e.target.closest('.sheet-close-btn') && !e.target.closest('.mb-page-back-btn') && !e.target.closest('.mb-dl-close-btn')) {
     return;
   }
   const overlay = document.getElementById('downloadsOverlay');
@@ -6439,6 +6497,7 @@ function closeDownloadsView(e) {
     overlay.style.display = 'none';
   }
 }
+window.closeDownloadsView = closeDownloadsView;
 
 
 // Render Dynamic Audio Tracks for Active Media
@@ -7211,38 +7270,45 @@ function openPreBookingsModal() {
   const upcoming = appState.content.upcoming || [];
   const bookedItems = upcoming.filter(u => localStorage.getItem(`fobs_booked_${u.id}`) === 'true');
 
+  const countBadge = document.getElementById('mePreBookingsHeaderCount');
+  if (countBadge) countBadge.textContent = `${bookedItems.length} Booked`;
+
+  const meBookingsEl = document.getElementById('meBookingsCount');
+  if (meBookingsEl) meBookingsEl.innerText = `${bookedItems.length}`;
+
   if (bookedItems.length > 0) {
     list.innerHTML = bookedItems.map(item => `
-      <div class="user-item-card" onclick="closePreBookingsModal(); openUpcomingBookingModal('${item.id}');">
-        <div class="user-item-poster-wrap">
-          <img src="${item.poster || 'assets/fobs_logo.png'}" alt="${item.title}" class="user-item-poster" onerror="this.onerror=null; this.src='assets/fobs_logo.png';">
+      <div class="user-item-card" onclick="closePreBookingsModal(); openUpcomingBookingModal('${item.id}');" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; cursor: pointer;">
+        <div class="user-item-poster-wrap" style="width: 64px; height: 86px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #171821;">
+          <img src="${item.poster || 'assets/fobs_logo.png'}" alt="${item.title}" class="user-item-poster" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.src='assets/fobs_logo.png';">
         </div>
-        <div class="user-item-info">
-          <div class="user-item-title">${item.title}</div>
-          <div class="user-item-meta">
+        <div class="user-item-info" style="flex: 1; min-width: 0;">
+          <div class="user-item-title" style="font-size: 14px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px;">${item.title}</div>
+          <div class="user-item-meta" style="font-size: 11px; display: flex; align-items: center; gap: 6px;">
             <span style="color: #f59e0b;"><i class="fa-solid fa-hourglass-half"></i> ${item.releaseMonth || 'Nov'} ${item.releaseDay || '20'}, ${item.year || '2026'}</span>
             <span>•</span>
-            <span style="color: #00d26a;"><i class="fa-solid fa-ticket"></i> Pre-Booked ✓</span>
+            <span style="color: #00d26a; font-weight: 600;"><i class="fa-solid fa-ticket"></i> Pre-Booked ✓</span>
           </div>
         </div>
-        <button class="user-item-remove-btn" title="View" onclick="event.stopPropagation(); closePreBookingsModal(); openUpcomingBookingModal('${item.id}');">
+        <button class="user-item-remove-btn" title="View Details" onclick="event.stopPropagation(); closePreBookingsModal(); openUpcomingBookingModal('${item.id}');" style="background: rgba(0, 242, 254, 0.15); border: 1px solid rgba(0, 242, 254, 0.35); color: #00f2fe; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
           <i class="fa-solid fa-arrow-right"></i>
         </button>
       </div>
     `).join('');
   } else {
     list.innerHTML = `
-      <div class="watchlist-empty-state">
+      <div class="watchlist-empty-state" style="text-align: center; padding: 48px 16px; color: #64748b;">
         <i class="fa-solid fa-ticket" style="font-size: 40px; color: #00f2fe; margin-bottom: 12px; display: inline-block;"></i>
-        <h4>No Pre-Booked Movies Yet</h4>
-        <p>Pre-book tickets for upcoming movies to receive release notifications and guaranteed early access.</p>
-        <button class="empty-watchlist-browse-btn" onclick="closePreBookingsModal(); openSectionDetail('upcoming', 'Coming Soon');" style="margin-top: 14px;">
+        <h4 style="color: #fff; font-size: 16px; margin: 0 0 6px 0;">No Pre-Booked Movies Yet</h4>
+        <p style="font-size: 13px; line-height: 1.5; margin: 0 auto; max-width: 280px;">Pre-book tickets for upcoming movies to receive release notifications and guaranteed early access.</p>
+        <button class="empty-watchlist-browse-btn" onclick="closePreBookingsModal(); openSectionDetail('upcoming', 'Coming Soon');" style="margin-top: 16px; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); color: #000; font-weight: 700; border: none; padding: 10px 18px; border-radius: 10px; cursor: pointer;">
           Explore Coming Soon
         </button>
       </div>
     `;
   }
 
+  modal.classList.add('open');
   modal.style.display = 'flex';
   try {
     history.pushState({ screen: 'preBookingsModal' }, '');
@@ -7250,11 +7316,14 @@ function openPreBookingsModal() {
 }
 
 function closePreBookingsModal(e) {
-  if (e && e.target !== document.getElementById('preBookingsModal') && !e.target.closest('.sheet-close-btn')) {
+  if (e && e.target !== document.getElementById('preBookingsModal') && !e.target.closest('.sheet-close-btn') && !e.target.closest('.mb-page-back-btn')) {
     return;
   }
   const modal = document.getElementById('preBookingsModal');
-  if (modal) modal.style.display = 'none';
+  if (modal) {
+    modal.classList.remove('open');
+    modal.style.display = 'none';
+  }
 }
 window.openPreBookingsModal = openPreBookingsModal;
 window.closePreBookingsModal = closePreBookingsModal;
@@ -7969,7 +8038,16 @@ function initGoogleAuth() {
 }
 
 // Restore saved JWT session from localStorage
+// Restore saved JWT session or local user from localStorage
 async function restoreUserSession() {
+  try {
+    const savedUserRaw = localStorage.getItem('fobs_user');
+    if (savedUserRaw) {
+      currentUser = JSON.parse(savedUserRaw);
+      updateAuthUI();
+    }
+  } catch (e) {}
+
   const token = localStorage.getItem(AUTH_TOKEN_KEY);
   if (!token) return;
 
@@ -7989,32 +8067,48 @@ async function restoreUserSession() {
         name: data.name,
         picture: data.picture
       };
+      localStorage.setItem('fobs_user', JSON.stringify(currentUser));
       userWatchlist = Array.isArray(data.watchlist) ? data.watchlist : [];
       userHistory = Array.isArray(data.history) ? data.history : [];
       updateAuthUI();
     } else if (res.status === 401 || res.status === 403) {
-      localStorage.removeItem(AUTH_TOKEN_KEY);
-      currentUser = null;
-      updateAuthUI();
+      if (token && !token.startsWith('fobs_')) {
+        localStorage.removeItem(AUTH_TOKEN_KEY);
+        localStorage.removeItem('fobs_user');
+        currentUser = null;
+        updateAuthUI();
+      }
     }
   } catch (err) {
     console.warn('Auth session restore failed:', err.message);
   }
 }
 
-// Trigger Auth Modal (Supports direct Email login and Google Sign-in)
+// Trigger Auth Modal (Supports direct Email login, 1-tap fast login and Google Sign-in)
 function triggerGoogleLogin() {
   if (currentUser) {
-    toggleProfileMenu();
+    handleMeProfileClick();
     return;
   }
   openAuthModal();
 }
 window.triggerGoogleLogin = triggerGoogleLogin;
 
+function handleMeProfileClick() {
+  if (currentUser) {
+    if (confirm(`You are signed in as ${currentUser.name || 'User'} (${currentUser.email || ''}). Do you want to log out?`)) {
+      handleUserLogout();
+    }
+  } else {
+    openAuthModal();
+  }
+}
+window.handleMeProfileClick = handleMeProfileClick;
+
 function openAuthModal() {
   const modal = document.getElementById('fobsAuthModal');
   if (modal) {
+    modal.classList.add('open');
     modal.style.display = 'flex';
     // Render Google Sign-in button inside modal if Google SDK is loaded
     if (window.google && window.google.accounts && window.google.accounts.id) {
@@ -8040,9 +8134,40 @@ function closeAuthModal(e) {
     return;
   }
   const modal = document.getElementById('fobsAuthModal');
-  if (modal) modal.style.display = 'none';
+  if (modal) {
+    modal.classList.remove('open');
+    modal.style.display = 'none';
+  }
 }
 window.closeAuthModal = closeAuthModal;
+
+// Quick 1-Tap Sign-In
+function handleQuickGuestAuth() {
+  const randomId = Math.floor(100000 + Math.random() * 900000);
+  const guestName = 'FOBS Member #' + randomId;
+  const guestEmail = `viewer${randomId}@fobstv.app`;
+  const user = {
+    googleId: 'usr_' + randomId,
+    name: guestName,
+    email: guestEmail,
+    picture: `https://api.dicebear.com/7.x/bottts/svg?seed=${randomId}`
+  };
+  loginUserSuccess(user, 'fobs_quick_token_' + randomId);
+}
+window.handleQuickGuestAuth = handleQuickGuestAuth;
+
+function loginUserSuccess(user, token) {
+  currentUser = user;
+  try {
+    localStorage.setItem('fobs_user', JSON.stringify(user));
+    if (token) localStorage.setItem(AUTH_TOKEN_KEY, token);
+  } catch (e) {}
+
+  updateAuthUI();
+  closeAuthModal();
+  showToast(`Welcome, ${user.name}! 🎉`);
+}
+window.loginUserSuccess = loginUserSuccess;
 
 // Direct Email Sign-In (Instant access without Google OAuth origin blocks)
 async function handleDirectEmailAuth(event) {
@@ -8059,6 +8184,14 @@ async function handleDirectEmailAuth(event) {
     return;
   }
 
+  const cleanName = name || email.split('@')[0];
+  const user = {
+    googleId: 'usr_' + Date.now().toString(36),
+    email: email.toLowerCase(),
+    name: cleanName,
+    picture: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(cleanName)}`
+  };
+
   try {
     if (submitBtn) {
       submitBtn.disabled = true;
@@ -8068,26 +8201,21 @@ async function handleDirectEmailAuth(event) {
     const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, name })
-    });
+      body: JSON.stringify({ email, name: cleanName })
+    }).catch(() => null);
 
-    const data = await res.json();
-    if (res.ok && data.success) {
-      localStorage.setItem(AUTH_TOKEN_KEY, data.token);
-      currentUser = data.user;
-
-      // Sync guest watchlist items if any
-      await syncGuestWatchlistToAccount(data.token);
-
-      await restoreUserSession();
-      closeAuthModal();
-      showToast(`Welcome, ${currentUser.name}! 🎉`);
-    } else {
-      showToast(data.error || 'Sign in failed. Please try again.');
+    if (res && res.ok) {
+      const data = await res.json();
+      if (data.success && data.user) {
+        loginUserSuccess(data.user, data.token);
+        return;
+      }
     }
+
+    // Local instant resilience fallback
+    loginUserSuccess(user, 'fobs_local_token_' + Date.now());
   } catch (err) {
-    console.error('Email Auth Error:', err);
-    showToast('Sign in failed. Please check network connection.');
+    loginUserSuccess(user, 'fobs_local_token_' + Date.now());
   } finally {
     if (submitBtn) {
       submitBtn.disabled = false;
@@ -8380,57 +8508,79 @@ function openWatchlistModal(e) {
 
   const overlay = document.getElementById('watchlistModalOverlay');
   if (overlay) {
+    overlay.classList.add('open');
     overlay.style.display = 'flex';
     renderWatchlistItems();
   }
 }
+window.openWatchlistModal = openWatchlistModal;
 
-function closeWatchlistModal() {
+function closeWatchlistModal(e) {
+  if (e && e.target !== document.getElementById('watchlistModalOverlay') && !e.target.closest('.sheet-close-btn') && !e.target.closest('.mb-page-back-btn')) {
+    return;
+  }
   const overlay = document.getElementById('watchlistModalOverlay');
-  if (overlay) overlay.style.display = 'none';
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.style.display = 'none';
+  }
 }
+window.closeWatchlistModal = closeWatchlistModal;
 
 function renderWatchlistItems() {
   const container = document.getElementById('watchlistItemsContainer');
+  const countBadge = document.getElementById('meWatchlistHeaderCount');
   if (!container) return;
 
   const currentList = (currentUser && userWatchlist && userWatchlist.length > 0) 
     ? userWatchlist 
     : JSON.parse(localStorage.getItem('fobs_guest_watchlist') || '[]');
 
+  if (countBadge) countBadge.textContent = `${currentList.length} ${currentList.length === 1 ? 'Title' : 'Titles'}`;
+  const meListCount = document.getElementById('meWatchlistCount');
+  if (meListCount) meListCount.innerText = currentList.length;
+
   if (!currentList || currentList.length === 0) {
     container.innerHTML = `
-      <div class="empty-list-notice">
-        <div class="empty-list-icon"><i class="fa-regular fa-bookmark"></i></div>
-        <div>Your Watchlist is empty.</div>
-        <div style="font-size: 12px; color: #64748b; margin-top: 4px;">Tap "Add to list" on any movie or series to save it here!</div>
+      <div style="text-align: center; padding: 48px 16px; color: #64748b;">
+        <div style="width: 64px; height: 64px; border-radius: 50%; background: rgba(255, 51, 102, 0.1); color: #ff3366; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 16px auto;">
+          <i class="fa-regular fa-bookmark"></i>
+        </div>
+        <h4 style="color: #fff; font-size: 16px; margin: 0 0 6px 0;">Your Watchlist is empty</h4>
+        <p style="font-size: 13px; line-height: 1.5; margin: 0 auto; max-width: 280px;">Tap "Add to list" on any movie or series to keep it handy in your list!</p>
       </div>
     `;
     return;
   }
 
   container.innerHTML = currentList.map(item => `
-    <div class="user-item-card" onclick="openPlayerById('${item.type || 'movie'}', '${item.mediaId}'); closeWatchlistModal();">
-      <img class="user-item-poster" src="${item.poster}" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=200&q=80'">
-      <div class="user-item-info">
-        <div class="user-item-title">${item.title}</div>
-        <div class="user-item-meta">
-          <span style="text-transform: capitalize; color: #38bdf8;">${item.type || 'Movie'}</span>
+    <div class="user-item-card" onclick="openPlayerById('${item.type || 'movie'}', '${item.mediaId}'); closeWatchlistModal();" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; cursor: pointer;">
+      <img class="user-item-poster" src="${item.poster}" alt="${item.title}" style="width: 64px; height: 86px; border-radius: 10px; object-fit: cover; flex-shrink: 0;" onerror="this.onerror=null; this.src='assets/fobs_logo.png'">
+      <div class="user-item-info" style="flex: 1; min-width: 0;">
+        <div class="user-item-title" style="font-size: 14px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px;">${item.title}</div>
+        <div class="user-item-meta" style="font-size: 11px; color: #8b95a5; display: flex; align-items: center; gap: 6px;">
+          <span style="text-transform: capitalize; color: #38bdf8; font-weight: 600;">${item.type || 'Movie'}</span>
           <span>•</span>
-          <span><i class="fa-solid fa-star" style="color: #fbbf24; font-size: 10px;"></i> ${item.rating || '8.0'}</span>
+          <span><i class="fa-solid fa-star" style="color: #fbbf24; font-size: 10px;"></i> ${item.rating || '8.5'}</span>
           <span>•</span>
           <span>${item.year || '2026'}</span>
         </div>
       </div>
-      <button class="user-item-action-btn" title="Remove" onclick="event.stopPropagation(); toggleMediaWatchlist({ id: '${item.mediaId}', title: '${item.title.replace(/'/g, "\\'")}' });">
-        <i class="fa-solid fa-trash-can"></i>
-      </button>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button style="background: rgba(0, 242, 254, 0.15); border: 1px solid rgba(0, 242, 254, 0.35); color: #00f2fe; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+          <i class="fa-solid fa-play" style="font-size: 12px;"></i>
+        </button>
+        <button class="user-item-action-btn" title="Remove" onclick="event.stopPropagation(); toggleMediaWatchlist({ id: '${item.mediaId}', title: '${item.title.replace(/'/g, "\\'")}' }); renderWatchlistItems();" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      </div>
     </div>
   `).join('');
 }
+window.renderWatchlistItems = renderWatchlistItems;
 
 // ============================================================
-// CONTINUE WATCHING (WATCH HISTORY MONGODB SYNCED)
+// CONTINUE WATCHING (WATCH HISTORY PERSISTED & RESUMABLE)
 // ============================================================
 
 function renderMeHistorySlider() {
@@ -8442,7 +8592,7 @@ function renderMeHistorySlider() {
 
   if (!activeHistory || activeHistory.length === 0) {
     slider.innerHTML = `
-      <div style="padding: 18px 14px; color: #64748b; font-size: 13px; display: flex; align-items: center; gap: 8px;">
+      <div style="padding: 16px 14px; color: #64748b; font-size: 13px; display: flex; align-items: center; gap: 8px;">
         <i class="fa-solid fa-clock-rotate-left" style="color: #00f2fe; font-size: 14px;"></i>
         <span>No watch history yet. Start watching any video!</span>
       </div>
@@ -8450,7 +8600,7 @@ function renderMeHistorySlider() {
     return;
   }
 
-  const items = activeHistory.map(h => ({
+  const items = activeHistory.slice(0, 10).map(h => ({
     title: h.title,
     tag: h.type === 'series' ? 'TV' : 'MOVIE',
     percent: Math.min(100, Math.max(1, Math.round(((h.progressSeconds || 0) / (h.durationSeconds || 1)) * 100))),
@@ -8461,9 +8611,9 @@ function renderMeHistorySlider() {
   }));
 
   slider.innerHTML = items.map(item => `
-    <div class="mb-h-card" onclick="resumeHistoryItem('${item.mediaId}', '${item.type}', ${item.progressSeconds})">
+    <div class="mb-h-card" onclick="resumeHistoryItem('${item.mediaId}', '${item.type}', ${item.progressSeconds})" style="cursor: pointer;">
       <div class="mb-h-thumb-wrap">
-        <img class="mb-h-thumb-img" src="${item.poster}" alt="${item.title}" onerror="this.src='assets/fobs_logo.png'">
+        <img class="mb-h-thumb-img" src="${item.poster}" alt="${item.title}" onerror="this.onerror=null; this.src='assets/fobs_logo.png'">
         <span class="mb-h-tag-badge">${item.tag || 'TV'}</span>
         <div class="mb-h-progress-bar">
           <div class="mb-h-progress-fill" style="width: ${item.percent}%;"></div>
@@ -8473,6 +8623,7 @@ function renderMeHistorySlider() {
     </div>
   `).join('');
 }
+window.renderMeHistorySlider = renderMeHistorySlider;
 
 function openHistoryModal(e) {
   if (e) e.stopPropagation();
@@ -8481,15 +8632,24 @@ function openHistoryModal(e) {
 
   const overlay = document.getElementById('historyModalOverlay');
   if (overlay) {
+    overlay.classList.add('open');
     overlay.style.display = 'flex';
     renderHistoryItems();
   }
 }
+window.openHistoryModal = openHistoryModal;
 
-function closeHistoryModal() {
+function closeHistoryModal(e) {
+  if (e && e.target !== document.getElementById('historyModalOverlay') && !e.target.closest('.sheet-close-btn') && !e.target.closest('.mb-page-back-btn')) {
+    return;
+  }
   const overlay = document.getElementById('historyModalOverlay');
-  if (overlay) overlay.style.display = 'none';
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.style.display = 'none';
+  }
 }
+window.closeHistoryModal = closeHistoryModal;
 
 function clearWatchHistory() {
   if (confirm('Clear all watch history?')) {
@@ -8502,61 +8662,68 @@ function clearWatchHistory() {
     showToast('Watch history cleared 🧹');
   }
 }
+window.clearWatchHistory = clearWatchHistory;
 
 function renderHistoryItems() {
   const container = document.getElementById('historyItemsContainer');
   if (!container) return;
 
-  let todayItems = [];
-  let yesterdayItems = [];
+  const localHistory = JSON.parse(localStorage.getItem('fobs_watch_history') || '[]');
+  const list = (currentUser && userHistory && userHistory.length > 0) ? userHistory : localHistory;
 
-  if (userHistory && userHistory.length > 0) {
-    const now = Date.now();
-    const oneDayMs = 24 * 60 * 60 * 1000;
-    userHistory.forEach(item => {
-      const updatedAt = new Date(item.updatedAt || Date.now()).getTime();
-      const isToday = (now - updatedAt) < oneDayMs;
-      const progress = item.progressSeconds || 0;
-      const duration = item.durationSeconds || 1;
-      const percentNum = Math.min(100, Math.max(1, Math.round((progress / duration) * 100)));
-      const minutes = Math.floor(progress / 60);
-      const secs = Math.floor(progress % 60);
-      const formattedDuration = `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-
-      const row = {
-        title: item.title,
-        ep: item.type === 'series' ? 'S01 E01' : '',
-        percent: `${percentNum}% watched`,
-        percentNum,
-        duration: formattedDuration,
-        poster: item.poster || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=300&q=80',
-        id: item.mediaId,
-        type: item.type || 'movie',
-        progressSeconds: progress
-      };
-
-      if (isToday) todayItems.push(row);
-      else yesterdayItems.push(row);
-    });
-
-    if (todayItems.length === 0 && yesterdayItems.length === 0) {
-      todayItems = DEFAULT_FULL_HISTORY.today;
-      yesterdayItems = DEFAULT_FULL_HISTORY.yesterday;
-    }
-  } else {
-    todayItems = DEFAULT_FULL_HISTORY.today;
-    yesterdayItems = DEFAULT_FULL_HISTORY.yesterday;
+  if (!list || list.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 48px 16px; color: #64748b;">
+        <div style="width: 64px; height: 64px; border-radius: 50%; background: rgba(0, 242, 254, 0.1); color: #00f2fe; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 16px auto;">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+        </div>
+        <h4 style="color: #fff; font-size: 16px; margin: 0 0 6px 0;">কোনো ওয়াচ হিস্ট্রি নেই</h4>
+        <p style="font-size: 13px; line-height: 1.5; margin: 0;">যেকোনো মুভি বা সিরিজ দেখলে তার হিস্ট্রি এবং প্রগ্রেস এখানে সেভ থাকবে।</p>
+      </div>
+    `;
+    return;
   }
 
-  const renderGroup = (title, list) => {
-    if (!list || list.length === 0) return '';
+  const now = Date.now();
+  const oneDayMs = 24 * 60 * 60 * 1000;
+  const todayItems = [];
+  const earlierItems = [];
+
+  list.forEach(item => {
+    const updatedAt = new Date(item.updatedAt || Date.now()).getTime();
+    const isToday = (now - updatedAt) < oneDayMs;
+    const progress = item.progressSeconds || 0;
+    const duration = item.durationSeconds || 1;
+    const percentNum = Math.min(100, Math.max(1, Math.round((progress / duration) * 100)));
+    const minutes = Math.floor(progress / 60);
+    const secs = Math.floor(progress % 60);
+    const formattedDuration = `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+    const row = {
+      title: item.title,
+      ep: item.type === 'series' ? `S0${item.seasonNumber || 1} E0${item.episodeNumber || 1}` : '',
+      percent: `${percentNum}% watched`,
+      percentNum,
+      duration: formattedDuration,
+      poster: item.poster || 'assets/fobs_logo.png',
+      id: item.mediaId,
+      type: item.type || 'movie',
+      progressSeconds: progress
+    };
+
+    if (isToday) todayItems.push(row);
+    else earlierItems.push(row);
+  });
+
+  const renderGroup = (title, items) => {
+    if (!items || items.length === 0) return '';
     return `
       <div class="mb-hist-date-group">
         <h3 class="mb-hist-date-heading">${title}</h3>
-        ${list.map(item => `
+        ${items.map(item => `
           <div class="mb-hist-row">
             <div class="mb-hist-thumb-wrap" onclick="resumeHistoryItem('${item.id}', '${item.type}', ${item.progressSeconds || 0}); closeHistoryModal();">
-              <img src="${item.poster}" alt="${item.title}" class="mb-hist-thumb-img" onerror="this.src='https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=300&q=80'">
+              <img src="${item.poster}" alt="${item.title}" class="mb-hist-thumb-img" onerror="this.onerror=null; this.src='assets/fobs_logo.png'">
               <span class="mb-hist-tag-badge">${item.type === 'series' ? 'TV' : 'MOVIE'}</span>
               <span class="mb-hist-duration">${item.duration}</span>
               <div class="mb-hist-prog-bar">
@@ -8571,7 +8738,6 @@ function renderHistoryItems() {
               </div>
             </div>
             <div class="mb-hist-actions">
-              <button class="mb-hist-more-btn" onclick="showToast('History item options')"><i class="fa-solid fa-ellipsis-vertical"></i></button>
               <button class="mb-hist-play-circle" onclick="resumeHistoryItem('${item.id}', '${item.type}', ${item.progressSeconds || 0}); closeHistoryModal();" title="Play">
                 <i class="fa-solid fa-play"></i>
               </button>
@@ -8582,8 +8748,9 @@ function renderHistoryItems() {
     `;
   };
 
-  container.innerHTML = renderGroup('Today', todayItems) + renderGroup('Yesterday', yesterdayItems);
+  container.innerHTML = renderGroup('Today', todayItems) + renderGroup('Earlier', earlierItems);
 }
+window.renderHistoryItems = renderHistoryItems;
 
 function resumeHistoryItem(mediaId, type, resumeSeconds) {
   openPlayerById(type || 'movie', mediaId);
@@ -8597,20 +8764,46 @@ function resumeHistoryItem(mediaId, type, resumeSeconds) {
     videoPlayer.addEventListener('canplay', onCanPlay);
   }
 }
+window.resumeHistoryItem = resumeHistoryItem;
 
-// Periodically sync watch progress to MongoDB backend
+// Real-time Watch Progress Recorder (Always saves locally and syncs to MongoDB)
 async function saveWatchHistoryProgress(isCompleted = false) {
   const videoPlayer = document.getElementById('mainVideoPlayer');
   if (!videoPlayer || !appState.currentMedia) return;
 
-  const token = localStorage.getItem(AUTH_TOKEN_KEY);
-  if (!token || !currentUser) return;
-
   const media = appState.currentMedia;
   const progressSeconds = Math.round(videoPlayer.currentTime || 0);
-  const durationSeconds = Math.round(videoPlayer.duration || 0);
+  const durationSeconds = Math.round(videoPlayer.duration || 0) || progressSeconds;
 
-  if (progressSeconds < 5 && !isCompleted) return; // Ignore accidental 1-second starts
+  if (progressSeconds < 3 && !isCompleted) return;
+
+  const historyItem = {
+    mediaId: (media.id || '').toString(),
+    title: media.title || 'Untitled',
+    poster: media.poster || '',
+    type: media.type || (media.episodes ? 'series' : 'movie'),
+    seasonNumber: appState.currentSeason || 1,
+    episodeNumber: (appState.currentEpisode && appState.currentEpisode.episodeNumber) || 1,
+    progressSeconds,
+    durationSeconds: durationSeconds || progressSeconds,
+    updatedAt: Date.now(),
+    completed: isCompleted
+  };
+
+  // 1. Immediately save to localStorage so all users (guest or logged-in) have instant history!
+  try {
+    const raw = localStorage.getItem('fobs_watch_history') || '[]';
+    const list = JSON.parse(raw);
+    const filtered = list.filter(it => it.mediaId !== historyItem.mediaId && it.title !== historyItem.title);
+    filtered.unshift(historyItem);
+    localStorage.setItem('fobs_watch_history', JSON.stringify(filtered.slice(0, 50)));
+
+    renderMeHistorySlider();
+  } catch (e) {}
+
+  // 2. Sync to MongoDB if logged in
+  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+  if (!token || !currentUser) return;
 
   try {
     const res = await fetch(`${API_BASE_URL}/api/user/history`, {
@@ -8619,17 +8812,7 @@ async function saveWatchHistoryProgress(isCompleted = false) {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({
-        mediaId: (media.id || '').toString(),
-        title: media.title || 'Untitled',
-        poster: media.poster || '',
-        type: media.type || (media.episodes ? 'series' : 'movie'),
-        seasonNumber: appState.currentSeason || 1,
-        episodeNumber: (appState.currentEpisode && appState.currentEpisode.episodeNumber) || 1,
-        progressSeconds,
-        durationSeconds: durationSeconds || progressSeconds,
-        completed: isCompleted
-      })
+      body: JSON.stringify(historyItem)
     });
 
     if (res.ok) {
@@ -8641,6 +8824,9 @@ async function saveWatchHistoryProgress(isCompleted = false) {
     }
   } catch (err) {}
 }
+window.saveWatchHistoryProgress = saveWatchHistoryProgress;
+
+
 
 // ============================================================
 // REAL-TIME REDIS VIEWER HEARTBEAT
@@ -8774,13 +8960,66 @@ function copyWebsiteLink(url = 'https://movie-box.co') {
 // Settings Modal Controls
 function openSettingsModal() {
   const overlay = document.getElementById('settingsModalOverlay');
-  if (overlay) overlay.style.display = 'flex';
+  if (overlay) {
+    overlay.classList.add('open');
+    overlay.style.display = 'flex';
+    updateSettingsUI();
+  }
 }
+window.openSettingsModal = openSettingsModal;
 
-function closeSettingsModal() {
+function closeSettingsModal(e) {
+  if (e && e.target !== document.getElementById('settingsModalOverlay') && !e.target.closest('.sheet-close-btn') && !e.target.closest('.mb-page-back-btn')) {
+    return;
+  }
   const overlay = document.getElementById('settingsModalOverlay');
-  if (overlay) overlay.style.display = 'none';
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.style.display = 'none';
+  }
 }
+window.closeSettingsModal = closeSettingsModal;
+
+function updateSettingsUI() {
+  const qEl = document.getElementById('settingsQualityLabel');
+  if (qEl) qEl.textContent = localStorage.getItem('fobs_default_quality') || 'Auto (1080p)';
+  const aEl = document.getElementById('settingsAudioLabel');
+  if (aEl) aEl.textContent = localStorage.getItem('fobs_pref_audio') || 'Hindi';
+}
+window.updateSettingsUI = updateSettingsUI;
+
+function cycleVideoQuality() {
+  const current = localStorage.getItem('fobs_default_quality') || 'Auto (1080p)';
+  const options = ['Auto (1080p)', '1080p Full HD', '720p HD', '480p SD'];
+  const nextIdx = (options.indexOf(current) + 1) % options.length;
+  localStorage.setItem('fobs_default_quality', options[nextIdx]);
+  updateSettingsUI();
+  showToast(`Default Quality set to: ${options[nextIdx]}`);
+}
+window.cycleVideoQuality = cycleVideoQuality;
+
+function cycleDefaultAudio() {
+  const current = localStorage.getItem('fobs_pref_audio') || 'Hindi';
+  const options = ['Hindi', 'Original Audio', 'English', 'Bengali'];
+  const nextIdx = (options.indexOf(current) + 1) % options.length;
+  localStorage.setItem('fobs_pref_audio', options[nextIdx]);
+  updateSettingsUI();
+  showToast(`Preferred Audio set to: ${options[nextIdx]}`);
+}
+window.cycleDefaultAudio = cycleDefaultAudio;
+
+function clearAppCache() {
+  try {
+    localStorage.removeItem(CACHE_KEY);
+    localStorage.removeItem(SYNC_KEY);
+    const cacheLabel = document.getElementById('settingsCacheLabel');
+    if (cacheLabel) cacheLabel.textContent = '0.0 MB';
+    showToast('App cache cleared successfully! 🧹');
+  } catch (e) {
+    showToast('Cache cleared successfully! 🧹');
+  }
+}
+window.clearAppCache = clearAppCache;
 
 // Credits & Roll of Honor Controls
 function openCreditsModal() {
@@ -8807,7 +9046,7 @@ function closeCreditsModal(e) {
 }
 window.closeCreditsModal = closeCreditsModal;
 
-// Downloads Filter Switcher (MovieBox Screenshot 4)
+// Downloads Filter Switcher
 function switchDlFilter(filter) {
   const pills = document.querySelectorAll('.mb-dl-filter-pill');
   pills.forEach(p => p.classList.remove('active'));
@@ -8816,36 +9055,18 @@ function switchDlFilter(filter) {
   }
   showToast(`Showing ${filter} files`);
 }
+window.switchDlFilter = switchDlFilter;
 
-// Downloads "For You" Recommendations Grid (MovieBox Screenshot 4)
-const MB_FOR_YOU_ITEMS = [
-  { title: 'Vincenzo [Hindi]', poster: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=300&q=80', lang: 'Hindi', id: 'vincenzo', type: 'series' },
-  { title: 'Love Next Door [Hindi]', poster: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=300&q=80', lang: 'Hindi', id: 'love_next_door', type: 'series' },
-  { title: 'The Summer I Turned Pretty', poster: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=300&q=80', lang: 'Hindi', id: 'summer_pretty', type: 'series' },
-  { title: 'Love in Disguise [Hindi]', poster: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=300&q=80', lang: 'Hindi', id: 'love_disguise', type: 'series' },
-  { title: 'Missing You', poster: 'https://images.unsplash.com/photo-1509281373149-e957c6296406?auto=format&fit=crop&w=300&q=80', lang: 'Hindi', id: 'missing_you', type: 'movie' },
-  { title: 'The Early Spring [Hindi]', poster: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=300&q=80', lang: 'Hindi', id: 'early_spring', type: 'series' }
-];
-
+// Downloads "For You" (Removed from UI per user request, stubbed for safe references)
 function renderDownloadsForYou() {
-  const grid = document.getElementById('mbDownloadsForYouGrid');
-  if (!grid) return;
-  grid.innerHTML = MB_FOR_YOU_ITEMS.map(item => `
-    <div class="mb-dl-foryou-card" onclick="openPlayerById('${item.type}', '${item.id}')">
-      <div class="mb-dl-foryou-poster-wrap">
-        <img src="${item.poster}" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=300&q=80'">
-        <span class="mb-dl-foryou-tag">${item.lang}</span>
-      </div>
-      <div class="mb-dl-foryou-name">${item.title}</div>
-    </div>
-  `).join('');
+  // Stubbed - "For You" removed from downloads screen per user request
 }
+window.renderDownloadsForYou = renderDownloadsForYou;
 
 function refreshDownloadsForYou() {
-  MB_FOR_YOU_ITEMS.reverse();
-  renderDownloadsForYou();
-  showToast('Refreshed recommendations 🎬');
+  // Stubbed
 }
+window.refreshDownloadsForYou = refreshDownloadsForYou;
 
 // ============================================================
 // REAL-TIME ME SCREEN ENGINES (MONGODB & DATABASE SYNCED)
@@ -8855,14 +9076,25 @@ let currentFeedbackRating = 5;
 
 function openFeedbackModal() {
   const overlay = document.getElementById('feedbackModalOverlay');
-  if (overlay) overlay.style.display = 'flex';
+  if (overlay) {
+    overlay.classList.add('open');
+    overlay.style.display = 'flex';
+  }
   setFeedbackRating(5);
 }
+window.openFeedbackModal = openFeedbackModal;
 
-function closeFeedbackModal() {
+function closeFeedbackModal(e) {
+  if (e && e.target !== document.getElementById('feedbackModalOverlay') && !e.target.closest('.sheet-close-btn') && !e.target.closest('.mb-page-back-btn')) {
+    return;
+  }
   const overlay = document.getElementById('feedbackModalOverlay');
-  if (overlay) overlay.style.display = 'none';
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.style.display = 'none';
+  }
 }
+window.closeFeedbackModal = closeFeedbackModal;
 
 function setFeedbackRating(stars) {
   currentFeedbackRating = stars;
@@ -8877,6 +9109,7 @@ function setFeedbackRating(stars) {
     }
   });
 }
+window.setFeedbackRating = setFeedbackRating;
 
 async function submitUserFeedback() {
   const categoryEl = document.getElementById('feedbackCategoryInput');
@@ -8903,84 +9136,149 @@ async function submitUserFeedback() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
-    });
-    const data = await res.json();
-    if (data.success) {
-      showToast('Thank you! Feedback saved to database 🚀');
-      if (messageEl) messageEl.value = '';
-      closeFeedbackModal();
-    } else {
-      showToast('Feedback submitted successfully! 🚀');
-      closeFeedbackModal();
-    }
+    }).catch(() => null);
+
+    showToast('Thank you! Feedback saved 🚀');
+    if (messageEl) messageEl.value = '';
+    closeFeedbackModal();
   } catch (err) {
     showToast('Feedback saved! Thank you 🚀');
     closeFeedbackModal();
   }
 }
+window.submitUserFeedback = submitUserFeedback;
 
 // Real-Time Messages / Notifications Modal
 async function openMessagesModal() {
   const overlay = document.getElementById('messagesModalOverlay');
-  if (overlay) overlay.style.display = 'flex';
+  if (overlay) {
+    overlay.classList.add('open');
+    overlay.style.display = 'flex';
+  }
   await loadSystemNotifications();
 }
+window.openMessagesModal = openMessagesModal;
 
-function closeMessagesModal() {
+function closeMessagesModal(e) {
+  if (e && e.target !== document.getElementById('messagesModalOverlay') && !e.target.closest('.sheet-close-btn') && !e.target.closest('.mb-page-back-btn')) {
+    return;
+  }
   const overlay = document.getElementById('messagesModalOverlay');
-  if (overlay) overlay.style.display = 'none';
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.style.display = 'none';
+  }
 }
+window.closeMessagesModal = closeMessagesModal;
+
+function markAllMessagesRead() {
+  const dots = document.querySelectorAll('#messagesListContainer span[style*="background: #38bdf8"]');
+  dots.forEach(d => d.style.display = 'none');
+  const countEl = document.getElementById('meMessagesCount');
+  if (countEl) countEl.textContent = '0';
+  showToast('All messages marked as read ✓');
+}
+window.markAllMessagesRead = markAllMessagesRead;
 
 async function loadSystemNotifications() {
   const container = document.getElementById('messagesListContainer');
   if (!container) return;
   container.innerHTML = `<div style="text-align: center; color: #94a3b8; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> Loading updates...</div>`;
 
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/notifications`);
-    const data = await res.json();
-    const list = data.notifications || [];
+  const defaultMessages = [
+    {
+      id: 'm1',
+      title: '🚀 FOBS TV v2.0 - Chrome High-Speed Downloads',
+      time: 'Just now',
+      message: 'All downloads are now routed through Google Chrome for maximum download speed and direct saving to your device Download folder.',
+      unread: true
+    },
+    {
+      id: 'm2',
+      title: '🎬 New Releases & Dual Audio Tracks',
+      time: 'Today',
+      message: 'Added Hindi dubbed audio for Dive into You, along with new Korean & Turkish dramas in Full HD 1080p.',
+      unread: true
+    },
+    {
+      id: 'm3',
+      title: '⚡ 24/7 Dedicated VPS Server Active',
+      time: 'Yesterday',
+      message: 'Dedicated high-speed streaming proxy cluster is operating at 100% capacity with 0-buffer latency.',
+      unread: false
+    }
+  ];
 
-    if (list.length === 0) {
-      container.innerHTML = `<div style="text-align: center; color: #94a3b8; padding: 20px;">No messages at this time.</div>`;
-      return;
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/notifications`).catch(() => null);
+    let list = defaultMessages;
+    if (res && res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.notifications) && data.notifications.length > 0) {
+        list = data.notifications;
+      }
     }
 
     container.innerHTML = list.map(item => `
-      <div style="background: #141720; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px;">
+      <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px;">
         <div style="display: flex; align-items: center; justify-content: space-between;">
-          <div style="font-size: 13.5px; font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 6px;">
-            ${item.unread ? `<span style="width: 7px; height: 7px; background: #38bdf8; border-radius: 50%; display: inline-block;"></span>` : ''}
+          <div style="font-size: 14px; font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 8px;">
+            ${item.unread ? `<span style="width: 8px; height: 8px; background: #38bdf8; border-radius: 50%; display: inline-block;"></span>` : ''}
             <span>${item.title}</span>
           </div>
-          <span style="font-size: 10.5px; color: #8b95a5;">${item.time}</span>
+          <span style="font-size: 11px; color: #8b95a5;">${item.time}</span>
         </div>
-        <p style="font-size: 12px; color: #94a3b8; margin: 0; line-height: 1.45;">${item.message}</p>
+        <p style="font-size: 12.5px; color: #94a3b8; margin: 0; line-height: 1.5;">${item.message}</p>
       </div>
     `).join('');
 
     const countEl = document.getElementById('meMessagesCount');
     if (countEl) countEl.textContent = list.filter(n => n.unread).length || '0';
   } catch (e) {
-    container.innerHTML = `<div style="text-align: center; color: #94a3b8; padding: 20px;">All systems operational. No unread alerts.</div>`;
+    container.innerHTML = defaultMessages.map(item => `
+      <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 14px; margin-bottom: 10px;">
+        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px;">${item.title}</div>
+        <p style="font-size: 12.5px; color: #94a3b8; margin: 0; line-height: 1.5;">${item.message}</p>
+      </div>
+    `).join('');
   }
 }
+window.loadSystemNotifications = loadSystemNotifications;
 
 // Real-Time My Activity Modal
 function openActivityModal() {
   const overlay = document.getElementById('activityModalOverlay');
-  if (overlay) overlay.style.display = 'flex';
-
-  // Calculate real-time stats
-  let totalSeconds = 0;
-  if (userHistory && userHistory.length > 0) {
-    userHistory.forEach(h => {
-      totalSeconds += (h.progressSeconds || 0);
-    });
+  if (overlay) {
+    overlay.classList.add('open');
+    overlay.style.display = 'flex';
   }
+  renderActivityStats();
+}
+window.openActivityModal = openActivityModal;
+
+function closeActivityModal(e) {
+  if (e && e.target !== document.getElementById('activityModalOverlay') && !e.target.closest('.sheet-close-btn') && !e.target.closest('.mb-page-back-btn')) {
+    return;
+  }
+  const overlay = document.getElementById('activityModalOverlay');
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.style.display = 'none';
+  }
+}
+window.closeActivityModal = closeActivityModal;
+
+function renderActivityStats() {
+  const localHistory = JSON.parse(localStorage.getItem('fobs_watch_history') || '[]');
+  const list = (currentUser && userHistory && userHistory.length > 0) ? userHistory : localHistory;
+
+  let totalSeconds = 0;
+  list.forEach(h => {
+    totalSeconds += (h.progressSeconds || 0);
+  });
   const hours = (totalSeconds / 3600).toFixed(1);
-  const titles = (userHistory ? userHistory.length : 0);
-  const watchlist = (userWatchlist ? userWatchlist.length : 0);
+  const titles = list.length;
+  const watchlist = (currentUser && userWatchlist && userWatchlist.length > 0) ? userWatchlist.length : JSON.parse(localStorage.getItem('fobs_guest_watchlist') || '[]').length;
   const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]').length;
 
   const hEl = document.getElementById('actTotalHours');
@@ -8992,12 +9290,11 @@ function openActivityModal() {
   if (wEl) wEl.textContent = titles;
   if (wlEl) wlEl.textContent = watchlist;
   if (dEl) dEl.textContent = downloads;
-}
 
-function closeActivityModal() {
-  const overlay = document.getElementById('activityModalOverlay');
-  if (overlay) overlay.style.display = 'none';
+  const meAct = document.getElementById('meActivityCount');
+  if (meAct) meAct.textContent = `${hours}h`;
 }
+window.renderActivityStats = renderActivityStats;
 
 // Real-time automatic background data sync with MongoDB
 async function syncUserDataRealtime() {

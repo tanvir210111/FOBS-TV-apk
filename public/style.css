@@ -9249,4 +9249,127 @@ body.is-fullscreen #subtitleModal .subtitle-modal-container {
   margin-top: 4px;
 }
 
+/* ============================================================
+   DEDICATED FULLSCREEN PAGE OVERLAYS (ME TAB SCREENS)
+   ============================================================ */
+.mb-fullscreen-page-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 10000;
+  display: none !important;
+  align-items: center;
+  justify-content: center;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+.mb-fullscreen-page-overlay.open {
+  display: flex !important;
+}
+
+.mb-fullscreen-page {
+  width: 100%;
+  max-width: 480px;
+  height: 100%;
+  max-height: 100vh;
+  background: #0d0f14;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+}
+
+.mb-page-scrollable-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 16px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Chrome Download Banner & Actions */
+.mb-chrome-dl-banner {
+  background: linear-gradient(135deg, rgba(66, 133, 244, 0.15) 0%, rgba(52, 168, 83, 0.1) 50%, rgba(251, 188, 5, 0.1) 100%);
+  border: 1px solid rgba(66, 133, 244, 0.3);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.mb-chrome-banner-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.mb-chrome-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(66, 133, 244, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4285f4;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.mb-chrome-banner-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.mb-chrome-banner-info p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #94a3b8;
+}
+
+.btn-chrome-action {
+  width: 100%;
+  background: linear-gradient(135deg, #4285f4 0%, #2b6cb0 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(66, 133, 244, 0.35);
+  transition: transform 0.15s, opacity 0.15s;
+}
+
+.btn-chrome-action:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+/* Auth Modal Open Support */
+#fobsAuthModal.open {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  display: flex !important;
+}
+
+#fobsAuthModal.open .download-modal-sheet {
+  transform: translateY(0) !important;
+}
+
+
 
