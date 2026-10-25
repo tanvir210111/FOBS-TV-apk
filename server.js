@@ -23,7 +23,14 @@ const subtitleService = require('./services/subtitleService');
 app.use(cors());
 app.use(compression({
   threshold: 1024,
-  level: 6
+  level: 6,
+  filter: (req, res) => {
+    // Never compress video streaming or download routes - preserves HTTP 206 byte-ranges & zero-buffering
+    if (req.path.includes('/stream') || req.path.includes('/download')) {
+      return false;
+    }
+    return compression.filter(req, res);
+  }
 }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
@@ -895,9 +902,19 @@ app.post('/api/content', (req, res) => {
 
 // Stream Proxy: Handles Google Drive, V-Cloud, and Direct links with Range (Byte-level Seeking)
 app.all('/api/stream', async (req, res) => {
+  const standardStreamCorsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+    'Access-Control-Allow-Headers': 'Range, Content-Type, Accept, X-Requested-With, Origin, Authorization',
+    'Access-Control-Expose-Headers': 'Content-Range, Content-Length, Accept-Ranges, Content-Type',
+    'Content-Disposition': 'inline',
+    'Cache-Control': 'no-cache, no-store',
+    'X-Accel-Buffering': 'no'
+  };
+
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type, Accept, X-Requested-With');
+  res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type, Accept, X-Requested-With, Origin, Authorization');
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range, Content-Length, Accept-Ranges, Content-Type');
   res.setHeader('X-Accel-Buffering', 'no');
   res.setHeader('Cache-Control', 'no-cache, no-store');
@@ -937,7 +954,7 @@ app.all('/api/stream', async (req, res) => {
     targetUrl.includes('haildrop') || 
     targetUrl.includes('fogtwist') || 
     targetUrl.includes('sunburst') || 
-    targetUrl.includes('stormshade') ||
+    targetUrl.includes('stormshade') || 
     targetUrl.includes('kmdl.eu.org') ||
     resolvedUrl.includes('hakunaymatata') ||
     resolvedUrl.includes('bcdnxw') ||
@@ -962,9 +979,9 @@ app.all('/api/stream', async (req, res) => {
 
   if (isMkvOrEac3 && ffmpegPath) {
     res.writeHead(200, {
+      ...standardStreamCorsHeaders,
       'Content-Type': 'video/mp4',
-      'Accept-Ranges': 'none',
-      'Cache-Control': 'no-cache, no-store'
+      'Accept-Ranges': 'none'
     });
 
     if (isHead) return res.end();
@@ -1068,6 +1085,7 @@ app.all('/api/stream', async (req, res) => {
           const chunkLength = serveEnd - start + 1;
 
           res.writeHead(206, {
+            ...standardStreamCorsHeaders,
             'Content-Range': `bytes ${start}-${serveEnd}/${totalLength}`,
             'Accept-Ranges': 'bytes',
             'Content-Length': chunkLength,
@@ -1174,10 +1192,10 @@ app.all('/api/stream', async (req, res) => {
         ? (response.headers['content-range'].split('/')[1] || '')
         : (response.headers['content-length'] || '');
       res.writeHead(200, {
+        ...standardStreamCorsHeaders,
         'Content-Type': contentType,
         'Accept-Ranges': 'bytes',
-        'Content-Length': totalLen,
-        'Access-Control-Allow-Origin': '*'
+        'Content-Length': totalLen
       });
       try { response.data.destroy(); } catch (e) {}
       return res.end();
@@ -1186,9 +1204,9 @@ app.all('/api/stream', async (req, res) => {
     // Upstream returned 206 natively (e.g. KMDL or Range-supporting servers)
     if (response.status === 206) {
       const headersToSend = {
+        ...standardStreamCorsHeaders,
         'Content-Type': contentType,
-        'Accept-Ranges': 'bytes',
-        'Access-Control-Allow-Origin': '*'
+        'Accept-Ranges': 'bytes'
       };
       if (response.headers['content-range']) headersToSend['Content-Range'] = response.headers['content-range'];
       if (response.headers['content-length']) headersToSend['Content-Length'] = response.headers['content-length'];
@@ -1212,6 +1230,7 @@ app.all('/api/stream', async (req, res) => {
       const chunkLength = end - start + 1;
 
       res.writeHead(206, {
+        ...standardStreamCorsHeaders,
         'Content-Range': `bytes ${start}-${end}/${totalLength}`,
         'Accept-Ranges': 'bytes',
         'Content-Length': chunkLength,
@@ -1228,6 +1247,7 @@ app.all('/api/stream', async (req, res) => {
       }
     } else {
       const headersToSend = {
+        ...standardStreamCorsHeaders,
         'Content-Type': contentType,
         'Accept-Ranges': 'bytes'
       };

@@ -3131,14 +3131,16 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       const applySeek = () => {
         if (seekApplied) return;
         seekApplied = true;
-        try { videoPlayer.currentTime = seekTime; } catch (e) {}
+        try {
+          if (videoPlayer.duration && videoPlayer.duration > 1) {
+            videoPlayer.currentTime = Math.min(seekTime, videoPlayer.duration - 1);
+          } else {
+            videoPlayer.currentTime = seekTime;
+          }
+        } catch (e) {}
       };
-      if (videoPlayer.readyState >= 1) {
-        applySeek();
-      } else {
-        videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
-        videoPlayer.addEventListener('canplay', applySeek, { once: true });
-      }
+      videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
+      videoPlayer.addEventListener('canplay', applySeek, { once: true });
     }
     videoPlayer.play().catch(() => {});
     return;
@@ -3185,15 +3187,20 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       videoPlayer.src = proxyUrl;
       videoPlayer.load();
       if (seekTime && seekTime > 0) {
+        let seekApplied = false;
         const applySeek = () => {
-          try { videoPlayer.currentTime = seekTime; } catch (e) {}
+          if (seekApplied) return;
+          seekApplied = true;
+          try {
+            if (videoPlayer.duration && videoPlayer.duration > 1) {
+              videoPlayer.currentTime = Math.min(seekTime, videoPlayer.duration - 1);
+            } else {
+              videoPlayer.currentTime = seekTime;
+            }
+          } catch (e) {}
         };
-        if (videoPlayer.readyState >= 1) {
-          applySeek();
-        } else {
-          videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
-          videoPlayer.addEventListener('canplay', applySeek, { once: true });
-        }
+        videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
+        videoPlayer.addEventListener('canplay', applySeek, { once: true });
       }
       videoPlayer.play().catch(() => {});
       return;
@@ -3204,15 +3211,20 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     videoPlayer.src = finalDirectUrl;
     videoPlayer.load();
     if (seekTime && seekTime > 0) {
+      let seekApplied = false;
       const applySeek = () => {
-        try { videoPlayer.currentTime = seekTime; } catch (e) {}
+        if (seekApplied) return;
+        seekApplied = true;
+        try {
+          if (videoPlayer.duration && videoPlayer.duration > 1) {
+            videoPlayer.currentTime = Math.min(seekTime, videoPlayer.duration - 1);
+          } else {
+            videoPlayer.currentTime = seekTime;
+          }
+        } catch (e) {}
       };
-      if (videoPlayer.readyState >= 1) {
-        applySeek();
-      } else {
-        videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
-        videoPlayer.addEventListener('canplay', applySeek, { once: true });
-      }
+      videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
+      videoPlayer.addEventListener('canplay', applySeek, { once: true });
     }
     videoPlayer.play().catch(err => {
       console.log('Autoplay deferred until user taps video controls:', err.message);
@@ -5424,8 +5436,8 @@ function setupVideoListeners() {
   videoPlayer.addEventListener('error', (e) => {
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
 
-    // If player is closing, ignoring errors, or iframe embed player is active, DO NOT attempt fallback retry!
-    if (videoPlayer._isClosing || videoPlayer._ignoreErrors || !appState.currentMedia || (embedFrame && embedFrame.style.display === 'block') || videoPlayer.style.display === 'none') {
+    // If player is closing, ignoring errors, changing audio track, or iframe embed player is active, DO NOT attempt fallback retry!
+    if (videoPlayer._isClosing || videoPlayer._ignoreErrors || videoPlayer._isChangingTrack || !appState.currentMedia || (embedFrame && embedFrame.style.display === 'block') || videoPlayer.style.display === 'none') {
       return;
     }
 
@@ -6573,10 +6585,22 @@ function switchAudioTrack(lang) {
   if (videoPlayer) {
     videoPlayer._retryCount = 0;
     videoPlayer._ignoreErrors = true;
+    videoPlayer._isChangingTrack = true;
     try { videoPlayer.pause(); } catch (e) {}
+    const onTrackReady = () => {
+      if (videoPlayer) {
+        videoPlayer._ignoreErrors = false;
+        videoPlayer._isChangingTrack = false;
+      }
+    };
+    videoPlayer.addEventListener('canplay', onTrackReady, { once: true });
+    videoPlayer.addEventListener('playing', onTrackReady, { once: true });
     setTimeout(() => {
-      if (videoPlayer) videoPlayer._ignoreErrors = false;
-    }, 1500);
+      if (videoPlayer) {
+        videoPlayer._ignoreErrors = false;
+        videoPlayer._isChangingTrack = false;
+      }
+    }, 10000);
   }
 
   const isOriginal = lang.toLowerCase().includes('original') || lang.toLowerCase().includes('english') || lang.toLowerCase().includes('eng') || lang.toLowerCase().includes('korean') || lang.toLowerCase().includes('orig');
