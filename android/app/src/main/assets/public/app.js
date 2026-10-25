@@ -3016,24 +3016,19 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     return;
   }
 
-  // MovieBox dynamic stream redirect handler
+  // MovieBox dynamic stream redirect handler: Pre-resolve to actual direct CDN link for instant seeking
   if (playableUrl.includes('/api/moviebox/stream')) {
-    const fullUrl = playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`;
-    videoPlayer.src = fullUrl;
-    videoPlayer.load();
-    if (seekTime && seekTime > 0) {
-      const applySeek = () => { try { videoPlayer.currentTime = seekTime; } catch(e) {} };
-      if (videoPlayer.readyState >= 1) applySeek();
-      else {
-        videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
-        videoPlayer.addEventListener('canplay', applySeek, { once: true });
+    try {
+      const fullUrl = playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`;
+      const jsonUrl = fullUrl.includes('?') ? `${fullUrl}&json=1` : `${fullUrl}?json=1`;
+      const res = await fetch(jsonUrl);
+      const data = await res.json();
+      if (data && data.ok && data.streamUrl) {
+        playableUrl = data.streamUrl;
       }
+    } catch (e) {
+      console.warn('Pre-resolve MovieBox stream failed, falling back to direct endpoint:', e.message);
     }
-    videoPlayer.play().catch(err => {
-      console.log('Autoplay deferred until user taps video controls:', err.message);
-      if (loader) loader.classList.remove('active');
-    });
-    return;
   }
 
   // Direct play for sources that provide CORS headers and fast direct CDN edge delivery without IP restrictions
@@ -3056,7 +3051,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
      !playableUrl.includes('vkpluscdn') &&
      !playableUrl.includes('vkcdn'))
   );
-  if (isDirectMp4Source && !playableUrl.includes('googleusercontent.com') && (audioIndex === null || audioIndex === 0 || audioIndex === undefined)) {
+  if (isDirectMp4Source && !playableUrl.includes('googleusercontent.com')) {
     appState.streamSeekOffset = 0;
     // If running in a browser outside Android APK, route hakunaymatata through proxy to include Referer
     if (!window.AndroidApp && (playableUrl.includes('hakunaymatata') || playableUrl.includes('bcdnxw') || playableUrl.includes('haildrop') || playableUrl.includes('fogtwist'))) {
@@ -3473,7 +3468,7 @@ function seekToAbsoluteTime(targetSeconds) {
   if (window.seekStallRecoveryTimeout) clearTimeout(window.seekStallRecoveryTimeout);
   if (window.seekFallbackTimeout) clearTimeout(window.seekFallbackTimeout);
 
-  // Show subtle loader spinner ONLY if decoding keyframe takes longer than 150ms
+  // Show subtle loader spinner ONLY if decoding keyframe takes longer than 200ms
   const loader = document.getElementById('videoLoader');
   window.seekLoaderDebounceTimer = setTimeout(() => {
     if (video.seeking || video.readyState < 3) {
@@ -3483,38 +3478,12 @@ function seekToAbsoluteTime(targetSeconds) {
         if (loaderText) loaderText.innerText = 'Loading...';
       }
     }
-  }, 150);
+  }, 200);
 
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = safeTarget;
 
-  // Check if current source is an FFmpeg transcoded stream (/api/stream) that doesn't support native byte ranges
-  const currentSrc = video.currentSrc || video.src || '';
-  const isTranscodedStream = currentSrc.includes('/api/stream?') && (
-    currentSrc.includes('&audio=') || 
-    currentSrc.includes('.mkv') || 
-    (appState.selectedAudioIndex !== undefined && appState.selectedAudioIndex > 0)
-  );
-
-  if (isTranscodedStream) {
-    // Restart stream at safeTarget via &t= parameter
-    let baseStreamUrl = currentSrc.replace(/[?&]t=[^&]*/g, '');
-    const joinChar = baseStreamUrl.includes('?') ? '&' : '?';
-    const newStreamUrl = `${baseStreamUrl}${joinChar}t=${safeTarget}`;
-    appState.streamSeekOffset = safeTarget;
-    console.log('Seeking transcoded stream via server offset:', newStreamUrl);
-    video.src = newStreamUrl;
-    video.load();
-    video.play().catch(() => {});
-    return;
-  }
-
-  // For native HTML5 / MP4 / HLS streams: pause decoder while jumping timestamp to avoid pipeline deadlocks
-  const wasPlaying = !video.paused;
-  if (wasPlaying) {
-    try { video.pause(); } catch (e) {}
-  }
-
+  // Direct native seek via currentTime (uses HTTP 206 Partial Content byte ranges without reloading video.src)
   let seekSettled = false;
   const finishSeek = () => {
     if (seekSettled) return;
@@ -3525,24 +3494,23 @@ function seekToAbsoluteTime(targetSeconds) {
     appState.pendingSeekTime = null;
     updateLandscapeProgress();
     syncPlayPauseIcons();
-    if (wasPlaying) {
-      video.play().catch(() => {});
-    }
+    video.play().catch(() => {});
   };
 
   video.addEventListener('seeked', finishSeek, { once: true });
   video.addEventListener('canplay', finishSeek, { once: true });
   video.addEventListener('playing', finishSeek, { once: true });
 
-  // 12-second safety watchdog: unfreezes and resumes playback if seek event was swallowed by WebView
+  // 6-second safety watchdog: unfreezes and resumes playback if seek event was swallowed by WebView
   window.seekSafetyTimeout = setTimeout(() => {
     finishSeek();
-  }, 12000);
+  }, 6000);
 
-  // Apply seek to video element directly via currentTime (never fastSeek which stalls in WebViews)
+  // Apply seek to video element directly via currentTime without tearing down decoder or pausing network
   try {
     video.currentTime = safeTarget;
   } catch (err) {
+    console.warn('Direct seek error:', err);
     finishSeek();
   }
 }
@@ -3852,6 +3820,8 @@ function saveSubtitleSettings() {
       syncOffset: subtitleState.syncOffset
     }));
   } catch (e) {}
+}
+
 // Client-side SRT and WebVTT Parser
 function parseSubtitleTextToCues(rawText) {
   if (!rawText) return [];
@@ -6293,7 +6263,9 @@ function switchAudioTrack(lang) {
   if (rawUrl && videoPlayer) {
     const curTime = (videoPlayer.currentTime || 0) + (appState.streamSeekOffset || 0);
     const isPlaying = !videoPlayer.paused;
-    playStreamUrl(rawUrl, targetAudioIndex, curTime);
+    const isSeparateTrackUrl = !!(currentEp?.audioTracks && Object.keys(currentEp.audioTracks).length > 1);
+    const audioParam = isSeparateTrackUrl ? null : targetAudioIndex;
+    playStreamUrl(rawUrl, audioParam, curTime);
     if (isPlaying) {
       videoPlayer.play().catch(() => {});
     }

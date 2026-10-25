@@ -710,6 +710,9 @@ app.get('/api/moviebox/stream', async (req, res) => {
     if (!media || !media.streamUrl) {
       return res.status(404).send('Stream not available for this episode yet');
     }
+    if (req.query.json === '1' || req.headers.accept?.includes('application/json')) {
+      return res.json({ ok: true, streamUrl: media.streamUrl, resolution: media.resolution });
+    }
     // Redirect to the actual CDN video URL (video player follows the redirect)
     res.redirect(302, media.streamUrl);
   } catch (err) {
@@ -887,7 +890,7 @@ app.all('/api/stream', async (req, res) => {
     targetUrl.includes('luluvido') || 
     targetUrl.includes('upbolt') || 
     targetUrl.includes('it2k1jyiil2q') || 
-    (req.query.audio !== undefined && parseInt(req.query.audio, 10) > 0)
+    ((targetUrl.includes('.mkv') || targetUrl.includes('matroska')) && req.query.audio !== undefined && parseInt(req.query.audio, 10) > 0)
   );
 
   if (isMkvOrEac3 && ffmpegPath) {
