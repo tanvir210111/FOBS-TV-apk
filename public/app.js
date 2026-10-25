@@ -3108,11 +3108,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       const res = await fetch(jsonUrl, { cache: 'no-store' });
       const data = await res.json();
       if (data && data.ok) {
-        if (window.AndroidApp && data.directCdnUrl) {
-          // Native Android APK: CustomBridgeWebViewClient natively intercepts direct HTTPS CDN URLs
-          // with Referer: https://movieboxapp.in/ (no Mixed Content, no cleartext IP blocking!)
-          playableUrl = data.directCdnUrl;
-        } else if (data.streamUrl) {
+        if (data.streamUrl) {
           playableUrl = data.streamUrl.startsWith('http') ? data.streamUrl : `${API_BASE_URL}${data.streamUrl}`;
         }
       }
@@ -3124,43 +3120,17 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     }
   }
 
-  // Direct MovieBox playback inside native Android APK (CustomBridgeWebViewClient handles Referer)
-  if (window.AndroidApp && (
-    playableUrl.includes('hakunaymatata') || 
-    playableUrl.includes('bcdnxw') || 
-    playableUrl.includes('haildrop') || 
-    playableUrl.includes('fogtwist') || 
-    playableUrl.includes('sunburst') || 
-    playableUrl.includes('stormshade')
-  )) {
-    console.log('Playing MovieBox stream directly via native Android Bridge (HTTPS):', playableUrl);
-    videoPlayer.src = playableUrl;
-    if (seekTime && seekTime > 0) {
-      let seekApplied = false;
-      const applySeek = () => {
-        if (seekApplied) return;
-        seekApplied = true;
-        try { videoPlayer.currentTime = seekTime; } catch (e) {}
-      };
-      if (videoPlayer.readyState >= 1) {
-        applySeek();
-      } else {
-        videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
-        videoPlayer.addEventListener('canplay', applySeek, { once: true });
-      }
-    }
-    videoPlayer.play().catch(() => {});
-    return;
-  }
-
-  // If already routed through /api/stream proxy (e.g. from MovieBox resolver in browser)
+  // If already routed through /api/stream proxy (e.g. from MovieBox resolver in browser or APK)
   if (playableUrl.includes('/api/stream')) {
     const proxyStreamUrl = playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`;
     console.log('Playing stream via server proxy:', proxyStreamUrl);
     videoPlayer.src = proxyStreamUrl;
     videoPlayer.load();
     if (seekTime && seekTime > 0) {
+      let seekApplied = false;
       const applySeek = () => {
+        if (seekApplied) return;
+        seekApplied = true;
         try { videoPlayer.currentTime = seekTime; } catch (e) {}
       };
       if (videoPlayer.readyState >= 1) {
