@@ -1639,9 +1639,9 @@ app.post('/api/feedback', async (req, res) => {
 });
 
 // 5b. Movie & Series Request Endpoint
-app.post('/api/request', async (req, res) => {
+app.post(['/api/request', '/api/requests'], async (req, res) => {
   try {
-    const { title, type, year, language, notes, googleId } = req.body;
+    const { title, type, year, language, notes, googleId } = req.body || {};
     if (!title || !title.trim()) {
       return res.status(400).json({ error: 'Title is required' });
     }
@@ -1663,7 +1663,7 @@ app.post('/api/request', async (req, res) => {
   }
 });
 
-app.get('/api/requests', (req, res) => {
+app.get(['/api/request', '/api/requests'], (req, res) => {
   try {
     const { googleId } = req.query;
     const list = dbService.getMediaRequests(googleId);
