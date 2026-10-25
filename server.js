@@ -97,6 +97,8 @@ function saveContentData(data) {
 // MovieBox Subject ID to detailPath lookup map
 function getMovieBoxDetailPath(id) {
   const sId = String(id).trim();
+  if (sId === '7956543182215725408') return 'take-charge-of-my-heart-hindi-oIO9IBe3Lt9';
+  const sId = String(id).trim();
   if (sId === '6040954039821651336') return 'colony-hindi-WrHlMwhDfc7';
   if (sId === '2966181623634480144') return 'colony-06FbDRS87x3';
   if (!id) return '';
