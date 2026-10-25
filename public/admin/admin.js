@@ -563,6 +563,11 @@ function renderMoviesTable(movies) {
       <td>${movie.industry || 'Hollywood'}</td>
       <td><span class="text-warning">${audioTrack}</span></td>
       <td>⭐ ${movie.rating || movie.imdbRating || '8.0'}</td>
+      <td>
+        <span class="badge-views" title="Click to set/boost views" onclick="editMediaViews('${movie.id}', ${movie.views || 0}, '${escapeHtml(movie.title)}')">
+          <i class="fa-solid fa-eye"></i> ${formatViews(movie.views || 0)}
+        </span>
+      </td>
       <td><span class="metric-pill">${serversCount} Servers</span></td>
       <td class="text-right">
         <div class="action-buttons">
@@ -613,6 +618,11 @@ function renderSeriesTable(seriesList) {
       <td>${series.duration || `${epsCount} Episodes`}</td>
       <td>${seasonsCount} Season</td>
       <td><strong class="text-amber">${epsCount} Episodes</strong></td>
+      <td>
+        <span class="badge-views" title="Click to set/boost views" onclick="editMediaViews('${series.id}', ${series.views || 0}, '${escapeHtml(series.title)}')">
+          <i class="fa-solid fa-eye"></i> ${formatViews(series.views || 0)}
+        </span>
+      </td>
       <td class="text-right">
         <div class="action-buttons">
           <button class="btn-action-sm danger" title="Delete Series" onclick="deleteSeries('${series.id}')"><i class="fa-solid fa-trash"></i></button>
@@ -692,6 +702,7 @@ function editMovie(movie) {
   document.getElementById('movie-audio').value = movie.selectedAudio || 'Hindi dub';
   document.getElementById('movie-poster').value = movie.poster || '';
   document.getElementById('movie-stream').value = movie.streamUrl || '';
+  if (document.getElementById('movie-views')) document.getElementById('movie-views').value = movie.views || 0;
 
   document.getElementById('movie-modal-title').innerText = 'Edit Movie';
   document.getElementById('movie-modal').classList.add('active');
@@ -716,6 +727,7 @@ async function handleMovieSubmit(e) {
     poster: document.getElementById('movie-poster').value.trim(),
     backdrop: document.getElementById('movie-poster').value.trim(),
     streamUrl: document.getElementById('movie-stream').value.trim(),
+    views: parseInt(document.getElementById('movie-views')?.value, 10) || 0,
     servers: [
       { name: 'Server 1 (Fast HD)', url: document.getElementById('movie-stream').value.trim(), isDirect: true }
     ]
@@ -1034,6 +1046,38 @@ function showToast(message, type = 'info') {
     toast.style.transition = 'all 0.3s ease';
     setTimeout(() => toast.remove(), 300);
   }, 4000);
+}
+
+
+function formatViews(num) {
+  num = Number(num) || 0;
+  if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+  if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+  return num.toLocaleString();
+}
+
+async function editMediaViews(id, currentViews, title) {
+  const newViewsStr = prompt(`Set total views for "${title}":`, currentViews);
+  if (newViewsStr === null) return;
+  const newViews = parseInt(newViewsStr, 10);
+  if (isNaN(newViews) || newViews < 0) {
+    alert('Please enter a valid non-negative number.');
+    return;
+  }
+
+  try {
+    const data = await apiFetch(`/api/admin/media/${encodeURIComponent(id)}/views`, {
+      method: 'POST',
+      body: JSON.stringify({ views: newViews })
+    });
+    if (data.success) {
+      showToast(`Updated views for "${title}" to ${formatViews(newViews)}!`, 'success');
+      loadContent();
+      apiFetch('/api/admin/stats').then(res => renderStats(res.stats));
+    }
+  } catch (err) {
+    showToast(`Failed to update views: ${err.message}`, 'error');
+  }
 }
 
 // ==========================================================================

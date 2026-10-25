@@ -1,6 +1,6 @@
 /**
  * FOBS TV - Web Admin Panel Service
- * Secure management for Content, MovieBox Recent & Trending Importer, Live TV, User Requests & Announcements
+ * Secure management for Content, MovieBox Recent Importer, Live TV, Views & User Requests
  */
 
 const fs = require('fs');
@@ -76,6 +76,25 @@ function writeRequests(list) {
   return false;
 }
 
+function readViewsMap() {
+  try {
+    if (fs.existsSync(VIEWS_FILE)) {
+      return JSON.parse(fs.readFileSync(VIEWS_FILE, 'utf8'));
+    }
+  } catch (e) {}
+  return {};
+}
+
+function writeViewsMap(map) {
+  try {
+    fs.writeFileSync(VIEWS_FILE, JSON.stringify(map, null, 2), 'utf8');
+    return true;
+  } catch (e) {
+    console.error('Error writing views.json:', e);
+  }
+  return false;
+}
+
 class AdminService {
   /**
    * Verify password & issue JWT
@@ -114,13 +133,19 @@ class AdminService {
    */
   getStats() {
     const content = readContent();
+    const viewsMap = readViewsMap();
     let totalViews = 0;
-    try {
-      if (fs.existsSync(VIEWS_FILE)) {
-        const views = JSON.parse(fs.readFileSync(VIEWS_FILE, 'utf8'));
-        totalViews = Object.values(views).reduce((acc, v) => acc + (typeof v === 'number' ? v : 1), 0);
-      }
-    } catch (e) {}
+
+    for (const v of Object.values(viewsMap)) {
+      if (typeof v === 'number') totalViews += v;
+    }
+
+    for (const m of content.movies || []) {
+      if (m.views && !viewsMap[m.id]) totalViews += m.views;
+    }
+    for (const s of content.series || []) {
+      if (s.views && !viewsMap[s.id]) totalViews += s.views;
+    }
 
     const requests = readRequests();
     const notifications = readNotifications();
@@ -132,7 +157,7 @@ class AdminService {
         totalMovies: (content.movies || []).length,
         totalSeries: (content.series || []).length,
         totalChannels: (content.liveTv || []).length,
-        totalViews,
+        totalViews: Math.max(totalViews, 0),
         pendingRequests: requests.filter(r => (r.status || '').toLowerCase() === 'pending').length,
         totalRequests: requests.length,
         totalNotifications: notifications.length,
@@ -144,20 +169,68 @@ class AdminService {
   }
 
   /**
-   * Get all content for admin view
+   * Get all content with real-time views attached
    */
   getContent() {
     const content = readContent();
+    const viewsMap = readViewsMap();
+
+    const movies = (content.movies || []).map(m => {
+      const count = viewsMap[m.id] ||
+        (m.subjectId ? viewsMap[m.subjectId] : 0) ||
+        (m.subjectId ? viewsMap[`mb-m-${m.subjectId}`] : 0) ||
+        m.views || 0;
+      return { ...m, views: count };
+    });
+
+    const series = (content.series || []).map(s => {
+      const count = viewsMap[s.id] ||
+        (s.subjectId ? viewsMap[s.subjectId] : 0) ||
+        (s.subjectId ? viewsMap[`mb-s-${s.subjectId}`] : 0) ||
+        s.views || 0;
+      return { ...s, views: count };
+    });
+
     return {
       success: true,
       data: {
-        movies: content.movies || [],
-        series: content.series || [],
+        movies,
+        series,
         liveTv: content.liveTv || [],
         categories: content.categories || [],
-        industries: content.industries || []
+        industries: content.industries || [],
+        viewsMap
       }
     };
+  }
+
+  /**
+   * Update or Set Media Views Count
+   */
+  updateMediaViews(id, newViews) {
+    const count = Math.max(parseInt(newViews, 10) || 0, 0);
+    const viewsMap = readViewsMap();
+    viewsMap[id] = count;
+
+    const content = readContent();
+    const movie = (content.movies || []).find(m => m.id === id || m.subjectId === id);
+    if (movie) {
+      movie.views = count;
+      if (movie.subjectId) viewsMap[movie.subjectId] = count;
+      viewsMap[movie.id] = count;
+    }
+
+    const s = (content.series || []).find(s => s.id === id || s.subjectId === id);
+    if (s) {
+      s.views = count;
+      if (s.subjectId) viewsMap[s.subjectId] = count;
+      viewsMap[s.id] = count;
+    }
+
+    writeViewsMap(viewsMap);
+    writeContent(content);
+
+    return { success: true, id, views: count };
   }
 
   /**
@@ -176,7 +249,6 @@ class AdminService {
     const allItems = [];
 
     for (const sec of sections) {
-      const secTitle = (sec.title || '').toLowerCase();
       for (const it of sec.items) {
         if (!it.id || seen.has(it.id)) continue;
         seen.add(it.id);
@@ -312,6 +384,7 @@ class AdminService {
         audioTracks: isHindi ? ['Hindi dub', 'Original Audio'] : ['Original Audio'],
         selectedAudio: isHindi ? 'Hindi dub' : 'Original Audio',
         streamUrl: mb.streamUrl,
+        views: 0,
         servers: [
           {
             name: `Server 1 (${isHindi ? 'Hindi Dub' : 'HD'} - Fast ${resName}p)`,
@@ -413,6 +486,7 @@ class AdminService {
         language: isHindi ? 'Hindi' : 'English',
         dubLanguage: isHindi ? 'Hindi' : 'Original',
         seasonsCount: 1,
+        views: 0,
         seasons: [
           {
             seasonNumber: 1,
@@ -496,6 +570,12 @@ class AdminService {
       movie.id = `movie_${Date.now()}`;
     }
 
+    if (movie.views !== undefined) {
+      const viewsMap = readViewsMap();
+      viewsMap[movie.id] = parseInt(movie.views, 10) || 0;
+      writeViewsMap(viewsMap);
+    }
+
     const idx = (content.movies || []).findIndex(m => m.id === movie.id);
     if (idx >= 0) {
       content.movies[idx] = { ...content.movies[idx], ...movie };
@@ -524,6 +604,12 @@ class AdminService {
     const content = readContent();
     if (!series.id) {
       series.id = `series_${Date.now()}`;
+    }
+
+    if (series.views !== undefined) {
+      const viewsMap = readViewsMap();
+      viewsMap[series.id] = parseInt(series.views, 10) || 0;
+      writeViewsMap(viewsMap);
     }
 
     const idx = (content.series || []).findIndex(s => s.id === series.id);

@@ -2100,6 +2100,17 @@ app.post('/api/admin/moviebox/import', adminService.authenticate, async (req, re
   }
 });
 
+// Update Media Views Count
+app.post('/api/admin/media/:id/views', adminService.authenticate, (req, res) => {
+  try {
+    const { views } = req.body;
+    const result = adminService.updateMediaViews(req.params.id, views);
+    res.json(result);
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+});
+
 // Movie CRUD
 app.post('/api/admin/movie', adminService.authenticate, (req, res) => {
   try {

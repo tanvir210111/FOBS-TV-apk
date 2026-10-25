@@ -352,12 +352,13 @@
                 <th>Industry</th>
                 <th>Audio Track</th>
                 <th>Rating</th>
+                <th><i class="fa-solid fa-eye text-cyan"></i> Views</th>
                 <th>Servers</th>
                 <th width="140" class="text-right">Actions</th>
               </tr>
             </thead>
             <tbody id="movies-table-body">
-              <tr><td colspan="8" class="text-center py-4">Loading movies...</td></tr>
+              <tr><td colspan="9" class="text-center py-4">Loading movies...</td></tr>
             </tbody>
           </table>
         </div>
@@ -388,11 +389,12 @@
                 <th>Duration</th>
                 <th>Seasons</th>
                 <th>Episodes</th>
+                <th><i class="fa-solid fa-eye text-cyan"></i> Views</th>
                 <th width="140" class="text-right">Actions</th>
               </tr>
             </thead>
             <tbody id="series-table-body">
-              <tr><td colspan="7" class="text-center py-4">Loading series...</td></tr>
+              <tr><td colspan="8" class="text-center py-4">Loading series...</td></tr>
             </tbody>
           </table>
         </div>
@@ -584,6 +586,10 @@
           <div class="input-group flex-1">
             <label>Rating</label>
             <input type="text" id="movie-rating" placeholder="8.5">
+          </div>
+          <div class="input-group flex-1">
+            <label><i class="fa-solid fa-eye text-cyan"></i> Views</label>
+            <input type="number" id="movie-views" placeholder="0" min="0">
           </div>
         </div>
 
