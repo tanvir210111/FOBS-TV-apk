@@ -459,12 +459,14 @@ async function previewMovieBoxStream(subjectId, detailPath, isSeries) {
   }
 }
 
-function openImportModal(item) {
+async function openImportModal(item) {
   if (document.getElementById('imp-featured')) document.getElementById('imp-featured').checked = false;
   const isSeries = item.type === 'series' || item.hasSeason || (item.title && item.title.toLowerCase().includes('season'));
-  
-  document.getElementById('imp-subjectId').value = item.subjectId || item.id || '';
-  document.getElementById('imp-detailPath').value = item.detailPath || '';
+  const sId = String(item.subjectId || item.id || '');
+  const dPath = item.detailPath || '';
+
+  document.getElementById('imp-subjectId').value = sId;
+  document.getElementById('imp-detailPath').value = dPath;
   document.getElementById('imp-poster').value = item.poster || '';
   if (document.getElementById('imp-cover')) document.getElementById('imp-cover').value = item.backdrop || item.cover || '';
   document.getElementById('imp-title').value = item.title || '';
@@ -475,7 +477,48 @@ function openImportModal(item) {
   const isHindi = (item.title && item.title.toLowerCase().includes('hindi')) || (item.section && item.section.toLowerCase().includes('hindi'));
   document.getElementById('imp-ishindi').checked = isHindi;
 
+  const epHint = document.getElementById('imp-episodes-hint');
+  if (epHint) {
+    epHint.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detecting uploaded episodes & industry from MovieBox...';
+    epHint.style.color = 'var(--text-muted)';
+  }
+
   document.getElementById('import-modal').classList.add('active');
+
+  // Asynchronously query MovieBox for exact uploaded episode count, industry, category, and year
+  try {
+    const data = await apiFetch(`/api/admin/moviebox/detail?subjectId=${encodeURIComponent(sId)}`);
+    if (data && data.success && data.detail) {
+      const d = data.detail;
+      if (d.totalEpisodes && document.getElementById('imp-episodes')) {
+        document.getElementById('imp-episodes').value = d.totalEpisodes;
+      }
+      if (d.type) {
+        document.getElementById('imp-type').value = d.type;
+        document.getElementById('series-episodes-row').style.display = d.type === 'series' ? 'flex' : 'none';
+      }
+      if (d.year && document.getElementById('imp-year')) {
+        document.getElementById('imp-year').value = d.year;
+      }
+      if (d.industry && document.getElementById('imp-industry')) {
+        document.getElementById('imp-industry').value = d.industry;
+      }
+      if (d.category && document.getElementById('imp-category')) {
+        document.getElementById('imp-category').value = d.category;
+      }
+      if (d.cover && document.getElementById('imp-cover') && !document.getElementById('imp-cover').value) {
+        document.getElementById('imp-cover').value = d.cover;
+      }
+      if (epHint) {
+        epHint.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Auto-detected: <strong>${d.totalEpisodes} Episodes</strong> uploaded on MovieBox • ${d.industry} (${d.category})`;
+        epHint.style.color = '#10b981';
+      }
+    }
+  } catch (err) {
+    if (epHint) {
+      epHint.innerHTML = '<i class="fa-solid fa-info-circle"></i> Default settings loaded. You can adjust episodes count.';
+    }
+  }
 }
 
 function closeImportModal() {

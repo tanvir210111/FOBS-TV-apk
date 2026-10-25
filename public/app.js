@@ -4123,12 +4123,13 @@ async function setupSubtitlesForMedia(media) {
       const langLower = (c.label || c.srclang || c.language || '').toLowerCase();
       const isEn = langLower.includes('en') || langLower.includes('eng') || langLower.includes('english');
       const isBn = langLower.includes('bn') || langLower.includes('bangla') || langLower.includes('bengali');
+      const isHi = langLower.includes('hi') || langLower.includes('hin') || langLower.includes('hindi');
 
-      // User requested: ONLY English and Bangla (বাংলা), ignore all other languages!
-      if (!isEn && !isBn) return;
+      // Allow English, Bangla, and Hindi subtitles from MovieBox!
+      if (!isEn && !isBn && !isHi) return;
 
-      const displayName = isBn ? 'Bangla (বাংলা)' : 'English';
-      const code = isBn ? 'bn' : 'en';
+      const displayName = isBn ? 'Bangla (বাংলা)' : (isHi ? 'Hindi (हिन्दी)' : 'English');
+      const code = isBn ? 'bn' : (isHi ? 'hi' : 'en');
 
       if (!tracks.some(t => t.langCode === code)) {
         tracks.push({

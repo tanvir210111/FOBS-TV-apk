@@ -2092,6 +2092,19 @@ app.get('/api/admin/moviebox/search', adminService.authenticate, async (req, res
   }
 });
 
+app.get('/api/admin/moviebox/detail', adminService.authenticate, async (req, res) => {
+  try {
+    const { id, subjectId } = req.query;
+    const sId = subjectId || id;
+    if (!sId) return res.status(400).json({ success: false, error: 'subjectId is required' });
+    const detail = await movieboxService.getDetail(sId);
+    if (!detail) return res.status(404).json({ success: false, error: 'Detail not found on MovieBox' });
+    res.json({ success: true, detail });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 app.get('/api/admin/moviebox/resolve', adminService.authenticate, async (req, res) => {
   try {
     const { id, path: detailPath, se, ep } = req.query;

@@ -111,14 +111,88 @@ class MovieBoxService {
    * Resolves direct playable video stream links for a movie or series episode
    * Returns available qualities (360p, 720p, 1080p), preferred streamUrl, and captions
    */
-  async resolveMedia(subjectId, detailPath = '', season = 0, episode = 0) {
+  
+  /**
+   * Fetches full metadata, total uploaded episodes, and auto-detected categories for a subject
+   */
+  async getDetail(subjectId) {
     if (!subjectId) return null;
-    const cacheKey = `${subjectId}_s${season}_e${episode}`;
-    const cached = this.cache.get(cacheKey);
-    if (cached && cached.expireAt > Date.now()) {
-      return cached.data;
-    }
+    try {
+      const res = await axios.get(`${BASE_URL}/wefeed-h5-bff/web/subject/detail?subjectId=${subjectId}`, {
+        headers: HEADERS,
+        timeout: 10000
+      });
+      const d = res.data?.data;
+      if (!d || !d.subject) return null;
 
+      const sub = d.subject;
+      const isSeries = sub.subjectType === 2;
+      const seasons = d.resource?.seasons || [];
+
+      // Calculate exact total uploaded episodes on MovieBox
+      let totalEpisodes = 1;
+      if (isSeries) {
+        if (seasons.length > 0) {
+          totalEpisodes = seasons.reduce((sum, s) => sum + (s.maxEp || 0), 0) || seasons[0]?.maxEp || 10;
+        } else {
+          totalEpisodes = 10;
+        }
+      }
+
+      const country = (sub.countryName || sub.country || '').toLowerCase();
+      const genre = (sub.genre || '').toLowerCase();
+      const title = sub.title || '';
+      const isHindi = title.toLowerCase().includes('hindi');
+
+      // Auto-detect Industry & Category intelligently
+      let industry = 'Hollywood';
+      let category = isSeries ? 'Web Series' : 'Hollywood Movies';
+
+      if (country.includes('korea') || genre.includes('k-drama') || genre.includes('kdrama')) {
+        industry = 'Kdrama';
+        category = 'Korean Drama';
+      } else if (country.includes('turk') || genre.includes('turkish')) {
+        industry = 'Turkish';
+        category = 'Turkish Series';
+      } else if (country.includes('japan') || genre.includes('anime') || genre.includes('animation')) {
+        industry = 'Anime';
+        category = 'Animation & Anime';
+      } else if (country.includes('india') || genre.includes('bollywood') || isHindi) {
+        industry = 'Bollywood';
+        category = isSeries ? 'Web Series' : (isHindi ? 'Bollywood Movies' : 'South Indian Hindi Dubbed');
+      } else if (country.includes('china') || country.includes('taiwan')) {
+        industry = 'Chinese';
+        category = 'Chinese Drama';
+      }
+
+      const year = sub.releaseDate ? sub.releaseDate.substring(0, 4) : '2026';
+      const poster = sub.cover?.url || sub.cover || '';
+      const cover = sub.stills?.[0]?.url || poster;
+
+      return {
+        subjectId: String(subjectId),
+        detailPath: sub.detailPath || '',
+        title,
+        type: isSeries ? 'series' : 'movie',
+        year,
+        industry,
+        category,
+        isHindi,
+        totalEpisodes,
+        seasonsCount: seasons.length || 1,
+        seasons,
+        poster,
+        cover,
+        rating: sub.imdbRatingValue || '8.2',
+        description: sub.description || ''
+      };
+    } catch (err) {
+      console.error(`MovieBoxService getDetail error (id: ${subjectId}):`, err.message);
+      return null;
+    }
+  }
+
+  async _fetchDownload(subjectId, detailPath, season, episode) {
     try {
       const refPath = detailPath ? `${BASE_URL}/movies/${detailPath}` : `${BASE_URL}/`;
       const res = await axios.get(`${BASE_URL}/wefeed-h5-bff/web/subject/download`, {
@@ -139,11 +213,10 @@ class MovieBoxService {
         return null;
       }
 
-      // Sort by resolution descending (1080p -> 720p -> 360p)
       const sortedDownloads = [...data.downloads].sort((a, b) => (b.resolution || 0) - (a.resolution || 0));
       const best = sortedDownloads[0];
 
-      const result = {
+      return {
         subjectId,
         streamUrl: best.url,
         resolution: best.resolution,
@@ -157,23 +230,65 @@ class MovieBoxService {
           url: c.url
         }))
       };
-
-      // Cache for 10 minutes to guarantee fresh CDN signatures
-      this.cache.set(cacheKey, {
-        data: result,
-        expireAt: Date.now() + 10 * 60 * 1000
-      });
-
-      return result;
-    } catch (err) {
-      console.error(`MovieBoxService resolveMedia error (id: ${subjectId}):`, err.message);
+    } catch (e) {
       return null;
     }
   }
 
-  /**
-   * Clears cache for a given subjectId or clears entire cache
-   */
+  async resolveMedia(subjectId, detailPath = '', season = 0, episode = 0) {
+    if (!subjectId) return null;
+    const cacheKey = `${subjectId}_s${season}_e${episode}`;
+    const cached = this.cache.get(cacheKey);
+    if (cached && cached.expireAt > Date.now()) {
+      return cached.data;
+    }
+
+    // Try primary params
+    let result = await this._fetchDownload(subjectId, detailPath, season, episode);
+
+    // Fallback attempt: if season=1 & ep>0 returned nothing, try season=0 & ep-1 (0-based)
+    if (!result && season === 1 && episode > 0) {
+      result = await this._fetchDownload(subjectId, detailPath, 0, episode - 1);
+    }
+    // If season=0 & ep=0 returned nothing, try season=1 & ep=1 (1-based)
+    if (!result && season === 0 && episode === 0) {
+      result = await this._fetchDownload(subjectId, detailPath, 1, 1);
+    }
+
+    if (result) {
+      this.cache.set(cacheKey, {
+        data: result,
+        expireAt: Date.now() + 10 * 60 * 1000
+      });
+      return result;
+    }
+
+    // Legacy fallback using direct download
+    try {
+      const refPath = detailPath ? `${BASE_URL}/movies/${detailPath}` : `${BASE_URL}/`;
+      const res = await axios.get(`${BASE_URL}/wefeed-h5-bff/web/subject/download`, {
+        params: { subjectId, se: season, ep: episode },
+        headers: { ...HEADERS, 'Referer': refPath },
+        timeout: 10000
+      });
+      const data = res.data?.data;
+      if (!data || !data.downloads || data.downloads.length === 0) return null;
+      const sortedDownloads = [...data.downloads].sort((a, b) => (b.resolution || 0) - (a.resolution || 0));
+      const best = sortedDownloads[0];
+      const legacyRes = {
+        subjectId,
+        streamUrl: best.url,
+        resolution: best.resolution,
+        qualities: sortedDownloads.map(d => ({ resolution: d.resolution, url: d.url, size: d.size })),
+        captions: (data.captions || []).map(c => ({ language: c.language || c.lan, url: c.url }))
+      };
+      this.cache.set(cacheKey, { data: legacyRes, expireAt: Date.now() + 10 * 60 * 1000 });
+      return legacyRes;
+    } catch (err) {
+      return null;
+    }
+  }
+
   invalidateCache(subjectId = null) {
     if (!subjectId) {
       this.cache.clear();

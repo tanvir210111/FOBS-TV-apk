@@ -416,9 +416,28 @@ class AdminService {
       episodesCount = 1
     } = payload;
 
-    if (!subjectId || !title) {
-      throw new Error('subjectId and title are required for import');
+    if (!subjectId) {
+      throw new Error('subjectId is required for import');
     }
+
+    // Auto-fetch full metadata, total uploaded episodes, and categories from MovieBox
+    const autoDetail = await movieboxService.getDetail(subjectId);
+    if (autoDetail) {
+      if (!title) title = autoDetail.title;
+      if (!type) type = autoDetail.type;
+      if (!detailPath) detailPath = autoDetail.detailPath;
+      if (!year || year === '2026') year = autoDetail.year || year || '2026';
+      if (!rating || rating === '8.0') rating = autoDetail.rating || rating || '8.2';
+      if (!industry || industry === 'Hollywood') industry = autoDetail.industry || industry;
+      if (!category || category === 'Hollywood Movies') category = autoDetail.category || category;
+      if (!poster) poster = autoDetail.poster;
+      if (!payload.cover) payload.cover = autoDetail.cover;
+      if (payload.isHindi === undefined) isHindi = autoDetail.isHindi;
+      if (!episodesCount || episodesCount <= 0) episodesCount = autoDetail.totalEpisodes;
+    }
+
+    if (!title) title = 'Untitled Content';
+    if (!episodesCount || episodesCount <= 0) episodesCount = type === 'series' ? 10 : 1;
 
     const content = readContent();
 
@@ -528,15 +547,19 @@ class AdminService {
         const mb = await movieboxService.resolveMedia(subjectId, detailPath, 1, ep);
         if (!mb || !mb.streamUrl) break;
 
-        const epCaptions = (mb.captions || []).map((c, i) => ({
-          id: `ep${ep}_sub_${c.language}_${i}`,
-          label: c.language === 'en' ? 'English' : (c.language === 'hi' ? 'हिन्दी' : c.language),
-          language: c.language,
-          srclang: c.language,
-          src: c.url,
-          url: c.url,
-          format: c.url && c.url.includes('.srt') ? 'srt' : 'vtt'
-        }));
+        const epCaptions = (mb.captions || []).map((c, i) => {
+          const l = (c.language || 'en').toLowerCase();
+          const label = l === 'en' ? 'English' : (l === 'hi' ? 'Hindi (हिन्दी)' : (l === 'bn' ? 'Bangla (বাংলা)' : (c.language || 'Subtitle')));
+          return {
+            id: `ep${ep}_sub_${l}_${i}`,
+            label,
+            language: l,
+            srclang: l,
+            src: c.url,
+            url: c.url,
+            format: c.url && c.url.includes('.srt') ? 'srt' : 'vtt'
+          };
+        });
 
         const res = mb.resolution || 1080;
         episodes.push({
