@@ -516,6 +516,16 @@ function getMediaRequests(googleId = null) {
 }
 
 function getSystemNotifications() {
+  try {
+    const notifPath = path.join(__dirname, '..', 'data', 'notifications.json');
+    if (fs.existsSync(notifPath)) {
+      const saved = JSON.parse(fs.readFileSync(notifPath, 'utf8'));
+      if (Array.isArray(saved) && saved.length > 0) {
+        return saved;
+      }
+    }
+  } catch (e) {}
+
   return [
     {
       id: 'notif_1',

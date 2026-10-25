@@ -1713,10 +1713,25 @@ app.post('/api/requests', handleMediaRequestPost);
 app.get('/api/requests', handleMediaRequestGet);
 app.get('/api/request', handleMediaRequestGet);
 
-// 6. Get Broadcast System Notifications
+// 6. Get Broadcast System Notifications (Live from Admin Panel Announcements)
 app.get('/api/notifications', (req, res) => {
   try {
-    const list = dbService.getSystemNotifications();
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+
+    let list = [];
+    try {
+      const result = adminService.getNotifications();
+      if (result && Array.isArray(result.notifications) && result.notifications.length > 0) {
+        list = result.notifications;
+      }
+    } catch (e) {}
+
+    if (!list || list.length === 0) {
+      list = dbService.getSystemNotifications();
+    }
+
     res.json({ success: true, notifications: list });
   } catch (err) {
     res.status(500).json({ error: err.message });

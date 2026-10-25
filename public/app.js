@@ -9559,7 +9559,7 @@ async function loadSystemNotifications() {
   ];
 
   try {
-    const res = await fetch(`${API_BASE_URL}/api/notifications`).catch(() => null);
+    const res = await fetch(`${API_BASE_URL}/api/notifications?_t=${Date.now()}`).catch(() => null);
     let list = defaultMessages;
     if (res && res.ok) {
       const data = await res.json();
