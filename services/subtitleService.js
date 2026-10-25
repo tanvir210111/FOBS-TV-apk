@@ -41,17 +41,19 @@ class SubtitleService {
             const langLower = (cap.language || '').toLowerCase();
             const isEnglish = langLower.includes('en') || langLower.includes('eng');
             const isBangla = langLower.includes('bn') || langLower.includes('bangla') || langLower.includes('bengali');
-            const isHindi = langLower.includes('hi') || langLower.includes('hindi');
 
-            if (isEnglish || isBangla || isHindi) {
-              availableSubtitles.push({
-                id: `mb_${cap.language || 'sub'}_${availableSubtitles.length + 1}`,
-                language: isBangla ? 'Bangla (বাংলা)' : isHindi ? 'Hindi (हिन्दी)' : 'English',
-                langCode: isBangla ? 'bn' : isHindi ? 'hi' : 'en',
-                source: 'MovieBox / CDN',
-                url: cap.url,
-                format: cap.url.endsWith('.srt') ? 'srt' : 'vtt'
-              });
+            if (isEnglish || isBangla) {
+              const code = isBangla ? 'bn' : 'en';
+              if (!availableSubtitles.some(s => s.langCode === code)) {
+                availableSubtitles.push({
+                  id: `mb_${code}_${availableSubtitles.length + 1}`,
+                  language: isBangla ? 'Bangla (বাংলা)' : 'English',
+                  langCode: code,
+                  source: 'MovieBox / CDN',
+                  url: cap.url,
+                  format: cap.url.endsWith('.srt') ? 'srt' : 'vtt'
+                });
+              }
             }
           }
         }

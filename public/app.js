@@ -4099,23 +4099,25 @@ async function setupSubtitlesForMedia(media) {
   if (Array.isArray(directCaps) && directCaps.length > 0) {
     directCaps.forEach((c, idx) => {
       const langLower = (c.label || c.srclang || '').toLowerCase();
-      const isEn = langLower.includes('en') || langLower.includes('eng');
+      const isEn = langLower.includes('en') || langLower.includes('eng') || langLower.includes('english');
       const isBn = langLower.includes('bn') || langLower.includes('bangla') || langLower.includes('bengali');
-      const isHi = langLower.includes('hi') || langLower.includes('hindi');
 
-      let displayName = c.label;
-      if (isEn) displayName = 'English';
-      else if (isBn) displayName = 'Bangla (বাংলা)';
-      else if (isHi) displayName = 'Hindi (हिन्दी)';
+      // User requested: ONLY English and Bangla (বাংলা), ignore all other languages!
+      if (!isEn && !isBn) return;
 
-      tracks.push({
-        id: `ep_cap_${c.srclang || idx}`,
-        language: displayName,
-        langCode: c.srclang || (isEn ? 'en' : isBn ? 'bn' : 'other'),
-        source: 'MovieBox / CDN',
-        url: c.src,
-        format: c.src && c.src.includes('.srt') ? 'srt' : 'vtt'
-      });
+      const displayName = isBn ? 'Bangla (বাংলা)' : 'English';
+      const code = isBn ? 'bn' : 'en';
+
+      if (!tracks.some(t => t.langCode === code)) {
+        tracks.push({
+          id: `ep_cap_${code}_${idx}`,
+          language: displayName,
+          langCode: code,
+          source: 'MovieBox / CDN',
+          url: c.src,
+          format: c.src && c.src.includes('.srt') ? 'srt' : 'vtt'
+        });
+      }
     });
   }
 
@@ -4127,6 +4129,8 @@ async function setupSubtitlesForMedia(media) {
     const data = await res.json();
     if (data && data.success && Array.isArray(data.subtitles)) {
       data.subtitles.forEach(sub => {
+        // User requested: ONLY English and Bangla
+        if (sub.langCode !== 'en' && sub.langCode !== 'bn') return;
         if (!tracks.some(t => t.langCode === sub.langCode)) {
           tracks.push(sub);
         }
@@ -4190,9 +4194,14 @@ function renderSubtitleLists() {
   const modalList = document.getElementById('subModalTracksList');
   const lsList = document.getElementById('lsSubtitleOptionsList');
 
+  // Strictly allow ONLY English, Bangla (বাংলা), and custom manually uploaded subtitles
+  const filteredTracks = (subtitleState.availableTracks || []).filter(t => 
+    t.isCustom || t.langCode === 'en' || t.langCode === 'bn' || t.language === 'English' || t.language === 'Bangla (বাংলা)'
+  );
+
   const tracks = [
     { id: 'off', language: 'Off (None)', source: 'Disable subtitles' },
-    ...subtitleState.availableTracks
+    ...filteredTracks
   ];
 
   // Render Modal List
