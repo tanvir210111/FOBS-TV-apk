@@ -2557,19 +2557,35 @@ function getActiveEpisodeStream(ep, audioTrack) {
   if (!ep) return '';
   const track = audioTrack || appState.currentAudioTrack || 'Original audio';
   const isOrig = track.toLowerCase().includes('original') || track.toLowerCase().includes('korean');
+
+  // 1. First priority: Check servers array for auto-renewing /api/moviebox/stream endpoints
+  if (ep.servers && Array.isArray(ep.servers)) {
+    const autoRenewingServer = ep.servers.find(s => 
+      s.url && s.url.includes('/api/moviebox/stream') && (
+        isOrig 
+          ? (s.audio === 'Original audio' || /original|korean/i.test(s.name))
+          : (s.audio === 'Hindi dub' || /hindi/i.test(s.name))
+      )
+    );
+    if (autoRenewingServer && autoRenewingServer.url) return autoRenewingServer.url;
+
+    const matchServer = ep.servers.find(s => isOrig
+      ? (s.audio === 'Original audio' || /original|korean/i.test(s.name))
+      : (s.audio === 'Hindi dub' || /hindi/i.test(s.name))
+    );
+    if (matchServer && matchServer.url) return matchServer.url;
+  }
+
+  // 2. AudioTracks map fallback
   if (ep.audioTracks && typeof ep.audioTracks === 'object' && !Array.isArray(ep.audioTracks)) {
     const val = isOrig
       ? (ep.audioTracks['Original audio'] || ep.audioTracks['Original Audio'] || ep.audioTracks['Korean'] || ep.audioTracks['Original'])
       : (ep.audioTracks['Hindi dub'] || ep.audioTracks['Hindi Dub'] || ep.audioTracks['Hindi']);
     if (val) return val;
   }
-  if (ep.servers && Array.isArray(ep.servers)) {
-    const matchServer = ep.servers.find(s => isOrig
-      ? (s.audio === 'Original audio' || /original|korean/i.test(s.name))
-      : (s.audio === 'Hindi dub' || /hindi/i.test(s.name))
-    );
-    if (matchServer && matchServer.url) return matchServer.url;
-    if (ep.servers[0] && ep.servers[0].url) return ep.servers[0].url;
+
+  if (ep.servers && Array.isArray(ep.servers) && ep.servers[0] && ep.servers[0].url) {
+    return ep.servers[0].url;
   }
   return ep.streamUrl || '';
 }
@@ -3024,11 +3040,32 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       const res = await fetch(jsonUrl);
       const data = await res.json();
       if (data && data.ok && data.streamUrl) {
-        playableUrl = data.streamUrl;
+        playableUrl = data.streamUrl.startsWith('http') ? data.streamUrl : `${API_BASE_URL}${data.streamUrl}`;
       }
     } catch (e) {
       console.warn('Pre-resolve MovieBox stream failed, falling back to direct endpoint:', e.message);
     }
+  }
+
+  // If already routed through /api/stream proxy (e.g. from MovieBox resolver)
+  if (playableUrl.includes('/api/stream')) {
+    const proxyStreamUrl = playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`;
+    console.log('Playing stream via server proxy:', proxyStreamUrl);
+    videoPlayer.src = proxyStreamUrl;
+    videoPlayer.load();
+    if (seekTime && seekTime > 0) {
+      const applySeek = () => {
+        try { videoPlayer.currentTime = seekTime; } catch (e) {}
+      };
+      if (videoPlayer.readyState >= 1) {
+        applySeek();
+      } else {
+        videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
+        videoPlayer.addEventListener('canplay', applySeek, { once: true });
+      }
+    }
+    videoPlayer.play().catch(() => {});
+    return;
   }
 
   // Direct play for sources that provide CORS headers and fast direct CDN edge delivery without IP restrictions
@@ -3053,10 +3090,19 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
   );
   if (isDirectMp4Source && !playableUrl.includes('googleusercontent.com')) {
     appState.streamSeekOffset = 0;
-    // If running in a browser outside Android APK, route hakunaymatata through proxy to include Referer
-    if (!window.AndroidApp && (playableUrl.includes('hakunaymatata') || playableUrl.includes('bcdnxw') || playableUrl.includes('haildrop') || playableUrl.includes('fogtwist'))) {
+    // MovieBox CDNs require Referer: https://movieboxapp.in/
+    // Since HTML5 <video> elements in mobile WebView cannot attach custom Referer headers,
+    // always stream through VPS proxy to prevent 429 Too Many Requests and ensure instant seeking!
+    if (
+      playableUrl.includes('hakunaymatata') || 
+      playableUrl.includes('bcdnxw') || 
+      playableUrl.includes('haildrop') || 
+      playableUrl.includes('fogtwist') || 
+      playableUrl.includes('sunburst') || 
+      playableUrl.includes('stormshade')
+    ) {
       const proxyUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(playableUrl)}`;
-      console.log('Playing MovieBox stream via server proxy (browser):', proxyUrl);
+      console.log('Playing MovieBox stream via server proxy:', proxyUrl);
       videoPlayer.src = proxyUrl;
       videoPlayer.load();
       if (seekTime && seekTime > 0) {
@@ -5880,14 +5926,15 @@ function triggerDownload() {
     const epNum = ep.episodeNumber || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1);
     const epTitle = ep.title ? ` - ${ep.title}` : ` - Ep ${epNum}`;
     activeTitle = `${media.title}${epTitle}`;
-    targetUrl = (ep.servers && ep.servers.length > 0 && ep.servers[0].url)
+    targetUrl = getActiveEpisodeStream(ep, appState.currentAudioTrack)
+      || (ep.servers && ep.servers.length > 0 && ep.servers[0].url)
       || ep.streamUrl
-      || (ep.audioTracks && ep.audioTracks[appState.currentAudioTrack])
       || (media.servers && media.servers[0]?.url)
       || media.streamUrl;
     if (ep.stillPath) activePoster = ep.stillPath;
   } else {
-    targetUrl = (media.servers && media.servers.length > 0 && media.servers[0].url)
+    targetUrl = getActiveEpisodeStream(media, appState.currentAudioTrack)
+      || (media.servers && media.servers.length > 0 && media.servers[0].url)
       || media.streamUrl
       || media.driveUrl;
   }
@@ -6028,15 +6075,20 @@ function downloadMedia(url, title, options = {}) {
   if (window.AndroidApp && typeof window.AndroidApp.openExternalUrl === 'function') {
     window.AndroidApp.openExternalUrl(downloadUrl);
   } else {
-    const link = document.createElement('a');
-    link.href = downloadUrl;
-    link.setAttribute('download', `${cleanTitle}.mp4`);
-    link.setAttribute('target', '_blank');
-    document.body.appendChild(link);
-    link.click();
-    setTimeout(() => {
-      if (link.parentNode) link.parentNode.removeChild(link);
-    }, 1000);
+    // Hand off download request to Android OS / default browser
+    try {
+      window.location.assign(downloadUrl);
+    } catch (e) {
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.setAttribute('download', `${cleanTitle}.mp4`);
+      link.setAttribute('target', '_blank');
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(() => {
+        if (link.parentNode) link.parentNode.removeChild(link);
+      }, 1000);
+    }
   }
 }
 window.downloadMedia = downloadMedia;

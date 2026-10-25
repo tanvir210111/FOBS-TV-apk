@@ -710,11 +710,12 @@ app.get('/api/moviebox/stream', async (req, res) => {
     if (!media || !media.streamUrl) {
       return res.status(404).send('Stream not available for this episode yet');
     }
+    const proxiedStreamUrl = `/api/stream?url=${encodeURIComponent(media.streamUrl)}`;
     if (req.query.json === '1' || req.headers.accept?.includes('application/json')) {
-      return res.json({ ok: true, streamUrl: media.streamUrl, resolution: media.resolution });
+      return res.json({ ok: true, streamUrl: proxiedStreamUrl, directCdnUrl: media.streamUrl, resolution: media.resolution });
     }
-    // Redirect to the actual CDN video URL (video player follows the redirect)
-    res.redirect(302, media.streamUrl);
+    // Redirect through proxy so HTTP Referer is attached and byte-range seeking works 100%
+    res.redirect(302, proxiedStreamUrl);
   } catch (err) {
     console.error('MovieBox stream redirect error:', err.message);
     res.status(500).send('Stream resolution failed');
@@ -1164,15 +1165,34 @@ app.get('/api/download', async (req, res) => {
 
   const resolvedUrl = await resolveStreamUrl(targetUrl);
 
+  const downloadHeaders = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+  };
+  if (
+    resolvedUrl.includes('hakunaymatata') || 
+    resolvedUrl.includes('bcdnxw') || 
+    resolvedUrl.includes('haildrop') || 
+    resolvedUrl.includes('fogtwist') || 
+    resolvedUrl.includes('sunburst') || 
+    resolvedUrl.includes('stormshade') || 
+    targetUrl.includes('moviebox')
+  ) {
+    downloadHeaders['Referer'] = 'https://movieboxapp.in/';
+  } else if (resolvedUrl.includes('upbolt.to') || targetUrl.includes('upbolt')) {
+    downloadHeaders['Referer'] = 'https://upbolt.to/';
+  } else if (resolvedUrl.includes('vkuser.net') || targetUrl.includes('ok.ru')) {
+    downloadHeaders['Referer'] = 'https://ok.ru/';
+  } else if (resolvedUrl.includes('vkpluscdn') || resolvedUrl.includes('vkcdn') || targetUrl.includes('pkembed')) {
+    downloadHeaders['Referer'] = 'https://pkembed.site/';
+  }
+
   try {
     const response = await axios({
       method: 'GET',
       url: resolvedUrl,
       responseType: 'stream',
       maxRedirects: 5,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
-      }
+      headers: downloadHeaders
     });
 
     res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(filename)}"`);
@@ -1184,7 +1204,6 @@ app.get('/api/download', async (req, res) => {
     response.data.pipe(res);
   } catch (err) {
     console.error('Download error:', err.message);
-    // If stream fails, direct redirect to download
     res.redirect(resolvedUrl);
   }
 });

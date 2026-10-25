@@ -114,46 +114,47 @@ async function run() {
     }
 
     const servers = [];
-    const origUrl = (mb && mb.best) ? mb.best.url : `https://multiembed.mov/?video_id=${TMDB_TV_ID}&s=1&e=${epNum}`;
-    const hindiUrl = (mbHindi && mbHindi.best) ? mbHindi.best.url : (epNum === 1 ? origUrl : `https://multiembed.mov/?video_id=${TMDB_TV_ID}&s=1&e=${epNum}`);
-    const primaryStreamUrl = origUrl;
+    const autoRenewingOrig = `/api/moviebox/stream?id=${SUBJECT_ID_FULL}&se=1&ep=${epNum}`;
+    const autoRenewingHindi = `/api/moviebox/stream?id=${SUBJECT_ID_HINDI}&se=1&ep=${epNum}`;
+    const primaryStreamUrl = autoRenewingOrig;
 
     if (epNum === 1) {
-      // Ep 1: Both Original Audio (1080p Direct) and Hindi Dub (480p Direct) available
-      const origSizeMB = mb?.best ? Math.round(Number(mb.best.size || 0) / 1024 / 1024) : 982;
-      const hindiSizeMB = mbHindi?.best ? Math.round(Number(mbHindi.best.size || 0) / 1024 / 1024) : 397;
-
+      // Ep 1: Both Original Audio and Hindi Dub available
       servers.push({
-        name: `Server 1 (Original Audio - Korean 1080p HD Direct - ${origSizeMB}MB)`,
-        url: origUrl,
+        name: 'Server 1 (Original Audio - Auto-Renewing 1080p HD)',
+        url: autoRenewingOrig,
         isDirect: true,
         quality: '1080p',
         audio: 'Original audio'
       });
 
       servers.push({
-        name: `Server 2 (Hindi Dub - MovieBox 480p Direct - ${hindiSizeMB}MB)`,
-        url: hindiUrl,
+        name: 'Server 2 (Hindi Dub - Auto-Renewing 480p SD)',
+        url: autoRenewingHindi,
         isDirect: true,
         quality: '480p',
         audio: 'Hindi dub'
       });
 
-      servers.push({
-        name: 'Server 3 (Original Audio - Auto-Renewing Stream)',
-        url: `/api/moviebox/stream?id=${SUBJECT_ID_FULL}&se=1&ep=${epNum}`,
-        isDirect: true,
-        quality: '1080p',
-        audio: 'Original audio'
-      });
+      if (mb?.best?.url) {
+        servers.push({
+          name: 'Server 3 (Original Audio - Direct CDN)',
+          url: mb.best.url,
+          isDirect: true,
+          quality: '1080p',
+          audio: 'Original audio'
+        });
+      }
 
-      servers.push({
-        name: 'Server 4 (Hindi Dub - Auto-Renewing Stream)',
-        url: `/api/moviebox/stream?id=${SUBJECT_ID_HINDI}&se=1&ep=${epNum}`,
-        isDirect: true,
-        quality: '480p',
-        audio: 'Hindi dub'
-      });
+      if (mbHindi?.best?.url) {
+        servers.push({
+          name: 'Server 4 (Hindi Dub - Direct CDN)',
+          url: mbHindi.best.url,
+          isDirect: true,
+          quality: '480p',
+          audio: 'Hindi dub'
+        });
+      }
 
       if (mb?.qualities) {
         const lower = mb.qualities.find(q => q.resolution < mb.best.resolution);
@@ -173,20 +174,22 @@ async function run() {
       const res = mb?.best?.resolution || 1080;
 
       servers.push({
-        name: `Server 1 (Original Audio - Korean ${res}p HD Direct - ${origSizeMB}MB)`,
-        url: origUrl,
+        name: `Server 1 (Original Audio - Auto-Renewing ${res}p HD)`,
+        url: autoRenewingOrig,
         isDirect: true,
         quality: `${res}p`,
         audio: 'Original audio'
       });
 
-      servers.push({
-        name: 'Server 2 (Original Audio - Auto-Renewing Stream)',
-        url: `/api/moviebox/stream?id=${SUBJECT_ID_FULL}&se=1&ep=${epNum}`,
-        isDirect: true,
-        quality: `${res}p`,
-        audio: 'Original audio'
-      });
+      if (mb?.best?.url) {
+        servers.push({
+          name: `Server 2 (Original Audio - Direct CDN - ${origSizeMB}MB)`,
+          url: mb.best.url,
+          isDirect: true,
+          quality: `${res}p`,
+          audio: 'Original audio'
+        });
+      }
 
       if (mb?.qualities) {
         const lower = mb.qualities.find(q => q.resolution < mb.best.resolution);
@@ -229,11 +232,11 @@ async function run() {
     }));
 
     const audioTracksMap = {
-      'Original audio': origUrl,
-      'Original Audio': origUrl,
-      'Korean': origUrl,
-      'Hindi dub': hindiUrl,
-      'Hindi Dub': hindiUrl
+      'Original audio': autoRenewingOrig,
+      'Original Audio': autoRenewingOrig,
+      'Korean': autoRenewingOrig,
+      'Hindi dub': autoRenewingHindi,
+      'Hindi Dub': autoRenewingHindi
     };
 
     episodes.push({
