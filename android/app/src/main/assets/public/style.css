@@ -8530,3 +8530,600 @@ body.is-fullscreen #subtitleModal,
   transform: scale(1.01);
 }
 
+/* ============================================================ */
+/* FOBS TV CREDITS & ACKNOWLEDGMENTS VIEW (MOVIEBOX SIGNATURE UI)*/
+/* ============================================================ */
+
+.credits-view-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 10000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.credits-view-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.credits-view-sheet {
+  width: 100%;
+  max-width: 480px;
+  height: 94vh;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #12141c 0%, #090a0f 100%);
+  border-radius: 24px 24px 0 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255, 215, 0, 0.25);
+  box-shadow: 0 -12px 45px rgba(0, 0, 0, 0.9);
+  animation: slideUpBookingSheet 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.credits-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  background: rgba(18, 20, 28, 0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  z-index: 10;
+}
+
+.credits-back-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.credits-back-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(1.05);
+}
+
+.credits-header-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.2px;
+}
+
+.credits-scroll-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 18px 42px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* Hero Banner */
+.credits-hero-card {
+  text-align: center;
+  background: linear-gradient(180deg, rgba(255, 215, 0, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 20px;
+  padding: 24px 18px 20px 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.credits-app-badge {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 12px auto;
+}
+
+.credits-hero-logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  object-fit: cover;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  position: relative;
+  z-index: 2;
+  border: 2px solid rgba(255, 215, 0, 0.4);
+}
+
+.credits-hero-glow {
+  position: absolute;
+  inset: -10px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.45) 0%, transparent 70%);
+  filter: blur(12px);
+  z-index: 1;
+}
+
+.credits-hero-heading {
+  font-size: 24px;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+  letter-spacing: 0.5px;
+}
+
+.credits-hero-tagline {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffd700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+}
+
+.credits-hero-desc {
+  font-size: 13px;
+  color: #a0a6b8;
+  line-height: 1.5;
+  margin: 0 0 18px 0;
+  padding: 0 8px;
+}
+
+.credits-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 14px;
+}
+
+.credits-stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.credits-stat-num {
+  font-size: 17px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.credits-stat-label {
+  font-size: 11px;
+  color: #7b8398;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* Sections */
+.credits-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.credits-sec-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.credits-sec-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.credits-sec-icon.gold {
+  background: rgba(255, 215, 0, 0.15);
+  color: #ffd700;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.credits-sec-icon.cyan {
+  background: rgba(0, 242, 254, 0.15);
+  color: #00f2fe;
+  border: 1px solid rgba(0, 242, 254, 0.3);
+}
+
+.credits-sec-icon.purple {
+  background: rgba(168, 85, 247, 0.15);
+  color: #a855f7;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.credits-sec-icon.green {
+  background: rgba(0, 210, 106, 0.15);
+  color: #00d26a;
+  border: 1px solid rgba(0, 210, 106, 0.3);
+}
+
+.credits-sec-icon.rose {
+  background: rgba(244, 63, 94, 0.15);
+  color: #f43f5e;
+  border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+.credits-sec-icon.rainbow {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(244, 63, 94, 0.2) 50%, rgba(0, 242, 254, 0.2) 100%);
+  color: #ffd700;
+  border: 1px solid rgba(255, 215, 0, 0.4);
+}
+
+.credits-sec-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.2px;
+}
+
+.credits-sec-sub {
+  font-size: 11px;
+  color: #7d859a;
+  font-weight: 500;
+}
+
+/* Cards */
+.credit-card {
+  background: #141722;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.credit-card.gold-border {
+  border-color: rgba(255, 215, 0, 0.3);
+  background: linear-gradient(180deg, rgba(255, 215, 0, 0.04) 0%, #141722 100%);
+}
+
+.credit-card.cyan-border {
+  border-color: rgba(0, 242, 254, 0.3);
+  background: linear-gradient(180deg, rgba(0, 242, 254, 0.04) 0%, #141722 100%);
+}
+
+.credit-card.green-border {
+  border-color: rgba(0, 210, 106, 0.3);
+  background: linear-gradient(180deg, rgba(0, 210, 106, 0.04) 0%, #141722 100%);
+}
+
+.credit-card.rose-border {
+  border-color: rgba(244, 63, 94, 0.3);
+  background: linear-gradient(180deg, rgba(244, 63, 94, 0.04) 0%, #141722 100%);
+}
+
+.credit-card.rainbow-border {
+  border-color: rgba(255, 215, 0, 0.4);
+  background: linear-gradient(180deg, rgba(255, 215, 0, 0.06) 0%, rgba(244, 63, 94, 0.03) 50%, #141722 100%);
+}
+
+.credit-card-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.credit-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.credit-avatar.gold-glow {
+  background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+  color: #1a1600;
+  box-shadow: 0 0 16px rgba(255, 215, 0, 0.4);
+}
+
+.credit-avatar.cyan-glow {
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  color: #04121e;
+  box-shadow: 0 0 16px rgba(0, 242, 254, 0.4);
+}
+
+.credit-avatar.green-glow {
+  background: linear-gradient(135deg, #00d26a 0%, #00b85c 100%);
+  color: #03180d;
+  box-shadow: 0 0 16px rgba(0, 210, 106, 0.4);
+}
+
+.credit-avatar-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  border: 2px solid #141722;
+}
+
+.credit-avatar-badge.gold {
+  background: #ffd700;
+  color: #1a1600;
+}
+
+.credit-avatar-badge.cyan {
+  background: #00f2fe;
+  color: #04121e;
+}
+
+.credit-avatar-badge.green {
+  background: #00d26a;
+  color: #03180d;
+}
+
+.credit-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.credit-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.credit-role {
+  font-size: 12px;
+  color: #9da3b6;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.credit-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.credit-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+}
+
+.credit-tag.gold {
+  background: rgba(255, 215, 0, 0.18);
+  color: #ffd700;
+}
+
+.credit-tag.cyan {
+  background: rgba(0, 242, 254, 0.18);
+  color: #00f2fe;
+}
+
+.credit-tag.green {
+  background: rgba(0, 210, 106, 0.18);
+  color: #00d26a;
+}
+
+.credit-desc {
+  font-size: 12.5px;
+  color: #949cb2;
+  line-height: 1.55;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 10px;
+}
+
+/* Grid of Mini Cards for FOBS Team */
+.credits-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.credit-mini-card {
+  background: #141722;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 13px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.credit-mini-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.credit-mini-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.credit-mini-icon.purple {
+  background: rgba(168, 85, 247, 0.15);
+  color: #a855f7;
+}
+
+.credit-mini-icon.green {
+  background: rgba(0, 210, 106, 0.15);
+  color: #00d26a;
+}
+
+.credit-mini-icon.orange {
+  background: rgba(255, 152, 0, 0.15);
+  color: #ff9800;
+}
+
+.credit-mini-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.credit-mini-role {
+  font-size: 11px;
+  color: #7b8398;
+}
+
+.credit-mini-text {
+  font-size: 12px;
+  color: #8f97ae;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Special Thanks List */
+.credit-special-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.credit-special-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #949cb2;
+}
+
+.credit-special-item i {
+  font-size: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.credit-special-item strong {
+  color: #ffffff;
+  display: block;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+/* Audience Card */
+.credit-audience-hero {
+  text-align: center;
+  padding: 8px 4px;
+}
+
+.credit-audience-stars {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  color: #ffd700;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.credit-audience-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+}
+
+.credit-audience-quote {
+  font-size: 13px;
+  color: #a0a6b8;
+  line-height: 1.6;
+  font-style: italic;
+  margin: 0 0 16px 0;
+}
+
+.credit-audience-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: #ffd700;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Footer Action Buttons */
+.credits-footer-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.credits-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s, filter 0.15s;
+}
+
+.credits-action-btn:active {
+  transform: scale(0.97);
+}
+
+.credits-action-btn.primary {
+  background: linear-gradient(135deg, #0088cc 0%, #00f2fe 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(0, 136, 204, 0.35);
+}
+
+.credits-action-btn.secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.credits-bottom-copy {
+  text-align: center;
+  font-size: 11px;
+  color: #555d72;
+  margin-top: 4px;
+}
+
+

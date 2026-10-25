@@ -7301,6 +7301,13 @@ window.handleAndroidBack = function() {
     return true;
   }
 
+  // -0.83. Credits & Acknowledgments modal: close if open
+  const creditsOverlay = document.getElementById('creditsOverlay');
+  if (creditsOverlay && (creditsOverlay.classList.contains('open') || (creditsOverlay.style.display !== 'none' && creditsOverlay.style.display !== ''))) {
+    closeCreditsModal();
+    return true;
+  }
+
   // -0.8. Download options modal: close if open
   const downloadOptionsModal = document.getElementById('downloadOptionsModal');
   if (downloadOptionsModal && downloadOptionsModal.style.display !== 'none' && downloadOptionsModal.style.display !== '') {
@@ -8569,6 +8576,31 @@ function closeSettingsModal() {
   const overlay = document.getElementById('settingsModalOverlay');
   if (overlay) overlay.style.display = 'none';
 }
+
+// Credits & Roll of Honor Controls
+function openCreditsModal() {
+  const overlay = document.getElementById('creditsOverlay');
+  if (overlay) {
+    overlay.style.display = 'flex';
+    overlay.offsetHeight; // Force reflow
+    overlay.classList.add('open');
+  }
+}
+window.openCreditsModal = openCreditsModal;
+
+function closeCreditsModal(e) {
+  if (e && e.target !== document.getElementById('creditsOverlay') && !e.target.closest('.credits-back-btn')) {
+    return;
+  }
+  const overlay = document.getElementById('creditsOverlay');
+  if (overlay) {
+    overlay.classList.remove('open');
+    setTimeout(() => {
+      overlay.style.display = 'none';
+    }, 250);
+  }
+}
+window.closeCreditsModal = closeCreditsModal;
 
 // Downloads Filter Switcher (MovieBox Screenshot 4)
 function switchDlFilter(filter) {

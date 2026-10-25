@@ -666,7 +666,7 @@
           </div>
         </div>
 
-        <!-- Menu Group 3: Settings, Feedback -->
+        <!-- Menu Group 3: Settings, Credits, Feedback -->
         <div class="mb-menu-group">
           <div class="mb-menu-row" onclick="openSettingsModal()">
             <div class="mb-m-left">
@@ -675,6 +675,17 @@
             </div>
             <div class="mb-m-right">
               <span class="mb-highlight-tag">New Version</span>
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+          </div>
+
+          <div class="mb-menu-row" onclick="openCreditsModal()">
+            <div class="mb-m-left">
+              <i class="fa-solid fa-award" style="color: #ffd700;"></i>
+              <span>Credits</span>
+            </div>
+            <div class="mb-m-right">
+              <span class="mb-highlight-tag" style="background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%); color: #0b0d14; font-weight: 700;">FOBS Team</span>
               <i class="fa-solid fa-chevron-right"></i>
             </div>
           </div>
@@ -1983,6 +1994,367 @@
               <i class="fa-solid fa-paper-plane"></i>
               <span>Submit to Database</span>
             </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- CREDITS & ACKNOWLEDGMENTS MODAL (EXACT NAMES)    -->
+    <!-- ============================================== -->
+    <div class="bottom-sheet-overlay credits-view-overlay" id="creditsOverlay" onclick="closeCreditsModal(event)" style="display: none; z-index: 10000;">
+      <div class="credits-view-sheet" onclick="event.stopPropagation()">
+        <!-- Sticky Header with Back Button -->
+        <div class="credits-header">
+          <button class="credits-back-btn" onclick="closeCreditsModal()" title="Back">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <div class="credits-header-title">Credits & Team</div>
+          <div style="width: 38px;"></div>
+        </div>
+
+        <!-- Scrollable Credits Body -->
+        <div class="credits-scroll-body">
+          <!-- Hero Banner -->
+          <div class="credits-hero-card">
+            <div class="credits-app-badge">
+              <img src="assets/fobs_logo.png" alt="FOBS TV" class="credits-hero-logo" onerror="this.onerror=null; this.src='favicon.png';">
+              <div class="credits-hero-glow"></div>
+            </div>
+            <h2 class="credits-hero-heading">FOBS TV</h2>
+            <div class="credits-hero-tagline">Official Credits & Roll of Honor</div>
+            <p class="credits-hero-desc">
+              Dedicated to bringing you lightning-fast streaming, dual-audio tracks, full HD offline downloads, and a cinematic experience completely free.
+            </p>
+            <div class="credits-stats-row">
+              <div class="credits-stat-box">
+                <span class="credits-stat-num">24/7</span>
+                <span class="credits-stat-label">VPS Uptime</span>
+              </div>
+              <div class="credits-stat-box">
+                <span class="credits-stat-num">50K+</span>
+                <span class="credits-stat-label">Audience</span>
+              </div>
+              <div class="credits-stat-box">
+                <span class="credits-stat-num">1080p</span>
+                <span class="credits-stat-label">Full HD</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 1: OWNER -->
+          <div class="credits-section">
+            <div class="credits-sec-header">
+              <div class="credits-sec-icon gold"><i class="fa-solid fa-crown"></i></div>
+              <div>
+                <h3 class="credits-sec-title">Owner</h3>
+                <div class="credits-sec-sub">Founder, Visionary & Executive Leadership</div>
+              </div>
+            </div>
+            <div class="credit-card gold-border">
+              <div class="credit-card-top">
+                <div class="credit-avatar gold-glow">
+                  <i class="fa-solid fa-user-tie"></i>
+                  <span class="credit-avatar-badge gold"><i class="fa-solid fa-crown"></i></span>
+                </div>
+                <div class="credit-meta">
+                  <div class="credit-name">Tanvir Hossain Khan</div>
+                  <div class="credit-role">Owner & Founder • FOBS TV</div>
+                  <div class="credit-tags">
+                    <span class="credit-tag gold">Owner</span>
+                    <span class="credit-tag">Founder</span>
+                    <span class="credit-tag">Visionary</span>
+                  </div>
+                </div>
+              </div>
+              <div class="credit-desc">
+                Leading the vision of FOBS TV to redefine free mobile and smart TV entertainment. Pioneering buffer-free high-speed streaming for everyone with passion and relentless commitment to quality.
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: DEVELOPER -->
+          <div class="credits-section">
+            <div class="credits-sec-header">
+              <div class="credits-sec-icon cyan"><i class="fa-solid fa-code"></i></div>
+              <div>
+                <h3 class="credits-sec-title">Developer</h3>
+                <div class="credits-sec-sub">Full-Stack Systems & Android Architecture</div>
+              </div>
+            </div>
+            <div class="credit-card cyan-border">
+              <div class="credit-card-top">
+                <div class="credit-avatar cyan-glow">
+                  <i class="fa-solid fa-laptop-code"></i>
+                  <span class="credit-avatar-badge cyan"><i class="fa-solid fa-bolt"></i></span>
+                </div>
+                <div class="credit-meta">
+                  <div class="credit-name">Tanvir Hossain Khan</div>
+                  <div class="credit-role">Lead Developer & Systems Architect</div>
+                  <div class="credit-tags">
+                    <span class="credit-tag cyan">Developer</span>
+                    <span class="credit-tag">Full-Stack</span>
+                    <span class="credit-tag">Android APK</span>
+                    <span class="credit-tag">Cloud VPS</span>
+                  </div>
+                </div>
+              </div>
+              <div class="credit-desc">
+                Engineered the custom 24/7 dedicated VPS streaming proxy, dynamic MovieBox multi-CDN engine, dual-audio syncing mechanism, native Android DownloadManager integration, and the signature Castle/MovieBox UI.
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: FOBS TEAM -->
+          <div class="credits-section">
+            <div class="credits-sec-header">
+              <div class="credits-sec-icon purple"><i class="fa-solid fa-people-group"></i></div>
+              <div>
+                <h3 class="credits-sec-title">FOBS Team</h3>
+                <div class="credits-sec-sub">Core Management, Operations & Media Curation</div>
+              </div>
+            </div>
+            <div class="credits-grid">
+              <div class="credit-mini-card">
+                <div class="credit-mini-header">
+                  <div class="credit-mini-icon purple"><i class="fa-solid fa-film"></i></div>
+                  <div>
+                    <div class="credit-mini-title">Content Curation & Dual-Audio Team</div>
+                    <div class="credit-mini-role">Movies, Series & Dubbing Discovery</div>
+                  </div>
+                </div>
+                <p class="credit-mini-text">Daily sourcing of the newest Bollywood, Hollywood, Turkish dramas, K-Dramas & Anime with authentic Hindi dubbed and original audio tracks.</p>
+              </div>
+
+              <div class="credit-mini-card">
+                <div class="credit-mini-header">
+                  <div class="credit-mini-icon green"><i class="fa-solid fa-server"></i></div>
+                  <div>
+                    <div class="credit-mini-title">Infrastructure & Media Operations</div>
+                    <div class="credit-mini-role">24/7 Dedicated Server Reliability</div>
+                  </div>
+                </div>
+                <p class="credit-mini-text">Maintaining our 24/7 dedicated VPS proxy network, failover stream nodes, and seamless zero-buffer playback across countries.</p>
+              </div>
+
+              <div class="credit-mini-card">
+                <div class="credit-mini-header">
+                  <div class="credit-mini-icon orange"><i class="fa-solid fa-palette"></i></div>
+                  <div>
+                    <div class="credit-mini-title">UI/UX & Mobile Experience Team</div>
+                    <div class="credit-mini-role">Fluid Gestures & Responsive Design</div>
+                  </div>
+                </div>
+                <p class="credit-mini-text">Designing the fluid dark-mode glassmorphism interface, landscape swipe gestures, immersive video player, and clean navigation.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4: MODERATOR -->
+          <div class="credits-section">
+            <div class="credits-sec-header">
+              <div class="credits-sec-icon green"><i class="fa-solid fa-shield-halved"></i></div>
+              <div>
+                <h3 class="credits-sec-title">Moderators</h3>
+                <div class="credits-sec-sub">Community Guardians & Real-Time Support</div>
+              </div>
+            </div>
+            <div class="credits-grid">
+              <div class="credit-card green-border">
+                <div class="credit-card-top">
+                  <div class="credit-avatar green-glow">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span class="credit-avatar-badge green"><i class="fa-solid fa-check"></i></span>
+                  </div>
+                  <div class="credit-meta">
+                    <div class="credit-name">J Nipa</div>
+                    <div class="credit-role">Senior Moderator • Community Guardian</div>
+                    <div class="credit-tags">
+                      <span class="credit-tag green">Moderator</span>
+                      <span class="credit-tag">Community Lead</span>
+                      <span class="credit-tag">24/7 Active</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="credit-desc">
+                  Maintaining community harmony, moderating discussions, verifying user reports, and keeping the FOBS TV environment safe and welcoming for all members.
+                </div>
+              </div>
+
+              <div class="credit-card green-border">
+                <div class="credit-card-top">
+                  <div class="credit-avatar green-glow">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span class="credit-avatar-badge green"><i class="fa-solid fa-check"></i></span>
+                  </div>
+                  <div class="credit-meta">
+                    <div class="credit-name">Ibrahim</div>
+                    <div class="credit-role">Community Moderator • Stream Support</div>
+                    <div class="credit-tags">
+                      <span class="credit-tag green">Moderator</span>
+                      <span class="credit-tag">Stream Support</span>
+                      <span class="credit-tag">User Help</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="credit-desc">
+                  Resolving user inquiries, identifying broken stream sources in real-time, assisting new users, and ensuring smooth platform operation around the clock.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 5: SPECIAL THANKS -->
+          <div class="credits-section">
+            <div class="credits-sec-header">
+              <div class="credits-sec-icon rose"><i class="fa-solid fa-heart"></i></div>
+              <div>
+                <h3 class="credits-sec-title">Special Thanks</h3>
+                <div class="credits-sec-sub">Honoring Our Special Well-Wishers & Contributors</div>
+              </div>
+            </div>
+            <div class="credits-grid">
+              <div class="credit-card rose-border">
+                <div class="credit-card-top">
+                  <div class="credit-avatar" style="background: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%); color: #fff; box-shadow: 0 0 16px rgba(244, 63, 94, 0.4);">
+                    <i class="fa-solid fa-sparkles"></i>
+                  </div>
+                  <div class="credit-meta">
+                    <div class="credit-name">SA Saima Islam</div>
+                    <div class="credit-role">Special Supporter & Creative Contributor</div>
+                    <div class="credit-tags">
+                      <span class="credit-tag" style="background: rgba(244, 63, 94, 0.2); color: #f43f5e;">Special Thanks</span>
+                      <span class="credit-tag">Creative Support</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="credit-card rose-border">
+                <div class="credit-card-top">
+                  <div class="credit-avatar" style="background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%); color: #fff; box-shadow: 0 0 16px rgba(236, 72, 153, 0.4);">
+                    <i class="fa-solid fa-gem"></i>
+                  </div>
+                  <div class="credit-meta">
+                    <div class="credit-name">Fahmida Faria</div>
+                    <div class="credit-role">Special Supporter & Beta Experience Contributor</div>
+                    <div class="credit-tags">
+                      <span class="credit-tag" style="background: rgba(236, 72, 153, 0.2); color: #ec4899;">Special Thanks</span>
+                      <span class="credit-tag">Beta Experience</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="credit-card rose-border">
+                <div class="credit-card-top">
+                  <div class="credit-avatar" style="background: linear-gradient(135deg, #a855f7 0%, #c084fc 100%); color: #fff; box-shadow: 0 0 16px rgba(168, 85, 247, 0.4);">
+                    <i class="fa-solid fa-clover"></i>
+                  </div>
+                  <div class="credit-meta">
+                    <div class="credit-name">Borsha Hayat</div>
+                    <div class="credit-role">Special Supporter & Community Well-Wisher</div>
+                    <div class="credit-tags">
+                      <span class="credit-tag" style="background: rgba(168, 85, 247, 0.2); color: #a855f7;">Special Thanks</span>
+                      <span class="credit-tag">Community Well-Wisher</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="credit-card rose-border">
+                <div class="credit-card-top">
+                  <div class="credit-avatar" style="background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%); color: #fff; box-shadow: 0 0 16px rgba(59, 130, 246, 0.4);">
+                    <i class="fa-solid fa-star"></i>
+                  </div>
+                  <div class="credit-meta">
+                    <div class="credit-name">Aditto Akash</div>
+                    <div class="credit-role">Special Supporter & Media Contributor</div>
+                    <div class="credit-tags">
+                      <span class="credit-tag" style="background: rgba(59, 130, 246, 0.2); color: #3b82f6;">Special Thanks</span>
+                      <span class="credit-tag">Media Contributor</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 6: AUDIENCE -->
+          <div class="credits-section">
+            <div class="credits-sec-header">
+              <div class="credits-sec-icon rainbow"><i class="fa-solid fa-hands-clapping"></i></div>
+              <div>
+                <h3 class="credits-sec-title">Audience</h3>
+                <div class="credits-sec-sub">Our Valued Streamers & Community Stars</div>
+              </div>
+            </div>
+            <div class="credit-card rainbow-border">
+              <div class="credit-audience-hero">
+                <div class="credit-audience-stars">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                </div>
+                <h4 class="credit-audience-title">Featured Super Streamers</h4>
+                <p class="credit-audience-quote">
+                  "Honoring the dedicated audience members whose love and passion inspire FOBS TV every single day."
+                </p>
+
+                <!-- Featured Audience Members Grid -->
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; text-align: left;">
+                  <div style="display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 12px; border-radius: 12px;">
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #ff9800); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;">TA</div>
+                    <div style="flex: 1;">
+                      <div style="font-size: 14px; font-weight: 700; color: #fff;">Tamanna Afroz</div>
+                      <div style="font-size: 11px; color: #94a3b8;">VIP Audience • Dedicated Streamer</div>
+                    </div>
+                    <span style="font-size: 10px; font-weight: 700; background: rgba(255, 215, 0, 0.2); color: #ffd700; padding: 2px 8px; border-radius: 6px;">Top Fan</span>
+                  </div>
+
+                  <div style="display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 12px; border-radius: 12px;">
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #00f2fe, #4facfe); color: #000; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;">BR</div>
+                    <div style="flex: 1;">
+                      <div style="font-size: 14px; font-weight: 700; color: #fff;">Bappe Reja</div>
+                      <div style="font-size: 11px; color: #94a3b8;">VIP Audience • Daily Active Viewer</div>
+                    </div>
+                    <span style="font-size: 10px; font-weight: 700; background: rgba(0, 242, 254, 0.2); color: #00f2fe; padding: 2px 8px; border-radius: 6px;">Top Fan</span>
+                  </div>
+
+                  <div style="display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 12px; border-radius: 12px;">
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #f43f5e); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;">AM</div>
+                    <div style="flex: 1;">
+                      <div style="font-size: 14px; font-weight: 700; color: #fff;">Asia Marufa</div>
+                      <div style="font-size: 11px; color: #94a3b8;">VIP Audience • Community Enthusiast</div>
+                    </div>
+                    <span style="font-size: 10px; font-weight: 700; background: rgba(236, 72, 153, 0.2); color: #ec4899; padding: 2px 8px; border-radius: 6px;">Top Fan</span>
+                  </div>
+                </div>
+
+                <div class="credit-audience-badge">
+                  <i class="fa-solid fa-fire" style="color: #ff5722;"></i>
+                  <span>50,000+ Amazing Audience Members Worldwide</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Community Links Footer -->
+          <div class="credits-footer-links">
+            <button class="credits-action-btn primary" onclick="openCommunity()">
+              <i class="fa-brands fa-telegram"></i>
+              <span>Join Community</span>
+            </button>
+            <button class="credits-action-btn secondary" onclick="shareMedia()">
+              <i class="fa-solid fa-share-nodes"></i>
+              <span>Share App</span>
+            </button>
+          </div>
+
+          <div class="credits-bottom-copy">
+            FOBS TV • Crafted with passion for entertainment lovers © 2026
           </div>
         </div>
       </div>
