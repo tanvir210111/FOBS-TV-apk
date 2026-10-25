@@ -2662,6 +2662,7 @@ function openLiveTvPlayer(id) {
 
 function formatCleanMediaTitle(rawTitle, dubLanguage = 'Hindi') {
   if (!rawTitle) return '';
+  const isOriginal = (dubLanguage && /original|korean/i.test(dubLanguage)) || /\[\s*original\s*audio\s*\]/i.test(rawTitle);
   let clean = rawTitle
     .replace(/\[\s*hindi\s*dub(bed)?\s*\]/gi, '')
     .replace(/\(\s*hindi\s*dub(bed)?\s*\)/gi, '')
@@ -2669,8 +2670,13 @@ function formatCleanMediaTitle(rawTitle, dubLanguage = 'Hindi') {
     .replace(/\(\s*hindi\s*\)/gi, '')
     .replace(/\[\s*fan\s*dub(bed)?\s*\]/gi, '')
     .replace(/\(\s*fan\s*dub(bed)?\s*\)/gi, '')
+    .replace(/\[\s*original\s*audio\s*\]/gi, '')
+    .replace(/\(\s*original\s*audio\s*\)/gi, '')
     .trim();
   clean = clean.replace(/\s+/g, ' ').trim();
+  if (isOriginal) {
+    return `${clean} [Original Audio]`;
+  }
   const tag = (dubLanguage && dubLanguage.toLowerCase().includes('fan')) ? '[Fan Dubbed]' : '[Hindi]';
   return `${clean} ${tag}`;
 }
@@ -3045,6 +3051,9 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     } catch (e) {
       console.warn('Pre-resolve MovieBox stream failed, falling back to direct endpoint:', e.message);
     }
+    if (playableUrl.startsWith('/')) {
+      playableUrl = `${API_BASE_URL}${playableUrl}`;
+    }
   }
 
   // If already routed through /api/stream proxy (e.g. from MovieBox resolver)
@@ -3120,8 +3129,9 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       return;
     }
 
-    console.log('Playing direct CDN stream:', playableUrl);
-    videoPlayer.src = playableUrl;
+    const finalDirectUrl = playableUrl.startsWith('/') ? `${API_BASE_URL}${playableUrl}` : playableUrl;
+    console.log('Playing direct CDN stream:', finalDirectUrl);
+    videoPlayer.src = finalDirectUrl;
     videoPlayer.load();
     if (seekTime && seekTime > 0) {
       const applySeek = () => {
@@ -6327,6 +6337,37 @@ function switchAudioTrack(lang) {
   const targetAudioIndex = isOriginal ? 1 : 0;
   appState.selectedAudioIndex = targetAudioIndex;
 
+  // Seamless Dual-Series switching for Dive Into You (or any dual-series pair)
+  if (appState.currentMedia && appState.currentMedia.title && appState.currentMedia.title.toLowerCase().includes('dive into you')) {
+    const targetSeriesId = isOriginal ? 'mb-s-3870036899930730728' : 'mb-s-1932866268428649968';
+    if (appState.currentMedia.id !== targetSeriesId) {
+      const targetSeries = (appState.content.series || []).find(s => s.id === targetSeriesId);
+      if (targetSeries) {
+        const curEpNum = appState.currentEpisode?.number || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1);
+        const curTime = (videoPlayer ? videoPlayer.currentTime : 0) || 0;
+
+        appState.currentMedia = targetSeries;
+        const newSeasonEps = getActiveSeasonEpisodes(targetSeries);
+        const newEpIdx = Math.max(0, curEpNum - 1);
+        appState.currentEpisode = (newSeasonEps && newSeasonEps[newEpIdx]) || (newSeasonEps && newSeasonEps[0]);
+        appState.currentEpisodeIndex = newEpIdx;
+
+        const titleText = formatCleanMediaTitle(targetSeries.title, targetSeries.dubLanguage);
+        const titleEl = document.getElementById('playerMediaTitle');
+        if (titleEl) titleEl.innerText = titleText;
+
+        renderEpisodePills(newSeasonEps, newEpIdx);
+        renderServerPills(targetSeries);
+        renderAudioTrackOptions(targetSeries);
+
+        const nextStream = getActiveEpisodeStream(appState.currentEpisode, lang);
+        playStreamUrl(nextStream, null, curTime);
+        showToast(`Audio Track: ${lang}`);
+        return;
+      }
+    }
+  }
+
   const currentEp = appState.currentEpisode;
   const rawUrl = getActiveEpisodeStream(currentEp, lang)
     || (currentEp?.servers && currentEp.servers[targetAudioIndex] && currentEp.servers[targetAudioIndex].url)
@@ -6337,13 +6378,9 @@ function switchAudioTrack(lang) {
 
   if (rawUrl && videoPlayer) {
     const curTime = (videoPlayer.currentTime || 0) + (appState.streamSeekOffset || 0);
-    const isPlaying = !videoPlayer.paused;
     const isSeparateTrackUrl = !!(currentEp?.audioTracks && Object.keys(currentEp.audioTracks).length > 1);
     const audioParam = isSeparateTrackUrl ? null : targetAudioIndex;
     playStreamUrl(rawUrl, audioParam, curTime);
-    if (isPlaying) {
-      videoPlayer.play().catch(() => {});
-    }
   }
 
   showToast(`Audio Track: ${lang}`);

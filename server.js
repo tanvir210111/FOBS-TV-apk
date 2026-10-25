@@ -1119,7 +1119,7 @@ app.all('/api/stream', async (req, res) => {
       headers: requestHeaders,
       responseType: 'stream',
       maxRedirects: 5,
-      timeout: 15000,
+      timeout: 0,
       validateStatus: (status) => status >= 200 && status < 400
     });
 
@@ -1210,7 +1210,18 @@ app.all('/api/stream', async (req, res) => {
   } catch (error) {
     console.error('Stream proxy error:', error.message);
     if (!res.headersSent) {
-      res.redirect(resolvedUrl);
+      if (
+        resolvedUrl.includes('hakunaymatata') || 
+        resolvedUrl.includes('bcdnxw') || 
+        resolvedUrl.includes('haildrop') || 
+        resolvedUrl.includes('fogtwist') || 
+        resolvedUrl.includes('sunburst') || 
+        resolvedUrl.includes('stormshade')
+      ) {
+        res.status(502).json({ error: 'Upstream CDN error', message: error.message });
+      } else {
+        res.redirect(302, resolvedUrl);
+      }
     }
   }
 });
