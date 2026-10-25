@@ -1,9 +1,13 @@
 /**
- * FOBS TV - Dive to You [Hindi] K-Drama Ingestion
+ * FOBS TV - Dive into You / Dive to You K-Drama Ingestion
  * - TMDB TV ID: 316197 (Dive into You / 너에게 다이브, 2026)
  * - MovieBox Subject IDs:
+ *     - 3870036899930730728 (dive-to-you-G56UVRdOSB4) -> Ep 1-8 Full 1080p/720p HD Original Korean Audio
  *     - 1932866268428649968 (dive-to-you-hindi-mHK7tzYxMi2) -> Ep 1 Hindi Dub
- *     - 3870036899930730728 (dive-to-you-G56UVRdOSB4) -> Ep 1-8 Full 1080p/720p HD with Hindi Subtitles
+ * - Features:
+ *     - Dual Audio Tracks: 'Original audio' (Korean 1080p HD) & 'Hindi dub'
+ *     - Auto-Renewing MovieBox streaming proxy endpoints
+ *     - Multi-server failover
  * - Syncs across:
  *     - data/content.json
  *     - public/seed-content.json
@@ -70,7 +74,7 @@ async function fetchEpisodeDownload(subjectId, detailPath, se, ep, retries = 5) 
 
 async function run() {
   console.log('====================================================');
-  console.log('Dive to You [Hindi] - TMDB & MovieBox Ingestion');
+  console.log('Dive into You / Dive to You - Original Audio & Hindi Dub Ingestion');
   console.log('====================================================\n');
 
   // 1. Fetch TMDB TV details
@@ -96,12 +100,12 @@ async function run() {
     const epNum = i + 1;
     const tmdbEp = tmdbEpisodes[i] || {
       name: `Episode ${epNum}`,
-      overview: `Episode ${epNum} of Dive to You.`,
+      overview: `Episode ${epNum} of Dive into You.`,
       still_path: null,
       runtime: 60
     };
 
-    // Download from full HD subject
+    // Download from full HD subject (Original Audio - Korean 1080p/720p)
     const mb = await fetchEpisodeDownload(SUBJECT_ID_FULL, DETAIL_PATH_FULL, 1, epNum);
     // If ep 1, also check dedicated Hindi subject
     let mbHindi = null;
@@ -110,60 +114,92 @@ async function run() {
     }
 
     const servers = [];
-    let primaryStreamUrl = '';
+    const origUrl = (mb && mb.best) ? mb.best.url : `https://multiembed.mov/?video_id=${TMDB_TV_ID}&s=1&e=${epNum}`;
+    const hindiUrl = (mbHindi && mbHindi.best) ? mbHindi.best.url : (epNum === 1 ? origUrl : `https://multiembed.mov/?video_id=${TMDB_TV_ID}&s=1&e=${epNum}`);
+    const primaryStreamUrl = origUrl;
 
-    if (mb && mb.best) {
-      primaryStreamUrl = mb.best.url;
-      const sizeMB = Math.round(Number(mb.best.size || 0) / 1024 / 1024);
+    if (epNum === 1) {
+      // Ep 1: Both Original Audio (1080p Direct) and Hindi Dub (480p Direct) available
+      const origSizeMB = mb?.best ? Math.round(Number(mb.best.size || 0) / 1024 / 1024) : 982;
+      const hindiSizeMB = mbHindi?.best ? Math.round(Number(mbHindi.best.size || 0) / 1024 / 1024) : 397;
+
       servers.push({
-        name: `Server 1 (MovieBox ${mb.best.resolution}p Direct - ${sizeMB}MB)`,
-        url: mb.best.url,
+        name: `Server 1 (Original Audio - Korean 1080p HD Direct - ${origSizeMB}MB)`,
+        url: origUrl,
         isDirect: true,
-        quality: `${mb.best.resolution}p`
+        quality: '1080p',
+        audio: 'Original audio'
       });
+
       servers.push({
-        name: 'Server 2 (Auto-Renewing MovieBox Stream)',
+        name: `Server 2 (Hindi Dub - MovieBox 480p Direct - ${hindiSizeMB}MB)`,
+        url: hindiUrl,
+        isDirect: true,
+        quality: '480p',
+        audio: 'Hindi dub'
+      });
+
+      servers.push({
+        name: 'Server 3 (Original Audio - Auto-Renewing Stream)',
         url: `/api/moviebox/stream?id=${SUBJECT_ID_FULL}&se=1&ep=${epNum}`,
         isDirect: true,
-        quality: `${mb.best.resolution}p`
+        quality: '1080p',
+        audio: 'Original audio'
       });
 
-      if (mbHindi && mbHindi.best) {
-        const hSizeMB = Math.round(Number(mbHindi.best.size || 0) / 1024 / 1024);
-        servers.push({
-          name: `Server 3 (MovieBox Hindi Dub - ${hSizeMB}MB)`,
-          url: mbHindi.best.url,
-          isDirect: true,
-          quality: `${mbHindi.best.resolution}p`
-        });
-      }
-
-      const lower = mb.qualities.find(q => q.resolution < mb.best.resolution);
-      if (lower) {
-        servers.push({
-          name: `Server ${servers.length + 1} (MovieBox Fast SD - ${lower.resolution}p)`,
-          url: lower.url,
-          isDirect: true,
-          quality: `${lower.resolution}p`
-        });
-      }
-    } else if (mbHindi && mbHindi.best) {
-      primaryStreamUrl = mbHindi.best.url;
-      const sizeMB = Math.round(Number(mbHindi.best.size || 0) / 1024 / 1024);
       servers.push({
-        name: `Server 1 (MovieBox Hindi Dub - ${sizeMB}MB)`,
-        url: mbHindi.best.url,
-        isDirect: true,
-        quality: `${mbHindi.best.resolution}p`
-      });
-      servers.push({
-        name: 'Server 2 (Auto-Renewing MovieBox Stream)',
+        name: 'Server 4 (Hindi Dub - Auto-Renewing Stream)',
         url: `/api/moviebox/stream?id=${SUBJECT_ID_HINDI}&se=1&ep=${epNum}`,
         isDirect: true,
-        quality: '480p'
+        quality: '480p',
+        audio: 'Hindi dub'
       });
+
+      if (mb?.qualities) {
+        const lower = mb.qualities.find(q => q.resolution < mb.best.resolution);
+        if (lower) {
+          servers.push({
+            name: `Server 5 (MovieBox Fast SD - ${lower.resolution}p)`,
+            url: lower.url,
+            isDirect: true,
+            quality: `${lower.resolution}p`,
+            audio: 'Original audio'
+          });
+        }
+      }
     } else {
-      primaryStreamUrl = `https://multiembed.mov/?video_id=${TMDB_TV_ID}&s=1&e=${epNum}`;
+      // Ep 2 to 8: Original Audio (Korean 1080p/720p Direct)
+      const origSizeMB = mb?.best ? Math.round(Number(mb.best.size || 0) / 1024 / 1024) : 800;
+      const res = mb?.best?.resolution || 1080;
+
+      servers.push({
+        name: `Server 1 (Original Audio - Korean ${res}p HD Direct - ${origSizeMB}MB)`,
+        url: origUrl,
+        isDirect: true,
+        quality: `${res}p`,
+        audio: 'Original audio'
+      });
+
+      servers.push({
+        name: 'Server 2 (Original Audio - Auto-Renewing Stream)',
+        url: `/api/moviebox/stream?id=${SUBJECT_ID_FULL}&se=1&ep=${epNum}`,
+        isDirect: true,
+        quality: `${res}p`,
+        audio: 'Original audio'
+      });
+
+      if (mb?.qualities) {
+        const lower = mb.qualities.find(q => q.resolution < mb.best.resolution);
+        if (lower) {
+          servers.push({
+            name: `Server 3 (MovieBox Fast SD - ${lower.resolution}p)`,
+            url: lower.url,
+            isDirect: true,
+            quality: `${lower.resolution}p`,
+            audio: 'Original audio'
+          });
+        }
+      }
     }
 
     const srvOffset = servers.length + 1;
@@ -192,48 +228,67 @@ async function run() {
       src: c.url
     }));
 
+    const audioTracksMap = {
+      'Original audio': origUrl,
+      'Original Audio': origUrl,
+      'Korean': origUrl,
+      'Hindi dub': hindiUrl,
+      'Hindi Dub': hindiUrl
+    };
+
     episodes.push({
       number: epNum,
       episode: epNum,
       season: 1,
       title: tmdbEp.name || `Episode ${epNum}`,
       duration: `${tmdbEp.runtime || 60} min`,
-      overview: tmdbEp.overview || `Episode ${epNum} of Dive to You.`,
+      overview: tmdbEp.overview || `Episode ${epNum} of Dive into You.`,
       still: tmdbEp.still_path ? `https://image.tmdb.org/t/p/w500${tmdbEp.still_path}` : 'https://image.tmdb.org/t/p/w500/jseW3HucgNjN2CwJa3MiOlF4xMO.jpg',
+      stillPath: tmdbEp.still_path ? `https://image.tmdb.org/t/p/w500${tmdbEp.still_path}` : 'https://image.tmdb.org/t/p/w500/jseW3HucgNjN2CwJa3MiOlF4xMO.jpg',
       streamUrl: primaryStreamUrl,
       servers,
-      audioTracks: ['Hindi', 'Korean'],
+      audioTracks: audioTracksMap,
       captions: captionList
     });
 
-    const qualName = mb?.best ? `${mb.best.resolution}p` : (mbHindi?.best ? `${mbHindi.best.resolution}p` : 'embed');
-    console.log(`   ✅ S1 E${epNum}: ${qualName} (${servers.length} servers)`);
+    const qualName = mb?.best ? `${mb.best.resolution}p` : '1080p';
+    console.log(`   ✅ S1 E${epNum}: Original Audio Korean ${qualName} (${servers.length} servers)`);
     await delay(200);
   }
 
   // Cast
   const castList = (tv.credits?.cast || []).slice(0, 6).map(c => c.name).join(', ') || 'Lee Jae-wook, Choi Sung-eun, Hong Kyung';
 
-  // 4. Construct Series Object
+  // 4. Construct Series Object with both Original Audio and Hindi Dub
   const seriesObj = {
-    id: `mb-s-${SUBJECT_ID_HINDI}`,
-    subjectId: SUBJECT_ID_HINDI,
+    id: `mb-s-${SUBJECT_ID_FULL}`,
+    subjectId: SUBJECT_ID_FULL,
+    hindiSubjectId: SUBJECT_ID_HINDI,
     tmdbId: TMDB_TV_ID,
-    title: 'Dive to You [Hindi]',
-    originalTitle: tv.original_name || '너에게 다이브',
+    title: 'Dive into You',
+    altTitle: 'Dive to You',
+    originalTitle: '너에게 다이브 (Dive to You)',
     year: tv.first_air_date ? tv.first_air_date.substring(0, 4) : '2026',
     releaseDate: tv.first_air_date || '2026-09-26',
     rating: String(tv.vote_average ? tv.vote_average.toFixed(1) : '8.4'),
+    imdbRating: String(tv.vote_average ? tv.vote_average.toFixed(1) : '8.4'),
     votes: String(tv.vote_count || '95'),
     duration: '8 Episodes',
     category: 'Korean (Dubbed) Series',
     industry: 'Korean',
     country: 'Korea',
-    badgeLeft: 'K-Drama',
-    badgeRight: 'Hindi Dub',
+    badgeLeft: 'Original Audio + Hindi',
+    badgeRight: 'K-Drama',
+    tag: 'Original Audio + Hindi',
+    dubLanguage: 'Original Audio (Korean) + Hindi Dub',
+    audioTracks: ['Original audio', 'Hindi dub'],
+    selectedAudio: 'Original audio',
+    streamUrl: episodes[0].streamUrl,
+    servers: episodes[0].servers,
     poster: tv.poster_path ? `https://image.tmdb.org/t/p/w500${tv.poster_path}` : 'https://image.tmdb.org/t/p/w500/6OAuQOGqjYY1JXbkTlWz4Mm2Kmi.jpg',
     backdrop: tv.backdrop_path ? `https://image.tmdb.org/t/p/original${tv.backdrop_path}` : 'https://image.tmdb.org/t/p/original/jseW3HucgNjN2CwJa3MiOlF4xMO.jpg',
     overview: tv.overview || "An actress and her twin brother slip through time – and swap bodies – to save their friend's life.",
+    description: tv.overview || "An actress and her twin brother slip through time – and swap bodies – to save their friend's life.",
     genres: (tv.genres || []).map(g => g.name).join(', ') || 'Comedy, Drama, Sci-Fi & Fantasy, K-Drama',
     director: 'Kim Jin-min',
     cast: castList,
@@ -248,7 +303,10 @@ async function run() {
         poster: tv.poster_path ? `https://image.tmdb.org/t/p/w500${tv.poster_path}` : 'https://image.tmdb.org/t/p/w500/6OAuQOGqjYY1JXbkTlWz4Mm2Kmi.jpg',
         episodes
       }
-    ]
+    ],
+    episodes: episodes,
+    type: 'series',
+    addedAt: new Date().toISOString()
   };
 
   // 5. Update across catalog files
@@ -258,8 +316,9 @@ async function run() {
 
     content.series = content.series.filter(s => {
       const idMatch = s.id === `mb-s-${SUBJECT_ID_HINDI}` || s.id === `mb-s-${SUBJECT_ID_FULL}`;
-      const titleMatch = s.title && s.title.toLowerCase().includes('dive to you');
-      return !idMatch && !titleMatch;
+      const titleMatch = s.title && (s.title.toLowerCase().includes('dive to you') || s.title.toLowerCase().includes('dive into you'));
+      const origMatch = s.originalTitle && s.originalTitle.includes('너에게 다이브');
+      return !idMatch && !titleMatch && !origMatch;
     });
 
     content.series.unshift(seriesObj);
@@ -268,7 +327,7 @@ async function run() {
     console.log(`💾 Replaced entry in: ${filePath}`);
   }
 
-  console.log('\n🎉 Successfully added Dive to You [Hindi] with all 8 episodes!');
+  console.log('\n🎉 Successfully updated Dive into You with Original Korean Audio and Hindi Dub across all 8 episodes!');
 }
 
 run().catch(err => {

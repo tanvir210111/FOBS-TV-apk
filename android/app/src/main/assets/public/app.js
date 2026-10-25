@@ -2552,6 +2552,28 @@ function toggleSeasonDropdown(event) {
   openSeasonSheet();
 }
 
+// Helper: Resolve active stream URL matching the requested audio track
+function getActiveEpisodeStream(ep, audioTrack) {
+  if (!ep) return '';
+  const track = audioTrack || appState.currentAudioTrack || 'Original audio';
+  const isOrig = track.toLowerCase().includes('original') || track.toLowerCase().includes('korean');
+  if (ep.audioTracks && typeof ep.audioTracks === 'object' && !Array.isArray(ep.audioTracks)) {
+    const val = isOrig
+      ? (ep.audioTracks['Original audio'] || ep.audioTracks['Original Audio'] || ep.audioTracks['Korean'] || ep.audioTracks['Original'])
+      : (ep.audioTracks['Hindi dub'] || ep.audioTracks['Hindi Dub'] || ep.audioTracks['Hindi']);
+    if (val) return val;
+  }
+  if (ep.servers && Array.isArray(ep.servers)) {
+    const matchServer = ep.servers.find(s => isOrig
+      ? (s.audio === 'Original audio' || /original|korean/i.test(s.name))
+      : (s.audio === 'Hindi dub' || /hindi/i.test(s.name))
+    );
+    if (matchServer && matchServer.url) return matchServer.url;
+    if (ep.servers[0] && ep.servers[0].url) return ep.servers[0].url;
+  }
+  return ep.streamUrl || '';
+}
+
 // Switch Active Season (Season 1 / Season 2)
 function switchSeason(seasonNumber) {
   appState.currentSeason = seasonNumber;
@@ -2568,10 +2590,7 @@ function switchSeason(seasonNumber) {
   renderServerPills(appState.currentMedia);
 
   if (appState.currentEpisode) {
-    const activeEpStream = (appState.currentEpisode.servers && appState.currentEpisode.servers.length > 0)
-      ? appState.currentEpisode.servers[0].url
-      : ((appState.currentEpisode.audioTracks && appState.currentEpisode.audioTracks[appState.currentAudioTrack])
-        || appState.currentEpisode.streamUrl);
+    const activeEpStream = getActiveEpisodeStream(appState.currentEpisode);
     playStreamUrl(activeEpStream);
   }
 }
@@ -2755,10 +2774,7 @@ function openPlayer(media, episodeIndex = 0) {
     appState.activeServerIndex = 0;
     renderEpisodePills(activeEpisodes, episodeIndex);
     renderServerPills(media);
-    const activeEpStream = (appState.currentEpisode.servers && appState.currentEpisode.servers.length > 0)
-      ? appState.currentEpisode.servers[0].url
-      : ((appState.currentEpisode.audioTracks && appState.currentEpisode.audioTracks[appState.currentAudioTrack])
-        || appState.currentEpisode.streamUrl);
+    const activeEpStream = getActiveEpisodeStream(appState.currentEpisode);
     playStreamUrl(activeEpStream);
   } else {
     if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'none';
@@ -2837,10 +2853,7 @@ function selectEpisode(idx) {
   appState.activeServerIndex = 0;
   renderEpisodePills(currentEpisodes, idx);
   renderServerPills(appState.currentMedia);
-  const activeEpStream = (appState.currentEpisode.servers && appState.currentEpisode.servers.length > 0)
-    ? appState.currentEpisode.servers[0].url
-    : ((appState.currentEpisode.audioTracks && appState.currentEpisode.audioTracks[appState.currentAudioTrack])
-      || appState.currentEpisode.streamUrl);
+  const activeEpStream = getActiveEpisodeStream(appState.currentEpisode);
   playStreamUrl(activeEpStream);
 }
 
@@ -6032,7 +6045,17 @@ function renderAudioTrackOptions(media) {
   // Remove duplicates
   tracks = [...new Set(tracks)];
 
-  appState.currentAudioTrack = tracks[0];
+  // Respect media.selectedAudio if specified
+  if (media && media.selectedAudio) {
+    const preferred = /original|korean/i.test(media.selectedAudio) ? 'Original audio' : 'Hindi dub';
+    if (tracks.includes(preferred)) {
+      appState.currentAudioTrack = preferred;
+    } else {
+      appState.currentAudioTrack = tracks[0];
+    }
+  } else {
+    appState.currentAudioTrack = tracks[0];
+  }
 
   // 1. Update Dub Selector Text (Portrait)
   const dubText = document.getElementById('currentDubText');
@@ -6088,7 +6111,7 @@ function switchAudioTrack(lang) {
   appState.selectedAudioIndex = targetAudioIndex;
 
   const currentEp = appState.currentEpisode;
-  const rawUrl = (currentEp?.audioTracks && (currentEp.audioTracks[lang] || currentEp.audioTracks['Original audio'] || currentEp.audioTracks['Hindi dub']))
+  const rawUrl = getActiveEpisodeStream(currentEp, lang)
     || (currentEp?.servers && currentEp.servers[targetAudioIndex] && currentEp.servers[targetAudioIndex].url)
     || currentEp?.streamUrl 
     || (appState.currentMedia?.servers && appState.currentMedia.servers[targetAudioIndex] && appState.currentMedia.servers[targetAudioIndex].url)
