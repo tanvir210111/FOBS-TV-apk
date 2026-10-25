@@ -19,6 +19,7 @@ const syncService = require('./services/syncService');
 const dbService = require('./services/dbService');
 const authService = require('./services/authService');
 const subtitleService = require('./services/subtitleService');
+const adminService = require('./services/adminService');
 
 app.use(cors());
 app.use(compression({
@@ -2017,6 +2018,160 @@ Enjoy full HD streaming with synchronized subtitles
 app.post('/api/moviebox/sync', async (req, res) => {
   syncService.runMovieBoxSync().catch(() => {});
   res.json({ success: true, message: 'MovieBox hourly sync initiated' });
+});
+
+
+// ============================================================
+// WEB ADMIN PANEL & MANAGEMENT APIS
+// ============================================================
+
+// Static Admin Entry
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin', 'index.html'));
+});
+
+// Admin Auth
+app.post('/api/admin/login', (req, res) => {
+  const { password } = req.body;
+  const result = adminService.login(password);
+  if (!result.success) {
+    return res.status(401).json(result);
+  }
+  res.json(result);
+});
+
+// Admin Protected Endpoints
+app.get('/api/admin/stats', adminService.authenticate, (req, res) => {
+  res.json(adminService.getStats());
+});
+
+app.get('/api/admin/content', adminService.authenticate, (req, res) => {
+  res.json(adminService.getContent());
+});
+
+// MovieBox Admin Search & Live Resolve & Importer
+app.get('/api/admin/moviebox/search', adminService.authenticate, async (req, res) => {
+  try {
+    const { q } = req.query;
+    const result = await adminService.searchMovieBox(q);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.get('/api/admin/moviebox/resolve', adminService.authenticate, async (req, res) => {
+  try {
+    const { id, path: detailPath, se, ep } = req.query;
+    const result = await adminService.resolveMovieBox(id, detailPath, se ? parseInt(se, 10) : 0, ep ? parseInt(ep, 10) : 0);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/admin/moviebox/import', adminService.authenticate, async (req, res) => {
+  try {
+    const result = await adminService.importFromMovieBox(req.body);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Movie CRUD
+app.post('/api/admin/movie', adminService.authenticate, (req, res) => {
+  try {
+    const result = adminService.saveMovie(req.body);
+    res.json(result);
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+});
+
+app.delete('/api/admin/movie/:id', adminService.authenticate, (req, res) => {
+  try {
+    const result = adminService.deleteMovie(req.params.id);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Series CRUD
+app.post('/api/admin/series', adminService.authenticate, (req, res) => {
+  try {
+    const result = adminService.saveSeries(req.body);
+    res.json(result);
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+});
+
+app.delete('/api/admin/series/:id', adminService.authenticate, (req, res) => {
+  try {
+    const result = adminService.deleteSeries(req.params.id);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Live TV CRUD
+app.post('/api/admin/channel', adminService.authenticate, (req, res) => {
+  try {
+    const result = adminService.saveChannel(req.body);
+    res.json(result);
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+});
+
+app.delete('/api/admin/channel/:id', adminService.authenticate, (req, res) => {
+  try {
+    const result = adminService.deleteChannel(req.params.id);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// User Media Requests Management
+app.get('/api/admin/requests', adminService.authenticate, (req, res) => {
+  res.json(adminService.getRequests());
+});
+
+app.post('/api/admin/requests/:id/status', adminService.authenticate, (req, res) => {
+  try {
+    const { status } = req.body;
+    const result = adminService.updateRequestStatus(req.params.id, status);
+    res.json(result);
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+});
+
+// System Broadcast Notifications Management
+app.get('/api/admin/notifications', adminService.authenticate, (req, res) => {
+  res.json(adminService.getNotifications());
+});
+
+app.post('/api/admin/notifications', adminService.authenticate, (req, res) => {
+  try {
+    const result = adminService.saveNotification(req.body);
+    res.json(result);
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+});
+
+app.delete('/api/admin/notifications/:id', adminService.authenticate, (req, res) => {
+  try {
+    const result = adminService.deleteNotification(req.params.id);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 // One-Click / Webhook Auto-Deploy to VPS
