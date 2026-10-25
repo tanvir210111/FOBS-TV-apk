@@ -1034,6 +1034,19 @@ class AdminService {
     let repairedEpisodes = 0;
     let repairedMovies = 0;
 
+    const movieBoxIdMap = {
+      'tmdb-m-1654581': { sId: '2978700976560953208', path: 'daldal-hindi-s6e4P5Tt2y3' },
+      'tmdb-m-1451944': { sId: '4615851813508628976', path: 'lust-stories-hindi-Otol6FjEYu5' },
+      'tmdb-m-1423191': { sId: '4192178861456740576', path: 'resident-evil-M6HaKKRdGZ4' },
+      'tmdb-m-1234139': { sId: '2838322006842639760', path: 'jailer-indonesian-YCa3PBMxFn3' },
+      'tmdb-m-969681':  { sId: '1321879841695749848', path: 'spider-man-brand-new-day-hindi-full-movie-iHD2LTRdEz1' },
+      'tmdb-m-1153576': { sId: '1050173597374890184', path: 'street-fighter-cam-2DhSc6ZNzf1' },
+      'tmdb-m-1101383': { sId: '774020224193544440',  path: 'the-dark-end-of-the-street-6P6Gp6i1bV' },
+      'turkish-m-785534': { sId: '331534456928489048', path: 'paper-lives-MOrS12Kquo' },
+      'turkish-m-637920': { sId: '2593580836368859088', path: 'miracle-in-cell-no-7-CpdPy3VCA53' },
+      'turkish-m-375784': { sId: '6754139210678502168', path: 'adini-feriha-koydum-hindi-sUF1ZoO1W28' }
+    };
+
     function isExpiringCdn(url) {
       if (!url) return true;
       return url.includes('hakunaymatata') || url.includes('bcdnxw') || url.includes('haildrop') ||
@@ -1041,7 +1054,7 @@ class AdminService {
              url.includes('.mp4?s=') || url.includes('.mp4?sign=');
     }
 
-    // 1. Repair Series & All Season Episodes
+    // 1. Repair Series & All Season Episodes (Covering all categories: Korean, Turkish, Anime, Hollywood, Bollywood, etc.)
     for (const s of content.series || []) {
       let sId = s.subjectId || s.mbSubjectId;
       if (!sId && s.id && s.id.startsWith('mb-s-')) {
@@ -1112,6 +1125,7 @@ class AdminService {
               for (const k of Object.keys(ep.audioTracks)) {
                 if (isExpiringCdn(ep.audioTracks[k])) {
                   ep.audioTracks[k] = autoRenewUrl;
+                  seriesTouched = true;
                 }
               }
             }
@@ -1122,8 +1136,14 @@ class AdminService {
       }
     }
 
-    // 2. Repair Movies
+    // 2. Repair Movies (All categories: Hollywood, Bollywood, South, Anime, Turkish, etc.)
     for (const m of content.movies || []) {
+      // Map known unlinked movies to their MovieBox counterparts
+      if (movieBoxIdMap[m.id]) {
+        m.subjectId = movieBoxIdMap[m.id].sId;
+        m.detailPath = movieBoxIdMap[m.id].path;
+      }
+
       let sId = m.subjectId || m.mbSubjectId;
       if (!sId && m.id && m.id.startsWith('mb-m-')) {
         sId = m.id.replace('mb-m-', '');
@@ -1141,6 +1161,23 @@ class AdminService {
       }
     }
 
+    // 3. Repair Featured Hero Spotlight
+    if (content.featured) {
+      const feat = content.featured;
+      let sId = feat.subjectId || feat.mbSubjectId;
+      if (!sId && feat.id && (feat.id.startsWith('mb-m-') || feat.id.startsWith('mb-s-'))) {
+        sId = feat.id.replace('mb-m-', '').replace('mb-s-', '');
+        feat.subjectId = sId;
+      }
+      if (sId && (!feat.streamUrl || isExpiringCdn(feat.streamUrl))) {
+        const isSeries = feat.type === 'series' || (feat.seasons && feat.seasons.length > 0);
+        feat.streamUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(feat.detailPath || '')}&se=${isSeries ? 1 : 0}&ep=${isSeries ? 1 : 0}`;
+        feat.servers = [
+          { name: 'Server 1 (Fast HD Auto-Renew)', url: feat.streamUrl, isDirect: true }
+        ];
+      }
+    }
+
     writeContent(content);
     return {
       success: true,
@@ -1153,10 +1190,6 @@ class AdminService {
     };
   }
 
-
-  /**
-   * Sync / Update a single series with newly uploaded episodes/seasons from MovieBox
-   */
   async syncSeriesEpisodes(identifier) {
     const content = readContent();
     const seriesList = content.series || [];

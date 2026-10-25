@@ -2358,3 +2358,29 @@ app.all('/api/deploy', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🎬 FOBS TV Streaming App running at http://localhost:${PORT}`);
 });
+
+
+// ============================================================
+// AUTOMATIC PLAYBACK REPAIR & STREAM AUTO-RENEW WORKER (EVERY 30 MIN)
+// ============================================================
+const AUTO_REPAIR_INTERVAL_MS = 30 * 60 * 1000; // Runs every 30 minutes
+setInterval(() => {
+  try {
+    console.log('[Auto-Repair Worker] 🔄 Running automatic 30-min playback stream health check & auto-repair...');
+    const result = adminService.repairAllPlaybackStreams();
+    console.log(`[Auto-Repair Worker] ✓ Verified & auto-renewed: ${result.repairedEpisodes} episodes, ${result.repairedMovies} movies across ${result.totalSeries} series & ${result.totalMovies} movies.`);
+  } catch (err) {
+    console.error('[Auto-Repair Worker] Error during automatic stream check:', err.message);
+  }
+}, AUTO_REPAIR_INTERVAL_MS);
+
+// Also run initial stream verification on server startup after 5 seconds
+setTimeout(() => {
+  try {
+    console.log('[Auto-Repair Worker] 🚀 Initial playback stream auto-check starting...');
+    const res = adminService.repairAllPlaybackStreams();
+    console.log(`[Auto-Repair Worker] 🚀 Initial check done: ${res.repairedEpisodes} episodes, ${res.repairedMovies} movies renewed.`);
+  } catch (e) {
+    console.error('[Auto-Repair Worker] Initial check error:', e.message);
+  }
+}, 5000);
