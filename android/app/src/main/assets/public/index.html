@@ -1564,7 +1564,7 @@
         </div>
 
         <div class="download-quality-list">
-          <div class="dl-quality-item active" data-quality="1080P" data-size="1.1 GB" onclick="selectDownloadQuality(this)">
+          <div class="dl-quality-item active" data-quality="1080P" onclick="selectDownloadQuality(this)">
             <div class="dl-q-left">
               <div class="dl-q-radio"><i class="fa-solid fa-circle-check"></i></div>
               <div>
@@ -1572,10 +1572,10 @@
                 <div class="dl-q-desc">Crisp picture quality, rich Dolby audio</div>
               </div>
             </div>
-            <div class="dl-q-size">~1.1 GB</div>
+            <div class="dl-q-tag"><i class="fa-solid fa-circle-down"></i></div>
           </div>
 
-          <div class="dl-quality-item" data-quality="720P" data-size="680 MB" onclick="selectDownloadQuality(this)">
+          <div class="dl-quality-item" data-quality="720P" onclick="selectDownloadQuality(this)">
             <div class="dl-q-left">
               <div class="dl-q-radio"><i class="fa-regular fa-circle"></i></div>
               <div>
@@ -1583,25 +1583,25 @@
                 <div class="dl-q-desc">Standard high definition, fast download</div>
               </div>
             </div>
-            <div class="dl-q-size">~680 MB</div>
+            <div class="dl-q-tag"><i class="fa-solid fa-circle-down"></i></div>
           </div>
 
-          <div class="dl-quality-item" data-quality="480P" data-size="380 MB" onclick="selectDownloadQuality(this)">
+          <div class="dl-quality-item" data-quality="480P" onclick="selectDownloadQuality(this)">
             <div class="dl-q-left">
               <div class="dl-q-radio"><i class="fa-regular fa-circle"></i></div>
               <div>
                 <div class="dl-q-name">480P SD <span class="dl-q-saver">Data Saver</span></div>
-                <div class="dl-q-desc">Smaller file size, ideal for mobile data</div>
+                <div class="dl-q-desc">Standard resolution, ideal for mobile data</div>
               </div>
             </div>
-            <div class="dl-q-size">~380 MB</div>
+            <div class="dl-q-tag"><i class="fa-solid fa-circle-down"></i></div>
           </div>
         </div>
 
         <div class="download-action-wrap">
           <button class="btn-start-download" id="btnStartDownload" onclick="confirmStartDownload()">
             <i class="fa-solid fa-arrow-down-to-line"></i>
-            <span id="btnStartDownloadText">Download 1080P Full HD (~1.1 GB)</span>
+            <span id="btnStartDownloadText">Download 1080P Full HD</span>
           </button>
         </div>
       </div>

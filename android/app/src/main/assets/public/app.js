@@ -6077,39 +6077,21 @@ function triggerDownload() {
     (appState.currentAudioTrack && appState.currentAudioTrack.toLowerCase().includes('hindi'))
   );
 
-  if (isHindi) {
-    if (previewMeta) previewMeta.innerText = 'Hindi Dubbed • 480P SD (~416 MB)';
-    currentDownloadQuality = '480P';
-    currentDownloadSize = '416 MB';
-    if (btnText) btnText.innerText = 'Download 480P SD (~416 MB)';
+  const dubLabel = isHindi ? 'Hindi Dubbed' : (media.dubLanguage || 'Original Audio');
+  currentDownloadQuality = isHindi ? '480P' : '1080P';
+  const qualityLabel = currentDownloadQuality === '1080P' ? '1080P Full HD' : (currentDownloadQuality === '720P' ? '720P HD' : '480P SD');
 
-    document.querySelectorAll('.dl-quality-item').forEach(item => {
-      const is480 = item.getAttribute('data-quality') === '480P';
-      item.classList.toggle('active', is480);
-      const radio = item.querySelector('.dl-q-radio i');
-      if (radio) {
-        radio.className = is480 ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle';
-      }
-      const sizeEl = item.querySelector('.dl-q-size');
-      if (is480 && sizeEl) sizeEl.innerText = '~416 MB';
-    });
-  } else {
-    if (previewMeta) previewMeta.innerText = `${media.dubLanguage || 'Original Audio'} • 1080P Full HD (~1.1 GB)`;
-    currentDownloadQuality = '1080P';
-    currentDownloadSize = '1.1 GB';
-    if (btnText) btnText.innerText = 'Download 1080P Full HD (~1.1 GB)';
+  if (previewMeta) previewMeta.innerText = `${dubLabel} • ${qualityLabel}`;
+  if (btnText) btnText.innerText = `Download ${qualityLabel}`;
 
-    document.querySelectorAll('.dl-quality-item').forEach(item => {
-      const is1080 = item.getAttribute('data-quality') === '1080P';
-      item.classList.toggle('active', is1080);
-      const radio = item.querySelector('.dl-q-radio i');
-      if (radio) {
-        radio.className = is1080 ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle';
-      }
-      const sizeEl = item.querySelector('.dl-q-size');
-      if (item.getAttribute('data-quality') === '480P' && sizeEl) sizeEl.innerText = '~380 MB';
-    });
-  }
+  document.querySelectorAll('.dl-quality-item').forEach(item => {
+    const isSelected = item.getAttribute('data-quality') === currentDownloadQuality;
+    item.classList.toggle('active', isSelected);
+    const radio = item.querySelector('.dl-q-radio i');
+    if (radio) {
+      radio.className = isSelected ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle';
+    }
+  });
 
   appState._pendingDownload = {
     url: targetUrl,
@@ -6139,11 +6121,19 @@ function selectDownloadQuality(element) {
   if (radio) radio.className = 'fa-solid fa-circle-check';
 
   currentDownloadQuality = element.getAttribute('data-quality') || '1080P';
-  currentDownloadSize = element.getAttribute('data-size') || '1.1 GB';
+  const qualityLabel = currentDownloadQuality === '1080P' ? '1080P Full HD' : (currentDownloadQuality === '720P' ? '720P HD' : '480P SD');
+
+  const previewMeta = document.getElementById('dlPreviewMeta');
+  const pending = appState._pendingDownload;
+  const isHindi = pending && pending.title && pending.title.toLowerCase().includes('hindi');
+  const dubLabel = isHindi ? 'Hindi Dubbed' : 'Original Audio';
+  if (previewMeta) {
+    previewMeta.innerText = `${dubLabel} • ${qualityLabel}`;
+  }
 
   const btnText = document.getElementById('btnStartDownloadText');
   if (btnText) {
-    btnText.innerText = `Download ${currentDownloadQuality} (${currentDownloadSize})`;
+    btnText.innerText = `Download ${qualityLabel}`;
   }
 }
 window.selectDownloadQuality = selectDownloadQuality;
@@ -6184,7 +6174,6 @@ function confirmStartDownload() {
 
   downloadMedia(finalDownloadUrl, pending.title, {
     quality: currentDownloadQuality,
-    size: currentDownloadSize,
     poster: pending.poster,
     mediaId: pending.mediaId
   });
@@ -6196,7 +6185,6 @@ window.confirmStartDownload = confirmStartDownload;
 function downloadMedia(url, title, options = {}) {
   if (!url) return;
   const quality = options.quality || '1080P';
-  const size = options.size || '1.1 GB';
   const poster = options.poster || 'assets/fobs_logo.png';
   const mediaId = options.mediaId || '';
 
@@ -6213,7 +6201,6 @@ function downloadMedia(url, title, options = {}) {
       title,
       poster,
       quality,
-      size,
       url,
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
       status: 'Ready to play'
@@ -6284,7 +6271,7 @@ function renderDownloadsList() {
       </div>
       <div class="mb-dl-card-info" onclick="playDownloadedMedia('${item.id}')">
         <div class="mb-dl-item-title">${item.title}</div>
-        <div class="mb-dl-item-size">${item.quality || '1080P'} • ${item.size || '1.1GB'}</div>
+        <div class="mb-dl-item-size">${item.quality ? item.quality + ' HD' : 'HD Video'}</div>
         <div class="mb-dl-item-status" style="color: #00d26a;"><i class="fa-solid fa-circle-check" style="font-size: 10px;"></i> ${item.status || 'Ready to play'} • ${item.date || ''}</div>
       </div>
       <div class="mb-dl-card-action">
