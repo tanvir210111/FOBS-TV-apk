@@ -524,6 +524,89 @@ body {
 }
 
 /* IMPORTER STYLES */
+.importer-header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.importer-batch-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.feed-filter-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border-glass);
+}
+.feed-filter-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glass);
+  color: var(--text-muted);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition);
+}
+.feed-filter-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.feed-filter-btn.active {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.05));
+  border-color: var(--accent-amber);
+  color: var(--accent-amber);
+}
+.feed-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 0 4px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+.badge-section {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  max-width: 80%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.badge-imported {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #34D399 !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
+.btn-imported {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34D399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  cursor: default !important;
+  box-shadow: none !important;
+}
+
 .importer-header {
   padding: 26px;
   border-radius: var(--radius-lg);

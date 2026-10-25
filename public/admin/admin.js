@@ -1,9 +1,10 @@
 /**
- * FOBS TV — Web Admin Panel Client Engine
+ * FOBS TV — Web Admin Panel Client Engine (with Recent Importer)
  */
 
 let authToken = localStorage.getItem('fobs_admin_token') || '';
 let currentContent = { movies: [], series: [], liveTv: [], categories: [], industries: [] };
+let currentFeedFilter = 'all';
 let hlsInstance = null;
 
 // ==========================================================================
@@ -65,6 +66,8 @@ async function verifyAuth() {
       loadContent();
       loadRequests();
       loadNotifications();
+      // Pre-load recent MovieBox feed in background
+      loadMovieBoxRecent('all');
     } else {
       logout();
     }
@@ -168,6 +171,27 @@ function initEventListeners() {
     }
   });
 
+  // MovieBox Feed Filter Buttons (Recent, Trending, Cinema, Bollywood, Hollywood, etc.)
+  document.querySelectorAll('.feed-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.feed-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.getAttribute('data-filter');
+      currentFeedFilter = filter;
+      document.getElementById('mb-search-input').value = '';
+      loadMovieBoxRecent(filter);
+    });
+  });
+
+  // Refresh Recent Feed Button
+  document.getElementById('btn-refresh-recent-feed').addEventListener('click', () => {
+    loadMovieBoxRecent(currentFeedFilter);
+    showToast('Refreshing live MovieBox catalog...', 'info');
+  });
+
+  // Batch Auto-Import Top 5 Recent Button
+  document.getElementById('btn-batch-import-5').addEventListener('click', handleBatchImportRecent);
+
   // Movies Table Search Filter
   document.getElementById('movies-search').addEventListener('input', (e) => {
     filterMoviesTable(e.target.value.trim().toLowerCase());
@@ -214,10 +238,9 @@ function switchTab(tabName) {
   const activePane = document.getElementById(`tab-${tabName}`);
   if (activePane) activePane.classList.add('active');
 
-  // Update header titles
   const titles = {
     overview: ['System Overview', 'Real-time statistics and streaming engine status'],
-    moviebox: ['MovieBox 1-Click Importer', 'Direct query to MovieBox streaming CDN with Hindi dubs & subtitles'],
+    moviebox: ['Recent & Trending Importer', 'Real-time feed of newly released MovieBox titles with 1-click import'],
     movies: ['Movies Catalog Manager', 'Manage and edit Full HD movies available on FOBS TV'],
     series: ['TV Series & Episodes', 'Manage multi-season TV shows and episode stream links'],
     livetv: ['Live TV Channels', 'Manage sports and 24/7 entertainment HLS streams'],
@@ -228,6 +251,10 @@ function switchTab(tabName) {
   if (titles[tabName]) {
     document.getElementById('page-title').innerText = titles[tabName][0];
     document.getElementById('page-subtitle').innerText = titles[tabName][1];
+  }
+
+  if (tabName === 'moviebox' && document.getElementById('mb-results').children.length === 0) {
+    loadMovieBoxRecent('all');
   }
 }
 
@@ -252,7 +279,6 @@ function renderStats(stats) {
   document.getElementById('ram-usage').innerText = `${stats.memoryMb || 0} MB`;
   document.getElementById('node-ver').innerText = stats.nodeVersion || 'v22';
 
-  // Format uptime
   const sec = stats.uptimeSeconds || 0;
   const hours = Math.floor(sec / 3600);
   const mins = Math.floor((sec % 3600) / 60);
@@ -260,16 +286,87 @@ function renderStats(stats) {
 }
 
 // ==========================================================================
-// MOVIEBOX 1-CLICK IMPORTER
+// RECENT & TRENDING IMPORTER ENGINE
+// ==========================================================================
+
+async function loadMovieBoxRecent(filter = 'all') {
+  const loading = document.getElementById('mb-loading');
+  const resultsContainer = document.getElementById('mb-results');
+  const emptyState = document.getElementById('mb-empty');
+  const metaBar = document.getElementById('mb-feed-meta');
+
+  loading.style.display = 'block';
+  document.getElementById('mb-loading-text').innerText = `Loading ${filter === 'all' ? 'recent' : filter} releases from MovieBox...`;
+  emptyState.style.display = 'none';
+
+  try {
+    const data = await apiFetch(`/api/admin/moviebox/recent?filter=${encodeURIComponent(filter)}`);
+    loading.style.display = 'none';
+
+    if (data.success && data.items && data.items.length > 0) {
+      metaBar.style.display = 'flex';
+      document.getElementById('feed-meta-title').innerHTML = `Showing: <strong>${escapeHtml(filter.toUpperCase())} RELEASES</strong> (${data.items.length} titles)`;
+      document.getElementById('feed-meta-unimported').innerText = `${data.unimportedCount || 0} Ready to Import`;
+
+      if (data.totalCount && document.getElementById('count-all')) {
+        document.getElementById('count-all').innerText = data.totalCount;
+      }
+
+      renderMovieBoxResults(data.items);
+    } else {
+      resultsContainer.innerHTML = '';
+      metaBar.style.display = 'none';
+      emptyState.style.display = 'block';
+    }
+  } catch (err) {
+    loading.style.display = 'none';
+    showToast(`Failed to load recent releases: ${err.message}`, 'error');
+  }
+}
+
+async function handleBatchImportRecent() {
+  const btn = document.getElementById('btn-batch-import-5');
+  if (!confirm('Do you want to automatically import the top 5 newest releases into FOBS TV?')) return;
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Auto-Importing 5 Items...';
+
+  try {
+    const data = await apiFetch('/api/admin/moviebox/batch-import', {
+      method: 'POST',
+      body: JSON.stringify({ count: 5, filter: currentFeedFilter })
+    });
+
+    if (data.success) {
+      showToast(`🎉 Successfully imported ${data.importedCount} new titles into FOBS TV!`, 'success');
+      loadContent();
+      apiFetch('/api/admin/stats').then(res => renderStats(res.stats));
+      loadMovieBoxRecent(currentFeedFilter);
+    } else {
+      showToast(data.error || 'Batch import failed', 'error');
+    }
+  } catch (err) {
+    showToast(`Batch import error: ${err.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-bolt"></i> <span>Auto-Import Top 5 Recent</span>';
+  }
+}
+
+// ==========================================================================
+// SEARCH MOVIEBOX CATALOG
 // ==========================================================================
 
 async function searchMovieBox(query) {
   const loading = document.getElementById('mb-loading');
   const resultsContainer = document.getElementById('mb-results');
   const emptyState = document.getElementById('mb-empty');
+  const metaBar = document.getElementById('mb-feed-meta');
 
   loading.style.display = 'block';
+  document.getElementById('mb-loading-text').innerText = `Searching MovieBox for "${query}"...`;
   emptyState.style.display = 'none';
+  metaBar.style.display = 'none';
   resultsContainer.innerHTML = '';
 
   try {
@@ -281,7 +378,7 @@ async function searchMovieBox(query) {
     } else {
       emptyState.style.display = 'block';
       emptyState.querySelector('h3').innerText = 'No titles found on MovieBox';
-      emptyState.querySelector('p').innerText = `We couldn't find any media matching "${query}". Try another title keyword.`;
+      emptyState.querySelector('p').innerText = `We couldn't find any media matching "${query}". Try another keyword.`;
     }
   } catch (err) {
     loading.style.display = 'none';
@@ -299,24 +396,33 @@ function renderMovieBoxResults(items) {
 
     const posterUrl = item.poster || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80';
     const isSeries = item.type === 'series' || item.hasSeason || (item.title && item.title.toLowerCase().includes('season'));
+    const isImported = !!item.alreadyImported;
 
     card.innerHTML = `
       <div class="mb-card-poster">
-        <span class="mb-badge-type">${isSeries ? 'Series' : 'Movie'}</span>
+        <span class="mb-badge-type ${isImported ? 'badge-imported' : ''}">${isImported ? '✓ In App' : (isSeries ? 'Series' : 'Movie')}</span>
+        ${item.section ? `<span class="badge-section">${escapeHtml(item.section)}</span>` : ''}
         <img src="${posterUrl}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80'">
       </div>
       <div class="mb-card-content">
         <h4>${escapeHtml(item.title)}</h4>
         <div class="mb-meta">
           <span><i class="fa-solid fa-calendar"></i> ${item.year || '2026'}</span>
-          <span><i class="fa-solid fa-id-card"></i> ${item.subjectId || item.id || ''}</span>
+          <span><i class="fa-solid fa-star text-warning"></i> ${item.rating || '7.5'}</span>
         </div>
         <div class="mb-actions">
-          <button class="btn-import-card" onclick="openImportModal(${escapeJson(item)})">
-            <i class="fa-solid fa-download"></i>
-            <span>1-Click Import</span>
-          </button>
-          <button class="btn-preview-card" onclick="previewMovieBoxStream('${item.subjectId || item.id}', '${item.detailPath || ''}', ${isSeries ? 1 : 0})">
+          ${isImported ? `
+            <button class="btn-import-card btn-imported" title="Already added to FOBS TV catalog">
+              <i class="fa-solid fa-check"></i>
+              <span>Already Added</span>
+            </button>
+          ` : `
+            <button class="btn-import-card" onclick="openImportModal(${escapeJson(item)})">
+              <i class="fa-solid fa-download"></i>
+              <span>1-Click Import</span>
+            </button>
+          `}
+          <button class="btn-preview-card" title="Preview Video Stream" onclick="previewMovieBoxStream('${item.subjectId || item.id}', '${item.detailPath || ''}', ${isSeries ? 1 : 0})">
             <i class="fa-solid fa-play"></i>
           </button>
         </div>
@@ -350,7 +456,9 @@ function openImportModal(item) {
   document.getElementById('imp-year').value = item.year || '2026';
   document.getElementById('imp-type').value = isSeries ? 'series' : 'movie';
   document.getElementById('series-episodes-row').style.display = isSeries ? 'flex' : 'none';
-  document.getElementById('imp-ishindi').checked = true;
+
+  const isHindi = (item.title && item.title.toLowerCase().includes('hindi')) || (item.section && item.section.toLowerCase().includes('hindi'));
+  document.getElementById('imp-ishindi').checked = isHindi;
 
   document.getElementById('import-modal').classList.add('active');
 }
@@ -389,6 +497,7 @@ async function handleImportSubmit(e) {
       showToast(`🎉 "${payload.title}" successfully added to FOBS TV!`, 'success');
       loadContent();
       apiFetch('/api/admin/stats').then(res => renderStats(res.stats));
+      loadMovieBoxRecent(currentFeedFilter);
     } else {
       showToast(data.error || 'Failed to import title', 'error');
     }
@@ -881,7 +990,6 @@ function openPlayerModal(title, streamUrl) {
     hlsInstance = null;
   }
 
-  // Check if HLS (.m3u8)
   if (streamUrl.includes('.m3u8') && Hls.isSupported()) {
     hlsInstance = new Hls({ enableWorker: true });
     hlsInstance.loadSource(streamUrl);

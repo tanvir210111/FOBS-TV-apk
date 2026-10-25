@@ -2049,6 +2049,27 @@ app.get('/api/admin/content', adminService.authenticate, (req, res) => {
   res.json(adminService.getContent());
 });
 
+// MovieBox Recent & Trending Live Feed & Importer
+app.get('/api/admin/moviebox/recent', adminService.authenticate, async (req, res) => {
+  try {
+    const { filter } = req.query;
+    const result = await adminService.getMovieBoxRecent(filter || 'all');
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/admin/moviebox/batch-import', adminService.authenticate, async (req, res) => {
+  try {
+    const { count, filter } = req.body;
+    const result = await adminService.batchImportRecent(count ? parseInt(count, 10) : 5, filter || 'trending');
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // MovieBox Admin Search & Live Resolve & Importer
 app.get('/api/admin/moviebox/search', adminService.authenticate, async (req, res) => {
   try {

@@ -67,8 +67,8 @@
         </a>
         <a href="#moviebox" class="nav-item highlight" data-tab="moviebox">
           <i class="fa-solid fa-wand-magic-sparkles"></i>
-          <span>MovieBox Importer</span>
-          <span class="badge-pill pulse">Auto</span>
+          <span>Recent Importer</span>
+          <span class="badge-pill pulse">Live</span>
         </a>
         <a href="#movies" class="nav-item" data-tab="movies">
           <i class="fa-solid fa-film"></i>
@@ -217,8 +217,8 @@
             </div>
             <div class="system-actions">
               <button class="btn-panel-action" onclick="switchTab('moviebox')">
-                <i class="fa-solid fa-plus-circle"></i>
-                <span>Import from MovieBox</span>
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span>Recent & Trending Importer</span>
               </button>
               <button class="btn-panel-action" onclick="openMovieModal()">
                 <i class="fa-solid fa-film"></i>
@@ -237,17 +237,62 @@
         </div>
       </section>
 
-      <!-- TAB 2: MOVIEBOX 1-CLICK IMPORTER -->
+      <!-- TAB 2: RECENT & TRENDING MOVIEBOX IMPORTER -->
       <section id="tab-moviebox" class="tab-pane">
         <div class="importer-header glass">
-          <div class="importer-title">
-            <h2><i class="fa-solid fa-wand-magic-sparkles text-amber"></i> MovieBox Stream Importer</h2>
-            <p>Direct query access to MovieBox's streaming CDN with automatic subtitles, Hindi dubs & proxy server generators</p>
+          <div class="importer-header-top">
+            <div class="importer-title">
+              <h2><i class="fa-solid fa-wand-magic-sparkles text-amber"></i> Recent & Trending MovieBox Importer</h2>
+              <p>Real-time feed of 220+ newly released titles on MovieBox. Click 1-Click Import to add them instantly to FOBS TV with Hindi dubs and auto-renewing streams.</p>
+            </div>
+            <div class="importer-batch-actions">
+              <button id="btn-batch-import-5" class="btn-primary glow-sm" title="Automatically import top 5 unimported movies">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Auto-Import Top 5 Recent</span>
+              </button>
+              <button id="btn-refresh-recent-feed" class="btn-secondary" title="Refresh Live Feed">
+                <i class="fa-solid fa-rotate"></i>
+              </button>
+            </div>
           </div>
+
+          <!-- Feed Category Filters -->
+          <div class="feed-filter-bar">
+            <button class="feed-filter-btn active" data-filter="all">
+              <i class="fa-solid fa-fire text-amber"></i>
+              <span>All Recent (<span id="count-all">220</span>)</span>
+            </button>
+            <button class="feed-filter-btn" data-filter="trending">
+              <i class="fa-solid fa-chart-line text-cyan"></i>
+              <span>Trending Now</span>
+            </button>
+            <button class="feed-filter-btn" data-filter="cinema">
+              <i class="fa-solid fa-film text-rose"></i>
+              <span>Latest Cinema</span>
+            </button>
+            <button class="feed-filter-btn" data-filter="bollywood">
+              <i class="fa-solid fa-om text-warning"></i>
+              <span>Bollywood & Hindi</span>
+            </button>
+            <button class="feed-filter-btn" data-filter="hollywood">
+              <i class="fa-solid fa-clapperboard text-cyan"></i>
+              <span>Hollywood</span>
+            </button>
+            <button class="feed-filter-btn" data-filter="series">
+              <i class="fa-solid fa-tv text-emerald"></i>
+              <span>TV Series & Drama</span>
+            </button>
+            <button class="feed-filter-btn" data-filter="anime">
+              <i class="fa-solid fa-dragon text-violet"></i>
+              <span>Anime</span>
+            </button>
+          </div>
+
+          <!-- Manual Search Bar -->
           <div class="importer-search-bar">
             <div class="search-input-wrapper">
               <i class="fa-solid fa-magnifying-glass"></i>
-              <input type="text" id="mb-search-input" placeholder="Search by title (e.g. Avatar, Inception, Solo Leveling, Colony)...">
+              <input type="text" id="mb-search-input" placeholder="Or search specific title (e.g. Avatar, Inception, Solo Leveling, Colony)...">
             </div>
             <button id="btn-mb-search" class="btn-primary glow">
               <i class="fa-solid fa-search"></i>
@@ -256,20 +301,26 @@
           </div>
         </div>
 
-        <!-- Search Status / Loader -->
+        <!-- Search / Feed Status / Loader -->
         <div id="mb-loading" class="loading-state" style="display: none;">
           <div class="spinner"></div>
-          <p>Querying MovieBox CDN database...</p>
+          <p id="mb-loading-text">Fetching live MovieBox recent releases...</p>
+        </div>
+
+        <!-- Feed Info Bar -->
+        <div id="mb-feed-meta" class="feed-meta-bar" style="display: none;">
+          <span id="feed-meta-title">Showing: <strong>All Recent Releases</strong></span>
+          <span id="feed-meta-unimported" class="badge-pill">-- new available</span>
         </div>
 
         <!-- Search Results Grid -->
         <div id="mb-results" class="mb-results-grid"></div>
 
         <!-- Empty Placeholder -->
-        <div id="mb-empty" class="empty-state">
+        <div id="mb-empty" class="empty-state" style="display: none;">
           <i class="fa-solid fa-film-simple"></i>
-          <h3>Search to discover content</h3>
-          <p>Enter any Movie or TV Series title above to fetch live stream URLs and add them to FOBS TV with 1 click.</p>
+          <h3>No titles found</h3>
+          <p>Try selecting another category filter or searching with a different keyword.</p>
         </div>
       </section>
 

@@ -1,6 +1,6 @@
 /**
  * FOBS TV - Web Admin Panel Service
- * Secure management for Content, MovieBox 1-Click Importer, Live TV, User Requests & Announcements
+ * Secure management for Content, MovieBox Recent & Trending Importer, Live TV, User Requests & Announcements
  */
 
 const fs = require('fs');
@@ -161,12 +161,83 @@ class AdminService {
   }
 
   /**
+   * Get Recent & Trending Releases from MovieBox Live Feed
+   */
+  async getMovieBoxRecent(filter = 'all') {
+    const sections = await movieboxService.getHomepage();
+    const content = readContent();
+
+    const existingIds = new Set([
+      ...(content.movies || []).map(m => String(m.subjectId || m.id)),
+      ...(content.series || []).map(s => String(s.subjectId || s.id))
+    ]);
+
+    const seen = new Set();
+    const allItems = [];
+
+    for (const sec of sections) {
+      const secTitle = (sec.title || '').toLowerCase();
+      for (const it of sec.items) {
+        if (!it.id || seen.has(it.id)) continue;
+        seen.add(it.id);
+
+        const alreadyImported = existingIds.has(String(it.subjectId || it.id)) ||
+          existingIds.has(`mb-m-${it.subjectId || it.id}`) ||
+          existingIds.has(`mb-s-${it.subjectId || it.id}`);
+
+        allItems.push({
+          ...it,
+          section: sec.title,
+          alreadyImported
+        });
+      }
+    }
+
+    let filtered = allItems;
+    if (filter === 'trending') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('trending') || (i.section || '').toLowerCase().includes('top'));
+    } else if (filter === 'cinema') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('cinema'));
+    } else if (filter === 'bollywood') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('bollywood') || (i.section || '').toLowerCase().includes('south') || (i.title || '').toLowerCase().includes('hindi'));
+    } else if (filter === 'hollywood') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('hollywood') || (i.section || '').toLowerCase().includes('western'));
+    } else if (filter === 'series') {
+      filtered = allItems.filter(i => i.type === 'series' || (i.section || '').toLowerCase().includes('series') || (i.section || '').toLowerCase().includes('drama'));
+    } else if (filter === 'anime') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('anime'));
+    }
+
+    return {
+      success: true,
+      filter,
+      totalCount: allItems.length,
+      filteredCount: filtered.length,
+      unimportedCount: filtered.filter(i => !i.alreadyImported).length,
+      items: filtered
+    };
+  }
+
+  /**
    * Search MovieBox API directly for admin importer
    */
   async searchMovieBox(query) {
     if (!query) return { success: true, items: [] };
     const items = await movieboxService.search(query);
-    return { success: true, items };
+    const content = readContent();
+    const existingIds = new Set([
+      ...(content.movies || []).map(m => String(m.subjectId || m.id)),
+      ...(content.series || []).map(s => String(s.subjectId || s.id))
+    ]);
+
+    const formatted = items.map(it => ({
+      ...it,
+      alreadyImported: existingIds.has(String(it.subjectId || it.id)) ||
+        existingIds.has(`mb-m-${it.subjectId || it.id}`) ||
+        existingIds.has(`mb-s-${it.subjectId || it.id}`)
+    }));
+
+    return { success: true, items: formatted };
   }
 
   /**
@@ -361,6 +432,58 @@ class AdminService {
 
       return { success: true, item: newSeries };
     }
+  }
+
+  /**
+   * Auto-Batch Import Top N Unimported Recent Items
+   */
+  async batchImportRecent(count = 5, filter = 'trending') {
+    const recent = await this.getMovieBoxRecent(filter);
+    const unimported = (recent.items || []).filter(i => !i.alreadyImported).slice(0, count);
+
+    const results = [];
+    for (const item of unimported) {
+      try {
+        const isSeries = item.type === 'series';
+        const isHindi = (item.title || '').toLowerCase().includes('hindi') || (item.section || '').toLowerCase().includes('hindi');
+        
+        let category = 'Hollywood Movies';
+        let industry = 'Hollywood';
+        if (isSeries) {
+          category = 'Web Series';
+        } else if ((item.section || '').toLowerCase().includes('bollywood')) {
+          category = 'Bollywood Movies';
+          industry = 'Bollywood';
+        } else if ((item.section || '').toLowerCase().includes('south')) {
+          category = 'South Indian Hindi Dubbed';
+          industry = 'Tollywood';
+        }
+
+        const res = await this.importFromMovieBox({
+          subjectId: item.subjectId || item.id,
+          detailPath: item.detailPath || '',
+          title: item.title,
+          year: item.year || '2026',
+          rating: item.rating || '8.0',
+          poster: item.poster,
+          type: item.type,
+          category,
+          industry,
+          isHindi,
+          episodesCount: isSeries ? 10 : 1
+        });
+        results.push({ id: item.id, title: item.title, success: true });
+      } catch (e) {
+        results.push({ id: item.id, title: item.title, success: false, error: e.message });
+      }
+    }
+
+    return {
+      success: true,
+      requestedCount: count,
+      importedCount: results.filter(r => r.success).length,
+      results
+    };
   }
 
   /**
