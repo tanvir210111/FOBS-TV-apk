@@ -954,5 +954,130 @@ class AdminService {
     return { success: true, featured: featuredItem };
   }
 
+  repairAllPlaybackStreams() {
+    const content = readContent();
+    let repairedSeries = 0;
+    let repairedEpisodes = 0;
+    let repairedMovies = 0;
+
+    function isExpiringCdn(url) {
+      if (!url) return true;
+      return url.includes('hakunaymatata') || url.includes('bcdnxw') || url.includes('haildrop') ||
+             url.includes('fogtwist') || url.includes('sunburst') || url.includes('stormshade') ||
+             url.includes('.mp4?s=') || url.includes('.mp4?sign=');
+    }
+
+    // 1. Repair Series & All Season Episodes
+    for (const s of content.series || []) {
+      let sId = s.subjectId || s.mbSubjectId;
+      if (!sId && s.id && s.id.startsWith('mb-s-')) {
+        sId = s.id.replace('mb-s-', '');
+        s.subjectId = sId;
+      }
+      const dPath = s.detailPath || s.mbDetailPath || s.movieboxDetailPath || '';
+
+      if (sId) {
+        let seriesTouched = false;
+
+        // Parent streamUrl
+        if (!s.streamUrl || isExpiringCdn(s.streamUrl)) {
+          s.streamUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=1&ep=1`;
+          s.servers = [{ name: 'Fast Server (Auto-Renew)', url: s.streamUrl, isDirect: true }];
+          seriesTouched = true;
+        }
+
+        // Season episodes
+        if (Array.isArray(s.seasons)) {
+          s.seasons.forEach((season, sIdx) => {
+            const seNum = season.seasonNumber || season.season || (sIdx + 1);
+            if (Array.isArray(season.episodes)) {
+              season.episodes.forEach((ep, epIdx) => {
+                const epNum = ep.episode || parseInt(ep.number, 10) || (epIdx + 1);
+                const autoRenewUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}`;
+
+                if (!ep.streamUrl || isExpiringCdn(ep.streamUrl)) {
+                  ep.streamUrl = autoRenewUrl;
+                  ep.servers = [
+                    { name: 'Server 1 (Fast HD Auto-Renew)', url: autoRenewUrl, isDirect: true },
+                    { name: 'Server 2 (Auto Failover)', url: autoRenewUrl, isDirect: true }
+                  ];
+                  repairedEpisodes++;
+                  seriesTouched = true;
+                }
+
+                if (ep.audioTracks && typeof ep.audioTracks === 'object') {
+                  for (const k of Object.keys(ep.audioTracks)) {
+                    if (isExpiringCdn(ep.audioTracks[k])) {
+                      ep.audioTracks[k] = autoRenewUrl;
+                      seriesTouched = true;
+                    }
+                  }
+                }
+              });
+            }
+          });
+        }
+
+        // Top-level episodes
+        if (Array.isArray(s.episodes)) {
+          s.episodes.forEach((ep, epIdx) => {
+            const epNum = ep.episode || parseInt(ep.number, 10) || (epIdx + 1);
+            const seNum = ep.season || 1;
+            const autoRenewUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}`;
+
+            if (!ep.streamUrl || isExpiringCdn(ep.streamUrl)) {
+              ep.streamUrl = autoRenewUrl;
+              ep.servers = [
+                { name: 'Server 1 (Fast HD Auto-Renew)', url: autoRenewUrl, isDirect: true },
+                { name: 'Server 2 (Auto Failover)', url: autoRenewUrl, isDirect: true }
+              ];
+              seriesTouched = true;
+            }
+
+            if (ep.audioTracks && typeof ep.audioTracks === 'object') {
+              for (const k of Object.keys(ep.audioTracks)) {
+                if (isExpiringCdn(ep.audioTracks[k])) {
+                  ep.audioTracks[k] = autoRenewUrl;
+                }
+              }
+            }
+          });
+        }
+
+        if (seriesTouched) repairedSeries++;
+      }
+    }
+
+    // 2. Repair Movies
+    for (const m of content.movies || []) {
+      let sId = m.subjectId || m.mbSubjectId;
+      if (!sId && m.id && m.id.startsWith('mb-m-')) {
+        sId = m.id.replace('mb-m-', '');
+        m.subjectId = sId;
+      }
+      const dPath = m.detailPath || m.mbDetailPath || m.movieboxDetailPath || '';
+
+      if (sId && (!m.streamUrl || isExpiringCdn(m.streamUrl))) {
+        m.streamUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=0&ep=0`;
+        m.servers = [
+          { name: 'Server 1 (Fast HD Auto-Renew)', url: m.streamUrl, isDirect: true },
+          { name: 'Server 2 (Direct Fast CDN)', url: m.streamUrl, isDirect: true }
+        ];
+        repairedMovies++;
+      }
+    }
+
+    writeContent(content);
+    return {
+      success: true,
+      repairedSeries,
+      repairedEpisodes,
+      repairedMovies,
+      totalSeries: (content.series || []).length,
+      totalMovies: (content.movies || []).length,
+      timestamp: new Date().toISOString()
+    };
+  }
+
 }
 module.exports = new AdminService();

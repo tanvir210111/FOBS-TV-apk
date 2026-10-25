@@ -1269,3 +1269,34 @@ function escapeHtml(str) {
 function escapeJson(obj) {
   return JSON.stringify(obj).replace(/"/g, '&quot;');
 }
+
+// 1-Click Stream & Playback Repair
+async function triggerRepairStreams() {
+  const btns = document.querySelectorAll('#btn-repair-streams, .repair-banner button');
+  btns.forEach(b => {
+    b.disabled = true;
+    b.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Repairing Streams...';
+  });
+  showToast('Scanning all series, episodes and movies to renew streams...', 'info');
+
+  try {
+    const data = await apiFetch('/api/admin/repair-streams', {
+      method: 'POST'
+    });
+
+    if (data && data.success) {
+      showToast(`Playback Fixed! Renewed ${data.repairedEpisodes} season episodes across ${data.repairedSeries} series & ${data.repairedMovies} movies.`, 'success');
+      if (typeof loadStats === 'function') loadStats();
+      if (typeof loadContent === 'function') loadContent();
+    } else {
+      showToast(`Repair finished: ${data.error || 'All streams were already up to date.'}`, 'warning');
+    }
+  } catch (err) {
+    showToast(`Repair failed: ${err.message}`, 'error');
+  } finally {
+    btns.forEach(b => {
+      b.disabled = false;
+      b.innerHTML = '<i class="fa-solid fa-screwdriver-wrench"></i> <span>Fix Playback</span>';
+    });
+  }
+}

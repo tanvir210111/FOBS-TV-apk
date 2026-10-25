@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <!-- HLS.js for Live TV testing -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <link rel="stylesheet" href="/admin/style.css?v=2.2">
+  <link rel="stylesheet" href="/admin/style.css?v=2.3">
 </head>
 <body>
 
@@ -129,6 +129,10 @@
             <span class="metric-pill"><i class="fa-solid fa-microchip"></i> Node <strong id="node-ver">v22</strong></span>
             <span class="metric-pill"><i class="fa-solid fa-memory"></i> RAM <strong id="ram-usage">-- MB</strong></span>
           </div>
+          <button id="btn-repair-streams" class="btn-warning" onclick="triggerRepairStreams()" title="1-Click Auto-Repair All Playback Errors & Expired Streams">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+            <span>Fix Playback</span>
+          </button>
           <button id="btn-featured-modal" class="btn-secondary" onclick="openFeaturedModal()" title="Manage Hero Spotlight Banner">
             <i class="fa-solid fa-star text-amber"></i>
             <span>Hero Spotlight</span>
@@ -147,6 +151,22 @@
       <!-- TAB 1: OVERVIEW -->
       <section id="tab-overview" class="tab-pane active">
         <!-- STATS GRID -->
+        <div class="repair-banner glass">
+          <div class="repair-banner-left">
+            <div class="repair-banner-icon">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+            <div class="repair-banner-info">
+              <h4>1-Click Playback & Stream Repair</h4>
+              <p>Experiencing playback errors on older series or movies? Click to scan and renew all MovieBox streams automatically.</p>
+            </div>
+          </div>
+          <button class="btn-warning" onclick="triggerRepairStreams()">
+            <i class="fa-solid fa-bolt"></i>
+            <span>Fix All Streams Now</span>
+          </button>
+        </div>
+
         <div class="stats-grid">
           <div class="stat-card glass">
             <div class="stat-icon movie-accent"><i class="fa-solid fa-film"></i></div>
@@ -752,7 +772,7 @@
   <!-- TOAST NOTIFICATIONS -->
   <div id="toast-container"></div>
 
-  <script src="/admin/admin.js?v=2.2"></script>
+  <script src="/admin/admin.js?v=2.3"></script>
 
   <!-- HERO SPOTLIGHT / FEATURED BANNER MODAL -->
   <div id="featured-modal" class="modal-backdrop">

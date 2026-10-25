@@ -2163,6 +2163,16 @@ app.post('/api/admin/media/:id/views', adminService.authenticate, (req, res) => 
 });
 
 // Movie CRUD
+// 1-Click Stream & Playback Repair
+app.post('/api/admin/repair-streams', adminService.authenticate, (req, res) => {
+  try {
+    const result = adminService.repairAllPlaybackStreams();
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Featured Spotlight Management
 app.get('/api/admin/featured', adminService.authenticate, (req, res) => {
   try {
