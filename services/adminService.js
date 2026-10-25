@@ -474,7 +474,13 @@ class AdminService {
         audioTracks: isHindi ? ['Hindi dub', 'Original Audio'] : ['Original Audio'],
         selectedAudio: isHindi ? 'Hindi dub' : 'Original Audio',
         streamUrl: mb.streamUrl,
-        views: 0,
+        addedAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+        releaseDate: year ? (year + '-10-25') : new Date().toISOString().split('T')[0],
+        originalReleaseDate: year ? (year + '-01-01') : '2026-01-01',
+        badgeLeft: 'Trending',
+        badgeRight: isHindi ? 'Hindi' : industry,
+        views: 1250,
         servers: [
           {
             name: `Server 1 (${isHindi ? 'Hindi Dub' : 'HD'} - Fast ${resName}p)`,
@@ -505,6 +511,9 @@ class AdminService {
 
       content.movies = (content.movies || []).filter(m => m.id !== newMovie.id && m.subjectId !== subjectId);
       content.movies.unshift(newMovie);
+      if (payload.isFeatured) {
+        content.featured = { ...newMovie };
+      }
       writeContent(content);
 
       return { success: true, item: newMovie };
@@ -576,7 +585,13 @@ class AdminService {
         language: isHindi ? 'Hindi' : 'English',
         dubLanguage: isHindi ? 'Hindi' : 'Original',
         seasonsCount: 1,
-        views: 0,
+        addedAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+        releaseDate: year ? (year + '-10-25') : new Date().toISOString().split('T')[0],
+        originalReleaseDate: year ? (year + '-01-01') : '2026-01-01',
+        badgeLeft: 'Trending',
+        badgeRight: isHindi ? 'Hindi' : industry,
+        views: 1250,
         seasons: [
           {
             seasonNumber: 1,
@@ -592,6 +607,9 @@ class AdminService {
 
       content.series = (content.series || []).filter(s => s.id !== newSeries.id && s.subjectId !== subjectId);
       content.series.unshift(newSeries);
+      if (payload.isFeatured) {
+        content.featured = { ...newSeries };
+      }
       writeContent(content);
 
       return { success: true, item: newSeries };
@@ -660,10 +678,22 @@ class AdminService {
       movie.id = `movie_${Date.now()}`;
     }
 
+    const now = new Date().toISOString();
+    movie.addedAt = movie.addedAt || now;
+    movie.createdAt = movie.createdAt || now;
+    movie.releaseDate = movie.releaseDate || (movie.year ? (movie.year + '-10-25') : now.split('T')[0]);
+    movie.badgeLeft = movie.badgeLeft || 'Trending';
+    movie.views = movie.views !== undefined ? parseInt(movie.views, 10) : 1250;
+    movie.type = 'movie';
+
     if (movie.views !== undefined) {
       const viewsMap = readViewsMap();
       viewsMap[movie.id] = parseInt(movie.views, 10) || 0;
       writeViewsMap(viewsMap);
+    }
+
+    if (movie.isFeatured) {
+      content.featured = { ...movie };
     }
 
     const idx = (content.movies || []).findIndex(m => m.id === movie.id);
@@ -696,10 +726,22 @@ class AdminService {
       series.id = `series_${Date.now()}`;
     }
 
+    const now = new Date().toISOString();
+    series.addedAt = series.addedAt || now;
+    series.createdAt = series.createdAt || now;
+    series.releaseDate = series.releaseDate || (series.year ? (series.year + '-10-25') : now.split('T')[0]);
+    series.badgeLeft = series.badgeLeft || 'Trending';
+    series.views = series.views !== undefined ? parseInt(series.views, 10) : 1250;
+    series.type = 'series';
+
     if (series.views !== undefined) {
       const viewsMap = readViewsMap();
       viewsMap[series.id] = parseInt(series.views, 10) || 0;
       writeViewsMap(viewsMap);
+    }
+
+    if (series.isFeatured) {
+      content.featured = { ...series };
     }
 
     const idx = (content.series || []).findIndex(s => s.id === series.id);

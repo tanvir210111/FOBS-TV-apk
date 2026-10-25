@@ -581,24 +581,27 @@ app.get('/api/content', async (req, res) => {
     res.setHeader('Surrogate-Control', 'no-store');
 
     const data = getContentData();
+    const nowMs = Date.now();
     if (data.movies) {
-      data.movies.forEach(m => {
+      data.movies.forEach((m, idx) => {
         m.type = 'movie';
         if (!m.cover) m.cover = m.backdrop || m.poster;
-        if (m.addedAt) {
-          if (!m.originalReleaseDate) m.originalReleaseDate = m.releaseDate;
-          m.releaseDate = m.addedAt;
+        if (!m.addedAt) {
+          m.addedAt = new Date(nowMs - idx * 60000).toISOString();
         }
+        if (!m.originalReleaseDate) m.originalReleaseDate = m.releaseDate;
+        m.releaseDate = m.addedAt;
       });
     }
     if (data.series) {
-      data.series.forEach(s => {
+      data.series.forEach((s, idx) => {
         s.type = 'series';
         if (!s.cover) s.cover = s.backdrop || s.poster;
-        if (s.addedAt) {
-          if (!s.originalReleaseDate) s.originalReleaseDate = s.releaseDate;
-          s.releaseDate = s.addedAt;
+        if (!s.addedAt) {
+          s.addedAt = new Date(nowMs - idx * 60000).toISOString();
         }
+        if (!s.originalReleaseDate) s.originalReleaseDate = s.releaseDate;
+        s.releaseDate = s.addedAt;
       });
     }
     if (data.upcoming) data.upcoming.forEach(u => u.type = u.type || 'series');

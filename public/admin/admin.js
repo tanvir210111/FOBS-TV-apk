@@ -458,6 +458,7 @@ async function previewMovieBoxStream(subjectId, detailPath, isSeries) {
 }
 
 function openImportModal(item) {
+  if (document.getElementById('imp-featured')) document.getElementById('imp-featured').checked = false;
   const isSeries = item.type === 'series' || item.hasSeason || (item.title && item.title.toLowerCase().includes('season'));
   
   document.getElementById('imp-subjectId').value = item.subjectId || item.id || '';
@@ -494,6 +495,7 @@ async function handleImportSubmit(e) {
     category: document.getElementById('imp-category').value,
     industry: document.getElementById('imp-industry').value,
     isHindi: document.getElementById('imp-ishindi').checked,
+    isFeatured: !!document.getElementById('imp-featured')?.checked,
     episodesCount: parseInt(document.getElementById('imp-episodes').value, 10) || 1
   };
 
@@ -699,6 +701,7 @@ function filterChannelsGrid(query) {
 function openMovieModal() {
   document.getElementById('movie-id').value = '';
   document.getElementById('movie-form').reset();
+  if (document.getElementById('movie-featured')) document.getElementById('movie-featured').checked = false;
   document.getElementById('movie-modal-title').innerText = 'Add Custom Movie';
   document.getElementById('movie-modal').classList.add('active');
 }
@@ -714,6 +717,7 @@ function editMovie(movie) {
   document.getElementById('movie-poster').value = movie.poster || '';
   document.getElementById('movie-stream').value = movie.streamUrl || '';
   if (document.getElementById('movie-views')) document.getElementById('movie-views').value = movie.views || 0;
+  if (document.getElementById('movie-featured')) document.getElementById('movie-featured').checked = !!(appContent.featured && appContent.featured.id === movie.id);
 
   document.getElementById('movie-modal-title').innerText = 'Edit Movie';
   document.getElementById('movie-modal').classList.add('active');
@@ -738,7 +742,8 @@ async function handleMovieSubmit(e) {
     poster: document.getElementById('movie-poster').value.trim(),
     backdrop: document.getElementById('movie-poster').value.trim(),
     streamUrl: document.getElementById('movie-stream').value.trim(),
-    views: parseInt(document.getElementById('movie-views')?.value, 10) || 0,
+    views: parseInt(document.getElementById('movie-views')?.value, 10) || 1250,
+    isFeatured: !!document.getElementById('movie-featured')?.checked,
     servers: [
       { name: 'Server 1 (Fast HD)', url: document.getElementById('movie-stream').value.trim(), isDirect: true }
     ]
