@@ -170,6 +170,19 @@ function getMovieBoxDetailPath(id) {
   if (sId === '6930023915360583800') return 'high-school-return-of-a-gangster-8ydAeg9AVf8';
   if (sId === '13309505576601376') return 'crash-landing-on-you-hindi-ad4mbjnXY';
   if (sId === '8152231361013763208') return 'crash-landing-on-you-M2pZwJYidI9';
+  // Anime & MovieBox Real-time Mappings
+  if (sId === '4681337201345660416') return 'naruto-shippuden-hindi-C3uFBDAzOz5';
+  if (sId === '886218306628322136' || sId === 'anime-suzume') return 'suzume-hindi-keUokg8Ts31';
+  if (sId === '6189703385403770824' || sId === 'anime-mugentrain') return 'demon-slayer-kimetsu-no-yaiba-to-the-hashira-training-GDvoLafUen7';
+  if (sId === '368113073112187200') return 'that-time-i-got-reincarnated-as-a-slime-hindi-2Rs9a5DXbr';
+  if (sId === '7097651204503001752') return 'konosuba-gods-blessing-on-this-wonderful-world-hindi-6bkFKGHjjs8';
+  if (sId === '5940673723370990096') return 'solo-leveling-hindi-233zYjClQ47';
+  if (sId === '102175217904222864') return 'jujutsu-kaisen-hindi-Gjrqz0KXx7';
+  if (sId === '2590127567235599160') return 'dragon-ball-hindi-KvCIHjkOk53';
+  if (sId === '7777395346602609920') return 'attack-on-titan-yZeOXuiywg9';
+  if (sId === '3350050042852901216') return 'demon-slayer-kimetsu-no-yaiba-hindi-kwZDpEpgtZ3';
+  if (sId === '4302184927338135648') return 'naruto-hindi-gsQpseg3O75';
+  if (sId === '8434951818110719008') return 'cyberpunk-edgerunners-Wl8UpVsa63a';
   return '';
 }
 
@@ -699,9 +712,19 @@ app.get('/api/moviebox/stream', async (req, res) => {
   let { id, path: detailPath, se, ep } = req.query;
   if (!id) return res.status(400).send('Missing id parameter');
   try {
+    if (id === 'anime-suzume') id = '886218306628322136';
+    if (id === 'anime-mugentrain') id = '6189703385403770824';
     const seNum = parseInt(se || '1', 10);
     const epNum = parseInt(ep || '1', 10);
     let resolvedPath = detailPath || getMovieBoxDetailPath(id) || '';
+    if (!resolvedPath) {
+      try {
+        const autoD = await movieboxService.getDetail(id);
+        if (autoD && autoD.detailPath) {
+          resolvedPath = autoD.detailPath;
+        }
+      } catch (e) {}
+    }
     if (!resolvedPath) {
       // Golden Boy (Yalı Çapkını) - Turkish series
       if (id === '2706073799983877168') resolvedPath = 'golden-boy-hindi-84Y8uLuQTd3';
