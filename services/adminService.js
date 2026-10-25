@@ -493,7 +493,7 @@ class AdminService {
         dubLanguage: isHindi ? 'Hindi' : 'Original',
         audioTracks: isHindi ? ['Hindi dub', 'Original Audio'] : ['Original Audio'],
         selectedAudio: isHindi ? 'Hindi dub' : 'Original Audio',
-        streamUrl: mb.streamUrl,
+        streamUrl: `/api/moviebox/stream?id=${subjectId}&path=${encodeURIComponent(detailPath || '')}&se=0&ep=0`,
         addedAt: new Date().toISOString(),
         createdAt: new Date().toISOString(),
         releaseDate: year ? (year + '-10-25') : new Date().toISOString().split('T')[0],
@@ -503,26 +503,26 @@ class AdminService {
         views: 1250,
         servers: [
           {
-            name: `Server 1 (${isHindi ? 'Hindi Dub' : 'HD'} - Fast ${resName}p)`,
+            name: `Server 1 (${isHindi ? 'Hindi Dub' : 'HD'} - Auto-Renewing ${resName}p)`,
+            url: `/api/moviebox/stream?id=${subjectId}&path=${encodeURIComponent(detailPath || '')}&se=0&ep=0`,
+            quality: `${resName}p`,
+            audio: isHindi ? 'Hindi dub' : 'Original Audio',
+            isDirect: true
+          },
+          {
+            name: 'Server 2 (Direct Fast CDN)',
             url: mb.streamUrl,
             quality: `${resName}p`,
             audio: isHindi ? 'Hindi dub' : 'Original Audio',
             isDirect: true
           },
           ...(mb.qualities || []).slice(1).map((q, i) => ({
-            name: `Server ${i + 2} (${q.resolution}p SD)`,
+            name: `Server ${i + 3} (${q.resolution}p SD)`,
             url: q.url,
             quality: `${q.resolution}p`,
             audio: isHindi ? 'Hindi dub' : 'Original Audio',
             isDirect: true
-          })),
-          {
-            name: `Server ${(mb.qualities?.length || 1) + 1} (Auto-Renewing Stream)`,
-            url: `/api/moviebox/stream?id=${subjectId}&path=${detailPath}`,
-            quality: `${resName}p`,
-            audio: isHindi ? 'Hindi dub' : 'Original Audio',
-            isDirect: true
-          }
+          }))
         ],
         captions: formattedCaptions,
         subtitles: formattedCaptions,
@@ -562,26 +562,27 @@ class AdminService {
         });
 
         const res = mb.resolution || 1080;
+        const autoRenewEpUrl = `/api/moviebox/stream?id=${subjectId}&path=${encodeURIComponent(detailPath || '')}&se=1&ep=${ep}`;
         episodes.push({
-          number: ep,
+          number: String(ep).padStart(2, '0'),
           episode: ep,
           season: 1,
           title: `Episode ${ep}`,
-          duration: '45 min',
+          duration: mb.duration || '45 min',
           still: poster,
           stillPath: poster,
-          streamUrl: mb.streamUrl,
+          streamUrl: autoRenewEpUrl,
           servers: [
             {
-              name: `Server 1 (${isHindi ? 'Hindi Dub' : 'HD'} - Fast ${res}p)`,
-              url: mb.streamUrl,
+              name: `Server 1 (${isHindi ? 'Hindi Dub' : 'HD'} - Auto-Renewing ${res}p)`,
+              url: autoRenewEpUrl,
               quality: `${res}p`,
               audio: isHindi ? 'Hindi dub' : 'Original Audio',
               isDirect: true
             },
             {
-              name: `Server 2 (Auto-Renewing Stream)`,
-              url: `/api/moviebox/stream?id=${subjectId}&path=${detailPath}&se=1&ep=${ep}`,
+              name: `Server 2 (Direct Fast CDN)`,
+              url: mb.streamUrl,
               quality: `${res}p`,
               audio: isHindi ? 'Hindi dub' : 'Original Audio',
               isDirect: true
@@ -604,6 +605,8 @@ class AdminService {
         backdrop: payload.cover || optBackdrop || poster,
         cover: payload.cover || optBackdrop || poster,
         duration: `${episodes.length} Episodes`,
+        streamUrl: `/api/moviebox/stream?id=${subjectId}&path=${encodeURIComponent(detailPath || '')}&se=1&ep=1`,
+        servers: [{ name: 'Fast Server (Auto-Renew)', url: `/api/moviebox/stream?id=${subjectId}&path=${encodeURIComponent(detailPath || '')}&se=1&ep=1` }],
         episodesCount: episodes.length,
         category,
         industry,

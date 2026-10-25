@@ -2648,7 +2648,19 @@ function getActiveEpisodeStream(ep, audioTrack) {
   if (ep.servers && Array.isArray(ep.servers) && ep.servers[0] && ep.servers[0].url) {
     return ep.servers[0].url;
   }
-  return ep.streamUrl || '';
+  if (ep.streamUrl) return ep.streamUrl;
+
+  // Resilient fallback: auto-generate MovieBox stream URL if subjectId exists
+  const m = appState.currentMedia;
+  const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : null);
+  const dPath = m?.detailPath || m?.mbDetailPath || m?.movieboxDetailPath || '';
+  if (sId) {
+    const epNum = ep.episode || parseInt(ep.number, 10) || 1;
+    const seNum = ep.season || 1;
+    return `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}`;
+  }
+
+  return '';
 }
 
 // Switch Active Season (Season 1 / Season 2)
