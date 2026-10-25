@@ -11,6 +11,7 @@ const movieboxService = require('./movieboxService');
 const dbService = require('./dbService');
 
 const CONTENT_FILE = path.join(__dirname, '..', 'data', 'content.json');
+const CONTENT_BACKUP_FILE = path.join(__dirname, '..', 'data', 'content.backup.json');
 const VIEWS_FILE = path.join(__dirname, '..', 'data', 'views.json');
 const REQUESTS_FILE = path.join(__dirname, '..', 'data', 'requests.json');
 const NOTIFICATIONS_FILE = path.join(__dirname, '..', 'data', 'notifications.json');
@@ -24,10 +25,24 @@ const JWT_SECRET = process.env.JWT_SECRET || 'fobs_tv_admin_secret_key_2026';
 function readContent() {
   try {
     if (fs.existsSync(CONTENT_FILE)) {
-      return JSON.parse(fs.readFileSync(CONTENT_FILE, 'utf8'));
+      const data = JSON.parse(fs.readFileSync(CONTENT_FILE, 'utf8'));
+      if ((!data.movies || data.movies.length === 0) && (!data.series || data.series.length === 0)) {
+        if (fs.existsSync(CONTENT_BACKUP_FILE)) {
+          const backup = JSON.parse(fs.readFileSync(CONTENT_BACKUP_FILE, 'utf8'));
+          if (backup.movies?.length > 0 || backup.series?.length > 0) {
+            return backup;
+          }
+        }
+      }
+      return data;
     }
   } catch (err) {
     console.error('Error reading content.json in adminService:', err);
+    if (fs.existsSync(CONTENT_BACKUP_FILE)) {
+      try {
+        return JSON.parse(fs.readFileSync(CONTENT_BACKUP_FILE, 'utf8'));
+      } catch(e) {}
+    }
   }
   return { featured: {}, movies: [], series: [], liveTv: [], categories: [], industries: [] };
 }

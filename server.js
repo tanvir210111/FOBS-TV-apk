@@ -53,6 +53,7 @@ app.get('/health', (req, res) => {
 });
 
 const DATA_FILE = path.join(__dirname, 'data', 'content.json');
+const BACKUP_DATA_FILE = path.join(__dirname, 'data', 'content.backup.json');
 const STREAM_CACHE_DIR = path.join(__dirname, 'data', 'stream_cache');
 if (!fs.existsSync(STREAM_CACHE_DIR)) {
   fs.mkdirSync(STREAM_CACHE_DIR, { recursive: true });
@@ -98,12 +99,39 @@ function getContentData() {
     const stat = fs.statSync(DATA_FILE);
     if (!_cachedContentData || stat.mtimeMs !== _cachedMtimeMs) {
       const raw = fs.readFileSync(DATA_FILE, 'utf-8');
-      _cachedContentData = JSON.parse(raw);
+      const parsed = JSON.parse(raw);
+      if ((!parsed.movies || parsed.movies.length === 0) && (!parsed.series || parsed.series.length === 0)) {
+        if (fs.existsSync(BACKUP_DATA_FILE)) {
+          const backupRaw = fs.readFileSync(BACKUP_DATA_FILE, 'utf-8');
+          const backupParsed = JSON.parse(backupRaw);
+          if (backupParsed.movies?.length > 0 || backupParsed.series?.length > 0) {
+            console.warn('[SELF-HEAL] data/content.json was empty. Restored from content.backup.json');
+            _cachedContentData = backupParsed;
+            _cachedMtimeMs = Date.now();
+            try { fs.writeFileSync(DATA_FILE, JSON.stringify(backupParsed), 'utf-8'); } catch(e){}
+            return JSON.parse(JSON.stringify(_cachedContentData));
+          }
+        }
+      }
+      _cachedContentData = parsed;
       _cachedMtimeMs = stat.mtimeMs;
     }
     return JSON.parse(JSON.stringify(_cachedContentData));
   } catch (err) {
-    console.error('Error reading data:', err);
+    console.error('Error reading data/content.json:', err.message);
+    if (fs.existsSync(BACKUP_DATA_FILE)) {
+      try {
+        const backupRaw = fs.readFileSync(BACKUP_DATA_FILE, 'utf-8');
+        const backupParsed = JSON.parse(backupRaw);
+        if (backupParsed.movies?.length > 0 || backupParsed.series?.length > 0) {
+          console.warn('[SELF-HEAL] data/content.json corrupt/missing. Recovered from content.backup.json');
+          _cachedContentData = backupParsed;
+          _cachedMtimeMs = Date.now();
+          try { fs.writeFileSync(DATA_FILE, JSON.stringify(backupParsed), 'utf-8'); } catch(e){}
+          return JSON.parse(JSON.stringify(_cachedContentData));
+        }
+      } catch(e) {}
+    }
     return { featured: {}, movies: [], series: [], liveTv: [] };
   }
 }
@@ -113,6 +141,11 @@ function saveContentData(data) {
   _cachedContentData = null;
   _cachedMtimeMs = 0;
   fs.writeFileSync(DATA_FILE, JSON.stringify(data), 'utf-8');
+  if (data && (data.movies?.length > 0 || data.series?.length > 0)) {
+    try {
+      fs.writeFileSync(BACKUP_DATA_FILE, JSON.stringify(data), 'utf-8');
+    } catch(e) {}
+  }
 }
 
 // MovieBox Subject ID to detailPath lookup map
