@@ -448,7 +448,7 @@ class AdminService {
       if (!industry || industry === 'Hollywood') industry = autoDetail.industry || industry;
       if (!category || category === 'Hollywood Movies') category = autoDetail.category || category;
       if (!poster) poster = autoDetail.poster;
-      if (!payload.cover) payload.cover = autoDetail.cover;
+      if (!payload.cover || payload.cover.includes('aoneroom')) payload.cover = autoDetail.cover && !autoDetail.cover.includes('aoneroom') ? autoDetail.cover : undefined;
       if (payload.isHindi === undefined) isHindi = autoDetail.isHindi;
       if (!episodesCount || episodesCount <= 0) episodesCount = autoDetail.totalEpisodes;
     }

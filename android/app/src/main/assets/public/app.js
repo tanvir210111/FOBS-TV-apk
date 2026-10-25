@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v64';
+const CACHE_KEY = 'fobs_tv_content_cache_v65';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -639,6 +639,18 @@ let loopCardsList = [];
 let isHeroSliding = false;
 let isSwipingHero = false;
 
+
+function getValidBackdropUrl(slide) {
+  if (!slide) return '';
+  const candidates = [slide.cover, slide.backdrop, slide.poster];
+  for (const c of candidates) {
+    if (c && typeof c === 'string' && c.startsWith('http') && !c.includes('aoneroom')) {
+      return c;
+    }
+  }
+  return slide.poster || slide.backdrop || slide.cover || 'https://image.tmdb.org/t/p/w1280/anwMEnTDkhv5qJ8wXSRieCvFHGs.jpg';
+}
+
 function renderHeroBanner() {
   const movies = appState.content.movies || [];
   const series = appState.content.series || [];
@@ -668,7 +680,7 @@ function renderHeroBanner() {
 
   if (backdropTrack) {
     backdropTrack.innerHTML = heroItems.map((slide, idx) => {
-      const bgUrl = slide.cover || slide.backdrop || slide.poster;
+      const bgUrl = getValidBackdropUrl(slide);
       return `<div class="hero-backdrop-slide ${idx === 0 ? 'active' : ''}" style="background-image: url('${bgUrl}')"></div>`;
     }).join('');
   }
@@ -918,7 +930,7 @@ function renderMovieHeroBanner() {
 
   if (backdropTrack) {
     backdropTrack.innerHTML = movieHeroItems.map((slide, idx) => {
-      const bgUrl = slide.cover || slide.backdrop || slide.poster;
+      const bgUrl = getValidBackdropUrl(slide);
       return `<div class="hero-backdrop-slide ${idx === 0 ? 'active' : ''}" style="background-image: url('${bgUrl}')"></div>`;
     }).join('');
   }
@@ -1149,7 +1161,7 @@ function renderSeriesHeroBanner() {
 
   if (backdropTrack) {
     backdropTrack.innerHTML = seriesHeroItems.map((slide, idx) => {
-      const bgUrl = slide.cover || slide.backdrop || slide.poster;
+      const bgUrl = getValidBackdropUrl(slide);
       return `<div class="hero-backdrop-slide ${idx === 0 ? 'active' : ''}" style="background-image: url('${bgUrl}')"></div>`;
     }).join('');
   }
