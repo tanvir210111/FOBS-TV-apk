@@ -1063,6 +1063,11 @@
                     </label>
                   </div>
 
+                  <div class="ls-sub-upload-btn" onclick="triggerManualSrtUpload()">
+                    <i class="fa-solid fa-folder-open"></i>
+                    <span>Open Local .SRT File</span>
+                  </div>
+
                   <div class="ls-lang-items" id="lsSubtitleOptionsList" style="flex: 1;">
                     <div class="ls-lang-item active" onclick="selectSubtitleTrack('off')">
                       <span>Off (None)</span>
@@ -2559,6 +2564,19 @@
 
         <!-- Tab 1: Language Selection -->
         <div class="sub-tab-panel active" id="subPanelLang">
+          <!-- Manual Local SRT Upload Card -->
+          <div class="sub-upload-card" onclick="triggerManualSrtUpload()">
+            <div class="sub-upload-left">
+              <div class="sub-upload-icon-wrap"><i class="fa-solid fa-file-arrow-up"></i></div>
+              <div class="sub-upload-info">
+                <div class="sub-upload-title">Open Local Subtitle (.srt / .vtt)</div>
+                <div class="sub-upload-subtitle">Choose any downloaded subtitle from your storage</div>
+              </div>
+            </div>
+            <button class="sub-upload-action-btn" type="button"><i class="fa-solid fa-folder-open"></i> Browse</button>
+          </div>
+          <input type="file" id="customSrtFileInput" accept=".srt,.vtt,.txt,text/plain" style="display: none;" onchange="handleManualSrtUpload(event)">
+
           <div class="sub-panel-title">Choose Subtitle Track</div>
           <div class="sub-tracks-list" id="subModalTracksList">
             <!-- Dynamically populated -->

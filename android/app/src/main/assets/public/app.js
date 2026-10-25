@@ -4006,7 +4006,11 @@ function parseSubtitleTextToCues(rawText) {
         textLines.push(lines[i].trim());
         i++;
       }
-      const text = textLines.join('\n').replace(/<[^>]+>/g, '').trim();
+      const text = textLines.join('\n')
+        .replace(/<[^>]+>/g, '')
+        .replace(/\{[^\}]+\}/g, '')
+        .replace(/&rlm;|&lrm;|&nbsp;/gi, ' ')
+        .trim();
       if (text) {
         cues.push({ startTime, endTime, text });
       }
@@ -4015,6 +4019,68 @@ function parseSubtitleTextToCues(rawText) {
   }
   return cues;
 }
+
+// Manual .SRT / .VTT Local File Upload Handler
+function triggerManualSrtUpload() {
+  const input = document.getElementById('customSrtFileInput');
+  if (input) {
+    input.value = ''; // Reset so the user can re-upload or select same file
+    input.click();
+  }
+}
+window.triggerManualSrtUpload = triggerManualSrtUpload;
+
+function handleManualSrtUpload(event) {
+  const file = event.target?.files && event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const rawText = e.target.result;
+      const cues = parseSubtitleTextToCues(rawText);
+
+      if (!cues || cues.length === 0) {
+        showToast('⚠️ No valid timestamps found in this file. Please ensure it is a valid .srt or .vtt file.');
+        return;
+      }
+
+      // Format clean file label
+      const baseName = file.name.replace(/\.[^/.]+$/, '').trim();
+      const cleanName = baseName.length > 22 ? baseName.slice(0, 20) + '...' : baseName;
+
+      const customTrack = {
+        id: 'custom_srt_' + Date.now(),
+        language: cleanName,
+        langCode: 'custom',
+        source: 'Local File (.srt)',
+        rawCues: cues,
+        isCustom: true
+      };
+
+      // Filter out previous custom tracks and insert at the top
+      subtitleState.availableTracks = [
+        customTrack,
+        ...subtitleState.availableTracks.filter(t => !t.isCustom)
+      ];
+
+      // Automatically select and activate this custom track
+      selectSubtitleTrack(customTrack.id);
+
+      showToast(`✅ Subtitle Active: "${cleanName}" (${cues.length} lines)`);
+    } catch (err) {
+      console.error('Manual SRT read error:', err);
+      showToast('⚠️ Failed to parse subtitle file. Please try another .srt file.');
+    }
+  };
+
+  reader.onerror = function() {
+    showToast('⚠️ Error reading selected file from device storage.');
+  };
+
+  reader.readAsText(file, 'utf-8');
+}
+window.handleManualSrtUpload = handleManualSrtUpload;
 
 // Setup Subtitles when a Media is opened
 async function setupSubtitlesForMedia(media) {
@@ -4160,11 +4226,12 @@ function renderSubtitleLists() {
   if (modalList) {
     modalList.innerHTML = tracks.map(t => {
       const isAct = (subtitleState.currentTrackId === t.id) || (!subtitleState.enabled && t.id === 'off');
+      const isCustom = !!t.isCustom;
       return `
         <div class="sub-track-item ${isAct ? 'active' : ''}" onclick="selectSubtitleTrack('${t.id}')">
           <div class="sub-track-info">
-            <span class="sub-track-name">${t.language}</span>
-            <span class="sub-track-source">${t.source || 'SubSource.net'}</span>
+            <span class="sub-track-name">${isCustom ? '<i class="fa-solid fa-file-code" style="color:#00f2fe;margin-right:5px;"></i>' : ''}${t.language}</span>
+            <span class="sub-track-source" style="${isCustom ? 'color:#00f2fe;' : ''}">${t.source || 'SubSource.net'}</span>
           </div>
           ${isAct ? '<i class="fa-solid fa-check sub-track-check"></i>' : ''}
         </div>
@@ -4176,9 +4243,10 @@ function renderSubtitleLists() {
   if (lsList) {
     lsList.innerHTML = tracks.map(t => {
       const isAct = (subtitleState.currentTrackId === t.id) || (!subtitleState.enabled && t.id === 'off');
+      const isCustom = !!t.isCustom;
       return `
         <div class="ls-lang-item ${isAct ? 'active' : ''}" onclick="selectSubtitleTrack('${t.id}')">
-          <span>${t.language}</span>
+          <span>${isCustom ? '<i class="fa-solid fa-file-code" style="color:#00f2fe;margin-right:5px;"></i>' : ''}${t.language}</span>
           <i class="fa-solid fa-check ls-check-icon ${isAct ? '' : 'hidden'}"></i>
         </div>
       `;
@@ -4230,11 +4298,22 @@ async function selectSubtitleTrack(trackId) {
   const subToggle = document.getElementById('lsSubtitleToggle');
   if (subToggle) subToggle.checked = true;
   const subBtnLabel = document.getElementById('playerSubtitleBtnLabel');
-  if (subBtnLabel) subBtnLabel.innerText = track.langCode === 'bn' ? 'BN Sub' : (track.langCode === 'hi' ? 'HI Sub' : 'EN Sub');
+  if (subBtnLabel) subBtnLabel.innerText = track.isCustom ? 'Custom Sub' : (track.langCode === 'bn' ? 'BN Sub' : (track.langCode === 'hi' ? 'HI Sub' : 'EN Sub'));
   const subIcon = document.getElementById('actionSubIcon');
   if (subIcon) subIcon.style.color = '#00f2fe';
 
   renderSubtitleLists();
+
+  // If custom uploaded SRT, apply immediately without network request
+  if (track.rawCues && track.rawCues.length > 0) {
+    subtitleState.cues = track.rawCues;
+    showToast(`💬 Subtitles Active: ${track.language} (${track.rawCues.length} lines)`);
+    const vp = document.getElementById('mainVideoPlayer');
+    const curTime = (vp?.currentTime || 0) + (appState.streamSeekOffset || 0);
+    renderActiveSubtitleCue(curTime);
+    return;
+  }
+
   showToast(`Loading ${track.language} (SubSource)...`);
 
   let loadedCues = [];
