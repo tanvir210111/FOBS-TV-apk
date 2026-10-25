@@ -3043,7 +3043,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     try {
       const fullUrl = playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`;
       const jsonUrl = fullUrl.includes('?') ? `${fullUrl}&json=1` : `${fullUrl}?json=1`;
-      const res = await fetch(jsonUrl);
+      const res = await fetch(jsonUrl, { cache: 'no-store' });
       const data = await res.json();
       if (data && data.ok && data.streamUrl) {
         playableUrl = data.streamUrl.startsWith('http') ? data.streamUrl : `${API_BASE_URL}${data.streamUrl}`;
@@ -3103,6 +3103,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     // Since HTML5 <video> elements in mobile WebView cannot attach custom Referer headers,
     // always stream through VPS proxy to prevent 429 Too Many Requests and ensure instant seeking!
     if (
+      playableUrl.includes('/api/moviebox/stream') ||
       playableUrl.includes('hakunaymatata') || 
       playableUrl.includes('bcdnxw') || 
       playableUrl.includes('haildrop') || 
@@ -3110,7 +3111,9 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       playableUrl.includes('sunburst') || 
       playableUrl.includes('stormshade')
     ) {
-      const proxyUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(playableUrl)}`;
+      const proxyUrl = playableUrl.includes('/api/stream') 
+        ? (playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`)
+        : `${API_BASE_URL}/api/stream?url=${encodeURIComponent(playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`)}`;
       console.log('Playing MovieBox stream via server proxy:', proxyUrl);
       videoPlayer.src = proxyUrl;
       videoPlayer.load();
@@ -6089,7 +6092,7 @@ function downloadMedia(url, title, options = {}) {
   // Render in downloads sheet if currently viewed
   renderDownloadsList();
 
-  // Trigger browser / Android download file stream
+  // Trigger browser / Chrome external download
   const cleanTitle = title.replace(/[^a-zA-Z0-9_\-\u0980-\u09FF\s]/g, '').trim();
   const baseApi = 'http://187.127.114.52';
   let fullStreamUrl = url;
@@ -6098,24 +6101,16 @@ function downloadMedia(url, title, options = {}) {
   }
   const downloadUrl = `${baseApi}/api/download?url=${encodeURIComponent(fullStreamUrl)}&title=${encodeURIComponent(cleanTitle)}`;
   
-  if (window.AndroidApp && typeof window.AndroidApp.downloadFile === 'function') {
-    window.AndroidApp.downloadFile(downloadUrl, `${cleanTitle}.mp4`);
-  } else if (window.AndroidApp && typeof window.AndroidApp.openExternalUrl === 'function') {
+  showToast(`📥 Opening in Chrome / Browser to download...`);
+
+  if (window.AndroidApp && typeof window.AndroidApp.openExternalUrl === 'function') {
     window.AndroidApp.openExternalUrl(downloadUrl);
   } else {
-    // Hand off download request to Android OS / default browser
     try {
-      window.location.assign(downloadUrl);
+      const opened = window.open(downloadUrl, '_blank');
+      if (!opened) window.location.assign(downloadUrl);
     } catch (e) {
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.setAttribute('download', `${cleanTitle}.mp4`);
-      link.setAttribute('target', '_blank');
-      document.body.appendChild(link);
-      link.click();
-      setTimeout(() => {
-        if (link.parentNode) link.parentNode.removeChild(link);
-      }, 1000);
+      window.location.assign(downloadUrl);
     }
   }
 }

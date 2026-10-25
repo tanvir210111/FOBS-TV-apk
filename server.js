@@ -772,6 +772,9 @@ app.get('/api/moviebox/stream', async (req, res) => {
     const proxiedStreamUrl = `/api/stream?url=${encodeURIComponent(media.streamUrl)}`;
     const fullProxiedStreamUrl = `${baseUrl}${proxiedStreamUrl}`;
 
+    res.setHeader('X-Accel-Buffering', 'no');
+    res.setHeader('Cache-Control', 'no-cache, no-store');
+
     if (req.query.json === '1' || req.headers.accept?.includes('application/json')) {
       return res.json({ ok: true, streamUrl: fullProxiedStreamUrl, directCdnUrl: media.streamUrl, resolution: media.resolution });
     }
@@ -896,6 +899,8 @@ app.all('/api/stream', async (req, res) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type, Accept, X-Requested-With');
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range, Content-Length, Accept-Ranges, Content-Type');
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.setHeader('Cache-Control', 'no-cache, no-store');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -1112,16 +1117,52 @@ app.all('/api/stream', async (req, res) => {
     requestHeaders['Range'] = 'bytes=0-0';
   }
 
+  let streamFetchUrl = resolvedUrl;
+  let response;
   try {
-    const response = await axios({
-      method: 'GET',
-      url: resolvedUrl,
-      headers: requestHeaders,
-      responseType: 'stream',
-      maxRedirects: 5,
-      timeout: 0,
-      validateStatus: (status) => status >= 200 && status < 400
-    });
+    try {
+      response = await axios({
+        method: 'GET',
+        url: streamFetchUrl,
+        headers: requestHeaders,
+        responseType: 'stream',
+        maxRedirects: 5,
+        timeout: 0,
+        validateStatus: (status) => status >= 200 && status < 400
+      });
+    } catch (initialErr) {
+      const isMb = (
+        targetUrl.includes('/api/moviebox/stream') ||
+        targetUrl.includes('movieboxapp.in') ||
+        streamFetchUrl.includes('hakunaymatata') ||
+        streamFetchUrl.includes('bcdnxw') ||
+        streamFetchUrl.includes('haildrop') ||
+        streamFetchUrl.includes('fogtwist') ||
+        streamFetchUrl.includes('sunburst') ||
+        streamFetchUrl.includes('stormshade')
+      );
+      if (isMb) {
+        console.warn(`MovieBox stream fetch failed (${initialErr.message}). Invalidating cache and retrying with fresh token...`);
+        movieboxService.invalidateCache();
+        const freshUrl = await resolveStreamUrl(targetUrl);
+        if (freshUrl && freshUrl !== streamFetchUrl) {
+          streamFetchUrl = freshUrl;
+          response = await axios({
+            method: 'GET',
+            url: streamFetchUrl,
+            headers: requestHeaders,
+            responseType: 'stream',
+            maxRedirects: 5,
+            timeout: 0,
+            validateStatus: (status) => status >= 200 && status < 400
+          });
+        } else {
+          throw initialErr;
+        }
+      } else {
+        throw initialErr;
+      }
+    }
 
     let contentType = response.headers['content-type'];
     if (!contentType || contentType === 'application/octet-stream') {
@@ -1289,15 +1330,52 @@ app.get('/api/download', async (req, res) => {
     downloadHeaders['Referer'] = 'https://pkembed.site/';
   }
 
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.setHeader('Cache-Control', 'no-cache, no-store');
+
+  let downloadFetchUrl = resolvedUrl;
+  let response;
   try {
-    const response = await axios({
-      method: 'GET',
-      url: resolvedUrl,
-      responseType: 'stream',
-      maxRedirects: 5,
-      timeout: 30000,
-      headers: downloadHeaders
-    });
+    try {
+      response = await axios({
+        method: 'GET',
+        url: downloadFetchUrl,
+        responseType: 'stream',
+        maxRedirects: 5,
+        timeout: 0,
+        headers: downloadHeaders
+      });
+    } catch (initialErr) {
+      const isMb = (
+        targetUrl.includes('/api/moviebox/stream') ||
+        downloadFetchUrl.includes('hakunaymatata') || 
+        downloadFetchUrl.includes('bcdnxw') || 
+        downloadFetchUrl.includes('haildrop') || 
+        downloadFetchUrl.includes('fogtwist') || 
+        downloadFetchUrl.includes('sunburst') || 
+        downloadFetchUrl.includes('stormshade') || 
+        targetUrl.includes('moviebox')
+      );
+      if (isMb) {
+        movieboxService.invalidateCache();
+        const freshUrl = await resolveStreamUrl(targetUrl);
+        if (freshUrl && freshUrl !== downloadFetchUrl) {
+          downloadFetchUrl = freshUrl;
+          response = await axios({
+            method: 'GET',
+            url: downloadFetchUrl,
+            responseType: 'stream',
+            maxRedirects: 5,
+            timeout: 0,
+            headers: downloadHeaders
+          });
+        } else {
+          throw initialErr;
+        }
+      } else {
+        throw initialErr;
+      }
+    }
 
     res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(filename)}"`);
     res.setHeader('Content-Type', response.headers['content-type'] || 'video/mp4');
@@ -1308,7 +1386,7 @@ app.get('/api/download', async (req, res) => {
     response.data.pipe(res);
   } catch (err) {
     console.error('Download error:', err.message);
-    res.redirect(302, resolvedUrl);
+    res.redirect(302, downloadFetchUrl || resolvedUrl);
   }
 });
 

@@ -158,16 +158,32 @@ class MovieBoxService {
         }))
       };
 
-      // Cache for 3 hours (tokens are usually valid for 24 hours)
+      // Cache for 10 minutes to guarantee fresh CDN signatures
       this.cache.set(cacheKey, {
         data: result,
-        expireAt: Date.now() + 3 * 60 * 60 * 1000
+        expireAt: Date.now() + 10 * 60 * 1000
       });
 
       return result;
     } catch (err) {
       console.error(`MovieBoxService resolveMedia error (id: ${subjectId}):`, err.message);
       return null;
+    }
+  }
+
+  /**
+   * Clears cache for a given subjectId or clears entire cache
+   */
+  invalidateCache(subjectId = null) {
+    if (!subjectId) {
+      this.cache.clear();
+      return;
+    }
+    const prefix = String(subjectId);
+    for (const key of this.cache.keys()) {
+      if (key.startsWith(prefix)) {
+        this.cache.delete(key);
+      }
     }
   }
 }
