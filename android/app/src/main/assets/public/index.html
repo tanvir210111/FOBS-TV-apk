@@ -1040,41 +1040,105 @@
               </div>
 
               <!-- Subtitle Column -->
-              <div class="ls-lang-column">
-                <div class="ls-column-header-row">
-                  <span class="ls-column-title">Subtitle</span>
-                  <label class="ls-switch">
-                    <input type="checkbox" checked id="lsSubtitleToggle">
-                    <span class="ls-slider"></span>
-                  </label>
-                </div>
-                <div class="ls-column-header-row" style="margin-bottom: 8px;">
-                  <span class="ls-column-sub">Bilingual</span>
-                  <label class="ls-switch">
-                    <input type="checkbox" id="lsBilingualToggle">
-                    <span class="ls-slider"></span>
-                  </label>
+              <div class="ls-lang-column" id="lsSubtitleColumn">
+                <!-- Sub-view 1: Track Selection -->
+                <div id="lsSubTrackView" style="display: flex; flex-direction: column; flex: 1;">
+                  <div class="ls-column-header-row">
+                    <span class="ls-column-title">Subtitle</span>
+                    <label class="ls-switch">
+                      <input type="checkbox" checked id="lsSubtitleToggle">
+                      <span class="ls-slider"></span>
+                    </label>
+                  </div>
+                  <div class="ls-column-header-row" style="margin-bottom: 8px;">
+                    <span class="ls-column-sub">Bilingual</span>
+                    <label class="ls-switch">
+                      <input type="checkbox" id="lsBilingualToggle">
+                      <span class="ls-slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="ls-lang-items" id="lsSubtitleOptionsList" style="flex: 1;">
+                    <div class="ls-lang-item active" onclick="selectSubtitleTrack('off')">
+                      <span>Off (None)</span>
+                      <i class="fa-solid fa-check ls-check-icon"></i>
+                    </div>
+                    <div class="ls-lang-item" onclick="selectSubtitleTrack('en')">
+                      <span>English</span>
+                      <i class="fa-solid fa-check ls-check-icon hidden"></i>
+                    </div>
+                    <div class="ls-lang-item" onclick="selectSubtitleTrack('bn')">
+                      <span>Bangla (বাংলা)</span>
+                      <i class="fa-solid fa-check ls-check-icon hidden"></i>
+                    </div>
+                  </div>
+
+                  <div class="ls-subtitle-bottom-bar">
+                    <button class="ls-sub-bar-btn" type="button" onclick="showLandscapeSubView('style')"><i class="fa-solid fa-palette"></i> Style</button>
+                    <span class="ls-divider">|</span>
+                    <button class="ls-sub-bar-btn" type="button" onclick="showLandscapeSubView('sync')"><i class="fa-solid fa-sliders"></i> Delay (Sync)</button>
+                  </div>
                 </div>
 
-                <div class="ls-lang-items" id="lsSubtitleOptionsList">
-                  <div class="ls-lang-item active" onclick="selectSubtitleTrack('off')">
-                    <span>Off (None)</span>
-                    <i class="fa-solid fa-check ls-check-icon"></i>
+                <!-- Sub-view 2: In-Drawer Landscape MX Sync Controls -->
+                <div id="lsSubSyncView" style="display: none; flex-direction: column; gap: 10px; flex: 1;">
+                  <div class="ls-sync-top-row">
+                    <button class="ls-sub-back-btn" type="button" onclick="showLandscapeSubView('tracks')">
+                      <i class="fa-solid fa-chevron-left"></i> Tracks
+                    </button>
+                    <span class="ls-column-title" style="font-size: 13px;"><i class="fa-solid fa-sliders" style="color: #00f2fe; margin-right: 4px;"></i> MX Sync</span>
                   </div>
-                  <div class="ls-lang-item" onclick="selectSubtitleTrack('en')">
-                    <span>English (SubSource)</span>
-                    <i class="fa-solid fa-check ls-check-icon hidden"></i>
+
+                  <div class="ls-sync-display-box">
+                    <span class="ls-sync-label">Delay Offset:</span>
+                    <span class="ls-sync-badge" id="lsSyncValBadge">+0.0s</span>
                   </div>
-                  <div class="ls-lang-item" onclick="selectSubtitleTrack('bn')">
-                    <span>Bangla (বাংলা - SubSource)</span>
-                    <i class="fa-solid fa-check ls-check-icon hidden"></i>
+
+                  <!-- Quick Stepper Buttons -->
+                  <div class="ls-sync-btn-grid">
+                    <button class="ls-sync-btn" type="button" onclick="adjustSubtitleSync(-1.0)">-1.0s</button>
+                    <button class="ls-sync-btn" type="button" onclick="adjustSubtitleSync(-0.5)">-0.5s</button>
+                    <button class="ls-sync-btn" type="button" onclick="adjustSubtitleSync(-0.1)">-0.1s</button>
+                    <button class="ls-sync-btn reset" type="button" onclick="resetSubtitleSync()">Reset</button>
+                    <button class="ls-sync-btn" type="button" onclick="adjustSubtitleSync(+0.1)">+0.1s</button>
+                    <button class="ls-sync-btn" type="button" onclick="adjustSubtitleSync(+0.5)">+0.5s</button>
+                    <button class="ls-sync-btn" type="button" onclick="adjustSubtitleSync(+1.0)">+1.0s</button>
                   </div>
+
+                  <!-- Range Slider -->
+                  <div class="ls-sync-slider-wrap">
+                    <span>-10s</span>
+                    <input type="range" min="-10" max="10" step="0.1" value="0" id="lsSyncSlider" oninput="handleSubtitleSyncSlider(this.value)">
+                    <span>+10s</span>
+                  </div>
+
+                  <p class="ls-sync-hint">Adjust timing in seconds to synchronize dialogue with subtitles in real-time.</p>
                 </div>
 
-                <div class="ls-subtitle-bottom-bar">
-                  <button class="ls-sub-bar-btn" type="button" onclick="openSubtitleModal('style')"><i class="fa-solid fa-palette"></i> Style</button>
-                  <span class="ls-divider">|</span>
-                  <button class="ls-sub-bar-btn" type="button" onclick="openSubtitleModal('sync')"><i class="fa-solid fa-sliders"></i> Delay (Sync)</button>
+                <!-- Sub-view 3: In-Drawer Landscape Style Controls -->
+                <div id="lsSubStyleView" style="display: none; flex-direction: column; gap: 8px; flex: 1;">
+                  <div class="ls-sync-top-row">
+                    <button class="ls-sub-back-btn" type="button" onclick="showLandscapeSubView('tracks')">
+                      <i class="fa-solid fa-chevron-left"></i> Tracks
+                    </button>
+                    <span class="ls-column-title" style="font-size: 13px;"><i class="fa-solid fa-palette" style="color: #00f2fe; margin-right: 4px;"></i> Style</span>
+                  </div>
+
+                  <span class="ls-style-label">Font Size</span>
+                  <div class="ls-size-row">
+                    <button class="ls-size-chip" data-size="14" onclick="setSubtitleSize(14)">Small</button>
+                    <button class="ls-size-chip active" data-size="18" onclick="setSubtitleSize(18)">Normal</button>
+                    <button class="ls-size-chip" data-size="22" onclick="setSubtitleSize(22)">Large</button>
+                    <button class="ls-size-chip" data-size="26" onclick="setSubtitleSize(26)">Extra</button>
+                  </div>
+
+                  <span class="ls-style-label">Text Color</span>
+                  <div class="ls-color-row">
+                    <div class="ls-color-dot active" style="background:#ffffff;" onclick="setSubtitleTextColor('#ffffff')"></div>
+                    <div class="ls-color-dot" style="background:#ffeb3b;" onclick="setSubtitleTextColor('#ffeb3b')"></div>
+                    <div class="ls-color-dot" style="background:#00f2fe;" onclick="setSubtitleTextColor('#00f2fe')"></div>
+                    <div class="ls-color-dot" style="background:#00ff88;" onclick="setSubtitleTextColor('#00ff88')"></div>
+                  </div>
                 </div>
               </div>
             </div>

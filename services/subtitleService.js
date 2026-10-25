@@ -32,20 +32,22 @@ class SubtitleService {
     const availableSubtitles = [];
 
     // 1. MovieBox Embedded / Associated Captions
-    if (subjectId) {
+    const cleanSubjectId = subjectId ? String(subjectId).replace(/^mb-[s|m]-/, '') : '';
+    if (cleanSubjectId) {
       try {
-        const mbMedia = await movieboxService.resolveMedia(subjectId, detailPath, season, episode);
+        const mbMedia = await movieboxService.resolveMedia(cleanSubjectId, detailPath, season || 1, episode || 1);
         if (mbMedia && Array.isArray(mbMedia.captions)) {
           for (const cap of mbMedia.captions) {
             const langLower = (cap.language || '').toLowerCase();
             const isEnglish = langLower.includes('en') || langLower.includes('eng');
             const isBangla = langLower.includes('bn') || langLower.includes('bangla') || langLower.includes('bengali');
+            const isHindi = langLower.includes('hi') || langLower.includes('hindi');
 
-            if (isEnglish || isBangla) {
+            if (isEnglish || isBangla || isHindi) {
               availableSubtitles.push({
-                id: `mb_${cap.language}_${Date.now()}`,
-                language: isBangla ? 'Bangla' : 'English',
-                langCode: isBangla ? 'bn' : 'en',
+                id: `mb_${cap.language || 'sub'}_${availableSubtitles.length + 1}`,
+                language: isBangla ? 'Bangla (বাংলা)' : isHindi ? 'Hindi (हिन्दी)' : 'English',
+                langCode: isBangla ? 'bn' : isHindi ? 'hi' : 'en',
                 source: 'MovieBox / CDN',
                 url: cap.url,
                 format: cap.url.endsWith('.srt') ? 'srt' : 'vtt'
