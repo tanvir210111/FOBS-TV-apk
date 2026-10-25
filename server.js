@@ -1638,8 +1638,8 @@ app.post('/api/feedback', async (req, res) => {
   }
 });
 
-// 5b. Movie & Series Request Endpoint
-app.post(['/api/request', '/api/requests'], async (req, res) => {
+// 5b. Movie & Series Request Endpoint (Express 5 compatible)
+const handleMediaRequestPost = async (req, res) => {
   try {
     const { title, type, year, language, notes, googleId } = req.body || {};
     if (!title || !title.trim()) {
@@ -1661,9 +1661,9 @@ app.post(['/api/request', '/api/requests'], async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-});
+};
 
-app.get(['/api/request', '/api/requests'], (req, res) => {
+const handleMediaRequestGet = (req, res) => {
   try {
     const { googleId } = req.query;
     const list = dbService.getMediaRequests(googleId);
@@ -1671,7 +1671,12 @@ app.get(['/api/request', '/api/requests'], (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-});
+};
+
+app.post('/api/request', handleMediaRequestPost);
+app.post('/api/requests', handleMediaRequestPost);
+app.get('/api/requests', handleMediaRequestGet);
+app.get('/api/request', handleMediaRequestGet);
 
 // 6. Get Broadcast System Notifications
 app.get('/api/notifications', (req, res) => {
