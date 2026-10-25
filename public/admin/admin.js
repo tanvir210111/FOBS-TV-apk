@@ -448,9 +448,9 @@ function renderMovieBoxResults(items) {
         </div>
         <div class="mb-actions">
           ${isImported ? `
-            <button class="btn-import-card btn-imported" title="Already added to FOBS TV catalog">
-              <i class="fa-solid fa-check"></i>
-              <span>Already Added</span>
+            <button class="btn-import-card btn-imported" onclick="openImportModal(${escapeJson(item)})" title="Already in FOBS TV — Click to check/update newly released episodes without duplicating">
+              <i class="fa-solid fa-arrows-rotate text-cyan"></i>
+              <span>Update / Sync</span>
             </button>
           ` : `
             <button class="btn-import-card" onclick="openImportModal(${escapeJson(item)})">
@@ -771,6 +771,7 @@ function renderSeriesTable(seriesList) {
       </td>
       <td class="text-right">
         <div class="action-buttons">
+          <button class="btn-action-sm info glow-cyan" title="🔄 Sync / Check New Episodes from MovieBox" onclick="syncSeriesEpisodes('${series.id}')"><i class="fa-solid fa-arrows-rotate"></i></button>
           <button class="btn-action-sm warning" title="Set as Hero Spotlight" onclick="makeFeatured(${escapeJson(series)})"><i class="fa-solid fa-star text-amber"></i></button>
           <button class="btn-action-sm danger" title="Delete Series" onclick="deleteSeries('${series.id}')"><i class="fa-solid fa-trash"></i></button>
         </div>
@@ -1362,5 +1363,39 @@ async function triggerRepairStreams() {
       b.disabled = false;
       b.innerHTML = '<i class="fa-solid fa-screwdriver-wrench"></i> <span>Fix Playback</span>';
     });
+  }
+}
+
+
+async function syncSeriesEpisodes(seriesId) {
+  showToast('Checking MovieBox for newly uploaded episodes/seasons...', 'info');
+  try {
+    const res = await apiFetch('/api/admin/series/sync', {
+      method: 'POST',
+      body: JSON.stringify({ id: seriesId })
+    });
+    if (res.success) {
+      showToast(res.message, res.isUpdated ? 'success' : 'info');
+      loadContent();
+    } else {
+      showToast(res.error || 'Failed to sync series', 'error');
+    }
+  } catch (err) {
+    showToast(`Sync error: ${err.message}`, 'error');
+  }
+}
+
+async function autoSyncAllSeries() {
+  showToast('Scanning all series on MovieBox for new releases in background...', 'info');
+  try {
+    const res = await apiFetch('/api/admin/series/sync-all', { method: 'POST' });
+    if (res.success) {
+      showToast(res.message, res.updatedCount > 0 ? 'success' : 'info');
+      loadContent();
+    } else {
+      showToast(res.error || 'Auto-sync failed', 'error');
+    }
+  } catch (err) {
+    showToast(`Auto-sync error: ${err.message}`, 'error');
   }
 }

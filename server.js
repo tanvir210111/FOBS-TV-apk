@@ -2309,6 +2309,29 @@ app.delete('/api/admin/notifications/:id', adminService.authenticate, (req, res)
   }
 });
 
+
+// Sync Series Episodes from MovieBox
+app.post('/api/admin/series/sync', adminService.authenticate, async (req, res) => {
+  try {
+    const { id } = req.body;
+    if (!id) return res.status(400).json({ success: false, error: 'Series ID is required' });
+    const result = await adminService.syncSeriesEpisodes(id);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Auto-Sync All Series in Database
+app.post('/api/admin/series/sync-all', adminService.authenticate, async (req, res) => {
+  try {
+    const result = await adminService.autoSyncAllSeries();
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // One-Click / Webhook Auto-Deploy to VPS
 app.all('/api/deploy', (req, res) => {
   const secret = req.query.secret || req.body?.secret || req.headers['x-deploy-secret'];

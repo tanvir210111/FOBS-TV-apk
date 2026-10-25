@@ -1153,5 +1153,129 @@ class AdminService {
     };
   }
 
+
+  /**
+   * Sync / Update a single series with newly uploaded episodes/seasons from MovieBox
+   */
+  async syncSeriesEpisodes(identifier) {
+    const content = readContent();
+    const seriesList = content.series || [];
+    const target = seriesList.find(s => s.id === identifier || s.subjectId === identifier || String(s.subjectId) === String(identifier));
+    if (!target) {
+      throw new Error('Series not found in database');
+    }
+
+    const sId = target.subjectId || (target.id && target.id.startsWith('mb-s-') ? target.id.replace('mb-s-', '') : null);
+    if (!sId) {
+      throw new Error('This series was manually added without a MovieBox subjectId');
+    }
+
+    const autoDetail = await movieboxService.getDetail(sId);
+    if (!autoDetail) {
+      throw new Error('Could not fetch latest details from MovieBox');
+    }
+
+    const existingViews = target.views || 0;
+    const isFeatured = content.featured && (content.featured.id === target.id || content.featured.subjectId === sId);
+
+    const prevEpsCount = target.episodesCount || (target.seasons ? target.seasons.reduce((acc, s) => acc + (s.episodes ? s.episodes.length : 0), 0) : 0);
+    const prevSeasonsCount = target.seasonsCount || (target.seasons ? target.seasons.length : 1);
+
+    const result = await this.importFromMovieBox({
+      subjectId: sId,
+      detailPath: target.detailPath || autoDetail.detailPath,
+      title: target.title || autoDetail.title,
+      type: 'series',
+      year: target.year || autoDetail.year,
+      rating: target.rating || autoDetail.rating,
+      category: target.category || autoDetail.category,
+      industry: target.industry || autoDetail.industry,
+      isHindi: target.isHindi !== undefined ? target.isHindi : autoDetail.isHindi,
+      cover: target.cover || target.backdrop,
+      seasonMode: 'all',
+      isFeatured
+    });
+
+    if (result.success && result.item) {
+      const updated = result.item;
+      // Preserve original views
+      updated.views = existingViews;
+      const newEpsCount = updated.episodesCount || 0;
+      const newSeasonsCount = updated.seasonsCount || 1;
+      const diffEps = newEpsCount - prevEpsCount;
+      const diffSeasons = newSeasonsCount - prevSeasonsCount;
+
+      const latestContent = readContent();
+      const idx = (latestContent.series || []).findIndex(s => s.id === updated.id);
+      if (idx !== -1) {
+        latestContent.series[idx].views = existingViews;
+        writeContent(latestContent);
+      }
+
+      return {
+        success: true,
+        series: updated,
+        prevEpsCount,
+        newEpsCount,
+        diffEps: Math.max(diffEps, 0),
+        diffSeasons: Math.max(diffSeasons, 0),
+        isUpdated: diffEps > 0 || diffSeasons > 0,
+        message: (diffEps > 0 || diffSeasons > 0)
+          ? `🎉 Updated "${updated.title}"! Added ${diffEps > 0 ? `${diffEps} new episode(s)` : ''}${diffSeasons > 0 ? ` ${diffSeasons} new season(s)` : ''}. Total: ${newEpsCount} episodes.`
+          : `✓ "${updated.title}" is already up-to-date with MovieBox (${newEpsCount} episodes across ${newSeasonsCount} season(s)).`
+      };
+    }
+
+    return result;
+  }
+
+  /**
+   * Auto-scan all series in FOBS TV and sync any that have new episodes on MovieBox
+   */
+  async autoSyncAllSeries() {
+    const content = readContent();
+    const seriesList = content.series || [];
+    const updatedSeries = [];
+
+    for (const s of seriesList) {
+      const sId = s.subjectId || (s.id && s.id.startsWith('mb-s-') ? s.id.replace('mb-s-', '') : null);
+      if (!sId) continue;
+
+      try {
+        const d = await movieboxService.getDetail(sId);
+        if (!d || !d.totalEpisodes) continue;
+
+        const curEps = s.episodesCount || (s.seasons ? s.seasons.reduce((acc, sea) => acc + (sea.episodes ? sea.episodes.length : 0), 0) : 0);
+        const curSeasons = s.seasonsCount || (s.seasons ? s.seasons.length : 1);
+
+        if (d.totalEpisodes > curEps || (d.seasonsCount && d.seasonsCount > curSeasons)) {
+          console.log(`[Auto-Sync] Detected new release for ${s.title}: ${curEps} -> ${d.totalEpisodes} eps`);
+          const syncRes = await this.syncSeriesEpisodes(s.id);
+          if (syncRes.success && syncRes.isUpdated) {
+            updatedSeries.push({
+              title: s.title,
+              oldEps: curEps,
+              newEps: d.totalEpisodes,
+              added: syncRes.diffEps
+            });
+          }
+        }
+      } catch (err) {
+        console.error(`Failed to check series ${s.title}:`, err.message);
+      }
+    }
+
+    return {
+      success: true,
+      updatedCount: updatedSeries.length,
+      updatedSeries,
+      message: updatedSeries.length > 0
+        ? `🎉 Auto-sync completed! Updated ${updatedSeries.length} series with new episodes: ${updatedSeries.map(u => `${u.title} (+${u.added} eps)`).join(', ')}`
+        : '✓ All TV series are currently up-to-date with MovieBox releases.'
+    };
+  }
+
+
 }
+
 module.exports = new AdminService();
