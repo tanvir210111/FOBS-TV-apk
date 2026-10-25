@@ -629,6 +629,17 @@
             </div>
           </div>
 
+          <div class="mb-menu-row" onclick="openMediaRequestModal()">
+            <div class="mb-m-left">
+              <i class="fa-solid fa-clapperboard" style="color: #ffd700;"></i>
+              <span>Movie & Series Request</span>
+            </div>
+            <div class="mb-m-right">
+              <span class="mb-highlight-tag" style="background: rgba(255, 215, 0, 0.15); color: #ffd700; border: 1px solid rgba(255, 215, 0, 0.3);">Request</span>
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+          </div>
+
           <div class="mb-menu-row" onclick="openMessagesModal()">
             <div class="mb-m-left">
               <i class="fa-solid fa-bell"></i>
@@ -2481,6 +2492,95 @@
               </div>
             </div>
             <span style="font-size: 11px; font-weight: 700; color: #ffd700; background: rgba(255, 215, 0, 0.15); padding: 4px 10px; border-radius: 8px;">Active</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- MOVIE & SERIES REQUEST DEDICATED PAGE          -->
+    <!-- ============================================== -->
+    <div class="mb-fullscreen-page-overlay" id="mediaRequestModal" style="display: none; z-index: 10000;">
+      <div class="mb-fullscreen-page">
+        <div class="mb-page-header">
+          <button class="mb-page-back-btn" onclick="closeMediaRequestModal()" aria-label="Go Back">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <h2 class="mb-page-title">Request Content</h2>
+          <span class="section-count-badge" id="meRequestHeaderBadge">New</span>
+        </div>
+
+        <div class="mb-history-page-body" style="gap: 16px;">
+          <!-- Helpful Request Banner -->
+          <div class="req-banner-card">
+            <div class="req-banner-icon">
+              <i class="fa-solid fa-clapperboard"></i>
+            </div>
+            <div>
+              <h3 class="req-banner-title">মুভি ও সিরিজ রিকোয়েস্ট</h3>
+              <p class="req-banner-desc">যে মুভি বা সিরিজটি অ্যাপে দেখতে চান, তার নাম নিচে লিখে পাঠান। আমাদের টিম দ্রুত সার্ভারে যুক্ত করবে।</p>
+            </div>
+          </div>
+
+          <!-- Request Form -->
+          <form id="mediaRequestForm" onsubmit="submitMediaRequest(event)" style="margin: 0;">
+            <!-- Type Selector Pills -->
+            <div class="req-form-group">
+              <label class="req-label">Content Type</label>
+              <div class="req-type-row" id="reqTypeSelector">
+                <button type="button" class="req-type-pill active" data-type="Movie" onclick="selectReqType(this)">Movie</button>
+                <button type="button" class="req-type-pill" data-type="Web Series" onclick="selectReqType(this)">Web Series</button>
+                <button type="button" class="req-type-pill" data-type="Anime" onclick="selectReqType(this)">Anime</button>
+                <button type="button" class="req-type-pill" data-type="Live TV Channel" onclick="selectReqType(this)">Live TV</button>
+              </div>
+            </div>
+
+            <!-- Title Input -->
+            <div class="req-form-group">
+              <label class="req-label"><i class="fa-solid fa-film" style="color: #00f2fe; margin-right: 6px;"></i>Title (নাম) *</label>
+              <input type="text" id="reqTitleInput" class="req-input" placeholder="e.g. Squid Game Season 2 or Pushpa 2" required autocomplete="off">
+            </div>
+
+            <!-- Release Year & Preferred Audio -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="req-form-group">
+                <label class="req-label"><i class="fa-regular fa-calendar" style="color: #ffd700; margin-right: 6px;"></i>Year (বছর)</label>
+                <input type="number" id="reqYearInput" class="req-input" placeholder="2024" min="1950" max="2030">
+              </div>
+              <div class="req-form-group">
+                <label class="req-label"><i class="fa-solid fa-language" style="color: #38bdf8; margin-right: 6px;"></i>Language</label>
+                <select id="reqLangSelect" class="req-input" style="cursor: pointer;">
+                  <option value="Hindi Dubbed">Hindi Dubbed</option>
+                  <option value="Bengali Dubbed">Bengali Dubbed</option>
+                  <option value="Original Audio">Original Audio</option>
+                  <option value="Dual Audio">Dual Audio</option>
+                  <option value="English">English</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Extra Notes / Message -->
+            <div class="req-form-group">
+              <label class="req-label"><i class="fa-regular fa-comment-dots" style="color: #a855f7; margin-right: 6px;"></i>Notes (Optional)</label>
+              <textarea id="reqNotesInput" class="req-textarea" placeholder="e.g. Please add in 1080p Full HD version or with Bangla subtitles..."></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="btnSubmitRequest" class="req-submit-btn">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Submit Request</span>
+            </button>
+          </form>
+
+          <!-- User's Submitted Requests History -->
+          <div style="margin-top: 14px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+              <h4 style="margin: 0; font-size: 14px; font-weight: 700; color: #fff;">My Requests (আপনার রিকোয়েস্টসমূহ)</h4>
+              <span id="myRequestsCountBadge" style="font-size: 11.5px; color: #8b95a5;">0 Submitted</span>
+            </div>
+            <div id="myRequestsListContainer">
+              <!-- Dynamically populated from JS -->
+            </div>
           </div>
         </div>
       </div>

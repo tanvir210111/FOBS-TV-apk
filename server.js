@@ -1638,6 +1638,41 @@ app.post('/api/feedback', async (req, res) => {
   }
 });
 
+// 5b. Movie & Series Request Endpoint
+app.post('/api/request', async (req, res) => {
+  try {
+    const { title, type, year, language, notes, googleId } = req.body;
+    if (!title || !title.trim()) {
+      return res.status(400).json({ error: 'Title is required' });
+    }
+
+    const saved = await dbService.saveMediaRequest({
+      googleId: googleId || 'guest',
+      title: title.trim(),
+      type: type || 'Movie',
+      year: year || '',
+      language: language || 'Hindi Dubbed',
+      notes: notes || '',
+      status: 'Pending',
+      createdAt: new Date().toISOString()
+    });
+
+    res.json({ success: true, request: saved });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/requests', (req, res) => {
+  try {
+    const { googleId } = req.query;
+    const list = dbService.getMediaRequests(googleId);
+    res.json({ success: true, requests: list });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // 6. Get Broadcast System Notifications
 app.get('/api/notifications', (req, res) => {
   try {

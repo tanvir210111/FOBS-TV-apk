@@ -488,6 +488,33 @@ async function saveFeedback({ googleId = 'guest', name = 'User', email = '', typ
   return doc;
 }
 
+const memoryMediaRequests = [];
+
+async function saveMediaRequest(data) {
+  const doc = {
+    id: `req_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+    googleId: data.googleId || 'guest',
+    title: data.title,
+    type: data.type || 'Movie',
+    year: data.year || '',
+    language: data.language || 'Hindi Dubbed',
+    notes: data.notes || '',
+    status: 'Pending',
+    createdAt: new Date().toISOString()
+  };
+
+  memoryMediaRequests.unshift(doc);
+  if (memoryMediaRequests.length > 200) memoryMediaRequests.pop();
+  return doc;
+}
+
+function getMediaRequests(googleId = null) {
+  if (googleId && googleId !== 'guest') {
+    return memoryMediaRequests.filter(r => r.googleId === googleId);
+  }
+  return memoryMediaRequests;
+}
+
 function getSystemNotifications() {
   return [
     {
@@ -753,6 +780,8 @@ module.exports = {
   toggleWatchlist,
   updateWatchHistory,
   saveFeedback,
+  saveMediaRequest,
+  getMediaRequests,
   getSystemNotifications,
   recordViewerHeartbeat,
   getMediaViews,

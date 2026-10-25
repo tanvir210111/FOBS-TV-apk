@@ -6475,6 +6475,9 @@ function closeDownloadsView(e) {
     overlay.classList.remove('open');
     overlay.style.display = 'none';
   }
+  if (typeof switchMainTab === 'function') {
+    switchMainTab('me');
+  }
 }
 window.closeDownloadsView = closeDownloadsView;
 
@@ -7303,6 +7306,9 @@ function closePreBookingsModal(e) {
     modal.classList.remove('open');
     modal.style.display = 'none';
   }
+  if (typeof switchMainTab === 'function') {
+    switchMainTab('me');
+  }
 }
 window.openPreBookingsModal = openPreBookingsModal;
 window.closePreBookingsModal = closePreBookingsModal;
@@ -7540,10 +7546,73 @@ window.handleAndroidBack = function() {
     return true;
   }
 
+  // -0.95. Movie & Series Request Modal
+  const mediaReqModal = document.getElementById('mediaRequestModal');
+  if (mediaReqModal && (mediaReqModal.classList.contains('open') || mediaReqModal.style.display === 'flex')) {
+    if (typeof closeMediaRequestModal === 'function') closeMediaRequestModal();
+    return true;
+  }
+
+  // -0.94. App Settings Dedicated Page
+  const settingsOverlay = document.getElementById('settingsModalOverlay');
+  if (settingsOverlay && (settingsOverlay.classList.contains('open') || settingsOverlay.style.display === 'flex')) {
+    if (typeof closeSettingsModal === 'function') closeSettingsModal();
+    return true;
+  }
+
+  // -0.93. User Feedback Modal
+  const feedbackOverlay = document.getElementById('feedbackModalOverlay');
+  if (feedbackOverlay && (feedbackOverlay.classList.contains('open') || feedbackOverlay.style.display === 'flex')) {
+    if (typeof closeFeedbackModal === 'function') closeFeedbackModal();
+    return true;
+  }
+
+  // -0.92. System Notifications & Messages Modal
+  const messagesOverlay = document.getElementById('messagesModalOverlay');
+  if (messagesOverlay && (messagesOverlay.classList.contains('open') || messagesOverlay.style.display === 'flex')) {
+    if (typeof closeMessagesModal === 'function') closeMessagesModal();
+    return true;
+  }
+
+  // -0.91. My Activity Modal
+  const activityOverlay = document.getElementById('activityModalOverlay');
+  if (activityOverlay && (activityOverlay.classList.contains('open') || activityOverlay.style.display === 'flex')) {
+    if (typeof closeActivityModal === 'function') closeActivityModal();
+    return true;
+  }
+
+  // -0.90. My List / Watchlist Dedicated Page
+  const watchlistOverlay = document.getElementById('watchlistModalOverlay');
+  if (watchlistOverlay && (watchlistOverlay.classList.contains('open') || watchlistOverlay.style.display === 'flex')) {
+    if (typeof closeWatchlistModal === 'function') closeWatchlistModal();
+    return true;
+  }
+
+  // -0.89. Watch History Dedicated Page
+  const historyOverlay = document.getElementById('historyModalOverlay');
+  if (historyOverlay && (historyOverlay.classList.contains('open') || historyOverlay.style.display === 'flex')) {
+    if (typeof closeHistoryModal === 'function') closeHistoryModal();
+    return true;
+  }
+
+  // -0.88. Downloads Dedicated Page
+  const downloadsOverlay = document.getElementById('downloadsOverlay');
+  if (downloadsOverlay && (downloadsOverlay.classList.contains('open') || downloadsOverlay.style.display === 'flex')) {
+    if (typeof closeDownloadsView === 'function') closeDownloadsView();
+    return true;
+  }
+
   // -0.87. Subtitle Settings & Customizer Modal: close if open
   const subModal = document.getElementById('subtitleModal');
   if (subModal && subModal.classList.contains('open')) {
     if (typeof closeSubtitleModal === 'function') closeSubtitleModal();
+    return true;
+  }
+
+  // -0.86. Sign-In / Auth Modal: close if open
+  const authModal = document.getElementById('fobsAuthModal');
+  if (authModal && (authModal.classList.contains('open') || authModal.style.display === 'flex')) {
+    if (typeof closeAuthModal === 'function') closeAuthModal();
     return true;
   }
 
@@ -7577,7 +7646,7 @@ window.handleAndroidBack = function() {
 
   // -0.6. Pre-Bookings modal: close if open
   const preBookingsModal = document.getElementById('preBookingsModal');
-  if (preBookingsModal && preBookingsModal.style.display !== 'none' && preBookingsModal.style.display !== '') {
+  if (preBookingsModal && (preBookingsModal.classList.contains('open') || (preBookingsModal.style.display !== 'none' && preBookingsModal.style.display !== ''))) {
     closePreBookingsModal();
     return true;
   }
@@ -8503,6 +8572,9 @@ function closeWatchlistModal(e) {
     overlay.classList.remove('open');
     overlay.style.display = 'none';
   }
+  if (typeof switchMainTab === 'function') {
+    switchMainTab('me');
+  }
 }
 window.closeWatchlistModal = closeWatchlistModal;
 
@@ -8626,6 +8698,9 @@ function closeHistoryModal(e) {
   if (overlay) {
     overlay.classList.remove('open');
     overlay.style.display = 'none';
+  }
+  if (typeof switchMainTab === 'function') {
+    switchMainTab('me');
   }
 }
 window.closeHistoryModal = closeHistoryModal;
@@ -8956,6 +9031,9 @@ function closeSettingsModal(e) {
     overlay.classList.remove('open');
     overlay.style.display = 'none';
   }
+  if (typeof switchMainTab === 'function') {
+    switchMainTab('me');
+  }
 }
 window.closeSettingsModal = closeSettingsModal;
 
@@ -9012,7 +9090,7 @@ function openCreditsModal() {
 window.openCreditsModal = openCreditsModal;
 
 function closeCreditsModal(e) {
-  if (e && e.target !== document.getElementById('creditsOverlay') && !e.target.closest('.credits-back-btn')) {
+  if (e && e.target !== document.getElementById('creditsOverlay') && !e.target.closest('.credits-back-btn') && !e.target.closest('.mb-page-back-btn')) {
     return;
   }
   const overlay = document.getElementById('creditsOverlay');
@@ -9021,6 +9099,9 @@ function closeCreditsModal(e) {
     setTimeout(() => {
       overlay.style.display = 'none';
     }, 250);
+  }
+  if (typeof switchMainTab === 'function') {
+    switchMainTab('me');
   }
 }
 window.closeCreditsModal = closeCreditsModal;
@@ -9071,6 +9152,9 @@ function closeFeedbackModal(e) {
   if (overlay) {
     overlay.classList.remove('open');
     overlay.style.display = 'none';
+  }
+  if (typeof switchMainTab === 'function') {
+    switchMainTab('me');
   }
 }
 window.closeFeedbackModal = closeFeedbackModal;
@@ -9146,6 +9230,9 @@ function closeMessagesModal(e) {
   if (overlay) {
     overlay.classList.remove('open');
     overlay.style.display = 'none';
+  }
+  if (typeof switchMainTab === 'function') {
+    switchMainTab('me');
   }
 }
 window.closeMessagesModal = closeMessagesModal;
@@ -9244,6 +9331,9 @@ function closeActivityModal(e) {
     overlay.classList.remove('open');
     overlay.style.display = 'none';
   }
+  if (typeof switchMainTab === 'function') {
+    switchMainTab('me');
+  }
 }
 window.closeActivityModal = closeActivityModal;
 
@@ -9310,14 +9400,238 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-// Initial render for Me screen and Downloads when DOM is ready
+// Initial render for Me screen, Downloads, and Swipe Back gesture when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     updateAuthUI();
     renderMeHistorySlider();
     renderDownloadsForYou();
+    initFullscreenSwipeBackGesture();
   }, 300);
 });
+
+// ============================================================
+// MOVIE & SERIES REQUEST SYSTEM (COMMUNITY & SERVER SYNCED)
+// ============================================================
+
+let currentReqType = 'Movie';
+
+function openMediaRequestModal() {
+  const overlay = document.getElementById('mediaRequestModal');
+  if (overlay) {
+    overlay.classList.add('open');
+    overlay.style.display = 'flex';
+    renderMyRequestsList();
+  }
+}
+window.openMediaRequestModal = openMediaRequestModal;
+
+function closeMediaRequestModal(e) {
+  if (e && e.target !== document.getElementById('mediaRequestModal') && !e.target.closest('.sheet-close-btn') && !e.target.closest('.mb-page-back-btn')) {
+    return;
+  }
+  const overlay = document.getElementById('mediaRequestModal');
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.style.display = 'none';
+  }
+  if (typeof switchMainTab === 'function') {
+    switchMainTab('me');
+  }
+}
+window.closeMediaRequestModal = closeMediaRequestModal;
+
+function selectReqType(type) {
+  currentReqType = type;
+  const pills = document.querySelectorAll('.req-type-pill');
+  pills.forEach(p => {
+    if (p.getAttribute('data-type') === type) {
+      p.classList.add('active');
+    } else {
+      p.classList.remove('active');
+    }
+  });
+}
+window.selectReqType = selectReqType;
+
+async function submitMediaRequest() {
+  const titleEl = document.getElementById('reqTitleInput');
+  const yearEl = document.getElementById('reqYearInput');
+  const langEl = document.getElementById('reqLangInput');
+  const noteEl = document.getElementById('reqNoteInput');
+  const submitBtn = document.getElementById('reqSubmitBtn');
+
+  const title = titleEl ? titleEl.value.trim() : '';
+  if (!title) {
+    showToast('অনুগ্রহ করে মুভি বা সিরিজের নাম লিখুন!');
+    if (titleEl) titleEl.focus();
+    return;
+  }
+
+  const payload = {
+    googleId: currentUser ? currentUser.googleId : 'guest',
+    userName: currentUser ? currentUser.name : 'FOBS Member',
+    title: title,
+    type: currentReqType || 'Movie',
+    year: yearEl ? yearEl.value.trim() : '',
+    language: langEl ? langEl.value : 'Hindi / Dual Audio',
+    notes: noteEl ? noteEl.value.trim() : ''
+  };
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+  }
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/request`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(() => null);
+
+    // Save locally to localStorage so it's instantly available offline
+    try {
+      const localReqs = JSON.parse(localStorage.getItem('fobs_my_requests') || '[]');
+      localReqs.unshift({
+        id: 'req_' + Date.now(),
+        ...payload,
+        status: 'Pending',
+        createdAt: new Date().toISOString()
+      });
+      localStorage.setItem('fobs_my_requests', JSON.stringify(localReqs.slice(0, 30)));
+    } catch (e) {}
+
+    showToast('আপনার রিকোয়েস্ট জমা হয়েছে! শীঘ্রই অ্যাড করা হবে 🎉');
+
+    if (titleEl) titleEl.value = '';
+    if (yearEl) yearEl.value = '';
+    if (noteEl) noteEl.value = '';
+
+    renderMyRequestsList();
+  } catch (err) {
+    showToast('রিকোয়েস্ট সেভ হয়েছে! ধন্যবাদ 🎉');
+    renderMyRequestsList();
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Request';
+    }
+  }
+}
+window.submitMediaRequest = submitMediaRequest;
+
+async function renderMyRequestsList() {
+  const container = document.getElementById('myRequestsListContainer');
+  if (!container) return;
+
+  const localReqs = JSON.parse(localStorage.getItem('fobs_my_requests') || '[]');
+  let list = localReqs;
+
+  try {
+    const gid = currentUser ? currentUser.googleId : 'guest';
+    const res = await fetch(`${API_BASE_URL}/api/requests?googleId=${encodeURIComponent(gid)}`).catch(() => null);
+    if (res && res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.requests) && data.requests.length > 0) {
+        list = data.requests;
+      }
+    }
+  } catch (e) {}
+
+  if (!list || list.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 28px 16px; color: #64748b; font-size: 13px;">
+        <i class="fa-regular fa-folder-open" style="font-size: 28px; margin-bottom: 8px; display: block; opacity: 0.6; color: #ffd700;"></i>
+        এখনো কোনো রিকোয়েস্ট করেননি। পছন্দের মুভি বা সিরিজ রিকোয়েস্ট করুন!
+      </div>
+    `;
+    return;
+  }
+
+  const typeIcons = {
+    'Movie': 'fa-film',
+    'Web Series': 'fa-tv',
+    'Anime': 'fa-dragon',
+    'Live TV': 'fa-satellite-dish'
+  };
+
+  container.innerHTML = list.map(item => {
+    let statusClass = 'pending';
+    let statusText = 'Pending';
+    if (item.status === 'Added') {
+      statusClass = 'added';
+      statusText = 'Added ✓';
+    } else if (item.status === 'In Progress') {
+      statusClass = 'progress';
+      statusText = 'Finding Source...';
+    }
+
+    const icon = typeIcons[item.type] || 'fa-clapperboard';
+    const dateStr = item.createdAt ? new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Recently';
+
+    return `
+      <div class="req-item-card">
+        <div class="req-item-top">
+          <div class="req-item-title-wrap">
+            <div class="req-item-title">
+              <i class="fa-solid ${icon}" style="color: #ffd700; font-size: 13px;"></i>
+              ${item.title}
+            </div>
+            <div class="req-item-meta">
+              <span>${item.type || 'Movie'}</span>
+              ${item.year ? `<span>• ${item.year}</span>` : ''}
+              <span>• ${item.language || 'Dual Audio'}</span>
+            </div>
+          </div>
+          <span class="req-status-badge ${statusClass}">${statusText}</span>
+        </div>
+        <div class="req-item-bottom">
+          <span class="req-item-date"><i class="fa-regular fa-clock"></i> ${dateStr}</span>
+          ${item.notes ? `<span class="req-item-notes">${item.notes}</span>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+window.renderMyRequestsList = renderMyRequestsList;
+
+// ============================================================
+// NATIVE SWIPE-TO-BACK TOUCH GESTURE (LEFT EDGE TO RIGHT)
+// ============================================================
+function initFullscreenSwipeBackGesture() {
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchStartTime = 0;
+  let isSwiping = false;
+
+  window.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchStartTime = Date.now();
+    // Allow swipe back if touch starts in the left 140px of screen
+    isSwiping = touchStartX < 140;
+  }, { passive: true });
+
+  window.addEventListener('touchend', (e) => {
+    if (!isSwiping || e.changedTouches.length !== 1) return;
+    const touch = e.changedTouches[0];
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
+    const deltaTime = Date.now() - touchStartTime;
+
+    // Swipe right threshold: horizontal drag > 55px, horizontal > vertical * 1.3, within 500ms
+    if (deltaX > 55 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3 && deltaTime < 500) {
+      if (typeof window.handleAndroidBack === 'function') {
+        window.handleAndroidBack();
+      }
+    }
+    isSwiping = false;
+  }, { passive: true });
+}
+window.initFullscreenSwipeBackGesture = initFullscreenSwipeBackGesture;
+
 
 
 
