@@ -137,6 +137,12 @@ function writeViewsMap(map) {
 }
 
 class AdminService {
+  readContent() {
+    return readContent();
+  }
+  writeContent(data) {
+    return writeContent(data);
+  }
   /**
    * Verify password & issue JWT
    */

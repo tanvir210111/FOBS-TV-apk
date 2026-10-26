@@ -96,84 +96,12 @@ let _cachedContentData = null;
 let _cachedMtimeMs = 0;
 
 function getContentData() {
-  try {
-    const fileToRead = fs.existsSync(LOCAL_DATA_FILE) ? LOCAL_DATA_FILE : DATA_FILE;
-    const stat = fs.statSync(fileToRead);
-    if (!_cachedContentData || stat.mtimeMs !== _cachedMtimeMs) {
-      let baseData = null;
-      if (fs.existsSync(LOCAL_DATA_FILE)) {
-        try {
-          const l = JSON.parse(fs.readFileSync(LOCAL_DATA_FILE, 'utf-8'));
-          if (l && (l.movies?.length > 0 || l.series?.length > 0)) baseData = l;
-        } catch(e) {}
-      }
-
-      let gitData = null;
-      if (fs.existsSync(DATA_FILE)) {
-        try {
-          gitData = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
-        } catch(e) {}
-      }
-
-      if (baseData) {
-        if (gitData) {
-          const mIds = new Set((baseData.movies || []).map(m => m.id || m.subjectId));
-          for (const m of gitData.movies || []) {
-            if (!mIds.has(m.id) && !mIds.has(m.subjectId)) {
-              baseData.movies.push(m);
-              mIds.add(m.id);
-            }
-          }
-          const sIds = new Set((baseData.series || []).map(s => s.id || s.subjectId));
-          for (const s of gitData.series || []) {
-            if (!sIds.has(s.id) && !sIds.has(s.subjectId)) {
-              baseData.series.push(s);
-              sIds.add(s.id);
-            }
-          }
-          if (!baseData.liveTv || baseData.liveTv.length === 0) baseData.liveTv = gitData.liveTv;
-        }
-        _cachedContentData = baseData;
-        _cachedMtimeMs = stat.mtimeMs;
-        return JSON.parse(JSON.stringify(_cachedContentData));
-      }
-
-      if (gitData && (gitData.movies?.length > 0 || gitData.series?.length > 0)) {
-        _cachedContentData = gitData;
-        _cachedMtimeMs = stat.mtimeMs;
-        return JSON.parse(JSON.stringify(_cachedContentData));
-      }
-
-      if (fs.existsSync(BACKUP_DATA_FILE)) {
-        const backupRaw = fs.readFileSync(BACKUP_DATA_FILE, 'utf-8');
-        _cachedContentData = JSON.parse(backupRaw);
-        _cachedMtimeMs = Date.now();
-        return JSON.parse(JSON.stringify(_cachedContentData));
-      }
-    }
-    return JSON.parse(JSON.stringify(_cachedContentData));
-  } catch (err) {
-    console.error('Error reading content data:', err.message);
-    if (fs.existsSync(BACKUP_DATA_FILE)) {
-      try {
-        return JSON.parse(fs.readFileSync(BACKUP_DATA_FILE, 'utf-8'));
-      } catch(e) {}
-    }
-    return { featured: {}, movies: [], series: [], liveTv: [] };
-  }
+  return adminService.readContent();
 }
 
 // Helper to save data
 function saveContentData(data) {
-  _cachedContentData = null;
-  _cachedMtimeMs = 0;
-  fs.writeFileSync(LOCAL_DATA_FILE, JSON.stringify(data), 'utf-8');
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data), 'utf-8');
-  if (data && (data.movies?.length > 0 || data.series?.length > 0)) {
-    try {
-      fs.writeFileSync(BACKUP_DATA_FILE, JSON.stringify(data), 'utf-8');
-    } catch(e) {}
-  }
+  return adminService.writeContent(data);
 }
 
 // MovieBox Subject ID to detailPath lookup map
@@ -669,7 +597,9 @@ app.get('/api/resolve', async (req, res) => {
 // API: Get all contents
 app.get('/api/content', async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'public, max-age=15, stale-while-revalidate=30');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
 
     const data = getContentData();
     const nowMs = Date.now();
