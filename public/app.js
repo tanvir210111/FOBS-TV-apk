@@ -699,7 +699,7 @@ function renderHeroBanner() {
 
   if (cardsTrack) {
     cardsTrack.innerHTML = loopCardsList.map((slide, idx) => {
-      const isSeries = !!slide.episodes || slide.type === 'series';
+      const isSeries = slide.type === 'series' || !!slide.episodes || (slide.id && slide.id.startsWith('mb-s-')) || (slide.seasons && slide.seasons.length > 0);
       const originalIndex = idx % heroItems.length;
       return `
         <div class="hero-peek-card ${idx === 0 ? 'active' : ''}" data-index="${originalIndex}" onclick="handleHeroCardClick(event, '${isSeries ? 'series' : 'movie'}', '${slide.id}')">
@@ -741,7 +741,8 @@ function handleActiveHeroClick(tab) {
   if (tab === 'home' && heroItems && heroItems.length > 0) {
     const activeItem = heroItems[currentHeroIndex % heroItems.length];
     if (activeItem) {
-      const type = (activeItem.episodes || activeItem.type === 'series') ? 'series' : 'movie';
+      const isSer = activeItem.type === 'series' || !!activeItem.episodes || (activeItem.id && activeItem.id.startsWith('mb-s-')) || (activeItem.seasons && activeItem.seasons.length > 0);
+      const type = isSer ? 'series' : 'movie';
       openPlayerById(type, activeItem.id);
     }
   } else if (tab === 'movie' && movieHeroItems && movieHeroItems.length > 0) {
@@ -2712,10 +2713,10 @@ function switchSeason(seasonNumber) {
 function openPlayerById(type, id) {
   let item = null;
   if (type === 'movie') {
-    item = appState.content.movies.find(m => m.id === id);
+    item = (appState.content.movies || []).find(m => m.id === id);
     if (item) item.type = 'movie';
   } else if (type === 'series') {
-    item = appState.content.series.find(s => s.id === id);
+    item = (appState.content.series || []).find(s => s.id === id);
     if (item) item.type = 'series';
   } else if (type === 'upcoming') {
     item = (appState.content.upcoming || []).find(u => u.id === id);
@@ -2725,10 +2726,45 @@ function openPlayerById(type, id) {
     }
   }
 
+  // Universal Fallback: If item not found under specified type, search across all catalogs
+  if (!item) {
+    item = (appState.content.series || []).find(s => s.id === id);
+    if (item) {
+      item.type = 'series';
+    } else {
+      item = (appState.content.movies || []).find(m => m.id === id);
+      if (item) {
+        item.type = 'movie';
+      } else if (appState.content.featured && appState.content.featured.id === id) {
+        item = appState.content.featured;
+        const isSer = item.type === 'series' || (item.id && item.id.startsWith('mb-s-')) || (item.seasons && item.seasons.length > 0) || (item.episodes && item.episodes.length > 0);
+        item.type = isSer ? 'series' : 'movie';
+      } else {
+        item = (appState.content.upcoming || []).find(u => u.id === id);
+        if (item) {
+          openUpcomingBookingModal(item);
+          return;
+        } else {
+          item = (appState.content.liveTv || []).find(t => t.id === id);
+          if (item) {
+            openLiveTvPlayer(id);
+            return;
+          }
+        }
+      }
+    }
+  }
+
   if (item) {
     if (item.type === 'upcoming' || (item.badgeRight && item.badgeRight.toLowerCase().includes('coming'))) {
       openUpcomingBookingModal(item);
       return;
+    }
+    // Ensure series has episodes array populated from seasons if needed
+    if ((item.type === 'series' || (item.seasons && item.seasons.length > 0)) && (!item.episodes || item.episodes.length === 0)) {
+      if (item.seasons && item.seasons[0] && item.seasons[0].episodes) {
+        item.episodes = item.seasons[0].episodes;
+      }
     }
     openPlayer(item);
   }
@@ -2855,7 +2891,13 @@ function openPlayer(media, episodeIndex = 0) {
     history.pushState({ screen: 'player' }, '');
   } catch (e) {}
 
-  const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-')) || (media.seasons && media.seasons.length > 0);
+  const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && (media.id.startsWith('kmdl-s-') || media.id.startsWith('mb-s-'))) || (media.seasons && media.seasons.length > 0);
+  if (isSeries) {
+    media.type = 'series';
+    if ((!media.episodes || media.episodes.length === 0) && media.seasons && media.seasons[0] && media.seasons[0].episodes) {
+      media.episodes = media.seasons[0].episodes;
+    }
+  }
 
   // Set Clean Title: only one "[Hindi]" or "[Fan Dubbed]" tag
   const ongoingTag = (media.isOngoing || media.badgeRight === 'ONGOING' || media.status === 'Ongoing') && !media.title.toLowerCase().includes('ongoing') ? ' [Ongoing]' : '';

@@ -1101,13 +1101,18 @@ class AdminService {
       const series = (content.series || []).find(s => s.id === payload.id);
       const base = movie || series;
       if (base) {
+        const itemType = payload.type || (movie ? 'movie' : 'series');
         featuredItem = {
           ...base,
           ...payload,
+          type: itemType,
           cover: payload.cover || payload.backdrop || base.cover || base.backdrop || base.poster,
           backdrop: payload.cover || payload.backdrop || base.backdrop || base.cover || base.poster,
           poster: payload.poster || base.poster
         };
+        if (itemType === 'series' && (!featuredItem.episodes || featuredItem.episodes.length === 0) && base.seasons && base.seasons[0] && base.seasons[0].episodes) {
+          featuredItem.episodes = base.seasons[0].episodes;
+        }
       }
     }
 

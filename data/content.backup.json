@@ -444,7 +444,394 @@
         ]
       }
     ],
-    "description": "Final Table - Full season streaming on FOBS TV."
+    "description": "Final Table - Full season streaming on FOBS TV.",
+    "type": "series",
+    "episodes": [
+      {
+        "number": "01",
+        "episode": 1,
+        "season": 1,
+        "title": "Episode 1",
+        "duration": "45 min",
+        "still": "https://pbcdnw.aoneroom.com/image/2026/10/25/527d29143b34ac60780899f45d2c0a2d.jpg",
+        "stillPath": "https://pbcdnw.aoneroom.com/image/2026/10/25/527d29143b34ac60780899f45d2c0a2d.jpg",
+        "streamUrl": "/api/moviebox/stream?id=3292762350108954536&path=final-table-hindi-OjBf6HXSeV3&se=1&ep=1",
+        "servers": [
+          {
+            "name": "Server 1 (HD - Auto-Renewing 1080p)",
+            "url": "/api/moviebox/stream?id=3292762350108954536&path=final-table-hindi-OjBf6HXSeV3&se=1&ep=1",
+            "quality": "1080p",
+            "audio": "Original Audio",
+            "isDirect": true
+          },
+          {
+            "name": "Server 2 (Direct Fast CDN)",
+            "url": "https://bcdnxw.hakunaymatata.com/cms/0f69bafbed8de43e34e46651ec4de005.mp4?sign=d66e57a905c58e5d8b45065735caa4b9&t=1792951972",
+            "quality": "1080p",
+            "audio": "Original Audio",
+            "isDirect": true
+          }
+        ],
+        "captions": [
+          {
+            "id": "ep1_sub_ar_0",
+            "label": "ar",
+            "language": "ar",
+            "srclang": "ar",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/b59c78916f1569b4f93cc3300a1f8b02.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/b59c78916f1569b4f93cc3300a1f8b02.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep1_sub_en_1",
+            "label": "English",
+            "language": "en",
+            "srclang": "en",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/de9e9a5376f972a97500fea846621930.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/de9e9a5376f972a97500fea846621930.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep1_sub_es_2",
+            "label": "es",
+            "language": "es",
+            "srclang": "es",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/be3ff5132f3b1a2d9efd4b711b4db63f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/be3ff5132f3b1a2d9efd4b711b4db63f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep1_sub_fil_3",
+            "label": "fil",
+            "language": "fil",
+            "srclang": "fil",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/ad4ec030b525c95226549e0362febb0e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/ad4ec030b525c95226549e0362febb0e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep1_sub_fr_4",
+            "label": "fr",
+            "language": "fr",
+            "srclang": "fr",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/864ea7bb8ed54018c702c3c5a6882be3.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/864ea7bb8ed54018c702c3c5a6882be3.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep1_sub_hi_5",
+            "label": "Hindi (हिन्दी)",
+            "language": "hi",
+            "srclang": "hi",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/c1415689eef67326b1a279b32a1909da.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/c1415689eef67326b1a279b32a1909da.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep1_sub_in_id_6",
+            "label": "in_id",
+            "language": "in_id",
+            "srclang": "in_id",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/a61d45cda3d7193a5e2b6109dcb7257f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/a61d45cda3d7193a5e2b6109dcb7257f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep1_sub_ms_7",
+            "label": "ms",
+            "language": "ms",
+            "srclang": "ms",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/515263356b284d5da70587fb830fe7e0.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/515263356b284d5da70587fb830fe7e0.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep1_sub_pt_8",
+            "label": "pt",
+            "language": "pt",
+            "srclang": "pt",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/32d5d286e2c7c36d481a115a93009743.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/32d5d286e2c7c36d481a115a93009743.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          }
+        ],
+        "subtitles": [
+          {
+            "id": "ep1_sub_ar_0",
+            "label": "ar",
+            "language": "ar",
+            "srclang": "ar",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/b59c78916f1569b4f93cc3300a1f8b02.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/b59c78916f1569b4f93cc3300a1f8b02.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep1_sub_en_1",
+            "label": "English",
+            "language": "en",
+            "srclang": "en",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/de9e9a5376f972a97500fea846621930.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/de9e9a5376f972a97500fea846621930.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep1_sub_es_2",
+            "label": "es",
+            "language": "es",
+            "srclang": "es",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/be3ff5132f3b1a2d9efd4b711b4db63f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/be3ff5132f3b1a2d9efd4b711b4db63f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep1_sub_fil_3",
+            "label": "fil",
+            "language": "fil",
+            "srclang": "fil",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/ad4ec030b525c95226549e0362febb0e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/ad4ec030b525c95226549e0362febb0e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep1_sub_fr_4",
+            "label": "fr",
+            "language": "fr",
+            "srclang": "fr",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/864ea7bb8ed54018c702c3c5a6882be3.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/864ea7bb8ed54018c702c3c5a6882be3.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep1_sub_hi_5",
+            "label": "Hindi (हिन्दी)",
+            "language": "hi",
+            "srclang": "hi",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/c1415689eef67326b1a279b32a1909da.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/c1415689eef67326b1a279b32a1909da.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep1_sub_in_id_6",
+            "label": "in_id",
+            "language": "in_id",
+            "srclang": "in_id",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/a61d45cda3d7193a5e2b6109dcb7257f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/a61d45cda3d7193a5e2b6109dcb7257f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep1_sub_ms_7",
+            "label": "ms",
+            "language": "ms",
+            "srclang": "ms",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/515263356b284d5da70587fb830fe7e0.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/515263356b284d5da70587fb830fe7e0.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep1_sub_pt_8",
+            "label": "pt",
+            "language": "pt",
+            "srclang": "pt",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/32d5d286e2c7c36d481a115a93009743.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/32d5d286e2c7c36d481a115a93009743.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          }
+        ]
+      },
+      {
+        "number": "02",
+        "episode": 2,
+        "season": 1,
+        "title": "Episode 2",
+        "duration": "45 min",
+        "still": "https://pbcdnw.aoneroom.com/image/2026/10/25/527d29143b34ac60780899f45d2c0a2d.jpg",
+        "stillPath": "https://pbcdnw.aoneroom.com/image/2026/10/25/527d29143b34ac60780899f45d2c0a2d.jpg",
+        "streamUrl": "/api/moviebox/stream?id=3292762350108954536&path=final-table-hindi-OjBf6HXSeV3&se=1&ep=2",
+        "servers": [
+          {
+            "name": "Server 1 (HD - Auto-Renewing 1080p)",
+            "url": "/api/moviebox/stream?id=3292762350108954536&path=final-table-hindi-OjBf6HXSeV3&se=1&ep=2",
+            "quality": "1080p",
+            "audio": "Original Audio",
+            "isDirect": true
+          },
+          {
+            "name": "Server 2 (Direct Fast CDN)",
+            "url": "https://bcdnxw.hakunaymatata.com/cms/63bf7bbf7b1f1420f804ae34ae432ea8.mp4?sign=ca90893e321e335853515724e1bf5256&t=1792951613",
+            "quality": "1080p",
+            "audio": "Original Audio",
+            "isDirect": true
+          }
+        ],
+        "captions": [
+          {
+            "id": "ep2_sub_ar_0",
+            "label": "ar",
+            "language": "ar",
+            "srclang": "ar",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/309145f266529ec357938ea2d7b4dd18.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/309145f266529ec357938ea2d7b4dd18.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep2_sub_en_1",
+            "label": "English",
+            "language": "en",
+            "srclang": "en",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/eb73e327cb09be803f07083e01fc8a47.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/eb73e327cb09be803f07083e01fc8a47.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep2_sub_es_2",
+            "label": "es",
+            "language": "es",
+            "srclang": "es",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/d4b763810f67f39c07896334471f8aa2.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/d4b763810f67f39c07896334471f8aa2.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep2_sub_fil_3",
+            "label": "fil",
+            "language": "fil",
+            "srclang": "fil",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/5065ab27567e1269ab2fcb86f4ee32aa.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/5065ab27567e1269ab2fcb86f4ee32aa.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep2_sub_fr_4",
+            "label": "fr",
+            "language": "fr",
+            "srclang": "fr",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/bc8e47519ca3e3475f77b4da4f90d58a.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/bc8e47519ca3e3475f77b4da4f90d58a.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep2_sub_hi_5",
+            "label": "Hindi (हिन्दी)",
+            "language": "hi",
+            "srclang": "hi",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/5a72d5b426742d41a4b4fdf86dbf3eed.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/5a72d5b426742d41a4b4fdf86dbf3eed.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep2_sub_in_id_6",
+            "label": "in_id",
+            "language": "in_id",
+            "srclang": "in_id",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/97a6cf9b7b16c525e3434fda0233cf3e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/97a6cf9b7b16c525e3434fda0233cf3e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep2_sub_ms_7",
+            "label": "ms",
+            "language": "ms",
+            "srclang": "ms",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/fa554b56856b7bc4166f330074b7bbea.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/fa554b56856b7bc4166f330074b7bbea.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep2_sub_pt_8",
+            "label": "pt",
+            "language": "pt",
+            "srclang": "pt",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/9e90d8268a8fc35969241b238fb74b6d.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/9e90d8268a8fc35969241b238fb74b6d.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          }
+        ],
+        "subtitles": [
+          {
+            "id": "ep2_sub_ar_0",
+            "label": "ar",
+            "language": "ar",
+            "srclang": "ar",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/309145f266529ec357938ea2d7b4dd18.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/309145f266529ec357938ea2d7b4dd18.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep2_sub_en_1",
+            "label": "English",
+            "language": "en",
+            "srclang": "en",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/eb73e327cb09be803f07083e01fc8a47.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/eb73e327cb09be803f07083e01fc8a47.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep2_sub_es_2",
+            "label": "es",
+            "language": "es",
+            "srclang": "es",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/d4b763810f67f39c07896334471f8aa2.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/d4b763810f67f39c07896334471f8aa2.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep2_sub_fil_3",
+            "label": "fil",
+            "language": "fil",
+            "srclang": "fil",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/5065ab27567e1269ab2fcb86f4ee32aa.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/5065ab27567e1269ab2fcb86f4ee32aa.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep2_sub_fr_4",
+            "label": "fr",
+            "language": "fr",
+            "srclang": "fr",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/bc8e47519ca3e3475f77b4da4f90d58a.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/bc8e47519ca3e3475f77b4da4f90d58a.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep2_sub_hi_5",
+            "label": "Hindi (हिन्दी)",
+            "language": "hi",
+            "srclang": "hi",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/5a72d5b426742d41a4b4fdf86dbf3eed.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/5a72d5b426742d41a4b4fdf86dbf3eed.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep2_sub_in_id_6",
+            "label": "in_id",
+            "language": "in_id",
+            "srclang": "in_id",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/97a6cf9b7b16c525e3434fda0233cf3e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/97a6cf9b7b16c525e3434fda0233cf3e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep2_sub_ms_7",
+            "label": "ms",
+            "language": "ms",
+            "srclang": "ms",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/fa554b56856b7bc4166f330074b7bbea.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/fa554b56856b7bc4166f330074b7bbea.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          },
+          {
+            "id": "ep2_sub_pt_8",
+            "label": "pt",
+            "language": "pt",
+            "srclang": "pt",
+            "src": "https://cacdn.hakunaymatata.com/subtitle/9e90d8268a8fc35969241b238fb74b6d.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "url": "https://cacdn.hakunaymatata.com/subtitle/9e90d8268a8fc35969241b238fb74b6d.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+            "format": "srt"
+          }
+        ]
+      }
+    ]
   },
   "movies": [
     {
@@ -509,7 +896,8 @@
         }
       ],
       "views": 0,
-      "description": "BTS: The Return [Hindi] (2026) - Latest Korean movie with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "BTS: The Return [Hindi] (2026) - Latest Korean movie with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-4666948055344764304",
@@ -768,7 +1156,8 @@
         }
       ],
       "views": 0,
-      "description": "Project Y [Hindi] (2026) - Latest Korean movie with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "Project Y [Hindi] (2026) - Latest Korean movie with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-8280774283480165112",
@@ -1009,7 +1398,8 @@
         }
       ],
       "views": 0,
-      "description": "Salmokji: Whispering Water [Hindi] (2026) - Latest Korean movie with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "Salmokji: Whispering Water [Hindi] (2026) - Latest Korean movie with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-7022932076140052616",
@@ -1214,7 +1604,8 @@
         }
       ],
       "views": 0,
-      "description": "HUMINT [Hindi] (2026) - Latest Korean movie with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "HUMINT [Hindi] (2026) - Latest Korean movie with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-375424786782110040",
@@ -1298,7 +1689,8 @@
           "format": "srt"
         }
       ],
-      "description": "Deadpool & Wolverine [Hindi] - Available in high definition on FOBS TV."
+      "description": "Deadpool & Wolverine [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-1792151961622430264",
@@ -1382,7 +1774,8 @@
           "format": "srt"
         }
       ],
-      "description": "Eternals [Hindi] - Available in high definition on FOBS TV."
+      "description": "Eternals [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-7483450801005233712",
@@ -1466,7 +1859,8 @@
           "format": "srt"
         }
       ],
-      "description": "Shang-Chi and the Legend of the Ten Rings [Hindi] - Available in high definition on FOBS TV."
+      "description": "Shang-Chi and the Legend of the Ten Rings [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-568300017014950056",
@@ -1550,7 +1944,8 @@
           "format": "srt"
         }
       ],
-      "description": "Black Widow [Hindi] - Available in high definition on FOBS TV."
+      "description": "Black Widow [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-8038785631381848184",
@@ -1634,7 +2029,8 @@
           "format": "srt"
         }
       ],
-      "description": "The Marvels [Hindi] - Available in high definition on FOBS TV."
+      "description": "The Marvels [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-2518689608666335128",
@@ -1704,7 +2100,8 @@
           "format": "srt"
         }
       ],
-      "description": "Captain Marvel [Hindi] - Available in high definition on FOBS TV."
+      "description": "Captain Marvel [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-122882320390128384",
@@ -1788,7 +2185,8 @@
           "format": "srt"
         }
       ],
-      "description": "Black Panther: Wakanda Forever [Hindi] - Available in high definition on FOBS TV."
+      "description": "Black Panther: Wakanda Forever [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-3145323181079150880",
@@ -2034,7 +2432,8 @@
           "format": "srt"
         }
       ],
-      "description": "Black Panther [Hindi] - Available in high definition on FOBS TV."
+      "description": "Black Panther [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-3559038435602089312",
@@ -2104,7 +2503,8 @@
           "format": "srt"
         }
       ],
-      "description": "Spider-Man: No Way Home [Hindi] - Available in high definition on FOBS TV."
+      "description": "Spider-Man: No Way Home [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-967665729967376560",
@@ -2174,7 +2574,8 @@
           "format": "srt"
         }
       ],
-      "description": "Spider-Man: Far From Home [Hindi] - Available in high definition on FOBS TV."
+      "description": "Spider-Man: Far From Home [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-5441389938489050856",
@@ -2265,7 +2666,8 @@
           "format": "srt"
         }
       ],
-      "description": "Doctor Strange in the Multiverse of Madness [Hindi] - Available in high definition on FOBS TV."
+      "description": "Doctor Strange in the Multiverse of Madness [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-885184765698212968",
@@ -2335,7 +2737,8 @@
           "format": "srt"
         }
       ],
-      "description": "Doctor Strange [Hindi] - Available in high definition on FOBS TV."
+      "description": "Doctor Strange [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-7686600967399557800",
@@ -2399,7 +2802,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Ant-Man and the Wasp: Quantumania [Hindi] - Available in high definition on FOBS TV."
+      "description": "Ant-Man and the Wasp: Quantumania [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-4354700815316173632",
@@ -2476,7 +2880,8 @@
           "format": "srt"
         }
       ],
-      "description": "Ant-Man and the Wasp [Hindi] - Available in high definition on FOBS TV."
+      "description": "Ant-Man and the Wasp [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-2598285454424376904",
@@ -2533,7 +2938,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Ant-Man [Hindi] - Available in high definition on FOBS TV."
+      "description": "Ant-Man [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-323259557113987728",
@@ -2583,7 +2989,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Guardians of the Galaxy Vol. 3 [Hindi] - Available in high definition on FOBS TV."
+      "description": "Guardians of the Galaxy Vol. 3 [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-764094588058567056",
@@ -2660,7 +3067,8 @@
           "format": "srt"
         }
       ],
-      "description": "Guardians of the Galaxy Vol. 2 [Hindi] - Available in high definition on FOBS TV."
+      "description": "Guardians of the Galaxy Vol. 2 [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-6674767695357380288",
@@ -2737,7 +3145,8 @@
           "format": "srt"
         }
       ],
-      "description": "Guardians of the Galaxy [Hindi] - Available in high definition on FOBS TV."
+      "description": "Guardians of the Galaxy [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-4570768632724293216",
@@ -2828,7 +3237,8 @@
           "format": "srt"
         }
       ],
-      "description": "Avengers: Endgame [Hindi] - Available in high definition on FOBS TV."
+      "description": "Avengers: Endgame [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-5286679345266918984",
@@ -2898,7 +3308,8 @@
           "format": "srt"
         }
       ],
-      "description": "Avengers: Infinity War [Hindi] - Available in high definition on FOBS TV."
+      "description": "Avengers: Infinity War [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-2360386322545738664",
@@ -2982,7 +3393,8 @@
           "format": "srt"
         }
       ],
-      "description": "Avengers: Age of Ultron [Hindi] - Available in high definition on FOBS TV."
+      "description": "Avengers: Age of Ultron [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-7463045102144291536",
@@ -3059,7 +3471,8 @@
           "format": "srt"
         }
       ],
-      "description": "The Avengers [Hindi] - Available in high definition on FOBS TV."
+      "description": "The Avengers [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-5836403273317631032",
@@ -3136,7 +3549,8 @@
           "format": "srt"
         }
       ],
-      "description": "Captain America: Civil War [Hindi] - Available in high definition on FOBS TV."
+      "description": "Captain America: Civil War [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-8338814909760822480",
@@ -3213,7 +3627,8 @@
           "format": "srt"
         }
       ],
-      "description": "Captain America: The Winter Soldier [Hindi] - Available in high definition on FOBS TV."
+      "description": "Captain America: The Winter Soldier [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-509187037795419912",
@@ -3290,7 +3705,8 @@
           "format": "srt"
         }
       ],
-      "description": "Captain America: The First Avenger [Hindi] - Available in high definition on FOBS TV."
+      "description": "Captain America: The First Avenger [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-6598203426495415840",
@@ -3340,7 +3756,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Thor: Love and Thunder [Hindi] - Available in high definition on FOBS TV."
+      "description": "Thor: Love and Thunder [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-3006217462468805736",
@@ -3424,7 +3841,8 @@
           "format": "srt"
         }
       ],
-      "description": "Thor: Ragnarok [Hindi] - Available in high definition on FOBS TV."
+      "description": "Thor: Ragnarok [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-8782836050524782936",
@@ -3501,7 +3919,8 @@
           "format": "srt"
         }
       ],
-      "description": "Thor: The Dark World [Hindi] - Available in high definition on FOBS TV."
+      "description": "Thor: The Dark World [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-5081472130055822544",
@@ -3571,7 +3990,8 @@
           "format": "srt"
         }
       ],
-      "description": "Thor [Hindi] - Available in high definition on FOBS TV."
+      "description": "Thor [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-4224140994998142512",
@@ -3641,7 +4061,8 @@
           "format": "srt"
         }
       ],
-      "description": "The Incredible Hulk [Hindi] - Available in high definition on FOBS TV."
+      "description": "The Incredible Hulk [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-8767086645968602024",
@@ -3725,7 +4146,8 @@
           "format": "srt"
         }
       ],
-      "description": "Iron Man 3 [Hindi] - Available in high definition on FOBS TV."
+      "description": "Iron Man 3 [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-7692868183677880392",
@@ -3802,7 +4224,8 @@
           "format": "srt"
         }
       ],
-      "description": "Iron Man 2 [Hindi] - Available in high definition on FOBS TV."
+      "description": "Iron Man 2 [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-4210985338371721896",
@@ -4040,7 +4463,8 @@
           "format": "srt"
         }
       ],
-      "description": "Pradhan - Available in high definition on FOBS TV."
+      "description": "Pradhan - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-2793681864819624616",
@@ -4123,7 +4547,8 @@
           "format": "srt"
         }
       ],
-      "description": "Bagha Jatin - Available in high definition on FOBS TV."
+      "description": "Bagha Jatin - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-4936116747624664216",
@@ -4172,7 +4597,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Tonic - Available in high definition on FOBS TV."
+      "description": "Tonic - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-4612537979951874904",
@@ -4241,7 +4667,8 @@
           "format": "srt"
         }
       ],
-      "description": "Golondaaj - Available in high definition on FOBS TV."
+      "description": "Golondaaj - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-776060435664619680",
@@ -4290,7 +4717,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Yoddha: The Warrior - Available in high definition on FOBS TV."
+      "description": "Yoddha: The Warrior - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-1912022759392116952",
@@ -4339,7 +4767,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Rangbaaz - Available in high definition on FOBS TV."
+      "description": "Rangbaaz - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-4039988187824112624",
@@ -4388,7 +4817,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Khoka 420 - Available in high definition on FOBS TV."
+      "description": "Khoka 420 - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-8238689312527794128",
@@ -4437,7 +4867,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Challenge 2 - Available in high definition on FOBS TV."
+      "description": "Challenge 2 - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-6877241348568088792",
@@ -4486,7 +4917,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Challenge - Available in high definition on FOBS TV."
+      "description": "Challenge - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-5862359911392232272",
@@ -4535,7 +4967,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Paglu 2 - Available in high definition on FOBS TV."
+      "description": "Paglu 2 - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-2615887484533835160",
@@ -4584,7 +5017,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Paglu - Available in high definition on FOBS TV."
+      "description": "Paglu - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-2302071794926241624",
@@ -4660,7 +5094,8 @@
           "format": "srt"
         }
       ],
-      "description": "Amazon Obhijaan - Available in high definition on FOBS TV."
+      "description": "Amazon Obhijaan - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-3482267462849234632",
@@ -4709,7 +5144,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Chander Pahar - Available in high definition on FOBS TV."
+      "description": "Chander Pahar - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-5503634799270970112",
@@ -4955,7 +5391,8 @@
           "format": "srt"
         }
       ],
-      "description": "Fukrey 3 [Hindi] - Available in high definition on FOBS TV."
+      "description": "Fukrey 3 [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-7550670543880947296",
@@ -5032,7 +5469,8 @@
           "format": "srt"
         }
       ],
-      "description": "Fukrey Returns [Hindi] - Available in high definition on FOBS TV."
+      "description": "Fukrey Returns [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-4396890094381269904",
@@ -5089,7 +5527,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Fukrey [Hindi] - Available in high definition on FOBS TV."
+      "description": "Fukrey [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-1420498631794328488",
@@ -5173,7 +5612,8 @@
           "format": "srt"
         }
       ],
-      "description": "Krrish 3 [Hindi] - Available in high definition on FOBS TV."
+      "description": "Krrish 3 [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-4830378885487415080",
@@ -5311,7 +5751,8 @@
           "format": "srt"
         }
       ],
-      "description": "Krrish [Hindi] - Available in high definition on FOBS TV."
+      "description": "Krrish [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-4542007771847348016",
@@ -5568,7 +6009,8 @@
           "format": "srt"
         }
       ],
-      "description": "Kabhi Khushi Kabhie Gham [Hindi] - Available in high definition on FOBS TV."
+      "description": "Kabhi Khushi Kabhie Gham [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-3621351474694947752",
@@ -5645,7 +6087,8 @@
           "format": "srt"
         }
       ],
-      "description": "Koi... Mil Gaya [Hindi] - Available in high definition on FOBS TV."
+      "description": "Koi... Mil Gaya [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-4635101195504419216",
@@ -5715,7 +6158,8 @@
           "format": "srt"
         }
       ],
-      "description": "Kal Ho Naa Ho [Hindi] - Available in high definition on FOBS TV."
+      "description": "Kal Ho Naa Ho [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-1654274595068805784",
@@ -6170,7 +6614,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Daughter Of The Secret Tycoon [Bengali] - Available in high definition on FOBS TV."
+      "description": "Daughter Of The Secret Tycoon [Bengali] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-340656650174512800",
@@ -6233,7 +6678,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Little Poor Thing Rises by Bearing Children, Reigns Over the Electronics Factory [Bengali] - Available in high definition on FOBS TV."
+      "description": "Little Poor Thing Rises by Bearing Children, Reigns Over the Electronics Factory [Bengali] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-1011335773633364112",
@@ -6296,7 +6742,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Where is Home [Bengali] - Available in high definition on FOBS TV."
+      "description": "Where is Home [Bengali] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-627106050491275672",
@@ -6359,7 +6806,8 @@
       ],
       "captions": [],
       "subtitles": [],
-      "description": "Pressure Cooker [Bengali] - Available in high definition on FOBS TV."
+      "description": "Pressure Cooker [Bengali] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-3953429442554463304",
@@ -6443,7 +6891,8 @@
           "format": "srt"
         }
       ],
-      "description": "Jailer [Hindi] - Available in high definition on FOBS TV."
+      "description": "Jailer [Hindi] - Available in high definition on FOBS TV.",
+      "type": "movie"
     },
     {
       "id": "mb-m-8535219140137830216",
@@ -11389,7 +11838,8 @@
           "subtitles": []
         }
       ],
-      "description": "Fifties Professionals [Hindi] (2026) - All 12 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "Fifties Professionals [Hindi] (2026) - All 12 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-2292877793048286096",
@@ -13805,7 +14255,8 @@
           ]
         }
       ],
-      "description": "The Apartment Job [Hindi] (2026) - All 12 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "The Apartment Job [Hindi] (2026) - All 12 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-3749246425109095096",
@@ -15317,7 +15768,8 @@
           ]
         }
       ],
-      "description": "The Judge Returns [Hindi] (2026) - All 14 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "The Judge Returns [Hindi] (2026) - All 14 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-8637267170101281656",
@@ -16621,7 +17073,8 @@
           ]
         }
       ],
-      "description": "Spring Fever [Hindi] (2026) - All 12 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "Spring Fever [Hindi] (2026) - All 12 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-6657365783343416200",
@@ -18393,7 +18846,8 @@
           ]
         }
       ],
-      "description": "See You at Work Tomorrow! [Hindi] (2026) - All 12 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "See You at Work Tomorrow! [Hindi] (2026) - All 12 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-4439270089858372624",
@@ -19489,7 +19943,8 @@
           ]
         }
       ],
-      "description": "Teach You A Lesson [Hindi] (2026) - All 10 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "Teach You A Lesson [Hindi] (2026) - All 10 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-4397066641696345744",
@@ -20313,7 +20768,8 @@
           "subtitles": []
         }
       ],
-      "description": "Reborn Rookie [Hindi] (2026) - All 12 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "Reborn Rookie [Hindi] (2026) - All 12 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-8540517644796157272",
@@ -25915,7 +26371,8 @@
           ]
         }
       ],
-      "description": "Spooky in Love [Hindi] (2026) - All 12 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "Spooky in Love [Hindi] (2026) - All 12 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-5097017101148115856",
@@ -30189,7 +30646,8 @@
           ]
         }
       ],
-      "description": "The East Palace [Hindi] (2026) - All 8 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "The East Palace [Hindi] (2026) - All 8 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-5203417860348986440",
@@ -31285,7 +31743,8 @@
           ]
         }
       ],
-      "description": "Boyfriend on Demand [Hindi] (2026) - All 10 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "Boyfriend on Demand [Hindi] (2026) - All 10 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-4183836956931122184",
@@ -32173,7 +32632,8 @@
           ]
         }
       ],
-      "description": "If Wishes Could Kill [Hindi] (2026) - All 8 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "If Wishes Could Kill [Hindi] (2026) - All 8 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-706911921223650264",
@@ -33477,7 +33937,8 @@
           ]
         }
       ],
-      "description": "Mad Concrete Dreams [Hindi] (2026) - All 12 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "Mad Concrete Dreams [Hindi] (2026) - All 12 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-874833288387512056",
@@ -39223,7 +39684,8 @@
           ]
         }
       ],
-      "description": "Perfect Crown [Hindi] (2026) - All 12 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV."
+      "description": "Perfect Crown [Hindi] (2026) - All 12 episodes complete with Dual Audio (Hindi Dubbed & Original Korean Audio) in Full HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-6913669534595909592",
@@ -41310,7 +41772,8 @@
           ]
         }
       ],
-      "description": "My Happy Marriage [Hindi] S1-S2 - 2 Seasons (29 Episodes) streaming in HD on FOBS TV."
+      "description": "My Happy Marriage [Hindi] S1-S2 - 2 Seasons (29 Episodes) streaming in HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-7522018400437502256",
@@ -74909,7 +75372,8 @@
           "subtitles": []
         }
       ],
-      "description": "Nocturne [Hindi] - 1 Episodes streaming in HD on FOBS TV."
+      "description": "Nocturne [Hindi] - 1 Episodes streaming in HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-6630269010766617880",
@@ -75027,7 +75491,8 @@
           "subtitles": []
         }
       ],
-      "description": "LOL: Last One Laughing Philippines [Hindi] - 1 Episodes streaming in HD on FOBS TV."
+      "description": "LOL: Last One Laughing Philippines [Hindi] - 1 Episodes streaming in HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-2790387378479848728",
@@ -75145,7 +75610,8 @@
           "subtitles": []
         }
       ],
-      "description": "Dexter: Resurrection [Hindi] - 1 Episodes streaming in HD on FOBS TV."
+      "description": "Dexter: Resurrection [Hindi] - 1 Episodes streaming in HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-568529383837815064",
@@ -75263,7 +75729,8 @@
           "subtitles": []
         }
       ],
-      "description": "Balaraw: Blood Island [Hindi] - 1 Episodes streaming in HD on FOBS TV."
+      "description": "Balaraw: Blood Island [Hindi] - 1 Episodes streaming in HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-2343074542031175984",
@@ -76116,7 +76583,8 @@
           ]
         }
       ],
-      "description": "Rumi - 6 Episodes streaming in HD on FOBS TV."
+      "description": "Rumi - 6 Episodes streaming in HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-6876820355873653224",
@@ -76273,7 +76741,8 @@
           ]
         }
       ],
-      "description": "Rongila Kitab - 1 Episodes streaming in HD on FOBS TV."
+      "description": "Rongila Kitab - 1 Episodes streaming in HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-2333060001146832040",
@@ -76502,7 +76971,8 @@
           "subtitles": []
         }
       ],
-      "description": "Adhunik Bangla Hotel - 3 Episodes streaming in HD on FOBS TV."
+      "description": "Adhunik Bangla Hotel - 3 Episodes streaming in HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-6801342275650995352",
@@ -78301,7 +78771,8 @@
           ]
         }
       ],
-      "description": "Dandadan [Hindi] - 2 Seasons (24 Episodes) streaming in HD on FOBS TV."
+      "description": "Dandadan [Hindi] - 2 Seasons (24 Episodes) streaming in HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-5173051772088320424",
@@ -78939,7 +79410,8 @@
           ]
         }
       ],
-      "description": "Citadel: Honey Bunny [Hindi] - 6 Episodes streaming in HD on FOBS TV."
+      "description": "Citadel: Honey Bunny [Hindi] - 6 Episodes streaming in HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-6164881272604084120",
@@ -80468,7 +80940,8 @@
           ]
         }
       ],
-      "description": "Lupin [Hindi] - 4 Seasons (25 Episodes) streaming in HD on FOBS TV."
+      "description": "Lupin [Hindi] - 4 Seasons (25 Episodes) streaming in HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-5543197340762262336",
@@ -85117,7 +85590,8 @@
           ]
         }
       ],
-      "description": "Bloodhounds [Hindi] - 2 Seasons (15 Episodes) streaming in HD on FOBS TV."
+      "description": "Bloodhounds [Hindi] - 2 Seasons (15 Episodes) streaming in HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-4114525489820228816",
@@ -86340,7 +86814,8 @@
           ]
         }
       ],
-      "description": "Weak Hero Class [Hindi] - 2 Seasons (16 Episodes) streaming in HD on FOBS TV."
+      "description": "Weak Hero Class [Hindi] - 2 Seasons (16 Episodes) streaming in HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-5844444070034161864",
@@ -88705,7 +89180,8 @@
           ]
         }
       ],
-      "description": "100 Days of Deception [Original Audio] - 6 Episodes streaming in HD on FOBS TV."
+      "description": "100 Days of Deception [Original Audio] - 6 Episodes streaming in HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-3053394272306217792",
@@ -90670,7 +91146,8 @@
           ]
         }
       ],
-      "description": "The Protector [Hindi] - 4 Seasons (32 Episodes) streaming in HD on FOBS TV."
+      "description": "The Protector [Hindi] - 4 Seasons (32 Episodes) streaming in HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-989331753695335192",
@@ -98332,7 +98809,8 @@
           ]
         }
       ],
-      "description": "The Protector - 4 Seasons (32 Episodes) streaming in HD on FOBS TV."
+      "description": "The Protector - 4 Seasons (32 Episodes) streaming in HD on FOBS TV.",
+      "type": "series"
     },
     {
       "id": "mb-s-3292762350108954536",
@@ -98761,7 +99239,394 @@
           ]
         }
       ],
-      "description": "Final Table - Full season streaming on FOBS TV."
+      "description": "Final Table - Full season streaming on FOBS TV.",
+      "type": "series",
+      "episodes": [
+        {
+          "number": "01",
+          "episode": 1,
+          "season": 1,
+          "title": "Episode 1",
+          "duration": "45 min",
+          "still": "https://pbcdnw.aoneroom.com/image/2026/10/25/527d29143b34ac60780899f45d2c0a2d.jpg",
+          "stillPath": "https://pbcdnw.aoneroom.com/image/2026/10/25/527d29143b34ac60780899f45d2c0a2d.jpg",
+          "streamUrl": "/api/moviebox/stream?id=3292762350108954536&path=final-table-hindi-OjBf6HXSeV3&se=1&ep=1",
+          "servers": [
+            {
+              "name": "Server 1 (HD - Auto-Renewing 1080p)",
+              "url": "/api/moviebox/stream?id=3292762350108954536&path=final-table-hindi-OjBf6HXSeV3&se=1&ep=1",
+              "quality": "1080p",
+              "audio": "Original Audio",
+              "isDirect": true
+            },
+            {
+              "name": "Server 2 (Direct Fast CDN)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/0f69bafbed8de43e34e46651ec4de005.mp4?sign=d66e57a905c58e5d8b45065735caa4b9&t=1792951972",
+              "quality": "1080p",
+              "audio": "Original Audio",
+              "isDirect": true
+            }
+          ],
+          "captions": [
+            {
+              "id": "ep1_sub_ar_0",
+              "label": "ar",
+              "language": "ar",
+              "srclang": "ar",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/b59c78916f1569b4f93cc3300a1f8b02.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/b59c78916f1569b4f93cc3300a1f8b02.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep1_sub_en_1",
+              "label": "English",
+              "language": "en",
+              "srclang": "en",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/de9e9a5376f972a97500fea846621930.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/de9e9a5376f972a97500fea846621930.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep1_sub_es_2",
+              "label": "es",
+              "language": "es",
+              "srclang": "es",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/be3ff5132f3b1a2d9efd4b711b4db63f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/be3ff5132f3b1a2d9efd4b711b4db63f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep1_sub_fil_3",
+              "label": "fil",
+              "language": "fil",
+              "srclang": "fil",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/ad4ec030b525c95226549e0362febb0e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/ad4ec030b525c95226549e0362febb0e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep1_sub_fr_4",
+              "label": "fr",
+              "language": "fr",
+              "srclang": "fr",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/864ea7bb8ed54018c702c3c5a6882be3.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/864ea7bb8ed54018c702c3c5a6882be3.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep1_sub_hi_5",
+              "label": "Hindi (हिन्दी)",
+              "language": "hi",
+              "srclang": "hi",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/c1415689eef67326b1a279b32a1909da.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/c1415689eef67326b1a279b32a1909da.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep1_sub_in_id_6",
+              "label": "in_id",
+              "language": "in_id",
+              "srclang": "in_id",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/a61d45cda3d7193a5e2b6109dcb7257f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/a61d45cda3d7193a5e2b6109dcb7257f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep1_sub_ms_7",
+              "label": "ms",
+              "language": "ms",
+              "srclang": "ms",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/515263356b284d5da70587fb830fe7e0.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/515263356b284d5da70587fb830fe7e0.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep1_sub_pt_8",
+              "label": "pt",
+              "language": "pt",
+              "srclang": "pt",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/32d5d286e2c7c36d481a115a93009743.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/32d5d286e2c7c36d481a115a93009743.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            }
+          ],
+          "subtitles": [
+            {
+              "id": "ep1_sub_ar_0",
+              "label": "ar",
+              "language": "ar",
+              "srclang": "ar",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/b59c78916f1569b4f93cc3300a1f8b02.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/b59c78916f1569b4f93cc3300a1f8b02.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep1_sub_en_1",
+              "label": "English",
+              "language": "en",
+              "srclang": "en",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/de9e9a5376f972a97500fea846621930.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/de9e9a5376f972a97500fea846621930.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep1_sub_es_2",
+              "label": "es",
+              "language": "es",
+              "srclang": "es",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/be3ff5132f3b1a2d9efd4b711b4db63f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/be3ff5132f3b1a2d9efd4b711b4db63f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep1_sub_fil_3",
+              "label": "fil",
+              "language": "fil",
+              "srclang": "fil",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/ad4ec030b525c95226549e0362febb0e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/ad4ec030b525c95226549e0362febb0e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep1_sub_fr_4",
+              "label": "fr",
+              "language": "fr",
+              "srclang": "fr",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/864ea7bb8ed54018c702c3c5a6882be3.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/864ea7bb8ed54018c702c3c5a6882be3.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep1_sub_hi_5",
+              "label": "Hindi (हिन्दी)",
+              "language": "hi",
+              "srclang": "hi",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/c1415689eef67326b1a279b32a1909da.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/c1415689eef67326b1a279b32a1909da.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep1_sub_in_id_6",
+              "label": "in_id",
+              "language": "in_id",
+              "srclang": "in_id",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/a61d45cda3d7193a5e2b6109dcb7257f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/a61d45cda3d7193a5e2b6109dcb7257f.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep1_sub_ms_7",
+              "label": "ms",
+              "language": "ms",
+              "srclang": "ms",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/515263356b284d5da70587fb830fe7e0.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/515263356b284d5da70587fb830fe7e0.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep1_sub_pt_8",
+              "label": "pt",
+              "language": "pt",
+              "srclang": "pt",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/32d5d286e2c7c36d481a115a93009743.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/32d5d286e2c7c36d481a115a93009743.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU4MTA4fX19XX0_&Signature=vh8Nk7XqwiA22KQ0VNRRuSyW3MHtSXx8T1j3bXzGEkfynwsNhS8myMzEQGvbWjEf09kT2a8lit1jpXQ72WhVLttscEMt0XKPriuxqsb5UuZy2wM0FNPeVEiG3FK7lAIUdWsaBd3tjECt31YV1Ink1eS74fPBmVqey375r-S0Pr58cwUOAK1MKcrXs3i23nK9RVtCYlQBvCUVaCH8PEOX~rkY5GdWFYxOZ-SaioRovoMQjLg02xtBkAZqDReRLDK6JRICRUsOO-zetNSwz~X2ft0s5e80Ql~ATWjztI-dynV890Wh-VqmyR3929PZr0VOeKJDEsx3tOJtTZYh1d3ASA__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            }
+          ]
+        },
+        {
+          "number": "02",
+          "episode": 2,
+          "season": 1,
+          "title": "Episode 2",
+          "duration": "45 min",
+          "still": "https://pbcdnw.aoneroom.com/image/2026/10/25/527d29143b34ac60780899f45d2c0a2d.jpg",
+          "stillPath": "https://pbcdnw.aoneroom.com/image/2026/10/25/527d29143b34ac60780899f45d2c0a2d.jpg",
+          "streamUrl": "/api/moviebox/stream?id=3292762350108954536&path=final-table-hindi-OjBf6HXSeV3&se=1&ep=2",
+          "servers": [
+            {
+              "name": "Server 1 (HD - Auto-Renewing 1080p)",
+              "url": "/api/moviebox/stream?id=3292762350108954536&path=final-table-hindi-OjBf6HXSeV3&se=1&ep=2",
+              "quality": "1080p",
+              "audio": "Original Audio",
+              "isDirect": true
+            },
+            {
+              "name": "Server 2 (Direct Fast CDN)",
+              "url": "https://bcdnxw.hakunaymatata.com/cms/63bf7bbf7b1f1420f804ae34ae432ea8.mp4?sign=ca90893e321e335853515724e1bf5256&t=1792951613",
+              "quality": "1080p",
+              "audio": "Original Audio",
+              "isDirect": true
+            }
+          ],
+          "captions": [
+            {
+              "id": "ep2_sub_ar_0",
+              "label": "ar",
+              "language": "ar",
+              "srclang": "ar",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/309145f266529ec357938ea2d7b4dd18.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/309145f266529ec357938ea2d7b4dd18.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep2_sub_en_1",
+              "label": "English",
+              "language": "en",
+              "srclang": "en",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/eb73e327cb09be803f07083e01fc8a47.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/eb73e327cb09be803f07083e01fc8a47.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep2_sub_es_2",
+              "label": "es",
+              "language": "es",
+              "srclang": "es",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/d4b763810f67f39c07896334471f8aa2.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/d4b763810f67f39c07896334471f8aa2.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep2_sub_fil_3",
+              "label": "fil",
+              "language": "fil",
+              "srclang": "fil",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/5065ab27567e1269ab2fcb86f4ee32aa.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/5065ab27567e1269ab2fcb86f4ee32aa.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep2_sub_fr_4",
+              "label": "fr",
+              "language": "fr",
+              "srclang": "fr",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/bc8e47519ca3e3475f77b4da4f90d58a.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/bc8e47519ca3e3475f77b4da4f90d58a.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep2_sub_hi_5",
+              "label": "Hindi (हिन्दी)",
+              "language": "hi",
+              "srclang": "hi",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/5a72d5b426742d41a4b4fdf86dbf3eed.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/5a72d5b426742d41a4b4fdf86dbf3eed.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep2_sub_in_id_6",
+              "label": "in_id",
+              "language": "in_id",
+              "srclang": "in_id",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/97a6cf9b7b16c525e3434fda0233cf3e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/97a6cf9b7b16c525e3434fda0233cf3e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep2_sub_ms_7",
+              "label": "ms",
+              "language": "ms",
+              "srclang": "ms",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/fa554b56856b7bc4166f330074b7bbea.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/fa554b56856b7bc4166f330074b7bbea.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep2_sub_pt_8",
+              "label": "pt",
+              "language": "pt",
+              "srclang": "pt",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/9e90d8268a8fc35969241b238fb74b6d.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/9e90d8268a8fc35969241b238fb74b6d.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            }
+          ],
+          "subtitles": [
+            {
+              "id": "ep2_sub_ar_0",
+              "label": "ar",
+              "language": "ar",
+              "srclang": "ar",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/309145f266529ec357938ea2d7b4dd18.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/309145f266529ec357938ea2d7b4dd18.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep2_sub_en_1",
+              "label": "English",
+              "language": "en",
+              "srclang": "en",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/eb73e327cb09be803f07083e01fc8a47.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/eb73e327cb09be803f07083e01fc8a47.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep2_sub_es_2",
+              "label": "es",
+              "language": "es",
+              "srclang": "es",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/d4b763810f67f39c07896334471f8aa2.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/d4b763810f67f39c07896334471f8aa2.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep2_sub_fil_3",
+              "label": "fil",
+              "language": "fil",
+              "srclang": "fil",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/5065ab27567e1269ab2fcb86f4ee32aa.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/5065ab27567e1269ab2fcb86f4ee32aa.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep2_sub_fr_4",
+              "label": "fr",
+              "language": "fr",
+              "srclang": "fr",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/bc8e47519ca3e3475f77b4da4f90d58a.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/bc8e47519ca3e3475f77b4da4f90d58a.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep2_sub_hi_5",
+              "label": "Hindi (हिन्दी)",
+              "language": "hi",
+              "srclang": "hi",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/5a72d5b426742d41a4b4fdf86dbf3eed.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/5a72d5b426742d41a4b4fdf86dbf3eed.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep2_sub_in_id_6",
+              "label": "in_id",
+              "language": "in_id",
+              "srclang": "in_id",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/97a6cf9b7b16c525e3434fda0233cf3e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/97a6cf9b7b16c525e3434fda0233cf3e.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep2_sub_ms_7",
+              "label": "ms",
+              "language": "ms",
+              "srclang": "ms",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/fa554b56856b7bc4166f330074b7bbea.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/fa554b56856b7bc4166f330074b7bbea.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            },
+            {
+              "id": "ep2_sub_pt_8",
+              "label": "pt",
+              "language": "pt",
+              "srclang": "pt",
+              "src": "https://cacdn.hakunaymatata.com/subtitle/9e90d8268a8fc35969241b238fb74b6d.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "url": "https://cacdn.hakunaymatata.com/subtitle/9e90d8268a8fc35969241b238fb74b6d.srt?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jYWNkbi5oYWt1bmF5bWF0YXRhLmNvbS9zdWJ0aXRsZS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzkzNTU2MDQ1fX19XX0_&Signature=mqWW3p5KOkomcoiXRxGaX5OSDD95rbj-u8BYSCRs1XQzkGLmuswyuyWObJ1nXixQgO1hTn4feNgPXiUZSNwEOMZEJDbzXUIUn46pV9rbeuWZqPxVpFSKv2aiv7tSh-2tablwj00Ucsj5JabbTDo-BP2OgCvaTqYEqGc-QNR1ig2Cyb3sjG2i5mjxm3JAtgWwMFlaTbtVT9QCRcvdxQqR5Pd6IB636OwuMN~yE~DuWmVadSRnH3VULtGM6~S~RXKoYvnbV2bpVG2TYqjGgT-HJwH9MWGttWETGvbDXn~s1Eozf-YhVsix2GMm5JcL1kvRZ5KqcNpgUuzIT7rDcodysw__&Key-Pair-Id=KMHN1LQ1HEUPL",
+              "format": "srt"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "mb-s-1932866268428649968",
@@ -102745,7 +103610,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=13309505576601376&path=&se=1&ep=1"
         }
-      ]
+      ],
+      "type": "series"
     },
     {
       "id": "mb-s-3622255521824228456",
@@ -103269,7 +104135,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=3622255521824228456&path=&se=1&ep=1"
         }
-      ]
+      ],
+      "type": "series"
     },
     {
       "id": "mb-s-1332900149030438936",
@@ -104073,7 +104940,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=1332900149030438936&path=&se=1&ep=1"
         }
-      ]
+      ],
+      "type": "series"
     },
     {
       "id": "mb-s-341274161781817952",
@@ -104922,7 +105790,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=341274161781817952&path=&se=1&ep=1"
         }
-      ]
+      ],
+      "type": "series"
     },
     {
       "id": "mb-s-8445472975083767584",
@@ -108002,7 +108871,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=8445472975083767584&path=&se=1&ep=1"
         }
-      ]
+      ],
+      "type": "series"
     },
     {
       "id": "mb-s-3604422232421843392",
@@ -109283,7 +110153,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=1"
         }
-      ]
+      ],
+      "type": "series"
     },
     {
       "id": "mb-s-4332534660363340496",
@@ -109991,7 +110862,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=1"
         }
-      ]
+      ],
+      "type": "series"
     },
     {
       "id": "mb-s-3908280950886646112",
@@ -110279,7 +111151,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=3908280950886646112&path=&se=1&ep=1"
         }
-      ]
+      ],
+      "type": "series"
     },
     {
       "id": "mb-s-637731293849080088",
@@ -111408,7 +112281,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=637731293849080088&path=&se=1&ep=1"
         }
-      ]
+      ],
+      "type": "series"
     },
     {
       "id": "mb-s-1395930250630021944",
@@ -112203,7 +113077,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=1395930250630021944&path=&se=1&ep=1"
         }
-      ]
+      ],
+      "type": "series"
     },
     {
       "id": "mb-s-2154607436987001256",
@@ -113576,7 +114451,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=1"
         }
-      ]
+      ],
+      "type": "series"
     },
     {
       "id": "mb-s-2206443205082733056",
@@ -114377,7 +115253,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=1"
         }
-      ]
+      ],
+      "type": "series"
     },
     {
       "id": "mb-s-7384944248602723992",
@@ -115876,7 +116753,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=7384944248602723992&path=&se=1&ep=1"
         }
-      ]
+      ],
+      "type": "series"
     },
     {
       "id": "mb-s-7573592610930312192",
@@ -117967,7 +118845,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=7573592610930312192&path=&se=1&ep=1"
         }
-      ]
+      ],
+      "type": "series"
     },
     {
       "id": "mb-s-1986985589031195976",

@@ -631,6 +631,9 @@ app.get('/api/content', async (req, res) => {
     if (data.series) {
       data.series.forEach((s, idx) => {
         s.type = 'series';
+        if ((!s.episodes || s.episodes.length === 0) && s.seasons && s.seasons[0] && s.seasons[0].episodes) {
+          s.episodes = s.seasons[0].episodes;
+        }
         if (!s.cover) s.cover = s.backdrop || s.poster;
         if (!s.addedAt) {
           s.addedAt = new Date(nowMs - idx * 60000).toISOString();
@@ -646,6 +649,14 @@ app.get('/api/content', async (req, res) => {
       data.featured = (data.series && data.series[0]) || (data.movies && data.movies[0]);
     }
     if (data.featured) {
+      const isSer = data.featured.type === 'series' || 
+                    (data.featured.id && data.featured.id.startsWith('mb-s-')) || 
+                    (data.featured.seasons && data.featured.seasons.length > 0) || 
+                    (data.featured.episodes && data.featured.episodes.length > 0);
+      data.featured.type = isSer ? 'series' : 'movie';
+      if (isSer && (!data.featured.episodes || data.featured.episodes.length === 0) && data.featured.seasons && data.featured.seasons[0] && data.featured.seasons[0].episodes) {
+        data.featured.episodes = data.featured.seasons[0].episodes;
+      }
       data.featured.cover = data.featured.cover || data.featured.backdrop || data.featured.poster;
       data.featured.backdrop = data.featured.backdrop || data.featured.cover;
     }
