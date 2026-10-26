@@ -229,6 +229,32 @@ function getMovieBoxDetailPath(id) {
   if (sId === '1418810570597357232') return 'the-exiled-heavy-knight-knows-how-to-game-the-system-hindi-iXPlNJnaOG1';
   if (sId === '2551537104618775712') return 'black-clover-hindi-KLstyjCN7L2';
   if (sId === '542646768450818704') return 'the-exiled-heavy-knight-knows-how-to-game-the-system-hindi-iXPlNJnaOG1';
+  if (sId === '448518584629952800') return 'queen-of-tears-hindi-o4wiCcDd8x';
+  if (sId === '5416421910617932168') return 'lovely-runner-hindi-evcToaJg7s6';
+  if (sId === '7470677327748759688') return 'marry-my-husband-hindi-IMro5MrMRT8';
+  if (sId === '6324293089783857168') return 'no-gain-no-love-hindi-qNeetoqkbx7';
+  if (sId === '115304258618148488') return 'a-killer-paradox-hindi-scTdh8S5w8';
+  if (sId === '3752934291798377528') return 'parasyte-the-grey-hindi-M0mqEMGtet4';
+  if (sId === '833946071607951392') return 'wedding-impossible-hindi-UOtFEfStBZ';
+  if (sId === '7168098135875939392') return 'the-whirlwind-hindi-uhjb9qRXvx8';
+  if (sId === '7772712596373210912') return 'the-8-show-hindi-WbDSr3A6bg9';
+  if (sId === '538461212762325432') return 'the-frog-hindi-CfaLOBN9MD';
+  if (sId === '5216884078007517384') return 'mr-plankton-hindi-qPZk6JPnnd6';
+  if (sId === '6426927164276854376') return 'the-midnight-romance-in-hagwon-hindi-W37dyPsoLE7';
+  if (sId === '2189551872338528160') return 'the-trunk-hindi-0AGMyzAaKB2';
+  if (sId === '1072190347595367768') return 'badland-hunters-hindi-2vZeJkSDch1';
+  if (sId === '4637254782300866152') return 'the-roundup-punishment-hindi-mzEtIVUFyw5';
+  if (sId === '315799800216190944') return 'officer-black-belt-hindi-ib5mOzImkn';
+  if (sId === '485177942977430000') return 'my-name-is-loh-kiwan-hindi-QMj8rLr7Qz';
+  if (sId === '3650656341498152288') return 'uprising-hindi-w8Kp47M2Gl4';
+  if (sId === '3120743237862966864') return 'alienoid-the-return-to-the-future-hindi-Olu83Li2xI3';
+  if (sId === '8979160723611861240') return 'wonderland-hindi-UcaWaTnEiHa';
+  if (sId === '8742782508372214184') return 'hijack-1971-hindi-8O5SWQg2Qpa';
+  if (sId === '237451987665800296') return 'handsome-guys-hindi-AE5STo1xxh';
+  if (sId === '5683378209946042552') return 'mission-cross-hindi-kiKolwOVPL6';
+  if (sId === '6857431659634377576') return 'the-plot-hindi-mBRrgTN6za8';
+  if (sId === '5004232962917941856') return 'the-wild-hindi-KHuKUAhrFX5';
+  if (sId === '4364374393242501488') return 'project-silence-hindi-gIMtCECSoc5';
 
   return '';
 }
