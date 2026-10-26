@@ -349,6 +349,27 @@ class MovieBoxService {
       return cached.data;
     }
 
+    // Auto-discover detailPath if missing
+    if (!detailPath && subjectId) {
+      if (!this.detailPathMap) this.detailPathMap = new Map();
+      if (this.detailPathMap.has(String(subjectId))) {
+        detailPath = this.detailPathMap.get(String(subjectId));
+      } else {
+        try {
+          const detailRes = await axios.get(`${BASE_URL}/wefeed-h5-bff/web/subject/detail?subjectId=${subjectId}`, {
+            headers: HEADERS,
+            httpsAgent: ipv4Agent,
+            timeout: 6000
+          });
+          const sub = detailRes.data?.data?.subject;
+          if (sub && sub.detailPath) {
+            detailPath = sub.detailPath;
+            this.detailPathMap.set(String(subjectId), detailPath);
+          }
+        } catch (_) {}
+      }
+    }
+
     // Try primary params
     let result = await this._fetchPlayStream(subjectId, detailPath, season, episode);
     if (!result) result = await this._fetchDownload(subjectId, detailPath, season, episode);

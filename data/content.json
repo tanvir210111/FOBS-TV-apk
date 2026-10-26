@@ -232374,6 +232374,13 @@
               "streamUrl": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=1",
               "servers": [
                 {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/fbfd40f336540a99c73355cf96868963.mp4?sign=61e35623280b6d4bad410b5a305d6172&t=1793040039",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=1",
                   "quality": "1080p",
@@ -232386,7 +232393,9 @@
               ],
               "captions": [],
               "episodeNumber": 1,
-              "id": "mb-s-3604422232421843392-s1-e1"
+              "id": "mb-s-3604422232421843392-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/fbfd40f336540a99c73355cf96868963.mp4?sign=61e35623280b6d4bad410b5a305d6172&t=1793040039",
+              "resolution": 1080
             },
             {
               "number": 2,
@@ -232398,6 +232407,13 @@
               "still": "https://image.tmdb.org/t/p/w500/wNRundU6CtfRQcrgLBAdYMA5BkO.jpg",
               "streamUrl": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=2",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/f3b9a9c17381d0e79e761c5928509226.mp4?sign=c3537fb15c1a8e1ef6934bd910d6973f&t=1793036469",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=2",
@@ -232411,7 +232427,9 @@
               ],
               "captions": [],
               "episodeNumber": 2,
-              "id": "mb-s-3604422232421843392-s1-e2"
+              "id": "mb-s-3604422232421843392-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/f3b9a9c17381d0e79e761c5928509226.mp4?sign=c3537fb15c1a8e1ef6934bd910d6973f&t=1793036469",
+              "resolution": 1080
             },
             {
               "number": 3,
@@ -232423,6 +232441,13 @@
               "still": "https://image.tmdb.org/t/p/w500/6txnTw4KwyraUu7b19LcSb2ZsNg.jpg",
               "streamUrl": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=3",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/cc87bf3564e1acb30274c9ce078c561e.mp4?sign=075e0e10d15704866f1c6d70011f1a00&t=1793040039",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=3",
@@ -232436,7 +232461,9 @@
               ],
               "captions": [],
               "episodeNumber": 3,
-              "id": "mb-s-3604422232421843392-s1-e3"
+              "id": "mb-s-3604422232421843392-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/cc87bf3564e1acb30274c9ce078c561e.mp4?sign=075e0e10d15704866f1c6d70011f1a00&t=1793040039",
+              "resolution": 1080
             },
             {
               "number": 4,
@@ -232448,6 +232475,13 @@
               "still": "https://image.tmdb.org/t/p/w500/dLezNoe2nUXE8ofIF7zzVIWhvS7.jpg",
               "streamUrl": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=4",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/478a9c445440cd8351ef015d78756b26.mp4?sign=64d54d9ea370575fb4218b82d5f633d9&t=1793039129",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=4",
@@ -232461,7 +232495,9 @@
               ],
               "captions": [],
               "episodeNumber": 4,
-              "id": "mb-s-3604422232421843392-s1-e4"
+              "id": "mb-s-3604422232421843392-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/478a9c445440cd8351ef015d78756b26.mp4?sign=64d54d9ea370575fb4218b82d5f633d9&t=1793039129",
+              "resolution": 1080
             },
             {
               "number": 5,
@@ -232473,6 +232509,13 @@
               "still": "https://image.tmdb.org/t/p/w500/wnmVAeGuS5nV53q6DyyBUITSVkC.jpg",
               "streamUrl": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=5",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/646d993aeef4a92a9ea97240b1d1f909.mp4?sign=2b8cd548704c955d24e1617e33c724aa&t=1793038383",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=5",
@@ -232486,7 +232529,9 @@
               ],
               "captions": [],
               "episodeNumber": 5,
-              "id": "mb-s-3604422232421843392-s1-e5"
+              "id": "mb-s-3604422232421843392-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/646d993aeef4a92a9ea97240b1d1f909.mp4?sign=2b8cd548704c955d24e1617e33c724aa&t=1793038383",
+              "resolution": 1080
             },
             {
               "number": 6,
@@ -232498,6 +232543,13 @@
               "still": "https://image.tmdb.org/t/p/w500/4qSZkElkMjs5E3L7eLwMtNw4sA1.jpg",
               "streamUrl": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=6",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/1cbf7c3908e4cc43523cba7fb7bada68.mp4?sign=e92a0b45b055e52621785ff0ca671dca&t=1793038573",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=6",
@@ -232511,7 +232563,9 @@
               ],
               "captions": [],
               "episodeNumber": 6,
-              "id": "mb-s-3604422232421843392-s1-e6"
+              "id": "mb-s-3604422232421843392-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/1cbf7c3908e4cc43523cba7fb7bada68.mp4?sign=e92a0b45b055e52621785ff0ca671dca&t=1793038573",
+              "resolution": 1080
             },
             {
               "number": 7,
@@ -232523,6 +232577,13 @@
               "still": "https://image.tmdb.org/t/p/w500/omF26UjtawIX50crgV8DxJNNdZj.jpg",
               "streamUrl": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=7",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/e0e06f3ed6735db9d3876b8a3f673b8f.mp4?sign=7ebabceb88db5d65a775f4d5a6c4d560&t=1793040041",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=3604422232421843392&path=adarsh-baal-vidyalaya-hindi-UKlobH6igi4&se=1&ep=7",
@@ -232536,7 +232597,9 @@
               ],
               "captions": [],
               "episodeNumber": 7,
-              "id": "mb-s-3604422232421843392-s1-e7"
+              "id": "mb-s-3604422232421843392-s1-e7",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/e0e06f3ed6735db9d3876b8a3f673b8f.mp4?sign=7ebabceb88db5d65a775f4d5a6c4d560&t=1793040041",
+              "resolution": 1080
             }
           ]
         }
@@ -232763,6 +232826,13 @@
               "streamUrl": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=1",
               "servers": [
                 {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/05bf5f673452419782226732d566f9ea.mp4?sign=902faa84e68240ea45316f44c4a2d8ea&t=1793039924",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=1",
                   "quality": "1080p",
@@ -232775,7 +232845,9 @@
               ],
               "captions": [],
               "episodeNumber": 1,
-              "id": "mb-s-4720961996777219576-s1-e1"
+              "id": "mb-s-4720961996777219576-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/05bf5f673452419782226732d566f9ea.mp4?sign=902faa84e68240ea45316f44c4a2d8ea&t=1793039924",
+              "resolution": 1080
             },
             {
               "number": 2,
@@ -232787,6 +232859,13 @@
               "still": "https://image.tmdb.org/t/p/w500/2LpxnhvUDDsNhgTFTp3ByV6BqO0.jpg",
               "streamUrl": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=2",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/78fdfb80cadf361a6b29e6d38f43572e.mp4?sign=484ec61888b598e23ff26ae2d8b8640d&t=1793039259",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=2",
@@ -232800,7 +232879,9 @@
               ],
               "captions": [],
               "episodeNumber": 2,
-              "id": "mb-s-4720961996777219576-s1-e2"
+              "id": "mb-s-4720961996777219576-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/78fdfb80cadf361a6b29e6d38f43572e.mp4?sign=484ec61888b598e23ff26ae2d8b8640d&t=1793039259",
+              "resolution": 1080
             },
             {
               "number": 3,
@@ -232812,6 +232893,13 @@
               "still": "https://image.tmdb.org/t/p/w500/xY5UQNNaENFrUu6r33ctDCTQ0eG.jpg",
               "streamUrl": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=3",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/d007934496e59f69ec657d12d44c262a.mp4?sign=ab0dfae7ce2e1fd998c0d5104c4fbdcf&t=1793040042",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=3",
@@ -232825,7 +232913,9 @@
               ],
               "captions": [],
               "episodeNumber": 3,
-              "id": "mb-s-4720961996777219576-s1-e3"
+              "id": "mb-s-4720961996777219576-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/d007934496e59f69ec657d12d44c262a.mp4?sign=ab0dfae7ce2e1fd998c0d5104c4fbdcf&t=1793040042",
+              "resolution": 1080
             },
             {
               "number": 4,
@@ -232837,6 +232927,13 @@
               "still": "https://image.tmdb.org/t/p/w500/h0GdD6NfAZYQN4UMZ2tZ36YVrVZ.jpg",
               "streamUrl": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=4",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/63306ee954595e21339799f5dce65eda.mp4?sign=a3d3397f56de2ec26c167b710437fa1d&t=1793036523",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=4",
@@ -232850,7 +232947,9 @@
               ],
               "captions": [],
               "episodeNumber": 4,
-              "id": "mb-s-4720961996777219576-s1-e4"
+              "id": "mb-s-4720961996777219576-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/63306ee954595e21339799f5dce65eda.mp4?sign=a3d3397f56de2ec26c167b710437fa1d&t=1793036523",
+              "resolution": 1080
             },
             {
               "number": 5,
@@ -232862,6 +232961,13 @@
               "still": "https://image.tmdb.org/t/p/w500/b2wg7qWwgMZohIK2sQStqbll7mv.jpg",
               "streamUrl": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=5",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/7dca4f8878153655e5db6b31bacec630.mp4?sign=5882827f815b991302e6c0dfd3abfd5d&t=1793039693",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=5",
@@ -232875,7 +232981,9 @@
               ],
               "captions": [],
               "episodeNumber": 5,
-              "id": "mb-s-4720961996777219576-s1-e5"
+              "id": "mb-s-4720961996777219576-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/7dca4f8878153655e5db6b31bacec630.mp4?sign=5882827f815b991302e6c0dfd3abfd5d&t=1793039693",
+              "resolution": 1080
             },
             {
               "number": 6,
@@ -232887,6 +232995,13 @@
               "still": "https://image.tmdb.org/t/p/w500/isPVzujhIaeqs0PdeDRjhbwps5f.jpg",
               "streamUrl": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=6",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/562dcc48a0b25a36256d5cba7a501b3a.mp4?sign=8878bcdc6471b2b5bfe844ad15f80075&t=1793038575",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=6",
@@ -232900,7 +233015,9 @@
               ],
               "captions": [],
               "episodeNumber": 6,
-              "id": "mb-s-4720961996777219576-s1-e6"
+              "id": "mb-s-4720961996777219576-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/562dcc48a0b25a36256d5cba7a501b3a.mp4?sign=8878bcdc6471b2b5bfe844ad15f80075&t=1793038575",
+              "resolution": 1080
             },
             {
               "number": 7,
@@ -232912,6 +233029,13 @@
               "still": "https://image.tmdb.org/t/p/w500/sbJAk2GJHtHQimzy9PuXHDYZtIL.jpg",
               "streamUrl": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=7",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/d7335410a08045f7098d7c1d428bc91b.mp4?sign=ccbff9c7556f56e710cf4eac5226e3b4&t=1793037552",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=7",
@@ -232925,7 +233049,9 @@
               ],
               "captions": [],
               "episodeNumber": 7,
-              "id": "mb-s-4720961996777219576-s1-e7"
+              "id": "mb-s-4720961996777219576-s1-e7",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/d7335410a08045f7098d7c1d428bc91b.mp4?sign=ccbff9c7556f56e710cf4eac5226e3b4&t=1793037552",
+              "resolution": 1080
             },
             {
               "number": 8,
@@ -232937,6 +233063,13 @@
               "still": "https://image.tmdb.org/t/p/w500/la9xuctBaFqVDCZjQmCbeFpSY5n.jpg",
               "streamUrl": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=8",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/bd47a4f798ebbd226e566b5f65e0476e.mp4?sign=d3e862c402a5e366688cb31d467e3f54&t=1793039210",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4720961996777219576&path=musafir-cafe-hindi-MStiLnt3KC5&se=1&ep=8",
@@ -232950,7 +233083,9 @@
               ],
               "captions": [],
               "episodeNumber": 8,
-              "id": "mb-s-4720961996777219576-s1-e8"
+              "id": "mb-s-4720961996777219576-s1-e8",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/bd47a4f798ebbd226e566b5f65e0476e.mp4?sign=d3e862c402a5e366688cb31d467e3f54&t=1793039210",
+              "resolution": 1080
             }
           ]
         }
@@ -233213,6 +233348,13 @@
               "streamUrl": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=1",
               "servers": [
                 {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/99f06ab4c0e67121277aae0195bd39fc.mp4?sign=85a27f95325fd26f3d441b0581affa00&t=1793036018",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=1",
                   "quality": "1080p",
@@ -233232,7 +233374,9 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-7992739293980674584-s1-e1"
+              "id": "mb-s-7992739293980674584-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/99f06ab4c0e67121277aae0195bd39fc.mp4?sign=85a27f95325fd26f3d441b0581affa00&t=1793036018",
+              "resolution": 1080
             },
             {
               "number": 2,
@@ -233244,6 +233388,13 @@
               "still": "https://image.tmdb.org/t/p/w500/iHfT5NDzGxQoovTKbqkBPcyZUxJ.jpg",
               "streamUrl": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=2",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/vegamovies/37a0951eac25f38b9ca3624462b98bbc.mp4?sign=f6ee3c050be9a5161e22cbf7fd8ad227&t=1793037602",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=2",
@@ -233264,7 +233415,9 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-7992739293980674584-s1-e2"
+              "id": "mb-s-7992739293980674584-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/vegamovies/37a0951eac25f38b9ca3624462b98bbc.mp4?sign=f6ee3c050be9a5161e22cbf7fd8ad227&t=1793037602",
+              "resolution": 1080
             },
             {
               "number": 3,
@@ -233276,6 +233429,13 @@
               "still": "https://image.tmdb.org/t/p/w500/1SH9BxLQa0jyxWSe0qgDZXVzPR8.jpg",
               "streamUrl": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=3",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/vegamovies/6e85575cfbb76d5b01d754925082af35.mp4?sign=a02f4d576dfb144b14df16e128fbd2a2&t=1793037615",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=3",
@@ -233316,7 +233476,9 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-7992739293980674584-s1-e3"
+              "id": "mb-s-7992739293980674584-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/vegamovies/6e85575cfbb76d5b01d754925082af35.mp4?sign=a02f4d576dfb144b14df16e128fbd2a2&t=1793037615",
+              "resolution": 1080
             },
             {
               "number": 4,
@@ -233328,6 +233490,13 @@
               "still": "https://image.tmdb.org/t/p/w500/i6Wz0LHsnqke3Bw0ZKmVjFfd1du.jpg",
               "streamUrl": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=4",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/9120f9d16b91318081a835993d709847.mp4?sign=949cded9039e533de029b3fbd5b4da7e&t=1793037627",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=4",
@@ -233348,7 +233517,9 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-7992739293980674584-s1-e4"
+              "id": "mb-s-7992739293980674584-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/9120f9d16b91318081a835993d709847.mp4?sign=949cded9039e533de029b3fbd5b4da7e&t=1793037627",
+              "resolution": 1080
             },
             {
               "number": 5,
@@ -233360,6 +233531,13 @@
               "still": "https://image.tmdb.org/t/p/w500/85vQvjEJlX4FZpRdINgX4y5Yw0q.jpg",
               "streamUrl": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=5",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/bad6793521858245acb5957cf04b1f42.mp4?sign=abbc0d81259efe1476784e6c541b5978&t=1793037050",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=5",
@@ -233400,7 +233578,9 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-7992739293980674584-s1-e5"
+              "id": "mb-s-7992739293980674584-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/bad6793521858245acb5957cf04b1f42.mp4?sign=abbc0d81259efe1476784e6c541b5978&t=1793037050",
+              "resolution": 1080
             },
             {
               "number": 6,
@@ -233412,6 +233592,13 @@
               "still": "https://image.tmdb.org/t/p/w500/oaV4eutM7B3R8gJwYhwBVqK8QO1.jpg",
               "streamUrl": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=6",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/vegamovies/da919bd5e6d07a0c4314af11ea0da326.mp4?sign=cd05e203e11eada80357a0944cc0f7e1&t=1793038577",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=6",
@@ -233432,7 +233619,9 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-7992739293980674584-s1-e6"
+              "id": "mb-s-7992739293980674584-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/vegamovies/da919bd5e6d07a0c4314af11ea0da326.mp4?sign=cd05e203e11eada80357a0944cc0f7e1&t=1793038577",
+              "resolution": 1080
             },
             {
               "number": 7,
@@ -233444,6 +233633,13 @@
               "still": "https://image.tmdb.org/t/p/w500/w5Hrm0A85Ulzeu2HOG1yvNfpLzz.jpg",
               "streamUrl": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=7",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/vegamovies/5ff41389564079a2e133e8691b374796.mp4?sign=300b7d6bd1a2be813754d8d5e2523df8&t=1793040047",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=7",
@@ -233464,7 +233660,9 @@
                 }
               ],
               "episodeNumber": 7,
-              "id": "mb-s-7992739293980674584-s1-e7"
+              "id": "mb-s-7992739293980674584-s1-e7",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/vegamovies/5ff41389564079a2e133e8691b374796.mp4?sign=300b7d6bd1a2be813754d8d5e2523df8&t=1793040047",
+              "resolution": 1080
             },
             {
               "number": 8,
@@ -233476,6 +233674,13 @@
               "still": "https://image.tmdb.org/t/p/w500/wlAMmhDH2MjHpt6d3d4ymEvO3Hd.jpg",
               "streamUrl": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=8",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/vegamovies/52dd41d9bc91b5e04bb8abc131ac1289.mp4?sign=756a7d9b25cd3540137362ff05d0221d&t=1793038499",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=7992739293980674584&path=lanterns-hindi-ciMc9svPqw9&se=1&ep=8",
@@ -233496,7 +233701,9 @@
                 }
               ],
               "episodeNumber": 8,
-              "id": "mb-s-7992739293980674584-s1-e8"
+              "id": "mb-s-7992739293980674584-s1-e8",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/vegamovies/52dd41d9bc91b5e04bb8abc131ac1289.mp4?sign=756a7d9b25cd3540137362ff05d0221d&t=1793038499",
+              "resolution": 1080
             }
           ]
         }
@@ -233882,6 +234089,13 @@
               "streamUrl": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=1",
               "servers": [
                 {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/a35cad5d817504dac4925a5a8977d8d9.mp4?sign=7a2aa5de533b23bdfa2d3a27ca7b9e6b&t=1793038380",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=1",
                   "quality": "1080p",
@@ -233899,7 +234113,9 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-4332534660363340496-s1-e1"
+              "id": "mb-s-4332534660363340496-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/a35cad5d817504dac4925a5a8977d8d9.mp4?sign=7a2aa5de533b23bdfa2d3a27ca7b9e6b&t=1793038380",
+              "resolution": 1080
             },
             {
               "number": 2,
@@ -233911,6 +234127,13 @@
               "still": "https://image.tmdb.org/t/p/w500/iGgs8n4n38bTvKyLgcs82Fe50fi.jpg",
               "streamUrl": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=2",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/2ebe9290e8a1bc24cef91d58897f7db6.mp4?sign=dac7d9edd4f523dd834b1b897c865ce2&t=1793036529",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=2",
@@ -233929,7 +234152,9 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-4332534660363340496-s1-e2"
+              "id": "mb-s-4332534660363340496-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/2ebe9290e8a1bc24cef91d58897f7db6.mp4?sign=dac7d9edd4f523dd834b1b897c865ce2&t=1793036529",
+              "resolution": 1080
             },
             {
               "number": 3,
@@ -233941,6 +234166,13 @@
               "still": "https://image.tmdb.org/t/p/w500/Ahr48jwzPqr2WPTYCY1yYMJN0cf.jpg",
               "streamUrl": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=3",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/529632db509cc94e4a70f8eecf27d2bf.mp4?sign=ea09cfb93bf122fa1d174c7a941ec261&t=1793040050",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=3",
@@ -233959,7 +234191,9 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-4332534660363340496-s1-e3"
+              "id": "mb-s-4332534660363340496-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/529632db509cc94e4a70f8eecf27d2bf.mp4?sign=ea09cfb93bf122fa1d174c7a941ec261&t=1793040050",
+              "resolution": 1080
             },
             {
               "number": 4,
@@ -233971,6 +234205,13 @@
               "still": "https://image.tmdb.org/t/p/w500/dafJHVR2hZloGWVD9QnqsLZAlm1.jpg",
               "streamUrl": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=4",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/ef568c89e5a3f0c2174c3d0e454e8a8c.mp4?sign=436f05a1e5ff7121b35d91603de477af&t=1793036310",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=4",
@@ -233989,7 +234230,9 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-4332534660363340496-s1-e4"
+              "id": "mb-s-4332534660363340496-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/ef568c89e5a3f0c2174c3d0e454e8a8c.mp4?sign=436f05a1e5ff7121b35d91603de477af&t=1793036310",
+              "resolution": 1080
             },
             {
               "number": 5,
@@ -234001,6 +234244,13 @@
               "still": "https://image.tmdb.org/t/p/w500/8zX9nPU0mXr1smHRECGwdfAMNjH.jpg",
               "streamUrl": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=5",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/7d79078e968af3216c82da42ba43b1cf.mp4?sign=a0abe520e80e20186b1bcbf97ef6d645&t=1793038007",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=5",
@@ -234019,7 +234269,9 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-4332534660363340496-s1-e5"
+              "id": "mb-s-4332534660363340496-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/7d79078e968af3216c82da42ba43b1cf.mp4?sign=a0abe520e80e20186b1bcbf97ef6d645&t=1793038007",
+              "resolution": 1080
             },
             {
               "number": 6,
@@ -234031,6 +234283,13 @@
               "still": "https://image.tmdb.org/t/p/w500/we9ExudgEDTdqnrdjF9gN7okFQC.jpg",
               "streamUrl": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=6",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/7524a31b026c5d0a3ce5faa053e251ad.mp4?sign=ab53e891c988baa5d24a97a3db254ec3&t=1793040051",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=6",
@@ -234049,7 +234308,9 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-4332534660363340496-s1-e6"
+              "id": "mb-s-4332534660363340496-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/7524a31b026c5d0a3ce5faa053e251ad.mp4?sign=ab53e891c988baa5d24a97a3db254ec3&t=1793040051",
+              "resolution": 1080
             },
             {
               "number": 7,
@@ -234061,6 +234322,13 @@
               "still": "https://image.tmdb.org/t/p/w500/oz3rkF0rGiUymDL31RKOzxtB7aI.jpg",
               "streamUrl": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=7",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/7898ca179b15372d9125a5f0c261423b.mp4?sign=83b2dd4435df3e8693c461a31027a5ba&t=1793039758",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=7",
@@ -234079,7 +234347,9 @@
                 }
               ],
               "episodeNumber": 7,
-              "id": "mb-s-4332534660363340496-s1-e7"
+              "id": "mb-s-4332534660363340496-s1-e7",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/7898ca179b15372d9125a5f0c261423b.mp4?sign=83b2dd4435df3e8693c461a31027a5ba&t=1793039758",
+              "resolution": 1080
             },
             {
               "number": 8,
@@ -234150,6 +234420,13 @@
               "streamUrl": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=9",
               "servers": [
                 {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/e425f7a3c31d18140a3e783aae6ee425.mp4?sign=1a751bc23ea5c26661a87487511112bc&t=1793036911",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=9",
                   "quality": "1080p",
@@ -234167,7 +234444,9 @@
                 }
               ],
               "episodeNumber": 9,
-              "id": "mb-s-4332534660363340496-s1-e9"
+              "id": "mb-s-4332534660363340496-s1-e9",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/e425f7a3c31d18140a3e783aae6ee425.mp4?sign=1a751bc23ea5c26661a87487511112bc&t=1793036911",
+              "resolution": 1080
             },
             {
               "number": 10,
@@ -234179,6 +234458,13 @@
               "still": "https://image.tmdb.org/t/p/w500/bNW9ufAfXEwJX3KxAel94GoDcXb.jpg",
               "streamUrl": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=10",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/d955b9b6112a63f7b22660b41408b7b8.mp4?sign=63601e449e0fde995978aa6814308b11&t=1793039547",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=10",
@@ -234197,7 +234483,9 @@
                 }
               ],
               "episodeNumber": 10,
-              "id": "mb-s-4332534660363340496-s1-e10"
+              "id": "mb-s-4332534660363340496-s1-e10",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/d955b9b6112a63f7b22660b41408b7b8.mp4?sign=63601e449e0fde995978aa6814308b11&t=1793039547",
+              "resolution": 1080
             },
             {
               "number": 11,
@@ -234209,6 +234497,13 @@
               "still": "https://image.tmdb.org/t/p/w500/rT2NmtB5KKvpuYwiOQ3OVWyrZdv.jpg",
               "streamUrl": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=11",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/31276cd99a0462992d2763b3e1aa0a4f.mp4?sign=8dab355f6219c19463cd1b29e98571f2&t=1793040057",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=11",
@@ -234227,7 +234522,9 @@
                 }
               ],
               "episodeNumber": 11,
-              "id": "mb-s-4332534660363340496-s1-e11"
+              "id": "mb-s-4332534660363340496-s1-e11",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/31276cd99a0462992d2763b3e1aa0a4f.mp4?sign=8dab355f6219c19463cd1b29e98571f2&t=1793040057",
+              "resolution": 1080
             },
             {
               "number": 12,
@@ -234239,6 +234536,13 @@
               "still": "https://image.tmdb.org/t/p/w500/AqVKkXhfUfKrMMtAd97XIQLCJs0.jpg",
               "streamUrl": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=12",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/e5aff4f601264355e8a0f0c8cee09fba.mp4?sign=c912a2b5b13b281bb469566e3b939025&t=1793037150",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=4332534660363340496&path=our-universe-hindi-ez8xLio33a5&se=1&ep=12",
@@ -234257,7 +234561,9 @@
                 }
               ],
               "episodeNumber": 12,
-              "id": "mb-s-4332534660363340496-s1-e12"
+              "id": "mb-s-4332534660363340496-s1-e12",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/e5aff4f601264355e8a0f0c8cee09fba.mp4?sign=c912a2b5b13b281bb469566e3b939025&t=1793037150",
+              "resolution": 1080
             }
           ]
         }
@@ -234725,6 +235031,13 @@
               "streamUrl": "/api/moviebox/stream?id=3908280950886646112&path=&se=1&ep=1",
               "servers": [
                 {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a8db962b09b9f3f9e88ae1556431bf3a.mp4?sign=fc269d3a3ea061c5a42e32e95d3112d1&t=1793038220",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=3908280950886646112&path=&se=1&ep=1",
                   "quality": "1080p",
@@ -234742,7 +235055,9 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-3908280950886646112-s1-e1"
+              "id": "mb-s-3908280950886646112-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/a8db962b09b9f3f9e88ae1556431bf3a.mp4?sign=fc269d3a3ea061c5a42e32e95d3112d1&t=1793038220",
+              "resolution": 1080
             },
             {
               "number": 2,
@@ -234754,6 +235069,13 @@
               "still": "https://image.tmdb.org/t/p/w500/sPFlMWA0YzOfuwys7BumrOJP5HR.jpg",
               "streamUrl": "/api/moviebox/stream?id=3908280950886646112&path=&se=1&ep=2",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/c0d9096687d2ec9621a2ba57cbb63889.mp4?sign=213694b83192290e4531c51a218b470f&t=1793037349",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=3908280950886646112&path=&se=1&ep=2",
@@ -234772,7 +235094,9 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-3908280950886646112-s1-e2"
+              "id": "mb-s-3908280950886646112-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/c0d9096687d2ec9621a2ba57cbb63889.mp4?sign=213694b83192290e4531c51a218b470f&t=1793037349",
+              "resolution": 1080
             },
             {
               "number": 3,
@@ -234784,6 +235108,13 @@
               "still": "https://image.tmdb.org/t/p/w500/u2YwlI82Nm6pM3jFijt00lxY2Be.jpg",
               "streamUrl": "/api/moviebox/stream?id=3908280950886646112&path=&se=1&ep=3",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/6111116d004211f9858fd6ed624800f6.mp4?sign=e2646b6be80e22fc6fc9e135b5425198&t=1793039717",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=3908280950886646112&path=&se=1&ep=3",
@@ -234802,7 +235133,9 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-3908280950886646112-s1-e3"
+              "id": "mb-s-3908280950886646112-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/6111116d004211f9858fd6ed624800f6.mp4?sign=e2646b6be80e22fc6fc9e135b5425198&t=1793039717",
+              "resolution": 1080
             },
             {
               "number": 4,
@@ -234814,6 +235147,13 @@
               "still": "https://image.tmdb.org/t/p/w500/6eVHqUOPEe1CIbvg4Dx6H4awFBR.jpg",
               "streamUrl": "/api/moviebox/stream?id=3908280950886646112&path=&se=1&ep=4",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/3ab676f3b533d81aec75060f694615a7.mp4?sign=02b5abab74f65e0ce0d9db279b63c5ea&t=1793040060",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=3908280950886646112&path=&se=1&ep=4",
@@ -234832,7 +235172,9 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-3908280950886646112-s1-e4"
+              "id": "mb-s-3908280950886646112-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/3ab676f3b533d81aec75060f694615a7.mp4?sign=02b5abab74f65e0ce0d9db279b63c5ea&t=1793040060",
+              "resolution": 1080
             }
           ]
         }
@@ -237381,6 +237723,13 @@
               "streamUrl": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=1",
               "servers": [
                 {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/9e13d13cda302cbe25c9e4a6b1ae4481.mp4?sign=115ffe59f0e81fa32ed4debf49d324a0&t=1793040106",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=1",
                   "quality": "1080p",
@@ -237460,7 +237809,9 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-2154607436987001256-s1-e1"
+              "id": "mb-s-2154607436987001256-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/9e13d13cda302cbe25c9e4a6b1ae4481.mp4?sign=115ffe59f0e81fa32ed4debf49d324a0&t=1793040106",
+              "resolution": 720
             },
             {
               "number": 2,
@@ -237472,6 +237823,13 @@
               "still": "https://image.tmdb.org/t/p/w500/gbLoR5X6Gd6UxBa0d4i3BHD6bNK.jpg",
               "streamUrl": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=2",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/9189e8acae1088e99a5a98782c78b8a0.mp4?sign=df2c6844422d5025dd5ca6d528a3e297&t=1793036268",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=2",
@@ -237542,7 +237900,9 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-2154607436987001256-s1-e2"
+              "id": "mb-s-2154607436987001256-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/9189e8acae1088e99a5a98782c78b8a0.mp4?sign=df2c6844422d5025dd5ca6d528a3e297&t=1793036268",
+              "resolution": 720
             },
             {
               "number": 3,
@@ -237554,6 +237914,13 @@
               "still": "https://image.tmdb.org/t/p/w500/bFRInLEHK6HQSJqna65AJT89wLX.jpg",
               "streamUrl": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=3",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/1e2820c01d414ff55c1b732b36cfb3cc.mp4?sign=a14e46d166886755f3ff962992883802&t=1793037183",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=3",
@@ -237624,7 +237991,9 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-2154607436987001256-s1-e3"
+              "id": "mb-s-2154607436987001256-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/1e2820c01d414ff55c1b732b36cfb3cc.mp4?sign=a14e46d166886755f3ff962992883802&t=1793037183",
+              "resolution": 720
             },
             {
               "number": 4,
@@ -237636,6 +238005,13 @@
               "still": "https://image.tmdb.org/t/p/w500/bYKUEdJt6RMn6xMaH2zSugpBqXG.jpg",
               "streamUrl": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=4",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/c77e2450520f73fd3630beaab0e7b12d.mp4?sign=91f4d7fc9016075c3edd1c2a4583b14c&t=1793038594",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=4",
@@ -237706,7 +238082,9 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-2154607436987001256-s1-e4"
+              "id": "mb-s-2154607436987001256-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/c77e2450520f73fd3630beaab0e7b12d.mp4?sign=91f4d7fc9016075c3edd1c2a4583b14c&t=1793038594",
+              "resolution": 720
             },
             {
               "number": 5,
@@ -237718,6 +238096,13 @@
               "still": "https://image.tmdb.org/t/p/w500/fOxDisUQ5gEGNXacdA2BPVYFp2.jpg",
               "streamUrl": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=5",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/c1c769238701566638fcab1fbc77954d.mp4?sign=a16c334abb8c34a0a561719f9540b58a&t=1793038594",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=5",
@@ -237788,7 +238173,9 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-2154607436987001256-s1-e5"
+              "id": "mb-s-2154607436987001256-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/c1c769238701566638fcab1fbc77954d.mp4?sign=a16c334abb8c34a0a561719f9540b58a&t=1793038594",
+              "resolution": 720
             },
             {
               "number": 6,
@@ -237800,6 +238187,13 @@
               "still": "https://image.tmdb.org/t/p/w500/78h8e9kS03M7HPupNqI3iKjzg5y.jpg",
               "streamUrl": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=6",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/5852ce16593fb4ecb2567e32d8214fc0.mp4?sign=220492078a2d5c02d8620ff5c87ae9cf&t=1793036704",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=6",
@@ -237870,7 +238264,9 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-2154607436987001256-s1-e6"
+              "id": "mb-s-2154607436987001256-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/5852ce16593fb4ecb2567e32d8214fc0.mp4?sign=220492078a2d5c02d8620ff5c87ae9cf&t=1793036704",
+              "resolution": 720
             },
             {
               "number": 7,
@@ -237882,6 +238278,13 @@
               "still": "https://image.tmdb.org/t/p/w500/vBBFaPPNI5OpV7yhHbiDhN8d0ps.jpg",
               "streamUrl": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=7",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/317dfe47563893762f32195ac7a5e762.mp4?sign=0fe0807125ef83e4b27e448bdb5cd098&t=1793038594",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=7",
@@ -237962,7 +238365,9 @@
                 }
               ],
               "episodeNumber": 7,
-              "id": "mb-s-2154607436987001256-s1-e7"
+              "id": "mb-s-2154607436987001256-s1-e7",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/317dfe47563893762f32195ac7a5e762.mp4?sign=0fe0807125ef83e4b27e448bdb5cd098&t=1793038594",
+              "resolution": 720
             },
             {
               "number": 8,
@@ -237974,6 +238379,13 @@
               "still": "https://image.tmdb.org/t/p/w500/mwyUh6cRBeVQeEg5RtRXDloOcV.jpg",
               "streamUrl": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=8",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/3bd37daf676f3f0f765fb63492ba1aa5.mp4?sign=8d6588fa557fb511c0d5381b2e67d006&t=1793039818",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=8",
@@ -238054,7 +238466,9 @@
                 }
               ],
               "episodeNumber": 8,
-              "id": "mb-s-2154607436987001256-s1-e8"
+              "id": "mb-s-2154607436987001256-s1-e8",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/3bd37daf676f3f0f765fb63492ba1aa5.mp4?sign=8d6588fa557fb511c0d5381b2e67d006&t=1793039818",
+              "resolution": 720
             },
             {
               "number": 9,
@@ -238066,6 +238480,13 @@
               "still": "https://image.tmdb.org/t/p/w500/qoptWs4x0PYe1OkmSpDDPOVMJzs.jpg",
               "streamUrl": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=9",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/b8d08e2d47d883cfed18618cc6e0836a.mp4?sign=654357f4f5b9acfb491b629d5c868131&t=1793039821",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=9",
@@ -238146,7 +238567,9 @@
                 }
               ],
               "episodeNumber": 9,
-              "id": "mb-s-2154607436987001256-s1-e9"
+              "id": "mb-s-2154607436987001256-s1-e9",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/b8d08e2d47d883cfed18618cc6e0836a.mp4?sign=654357f4f5b9acfb491b629d5c868131&t=1793039821",
+              "resolution": 720
             },
             {
               "number": 10,
@@ -238158,6 +238581,13 @@
               "still": "https://image.tmdb.org/t/p/w500/21TgX0LtcL8EVfOSTam3puMydUB.jpg",
               "streamUrl": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=10",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/539ae965ec262e45019e6b03d0d0596b.mp4?sign=a1d0bf382d6c21ef36fa8e341cbc1403&t=1793038595",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=10",
@@ -238238,7 +238668,9 @@
                 }
               ],
               "episodeNumber": 10,
-              "id": "mb-s-2154607436987001256-s1-e10"
+              "id": "mb-s-2154607436987001256-s1-e10",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/539ae965ec262e45019e6b03d0d0596b.mp4?sign=a1d0bf382d6c21ef36fa8e341cbc1403&t=1793038595",
+              "resolution": 720
             },
             {
               "number": 11,
@@ -238250,6 +238682,13 @@
               "still": "https://image.tmdb.org/t/p/w500/mIzSZ7Vsgnr3G0aECIJ94MEna4G.jpg",
               "streamUrl": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=11",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/1b575db82af458494f7454876add3376.mp4?sign=3bdaeab833b2b0a57e185e88add29be6&t=1793040109",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=11",
@@ -238330,7 +238769,9 @@
                 }
               ],
               "episodeNumber": 11,
-              "id": "mb-s-2154607436987001256-s1-e11"
+              "id": "mb-s-2154607436987001256-s1-e11",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/1b575db82af458494f7454876add3376.mp4?sign=3bdaeab833b2b0a57e185e88add29be6&t=1793040109",
+              "resolution": 720
             },
             {
               "number": 12,
@@ -238342,6 +238783,13 @@
               "still": "https://image.tmdb.org/t/p/w500/5iPbvsjysullTfR0hjBoCq7ntEY.jpg",
               "streamUrl": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=12",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/74f02085af36c5e64498481afa78738e.mp4?sign=7d95731544b4d9954a3eb0b4663240d0&t=1793040110",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2154607436987001256&path=&se=1&ep=12",
@@ -238422,7 +238870,9 @@
                 }
               ],
               "episodeNumber": 12,
-              "id": "mb-s-2154607436987001256-s1-e12"
+              "id": "mb-s-2154607436987001256-s1-e12",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/74f02085af36c5e64498481afa78738e.mp4?sign=7d95731544b4d9954a3eb0b4663240d0&t=1793040110",
+              "resolution": 720
             }
           ]
         }
@@ -239558,6 +240008,13 @@
               "streamUrl": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=1",
               "servers": [
                 {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/5e0ac1d0a98e38efb21f7bfd9a8090df.mp4?sign=02443e424565c77599d56c48aca1934d&t=1793039593",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=1",
                   "quality": "1080p",
@@ -239586,7 +240043,9 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-2206443205082733056-s1-e1"
+              "id": "mb-s-2206443205082733056-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/5e0ac1d0a98e38efb21f7bfd9a8090df.mp4?sign=02443e424565c77599d56c48aca1934d&t=1793039593",
+              "resolution": 720
             },
             {
               "number": 2,
@@ -239598,6 +240057,13 @@
               "still": "https://image.tmdb.org/t/p/w500/j9g84omhffEspeadKVVWh19iQ94.jpg",
               "streamUrl": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=2",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/1c03c4634061c138f6b1169708b0c4fa.mp4?sign=7e341e8223fc7916211901a5d2e8701d&t=1793038882",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=2",
@@ -239627,7 +240093,9 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-2206443205082733056-s1-e2"
+              "id": "mb-s-2206443205082733056-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/1c03c4634061c138f6b1169708b0c4fa.mp4?sign=7e341e8223fc7916211901a5d2e8701d&t=1793038882",
+              "resolution": 720
             },
             {
               "number": 3,
@@ -239639,6 +240107,13 @@
               "still": "https://image.tmdb.org/t/p/w500/dZWBlufYmqTcpjvLdp11oYgIrl3.jpg",
               "streamUrl": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=3",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a305315b18b0140a0bf257350974eb80.mp4?sign=6809de36731700f6c0e4ed93a876c51b&t=1793037524",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=3",
@@ -239668,7 +240143,9 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-2206443205082733056-s1-e3"
+              "id": "mb-s-2206443205082733056-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/a305315b18b0140a0bf257350974eb80.mp4?sign=6809de36731700f6c0e4ed93a876c51b&t=1793037524",
+              "resolution": 720
             },
             {
               "number": 4,
@@ -239680,6 +240157,13 @@
               "still": "https://image.tmdb.org/t/p/w500/tXdAjZPTcCJNXqXFsYtm6RlRlIf.jpg",
               "streamUrl": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=4",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/eff867f1d6337cdeb5aa2c5e291f0395.mp4?sign=c56aa544e3fd5398a642ca26a9a2da70&t=1793038456",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=4",
@@ -239709,7 +240193,9 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-2206443205082733056-s1-e4"
+              "id": "mb-s-2206443205082733056-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/eff867f1d6337cdeb5aa2c5e291f0395.mp4?sign=c56aa544e3fd5398a642ca26a9a2da70&t=1793038456",
+              "resolution": 720
             },
             {
               "number": 5,
@@ -239721,6 +240207,13 @@
               "still": "https://image.tmdb.org/t/p/w500/i3lkWtxV2gzinnK7WUELV9SNnfA.jpg",
               "streamUrl": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=5",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/66052bc590c34b1d13ee6e8055953890.mp4?sign=49a9f06e4fbfae365fae16cdaec9fa64&t=1793036832",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=5",
@@ -239740,7 +240233,9 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-2206443205082733056-s1-e5"
+              "id": "mb-s-2206443205082733056-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/66052bc590c34b1d13ee6e8055953890.mp4?sign=49a9f06e4fbfae365fae16cdaec9fa64&t=1793036832",
+              "resolution": 720
             },
             {
               "number": 6,
@@ -239752,6 +240247,13 @@
               "still": "https://image.tmdb.org/t/p/w500/fdvxj4EvnW1yzwUZamzdYbQpyX9.jpg",
               "streamUrl": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=6",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/e7364a2eae341bddfbe38c12d27b2ed7.mp4?sign=7f048a3a5986a7ab129ba358796b956c&t=1793040112",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=6",
@@ -239781,7 +240283,9 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-2206443205082733056-s1-e6"
+              "id": "mb-s-2206443205082733056-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/e7364a2eae341bddfbe38c12d27b2ed7.mp4?sign=7f048a3a5986a7ab129ba358796b956c&t=1793040112",
+              "resolution": 720
             },
             {
               "number": 7,
@@ -239793,6 +240297,13 @@
               "still": "https://image.tmdb.org/t/p/w500/egSPoIFBDgVWK0l6F3fXTSNDMIh.jpg",
               "streamUrl": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=7",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/881fa31c233c7bcd09d8ba2480cb94c0.mp4?sign=c0fe6d448d23c5540fa09d145e3bc5b4&t=1793037411",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=7",
@@ -239822,7 +240333,9 @@
                 }
               ],
               "episodeNumber": 7,
-              "id": "mb-s-2206443205082733056-s1-e7"
+              "id": "mb-s-2206443205082733056-s1-e7",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/881fa31c233c7bcd09d8ba2480cb94c0.mp4?sign=c0fe6d448d23c5540fa09d145e3bc5b4&t=1793037411",
+              "resolution": 720
             },
             {
               "number": 8,
@@ -239834,6 +240347,13 @@
               "still": "https://image.tmdb.org/t/p/w500/7a0CIPJDH34NLVaJ0Sqd9jJ2Q5E.jpg",
               "streamUrl": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=8",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/ff6c8a15fecd1029318932d99f1a9b8c.mp4?sign=0a1eac6105a8ede129a4b908c88f5e42&t=1793038462",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=8",
@@ -239863,7 +240383,9 @@
                 }
               ],
               "episodeNumber": 8,
-              "id": "mb-s-2206443205082733056-s1-e8"
+              "id": "mb-s-2206443205082733056-s1-e8",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/ff6c8a15fecd1029318932d99f1a9b8c.mp4?sign=0a1eac6105a8ede129a4b908c88f5e42&t=1793038462",
+              "resolution": 720
             },
             {
               "number": 9,
@@ -239875,6 +240397,13 @@
               "still": "https://image.tmdb.org/t/p/w500/nST9Ftn5VLV7G0WC8ZzdfWlttYH.jpg",
               "streamUrl": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=9",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/b9ea416890375b36c606a2b3f798cb87.mp4?sign=4389d6cdd8b0d3c9eaf31e389e715914&t=1793036463",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=9",
@@ -239904,7 +240433,9 @@
                 }
               ],
               "episodeNumber": 9,
-              "id": "mb-s-2206443205082733056-s1-e9"
+              "id": "mb-s-2206443205082733056-s1-e9",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/b9ea416890375b36c606a2b3f798cb87.mp4?sign=4389d6cdd8b0d3c9eaf31e389e715914&t=1793036463",
+              "resolution": 720
             },
             {
               "number": 10,
@@ -239916,6 +240447,13 @@
               "still": "https://image.tmdb.org/t/p/w500/dm0HKc1cDkqI1DVvyHL2qo5HAFf.jpg",
               "streamUrl": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=10",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/9cc921b5e2dada8314770c91e2e6d9c4.mp4?sign=b7cda50cbfd9677cf255f80ece7fc6fd&t=1793038394",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=10",
@@ -239945,7 +240483,9 @@
                 }
               ],
               "episodeNumber": 10,
-              "id": "mb-s-2206443205082733056-s1-e10"
+              "id": "mb-s-2206443205082733056-s1-e10",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/9cc921b5e2dada8314770c91e2e6d9c4.mp4?sign=b7cda50cbfd9677cf255f80ece7fc6fd&t=1793038394",
+              "resolution": 720
             },
             {
               "number": 11,
@@ -239957,6 +240497,13 @@
               "still": "https://image.tmdb.org/t/p/w500/pKNDBL4Qy21nuyNP46xSCJUJ030.jpg",
               "streamUrl": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=11",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/6df8c6619893b4f94b7a0c536038eee5.mp4?sign=fc017c9df1be9a0dbcdd696cb347fcee&t=1793039827",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=11",
@@ -239986,7 +240533,9 @@
                 }
               ],
               "episodeNumber": 11,
-              "id": "mb-s-2206443205082733056-s1-e11"
+              "id": "mb-s-2206443205082733056-s1-e11",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/6df8c6619893b4f94b7a0c536038eee5.mp4?sign=fc017c9df1be9a0dbcdd696cb347fcee&t=1793039827",
+              "resolution": 720
             },
             {
               "number": 12,
@@ -239998,6 +240547,13 @@
               "still": "https://image.tmdb.org/t/p/w500/12oli2YqdwJ1FuTgxGbm4vLLrIg.jpg",
               "streamUrl": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=12",
               "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a53af682bd8f801edafb394ac93ab5e8.mp4?sign=1f44509839d313069dc8ca27c5b44cca&t=1793037464",
+                  "quality": "720p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
                   "url": "/api/moviebox/stream?id=2206443205082733056&path=&se=1&ep=12",
@@ -240027,7 +240583,9 @@
                 }
               ],
               "episodeNumber": 12,
-              "id": "mb-s-2206443205082733056-s1-e12"
+              "id": "mb-s-2206443205082733056-s1-e12",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/a53af682bd8f801edafb394ac93ab5e8.mp4?sign=1f44509839d313069dc8ca27c5b44cca&t=1793037464",
+              "resolution": 720
             }
           ]
         }
@@ -253637,7 +254195,8 @@
       "cover": "https://image.tmdb.org/t/p/original/32g5MD6eHPAZ5NAgkNAURb4eupm.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2026-10-19",
-      "subjectId": "1295982060779237904"
+      "subjectId": "1295982060779237904",
+      "detailPath": "love-in-disguise-hindi-ww61uWUBJx1"
     },
     {
       "id": "mb-s-1131798723912254248",
@@ -253886,7 +254445,8 @@
       "cover": "https://image.tmdb.org/t/p/original/voAufY8Jv3AVfG15sxY5H6XWFKr.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2026-10-15",
-      "subjectId": "1131798723912254248"
+      "subjectId": "1131798723912254248",
+      "detailPath": "make-me-tingle-hindi-0yDs3ejEBl1"
     },
     {
       "id": "mb-s-7956543182215725408",
@@ -258340,7 +258900,8 @@
       "cover": "https://image.tmdb.org/t/p/original/9yCJtipMeDe8uAdSJKvw8BnYfRz.jpg",
       "addedAt": "2026-10-22T16:28:51.000Z",
       "originalReleaseDate": "2026-10-07",
-      "subjectId": "1819272685621345488"
+      "subjectId": "1819272685621345488",
+      "detailPath": "carrie-hindi-AOehqQRhoa2"
     },
     {
       "id": "mb-s-8458814937190780632",
@@ -259079,7 +259640,8 @@
       "cover": "https://image.tmdb.org/t/p/original/moUjiEzpJVNZc7hyNRBbLPt0CPX.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2026-09-12",
-      "subjectId": "6067650409777220448"
+      "subjectId": "6067650409777220448",
+      "detailPath": "a-love-other-than-yours-hindi-wOV0K50Ude7"
     },
     {
       "id": "mb-s-7598175474724358640",
@@ -259467,7 +260029,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=7598175474724358640&path=&se=1&ep=1"
         }
-      ]
+      ],
+      "detailPath": "ali-baba-aur-40-bhoot-hindi-2Vmlp9UIh39"
     },
     {
       "id": "mb-s-7332036005161487320",
@@ -260080,7 +260643,8 @@
       "cover": "https://image.tmdb.org/t/p/original/oxJIuxIWiBEcIBRDdu48vTwQcJZ.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2026-09-10",
-      "subjectId": "742546769883585176"
+      "subjectId": "742546769883585176",
+      "detailPath": "the-ordinary-jackpot-hindi-sqo01i4SQS"
     },
     {
       "id": "mb-s-2344383564848037072",
@@ -260689,7 +261253,8 @@
       "cover": "https://image.tmdb.org/t/p/original/oUFUvEMCBP80e4eYsfVfxC8n7ih.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2026-08-26",
-      "subjectId": "2344383564848037072"
+      "subjectId": "2344383564848037072",
+      "detailPath": "the-early-spring-hindi-mL0TvlHibN2"
     },
     {
       "id": "mb-s-3642928735944335256",
@@ -261250,7 +261815,8 @@
       "cover": "https://image.tmdb.org/t/p/original/mp2AFsWsuyxCzenJh3DTKw7z4jG.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2026-08-07",
-      "subjectId": "3642928735944335256"
+      "subjectId": "3642928735944335256",
+      "detailPath": "our-sticky-love-hindi-6ZZFEhrE6l4"
     },
     {
       "id": "mb-s-4258766710490154968",
@@ -261811,7 +262377,8 @@
       "cover": "https://image.tmdb.org/t/p/original/eBD46F44qKGPZiRLffO4q3JF8Hc.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2026-08-03",
-      "subjectId": "4258766710490154968"
+      "subjectId": "4258766710490154968",
+      "detailPath": "my-bias-my-boss-hindi-C5150bccB45"
     },
     {
       "id": "mb-s-542646768450818704",
@@ -264485,7 +265052,8 @@
       "cover": "https://image.tmdb.org/t/p/original/xrzle63zw2MduVGmTFeKNXKqUla.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2026-04-25",
-      "subjectId": "8386834503314067800"
+      "subjectId": "8386834503314067800",
+      "detailPath": "filing-for-love-hindi-yZC3bC2NxZ9"
     },
     {
       "id": "mb-s-6446851041895370536",
@@ -272304,7 +272872,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=1880138457100470096&path=&se=1&ep=1"
         }
-      ]
+      ],
+      "detailPath": "rise-and-fall-hindi-AOwoRSl3Te2"
     },
     {
       "id": "mb-s-2449209778300666432",
@@ -273021,7 +273590,8 @@
       "cover": "https://image.tmdb.org/t/p/original/8l1BN0IIjHmRyW0oDfUfs3F6F4N.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2025-05-31",
-      "subjectId": "2449209778300666432"
+      "subjectId": "2449209778300666432",
+      "detailPath": "good-boy-hindi-QiGhpCdpVU2"
     },
     {
       "id": "mb-s-7326680523467114264",
@@ -273523,7 +274093,8 @@
       "cover": "https://image.tmdb.org/t/p/w500/ueyjrFrgvFOAW1sZkgsTtSEj82I.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2025-05-16",
-      "subjectId": "7326680523467114264"
+      "subjectId": "7326680523467114264",
+      "detailPath": "dear-hongrang-hindi-2x49Hh1heJ8"
     },
     {
       "id": "mb-s-4424066505852289304",
@@ -274077,7 +274648,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=4424066505852289304&path=&se=1&ep=1"
         }
-      ]
+      ],
+      "detailPath": "dupahiya-hindi-CHSgRLPgOg5"
     },
     {
       "id": "mb-s-869682023798037784",
@@ -274638,7 +275210,8 @@
       "cover": "https://image.tmdb.org/t/p/original/4Xer0oaXautbLRfJQOrlmPSCfN1.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2025-02-17",
-      "subjectId": "869682023798037784"
+      "subjectId": "869682023798037784",
+      "detailPath": "my-dearest-nemesis-hindi-CnazjJt9f21"
     },
     {
       "id": "mb-s-3997659161797476824",
@@ -283601,7 +284174,8 @@
       "cover": "https://image.tmdb.org/t/p/original/clGOzO82lN4gPI4Fon7wNVXS90i.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2022-11-18",
-      "subjectId": "760560240680133656"
+      "subjectId": "760560240680133656",
+      "detailPath": "reborn-rich-hindi-0koePxbnbU"
     },
     {
       "id": "turkish-s-210865",
@@ -296692,7 +297266,8 @@
       "cover": "https://image.tmdb.org/t/p/original/eqLwFXX0R7U0crdgQcj0Rxjb9uc.jpg",
       "addedAt": "2026-10-22T16:28:51.000Z",
       "originalReleaseDate": "2022-06-30",
-      "subjectId": "7658459104725665256"
+      "subjectId": "7658459104725665256",
+      "detailPath": "the-terminal-list-hindi-iZKpmg5PJ79"
     },
     {
       "id": "mb-s-4913967391899615376",
@@ -298074,7 +298649,8 @@
       "cover": "https://image.tmdb.org/t/p/original/i1SyUHsi45psSH1xy9sM0in8FKJ.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2021-04-09",
-      "subjectId": "7175789760341232656"
+      "subjectId": "7175789760341232656",
+      "detailPath": "taxi-driver-hindi-MmrQAMYb5y8"
     },
     {
       "id": "mb-s-1046337672425472216",
@@ -299022,7 +299598,8 @@
       "cover": "https://image.tmdb.org/t/p/original/8vTKWj8J6Z9YtsDbN038CWMadKp.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2020-07-28",
-      "subjectId": "7945411914401042712"
+      "subjectId": "7945411914401042712",
+      "detailPath": "karma-hindi-SNBSyoo4Ws9"
     },
     {
       "id": "turkish-s-95603",
@@ -317983,7 +318560,8 @@
       "cover": "https://image.tmdb.org/t/p/original/6oxQe4fyYJQT77NBNLQzbW7pf4Z.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2017-12-23",
-      "subjectId": "3000423889278234856"
+      "subjectId": "3000423889278234856",
+      "detailPath": "a-korean-odyssey-hindi-4Ouuy9lYDz3"
     },
     {
       "id": "mb-s-2288089881081512944",
@@ -322745,7 +323323,8 @@
       "cover": "https://image.tmdb.org/t/p/original/wgmikRStgBbrzjxFVe5rhFlpL2R.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2015-11-06",
-      "subjectId": "8891128203264291048"
+      "subjectId": "8891128203264291048",
+      "detailPath": "reply-1988-hindi-oWvn80CsNAa"
     },
     {
       "id": "turkish-s-66017",
@@ -333301,7 +333880,8 @@
       "cover": "https://image.tmdb.org/t/p/original/uH4HaYhGoZ3pBZxwTeGwGJ6Lc8M.jpg",
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2014-10-18",
-      "subjectId": "3814452171920267928"
+      "subjectId": "3814452171920267928",
+      "detailPath": "modeonpameo-hindi-UCjKRyleMx4"
     },
     {
       "id": "mb-s-4681337201345660416",
@@ -335183,7 +335763,8 @@
           "name": "Fast Server (Auto-Renew)",
           "url": "/api/moviebox/stream?id=8182411463231952776&path=&se=1&ep=1"
         }
-      ]
+      ],
+      "detailPath": "brothers-and-sisters-hindi-MUwFdmWwrK9"
     },
     {
       "id": "mb-s-3929372124917419816",
@@ -369172,159 +369753,4 @@
     },
     {
       "id": "tv-in-puebqthi67xhpe",
-      "name": "Asianet News",
-      "title": "Asianet News",
-      "category": "News",
-      "logo": "https://ui-avatars.com/api/?name=Asianet%20News&background=0f172a&color=00f2fe&size=256&bold=true",
-      "poster": "https://ui-avatars.com/api/?name=Asianet%20News&background=0f172a&color=00f2fe&size=256&bold=true",
-      "streamUrl": "https://amg13737-amg13737c1-amgplt0016.playout.now3.amagi.tv/playlist/amg13737-amg13737c1-amgplt0016/playlist.m3u8",
-      "streamType": "hls",
-      "badge": "LIVE",
-      "country": "in",
-      "language": "Hindi"
-    },
-    {
-      "id": "tv-in-25tia9bgccnc3x",
-      "name": "Asianet Suvarna News",
-      "title": "Asianet Suvarna News",
-      "category": "News",
-      "logo": "https://ui-avatars.com/api/?name=Asianet%20Suvarna%20News&background=0f172a&color=00f2fe&size=256&bold=true",
-      "poster": "https://ui-avatars.com/api/?name=Asianet%20Suvarna%20News&background=0f172a&color=00f2fe&size=256&bold=true",
-      "streamUrl": "https://asianetnews.vgcdn.net/vglive-sk-335835/playlist.m3u8",
-      "streamType": "hls",
-      "badge": "LIVE",
-      "country": "in",
-      "language": "Hindi"
-    },
-    {
-      "id": "tv-in-5gzdxjktsvye05",
-      "name": "Assam Talks",
-      "title": "Assam Talks",
-      "category": "Entertainment",
-      "logo": "https://ui-avatars.com/api/?name=Assam%20Talks&background=0f172a&color=00f2fe&size=256&bold=true",
-      "poster": "https://ui-avatars.com/api/?name=Assam%20Talks&background=0f172a&color=00f2fe&size=256&bold=true",
-      "streamUrl": "https://mumt05.tangotv.in/87NeALx2ASSAMTALKS/index.m3u8",
-      "streamType": "hls",
-      "badge": "LIVE",
-      "country": "in",
-      "language": "Hindi"
-    },
-    {
-      "id": "tv-in-bbgnmwvqeh7zfb",
-      "name": "Awaaz India TV",
-      "title": "Awaaz India TV",
-      "category": "Entertainment",
-      "logo": "https://ui-avatars.com/api/?name=Awaaz%20India%20TV&background=0f172a&color=00f2fe&size=256&bold=true",
-      "poster": "https://ui-avatars.com/api/?name=Awaaz%20India%20TV&background=0f172a&color=00f2fe&size=256&bold=true",
-      "streamUrl": "https://awaazindia.livebox.co.in/AwaazIndaTVhls/Live.m3u8",
-      "streamType": "hls",
-      "badge": "LIVE",
-      "country": "in",
-      "language": "Hindi"
-    },
-    {
-      "id": "tv-in-aneay4xutgz5bt",
-      "name": "Awakening TV",
-      "title": "Awakening TV",
-      "category": "Entertainment",
-      "logo": "https://ui-avatars.com/api/?name=Awakening%20TV&background=0f172a&color=00f2fe&size=256&bold=true",
-      "poster": "https://ui-avatars.com/api/?name=Awakening%20TV&background=0f172a&color=00f2fe&size=256&bold=true",
-      "streamUrl": "https://d2gvyg6lvauoko.cloudfront.net/230226/awakeningtv/playlist.m3u8?hdnts=st=1735898689~exp=1835898688~acl=*~hmac=f5fe24724fe05481e3841f9eb5ab8efdee0a3dd83645ae9dcf45703f525bab7b",
-      "streamType": "hls",
-      "badge": "LIVE",
-      "country": "in",
-      "language": "Hindi"
-    },
-    {
-      "id": "tv-in-bdwu9irq3fzngw",
-      "name": "Ayush TV",
-      "title": "Ayush TV",
-      "category": "Entertainment",
-      "logo": "https://ui-avatars.com/api/?name=Ayush%20TV&background=0f172a&color=00f2fe&size=256&bold=true",
-      "poster": "https://ui-avatars.com/api/?name=Ayush%20TV&background=0f172a&color=00f2fe&size=256&bold=true",
-      "streamUrl": "https://mumt07.tangotv.in/zHjX9OFlAYUSHTV/index.m3u8",
-      "streamType": "hls",
-      "badge": "LIVE",
-      "country": "in",
-      "language": "Hindi"
-    },
-    {
-      "id": "tv-in-llg3lzh10mx22l",
-      "name": "Balle Balle",
-      "title": "Balle Balle",
-      "category": "Entertainment",
-      "logo": "https://ui-avatars.com/api/?name=Balle%20Balle&background=0f172a&color=00f2fe&size=256&bold=true",
-      "poster": "https://ui-avatars.com/api/?name=Balle%20Balle&background=0f172a&color=00f2fe&size=256&bold=true",
-      "streamUrl": "https://mcncdndigital.com/balleballetv/index.m3u8",
-      "streamType": "hls",
-      "badge": "LIVE",
-      "country": "in",
-      "language": "Hindi"
-    },
-    {
-      "id": "tv-in-nyz89qw7dyal74",
-      "name": "Bansal News",
-      "title": "Bansal News",
-      "category": "News",
-      "logo": "https://ui-avatars.com/api/?name=Bansal%20News&background=0f172a&color=00f2fe&size=256&bold=true",
-      "poster": "https://ui-avatars.com/api/?name=Bansal%20News&background=0f172a&color=00f2fe&size=256&bold=true",
-      "streamUrl": "https://cdn.pishow.tv/ott/live/1051/master.m3u8",
-      "streamType": "hls",
-      "badge": "LIVE",
-      "country": "in",
-      "language": "Hindi"
-    },
-    {
-      "id": "tv-in-svj9rmcydfx3s6",
-      "name": "Bhagyam TV",
-      "title": "Bhagyam TV",
-      "category": "Entertainment",
-      "logo": "https://ui-avatars.com/api/?name=Bhagyam%20TV&background=0f172a&color=00f2fe&size=256&bold=true",
-      "poster": "https://ui-avatars.com/api/?name=Bhagyam%20TV&background=0f172a&color=00f2fe&size=256&bold=true",
-      "streamUrl": "https://ott.bhagyam.net/hls/bhagyamweb/index-1409148900-now.m3u8",
-      "streamType": "hls",
-      "badge": "LIVE",
-      "country": "in",
-      "language": "Hindi"
-    },
-    {
-      "id": "tv-in-rizrvpcdltpdtz",
-      "name": "Bhakthi TV",
-      "title": "Bhakthi TV",
-      "category": "Entertainment",
-      "logo": "https://ui-avatars.com/api/?name=Bhakthi%20TV&background=0f172a&color=00f2fe&size=256&bold=true",
-      "poster": "https://ui-avatars.com/api/?name=Bhakthi%20TV&background=0f172a&color=00f2fe&size=256&bold=true",
-      "streamUrl": "https://cdn.pishow.tv/ott/live/397/master.m3u8",
-      "streamType": "hls",
-      "badge": "LIVE",
-      "country": "in",
-      "language": "Hindi"
-    },
-    {
-      "id": "tv-in-ggajzpls3bp2is",
-      "name": "Bhakti Sagar",
-      "title": "Bhakti Sagar",
-      "category": "Entertainment",
-      "logo": "https://ui-avatars.com/api/?name=Bhakti%20Sagar&background=0f172a&color=00f2fe&size=256&bold=true",
-      "poster": "https://ui-avatars.com/api/?name=Bhakti%20Sagar&background=0f172a&color=00f2fe&size=256&bold=true",
-      "streamUrl": "https://mumt05.tangotv.in/87NeALx2BHAKTISAGAR/index.m3u8",
-      "streamType": "hls",
-      "badge": "LIVE",
-      "country": "in",
-      "language": "Hindi"
-    },
-    {
-      "id": "tv-in-lfhjrkg5yr0etl",
-      "name": "Bharat Express",
-      "title": "Bharat Express",
-      "category": "Entertainment",
-      "logo": "https://ui-avatars.com/api/?name=Bharat%20Express&background=0f172a&color=00f2fe&size=256&bold=true",
-      "poster": "https://ui-avatars.com/api/?name=Bharat%20Express&background=0f172a&color=00f2fe&size=256&bold=true",
-      "streamUrl": "https://mumt07.tangotv.in/zHjX9OFlBHARATEXPRESS/index.m3u8",
-      "streamType": "hls",
-      "badge": "LIVE",
-      "country": "in",
-      "language": "Hindi"
-    }
-  ]
-}
+      "name": "Asi
