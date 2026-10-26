@@ -48,6 +48,45 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Health check endpoint for Hostinger KVM 8 VPS and monitors
+
+app.get('/api/debug/stream-test', async (req, res) => {
+  const id = req.query.id || '7945411914401042712';
+  const path = req.query.path || 'karma-hindi-SNBSyoo4Ws9';
+  const se = parseInt(req.query.se || '1', 10);
+  const ep = parseInt(req.query.ep || '1', 10);
+
+  const report = { id, path, se, ep };
+
+  try {
+    const rawRes = await axios.get('https://h5.aoneroom.com/wefeed-h5-bff/web/subject/download', {
+      params: { subjectId: id, se, ep },
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'Origin': 'https://h5.aoneroom.com',
+        'Referer': 'https://h5.aoneroom.com/movies/' + path,
+        'Accept': 'application/json'
+      },
+      timeout: 10000
+    });
+    report.rawStatus = rawRes.status;
+    report.data = rawRes.data;
+  } catch (err) {
+    report.error = err.message;
+    report.code = err.code;
+    report.status = err.response?.status;
+    report.responseBody = err.response?.data;
+  }
+
+  try {
+    const resolved = await movieboxService.resolveMedia(id, path, se, ep);
+    report.resolveMediaResult = resolved ? { hasUrl: !!resolved.streamUrl, res: resolved.resolution, url: resolved.streamUrl?.substring(0, 60) } : null;
+  } catch (err2) {
+    report.resolveMediaError = err2.message;
+  }
+
+  res.json(report);
+});
+
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', service: 'FOBS TV', uptime: Math.round(process.uptime()) });
 });
