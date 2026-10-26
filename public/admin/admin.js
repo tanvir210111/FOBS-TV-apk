@@ -67,6 +67,7 @@ async function verifyAuth() {
       loadContent();
       loadRequests();
       loadNotifications();
+      loadUsers();
       // Pre-load recent MovieBox feed in background
       loadMovieBoxRecent('all');
     } else {
@@ -277,6 +278,7 @@ function switchTab(tabName) {
     series: ['TV Series & Episodes', 'Manage multi-season TV shows and episode stream links'],
     livetv: ['Live TV Channels', 'Manage sports and 24/7 entertainment HLS streams'],
     requests: ['User Media Requests', 'Review titles requested by users directly in the app'],
+    users: ['Audience & App Users', 'Real-time registered members, active mobile devices, and installations'],
     notifications: ['Broadcast Announcements', 'Instant notification alerts pushed to all mobile devices']
   };
 
@@ -285,6 +287,7 @@ function switchTab(tabName) {
     document.getElementById('page-subtitle').innerText = titles[tabName][1];
   }
 
+  if (tabName === 'users') loadUsers();
   if (tabName === 'moviebox' && document.getElementById('mb-results').children.length === 0) {
     loadMovieBoxRecent('all');
   }
@@ -1416,35 +1419,43 @@ async function autoSyncAllSeries() {
 async function loadUsers() {
   const tbody = document.getElementById('users-table-body');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Loading user accounts...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Loading users and mobile app devices...</td></tr>';
 
   try {
     const res = await apiFetch('/api/admin/users');
     const users = (res && res.users) || [];
 
     if (users.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">No registered user accounts yet. (App install devices are active)</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-mobile-screen"></i> No active users recorded yet. Launching the mobile app will automatically register your device here!</td></tr>';
       return;
     }
 
     tbody.innerHTML = users.map(u => {
-      const avatar = u.picture || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(u.name || 'User');
+      const avatar = u.picture || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(u.name || u.id || 'User');
       const joined = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'N/A';
-      const lastActive = u.lastLogin ? new Date(u.lastLogin).toLocaleString() : 'N/A';
+      const lastActive = u.lastActive ? new Date(u.lastActive).toLocaleString() : (u.lastLogin ? new Date(u.lastLogin).toLocaleString() : 'N/A');
+      const isOnline = u.status === 'Online Now' || (u.lastActive && (Date.now() - new Date(u.lastActive).getTime() < 15 * 60 * 1000));
       return `
         <tr>
           <td>
             <div style="display:flex; align-items:center; gap:10px;">
               <img src="${avatar}" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1px solid rgba(255,255,255,0.15);" />
-              <strong style="color:var(--text-primary);">${escapeHtml(u.name || 'User')}</strong>
+              <div>
+                <strong style="color:var(--text-primary); font-size:14px;">${escapeHtml(u.name || 'App Viewer')}</strong>
+                <div style="font-size:11px; color:var(--text-muted);">${escapeHtml(u.type || u.platform || 'Android Device')}</div>
+              </div>
             </div>
           </td>
-          <td style="color:var(--text-secondary); font-family:monospace;">${escapeHtml(u.email || u.id || 'N/A')}</td>
+          <td style="color:var(--text-secondary); font-family:monospace; font-size:12px;">${escapeHtml(u.email || u.id || 'N/A')}</td>
+          <td><span class="badge" style="background:rgba(59,130,246,0.15); color:#3B82F6;"><i class="fa-brands fa-android"></i> ${escapeHtml(u.platform || 'Android App')}</span></td>
           <td><span class="badge" style="background:rgba(139,92,246,0.15); color:#8B5CF6;">${u.watchlistCount || 0} items</span></td>
-          <td><span class="badge" style="background:rgba(6,182,212,0.15); color:#06B6D4;">${u.historyCount || 0} watched</span></td>
           <td style="color:var(--text-muted); font-size:12px;">${joined}</td>
           <td style="color:var(--text-muted); font-size:12px;">${lastActive}</td>
-          <td><span class="badge text-success" style="background:rgba(16,185,129,0.15);"><i class="fa-solid fa-circle" style="font-size:8px;"></i> Active</span></td>
+          <td>
+            <span class="badge ${isOnline ? 'text-success' : 'text-info'}" style="background:${isOnline ? 'rgba(16,185,129,0.15)' : 'rgba(59,130,246,0.15)'};">
+              <i class="fa-solid fa-circle" style="font-size:8px;"></i> ${isOnline ? 'Online Now' : 'Active'}
+            </span>
+          </td>
         </tr>
       `;
     }).join('');

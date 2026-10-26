@@ -597,6 +597,20 @@ app.get('/api/resolve', async (req, res) => {
 // API: Get all contents
 app.get('/api/content', async (req, res) => {
   try {
+    // Auto-record active app viewer
+    try {
+      const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || req.connection?.remoteAddress || '';
+      const vId = req.headers['x-viewer-id'] || req.query.vId || (clientIp ? 'app_' + clientIp.replace(/[^a-zA-Z0-9]/g, '_') : null);
+      if (vId) {
+        dbService.recordDevice({
+          deviceId: vId,
+          ip: clientIp,
+          userAgent: req.headers['user-agent'] || '',
+          platform: (req.headers['user-agent'] && req.headers['user-agent'].includes('Android')) ? 'Android App' : 'Mobile App'
+        });
+      }
+    } catch(e) {}
+
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');

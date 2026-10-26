@@ -14,6 +14,7 @@ const BOOKINGS_FILE = path.join(__dirname, '..', 'data', 'bookings.json');
 const COMMENTS_FILE = path.join(__dirname, '..', 'data', 'comments.json');
 const USERS_FILE = path.join(__dirname, '..', 'data', 'users.json');
 const USERS_LOCAL_FILE = path.join(__dirname, '..', 'data', 'users.local.json');
+const DEVICES_FILE = path.join(__dirname, '..', 'data', 'devices.json');
 const DEVICES_LOCAL_FILE = path.join(__dirname, '..', 'data', 'devices.local.json');
 
 function getLocalUsersMap() {
@@ -45,7 +46,13 @@ function saveLocalUsersMap(map) {
 function getDevicesMap() {
   try {
     if (fs.existsSync(DEVICES_LOCAL_FILE)) {
-      return JSON.parse(fs.readFileSync(DEVICES_LOCAL_FILE, 'utf8'));
+      const data = JSON.parse(fs.readFileSync(DEVICES_LOCAL_FILE, 'utf8'));
+      if (data && Object.keys(data).length > 0) return data;
+    }
+  } catch (e) {}
+  try {
+    if (fs.existsSync(DEVICES_FILE)) {
+      return JSON.parse(fs.readFileSync(DEVICES_FILE, 'utf8'));
     }
   } catch (e) {}
   return {};
@@ -55,13 +62,19 @@ function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android' 
   if (!deviceId || String(deviceId).length < 3) return;
   try {
     const devices = getDevicesMap();
-    const existing = devices[deviceId] || { id: deviceId, firstSeen: new Date().toISOString() };
+    const cleanId = String(deviceId).trim();
+    const existing = devices[cleanId] || { id: cleanId, firstSeen: new Date().toISOString() };
     existing.lastActive = new Date().toISOString();
-    if (ip && !existing.ip) existing.ip = ip;
+    if (ip && (!existing.ip || existing.ip === '127.0.0.1')) existing.ip = ip;
     if (userAgent && !existing.userAgent) existing.userAgent = userAgent;
-    existing.platform = platform || existing.platform || 'Android';
-    devices[deviceId] = existing;
+    existing.platform = platform || existing.platform || 'Android App';
+    devices[cleanId] = existing;
+    
+    // Save to both files
     fs.writeFileSync(DEVICES_LOCAL_FILE, JSON.stringify(devices, null, 2), 'utf8');
+    try {
+      fs.writeFileSync(DEVICES_FILE, JSON.stringify(devices, null, 2), 'utf8');
+    } catch(e) {}
   } catch (e) {}
 }
 
@@ -73,22 +86,49 @@ async function getUserStats() {
 
   const totalRegistered = registeredUsers.length;
   const totalDevices = devices.length;
-  const totalUsers = Math.max(totalRegistered, totalDevices, totalRegistered + totalDevices);
+  const totalUsers = Math.max(totalRegistered + totalDevices, totalDevices, totalRegistered, 1);
 
-  return {
-    totalUsers: totalUsers > 0 ? totalUsers : (totalRegistered || totalDevices || 1),
-    totalRegistered,
-    totalDevices: Math.max(totalDevices, totalRegistered),
-    users: registeredUsers.map(u => ({
+  // Combine registered Google users + active mobile app devices
+  const combinedList = [
+    ...registeredUsers.map(u => ({
       id: u._id || u.googleId,
-      name: u.name || 'User',
-      email: u.email || 'N/A',
+      name: u.name || 'Registered Member',
+      email: u.email || 'Google User',
       picture: u.picture || '',
+      type: 'Registered Member',
+      platform: 'Google Account',
       watchlistCount: Array.isArray(u.watchlist) ? u.watchlist.length : 0,
       historyCount: Array.isArray(u.history) ? u.history.length : 0,
-      createdAt: u.createdAt || u.lastLogin,
-      lastLogin: u.lastLogin || u.createdAt
-    }))
+      createdAt: u.createdAt || u.lastLogin || new Date().toISOString(),
+      lastActive: u.lastLogin || u.createdAt || new Date().toISOString(),
+      status: 'Active Member'
+    })),
+    ...devices.map(d => {
+      const isOnline = d.lastActive && (Date.now() - new Date(d.lastActive).getTime() < 15 * 60 * 1000);
+      return {
+        id: d.id,
+        name: `Mobile App User (${d.platform || 'Android'})`,
+        email: d.ip ? `IP: ${d.ip.replace('::ffff:', '')}` : d.id,
+        picture: '',
+        type: 'App Installation',
+        platform: d.platform || 'Android App',
+        watchlistCount: 0,
+        historyCount: 0,
+        createdAt: d.firstSeen || d.lastActive || new Date().toISOString(),
+        lastActive: d.lastActive || d.firstSeen || new Date().toISOString(),
+        status: isOnline ? 'Online Now' : 'Active'
+      };
+    })
+  ];
+
+  // Sort by last active descending
+  combinedList.sort((a, b) => new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime());
+
+  return {
+    totalUsers,
+    totalRegistered,
+    totalDevices: Math.max(totalDevices, 1),
+    users: combinedList
   };
 }
 
