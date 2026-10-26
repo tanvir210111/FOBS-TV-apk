@@ -858,7 +858,9 @@ class AdminService {
     } else {
       content.movies.unshift(movie);
     }
-    writeContent(content);
+    if (repairedEpisodes > 0 || repairedMovies > 0 || repairedSeries > 0) {
+      writeContent(content);
+    }
     return { success: true, movie };
   }
 

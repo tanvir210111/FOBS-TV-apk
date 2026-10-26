@@ -1552,6 +1552,8 @@ app.get('/api/tmdb-details', async (req, res) => {
   }
 });
 
+const isPrimaryWorker = !process.env.NODE_APP_INSTANCE || process.env.NODE_APP_INSTANCE === '0';
+
 // ============================================================
 // GOOGLE AUTHENTICATION & USER PROFILE (MONGODB)
 // ============================================================
@@ -2382,7 +2384,7 @@ app.listen(PORT, () => {
 // AUTOMATIC PLAYBACK REPAIR & STREAM AUTO-RENEW WORKER (EVERY 30 MIN)
 // ============================================================
 const AUTO_REPAIR_INTERVAL_MS = 30 * 60 * 1000; // Runs every 30 minutes
-setInterval(() => {
+if (isPrimaryWorker) setInterval(() => {
   try {
     console.log('[Auto-Repair Worker] 🔄 Running automatic 30-min playback stream health check & auto-repair...');
     const result = adminService.repairAllPlaybackStreams();
@@ -2393,7 +2395,7 @@ setInterval(() => {
 }, AUTO_REPAIR_INTERVAL_MS);
 
 // Also run initial stream verification on server startup after 5 seconds
-setTimeout(() => {
+if (isPrimaryWorker) setTimeout(() => {
   try {
     console.log('[Auto-Repair Worker] 🚀 Initial playback stream auto-check starting...');
     const res = adminService.repairAllPlaybackStreams();
