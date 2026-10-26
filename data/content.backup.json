@@ -195908,7 +195908,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5173051772088320424&path=citadel-honey-bunny-hindi-qn9VSobD8a6&se=1&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/a6894923c2e82ecf09531c62b92b2ac8.mp4?sign=8f02c56a4885d1dcc1b5ecdafc3fab18&t=1793032150",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
@@ -195919,6 +195919,12 @@
                   "quality": "1080p",
                   "audio": "Hindi dub",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5173051772088320424&path=citadel-honey-bunny-hindi-qn9VSobD8a6&se=1&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -195944,7 +195950,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-5173051772088320424-s1-e1"
+              "id": "mb-s-5173051772088320424-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/a6894923c2e82ecf09531c62b92b2ac8.mp4?sign=8f02c56a4885d1dcc1b5ecdafc3fab18&t=1793032150"
             },
             {
               "number": "02",
@@ -195958,10 +195965,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5173051772088320424&path=citadel-honey-bunny-hindi-qn9VSobD8a6&se=1&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/bc923d04851c9dbea537b0999ba71d13.mp4?sign=78243bc3cae35e49b73d25abb8eaca59&t=1793034159",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5173051772088320424&path=citadel-honey-bunny-hindi-qn9VSobD8a6&se=1&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -195987,7 +196000,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-5173051772088320424-s1-e2"
+              "id": "mb-s-5173051772088320424-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/bc923d04851c9dbea537b0999ba71d13.mp4?sign=78243bc3cae35e49b73d25abb8eaca59&t=1793034159"
             },
             {
               "number": "03",
@@ -196001,10 +196015,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5173051772088320424&path=citadel-honey-bunny-hindi-qn9VSobD8a6&se=1&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/e706486ae27d37eb4381054a547280f5.mp4?sign=5d8345a8287abba41cda2d717a508f96&t=1793034159",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5173051772088320424&path=citadel-honey-bunny-hindi-qn9VSobD8a6&se=1&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -196030,7 +196050,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-5173051772088320424-s1-e3"
+              "id": "mb-s-5173051772088320424-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/e706486ae27d37eb4381054a547280f5.mp4?sign=5d8345a8287abba41cda2d717a508f96&t=1793034159"
             },
             {
               "number": "04",
@@ -196044,10 +196065,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5173051772088320424&path=citadel-honey-bunny-hindi-qn9VSobD8a6&se=1&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/35b3f1c8ab3478b4d16278525b7ffc04.mp4?sign=c6feabf303890c69eebb75eb75354cd8&t=1793034159",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5173051772088320424&path=citadel-honey-bunny-hindi-qn9VSobD8a6&se=1&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -196073,7 +196100,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-5173051772088320424-s1-e4"
+              "id": "mb-s-5173051772088320424-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/35b3f1c8ab3478b4d16278525b7ffc04.mp4?sign=c6feabf303890c69eebb75eb75354cd8&t=1793034159"
             },
             {
               "number": "05",
@@ -196087,10 +196115,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5173051772088320424&path=citadel-honey-bunny-hindi-qn9VSobD8a6&se=1&ep=05",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/2d7372137bbcf8765611d78efc29563d.mp4?sign=8576c0b226873b024dd9e95187225425&t=1793034160",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5173051772088320424&path=citadel-honey-bunny-hindi-qn9VSobD8a6&se=1&ep=5",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -196116,7 +196150,8 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-5173051772088320424-s1-e5"
+              "id": "mb-s-5173051772088320424-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/2d7372137bbcf8765611d78efc29563d.mp4?sign=8576c0b226873b024dd9e95187225425&t=1793034160"
             },
             {
               "number": "06",
@@ -196130,10 +196165,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5173051772088320424&path=citadel-honey-bunny-hindi-qn9VSobD8a6&se=1&ep=06",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/4b632d7fbf331f975ec4ec3c0ea93d1a.mp4?sign=1071afcdea375c7fcac68619c2ab5ba6&t=1793034161",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5173051772088320424&path=citadel-honey-bunny-hindi-qn9VSobD8a6&se=1&ep=6",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -196159,7 +196200,8 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-5173051772088320424-s1-e6"
+              "id": "mb-s-5173051772088320424-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/4b632d7fbf331f975ec4ec3c0ea93d1a.mp4?sign=1071afcdea375c7fcac68619c2ab5ba6&t=1793034161"
             }
           ]
         }
@@ -196489,7 +196531,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=1&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/c4a55558d5b327ed4460b0b1bcf47156.mp4?sign=42098732a5205a391a401e35c5498245&t=1793030872",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
@@ -196500,6 +196542,12 @@
                   "quality": "1080p",
                   "audio": "Hindi dub",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=1&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -196525,7 +196573,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-6164881272604084120-s1-e1"
+              "id": "mb-s-6164881272604084120-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/c4a55558d5b327ed4460b0b1bcf47156.mp4?sign=42098732a5205a391a401e35c5498245&t=1793030872"
             },
             {
               "number": "02",
@@ -196539,10 +196588,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=1&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/150c9fc854a1ef42865fad1914c2ab56.mp4?sign=7484bd97af1dd69832e0a7013c54bb3c&t=1793032751",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=1&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -196568,7 +196623,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-6164881272604084120-s1-e2"
+              "id": "mb-s-6164881272604084120-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/150c9fc854a1ef42865fad1914c2ab56.mp4?sign=7484bd97af1dd69832e0a7013c54bb3c&t=1793032751"
             },
             {
               "number": "03",
@@ -196582,10 +196638,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=1&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/f43c39afd63e5bf895c7c35dcf76b190.mp4?sign=ea570a195c264a5b26727eab3c1dcc17&t=1793031355",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=1&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -196611,7 +196673,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-6164881272604084120-s1-e3"
+              "id": "mb-s-6164881272604084120-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/f43c39afd63e5bf895c7c35dcf76b190.mp4?sign=ea570a195c264a5b26727eab3c1dcc17&t=1793031355"
             },
             {
               "number": "04",
@@ -196625,10 +196688,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=1&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/5695bce4c0cb3a6b762da90a290506e6.mp4?sign=051807a6cd5f1539e9f5c2a5961e7f5d&t=1793030767",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=1&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -196654,7 +196723,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-6164881272604084120-s1-e4"
+              "id": "mb-s-6164881272604084120-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/5695bce4c0cb3a6b762da90a290506e6.mp4?sign=051807a6cd5f1539e9f5c2a5961e7f5d&t=1793030767"
             },
             {
               "number": "05",
@@ -196668,10 +196738,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=1&ep=05",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/e096355d960ce92bd1e80feb2b26e7d8.mp4?sign=e3b8178638bc8fb9a6c3ee72195cad01&t=1793031093",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=1&ep=5",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -196697,7 +196773,8 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-6164881272604084120-s1-e5"
+              "id": "mb-s-6164881272604084120-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/e096355d960ce92bd1e80feb2b26e7d8.mp4?sign=e3b8178638bc8fb9a6c3ee72195cad01&t=1793031093"
             }
           ]
         },
@@ -196720,7 +196797,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=2&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/08f3b597eb27ba5e3eb13d6d12d21b78.mp4?sign=170179c8674087d49eb2f957b35858d1&t=1793031323",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
@@ -196731,6 +196808,12 @@
                   "quality": "1080p",
                   "audio": "Hindi dub",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=2&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -196756,7 +196839,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-6164881272604084120-s1-e1"
+              "id": "mb-s-6164881272604084120-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/08f3b597eb27ba5e3eb13d6d12d21b78.mp4?sign=170179c8674087d49eb2f957b35858d1&t=1793031323"
             },
             {
               "number": "02",
@@ -196770,10 +196854,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=2&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/e45594a89af1693eab158355f88da79e.mp4?sign=32d9a9ca800306dfba236bc270117f14&t=1793034162",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=2&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -196799,7 +196889,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-6164881272604084120-s1-e2"
+              "id": "mb-s-6164881272604084120-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/e45594a89af1693eab158355f88da79e.mp4?sign=32d9a9ca800306dfba236bc270117f14&t=1793034162"
             },
             {
               "number": "03",
@@ -196813,10 +196904,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=2&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/c36969a382098a1f10adda50605de7b6.mp4?sign=33472225d05b5214d0f858e8755f511c&t=1793033701",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=2&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -196842,7 +196939,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-6164881272604084120-s1-e3"
+              "id": "mb-s-6164881272604084120-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/c36969a382098a1f10adda50605de7b6.mp4?sign=33472225d05b5214d0f858e8755f511c&t=1793033701"
             },
             {
               "number": "04",
@@ -196856,10 +196954,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=2&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/afbb6276deb6dfbe20ed9cae5b303828.mp4?sign=3e613f1ba1d69f2db48f68e458558bb6&t=1793031209",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=2&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -196885,7 +196989,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-6164881272604084120-s1-e4"
+              "id": "mb-s-6164881272604084120-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/afbb6276deb6dfbe20ed9cae5b303828.mp4?sign=3e613f1ba1d69f2db48f68e458558bb6&t=1793031209"
             },
             {
               "number": "05",
@@ -196899,10 +197004,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=2&ep=05",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/3bb8dc817072d609400ade2e868a596b.mp4?sign=de975351fae2a146464b135df80a5d36&t=1793030111",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=2&ep=5",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -196928,7 +197039,8 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-6164881272604084120-s1-e5"
+              "id": "mb-s-6164881272604084120-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/3bb8dc817072d609400ade2e868a596b.mp4?sign=de975351fae2a146464b135df80a5d36&t=1793030111"
             }
           ]
         },
@@ -196951,7 +197063,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=3&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/733857a46f6449bea9b90d21bb30c879.mp4?sign=d134af24e94db1b2f1d450b38fd57a26&t=1793032678",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
@@ -196962,6 +197074,12 @@
                   "quality": "1080p",
                   "audio": "Hindi dub",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=3&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -196987,7 +197105,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-6164881272604084120-s1-e1"
+              "id": "mb-s-6164881272604084120-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/733857a46f6449bea9b90d21bb30c879.mp4?sign=d134af24e94db1b2f1d450b38fd57a26&t=1793032678"
             },
             {
               "number": "02",
@@ -197001,10 +197120,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=3&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/9bdc25f94e5287d0935fdd70074adab4.mp4?sign=c198e1c9bec4fefd7bd18a270eaa0739&t=1793032375",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=3&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -197030,7 +197155,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-6164881272604084120-s1-e2"
+              "id": "mb-s-6164881272604084120-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/9bdc25f94e5287d0935fdd70074adab4.mp4?sign=c198e1c9bec4fefd7bd18a270eaa0739&t=1793032375"
             },
             {
               "number": "03",
@@ -197044,10 +197170,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=3&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/ca9056a0c08f63147c3a391deb239049.mp4?sign=4c83aaf96747beaecc570acf0f75cfd6&t=1793031514",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=3&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -197073,7 +197205,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-6164881272604084120-s1-e3"
+              "id": "mb-s-6164881272604084120-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/ca9056a0c08f63147c3a391deb239049.mp4?sign=4c83aaf96747beaecc570acf0f75cfd6&t=1793031514"
             },
             {
               "number": "04",
@@ -197087,10 +197220,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=3&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/39c1376450c0fa311c8a3351a19d856a.mp4?sign=b42be5a92cf4c5355d1e6b42a43663d6&t=1793034133",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=3&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -197116,7 +197255,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-6164881272604084120-s1-e4"
+              "id": "mb-s-6164881272604084120-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/39c1376450c0fa311c8a3351a19d856a.mp4?sign=b42be5a92cf4c5355d1e6b42a43663d6&t=1793034133"
             },
             {
               "number": "05",
@@ -197130,10 +197270,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=3&ep=05",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/60931faf772037e5b12fd934ddb5d35b.mp4?sign=28aabf8eff50c49f59e90569d2ca90d8&t=1793031552",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=3&ep=5",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -197159,7 +197305,8 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-6164881272604084120-s1-e5"
+              "id": "mb-s-6164881272604084120-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/60931faf772037e5b12fd934ddb5d35b.mp4?sign=28aabf8eff50c49f59e90569d2ca90d8&t=1793031552"
             },
             {
               "number": "06",
@@ -197173,10 +197320,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=3&ep=06",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/1eda8f3107e2098f6b9d0fca4adf5289.mp4?sign=e477da7ffbfda185f172f3b972f5c17d&t=1793031443",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=3&ep=6",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -197202,7 +197355,8 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-6164881272604084120-s1-e6"
+              "id": "mb-s-6164881272604084120-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/1eda8f3107e2098f6b9d0fca4adf5289.mp4?sign=e477da7ffbfda185f172f3b972f5c17d&t=1793031443"
             },
             {
               "number": "07",
@@ -197216,10 +197370,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=3&ep=07",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/dd6bdcf979c5e5404db29bec62fadc30.mp4?sign=f47f98680ade14fdc7a06df2a502059e&t=1793030769",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=3&ep=7",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -197245,7 +197405,8 @@
                 }
               ],
               "episodeNumber": 7,
-              "id": "mb-s-6164881272604084120-s1-e7"
+              "id": "mb-s-6164881272604084120-s1-e7",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250605/dd6bdcf979c5e5404db29bec62fadc30.mp4?sign=f47f98680ade14fdc7a06df2a502059e&t=1793030769"
             }
           ]
         },
@@ -197268,7 +197429,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=4&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/1735cec1fe65bd08eec853fcdb4823d5.mp4?sign=41e20c78ef0b7dad183e70ab053533a8&t=1793032369",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
@@ -197279,6 +197440,12 @@
                   "quality": "1080p",
                   "audio": "Hindi dub",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=4&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -197304,7 +197471,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-6164881272604084120-s1-e1"
+              "id": "mb-s-6164881272604084120-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/1735cec1fe65bd08eec853fcdb4823d5.mp4?sign=41e20c78ef0b7dad183e70ab053533a8&t=1793032369"
             },
             {
               "number": "02",
@@ -197318,10 +197486,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=4&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/000a16fbaf0e7105571f76b7f45a6233.mp4?sign=e59e8a4be43ddf8406adc80418153e78&t=1793032785",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=4&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -197347,7 +197521,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-6164881272604084120-s1-e2"
+              "id": "mb-s-6164881272604084120-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/000a16fbaf0e7105571f76b7f45a6233.mp4?sign=e59e8a4be43ddf8406adc80418153e78&t=1793032785"
             },
             {
               "number": "03",
@@ -197361,10 +197536,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=4&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/95b192a0d8fe46dec9018479ea349616.mp4?sign=14d7152d4d4272e5c956f5dcb5341a3a&t=1793032584",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=4&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -197390,7 +197571,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-6164881272604084120-s1-e3"
+              "id": "mb-s-6164881272604084120-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/95b192a0d8fe46dec9018479ea349616.mp4?sign=14d7152d4d4272e5c956f5dcb5341a3a&t=1793032584"
             },
             {
               "number": "04",
@@ -197404,10 +197586,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=4&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/dd84ab884ebe5908af5eaf126758e853.mp4?sign=54bab565bd5894d26dc4c4f154d95521&t=1793033709",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=4&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -197433,7 +197621,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-6164881272604084120-s1-e4"
+              "id": "mb-s-6164881272604084120-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/dd84ab884ebe5908af5eaf126758e853.mp4?sign=54bab565bd5894d26dc4c4f154d95521&t=1793033709"
             },
             {
               "number": "05",
@@ -197447,10 +197636,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=4&ep=05",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/b99df389595872399b4e5f5141461555.mp4?sign=0808e80aaa20510c20a7c722c11a0e22&t=1793033198",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=4&ep=5",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -197476,7 +197671,8 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-6164881272604084120-s1-e5"
+              "id": "mb-s-6164881272604084120-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/b99df389595872399b4e5f5141461555.mp4?sign=0808e80aaa20510c20a7c722c11a0e22&t=1793033198"
             },
             {
               "number": "06",
@@ -197490,10 +197686,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=4&ep=06",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/5f67a04f175ff49074c633d0a5720528.mp4?sign=9c4a54a4b8c51e6d8346c01e6d8fc28c&t=1793030580",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=4&ep=6",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -197519,7 +197721,8 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-6164881272604084120-s1-e6"
+              "id": "mb-s-6164881272604084120-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/5f67a04f175ff49074c633d0a5720528.mp4?sign=9c4a54a4b8c51e6d8346c01e6d8fc28c&t=1793030580"
             },
             {
               "number": "07",
@@ -197533,10 +197736,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=4&ep=07",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/1a3cc2e3317d9b202402d91beaee2cb5.mp4?sign=e525447c9d992832d467a955d989905b&t=1793031056",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=4&ep=7",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -197562,7 +197771,8 @@
                 }
               ],
               "episodeNumber": 7,
-              "id": "mb-s-6164881272604084120-s1-e7"
+              "id": "mb-s-6164881272604084120-s1-e7",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/1a3cc2e3317d9b202402d91beaee2cb5.mp4?sign=e525447c9d992832d467a955d989905b&t=1793031056"
             },
             {
               "number": "08",
@@ -197576,10 +197786,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=4&ep=08",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a08a1b8e6d16fe6c15820faf572238f5.mp4?sign=4156d5f1cf33f19f458a243f0c286740&t=1793030805",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6164881272604084120&path=lupin-hindi-IERvoXJdpl7&se=4&ep=8",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -197605,7 +197821,8 @@
                 }
               ],
               "episodeNumber": 8,
-              "id": "mb-s-6164881272604084120-s1-e8"
+              "id": "mb-s-6164881272604084120-s1-e8",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/a08a1b8e6d16fe6c15820faf572238f5.mp4?sign=4156d5f1cf33f19f458a243f0c286740&t=1793030805"
             }
           ]
         }
@@ -197894,7 +198111,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=1&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/84155ac0b74c780bd9108ff1bd2c74ed.mp4?sign=840229f5b195766ef126961047366674&t=1793033054",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
@@ -197905,6 +198122,12 @@
                   "quality": "1080p",
                   "audio": "Hindi dub",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=1&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -198092,7 +198315,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-5543197340762262336-s1-e1"
+              "id": "mb-s-5543197340762262336-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/84155ac0b74c780bd9108ff1bd2c74ed.mp4?sign=840229f5b195766ef126961047366674&t=1793033054"
             },
             {
               "number": "02",
@@ -198106,10 +198330,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=1&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/b3288fc4a8785d3f91e82b8767ca93c3.mp4?sign=daf3093be89a67d851f70a4f9fdd1cd9&t=1793032265",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=1&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -198297,7 +198527,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-5543197340762262336-s1-e2"
+              "id": "mb-s-5543197340762262336-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/b3288fc4a8785d3f91e82b8767ca93c3.mp4?sign=daf3093be89a67d851f70a4f9fdd1cd9&t=1793032265"
             },
             {
               "number": "03",
@@ -198311,10 +198542,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=1&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/058d72d1de1cbd860a81a321d59dbb08.mp4?sign=52b1b2740076d064f4209f0fd886b3ad&t=1793032922",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=1&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -198502,7 +198739,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-5543197340762262336-s1-e3"
+              "id": "mb-s-5543197340762262336-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/058d72d1de1cbd860a81a321d59dbb08.mp4?sign=52b1b2740076d064f4209f0fd886b3ad&t=1793032922"
             },
             {
               "number": "04",
@@ -198516,10 +198754,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=1&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/9eee15bfeadb8b2bdd20d3d2e571faca.mp4?sign=de98dcb7199d7a104bb6d934dbf7973d&t=1793033585",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=1&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -198707,7 +198951,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-5543197340762262336-s1-e4"
+              "id": "mb-s-5543197340762262336-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/9eee15bfeadb8b2bdd20d3d2e571faca.mp4?sign=de98dcb7199d7a104bb6d934dbf7973d&t=1793033585"
             },
             {
               "number": "05",
@@ -198721,10 +198966,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=1&ep=05",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/ecc048d39f9689403173d0bae5e0b75e.mp4?sign=e15fde348758c3fb5ccc3b67976f005a&t=1793031707",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=1&ep=5",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -198912,7 +199163,8 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-5543197340762262336-s1-e5"
+              "id": "mb-s-5543197340762262336-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/ecc048d39f9689403173d0bae5e0b75e.mp4?sign=e15fde348758c3fb5ccc3b67976f005a&t=1793031707"
             },
             {
               "number": "06",
@@ -198926,10 +199178,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=1&ep=06",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a2d3f3e61140d31b8acc79e39f2aec80.mp4?sign=93c564f84aff8fdc0981a11774eacd04&t=1793031370",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=1&ep=6",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -199117,7 +199375,8 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-5543197340762262336-s1-e6"
+              "id": "mb-s-5543197340762262336-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/a2d3f3e61140d31b8acc79e39f2aec80.mp4?sign=93c564f84aff8fdc0981a11774eacd04&t=1793031370"
             },
             {
               "number": "07",
@@ -199131,10 +199390,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=1&ep=07",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/3d19b764442e22eb93ada9c7698c20d2.mp4?sign=ec5bca4105d5c3f273f988571ba042f5&t=1793032360",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=1&ep=7",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -199322,7 +199587,8 @@
                 }
               ],
               "episodeNumber": 7,
-              "id": "mb-s-5543197340762262336-s1-e7"
+              "id": "mb-s-5543197340762262336-s1-e7",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/3d19b764442e22eb93ada9c7698c20d2.mp4?sign=ec5bca4105d5c3f273f988571ba042f5&t=1793032360"
             },
             {
               "number": "08",
@@ -199336,10 +199602,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=1&ep=08",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/3945ade8051d831783d17d49c2f8af40.mp4?sign=7658fd452f63963289910a288feecd1d&t=1793031697",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=1&ep=8",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -199527,7 +199799,8 @@
                 }
               ],
               "episodeNumber": 8,
-              "id": "mb-s-5543197340762262336-s1-e8"
+              "id": "mb-s-5543197340762262336-s1-e8",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/3945ade8051d831783d17d49c2f8af40.mp4?sign=7658fd452f63963289910a288feecd1d&t=1793031697"
             }
           ]
         },
@@ -199550,7 +199823,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=2&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/85829e336255f92b6d0e3dcbd40b30be.mp4?sign=5970ffcb6d041acffa7b5ad13f2a1669&t=1793033355",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
@@ -199561,6 +199834,12 @@
                   "quality": "1080p",
                   "audio": "Hindi dub",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=2&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -199712,7 +199991,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-5543197340762262336-s1-e1"
+              "id": "mb-s-5543197340762262336-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/85829e336255f92b6d0e3dcbd40b30be.mp4?sign=5970ffcb6d041acffa7b5ad13f2a1669&t=1793033355"
             },
             {
               "number": "02",
@@ -199726,10 +200006,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=2&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/1af37477b5f858460d7e052e6c08fb14.mp4?sign=cdc5ae50acc3db567ab43b6910f886cc&t=1793030839",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=2&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -199881,7 +200167,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-5543197340762262336-s1-e2"
+              "id": "mb-s-5543197340762262336-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/1af37477b5f858460d7e052e6c08fb14.mp4?sign=cdc5ae50acc3db567ab43b6910f886cc&t=1793030839"
             },
             {
               "number": "03",
@@ -199895,10 +200182,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=2&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/3d93ab4c2ac80191ca294b413d2a5e7f.mp4?sign=45c977e37d78f7a89a92b6ddd000e5d6&t=1793030865",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=2&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -200050,7 +200343,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-5543197340762262336-s1-e3"
+              "id": "mb-s-5543197340762262336-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/3d93ab4c2ac80191ca294b413d2a5e7f.mp4?sign=45c977e37d78f7a89a92b6ddd000e5d6&t=1793030865"
             },
             {
               "number": "04",
@@ -200064,10 +200358,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=2&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/a277601b47d296ffa3edd7ae2b6d9da4.mp4?sign=6f1966fa46799a08cb6285bc903057b5&t=1793034170",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=2&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -200219,7 +200519,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-5543197340762262336-s1-e4"
+              "id": "mb-s-5543197340762262336-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/a277601b47d296ffa3edd7ae2b6d9da4.mp4?sign=6f1966fa46799a08cb6285bc903057b5&t=1793034170"
             },
             {
               "number": "05",
@@ -200233,10 +200534,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=2&ep=05",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/0dfe6b5db40d6e7ea81726a5b882a0e2.mp4?sign=4e4c208e3aebd2482bf2493ec77a0a2b&t=1793033677",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=2&ep=5",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -200388,7 +200695,8 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-5543197340762262336-s1-e5"
+              "id": "mb-s-5543197340762262336-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/0dfe6b5db40d6e7ea81726a5b882a0e2.mp4?sign=4e4c208e3aebd2482bf2493ec77a0a2b&t=1793033677"
             },
             {
               "number": "06",
@@ -200402,10 +200710,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=2&ep=06",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/6c19fc2f5e9d6a04fe592622b8ab72ab.mp4?sign=b12793b785c4e8220f77136bd306fe9f&t=1793032103",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=2&ep=6",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -200557,7 +200871,8 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-5543197340762262336-s1-e6"
+              "id": "mb-s-5543197340762262336-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/6c19fc2f5e9d6a04fe592622b8ab72ab.mp4?sign=b12793b785c4e8220f77136bd306fe9f&t=1793032103"
             },
             {
               "number": "07",
@@ -200571,10 +200886,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=2&ep=07",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/03ad458b0b3ab87b95a3aec3d8d2cef0.mp4?sign=3258e0457ddd0bb058c027ce6a90c73a&t=1793032281",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5543197340762262336&path=bloodhounds-hindi-aFaIWHXTtB6&se=2&ep=7",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -200726,7 +201047,8 @@
                 }
               ],
               "episodeNumber": 7,
-              "id": "mb-s-5543197340762262336-s1-e7"
+              "id": "mb-s-5543197340762262336-s1-e7",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/03ad458b0b3ab87b95a3aec3d8d2cef0.mp4?sign=3258e0457ddd0bb058c027ce6a90c73a&t=1793032281"
             }
           ]
         }
@@ -202434,7 +202756,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=1&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250523/new-e78bf9ad383cb12fd36648d781ad135d.mp4?sign=1db11209c93cdd0a63e224c8d9a9072b&t=1793032263",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
@@ -202445,6 +202767,12 @@
                   "quality": "1080p",
                   "audio": "Hindi dub",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=1&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -202470,7 +202798,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-4114525489820228816-s1-e1"
+              "id": "mb-s-4114525489820228816-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250523/new-e78bf9ad383cb12fd36648d781ad135d.mp4?sign=1db11209c93cdd0a63e224c8d9a9072b&t=1793032263"
             },
             {
               "number": "02",
@@ -202484,10 +202813,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=1&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/f62ea8cd375a219005d6eaefa7c6af85.mp4?sign=102d49d5c0d9e89c2c4f2e87a56e2591&t=1793032341",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=1&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -202513,7 +202848,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-4114525489820228816-s1-e2"
+              "id": "mb-s-4114525489820228816-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/f62ea8cd375a219005d6eaefa7c6af85.mp4?sign=102d49d5c0d9e89c2c4f2e87a56e2591&t=1793032341"
             },
             {
               "number": "03",
@@ -202527,10 +202863,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=1&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/575b69b7f99ccc04445076526d571d69.mp4?sign=d620cf6eea32de87d49f9ab34a052bce&t=1793033461",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=1&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -202556,7 +202898,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-4114525489820228816-s1-e3"
+              "id": "mb-s-4114525489820228816-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/575b69b7f99ccc04445076526d571d69.mp4?sign=d620cf6eea32de87d49f9ab34a052bce&t=1793033461"
             },
             {
               "number": "04",
@@ -202570,10 +202913,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=1&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250523/new-0c2e43de94af52856bd7297867ecc56b.mp4?sign=fb51f23f9b19f80915f6fc7f52767b4c&t=1793031297",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=1&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -202599,7 +202948,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-4114525489820228816-s1-e4"
+              "id": "mb-s-4114525489820228816-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250523/new-0c2e43de94af52856bd7297867ecc56b.mp4?sign=fb51f23f9b19f80915f6fc7f52767b4c&t=1793031297"
             },
             {
               "number": "05",
@@ -202613,10 +202963,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=1&ep=05",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/1805009397222b0d3ecf47904e97ddb4.mp4?sign=fcff9c570ae7e0be9b1777d4dc8d9587&t=1793033180",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=1&ep=5",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -202642,7 +202998,8 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-4114525489820228816-s1-e5"
+              "id": "mb-s-4114525489820228816-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/1805009397222b0d3ecf47904e97ddb4.mp4?sign=fcff9c570ae7e0be9b1777d4dc8d9587&t=1793033180"
             },
             {
               "number": "06",
@@ -202656,10 +203013,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=1&ep=06",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/d7016377203b06cd0318ad4c0b5f6257.mp4?sign=011f4bad5e7845537196271216e77c68&t=1793033975",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=1&ep=6",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -202685,7 +203048,8 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-4114525489820228816-s1-e6"
+              "id": "mb-s-4114525489820228816-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/d7016377203b06cd0318ad4c0b5f6257.mp4?sign=011f4bad5e7845537196271216e77c68&t=1793033975"
             },
             {
               "number": "07",
@@ -202699,10 +203063,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=1&ep=07",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/ffea15defe7b39bc78e4dad6d5309eed.mp4?sign=8c8c0497763afb92da5c0eb69669a5db&t=1793033481",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=1&ep=7",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -202728,7 +203098,8 @@
                 }
               ],
               "episodeNumber": 7,
-              "id": "mb-s-4114525489820228816-s1-e7"
+              "id": "mb-s-4114525489820228816-s1-e7",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/ffea15defe7b39bc78e4dad6d5309eed.mp4?sign=8c8c0497763afb92da5c0eb69669a5db&t=1793033481"
             },
             {
               "number": "08",
@@ -202742,10 +203113,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=1&ep=08",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/a751c3feb168311514a55bdaba2c79c9.mp4?sign=1166ef1cc4fe0166f740d82e50f71fc6&t=1793032545",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=1&ep=8",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -202771,7 +203148,8 @@
                 }
               ],
               "episodeNumber": 8,
-              "id": "mb-s-4114525489820228816-s1-e8"
+              "id": "mb-s-4114525489820228816-s1-e8",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/a751c3feb168311514a55bdaba2c79c9.mp4?sign=1166ef1cc4fe0166f740d82e50f71fc6&t=1793032545"
             }
           ]
         },
@@ -202844,10 +203222,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=2&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/bf41d3f60a4cc9e10f9ebd553fa11176.mp4?sign=ce8678069a59edcebcff7b962a8c9940&t=1793034080",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=2&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -202873,7 +203257,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-4114525489820228816-s1-e2"
+              "id": "mb-s-4114525489820228816-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/bf41d3f60a4cc9e10f9ebd553fa11176.mp4?sign=ce8678069a59edcebcff7b962a8c9940&t=1793034080"
             },
             {
               "number": "03",
@@ -202887,10 +203272,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=2&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/45223494a0b97351803701c7060a0f06.mp4?sign=c79a2df9bb324a6db5a3c0155029027e&t=1793033000",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=2&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -202916,7 +203307,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-4114525489820228816-s1-e3"
+              "id": "mb-s-4114525489820228816-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/45223494a0b97351803701c7060a0f06.mp4?sign=c79a2df9bb324a6db5a3c0155029027e&t=1793033000"
             },
             {
               "number": "04",
@@ -202930,10 +203322,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=2&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250523/new-2f589a922be7325c8774eed6c218433d.mp4?sign=35ce25f0b917bb8df632e8291090d941&t=1793032260",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=2&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -202959,7 +203357,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-4114525489820228816-s1-e4"
+              "id": "mb-s-4114525489820228816-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250523/new-2f589a922be7325c8774eed6c218433d.mp4?sign=35ce25f0b917bb8df632e8291090d941&t=1793032260"
             },
             {
               "number": "05",
@@ -202973,10 +203372,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=2&ep=05",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250523/new-85756dfa5f86a7f8614bc22e3cf4c6cd.mp4?sign=0fb4cdbfec2dffcd135e86e22e4ac159&t=1793033749",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=2&ep=5",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -203002,7 +203407,8 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-4114525489820228816-s1-e5"
+              "id": "mb-s-4114525489820228816-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250523/new-85756dfa5f86a7f8614bc22e3cf4c6cd.mp4?sign=0fb4cdbfec2dffcd135e86e22e4ac159&t=1793033749"
             },
             {
               "number": "06",
@@ -203016,10 +203422,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=2&ep=06",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250523/new-7d1be66ba35dfe713a75d20f53cb23fe.mp4?sign=afbdc769afa7a1504e8c721be7386cca&t=1793034187",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=2&ep=6",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -203045,7 +203457,8 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-4114525489820228816-s1-e6"
+              "id": "mb-s-4114525489820228816-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250523/new-7d1be66ba35dfe713a75d20f53cb23fe.mp4?sign=afbdc769afa7a1504e8c721be7386cca&t=1793034187"
             },
             {
               "number": "07",
@@ -203059,10 +203472,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=2&ep=07",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/d8f610c3b15b76b7cebc15690862dede.mp4?sign=56a7f1093f8ad73ce4bb5bbaad50c95d&t=1793034188",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=2&ep=7",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -203088,7 +203507,8 @@
                 }
               ],
               "episodeNumber": 7,
-              "id": "mb-s-4114525489820228816-s1-e7"
+              "id": "mb-s-4114525489820228816-s1-e7",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/d8f610c3b15b76b7cebc15690862dede.mp4?sign=56a7f1093f8ad73ce4bb5bbaad50c95d&t=1793034188"
             },
             {
               "number": "08",
@@ -203102,10 +203522,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=2&ep=08",
+                  "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/1a9cd7c3bee17b7cfed73943baad0783.mp4?sign=b3438d4420e1e24d110f964e380731be&t=1793032601",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=4114525489820228816&path=weak-hero-class-hindi-sOSabBmzWT4&se=2&ep=8",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -203131,7 +203557,8 @@
                 }
               ],
               "episodeNumber": 8,
-              "id": "mb-s-4114525489820228816-s1-e8"
+              "id": "mb-s-4114525489820228816-s1-e8",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250603/1a9cd7c3bee17b7cfed73943baad0783.mp4?sign=b3438d4420e1e24d110f964e380731be&t=1793032601"
             }
           ]
         }
@@ -203542,7 +203969,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5844444070034161864&path=100-days-of-deception-Mw4TijbCJX6&se=1&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a3a1fd4f23219b6a7fb324f301a00e90.mp4?sign=2e87a241cddd2008012b488ae813d390&t=1793032677",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
@@ -203553,6 +203980,12 @@
                   "quality": "1080p",
                   "audio": "Original Audio",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5844444070034161864&path=100-days-of-deception-Mw4TijbCJX6&se=1&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -203722,7 +204155,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-5844444070034161864-s1-e1"
+              "id": "mb-s-5844444070034161864-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/a3a1fd4f23219b6a7fb324f301a00e90.mp4?sign=2e87a241cddd2008012b488ae813d390&t=1793032677"
             },
             {
               "number": "02",
@@ -203736,10 +204170,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5844444070034161864&path=100-days-of-deception-Mw4TijbCJX6&se=1&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/038703baa0749ddf613e1500d2b21b60.mp4?sign=035cb1cb05c5b7a52c7e5d9026a5579c&t=1793032056",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5844444070034161864&path=100-days-of-deception-Mw4TijbCJX6&se=1&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -203909,7 +204349,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-5844444070034161864-s1-e2"
+              "id": "mb-s-5844444070034161864-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/038703baa0749ddf613e1500d2b21b60.mp4?sign=035cb1cb05c5b7a52c7e5d9026a5579c&t=1793032056"
             },
             {
               "number": "03",
@@ -203923,10 +204364,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5844444070034161864&path=100-days-of-deception-Mw4TijbCJX6&se=1&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/bff326627fe5e71b83c7423a4b761cff.mp4?sign=1b30f352976d1ec1b43e2a690ba82b38&t=1793030924",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5844444070034161864&path=100-days-of-deception-Mw4TijbCJX6&se=1&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -204096,7 +204543,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-5844444070034161864-s1-e3"
+              "id": "mb-s-5844444070034161864-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/bff326627fe5e71b83c7423a4b761cff.mp4?sign=1b30f352976d1ec1b43e2a690ba82b38&t=1793030924"
             },
             {
               "number": "04",
@@ -204110,10 +204558,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5844444070034161864&path=100-days-of-deception-Mw4TijbCJX6&se=1&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/e6bb567aef13087e916677ce785ab95f.mp4?sign=cae6636869e061203eb463de6b48e83c&t=1793032128",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5844444070034161864&path=100-days-of-deception-Mw4TijbCJX6&se=1&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -204283,7 +204737,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-5844444070034161864-s1-e4"
+              "id": "mb-s-5844444070034161864-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/e6bb567aef13087e916677ce785ab95f.mp4?sign=cae6636869e061203eb463de6b48e83c&t=1793032128"
             },
             {
               "number": "05",
@@ -204297,10 +204752,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5844444070034161864&path=100-days-of-deception-Mw4TijbCJX6&se=1&ep=05",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/54c9a5dcf9ec5eff4dced19611c3c7c0.mp4?sign=4e02aaa113fd92b41f7de650ccd9eec1&t=1793032028",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5844444070034161864&path=100-days-of-deception-Mw4TijbCJX6&se=1&ep=5",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -204470,7 +204931,8 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-5844444070034161864-s1-e5"
+              "id": "mb-s-5844444070034161864-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/54c9a5dcf9ec5eff4dced19611c3c7c0.mp4?sign=4e02aaa113fd92b41f7de650ccd9eec1&t=1793032028"
             },
             {
               "number": "06",
@@ -204484,10 +204946,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=5844444070034161864&path=100-days-of-deception-Mw4TijbCJX6&se=1&ep=06",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/18e7e75fbcfe34e9230cf656e4a5dc8a.mp4?sign=7dbe178b67da05966a280528f8f8abaa&t=1793033642",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=5844444070034161864&path=100-days-of-deception-Mw4TijbCJX6&se=1&ep=6",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -204657,7 +205125,8 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-5844444070034161864-s1-e6"
+              "id": "mb-s-5844444070034161864-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/18e7e75fbcfe34e9230cf656e4a5dc8a.mp4?sign=7dbe178b67da05966a280528f8f8abaa&t=1793033642"
             }
           ]
         }
