@@ -23,34 +23,85 @@ const VIEWS_LOCAL_FILE = path.join(__dirname, '..', 'data', 'views.local.json');
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'fobs2026admin';
 const JWT_SECRET = process.env.JWT_SECRET || 'fobs_tv_admin_secret_key_2026';
 
+function atomicWriteFile(targetFile, dataStr) {
+  const dir = path.dirname(targetFile);
+  const tmpFile = path.join(dir, `.${path.basename(targetFile)}.tmp.${Date.now()}.${Math.random().toString(36).substring(2, 8)}`);
+  fs.writeFileSync(tmpFile, dataStr, 'utf8');
+  fs.renameSync(tmpFile, targetFile);
+}
+
 function readContent() {
+  let mainData = null;
+
   try {
     if (fs.existsSync(CONTENT_FILE)) {
-      const data = JSON.parse(fs.readFileSync(CONTENT_FILE, 'utf8'));
-      if ((!data.movies || data.movies.length === 0) && (!data.series || data.series.length === 0)) {
-        if (fs.existsSync(CONTENT_BACKUP_FILE)) {
-          const backup = JSON.parse(fs.readFileSync(CONTENT_BACKUP_FILE, 'utf8'));
-          if (backup.movies?.length > 0 || backup.series?.length > 0) {
-            return backup;
-          }
-        }
-      }
-      return data;
+      mainData = JSON.parse(fs.readFileSync(CONTENT_FILE, 'utf8'));
     }
   } catch (err) {
     console.error('Error reading content.json in adminService:', err);
-    if (fs.existsSync(CONTENT_BACKUP_FILE)) {
+  }
+
+  // If mainData is missing or empty, try local, then backup
+  if (!mainData || ((!mainData.movies || mainData.movies.length === 0) && (!mainData.series || mainData.series.length === 0))) {
+    if (fs.existsSync(CONTENT_LOCAL_FILE)) {
       try {
-        return JSON.parse(fs.readFileSync(CONTENT_BACKUP_FILE, 'utf8'));
+        const local = JSON.parse(fs.readFileSync(CONTENT_LOCAL_FILE, 'utf8'));
+        if (local.movies?.length > 0 || local.series?.length > 0) mainData = local;
       } catch(e) {}
     }
   }
-  return { featured: {}, movies: [], series: [], liveTv: [], categories: [], industries: [] };
+
+  if (!mainData || ((!mainData.movies || mainData.movies.length === 0) && (!mainData.series || mainData.series.length === 0))) {
+    if (fs.existsSync(CONTENT_BACKUP_FILE)) {
+      try {
+        const backup = JSON.parse(fs.readFileSync(CONTENT_BACKUP_FILE, 'utf8'));
+        if (backup.movies?.length > 0 || backup.series?.length > 0) mainData = backup;
+      } catch(e) {}
+    }
+  }
+
+  if (!mainData) {
+    mainData = { featured: {}, movies: [], series: [], liveTv: [], categories: [], industries: [] };
+  }
+
+  mainData.movies = Array.isArray(mainData.movies) ? mainData.movies : [];
+  mainData.series = Array.isArray(mainData.series) ? mainData.series : [];
+  mainData.liveTv = Array.isArray(mainData.liveTv) ? mainData.liveTv : [];
+
+  return mainData;
 }
 
 function writeContent(content) {
+  if (!content || (!content.movies && !content.series)) {
+    console.error('[writeContent] Refusing to write empty or invalid content');
+    return false;
+  }
+
+  // Safety latch: prevent accidental downgrade of catalog
   try {
-    fs.writeFileSync(CONTENT_FILE, JSON.stringify(content), 'utf8');
+    const current = readContent();
+    if (current.movies?.length > 20 && content.movies?.length < current.movies.length - 10) {
+      console.warn(`[writeContent] Blocked suspicious reduction in movies: from ${current.movies.length} down to ${content.movies.length}`);
+      return false;
+    }
+  } catch (e) {}
+
+  try {
+    const jsonStr = JSON.stringify(content, null, 2);
+
+    // 1. Atomically update main content.json
+    atomicWriteFile(CONTENT_FILE, jsonStr);
+
+    // 2. Atomically update content.backup.json so backup is NEVER outdated!
+    try {
+      atomicWriteFile(CONTENT_BACKUP_FILE, jsonStr);
+    } catch(e) {}
+
+    // 3. Atomically update content.local.json (git-immune local copy)
+    try {
+      atomicWriteFile(CONTENT_LOCAL_FILE, jsonStr);
+    } catch(e) {}
+
     return true;
   } catch (err) {
     console.error('Error writing content.json in adminService:', err);
@@ -870,7 +921,9 @@ class AdminService {
   deleteMovie(id) {
     const content = readContent();
     content.movies = (content.movies || []).filter(m => m.id !== id);
-    writeContent(content);
+    if (repairedEpisodes > 0 || repairedMovies > 0 || repairedSeries > 0) {
+      writeContent(content);
+    }
     return { success: true };
   }
 
