@@ -2134,8 +2134,35 @@ app.post('/api/admin/login', (req, res) => {
 });
 
 // Admin Protected Endpoints
-app.get('/api/admin/stats', adminService.authenticate, (req, res) => {
-  res.json(adminService.getStats());
+app.get('/api/admin/stats', adminService.authenticate, async (req, res) => {
+  res.json(await adminService.getStats());
+});
+
+// Admin Users list & audience analytics
+app.get('/api/admin/users', adminService.authenticate, async (req, res) => {
+  try {
+    const data = await dbService.getUserStats();
+    res.json({ success: true, ...data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// App Launch Ping & Active Device Registration
+app.post('/api/app-ping', (req, res) => {
+  try {
+    const { viewerId, platform } = req.body;
+    const vId = viewerId || req.headers['x-viewer-id'] || ('v_' + Math.random().toString(36).substring(2, 10));
+    dbService.recordDevice({
+      deviceId: vId,
+      ip: req.ip || req.connection?.remoteAddress,
+      userAgent: req.headers['user-agent'],
+      platform: platform || 'Android'
+    });
+    res.json({ success: true, viewerId: vId });
+  } catch(e) {
+    res.json({ success: true });
+  }
 });
 
 app.get('/api/admin/content', adminService.authenticate, (req, res) => {

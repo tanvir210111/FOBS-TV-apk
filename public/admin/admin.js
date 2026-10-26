@@ -300,6 +300,15 @@ function renderStats(stats) {
   document.getElementById('stat-series').innerText = stats.totalSeries || 0;
   document.getElementById('stat-channels').innerText = stats.totalChannels || 0;
   document.getElementById('stat-views').innerText = Number(stats.totalViews || 0).toLocaleString();
+  if (document.getElementById('stat-users')) {
+    document.getElementById('stat-users').innerText = Number(stats.totalUsers || 0).toLocaleString();
+  }
+  if (document.getElementById('stat-users-sub') && stats.totalRegistered !== undefined) {
+    document.getElementById('stat-users-sub').innerText = `${stats.totalRegistered || 0} Registered • ${stats.totalDevices || 0} App Installs`;
+  }
+  if (document.getElementById('badge-users-count')) {
+    document.getElementById('badge-users-count').innerText = stats.totalUsers || 0;
+  }
   document.getElementById('stat-requests').innerText = stats.pendingRequests || 0;
   document.getElementById('stat-notifs').innerText = stats.totalNotifications || 0;
 
@@ -1399,3 +1408,57 @@ async function autoSyncAllSeries() {
     showToast(`Auto-sync error: ${err.message}`, 'error');
   }
 }
+
+// ==========================================================================
+// APP USERS & AUDIENCE MANAGEMENT
+// ==========================================================================
+
+async function loadUsers() {
+  const tbody = document.getElementById('users-table-body');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Loading user accounts...</td></tr>';
+
+  try {
+    const res = await apiFetch('/api/admin/users');
+    const users = (res && res.users) || [];
+
+    if (users.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">No registered user accounts yet. (App install devices are active)</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = users.map(u => {
+      const avatar = u.picture || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(u.name || 'User');
+      const joined = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'N/A';
+      const lastActive = u.lastLogin ? new Date(u.lastLogin).toLocaleString() : 'N/A';
+      return `
+        <tr>
+          <td>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <img src="${avatar}" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1px solid rgba(255,255,255,0.15);" />
+              <strong style="color:var(--text-primary);">${escapeHtml(u.name || 'User')}</strong>
+            </div>
+          </td>
+          <td style="color:var(--text-secondary); font-family:monospace;">${escapeHtml(u.email || u.id || 'N/A')}</td>
+          <td><span class="badge" style="background:rgba(139,92,246,0.15); color:#8B5CF6;">${u.watchlistCount || 0} items</span></td>
+          <td><span class="badge" style="background:rgba(6,182,212,0.15); color:#06B6D4;">${u.historyCount || 0} watched</span></td>
+          <td style="color:var(--text-muted); font-size:12px;">${joined}</td>
+          <td style="color:var(--text-muted); font-size:12px;">${lastActive}</td>
+          <td><span class="badge text-success" style="background:rgba(16,185,129,0.15);"><i class="fa-solid fa-circle" style="font-size:8px;"></i> Active</span></td>
+        </tr>
+      `;
+    }).join('');
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Failed to load users: ${err.message}</td></tr>`;
+  }
+}
+
+// Auto real-time background refresh every 10 seconds for Views & Users
+if (window._adminStatsInterval) clearInterval(window._adminStatsInterval);
+window._adminStatsInterval = setInterval(() => {
+  if (localStorage.getItem('fobs_admin_token')) {
+    apiFetch('/api/admin/stats').then(res => {
+      if (res && res.stats) renderStats(res.stats);
+    }).catch(() => {});
+  }
+}, 10000);

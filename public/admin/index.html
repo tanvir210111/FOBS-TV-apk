@@ -90,6 +90,11 @@
           <span>User Requests</span>
           <span id="badge-requests-count" class="badge-count alert">0</span>
         </a>
+        <a href="#users" class="nav-item" data-tab="users">
+          <i class="fa-solid fa-users"></i>
+          <span>App Users</span>
+          <span class="badge" id="badge-users-count">0</span>
+        </a>
         <a href="#notifications" class="nav-item" data-tab="notifications">
           <i class="fa-solid fa-bullhorn"></i>
           <span>Announcements</span>
@@ -190,6 +195,14 @@
               <span class="stat-label">Live Channels</span>
               <h3 id="stat-channels">--</h3>
               <small class="stat-sub text-success">Active HLS streams</small>
+            </div>
+          </div>
+          <div class="stat-card glass">
+            <div class="stat-icon users-accent"><i class="fa-solid fa-users"></i></div>
+            <div class="stat-data">
+              <span class="stat-label">Total App Users</span>
+              <h3 id="stat-users">--</h3>
+              <small class="stat-sub text-success" id="stat-users-sub">Registered & Active</small>
             </div>
           </div>
           <div class="stat-card glass">
@@ -482,6 +495,36 @@
       </section>
 
       <!-- TAB 7: ANNOUNCEMENTS -->
+      <!-- APP USERS TAB -->
+      <section id="tab-users" class="tab-pane">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">App Users & Active Audience</h2>
+            <p class="section-desc">Real-time registered users, active device installations, and audience analytics</p>
+          </div>
+          <button class="btn btn-secondary" onclick="loadUsers()"><i class="fa-solid fa-rotate"></i> Refresh Users</button>
+        </div>
+
+        <div class="data-table-container glass">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>User / Avatar</th>
+                <th>Email / User ID</th>
+                <th>Watchlist</th>
+                <th>History</th>
+                <th>Joined Date</th>
+                <th>Last Active</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body">
+              <tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Loading users...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section id="tab-notifications" class="tab-pane">
         <div class="table-controls glass">
           <div>

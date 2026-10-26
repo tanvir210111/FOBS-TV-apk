@@ -13,8 +13,16 @@ const REDIS_URI = process.env.REDIS_URI || 'redis://127.0.0.1:6379';
 const BOOKINGS_FILE = path.join(__dirname, '..', 'data', 'bookings.json');
 const COMMENTS_FILE = path.join(__dirname, '..', 'data', 'comments.json');
 const USERS_FILE = path.join(__dirname, '..', 'data', 'users.json');
+const USERS_LOCAL_FILE = path.join(__dirname, '..', 'data', 'users.local.json');
+const DEVICES_LOCAL_FILE = path.join(__dirname, '..', 'data', 'devices.local.json');
 
 function getLocalUsersMap() {
+  try {
+    if (fs.existsSync(USERS_LOCAL_FILE)) {
+      const data = JSON.parse(fs.readFileSync(USERS_LOCAL_FILE, 'utf8'));
+      if (data && Object.keys(data).length > 0) return data;
+    }
+  } catch (e) {}
   try {
     if (fs.existsSync(USERS_FILE)) {
       return JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
@@ -27,10 +35,61 @@ function getLocalUsersMap() {
 
 function saveLocalUsersMap(map) {
   try {
+    fs.writeFileSync(USERS_LOCAL_FILE, JSON.stringify(map, null, 2), 'utf8');
     fs.writeFileSync(USERS_FILE, JSON.stringify(map, null, 2), 'utf8');
   } catch (e) {
     console.error('Error saving users file:', e.message);
   }
+}
+
+function getDevicesMap() {
+  try {
+    if (fs.existsSync(DEVICES_LOCAL_FILE)) {
+      return JSON.parse(fs.readFileSync(DEVICES_LOCAL_FILE, 'utf8'));
+    }
+  } catch (e) {}
+  return {};
+}
+
+function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android' }) {
+  if (!deviceId || String(deviceId).length < 3) return;
+  try {
+    const devices = getDevicesMap();
+    const existing = devices[deviceId] || { id: deviceId, firstSeen: new Date().toISOString() };
+    existing.lastActive = new Date().toISOString();
+    if (ip && !existing.ip) existing.ip = ip;
+    if (userAgent && !existing.userAgent) existing.userAgent = userAgent;
+    existing.platform = platform || existing.platform || 'Android';
+    devices[deviceId] = existing;
+    fs.writeFileSync(DEVICES_LOCAL_FILE, JSON.stringify(devices, null, 2), 'utf8');
+  } catch (e) {}
+}
+
+async function getUserStats() {
+  const usersMap = getLocalUsersMap();
+  const devicesMap = getDevicesMap();
+  const registeredUsers = Object.values(usersMap);
+  const devices = Object.values(devicesMap);
+
+  const totalRegistered = registeredUsers.length;
+  const totalDevices = devices.length;
+  const totalUsers = Math.max(totalRegistered, totalDevices, totalRegistered + totalDevices);
+
+  return {
+    totalUsers: totalUsers > 0 ? totalUsers : (totalRegistered || totalDevices || 1),
+    totalRegistered,
+    totalDevices: Math.max(totalDevices, totalRegistered),
+    users: registeredUsers.map(u => ({
+      id: u._id || u.googleId,
+      name: u.name || 'User',
+      email: u.email || 'N/A',
+      picture: u.picture || '',
+      watchlistCount: Array.isArray(u.watchlist) ? u.watchlist.length : 0,
+      historyCount: Array.isArray(u.history) ? u.history.length : 0,
+      createdAt: u.createdAt || u.lastLogin,
+      lastLogin: u.lastLogin || u.createdAt
+    }))
+  };
 }
 
 let isMongoConnected = false;
@@ -808,6 +867,8 @@ initMongoDB();
 initRedis();
 
 module.exports = {
+  recordDevice,
+  getUserStats,
   findOrCreateUser,
   getUserById,
   toggleWatchlist,

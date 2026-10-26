@@ -54,6 +54,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // App Startup Flow
 async function initApp() {
+  try {
+    let pingViewerId = localStorage.getItem('fobs_viewer_uuid');
+    if (!pingViewerId) {
+      pingViewerId = 'v_' + Math.random().toString(36).substring(2, 10);
+      localStorage.setItem('fobs_viewer_uuid', pingViewerId);
+    }
+    fetch(`${API_BASE_URL}/api/app-ping`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ viewerId: pingViewerId, platform: 'Android App' })
+    }).catch(() => {});
+  } catch(e) {}
   setupVideoListeners();
   setupHeroSwipeGestures();
   setupMovieHeroSwipeGestures();

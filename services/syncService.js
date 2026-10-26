@@ -19,6 +19,7 @@ const TMDB_API_KEY = '6e766190399843a3e1d85b68eaa3de69';
 
 const DATA_FILE = path.join(__dirname, '..', 'data', 'content.json');
 const VIEWS_FILE = path.join(__dirname, '..', 'data', 'views.json');
+const VIEWS_LOCAL_FILE = path.join(__dirname, '..', 'data', 'views.local.json');
 const PUBLIC_SEED_FILE = path.join(__dirname, '..', 'public', 'seed-content.json');
 const ANDROID_SEED_FILE = path.join(__dirname, '..', 'android', 'app', 'src', 'main', 'assets', 'public', 'seed-content.json');
 
@@ -26,6 +27,12 @@ const ANDROID_SEED_FILE = path.join(__dirname, '..', 'android', 'app', 'src', 'm
 // REAL-TIME VIDEO VIEWS MANAGER
 // ============================================================
 function getViewsMap() {
+  try {
+    if (fs.existsSync(VIEWS_LOCAL_FILE)) {
+      const local = JSON.parse(fs.readFileSync(VIEWS_LOCAL_FILE, 'utf8'));
+      if (local && Object.keys(local).length > 0) return local;
+    }
+  } catch (e) {}
   try {
     if (fs.existsSync(VIEWS_FILE)) {
       return JSON.parse(fs.readFileSync(VIEWS_FILE, 'utf8'));
@@ -38,6 +45,7 @@ function getViewsMap() {
 
 function saveViewsMap(map) {
   try {
+    fs.writeFileSync(VIEWS_LOCAL_FILE, JSON.stringify(map, null, 2), 'utf8');
     fs.writeFileSync(VIEWS_FILE, JSON.stringify(map, null, 2), 'utf8');
   } catch (e) {
     console.error('Error saving views file:', e.message);

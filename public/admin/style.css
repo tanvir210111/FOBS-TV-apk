@@ -419,6 +419,7 @@ body {
 .series-accent { background: rgba(139, 92, 246, 0.15); color: #8B5CF6; }
 .tv-accent { background: rgba(6, 182, 212, 0.15); color: #06B6D4; }
 .views-accent { background: rgba(244, 63, 94, 0.15); color: #F43F5E; }
+.users-accent { background: rgba(59, 130, 246, 0.15); color: #3B82F6; }
 .requests-accent { background: rgba(234, 179, 8, 0.15); color: #EAB308; }
 .notif-accent { background: rgba(16, 185, 129, 0.15); color: #10B981; }
 

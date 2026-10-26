@@ -111,6 +111,12 @@ function writeRequests(list) {
 
 function readViewsMap() {
   try {
+    if (fs.existsSync(VIEWS_LOCAL_FILE)) {
+      const local = JSON.parse(fs.readFileSync(VIEWS_LOCAL_FILE, 'utf8'));
+      if (local && Object.keys(local).length > 0) return local;
+    }
+  } catch (e) {}
+  try {
     if (fs.existsSync(VIEWS_FILE)) {
       return JSON.parse(fs.readFileSync(VIEWS_FILE, 'utf8'));
     }
@@ -120,6 +126,7 @@ function readViewsMap() {
 
 function writeViewsMap(map) {
   try {
+    fs.writeFileSync(VIEWS_LOCAL_FILE, JSON.stringify(map, null, 2), 'utf8');
     fs.writeFileSync(VIEWS_FILE, JSON.stringify(map, null, 2), 'utf8');
     return true;
   } catch (e) {
@@ -164,24 +171,44 @@ class AdminService {
   /**
    * Dashboard Stats
    */
-  getStats() {
+  async getStats() {
     const content = readContent();
     const viewsMap = readViewsMap();
-    let totalViews = 0;
 
-    for (const v of Object.values(viewsMap)) {
-      if (typeof v === 'number') totalViews += v;
-    }
+    // Canonical, strictly deduplicated views calculation
+    let totalViews = 0;
+    const accounted = new Set();
 
     for (const m of content.movies || []) {
-      if (m.views && !viewsMap[m.id]) totalViews += m.views;
+      accounted.add(m.id);
+      if (m.subjectId) {
+        accounted.add(String(m.subjectId));
+        accounted.add(`mb-m-${m.subjectId}`);
+      }
+      const val = viewsMap[m.id] ?? (m.subjectId ? viewsMap[m.subjectId] : undefined) ?? (m.subjectId ? viewsMap[`mb-m-${m.subjectId}`] : undefined) ?? m.views ?? 0;
+      totalViews += Math.max(0, parseInt(val, 10) || 0);
     }
+
     for (const s of content.series || []) {
-      if (s.views && !viewsMap[s.id]) totalViews += s.views;
+      accounted.add(s.id);
+      if (s.subjectId) {
+        accounted.add(String(s.subjectId));
+        accounted.add(`mb-s-${s.subjectId}`);
+      }
+      const val = viewsMap[s.id] ?? (s.subjectId ? viewsMap[s.subjectId] : undefined) ?? (s.subjectId ? viewsMap[`mb-s-${s.subjectId}`] : undefined) ?? s.views ?? 0;
+      totalViews += Math.max(0, parseInt(val, 10) || 0);
+    }
+
+    for (const [k, v] of Object.entries(viewsMap)) {
+      if (!accounted.has(k) && !k.startsWith('mb-')) {
+        accounted.add(k);
+        totalViews += Math.max(0, parseInt(v, 10) || 0);
+      }
     }
 
     const requests = readRequests();
     const notifications = readNotifications();
+    const userStats = await dbService.getUserStats();
 
     const mem = process.memoryUsage();
     return {
@@ -191,6 +218,9 @@ class AdminService {
         totalSeries: (content.series || []).length,
         totalChannels: (content.liveTv || []).length,
         totalViews: Math.max(totalViews, 0),
+        totalUsers: userStats.totalUsers || 1,
+        totalRegistered: userStats.totalRegistered || 0,
+        totalDevices: userStats.totalDevices || 1,
         pendingRequests: requests.filter(r => (r.status || '').toLowerCase() === 'pending').length,
         totalRequests: requests.length,
         totalNotifications: notifications.length,
