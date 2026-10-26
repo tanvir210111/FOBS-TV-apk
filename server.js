@@ -579,6 +579,26 @@ async function resolveStreamUrl(rawUrl) {
           }
           if (media && media.streamUrl) {
             resolved = media.streamUrl;
+          } else {
+            // Smart Fallback: Look up direct stream from content.json
+            try {
+              const content = getContentData();
+              let foundMovie = (content.movies || []).find(m => String(m.subjectId) === String(id));
+              if (foundMovie && (foundMovie.directStreamUrl || foundMovie.servers?.[0]?.url)) {
+                const direct = foundMovie.directStreamUrl || foundMovie.servers[0].url;
+                if (direct && direct.startsWith('http')) resolved = direct;
+              } else {
+                let foundSeries = (content.series || []).find(s => String(s.subjectId) === String(id));
+                if (foundSeries) {
+                  const season = (foundSeries.seasons || []).find(seasonObj => (seasonObj.seasonNumber || seasonObj.season) === se) || foundSeries.seasons?.[0];
+                  const epObj = (season?.episodes || []).find(e => (e.episodeNumber || e.episode) === ep) || season?.episodes?.[ep - 1] || season?.episodes?.[0];
+                  if (epObj && (epObj.directStreamUrl || epObj.servers?.[0]?.url)) {
+                    const direct = epObj.directStreamUrl || epObj.servers[0].url;
+                    if (direct && direct.startsWith('http')) resolved = direct;
+                  }
+                }
+              }
+            } catch (e) {}
           }
         }
       } catch (err) {
@@ -911,6 +931,33 @@ app.get('/api/moviebox/stream', async (req, res) => {
     }
     if (!media || !media.streamUrl) {
       media = await movieboxService.resolveMedia(id, resolvedPath || '', 0, 0);
+    }
+    if (!media || !media.streamUrl) {
+      // Smart Fallback: Look up directStreamUrl or servers from content.json
+      try {
+        const content = getContentData();
+        let foundMovie = (content.movies || []).find(m => String(m.subjectId) === String(id));
+        if (foundMovie && (foundMovie.directStreamUrl || foundMovie.servers?.[0]?.url)) {
+          const direct = foundMovie.directStreamUrl || foundMovie.servers[0].url;
+          if (direct && direct.startsWith('http')) {
+            media = { streamUrl: direct, resolution: 1080 };
+          }
+        } else {
+          let foundSeries = (content.series || []).find(s => String(s.subjectId) === String(id));
+          if (foundSeries) {
+            const season = (foundSeries.seasons || []).find(seasonObj => (seasonObj.seasonNumber || seasonObj.season) === seNum) || foundSeries.seasons?.[0];
+            const epObj = (season?.episodes || []).find(e => (e.episodeNumber || e.episode) === epNum) || season?.episodes?.[epNum - 1] || season?.episodes?.[0];
+            if (epObj && (epObj.directStreamUrl || epObj.servers?.[0]?.url)) {
+              const direct = epObj.directStreamUrl || epObj.servers[0].url;
+              if (direct && direct.startsWith('http')) {
+                media = { streamUrl: direct, resolution: 1080 };
+              }
+            }
+          }
+        }
+      } catch (fbErr) {
+        console.error('Fallback lookup error in /api/moviebox/stream:', fbErr.message);
+      }
     }
     if (!media || !media.streamUrl) {
       return res.status(404).send('Stream not available for this episode yet');

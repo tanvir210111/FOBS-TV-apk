@@ -4,8 +4,17 @@
  */
 
 const axios = require('axios');
+const https = require('https');
+
+const ipv4Agent = new https.Agent({
+  family: 4,
+  keepAlive: true,
+  rejectUnauthorized: false
+});
 
 const BASE_URL = 'https://h5.aoneroom.com';
+const FALLBACK_URL = 'https://movieboxapp.in';
+
 const HEADERS = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
   'Origin': BASE_URL,
@@ -25,6 +34,7 @@ class MovieBoxService {
     try {
       const res = await axios.get(`${BASE_URL}/wefeed-h5-bff/web/home`, {
         headers: HEADERS,
+        httpsAgent: ipv4Agent,
         timeout: 10000
       });
       const raw = res.data?.data || res.data;
@@ -87,6 +97,7 @@ class MovieBoxService {
           'Origin': BASE_URL,
           'Referer': `${BASE_URL}/`
         },
+        httpsAgent: ipv4Agent,
         timeout: 10000
       });
       const items = res.data?.data?.items || [];
@@ -106,20 +117,18 @@ class MovieBoxService {
     }
   }
 
-
-  /**
-   * Resolves direct playable video stream links for a movie or series episode
-   * Returns available qualities (360p, 720p, 1080p), preferred streamUrl, and captions
-   */
-  
   /**
    * Fetches full metadata, total uploaded episodes, and auto-detected categories for a subject
    */
-  async getDetail(subjectId) {
+  async getDetail(subjectId, detailPath = '') {
     if (!subjectId) return null;
     try {
-      const res = await axios.get(`${BASE_URL}/wefeed-h5-bff/web/subject/detail?subjectId=${subjectId}`, {
+      let url = `${BASE_URL}/wefeed-h5-bff/web/subject/detail?subjectId=${subjectId}`;
+      if (detailPath) url += `&detailPath=${encodeURIComponent(detailPath)}`;
+
+      const res = await axios.get(url, {
         headers: HEADERS,
+        httpsAgent: ipv4Agent,
         timeout: 10000
       });
       const d = res.data?.data;
@@ -129,7 +138,6 @@ class MovieBoxService {
       const isSeries = sub.subjectType === 2;
       const seasons = d.resource?.seasons || [];
 
-      // Calculate exact total uploaded episodes on MovieBox
       let totalEpisodes = 1;
       if (isSeries) {
         if (seasons.length > 0) {
@@ -198,7 +206,7 @@ class MovieBoxService {
 
       return {
         subjectId: String(subjectId),
-        detailPath: sub.detailPath || '',
+        detailPath: sub.detailPath || detailPath || '',
         title,
         type: isSeries ? 'series' : 'movie',
         year,
@@ -220,46 +228,57 @@ class MovieBoxService {
   }
 
   async _fetchDownload(subjectId, detailPath, season, episode) {
-    try {
-      const refPath = detailPath ? `${BASE_URL}/movies/${detailPath}` : `${BASE_URL}/`;
-      const res = await axios.get(`${BASE_URL}/wefeed-h5-bff/web/subject/download`, {
-        params: {
+    const urlsToTry = [
+      `${BASE_URL}/wefeed-h5-bff/web/subject/download`,
+      `${FALLBACK_URL}/wefeed-h5-bff/web/subject/download`
+    ];
+
+    for (const fetchUrl of urlsToTry) {
+      try {
+        const domain = fetchUrl.startsWith(FALLBACK_URL) ? FALLBACK_URL : BASE_URL;
+        const refPath = detailPath ? `${domain}/movies/${detailPath}` : `${domain}/`;
+        const res = await axios.get(fetchUrl, {
+          params: {
+            subjectId,
+            se: season,
+            ep: episode
+          },
+          headers: {
+            ...HEADERS,
+            'Origin': domain,
+            'Referer': refPath
+          },
+          httpsAgent: ipv4Agent,
+          timeout: 10000
+        });
+
+        const data = res.data?.data;
+        if (!data || !data.downloads || data.downloads.length === 0) {
+          continue;
+        }
+
+        const sortedDownloads = [...data.downloads].sort((a, b) => (b.resolution || 0) - (a.resolution || 0));
+        const best = sortedDownloads[0];
+
+        return {
           subjectId,
-          se: season,
-          ep: episode
-        },
-        headers: {
-          ...HEADERS,
-          'Referer': refPath
-        },
-        timeout: 10000
-      });
-
-      const data = res.data?.data;
-      if (!data || !data.downloads || data.downloads.length === 0) {
-        return null;
+          streamUrl: best.url,
+          resolution: best.resolution,
+          qualities: sortedDownloads.map(d => ({
+            resolution: d.resolution,
+            url: d.url,
+            size: d.size
+          })),
+          captions: (data.captions || []).map(c => ({
+            language: c.language || c.lan,
+            url: c.url
+          }))
+        };
+      } catch (e) {
+        // Continue to fallback
       }
-
-      const sortedDownloads = [...data.downloads].sort((a, b) => (b.resolution || 0) - (a.resolution || 0));
-      const best = sortedDownloads[0];
-
-      return {
-        subjectId,
-        streamUrl: best.url,
-        resolution: best.resolution,
-        qualities: sortedDownloads.map(d => ({
-          resolution: d.resolution,
-          url: d.url,
-          size: d.size
-        })),
-        captions: (data.captions || []).map(c => ({
-          language: c.language || c.lan,
-          url: c.url
-        }))
-      };
-    } catch (e) {
-      return null;
     }
+    return null;
   }
 
   async resolveMedia(subjectId, detailPath = '', season = 0, episode = 0) {
@@ -296,6 +315,7 @@ class MovieBoxService {
       const res = await axios.get(`${BASE_URL}/wefeed-h5-bff/web/subject/download`, {
         params: { subjectId, se: season, ep: episode },
         headers: { ...HEADERS, 'Referer': refPath },
+        httpsAgent: ipv4Agent,
         timeout: 10000
       });
       const data = res.data?.data;

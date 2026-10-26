@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v65';
+const CACHE_KEY = 'fobs_tv_content_cache_v66';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -2644,7 +2644,26 @@ function getActiveEpisodeStream(ep, audioTrack) {
   const track = audioTrack || appState.currentAudioTrack || 'Original audio';
   const isOrig = track.toLowerCase().includes('original') || track.toLowerCase().includes('korean');
 
-  // 1. First priority: Check servers array for auto-renewing /api/moviebox/stream endpoints
+  // 1. High Priority: Direct fast CDN stream (immediate playback through VPS proxy)
+  if (ep.servers && Array.isArray(ep.servers)) {
+    const directServer = ep.servers.find(s => 
+      (s.isDirect || (s.url && s.url.startsWith('https://') && !s.url.includes('/api/moviebox/stream'))) && (
+        isOrig 
+          ? (s.audio === 'Original audio' || /original|korean/i.test(s.name))
+          : (s.audio === 'Hindi dub' || /hindi/i.test(s.name))
+      )
+    ) || ep.servers.find(s => s.isDirect || (s.url && s.url.startsWith('https://') && !s.url.includes('/api/moviebox/stream')));
+
+    if (directServer && directServer.url && directServer.url.startsWith('http')) {
+      return directServer.url;
+    }
+  }
+
+  if (ep.directStreamUrl && ep.directStreamUrl.startsWith('http')) {
+    return ep.directStreamUrl;
+  }
+
+  // 2. Fallback: Auto-renewing /api/moviebox/stream endpoint
   if (ep.servers && Array.isArray(ep.servers)) {
     const autoRenewingServer = ep.servers.find(s => 
       s.url && s.url.includes('/api/moviebox/stream') && (
@@ -2942,8 +2961,9 @@ function openPlayer(media, episodeIndex = 0) {
     appState.currentEpisode = null;
     appState.activeServerIndex = 0;
     renderServerPills(media);
+    const directServer = (media.servers || []).find(s => (s.isDirect || (s.url && s.url.startsWith('https://') && !s.url.includes('/api/moviebox/stream')))) || ((media.servers && media.servers[0] && media.servers[0].url.startsWith('http') && !media.servers[0].url.includes('/api/moviebox/stream')) ? media.servers[0] : null);
     const autoRenewingServer = media.servers?.find(s => s.url && s.url.includes('/api/moviebox/stream'));
-    const initialUrl = autoRenewingServer ? autoRenewingServer.url : ((media.servers && media.servers.length > 0) ? media.servers[0].url : (media.streamUrl || media.driveUrl));
+    const initialUrl = (directServer ? directServer.url : null) || (media.directStreamUrl && media.directStreamUrl.startsWith('http') ? media.directStreamUrl : null) || (autoRenewingServer ? autoRenewingServer.url : (media.streamUrl || media.driveUrl));
     playStreamUrl(initialUrl);
   }
 
