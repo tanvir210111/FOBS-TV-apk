@@ -213,6 +213,23 @@ function getMovieBoxDetailPath(id) {
   if (sId === '3350050042852901216') return 'demon-slayer-kimetsu-no-yaiba-hindi-kwZDpEpgtZ3';
   if (sId === '4302184927338135648') return 'naruto-hindi-gsQpseg3O75';
   if (sId === '8434951818110719008') return 'cyberpunk-edgerunners-Wl8UpVsa63a';
+  if (sId === '2225435141369905464') return 'blue-box-hindi-0enb9E1woE2';
+  if (sId === '3997659161797476824') return 'ranma-1-2-hindi-s8JndmVjjL4';
+  if (sId === '4163992514732639728') return 'the-laid-off-cheat-granting-mage-enjoys-a-second-lease-on-life-hindi-aYt8O1kXbX3';
+  if (sId === '8458814937190780632') return 'overgeared-hindi-IUfYcwEsR4a';
+  if (sId === '6446851041895370536') return 'the-ramparts-of-ice-hindi-I2AUVR3EeG7';
+  if (sId === '1042151586308440096') return 'a-wild-last-boss-appeared-hindi-29oIZ534Ze1';
+  if (sId === '3015067308617353456') return 'as-a-reincarnated-aristocrat-ill-use-my-appraisal-skill-to-rise-in-the-world-hindi-KfYmkLu2JA3';
+  if (sId === '5985714864478734088') return 'ragna-crimson-hindi-CZFZURwDa87';
+  if (sId === '4913967391899615376') return 'the-detective-is-already-dead-hindi-s6uZ5Bp10R5';
+  if (sId === '7967254200902451552') return 'welcome-to-demon-school-iruma-kun-hindi-6L0z1b2E4a1';
+  if (sId === '5663438161238710152') return 'arifureta-from-commonplace-to-worlds-strongest-hindi-2z3Y9pLkq8';
+  if (sId === '2288089881081512944') return 're-zero-starting-life-in-another-world-hindi-7Y6pOmNwKa';
+  if (sId === '2338717329384787360') return 'grand-blue-dreaming-hindi-Cl7VP5IlLM2';
+  if (sId === '1418810570597357232') return 'the-exiled-heavy-knight-knows-how-to-game-the-system-hindi-iXPlNJnaOG1';
+  if (sId === '2551537104618775712') return 'black-clover-hindi-KLstyjCN7L2';
+  if (sId === '542646768450818704') return 'the-exiled-heavy-knight-knows-how-to-game-the-system-hindi-iXPlNJnaOG1';
+
   return '';
 }
 
