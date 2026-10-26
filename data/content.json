@@ -8701,7 +8701,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -8721,6 +8721,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=4393216074666474704&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250627/f02822c484149f064d03133cf9706448.mp4?sign=a237fe4719d363e66a157d1f29191921&t=1793035249",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=4393216074666474704&path=&se=0&ep=0",
@@ -8771,13 +8778,15 @@
           "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1220538,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/anwB9RlA2haerdblfBcl5OH9gtr.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-10-02",
-      "subjectId": "4393216074666474704"
+      "subjectId": "8157800403514572920",
+      "detailPath": "bambai-meri-jaan-hindi-UyPPJQmOCI9",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250627/f02822c484149f064d03133cf9706448.mp4?sign=a237fe4719d363e66a157d1f29191921&t=1793035249"
     },
     {
       "id": "mb-m-7908270876544975128",
@@ -8786,7 +8795,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -8806,6 +8815,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=7908270876544975128&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/c4847b184051ee586b6dcd55bc52bd6f.mp4?sign=b4183f62bbc82cb2ee6a664d45ab130e&t=1793036458",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=7908270876544975128&path=&se=0&ep=0",
@@ -8856,13 +8872,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/zRjr0F64Eznbliz1RvN9icj3Lq1.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1376856,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/7AcH5TFppoMusNkCBLaQP6UOODp.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-09-23",
-      "subjectId": "7908270876544975128"
+      "subjectId": "978589785474451688",
+      "detailPath": "the-paradise-WRmQOWZWha1",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/c4847b184051ee586b6dcd55bc52bd6f.mp4?sign=b4183f62bbc82cb2ee6a664d45ab130e&t=1793036458"
     },
     {
       "id": "mb-m-6714742242860745056",
@@ -8871,7 +8889,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -8891,6 +8909,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=6714742242860745056&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/6c42ae8fb2e936823932fec8ab8bca03.mp4?sign=ccfc51f96fb6b3e50763f3a4df91a4b3&t=1793035345",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=6714742242860745056&path=&se=0&ep=0",
@@ -8941,13 +8966,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/iBUUpfHZIfpC5afHrHwcyGTHKQF.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1317872,
       "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/zNghOXSvoex2wHx88skt5wGEzPd.jpg",
       "addedAt": "2026-10-22T18:58:59.000Z",
       "originalReleaseDate": "2026-09-10",
-      "subjectId": "6714742242860745056"
+      "subjectId": "6714742242860745056",
+      "detailPath": "sardar-2-hindi-oKhSRGCA108",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/6c42ae8fb2e936823932fec8ab8bca03.mp4?sign=ccfc51f96fb6b3e50763f3a4df91a4b3&t=1793035345"
     },
     {
       "id": "mb-m-4151920426815471968",
@@ -8956,7 +8983,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -8976,6 +9003,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=4151920426815471968&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/76a6485f1c27599cdf2ff725bdb24791.mp4?sign=0b3edc9daad041b2aac39fad314150b4&t=1793036812",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=4151920426815471968&path=&se=0&ep=0",
@@ -9026,13 +9060,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/rTBzBagl6uD6YooliwpL5MU2kyB.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1465943,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/dJ4sqrmX2KviF8HBKlLrDedUhnh.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-09-10",
-      "subjectId": "4151920426815471968"
+      "subjectId": "4151920426815471968",
+      "detailPath": "mandaadi-hindi-qxUx1r3QHW4",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/76a6485f1c27599cdf2ff725bdb24791.mp4?sign=0b3edc9daad041b2aac39fad314150b4&t=1793036812"
     },
     {
       "id": "mb-m-5349301616099452064",
@@ -9041,7 +9077,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -9061,6 +9097,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=5349301616099452064&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/ssrmovies/36e71d31c0ade13ee137e684888ef2bf.mp4?sign=d9c50cc68b837039bec01434a651f851&t=1793034319",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=5349301616099452064&path=&se=0&ep=0",
@@ -9111,13 +9154,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/2zIIonCsFrdcmmZD0g5YIaCPnQY.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1355228,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/sT5WVT8LzvDwIbfy9BGXK0fvf3s.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-09-03",
-      "subjectId": "5349301616099452064"
+      "subjectId": "2074372956972532296",
+      "detailPath": "gandeevadhari-arjuna-hindi-Wh6n3bjEet2",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/ssrmovies/36e71d31c0ade13ee137e684888ef2bf.mp4?sign=d9c50cc68b837039bec01434a651f851&t=1793034319"
     },
     {
       "id": "mb-m-3136667368668152832",
@@ -9126,7 +9171,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -9146,6 +9191,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=3136667368668152832&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/0efb84754f2d88f88c6174c5c511c450.mp4?sign=51fc6bc53ced4af2aca97db8f2938f85&t=1793033893",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=3136667368668152832&path=&se=0&ep=0",
@@ -9196,13 +9248,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/bHZwl5Vpf9X9IlqilC0wi3IGoVV.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1654516,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/o80iCzo1zqSt4zx9SZkCsjgxzvi.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-08-28",
-      "subjectId": "3136667368668152832"
+      "subjectId": "3136667368668152832",
+      "detailPath": "asi-babita-singh-reporting-hindi-anjRI08YHJ3",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/0efb84754f2d88f88c6174c5c511c450.mp4?sign=51fc6bc53ced4af2aca97db8f2938f85&t=1793033893"
     },
     {
       "id": "mb-m-6800165531384434648",
@@ -9211,7 +9265,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -9231,6 +9285,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=6800165531384434648&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/815262e7f8d1b722a894d70e34567ebf.mp4?sign=0c08676aca70aa9555a3c17d8deea610&t=1793036787",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=6800165531384434648&path=&se=0&ep=0",
@@ -9281,13 +9342,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/dsFqDJzSzUiKZpicmj05Iv1YbOs.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1213243,
       "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/tBRSSfgqOAq7YlG8udcoJIBm2FG.jpg",
       "addedAt": "2026-10-22T18:58:59.000Z",
       "originalReleaseDate": "2026-08-26",
-      "subjectId": "6800165531384434648"
+      "subjectId": "6800165531384434648",
+      "detailPath": "toxic-hindi-cYFUyAtPk68",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/815262e7f8d1b722a894d70e34567ebf.mp4?sign=0c08676aca70aa9555a3c17d8deea610&t=1793036787"
     },
     {
       "id": "mb-m-2355442796397591760",
@@ -9296,7 +9359,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -9316,6 +9379,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=2355442796397591760&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/convert-h264/ac9f58a37684580a2dfd0a615beeac16.mp4?sign=7dd06eaf78caec9eab6f9df89f2733eb&t=1793037110",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=2355442796397591760&path=&se=0&ep=0",
@@ -9366,13 +9436,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/5kdOuFtZ6T3LPwtu5mQfXSXPYUP.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1508168,
       "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/zms3m4kVz7RXmobU1B0nhrvUEmP.jpg",
       "addedAt": "2026-10-22T18:58:59.000Z",
       "originalReleaseDate": "2026-08-21",
-      "subjectId": "2355442796397591760"
+      "subjectId": "2355442796397591760",
+      "detailPath": "bethlehem-kudumba-unit-hindi-KlX2Rj5XZN2",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/ac9f58a37684580a2dfd0a615beeac16.mp4?sign=7dd06eaf78caec9eab6f9df89f2733eb&t=1793037110"
     },
     {
       "id": "mb-m-5268394138868805864",
@@ -9381,7 +9453,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -9401,6 +9473,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=5268394138868805864&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/4b9a732197df6d73fdb6d6afe4157865.mp4?sign=11e1835c502accde3123b528c105cbab&t=1793035582",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=5268394138868805864&path=&se=0&ep=0",
@@ -9451,13 +9530,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/5Vq2jrYVPviTqe7s7DcLrrq57Rx.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1441228,
       "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/578jrGVEN4a5rxJGtkt9sMI2w6c.jpg",
       "addedAt": "2026-10-22T18:58:59.000Z",
       "originalReleaseDate": "2026-08-20",
-      "subjectId": "5268394138868805864"
+      "subjectId": "3834729245100722000",
+      "detailPath": "irumudi-hindi-full-movie-uzw31Oe6hz4",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/4b9a732197df6d73fdb6d6afe4157865.mp4?sign=11e1835c502accde3123b528c105cbab&t=1793035582"
     },
     {
       "id": "mb-m-2785754964193329504",
@@ -9466,7 +9547,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -9486,6 +9567,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=2785754964193329504&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/b2df0452941953004091b3c538afdf6a.mp4?sign=e4f15e39cef3b9befd65c45dcacf99f4&t=1793036682",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=2785754964193329504&path=&se=0&ep=0",
@@ -9536,13 +9624,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/h4P1Nwl5bswA2n2d4gPLJ6k2pV.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1036081,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/6Jz7rnnZrSkgs9ySWUxewpcxr7Q.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-08-20",
-      "subjectId": "2785754964193329504"
+      "subjectId": "320649994577529872",
+      "detailPath": "overflow-hindi-ul5N5YYzGn",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/b2df0452941953004091b3c538afdf6a.mp4?sign=e4f15e39cef3b9befd65c45dcacf99f4&t=1793036682"
     },
     {
       "id": "mb-m-8826677989518759008",
@@ -9551,7 +9641,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -9571,6 +9661,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=8826677989518759008&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/53459e983c1e1af1c71c8468e204913b.mp4?sign=aa51187e4dc8adde599f713d3f33ea92&t=1793034920",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=8826677989518759008&path=&se=0&ep=0",
@@ -9621,13 +9718,15 @@
           "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1444466,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/qrYsuB5kPCw0y7IVIuOyEAI1GXh.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-08-14",
-      "subjectId": "8826677989518759008"
+      "subjectId": "4425096536183425200",
+      "detailPath": "awarapan-hindi-mRXR42kZSg5",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/53459e983c1e1af1c71c8468e204913b.mp4?sign=aa51187e4dc8adde599f713d3f33ea92&t=1793034920"
     },
     {
       "id": "mb-m-1492986236347339808",
@@ -9636,7 +9735,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -9656,6 +9755,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=1492986236347339808&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/d5b33f7f26ea4c60dc13fee4f3ea1e3e.mp4?sign=48570e5eaa6ad3696679911afd89a3ff&t=1793037305",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=1492986236347339808&path=&se=0&ep=0",
@@ -9706,13 +9812,15 @@
           "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1727563,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/nOQYly08Rv5fepk67i4wy43Oyyf.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-08-07",
-      "subjectId": "1492986236347339808"
+      "subjectId": "6451490006543860112",
+      "detailPath": "oh-my-dog-hindi-0ISGwrlTzG7",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/d5b33f7f26ea4c60dc13fee4f3ea1e3e.mp4?sign=48570e5eaa6ad3696679911afd89a3ff&t=1793037305"
     },
     {
       "id": "mb-m-9107376937579734040",
@@ -9721,7 +9829,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -9741,6 +9849,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=9107376937579734040&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/d5e9f316ebe3d55ec6002c9460bd807b.mp4?sign=6ad57d29e8932530b09fc08d2f5281cc&t=1793037310",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=9107376937579734040&path=&se=0&ep=0",
@@ -9791,13 +9906,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/2mlbBSwHF2nzlPpVnjXpTKLaoxQ.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1479832,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/v7kqufGRDotShPCw53SM7m8t6oc.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-08-06",
-      "subjectId": "9107376937579734040"
+      "subjectId": "7553586723058761928",
+      "detailPath": "aint-nobody-from-dc-KJZiNasvZZ8",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/d5e9f316ebe3d55ec6002c9460bd807b.mp4?sign=6ad57d29e8932530b09fc08d2f5281cc&t=1793037310"
     },
     {
       "id": "mb-m-132035362238649848",
@@ -9806,7 +9923,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -9826,6 +9943,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=132035362238649848&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/8657c8bd609df11c76b31d07c527e926.mp4?sign=37854aee5cc16053ee8bf50b26861042&t=1793035056",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=132035362238649848&path=&se=0&ep=0",
@@ -9871,13 +9995,15 @@
           "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1741770,
       "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/pZWvngm47TEmrnV6xDAoiIc16gP.jpg",
       "addedAt": "2026-10-22T18:58:59.000Z",
       "originalReleaseDate": "2026-07-31",
-      "subjectId": "132035362238649848"
+      "subjectId": "5055682894237167848",
+      "detailPath": "karmakhya-hindi-CFRGhu25t16",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/8657c8bd609df11c76b31d07c527e926.mp4?sign=37854aee5cc16053ee8bf50b26861042&t=1793035056"
     },
     {
       "id": "tmdb-m-969681",
@@ -9986,7 +10112,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -10006,6 +10132,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=8499680477270401976&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/38338ab962ac78d5ffa5eaf972a57c01.mp4?sign=69874a100d7649225d00e52246491eea&t=1793037314",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=8499680477270401976&path=&se=0&ep=0",
@@ -10056,13 +10189,15 @@
           "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1682974,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/4TtfVgg7GHiYFtlIiEjZ3JHTz4S.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-07-24",
-      "subjectId": "8499680477270401976"
+      "subjectId": "8499680477270401976",
+      "detailPath": "the-india-story-hindi-KHg2HgRCS7a",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/38338ab962ac78d5ffa5eaf972a57c01.mp4?sign=69874a100d7649225d00e52246491eea&t=1793037314"
     },
     {
       "id": "mb-m-3383785055142172048",
@@ -10071,7 +10206,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -10091,6 +10226,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=3383785055142172048&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/mkvcnimas/17230ce1b26b6077c9c7462fd3306c49.mp4?sign=afcf8dcd3754cedadc0de77770466da8&t=1793037316",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=3383785055142172048&path=&se=0&ep=0",
@@ -10141,13 +10283,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/hAdKu3EPesGja7We6zKbaZNVyy1.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1303331,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/95sjD0dRajtU6SKD6Gq6PtrGoGY.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-07-10",
-      "subjectId": "3383785055142172048"
+      "subjectId": "6296805075751241472",
+      "detailPath": "total-dhamaal-hindi-M29CyuUq9v7",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/mkvcnimas/17230ce1b26b6077c9c7462fd3306c49.mp4?sign=afcf8dcd3754cedadc0de77770466da8&t=1793037316"
     },
     {
       "id": "mb-m-6242809544159155600",
@@ -10156,7 +10300,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Hollywood",
@@ -10176,6 +10320,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=6242809544159155600&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/01a6f4f6df56560b0b262ad54b65e084.mp4?sign=3a7b4bdb2fffb41e2d8a9ab2a476e6fe&t=1793033730",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=6242809544159155600&path=&se=0&ep=0",
@@ -10226,13 +10377,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/fDqCryVbJGSb6CPLCIxmfbN8wsV.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1108427,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/c6BPbkO5Npt1OdwttAxCFo06wtH.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-07-08",
-      "subjectId": "6242809544159155600"
+      "subjectId": "4785331923088539720",
+      "detailPath": "moana-hindi-e9lF420SuH5",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/01a6f4f6df56560b0b262ad54b65e084.mp4?sign=3a7b4bdb2fffb41e2d8a9ab2a476e6fe&t=1793033730"
     },
     {
       "id": "mb-m-5078903437354494336",
@@ -10241,7 +10394,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -10261,6 +10414,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=5078903437354494336&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/c39ebf244f0a6e32b63f94de367b36c4.mp4?sign=535ca3208f5396896788a316721ddf76&t=1793037320",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=5078903437354494336&path=&se=0&ep=0",
@@ -10311,13 +10471,15 @@
           "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1512084,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/l2TgHsg445CPwSGtg30I0GmoFtG.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-07-03",
-      "subjectId": "5078903437354494336"
+      "subjectId": "5078903437354494336",
+      "detailPath": "baby-do-die-do-hindi-wuf4EaLqb36",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/c39ebf244f0a6e32b63f94de367b36c4.mp4?sign=535ca3208f5396896788a316721ddf76&t=1793037320"
     },
     {
       "id": "mb-m-8195040886506541968",
@@ -10326,7 +10488,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -10346,6 +10508,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=8195040886506541968&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250628/2b00069705a5e10442094f14417aa0da.mp4?sign=5db7d7f5c845f21b1bc8757b57342556&t=1793034974",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=8195040886506541968&path=&se=0&ep=0",
@@ -10396,13 +10565,15 @@
           "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1122030,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/b4WXm5ahmtubYXy3wqHUG2nUKoM.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-07-02",
-      "subjectId": "8195040886506541968"
+      "subjectId": "7421543898314852424",
+      "detailPath": "alpha-hindi-SjekecuKeQ8",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250628/2b00069705a5e10442094f14417aa0da.mp4?sign=5db7d7f5c845f21b1bc8757b57342556&t=1793034974"
     },
     {
       "id": "mb-m-2897664112366868144",
@@ -10411,7 +10582,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -10431,6 +10602,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=2897664112366868144&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/e6f85aca6c84c057bd6f265e05e2da7c.mp4?sign=73ed0fb5a087eab3d23dc5e40c48d01f&t=1793034130",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=2897664112366868144&path=&se=0&ep=0",
@@ -10481,13 +10659,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/kr1Nv0Q2cZEO4wVRFrUzdoXtM01.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1392469,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/7CJQvCO8aNKEewAFw90qvQ7fr1T.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-06-19",
-      "subjectId": "2897664112366868144"
+      "subjectId": "2897664112366868144",
+      "detailPath": "cocktail-2-hindi-6ltQEEBk3s3",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/e6f85aca6c84c057bd6f265e05e2da7c.mp4?sign=73ed0fb5a087eab3d23dc5e40c48d01f&t=1793034130"
     },
     {
       "id": "mb-m-8175753992266569024",
@@ -10496,7 +10676,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -10516,6 +10696,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=8175753992266569024&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/tran-audio/20250712/a680e80b487d7ce17da6639e36852f8b.mp4?sign=d338deba1ba408ab478f8c73056bc44d&t=1793037325",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=8175753992266569024&path=&se=0&ep=0",
@@ -10566,13 +10753,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/xYiQULIzHIk57rLYeiwipLzVPRi.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1351908,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/vnEdyQ0XL325M4jd1prEMNo4xlL.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-06-12",
-      "subjectId": "8175753992266569024"
+      "subjectId": "6734545943536305256",
+      "detailPath": "bharat-hindi-U2lKJW5iu18",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/tran-audio/20250712/a680e80b487d7ce17da6639e36852f8b.mp4?sign=d338deba1ba408ab478f8c73056bc44d&t=1793037325"
     },
     {
       "id": "mb-m-5127954970351917664",
@@ -10581,7 +10770,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -10601,6 +10790,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=5127954970351917664&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/e93737c84995556df4040c074886c1ae.mp4?sign=8abc5a9cce361708b3d1f97090e9e602&t=1793036181",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=5127954970351917664&path=&se=0&ep=0",
@@ -10651,13 +10847,15 @@
           "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1293550,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/xS8tsJ8IvNkzBMu3kq3gZFReh7j.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-06-04",
-      "subjectId": "5127954970351917664"
+      "subjectId": "2147669747859687376",
+      "detailPath": "mohanagar-hindi-uxDZGhIlEy2",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/e93737c84995556df4040c074886c1ae.mp4?sign=8abc5a9cce361708b3d1f97090e9e602&t=1793036181"
     },
     {
       "id": "mb-m-4323176914467930864",
@@ -10666,7 +10864,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -10686,6 +10884,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=4323176914467930864&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/d35003e9063fad2ea4f699470e552812.mp4?sign=6ea9136be005904ced02b4b5e7fa1e60&t=1793035618",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=4323176914467930864&path=&se=0&ep=0",
@@ -10736,13 +10941,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/ArW6nQ23bjVfbcFmNVl4W9zpd7X.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1653208,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/2Lu1jb8kv93ciXYhmUlsj0E2RK1.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-05-28",
-      "subjectId": "4323176914467930864"
+      "subjectId": "4681337201345660416",
+      "detailPath": "naruto-shippuden-hindi-C3uFBDAzOz5",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/d35003e9063fad2ea4f699470e552812.mp4?sign=6ea9136be005904ced02b4b5e7fa1e60&t=1793035618"
     },
     {
       "id": "mb-m-5481474927855289304",
@@ -10751,7 +10958,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -10771,6 +10978,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=5481474927855289304&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/cms/45df4adca01036fd6a90edcbb0426864.mp4?sign=30d2799dc774a6a3f85ddb454f0cc839&t=1793035359",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=5481474927855289304&path=&se=0&ep=0",
@@ -10821,13 +11035,15 @@
           "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1600771,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/akZ9jTTzvBOx3CeTVCo9WyhxL5q.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-05-15",
-      "subjectId": "5481474927855289304"
+      "subjectId": "7276661899126002144",
+      "detailPath": "aakhri-sukh-hindi-ECp8YlHbxF8",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/45df4adca01036fd6a90edcbb0426864.mp4?sign=30d2799dc774a6a3f85ddb454f0cc839&t=1793035359"
     },
     {
       "id": "mb-m-5244918809701544168",
@@ -10836,7 +11052,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -10856,6 +11072,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=5244918809701544168&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/vegamovies/74c9dc04abcd2667a97d647863b61512.mp4?sign=7192bcdbd25dc393fc5ee10edd1ed8c3&t=1793034606",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=5244918809701544168&path=&se=0&ep=0",
@@ -10906,13 +11129,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/pCpRhGfErWK0jkagdmGQGpy0hLl.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1284186,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/oAUf1pvGlafCZVlEuPt1JyONHR1.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2026-04-09",
-      "subjectId": "5244918809701544168"
+      "subjectId": "5244918809701544168",
+      "detailPath": "sacrifice-hindi-67oKOTAMrf6",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/vegamovies/74c9dc04abcd2667a97d647863b61512.mp4?sign=7192bcdbd25dc393fc5ee10edd1ed8c3&t=1793034606"
     },
     {
       "id": "tmdb-m-1153576",
@@ -11124,7 +11349,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -11144,6 +11369,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=3532379387301615648&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/094a2055b04cf26bcfbf7149be9135ed.mp4?sign=8960c250d22a90ac861741427e67781f&t=1793036960",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=3532379387301615648&path=&se=0&ep=0",
@@ -11194,13 +11426,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/3uhvhOTAVFsSVRVR41rjILq9Fcn.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1372059,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/87HrTwoaRMgNUIbIKIABd2L8cu5.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2024-10-18",
-      "subjectId": "3532379387301615648"
+      "subjectId": "4754727766937984080",
+      "detailPath": "ghamasaan-hindi-full-movie-KvkcxHCHeF5",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/094a2055b04cf26bcfbf7149be9135ed.mp4?sign=8960c250d22a90ac861741427e67781f&t=1793036960"
     },
     {
       "id": "mb-m-3245114829035696656",
@@ -11209,7 +11443,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Bollywood",
@@ -11229,6 +11463,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=3245114829035696656&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/c3579d6ede647997e96803b9dd8a2727.mp4?sign=4e352cf7270166999f472d8306440928&t=1793034067",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=3245114829035696656&path=&se=0&ep=0",
@@ -11279,13 +11520,15 @@
           "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 1277236,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/yXvVIZCIitmt8SeGAoSuEn8Z6Mi.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2024-04-26",
-      "subjectId": "3245114829035696656"
+      "subjectId": "3245114829035696656",
+      "detailPath": "main-ladega-hindi-EUM1KmWEIR3",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/c3579d6ede647997e96803b9dd8a2727.mp4?sign=4e352cf7270166999f472d8306440928&t=1793034067"
     },
     {
       "id": "mb-m-920251265093878016",
@@ -11294,7 +11537,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Hollywood",
@@ -11314,6 +11557,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=920251265093878016&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/mlwbd/1602b44ff87ef18e3637d596f798c847.mp4?sign=baadb19916db53e572e259b0fc3bb362&t=1793037341",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=920251265093878016&path=&se=0&ep=0",
@@ -11364,13 +11614,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/6ANuYnZZJTuQLL4bbt8vH1qDYje.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 804150,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/a2tys4sD7xzVaogPntGsT1ypVoT.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2023-02-22",
-      "subjectId": "920251265093878016"
+      "subjectId": "7852346203483553840",
+      "detailPath": "cocaine-bear-hindi-QwTwGmoP3m9",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/mlwbd/1602b44ff87ef18e3637d596f798c847.mp4?sign=baadb19916db53e572e259b0fc3bb362&t=1793037341"
     },
     {
       "id": "mb-m-886218306628322136",
@@ -11541,7 +11793,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Chinese",
@@ -11562,6 +11814,13 @@
       "streamUrl": "/api/moviebox/stream?id=c-ipman4&path=&se=0&ep=0",
       "servers": [
         {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/00592aeb93ed8588b9e4e9d39ba62928.mp4?sign=33a97946fe92eaf1c2cedd14d668304b&t=1793033627",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
+        {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=c-ipman4&path=&se=0&ep=0",
           "quality": "1080p",
@@ -11576,13 +11835,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/5nRkWmYgWwU2u6Xg6W5.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 449924,
       "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/jZDudPPIV4lSxEVgzfK9Z6nHdhi.jpg",
       "addedAt": "2026-10-22T18:58:59.000Z",
       "originalReleaseDate": "2019-12-19",
-      "subjectId": "c-ipman4"
+      "subjectId": "6657327379356550192",
+      "detailPath": "ip-man-4-the-finale-hindi-kwRDYO3DMV7",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/00592aeb93ed8588b9e4e9d39ba62928.mp4?sign=33a97946fe92eaf1c2cedd14d668304b&t=1793033627"
     },
     {
       "id": "turkish-m-637920",
@@ -11641,7 +11902,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Chinese",
@@ -11662,6 +11923,13 @@
       "streamUrl": "/api/moviebox/stream?id=c-wanderingearth&path=&se=0&ep=0",
       "servers": [
         {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/92cba3cbea4726cc9c0c1ba5f67db943.mp4?sign=0bb602d8bb03421c4e02f1cc7269de79&t=1793035809",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
+        {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=c-wanderingearth&path=&se=0&ep=0",
           "quality": "1080p",
@@ -11676,13 +11944,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/aM5T2bKqB4qP5uWv.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 535167,
       "releaseDate": "2026-10-22T18:58:59.000Z",
       "cover": "https://image.tmdb.org/t/p/original/wIrqeoJHYtZmneqIufPtcOHMjOg.jpg",
       "addedAt": "2026-10-22T18:58:59.000Z",
       "originalReleaseDate": "2019-02-05",
-      "subjectId": "c-wanderingearth"
+      "subjectId": "668708493679020720",
+      "detailPath": "the-wandering-earth-MeLwU1UGoN",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/92cba3cbea4726cc9c0c1ba5f67db943.mp4?sign=0bb602d8bb03421c4e02f1cc7269de79&t=1793035809"
     },
     {
       "id": "mb-m-5091094358426900488",
@@ -11691,7 +11961,7 @@
       "language": "Hindi",
       "dubLanguage": "Hindi",
       "badgeLeft": "Hindi",
-      "badgeRight": "COMING SOON",
+      "badgeRight": "HD",
       "tag": "HD 720p",
       "quality": "HD 720p",
       "industry": "Hollywood",
@@ -11711,6 +11981,13 @@
       "selectedAudio": "Hindi dub",
       "streamUrl": "/api/moviebox/stream?id=5091094358426900488&path=&se=0&ep=0",
       "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/d0335bec3699a6895433d3437757b9b9.mp4?sign=6a078fc91177bdcf447d985db8cc4151&t=1793035185",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
         {
           "name": "Server 1 (HD - Auto-Renewing 1080p)",
           "url": "/api/moviebox/stream?id=5091094358426900488&path=&se=0&ep=0",
@@ -11761,13 +12038,15 @@
           "photo": "https://image.tmdb.org/t/p/w185/7PMu5zFOEH7PqFDzrKThgKD4Ndf.jpg"
         }
       ],
-      "type": "upcoming",
+      "type": "movie",
       "tmdbId": 353486,
       "releaseDate": "2026-10-22T16:03:10.000Z",
       "cover": "https://image.tmdb.org/t/p/original/zZKmEmRDc7ZjFucPm2UGNgDRlDc.jpg",
       "addedAt": "2026-10-22T16:03:10.000Z",
       "originalReleaseDate": "2017-12-20",
-      "subjectId": "5091094358426900488"
+      "subjectId": "7078571519349507112",
+      "detailPath": "jumanji-welcome-to-the-jungle-qlsPe8PVTq8",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/d0335bec3699a6895433d3437757b9b9.mp4?sign=6a078fc91177bdcf447d985db8cc4151&t=1793035185"
     },
     {
       "id": "turkish-m-375784",
