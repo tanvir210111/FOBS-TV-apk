@@ -12,6 +12,7 @@ const dbService = require('./dbService');
 
 const CONTENT_FILE = path.join(__dirname, '..', 'data', 'content.json');
 const CONTENT_BACKUP_FILE = path.join(__dirname, '..', 'data', 'content.backup.json');
+const CONTENT_LOCAL_FILE = path.join(__dirname, '..', 'data', 'content.local.json');
 const VIEWS_FILE = path.join(__dirname, '..', 'data', 'views.json');
 const REQUESTS_FILE = path.join(__dirname, '..', 'data', 'requests.json');
 const NOTIFICATIONS_FILE = path.join(__dirname, '..', 'data', 'notifications.json');

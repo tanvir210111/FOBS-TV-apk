@@ -54,6 +54,7 @@ app.get('/health', (req, res) => {
 
 const DATA_FILE = path.join(__dirname, 'data', 'content.json');
 const BACKUP_DATA_FILE = path.join(__dirname, 'data', 'content.backup.json');
+const LOCAL_DATA_FILE = path.join(__dirname, 'data', 'content.local.json');
 const STREAM_CACHE_DIR = path.join(__dirname, 'data', 'stream_cache');
 if (!fs.existsSync(STREAM_CACHE_DIR)) {
   fs.mkdirSync(STREAM_CACHE_DIR, { recursive: true });
@@ -96,40 +97,66 @@ let _cachedMtimeMs = 0;
 
 function getContentData() {
   try {
-    const stat = fs.statSync(DATA_FILE);
+    const fileToRead = fs.existsSync(LOCAL_DATA_FILE) ? LOCAL_DATA_FILE : DATA_FILE;
+    const stat = fs.statSync(fileToRead);
     if (!_cachedContentData || stat.mtimeMs !== _cachedMtimeMs) {
-      const raw = fs.readFileSync(DATA_FILE, 'utf-8');
-      const parsed = JSON.parse(raw);
-      if ((!parsed.movies || parsed.movies.length === 0) && (!parsed.series || parsed.series.length === 0)) {
-        if (fs.existsSync(BACKUP_DATA_FILE)) {
-          const backupRaw = fs.readFileSync(BACKUP_DATA_FILE, 'utf-8');
-          const backupParsed = JSON.parse(backupRaw);
-          if (backupParsed.movies?.length > 0 || backupParsed.series?.length > 0) {
-            console.warn('[SELF-HEAL] data/content.json was empty. Restored from content.backup.json');
-            _cachedContentData = backupParsed;
-            _cachedMtimeMs = Date.now();
-            try { fs.writeFileSync(DATA_FILE, JSON.stringify(backupParsed), 'utf-8'); } catch(e){}
-            return JSON.parse(JSON.stringify(_cachedContentData));
-          }
-        }
+      let baseData = null;
+      if (fs.existsSync(LOCAL_DATA_FILE)) {
+        try {
+          const l = JSON.parse(fs.readFileSync(LOCAL_DATA_FILE, 'utf-8'));
+          if (l && (l.movies?.length > 0 || l.series?.length > 0)) baseData = l;
+        } catch(e) {}
       }
-      _cachedContentData = parsed;
-      _cachedMtimeMs = stat.mtimeMs;
+
+      let gitData = null;
+      if (fs.existsSync(DATA_FILE)) {
+        try {
+          gitData = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
+        } catch(e) {}
+      }
+
+      if (baseData) {
+        if (gitData) {
+          const mIds = new Set((baseData.movies || []).map(m => m.id || m.subjectId));
+          for (const m of gitData.movies || []) {
+            if (!mIds.has(m.id) && !mIds.has(m.subjectId)) {
+              baseData.movies.push(m);
+              mIds.add(m.id);
+            }
+          }
+          const sIds = new Set((baseData.series || []).map(s => s.id || s.subjectId));
+          for (const s of gitData.series || []) {
+            if (!sIds.has(s.id) && !sIds.has(s.subjectId)) {
+              baseData.series.push(s);
+              sIds.add(s.id);
+            }
+          }
+          if (!baseData.liveTv || baseData.liveTv.length === 0) baseData.liveTv = gitData.liveTv;
+        }
+        _cachedContentData = baseData;
+        _cachedMtimeMs = stat.mtimeMs;
+        return JSON.parse(JSON.stringify(_cachedContentData));
+      }
+
+      if (gitData && (gitData.movies?.length > 0 || gitData.series?.length > 0)) {
+        _cachedContentData = gitData;
+        _cachedMtimeMs = stat.mtimeMs;
+        return JSON.parse(JSON.stringify(_cachedContentData));
+      }
+
+      if (fs.existsSync(BACKUP_DATA_FILE)) {
+        const backupRaw = fs.readFileSync(BACKUP_DATA_FILE, 'utf-8');
+        _cachedContentData = JSON.parse(backupRaw);
+        _cachedMtimeMs = Date.now();
+        return JSON.parse(JSON.stringify(_cachedContentData));
+      }
     }
     return JSON.parse(JSON.stringify(_cachedContentData));
   } catch (err) {
-    console.error('Error reading data/content.json:', err.message);
+    console.error('Error reading content data:', err.message);
     if (fs.existsSync(BACKUP_DATA_FILE)) {
       try {
-        const backupRaw = fs.readFileSync(BACKUP_DATA_FILE, 'utf-8');
-        const backupParsed = JSON.parse(backupRaw);
-        if (backupParsed.movies?.length > 0 || backupParsed.series?.length > 0) {
-          console.warn('[SELF-HEAL] data/content.json corrupt/missing. Recovered from content.backup.json');
-          _cachedContentData = backupParsed;
-          _cachedMtimeMs = Date.now();
-          try { fs.writeFileSync(DATA_FILE, JSON.stringify(backupParsed), 'utf-8'); } catch(e){}
-          return JSON.parse(JSON.stringify(_cachedContentData));
-        }
+        return JSON.parse(fs.readFileSync(BACKUP_DATA_FILE, 'utf-8'));
       } catch(e) {}
     }
     return { featured: {}, movies: [], series: [], liveTv: [] };
@@ -140,6 +167,7 @@ function getContentData() {
 function saveContentData(data) {
   _cachedContentData = null;
   _cachedMtimeMs = 0;
+  fs.writeFileSync(LOCAL_DATA_FILE, JSON.stringify(data), 'utf-8');
   fs.writeFileSync(DATA_FILE, JSON.stringify(data), 'utf-8');
   if (data && (data.movies?.length > 0 || data.series?.length > 0)) {
     try {
