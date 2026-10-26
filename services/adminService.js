@@ -41,32 +41,91 @@ function readContent() {
     console.error('Error reading content.json in adminService:', err);
   }
 
-  // If mainData is missing or empty, try local, then backup
-  if (!mainData || ((!mainData.movies || mainData.movies.length === 0) && (!mainData.series || mainData.series.length === 0))) {
-    if (fs.existsSync(CONTENT_LOCAL_FILE)) {
-      try {
-        const local = JSON.parse(fs.readFileSync(CONTENT_LOCAL_FILE, 'utf8'));
-        if (local.movies?.length > 0 || local.series?.length > 0) mainData = local;
-      } catch(e) {}
-    }
+  // Load persistent local copy (immune to git checkout/pull)
+  let localData = null;
+  if (fs.existsSync(CONTENT_LOCAL_FILE)) {
+    try {
+      localData = JSON.parse(fs.readFileSync(CONTENT_LOCAL_FILE, 'utf8'));
+    } catch(e) {}
   }
 
-  if (!mainData || ((!mainData.movies || mainData.movies.length === 0) && (!mainData.series || mainData.series.length === 0))) {
-    if (fs.existsSync(CONTENT_BACKUP_FILE)) {
-      try {
-        const backup = JSON.parse(fs.readFileSync(CONTENT_BACKUP_FILE, 'utf8'));
-        if (backup.movies?.length > 0 || backup.series?.length > 0) mainData = backup;
-      } catch(e) {}
-    }
+  // Load backup copy
+  let backupData = null;
+  if (fs.existsSync(CONTENT_BACKUP_FILE)) {
+    try {
+      backupData = JSON.parse(fs.readFileSync(CONTENT_BACKUP_FILE, 'utf8'));
+    } catch(e) {}
   }
 
   if (!mainData) {
-    mainData = { featured: {}, movies: [], series: [], liveTv: [], categories: [], industries: [] };
+    mainData = localData || backupData || { featured: {}, movies: [], series: [], liveTv: [], categories: [], industries: [], upcoming: [] };
   }
 
   mainData.movies = Array.isArray(mainData.movies) ? mainData.movies : [];
   mainData.series = Array.isArray(mainData.series) ? mainData.series : [];
   mainData.liveTv = Array.isArray(mainData.liveTv) ? mainData.liveTv : [];
+  mainData.upcoming = Array.isArray(mainData.upcoming) ? mainData.upcoming : [];
+
+  // ANTI-LOSS VAULT MERGE:
+  // If localData or backupData has items that mainData is missing (e.g. after a git pull/checkout),
+  // merge them by ID so nothing added in Admin is ever lost!
+  let needsSyncBack = false;
+  const sources = [localData, backupData];
+  for (const src of sources) {
+    if (!src) continue;
+
+    // Merge movies
+    if (Array.isArray(src.movies)) {
+      const existingMovieIds = new Set(mainData.movies.map(m => m.id));
+      for (const m of src.movies) {
+        if (m && m.id && !existingMovieIds.has(m.id)) {
+          mainData.movies.push(m);
+          existingMovieIds.add(m.id);
+          needsSyncBack = true;
+        }
+      }
+    }
+
+    // Merge series
+    if (Array.isArray(src.series)) {
+      const existingSeriesIds = new Set(mainData.series.map(s => s.id));
+      for (const s of src.series) {
+        if (s && s.id && !existingSeriesIds.has(s.id)) {
+          mainData.series.push(s);
+          existingSeriesIds.add(s.id);
+          needsSyncBack = true;
+        }
+      }
+    }
+
+    // Merge liveTv
+    if (Array.isArray(src.liveTv) && src.liveTv.length > 0 && mainData.liveTv.length === 0) {
+      mainData.liveTv = src.liveTv;
+      needsSyncBack = true;
+    }
+
+    // Merge upcoming
+    if (Array.isArray(src.upcoming)) {
+      const existingUpcomingIds = new Set(mainData.upcoming.map(u => u.id));
+      for (const u of src.upcoming) {
+        if (u && u.id && !existingUpcomingIds.has(u.id)) {
+          mainData.upcoming.push(u);
+          existingUpcomingIds.add(u.id);
+          needsSyncBack = true;
+        }
+      }
+    }
+  }
+
+  if (needsSyncBack) {
+    try {
+      const jsonStr = JSON.stringify(mainData, null, 2);
+      atomicWriteFile(CONTENT_FILE, jsonStr);
+      atomicWriteFile(CONTENT_BACKUP_FILE, jsonStr);
+      atomicWriteFile(CONTENT_LOCAL_FILE, jsonStr);
+      console.log(`[readContent] Auto-healed catalog! Total movies: ${mainData.movies.length}, series: ${mainData.series.length}`);
+    } catch (e) {}
+  }
 
   return mainData;
 }
@@ -909,9 +968,7 @@ class AdminService {
     } else {
       content.movies.unshift(movie);
     }
-    if (repairedEpisodes > 0 || repairedMovies > 0 || repairedSeries > 0) {
-      writeContent(content);
-    }
+    writeContent(content);
     return { success: true, movie };
   }
 
@@ -921,9 +978,7 @@ class AdminService {
   deleteMovie(id) {
     const content = readContent();
     content.movies = (content.movies || []).filter(m => m.id !== id);
-    if (repairedEpisodes > 0 || repairedMovies > 0 || repairedSeries > 0) {
-      writeContent(content);
-    }
+    writeContent(content);
     return { success: true };
   }
 
