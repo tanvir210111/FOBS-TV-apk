@@ -1227,6 +1227,7 @@ class AdminService {
           const media = await movieboxService.resolveMedia(sId, feat.detailPath || '', isSer ? 1 : 0, isSer ? 1 : 0);
           if (media && media.streamUrl) {
             feat.streamUrl = media.streamUrl;
+            feat.directStreamUrl = media.streamUrl;
             const autoUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(feat.detailPath || '')}&se=${isSer ? 1 : 0}&ep=${isSer ? 1 : 0}`;
             feat.servers = [
               { name: 'Server 1 (Direct Fast CDN)', url: media.streamUrl, quality: '1080p', audio: feat.dubLanguage || 'Hindi dub', isDirect: true },
@@ -1245,6 +1246,7 @@ class AdminService {
           const media = await movieboxService.resolveMedia(sId, m.detailPath || '', 0, 0);
           if (media && media.streamUrl) {
             m.streamUrl = media.streamUrl;
+            m.directStreamUrl = media.streamUrl;
             const autoUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(m.detailPath || '')}&se=0&ep=0`;
             m.servers = [
               { name: 'Server 1 (Direct Fast CDN)', url: media.streamUrl, quality: '1080p', audio: m.dubLanguage || 'Hindi dub', isDirect: true },
@@ -1269,6 +1271,7 @@ class AdminService {
                 const media = await movieboxService.resolveMedia(sId, s.detailPath || '', seNum, epNum);
                 if (media && media.streamUrl) {
                   ep.streamUrl = media.streamUrl;
+                  ep.directStreamUrl = media.streamUrl;
                   const autoUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(s.detailPath || '')}&se=${seNum}&ep=${epNum}`;
                   ep.servers = [
                     { name: 'Server 1 (Direct Fast CDN)', url: media.streamUrl, quality: '1080p', audio: s.dubLanguage || 'Hindi dub', isDirect: true },
