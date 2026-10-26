@@ -14,6 +14,14 @@ const ipv4Agent = new https.Agent({
 
 const BASE_URL = 'https://h5.aoneroom.com';
 const FALLBACK_URL = 'https://movieboxapp.in';
+const PLAY_DOMAINS = [
+  'https://h5-api.aoneroom.com',
+  'https://123moviesfree.club',
+  'https://movie-box.co',
+  'https://movieboxonline.net',
+  'https://sflix.film'
+];
+
 
 const HEADERS = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
@@ -227,6 +235,58 @@ class MovieBoxService {
     }
   }
 
+  
+  async _fetchPlayStream(subjectId, detailPath, season, episode) {
+    for (const domain of PLAY_DOMAINS) {
+      try {
+        const playUrl = `${domain}/wefeed-h5api-bff/subject/play?subjectId=${subjectId}&se=${season}&ep=${episode}&detailPath=${encodeURIComponent(detailPath || '')}&streamSignType=1&supportCodecs%5Bhevc%5D=1&supportCodecs%5Bh264%5D=1`;
+        const referer = detailPath ? `${domain}/movies/${detailPath}?id=${subjectId}&type=/movie/detail&lang=en` : `${domain}/`;
+        const res = await axios.get(playUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 15; Pixel 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Mobile Safari/537.36',
+            'Referer': referer,
+            'Origin': domain,
+            'Accept': 'application/json',
+            'x-client-info': '{"timezone":"Asia/Calcutta"}',
+            'x-request-lang': 'en',
+            'x-vip-restrict': '0',
+            'x-no-high-risk-restrict': '0',
+            'x-source': 'moviebox'
+          },
+          httpsAgent: ipv4Agent,
+          timeout: 8000
+        });
+
+        const data = res.data?.data;
+        if (data && Array.isArray(data.streams) && data.streams.length > 0) {
+          const sorted = [...data.streams].sort((a, b) => {
+            const resA = parseInt(a.resolutions, 10) || 0;
+            const resB = parseInt(b.resolutions, 10) || 0;
+            return resB - resA;
+          });
+          const best = sorted[0];
+          return {
+            subjectId,
+            streamUrl: best.url,
+            resolution: parseInt(best.resolutions, 10) || 1080,
+            qualities: sorted.map(st => ({
+              resolution: parseInt(st.resolutions, 10) || 1080,
+              url: st.url,
+              size: st.size || 0
+            })),
+            captions: (data.captions || []).map(c => ({
+              language: c.language || c.lan,
+              url: c.url
+            }))
+          };
+        }
+      } catch (e) {
+        // Try next domain
+      }
+    }
+    return null;
+  }
+
   async _fetchDownload(subjectId, detailPath, season, episode) {
     const urlsToTry = [
       `${BASE_URL}/wefeed-h5-bff/web/subject/download`,
@@ -290,15 +350,18 @@ class MovieBoxService {
     }
 
     // Try primary params
-    let result = await this._fetchDownload(subjectId, detailPath, season, episode);
+    let result = await this._fetchPlayStream(subjectId, detailPath, season, episode);
+    if (!result) result = await this._fetchDownload(subjectId, detailPath, season, episode);
 
     // Fallback attempt: if season=1 & ep>0 returned nothing, try season=0 & ep-1 (0-based)
     if (!result && season === 1 && episode > 0) {
-      result = await this._fetchDownload(subjectId, detailPath, 0, episode - 1);
+      result = await this._fetchPlayStream(subjectId, detailPath, 0, episode - 1);
+      if (!result) result = await this._fetchDownload(subjectId, detailPath, 0, episode - 1);
     }
     // If season=0 & ep=0 returned nothing, try season=1 & ep=1 (1-based)
     if (!result && season === 0 && episode === 0) {
-      result = await this._fetchDownload(subjectId, detailPath, 1, 1);
+      result = await this._fetchPlayStream(subjectId, detailPath, 1, 1);
+      if (!result) result = await this._fetchDownload(subjectId, detailPath, 1, 1);
     }
 
     if (result) {
