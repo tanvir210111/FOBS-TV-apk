@@ -255,6 +255,33 @@ function getMovieBoxDetailPath(id) {
   if (sId === '6857431659634377576') return 'the-plot-hindi-mBRrgTN6za8';
   if (sId === '5004232962917941856') return 'the-wild-hindi-KHuKUAhrFX5';
   if (sId === '4364374393242501488') return 'project-silence-hindi-gIMtCECSoc5';
+  if (sId === '8844111567252767160') return 'king-the-land-hindi-O1g34LJ7kxa';
+  if (sId === '6105641518834796168') return 'a-time-called-you-hindi-k0D75SYT1h7';
+  if (sId === '5100211312886433048') return 'doona-hindi-Cpf3Igm1L46';
+  if (sId === '4479348432762717464') return 'daily-dose-of-sunshine-hindi-gYm7Y5JsTk5';
+  if (sId === '7970743093031224968') return 'castaway-diva-hindi-008H40s5Ou9';
+  if (sId === '5473927412427677472') return 'see-you-in-my-19th-life-hindi-EyLK3M1Emw6';
+  if (sId === '4273732001657670464') return 'celebrity-hindi-2NuBhwKJH55';
+  if (sId === '8598850449111924848') return 'my-demon-hindi-SfaaEeePcfa';
+  if (sId === '4482503215090647152') return 'strong-girl-nam-soon-hindi-46A97OyU7l5';
+  if (sId === '4850789299148785304') return 'behind-your-touch-hindi-gsIgtQjFkM5';
+  if (sId === '2012240220606924232') return 'mask-girl-hindi-eZtQIv35Eo2';
+  if (sId === '1007107754676339512') return 'song-of-the-bandits-hindi-2v1qUMYyoc1';
+  if (sId === '6951674819729917200') return 'black-knight-hindi-wGRcDz9Kwh8';
+  if (sId === '3777043351980180752') return 'love-to-hate-you-hindi-K5xjajIT0v4';
+  if (sId === '5903886804494729504') return 'kill-boksoon-hindi-u3a08ZzR727';
+  if (sId === '6365900679953219704') return 'ballerina-hindi-O3vGQllTfA7';
+  if (sId === '111942592010618312') return 'target-hindi-WR26G6iHg8';
+  if (sId === '473817704550616768') return 'concrete-utopia-hindi-8005CoA50z';
+  if (sId === '1245606970795638832') return 'smugglers-hindi-ooY9yenT0u1';
+  if (sId === '7889348807027557528') return 'the-childe-hindi-Igdh0XFiNo9';
+  if (sId === '4897113484963496224') return 'the-roundup-no-way-out-hindi-m5Jq97zPKP5';
+  if (sId === '5222412796134129864') return 'phantom-hindi-8sKSrULHMd6';
+  if (sId === '4907244574080467696') return 'believer-2-hindi-AqwytCoevQ5';
+  if (sId === '6993281988992401424') return 'jung_e-hindi-YcLsz7XiBk8';
+  if (sId === '6188426678457827992') return 'sleep-hindi-IgvyY1I39n7';
+  if (sId === '5879749595097350800') return 'ransomed-hindi-o677uSyjl07';
+  if (sId === '6637609605407409248') return 'dream-hindi-SD4DYlZjkU7';
 
   return '';
 }
