@@ -7179,16 +7179,14 @@ function handleSearch(customQuery = null) {
   gridEl.innerHTML = filtered.map(item => {
     if (item.type === 'upcoming') {
       return `
-        <div class="coming-card" style="width: 100%; margin-bottom: 8px;" onclick='openUpcomingBookingModal("${item.id}")'>
-          <div class="coming-thumb-box">
-            <img src="${item.poster}" alt="${item.title}" class="coming-thumb-img" loading="lazy">
+        <div class="media-card" onclick='openUpcomingBookingModal("${item.id}")'>
+          <div class="card-poster-wrap">
+            <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" loading="lazy">
             <span class="card-badge-left">Coming Soon</span>
+            <span class="card-badge-right" style="background:#11693e;"><i class="fa-solid fa-ticket"></i> Pre-Book</span>
           </div>
-          <div class="coming-details">
-            <div class="coming-title">${item.title}</div>
-            <div class="coming-meta">${item.year || '2026'} • ${item.genre ? item.genre.split(',')[0].trim() : 'Hindi Dubbed'}</div>
-            <button class="coming-remind-pill" style="margin-top: 6px;"><i class="fa-solid fa-ticket"></i> Pre-Book</button>
-          </div>
+          <div class="card-title">${item.title}</div>
+          <div class="card-meta">${item.year || '2026'} • ${item.genre ? item.genre.split(',')[0].trim() : 'Hindi Dubbed'}</div>
         </div>
       `;
     }

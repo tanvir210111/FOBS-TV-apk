@@ -9767,3 +9767,20 @@ body.is-fullscreen #subtitleModal .subtitle-modal-container {
 #communityOverlay {
   z-index: 10005 !important;
 }
+
+/* Search Results & Grid Coming Soon Card Fallback */
+.coming-thumb-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+  background-color: var(--bg-card, #141724);
+}
+
+.coming-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
