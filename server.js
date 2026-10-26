@@ -1,3 +1,4 @@
+const https = require('https');
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
@@ -10,6 +11,7 @@ const ffmpegPath = require('ffmpeg-static');
 
 const compression = require('compression');
 
+const streamHttpsAgent = new https.Agent({ family: 4, keepAlive: true, rejectUnauthorized: false });
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -613,38 +615,7 @@ async function resolveStreamUrl(rawUrl) {
       rawUrl.includes('sunburst') ||
       rawUrl.includes('stormshade')
     ) {
-      try {
-        const content = getContentData();
-        let found = (content.movies || []).find(m => m.servers?.some(s => s.url === rawUrl) || m.streamUrl === rawUrl);
-        let sId = found?.subjectId;
-        let dPath = found?.detailPath;
-        let se = 0, ep = 0;
-        if (!found) {
-          for (const s of (content.series || [])) {
-            if (s.seasons) {
-              for (const season of s.seasons) {
-                const epMatch = (season.episodes || []).find(e => e.servers?.some(srv => srv.url === rawUrl) || e.streamUrl === rawUrl);
-                if (epMatch) {
-                  sId = s.subjectId;
-                  dPath = s.detailPath;
-                  se = season.seasonNumber || season.season || 1;
-                  ep = epMatch.number || 1;
-                  break;
-                }
-              }
-            }
-            if (sId) break;
-          }
-        }
-        if (sId) {
-          let media = await movieboxService.resolveMedia(sId, dPath || '', se, ep);
-          if (media && media.streamUrl) {
-            resolved = media.streamUrl;
-          }
-        }
-      } catch (e) {}
-    }
-    if (!resolved || resolved === rawUrl) {
+      // Direct fast CDN links are already valid and pre-signed. Return immediately without hitting rate-limited API!
       resolved = rawUrl;
     }
   }
@@ -1332,9 +1303,10 @@ app.all('/api/stream', async (req, res) => {
         method: 'GET',
         url: streamFetchUrl,
         headers: requestHeaders,
+        httpsAgent: streamHttpsAgent,
         responseType: 'stream',
         maxRedirects: 5,
-        timeout: 0,
+        timeout: 15000,
         validateStatus: (status) => status >= 200 && status < 400
       });
     } catch (initialErr) {
@@ -1359,9 +1331,10 @@ app.all('/api/stream', async (req, res) => {
             method: 'GET',
             url: streamFetchUrl,
             headers: requestHeaders,
+            httpsAgent: streamHttpsAgent,
             responseType: 'stream',
             maxRedirects: 5,
-            timeout: 0,
+            timeout: 15000,
             validateStatus: (status) => status >= 200 && status < 400
           });
         } else {
