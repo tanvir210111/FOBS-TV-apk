@@ -546,6 +546,45 @@ async function resolveStreamUrl(rawUrl) {
         console.error('MovieBox route resolve error in resolveStreamUrl:', err.message);
       }
     }
+    else if (
+      rawUrl.includes('hakunaymatata') ||
+      rawUrl.includes('bcdnxw') ||
+      rawUrl.includes('haildrop') ||
+      rawUrl.includes('fogtwist') ||
+      rawUrl.includes('sunburst') ||
+      rawUrl.includes('stormshade')
+    ) {
+      try {
+        const content = getContentData();
+        let found = (content.movies || []).find(m => m.servers?.some(s => s.url === rawUrl) || m.streamUrl === rawUrl);
+        let sId = found?.subjectId;
+        let dPath = found?.detailPath;
+        let se = 0, ep = 0;
+        if (!found) {
+          for (const s of (content.series || [])) {
+            if (s.seasons) {
+              for (const season of s.seasons) {
+                const epMatch = (season.episodes || []).find(e => e.servers?.some(srv => srv.url === rawUrl) || e.streamUrl === rawUrl);
+                if (epMatch) {
+                  sId = s.subjectId;
+                  dPath = s.detailPath;
+                  se = season.seasonNumber || season.season || 1;
+                  ep = epMatch.number || 1;
+                  break;
+                }
+              }
+            }
+            if (sId) break;
+          }
+        }
+        if (sId) {
+          let media = await movieboxService.resolveMedia(sId, dPath || '', se, ep);
+          if (media && media.streamUrl) {
+            resolved = media.streamUrl;
+          }
+        }
+      } catch (e) {}
+    }
     if (!resolved || resolved === rawUrl) {
       resolved = rawUrl;
     }
@@ -1226,6 +1265,7 @@ app.all('/api/stream', async (req, res) => {
       if (isMb) {
         console.warn(`MovieBox stream fetch failed (${initialErr.message}). Invalidating cache and retrying with fresh token...`);
         movieboxService.invalidateCache();
+        streamUrlCache.delete(targetUrl);
         const freshUrl = await resolveStreamUrl(targetUrl);
         if (freshUrl && freshUrl !== streamFetchUrl) {
           streamFetchUrl = freshUrl;

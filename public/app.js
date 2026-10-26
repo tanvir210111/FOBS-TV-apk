@@ -2652,7 +2652,7 @@ function getActiveEpisodeStream(ep, audioTrack) {
           ? (s.audio === 'Original audio' || /original|korean/i.test(s.name))
           : (s.audio === 'Hindi dub' || /hindi/i.test(s.name))
       )
-    );
+    ) || ep.servers.find(s => s.url && s.url.includes('/api/moviebox/stream'));
     if (autoRenewingServer && autoRenewingServer.url) return autoRenewingServer.url;
 
     const matchServer = ep.servers.find(s => isOrig
@@ -2942,7 +2942,8 @@ function openPlayer(media, episodeIndex = 0) {
     appState.currentEpisode = null;
     appState.activeServerIndex = 0;
     renderServerPills(media);
-    const initialUrl = (media.servers && media.servers.length > 0) ? media.servers[0].url : (media.streamUrl || media.driveUrl);
+    const autoRenewingServer = media.servers?.find(s => s.url && s.url.includes('/api/moviebox/stream'));
+    const initialUrl = autoRenewingServer ? autoRenewingServer.url : ((media.servers && media.servers.length > 0) ? media.servers[0].url : (media.streamUrl || media.driveUrl));
     playStreamUrl(initialUrl);
   }
 
@@ -3178,23 +3179,21 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     return;
   }
 
-  // MovieBox dynamic stream redirect handler: Pre-resolve to actual direct CDN link for instant seeking
+  // MovieBox dynamic stream redirect handler: Pre-resolve to actual direct CDN link or route through stream proxy
   if (playableUrl.includes('/api/moviebox/stream')) {
+    const fullUrl = playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl.startsWith('/') ? '' : '/'}${playableUrl}`;
     try {
-      const fullUrl = playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`;
       const jsonUrl = fullUrl.includes('?') ? `${fullUrl}&json=1` : `${fullUrl}?json=1`;
       const res = await fetch(jsonUrl, { cache: 'no-store' });
       const data = await res.json();
-      if (data && data.ok) {
-        if (data.streamUrl) {
-          playableUrl = data.streamUrl.startsWith('http') ? data.streamUrl : `${API_BASE_URL}${data.streamUrl}`;
-        }
+      if (data && data.ok && data.streamUrl) {
+        playableUrl = data.streamUrl.startsWith('http') ? data.streamUrl : `${API_BASE_URL}${data.streamUrl}`;
+      } else {
+        playableUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(fullUrl)}`;
       }
     } catch (e) {
-      console.warn('Pre-resolve MovieBox stream failed, falling back to direct endpoint:', e.message);
-    }
-    if (playableUrl.startsWith('/')) {
-      playableUrl = `${API_BASE_URL}${playableUrl}`;
+      console.warn('Pre-resolve MovieBox stream failed, routing through stream proxy:', e.message);
+      playableUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(fullUrl)}`;
     }
   }
 
