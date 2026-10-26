@@ -161897,7 +161897,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/2b436d305212a9b740f6a1ce5cc6faa9.mp4?sign=afe1713ad83436ab7d92ef23683cf6a7&t=1793032950",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
@@ -161908,6 +161908,12 @@
                   "quality": "1080p",
                   "audio": "Original Audio",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -162131,7 +162137,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-2338494413602702672-s1-e1"
+              "id": "mb-s-2338494413602702672-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/2b436d305212a9b740f6a1ce5cc6faa9.mp4?sign=afe1713ad83436ab7d92ef23683cf6a7&t=1793032950"
             },
             {
               "number": "02",
@@ -162145,10 +162152,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/fb61cb6ec535dfa466a97173bb08957b.mp4?sign=885ac3b8932cea46b5293540c7d52fbb&t=1793032708",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -162372,7 +162385,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-2338494413602702672-s1-e2"
+              "id": "mb-s-2338494413602702672-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/fb61cb6ec535dfa466a97173bb08957b.mp4?sign=885ac3b8932cea46b5293540c7d52fbb&t=1793032708"
             },
             {
               "number": "03",
@@ -162386,10 +162400,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/f11c20e31d16d32c433ea69481252fac.mp4?sign=7b79d61290703ecec41e83dd1370e3f4&t=1793031950",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -162613,7 +162633,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-2338494413602702672-s1-e3"
+              "id": "mb-s-2338494413602702672-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/f11c20e31d16d32c433ea69481252fac.mp4?sign=7b79d61290703ecec41e83dd1370e3f4&t=1793031950"
             },
             {
               "number": "04",
@@ -162627,10 +162648,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/40fc886712ae30b8ab031fc92d9156ce.mp4?sign=b36eb9143e4708ef02a330672c528096&t=1793031340",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -162854,7 +162881,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-2338494413602702672-s1-e4"
+              "id": "mb-s-2338494413602702672-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/40fc886712ae30b8ab031fc92d9156ce.mp4?sign=b36eb9143e4708ef02a330672c528096&t=1793031340"
             },
             {
               "number": "05",
@@ -162868,10 +162896,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=05",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/75e13b7ae8fa44c7d2193fcdcdd0e2f0.mp4?sign=0871087cd40d3ecf56fed40954c24e36&t=1793031875",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=5",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -163095,7 +163129,8 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-2338494413602702672-s1-e5"
+              "id": "mb-s-2338494413602702672-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/75e13b7ae8fa44c7d2193fcdcdd0e2f0.mp4?sign=0871087cd40d3ecf56fed40954c24e36&t=1793031875"
             },
             {
               "number": "06",
@@ -163109,10 +163144,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=06",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/c09009e381244ad81c8e2f7872ce0fd1.mp4?sign=aad62081e515305fc704303361c20914&t=1793032875",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=6",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -163336,7 +163377,8 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-2338494413602702672-s1-e6"
+              "id": "mb-s-2338494413602702672-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/c09009e381244ad81c8e2f7872ce0fd1.mp4?sign=aad62081e515305fc704303361c20914&t=1793032875"
             },
             {
               "number": "07",
@@ -163350,10 +163392,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=07",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/2ac050524b16557ff9299945498b544e.mp4?sign=7ded6486231d9e17e5dd7e9700fdfa25&t=1793032397",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=7",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -163577,7 +163625,8 @@
                 }
               ],
               "episodeNumber": 7,
-              "id": "mb-s-2338494413602702672-s1-e7"
+              "id": "mb-s-2338494413602702672-s1-e7",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/2ac050524b16557ff9299945498b544e.mp4?sign=7ded6486231d9e17e5dd7e9700fdfa25&t=1793032397"
             },
             {
               "number": "08",
@@ -163591,10 +163640,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=08",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/9f0623cc41c2b015a039349e0f8aca9c.mp4?sign=71899f16057bf9b8dcfe12ac47de3ffe&t=1793032818",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=8",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -163818,7 +163873,8 @@
                 }
               ],
               "episodeNumber": 8,
-              "id": "mb-s-2338494413602702672-s1-e8"
+              "id": "mb-s-2338494413602702672-s1-e8",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/9f0623cc41c2b015a039349e0f8aca9c.mp4?sign=71899f16057bf9b8dcfe12ac47de3ffe&t=1793032818"
             },
             {
               "number": "09",
@@ -163832,10 +163888,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=09",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/690e6fe3fec17488605e05fb213eceb7.mp4?sign=b6540c9cd437ce1505c3f1464f417485&t=1793034114",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=9",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -164059,7 +164121,8 @@
                 }
               ],
               "episodeNumber": 9,
-              "id": "mb-s-2338494413602702672-s1-e9"
+              "id": "mb-s-2338494413602702672-s1-e9",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/690e6fe3fec17488605e05fb213eceb7.mp4?sign=b6540c9cd437ce1505c3f1464f417485&t=1793034114"
             },
             {
               "number": "10",
@@ -164073,10 +164136,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=10",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/08252d3c7aab5612de2f91db01222215.mp4?sign=8e9516544649a7e7763e478f5682edbe&t=1793032217",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=10",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -164300,7 +164369,8 @@
                 }
               ],
               "episodeNumber": 10,
-              "id": "mb-s-2338494413602702672-s1-e10"
+              "id": "mb-s-2338494413602702672-s1-e10",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/08252d3c7aab5612de2f91db01222215.mp4?sign=8e9516544649a7e7763e478f5682edbe&t=1793032217"
             },
             {
               "number": "11",
@@ -164314,10 +164384,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=11",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/e19342b137489dee3e01bb4015b2b1a5.mp4?sign=a9ee92d8111ffd9af48f1cbe099fe63c&t=1793031794",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=11",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -164541,7 +164617,8 @@
                 }
               ],
               "episodeNumber": 11,
-              "id": "mb-s-2338494413602702672-s1-e11"
+              "id": "mb-s-2338494413602702672-s1-e11",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/e19342b137489dee3e01bb4015b2b1a5.mp4?sign=a9ee92d8111ffd9af48f1cbe099fe63c&t=1793031794"
             },
             {
               "number": "12",
@@ -164555,10 +164632,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=12",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/4db53105506d9f57945fbd8fddb0dc2a.mp4?sign=39ecdd6cb04bdcbfeb9b491227ddbaa6&t=1793034115",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=12",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -164782,7 +164865,8 @@
                 }
               ],
               "episodeNumber": 12,
-              "id": "mb-s-2338494413602702672-s1-e12"
+              "id": "mb-s-2338494413602702672-s1-e12",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/4db53105506d9f57945fbd8fddb0dc2a.mp4?sign=39ecdd6cb04bdcbfeb9b491227ddbaa6&t=1793034115"
             },
             {
               "number": "13",
@@ -164796,10 +164880,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=13",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/bf55f69b92dc6b3c462037811d0649ac.mp4?sign=e4518bd1ca33e29194d9a1a67d45d14b&t=1793034038",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=13",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -165023,7 +165113,8 @@
                 }
               ],
               "episodeNumber": 13,
-              "id": "mb-s-2338494413602702672-s1-e13"
+              "id": "mb-s-2338494413602702672-s1-e13",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/bf55f69b92dc6b3c462037811d0649ac.mp4?sign=e4518bd1ca33e29194d9a1a67d45d14b&t=1793034038"
             },
             {
               "number": "14",
@@ -165037,10 +165128,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=14",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/3d50525f8176c42455af6521b10fb1de.mp4?sign=84a07252a3ca8eb0e3acf46ff32588d4&t=1793034115",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=14",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -165264,7 +165361,8 @@
                 }
               ],
               "episodeNumber": 14,
-              "id": "mb-s-2338494413602702672-s1-e14"
+              "id": "mb-s-2338494413602702672-s1-e14",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/3d50525f8176c42455af6521b10fb1de.mp4?sign=84a07252a3ca8eb0e3acf46ff32588d4&t=1793034115"
             },
             {
               "number": "15",
@@ -165278,10 +165376,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=15",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/ae8defb8589b00ab24e540949d0b3682.mp4?sign=59a7710d12ea452976875e765bb608aa&t=1793033262",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=15",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -165505,7 +165609,8 @@
                 }
               ],
               "episodeNumber": 15,
-              "id": "mb-s-2338494413602702672-s1-e15"
+              "id": "mb-s-2338494413602702672-s1-e15",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/ae8defb8589b00ab24e540949d0b3682.mp4?sign=59a7710d12ea452976875e765bb608aa&t=1793033262"
             },
             {
               "number": "16",
@@ -165519,10 +165624,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=16",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/07d282bda936435128bc453a0b4ebcce.mp4?sign=8fd99ca056415a1f9c57cee51c598d34&t=1793034116",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=16",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -165746,7 +165857,8 @@
                 }
               ],
               "episodeNumber": 16,
-              "id": "mb-s-2338494413602702672-s1-e16"
+              "id": "mb-s-2338494413602702672-s1-e16",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/07d282bda936435128bc453a0b4ebcce.mp4?sign=8fd99ca056415a1f9c57cee51c598d34&t=1793034116"
             },
             {
               "number": "17",
@@ -165760,10 +165872,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=17",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/4554534601644507d78bb2d4b81cb61f.mp4?sign=c1e9f9839749aa576f5420d61a83c18f&t=1793033314",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=17",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -165987,7 +166105,8 @@
                 }
               ],
               "episodeNumber": 17,
-              "id": "mb-s-2338494413602702672-s1-e17"
+              "id": "mb-s-2338494413602702672-s1-e17",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/4554534601644507d78bb2d4b81cb61f.mp4?sign=c1e9f9839749aa576f5420d61a83c18f&t=1793033314"
             },
             {
               "number": "18",
@@ -166001,10 +166120,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=18",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/239427c2589b32ca8cdfa894edf7b0de.mp4?sign=8186f4b09251ddf18099f3d8e5211b00&t=1793034117",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=18",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -166228,7 +166353,8 @@
                 }
               ],
               "episodeNumber": 18,
-              "id": "mb-s-2338494413602702672-s1-e18"
+              "id": "mb-s-2338494413602702672-s1-e18",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/239427c2589b32ca8cdfa894edf7b0de.mp4?sign=8186f4b09251ddf18099f3d8e5211b00&t=1793034117"
             },
             {
               "number": "19",
@@ -166242,10 +166368,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=19",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/923272f42335e4cca8044c935b9ab34a.mp4?sign=fd3afab53bd50037e6a9e465f7d45547&t=1793033676",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=19",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -166469,7 +166601,8 @@
                 }
               ],
               "episodeNumber": 19,
-              "id": "mb-s-2338494413602702672-s1-e19"
+              "id": "mb-s-2338494413602702672-s1-e19",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/923272f42335e4cca8044c935b9ab34a.mp4?sign=fd3afab53bd50037e6a9e465f7d45547&t=1793033676"
             },
             {
               "number": "20",
@@ -166483,10 +166616,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=20",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/92fc0081943077beaf8e7f15432b9b58.mp4?sign=258b177c1dc36a3a88f8e69bfb25f174&t=1793033324",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=20",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -166710,7 +166849,8 @@
                 }
               ],
               "episodeNumber": 20,
-              "id": "mb-s-2338494413602702672-s1-e20"
+              "id": "mb-s-2338494413602702672-s1-e20",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/92fc0081943077beaf8e7f15432b9b58.mp4?sign=258b177c1dc36a3a88f8e69bfb25f174&t=1793033324"
             },
             {
               "number": "21",
@@ -166724,10 +166864,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=21",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/fc9eec83a11304111c075facf2c0c415.mp4?sign=282c54f6319700a586b48f054333f701&t=1793030395",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=21",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -166951,7 +167097,8 @@
                 }
               ],
               "episodeNumber": 21,
-              "id": "mb-s-2338494413602702672-s1-e21"
+              "id": "mb-s-2338494413602702672-s1-e21",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/fc9eec83a11304111c075facf2c0c415.mp4?sign=282c54f6319700a586b48f054333f701&t=1793030395"
             },
             {
               "number": "22",
@@ -166965,10 +167112,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=22",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/85fbd037ce96553184a580646655b45c.mp4?sign=966cdf098e25ba013603c26ce8b5d60d&t=1793032694",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=22",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -167192,7 +167345,8 @@
                 }
               ],
               "episodeNumber": 22,
-              "id": "mb-s-2338494413602702672-s1-e22"
+              "id": "mb-s-2338494413602702672-s1-e22",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/85fbd037ce96553184a580646655b45c.mp4?sign=966cdf098e25ba013603c26ce8b5d60d&t=1793032694"
             },
             {
               "number": "23",
@@ -167206,10 +167360,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=23",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/2b1be9cabb7dcab535001e55f4bab8d8.mp4?sign=c66cf4ab3dbaa2ffd3e4d333b2f6cf48&t=1793031861",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=23",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -167433,7 +167593,8 @@
                 }
               ],
               "episodeNumber": 23,
-              "id": "mb-s-2338494413602702672-s1-e23"
+              "id": "mb-s-2338494413602702672-s1-e23",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/2b1be9cabb7dcab535001e55f4bab8d8.mp4?sign=c66cf4ab3dbaa2ffd3e4d333b2f6cf48&t=1793031861"
             },
             {
               "number": "24",
@@ -167447,10 +167608,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=24",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/3c6174f0ea458dc47161b70995eeb1d9.mp4?sign=4fa7eb3b1bd55a0610b2a9b00073464e&t=1793034118",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=24",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -167674,7 +167841,8 @@
                 }
               ],
               "episodeNumber": 24,
-              "id": "mb-s-2338494413602702672-s1-e24"
+              "id": "mb-s-2338494413602702672-s1-e24",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/3c6174f0ea458dc47161b70995eeb1d9.mp4?sign=4fa7eb3b1bd55a0610b2a9b00073464e&t=1793034118"
             },
             {
               "number": "25",
@@ -167688,10 +167856,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=25",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/84b1d561558ad6072109718eb70f6293.mp4?sign=7074ffb7584c956d6be99aa81c2bb68e&t=1793030870",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=25",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -167915,7 +168089,8 @@
                 }
               ],
               "episodeNumber": 25,
-              "id": "mb-s-2338494413602702672-s1-e25"
+              "id": "mb-s-2338494413602702672-s1-e25",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/84b1d561558ad6072109718eb70f6293.mp4?sign=7074ffb7584c956d6be99aa81c2bb68e&t=1793030870"
             },
             {
               "number": "26",
@@ -167929,10 +168104,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=26",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/9f1a874bec3c9c8b3f643a376912edf0.mp4?sign=aad98f309de184486bca1f858a5777bb&t=1793031819",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=26",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -168156,7 +168337,8 @@
                 }
               ],
               "episodeNumber": 26,
-              "id": "mb-s-2338494413602702672-s1-e26"
+              "id": "mb-s-2338494413602702672-s1-e26",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/9f1a874bec3c9c8b3f643a376912edf0.mp4?sign=aad98f309de184486bca1f858a5777bb&t=1793031819"
             },
             {
               "number": "27",
@@ -168170,10 +168352,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=27",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/035f4e85a589d796f9511a6f7f976768.mp4?sign=2d9986bac13ce1cb0b4b9a161e02e3be&t=1793032403",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=27",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -168397,7 +168585,8 @@
                 }
               ],
               "episodeNumber": 27,
-              "id": "mb-s-2338494413602702672-s1-e27"
+              "id": "mb-s-2338494413602702672-s1-e27",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/035f4e85a589d796f9511a6f7f976768.mp4?sign=2d9986bac13ce1cb0b4b9a161e02e3be&t=1793032403"
             },
             {
               "number": "28",
@@ -168411,10 +168600,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=28",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/008d0fd3bc7b8a3f34b449c46bc90713.mp4?sign=71e2ef3677a910b7b5041d17e6ea5e59&t=1793034119",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=28",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -168638,7 +168833,8 @@
                 }
               ],
               "episodeNumber": 28,
-              "id": "mb-s-2338494413602702672-s1-e28"
+              "id": "mb-s-2338494413602702672-s1-e28",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/008d0fd3bc7b8a3f34b449c46bc90713.mp4?sign=71e2ef3677a910b7b5041d17e6ea5e59&t=1793034119"
             },
             {
               "number": "29",
@@ -168652,10 +168848,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=29",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a53ae3b020926a245cbdecb2bb585da4.mp4?sign=3e4885bb30e609c938a784d48b641a42&t=1793031326",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=29",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -168879,7 +169081,8 @@
                 }
               ],
               "episodeNumber": 29,
-              "id": "mb-s-2338494413602702672-s1-e29"
+              "id": "mb-s-2338494413602702672-s1-e29",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/a53ae3b020926a245cbdecb2bb585da4.mp4?sign=3e4885bb30e609c938a784d48b641a42&t=1793031326"
             },
             {
               "number": "30",
@@ -168893,10 +169096,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=30",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/b4f1aa80c00a371c850dbff99ce17902.mp4?sign=1bc5e57ac15d707522ea5e70c1090566&t=1793030929",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=30",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -169120,7 +169329,8 @@
                 }
               ],
               "episodeNumber": 30,
-              "id": "mb-s-2338494413602702672-s1-e30"
+              "id": "mb-s-2338494413602702672-s1-e30",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/b4f1aa80c00a371c850dbff99ce17902.mp4?sign=1bc5e57ac15d707522ea5e70c1090566&t=1793030929"
             },
             {
               "number": "31",
@@ -169134,10 +169344,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=31",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/a6b9c1c4a73339a86fe0daa67e5681d6.mp4?sign=b57aaa434621c419faaa228069584290&t=1793034120",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=31",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -169361,7 +169577,8 @@
                 }
               ],
               "episodeNumber": 31,
-              "id": "mb-s-2338494413602702672-s1-e31"
+              "id": "mb-s-2338494413602702672-s1-e31",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/a6b9c1c4a73339a86fe0daa67e5681d6.mp4?sign=b57aaa434621c419faaa228069584290&t=1793034120"
             },
             {
               "number": "32",
@@ -169375,10 +169592,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=32",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/7a2a47c4fe010ffc01311494f6907909.mp4?sign=e0dc819be8244d551b91b2048a28814d&t=1793034120",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=32",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -169602,7 +169825,8 @@
                 }
               ],
               "episodeNumber": 32,
-              "id": "mb-s-2338494413602702672-s1-e32"
+              "id": "mb-s-2338494413602702672-s1-e32",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/7a2a47c4fe010ffc01311494f6907909.mp4?sign=e0dc819be8244d551b91b2048a28814d&t=1793034120"
             },
             {
               "number": "33",
@@ -169616,10 +169840,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=33",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/7921f5a42e985e1db5bf59a10f27580e.mp4?sign=a66fe8b96281ce5c1e3dec285118b9af&t=1793033665",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=33",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -169843,7 +170073,8 @@
                 }
               ],
               "episodeNumber": 33,
-              "id": "mb-s-2338494413602702672-s1-e33"
+              "id": "mb-s-2338494413602702672-s1-e33",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/7921f5a42e985e1db5bf59a10f27580e.mp4?sign=a66fe8b96281ce5c1e3dec285118b9af&t=1793033665"
             },
             {
               "number": "34",
@@ -169857,10 +170088,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=34",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/ff8e402416bdb05123d21d2485a09bc1.mp4?sign=a23adea86610338182a144d9ce2228f9&t=1793034120",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=34",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -170084,7 +170321,8 @@
                 }
               ],
               "episodeNumber": 34,
-              "id": "mb-s-2338494413602702672-s1-e34"
+              "id": "mb-s-2338494413602702672-s1-e34",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/ff8e402416bdb05123d21d2485a09bc1.mp4?sign=a23adea86610338182a144d9ce2228f9&t=1793034120"
             },
             {
               "number": "35",
@@ -170098,10 +170336,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=35",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/957b0832775816efa55a6fc176763035.mp4?sign=5495bd6c7804d64af5c863f73732f5e5&t=1793034121",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=35",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -170325,7 +170569,8 @@
                 }
               ],
               "episodeNumber": 35,
-              "id": "mb-s-2338494413602702672-s1-e35"
+              "id": "mb-s-2338494413602702672-s1-e35",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/957b0832775816efa55a6fc176763035.mp4?sign=5495bd6c7804d64af5c863f73732f5e5&t=1793034121"
             },
             {
               "number": "36",
@@ -170339,10 +170584,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=36",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/8866503bf908ed537dc54211e89a3a58.mp4?sign=29a40991642739c41513640988dfa06b&t=1793031094",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=36",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -170566,7 +170817,8 @@
                 }
               ],
               "episodeNumber": 36,
-              "id": "mb-s-2338494413602702672-s1-e36"
+              "id": "mb-s-2338494413602702672-s1-e36",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/8866503bf908ed537dc54211e89a3a58.mp4?sign=29a40991642739c41513640988dfa06b&t=1793031094"
             },
             {
               "number": "37",
@@ -170580,10 +170832,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=37",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/853748271909786c36998778e12829c7.mp4?sign=09430308dc741645645c249769db43c1&t=1793032050",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=37",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -170807,7 +171065,8 @@
                 }
               ],
               "episodeNumber": 37,
-              "id": "mb-s-2338494413602702672-s1-e37"
+              "id": "mb-s-2338494413602702672-s1-e37",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/853748271909786c36998778e12829c7.mp4?sign=09430308dc741645645c249769db43c1&t=1793032050"
             },
             {
               "number": "38",
@@ -170821,10 +171080,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=38",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/d135bee5ed2ffe350ae1adf17b173362.mp4?sign=f1e60395a1eb984fe8ff9844e73e8aa6&t=1793034121",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=38",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -171048,7 +171313,8 @@
                 }
               ],
               "episodeNumber": 38,
-              "id": "mb-s-2338494413602702672-s1-e38"
+              "id": "mb-s-2338494413602702672-s1-e38",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/d135bee5ed2ffe350ae1adf17b173362.mp4?sign=f1e60395a1eb984fe8ff9844e73e8aa6&t=1793034121"
             },
             {
               "number": "39",
@@ -171062,10 +171328,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=39",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/900595e641c954c7a69bda598ce9d46d.mp4?sign=0bdcfec45d96904c7c91bcf4b6565a9e&t=1793034122",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=39",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -171289,7 +171561,8 @@
                 }
               ],
               "episodeNumber": 39,
-              "id": "mb-s-2338494413602702672-s1-e39"
+              "id": "mb-s-2338494413602702672-s1-e39",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/900595e641c954c7a69bda598ce9d46d.mp4?sign=0bdcfec45d96904c7c91bcf4b6565a9e&t=1793034122"
             },
             {
               "number": "40",
@@ -171303,10 +171576,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=40",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/8cfe91ee8802aa12071b0aea6e5ff227.mp4?sign=87e7e0b423b6f63d3adc2b5d301f0353&t=1793034122",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=40",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -171530,7 +171809,8 @@
                 }
               ],
               "episodeNumber": 40,
-              "id": "mb-s-2338494413602702672-s1-e40"
+              "id": "mb-s-2338494413602702672-s1-e40",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/8cfe91ee8802aa12071b0aea6e5ff227.mp4?sign=87e7e0b423b6f63d3adc2b5d301f0353&t=1793034122"
             },
             {
               "number": "41",
@@ -171544,10 +171824,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=41",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/2788752a865e49dab6c69eb5ffc65ee6.mp4?sign=a9d8dbc90acfe2ef31c88525acb440b7&t=1793033179",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=41",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -171771,7 +172057,8 @@
                 }
               ],
               "episodeNumber": 41,
-              "id": "mb-s-2338494413602702672-s1-e41"
+              "id": "mb-s-2338494413602702672-s1-e41",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/2788752a865e49dab6c69eb5ffc65ee6.mp4?sign=a9d8dbc90acfe2ef31c88525acb440b7&t=1793033179"
             },
             {
               "number": "42",
@@ -171785,10 +172072,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=42",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/8fe064f3fe2087f7480ef9ff99d3aac0.mp4?sign=36007a4a295570fdf403db7cf282d145&t=1793034122",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=42",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -172012,7 +172305,8 @@
                 }
               ],
               "episodeNumber": 42,
-              "id": "mb-s-2338494413602702672-s1-e42"
+              "id": "mb-s-2338494413602702672-s1-e42",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/8fe064f3fe2087f7480ef9ff99d3aac0.mp4?sign=36007a4a295570fdf403db7cf282d145&t=1793034122"
             },
             {
               "number": "43",
@@ -172026,10 +172320,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=43",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/6dd88399c873207ec146310c58497554.mp4?sign=5a1f5c68049db97b3f0915e19e5742c7&t=1793031405",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=43",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -172253,7 +172553,8 @@
                 }
               ],
               "episodeNumber": 43,
-              "id": "mb-s-2338494413602702672-s1-e43"
+              "id": "mb-s-2338494413602702672-s1-e43",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/6dd88399c873207ec146310c58497554.mp4?sign=5a1f5c68049db97b3f0915e19e5742c7&t=1793031405"
             },
             {
               "number": "44",
@@ -172267,10 +172568,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=44",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/bf698717ebee29e5f7a6c01526f784ed.mp4?sign=6ae5a8aadffff6e305aa441c8c0e8edd&t=1793034123",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=44",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -172494,7 +172801,8 @@
                 }
               ],
               "episodeNumber": 44,
-              "id": "mb-s-2338494413602702672-s1-e44"
+              "id": "mb-s-2338494413602702672-s1-e44",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/bf698717ebee29e5f7a6c01526f784ed.mp4?sign=6ae5a8aadffff6e305aa441c8c0e8edd&t=1793034123"
             },
             {
               "number": "45",
@@ -172508,10 +172816,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=45",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/9e6c99e80ed890898e38739856b35c9b.mp4?sign=f50b55c9515b9642d154d23b977ec7dd&t=1793033698",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=45",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -172735,7 +173049,8 @@
                 }
               ],
               "episodeNumber": 45,
-              "id": "mb-s-2338494413602702672-s1-e45"
+              "id": "mb-s-2338494413602702672-s1-e45",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/9e6c99e80ed890898e38739856b35c9b.mp4?sign=f50b55c9515b9642d154d23b977ec7dd&t=1793033698"
             },
             {
               "number": "46",
@@ -172749,10 +173064,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=46",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/c62a7d1034fc43031c1c57950039cebb.mp4?sign=bd148bb27d56e460e96b6345eebd171b&t=1793034123",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=46",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -172976,7 +173297,8 @@
                 }
               ],
               "episodeNumber": 46,
-              "id": "mb-s-2338494413602702672-s1-e46"
+              "id": "mb-s-2338494413602702672-s1-e46",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/c62a7d1034fc43031c1c57950039cebb.mp4?sign=bd148bb27d56e460e96b6345eebd171b&t=1793034123"
             },
             {
               "number": "47",
@@ -172990,10 +173312,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=47",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/5c4178e24e573039eadfdb4c1de84b81.mp4?sign=795363b1beddd89c5874b237340ac060&t=1793034124",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=1&ep=47",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -173217,7 +173545,8 @@
                 }
               ],
               "episodeNumber": 47,
-              "id": "mb-s-2338494413602702672-s1-e47"
+              "id": "mb-s-2338494413602702672-s1-e47",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/5c4178e24e573039eadfdb4c1de84b81.mp4?sign=795363b1beddd89c5874b237340ac060&t=1793034124"
             }
           ]
         },
@@ -173240,7 +173569,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/49deeaea587a9c02466bd50676c70388.mp4?sign=1e4d708515825dda9a5213f7f3aa058d&t=1793032498",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
@@ -173251,6 +173580,12 @@
                   "quality": "1080p",
                   "audio": "Original Audio",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -173420,7 +173755,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-2338494413602702672-s1-e1"
+              "id": "mb-s-2338494413602702672-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/49deeaea587a9c02466bd50676c70388.mp4?sign=1e4d708515825dda9a5213f7f3aa058d&t=1793032498"
             },
             {
               "number": "02",
@@ -173434,10 +173770,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/1f41287dccf3fe34a3d1db670f53b06e.mp4?sign=1f692843c8dcfd9d13444f6424782792&t=1793032702",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -173607,7 +173949,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-2338494413602702672-s1-e2"
+              "id": "mb-s-2338494413602702672-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/1f41287dccf3fe34a3d1db670f53b06e.mp4?sign=1f692843c8dcfd9d13444f6424782792&t=1793032702"
             },
             {
               "number": "03",
@@ -173621,10 +173964,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/515ddda230af43d19556b6bc36404247.mp4?sign=d53cbd1f019fc2358cf561b4f79483f0&t=1793034035",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -173794,7 +174143,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-2338494413602702672-s1-e3"
+              "id": "mb-s-2338494413602702672-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/515ddda230af43d19556b6bc36404247.mp4?sign=d53cbd1f019fc2358cf561b4f79483f0&t=1793034035"
             },
             {
               "number": "04",
@@ -173808,10 +174158,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/bc45e7f58d000359b06b49c819e157c6.mp4?sign=3727b40ba6d9bb48cc01f4b57246d831&t=1793034125",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -173981,7 +174337,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-2338494413602702672-s1-e4"
+              "id": "mb-s-2338494413602702672-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/bc45e7f58d000359b06b49c819e157c6.mp4?sign=3727b40ba6d9bb48cc01f4b57246d831&t=1793034125"
             },
             {
               "number": "05",
@@ -173995,10 +174352,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=05",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/83cef063ac5870beeeeefe4e54f7d34c.mp4?sign=d0bccaa4b72879036881fdec2a73b846&t=1793030490",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=5",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -174168,7 +174531,8 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-2338494413602702672-s1-e5"
+              "id": "mb-s-2338494413602702672-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/83cef063ac5870beeeeefe4e54f7d34c.mp4?sign=d0bccaa4b72879036881fdec2a73b846&t=1793030490"
             },
             {
               "number": "06",
@@ -174182,10 +174546,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=06",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/c6eba756cedfb1c5a2374c68a503858f.mp4?sign=60840d40a426051c494b24cc07f26dc0&t=1793034125",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=6",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -174355,7 +174725,8 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-2338494413602702672-s1-e6"
+              "id": "mb-s-2338494413602702672-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/c6eba756cedfb1c5a2374c68a503858f.mp4?sign=60840d40a426051c494b24cc07f26dc0&t=1793034125"
             },
             {
               "number": "07",
@@ -174369,10 +174740,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=07",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/59d9ab20fe20917cae3fb2ededb4fee7.mp4?sign=dec167772f5dd74043886ed70c7c1b7f&t=1793031080",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=7",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -174542,7 +174919,8 @@
                 }
               ],
               "episodeNumber": 7,
-              "id": "mb-s-2338494413602702672-s1-e7"
+              "id": "mb-s-2338494413602702672-s1-e7",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/59d9ab20fe20917cae3fb2ededb4fee7.mp4?sign=dec167772f5dd74043886ed70c7c1b7f&t=1793031080"
             },
             {
               "number": "08",
@@ -174556,10 +174934,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=08",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/040b8b23e8c34f940b4c3fb253457e8b.mp4?sign=ddc7d5201060780f353ff922cc19d220&t=1793034126",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=8",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -174729,7 +175113,8 @@
                 }
               ],
               "episodeNumber": 8,
-              "id": "mb-s-2338494413602702672-s1-e8"
+              "id": "mb-s-2338494413602702672-s1-e8",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/040b8b23e8c34f940b4c3fb253457e8b.mp4?sign=ddc7d5201060780f353ff922cc19d220&t=1793034126"
             },
             {
               "number": "09",
@@ -174743,10 +175128,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=09",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/502743a9983420d7b7947705ccbe9733.mp4?sign=c606ad062aef4edbf734c5a46077d777&t=1793034126",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=9",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -174916,7 +175307,8 @@
                 }
               ],
               "episodeNumber": 9,
-              "id": "mb-s-2338494413602702672-s1-e9"
+              "id": "mb-s-2338494413602702672-s1-e9",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/502743a9983420d7b7947705ccbe9733.mp4?sign=c606ad062aef4edbf734c5a46077d777&t=1793034126"
             },
             {
               "number": "10",
@@ -174930,10 +175322,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=10",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/52ec234610dcaeb372735fc6f4e75849.mp4?sign=f56c3b6c051251770decb768c134f32a&t=1793034127",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=10",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -175103,7 +175501,8 @@
                 }
               ],
               "episodeNumber": 10,
-              "id": "mb-s-2338494413602702672-s1-e10"
+              "id": "mb-s-2338494413602702672-s1-e10",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/52ec234610dcaeb372735fc6f4e75849.mp4?sign=f56c3b6c051251770decb768c134f32a&t=1793034127"
             },
             {
               "number": "11",
@@ -175117,10 +175516,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=11",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/26fa73290baf2af12161d20e95eb5c3a.mp4?sign=ffb9092577d198504c463066cdc4cb71&t=1793031882",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=11",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -175290,7 +175695,8 @@
                 }
               ],
               "episodeNumber": 11,
-              "id": "mb-s-2338494413602702672-s1-e11"
+              "id": "mb-s-2338494413602702672-s1-e11",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/26fa73290baf2af12161d20e95eb5c3a.mp4?sign=ffb9092577d198504c463066cdc4cb71&t=1793031882"
             },
             {
               "number": "12",
@@ -175304,10 +175710,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=12",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/fc56f027b45fba66a1b2429ee3dedebc.mp4?sign=9f560f8b125f8f81fcd7207a549619d3&t=1793034127",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=12",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -175477,7 +175889,8 @@
                 }
               ],
               "episodeNumber": 12,
-              "id": "mb-s-2338494413602702672-s1-e12"
+              "id": "mb-s-2338494413602702672-s1-e12",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/fc56f027b45fba66a1b2429ee3dedebc.mp4?sign=9f560f8b125f8f81fcd7207a549619d3&t=1793034127"
             },
             {
               "number": "13",
@@ -175491,10 +175904,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=13",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/f8ada8e77b46d73464c7afb6736900ff.mp4?sign=4c4f6d5ac94add5f9b014d68b1853df2&t=1793034128",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=13",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -175664,7 +176083,8 @@
                 }
               ],
               "episodeNumber": 13,
-              "id": "mb-s-2338494413602702672-s1-e13"
+              "id": "mb-s-2338494413602702672-s1-e13",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/f8ada8e77b46d73464c7afb6736900ff.mp4?sign=4c4f6d5ac94add5f9b014d68b1853df2&t=1793034128"
             },
             {
               "number": "14",
@@ -175678,10 +176098,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=14",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/9a0faa915351b7681ed43887f4c690fc.mp4?sign=7110bfb6593030a864a78a0387da7e90&t=1793034128",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=14",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -175851,7 +176277,8 @@
                 }
               ],
               "episodeNumber": 14,
-              "id": "mb-s-2338494413602702672-s1-e14"
+              "id": "mb-s-2338494413602702672-s1-e14",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/9a0faa915351b7681ed43887f4c690fc.mp4?sign=7110bfb6593030a864a78a0387da7e90&t=1793034128"
             },
             {
               "number": "15",
@@ -175865,10 +176292,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=15",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/4d1f9c1736f2e6e8e7fb0453d28cdbc9.mp4?sign=605d508eee9a7ebaf1369252c2abe0e3&t=1793030411",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=15",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -176038,7 +176471,8 @@
                 }
               ],
               "episodeNumber": 15,
-              "id": "mb-s-2338494413602702672-s1-e15"
+              "id": "mb-s-2338494413602702672-s1-e15",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/4d1f9c1736f2e6e8e7fb0453d28cdbc9.mp4?sign=605d508eee9a7ebaf1369252c2abe0e3&t=1793030411"
             },
             {
               "number": "16",
@@ -176052,10 +176486,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=16",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/86a0dc8621ea5786e123ece8a63d80c7.mp4?sign=f7e012dd0e41fbc2368afbe05857f20d&t=1793032064",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=16",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -176225,7 +176665,8 @@
                 }
               ],
               "episodeNumber": 16,
-              "id": "mb-s-2338494413602702672-s1-e16"
+              "id": "mb-s-2338494413602702672-s1-e16",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/86a0dc8621ea5786e123ece8a63d80c7.mp4?sign=f7e012dd0e41fbc2368afbe05857f20d&t=1793032064"
             },
             {
               "number": "17",
@@ -176239,10 +176680,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=17",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/7edff429cf5e7370d37e2038b5ff9e9a.mp4?sign=7ab15ac7064f0356665eaad92c788d3d&t=1793034129",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=17",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -176412,7 +176859,8 @@
                 }
               ],
               "episodeNumber": 17,
-              "id": "mb-s-2338494413602702672-s1-e17"
+              "id": "mb-s-2338494413602702672-s1-e17",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/7edff429cf5e7370d37e2038b5ff9e9a.mp4?sign=7ab15ac7064f0356665eaad92c788d3d&t=1793034129"
             },
             {
               "number": "18",
@@ -176426,10 +176874,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=18",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/6b7e4f5a7789c09ac6cd67cbec76c455.mp4?sign=662d0d2e2830c58eefd6b24c1953d341&t=1793034129",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=18",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -176599,7 +177053,8 @@
                 }
               ],
               "episodeNumber": 18,
-              "id": "mb-s-2338494413602702672-s1-e18"
+              "id": "mb-s-2338494413602702672-s1-e18",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/6b7e4f5a7789c09ac6cd67cbec76c455.mp4?sign=662d0d2e2830c58eefd6b24c1953d341&t=1793034129"
             },
             {
               "number": "19",
@@ -176613,10 +177068,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=19",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/aa0884ebb230242afe830e37c9493f5a.mp4?sign=08c616a3d26449ae8c0c6ca1c0640406&t=1793032286",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=19",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -176786,7 +177247,8 @@
                 }
               ],
               "episodeNumber": 19,
-              "id": "mb-s-2338494413602702672-s1-e19"
+              "id": "mb-s-2338494413602702672-s1-e19",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/aa0884ebb230242afe830e37c9493f5a.mp4?sign=08c616a3d26449ae8c0c6ca1c0640406&t=1793032286"
             },
             {
               "number": "20",
@@ -176800,10 +177262,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=20",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/7b963d4af6c10265345acc6001cb2646.mp4?sign=807090c741924a4c416e579e5977be92&t=1793031807",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=20",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -176973,7 +177441,8 @@
                 }
               ],
               "episodeNumber": 20,
-              "id": "mb-s-2338494413602702672-s1-e20"
+              "id": "mb-s-2338494413602702672-s1-e20",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/7b963d4af6c10265345acc6001cb2646.mp4?sign=807090c741924a4c416e579e5977be92&t=1793031807"
             },
             {
               "number": "21",
@@ -176987,10 +177456,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=21",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/86a9445f71fdb48189873d0db98f2940.mp4?sign=a395a9c55f926f5f52e59ebdc109bed4&t=1793031685",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=21",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -177160,7 +177635,8 @@
                 }
               ],
               "episodeNumber": 21,
-              "id": "mb-s-2338494413602702672-s1-e21"
+              "id": "mb-s-2338494413602702672-s1-e21",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/86a9445f71fdb48189873d0db98f2940.mp4?sign=a395a9c55f926f5f52e59ebdc109bed4&t=1793031685"
             },
             {
               "number": "22",
@@ -177174,10 +177650,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=22",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/298128b72742e4e934cfd7ef946b6951.mp4?sign=941bd2c4336ee7d6193b7e101813e00f&t=1793032939",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=22",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -177347,7 +177829,8 @@
                 }
               ],
               "episodeNumber": 22,
-              "id": "mb-s-2338494413602702672-s1-e22"
+              "id": "mb-s-2338494413602702672-s1-e22",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/298128b72742e4e934cfd7ef946b6951.mp4?sign=941bd2c4336ee7d6193b7e101813e00f&t=1793032939"
             },
             {
               "number": "23",
@@ -177361,10 +177844,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=23",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/f5dc22151c297689217a7c7f5b833182.mp4?sign=20f72308d6531a4219e146a871b7e084&t=1793033238",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=23",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -177534,7 +178023,8 @@
                 }
               ],
               "episodeNumber": 23,
-              "id": "mb-s-2338494413602702672-s1-e23"
+              "id": "mb-s-2338494413602702672-s1-e23",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/f5dc22151c297689217a7c7f5b833182.mp4?sign=20f72308d6531a4219e146a871b7e084&t=1793033238"
             },
             {
               "number": "24",
@@ -177548,10 +178038,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=24",
-                  "quality": "1080p",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/72796b427cfb40be4d803c149d3c59a2.mp4?sign=2a3ece1777c81ecef67849be6518220e&t=1793032608",
+                  "quality": "720p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=2&ep=24",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -177721,7 +178217,8 @@
                 }
               ],
               "episodeNumber": 24,
-              "id": "mb-s-2338494413602702672-s1-e24"
+              "id": "mb-s-2338494413602702672-s1-e24",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/72796b427cfb40be4d803c149d3c59a2.mp4?sign=2a3ece1777c81ecef67849be6518220e&t=1793032608"
             }
           ]
         },
@@ -177744,7 +178241,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=3&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/nyaa/b147bd797e775fb5f027893a488f9bdd.mp4?sign=eb1cb53f94b3e5f60bbfaed9e961623a&t=1793031830",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
@@ -177755,6 +178252,12 @@
                   "quality": "1080p",
                   "audio": "Original Audio",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=3&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -177870,7 +178373,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-2338494413602702672-s1-e1"
+              "id": "mb-s-2338494413602702672-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/nyaa/b147bd797e775fb5f027893a488f9bdd.mp4?sign=eb1cb53f94b3e5f60bbfaed9e961623a&t=1793031830"
             },
             {
               "number": "02",
@@ -177884,10 +178388,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=3&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/nyaa/6d8799bedabf683465f7b6a655c74c6d.mp4?sign=48e92719bb68ce90336fec4e30fa926f&t=1793030402",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=3&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -178003,7 +178513,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-2338494413602702672-s1-e2"
+              "id": "mb-s-2338494413602702672-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/nyaa/6d8799bedabf683465f7b6a655c74c6d.mp4?sign=48e92719bb68ce90336fec4e30fa926f&t=1793030402"
             },
             {
               "number": "03",
@@ -178017,10 +178528,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=3&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/nyaa/3495ec9483c9a6a7a39b77f5e2537454.mp4?sign=f4cc5d1fe93df0f9ebf27f36c20a2758&t=1793034131",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=3&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -178136,7 +178653,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-2338494413602702672-s1-e3"
+              "id": "mb-s-2338494413602702672-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/nyaa/3495ec9483c9a6a7a39b77f5e2537454.mp4?sign=f4cc5d1fe93df0f9ebf27f36c20a2758&t=1793034131"
             },
             {
               "number": "04",
@@ -178150,10 +178668,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=3&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/nyaa/258e2b464a38d97649b15f8ed21d5e32.mp4?sign=49622d7ad201643753232c95304f9a85&t=1793031751",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2338494413602702672&path=the-apothecary-diaries-0CPshxpkKM2&se=3&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -178269,7 +178793,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-2338494413602702672-s1-e4"
+              "id": "mb-s-2338494413602702672-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/nyaa/258e2b464a38d97649b15f8ed21d5e32.mp4?sign=49622d7ad201643753232c95304f9a85&t=1793031751"
             }
           ]
         }
@@ -189585,7 +190110,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=8175590432395742648&path=doctor-x-age-of-the-white-mafia-QkR7Hh2iWJ9&se=1&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/5b2a36a3fba82d05808f0250bc2438f9.mp4?sign=f38c3f37407fc1c5818fe19a1a357a30&t=1793031738",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
@@ -189596,6 +190121,12 @@
                   "quality": "1080p",
                   "audio": "Original Audio",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=8175590432395742648&path=doctor-x-age-of-the-white-mafia-QkR7Hh2iWJ9&se=1&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -189765,7 +190296,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-8175590432395742648-s1-e1"
+              "id": "mb-s-8175590432395742648-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/5b2a36a3fba82d05808f0250bc2438f9.mp4?sign=f38c3f37407fc1c5818fe19a1a357a30&t=1793031738"
             },
             {
               "number": "02",
@@ -189779,10 +190311,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=8175590432395742648&path=doctor-x-age-of-the-white-mafia-QkR7Hh2iWJ9&se=1&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/925646190dca615490db8e4170fd3eeb.mp4?sign=5850e65e7ced7ca47b329237bddb02d9&t=1793033282",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=8175590432395742648&path=doctor-x-age-of-the-white-mafia-QkR7Hh2iWJ9&se=1&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -189952,7 +190490,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-8175590432395742648-s1-e2"
+              "id": "mb-s-8175590432395742648-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/925646190dca615490db8e4170fd3eeb.mp4?sign=5850e65e7ced7ca47b329237bddb02d9&t=1793033282"
             },
             {
               "number": "03",
@@ -189966,10 +190505,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=8175590432395742648&path=doctor-x-age-of-the-white-mafia-QkR7Hh2iWJ9&se=1&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/330ae1ebb76715fc906a901deec1615c.mp4?sign=f549e17b8d36182eafbbfb66e0a852c4&t=1793034132",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=8175590432395742648&path=doctor-x-age-of-the-white-mafia-QkR7Hh2iWJ9&se=1&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -190139,7 +190684,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-8175590432395742648-s1-e3"
+              "id": "mb-s-8175590432395742648-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/330ae1ebb76715fc906a901deec1615c.mp4?sign=f549e17b8d36182eafbbfb66e0a852c4&t=1793034132"
             },
             {
               "number": "04",
@@ -190153,10 +190699,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=8175590432395742648&path=doctor-x-age-of-the-white-mafia-QkR7Hh2iWJ9&se=1&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/511c65a231bfd503d1a5a87d2238f442.mp4?sign=6f27b34c8d30bc752d3013a56d9f1140&t=1793032004",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=8175590432395742648&path=doctor-x-age-of-the-white-mafia-QkR7Hh2iWJ9&se=1&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -190326,7 +190878,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-8175590432395742648-s1-e4"
+              "id": "mb-s-8175590432395742648-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/511c65a231bfd503d1a5a87d2238f442.mp4?sign=6f27b34c8d30bc752d3013a56d9f1140&t=1793032004"
             },
             {
               "number": "05",
@@ -190340,10 +190893,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=8175590432395742648&path=doctor-x-age-of-the-white-mafia-QkR7Hh2iWJ9&se=1&ep=05",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/7ca15fb478ff3930addf0db559471344.mp4?sign=fdd73762911d5e1d9fde34a9fd5c57af&t=1793032912",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=8175590432395742648&path=doctor-x-age-of-the-white-mafia-QkR7Hh2iWJ9&se=1&ep=5",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -190513,7 +191072,8 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-8175590432395742648-s1-e5"
+              "id": "mb-s-8175590432395742648-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/7ca15fb478ff3930addf0db559471344.mp4?sign=fdd73762911d5e1d9fde34a9fd5c57af&t=1793032912"
             },
             {
               "number": "06",
@@ -190527,10 +191087,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=8175590432395742648&path=doctor-x-age-of-the-white-mafia-QkR7Hh2iWJ9&se=1&ep=06",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/031a12fc1d180f5d66931ec5bf8f9817.mp4?sign=56f050d55ac4ed3cc6b39d7554fca16f&t=1793032730",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=8175590432395742648&path=doctor-x-age-of-the-white-mafia-QkR7Hh2iWJ9&se=1&ep=6",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -190700,7 +191266,8 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-8175590432395742648-s1-e6"
+              "id": "mb-s-8175590432395742648-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/031a12fc1d180f5d66931ec5bf8f9817.mp4?sign=56f050d55ac4ed3cc6b39d7554fca16f&t=1793032730"
             }
           ]
         }
@@ -192321,7 +192888,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2343074542031175984&path=rumi-osWpvgZi5N2&se=1&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/f6979d6e7d6b04b54caa5efe813ebc1d.mp4?sign=1564f70d9c4f0422c06652a8333a148b&t=1793034147",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
@@ -192332,6 +192899,12 @@
                   "quality": "1080p",
                   "audio": "Original Audio",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2343074542031175984&path=rumi-osWpvgZi5N2&se=1&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -192375,7 +192948,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-2343074542031175984-s1-e1"
+              "id": "mb-s-2343074542031175984-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/f6979d6e7d6b04b54caa5efe813ebc1d.mp4?sign=1564f70d9c4f0422c06652a8333a148b&t=1793034147"
             },
             {
               "number": "02",
@@ -192389,10 +192963,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2343074542031175984&path=rumi-osWpvgZi5N2&se=1&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/e1e39d4416007f70502f9f11922ad640.mp4?sign=0f2d6c499b08eea2a7e32684611b3eb5&t=1793034147",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2343074542031175984&path=rumi-osWpvgZi5N2&se=1&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -192436,7 +193016,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-2343074542031175984-s1-e2"
+              "id": "mb-s-2343074542031175984-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/e1e39d4416007f70502f9f11922ad640.mp4?sign=0f2d6c499b08eea2a7e32684611b3eb5&t=1793034147"
             },
             {
               "number": "03",
@@ -192450,10 +193031,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2343074542031175984&path=rumi-osWpvgZi5N2&se=1&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/d3dcbfae146e6f4ec32bb2711a66572d.mp4?sign=799992f2193e57abf8ef19ff9297baa2&t=1793034147",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2343074542031175984&path=rumi-osWpvgZi5N2&se=1&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -192497,7 +193084,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-2343074542031175984-s1-e3"
+              "id": "mb-s-2343074542031175984-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/d3dcbfae146e6f4ec32bb2711a66572d.mp4?sign=799992f2193e57abf8ef19ff9297baa2&t=1793034147"
             },
             {
               "number": "04",
@@ -192511,10 +193099,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2343074542031175984&path=rumi-osWpvgZi5N2&se=1&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/7fc124f2f528a375001487558fb918c3.mp4?sign=2d11129ca0711fe43da9db5d1abaa2b1&t=1793034148",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2343074542031175984&path=rumi-osWpvgZi5N2&se=1&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -192558,7 +193152,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-2343074542031175984-s1-e4"
+              "id": "mb-s-2343074542031175984-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/7fc124f2f528a375001487558fb918c3.mp4?sign=2d11129ca0711fe43da9db5d1abaa2b1&t=1793034148"
             },
             {
               "number": "05",
@@ -192572,10 +193167,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2343074542031175984&path=rumi-osWpvgZi5N2&se=1&ep=05",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/027ce227e7284450dd201de7a94a7a07.mp4?sign=c9c8fbd69bfd818111fe4c6ae158960c&t=1793034148",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2343074542031175984&path=rumi-osWpvgZi5N2&se=1&ep=5",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -192619,7 +193220,8 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-2343074542031175984-s1-e5"
+              "id": "mb-s-2343074542031175984-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/027ce227e7284450dd201de7a94a7a07.mp4?sign=c9c8fbd69bfd818111fe4c6ae158960c&t=1793034148"
             },
             {
               "number": "06",
@@ -192633,10 +193235,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2343074542031175984&path=rumi-osWpvgZi5N2&se=1&ep=06",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/609be5e2f7f20a4e30a11f4a63daaf39.mp4?sign=3c96fc994ca31514e0ac3787911c2232&t=1793034148",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2343074542031175984&path=rumi-osWpvgZi5N2&se=1&ep=6",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -192680,7 +193288,8 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-2343074542031175984-s1-e6"
+              "id": "mb-s-2343074542031175984-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/609be5e2f7f20a4e30a11f4a63daaf39.mp4?sign=3c96fc994ca31514e0ac3787911c2232&t=1793034148"
             }
           ]
         }
@@ -193117,7 +193726,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6876820355873653224&path=rongila-kitab-semcdLqUZb8&se=1&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/cms/ba4cdd70745ab39caf2870f6609f59da.mp4?sign=b12d008d4d16a8fdef46858090d42713&t=1793034148",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
@@ -193128,6 +193737,12 @@
                   "quality": "1080p",
                   "audio": "Original Audio",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6876820355873653224&path=rongila-kitab-semcdLqUZb8&se=1&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -193153,7 +193768,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-6876820355873653224-s1-e1"
+              "id": "mb-s-6876820355873653224-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/cms/ba4cdd70745ab39caf2870f6609f59da.mp4?sign=b12d008d4d16a8fdef46858090d42713&t=1793034148"
             }
           ]
         }
@@ -193277,7 +193893,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2333060001146832040&path=adhunik-bangla-hotel-Y8PkNEfrlM2&se=1&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/00182125f7e13638d70e54b9314feab4.mp4?sign=05a3c6db437153fc466a4cb03075ad3d&t=1793030541",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
@@ -193288,12 +193904,19 @@
                   "quality": "1080p",
                   "audio": "Original Audio",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2333060001146832040&path=adhunik-bangla-hotel-Y8PkNEfrlM2&se=1&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [],
               "subtitles": [],
               "episodeNumber": 1,
-              "id": "mb-s-2333060001146832040-s1-e1"
+              "id": "mb-s-2333060001146832040-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/00182125f7e13638d70e54b9314feab4.mp4?sign=05a3c6db437153fc466a4cb03075ad3d&t=1793030541"
             },
             {
               "number": "02",
@@ -193307,16 +193930,23 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2333060001146832040&path=adhunik-bangla-hotel-Y8PkNEfrlM2&se=1&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/6f053ed0cf5324f307bfe12c6b8d5887.mp4?sign=2169b01981e69d4a6f9e5c026d1f571a&t=1793034149",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2333060001146832040&path=adhunik-bangla-hotel-Y8PkNEfrlM2&se=1&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [],
               "subtitles": [],
               "episodeNumber": 2,
-              "id": "mb-s-2333060001146832040-s1-e2"
+              "id": "mb-s-2333060001146832040-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/6f053ed0cf5324f307bfe12c6b8d5887.mp4?sign=2169b01981e69d4a6f9e5c026d1f571a&t=1793034149"
             },
             {
               "number": "03",
@@ -193330,16 +193960,23 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=2333060001146832040&path=adhunik-bangla-hotel-Y8PkNEfrlM2&se=1&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/c03847fb5c8115a2b5622d9d14e7b748.mp4?sign=209bd52b4cbdf6bf3a7a276c75bcb2ac&t=1793034149",
                   "quality": "1080p",
                   "audio": "Original",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=2333060001146832040&path=adhunik-bangla-hotel-Y8PkNEfrlM2&se=1&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [],
               "subtitles": [],
               "episodeNumber": 3,
-              "id": "mb-s-2333060001146832040-s1-e3"
+              "id": "mb-s-2333060001146832040-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/c03847fb5c8115a2b5622d9d14e7b748.mp4?sign=209bd52b4cbdf6bf3a7a276c75bcb2ac&t=1793034149"
             }
           ]
         }
@@ -193486,7 +194123,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/a96cc777d3c003e75f3821b230dc436e.mp4?sign=d84ae244d40199176977298e69e9aa2d&t=1793031078",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
@@ -193497,6 +194134,12 @@
                   "quality": "1080p",
                   "audio": "Hindi dub",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -193522,7 +194165,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-6801342275650995352-s1-e1"
+              "id": "mb-s-6801342275650995352-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/a96cc777d3c003e75f3821b230dc436e.mp4?sign=d84ae244d40199176977298e69e9aa2d&t=1793031078"
             },
             {
               "number": "02",
@@ -193536,10 +194180,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/0dbeba335dfd5a6cf4f3db5d7c377cd4.mp4?sign=78cf0ae5f1cdca1b7d5fc0c557a0d2e0&t=1793034150",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -193565,7 +194215,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-6801342275650995352-s1-e2"
+              "id": "mb-s-6801342275650995352-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/0dbeba335dfd5a6cf4f3db5d7c377cd4.mp4?sign=78cf0ae5f1cdca1b7d5fc0c557a0d2e0&t=1793034150"
             },
             {
               "number": "03",
@@ -193579,10 +194230,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/4247f2cdbd140c0dfcca55ee8d2e2089.mp4?sign=db3068d15546badf384be276e4c9bf4a&t=1793032777",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -193608,7 +194265,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-6801342275650995352-s1-e3"
+              "id": "mb-s-6801342275650995352-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/4247f2cdbd140c0dfcca55ee8d2e2089.mp4?sign=db3068d15546badf384be276e4c9bf4a&t=1793032777"
             },
             {
               "number": "04",
@@ -193622,10 +194280,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/2550aac9194dbb26c78cae18cb3aed4d.mp4?sign=5f7df445b29bf3591826e3e164e846ba&t=1793034150",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -193651,7 +194315,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-6801342275650995352-s1-e4"
+              "id": "mb-s-6801342275650995352-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/2550aac9194dbb26c78cae18cb3aed4d.mp4?sign=5f7df445b29bf3591826e3e164e846ba&t=1793034150"
             },
             {
               "number": "05",
@@ -193665,10 +194330,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=05",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/81661e79efabbb3a5f220d7ae0c05bc2.mp4?sign=7dc79a8399504eacd597400ecfa837da&t=1793031775",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=5",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -193694,7 +194365,8 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-6801342275650995352-s1-e5"
+              "id": "mb-s-6801342275650995352-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/81661e79efabbb3a5f220d7ae0c05bc2.mp4?sign=7dc79a8399504eacd597400ecfa837da&t=1793031775"
             },
             {
               "number": "06",
@@ -193708,10 +194380,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=06",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/38e67923a533a38d41b615837aaeaa4d.mp4?sign=022c70bb601029553e465dc25eaf582d&t=1793032887",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=6",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -193737,7 +194415,8 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-6801342275650995352-s1-e6"
+              "id": "mb-s-6801342275650995352-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/38e67923a533a38d41b615837aaeaa4d.mp4?sign=022c70bb601029553e465dc25eaf582d&t=1793032887"
             },
             {
               "number": "07",
@@ -193751,10 +194430,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=07",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/245b8a6e7ae62d56bd3c2de218811b47.mp4?sign=da03fb4a0b89f9abfecd48fedd1113eb&t=1793034151",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=7",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -193780,7 +194465,8 @@
                 }
               ],
               "episodeNumber": 7,
-              "id": "mb-s-6801342275650995352-s1-e7"
+              "id": "mb-s-6801342275650995352-s1-e7",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/245b8a6e7ae62d56bd3c2de218811b47.mp4?sign=da03fb4a0b89f9abfecd48fedd1113eb&t=1793034151"
             },
             {
               "number": "08",
@@ -193794,10 +194480,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=08",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/80fd3c5b0855488e92211199c7561c0b.mp4?sign=0b12e59cd767dd1f00453f2333fdaf42&t=1793031092",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=8",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -193823,7 +194515,8 @@
                 }
               ],
               "episodeNumber": 8,
-              "id": "mb-s-6801342275650995352-s1-e8"
+              "id": "mb-s-6801342275650995352-s1-e8",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/80fd3c5b0855488e92211199c7561c0b.mp4?sign=0b12e59cd767dd1f00453f2333fdaf42&t=1793031092"
             },
             {
               "number": "09",
@@ -193837,10 +194530,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=09",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/8e1a60ee85ad8f28a8968143fc9f4f7b.mp4?sign=03ce5685d4bd38ecfc4dcc7318a8bb68&t=1793034152",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=9",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -193866,7 +194565,8 @@
                 }
               ],
               "episodeNumber": 9,
-              "id": "mb-s-6801342275650995352-s1-e9"
+              "id": "mb-s-6801342275650995352-s1-e9",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/8e1a60ee85ad8f28a8968143fc9f4f7b.mp4?sign=03ce5685d4bd38ecfc4dcc7318a8bb68&t=1793034152"
             },
             {
               "number": "10",
@@ -193880,10 +194580,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=10",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/40094884b98763d4c8b4e0d8b26f7cc1.mp4?sign=b3b38c547783d3638ac56d3c9b10a4d9&t=1793031350",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=10",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -193909,7 +194615,8 @@
                 }
               ],
               "episodeNumber": 10,
-              "id": "mb-s-6801342275650995352-s1-e10"
+              "id": "mb-s-6801342275650995352-s1-e10",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/40094884b98763d4c8b4e0d8b26f7cc1.mp4?sign=b3b38c547783d3638ac56d3c9b10a4d9&t=1793031350"
             },
             {
               "number": "11",
@@ -193923,10 +194630,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=11",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/2fed955344e52da12e806512b9f55cbf.mp4?sign=d2d187b97c4dd15da67c7c9338b682b6&t=1793034153",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=11",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -193952,7 +194665,8 @@
                 }
               ],
               "episodeNumber": 11,
-              "id": "mb-s-6801342275650995352-s1-e11"
+              "id": "mb-s-6801342275650995352-s1-e11",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/2fed955344e52da12e806512b9f55cbf.mp4?sign=d2d187b97c4dd15da67c7c9338b682b6&t=1793034153"
             },
             {
               "number": "12",
@@ -193966,10 +194680,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=12",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/3f2cf3c23803456bb49194092dd1a6d2.mp4?sign=57a9fce53b5e3216e5625e8f774b00f0&t=1793032573",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=1&ep=12",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -193995,7 +194715,8 @@
                 }
               ],
               "episodeNumber": 12,
-              "id": "mb-s-6801342275650995352-s1-e12"
+              "id": "mb-s-6801342275650995352-s1-e12",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/3f2cf3c23803456bb49194092dd1a6d2.mp4?sign=57a9fce53b5e3216e5625e8f774b00f0&t=1793032573"
             }
           ]
         },
@@ -194018,7 +194739,7 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=01",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/8fc404cb0cb278671f5c70739c585071.mp4?sign=a3ea260e0c30889c5f7e87fb0b80c4db&t=1793032858",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
@@ -194029,6 +194750,12 @@
                   "quality": "1080p",
                   "audio": "Hindi dub",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=1",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -194054,7 +194781,8 @@
                 }
               ],
               "episodeNumber": 1,
-              "id": "mb-s-6801342275650995352-s1-e1"
+              "id": "mb-s-6801342275650995352-s1-e1",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/8fc404cb0cb278671f5c70739c585071.mp4?sign=a3ea260e0c30889c5f7e87fb0b80c4db&t=1793032858"
             },
             {
               "number": "02",
@@ -194068,10 +194796,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=02",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/f5b04b1b6ac2a8162241c993a77149e0.mp4?sign=651aa82e2aebc4a99ba119ce0fca5a4d&t=1793033771",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=2",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -194097,7 +194831,8 @@
                 }
               ],
               "episodeNumber": 2,
-              "id": "mb-s-6801342275650995352-s1-e2"
+              "id": "mb-s-6801342275650995352-s1-e2",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/f5b04b1b6ac2a8162241c993a77149e0.mp4?sign=651aa82e2aebc4a99ba119ce0fca5a4d&t=1793033771"
             },
             {
               "number": "03",
@@ -194111,10 +194846,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=03",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/f1343ca6fa0837996b9feb9823bcdbaf.mp4?sign=f29c7b6b847c5994ba91119f979974fa&t=1793034154",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -194140,7 +194881,8 @@
                 }
               ],
               "episodeNumber": 3,
-              "id": "mb-s-6801342275650995352-s1-e3"
+              "id": "mb-s-6801342275650995352-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/f1343ca6fa0837996b9feb9823bcdbaf.mp4?sign=f29c7b6b847c5994ba91119f979974fa&t=1793034154"
             },
             {
               "number": "04",
@@ -194154,10 +194896,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=04",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/ce9d49828e4b1975b4f7c65a84b4f634.mp4?sign=4dd9158422361e4960b5cdf5e365b07d&t=1793034155",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -194183,7 +194931,8 @@
                 }
               ],
               "episodeNumber": 4,
-              "id": "mb-s-6801342275650995352-s1-e4"
+              "id": "mb-s-6801342275650995352-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/ce9d49828e4b1975b4f7c65a84b4f634.mp4?sign=4dd9158422361e4960b5cdf5e365b07d&t=1793034155"
             },
             {
               "number": "05",
@@ -194197,10 +194946,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=05",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/4b8c30feb4a8d08cbdbfe2e791edb02d.mp4?sign=5c1830029e18d7eef57e7d0061a4b939&t=1793034155",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=5",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -194226,7 +194981,8 @@
                 }
               ],
               "episodeNumber": 5,
-              "id": "mb-s-6801342275650995352-s1-e5"
+              "id": "mb-s-6801342275650995352-s1-e5",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/4b8c30feb4a8d08cbdbfe2e791edb02d.mp4?sign=5c1830029e18d7eef57e7d0061a4b939&t=1793034155"
             },
             {
               "number": "06",
@@ -194240,10 +194996,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=06",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/ffc4dd717e66f2007f0398a0b102c786.mp4?sign=be77f6afc3329fff6d891d5532ae568c&t=1793034155",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=6",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -194269,7 +195031,8 @@
                 }
               ],
               "episodeNumber": 6,
-              "id": "mb-s-6801342275650995352-s1-e6"
+              "id": "mb-s-6801342275650995352-s1-e6",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/ffc4dd717e66f2007f0398a0b102c786.mp4?sign=be77f6afc3329fff6d891d5532ae568c&t=1793034155"
             },
             {
               "number": "07",
@@ -194283,10 +195046,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=07",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/d4368ff15823df4b566c494fabd4852b.mp4?sign=f0893abdc0d1fcd836b1d831c8610a71&t=1793034155",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=7",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -194312,7 +195081,8 @@
                 }
               ],
               "episodeNumber": 7,
-              "id": "mb-s-6801342275650995352-s1-e7"
+              "id": "mb-s-6801342275650995352-s1-e7",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/d4368ff15823df4b566c494fabd4852b.mp4?sign=f0893abdc0d1fcd836b1d831c8610a71&t=1793034155"
             },
             {
               "number": "08",
@@ -194326,10 +195096,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=08",
+                  "url": "https://bcdnxw.hakunaymatata.com/resource/574dea16172c0ecb9a83d53a985cc645.mp4?sign=6901997f03c2f7e15900566084818fb7&t=1793034156",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=8",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -194355,7 +195131,8 @@
                 }
               ],
               "episodeNumber": 8,
-              "id": "mb-s-6801342275650995352-s1-e8"
+              "id": "mb-s-6801342275650995352-s1-e8",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/574dea16172c0ecb9a83d53a985cc645.mp4?sign=6901997f03c2f7e15900566084818fb7&t=1793034156"
             },
             {
               "number": "09",
@@ -194369,10 +195146,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=09",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/b3316ca741f622a3a0ad94b57d43328a.mp4?sign=f85420ed0c6641576b034133198712fa&t=1793033005",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=9",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -194398,7 +195181,8 @@
                 }
               ],
               "episodeNumber": 9,
-              "id": "mb-s-6801342275650995352-s1-e9"
+              "id": "mb-s-6801342275650995352-s1-e9",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/b3316ca741f622a3a0ad94b57d43328a.mp4?sign=f85420ed0c6641576b034133198712fa&t=1793033005"
             },
             {
               "number": "10",
@@ -194412,10 +195196,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=10",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/db0f197df2b142712827c324835d191a.mp4?sign=fa093bbceb0e21762243542f8bcffc7d&t=1793031379",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=10",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -194441,7 +195231,8 @@
                 }
               ],
               "episodeNumber": 10,
-              "id": "mb-s-6801342275650995352-s1-e10"
+              "id": "mb-s-6801342275650995352-s1-e10",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/db0f197df2b142712827c324835d191a.mp4?sign=fa093bbceb0e21762243542f8bcffc7d&t=1793031379"
             },
             {
               "number": "11",
@@ -194455,10 +195246,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=11",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/01227d29d3a11b3f2cce8741ac8d7452.mp4?sign=db55b8b6435741474da95b69c2d9cf3e&t=1793032847",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=11",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -194484,7 +195281,8 @@
                 }
               ],
               "episodeNumber": 11,
-              "id": "mb-s-6801342275650995352-s1-e11"
+              "id": "mb-s-6801342275650995352-s1-e11",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/01227d29d3a11b3f2cce8741ac8d7452.mp4?sign=db55b8b6435741474da95b69c2d9cf3e&t=1793032847"
             },
             {
               "number": "12",
@@ -194498,10 +195296,16 @@
               "servers": [
                 {
                   "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=12",
+                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/90062e41159b3e4766c8e9f719b1e942.mp4?sign=47f0245ddd190c04e80f2cdb53a28105&t=1793034157",
                   "quality": "1080p",
                   "audio": "Hindi",
                   "isDirect": true
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Stream)",
+                  "url": "/api/moviebox/stream?id=6801342275650995352&path=dandadan-hindi-gKbTBPCdq68&se=2&ep=12",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
                 }
               ],
               "captions": [
@@ -194527,7 +195331,8 @@
                 }
               ],
               "episodeNumber": 12,
-              "id": "mb-s-6801342275650995352-s1-e12"
+              "id": "mb-s-6801342275650995352-s1-e12",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/90062e41159b3e4766c8e9f719b1e942.mp4?sign=47f0245ddd190c04e80f2cdb53a28105&t=1793034157"
             }
           ]
         }
