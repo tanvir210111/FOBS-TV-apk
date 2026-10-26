@@ -2408,6 +2408,16 @@ app.post('/api/admin/series/sync', adminService.authenticate, async (req, res) =
 });
 
 // Auto-Sync All Series in Database
+// Trigger 15-Minute CDN Auto-Refresh manually
+app.all('/api/admin/refresh-cdn', adminService.authenticate, async (req, res) => {
+  try {
+    const result = await adminService.refreshAllCdnTokens();
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 app.post('/api/admin/series/sync-all', adminService.authenticate, async (req, res) => {
   try {
     const result = await adminService.autoSyncAllSeries();
@@ -2446,26 +2456,26 @@ app.listen(PORT, () => {
 
 
 // ============================================================
-// AUTOMATIC PLAYBACK REPAIR & STREAM AUTO-RENEW WORKER (EVERY 30 MIN)
+// AUTOMATIC CDN TOKEN AUTO-REFRESH WORKER (EVERY 15 MIN)
 // ============================================================
-const AUTO_REPAIR_INTERVAL_MS = 30 * 60 * 1000; // Runs every 30 minutes
-if (isPrimaryWorker) setInterval(() => {
+const AUTO_REFRESH_INTERVAL_MS = 15 * 60 * 1000; // Runs every 15 minutes continuously
+if (isPrimaryWorker) setInterval(async () => {
   try {
-    console.log('[Auto-Repair Worker] 🔄 Running automatic 30-min playback stream health check & auto-repair...');
-    const result = adminService.repairAllPlaybackStreams();
-    console.log(`[Auto-Repair Worker] ✓ Verified & auto-renewed: ${result.repairedEpisodes} episodes, ${result.repairedMovies} movies across ${result.totalSeries} series & ${result.totalMovies} movies.`);
+    console.log('[Auto-Refresh Worker] 🔄 Running automatic 15-min CDN token refresh cycle...');
+    const result = await adminService.refreshAllCdnTokens();
+    console.log(`[Auto-Refresh Worker] ✓ Refreshed & verified ${result.refreshedMovies} movies & ${result.refreshedEpisodes} episodes at ${new Date().toLocaleTimeString()}`);
   } catch (err) {
-    console.error('[Auto-Repair Worker] Error during automatic stream check:', err.message);
+    console.error('[Auto-Refresh Worker] Error during automatic CDN token refresh:', err.message);
   }
-}, AUTO_REPAIR_INTERVAL_MS);
+}, AUTO_REFRESH_INTERVAL_MS);
 
-// Also run initial stream verification on server startup after 5 seconds
-if (isPrimaryWorker) setTimeout(() => {
+// Also run initial CDN refresh on server startup after 3 seconds
+if (isPrimaryWorker) setTimeout(async () => {
   try {
-    console.log('[Auto-Repair Worker] 🚀 Initial playback stream auto-check starting...');
-    const res = adminService.repairAllPlaybackStreams();
-    console.log(`[Auto-Repair Worker] 🚀 Initial check done: ${res.repairedEpisodes} episodes, ${res.repairedMovies} movies renewed.`);
+    console.log('[Auto-Refresh Worker] 🚀 Initial CDN token auto-refresh starting...');
+    const res = await adminService.refreshAllCdnTokens();
+    console.log(`[Auto-Refresh Worker] 🚀 Initial refresh done: ${res.refreshedMovies} movies, ${res.refreshedEpisodes} episodes renewed.`);
   } catch (e) {
-    console.error('[Auto-Repair Worker] Initial check error:', e.message);
+    console.error('[Auto-Refresh Worker] Initial refresh error:', e.message);
   }
-}, 5000);
+}, 3000);

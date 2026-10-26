@@ -1195,6 +1195,109 @@ class AdminService {
     return { success: true, featured: featuredItem };
   }
 
+  /**
+   * Automated 15-Minute CDN Token Background Auto-Refresh Engine
+   * Continuously fetches fresh MovieBox CDN signatures in parallel batches so links NEVER expire.
+   */
+  async refreshAllCdnTokens() {
+    console.log('[CDN Refresher] ⚡ Starting active 15-minute background refresh of all MovieBox CDN streams...');
+    const content = readContent();
+    let refreshedMovies = 0;
+    let refreshedEpisodes = 0;
+
+    async function runBatch(tasks, concurrency = 8) {
+      const results = [];
+      for (let i = 0; i < tasks.length; i += concurrency) {
+        const chunk = tasks.slice(i, i + concurrency);
+        const chunkResults = await Promise.all(chunk.map(fn => fn().catch(() => null)));
+        results.push(...chunkResults);
+      }
+      return results;
+    }
+
+    const tasks = [];
+
+    // 1. Featured Spotlight
+    if (content.featured) {
+      const feat = content.featured;
+      const sId = feat.subjectId || (feat.id && (feat.id.startsWith('mb-m-') || feat.id.startsWith('mb-s-')) ? feat.id.replace(/^mb-[sm]-/, '') : null);
+      if (sId) {
+        tasks.push(async () => {
+          const isSer = feat.type === 'series' || (feat.seasons && feat.seasons.length > 0);
+          const media = await movieboxService.resolveMedia(sId, feat.detailPath || '', isSer ? 1 : 0, isSer ? 1 : 0);
+          if (media && media.streamUrl) {
+            feat.streamUrl = media.streamUrl;
+            const autoUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(feat.detailPath || '')}&se=${isSer ? 1 : 0}&ep=${isSer ? 1 : 0}`;
+            feat.servers = [
+              { name: 'Server 1 (Direct Fast CDN)', url: media.streamUrl, quality: '1080p', audio: feat.dubLanguage || 'Hindi dub', isDirect: true },
+              { name: 'Server 2 (HD - Auto-Renewing 1080p)', url: autoUrl, quality: '1080p', audio: feat.dubLanguage || 'Hindi dub', isDirect: true }
+            ];
+          }
+        });
+      }
+    }
+
+    // 2. Movies
+    for (const m of (content.movies || [])) {
+      const sId = m.subjectId || (m.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '') : null);
+      if (sId) {
+        tasks.push(async () => {
+          const media = await movieboxService.resolveMedia(sId, m.detailPath || '', 0, 0);
+          if (media && media.streamUrl) {
+            m.streamUrl = media.streamUrl;
+            const autoUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(m.detailPath || '')}&se=0&ep=0`;
+            m.servers = [
+              { name: 'Server 1 (Direct Fast CDN)', url: media.streamUrl, quality: '1080p', audio: m.dubLanguage || 'Hindi dub', isDirect: true },
+              { name: 'Server 2 (HD - Auto-Renewing 1080p)', url: autoUrl, quality: '1080p', audio: m.dubLanguage || 'Hindi dub', isDirect: true }
+            ];
+            refreshedMovies++;
+          }
+        });
+      }
+    }
+
+    // 3. Series Episodes
+    for (const s of (content.series || [])) {
+      const sId = s.subjectId || (s.id && s.id.startsWith('mb-s-') ? s.id.replace('mb-s-', '') : null);
+      if (sId && Array.isArray(s.seasons)) {
+        for (const season of s.seasons) {
+          const seNum = season.seasonNumber || season.season || 1;
+          if (Array.isArray(season.episodes)) {
+            for (const ep of season.episodes) {
+              const epNum = ep.number || ep.episode || 1;
+              tasks.push(async () => {
+                const media = await movieboxService.resolveMedia(sId, s.detailPath || '', seNum, epNum);
+                if (media && media.streamUrl) {
+                  ep.streamUrl = media.streamUrl;
+                  const autoUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(s.detailPath || '')}&se=${seNum}&ep=${epNum}`;
+                  ep.servers = [
+                    { name: 'Server 1 (Direct Fast CDN)', url: media.streamUrl, quality: '1080p', audio: s.dubLanguage || 'Hindi dub', isDirect: true },
+                    { name: 'Server 2 (HD - Auto-Renewing 1080p)', url: autoUrl, quality: '1080p', audio: s.dubLanguage || 'Hindi dub', isDirect: true }
+                  ];
+                  refreshedEpisodes++;
+                }
+              });
+            }
+          }
+        }
+      }
+    }
+
+    // Execute in parallel batches
+    await runBatch(tasks, 8);
+
+    // Sync top-level episodes
+    for (const s of (content.series || [])) {
+      if (s.seasons && s.seasons[0] && s.seasons[0].episodes) {
+        s.episodes = s.seasons[0].episodes;
+      }
+    }
+
+    writeContent(content);
+    console.log(`[CDN Refresher] ✅ Finished 15-min background refresh: ${refreshedMovies} movies & ${refreshedEpisodes} episodes refreshed at ${new Date().toLocaleTimeString()}`);
+    return { success: true, refreshedMovies, refreshedEpisodes };
+  }
+
   repairAllPlaybackStreams() {
     const content = readContent();
     let repairedSeries = 0;
