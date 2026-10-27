@@ -284,6 +284,17 @@ function getMovieBoxDetailPath(id) {
   if (sId === '6637609605407409248') return 'dream-hindi-SD4DYlZjkU7';
   if (sId === '5543197340762262336') return 'bloodhounds-hindi-aFaIWHXTtB6';
 
+  // Dynamic Content Lookup fallback: Check content.json for series and movies
+  try {
+    const data = typeof getContentData === 'function' ? getContentData() : null;
+    if (data) {
+      const foundSeries = (data.series || []).find(s => String(s.subjectId) === sId || String(s.id) === sId);
+      if (foundSeries && foundSeries.detailPath) return foundSeries.detailPath;
+      const foundMovie = (data.movies || []).find(m => String(m.subjectId) === sId || String(m.id) === sId);
+      if (foundMovie && foundMovie.detailPath) return foundMovie.detailPath;
+    }
+  } catch (_) {}
+
   return '';
 }
 
