@@ -1084,6 +1084,8 @@ app.get('/api/moviebox/stream', async (req, res) => {
       // Gyeongseong Creature [Hindi] (Korean Series - Seasons 1 & 2)
       else if (id === '341274161781817952') resolvedPath = 'gyeongseong-creature-hindi-cwXnUZq2dp';
       else if (id === '8749727399622889296') resolvedPath = 'gyeongseong-creature-2nf2FylQlqa';
+      // Connect [Hindi] (Korean Drama Series)
+      else if (id === '307765624728603424') resolvedPath = 'connect-YQLyApkzJm';
       // Love Next Door [Hindi] (Korean Series - Season 1)
       else if (id === '1332900149030438936') resolvedPath = 'love-next-door-hindi-A2MLzAcHsA1';
       else if (id === '900420217287968016') resolvedPath = 'love-next-door-21sWBRUVv41';
