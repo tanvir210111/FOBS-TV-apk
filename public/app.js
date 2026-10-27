@@ -7032,6 +7032,115 @@ function switchAudioTrack(lang) {
 }
 
 // Language / Dubbing Bottom Sheet Modal (Screenshot 2 & 5)
+// Video Quality Switcher Logic
+function openQualitySheet() {
+  const overlay = document.getElementById('qualitySheetOverlay');
+  if (overlay) overlay.classList.add('open');
+}
+
+function closeQualitySheet(event) {
+  if (event && event.target !== event.currentTarget && !event.target.closest('.sheet-close-btn')) return;
+  const overlay = document.getElementById('qualitySheetOverlay');
+  if (overlay) overlay.classList.remove('open');
+}
+
+function autoFallbackTo720p() {
+  if (appState.currentQuality === '720p') return;
+  selectVideoQuality('720p', true);
+  if (typeof showToast === 'function') {
+    showToast('Switched to 720p for smooth buffer-free playback ⚡');
+  }
+}
+
+function selectVideoQuality(quality, isAuto = false) {
+  const targetQ = (quality || '1080p').toLowerCase();
+  appState.currentQuality = targetQ;
+
+  // Update portrait dropdown button text
+  const currentText = document.getElementById('currentQualityText');
+  if (currentText) {
+    currentText.innerText = targetQ.toUpperCase();
+  }
+
+  // Update Landscape quality badge
+  const lsBadge = document.getElementById('lsQualityBadge');
+  if (lsBadge) {
+    lsBadge.innerText = targetQ.toUpperCase();
+  }
+
+  // Update modal selection checkmarks
+  document.querySelectorAll('#qualityOptionsList .sheet-option-btn').forEach(btn => {
+    const q = (btn.dataset.q || btn.innerText || '').toLowerCase();
+    btn.classList.toggle('selected', q.includes(targetQ));
+  });
+
+  const overlay = document.getElementById('qualitySheetOverlay');
+  if (overlay) overlay.classList.remove('open');
+
+  if (!isAuto && typeof showToast === 'function') {
+    showToast(`Quality set to ${targetQ.toUpperCase()}`);
+  }
+
+  // Switch stream URL while preserving current video playback timestamp
+  const videoPlayer = document.getElementById('mainVideoPlayer');
+  if (!videoPlayer) return;
+
+  const currentMedia = appState.currentMedia;
+  if (!currentMedia) return;
+
+  const isSeries = currentMedia.type === 'series' || (currentMedia.seasons && currentMedia.seasons.length > 0);
+  const activeObj = isSeries ? (appState.currentEpisode || (currentMedia.seasons?.[0]?.episodes?.[0])) : currentMedia;
+  if (!activeObj) return;
+
+  const targetResNum = parseInt(targetQ, 10);
+  let targetStreamUrl = null;
+
+  // 1. Check if activeObj has a server with matching quality
+  if (Array.isArray(activeObj.servers)) {
+    const matchedServer = activeObj.servers.find(s => {
+      const qNum = parseInt(s.quality || '', 10);
+      const nameMatch = (s.name || '').includes(String(targetResNum));
+      return qNum === targetResNum || nameMatch;
+    });
+    if (matchedServer && matchedServer.url) {
+      targetStreamUrl = matchedServer.url;
+    }
+  }
+
+  // 2. If not found in servers, check if there is an /api/moviebox/stream endpoint or subjectId
+  if (!targetStreamUrl) {
+    let mbServer = (activeObj.servers || []).find(s => s.url && s.url.includes('/api/moviebox/stream'));
+    if (mbServer) {
+      // Append or replace q param
+      let u = mbServer.url;
+      u = u.replace(/([?&])q=\d+/, '');
+      targetStreamUrl = u + (u.includes('?') ? '&' : '?') + `q=${targetResNum}`;
+    } else if (currentMedia.subjectId) {
+      const seNum = isSeries ? (appState.currentSeasonNumber || 1) : 0;
+      const epNum = isSeries ? (appState.currentEpisodeNumber || 1) : 0;
+      targetStreamUrl = `/api/moviebox/stream?id=${currentMedia.subjectId}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
+    }
+  }
+
+  if (targetStreamUrl) {
+    const seekPos = videoPlayer.currentTime || 0;
+    const isPaused = videoPlayer.paused;
+    console.log(`[Quality Switch] Switching to ${targetQ} stream: `, targetStreamUrl);
+
+    playStreamUrl(targetStreamUrl, null, seekPos);
+    if (!isPaused) {
+      setTimeout(() => { videoPlayer.play().catch(() => {}); }, 150);
+    }
+  }
+}
+
+// Override setLandscapeQuality to call selectVideoQuality
+function setLandscapeQuality(quality) {
+  selectVideoQuality(quality);
+  if (typeof closeLandscapeDrawers === 'function') closeLandscapeDrawers();
+  if (typeof resetLandscapeControlsTimer === 'function') resetLandscapeControlsTimer();
+}
+
 function openLanguageSheet() {
   document.getElementById('languageSheetOverlay').classList.add('open');
 }

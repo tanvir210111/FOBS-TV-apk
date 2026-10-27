@@ -11,7 +11,15 @@ const ffmpegPath = require('ffmpeg-static');
 
 const compression = require('compression');
 
-const streamHttpsAgent = new https.Agent({ family: 4, keepAlive: true, rejectUnauthorized: false });
+const streamHttpsAgent = new https.Agent({
+  family: 4,
+  keepAlive: true,
+  maxSockets: 80,
+  maxFreeSockets: 30,
+  timeout: 30000,
+  keepAliveMsecs: 15000,
+  rejectUnauthorized: false
+});
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -754,6 +762,7 @@ async function resolveStreamUrl(rawUrl) {
         let detailPath = urlObj.searchParams.get('path') || getMovieBoxDetailPath(id) || '';
         const se = parseInt(urlObj.searchParams.get('se') || '1', 10);
         const ep = parseInt(urlObj.searchParams.get('ep') || '1', 10);
+        const reqQ = parseInt(urlObj.searchParams.get('q') || urlObj.searchParams.get('quality') || '0', 10);
         if (id) {
           let media = await movieboxService.resolveMedia(id, detailPath, se, ep);
           if (!media || !media.streamUrl) {
@@ -763,7 +772,14 @@ async function resolveStreamUrl(rawUrl) {
             media = await movieboxService.resolveMedia(id, detailPath, 0, 0);
           }
           if (media && media.streamUrl) {
-            resolved = media.streamUrl;
+            if (reqQ > 0 && Array.isArray(media.qualities) && media.qualities.length > 0) {
+              const matchedQ = media.qualities.find(q => q.resolution === reqQ)
+                            || media.qualities.find(q => q.resolution <= reqQ)
+                            || media.qualities[0];
+              resolved = matchedQ?.url || media.streamUrl;
+            } else {
+              resolved = media.streamUrl;
+            }
           } else {
             // Smart Fallback: Look up direct stream from content.json
             try {
@@ -1078,6 +1094,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
       else if (id === '13309505576601376') resolvedPath = 'crash-landing-on-you-hindi-ad4mbjnXY';
       else if (id === '8152231361013763208') resolvedPath = 'crash-landing-on-you-M2pZwJYidI9';
     }
+    const requestedQ = parseInt(req.query.q || req.query.quality || '0', 10);
     // Try requested se/ep first, then fallbacks
     let media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);
     if (!media || !media.streamUrl) {
@@ -1119,11 +1136,22 @@ app.get('/api/moviebox/stream', async (req, res) => {
     const host = req.get('x-forwarded-host') || req.get('host') || '187.127.114.52';
     const proto = req.get('x-forwarded-proto') || req.protocol || 'http';
     const baseUrl = `${proto}://${host}`;
-    const proxiedStreamUrl = `/api/stream?url=${encodeURIComponent(media.streamUrl)}`;
+    let chosenStream = media.streamUrl;
+    let chosenRes = media.resolution || 1080;
+    if (requestedQ > 0 && Array.isArray(media.qualities) && media.qualities.length > 0) {
+      const matchQ = media.qualities.find(q => q.resolution === requestedQ)
+                  || media.qualities.find(q => q.resolution <= requestedQ)
+                  || media.qualities[0];
+      if (matchQ && matchQ.url) {
+        chosenStream = matchQ.url;
+        chosenRes = matchQ.resolution;
+      }
+    }
+    const proxiedStreamUrl = `/api/stream?url=${encodeURIComponent(chosenStream)}`;
     const fullProxiedStreamUrl = `${baseUrl}${proxiedStreamUrl}`;
 
     res.setHeader('X-Accel-Buffering', 'no');
-    res.setHeader('Cache-Control', 'no-cache, no-store');
+    res.setHeader('Cache-Control', 'public, max-age=86400, no-transform');
 
     if (req.query.json === '1' || req.headers.accept?.includes('application/json')) {
       return res.json({ ok: true, streamUrl: fullProxiedStreamUrl, directCdnUrl: media.streamUrl, resolution: media.resolution });
@@ -1251,7 +1279,7 @@ app.all('/api/stream', async (req, res) => {
     'Access-Control-Allow-Headers': 'Range, Content-Type, Accept, X-Requested-With, Origin, Authorization',
     'Access-Control-Expose-Headers': 'Content-Range, Content-Length, Accept-Ranges, Content-Type',
     'Content-Disposition': 'inline',
-    'Cache-Control': 'no-cache, no-store',
+    'Cache-Control': 'public, max-age=86400, no-transform',
     'X-Accel-Buffering': 'no'
   };
 
@@ -1260,7 +1288,7 @@ app.all('/api/stream', async (req, res) => {
   res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type, Accept, X-Requested-With, Origin, Authorization');
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range, Content-Length, Accept-Ranges, Content-Type');
   res.setHeader('X-Accel-Buffering', 'no');
-  res.setHeader('Cache-Control', 'no-cache, no-store');
+  res.setHeader('Cache-Control', 'public, max-age=86400, no-transform');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -1558,8 +1586,16 @@ app.all('/api/stream', async (req, res) => {
       if (response.headers['content-length']) headersToSend['Content-Length'] = response.headers['content-length'];
 
       res.writeHead(206, headersToSend);
+      response.data.on('error', () => {
+        try { res.end(); } catch (_) {}
+      });
+      res.on('error', () => {
+        try { response.data.destroy(); } catch (_) {}
+      });
+      req.on('close', () => {
+        try { response.data.destroy(); } catch (_) {}
+      });
       response.data.pipe(res);
-      req.on('close', () => response.data.destroy());
       return;
     }
 
@@ -1697,7 +1733,7 @@ app.get('/api/download', async (req, res) => {
   }
 
   res.setHeader('X-Accel-Buffering', 'no');
-  res.setHeader('Cache-Control', 'no-cache, no-store');
+  res.setHeader('Cache-Control', 'public, max-age=86400, no-transform');
 
   let downloadFetchUrl = resolvedUrl;
   let response;

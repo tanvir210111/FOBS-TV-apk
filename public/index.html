@@ -1284,6 +1284,10 @@
               <span id="currentDubText">Hindi dub</span>
               <i class="fa-solid fa-chevron-down"></i>
             </button>
+            <button class="dub-dropdown-btn" onclick="openQualitySheet()" id="currentQualityBtn" title="Switch Quality" style="min-width: 80px;">
+              <span id="currentQualityText">1080p</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
 
             <!-- Season Selector Dropdown (Right side of Hindi Dub dropdown - Matches Select Language design) -->
             <div class="season-selector-container" id="seasonSelectorContainer" style="display: none;">
@@ -1818,6 +1822,34 @@
     <!-- ============================================== -->
     <!-- LANGUAGE / AUDIO TRACK BOTTOM SHEET MODAL -->
     <!-- ============================================== -->
+    <!-- Video Quality Selector Modal -->
+    <div class="bottom-sheet-overlay" id="qualitySheetOverlay" onclick="closeQualitySheet(event)">
+      <div class="bottom-sheet-container" onclick="event.stopPropagation()">
+        <div class="sheet-header">
+          <h3>Select Video Quality</h3>
+          <button class="sheet-close-btn" onclick="closeQualitySheet()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="sheet-options-list" id="qualityOptionsList">
+          <button class="sheet-option-btn selected" data-q="1080p" onclick="selectVideoQuality('1080p')">
+            <span style="font-weight: 700;">1080p FHD</span>
+            <span style="font-size: 11px; color: #94a3b8; margin-left: 8px;">(Full HD Crystal Clear)</span>
+          </button>
+          <button class="sheet-option-btn" data-q="720p" onclick="selectVideoQuality('720p')">
+            <span style="font-weight: 700; color: #00d26a;">720p HD</span>
+            <span style="font-size: 11px; color: #00d26a; margin-left: 8px;">(Smooth - Recommended) ⚡</span>
+          </button>
+          <button class="sheet-option-btn" data-q="480p" onclick="selectVideoQuality('480p')">
+            <span style="font-weight: 700;">480p SD</span>
+            <span style="font-size: 11px; color: #94a3b8; margin-left: 8px;">(Data Saver - Super Fast) 🚀</span>
+          </button>
+          <button class="sheet-option-btn" data-q="360p" onclick="selectVideoQuality('360p')">
+            <span style="font-weight: 700;">360p</span>
+            <span style="font-size: 11px; color: #94a3b8; margin-left: 8px;">(Lowest Data Usage)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="bottom-sheet-overlay" id="languageSheetOverlay" onclick="closeLanguageSheet(event)">
       <div class="bottom-sheet-container" onclick="event.stopPropagation()">
         <div class="sheet-header">
