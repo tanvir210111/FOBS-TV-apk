@@ -47,6 +47,107 @@ app.use((req, res, next) => {
   next();
 });
 
+// ============================================================
+// PIRACY & UNAUTHORIZED WEB ACCESS PROTECTION
+// Blocks direct web browser access to root/streaming player
+// The official FOBS TV Android APK loads locally from device assets and calls /api
+// ============================================================
+app.use((req, res, next) => {
+  // Allow Admin panel, API endpoints, APK downloads, and health checks
+  if (
+    req.path.startsWith('/admin') ||
+    req.path.startsWith('/api') ||
+    req.path.startsWith('/download') ||
+    req.path === '/health'
+  ) {
+    return next();
+  }
+
+  // Block direct web browser visits to root, index, and web streaming bundles
+  if (
+    req.path === '/' ||
+    req.path === '/index.html' ||
+    req.path === '/app.js' ||
+    req.path === '/style.css' ||
+    req.path.endsWith('.html')
+  ) {
+    res.status(403).setHeader('Content-Type', 'text/html; charset=utf-8');
+    return res.send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>403 Forbidden - Access Denied</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #0b0f19;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+    .card {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: 20px;
+      padding: 48px 32px;
+      max-width: 480px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    h1 {
+      color: #ef4444;
+      font-size: 3.5rem;
+      margin: 0 0 12px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    h2 {
+      font-size: 1.4rem;
+      margin: 0 0 16px;
+      color: #f1f5f9;
+      font-weight: 600;
+    }
+    p {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">ACCESS DENIED</div>
+    <h1>403</h1>
+    <h2>Web Streaming Is Prohibited</h2>
+    <p>Unauthorized web streaming and piracy from external browsers are strictly blocked. This service is exclusively accessible through the official FOBS TV Android Application.</p>
+  </div>
+</body>
+</html>`);
+  }
+
+  next();
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Health check endpoint for Hostinger KVM 8 VPS and monitors
