@@ -282,6 +282,7 @@ function getMovieBoxDetailPath(id) {
   if (sId === '6188426678457827992') return 'sleep-hindi-IgvyY1I39n7';
   if (sId === '5879749595097350800') return 'ransomed-hindi-o677uSyjl07';
   if (sId === '6637609605407409248') return 'dream-hindi-SD4DYlZjkU7';
+  if (sId === '5543197340762262336') return 'bloodhounds-hindi-aFaIWHXTtB6';
 
   return '';
 }
