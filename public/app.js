@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v67';
+const CACHE_KEY = 'fobs_tv_content_cache_v68';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -3248,30 +3248,15 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
 
   // MovieBox dynamic stream redirect handler: Pre-resolve to actual direct CDN link or route through stream proxy
   if (playableUrl.includes('/api/moviebox/stream')) {
-    const fullUrl = playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl.startsWith('/') ? '' : '/'}${playableUrl}`;
-    try {
-      const jsonUrl = fullUrl.includes('?') ? `${fullUrl}&json=1` : `${fullUrl}?json=1`;
-      const res = await fetch(jsonUrl, { cache: 'no-store' });
-      const data = await res.json();
+    const fullUrl = playableUrl.startsWith('http') ? playableUrl : (API_BASE_URL + (playableUrl.startsWith('/') ? '' : '/') + playableUrl);
+    const jsonUrl = fullUrl.includes('?') ? (fullUrl + '&json=1') : (fullUrl + '?json=1');
+    fetch(jsonUrl, { cache: 'no-store' }).then(r => r.json()).then(data => {
       if (data && data.ok) {
-        if (Array.isArray(data.qualities) && data.qualities.length > 0) {
-          appState.availableQualities = data.qualities;
-        }
-        if (data.resolution) {
-          updateQualityDisplay(data.resolution);
-        }
-        if (data.streamUrl) {
-          playableUrl = data.streamUrl.startsWith('http') ? data.streamUrl : `${API_BASE_URL}${data.streamUrl}`;
-        } else {
-          playableUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(fullUrl)}`;
-        }
-      } else {
-        playableUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(fullUrl)}`;
+        if (Array.isArray(data.qualities) && data.qualities.length > 0) appState.availableQualities = data.qualities;
+        if (data.resolution) updateQualityDisplay(data.resolution);
       }
-    } catch (e) {
-      console.warn('Pre-resolve MovieBox stream failed, routing through stream proxy:', e.message);
-      playableUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(fullUrl)}`;
-    }
+    }).catch(() => {});
+    playableUrl = fullUrl;
   }
 
   // If already routed through /api/stream proxy (e.g. from MovieBox resolver in browser or APK)

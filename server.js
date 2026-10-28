@@ -1583,7 +1583,11 @@ app.all('/api/stream', async (req, res) => {
     requestHeaders['Referer'] = 'https://movieboxapp.in/';
   }
 
-  const CHUNK_SIZE = 4 * 1024 * 1024; // 4MB per request for ultra-fast startup and buffer-free streaming
+  // Ultra-Fast Zero-Buffering Chunking:
+  // Initial chunk is 1MB (1048576 bytes) for instant sub-second video startup!
+  // Subsequent chunks are 2MB (2097152 bytes) for ultra-smooth continuous streaming!
+  const isInitialProbe = (!range || range.replace(/bytes=/, '').split('-')[0] === '0');
+  const CHUNK_SIZE = isInitialProbe ? (1 * 1024 * 1024) : (2 * 1024 * 1024);
   let upstreamRange = range;
 
   if (range) {
@@ -1687,6 +1691,7 @@ app.all('/api/stream', async (req, res) => {
       if (response.headers['content-length']) headersToSend['Content-Length'] = response.headers['content-length'];
 
       res.writeHead(206, headersToSend);
+      if (typeof res.flushHeaders === 'function') res.flushHeaders();
       response.data.on('error', () => {
         try { res.end(); } catch (_) {}
       });
@@ -1738,6 +1743,7 @@ app.all('/api/stream', async (req, res) => {
         headersToSend['Content-Range'] = `bytes 0-${totalLength - 1}/${totalLength}`;
         headersToSend['Content-Length'] = totalLength;
         res.writeHead(206, headersToSend);
+      if (typeof res.flushHeaders === 'function') res.flushHeaders();
       } else {
         res.writeHead(200, headersToSend);
       }
