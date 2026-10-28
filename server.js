@@ -1147,13 +1147,24 @@ app.get('/api/moviebox/stream', async (req, res) => {
     const baseUrl = `${proto}://${host}`;
     let chosenStream = media.streamUrl;
     let chosenRes = media.resolution || 1080;
-    if (requestedQ > 0 && Array.isArray(media.qualities) && media.qualities.length > 0) {
-      const matchQ = media.qualities.find(q => q.resolution === requestedQ)
-                  || media.qualities.find(q => q.resolution <= requestedQ)
-                  || media.qualities[0];
-      if (matchQ && matchQ.url) {
-        chosenStream = matchQ.url;
-        chosenRes = matchQ.resolution;
+    if (Array.isArray(media.qualities) && media.qualities.length > 0) {
+      if (requestedQ > 0) {
+        // Find exact or closest requested resolution
+        const matchQ = media.qualities.find(q => q.resolution === requestedQ)
+                    || media.qualities.find(q => q.resolution <= requestedQ)
+                    || media.qualities[media.qualities.length - 1];
+        if (matchQ && matchQ.url) {
+          chosenStream = matchQ.url;
+          chosenRes = matchQ.resolution;
+        }
+      } else {
+        // Default to lowest resolution first (360p -> 480p -> 720p -> 1080p) for instant start!
+        const sortedLowToHigh = [...media.qualities].sort((a, b) => (parseInt(a.resolution, 10) || 0) - (parseInt(b.resolution, 10) || 0));
+        const lowestQ = sortedLowToHigh.find(q => q.resolution >= 360) || sortedLowToHigh[0];
+        if (lowestQ && lowestQ.url) {
+          chosenStream = lowestQ.url;
+          chosenRes = lowestQ.resolution;
+        }
       }
     }
     const proxiedStreamUrl = `/api/stream?url=${encodeURIComponent(chosenStream)}`;
@@ -1163,7 +1174,18 @@ app.get('/api/moviebox/stream', async (req, res) => {
     res.setHeader('Cache-Control', 'public, max-age=86400, no-transform');
 
     if (req.query.json === '1' || req.headers.accept?.includes('application/json')) {
-      return res.json({ ok: true, streamUrl: fullProxiedStreamUrl, directCdnUrl: media.streamUrl, resolution: media.resolution });
+      return res.json({
+        ok: true,
+        streamUrl: fullProxiedStreamUrl,
+        directCdnUrl: chosenStream,
+        resolution: chosenRes,
+        qualities: (media.qualities || []).map(q => ({
+          resolution: q.resolution,
+          url: `${baseUrl}/api/stream?url=${encodeURIComponent(q.url)}`,
+          directUrl: q.url,
+          size: q.size
+        }))
+      });
     }
     // Absolute redirect through proxy so HTTP Referer is attached and byte-range seeking works 100%
     res.redirect(302, fullProxiedStreamUrl);
@@ -1513,6 +1535,10 @@ app.all('/api/stream', async (req, res) => {
     requestHeaders['Range'] = range;
   } else if (isHead) {
     requestHeaders['Range'] = 'bytes=0-0';
+  } else {
+    // Smart Fast Handshake: When client sends initial probe without Range,
+    // request first 2MB chunk so upstream doesn't dump 4GB and server responds in milliseconds!
+    requestHeaders['Range'] = 'bytes=0-2097151';
   }
 
   let streamFetchUrl = resolvedUrl;

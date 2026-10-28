@@ -2638,32 +2638,59 @@ function toggleSeasonDropdown(event) {
   openSeasonSheet();
 }
 
+// Helper: Find lowest resolution server (360p -> 480p -> 720p -> 1080p) for instant start
+function getLowestResolutionServer(activeObj, isOrig) {
+  if (!activeObj) return null;
+  const servers = Array.isArray(activeObj.servers) ? activeObj.servers : [];
+  if (!servers.length) return null;
+
+  let candidateServers = servers;
+  if (isOrig !== undefined) {
+    const audioMatched = servers.filter(s => isOrig 
+      ? (s.audio === 'Original audio' || /original|korean/i.test(s.name || ''))
+      : (s.audio === 'Hindi dub' || /hindi/i.test(s.name || ''))
+    );
+    if (audioMatched.length > 0) {
+      candidateServers = audioMatched;
+    }
+  }
+
+  const extractRes = (s) => {
+    const qStr = `${s.quality || ''} ${s.name || ''} ${s.url || ''}`;
+    const m = qStr.match(/(360|480|720|1080|1440|2160|4k)/i);
+    if (!m) {
+      if (s.url && s.url.includes('/api/moviebox/stream')) return 480;
+      return 1080;
+    }
+    const val = m[1].toLowerCase();
+    if (val === '4k') return 2160;
+    return parseInt(val, 10) || 1080;
+  };
+
+  const sorted = candidateServers.slice().sort((a, b) => extractRes(a) - extractRes(b));
+  return sorted[0] || null;
+}
+
 // Helper: Resolve active stream URL matching the requested audio track
 function getActiveEpisodeStream(ep, audioTrack) {
   if (!ep) return '';
   const track = audioTrack || appState.currentAudioTrack || 'Original audio';
   const isOrig = track.toLowerCase().includes('original') || track.toLowerCase().includes('korean');
 
-  // 1. High Priority: Direct fast CDN stream (immediate playback through VPS proxy)
-  if (ep.servers && Array.isArray(ep.servers)) {
-    const directServer = ep.servers.find(s => 
-      (s.isDirect || (s.url && s.url.startsWith('https://') && !s.url.includes('/api/moviebox/stream'))) && (
-        isOrig 
-          ? (s.audio === 'Original audio' || /original|korean/i.test(s.name))
-          : (s.audio === 'Hindi dub' || /hindi/i.test(s.name))
-      )
-    ) || ep.servers.find(s => s.isDirect || (s.url && s.url.startsWith('https://') && !s.url.includes('/api/moviebox/stream')));
-
-    if (directServer && directServer.url && directServer.url.startsWith('http')) {
-      return directServer.url;
-    }
+  // 1. High Priority: Lowest resolution server (360p/480p) first for instant zero-buffering playback
+  const lowestServer = getLowestResolutionServer(ep, isOrig);
+  if (lowestServer && lowestServer.url && lowestServer.url.startsWith('http')) {
+    const res = parseInt(lowestServer.quality || lowestServer.name || '480', 10) || 480;
+    appState.currentQuality = `${res}p`;
+    return lowestServer.url;
   }
 
+  // 2. Direct fast CDN stream fallback
   if (ep.directStreamUrl && ep.directStreamUrl.startsWith('http')) {
     return ep.directStreamUrl;
   }
 
-  // 2. Fallback: Auto-renewing /api/moviebox/stream endpoint
+  // 3. Fallback: Auto-renewing /api/moviebox/stream endpoint (defaults to lowest 480p/360p in backend)
   if (ep.servers && Array.isArray(ep.servers)) {
     const autoRenewingServer = ep.servers.find(s => 
       s.url && s.url.includes('/api/moviebox/stream') && (
@@ -2672,7 +2699,10 @@ function getActiveEpisodeStream(ep, audioTrack) {
           : (s.audio === 'Hindi dub' || /hindi/i.test(s.name))
       )
     ) || ep.servers.find(s => s.url && s.url.includes('/api/moviebox/stream'));
-    if (autoRenewingServer && autoRenewingServer.url) return autoRenewingServer.url;
+    if (autoRenewingServer && autoRenewingServer.url) {
+      appState.currentQuality = '480p';
+      return autoRenewingServer.url;
+    }
 
     const matchServer = ep.servers.find(s => isOrig
       ? (s.audio === 'Original audio' || /original|korean/i.test(s.name))
@@ -2681,7 +2711,7 @@ function getActiveEpisodeStream(ep, audioTrack) {
     if (matchServer && matchServer.url) return matchServer.url;
   }
 
-  // 2. AudioTracks map fallback
+  // 4. AudioTracks map fallback
   if (ep.audioTracks && typeof ep.audioTracks === 'object' && !Array.isArray(ep.audioTracks)) {
     const val = isOrig
       ? (ep.audioTracks['Original audio'] || ep.audioTracks['Original Audio'] || ep.audioTracks['Korean'] || ep.audioTracks['Original'])
@@ -2694,14 +2724,15 @@ function getActiveEpisodeStream(ep, audioTrack) {
   }
   if (ep.streamUrl) return ep.streamUrl;
 
-  // Resilient fallback: auto-generate MovieBox stream URL if subjectId exists
+  // Resilient fallback: auto-generate MovieBox stream URL with lowest resolution (480p)
   const m = appState.currentMedia;
   const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : null);
   const dPath = m?.detailPath || m?.mbDetailPath || m?.movieboxDetailPath || '';
   if (sId) {
     const epNum = ep.episode || parseInt(ep.number, 10) || 1;
     const seNum = ep.season || 1;
-    return `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}`;
+    appState.currentQuality = '480p';
+    return `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480`;
   }
 
   return '';
@@ -2961,9 +2992,35 @@ function openPlayer(media, episodeIndex = 0) {
     appState.currentEpisode = null;
     appState.activeServerIndex = 0;
     renderServerPills(media);
-    const directServer = (media.servers || []).find(s => (s.isDirect || (s.url && s.url.startsWith('https://') && !s.url.includes('/api/moviebox/stream')))) || ((media.servers && media.servers[0] && media.servers[0].url.startsWith('http') && !media.servers[0].url.includes('/api/moviebox/stream')) ? media.servers[0] : null);
+
+    // Prioritize lowest resolution server (360p/480p) first for instant playback
+    const lowestServer = getLowestResolutionServer(media);
     const autoRenewingServer = media.servers?.find(s => s.url && s.url.includes('/api/moviebox/stream'));
-    const initialUrl = (directServer ? directServer.url : null) || (media.directStreamUrl && media.directStreamUrl.startsWith('http') ? media.directStreamUrl : null) || (autoRenewingServer ? autoRenewingServer.url : (media.streamUrl || media.driveUrl));
+    let initialUrl = null;
+
+    if (lowestServer && lowestServer.url) {
+      initialUrl = lowestServer.url;
+      const res = parseInt(lowestServer.quality || lowestServer.name || '480', 10) || 480;
+      appState.currentQuality = `${res}p`;
+    } else if (autoRenewingServer && autoRenewingServer.url) {
+      initialUrl = autoRenewingServer.url;
+      appState.currentQuality = '480p';
+    } else if (media.directStreamUrl && media.directStreamUrl.startsWith('http')) {
+      initialUrl = media.directStreamUrl;
+    } else if (media.servers && media.servers[0] && media.servers[0].url) {
+      initialUrl = media.servers[0].url;
+    } else {
+      initialUrl = media.streamUrl || media.driveUrl;
+    }
+
+    // If media is from MovieBox and no lowestServer direct URL was found, request 480p
+    const sId = media?.subjectId || media?.mbSubjectId || (media?.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace('-hindi', '') : null);
+    if (!initialUrl && sId) {
+      const dPath = media.detailPath || media.mbDetailPath || '';
+      initialUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=0&ep=0&q=480`;
+      appState.currentQuality = '480p';
+    }
+
     playStreamUrl(initialUrl);
   }
 
@@ -3206,8 +3263,18 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       const jsonUrl = fullUrl.includes('?') ? `${fullUrl}&json=1` : `${fullUrl}?json=1`;
       const res = await fetch(jsonUrl, { cache: 'no-store' });
       const data = await res.json();
-      if (data && data.ok && data.streamUrl) {
-        playableUrl = data.streamUrl.startsWith('http') ? data.streamUrl : `${API_BASE_URL}${data.streamUrl}`;
+      if (data && data.ok) {
+        if (Array.isArray(data.qualities) && data.qualities.length > 0) {
+          appState.availableQualities = data.qualities;
+        }
+        if (data.resolution) {
+          updateQualityDisplay(data.resolution);
+        }
+        if (data.streamUrl) {
+          playableUrl = data.streamUrl.startsWith('http') ? data.streamUrl : `${API_BASE_URL}${data.streamUrl}`;
+        } else {
+          playableUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(fullUrl)}`;
+        }
       } else {
         playableUrl = `${API_BASE_URL}/api/stream?url=${encodeURIComponent(fullUrl)}`;
       }
@@ -3991,29 +4058,80 @@ function setLandscapeQuality(quality) {
   resetLandscapeControlsTimer();
 }
 
+function updateQualityDisplay(quality) {
+  const targetQ = (quality || appState.currentQuality || '480p').toLowerCase();
+  const qNum = parseInt(targetQ, 10) || 480;
+  appState.currentQuality = `${qNum}p`;
+
+  // 1. Update portrait dropdown button text
+  const currentText = document.getElementById('currentQualityText');
+  if (currentText) {
+    currentText.innerText = `${qNum}p`;
+  }
+
+  // 2. Update Landscape quality badge
+  const lsBadge = document.getElementById('lsQualityBadge');
+  if (lsBadge) {
+    lsBadge.innerText = `${qNum}P`;
+  }
+
+  // 3. Update Landscape drawer options (lsQualityOptionsList)
+  const lsList = document.getElementById('lsQualityOptionsList');
+  if (lsList) {
+    const buttons = lsList.querySelectorAll('.ls-speed-option');
+    buttons.forEach(btn => {
+      const bq = (btn.dataset.quality || btn.innerText || '').toLowerCase();
+      const isActive = bq.includes(String(qNum));
+      btn.classList.toggle('active', isActive);
+      const icon = btn.querySelector('.fa-check');
+      if (isActive && !icon) {
+        btn.insertAdjacentHTML('beforeend', '<i class="fa-solid fa-check" style="color: #00d26a; font-size: 13px; margin-left: 8px;"></i>');
+      } else if (!isActive && icon) {
+        icon.remove();
+      }
+    });
+  }
+
+  // 4. Update Portrait modal selection (qualityOptionsList)
+  const portList = document.getElementById('qualityOptionsList');
+  if (portList) {
+    const buttons = portList.querySelectorAll('.sheet-option-btn');
+    buttons.forEach(btn => {
+      const bq = (btn.dataset.q || btn.innerText || '').toLowerCase();
+      const isSelected = bq.includes(String(qNum));
+      btn.classList.toggle('selected', isSelected);
+      const checkIcon = btn.querySelector('.fa-check');
+      if (isSelected && !checkIcon) {
+        btn.insertAdjacentHTML('beforeend', '<i class="fa-solid fa-check" style="color: #00d26a; margin-left: auto;"></i>');
+      } else if (!isSelected && checkIcon) {
+        checkIcon.remove();
+      }
+    });
+  }
+}
+
 function updateQualityPillsForMedia(media) {
   const qualityList = document.getElementById('lsQualityOptionsList');
-  if (!qualityList) return;
-
-  // Real resolution options (never Server 1/2)
-  qualityList.innerHTML = `
-    <button class="ls-speed-option active" data-quality="1080p" onclick="setLandscapeQuality('1080p')">
-      <span>1080P FHD</span>
-      <i class="fa-solid fa-check" style="color: #00d26a; font-size: 13px;"></i>
-    </button>
-    <button class="ls-speed-option" data-quality="720p" onclick="setLandscapeQuality('720p')">
-      <span>720P HD</span>
-    </button>
-    <button class="ls-speed-option" data-quality="480p" onclick="setLandscapeQuality('480p')">
-      <span>480P SD</span>
-    </button>
-    <button class="ls-speed-option" data-quality="360p" onclick="setLandscapeQuality('360p')">
-      <span>360P</span>
-    </button>
-    <button class="ls-speed-option" data-quality="auto" onclick="setLandscapeQuality('Auto')">
-      <span>Auto</span>
-    </button>
-  `;
+  if (qualityList) {
+    qualityList.innerHTML = `
+      <button class="ls-speed-option" data-quality="1080p" onclick="setLandscapeQuality('1080p')">
+        <span>1080P FHD</span>
+      </button>
+      <button class="ls-speed-option" data-quality="720p" onclick="setLandscapeQuality('720p')">
+        <span>720P HD</span>
+      </button>
+      <button class="ls-speed-option" data-quality="480p" onclick="setLandscapeQuality('480p')">
+        <span>480P SD</span>
+      </button>
+      <button class="ls-speed-option" data-quality="360p" onclick="setLandscapeQuality('360p')">
+        <span>360P</span>
+      </button>
+      <button class="ls-speed-option" data-quality="auto" onclick="setLandscapeQuality('Auto')">
+        <span>Auto</span>
+      </button>
+    `;
+  }
+  updateQualityDisplay(appState.currentQuality || '480p');
 }
 
 // ============================================================
@@ -7053,32 +7171,17 @@ function autoFallbackTo720p() {
 }
 
 function selectVideoQuality(quality, isAuto = false) {
-  const targetQ = (quality || '1080p').toLowerCase();
-  appState.currentQuality = targetQ;
+  const targetQ = (quality || '480p').toLowerCase();
+  const targetResNum = parseInt(targetQ, 10) || (targetQ === 'auto' ? 480 : 720);
+  appState.currentQuality = `${targetResNum}p`;
 
-  // Update portrait dropdown button text
-  const currentText = document.getElementById('currentQualityText');
-  if (currentText) {
-    currentText.innerText = targetQ.toUpperCase();
-  }
-
-  // Update Landscape quality badge
-  const lsBadge = document.getElementById('lsQualityBadge');
-  if (lsBadge) {
-    lsBadge.innerText = targetQ.toUpperCase();
-  }
-
-  // Update modal selection checkmarks
-  document.querySelectorAll('#qualityOptionsList .sheet-option-btn').forEach(btn => {
-    const q = (btn.dataset.q || btn.innerText || '').toLowerCase();
-    btn.classList.toggle('selected', q.includes(targetQ));
-  });
+  updateQualityDisplay(`${targetResNum}p`);
 
   const overlay = document.getElementById('qualitySheetOverlay');
   if (overlay) overlay.classList.remove('open');
 
   if (!isAuto && typeof showToast === 'function') {
-    showToast(`Quality set to ${targetQ.toUpperCase()}`);
+    showToast(`Quality set to ${targetResNum}p ${targetResNum >= 1080 ? 'FHD' : targetResNum >= 720 ? 'HD' : 'SD'}`);
   }
 
   // Switch stream URL while preserving current video playback timestamp
@@ -7092,11 +7195,18 @@ function selectVideoQuality(quality, isAuto = false) {
   const activeObj = isSeries ? (appState.currentEpisode || (currentMedia.seasons?.[0]?.episodes?.[0])) : currentMedia;
   if (!activeObj) return;
 
-  const targetResNum = parseInt(targetQ, 10);
   let targetStreamUrl = null;
 
-  // 1. Check if activeObj has a server with matching quality
-  if (Array.isArray(activeObj.servers)) {
+  // 1. Check if appState.availableQualities has an exact match
+  if (Array.isArray(appState.availableQualities) && appState.availableQualities.length > 0) {
+    const matched = appState.availableQualities.find(q => parseInt(q.resolution, 10) === targetResNum);
+    if (matched && (matched.proxyUrl || matched.url)) {
+      targetStreamUrl = matched.proxyUrl || matched.url;
+    }
+  }
+
+  // 2. Check if activeObj has a server with matching quality
+  if (!targetStreamUrl && Array.isArray(activeObj.servers)) {
     const matchedServer = activeObj.servers.find(s => {
       const qNum = parseInt(s.quality || '', 10);
       const nameMatch = (s.name || '').includes(String(targetResNum));
@@ -7107,30 +7217,35 @@ function selectVideoQuality(quality, isAuto = false) {
     }
   }
 
-  // 2. If not found in servers, check if there is an /api/moviebox/stream endpoint or subjectId
+  // 3. If not found in servers, check if there is an /api/moviebox/stream endpoint or subjectId
   if (!targetStreamUrl) {
     let mbServer = (activeObj.servers || []).find(s => s.url && s.url.includes('/api/moviebox/stream'));
     if (mbServer) {
-      // Append or replace q param
       let u = mbServer.url;
       u = u.replace(/([?&])q=\d+/, '');
       targetStreamUrl = u + (u.includes('?') ? '&' : '?') + `q=${targetResNum}`;
-    } else if (currentMedia.subjectId) {
-      const seNum = isSeries ? (appState.currentSeasonNumber || 1) : 0;
-      const epNum = isSeries ? (appState.currentEpisodeNumber || 1) : 0;
-      targetStreamUrl = `/api/moviebox/stream?id=${currentMedia.subjectId}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
+    } else {
+      const sId = currentMedia.subjectId || currentMedia.mbSubjectId || (currentMedia.id && currentMedia.id.startsWith('mb-') ? currentMedia.id.replace(/^mb-[ms]-/, '').replace(/-hindi$/, '') : null);
+      if (sId) {
+        const seNum = isSeries ? (appState.currentSeasonNumber || 1) : 0;
+        const epNum = isSeries ? (appState.currentEpisodeNumber || 1) : 0;
+        const dPath = currentMedia.detailPath || currentMedia.mbDetailPath || '';
+        targetStreamUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
+      }
     }
   }
 
   if (targetStreamUrl) {
     const seekPos = videoPlayer.currentTime || 0;
     const isPaused = videoPlayer.paused;
-    console.log(`[Quality Switch] Switching to ${targetQ} stream: `, targetStreamUrl);
+    console.log(`[Quality Switch] Switching to ${targetResNum}p stream at ${seekPos.toFixed(1)}s:`, targetStreamUrl);
 
     playStreamUrl(targetStreamUrl, null, seekPos);
     if (!isPaused) {
       setTimeout(() => { videoPlayer.play().catch(() => {}); }, 150);
     }
+  } else {
+    console.warn(`[Quality Switch] No stream URL found for ${targetResNum}p`);
   }
 }
 
