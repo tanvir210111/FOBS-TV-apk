@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v68';
+const CACHE_KEY = 'fobs_tv_content_cache_v69';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -3250,13 +3250,39 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
   if (playableUrl.includes('/api/moviebox/stream')) {
     const fullUrl = playableUrl.startsWith('http') ? playableUrl : (API_BASE_URL + (playableUrl.startsWith('/') ? '' : '/') + playableUrl);
     const jsonUrl = fullUrl.includes('?') ? (fullUrl + '&json=1') : (fullUrl + '?json=1');
-    fetch(jsonUrl, { cache: 'no-store' }).then(r => r.json()).then(data => {
-      if (data && data.ok) {
+    try {
+      const resp = await fetch(jsonUrl, { cache: 'no-store' });
+      const data = await resp.json();
+      if (data && data.ok && data.streamUrl) {
         if (Array.isArray(data.qualities) && data.qualities.length > 0) appState.availableQualities = data.qualities;
         if (data.resolution) updateQualityDisplay(data.resolution);
+        return playStreamUrl(data.streamUrl, audioIndex, seekTime);
       }
-    }).catch(() => {});
-    playableUrl = fullUrl;
+    } catch (e) {
+      console.warn('MovieBox pre-resolve json error, playing full redirect URL directly:', e.message);
+    }
+    // Direct 302 native fallback: Set src to fullUrl directly (DO NOT wrap in /api/stream!)
+    console.log('Playing MovieBox stream via direct 302 redirect:', fullUrl);
+    videoPlayer.src = fullUrl;
+    videoPlayer.load();
+    if (seekTime && seekTime > 0) {
+      let seekApplied = false;
+      const applySeek = () => {
+        if (seekApplied) return;
+        seekApplied = true;
+        try {
+          if (videoPlayer.duration && videoPlayer.duration > 1) {
+            videoPlayer.currentTime = Math.min(seekTime, videoPlayer.duration - 1);
+          } else {
+            videoPlayer.currentTime = seekTime;
+          }
+        } catch (e) {}
+      };
+      videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
+      videoPlayer.addEventListener('canplay', applySeek, { once: true });
+    }
+    videoPlayer.play().catch(() => {});
+    return;
   }
 
   // If already routed through /api/stream proxy (e.g. from MovieBox resolver in browser or APK)
@@ -5908,6 +5934,10 @@ function setupVideoListeners() {
       console.log(`Retrying stream via proxy at ${resumeTime}s (attempt ${videoPlayer._retryCount})...`);
 
       const targetUrl = rawUrl.startsWith('http') ? rawUrl : `${API_BASE_URL}${rawUrl}`;
+      if (targetUrl.includes('/api/moviebox/stream')) {
+        playStreamUrl(targetUrl, null, resumeTime);
+        return;
+      }
       const proxyUrl = targetUrl.includes('/api/stream') 
         ? targetUrl 
         : `${API_BASE_URL}/api/stream?url=${encodeURIComponent(targetUrl)}`;

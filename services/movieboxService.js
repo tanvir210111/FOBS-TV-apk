@@ -258,17 +258,22 @@ class MovieBoxService {
 
         const data = res.data?.data;
         if (data && Array.isArray(data.streams) && data.streams.length > 0) {
-          const sorted = [...data.streams].sort((a, b) => {
+          const sortedDesc = [...data.streams].sort((a, b) => {
             const resA = parseInt(a.resolutions, 10) || 0;
             const resB = parseInt(b.resolutions, 10) || 0;
             return resB - resA;
           });
-          const best = sorted[0];
+          const sortedAsc = [...data.streams].sort((a, b) => {
+            const resA = parseInt(a.resolutions, 10) || 0;
+            const resB = parseInt(b.resolutions, 10) || 0;
+            return resA - resB;
+          });
+          const fastStart = sortedAsc.find(st => (parseInt(st.resolutions, 10) || 0) >= 360) || sortedAsc[0];
           return {
             subjectId,
-            streamUrl: best.url,
-            resolution: parseInt(best.resolutions, 10) || 1080,
-            qualities: sorted.map(st => ({
+            streamUrl: fastStart.url,
+            resolution: parseInt(fastStart.resolutions, 10) || 480,
+            qualities: sortedDesc.map(st => ({
               resolution: parseInt(st.resolutions, 10) || 1080,
               url: st.url,
               size: st.size || 0

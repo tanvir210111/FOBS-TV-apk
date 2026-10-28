@@ -245004,8 +245004,15 @@
               "duration": "45 min",
               "still": "https://pbcdnw.aoneroom.com/image/2026/10/25/527d29143b34ac60780899f45d2c0a2d.jpg",
               "stillPath": "https://pbcdnw.aoneroom.com/image/2026/10/25/527d29143b34ac60780899f45d2c0a2d.jpg",
-              "streamUrl": "/api/moviebox/stream?id=3292762350108954536&path=final-table-hindi-OjBf6HXSeV3&se=1&ep=01",
+              "streamUrl": "/api/moviebox/stream?id=3292762350108954536&path=final-table-hindi-OjBf6HXSeV3&se=1&ep=01&q=480",
               "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing 480p Fast)",
+                  "url": "/api/moviebox/stream?id=3292762350108954536&path=final-table-hindi-OjBf6HXSeV3&se=1&ep=01&q=480",
+                  "quality": "480p",
+                  "audio": "Original audio",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 3 (480p)",
                   "url": "https://bcdnxw.hakunaymatata.com/bt/1a18093e85eb559e0e3aa14a1676f6bd.mp4?sign=81848cd999f1150c0ae1d1d72e67f8f0&t=1793035854",
@@ -245025,13 +245032,6 @@
                   "url": "https://bcdnxw.hakunaymatata.com/cms/0f69bafbed8de43e34e46651ec4de005.mp4?sign=76e8523c8a018a01a89249b261eee406&t=1793033081",
                   "quality": "1080p",
                   "audio": "Original audio",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=3292762350108954536&path=final-table-hindi-OjBf6HXSeV3&se=1&ep=01",
-                  "quality": "1080p",
-                  "audio": "Original",
                   "isDirect": true
                 },
                 {
@@ -245221,8 +245221,15 @@
               "duration": "45 min",
               "still": "https://pbcdnw.aoneroom.com/image/2026/10/25/527d29143b34ac60780899f45d2c0a2d.jpg",
               "stillPath": "https://pbcdnw.aoneroom.com/image/2026/10/25/527d29143b34ac60780899f45d2c0a2d.jpg",
-              "streamUrl": "/api/moviebox/stream?id=3292762350108954536&path=final-table-hindi-OjBf6HXSeV3&se=1&ep=02",
+              "streamUrl": "/api/moviebox/stream?id=3292762350108954536&path=final-table-hindi-OjBf6HXSeV3&se=1&ep=02&q=480",
               "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing 480p Fast)",
+                  "url": "/api/moviebox/stream?id=3292762350108954536&path=final-table-hindi-OjBf6HXSeV3&se=1&ep=02&q=480",
+                  "quality": "480p",
+                  "audio": "Original audio",
+                  "isDirect": true
+                },
                 {
                   "name": "Server 2 (480p)",
                   "url": "https://bcdnxw.hakunaymatata.com/bt/541982ebd684b8d9c6d6de86af7ece0a.mp4?sign=193f47bde857defc99844eb52d177a01&t=1793035584",
@@ -245235,13 +245242,6 @@
                   "url": "https://bcdnxw.hakunaymatata.com/cms/63bf7bbf7b1f1420f804ae34ae432ea8.mp4?sign=5d5d1ae4579ebb7f4faf3d5162fd9cbc&t=1793036708",
                   "quality": "1080p",
                   "audio": "Original audio",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 1 (HD - Auto-Renewing 1080p)",
-                  "url": "/api/moviebox/stream?id=3292762350108954536&path=final-table-hindi-OjBf6HXSeV3&se=1&ep=02",
-                  "quality": "1080p",
-                  "audio": "Original",
                   "isDirect": true
                 },
                 {

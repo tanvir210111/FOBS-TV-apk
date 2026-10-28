@@ -1383,6 +1383,52 @@ app.all('/api/stream', async (req, res) => {
     return res.status(400).send('Missing video URL parameter');
   }
 
+  // Prevent double-proxy loops: unwrap any nested /api/stream?url=
+  while (typeof targetUrl === 'string' && targetUrl.includes('/api/stream?url=')) {
+    try {
+      const urlObj = new URL(targetUrl, 'http://187.127.114.52');
+      const inner = urlObj.searchParams.get('url');
+      if (inner && inner !== targetUrl) {
+        targetUrl = decodeURIComponent(inner);
+      } else {
+        break;
+      }
+    } catch (e) {
+      break;
+    }
+  }
+
+  // Direct resolve if targetUrl is /api/moviebox/stream to avoid double proxying
+  if (typeof targetUrl === 'string' && targetUrl.includes('/api/moviebox/stream')) {
+    try {
+      const urlObj = new URL(targetUrl, 'http://187.127.114.52');
+      const mbId = urlObj.searchParams.get('id');
+      const mbPath = urlObj.searchParams.get('path') || getMovieBoxDetailPath(mbId) || '';
+      const mbSe = parseInt(urlObj.searchParams.get('se') || '1', 10);
+      const mbEp = parseInt(urlObj.searchParams.get('ep') || '1', 10);
+      const mbQ = parseInt(urlObj.searchParams.get('q') || urlObj.searchParams.get('quality') || '0', 10);
+      if (mbId) {
+        let media = await movieboxService.resolveMedia(mbId, mbPath, mbSe, mbEp);
+        if (!media || !media.streamUrl) media = await movieboxService.resolveMedia(mbId, mbPath, 0, mbEp);
+        if (!media || !media.streamUrl) media = await movieboxService.resolveMedia(mbId, mbPath, 0, 0);
+        if (media && media.streamUrl) {
+          if (mbQ > 0 && Array.isArray(media.qualities) && media.qualities.length > 0) {
+            const matchedQ = media.qualities.find(q => q.resolution === mbQ)
+                          || media.qualities.find(q => q.resolution <= mbQ)
+                          || media.qualities[0];
+            targetUrl = matchedQ?.url || media.streamUrl;
+          } else {
+            const sortedQ = [...(media.qualities || [])].sort((a, b) => (parseInt(a.resolution, 10) || 0) - (parseInt(b.resolution, 10) || 0));
+            const lowestQ = sortedQ.find(q => q.resolution >= 360) || sortedQ[0];
+            targetUrl = lowestQ?.url || media.streamUrl;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('MovieBox unwrap inside /api/stream error:', e.message);
+    }
+  }
+
   const resolvedUrl = await resolveStreamUrl(targetUrl);
   if (!resolvedUrl) {
     return res.status(404).send('Failed to resolve stream URL');
