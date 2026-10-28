@@ -1583,15 +1583,29 @@ app.all('/api/stream', async (req, res) => {
     requestHeaders['Referer'] = 'https://movieboxapp.in/';
   }
 
+  const CHUNK_SIZE = 4 * 1024 * 1024; // 4MB per request for ultra-fast startup and buffer-free streaming
+  let upstreamRange = range;
+
   if (range) {
-    requestHeaders['Range'] = range;
+    const parts = range.replace(/bytes=/, '').split('-');
+    const start = parseInt(parts[0], 10) || 0;
+    if (!parts[1] || parts[1].trim() === '') {
+      upstreamRange = `bytes=${start}-${start + CHUNK_SIZE - 1}`;
+    } else {
+      const end = parseInt(parts[1], 10);
+      if (end - start + 1 > CHUNK_SIZE * 2) {
+        upstreamRange = `bytes=${start}-${start + CHUNK_SIZE - 1}`;
+      } else {
+        upstreamRange = range;
+      }
+    }
   } else if (isHead) {
-    requestHeaders['Range'] = 'bytes=0-0';
+    upstreamRange = 'bytes=0-0';
   } else {
-    // Smart Fast Handshake: When client sends initial probe without Range,
-    // request first 2MB chunk so upstream doesn't dump 4GB and server responds in milliseconds!
-    requestHeaders['Range'] = 'bytes=0-2097151';
+    upstreamRange = `bytes=0-${CHUNK_SIZE - 1}`;
   }
+
+  requestHeaders['Range'] = upstreamRange;
 
   let streamFetchUrl = resolvedUrl;
   let response;
