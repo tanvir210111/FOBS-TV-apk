@@ -1048,13 +1048,13 @@ app.get('/api/moviebox/stream', async (req, res) => {
   try {
     if (id === 'anime-suzume') id = '886218306628322136';
     if (id === 'anime-mugentrain') id = '6189703385403770824';
+    let resolvedPath = detailPath || getMovieBoxDetailPath(id) || '';
     if (String(id).includes('809301786023658480')) {
       id = '809301786023658480';
       resolvedPath = 'hidden-face-cegwEMRBMX';
     }
-    const seNum = parseInt(se || '1', 10);
-    const epNum = parseInt(ep || '1', 10);
-    let resolvedPath = detailPath || getMovieBoxDetailPath(id) || '';
+    const seNum = (se !== undefined && se !== null && se !== '') ? parseInt(se, 10) : 0;
+    const epNum = (ep !== undefined && ep !== null && ep !== '') ? parseInt(ep, 10) : 0;
     if (!resolvedPath) {
       try {
         const autoD = await movieboxService.getDetail(id);
@@ -1240,7 +1240,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
     res.redirect(302, fullProxiedStreamUrl);
   } catch (err) {
     console.error('MovieBox stream redirect error:', err.message);
-    res.status(500).send('Stream resolution failed');
+    res.status(500).json({ error: 'Stream resolution failed', details: err.message, stack: err.stack });
   }
 });
 
