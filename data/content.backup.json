@@ -868,19 +868,21 @@
       "description": "Watch Hidden Face (2024) full Korean movie in Hindi dubbed with HD 1080p quality, English & Bangla Subtitles. Seong-jin, a conductor, and Su-yeon, a cellist, are engaged. Su-yeon disappears, leaving a video. Mi-joo replaces Su-yeon and develops a secret relationship with Seong-jin. They feel watched as their bond deepens.",
       "subtitles": [
         {
-          "id": "sub_bn_hf_hindi",
-          "label": "বাংলা (Bangla)",
+          "id": "sub_bn_hf_subsource",
+          "label": "বাংলা (SubSource)",
           "language": "bn",
           "srclang": "bn",
+          "source": "SubSource",
           "src": "/subtitles/hidden_face_2024_bn.vtt",
           "url": "/subtitles/hidden_face_2024_bn.vtt",
           "format": "vtt"
         },
         {
-          "id": "sub_en_hf_hindi",
-          "label": "English",
+          "id": "sub_en_hf_subsource",
+          "label": "English (SubSource BluRay)",
           "language": "en",
           "srclang": "en",
+          "source": "SubSource",
           "src": "/subtitles/hidden_face_2024_en.vtt",
           "url": "/subtitles/hidden_face_2024_en.vtt",
           "format": "vtt"
@@ -888,19 +890,21 @@
       ],
       "captions": [
         {
-          "id": "sub_bn_hf_hindi",
-          "label": "বাংলা (Bangla)",
+          "id": "sub_bn_hf_subsource",
+          "label": "বাংলা (SubSource)",
           "language": "bn",
           "srclang": "bn",
+          "source": "SubSource",
           "src": "/subtitles/hidden_face_2024_bn.vtt",
           "url": "/subtitles/hidden_face_2024_bn.vtt",
           "format": "vtt"
         },
         {
-          "id": "sub_en_hf_hindi",
-          "label": "English",
+          "id": "sub_en_hf_subsource",
+          "label": "English (SubSource BluRay)",
           "language": "en",
           "srclang": "en",
+          "source": "SubSource",
           "src": "/subtitles/hidden_face_2024_en.vtt",
           "url": "/subtitles/hidden_face_2024_en.vtt",
           "format": "vtt"
@@ -965,19 +969,21 @@
       "description": "Hidden Face (2024) Korean Movie with Original Audio & Multi-Subtitles (বাংলা ও English). Seong-jin, an orchestra conductor, and Su-yeon, a cellist, are engaged. When Su-yeon mysteriously disappears, Mi-joo steps in as her replacement. As an illicit attraction ignites, they sense an invisible presence watching them from within the shadows.",
       "subtitles": [
         {
-          "id": "sub_bn_hf_orig",
-          "label": "বাংলা (Bangla)",
+          "id": "sub_bn_hf_subsource",
+          "label": "বাংলা (SubSource)",
           "language": "bn",
           "srclang": "bn",
+          "source": "SubSource",
           "src": "/subtitles/hidden_face_2024_bn.vtt",
           "url": "/subtitles/hidden_face_2024_bn.vtt",
           "format": "vtt"
         },
         {
-          "id": "sub_en_hf_orig",
-          "label": "English",
+          "id": "sub_en_hf_subsource",
+          "label": "English (SubSource BluRay)",
           "language": "en",
           "srclang": "en",
+          "source": "SubSource",
           "src": "/subtitles/hidden_face_2024_en.vtt",
           "url": "/subtitles/hidden_face_2024_en.vtt",
           "format": "vtt"
@@ -985,19 +991,21 @@
       ],
       "captions": [
         {
-          "id": "sub_bn_hf_orig",
-          "label": "বাংলা (Bangla)",
+          "id": "sub_bn_hf_subsource",
+          "label": "বাংলা (SubSource)",
           "language": "bn",
           "srclang": "bn",
+          "source": "SubSource",
           "src": "/subtitles/hidden_face_2024_bn.vtt",
           "url": "/subtitles/hidden_face_2024_bn.vtt",
           "format": "vtt"
         },
         {
-          "id": "sub_en_hf_orig",
-          "label": "English",
+          "id": "sub_en_hf_subsource",
+          "label": "English (SubSource BluRay)",
           "language": "en",
           "srclang": "en",
+          "source": "SubSource",
           "src": "/subtitles/hidden_face_2024_en.vtt",
           "url": "/subtitles/hidden_face_2024_en.vtt",
           "format": "vtt"
