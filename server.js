@@ -815,8 +815,57 @@ async function resolveStreamUrl(rawUrl) {
       rawUrl.includes('sunburst') ||
       rawUrl.includes('stormshade')
     ) {
-      // Direct fast CDN links are already valid and pre-signed. Return immediately without hitting rate-limited API!
-      resolved = rawUrl;
+      // Check if URL has an expired timestamp token (&t=...)
+      const tMatch = rawUrl.match(/[?&]t=(\d+)/);
+      const isExpired = tMatch && (parseInt(tMatch[1], 10) * 1000 <= Date.now() + 30000);
+
+      if (isExpired) {
+        // Auto-refresh expired direct CDN link instantly from content.json metadata
+        try {
+          const content = getContentData();
+          let sId = null;
+          let dPath = '';
+          let seNum = 0;
+          let epNum = 0;
+
+          const matchedMovie = (content.movies || []).find(m => 
+            m.directStreamUrl === rawUrl || (m.servers || []).some(s => s.url === rawUrl)
+          );
+          if (matchedMovie) {
+            sId = matchedMovie.subjectId || (matchedMovie.id && matchedMovie.id.startsWith('mb-m-') ? matchedMovie.id.replace('mb-m-', '').replace('-hindi', '') : null);
+            dPath = matchedMovie.detailPath || '';
+          } else {
+            for (const s of (content.series || [])) {
+              for (const se of (s.seasons || [])) {
+                for (const ep of (se.episodes || [])) {
+                  if (ep.directStreamUrl === rawUrl || (ep.servers || []).some(srv => srv.url === rawUrl)) {
+                    sId = s.subjectId || (s.id && s.id.startsWith('mb-s-') ? s.id.replace('mb-s-', '') : null);
+                    dPath = s.detailPath || '';
+                    seNum = ep.season || se.seasonNumber || 1;
+                    epNum = ep.episode || ep.episodeNumber || 1;
+                    break;
+                  }
+                }
+                if (sId) break;
+              }
+              if (sId) break;
+            }
+          }
+
+          if (sId) {
+            const fresh = await movieboxService.resolveMedia(sId, dPath, seNum, epNum);
+            if (fresh && fresh.streamUrl) {
+              resolved = fresh.streamUrl;
+            }
+          }
+        } catch (e) {
+          console.error('Error refreshing expired CDN link:', e.message);
+        }
+      }
+
+      if (!resolved) {
+        resolved = rawUrl;
+      }
     }
   }
 
@@ -1552,7 +1601,7 @@ app.all('/api/stream', async (req, res) => {
         httpsAgent: streamHttpsAgent,
         responseType: 'stream',
         maxRedirects: 5,
-        timeout: 15000,
+        timeout: 5000,
         validateStatus: (status) => status >= 200 && status < 400
       });
     } catch (initialErr) {
@@ -1580,7 +1629,7 @@ app.all('/api/stream', async (req, res) => {
             httpsAgent: streamHttpsAgent,
             responseType: 'stream',
             maxRedirects: 5,
-            timeout: 15000,
+            timeout: 5000,
             validateStatus: (status) => status >= 200 && status < 400
           });
         } else {

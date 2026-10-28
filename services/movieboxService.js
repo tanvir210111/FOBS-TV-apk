@@ -254,7 +254,7 @@ class MovieBoxService {
             'x-source': 'moviebox'
           },
           httpsAgent: ipv4Agent,
-          timeout: 8000
+          timeout: 3500
         });
 
         const data = res.data?.data;
@@ -309,7 +309,7 @@ class MovieBoxService {
             'Referer': refPath
           },
           httpsAgent: ipv4Agent,
-          timeout: 10000
+          timeout: 4000
         });
 
         const data = res.data?.data;
@@ -318,12 +318,13 @@ class MovieBoxService {
         }
 
         const sortedDownloads = [...data.downloads].sort((a, b) => (b.resolution || 0) - (a.resolution || 0));
-        const best = sortedDownloads[0];
+        const sortedAsc = [...data.downloads].sort((a, b) => (a.resolution || 0) - (b.resolution || 0));
+        const fastStart = sortedAsc.find(d => d.resolution >= 360) || sortedAsc[0];
 
         return {
           subjectId,
-          streamUrl: best.url,
-          resolution: best.resolution,
+          streamUrl: fastStart.url,
+          resolution: fastStart.resolution,
           qualities: sortedDownloads.map(d => ({
             resolution: d.resolution,
             url: d.url,
@@ -370,19 +371,19 @@ class MovieBoxService {
       }
     }
 
-    // Try primary params
-    let result = await this._fetchPlayStream(subjectId, detailPath, season, episode);
-    if (!result) result = await this._fetchDownload(subjectId, detailPath, season, episode);
+    // Try primary params: prioritize fast direct CDN downloads first (resolves in ~300ms)
+    let result = await this._fetchDownload(subjectId, detailPath, season, episode);
+    if (!result) result = await this._fetchPlayStream(subjectId, detailPath, season, episode);
 
     // Fallback attempt: if season=1 & ep>0 returned nothing, try season=0 & ep-1 (0-based)
     if (!result && season === 1 && episode > 0) {
-      result = await this._fetchPlayStream(subjectId, detailPath, 0, episode - 1);
-      if (!result) result = await this._fetchDownload(subjectId, detailPath, 0, episode - 1);
+      result = await this._fetchDownload(subjectId, detailPath, 0, episode - 1);
+      if (!result) result = await this._fetchPlayStream(subjectId, detailPath, 0, episode - 1);
     }
     // If season=0 & ep=0 returned nothing, try season=1 & ep=1 (1-based)
     if (!result && season === 0 && episode === 0) {
-      result = await this._fetchPlayStream(subjectId, detailPath, 1, 1);
-      if (!result) result = await this._fetchDownload(subjectId, detailPath, 1, 1);
+      result = await this._fetchDownload(subjectId, detailPath, 1, 1);
+      if (!result) result = await this._fetchPlayStream(subjectId, detailPath, 1, 1);
     }
 
     if (result) {

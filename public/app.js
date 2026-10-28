@@ -2638,6 +2638,17 @@ function toggleSeasonDropdown(event) {
   openSeasonSheet();
 }
 
+// Helper: Check if signed CDN token timestamp is expired or expiring within 30s
+function isUrlExpired(url) {
+  if (!url) return true;
+  const m = url.match(/[?&]t=(\d+)/);
+  if (m) {
+    const exp = parseInt(m[1], 10);
+    return (exp * 1000) <= (Date.now() + 30000);
+  }
+  return false;
+}
+
 // Helper: Find lowest resolution server (360p -> 480p -> 720p -> 1080p) for instant start
 function getLowestResolutionServer(activeObj, isOrig) {
   if (!activeObj) return null;
@@ -2677,20 +2688,7 @@ function getActiveEpisodeStream(ep, audioTrack) {
   const track = audioTrack || appState.currentAudioTrack || 'Original audio';
   const isOrig = track.toLowerCase().includes('original') || track.toLowerCase().includes('korean');
 
-  // 1. High Priority: Lowest resolution server (360p/480p) first for instant zero-buffering playback
-  const lowestServer = getLowestResolutionServer(ep, isOrig);
-  if (lowestServer && lowestServer.url && lowestServer.url.startsWith('http')) {
-    const res = parseInt(lowestServer.quality || lowestServer.name || '480', 10) || 480;
-    appState.currentQuality = `${res}p`;
-    return lowestServer.url;
-  }
-
-  // 2. Direct fast CDN stream fallback
-  if (ep.directStreamUrl && ep.directStreamUrl.startsWith('http')) {
-    return ep.directStreamUrl;
-  }
-
-  // 3. Fallback: Auto-renewing /api/moviebox/stream endpoint (defaults to lowest 480p/360p in backend)
+  // 1. High Priority: Auto-renewing MovieBox endpoint (always fresh token & lowest 480p/360p first)
   if (ep.servers && Array.isArray(ep.servers)) {
     const autoRenewingServer = ep.servers.find(s => 
       s.url && s.url.includes('/api/moviebox/stream') && (
@@ -2701,30 +2699,25 @@ function getActiveEpisodeStream(ep, audioTrack) {
     ) || ep.servers.find(s => s.url && s.url.includes('/api/moviebox/stream'));
     if (autoRenewingServer && autoRenewingServer.url) {
       appState.currentQuality = '480p';
-      return autoRenewingServer.url;
+      const u = autoRenewingServer.url;
+      return u.includes('q=') ? u : `${u}${u.includes('?') ? '&' : '?'}q=480`;
     }
-
-    const matchServer = ep.servers.find(s => isOrig
-      ? (s.audio === 'Original audio' || /original|korean/i.test(s.name))
-      : (s.audio === 'Hindi dub' || /hindi/i.test(s.name))
-    );
-    if (matchServer && matchServer.url) return matchServer.url;
   }
 
-  // 4. AudioTracks map fallback
-  if (ep.audioTracks && typeof ep.audioTracks === 'object' && !Array.isArray(ep.audioTracks)) {
-    const val = isOrig
-      ? (ep.audioTracks['Original audio'] || ep.audioTracks['Original Audio'] || ep.audioTracks['Korean'] || ep.audioTracks['Original'])
-      : (ep.audioTracks['Hindi dub'] || ep.audioTracks['Hindi Dub'] || ep.audioTracks['Hindi']);
-    if (val) return val;
+  // 2. Lowest valid unexpired direct server
+  const lowestServer = getLowestResolutionServer(ep, isOrig);
+  if (lowestServer && lowestServer.url && lowestServer.url.startsWith('http') && !isUrlExpired(lowestServer.url)) {
+    const res = parseInt(lowestServer.quality || lowestServer.name || '480', 10) || 480;
+    appState.currentQuality = `${res}p`;
+    return lowestServer.url;
   }
 
-  if (ep.servers && Array.isArray(ep.servers) && ep.servers[0] && ep.servers[0].url) {
-    return ep.servers[0].url;
+  // 3. Fallback direct stream if not expired
+  if (ep.directStreamUrl && ep.directStreamUrl.startsWith('http') && !isUrlExpired(ep.directStreamUrl)) {
+    return ep.directStreamUrl;
   }
-  if (ep.streamUrl) return ep.streamUrl;
 
-  // Resilient fallback: auto-generate MovieBox stream URL with lowest resolution (480p)
+  // 4. Resilient fallback: auto-generate MovieBox stream URL with lowest resolution (480p)
   const m = appState.currentMedia;
   const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : null);
   const dPath = m?.detailPath || m?.mbDetailPath || m?.movieboxDetailPath || '';
@@ -2735,7 +2728,7 @@ function getActiveEpisodeStream(ep, audioTrack) {
     return `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480`;
   }
 
-  return '';
+  return (lowestServer && lowestServer.url) || ep.streamUrl || '';
 }
 
 // Switch Active Season (Season 1 / Season 2)
@@ -2993,32 +2986,29 @@ function openPlayer(media, episodeIndex = 0) {
     appState.activeServerIndex = 0;
     renderServerPills(media);
 
-    // Prioritize lowest resolution server (360p/480p) first for instant playback
-    const lowestServer = getLowestResolutionServer(media);
+    // Prioritize auto-renewing MovieBox stream (always fresh token & lowest 480p/360p first)
     const autoRenewingServer = media.servers?.find(s => s.url && s.url.includes('/api/moviebox/stream'));
+    const lowestServer = getLowestResolutionServer(media);
     let initialUrl = null;
 
-    if (lowestServer && lowestServer.url) {
+    if (autoRenewingServer && autoRenewingServer.url) {
+      initialUrl = autoRenewingServer.url.includes('q=') ? autoRenewingServer.url : `${autoRenewingServer.url}${autoRenewingServer.url.includes('?') ? '&' : '?'}q=480`;
+      appState.currentQuality = '480p';
+    } else if (lowestServer && lowestServer.url && !isUrlExpired(lowestServer.url)) {
       initialUrl = lowestServer.url;
       const res = parseInt(lowestServer.quality || lowestServer.name || '480', 10) || 480;
       appState.currentQuality = `${res}p`;
-    } else if (autoRenewingServer && autoRenewingServer.url) {
-      initialUrl = autoRenewingServer.url;
-      appState.currentQuality = '480p';
-    } else if (media.directStreamUrl && media.directStreamUrl.startsWith('http')) {
-      initialUrl = media.directStreamUrl;
-    } else if (media.servers && media.servers[0] && media.servers[0].url) {
-      initialUrl = media.servers[0].url;
     } else {
-      initialUrl = media.streamUrl || media.driveUrl;
-    }
-
-    // If media is from MovieBox and no lowestServer direct URL was found, request 480p
-    const sId = media?.subjectId || media?.mbSubjectId || (media?.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace('-hindi', '') : null);
-    if (!initialUrl && sId) {
-      const dPath = media.detailPath || media.mbDetailPath || '';
-      initialUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=0&ep=0&q=480`;
-      appState.currentQuality = '480p';
+      const sId = media?.subjectId || media?.mbSubjectId || (media?.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace('-hindi', '') : null);
+      if (sId) {
+        const dPath = media.detailPath || media.mbDetailPath || '';
+        initialUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=0&ep=0&q=480`;
+        appState.currentQuality = '480p';
+      } else if (lowestServer && lowestServer.url) {
+        initialUrl = lowestServer.url;
+      } else {
+        initialUrl = media.streamUrl || media.driveUrl;
+      }
     }
 
     playStreamUrl(initialUrl);
