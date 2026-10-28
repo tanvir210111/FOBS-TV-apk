@@ -17,7 +17,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v69';
+const CACHE_KEY = 'fobs_tv_content_cache_v70';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -3246,23 +3246,12 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     return;
   }
 
-  // MovieBox dynamic stream redirect handler: Pre-resolve to actual direct CDN link or route through stream proxy
+  // MovieBox dynamic stream redirect handler: Instant zero-delay playback + background quality discovery
   if (playableUrl.includes('/api/moviebox/stream')) {
     const fullUrl = playableUrl.startsWith('http') ? playableUrl : (API_BASE_URL + (playableUrl.startsWith('/') ? '' : '/') + playableUrl);
     const jsonUrl = fullUrl.includes('?') ? (fullUrl + '&json=1') : (fullUrl + '?json=1');
-    try {
-      const resp = await fetch(jsonUrl, { cache: 'no-store' });
-      const data = await resp.json();
-      if (data && data.ok && data.streamUrl) {
-        if (Array.isArray(data.qualities) && data.qualities.length > 0) appState.availableQualities = data.qualities;
-        if (data.resolution) updateQualityDisplay(data.resolution);
-        return playStreamUrl(data.streamUrl, audioIndex, seekTime);
-      }
-    } catch (e) {
-      console.warn('MovieBox pre-resolve json error, playing full redirect URL directly:', e.message);
-    }
-    // Direct 302 native fallback: Set src to fullUrl directly (DO NOT wrap in /api/stream!)
-    console.log('Playing MovieBox stream via direct 302 redirect:', fullUrl);
+
+    console.log('Playing MovieBox stream immediately:', fullUrl);
     videoPlayer.src = fullUrl;
     videoPlayer.load();
     if (seekTime && seekTime > 0) {
@@ -3282,6 +3271,20 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       videoPlayer.addEventListener('canplay', applySeek, { once: true });
     }
     videoPlayer.play().catch(() => {});
+
+    // Asynchronously discover qualities in background without blocking video start
+    fetch(jsonUrl, { cache: 'no-store' })
+      .then(r => r.json())
+      .then(data => {
+        if (data && data.ok) {
+          if (Array.isArray(data.qualities) && data.qualities.length > 0) {
+            appState.availableQualities = data.qualities;
+          }
+          if (data.resolution) updateQualityDisplay(data.resolution);
+        }
+      })
+      .catch(() => {});
+
     return;
   }
 

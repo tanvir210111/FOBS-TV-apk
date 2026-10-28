@@ -1239,8 +1239,8 @@ app.get('/api/moviebox/stream', async (req, res) => {
         }))
       });
     }
-    // Absolute redirect through proxy so HTTP Referer is attached and byte-range seeking works 100%
-    res.redirect(302, fullProxiedStreamUrl);
+    // Direct Zero-Redirect Streaming: Stream chosen CDN URL immediately in the same connection!
+    return streamMediaDirect(req, res, chosenStream);
   } catch (err) {
     console.error('MovieBox stream redirect error:', err.message);
     res.status(500).json({ error: 'Stream resolution failed', details: err.message, stack: err.stack });
@@ -1354,8 +1354,9 @@ app.post('/api/content', (req, res) => {
   res.json({ success: true, item: newItem });
 });
 
-// Stream Proxy: Handles Google Drive, V-Cloud, and Direct links with Range (Byte-level Seeking)
-app.all('/api/stream', async (req, res) => {
+// Direct Stream Pipeline: Handles Range, MovieBox CDNs, Google Drive, V-Cloud with zero-delay continuous streaming
+async function streamMediaDirect(req, res, inputTargetUrl) {
+  let targetUrl = inputTargetUrl || req.query.url;
   const standardStreamCorsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
@@ -1376,8 +1377,6 @@ app.all('/api/stream', async (req, res) => {
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
-
-  let targetUrl = req.query.url;
 
   if (!targetUrl || targetUrl === 'undefined' || targetUrl === 'null') {
     return res.status(400).send('Missing video URL parameter');
@@ -1629,30 +1628,10 @@ app.all('/api/stream', async (req, res) => {
     requestHeaders['Referer'] = 'https://movieboxapp.in/';
   }
 
-  // Ultra-Fast Zero-Buffering Chunking:
-  // Initial chunk is 1MB (1048576 bytes) for instant sub-second video startup!
-  // Subsequent chunks are 2MB (2097152 bytes) for ultra-smooth continuous streaming!
-  const isInitialProbe = (!range || range.replace(/bytes=/, '').split('-')[0] === '0');
-  const CHUNK_SIZE = isInitialProbe ? (1 * 1024 * 1024) : (2 * 1024 * 1024);
+  // Transparent Range Forwarding: Continuous full-speed streaming without artificial chunk cutoffs
   let upstreamRange = range;
-
-  if (range) {
-    const parts = range.replace(/bytes=/, '').split('-');
-    const start = parseInt(parts[0], 10) || 0;
-    if (!parts[1] || parts[1].trim() === '') {
-      upstreamRange = `bytes=${start}-${start + CHUNK_SIZE - 1}`;
-    } else {
-      const end = parseInt(parts[1], 10);
-      if (end - start + 1 > CHUNK_SIZE * 2) {
-        upstreamRange = `bytes=${start}-${start + CHUNK_SIZE - 1}`;
-      } else {
-        upstreamRange = range;
-      }
-    }
-  } else if (isHead) {
-    upstreamRange = 'bytes=0-0';
-  } else {
-    upstreamRange = `bytes=0-${CHUNK_SIZE - 1}`;
+  if (!range) {
+    upstreamRange = isHead ? 'bytes=0-0' : 'bytes=0-';
   }
 
   requestHeaders['Range'] = upstreamRange;
@@ -1820,6 +1799,11 @@ app.all('/api/stream', async (req, res) => {
       }
     }
   }
+}
+
+// Stream Proxy: Handles Google Drive, V-Cloud, and Direct links with Range (Byte-level Seeking)
+app.all('/api/stream', async (req, res) => {
+  return streamMediaDirect(req, res, req.query.url);
 });
 
 // Download endpoint

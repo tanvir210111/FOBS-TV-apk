@@ -393,7 +393,7 @@ class MovieBoxService {
     if (result) {
       this.cache.set(cacheKey, {
         data: result,
-        expireAt: Date.now() + 10 * 60 * 1000
+        expireAt: Date.now() + 6 * 60 * 60 * 1000
       });
       return result;
     }
