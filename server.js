@@ -12,10 +12,9 @@ const ffmpegPath = require('ffmpeg-static');
 const compression = require('compression');
 
 const streamHttpsAgent = new https.Agent({
-  family: 4,
   keepAlive: true,
-  maxSockets: 80,
-  maxFreeSockets: 30,
+  maxSockets: 100,
+  maxFreeSockets: 40,
   timeout: 30000,
   keepAliveMsecs: 15000,
   rejectUnauthorized: false
@@ -1156,10 +1155,14 @@ app.get('/api/moviebox/stream', async (req, res) => {
     // Try requested se/ep first, then fallbacks
     let media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);
     if (!media || !media.streamUrl) {
-      media = await movieboxService.resolveMedia(id, resolvedPath || '', 0, epNum);
+      if (seNum !== 0 || epNum !== 0) {
+        media = await movieboxService.resolveMedia(id, resolvedPath || '', 0, epNum);
+      }
     }
     if (!media || !media.streamUrl) {
-      media = await movieboxService.resolveMedia(id, resolvedPath || '', 0, 0);
+      if (seNum !== 0 || epNum !== 0) {
+        media = await movieboxService.resolveMedia(id, resolvedPath || '', 0, 0);
+      }
     }
     if (!media || !media.streamUrl) {
       // Smart Fallback: Look up directStreamUrl or servers from content.json

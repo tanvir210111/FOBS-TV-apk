@@ -6,9 +6,8 @@
 const axios = require('axios');
 const https = require('https');
 
-const ipv4Agent = new https.Agent({
-  family: 4,
-  keepAlive: true,
+const cleanAgent = new https.Agent({
+  keepAlive: false,
   rejectUnauthorized: false
 });
 
@@ -42,7 +41,7 @@ class MovieBoxService {
     try {
       const res = await axios.get(`${BASE_URL}/wefeed-h5-bff/web/home`, {
         headers: HEADERS,
-        httpsAgent: ipv4Agent,
+        httpsAgent: cleanAgent,
         timeout: 10000
       });
       const raw = res.data?.data || res.data;
@@ -105,7 +104,7 @@ class MovieBoxService {
           'Origin': BASE_URL,
           'Referer': `${BASE_URL}/`
         },
-        httpsAgent: ipv4Agent,
+        httpsAgent: cleanAgent,
         timeout: 10000
       });
       const items = res.data?.data?.items || [];
@@ -136,7 +135,7 @@ class MovieBoxService {
 
       const res = await axios.get(url, {
         headers: HEADERS,
-        httpsAgent: ipv4Agent,
+        httpsAgent: cleanAgent,
         timeout: 10000
       });
       const d = res.data?.data;
@@ -253,7 +252,7 @@ class MovieBoxService {
             'x-no-high-risk-restrict': '0',
             'x-source': 'moviebox'
           },
-          httpsAgent: ipv4Agent,
+          httpsAgent: cleanAgent,
           timeout: 3500
         });
 
@@ -308,8 +307,8 @@ class MovieBoxService {
             'Origin': domain,
             'Referer': refPath
           },
-          httpsAgent: ipv4Agent,
-          timeout: 4000
+          httpsAgent: cleanAgent,
+          timeout: 8000
         });
 
         const data = res.data?.data;
@@ -359,7 +358,7 @@ class MovieBoxService {
         try {
           const detailRes = await axios.get(`${BASE_URL}/wefeed-h5-bff/web/subject/detail?subjectId=${subjectId}`, {
             headers: HEADERS,
-            httpsAgent: ipv4Agent,
+            httpsAgent: cleanAgent,
             timeout: 6000
           });
           const sub = detailRes.data?.data?.subject;
@@ -400,7 +399,7 @@ class MovieBoxService {
       const res = await axios.get(`${BASE_URL}/wefeed-h5-bff/web/subject/download`, {
         params: { subjectId, se: season, ep: episode },
         headers: { ...HEADERS, 'Referer': refPath },
-        httpsAgent: ipv4Agent,
+        httpsAgent: cleanAgent,
         timeout: 10000
       });
       const data = res.data?.data;
