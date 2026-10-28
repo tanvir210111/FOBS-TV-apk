@@ -259,6 +259,7 @@ function saveContentData(data) {
 function getMovieBoxDetailPath(id) {
   if (!id) return '';
   const sId = String(id).trim();
+  if (sId.includes('809301786023658480')) return 'hidden-face-cegwEMRBMX';
   if (sId === '7956543182215725408') return 'take-charge-of-my-heart-hindi-oIO9IBe3Lt9';
   if (sId === '6040954039821651336') return 'colony-hindi-WrHlMwhDfc7';
   if (sId === '2966181623634480144') return 'colony-06FbDRS87x3';
@@ -998,6 +999,10 @@ app.get('/api/moviebox/stream', async (req, res) => {
   try {
     if (id === 'anime-suzume') id = '886218306628322136';
     if (id === 'anime-mugentrain') id = '6189703385403770824';
+    if (String(id).includes('809301786023658480')) {
+      id = '809301786023658480';
+      resolvedPath = 'hidden-face-cegwEMRBMX';
+    }
     const seNum = parseInt(se || '1', 10);
     const epNum = parseInt(ep || '1', 10);
     let resolvedPath = detailPath || getMovieBoxDetailPath(id) || '';

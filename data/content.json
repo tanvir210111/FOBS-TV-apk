@@ -838,6 +838,200 @@
   },
   "movies": [
     {
+      "id": "mb-m-809301786023658480-hindi",
+      "subjectId": "809301786023658480-hindi",
+      "detailPath": "hidden-face-cegwEMRBMX",
+      "title": "Hidden Face [Hindi]",
+      "year": "2024",
+      "rating": "6.8",
+      "imdbRating": "6.2",
+      "poster": "https://pbcdnw.aoneroom.com/image/2026/01/26/edce96c1213101da712dd8c9fdce3c30.jpg",
+      "backdrop": "https://pbcdnw.aoneroom.com/image/2026/01/26/edce96c1213101da712dd8c9fdce3c30.jpg",
+      "cover": "https://pbcdnw.aoneroom.com/image/2026/01/26/edce96c1213101da712dd8c9fdce3c30.jpg",
+      "banner": "https://pbcdnw.aoneroom.com/image/2026/01/26/edce96c1213101da712dd8c9fdce3c30.jpg",
+      "genre": "Mystery / Thriller / Romance",
+      "duration": "1h 55m",
+      "category": "Korean (Dubbed) Movies",
+      "industry": "Korean",
+      "language": "Hindi",
+      "dubLanguage": "Hindi Dubbed",
+      "audioTracks": [
+        "Hindi Dubbed",
+        "Original (Korean)"
+      ],
+      "selectedAudio": "Hindi Dubbed",
+      "badgeLeft": "Hindi Dub",
+      "badgeRight": "1080p",
+      "streamUrl": "/api/moviebox/stream?id=809301786023658480&path=hidden-face-cegwEMRBMX&se=0&ep=0",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/7b4f197c33deb00a6cb50cf93e6de111.mp4?sign=e806595b29ffd828bff30efc03da869c&t=1793189642",
+      "resolution": 1080,
+      "description": "Watch Hidden Face (2024) full Korean movie in Hindi dubbed with HD 1080p quality, English & Bangla Subtitles. Seong-jin, a conductor, and Su-yeon, a cellist, are engaged. Su-yeon disappears, leaving a video. Mi-joo replaces Su-yeon and develops a secret relationship with Seong-jin. They feel watched as their bond deepens.",
+      "subtitles": [
+        {
+          "id": "sub_bn_hf_hindi",
+          "label": "বাংলা (Bangla)",
+          "language": "bn",
+          "srclang": "bn",
+          "src": "/subtitles/hidden_face_2024_bn.vtt",
+          "url": "/subtitles/hidden_face_2024_bn.vtt",
+          "format": "vtt"
+        },
+        {
+          "id": "sub_en_hf_hindi",
+          "label": "English",
+          "language": "en",
+          "srclang": "en",
+          "src": "/subtitles/hidden_face_2024_en.vtt",
+          "url": "/subtitles/hidden_face_2024_en.vtt",
+          "format": "vtt"
+        }
+      ],
+      "captions": [
+        {
+          "id": "sub_bn_hf_hindi",
+          "label": "বাংলা (Bangla)",
+          "language": "bn",
+          "srclang": "bn",
+          "src": "/subtitles/hidden_face_2024_bn.vtt",
+          "url": "/subtitles/hidden_face_2024_bn.vtt",
+          "format": "vtt"
+        },
+        {
+          "id": "sub_en_hf_hindi",
+          "label": "English",
+          "language": "en",
+          "srclang": "en",
+          "src": "/subtitles/hidden_face_2024_en.vtt",
+          "url": "/subtitles/hidden_face_2024_en.vtt",
+          "format": "vtt"
+        }
+      ],
+      "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p - Hindi Dub)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/7b4f197c33deb00a6cb50cf93e6de111.mp4?sign=e806595b29ffd828bff30efc03da869c&t=1793189642",
+          "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        },
+        {
+          "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+          "url": "/api/moviebox/stream?id=809301786023658480&path=hidden-face-cegwEMRBMX&se=0&ep=0",
+          "quality": "1080p",
+          "audio": "Hindi dub"
+        },
+        {
+          "name": "Server 3 (Direct CDN 480p Fast)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/8b28eac5736a2f52877063d0f07fa179.mp4?sign=6081718226e45c242862c7747bfda9c5&t=1793189642",
+          "quality": "480p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        }
+      ],
+      "type": "movie",
+      "releaseDate": "2024-11-20",
+      "addedAt": "2026-10-28T12:22:52.089Z",
+      "createdAt": "2026-10-28T12:22:52.090Z",
+      "views": 940
+    },
+    {
+      "id": "mb-m-809301786023658480",
+      "subjectId": "809301786023658480",
+      "detailPath": "hidden-face-cegwEMRBMX",
+      "title": "Hidden Face (2024)",
+      "year": "2024",
+      "rating": "6.8",
+      "imdbRating": "6.2",
+      "poster": "https://pbcdnw.aoneroom.com/image/2026/01/26/edce96c1213101da712dd8c9fdce3c30.jpg",
+      "backdrop": "https://pbcdnw.aoneroom.com/image/2026/01/26/edce96c1213101da712dd8c9fdce3c30.jpg",
+      "cover": "https://pbcdnw.aoneroom.com/image/2026/01/26/edce96c1213101da712dd8c9fdce3c30.jpg",
+      "banner": "https://pbcdnw.aoneroom.com/image/2026/01/26/edce96c1213101da712dd8c9fdce3c30.jpg",
+      "genre": "Mystery / Thriller / Romance",
+      "duration": "1h 55m",
+      "category": "Korean Drama",
+      "industry": "Korean",
+      "language": "Korean",
+      "dubLanguage": "Original (Korean)",
+      "audioTracks": [
+        "Original (Korean)",
+        "Hindi Dubbed"
+      ],
+      "selectedAudio": "Original (Korean)",
+      "badgeLeft": "Korean",
+      "badgeRight": "1080p",
+      "streamUrl": "/api/moviebox/stream?id=809301786023658480&path=hidden-face-cegwEMRBMX&se=0&ep=0",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/7b4f197c33deb00a6cb50cf93e6de111.mp4?sign=e806595b29ffd828bff30efc03da869c&t=1793189642",
+      "resolution": 1080,
+      "description": "Hidden Face (2024) Korean Movie with Original Audio & Multi-Subtitles (বাংলা ও English). Seong-jin, an orchestra conductor, and Su-yeon, a cellist, are engaged. When Su-yeon mysteriously disappears, Mi-joo steps in as her replacement. As an illicit attraction ignites, they sense an invisible presence watching them from within the shadows.",
+      "subtitles": [
+        {
+          "id": "sub_bn_hf_orig",
+          "label": "বাংলা (Bangla)",
+          "language": "bn",
+          "srclang": "bn",
+          "src": "/subtitles/hidden_face_2024_bn.vtt",
+          "url": "/subtitles/hidden_face_2024_bn.vtt",
+          "format": "vtt"
+        },
+        {
+          "id": "sub_en_hf_orig",
+          "label": "English",
+          "language": "en",
+          "srclang": "en",
+          "src": "/subtitles/hidden_face_2024_en.vtt",
+          "url": "/subtitles/hidden_face_2024_en.vtt",
+          "format": "vtt"
+        }
+      ],
+      "captions": [
+        {
+          "id": "sub_bn_hf_orig",
+          "label": "বাংলা (Bangla)",
+          "language": "bn",
+          "srclang": "bn",
+          "src": "/subtitles/hidden_face_2024_bn.vtt",
+          "url": "/subtitles/hidden_face_2024_bn.vtt",
+          "format": "vtt"
+        },
+        {
+          "id": "sub_en_hf_orig",
+          "label": "English",
+          "language": "en",
+          "srclang": "en",
+          "src": "/subtitles/hidden_face_2024_en.vtt",
+          "url": "/subtitles/hidden_face_2024_en.vtt",
+          "format": "vtt"
+        }
+      ],
+      "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p - Original Audio)",
+          "url": "https://bcdnxw.hakunaymatata.com/resource/7b4f197c33deb00a6cb50cf93e6de111.mp4?sign=e806595b29ffd828bff30efc03da869c&t=1793189642",
+          "quality": "1080p",
+          "audio": "Original",
+          "isDirect": true
+        },
+        {
+          "name": "Server 2 (Auto-Renewing MovieBox Stream)",
+          "url": "/api/moviebox/stream?id=809301786023658480&path=hidden-face-cegwEMRBMX&se=0&ep=0",
+          "quality": "1080p",
+          "audio": "Original"
+        },
+        {
+          "name": "Server 3 (Direct CDN 480p Fast)",
+          "url": "https://bcdnxw.hakunaymatata.com/bt/8b28eac5736a2f52877063d0f07fa179.mp4?sign=6081718226e45c242862c7747bfda9c5&t=1793189642",
+          "quality": "480p",
+          "audio": "Original",
+          "isDirect": true
+        }
+      ],
+      "type": "movie",
+      "releaseDate": "2024-11-20",
+      "addedAt": "2026-10-28T12:22:52.090Z",
+      "createdAt": "2026-10-28T12:22:52.090Z",
+      "views": 1120
+    },
+    {
       "id": "mb-m-4510141832151662720",
       "subjectId": "4510141832151662720",
       "title": "Little Women [Hindi]",
@@ -15007,6 +15201,36 @@
           "name": "Server 1 (Direct CDN 1080p)",
           "url": "https://bcdnxw.hakunaymatata.com/resource/1890e58843ccbd29c17e3b84bf4ec2c8.mp4?sign=5ee2d969efc2f6f30bed4eac279d71ce&t=1793069085",
           "quality": "1080p",
+          "audio": "Hindi dub",
+          "isDirect": true
+        }
+      ]
+    },
+    {
+      "id": "mb-m-4476497510781125728",
+      "subjectId": "4476497510781125728",
+      "title": "Connect [Hindi]",
+      "description": "Watch Connect [Hindi] full movie in Hindi dubbed with HD 1080p quality.",
+      "poster": "https://pbcdnw.aoneroom.com/image/2026/03/30/da0a78313a4dbc8c24dbce272718e6c0.jpg",
+      "banner": "https://pbcdnw.aoneroom.com/image/2026/03/30/da0a78313a4dbc8c24dbce272718e6c0.jpg",
+      "badgeLeft": "MOVIE",
+      "badgeRight": "1080p",
+      "industry": "Korean",
+      "category": "K-Drama & Asian",
+      "genre": "Fantasy / Thriller / Mystery",
+      "year": "2022",
+      "rating": "8.5",
+      "type": "movie",
+      "detailPath": "connect-hindi-WzZHZ0bpGk5",
+      "streamUrl": "https://bcdnxw.hakunaymatata.com/mkvcnimas/50a695d8f892ad4ee5fe490bd620245e.mp4?sign=220ade6f30b679f3af547b8b7db46bd5&t=1793085352",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/mkvcnimas/50a695d8f892ad4ee5fe490bd620245e.mp4?sign=220ade6f30b679f3af547b8b7db46bd5&t=1793085352",
+      "resolution": 720,
+      "subtitles": [],
+      "servers": [
+        {
+          "name": "Server 1 (Direct CDN 1080p)",
+          "url": "https://bcdnxw.hakunaymatata.com/mkvcnimas/50a695d8f892ad4ee5fe490bd620245e.mp4?sign=220ade6f30b679f3af547b8b7db46bd5&t=1793085352",
+          "quality": "720p",
           "audio": "Hindi dub",
           "isDirect": true
         }
