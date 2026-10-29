@@ -14,7 +14,6 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="assets/fobs_logo.png">
   <link rel="stylesheet" href="style.css">
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 
@@ -1574,14 +1573,14 @@
               <label style="display: block; font-size: 12px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px;">
                 <i class="fa-solid fa-envelope" style="color: #00f2fe; margin-right: 6px;"></i>Email Address
               </label>
-              <input type="email" id="authEmailInput" placeholder="tanvir210111@diit.edu.bd" required autocomplete="email" style="width: 100%; box-sizing: border-box; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 12px; padding: 13px 14px; color: #fff; font-size: 14px; outline: none; transition: border-color 0.2s;">
+              <input type="email" id="authEmailInput" placeholder="Email" required autocomplete="email" style="width: 100%; box-sizing: border-box; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 12px; padding: 13px 14px; color: #fff; font-size: 14px; outline: none; transition: border-color 0.2s;">
             </div>
 
             <div style="margin-bottom: 16px;">
               <label style="display: block; font-size: 12px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px;">
                 <i class="fa-solid fa-id-badge" style="color: #a855f7; margin-right: 6px;"></i>Display Name (Optional)
               </label>
-              <input type="text" id="authNameInput" placeholder="Tanvir" autocomplete="name" style="width: 100%; box-sizing: border-box; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 12px; padding: 13px 14px; color: #fff; font-size: 14px; outline: none;">
+              <input type="text" id="authNameInput" placeholder="Name" autocomplete="name" style="width: 100%; box-sizing: border-box; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 12px; padding: 13px 14px; color: #fff; font-size: 14px; outline: none;">
             </div>
 
             <button type="submit" id="btnDirectAuthSubmit" style="width: 100%; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); color: #000; border: none; border-radius: 12px; padding: 14px; font-weight: 700; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 20px rgba(0, 242, 254, 0.35);">
@@ -3003,33 +3002,33 @@
       </div>
     </div>
 
-    <!-- 1-STEP SIMPLE LOGIN MODAL (NO GOOGLE / NO OTP) -->
+    <!-- CLEAN SIGN IN MODAL (NAME & EMAIL ONLY) -->
     <div class="mb-fullscreen-page-overlay" id="simpleLoginModalOverlay" style="display: none; z-index: 99999999 !important; position: fixed !important; inset: 0 !important; background: rgba(0,0,0,0.88); backdrop-filter: blur(10px);">
       <div class="mb-sheet-modal login-modal" id="simpleLoginModal" style="max-width: 420px;">
         <div class="sheet-handle"></div>
         <div class="sheet-header" style="text-align: center; justify-content: center; position: relative;">
-          <h3 style="margin: 0; font-size: 18px; font-weight: 800; color: #fff;">ভিডিও উপভোগ করতে সাইন-ইন করুন</h3>
-          <button class="sheet-close-btn" onclick="closeSimpleLoginModal()" style="position: absolute; right: 16px;"><i class="fa-solid fa-xmark"></i></button>
+          <h3 style="margin: 0; font-size: 18px; font-weight: 800; color: #fff;">সাইন-ইন করুন (Sign In)</h3>
+          <button class="sheet-close-btn" onclick="closeSimpleLoginModal()" style="position: absolute; right: 16px; background: rgba(255,255,255,0.1); border: none; border-radius: 50%; width: 32px; height: 32px; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="sheet-content" style="padding: 16px 22px 26px; text-align: center;">
-          <div style="width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg, rgba(66, 133, 244, 0.2), rgba(234, 67, 53, 0.2)); color: #ff0055; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 12px auto;">
-            <i class="fa-solid fa-play"></i>
+          <div style="width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.2)); color: #00f2fe; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 12px auto;">
+            <i class="fa-solid fa-user-lock"></i>
           </div>
           <p style="font-size: 13.5px; color: #94a3b8; margin: 0 0 20px 0; line-height: 1.5;">
-            শুধুমাত্র আপনার নাম ও ইমেইল দিয়ে প্রবেশ করুন।<br><span style="color: #22c55e; font-weight: 600;">কোনো পাসওয়ার্ড বা কোড লাগবে না!</span>
+            ভিডিও উপভোগ করতে আপনার নাম এবং ইমেইল দিয়ে সাইন-ইন করুন।
           </p>
-          <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; text-align: left;">
+          <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; text-align: left;">
             <div>
-              <label style="font-size: 12px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px; display: block;">আপনার পূর্ণ নাম (Full Name)</label>
-              <input type="text" id="simpleLoginNameInput" placeholder="e.g. Tanvir Ahmed" style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; color: #fff; font-size: 14px; outline: none;">
+              <label style="font-size: 12px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px; display: block;">নাম (Name)</label>
+              <input type="text" id="simpleLoginNameInput" placeholder="Name" autocomplete="name" style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 12px 14px; color: #fff; font-size: 14px; outline: none;">
             </div>
             <div>
-              <label style="font-size: 12px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px; display: block;">আপনার ইমেইল এড্রেস (Email Address)</label>
-              <input type="email" id="simpleLoginEmailInput" placeholder="e.g. tanvir@example.com" style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; color: #fff; font-size: 14px; outline: none;">
+              <label style="font-size: 12px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px; display: block;">ইমেইল (Email)</label>
+              <input type="email" id="simpleLoginEmailInput" placeholder="Email" autocomplete="email" style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 12px 14px; color: #fff; font-size: 14px; outline: none;">
             </div>
           </div>
           <button class="btn-primary" id="btnSubmitSimpleLogin" onclick="submitSimpleLogin()" style="width: 100%; padding: 13px; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); border: none; border-radius: 12px; color: #000; font-size: 15px; font-weight: 800; cursor: pointer;">
-            এগিয়ে যান (Continue Watching) <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
+            সাইন-ইন করুন (Sign In) <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
           </button>
         </div>
       </div>

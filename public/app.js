@@ -9368,38 +9368,12 @@ function handleMeProfileClick() {
 window.handleMeProfileClick = handleMeProfileClick;
 
 function openAuthModal() {
-  const modal = document.getElementById('fobsAuthModal');
-  if (modal) {
-    modal.classList.add('open');
-    modal.style.display = 'flex';
-    // Render Google Sign-in button inside modal if Google SDK is loaded
-    if (window.google && window.google.accounts && window.google.accounts.id) {
-      const container = document.getElementById('modalGoogleBtnContainer');
-      if (container && container.children.length === 0) {
-        try {
-          window.google.accounts.id.renderButton(container, {
-            theme: 'filled_blue',
-            size: 'large',
-            type: 'standard',
-            shape: 'pill',
-            width: 280
-          });
-        } catch(e) {}
-      }
-    }
-  }
+  openSimpleLoginModal();
 }
 window.openAuthModal = openAuthModal;
 
 function closeAuthModal(e) {
-  if (e && e.target !== document.getElementById('fobsAuthModal') && !e.target.closest('.sheet-close-btn')) {
-    return;
-  }
-  const modal = document.getElementById('fobsAuthModal');
-  if (modal) {
-    modal.classList.remove('open');
-    modal.style.display = 'none';
-  }
+  closeSimpleLoginModal(e);
 }
 window.closeAuthModal = closeAuthModal;
 
