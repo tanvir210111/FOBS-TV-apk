@@ -153,9 +153,43 @@ window.submitVideoReport = submitVideoReport;
 // ----------------------------------------------------
 // 1-STEP SIMPLE LOGIN MODAL (NO GOOGLE / NO OTP)
 // ----------------------------------------------------
+function isUserLoggedIn() {
+  if (!currentUser) {
+    try {
+      const raw = localStorage.getItem('fobs_user');
+      if (raw) currentUser = JSON.parse(raw);
+    } catch(e) {}
+  }
+  if (!currentUser || typeof currentUser !== 'object') return false;
+  const email = (currentUser.email || '').trim().toLowerCase();
+  const name = (currentUser.name || '').trim();
+  if (!email || !name || !email.includes('@') || !email.includes('.')) return false;
+  // If email was an anonymous dummy generator without real user input
+  if (email.startsWith('viewer') && email.endsWith('@fobstv.app')) return false;
+  return true;
+}
+window.isUserLoggedIn = isUserLoggedIn;
+
 function openSimpleLoginModal() {
   const overlay = document.getElementById('simpleLoginModalOverlay');
-  if (overlay) overlay.style.display = 'flex';
+  if (overlay) {
+    overlay.style.setProperty('display', 'flex', 'important');
+    overlay.style.setProperty('z-index', '99999999', 'important');
+    overlay.style.setProperty('position', 'fixed', 'important');
+    overlay.style.setProperty('inset', '0', 'important');
+    overlay.style.setProperty('visibility', 'visible', 'important');
+    overlay.style.setProperty('opacity', '1', 'important');
+  }
+  const vp = document.getElementById('mainVideoPlayer');
+  if (vp && !vp.paused) {
+    try { vp.pause(); } catch(e) {}
+  }
+  const loader = document.getElementById('videoLoader');
+  if (loader) loader.classList.remove('active');
+  setTimeout(() => {
+    const nameInput = document.getElementById('simpleLoginNameInput');
+    if (nameInput) nameInput.focus();
+  }, 250);
 }
 window.openSimpleLoginModal = openSimpleLoginModal;
 
@@ -190,7 +224,7 @@ async function submitSimpleLogin() {
   }
 
   try {
-    const res = await fetch('/api/auth/simple-login', {
+    const res = await fetch(`${API_BASE_URL}/api/auth/simple-login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email })
@@ -201,8 +235,16 @@ async function submitSimpleLogin() {
       closeSimpleLoginModal();
       showToast(`🎉 স্বাগতম ${data.user.name}!`);
       
-      // Auto-resume pending video playback
-      if (appState.pendingPlay) {
+      // Auto-resume pending video playback or open pending media
+      if (appState.pendingOpenMedia) {
+        const { type, id, media, episodeIndex } = appState.pendingOpenMedia;
+        appState.pendingOpenMedia = null;
+        if (media) {
+          openPlayer(media, episodeIndex || 0);
+        } else if (id) {
+          openPlayerById(type || 'movie', id);
+        }
+      } else if (appState.pendingPlay) {
         const { url, audioIndex, seekTime } = appState.pendingPlay;
         appState.pendingPlay = null;
         setTimeout(() => {
@@ -213,6 +255,7 @@ async function submitSimpleLogin() {
       showToast(data.error || 'সাইন-ইন করতে সমস্যা হয়েছে');
     }
   } catch (err) {
+    console.warn('Simple login backend request failed, using local fallback:', err);
     const user = {
       googleId: 'usr_' + Date.now(),
       name,
@@ -221,7 +264,17 @@ async function submitSimpleLogin() {
     };
     loginUserSuccess(user, 'fobs_offline_token_' + Date.now());
     closeSimpleLoginModal();
-    if (appState.pendingPlay) {
+    showToast(`🎉 স্বাগতম ${user.name}!`);
+
+    if (appState.pendingOpenMedia) {
+      const { type, id, media, episodeIndex } = appState.pendingOpenMedia;
+      appState.pendingOpenMedia = null;
+      if (media) {
+        openPlayer(media, episodeIndex || 0);
+      } else if (id) {
+        openPlayerById(type || 'movie', id);
+      }
+    } else if (appState.pendingPlay) {
       const { url, audioIndex, seekTime } = appState.pendingPlay;
       appState.pendingPlay = null;
       setTimeout(() => {
@@ -2995,6 +3048,11 @@ function switchSeason(seasonNumber) {
 
 // Open Player by Item ID
 function openPlayerById(type, id) {
+  if (type !== 'upcoming' && typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
+    appState.pendingOpenMedia = { type, id };
+    openSimpleLoginModal();
+    return;
+  }
   let item = null;
   if (type === 'movie') {
     item = (appState.content.movies || []).find(m => m.id === id);
@@ -3104,6 +3162,13 @@ function openPlayer(media, episodeIndex = 0) {
   // If upcoming or coming soon, redirect to dedicated Pre-Booking modal (no player controls/download/share/dub/servers)
   if (media.type === 'upcoming' || (media.badgeRight && media.badgeRight.toLowerCase().includes('coming'))) {
     openUpcomingBookingModal(media);
+    return;
+  }
+
+  // 1-Step Guest Login Enforcement: Must login to play video
+  if (typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
+    appState.pendingOpenMedia = { media, episodeIndex };
+    openSimpleLoginModal();
     return;
   }
   appState.currentMedia = media;
@@ -3338,24 +3403,17 @@ function selectEpisode(idx) {
 
 // Start Stream Playback via Direct Stream Resolution or Backend Proxy
 async function playStreamUrl(url, audioIndex = null, seekTime = null) {
+  const loader = document.getElementById('videoLoader');
+  const videoPlayer = document.getElementById('mainVideoPlayer');
+  const embedFrame = document.getElementById('mainEmbedPlayer');
 
   // Guest users can browse freely, but 1-step login required before playing videos
-  if (!currentUser) {
-    try {
-      const raw = localStorage.getItem('fobs_user');
-      if (raw) currentUser = JSON.parse(raw);
-    } catch(e) {}
-  }
-  if (!currentUser || !currentUser.email) {
+  if (typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
     appState.pendingPlay = { url, audioIndex, seekTime };
     openSimpleLoginModal();
     if (loader) loader.classList.remove('active');
     return;
   }
-
-  const videoPlayer = document.getElementById('mainVideoPlayer');
-  const embedFrame = document.getElementById('mainEmbedPlayer');
-  const loader = document.getElementById('videoLoader');
 
   if (!url) {
     console.warn('No stream URL provided for media');
@@ -9290,11 +9348,11 @@ async function restoreUserSession() {
 
 // Trigger Auth Modal (Supports direct Email login, 1-tap fast login and Google Sign-in)
 function triggerGoogleLogin() {
-  if (currentUser) {
+  if (currentUser && typeof isUserLoggedIn === 'function' && isUserLoggedIn()) {
     handleMeProfileClick();
     return;
   }
-  openAuthModal();
+  openSimpleLoginModal();
 }
 window.triggerGoogleLogin = triggerGoogleLogin;
 
@@ -9600,11 +9658,12 @@ function toggleProfileMenu(e) {
 function handleUserLogout(e) {
   if (e) e.stopPropagation();
   localStorage.removeItem(AUTH_TOKEN_KEY);
+  localStorage.removeItem('fobs_user');
   currentUser = null;
   userWatchlist = [];
   userHistory = [];
   updateAuthUI();
-  showToast('Signed out of FOBS TV');
+  showToast('লগআউট সম্পন্ন হয়েছে');
 }
 
 // ============================================================
