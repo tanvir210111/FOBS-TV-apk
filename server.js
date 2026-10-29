@@ -1053,6 +1053,14 @@ app.get('/api/moviebox/stream', async (req, res) => {
       id = '809301786023658480';
       resolvedPath = 'hidden-face-cegwEMRBMX';
     }
+    if (String(id).includes('3292762350108954536') || String(id).includes('316702')) {
+      id = '3292762350108954536';
+      resolvedPath = 'final-table-hindi-OjBf6HXSeV3';
+    }
+    if (String(id).includes('621608156268691750')) {
+      id = '621608156268691750';
+      resolvedPath = 'final-table-a1G9iGEikF1';
+    }
     const seNum = (se !== undefined && se !== null && se !== '') ? parseInt(se, 10) : 0;
     const epNum = (ep !== undefined && ep !== null && ep !== '') ? parseInt(ep, 10) : 0;
     if (!resolvedPath) {
