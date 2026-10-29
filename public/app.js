@@ -7317,41 +7317,69 @@ async function downloadMedia(url, title, options = {}) {
 
     const videoBlob = new Blob(chunks, { type: 'video/mp4' });
 
-    // 3. Fetch subtitle for 100% offline sync
-    let vttText = '';
-    try {
-      const available = subtitleState.availableTracks || [];
-      const bnSub = available.find(t => t.langCode === 'bn');
-      const enSub = available.find(t => t.langCode === 'en');
-      const chosenSub = bnSub || enSub || available[0];
-      if (chosenSub && (chosenSub.url || chosenSub.downloadUrl)) {
-        let subUrl = chosenSub.url || chosenSub.downloadUrl;
-        if (subUrl.startsWith('/')) {
-          subUrl = `${API_BASE_URL}${subUrl}`;
-        }
-        const sRes = await fetch(subUrl);
-        if (sRes.ok) {
-          vttText = await sRes.text();
-        }
-      }
+    // 3. Dual Subtitle Download: Both Bangla (Human or AI) and English for 100% offline freedom!
+    let bnVttText = '';
+    let enVttText = '';
 
-      // Direct Subtitles API fallback to guarantee Bangla subtitle is always bundled
-      if (!vttText) {
+    const fetchSubText = async (subObj) => {
+      if (!subObj) return '';
+      let subUrl = subObj.url || subObj.downloadUrl;
+      if (!subUrl) return '';
+      if (subUrl.startsWith('/')) subUrl = `${API_BASE_URL}${subUrl}`;
+      try {
+        const res = await fetch(subUrl);
+        if (res.ok) return await res.text();
+      } catch (e) {
+        console.warn('Failed to fetch offline sub:', e.message);
+      }
+      return '';
+    };
+
+    try {
+      let available = subtitleState.availableTracks || [];
+
+      // If available tracks not populated, query Subtitles API directly
+      if (available.length === 0) {
         const cleanT = (title || '').replace(/\[.*?\]|\(.*?\)/g, '').replace(/ - Ep.*/i, '').trim();
         const sRes = await fetch(`${API_BASE_URL}/api/subtitles?title=${encodeURIComponent(cleanT)}`);
-        const sData = await sRes.json();
-        if (sData && Array.isArray(sData.subtitles)) {
-          const bn = sData.subtitles.find(s => s.langCode === 'bn') || sData.subtitles.find(s => s.langCode === 'en');
-          if (bn && (bn.url || bn.downloadUrl)) {
-            let u = bn.url || bn.downloadUrl;
-            if (u.startsWith('/')) u = `${API_BASE_URL}${u}`;
-            const subRes = await fetch(u);
-            if (subRes.ok) vttText = await subRes.text();
+        if (sRes.ok) {
+          const sData = await sRes.json();
+          if (sData && Array.isArray(sData.subtitles)) {
+            available = sData.subtitles;
           }
         }
       }
+
+      // Priority 1: Human-made Bangla subtitle (not AI translated)
+      const humanBn = available.find(t => t.langCode === 'bn' && !t.isAi && !t.url?.includes('ai-translate'));
+      // Priority 2: Any Bangla subtitle (including AI)
+      const anyBn = available.find(t => t.langCode === 'bn');
+      // English subtitle
+      const enSub = available.find(t => t.langCode === 'en');
+
+      const chosenBn = humanBn || anyBn;
+      const chosenEn = enSub;
+
+      const [bnFetched, enFetched] = await Promise.all([
+        fetchSubText(chosenBn),
+        fetchSubText(chosenEn)
+      ]);
+
+      bnVttText = bnFetched || '';
+      enVttText = enFetched || '';
+
+      // If still no Bangla, but English exists: generate AI Bangla translation directly!
+      if (!bnVttText && enSub && (enSub.url || enSub.downloadUrl)) {
+        try {
+          const enUrl = enSub.url || enSub.downloadUrl;
+          const cleanT = (title || '').replace(/\[.*?\]|\(.*?\)/g, '').replace(/ - Ep.*/i, '').trim();
+          const aiUrl = `${API_BASE_URL}/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanT)}&season=0&episode=0`;
+          const aiRes = await fetch(aiUrl);
+          if (aiRes.ok) bnVttText = await aiRes.text();
+        } catch(aiErr) {}
+      }
     } catch (subErr) {
-      console.warn('Offline subtitle sync warning:', subErr.message);
+      console.warn('Offline dual subtitle sync warning:', subErr.message);
     }
 
     // 4. Save to Persistent IndexedDB Storage (Internal device storage)
@@ -7362,7 +7390,9 @@ async function downloadMedia(url, title, options = {}) {
       poster,
       quality,
       videoBlob,
-      vttText,
+      bnVttText,
+      enVttText,
+      vttText: bnVttText || enVttText,
       sizeBytes: receivedBytes,
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
     });
@@ -7415,20 +7445,43 @@ async function playDownloadedMedia(id) {
       videoPlayer.load();
       videoPlayer.play().catch(() => {});
 
-      // Apply offline subtitles if downloaded
-      if (offlineItem.vttText && typeof parseSubtitleTextToCues === 'function') {
-        const cues = parseSubtitleTextToCues(offlineItem.vttText);
-        if (cues && cues.length > 0) {
-          subtitleState.cues = cues;
-          subtitleState.enabled = true;
-          subtitleState.currentTrackId = 'offline_sub';
-          const subBtnLabel = document.getElementById('playerSubtitleBtnLabel');
-          if (subBtnLabel) subBtnLabel.innerText = 'Bangla (Offline)';
-          const subIcon = document.getElementById('actionSubIcon');
-          if (subIcon) subIcon.style.color = '#00f2fe';
-          const subToggle = document.getElementById('lsSubtitleToggle');
-          if (subToggle) subToggle.checked = true;
+      // Build offline subtitle tracks for full switching freedom!
+      const offlineTracks = [];
+      const bnText = offlineItem.bnVttText || offlineItem.vttText;
+      if (bnText && typeof parseSubtitleTextToCues === 'function') {
+        const bnCues = parseSubtitleTextToCues(bnText);
+        if (bnCues && bnCues.length > 0) {
+          offlineTracks.push({
+            id: 'offline_bn',
+            language: 'Bangla (বাংলা)',
+            langCode: 'bn',
+            source: 'Offline Storage',
+            rawCues: bnCues
+          });
         }
+      }
+
+      if (offlineItem.enVttText && typeof parseSubtitleTextToCues === 'function') {
+        const enCues = parseSubtitleTextToCues(offlineItem.enVttText);
+        if (enCues && enCues.length > 0) {
+          offlineTracks.push({
+            id: 'offline_en',
+            language: 'English',
+            langCode: 'en',
+            source: 'Offline Storage',
+            rawCues: enCues
+          });
+        }
+      }
+
+      subtitleState.availableTracks = offlineTracks;
+      renderSubtitleLists();
+
+      const preferredTrack = offlineTracks.find(t => t.langCode === 'bn') || offlineTracks[0];
+      if (preferredTrack) {
+        selectSubtitleTrack(preferredTrack.id);
+      } else {
+        selectSubtitleTrack('off');
       }
 
       const modal = document.getElementById('playerModal');
