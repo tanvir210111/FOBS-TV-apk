@@ -84,11 +84,9 @@ function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android',
 
 async function getUserStats() {
   const usersMap = getLocalUsersMap();
-  const devicesMap = getDevicesMap();
   const registeredUsers = Object.values(usersMap);
-  const devices = Object.values(devicesMap);
 
-  // Strictly v3.1.1 registered members
+  // Strictly v3.1.1 registered members who signed in
   const v311Users = registeredUsers.map(u => ({
     id: u._id || u.googleId,
     name: u.name || 'Registered Member',
@@ -104,39 +102,13 @@ async function getUserStats() {
     status: 'Active Member'
   }));
 
-  // Only include devices if explicitly marked as v3.1.1
-  const v311Devices = devices
-    .filter(d => d.appVersion === '3.1.1' || d.appVersion === 'v3.1.1' || String(d.appVersion || '').includes('3.1.1'))
-    .map(d => {
-      const isOnline = d.lastActive && (Date.now() - new Date(d.lastActive).getTime() < 15 * 60 * 1000);
-      return {
-        id: d.id,
-        name: `Mobile App User (${d.platform || 'Android'})`,
-        email: d.ip ? `IP: ${d.ip.replace('::ffff:', '')}` : d.id,
-        picture: '',
-        type: 'App Installation',
-        platform: d.platform || 'Android App',
-        appVersion: '3.1.1',
-        watchlistCount: 0,
-        historyCount: 0,
-        createdAt: d.firstSeen || d.lastActive || new Date().toISOString(),
-        lastActive: d.lastActive || d.firstSeen || new Date().toISOString(),
-        status: isOnline ? 'Online Now' : 'Active'
-      };
-    });
-
-  const combinedList = [...v311Users, ...v311Devices];
-  combinedList.sort((a, b) => new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime());
-
-  const totalRegistered = v311Users.length;
-  const totalDevices = v311Devices.length;
-  const totalUsers = totalRegistered + totalDevices;
+  v311Users.sort((a, b) => new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime());
 
   return {
-    totalUsers,
-    totalRegistered,
-    totalDevices,
-    users: combinedList
+    totalUsers: v311Users.length,
+    totalRegistered: v311Users.length,
+    totalDevices: 0,
+    users: v311Users
   };
 }
 
