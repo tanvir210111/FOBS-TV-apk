@@ -9823,3 +9823,13 @@ body.is-fullscreen #subtitleModal .subtitle-modal-container {
   object-fit: cover;
   display: block;
 }
+
+/* Video Report Modal Overlay */
+#reportModalOverlay {
+  z-index: 9999999 !important;
+  pointer-events: auto !important;
+}
+#reportModalOverlay.open {
+  display: flex !important;
+}
+

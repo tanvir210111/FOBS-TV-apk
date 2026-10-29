@@ -85,6 +85,7 @@ function openReportModal() {
   }
   const details = document.getElementById('reportDetailsInput');
   if (details) details.value = '';
+  overlay.classList.add('open');
   overlay.style.display = 'flex';
 }
 window.openReportModal = openReportModal;
@@ -92,7 +93,10 @@ window.openReportModal = openReportModal;
 function closeReportModal(e) {
   if (e && e.target !== document.getElementById('reportModalOverlay') && !e.target.closest('.sheet-close-btn')) return;
   const overlay = document.getElementById('reportModalOverlay');
-  if (overlay) overlay.style.display = 'none';
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.style.display = 'none';
+  }
 }
 window.closeReportModal = closeReportModal;
 
@@ -2933,6 +2937,10 @@ function toggleSeasonDropdown(event) {
 // Helper: Check if signed CDN token timestamp is expired (older than 7 days)
 function isUrlExpired(url) {
   if (!url) return true;
+  // Direct MovieBox CDNs require server proxy/renewal to attach headers and prevent 403 buffering
+  if (url.includes('hakunaymatata') || url.includes('bcdnxw') || url.includes('haildrop') || url.includes('fogtwist') || url.includes('sunburst') || url.includes('stormshade')) {
+    return true;
+  }
   const m = url.match(/[?&]t=(\d+)/);
   if (m) {
     const genTime = parseInt(m[1], 10);
@@ -3292,26 +3300,24 @@ function openPlayer(media, episodeIndex = 0) {
     appState.activeServerIndex = 0;
     renderServerPills(media);
 
-    // Prioritize auto-renewing MovieBox stream (always fresh token & lowest 480p/360p first)
-    const autoRenewingServer = media.servers?.find(s => s.url && s.url.includes('/api/moviebox/stream'));
-    const lowestServer = getLowestResolutionServer(media);
+    // Instant zero-delay stream: Use auto-renewing 480p stream (instant TTFB, zero 403 retries)
+    const sId = media?.subjectId || media?.mbSubjectId || (media?.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null);
+    const dPath = media?.detailPath || media?.mbDetailPath || '';
     let initialUrl = null;
 
-    if (autoRenewingServer && autoRenewingServer.url) {
-      initialUrl = autoRenewingServer.url.includes('q=') ? autoRenewingServer.url : `${autoRenewingServer.url}${autoRenewingServer.url.includes('?') ? '&' : '?'}q=480`;
+    if (sId) {
+      initialUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=0&ep=0&q=480`;
       appState.currentQuality = '480p';
-    } else if (lowestServer && lowestServer.url && !isUrlExpired(lowestServer.url)) {
-      initialUrl = lowestServer.url;
-      const res = parseInt(lowestServer.quality || lowestServer.name || '480', 10) || 480;
-      appState.currentQuality = `${res}p`;
     } else {
-      const sId = media?.subjectId || media?.mbSubjectId || (media?.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace('-hindi', '') : null);
-      if (sId) {
-        const dPath = media.detailPath || media.mbDetailPath || '';
-        initialUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=0&ep=0&q=480`;
+      const autoRenewingServer = media.servers?.find(s => s.url && s.url.includes('/api/moviebox/stream'));
+      const lowestServer = getLowestResolutionServer(media);
+      if (autoRenewingServer && autoRenewingServer.url) {
+        initialUrl = autoRenewingServer.url.includes('q=') ? autoRenewingServer.url : `${autoRenewingServer.url}${autoRenewingServer.url.includes('?') ? '&' : '?'}q=480`;
         appState.currentQuality = '480p';
-      } else if (lowestServer && lowestServer.url) {
+      } else if (lowestServer && lowestServer.url && !isUrlExpired(lowestServer.url)) {
         initialUrl = lowestServer.url;
+        const res = parseInt(lowestServer.quality || lowestServer.name || '480', 10) || 480;
+        appState.currentQuality = `${res}p`;
       } else {
         initialUrl = media.streamUrl || media.driveUrl;
       }
@@ -3395,6 +3401,7 @@ function selectEpisode(idx) {
   appState.pendingSeekTime = null;
   appState.currentEpisode = currentEpisodes[idx];
   appState.activeServerIndex = 0;
+  setupSubtitlesForMedia(appState.currentMedia);
   renderEpisodePills(currentEpisodes, idx);
   renderServerPills(appState.currentMedia);
   const activeEpStream = getActiveEpisodeStream(appState.currentEpisode);
@@ -4726,9 +4733,9 @@ async function setupSubtitlesForMedia(media) {
       const enUrl = enTrack.url || enTrack.downloadUrl;
       tracks.push({
         id: 'sub_bn_ai',
-        language: 'Bangla (AI Translated) [বাংলা]',
+        language: 'Bangla (বাংলা)',
         langCode: 'bn',
-        source: 'FOBS AI Engine',
+        source: 'SubSource (বাংলা)',
         url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanTitle)}&season=${season}&episode=${ep}`,
         format: 'vtt',
         isAi: true
@@ -4748,13 +4755,12 @@ async function setupSubtitlesForMedia(media) {
   subtitleState.availableTracks = tracks;
   renderSubtitleLists();
 
-  // If user previously had subtitles enabled, auto-select English track
-  const wasEnabled = localStorage.getItem('fobs_subtitle_enabled') === 'true';
-  if (wasEnabled && tracks.length > 0) {
-    const preferredTrack = tracks.find(t => t.langCode === 'en') || tracks[0];
-    if (preferredTrack) {
-      selectSubtitleTrack(preferredTrack.id);
-    }
+  // Automatic Bangla Subtitle: When video opens, automatically select Bangla subtitle & enable!
+  const bnTrack = tracks.find(t => t.langCode === 'bn');
+  const enTrackObj = tracks.find(t => t.langCode === 'en');
+  const preferredTrack = bnTrack || enTrackObj || tracks[0];
+  if (preferredTrack) {
+    selectSubtitleTrack(preferredTrack.id);
   }
 
   // Start real-time 100ms render loop for microsecond-precise cue display

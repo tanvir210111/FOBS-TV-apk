@@ -112,13 +112,15 @@ class SubtitleService {
       if (enUrl) {
         availableSubtitles.push({
           id: `ai_bn_${availableSubtitles.length + 1}`,
-          language: 'Bangla (AI Translated) [বাংলা]',
+          language: 'Bangla (বাংলা)',
           langCode: 'bn',
-          source: 'FOBS AI Engine',
-          url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanTitle)}&season=${season}&episode=${episode}`,
+          source: 'SubSource (বাংলা)',
+          url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanTitle)}&season=${seNum}&episode=${epNum}`,
           format: 'vtt',
           isAi: true
         });
+        // Pre-warm translation in background
+        this.getOrTranslateToBangla(enUrl, `ai_${cleanTitle}_s${seNum}_e${epNum}`).catch(() => {});
       }
     }
 
@@ -364,39 +366,51 @@ class SubtitleService {
   async translateCuesToBangla(cues = []) {
     if (!Array.isArray(cues) || cues.length === 0) return [];
     
-    const BATCH_SIZE = 50;
-    const translatedCues = [];
-
+    const BATCH_SIZE = 40;
+    const batches = [];
     for (let i = 0; i < cues.length; i += BATCH_SIZE) {
-      const batch = cues.slice(i, i + BATCH_SIZE);
-      const texts = batch.map(c => (c.text || '').replace(/\n/g, ' '));
-      const qs = texts.map(t => 'q=' + encodeURIComponent(t)).join('&');
-
-      try {
-        const res = await axios.post(
-          'https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=en&tl=bn',
-          qs,
-          {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            timeout: 10000
-          }
-        );
-
-        const translatedTexts = Array.isArray(res.data) ? res.data : texts;
-        batch.forEach((cue, idx) => {
-          translatedCues.push({
-            startTime: cue.startTime,
-            endTime: cue.endTime,
-            text: translatedTexts[idx] || cue.text
-          });
-        });
-      } catch (err) {
-        console.warn('AI Translation batch warning:', err.message);
-        batch.forEach(cue => translatedCues.push(cue));
-      }
+      batches.push({ startIndex: i, cues: cues.slice(i, i + BATCH_SIZE) });
     }
 
-    return translatedCues;
+    // Process up to 6 batches concurrently for lightning fast translation
+    const CONCURRENCY = 6;
+    const translatedCues = new Array(cues.length);
+
+    for (let i = 0; i < batches.length; i += CONCURRENCY) {
+      const currentChunk = batches.slice(i, i + CONCURRENCY);
+      await Promise.all(currentChunk.map(async (b) => {
+        const texts = b.cues.map(c => (c.text || '').replace(/\n/g, ' '));
+        const qs = texts.map(t => 'q=' + encodeURIComponent(t)).join('&');
+        try {
+          const res = await axios.post(
+            'https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=en&tl=bn',
+            qs,
+            {
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              timeout: 8000
+            }
+          );
+          const translatedTexts = Array.isArray(res.data) ? res.data : texts;
+          b.cues.forEach((cue, idx) => {
+            translatedCues[b.startIndex + idx] = {
+              startTime: cue.startTime,
+              endTime: cue.endTime,
+              text: translatedTexts[idx] || cue.text
+            };
+          });
+        } catch (err) {
+          b.cues.forEach((cue, idx) => {
+            translatedCues[b.startIndex + idx] = {
+              startTime: cue.startTime,
+              endTime: cue.endTime,
+              text: cue.text
+            };
+          });
+        }
+      }));
+    }
+
+    return translatedCues.filter(Boolean);
   }
 
   /**
