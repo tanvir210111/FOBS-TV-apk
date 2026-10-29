@@ -1263,13 +1263,10 @@
             <i class="fa-solid fa-closed-captioning" id="actionSubIcon"></i>
             <span id="playerSubtitleBtnLabel">Subtitles</span>
           </button>
-          <div class="action-strip-btn views-counter-btn" id="mediaViewsBadge" title="Real-time Views">
-            <div class="views-icon-wrap">
-              <span class="views-live-dot"></span>
-              <i class="fa-solid fa-eye" style="color: #00f2fe;"></i>
-            </div>
-            <span id="mediaViewsCount">...</span>
-          </div>
+          <button class="action-strip-btn report-btn" id="btnReportIssue" onclick="openReportModal()" title="Report problem with video">
+            <i class="fa-solid fa-triangle-exclamation" style="color: #ff4757;"></i>
+            <span>Report</span>
+          </button>
         </div>
 
         <!-- Resources Section with Dub Selector -->
@@ -2695,9 +2692,19 @@
           <span class="update-badge-pill" id="updateBadgePill">v1.1.0 Ready</span>
         </div>
 
-        <h2 class="update-modal-title" id="updateModalTitle">Update FOBS TV</h2>
+        <h2 class="update-modal-title" id="updateModalTitle">Update FOBS TV (v3.1.1)</h2>
+        
+        <!-- Mandatory Uninstall Warning Box -->
+        <div class="update-uninstall-alert" style="background: rgba(239, 68, 68, 0.16); border: 1.5px solid rgba(239, 68, 68, 0.65); border-radius: 12px; padding: 12px 14px; margin: 12px 0 14px; text-align: left; display: flex; align-items: flex-start; gap: 10px;">
+          <i class="fa-solid fa-triangle-exclamation" style="color: #ef4444; font-size: 20px; margin-top: 2px; flex-shrink: 0;"></i>
+          <div style="font-size: 13px; line-height: 1.5; color: #fecaca;">
+            <strong style="color: #ffffff; display: block; margin-bottom: 2px;">জরুরি নির্দেশিকা (Mandatory Action):</strong>
+            আপনার মোবাইলে থাকা <span style="color: #f87171; font-weight: bold; text-decoration: underline;">আগের অ্যাপটি আনইনস্টল (Uninstall) করুন</span>। এরপর নিচের লিংকে ক্লিক করে নতুন <strong>v3.1.1</strong> অ্যাপটি ইনস্টল করুন।
+          </div>
+        </div>
+
         <p class="update-modal-desc" id="updateModalDesc">
-          A new version of FOBS TV is available. Please update the app to continue using high-speed servers and fixed video streaming.
+          FOBS TV-র নতুন v3.1.1 ভার্সন চলে এসেছে! আগের অ্যাপটি আনইনস্টল করে নিচের লিংক থেকে নতুন v3.1.1 অ্যাপটি ডাউনলোড করে ইনস্টল করুন।
         </p>
 
         <!-- What's New Box -->
@@ -2737,10 +2744,10 @@
         <div class="update-modal-actions" id="updateModalActions">
           <button class="btn-update-primary" id="btnStartUpdate" onclick="startAppUpdate()">
             <i class="fa-solid fa-circle-arrow-down"></i>
-            <span>Update Now (v2.0.0)</span>
+            <span>Update Now (v3.1.1)</span>
           </button>
           <a href="https://fobs-apk-download.vercel.app/" class="btn-update-browser" id="btnBrowserDownload" target="_blank" rel="noopener">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> Download v2.0.0
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Download v3.1.1
           </a>
         </div>
 
@@ -2949,6 +2956,84 @@
     </div>
 
   </div>
+
+
+    <!-- VIDEO ISSUE REPORT MODAL -->
+    <div class="mb-fullscreen-page-overlay" id="reportModalOverlay" style="display: none; z-index: 10005;">
+      <div class="mb-sheet-modal report-modal" id="reportModal" style="max-width: 440px;">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-triangle-exclamation" style="color: #ff4757; font-size: 20px;"></i>
+            <h3 style="margin: 0; font-size: 17px; font-weight: 700;">ভিডিওতে সমস্যা? রিপোর্ট করুন</h3>
+          </div>
+          <button class="sheet-close-btn" onclick="closeReportModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="sheet-content" style="padding: 16px 20px 24px;">
+          <p id="reportMediaSubtitle" style="font-size: 13px; color: #94a3b8; margin: 0 0 16px 0;"></p>
+          <div class="report-options-grid" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;">
+            <label class="report-option-item" style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); cursor: pointer;">
+              <input type="radio" name="reportReason" value="Video playback issue / Play hocche na" checked style="accent-color: #ff4757;">
+              <span style="font-size: 13.5px; color: #f1f5f9;">🚫 ভিডিও প্লে হচ্ছে না (Playback issue)</span>
+            </label>
+            <label class="report-option-item" style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); cursor: pointer;">
+              <input type="radio" name="reportReason" value="Audio problem / Dubbing issue" style="accent-color: #ff4757;">
+              <span style="font-size: 13.5px; color: #f1f5f9;">🔊 অডিও সমস্যা / ডাবিং মিলছে না</span>
+            </label>
+            <label class="report-option-item" style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); cursor: pointer;">
+              <input type="radio" name="reportReason" value="Subtitle issue / Subtitle missing" style="accent-color: #ff4757;">
+              <span style="font-size: 13.5px; color: #f1f5f9;">💬 সাবটাইটেল সমস্যা / সাবটাইটেল নেই</span>
+            </label>
+            <label class="report-option-item" style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); cursor: pointer;">
+              <input type="radio" name="reportReason" value="Extreme Buffering / Slow loading" style="accent-color: #ff4757;">
+              <span style="font-size: 13.5px; color: #f1f5f9;">⏳ অতিরিক্ত বাফারিং / লোড হতে দেরি</span>
+            </label>
+            <label class="report-option-item" style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); cursor: pointer;">
+              <input type="radio" name="reportReason" value="Other" style="accent-color: #ff4757;">
+              <span style="font-size: 13.5px; color: #f1f5f9;">✍️ অন্যান্য সমস্যা (Other)</span>
+            </label>
+          </div>
+          <div style="margin-bottom: 18px;">
+            <textarea id="reportDetailsInput" placeholder="সমস্যার বিস্তারিত লিখুন (ঐচ্ছিক)..." rows="3" style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 10px 12px; color: #fff; font-size: 13px; resize: none; outline: none;"></textarea>
+          </div>
+          <button class="btn-primary" id="btnSubmitReport" onclick="submitVideoReport()" style="width: 100%; padding: 13px; background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%); border: none; border-radius: 12px; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;">
+            <i class="fa-solid fa-paper-plane" style="margin-right: 6px;"></i> রিপোর্ট জমা দিন
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1-STEP SIMPLE LOGIN MODAL (NO GOOGLE / NO OTP) -->
+    <div class="mb-fullscreen-page-overlay" id="simpleLoginModalOverlay" style="display: none; z-index: 10006;">
+      <div class="mb-sheet-modal login-modal" id="simpleLoginModal" style="max-width: 420px;">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header" style="text-align: center; justify-content: center; position: relative;">
+          <h3 style="margin: 0; font-size: 18px; font-weight: 800; color: #fff;">ভিডিও উপভোগ করতে সাইন-ইন করুন</h3>
+          <button class="sheet-close-btn" onclick="closeSimpleLoginModal()" style="position: absolute; right: 16px;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="sheet-content" style="padding: 16px 22px 26px; text-align: center;">
+          <div style="width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg, rgba(66, 133, 244, 0.2), rgba(234, 67, 53, 0.2)); color: #ff0055; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 12px auto;">
+            <i class="fa-solid fa-play"></i>
+          </div>
+          <p style="font-size: 13.5px; color: #94a3b8; margin: 0 0 20px 0; line-height: 1.5;">
+            শুধুমাত্র আপনার নাম ও ইমেইল দিয়ে প্রবেশ করুন।<br><span style="color: #22c55e; font-weight: 600;">কোনো পাসওয়ার্ড বা কোড লাগবে না!</span>
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; text-align: left;">
+            <div>
+              <label style="font-size: 12px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px; display: block;">আপনার পূর্ণ নাম (Full Name)</label>
+              <input type="text" id="simpleLoginNameInput" placeholder="e.g. Tanvir Ahmed" style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; color: #fff; font-size: 14px; outline: none;">
+            </div>
+            <div>
+              <label style="font-size: 12px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px; display: block;">আপনার ইমেইল এড্রেস (Email Address)</label>
+              <input type="email" id="simpleLoginEmailInput" placeholder="e.g. tanvir@example.com" style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; color: #fff; font-size: 14px; outline: none;">
+            </div>
+          </div>
+          <button class="btn-primary" id="btnSubmitSimpleLogin" onclick="submitSimpleLogin()" style="width: 100%; padding: 13px; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); border: none; border-radius: 12px; color: #000; font-size: 15px; font-weight: 800; cursor: pointer;">
+            এগিয়ে যান (Continue Watching) <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
+          </button>
+        </div>
+      </div>
+    </div>
 
   <script src="app.js"></script>
 </body>

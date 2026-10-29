@@ -7903,7 +7903,7 @@ body.is-fullscreen .ls-bottom-bar {
 
 .custom-subtitle-overlay {
   position: absolute !important;
-  bottom: 56px !important;
+  bottom: var(--sub-bottom-offset, 56px) !important;
   left: 0 !important;
   right: 0 !important;
   display: flex !important;
@@ -7917,14 +7917,14 @@ body.is-fullscreen .ls-bottom-bar {
 
 body.fullscreen-landscape .custom-subtitle-overlay,
 body.is-fullscreen .custom-subtitle-overlay {
-  bottom: 68px !important;
+  bottom: var(--sub-bottom-offset, 68px) !important;
   padding: 0 44px !important;
   z-index: 2000005 !important;
 }
 
 @media (orientation: landscape) {
   .custom-subtitle-overlay {
-    bottom: 68px !important;
+    bottom: var(--sub-bottom-offset, 68px) !important;
     padding: 0 44px !important;
     z-index: 2000005 !important;
   }
@@ -7946,10 +7946,49 @@ body.is-fullscreen .custom-subtitle-overlay {
   line-height: 1.38 !important;
   word-break: break-word !important;
   white-space: pre-wrap !important;
-  transition: font-size 0.15s, color 0.15s, text-shadow 0.15s, background 0.15s, bottom 0.2s, top 0.2s !important;
+  transition: font-size 0.15s, color 0.15s, text-shadow 0.15s, background 0.15s !important;
   border-radius: 6px !important;
   padding: 3px 10px !important;
   background-color: rgba(0, 0, 0, 0.45);
+  pointer-events: auto !important; /* MX Player: Allows drag gesture */
+  cursor: ns-resize !important;
+  touch-action: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+.custom-subtitle-cue.is-dragging {
+  background-color: rgba(0, 0, 0, 0.85) !important;
+  outline: 2px dashed #00f2fe !important;
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.7) !important;
+  cursor: grabbing !important;
+}
+
+.sub-drag-hud {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  background: rgba(10, 15, 29, 0.95);
+  border: 1px solid rgba(0, 242, 254, 0.7);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 242, 254, 0.4);
+  color: #00f2fe;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 2000006;
+}
+
+.sub-drag-hud.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-10px);
 }
 
 /* Subsource Online Subtitle Download Styles */

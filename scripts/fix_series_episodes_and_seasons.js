@@ -106,7 +106,9 @@ async function main() {
           const res = await moviebox.resolveMedia(subjectId, detailPath, seNum, ep);
           if (res && res.streamUrl) {
             episodes.push({
-              number: ep,
+              number: String(ep).padStart(2, '0'),
+              episode: ep,
+              episodeNumber: ep,
               season: seNum,
               title: `Episode ${ep}`,
               streamUrl: res.streamUrl,

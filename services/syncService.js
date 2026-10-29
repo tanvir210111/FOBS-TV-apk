@@ -531,7 +531,8 @@ async function runMovieBoxSync() {
             for (let ep = 1; ep <= epCount; ep++) {
               episodes.push({
                 episode: ep,
-                number: `EP ${ep < 10 ? '0' + ep : ep}`,
+                number: String(ep).padStart(2, '0'),
+                episodeNumber: ep,
                 title: `Episode ${ep}`,
                 season: 1,
                 streamUrl: directStream1,

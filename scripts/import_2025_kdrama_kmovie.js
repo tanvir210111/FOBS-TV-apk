@@ -186,6 +186,7 @@ async function run() {
 
             episodes.push({
               id: `ep-${item.id}-${seNum}-${ep}`,
+              number: String(ep).padStart(2, '0'),
               episode: ep,
               episodeNumber: ep,
               title: `Episode ${ep}`,

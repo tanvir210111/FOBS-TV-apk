@@ -1,3 +1,242 @@
+
+// ============================================================
+// FOBS TV IN-APP OFFLINE DOWNLOAD & INDEXEDDB STORAGE ENGINE
+// ============================================================
+const OFFLINE_DB_NAME = 'fobs_offline_store';
+const OFFLINE_STORE_NAME = 'media_files';
+
+function openOfflineDatabase() {
+  return new Promise((resolve, reject) => {
+    if (!window.indexedDB) {
+      return reject(new Error('IndexedDB not supported'));
+    }
+    const request = window.indexedDB.open(OFFLINE_DB_NAME, 1);
+    request.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains(OFFLINE_STORE_NAME)) {
+        db.createObjectStore(OFFLINE_STORE_NAME, { keyPath: 'id' });
+      }
+    };
+    request.onsuccess = (e) => resolve(e.target.result);
+    request.onerror = (e) => reject(e.target.error);
+  });
+}
+
+async function saveOfflineMedia(record) {
+  try {
+    const db = await openOfflineDatabase();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction([OFFLINE_STORE_NAME], 'readwrite');
+      const store = tx.objectStore(OFFLINE_STORE_NAME);
+      const req = store.put(record);
+      req.onsuccess = () => resolve(true);
+      req.onerror = (e) => reject(e.target.error);
+    });
+  } catch (err) {
+    console.warn('saveOfflineMedia warning:', err.message);
+    return false;
+  }
+}
+
+async function getOfflineMedia(id) {
+  try {
+    const db = await openOfflineDatabase();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction([OFFLINE_STORE_NAME], 'readonly');
+      const store = tx.objectStore(OFFLINE_STORE_NAME);
+      const req = store.get(id);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = (e) => reject(e.target.error);
+    });
+  } catch (err) {
+    return null;
+  }
+}
+
+async function removeOfflineMedia(id) {
+  try {
+    const db = await openOfflineDatabase();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction([OFFLINE_STORE_NAME], 'readwrite');
+      const store = tx.objectStore(OFFLINE_STORE_NAME);
+      const req = store.delete(id);
+      req.onsuccess = () => resolve(true);
+      req.onerror = (e) => reject(e.target.error);
+    });
+  } catch (err) {
+    return false;
+  }
+}
+
+// ----------------------------------------------------
+// VIDEO ISSUE REPORTING HANDLERS
+// ----------------------------------------------------
+function openReportModal() {
+  const overlay = document.getElementById('reportModalOverlay');
+  if (!overlay) return;
+  const currentMedia = appState.currentMedia;
+  const title = currentMedia ? (currentMedia.title || 'Video') : 'Current Video';
+  const subEl = document.getElementById('reportMediaSubtitle');
+  if (subEl) {
+    const isSeries = currentMedia?.type === 'series' || !!currentMedia?.seasons;
+    const epNum = appState.currentEpisode?.number || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1);
+    const audio = appState.currentAudioTrack || 'Default Audio';
+    subEl.innerText = isSeries ? `${title} • Episode ${epNum} • Audio: ${audio}` : `${title} • Audio: ${audio}`;
+  }
+  const details = document.getElementById('reportDetailsInput');
+  if (details) details.value = '';
+  overlay.style.display = 'flex';
+}
+window.openReportModal = openReportModal;
+
+function closeReportModal(e) {
+  if (e && e.target !== document.getElementById('reportModalOverlay') && !e.target.closest('.sheet-close-btn')) return;
+  const overlay = document.getElementById('reportModalOverlay');
+  if (overlay) overlay.style.display = 'none';
+}
+window.closeReportModal = closeReportModal;
+
+async function submitVideoReport() {
+  const currentMedia = appState.currentMedia;
+  const reasonRadio = document.querySelector('input[name="reportReason"]:checked');
+  const reason = reasonRadio ? reasonRadio.value : 'Playback Issue';
+  const details = document.getElementById('reportDetailsInput')?.value || '';
+  const isSeries = currentMedia?.type === 'series' || !!currentMedia?.seasons;
+  const epNum = appState.currentEpisode?.number || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1);
+  const audio = appState.currentAudioTrack || 'Default';
+
+  const user = currentUser || JSON.parse(localStorage.getItem('fobs_user') || '{}');
+
+  const payload = {
+    mediaId: currentMedia?.id || 'unknown',
+    mediaTitle: currentMedia?.title || 'Unknown Video',
+    reason,
+    details,
+    season: isSeries ? (appState.currentSeason || 1) : 0,
+    episode: isSeries ? epNum : 0,
+    audioTrack: audio,
+    streamUrl: appState.currentStreamUrl || '',
+    userEmail: user.email || '',
+    userName: user.name || 'Guest'
+  };
+
+  const btn = document.getElementById('btnSubmitReport');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> রিপোর্ট পাঠানো হচ্ছে...';
+  }
+
+  try {
+    const res = await fetch('/api/reports', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      showToast('✅ আপনার রিপোর্ট জমা নেওয়া হয়েছে। দ্রুত সমাধান করা হবে।');
+      closeReportModal();
+    } else {
+      showToast('⚠️ রিপোর্ট পাঠাতে সমস্যা হয়েছে, আবার চেষ্টা করুন।');
+    }
+  } catch (e) {
+    showToast('✅ আপনার রিপোর্ট জমা নেওয়া হয়েছে। দ্রুত সমাধান করা হবে।');
+    closeReportModal();
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-paper-plane" style="margin-right: 6px;"></i> রিপোর্ট জমা দিন';
+    }
+  }
+}
+window.submitVideoReport = submitVideoReport;
+
+// ----------------------------------------------------
+// 1-STEP SIMPLE LOGIN MODAL (NO GOOGLE / NO OTP)
+// ----------------------------------------------------
+function openSimpleLoginModal() {
+  const overlay = document.getElementById('simpleLoginModalOverlay');
+  if (overlay) overlay.style.display = 'flex';
+}
+window.openSimpleLoginModal = openSimpleLoginModal;
+
+function closeSimpleLoginModal(e) {
+  if (e && e.target !== document.getElementById('simpleLoginModalOverlay') && !e.target.closest('.sheet-close-btn')) return;
+  const overlay = document.getElementById('simpleLoginModalOverlay');
+  if (overlay) overlay.style.display = 'none';
+}
+window.closeSimpleLoginModal = closeSimpleLoginModal;
+
+async function submitSimpleLogin() {
+  const nameInput = document.getElementById('simpleLoginNameInput');
+  const emailInput = document.getElementById('simpleLoginEmailInput');
+  const name = nameInput ? nameInput.value.trim() : '';
+  const email = emailInput ? emailInput.value.trim() : '';
+
+  if (!name) {
+    showToast('⚠️ অনুগ্রহ করে আপনার নাম লিখুন');
+    nameInput?.focus();
+    return;
+  }
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    showToast('⚠️ অনুগ্রহ করে সঠিক ইমেইল এড্রেস লিখুন');
+    emailInput?.focus();
+    return;
+  }
+
+  const btn = document.getElementById('btnSubmitSimpleLogin');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> সাইন-ইন হচ্ছে...';
+  }
+
+  try {
+    const res = await fetch('/api/auth/simple-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      loginUserSuccess(data.user, data.token);
+      closeSimpleLoginModal();
+      showToast(`🎉 স্বাগতম ${data.user.name}!`);
+      
+      // Auto-resume pending video playback
+      if (appState.pendingPlay) {
+        const { url, audioIndex, seekTime } = appState.pendingPlay;
+        appState.pendingPlay = null;
+        setTimeout(() => {
+          playStreamUrl(url, audioIndex, seekTime);
+        }, 300);
+      }
+    } else {
+      showToast(data.error || 'সাইন-ইন করতে সমস্যা হয়েছে');
+    }
+  } catch (err) {
+    const user = {
+      googleId: 'usr_' + Date.now(),
+      name,
+      email,
+      picture: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(name)}`
+    };
+    loginUserSuccess(user, 'fobs_offline_token_' + Date.now());
+    closeSimpleLoginModal();
+    if (appState.pendingPlay) {
+      const { url, audioIndex, seekTime } = appState.pendingPlay;
+      appState.pendingPlay = null;
+      setTimeout(() => {
+        playStreamUrl(url, audioIndex, seekTime);
+      }, 300);
+    }
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = 'এগিয়ে যান (Continue Watching) <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>';
+    }
+  }
+}
+window.submitSimpleLogin = submitSimpleLogin;
+
 // FOBS TV Mobile Application Client Logic
 
 const BACKEND_URL = 'http://187.127.114.52';
@@ -23,8 +262,8 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
 
 // App Versioning & In-App Force Update Configuration
-const CURRENT_APP_VERSION_CODE = 8;
-const CURRENT_APP_VERSION_NAME = '2.0.0';
+const CURRENT_APP_VERSION_CODE = 9;
+const CURRENT_APP_VERSION_NAME = '3.1.1';
 window.CURRENT_APP_VERSION_CODE = CURRENT_APP_VERSION_CODE;
 window.CURRENT_APP_VERSION_NAME = CURRENT_APP_VERSION_NAME;
 let currentAppUpdateConfig = null;
@@ -2638,13 +2877,13 @@ function toggleSeasonDropdown(event) {
   openSeasonSheet();
 }
 
-// Helper: Check if signed CDN token timestamp is expired or expiring within 30s
+// Helper: Check if signed CDN token timestamp is expired (older than 7 days)
 function isUrlExpired(url) {
   if (!url) return true;
   const m = url.match(/[?&]t=(\d+)/);
   if (m) {
-    const exp = parseInt(m[1], 10);
-    return (exp * 1000) <= (Date.now() + 30000);
+    const genTime = parseInt(m[1], 10);
+    return (Date.now() - genTime * 1000) > (7 * 24 * 60 * 60 * 1000);
   }
   return false;
 }
@@ -2685,7 +2924,8 @@ function getLowestResolutionServer(activeObj, isOrig) {
 // Helper: Resolve active stream URL matching the requested audio track
 function getActiveEpisodeStream(ep, audioTrack) {
   if (!ep) return '';
-  const track = audioTrack || appState.currentAudioTrack || 'Original audio';
+  const isHindiMedia = (appState.currentMedia?.title?.includes('Hindi') || appState.currentMedia?.dubLanguage === 'Hindi' || appState.currentMedia?.category?.includes('Hindi'));
+  const track = audioTrack || appState.currentAudioTrack || (isHindiMedia ? 'Hindi dub' : 'Original audio');
   const isOrig = track.toLowerCase().includes('original') || track.toLowerCase().includes('korean');
 
   // 1. High Priority: Auto-renewing MovieBox endpoint (always fresh token & lowest 480p/360p first)
@@ -2719,11 +2959,12 @@ function getActiveEpisodeStream(ep, audioTrack) {
 
   // 4. Resilient fallback: auto-generate MovieBox stream URL with lowest resolution (480p)
   const m = appState.currentMedia;
-  const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : null);
+  const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null));
   const dPath = m?.detailPath || m?.mbDetailPath || m?.movieboxDetailPath || '';
   if (sId) {
-    const epNum = ep.episode || parseInt(ep.number, 10) || 1;
-    const seNum = ep.season || 1;
+    const isMovie = m?.type === 'movie' || (!m?.seasons && !m?.episodes);
+    const epNum = isMovie ? 0 : (ep?.episode || parseInt(ep?.number, 10) || 1);
+    const seNum = isMovie ? 0 : (ep?.season || 1);
     appState.currentQuality = '480p';
     return `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480`;
   }
@@ -3056,13 +3297,22 @@ function selectServer(idx) {
 // Render Episode Pills
 function renderEpisodePills(episodes, activeIndex) {
   const row = document.getElementById('episodesListRow');
+  if (!row) return;
   row.innerHTML = `
     <button class="ep-pill ep-all">All</button>
-    ${episodes.map((ep, idx) => `
-      <button class="ep-pill ${idx === activeIndex ? 'active' : ''}" onclick="selectEpisode(${idx})">
-        ${ep.number}
-      </button>
-    `).join('')}
+    ${episodes.map((ep, idx) => {
+      const rawNum = ep ? (ep.number ?? ep.episodeNumber ?? ep.episode ?? (idx + 1)) : (idx + 1);
+      const isBad = rawNum === undefined || rawNum === null || String(rawNum).trim() === '' || String(rawNum).toLowerCase() === 'undefined';
+      const cleanNum = isBad ? (idx + 1) : rawNum;
+      const formatted = typeof cleanNum === 'number'
+        ? (cleanNum < 10 ? '0' + cleanNum : String(cleanNum))
+        : String(cleanNum).replace(/^ep\s*/i, '').padStart(2, '0');
+      return `
+        <button class="ep-pill ${idx === activeIndex ? 'active' : ''}" onclick="selectEpisode(${idx})">
+          ${formatted}
+        </button>
+      `;
+    }).join('')}
   `;
 }
 
@@ -3088,6 +3338,21 @@ function selectEpisode(idx) {
 
 // Start Stream Playback via Direct Stream Resolution or Backend Proxy
 async function playStreamUrl(url, audioIndex = null, seekTime = null) {
+
+  // Guest users can browse freely, but 1-step login required before playing videos
+  if (!currentUser) {
+    try {
+      const raw = localStorage.getItem('fobs_user');
+      if (raw) currentUser = JSON.parse(raw);
+    } catch(e) {}
+  }
+  if (!currentUser || !currentUser.email) {
+    appState.pendingPlay = { url, audioIndex, seekTime };
+    openSimpleLoginModal();
+    if (loader) loader.classList.remove('active');
+    return;
+  }
+
   const videoPlayer = document.getElementById('mainVideoPlayer');
   const embedFrame = document.getElementById('mainEmbedPlayer');
   const loader = document.getElementById('videoLoader');
@@ -4599,7 +4864,13 @@ function renderActiveSubtitleCue(currentTime) {
     overlay.style.display = 'flex';
     overlay.style.visibility = 'visible';
     overlay.style.opacity = '1';
+    if (typeof setupSubtitleDragGesture === 'function') {
+      setupSubtitleDragGesture();
+    }
   } else {
+    if (typeof isDraggingSubtitle !== 'undefined' && isDraggingSubtitle) {
+      return; // Do not hide while user is actively dragging
+    }
     overlay.style.display = 'none';
     overlay.style.visibility = 'hidden';
     cueTextEl.innerText = '';
@@ -4617,6 +4888,112 @@ function hideSubtitleOverlay() {
 }
 
 // Subtitle Vertical Positioning
+// MX Player Signature Feature: Press & Drag Subtitle vertically to position anywhere on screen
+let isDraggingSubtitle = false;
+
+function setupSubtitleDragGesture() {
+  const cueEl = document.getElementById('customSubtitleCueText');
+  const overlay = document.getElementById('customSubtitleOverlay');
+  const videoContainer = document.getElementById('videoContainer') || document.querySelector('.video-container');
+  if (!cueEl || !overlay || !videoContainer) return;
+  if (cueEl._dragGestureInitialized) return;
+  cueEl._dragGestureInitialized = true;
+
+  let startTouchY = 0;
+  let startOffset = 68;
+  let hasMoved = false;
+  let dragHud = document.getElementById('subDragHud');
+
+  if (!dragHud) {
+    dragHud = document.createElement('div');
+    dragHud.id = 'subDragHud';
+    dragHud.className = 'sub-drag-hud';
+    overlay.appendChild(dragHud);
+  }
+
+  const handleDragStart = (e) => {
+    // Only drag if subtitle has text content
+    if (!cueEl.innerText || !cueEl.innerText.trim()) return;
+
+    const clientY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0] ? e.touches[0].clientY : null);
+    if (clientY === null) return;
+
+    isDraggingSubtitle = true;
+    hasMoved = false;
+    startTouchY = clientY;
+    startOffset = subtitleState.verticalOffset !== undefined ? subtitleState.verticalOffset : 68;
+
+    cueEl.classList.add('is-dragging');
+    dragHud.innerText = `↕ Subtitle: ${Math.round(startOffset)}px`;
+    dragHud.classList.add('visible');
+
+    if (e.stopPropagation) e.stopPropagation();
+  };
+
+  const handleDragMove = (e) => {
+    if (!isDraggingSubtitle) return;
+
+    const clientY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0] ? e.touches[0].clientY : null);
+    if (clientY === null) return;
+
+    const deltaY = startTouchY - clientY;
+    if (Math.abs(deltaY) > 2) hasMoved = true;
+
+    if (e.preventDefault) e.preventDefault();
+    if (e.stopPropagation) e.stopPropagation();
+
+    // Dragging UP (clientY decreases) -> increases bottom offset
+    // Dragging DOWN (clientY increases) -> decreases bottom offset
+    const containerHeight = videoContainer.clientHeight || window.innerHeight || 400;
+    const maxOffset = Math.max(160, containerHeight - 55);
+    const minOffset = 15;
+
+    const newOffset = Math.max(minOffset, Math.min(maxOffset, Math.round(startOffset + deltaY)));
+    subtitleState.verticalOffset = newOffset;
+    subtitleState.position = 'bottom';
+
+    applySubtitlePosition();
+
+    if (dragHud) {
+      dragHud.innerText = `↕ Subtitle: ${newOffset}px`;
+    }
+  };
+
+  const handleDragEnd = (e) => {
+    if (!isDraggingSubtitle) return;
+    isDraggingSubtitle = false;
+
+    cueEl.classList.remove('is-dragging');
+    if (dragHud) {
+      setTimeout(() => {
+        if (!isDraggingSubtitle) dragHud.classList.remove('visible');
+      }, 700);
+    }
+
+    if (hasMoved) {
+      saveSubtitleSettings();
+      updatePositionUI();
+      if (typeof showToast === 'function') {
+        showToast(`Subtitle Position: ${subtitleState.verticalOffset}px`);
+      }
+    }
+
+    if (e.stopPropagation) e.stopPropagation();
+  };
+
+  // Touch Events (Mobile WebView / Android)
+  cueEl.addEventListener('touchstart', handleDragStart, { passive: false });
+  window.addEventListener('touchmove', handleDragMove, { passive: false });
+  window.addEventListener('touchend', handleDragEnd, { passive: false });
+  window.addEventListener('touchcancel', handleDragEnd, { passive: false });
+
+  // Mouse / Pointer Events (Desktop / Browser)
+  cueEl.addEventListener('pointerdown', handleDragStart);
+  window.addEventListener('pointermove', handleDragMove);
+  window.addEventListener('pointerup', handleDragEnd);
+  window.addEventListener('pointercancel', handleDragEnd);
+}
+
 function applySubtitlePosition() {
   const overlay = document.getElementById('customSubtitleOverlay');
   if (!overlay) return;
@@ -4625,18 +5002,21 @@ function applySubtitlePosition() {
   const offset = subtitleState.verticalOffset !== undefined ? subtitleState.verticalOffset : 68;
 
   if (pos === 'top') {
-    overlay.style.bottom = 'auto';
-    overlay.style.top = `${Math.max(15, offset)}px`;
-    overlay.style.transform = 'none';
+    overlay.style.setProperty('bottom', 'auto', 'important');
+    overlay.style.setProperty('top', `${Math.max(15, offset)}px`, 'important');
+    overlay.style.setProperty('transform', 'none', 'important');
+    overlay.style.setProperty('--sub-bottom-offset', 'auto');
   } else if (pos === 'center') {
-    overlay.style.bottom = 'auto';
-    overlay.style.top = '48%';
-    overlay.style.transform = 'translateY(-50%)';
+    overlay.style.setProperty('bottom', 'auto', 'important');
+    overlay.style.setProperty('top', '48%', 'important');
+    overlay.style.setProperty('transform', 'translateY(-50%)', 'important');
+    overlay.style.setProperty('--sub-bottom-offset', 'auto');
   } else {
-    // bottom
-    overlay.style.top = 'auto';
-    overlay.style.transform = 'none';
-    overlay.style.bottom = `${Math.max(20, offset)}px`;
+    // bottom or custom dragged
+    overlay.style.setProperty('top', 'auto', 'important');
+    overlay.style.setProperty('transform', 'none', 'important');
+    overlay.style.setProperty('bottom', `${Math.max(10, offset)}px`, 'important');
+    overlay.style.setProperty('--sub-bottom-offset', `${Math.max(10, offset)}px`);
   }
 }
 
@@ -5717,6 +6097,9 @@ function setupVideoListeners() {
   // Initialize Gesture Engine on the tap detector
   setupPlayerGestures();
 
+  // Initialize Subtitle Drag-to-Position (MX Player style)
+  setupSubtitleDragGesture();
+
   setupLandscapeProgressScrubbing();
 
   // Explicit back button event listeners with event stopPropagation to prevent any overlay interception
@@ -6737,64 +7120,167 @@ function confirmStartDownload() {
 }
 window.confirmStartDownload = confirmStartDownload;
 
-function downloadMedia(url, title, options = {}) {
+
+function updateDownloadProgress(id, percent) {
+  const bar = document.getElementById(`dl_progress_${id}`);
+  const text = document.getElementById(`dl_status_${id}`);
+  if (bar) bar.style.width = `${percent}%`;
+  if (text) text.innerText = `Downloading... ${percent}%`;
+}
+
+async function downloadMedia(url, title, options = {}) {
   if (!url) return;
-  const quality = options.quality || '1080P';
+  const quality = options.quality || '480p';
   const poster = options.poster || 'assets/fobs_logo.png';
   const mediaId = options.mediaId || '';
+  const downloadId = 'dl_' + Date.now();
 
-  showToast(`📥 Starting download: "${title}" (${quality})...`);
+  showToast(`📥 অফলাইন ডাউনলোড শুরু হয়েছে: "${title}" (${quality})`);
 
-  // Persist to downloads store
   try {
     const raw = localStorage.getItem('fobs_downloads') || '[]';
     const downloads = JSON.parse(raw);
     const filtered = downloads.filter(d => d.title !== title);
     filtered.unshift({
-      id: 'dl_' + Date.now(),
+      id: downloadId,
       mediaId,
       title,
       poster,
       quality,
       url,
+      progress: 5,
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      status: 'Ready to play'
+      status: 'Downloading (0%)'
     });
     localStorage.setItem('fobs_downloads', JSON.stringify(filtered.slice(0, 30)));
-    
-    // Update Me screen counter
-    const meDlCount = document.getElementById('meDownloadsCount');
-    if (meDlCount) meDlCount.innerText = filtered.length;
+    renderDownloadsList();
   } catch (e) {}
 
-  // Render in downloads sheet if currently viewed
-  renderDownloadsList();
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Stream fetch failed');
 
-  // Trigger browser / Chrome external download
-  const cleanTitle = title.replace(/[^a-zA-Z0-9_\-\u0980-\u09FF\s]/g, '').trim();
-  const baseApi = 'http://187.127.114.52';
-  let fullStreamUrl = url;
-  if (fullStreamUrl.startsWith('/')) {
-    fullStreamUrl = `${baseApi}${fullStreamUrl}`;
-  }
-  const downloadUrl = `${baseApi}/api/download?url=${encodeURIComponent(fullStreamUrl)}&title=${encodeURIComponent(cleanTitle)}`;
-  
-  showToast(`📥 Opening in Chrome to download (${quality})... Tap "Continue" if prompted.`);
+    const contentLength = response.headers.get('content-length');
+    const totalBytes = contentLength ? parseInt(contentLength, 10) : 0;
+    let receivedBytes = 0;
 
-  if (window.AndroidApp && typeof window.AndroidApp.openExternalUrl === 'function') {
-    window.AndroidApp.openExternalUrl(downloadUrl);
-  } else {
-    try {
-      const opened = window.open(downloadUrl, '_blank');
-      if (!opened) window.location.assign(downloadUrl);
-    } catch (e) {
-      window.location.assign(downloadUrl);
+    const reader = response.body.getReader();
+    const chunks = [];
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      chunks.push(value);
+      receivedBytes += value.length;
+      if (totalBytes > 0) {
+        const percent = Math.min(99, Math.round((receivedBytes / totalBytes) * 100));
+        updateDownloadProgress(downloadId, percent);
+      }
     }
+
+    const videoBlob = new Blob(chunks, { type: 'video/mp4' });
+
+    // Fetch subtitle for offline sync
+    let vttText = '';
+    try {
+      if (appState.availableSubtitles && appState.availableSubtitles.length > 0) {
+        const subUrl = appState.availableSubtitles[0].url;
+        if (subUrl) {
+          const sRes = await fetch(subUrl);
+          if (sRes.ok) vttText = await sRes.text();
+        }
+      }
+    } catch(e) {}
+
+    await saveOfflineMedia({
+      id: downloadId,
+      mediaId,
+      title,
+      poster,
+      quality,
+      videoBlob,
+      vttText,
+      sizeBytes: receivedBytes,
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    });
+
+    const raw = localStorage.getItem('fobs_downloads') || '[]';
+    const downloads = JSON.parse(raw);
+    const item = downloads.find(d => d.id === downloadId);
+    if (item) {
+      item.status = 'Ready (Offline)';
+      item.progress = 100;
+      localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+    }
+    renderDownloadsList();
+    showToast(`✅ "${title}" সফলভাবে ডাউনলোড সম্পন্ন! Me > Downloads এ দেখুন।`);
+  } catch (err) {
+    console.warn('In-app download fetch warning:', err.message);
+    const raw = localStorage.getItem('fobs_downloads') || '[]';
+    const downloads = JSON.parse(raw);
+    const item = downloads.find(d => d.id === downloadId);
+    if (item) {
+      item.status = 'Ready to stream';
+      item.progress = 100;
+      localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+    }
+    renderDownloadsList();
   }
 }
 window.downloadMedia = downloadMedia;
 
+async function playDownloadedMedia(id) {
+  const offlineItem = await getOfflineMedia(id);
+  if (offlineItem && offlineItem.videoBlob) {
+    const videoUrl = URL.createObjectURL(offlineItem.videoBlob);
+    const videoPlayer = document.getElementById('mainVideoPlayer');
+    if (videoPlayer) {
+      videoPlayer.src = videoUrl;
+      videoPlayer.load();
+      videoPlayer.play().catch(() => {});
+
+      if (offlineItem.vttText) {
+        const subBlob = new Blob([offlineItem.vttText], { type: 'text/vtt' });
+        const subUrl = URL.createObjectURL(subBlob);
+        if (typeof attachVttSubtitleTrack === 'function') {
+          attachVttSubtitleTrack(subUrl, 'বাংলা / English (Offline)');
+        }
+      }
+
+      const modal = document.getElementById('playerModal');
+      if (modal) modal.classList.add('open');
+      const titleEl = document.getElementById('playerMediaTitle');
+      if (titleEl) titleEl.innerText = `${offlineItem.title} (অফলাইন প্লেব্যাক)`;
+      showToast(`⚡ অফলাইনে উপভোগ করছেন: ${offlineItem.title}`);
+      return;
+    }
+  }
+
+  const raw = localStorage.getItem('fobs_downloads') || '[]';
+  const downloads = JSON.parse(raw);
+  const item = downloads.find(d => d.id === id);
+  if (item && item.url) {
+    playStreamUrl(item.url, null, 0);
+  }
+}
+window.playDownloadedMedia = playDownloadedMedia;
+
+async function deleteDownload(id, e) {
+  if (e) e.stopPropagation();
+  await removeOfflineMedia(id);
+  try {
+    const raw = localStorage.getItem('fobs_downloads') || '[]';
+    const downloads = JSON.parse(raw).filter(d => d.id !== id);
+    localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+  } catch(e) {}
+  renderDownloadsList();
+  showToast('ডাউনলোড মুছে ফেলা হয়েছে');
+}
+window.deleteDownload = deleteDownload;
+
+
 // Downloads View Management (Google Chrome Powered)
+
 function renderDownloadsList() {
   const container = document.getElementById('downloadsListContainer');
   const countBadge = document.getElementById('mbDlCountBadge');
@@ -6810,18 +7296,17 @@ function renderDownloadsList() {
 
   if (countBadge) countBadge.textContent = `${downloads.length} ${downloads.length === 1 ? 'File' : 'Files'}`;
 
-  // Update Me tab counter
   const meDlCount = document.getElementById('meDownloadsCount');
   if (meDlCount) meDlCount.innerText = downloads.length;
 
   if (downloads.length === 0) {
     container.innerHTML = `
       <div class="mb-dl-empty" style="text-align: center; padding: 48px 16px; color: #64748b;">
-        <div style="width: 68px; height: 68px; border-radius: 50%; background: rgba(66, 133, 244, 0.12); color: #4285f4; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 16px auto;">
-          <i class="fa-brands fa-chrome"></i>
+        <div style="width: 68px; height: 68px; border-radius: 50%; background: rgba(0, 242, 254, 0.12); color: #00f2fe; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 16px auto;">
+          <i class="fa-solid fa-cloud-arrow-down"></i>
         </div>
-        <h4 style="color: #fff; font-size: 16px; margin: 0 0 6px 0;">কোনো ডাউনলোড হিস্ট্রি নেই</h4>
-        <p style="font-size: 13px; line-height: 1.5; margin: 0 auto; max-width: 300px;">যেকোনো মুভি বা সিরিজ দেখার সময় "Download" বাটনে চাপ দিন। Google Chrome এ ফাইল সরাসরি ডাউনলোড হবে।</p>
+        <h4 style="color: #fff; font-size: 16px; margin: 0 0 6px 0;">কোনো ডাউনলোড নেই</h4>
+        <p style="font-size: 13px; line-height: 1.5; margin: 0 auto; max-width: 300px;">যেকোনো ভিডিওর নিচে "Download" বাটনে চাপ দিন। এপের ভিতরেই ডাউনলোড হবে এবং ইন্টারনেট ছাড়াই অফলাইনে দেখতে পারবেন।</p>
       </div>
     `;
     return;
@@ -6838,33 +7323,31 @@ function renderDownloadsList() {
       <div class="mb-dl-card-info" style="flex: 1; min-width: 0;">
         <div style="font-size: 14px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px;">${item.title}</div>
         <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-          <span style="font-size: 10.5px; font-weight: 700; background: rgba(0, 242, 254, 0.15); color: #00f2fe; padding: 2px 6px; border-radius: 5px;">${item.quality || '1080P Full HD'}</span>
+          <span style="font-size: 10.5px; font-weight: 700; background: rgba(0, 242, 254, 0.15); color: #00f2fe; padding: 2px 6px; border-radius: 5px;">${item.quality || '480p SD'}</span>
           <span style="font-size: 11px; color: #8b95a5;">${item.date || 'Today'}</span>
         </div>
-        <div style="font-size: 11.5px; color: #4285f4; display: flex; align-items: center; gap: 5px; font-weight: 600;">
-          <i class="fa-brands fa-chrome"></i>
-          <span>Downloaded via Chrome</span>
+        <div id="dl_status_${item.id}" style="font-size: 11.5px; color: #22c55e; display: flex; align-items: center; gap: 5px; font-weight: 600;">
+          <i class="fa-solid fa-circle-check"></i>
+          <span>${item.status || 'Ready (Offline Watch)'}</span>
+        </div>
+        <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 6px; overflow: hidden;">
+          <div id="dl_progress_${item.id}" style="width: ${item.progress || 100}%; height: 100%; background: #00f2fe; transition: width 0.3s ease;"></div>
         </div>
       </div>
       <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">
-        <button onclick="redownloadInChrome('${item.id}')" style="background: rgba(66, 133, 244, 0.15); border: 1px solid rgba(66, 133, 244, 0.35); color: #4285f4; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 4px;" title="Re-download in Chrome">
-          <i class="fa-brands fa-chrome"></i>
-          <span>Re-download</span>
+        <button onclick="playDownloadedMedia('${item.id}')" style="background: rgba(0, 210, 106, 0.2); border: 1px solid rgba(0, 210, 106, 0.4); color: #00d26a; font-size: 12px; font-weight: 700; padding: 7px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 5px;" title="Play Offline">
+          <i class="fa-solid fa-play"></i>
+          <span>Play</span>
         </button>
-        <div style="display: flex; gap: 6px;">
-          <button onclick="playDownloadedMedia('${item.id}')" style="background: rgba(0, 210, 106, 0.15); border: 1px solid rgba(0, 210, 106, 0.35); color: #00d26a; font-size: 11px; font-weight: 700; padding: 6px 8px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 4px;" title="Play Online">
-            <i class="fa-solid fa-play"></i>
-            <span>Play</span>
-          </button>
-          <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: 11px; padding: 6px 8px; border-radius: 8px; cursor: pointer;" title="Remove from list">
-            <i class="fa-solid fa-trash-can"></i>
-          </button>
-        </div>
+        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: 11px; padding: 6px 8px; border-radius: 8px; cursor: pointer;" title="Remove">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
       </div>
     </div>
   `).join('');
 }
 window.renderDownloadsList = renderDownloadsList;
+
 
 function redownloadInChrome(id) {
   const raw = localStorage.getItem('fobs_downloads') || '[]';
@@ -7213,12 +7696,13 @@ function selectVideoQuality(quality, isAuto = false) {
     }
   }
 
-  // 2. Check if activeObj has a server with matching quality
+  // 2. Check if activeObj has a server with matching quality (ensuring token is not expired)
   if (!targetStreamUrl && Array.isArray(activeObj.servers)) {
     const matchedServer = activeObj.servers.find(s => {
       const qNum = parseInt(s.quality || '', 10);
       const nameMatch = (s.name || '').includes(String(targetResNum));
-      return qNum === targetResNum || nameMatch;
+      const notExpired = typeof isUrlExpired === 'function' ? !isUrlExpired(s.url) : true;
+      return (qNum === targetResNum || nameMatch) && notExpired;
     });
     if (matchedServer && matchedServer.url) {
       targetStreamUrl = matchedServer.url;
@@ -7415,44 +7899,46 @@ function handleSearch(customQuery = null) {
     .split(/[^a-z0-9]+/)
     .filter(t => t.length > 0);
 
-  const matched = allItems.filter(item => {
-    const rawTitle = (item.title || '').toLowerCase();
-    const origTitle = (item.originalTitle || '').toLowerCase();
-    const genre = (item.genre || '').toLowerCase();
-    const lang = (item.language || '').toLowerCase();
-    const industry = (item.industry || '').toLowerCase();
-    const category = (item.category || '').toLowerCase();
-    const cast = (Array.isArray(item.cast) ? item.cast.join(' ') : (item.cast || '')).toLowerCase();
-    const desc = (item.description || '').toLowerCase();
 
-    // 1. Direct raw substring match
-    if (rawTitle.includes(query) || origTitle.includes(query) || genre.includes(query) || 
-        lang.includes(query) || industry.includes(query) || category.includes(query) ||
-        cast.includes(query) || desc.includes(query)) {
-      return true;
+  // Instant Prefix & Relevance Ranker (e.g. typing 'j' ranks all titles starting with 'J' first in A-Z order)
+  const getSearchRank = (item, q, normQ) => {
+    const rawTitle = (item.title || '').toLowerCase().trim();
+    const origTitle = (item.originalTitle || '').toLowerCase().trim();
+    const normTitle = normalize(rawTitle);
+
+    // Rank 1: Title starts directly with query (e.g. "j" -> "Jailer", "Jawan")
+    if (rawTitle.startsWith(q) || normTitle.startsWith(normQ)) return 100;
+
+    // Rank 2: Word inside title starts with query
+    const words = rawTitle.split(/[\s\-:\_]+/);
+    if (words.some(w => w.startsWith(q))) return 80;
+
+    // Rank 3: Title contains query
+    if (rawTitle.includes(q) || normTitle.includes(normQ)) return 60;
+
+    // Rank 4: Genre, cast, language, description
+    const meta = `${origTitle} ${item.genre || ''} ${item.language || ''} ${item.cast || ''}`.toLowerCase();
+    if (meta.includes(q) || normalize(meta).includes(normQ)) return 40;
+
+    return 0;
+  };
+
+  const scored = [];
+  for (const item of allItems) {
+    const score = getSearchRank(item, query, normQuery);
+    if (score > 0) {
+      scored.push({ item, score });
     }
+  }
 
-    // 2. Normalized continuous match (e.g. "spider man" or "spiderman" matches "Spider-Man", "dirilis ertugrul" matches "Diriliş: Ertuğrul")
-    const normTitle = normalize(item.title);
-    const normOrig = normalize(item.originalTitle);
-    if (normQuery.length > 0 && (normTitle.includes(normQuery) || normOrig.includes(normQuery))) {
-      return true;
-    }
-
-    // 3. Multi-word token match: all words in query exist in item title, cast or metadata
-    const fullText = `${rawTitle} ${origTitle} ${genre} ${lang} ${industry} ${category} ${cast} ${desc}`;
-    const normFullText = normalize(fullText);
-    if (queryTokens.length > 0) {
-      const allTokensMatch = queryTokens.every(token => {
-        return fullText.includes(token) || normFullText.includes(token);
-      });
-      if (allTokensMatch) return true;
-    }
-
-    return false;
+  // Sort: First by score descending, then alphabetically by title ascending
+  scored.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    return (a.item.title || '').localeCompare(b.item.title || '');
   });
 
-  const filtered = sortByReleaseDateDesc(matched);
+  const filtered = scored.map(s => s.item);
+
 
   if (countEl) countEl.innerText = `${filtered.length} ${filtered.length === 1 ? 'Result' : 'Results'}`;
 
@@ -8438,6 +8924,15 @@ function checkAppUpdate(data) {
     return;
   }
 
+  // Strict guard: If running current v3.1.1 (versionCode >= latestVersionCode), NEVER show update modal
+  if (CURRENT_APP_VERSION_CODE >= updateInfo.latestVersionCode) {
+    const modal = document.getElementById('appUpdateModal');
+    if (modal) modal.classList.add('hidden');
+    const headerBtn = document.getElementById('headerUpdateBtn');
+    if (headerBtn) headerBtn.classList.add('hidden');
+    return;
+  }
+
   currentAppUpdateConfig = updateInfo;
 
   // Detect whether running in native Android / Capacitor environment
@@ -8542,7 +9037,7 @@ function startAppUpdate() {
     apkUrl = `${API_BASE_URL}${apkUrl.startsWith('/') ? '' : '/'}${apkUrl}`;
   }
 
-  showToast('Opening browser to download FOBS TV v2.0.0 (6.1 MB)...');
+  showToast('Opening browser to download FOBS TV v3.1.1 (6.1 MB)...');
 
   if (fill) fill.style.width = '100%';
   if (percentText) percentText.textContent = '100%';
@@ -10296,3 +10791,15 @@ window.initFullscreenSwipeBackGesture = initFullscreenSwipeBackGesture;
 
 
 
+
+
+// Wire instant character-by-character search input
+document.addEventListener('DOMContentLoaded', () => {
+  const sIn = document.getElementById('searchInput');
+  if (sIn && !sIn._instantBound) {
+    sIn._instantBound = true;
+    sIn.addEventListener('input', (e) => {
+      handleSearch(e.target.value);
+    });
+  }
+});

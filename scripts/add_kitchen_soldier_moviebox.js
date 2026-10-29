@@ -158,8 +158,9 @@ async function run() {
     }));
 
     episodes.push({
-      number: epNum,
+      number: String(epNum).padStart(2, '0'),
       episode: epNum,
+      episodeNumber: epNum,
       season: 1,
       title: tmdbEp.name || `Episode ${epNum}`,
       duration: `${tmdbEp.runtime || 45} min`,

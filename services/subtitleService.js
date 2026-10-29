@@ -1,3 +1,6 @@
+const fs = require('fs');
+const crypto = require('crypto');
+const path = require('path');
 /**
  * FOBS TV - Subtitle Service
  * Integrates SubSource, OpenSubtitles & MovieBox Captions
@@ -74,6 +77,25 @@ class SubtitleService {
       }
     } catch (e) {
       console.warn('Online subtitle prefetch warning:', e.message);
+    }
+
+
+    // 3. FOBS AI Auto-Translate fallback if no Bangla subtitle exists
+    const hasBn = availableSubtitles.some(s => s.langCode === 'bn');
+    const enSub = availableSubtitles.find(s => s.langCode === 'en');
+    if (!hasBn && enSub) {
+      const enUrl = enSub.url || enSub.downloadUrl;
+      if (enUrl) {
+        availableSubtitles.push({
+          id: `ai_bn_${availableSubtitles.length + 1}`,
+          language: 'Bangla (AI Translated) [বাংলা]',
+          langCode: 'bn',
+          source: 'FOBS AI Engine',
+          url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanTitle)}&season=${season}&episode=${episode}`,
+          format: 'vtt',
+          isAi: true
+        });
+      }
     }
 
     // Cache for 2 hours
@@ -267,6 +289,99 @@ class SubtitleService {
   /**
    * Parse WebVTT or SRT text into structured JSON cues for precise custom rendering & live sync
    */
+
+  /**
+   * Translate WebVTT / SRT cues into natural Bengali using Google batch engine
+   * @param {Array} cues - Structured cues array [{ startTime, endTime, text }]
+   */
+  async translateCuesToBangla(cues = []) {
+    if (!Array.isArray(cues) || cues.length === 0) return [];
+    
+    const BATCH_SIZE = 50;
+    const translatedCues = [];
+
+    for (let i = 0; i < cues.length; i += BATCH_SIZE) {
+      const batch = cues.slice(i, i + BATCH_SIZE);
+      const texts = batch.map(c => (c.text || '').replace(/\n/g, ' '));
+      const qs = texts.map(t => 'q=' + encodeURIComponent(t)).join('&');
+
+      try {
+        const res = await axios.post(
+          'https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=en&tl=bn',
+          qs,
+          {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            timeout: 10000
+          }
+        );
+
+        const translatedTexts = Array.isArray(res.data) ? res.data : texts;
+        batch.forEach((cue, idx) => {
+          translatedCues.push({
+            startTime: cue.startTime,
+            endTime: cue.endTime,
+            text: translatedTexts[idx] || cue.text
+          });
+        });
+      } catch (err) {
+        console.warn('AI Translation batch warning:', err.message);
+        batch.forEach(cue => translatedCues.push(cue));
+      }
+    }
+
+    return translatedCues;
+  }
+
+  /**
+   * Format cues array back to standard WebVTT string
+   */
+  cuesToVtt(cues = []) {
+    let vtt = 'WEBVTT\n\n';
+    const formatTime = (secs) => {
+      const pad = (n, z = 2) => String(Math.floor(n)).padStart(z, '0');
+      const h = pad(secs / 3600);
+      const m = pad((secs % 3600) / 60);
+      const s = pad(secs % 60);
+      const ms = String(Math.floor((secs % 1) * 1000)).padStart(3, '0');
+      return `${h}:${m}:${s}.${ms}`;
+    };
+
+    cues.forEach((cue, idx) => {
+      vtt += `${idx + 1}\n${formatTime(cue.startTime)} --> ${formatTime(cue.endTime)}\n${cue.text}\n\n`;
+    });
+
+    return vtt;
+  }
+
+  /**
+   * Get cached Bangla subtitle or translate from English source URL
+   */
+  async getOrTranslateToBangla(sourceUrl, cacheKey) {
+    const subtitlesDir = path.join(__dirname, '..', 'data', 'subtitles');
+    if (!fs.existsSync(subtitlesDir)) fs.mkdirSync(subtitlesDir, { recursive: true });
+
+    const safeHash = crypto.createHash('md5').update(sourceUrl || cacheKey || 'unknown').digest('hex');
+    const diskFile = path.join(subtitlesDir, `bn_ai_${safeHash}.vtt`);
+
+    if (fs.existsSync(diskFile)) {
+      return fs.readFileSync(diskFile, 'utf8');
+    }
+
+    // Download and parse original source
+    const downloaded = await this.downloadSubtitle(sourceUrl);
+    if (!downloaded.cues || downloaded.cues.length === 0) {
+      return downloaded.vtt;
+    }
+
+    // Translate to Bangla
+    const bnCues = await this.translateCuesToBangla(downloaded.cues);
+    const bnVtt = this.cuesToVtt(bnCues);
+
+    // Save permanently to disk
+    fs.writeFileSync(diskFile, bnVtt, 'utf8');
+    return bnVtt;
+  }
+
   parseCues(rawText) {
     if (!rawText) return [];
     const cues = [];

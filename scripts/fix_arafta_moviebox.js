@@ -288,6 +288,7 @@ async function run() {
         episodes.push({
           number: epPad,
           episode: ep,
+          episodeNumber: ep,
           season: se,
           overallEpisode: overallEpCounter,
           title: `Episode ${ep}`,

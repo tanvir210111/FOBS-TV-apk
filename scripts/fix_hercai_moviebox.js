@@ -246,6 +246,7 @@ async function run() {
         episodes.push({
           number: epPad,
           episode: i,
+          episodeNumber: i,
           season: sCfg.seasonNumber,
           overallEpisode: overallEp,
           title: `Episode ${i}`,

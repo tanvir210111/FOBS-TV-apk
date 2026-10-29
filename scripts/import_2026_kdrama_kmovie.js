@@ -401,8 +401,9 @@ async function run() {
         const epCaptions = formatCaptions(allEpCaptions, `s_${item.hindi.id}_ep${ep}`);
 
         episodes.push({
-          number: ep,
+          number: String(ep).padStart(2, '0'),
           episode: ep,
+          episodeNumber: ep,
           season: 1,
           title: `Episode ${ep}`,
           duration: '45 min',

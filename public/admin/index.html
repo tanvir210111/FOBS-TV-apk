@@ -90,6 +90,11 @@
           <span>User Requests</span>
           <span id="badge-requests-count" class="badge-count alert">0</span>
         </a>
+                <a href="#reports" class="nav-item" data-tab="reports">
+          <i class="fa-solid fa-triangle-exclamation" style="color: #ff4757;"></i>
+          <span>Video Reports</span>
+          <span id="badge-reports-count" class="badge-count alert">0</span>
+        </a>
         <a href="#users" class="nav-item" data-tab="users">
           <i class="fa-solid fa-users"></i>
           <span>App Users</span>
@@ -495,6 +500,37 @@
       </section>
 
       <!-- TAB 7: ANNOUNCEMENTS -->
+      
+      <!-- VIDEO ISSUE REPORTS TAB -->
+      <section id="tab-reports" class="tab-pane">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Video Problem Reports</h2>
+            <p class="section-desc">User-submitted playback, audio, and subtitle issues from mobile app</p>
+          </div>
+          <button class="btn btn-secondary" onclick="loadReports()"><i class="fa-solid fa-rotate"></i> Refresh Reports</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Video Title</th>
+                <th>Issue Reason</th>
+                <th>User Details</th>
+                <th>Reporter</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="reports-table-body">
+              <tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Loading reports...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <!-- APP USERS TAB -->
       <section id="tab-users" class="tab-pane">
         <div class="section-header">

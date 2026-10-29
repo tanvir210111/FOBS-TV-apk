@@ -259,6 +259,9 @@ async function main() {
       const autoUrl = `https://autoembed.co/tv/tmdb/${tmdbId}/1/${i}`;
       episodes.push({
         number: epNum,
+        episode: i,
+        episodeNumber: i,
+        season: 1,
         title: `Episode ${i}`,
         duration: '45m-60m',
         streamUrl: multiUrl,

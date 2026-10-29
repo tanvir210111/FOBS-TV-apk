@@ -378,7 +378,9 @@ async function main() {
         }
       }
       episodes.push({
-        number: ep,
+        number: String(ep).padStart(2, '0'),
+        episode: ep,
+        episodeNumber: ep,
         title: `Episode ${ep}`,
         streamUrl: epStream,
         audioTracks: {
@@ -390,7 +392,9 @@ async function main() {
     // If maxEp > epsToResolve, add remaining episodes with ep1 fallback or proxy
     for (let ep = epsToResolve + 1; ep <= maxEp; ep++) {
       episodes.push({
-        number: ep,
+        number: String(ep).padStart(2, '0'),
+        episode: ep,
+        episodeNumber: ep,
         title: `Episode ${ep}`,
         streamUrl: ep1Res.streamUrl,
         audioTracks: {

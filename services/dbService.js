@@ -12,6 +12,7 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/fobstv
 const REDIS_URI = process.env.REDIS_URI || 'redis://127.0.0.1:6379';
 const BOOKINGS_FILE = path.join(__dirname, '..', 'data', 'bookings.json');
 const COMMENTS_FILE = path.join(__dirname, '..', 'data', 'comments.json');
+const REPORTS_FILE = path.join(__dirname, '..', 'data', 'reports.json');
 const USERS_FILE = path.join(__dirname, '..', 'data', 'users.json');
 const USERS_LOCAL_FILE = path.join(__dirname, '..', 'data', 'users.local.json');
 const DEVICES_FILE = path.join(__dirname, '..', 'data', 'devices.json');
@@ -228,6 +229,7 @@ async function initMongoDB() {
     Feedback = mongoose.model('Feedback', FeedbackSchema);
     Booking = mongoose.model('Booking', BookingSchema);
     Comment = mongoose.model('Comment', CommentSchema);
+    Report = mongoose.model('Report', ReportSchema);
     console.log('🍃 MongoDB connected successfully: fobstv database online');
   } catch (err) {
     console.warn(`⚠️ MongoDB connection warning (${err.message}). Using resilient fallback.`);
@@ -902,6 +904,128 @@ async function likeComment(mediaId, commentId) {
   return { success: true, likes: updatedLikes };
 }
 
+
+// ----------------------------------------------------
+// VIDEO ISSUE REPORTS (MongoDB + Local Disk JSON)
+// ----------------------------------------------------
+const ReportSchema = new mongoose.Schema({
+  mediaId: { type: String, required: true, index: true },
+  mediaTitle: { type: String, default: '' },
+  reason: { type: String, required: true },
+  details: { type: String, default: '' },
+  season: { type: Number, default: 0 },
+  episode: { type: Number, default: 0 },
+  audioTrack: { type: String, default: '' },
+  streamUrl: { type: String, default: '' },
+  userEmail: { type: String, default: '' },
+  userName: { type: String, default: 'Guest' },
+  ip: { type: String, default: '' },
+  status: { type: String, default: 'pending', index: true }, // 'pending' | 'resolved'
+  createdAt: { type: Date, default: Date.now }
+});
+
+let Report = null;
+
+function getLocalReports() {
+  try {
+    if (fs.existsSync(REPORTS_FILE)) {
+      return JSON.parse(fs.readFileSync(REPORTS_FILE, 'utf8')) || [];
+    }
+  } catch (e) {}
+  return [];
+}
+
+function saveLocalReports(reports) {
+  try {
+    const dir = path.dirname(REPORTS_FILE);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(REPORTS_FILE, JSON.stringify(reports, null, 2), 'utf8');
+  } catch (e) {
+    console.error('Error saving reports file:', e.message);
+  }
+}
+
+async function saveReport(data) {
+  const reportObj = {
+    id: 'rep_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+    mediaId: data.mediaId || 'unknown',
+    mediaTitle: data.mediaTitle || 'Untitled',
+    reason: data.reason || 'Playback Issue',
+    details: data.details || '',
+    season: parseInt(data.season || 0, 10),
+    episode: parseInt(data.episode || 0, 10),
+    audioTrack: data.audioTrack || '',
+    streamUrl: data.streamUrl || '',
+    userEmail: data.userEmail || '',
+    userName: data.userName || 'Guest User',
+    ip: data.ip || '',
+    status: 'pending',
+    createdAt: new Date().toISOString()
+  };
+
+  // 1. Save locally
+  const reports = getLocalReports();
+  reports.unshift(reportObj);
+  saveLocalReports(reports);
+
+  // 2. Save in MongoDB if online
+  if (isMongoConnected && Report) {
+    try {
+      const doc = new Report(reportObj);
+      await doc.save();
+    } catch (e) {
+      console.warn('MongoDB report save warning:', e.message);
+    }
+  }
+
+  return reportObj;
+}
+
+async function getAllReports() {
+  if (isMongoConnected && Report) {
+    try {
+      const docs = await Report.find().sort({ createdAt: -1 }).lean();
+      if (docs && docs.length > 0) return docs;
+    } catch (e) {}
+  }
+  return getLocalReports();
+}
+
+async function resolveReport(reportId) {
+  const reports = getLocalReports();
+  const target = reports.find(r => r.id === reportId || r._id === reportId);
+  if (target) {
+    target.status = 'resolved';
+    target.resolvedAt = new Date().toISOString();
+    saveLocalReports(reports);
+  }
+
+  if (isMongoConnected && Report) {
+    try {
+      await Report.updateOne(
+        { $or: [{ id: reportId }, { _id: mongoose.Types.ObjectId.isValid(reportId) ? reportId : null }] },
+        { status: 'resolved', resolvedAt: new Date() }
+      );
+    } catch (e) {}
+  }
+
+  return { success: true };
+}
+
+async function deleteReport(reportId) {
+  let reports = getLocalReports();
+  reports = reports.filter(r => r.id !== reportId && r._id !== reportId);
+  saveLocalReports(reports);
+
+  if (isMongoConnected && Report) {
+    try {
+      await Report.deleteOne({ $or: [{ id: reportId }, { _id: mongoose.Types.ObjectId.isValid(reportId) ? reportId : null }] });
+    } catch (e) {}
+  }
+
+  return { success: true };
+}
+
 // Initialize connections
 initMongoDB();
 initRedis();
@@ -925,6 +1049,10 @@ module.exports = {
   getMediaComments,
   addMediaComment,
   likeComment,
+  saveReport,
+  getAllReports,
+  resolveReport,
+  deleteReport,
   isMongoConnected: () => isMongoConnected,
   isRedisConnected: () => isRedisConnected
 };

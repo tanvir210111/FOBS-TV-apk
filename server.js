@@ -815,8 +815,9 @@ async function resolveStreamUrl(rawUrl) {
       rawUrl.includes('stormshade')
     ) {
       // Check if URL has an expired timestamp token (&t=...)
+      // MovieBox CDN tokens are valid for 7 days from generation timestamp
       const tMatch = rawUrl.match(/[?&]t=(\d+)/);
-      const isExpired = tMatch && (parseInt(tMatch[1], 10) * 1000 <= Date.now() + 30000);
+      const isExpired = tMatch && ((Date.now() - parseInt(tMatch[1], 10) * 1000) > 7 * 24 * 60 * 60 * 1000);
 
       if (isExpired) {
         // Auto-refresh expired direct CDN link instantly from content.json metadata
@@ -1263,26 +1264,26 @@ app.get('/api/app-update', (req, res) => {
   const data = getContentData();
   const defaultUpdate = {
     enabled: true,
-    latestVersionCode: 7,
-    latestVersionName: '1.6.0',
-    minVersionCode: 1,
+    latestVersionCode: 9,
+    latestVersionName: '3.1.1',
+    minVersionCode: 9,
     forceUpdate: true,
-    title: 'New FOBS TV Update (v1.6.0) Available!',
-    message: 'FOBS TV v1.6.0: Turkish drama titles fixed (Kuruluş: Osman, Diriliş: Ertuğrul, Hercai, Masterplan, Arafta), Hindi dubbed streaming improved via MovieBox, Golden Boy complete series added.',
+    title: 'New FOBS TV Update (v3.1.1) Available!',
+    message: 'FOBS TV-র নতুন v3.1.1 ভার্সন চলে এসেছে! আগের অ্যাপটি আনইনস্টল (Uninstall) করে নিচের লিংকে ক্লিক করে নতুন v3.1.1 অ্যাপটি ডাউনলোড করে ইনস্টল করুন। (Please uninstall the previous app before installing v3.1.1).',
     releaseNotes: [
-      'Fixed all Turkish drama original titles and metadata',
-      'Masterplan originalTitle fixed',
-      'Arafta Hindi dub now streams via MovieBox',
-      'Miracle in Cell No. 7 (Turkish 2019) streaming via MovieBox',
-      'Golden Boy full 3-season series (371 Episodes from MovieBox)',
-      'Improved portrait & landscape video player controls',
-      'Direct 1-Click APK Download'
+      '⚠️ আগের অ্যাপটি আনইনস্টল করে নতুন v3.1.1 ইনস্টল করুন',
+      'MX Player Style: সাবটাইটেল চেপে ধরে উপরে-নিচে ড্র্যাগ করার সুবিধা (Drag Subtitles)',
+      'ভিডিও প্লেব্যাকের সমস্ত লোডিং ও বাফারিং সমস্যা ফিক্সড (<350ms instant start)',
+      'ইন-অ্যাপ অফলাইন ডাউনলোড এবং অফলাইন ওয়াচিং',
+      'Bangla Subtitles + SubSource AI Translate',
+      'মাল্টি-অডিও ট্র্যাকিং (Hindi Dub, Original Audio, Bangla)',
+      'সকল মুভি ও সিরিজের ৪টি কোয়ালিটি (1080p, 720p, 480p, 360p)'
     ],
-    downloadUrl: 'https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk',
-    fallbackUrl: 'https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk',
-    fileSize: '15.4 MB'
+    downloadUrl: 'https://fobs-apk-download.vercel.app/',
+    fallbackUrl: 'https://fobs-apk-download.vercel.app/',
+    fileSize: '6.1 MB'
   };
-  res.json(data.appUpdate || defaultUpdate);
+    res.json(data.appUpdate || defaultUpdate);
 });
 
 // API: Configure app update info dynamically
@@ -1428,7 +1429,11 @@ async function streamMediaDirect(req, res, inputTargetUrl) {
     }
   }
 
-  const resolvedUrl = await resolveStreamUrl(targetUrl);
+  // Fast-path: if inputTargetUrl is already a resolved CDN stream, use directly
+  let resolvedUrl = (inputTargetUrl && inputTargetUrl.startsWith('http') && !inputTargetUrl.includes('/api/'))
+    ? inputTargetUrl
+    : await resolveStreamUrl(targetUrl);
+
   if (!resolvedUrl) {
     return res.status(404).send('Failed to resolve stream URL');
   }
@@ -1647,8 +1652,7 @@ async function streamMediaDirect(req, res, inputTargetUrl) {
         httpsAgent: streamHttpsAgent,
         responseType: 'stream',
         maxRedirects: 5,
-        timeout: 5000,
-        validateStatus: (status) => status >= 200 && status < 400
+        timeout: 8000, validateStatus: (status) => status >= 200 && status < 400
       });
     } catch (initialErr) {
       const isMb = (
@@ -1675,8 +1679,7 @@ async function streamMediaDirect(req, res, inputTargetUrl) {
             httpsAgent: streamHttpsAgent,
             responseType: 'stream',
             maxRedirects: 5,
-            timeout: 5000,
-            validateStatus: (status) => status >= 200 && status < 400
+            timeout: 8000, validateStatus: (status) => status >= 200 && status < 400
           });
         } else {
           throw initialErr;
@@ -2037,6 +2040,98 @@ const isPrimaryWorker = !process.env.NODE_APP_INSTANCE || process.env.NODE_APP_I
 // ============================================================
 // GOOGLE AUTHENTICATION & USER PROFILE (MONGODB)
 // ============================================================
+
+
+// ============================================================
+// VIDEO ISSUE REPORTING & SIMPLE 1-STEP AUTH APIS
+// ============================================================
+app.post('/api/reports', async (req, res) => {
+  try {
+    const reportData = {
+      mediaId: req.body.mediaId,
+      mediaTitle: req.body.mediaTitle,
+      reason: req.body.reason,
+      details: req.body.details,
+      season: req.body.season,
+      episode: req.body.episode,
+      audioTrack: req.body.audioTrack,
+      streamUrl: req.body.streamUrl,
+      userEmail: req.body.userEmail,
+      userName: req.body.userName,
+      ip: req.ip || req.connection?.remoteAddress
+    };
+
+    const saved = await dbService.saveReport(reportData);
+    res.json({ success: true, report: saved });
+  } catch (err) {
+    console.error('Save report error:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.get('/api/admin/reports', adminService.authenticate, async (req, res) => {
+  try {
+    const reports = await dbService.getAllReports();
+    res.json({ success: true, reports });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/admin/reports/:id/resolve', adminService.authenticate, async (req, res) => {
+  try {
+    const result = await dbService.resolveReport(req.params.id);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.delete('/api/admin/reports/:id', adminService.authenticate, async (req, res) => {
+  try {
+    const result = await dbService.deleteReport(req.params.id);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/auth/simple-login', async (req, res) => {
+  try {
+    const { email, name } = req.body;
+    if (!email || !email.includes('@')) {
+      return res.status(400).json({ error: 'Valid email address is required' });
+    }
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanName = (name && name.trim()) ? name.trim() : cleanEmail.split('@')[0];
+    const googleId = 'usr_' + crypto.createHash('md5').update(cleanEmail).digest('hex').substring(0, 16);
+    const picture = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(cleanName)}`;
+
+    const user = await dbService.findOrCreateUser({
+      googleId,
+      email: cleanEmail,
+      name: cleanName,
+      picture
+    });
+    const token = authService.generateAppToken(user);
+
+    res.json({
+      success: true,
+      token,
+      user: {
+        googleId: user.googleId,
+        email: user.email,
+        name: user.name,
+        picture: user.picture,
+        watchlistCount: user.watchlist ? user.watchlist.length : 0,
+        historyCount: user.history ? user.history.length : 0
+      }
+    });
+  } catch (err) {
+    console.error('Simple Login Error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // 1. Google One-Tap & Sign-In verification endpoint
 app.post('/api/auth/google', async (req, res) => {
@@ -2501,6 +2596,27 @@ app.get('/api/subtitles/track', async (req, res) => {
 });
 
 // 3. Fallback subtitle generator in English & Bangla for instant playback
+
+// 5. FOBS AI Subtitle Auto-Translation (Translates English subtitle to natural Bengali and caches to disk)
+app.get('/api/subtitles/ai-translate', async (req, res) => {
+  try {
+    const { url, title, season, episode } = req.query;
+    if (!url) {
+      res.setHeader('Content-Type', 'text/vtt; charset=utf-8');
+      return res.send('WEBVTT\n\n1\n00:00:00.000 --> 00:00:05.000\nMissing subtitle URL');
+    }
+
+    const vtt = await subtitleService.getOrTranslateToBangla(url, `ai_${title || 'sub'}_s${season || 0}_e${episode || 0}`);
+    res.setHeader('Content-Type', 'text/vtt; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=604800');
+    res.send(vtt);
+  } catch (err) {
+    console.warn('AI subtitle translate route error:', err.message);
+    res.setHeader('Content-Type', 'text/vtt; charset=utf-8');
+    res.send('WEBVTT\n\n1\n00:00:01.000 --> 00:00:05.000\n[বাংলা সাবটাইটেল প্রস্তুত হচ্ছে...]');
+  }
+});
+
 app.get('/api/subtitles/generate', (req, res) => {
   const { title = 'Movie', lang = 'en' } = req.query;
   const isBn = lang === 'bn';

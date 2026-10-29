@@ -160,8 +160,9 @@ async function run() {
     }));
 
     episodes.push({
-      number: epNum,
+      number: String(epNum).padStart(2, '0'),
       episode: epNum,
+      episodeNumber: epNum,
       season: 1,
       title: tmdbEp.name && !tmdbEp.name.startsWith('Episode') ? tmdbEp.name : `Episode ${epNum}`,
       duration: '60 min',

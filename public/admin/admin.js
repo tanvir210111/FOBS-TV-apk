@@ -68,6 +68,7 @@ async function verifyAuth() {
       loadRequests();
       loadNotifications();
       loadUsers();
+      loadReports();
       // Pre-load recent MovieBox feed in background
       loadMovieBoxRecent('all');
     } else {
@@ -288,6 +289,7 @@ function switchTab(tabName) {
   }
 
   if (tabName === 'users') loadUsers();
+  if (tabName === 'reports') loadReports();
   if (tabName === 'moviebox' && document.getElementById('mb-results').children.length === 0) {
     loadMovieBoxRecent('all');
   }
@@ -1473,3 +1475,83 @@ window._adminStatsInterval = setInterval(() => {
     }).catch(() => {});
   }
 }, 10000);
+
+
+// ==========================================================================
+// VIDEO ISSUE REPORTS
+// ==========================================================================
+let videoReportsList = [];
+
+async function loadReports() {
+  const tbody = document.getElementById('reports-table-body');
+  const badge = document.getElementById('badge-reports-count');
+  if (tbody) tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Loading video reports...</td></tr>';
+
+  try {
+    const res = await apiFetch('/api/admin/reports');
+    videoReportsList = (res && res.reports) || [];
+    const pendingCount = videoReportsList.filter(r => r.status === 'pending').length;
+    if (badge) badge.innerText = pendingCount;
+
+    if (!tbody) return;
+    if (videoReportsList.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-circle-check" style="color: #00d26a;"></i> No issue reports submitted. Everything running smoothly!</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = videoReportsList.map(r => {
+      const isResolved = r.status === 'resolved';
+      const statusBadge = isResolved
+        ? '<span class="badge" style="background: rgba(0, 210, 106, 0.15); color: #00d26a; border: 1px solid rgba(0, 210, 106, 0.3);">Resolved</span>'
+        : '<span class="badge" style="background: rgba(255, 71, 87, 0.15); color: #ff4757; border: 1px solid rgba(255, 71, 87, 0.3);">Pending</span>';
+
+      const dateStr = r.createdAt ? new Date(r.createdAt).toLocaleString() : 'Recent';
+
+      return `
+        <tr>
+          <td>
+            <strong>${escapeHtml(r.mediaTitle || 'Unknown Video')}</strong>
+            ${r.season || r.episode ? `<div class="text-muted small">S${r.season} • E${r.episode}</div>` : ''}
+          </td>
+          <td><span style="color: #ff4757; font-weight: 600;">${escapeHtml(r.reason || 'Problem')}</span></td>
+          <td style="max-width: 200px; white-space: normal; font-size: 13px;">${escapeHtml(r.details || '-')}</td>
+          <td>
+            <div>${escapeHtml(r.userName || 'Guest')}</div>
+            <div class="text-muted small">${escapeHtml(r.userEmail || '')}</div>
+          </td>
+          <td class="text-muted small">${dateStr}</td>
+          <td>${statusBadge}</td>
+          <td>
+            <div style="display: flex; gap: 6px;">
+              ${!isResolved ? `<button class="btn btn-sm btn-success" onclick="resolveAdminReport('${r.id || r._id}')" title="Mark as Fixed"><i class="fa-solid fa-check"></i> Fix</button>` : ''}
+              <button class="btn btn-sm btn-danger" onclick="deleteAdminReport('${r.id || r._id}')" title="Delete Report"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  } catch (err) {
+    if (tbody) tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Failed to load reports: ${err.message}</td></tr>`;
+  }
+}
+
+async function resolveAdminReport(id) {
+  try {
+    await apiFetch(`/api/admin/reports/${id}/resolve`, { method: 'POST' });
+    showToast('Report marked as resolved!', 'success');
+    loadReports();
+  } catch(err) {
+    showToast('Error: ' + err.message, 'error');
+  }
+}
+
+async function deleteAdminReport(id) {
+  if (!confirm('Are you sure you want to delete this report?')) return;
+  try {
+    await apiFetch(`/api/admin/reports/${id}`, { method: 'DELETE' });
+    showToast('Report deleted', 'success');
+    loadReports();
+  } catch(err) {
+    showToast('Error: ' + err.message, 'error');
+  }
+}
