@@ -7218,21 +7218,24 @@ function confirmStartDownload() {
 window.confirmStartDownload = confirmStartDownload;
 
 
-function updateDownloadProgress(id, percent) {
+function updateDownloadProgress(id, percent, sizeText = '') {
   const bar = document.getElementById(`dl_progress_${id}`);
   const text = document.getElementById(`dl_status_${id}`);
   if (bar) bar.style.width = `${percent}%`;
-  if (text) text.innerText = `Downloading... ${percent}%`;
+  if (text) {
+    text.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color: #00f2fe; margin-right: 4px;"></i> <span>Downloading... ${percent}% ${sizeText ? `(${sizeText})` : ''}</span>`;
+    text.style.color = '#00f2fe';
+  }
 }
 
 async function downloadMedia(url, title, options = {}) {
   if (!url) return;
-  const quality = options.quality || '480p';
+  const quality = options.quality || '480P';
   const poster = options.poster || 'assets/fobs_logo.png';
   const mediaId = options.mediaId || '';
   const downloadId = 'dl_' + Date.now();
 
-  showToast(`📥 অফলাইন ডাউনলোড শুরু হয়েছে: "${title}" (${quality})`);
+  showToast(`📥 অফলাইন ডাউনলোড শুরু হয়েছে: "${title}" (${quality})`);
 
   try {
     const raw = localStorage.getItem('fobs_downloads') || '[]';
@@ -7245,17 +7248,48 @@ async function downloadMedia(url, title, options = {}) {
       poster,
       quality,
       url,
-      progress: 5,
+      progress: 1,
+      sizeText: 'Connecting...',
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      status: 'Downloading (0%)'
+      status: 'Downloading... 1%'
     });
     localStorage.setItem('fobs_downloads', JSON.stringify(filtered.slice(0, 30)));
     renderDownloadsList();
   } catch (e) {}
 
   try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error('Stream fetch failed');
+    // 1. Resolve direct downloadable stream URL
+    let streamFetchUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+
+    // If it's a MovieBox endpoint, resolve direct quality stream URL with known file size
+    if (streamFetchUrl.includes('/api/moviebox/stream')) {
+      const qNum = parseInt(quality, 10) || 480;
+      const jsonFetchUrl = streamFetchUrl.includes('?') 
+        ? `${streamFetchUrl}&json=1&q=${qNum}` 
+        : `${streamFetchUrl}?json=1&q=${qNum}`;
+      try {
+        const rRes = await fetch(jsonFetchUrl, { headers: { 'Accept': 'application/json' } });
+        if (rRes.ok) {
+          const rData = await rRes.json();
+          if (rData && rData.streamUrl) {
+            streamFetchUrl = rData.streamUrl;
+          }
+        }
+      } catch (rErr) {
+        console.warn('Moviebox JSON stream resolution warning, proceeding with direct:', rErr.message);
+      }
+    }
+
+    // 2. Fetch video binary chunks with real-time progress
+    const response = await fetch(streamFetchUrl, {
+      headers: {
+        'Accept': 'video/mp4, video/*;q=0.9, */*;q=0.8'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Server returned status ${response.status}`);
+    }
 
     const contentLength = response.headers.get('content-length');
     const totalBytes = contentLength ? parseInt(contentLength, 10) : 0;
@@ -7263,32 +7297,48 @@ async function downloadMedia(url, title, options = {}) {
 
     const reader = response.body.getReader();
     const chunks = [];
+    let lastUiUpdate = 0;
 
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
       chunks.push(value);
       receivedBytes += value.length;
-      if (totalBytes > 0) {
-        const percent = Math.min(99, Math.round((receivedBytes / totalBytes) * 100));
-        updateDownloadProgress(downloadId, percent);
+
+      const now = Date.now();
+      if (now - lastUiUpdate > 300) {
+        lastUiUpdate = now;
+        const percent = totalBytes > 0 ? Math.min(99, Math.round((receivedBytes / totalBytes) * 100)) : 0;
+        const downMb = (receivedBytes / (1024 * 1024)).toFixed(1);
+        const totMb = totalBytes > 0 ? (totalBytes / (1024 * 1024)).toFixed(1) : '?';
+        updateDownloadProgress(downloadId, percent, `${downMb} MB / ${totMb} MB`);
       }
     }
 
     const videoBlob = new Blob(chunks, { type: 'video/mp4' });
 
-    // Fetch subtitle for offline sync
+    // 3. Fetch subtitle for 100% offline sync
     let vttText = '';
     try {
-      if (appState.availableSubtitles && appState.availableSubtitles.length > 0) {
-        const subUrl = appState.availableSubtitles[0].url;
-        if (subUrl) {
-          const sRes = await fetch(subUrl);
-          if (sRes.ok) vttText = await sRes.text();
+      const available = subtitleState.availableTracks || [];
+      const bnSub = available.find(t => t.langCode === 'bn');
+      const enSub = available.find(t => t.langCode === 'en');
+      const chosenSub = bnSub || enSub || available[0];
+      if (chosenSub && (chosenSub.url || chosenSub.downloadUrl)) {
+        let subUrl = chosenSub.url || chosenSub.downloadUrl;
+        if (subUrl.startsWith('/')) {
+          subUrl = `${API_BASE_URL}${subUrl}`;
+        }
+        const sRes = await fetch(subUrl);
+        if (sRes.ok) {
+          vttText = await sRes.text();
         }
       }
-    } catch(e) {}
+    } catch (subErr) {
+      console.warn('Offline subtitle sync warning:', subErr.message);
+    }
 
+    // 4. Save to Persistent IndexedDB Storage (Internal device storage)
     await saveOfflineMedia({
       id: downloadId,
       mediaId,
@@ -7301,64 +7351,80 @@ async function downloadMedia(url, title, options = {}) {
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
     });
 
+    const finalMb = (receivedBytes / (1024 * 1024)).toFixed(1);
+
     const raw = localStorage.getItem('fobs_downloads') || '[]';
     const downloads = JSON.parse(raw);
     const item = downloads.find(d => d.id === downloadId);
     if (item) {
       item.status = 'Ready (Offline)';
       item.progress = 100;
+      item.sizeText = `${finalMb} MB`;
+      item.downloaded = true;
       localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
     }
     renderDownloadsList();
-    showToast(`✅ "${title}" সফলভাবে ডাউনলোড সম্পন্ন! Me > Downloads এ দেখুন।`);
+    showToast(`✅ "${title}" ডাউনলোড সম্পন্ন (${finalMb} MB)! Me > Downloads এ দেখুন।`);
   } catch (err) {
-    console.warn('In-app download fetch warning:', err.message);
-    const raw = localStorage.getItem('fobs_downloads') || '[]';
-    const downloads = JSON.parse(raw);
-    const item = downloads.find(d => d.id === downloadId);
-    if (item) {
-      item.status = 'Ready to stream';
-      item.progress = 100;
-      localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
-    }
-    renderDownloadsList();
+    console.error('In-app real download failed:', err);
+    try {
+      const raw = localStorage.getItem('fobs_downloads') || '[]';
+      const downloads = JSON.parse(raw);
+      const item = downloads.find(d => d.id === downloadId);
+      if (item) {
+        item.status = 'Download Failed';
+        item.failed = true;
+        item.progress = 0;
+        localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+      }
+      renderDownloadsList();
+    } catch (e) {}
+    showToast(`❌ ডাউনলোড সম্পন্ন হতে পারেনি: ${err.message}`);
   }
 }
 window.downloadMedia = downloadMedia;
 
 async function playDownloadedMedia(id) {
+  closeDownloadsView();
+  showToast('অফলাইন ভিডিও লোড হচ্ছে...');
+
   const offlineItem = await getOfflineMedia(id);
   if (offlineItem && offlineItem.videoBlob) {
     const videoUrl = URL.createObjectURL(offlineItem.videoBlob);
     const videoPlayer = document.getElementById('mainVideoPlayer');
     if (videoPlayer) {
+      videoPlayer.pause();
+      videoPlayer.removeAttribute('src');
       videoPlayer.src = videoUrl;
       videoPlayer.load();
       videoPlayer.play().catch(() => {});
 
-      if (offlineItem.vttText) {
-        const subBlob = new Blob([offlineItem.vttText], { type: 'text/vtt' });
-        const subUrl = URL.createObjectURL(subBlob);
-        if (typeof attachVttSubtitleTrack === 'function') {
-          attachVttSubtitleTrack(subUrl, 'বাংলা / English (Offline)');
+      // Apply offline subtitles if downloaded
+      if (offlineItem.vttText && typeof parseSubtitleTextToCues === 'function') {
+        const cues = parseSubtitleTextToCues(offlineItem.vttText);
+        if (cues && cues.length > 0) {
+          subtitleState.cues = cues;
+          subtitleState.enabled = true;
+          subtitleState.currentTrackId = 'offline_sub';
+          const subBtnLabel = document.getElementById('playerSubtitleBtnLabel');
+          if (subBtnLabel) subBtnLabel.innerText = 'Bangla (Offline)';
+          const subIcon = document.getElementById('actionSubIcon');
+          if (subIcon) subIcon.style.color = '#00f2fe';
+          const subToggle = document.getElementById('lsSubtitleToggle');
+          if (subToggle) subToggle.checked = true;
         }
       }
 
       const modal = document.getElementById('playerModal');
       if (modal) modal.classList.add('open');
       const titleEl = document.getElementById('playerMediaTitle');
-      if (titleEl) titleEl.innerText = `${offlineItem.title} (অফলাইন প্লেব্যাক)`;
-      showToast(`⚡ অফলাইনে উপভোগ করছেন: ${offlineItem.title}`);
+      if (titleEl) titleEl.innerText = `${offlineItem.title} (অফলাইন)`;
+      showToast(`⚡ ইন্টারনেট ছাড়াই চলছে: ${offlineItem.title}`);
       return;
     }
   }
 
-  const raw = localStorage.getItem('fobs_downloads') || '[]';
-  const downloads = JSON.parse(raw);
-  const item = downloads.find(d => d.id === id);
-  if (item && item.url) {
-    playStreamUrl(item.url, null, 0);
-  }
+  showToast('⚠️ অফলাইন ভিডিও ফাইলটি মেমরিতে পাওয়া যায়নি। আবার ডাউনলোড করুন।');
 }
 window.playDownloadedMedia = playDownloadedMedia;
 
@@ -7369,7 +7435,7 @@ async function deleteDownload(id, e) {
     const raw = localStorage.getItem('fobs_downloads') || '[]';
     const downloads = JSON.parse(raw).filter(d => d.id !== id);
     localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
-  } catch(e) {}
+  } catch (e) {}
   renderDownloadsList();
   showToast('ডাউনলোড মুছে ফেলা হয়েছে');
 }
@@ -7403,13 +7469,22 @@ function renderDownloadsList() {
           <i class="fa-solid fa-cloud-arrow-down"></i>
         </div>
         <h4 style="color: #fff; font-size: 16px; margin: 0 0 6px 0;">কোনো ডাউনলোড নেই</h4>
-        <p style="font-size: 13px; line-height: 1.5; margin: 0 auto; max-width: 300px;">যেকোনো ভিডিওর নিচে "Download" বাটনে চাপ দিন। এপের ভিতরেই ডাউনলোড হবে এবং ইন্টারনেট ছাড়াই অফলাইনে দেখতে পারবেন।</p>
+        <p style="font-size: 13px; line-height: 1.5; margin: 0 auto; max-width: 300px;">যেকোনো ভিডিওর নিচে "Download" বাটনে চাপ দিন। এপের ভিতরেই রিয়েল ডাউনলোড হবে এবং ইন্টারনেট ছাড়াই অফলাইনে দেখতে পারবেন।</p>
       </div>
     `;
     return;
   }
 
-  container.innerHTML = downloads.map(item => `
+  container.innerHTML = downloads.map(item => {
+    const isReady = item.status === 'Ready (Offline)';
+    const isFailed = !!item.failed;
+    const isDownloading = !isReady && !isFailed;
+    const statusColor = isReady ? '#22c55e' : (isFailed ? '#ef4444' : '#00f2fe');
+    const statusIcon = isReady ? 'fa-solid fa-circle-check' : (isFailed ? 'fa-solid fa-triangle-exclamation' : 'fa-solid fa-spinner fa-spin');
+    const statusText = item.status || 'Ready (Offline)';
+    const sizeInfo = item.sizeText ? ` • ${item.sizeText}` : '';
+
+    return `
     <div class="mb-dl-card" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
       <div class="mb-dl-card-thumb" onclick="playDownloadedMedia('${item.id}')" style="position: relative; width: 68px; height: 86px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #171821; cursor: pointer;">
         <img src="${item.poster || 'assets/fobs_logo.png'}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.src='assets/fobs_logo.png';">
@@ -7420,15 +7495,15 @@ function renderDownloadsList() {
       <div class="mb-dl-card-info" style="flex: 1; min-width: 0;">
         <div style="font-size: 14px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px;">${item.title}</div>
         <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-          <span style="font-size: 10.5px; font-weight: 700; background: rgba(0, 242, 254, 0.15); color: #00f2fe; padding: 2px 6px; border-radius: 5px;">${item.quality || '480p SD'}</span>
-          <span style="font-size: 11px; color: #8b95a5;">${item.date || 'Today'}</span>
+          <span style="font-size: 10.5px; font-weight: 700; background: rgba(0, 242, 254, 0.15); color: #00f2fe; padding: 2px 6px; border-radius: 5px;">${item.quality || '480P'}</span>
+          <span style="font-size: 11px; color: #8b95a5;">${item.date || 'Today'}${sizeInfo}</span>
         </div>
-        <div id="dl_status_${item.id}" style="font-size: 11.5px; color: #22c55e; display: flex; align-items: center; gap: 5px; font-weight: 600;">
-          <i class="fa-solid fa-circle-check"></i>
-          <span>${item.status || 'Ready (Offline Watch)'}</span>
+        <div id="dl_status_${item.id}" style="font-size: 11.5px; color: ${statusColor}; display: flex; align-items: center; gap: 5px; font-weight: 600;">
+          <i class="${statusIcon}"></i>
+          <span>${statusText}</span>
         </div>
         <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 6px; overflow: hidden;">
-          <div id="dl_progress_${item.id}" style="width: ${item.progress || 100}%; height: 100%; background: #00f2fe; transition: width 0.3s ease;"></div>
+          <div id="dl_progress_${item.id}" style="width: ${item.progress || (isReady ? 100 : 5)}%; height: 100%; background: #00f2fe; transition: width 0.3s ease;"></div>
         </div>
       </div>
       <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">
@@ -7441,7 +7516,8 @@ function renderDownloadsList() {
         </button>
       </div>
     </div>
-  `).join('');
+    `;
+  }).join('');
 }
 window.renderDownloadsList = renderDownloadsList;
 
@@ -7467,68 +7543,25 @@ function openChromeDownloadsInfo() {
 }
 window.openChromeDownloadsInfo = openChromeDownloadsInfo;
 
-function clearDownloadsHistory() {
-  if (confirm('Clear your download history list? (Actual files in Chrome / Download folder will remain on your device)')) {
+async function clearDownloadsHistory() {
+  if (confirm('সব অফলাইন ডাউনলোড মুছে ফেলতে চান? (Clear all downloaded offline videos?)')) {
+    try {
+      const raw = localStorage.getItem('fobs_downloads') || '[]';
+      const downloads = JSON.parse(raw);
+      for (const item of downloads) {
+        await removeOfflineMedia(item.id);
+      }
+    } catch(e) {}
     localStorage.removeItem('fobs_downloads');
     const meDlCount = document.getElementById('meDownloadsCount');
     if (meDlCount) meDlCount.innerText = '0';
     renderDownloadsList();
-    showToast('Download history cleared 🧹');
+    showToast('সব অফলাইন ডাউনলোড মুছে ফেলা হয়েছে 🧹');
   }
 }
 window.clearDownloadsHistory = clearDownloadsHistory;
 
-function playDownloadedMedia(id) {
-  const raw = localStorage.getItem('fobs_downloads') || '[]';
-  const downloads = JSON.parse(raw);
-  const item = downloads.find(d => d.id === id);
-  if (!item) return;
-
-  closeDownloadsView();
-
-  // Try finding real media item in content
-  const movie = (appState.content.movies || []).find(m => m.id === item.mediaId);
-  if (movie) {
-    openPlayer(movie);
-    return;
-  }
-  const series = (appState.content.series || []).find(s => s.id === item.mediaId);
-  if (series) {
-    openPlayer(series);
-    return;
-  }
-
-  // Standalone playback
-  openPlayer({
-    id: item.id,
-    title: item.title,
-    poster: item.poster,
-    streamUrl: item.url,
-    type: 'movie',
-    dubLanguage: 'Hindi Dubbed',
-    year: '2026',
-    genre: 'Offline Download'
-  });
-}
-window.playDownloadedMedia = playDownloadedMedia;
-
-function deleteDownload(id, e) {
-  if (e) e.stopPropagation();
-  try {
-    const raw = localStorage.getItem('fobs_downloads') || '[]';
-    const downloads = JSON.parse(raw);
-    const filtered = downloads.filter(d => d.id !== id);
-    localStorage.setItem('fobs_downloads', JSON.stringify(filtered));
-
-    // Update Me tab counter
-    const meDlCount = document.getElementById('meDownloadsCount');
-    if (meDlCount) meDlCount.innerText = filtered.length;
-
-    renderDownloadsList();
-    showToast('Video removed from Downloads');
-  } catch (e) {}
-}
-window.deleteDownload = deleteDownload;
+// Duplicate download helpers removed
 
 function openDownloadsView() {
   const overlay = document.getElementById('downloadsOverlay');
