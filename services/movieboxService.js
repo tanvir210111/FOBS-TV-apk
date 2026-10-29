@@ -399,6 +399,22 @@ class MovieBoxService {
           const fastStart = sortedAsc.find(st => (parseInt(st.resolutions || st.resolution, 10) || 0) >= 360) || sortedAsc[0];
           const duration = fastStart.duration || sortedDesc[0]?.duration || 0;
 
+          const playQualities = sortedDesc.map(function(st) {
+            return {
+              resolution: parseInt(st.resolutions || st.resolution, 10) || 1080,
+              url: st.url,
+              size: parseInt(st.size, 10) || 0,
+              codec: st.codecName || 'h264'
+            };
+          });
+
+          const playCaptions = (data.captions || []).map(function(c) {
+            return {
+              language: c.language || c.lan,
+              url: c.url
+            };
+          });
+
           return {
             subjectId: cleanId,
             detailPath: detailPath || '',
@@ -406,16 +422,8 @@ class MovieBoxService {
             resolution: parseInt(fastStart.resolutions || fastStart.resolution, 10) || 480,
             codec: fastStart.codecName || 'h264',
             duration: duration,
-            qualities: sortedDesc.map(st => ({
-              resolution: parseInt(st.resolutions || st.resolution, 10) || 1080,
-              url: st.url,
-              size: parseInt(st.size, 10) || 0,
-              codec: st.codecName || 'h264'
-            })),
-            captions: (data.captions || []).map(c => ({
-              language: c.language || c.lan,
-              url: c.url
-            })),
+            qualities: playQualities,
+            captions: playCaptions,
             headers: {
               'Referer': 'https://movieboxapp.in/'
             }
@@ -441,8 +449,13 @@ class MovieBoxService {
 
     for (const fetchUrl of urlsToTry) {
       try {
-        const domain = fetchUrl.startsWith(BASE_URL) ? BASE_URL : (fetchUrl.startsWith(BACKUP_URL_1) ? BACKUP_URL_1 : BACKUP_URL_2);
-        const refPath = detailPath ? `${domain}/movies/${detailPath}` : `${domain}/`;
+        let domain = BACKUP_URL_2;
+        if (fetchUrl.startsWith(BASE_URL)) {
+          domain = BASE_URL;
+        } else if (fetchUrl.startsWith(BACKUP_URL_1)) {
+          domain = BACKUP_URL_1;
+        }
+        const refPath = detailPath ? (domain + '/movies/' + detailPath) : (domain + '/');
         const res = await axios.get(fetchUrl, {
           params: {
             subjectId: cleanId,
@@ -467,6 +480,22 @@ class MovieBoxService {
         const sortedAsc = [...data.downloads].sort((a, b) => (a.resolution || 0) - (b.resolution || 0));
         const fastStart = sortedAsc.find(d => d.resolution >= 360) || sortedAsc[0];
 
+        const dlQualities = sortedDownloads.map(function(d) {
+          return {
+            resolution: d.resolution,
+            url: d.url,
+            size: d.size,
+            codec: 'h264'
+          };
+        });
+
+        const dlCaptions = (data.captions || []).map(function(c) {
+          return {
+            language: c.language || c.lan,
+            url: c.url
+          };
+        });
+
         return {
           subjectId: cleanId,
           detailPath: detailPath || '',
@@ -474,16 +503,8 @@ class MovieBoxService {
           resolution: fastStart.resolution,
           codec: 'h264',
           duration: fastStart.duration || 0,
-          qualities: sortedDownloads.map(d => ({
-            resolution: d.resolution,
-            url: d.url,
-            size: d.size,
-            codec: 'h264'
-          })),
-          captions: (data.captions || []).map(c => ({
-            language: c.language || c.lan,
-            url: c.url
-          })),
+          qualities: dlQualities,
+          captions: dlCaptions,
           headers: {
             'Referer': 'https://movieboxapp.in/'
           }
