@@ -924,7 +924,8 @@ app.get('/api/content', async (req, res) => {
           deviceId: vId,
           ip: clientIp,
           userAgent: req.headers['user-agent'] || '',
-          platform: (req.headers['user-agent'] && req.headers['user-agent'].includes('Android')) ? 'Android App' : 'Mobile App'
+          platform: (req.headers['user-agent'] && req.headers['user-agent'].includes('Android')) ? 'Android App' : 'Mobile App',
+          appVersion: req.headers['x-app-version'] || req.query.appVersion || ''
         });
       }
     } catch(e) {}
@@ -2119,7 +2120,8 @@ app.post('/api/auth/simple-login', async (req, res) => {
       googleId,
       email: cleanEmail,
       name: cleanName,
-      picture
+      picture,
+      appVersion: req.body.appVersion || req.headers['x-app-version'] || '3.1.1'
     });
     const token = authService.generateAppToken(user);
 
@@ -2131,6 +2133,7 @@ app.post('/api/auth/simple-login', async (req, res) => {
         email: user.email,
         name: user.name,
         picture: user.picture,
+        appVersion: user.appVersion || '3.1.1',
         watchlistCount: user.watchlist ? user.watchlist.length : 0,
         historyCount: user.history ? user.history.length : 0
       }
@@ -2187,7 +2190,8 @@ app.post('/api/auth/login', async (req, res) => {
       googleId,
       email: cleanEmail,
       name: cleanName,
-      picture
+      picture,
+      appVersion: req.body.appVersion || req.headers['x-app-version'] || '3.1.1'
     });
     const token = authService.generateAppToken(user);
 
@@ -2199,6 +2203,7 @@ app.post('/api/auth/login', async (req, res) => {
         email: user.email,
         name: user.name,
         picture: user.picture,
+        appVersion: user.appVersion || '3.1.1',
         watchlistCount: user.watchlist ? user.watchlist.length : 0,
         historyCount: user.history ? user.history.length : 0
       }
@@ -2715,17 +2720,29 @@ app.get('/api/admin/users', adminService.authenticate, async (req, res) => {
 // App Launch Ping & Active Device Registration
 app.post('/api/app-ping', (req, res) => {
   try {
-    const { viewerId, platform } = req.body;
+    const { viewerId, platform, appVersion } = req.body;
     const vId = viewerId || req.headers['x-viewer-id'] || ('v_' + Math.random().toString(36).substring(2, 10));
     dbService.recordDevice({
       deviceId: vId,
       ip: req.ip || req.connection?.remoteAddress,
       userAgent: req.headers['user-agent'],
-      platform: platform || 'Android'
+      platform: platform || 'Android',
+      appVersion: appVersion || req.headers['x-app-version'] || ''
     });
     res.json({ success: true, viewerId: vId });
   } catch(e) {
     res.json({ success: true });
+  }
+});
+
+// Purge Older Version Users & Devices (Keep v3.1.1)
+app.post('/api/admin/users/purge-old', adminService.authenticate, async (req, res) => {
+  try {
+    const targetVersion = req.body?.version || req.query?.version || '3.1.1';
+    const result = await dbService.purgeOldVersionUsers(targetVersion);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 

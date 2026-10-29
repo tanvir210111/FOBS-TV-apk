@@ -59,7 +59,7 @@ function getDevicesMap() {
   return {};
 }
 
-function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android' }) {
+function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android', appVersion = '' }) {
   if (!deviceId || String(deviceId).length < 3) return;
   try {
     const devices = getDevicesMap();
@@ -69,6 +69,7 @@ function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android' 
     if (ip && (!existing.ip || existing.ip === '127.0.0.1')) existing.ip = ip;
     if (userAgent && !existing.userAgent) existing.userAgent = userAgent;
     existing.platform = platform || existing.platform || 'Android App';
+    if (appVersion) existing.appVersion = appVersion;
     devices[cleanId] = existing;
     
     // Save to both files
@@ -87,7 +88,7 @@ async function getUserStats() {
 
   const totalRegistered = registeredUsers.length;
   const totalDevices = devices.length;
-  const totalUsers = Math.max(totalRegistered + totalDevices, totalDevices, totalRegistered, 1);
+  const totalUsers = Math.max(totalRegistered + totalDevices, totalDevices, totalRegistered, totalRegistered > 0 ? totalRegistered : 0);
 
   // Combine registered Google users + active mobile app devices
   const combinedList = [
@@ -98,6 +99,7 @@ async function getUserStats() {
       picture: u.picture || '',
       type: 'Registered Member',
       platform: 'Google Account',
+      appVersion: u.appVersion || ((u.createdAt && new Date(u.createdAt).getTime() >= new Date('2026-10-29T09:00:00.000Z').getTime()) ? '3.1.1' : 'Older Version'),
       watchlistCount: Array.isArray(u.watchlist) ? u.watchlist.length : 0,
       historyCount: Array.isArray(u.history) ? u.history.length : 0,
       createdAt: u.createdAt || u.lastLogin || new Date().toISOString(),
@@ -113,6 +115,7 @@ async function getUserStats() {
         picture: '',
         type: 'App Installation',
         platform: d.platform || 'Android App',
+        appVersion: d.appVersion || 'Older Version',
         watchlistCount: 0,
         historyCount: 0,
         createdAt: d.firstSeen || d.lastActive || new Date().toISOString(),
@@ -128,7 +131,7 @@ async function getUserStats() {
   return {
     totalUsers,
     totalRegistered,
-    totalDevices: Math.max(totalDevices, 1),
+    totalDevices,
     users: combinedList
   };
 }
@@ -173,6 +176,7 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, lowercase: true, trim: true, index: true },
   name: { type: String, required: true },
   picture: { type: String, default: '' },
+  appVersion: { type: String, default: '3.1.1' },
   watchlist: [WatchlistItemSchema],
   history: [WatchHistoryItemSchema],
   bookings: [{
@@ -379,7 +383,7 @@ async function getMediaViews(mediaId) {
 // 3. USER MANAGEMENT (PERSISTENCE)
 // ----------------------------------------------------
 
-async function findOrCreateUser({ googleId, email, name, picture }) {
+async function findOrCreateUser({ googleId, email, name, picture, appVersion = '3.1.1' }) {
   const now = new Date();
 
   if (isMongoConnected && User) {
@@ -391,6 +395,7 @@ async function findOrCreateUser({ googleId, email, name, picture }) {
           email,
           name,
           picture,
+          appVersion: appVersion || '3.1.1',
           watchlist: [],
           history: [],
           createdAt: now,
@@ -400,6 +405,7 @@ async function findOrCreateUser({ googleId, email, name, picture }) {
       } else {
         user.name = name || user.name;
         user.picture = picture || user.picture;
+        user.appVersion = appVersion || user.appVersion || '3.1.1';
         user.lastLogin = now;
         await user.save();
       }
@@ -420,6 +426,7 @@ async function findOrCreateUser({ googleId, email, name, picture }) {
       email: (email || '').toLowerCase().trim(),
       name: name || 'User',
       picture: picture || '',
+      appVersion: appVersion || '3.1.1',
       watchlist: [],
       history: [],
       createdAt: now,
@@ -429,6 +436,7 @@ async function findOrCreateUser({ googleId, email, name, picture }) {
     user.lastLogin = now;
     if (name) user.name = name;
     if (picture) user.picture = picture;
+    user.appVersion = appVersion || user.appVersion || '3.1.1';
   }
   memoryUsers.set(googleId, user);
   usersMap[googleId] = user;
@@ -1026,6 +1034,85 @@ async function deleteReport(reportId) {
   return { success: true };
 }
 
+/**
+ * Purge all users and devices from older app versions, keeping ONLY v3.1.1 users
+ */
+async function purgeOldVersionUsers(targetVersion = '3.1.1') {
+  const v311Threshold = new Date('2026-10-29T09:00:00.000Z').getTime();
+
+  let mongoDeleted = 0;
+  if (isMongoConnected && User) {
+    try {
+      const deleteResult = await User.deleteMany({
+        $and: [
+          { appVersion: { $ne: targetVersion } },
+          { email: { $ne: 'tanvir210111@gmail.com' } },
+          { createdAt: { $lt: new Date(v311Threshold) } }
+        ]
+      });
+      mongoDeleted = deleteResult.deletedCount || 0;
+      await User.updateMany(
+        { $or: [{ appVersion: { $exists: false } }, { appVersion: '' }, { appVersion: { $ne: targetVersion } }] },
+        { $set: { appVersion: targetVersion } }
+      );
+    } catch (e) {
+      console.warn('Error purging MongoDB users:', e.message);
+    }
+  }
+
+  // Purge local users
+  const usersMap = getLocalUsersMap();
+  const keptUsers = {};
+  let deletedUsers = 0;
+
+  for (const [key, u] of Object.entries(usersMap)) {
+    const isV311 = (u.appVersion === targetVersion);
+    const isAdmin = (u.email === 'tanvir210111@gmail.com') || (u.name && u.name.toLowerCase().includes('admin'));
+    const isTodayPostRelease = u.createdAt && (new Date(u.createdAt).getTime() >= v311Threshold);
+
+    if (isV311 || isAdmin || isTodayPostRelease) {
+      u.appVersion = targetVersion;
+      keptUsers[key] = u;
+    } else {
+      deletedUsers++;
+    }
+  }
+
+  memoryUsers.clear();
+  for (const [k, v] of Object.entries(keptUsers)) {
+    memoryUsers.set(k, v);
+  }
+  saveLocalUsersMap(keptUsers);
+
+  // Purge old devices
+  const devicesMap = getDevicesMap();
+  const keptDevices = {};
+  let deletedDevices = 0;
+
+  for (const [id, d] of Object.entries(devicesMap)) {
+    const isV311Device = (d.appVersion === targetVersion);
+    if (isV311Device) {
+      keptDevices[id] = d;
+    } else {
+      deletedDevices++;
+    }
+  }
+
+  try {
+    fs.writeFileSync(DEVICES_LOCAL_FILE, JSON.stringify(keptDevices, null, 2), 'utf8');
+    fs.writeFileSync(DEVICES_FILE, JSON.stringify(keptDevices, null, 2), 'utf8');
+  } catch (e) {}
+
+  return {
+    success: true,
+    targetVersion,
+    deletedUsers: deletedUsers + mongoDeleted,
+    keptUsers: Object.keys(keptUsers).length,
+    deletedDevices,
+    keptDevices: Object.keys(keptDevices).length
+  };
+}
+
 // Initialize connections
 initMongoDB();
 initRedis();
@@ -1034,6 +1121,7 @@ module.exports = {
   recordDevice,
   getUserStats,
   findOrCreateUser,
+  purgeOldVersionUsers,
   getUserById,
   toggleWatchlist,
   updateWatchHistory,

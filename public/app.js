@@ -228,10 +228,14 @@ async function submitSimpleLogin() {
   }
 
   try {
+    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.1');
     const res = await fetch(`${API_BASE_URL}/api/auth/simple-login`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email })
+      headers: {
+        'Content-Type': 'application/json',
+        'x-app-version': appVer
+      },
+      body: JSON.stringify({ name, email, appVersion: appVer })
     });
     const data = await res.json();
     if (res.ok && data.success) {
@@ -356,10 +360,14 @@ async function initApp() {
       pingViewerId = 'v_' + Math.random().toString(36).substring(2, 10);
       localStorage.setItem('fobs_viewer_uuid', pingViewerId);
     }
+    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.1');
     fetch(`${API_BASE_URL}/api/app-ping`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ viewerId: pingViewerId, platform: 'Android App' })
+      headers: {
+        'Content-Type': 'application/json',
+        'x-app-version': appVer
+      },
+      body: JSON.stringify({ viewerId: pingViewerId, platform: 'Android App', appVersion: appVer })
     }).catch(() => {});
   } catch(e) {}
   setupVideoListeners();
