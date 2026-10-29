@@ -4652,8 +4652,9 @@ async function setupSubtitlesForMedia(media) {
   if (subIcon) subIcon.style.color = '';
 
   const cleanTitle = (media.title || '').replace(/\[.*?\]|\(.*?\)/g, '').trim();
-  const season = appState.currentSeason || 1;
-  const ep = appState.currentEpisode ? appState.currentEpisode.number : 1;
+  const isSeries = media.type === 'series' || media.isSeries || (media.seasons && media.seasons.length > 0) || (media.totalEpisodes > 1);
+  const season = isSeries ? (appState.currentSeason || 1) : 0;
+  const ep = isSeries ? (appState.currentEpisode ? appState.currentEpisode.number : 1) : 0;
   const currentEp = appState.currentEpisode;
 
   const tracks = [];
@@ -4690,7 +4691,7 @@ async function setupSubtitlesForMedia(media) {
   try {
     const subjectId = (media.id || '').replace(/^mb-[s|m]-/, '');
     const detailPath = media.detailPath || '';
-    const res = await fetch(`${API_BASE_URL}/api/subtitles?title=${encodeURIComponent(cleanTitle)}&year=${media.year || ''}&subjectId=${encodeURIComponent(subjectId)}&detailPath=${encodeURIComponent(detailPath)}&season=${season}&episode=${ep}`);
+    const res = await fetch(`${API_BASE_URL}/api/subtitles?title=${encodeURIComponent(cleanTitle)}&year=${media.year || ''}&subjectId=${encodeURIComponent(subjectId)}&detailPath=${encodeURIComponent(detailPath)}&season=${season}&episode=${ep}&type=${isSeries ? 'series' : 'movie'}`);
     const data = await res.json();
     if (data && data.success && Array.isArray(data.subtitles)) {
       data.subtitles.forEach(sub => {
@@ -4721,13 +4722,27 @@ async function setupSubtitlesForMedia(media) {
   }
 
   if (!hasBn) {
-    tracks.push({
-      id: 'sub_bn_default',
-      language: 'Bangla (বাংলা)',
-      langCode: 'bn',
-      source: 'SubSource (বাংলা)',
-      url: enTrack ? enTrack.url : `/api/subtitles/generate?title=${encodeURIComponent(cleanTitle)}&lang=bn`
-    });
+    if (enTrack && (enTrack.url || enTrack.downloadUrl)) {
+      const enUrl = enTrack.url || enTrack.downloadUrl;
+      tracks.push({
+        id: 'sub_bn_ai',
+        language: 'Bangla (AI Translated) [বাংলা]',
+        langCode: 'bn',
+        source: 'FOBS AI Engine',
+        url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanTitle)}&season=${season}&episode=${ep}`,
+        format: 'vtt',
+        isAi: true
+      });
+    } else {
+      tracks.push({
+        id: 'sub_bn_default',
+        language: 'Bangla (বাংলা)',
+        langCode: 'bn',
+        source: 'SubSource (বাংলা)',
+        url: `/api/subtitles/generate?title=${encodeURIComponent(cleanTitle)}&lang=bn`,
+        format: 'vtt'
+      });
+    }
   }
 
   subtitleState.availableTracks = tracks;
@@ -4864,22 +4879,39 @@ async function selectSubtitleTrack(trackId) {
   showToast(`Loading ${track.language} (SubSource)...`);
 
   let loadedCues = [];
+  let targetUrl = track.url || '';
+  if (targetUrl.startsWith('/')) {
+    targetUrl = `${API_BASE_URL}${targetUrl}`;
+  }
+
+  // If local / relative or AI translation VTT endpoint, fetch directly
+  if (targetUrl.includes('/api/subtitles/ai-translate') || targetUrl.includes('/api/subtitles/generate') || targetUrl.includes('/subtitles/')) {
+    try {
+      const directRes = await fetch(targetUrl);
+      const directText = await directRes.text();
+      loadedCues = parseSubtitleTextToCues(directText);
+    } catch (err) {
+      console.warn('Direct relative subtitle fetch failed, trying proxy:', err);
+    }
+  }
 
   // Step 1: Try backend subtitle proxy
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/subtitles/track?url=${encodeURIComponent(track.url)}`);
-    const data = await res.json();
-    if (data && data.success && Array.isArray(data.cues) && data.cues.length > 0) {
-      loadedCues = data.cues;
+  if (loadedCues.length === 0) {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/subtitles/track?url=${encodeURIComponent(targetUrl)}`);
+      const data = await res.json();
+      if (data && data.success && Array.isArray(data.cues) && data.cues.length > 0) {
+        loadedCues = data.cues;
+      }
+    } catch (proxyErr) {
+      console.warn('Backend subtitle proxy fetch failed, trying direct fetch:', proxyErr);
     }
-  } catch (proxyErr) {
-    console.warn('Backend subtitle proxy fetch failed, trying direct fetch:', proxyErr);
   }
 
   // Step 2: Client-side fallback if proxy gave no cues and URL is direct HTTP
-  if (loadedCues.length === 0 && track.url && track.url.startsWith('http')) {
+  if (loadedCues.length === 0 && targetUrl && targetUrl.startsWith('http')) {
     try {
-      const directRes = await fetch(track.url);
+      const directRes = await fetch(targetUrl);
       const directText = await directRes.text();
       loadedCues = parseSubtitleTextToCues(directText);
     } catch (directErr) {
@@ -5211,14 +5243,15 @@ async function loadOnlineSubtitles() {
   if (ptContent) ptContent.innerHTML = loadingHtml;
 
   const media = appState.currentMedia;
+  const isSeries = media?.type === 'series' || media?.isSeries || (media?.seasons && media?.seasons.length > 0) || (media?.totalEpisodes > 1);
+  const seNum = isSeries ? (appState.currentSeason || 1) : 0;
   const ep = appState.currentEpisode;
-  const seNum = appState.currentSeason || 1;
-  const epNum = ep?.number || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1);
+  const epNum = isSeries ? (ep?.number || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1)) : 0;
   const queryTitle = media?.title || '';
   const subjectId = media?.subjectId || media?.id || '';
 
   try {
-    const res = await fetch(`${API_BASE_URL}/api/subtitles/online?title=${encodeURIComponent(queryTitle)}&season=${seNum}&episode=${epNum}&subjectId=${encodeURIComponent(subjectId)}`);
+    const res = await fetch(`${API_BASE_URL}/api/subtitles/online?title=${encodeURIComponent(queryTitle)}&season=${seNum}&episode=${epNum}&subjectId=${encodeURIComponent(subjectId)}&type=${isSeries ? 'series' : 'movie'}`);
     const data = await res.json();
     subtitleState.onlineSubtitles = {
       english: data.english || [],

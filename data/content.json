@@ -9609,6 +9609,16 @@
       ],
       "captions": [
         {
+          "id": "sub_bn_hope_verified",
+          "label": "Bangla (বাংলা)",
+          "language": "bn",
+          "srclang": "bn",
+          "source": "SubSource / Verified",
+          "src": "/subtitles/hope_2026_bn.vtt",
+          "url": "/subtitles/hope_2026_bn.vtt",
+          "format": "vtt"
+        },
+        {
           "id": "mb_sub_en_0",
           "label": "English",
           "language": "en",
@@ -9637,6 +9647,16 @@
         }
       ],
       "subtitles": [
+        {
+          "id": "sub_bn_hope_verified",
+          "label": "Bangla (বাংলা)",
+          "language": "bn",
+          "srclang": "bn",
+          "source": "SubSource / Verified",
+          "src": "/subtitles/hope_2026_bn.vtt",
+          "url": "/subtitles/hope_2026_bn.vtt",
+          "format": "vtt"
+        },
         {
           "id": "mb_sub_en_0",
           "label": "English",
