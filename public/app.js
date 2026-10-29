@@ -313,7 +313,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v70';
+const CACHE_KEY = 'fobs_tv_content_cache_v71';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -9071,7 +9071,7 @@ function checkAppUpdate(data) {
     if (currentTag) currentTag.textContent = `v${CURRENT_APP_VERSION_NAME}`;
 
     const latestTag = document.getElementById('latestVersionTag');
-    if (latestTag) latestTag.textContent = `v${updateInfo.latestVersionName || '1.1.0'}`;
+    if (latestTag) latestTag.textContent = `v${updateInfo.latestVersionName || '3.1.1'}`;
 
     const sizeTag = document.getElementById('updateFileSize');
     if (sizeTag && updateInfo.fileSize) sizeTag.textContent = updateInfo.fileSize;

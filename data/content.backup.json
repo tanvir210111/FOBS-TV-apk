@@ -1,17 +1,20 @@
 {
   "appUpdate": {
     "enabled": true,
-    "latestVersionCode": 8,
-    "latestVersionName": "2.0.0",
-    "minVersionCode": 1,
+    "latestVersionCode": 9,
+    "latestVersionName": "3.1.1",
+    "minVersionCode": 9,
     "forceUpdate": true,
-    "title": "New FOBS TV Update (v2.0.0) Available!",
-    "message": "FOBS TV v2.0.0 is now live with dedicated high-speed 8-core servers and zero buffering! Please update to continue watching.",
+    "title": "New FOBS TV Update (v3.1.1) Available!",
+    "message": "FOBS TV-র নতুন v3.1.1 ভার্সন চলে এসেছে! আগের অ্যাপটি আনইনস্টল (Uninstall) করে নিচের লিংকে ক্লিক করে নতুন v3.1.1 অ্যাপটি ডাউনলোড করে ইনস্টল করুন। (Please uninstall the previous app before installing v3.1.1).",
     "releaseNotes": [
-      "Brand New Dedicated 8-Core Streaming Server (Hostinger KVM 8)",
-      "Instant Video Playback & Zero Downtime",
-      "Fixed all previous streaming errors",
-      "Click Update Now to install FOBS TV v2.0.0"
+      "⚠️ আগের অ্যাপটি আনইনস্টল করে নতুন v3.1.1 ইনস্টল করুন",
+      "MX Player Style: সাবটাইটেল চেপে ধরে উপরে-নিচে ড্র্যাগ করার সুবিধা (Drag Subtitles)",
+      "ভিডিও প্লেব্যাকের সমস্ত লোডিং ও বাফারিং সমস্যা ফিক্সড (<350ms instant start)",
+      "ইন-অ্যাপ অফলাইন ডাউনলোড এবং অফলাইন ওয়াচিং",
+      "Bangla Subtitles + SubSource AI Translate",
+      "মাল্টি-অডিও ট্র্যাকিং (Hindi Dub, Original Audio, Bangla)",
+      "সকল মুভি ও সিরিজের ৪টি কোয়ালিটি (1080p, 720p, 480p, 360p)"
     ],
     "downloadUrl": "https://fobs-apk-download.vercel.app/",
     "fallbackUrl": "https://fobs-apk-download.vercel.app/",
