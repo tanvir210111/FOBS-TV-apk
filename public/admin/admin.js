@@ -1437,10 +1437,11 @@ async function loadUsers() {
       const joined = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'N/A';
       const lastActive = u.lastActive ? new Date(u.lastActive).toLocaleString() : (u.lastLogin ? new Date(u.lastLogin).toLocaleString() : 'N/A');
       const isOnline = u.status === 'Online Now' || (u.lastActive && (Date.now() - new Date(u.lastActive).getTime() < 15 * 60 * 1000));
-      const ver = u.appVersion || 'Older';
-      const isV311 = ver === '3.1.1';
+      const rawVer = u.appVersion || '';
+      const isV311 = rawVer === '3.1.1' || rawVer === 'v3.1.1' || String(rawVer).includes('3.1.1');
+      const ver = isV311 ? '3.1.1' : (rawVer || 'Older');
       const verBadge = isV311
-        ? `<span class="badge" style="background:rgba(16,185,129,0.15); color:#10B981; font-weight:600;"><i class="fa-solid fa-circle-check"></i> v${ver}</span>`
+        ? `<span class="badge" style="background:rgba(16,185,129,0.15); color:#10B981; font-weight:600;"><i class="fa-solid fa-circle-check"></i> v3.1.1</span>`
         : `<span class="badge" style="background:rgba(239,68,68,0.15); color:#EF4444;"><i class="fa-solid fa-triangle-exclamation"></i> ${escapeHtml(ver)}</span>`;
 
       return `

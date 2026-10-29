@@ -99,7 +99,7 @@ async function getUserStats() {
       picture: u.picture || '',
       type: 'Registered Member',
       platform: 'Google Account',
-      appVersion: u.appVersion || ((u.createdAt && new Date(u.createdAt).getTime() >= new Date('2026-10-29T09:00:00.000Z').getTime()) ? '3.1.1' : 'Older Version'),
+      appVersion: u.appVersion || ((u.createdAt && new Date(u.createdAt).getTime() >= new Date('2026-10-29T00:00:00.000Z').getTime()) ? '3.1.1' : 'Older Version'),
       watchlistCount: Array.isArray(u.watchlist) ? u.watchlist.length : 0,
       historyCount: Array.isArray(u.history) ? u.history.length : 0,
       createdAt: u.createdAt || u.lastLogin || new Date().toISOString(),
@@ -1038,7 +1038,7 @@ async function deleteReport(reportId) {
  * Purge all users and devices from older app versions, keeping ONLY v3.1.1 users
  */
 async function purgeOldVersionUsers(targetVersion = '3.1.1') {
-  const v311Threshold = new Date('2026-10-29T09:00:00.000Z').getTime();
+  const v311Threshold = new Date('2026-10-29T00:00:00.000Z').getTime();
 
   let mongoDeleted = 0;
   if (isMongoConnected && User) {
