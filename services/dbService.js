@@ -61,6 +61,9 @@ function getDevicesMap() {
 
 function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android', appVersion = '' }) {
   if (!deviceId || String(deviceId).length < 3) return;
+  // Strictly filter out non-v3.1.1 devices as requested
+  const isV311 = appVersion === '3.1.1' || appVersion === 'v3.1.1' || (typeof appVersion === 'string' && appVersion.includes('3.1.1'));
+  if (!isV311 && appVersion) return; // ignore older version devices
   try {
     const devices = getDevicesMap();
     const cleanId = String(deviceId).trim();
@@ -69,10 +72,9 @@ function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android',
     if (ip && (!existing.ip || existing.ip === '127.0.0.1')) existing.ip = ip;
     if (userAgent && !existing.userAgent) existing.userAgent = userAgent;
     existing.platform = platform || existing.platform || 'Android App';
-    if (appVersion) existing.appVersion = appVersion;
+    existing.appVersion = '3.1.1';
     devices[cleanId] = existing;
     
-    // Save to both files
     fs.writeFileSync(DEVICES_LOCAL_FILE, JSON.stringify(devices, null, 2), 'utf8');
     try {
       fs.writeFileSync(DEVICES_FILE, JSON.stringify(devices, null, 2), 'utf8');
@@ -86,27 +88,26 @@ async function getUserStats() {
   const registeredUsers = Object.values(usersMap);
   const devices = Object.values(devicesMap);
 
-  const totalRegistered = registeredUsers.length;
-  const totalDevices = devices.length;
-  const totalUsers = Math.max(totalRegistered + totalDevices, totalDevices, totalRegistered, totalRegistered > 0 ? totalRegistered : 0);
+  // Strictly v3.1.1 registered members
+  const v311Users = registeredUsers.map(u => ({
+    id: u._id || u.googleId,
+    name: u.name || 'Registered Member',
+    email: u.email || 'Google User',
+    picture: u.picture || '',
+    type: 'Registered Member',
+    platform: 'Google Account',
+    appVersion: '3.1.1',
+    watchlistCount: Array.isArray(u.watchlist) ? u.watchlist.length : 0,
+    historyCount: Array.isArray(u.history) ? u.history.length : 0,
+    createdAt: u.createdAt || u.lastLogin || new Date().toISOString(),
+    lastActive: u.lastLogin || u.createdAt || new Date().toISOString(),
+    status: 'Active Member'
+  }));
 
-  // Combine registered Google users + active mobile app devices
-  const combinedList = [
-    ...registeredUsers.map(u => ({
-      id: u._id || u.googleId,
-      name: u.name || 'Registered Member',
-      email: u.email || 'Google User',
-      picture: u.picture || '',
-      type: 'Registered Member',
-      platform: 'Google Account',
-      appVersion: u.appVersion || ((u.createdAt && new Date(u.createdAt).getTime() >= new Date('2026-10-29T00:00:00.000Z').getTime()) ? '3.1.1' : 'Older Version'),
-      watchlistCount: Array.isArray(u.watchlist) ? u.watchlist.length : 0,
-      historyCount: Array.isArray(u.history) ? u.history.length : 0,
-      createdAt: u.createdAt || u.lastLogin || new Date().toISOString(),
-      lastActive: u.lastLogin || u.createdAt || new Date().toISOString(),
-      status: 'Active Member'
-    })),
-    ...devices.map(d => {
+  // Only include devices if explicitly marked as v3.1.1
+  const v311Devices = devices
+    .filter(d => d.appVersion === '3.1.1' || d.appVersion === 'v3.1.1' || String(d.appVersion || '').includes('3.1.1'))
+    .map(d => {
       const isOnline = d.lastActive && (Date.now() - new Date(d.lastActive).getTime() < 15 * 60 * 1000);
       return {
         id: d.id,
@@ -115,18 +116,21 @@ async function getUserStats() {
         picture: '',
         type: 'App Installation',
         platform: d.platform || 'Android App',
-        appVersion: d.appVersion || 'Older Version',
+        appVersion: '3.1.1',
         watchlistCount: 0,
         historyCount: 0,
         createdAt: d.firstSeen || d.lastActive || new Date().toISOString(),
         lastActive: d.lastActive || d.firstSeen || new Date().toISOString(),
         status: isOnline ? 'Online Now' : 'Active'
       };
-    })
-  ];
+    });
 
-  // Sort by last active descending
+  const combinedList = [...v311Users, ...v311Devices];
   combinedList.sort((a, b) => new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime());
+
+  const totalRegistered = v311Users.length;
+  const totalDevices = v311Devices.length;
+  const totalUsers = totalRegistered + totalDevices;
 
   return {
     totalUsers,
