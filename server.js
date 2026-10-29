@@ -2992,7 +2992,7 @@ app.all('/api/deploy', (req, res) => {
 
   const { exec } = require('child_process');
   console.log('🚀 Triggering automated git pull & PM2 restart...');
-  exec('git reset --hard HEAD && git pull origin main && pm2 restart all', { cwd: __dirname }, (error, stdout, stderr) => {
+  exec('git fetch origin main && git reset --hard origin/main && pm2 restart all', { cwd: __dirname }, (error, stdout, stderr) => {
     if (error) {
       console.error('❌ Deploy execution error:', error.message);
       return res.status(500).json({ success: false, error: error.message, stderr, stdout });
