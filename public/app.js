@@ -7334,6 +7334,22 @@ async function downloadMedia(url, title, options = {}) {
           vttText = await sRes.text();
         }
       }
+
+      // Direct Subtitles API fallback to guarantee Bangla subtitle is always bundled
+      if (!vttText) {
+        const cleanT = (title || '').replace(/\[.*?\]|\(.*?\)/g, '').replace(/ - Ep.*/i, '').trim();
+        const sRes = await fetch(`${API_BASE_URL}/api/subtitles?title=${encodeURIComponent(cleanT)}`);
+        const sData = await sRes.json();
+        if (sData && Array.isArray(sData.subtitles)) {
+          const bn = sData.subtitles.find(s => s.langCode === 'bn') || sData.subtitles.find(s => s.langCode === 'en');
+          if (bn && (bn.url || bn.downloadUrl)) {
+            let u = bn.url || bn.downloadUrl;
+            if (u.startsWith('/')) u = `${API_BASE_URL}${u}`;
+            const subRes = await fetch(u);
+            if (subRes.ok) vttText = await subRes.text();
+          }
+        }
+      }
     } catch (subErr) {
       console.warn('Offline subtitle sync warning:', subErr.message);
     }
