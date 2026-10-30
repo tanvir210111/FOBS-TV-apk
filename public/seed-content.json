@@ -18698,6 +18698,1892 @@
   ],
   "series": [
     {
+      "id": "mb-s-8802963787692345120",
+      "subjectId": "8802963787692345120",
+      "origSubjectId": "8126793059993537672",
+      "detailPath": "all-of-us-are-dead-hindi-Y4Pcy1oFhua",
+      "origDetailPath": "all-of-us-are-dead-Cn6l8bvNkG9",
+      "title": "All of Us Are Dead [Hindi]",
+      "type": "series",
+      "category": "Korean (Dubbed) Series",
+      "industry": "Korean",
+      "country": "Korea",
+      "language": "Hindi",
+      "audio": "Hindi",
+      "year": "2022",
+      "rating": "8.5",
+      "imdbRating": "8.5",
+      "genre": "Action & Adventure, Drama, Sci-Fi & Fantasy, Horror",
+      "poster": "https://image.tmdb.org/t/p/w500/pTEFqAjLd5YTsMD6NSUxV6Dq7A6.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/8hp2CuGnw1iP5dLBVMAPUv23swx.jpg",
+      "banner": "https://image.tmdb.org/t/p/original/8hp2CuGnw1iP5dLBVMAPUv23swx.jpg",
+      "cover": "https://image.tmdb.org/t/p/original/8hp2CuGnw1iP5dLBVMAPUv23swx.jpg",
+      "description": "A high school becomes ground zero for a zombie virus outbreak. Trapped students must fight their way out or turn into one of the rabid infected. Includes Complete Season 1 (Hindi Dubbed) + Season 2 Official Netflix Teaser & Special Preview.",
+      "totalEpisodes": 13,
+      "seasonsCount": 2,
+      "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=1&q=720",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/57f994229d02d4f04018d7324cc4473f.mp4?sign=b20aed862ddbac963144348ff51d2e27&t=1793367339",
+      "audioTracks": [
+        "Hindi dub",
+        "Original Audio"
+      ],
+      "selectedAudio": "Hindi dub",
+      "seasons": [
+        {
+          "season": 1,
+          "seasonNumber": 1,
+          "name": "Season 1 (Hindi Dubbed)",
+          "title": "Season 1",
+          "episodes": [
+            {
+              "id": "ep-aouad-hi-1-1",
+              "number": "01",
+              "episode": 1,
+              "episodeNumber": 1,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 1",
+              "name": "Episode 1",
+              "duration": "66m",
+              "overview": "Inside Lee Byeong-chan's science lab, a student incurs a seemingly harmless bite. Shortly after, a fast-spreading outbreak soaks the school in blood.",
+              "still": "https://image.tmdb.org/t/p/original/eTCe1kQo3Rzm1sqcOycSEgKzF3z.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/eTCe1kQo3Rzm1sqcOycSEgKzF3z.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=1&q=720",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/57f994229d02d4f04018d7324cc4473f.mp4?sign=b20aed862ddbac963144348ff51d2e27&t=1793367339",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Hindi dub",
+              "servers": [
+                {
+                  "name": "Server 1 (Fast Direct CDN 1080p - Hindi dub)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/57f994229d02d4f04018d7324cc4473f.mp4?sign=b20aed862ddbac963144348ff51d2e27&t=1793367339",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
+                  "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=1&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=1&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-hi-1-2",
+              "number": "02",
+              "episode": 2,
+              "episodeNumber": 2,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 2",
+              "name": "Episode 2",
+              "duration": "70m",
+              "overview": "The infected multiply in droves. Scrambling for their lives, Nam On-jo and Lee Cheong-san find safety with others inside a classroom — but not for long.",
+              "still": "https://image.tmdb.org/t/p/original/s1ejjHUlB4S6SxkOkGmPQ7CfRgu.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/s1ejjHUlB4S6SxkOkGmPQ7CfRgu.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=2&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Hindi dub",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=2&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=2&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-hi-1-3",
+              "number": "03",
+              "episode": 3,
+              "episodeNumber": 3,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 3",
+              "name": "Episode 3",
+              "duration": "62m",
+              "overview": "When one of the group is scratched while fighting a zombie, Lee Na-yeon demands they kick him out. Outside, the virus swallows up the city.",
+              "still": "https://image.tmdb.org/t/p/original/cvNAL8Osgrca3uXUS4qGy8qrgNY.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/cvNAL8Osgrca3uXUS4qGy8qrgNY.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=3&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Hindi dub",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=3&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=3&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-hi-1-4",
+              "number": "04",
+              "episode": 4,
+              "episodeNumber": 4,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 4",
+              "name": "Episode 4",
+              "duration": "72m",
+              "overview": "In need of a cellphone, two students take a risky journey to the teachers' office. Byeong-chan passes on critical information to Detective Song Jae-ik.",
+              "still": "https://image.tmdb.org/t/p/original/2MA0irna8738Zr6FO9v9YfygdNV.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/2MA0irna8738Zr6FO9v9YfygdNV.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=4&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Hindi dub",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=4&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=4&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-hi-1-5",
+              "number": "05",
+              "episode": 5,
+              "episodeNumber": 5,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 5",
+              "name": "Episode 5",
+              "duration": "56m",
+              "overview": "Martial law is imposed on the city. When Cheong-san is separated from the rest of the group, On-jo leads a mission to use a drone to locate him.",
+              "still": "https://image.tmdb.org/t/p/original/inEDM5TP6uk0CFnvRwedE8yVvrU.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/inEDM5TP6uk0CFnvRwedE8yVvrU.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=5&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Hindi dub",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=5&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=5&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-hi-1-6",
+              "number": "06",
+              "episode": 6,
+              "episodeNumber": 6,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 6",
+              "name": "Episode 6",
+              "duration": "67m",
+              "overview": "The group clears a path to Cheong-san using sound to draw away zombies, but a new type of threat surfaces. Nam So-ju breaks out of the quarantine camp.",
+              "still": "https://image.tmdb.org/t/p/original/e6b835B0LWhflIrq2knNQL3VLCX.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/e6b835B0LWhflIrq2knNQL3VLCX.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=6&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Hindi dub",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=6&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=6&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-hi-1-7",
+              "number": "07",
+              "episode": 7,
+              "episodeNumber": 7,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 7",
+              "name": "Episode 7",
+              "duration": "60m",
+              "overview": "To make it out of the music room and onto the roof, the students put into action their most perilous plan yet. Elsewhere, Jae-ik comes across a setback.",
+              "still": "https://image.tmdb.org/t/p/original/jm5s8jAhUPQBUJJPH8wOpEnlt0v.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/jm5s8jAhUPQBUJJPH8wOpEnlt0v.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=7&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Hindi dub",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=7&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=7&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-hi-1-8",
+              "number": "08",
+              "episode": 8,
+              "episodeNumber": 8,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 8",
+              "name": "Episode 8",
+              "duration": "58m",
+              "overview": "Jae-ik and his crew run into a student from the school. Na-yeon works up the courage to face her peers. The group shares confessions around a fire.",
+              "still": "https://image.tmdb.org/t/p/original/gO0onHP51fbSTITwJJ289kUriDL.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/gO0onHP51fbSTITwJJ289kUriDL.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=8&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Hindi dub",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=8&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=8&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-hi-1-9",
+              "number": "09",
+              "episode": 9,
+              "episodeNumber": 9,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 9",
+              "name": "Episode 9",
+              "duration": "61m",
+              "overview": "A disturbance at the camp shifts the military's understanding of the virus. A thunderstorm provides cover as the group agrees to keep on moving.",
+              "still": "https://image.tmdb.org/t/p/original/hTjFMfoL9Js4gQrMqRNxZPM8VRo.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/hTjFMfoL9Js4gQrMqRNxZPM8VRo.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=9&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Hindi dub",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=9&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=9&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-hi-1-10",
+              "number": "10",
+              "episode": 10,
+              "episodeNumber": 10,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 10",
+              "name": "Episode 10",
+              "duration": "54m",
+              "overview": "The auditorium quickly becomes a trap for the two newly united teams of survivors. Byeong-chan's video logs reveal a drastic solution to the crisis.",
+              "still": "https://image.tmdb.org/t/p/original/fd5lPDdoXgKOKe39LrWoBTiMEJE.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/fd5lPDdoXgKOKe39LrWoBTiMEJE.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=10&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Hindi dub",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=10&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=10&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-hi-1-11",
+              "number": "11",
+              "episode": 11,
+              "episodeNumber": 11,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 11",
+              "name": "Episode 11",
+              "duration": "56m",
+              "overview": "Though a surprise protector provides the group safe passage to their next stop, Yoon Gwi-nam is not far behind. The military makes a grave decision.",
+              "still": "https://image.tmdb.org/t/p/original/1v95gKxVA5vPevto1iQB7s8Xa7i.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/1v95gKxVA5vPevto1iQB7s8Xa7i.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=11&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Hindi dub",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=11&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=11&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-hi-1-12",
+              "number": "12",
+              "episode": 12,
+              "episodeNumber": 12,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 12",
+              "name": "Episode 12",
+              "duration": "53m",
+              "overview": "The students make it to the quarantine camp, each of them weighed down by tragic loss. Months later, they hang on to hope for a survivor.",
+              "still": "https://image.tmdb.org/t/p/original/qXf3fb6dXPOIUWRtnMvCAxA9MUN.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/qXf3fb6dXPOIUWRtnMvCAxA9MUN.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=12&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Hindi dub",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=12&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=12&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "season": 2,
+          "seasonNumber": 2,
+          "name": "Season 2 (Netflix Preview)",
+          "title": "Season 2",
+          "episodes": [
+            {
+              "id": "ep-aouad-hi-2-1",
+              "number": "01",
+              "episode": 1,
+              "episodeNumber": 1,
+              "season": 2,
+              "seasonNumber": 2,
+              "title": "Season 2 — Official Netflix Announcement & Teaser Preview",
+              "name": "Season 2 — Official Netflix Announcement & Teaser Preview",
+              "duration": "3m",
+              "overview": "Netflix officially announced All of Us Are Dead Season 2! The zombie apocalypse continues as Yoon Chan-young (Cheong-san), Park Ji-hu (On-jo), and Cho Yi-hyun (Nam-ra) return. Production is underway with new episodes coming soon to FOBS TV.",
+              "still": "https://image.tmdb.org/t/p/original/eTCe1kQo3Rzm1sqcOycSEgKzF3z.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/eTCe1kQo3Rzm1sqcOycSEgKzF3z.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=12&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Hindi dub",
+              "servers": [
+                {
+                  "name": "Server 1 (Netflix Season 2 Official Announcement & Special Preview)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=12&q=720",
+                  "quality": "1080p",
+                  "audio": "Hindi dub"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "episodes": [
+        {
+          "id": "ep-aouad-hi-1-1",
+          "number": "01",
+          "episode": 1,
+          "episodeNumber": 1,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 1",
+          "name": "Episode 1",
+          "duration": "66m",
+          "overview": "Inside Lee Byeong-chan's science lab, a student incurs a seemingly harmless bite. Shortly after, a fast-spreading outbreak soaks the school in blood.",
+          "still": "https://image.tmdb.org/t/p/original/eTCe1kQo3Rzm1sqcOycSEgKzF3z.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/eTCe1kQo3Rzm1sqcOycSEgKzF3z.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=1&q=720",
+          "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/57f994229d02d4f04018d7324cc4473f.mp4?sign=b20aed862ddbac963144348ff51d2e27&t=1793367339",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Hindi dub",
+          "servers": [
+            {
+              "name": "Server 1 (Fast Direct CDN 1080p - Hindi dub)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/57f994229d02d4f04018d7324cc4473f.mp4?sign=b20aed862ddbac963144348ff51d2e27&t=1793367339",
+              "quality": "1080p",
+              "audio": "Hindi dub",
+              "isDirect": true
+            },
+            {
+              "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=1&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=1&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-hi-1-2",
+          "number": "02",
+          "episode": 2,
+          "episodeNumber": 2,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 2",
+          "name": "Episode 2",
+          "duration": "70m",
+          "overview": "The infected multiply in droves. Scrambling for their lives, Nam On-jo and Lee Cheong-san find safety with others inside a classroom — but not for long.",
+          "still": "https://image.tmdb.org/t/p/original/s1ejjHUlB4S6SxkOkGmPQ7CfRgu.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/s1ejjHUlB4S6SxkOkGmPQ7CfRgu.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=2&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Hindi dub",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=2&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=2&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-hi-1-3",
+          "number": "03",
+          "episode": 3,
+          "episodeNumber": 3,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 3",
+          "name": "Episode 3",
+          "duration": "62m",
+          "overview": "When one of the group is scratched while fighting a zombie, Lee Na-yeon demands they kick him out. Outside, the virus swallows up the city.",
+          "still": "https://image.tmdb.org/t/p/original/cvNAL8Osgrca3uXUS4qGy8qrgNY.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/cvNAL8Osgrca3uXUS4qGy8qrgNY.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=3&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Hindi dub",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=3&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=3&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-hi-1-4",
+          "number": "04",
+          "episode": 4,
+          "episodeNumber": 4,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 4",
+          "name": "Episode 4",
+          "duration": "72m",
+          "overview": "In need of a cellphone, two students take a risky journey to the teachers' office. Byeong-chan passes on critical information to Detective Song Jae-ik.",
+          "still": "https://image.tmdb.org/t/p/original/2MA0irna8738Zr6FO9v9YfygdNV.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/2MA0irna8738Zr6FO9v9YfygdNV.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=4&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Hindi dub",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=4&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=4&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-hi-1-5",
+          "number": "05",
+          "episode": 5,
+          "episodeNumber": 5,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 5",
+          "name": "Episode 5",
+          "duration": "56m",
+          "overview": "Martial law is imposed on the city. When Cheong-san is separated from the rest of the group, On-jo leads a mission to use a drone to locate him.",
+          "still": "https://image.tmdb.org/t/p/original/inEDM5TP6uk0CFnvRwedE8yVvrU.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/inEDM5TP6uk0CFnvRwedE8yVvrU.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=5&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Hindi dub",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=5&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=5&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-hi-1-6",
+          "number": "06",
+          "episode": 6,
+          "episodeNumber": 6,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 6",
+          "name": "Episode 6",
+          "duration": "67m",
+          "overview": "The group clears a path to Cheong-san using sound to draw away zombies, but a new type of threat surfaces. Nam So-ju breaks out of the quarantine camp.",
+          "still": "https://image.tmdb.org/t/p/original/e6b835B0LWhflIrq2knNQL3VLCX.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/e6b835B0LWhflIrq2knNQL3VLCX.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=6&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Hindi dub",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=6&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=6&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-hi-1-7",
+          "number": "07",
+          "episode": 7,
+          "episodeNumber": 7,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 7",
+          "name": "Episode 7",
+          "duration": "60m",
+          "overview": "To make it out of the music room and onto the roof, the students put into action their most perilous plan yet. Elsewhere, Jae-ik comes across a setback.",
+          "still": "https://image.tmdb.org/t/p/original/jm5s8jAhUPQBUJJPH8wOpEnlt0v.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/jm5s8jAhUPQBUJJPH8wOpEnlt0v.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=7&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Hindi dub",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=7&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=7&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-hi-1-8",
+          "number": "08",
+          "episode": 8,
+          "episodeNumber": 8,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 8",
+          "name": "Episode 8",
+          "duration": "58m",
+          "overview": "Jae-ik and his crew run into a student from the school. Na-yeon works up the courage to face her peers. The group shares confessions around a fire.",
+          "still": "https://image.tmdb.org/t/p/original/gO0onHP51fbSTITwJJ289kUriDL.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/gO0onHP51fbSTITwJJ289kUriDL.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=8&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Hindi dub",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=8&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=8&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-hi-1-9",
+          "number": "09",
+          "episode": 9,
+          "episodeNumber": 9,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 9",
+          "name": "Episode 9",
+          "duration": "61m",
+          "overview": "A disturbance at the camp shifts the military's understanding of the virus. A thunderstorm provides cover as the group agrees to keep on moving.",
+          "still": "https://image.tmdb.org/t/p/original/hTjFMfoL9Js4gQrMqRNxZPM8VRo.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/hTjFMfoL9Js4gQrMqRNxZPM8VRo.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=9&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Hindi dub",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=9&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=9&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-hi-1-10",
+          "number": "10",
+          "episode": 10,
+          "episodeNumber": 10,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 10",
+          "name": "Episode 10",
+          "duration": "54m",
+          "overview": "The auditorium quickly becomes a trap for the two newly united teams of survivors. Byeong-chan's video logs reveal a drastic solution to the crisis.",
+          "still": "https://image.tmdb.org/t/p/original/fd5lPDdoXgKOKe39LrWoBTiMEJE.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/fd5lPDdoXgKOKe39LrWoBTiMEJE.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=10&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Hindi dub",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=10&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=10&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-hi-1-11",
+          "number": "11",
+          "episode": 11,
+          "episodeNumber": 11,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 11",
+          "name": "Episode 11",
+          "duration": "56m",
+          "overview": "Though a surprise protector provides the group safe passage to their next stop, Yoon Gwi-nam is not far behind. The military makes a grave decision.",
+          "still": "https://image.tmdb.org/t/p/original/1v95gKxVA5vPevto1iQB7s8Xa7i.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/1v95gKxVA5vPevto1iQB7s8Xa7i.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=11&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Hindi dub",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=11&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=11&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-hi-1-12",
+          "number": "12",
+          "episode": 12,
+          "episodeNumber": 12,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 12",
+          "name": "Episode 12",
+          "duration": "53m",
+          "overview": "The students make it to the quarantine camp, each of them weighed down by tragic loss. Months later, they hang on to hope for a survivor.",
+          "still": "https://image.tmdb.org/t/p/original/qXf3fb6dXPOIUWRtnMvCAxA9MUN.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/qXf3fb6dXPOIUWRtnMvCAxA9MUN.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=12&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Hindi dub",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=12&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=12&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-hi-2-1",
+          "number": "01",
+          "episode": 1,
+          "episodeNumber": 1,
+          "season": 2,
+          "seasonNumber": 2,
+          "title": "Season 2 — Official Netflix Announcement & Teaser Preview",
+          "name": "Season 2 — Official Netflix Announcement & Teaser Preview",
+          "duration": "3m",
+          "overview": "Netflix officially announced All of Us Are Dead Season 2! The zombie apocalypse continues as Yoon Chan-young (Cheong-san), Park Ji-hu (On-jo), and Cho Yi-hyun (Nam-ra) return. Production is underway with new episodes coming soon to FOBS TV.",
+          "still": "https://image.tmdb.org/t/p/original/eTCe1kQo3Rzm1sqcOycSEgKzF3z.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/eTCe1kQo3Rzm1sqcOycSEgKzF3z.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=12&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Hindi dub",
+          "servers": [
+            {
+              "name": "Server 1 (Netflix Season 2 Official Announcement & Special Preview)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=12&q=720",
+              "quality": "1080p",
+              "audio": "Hindi dub"
+            }
+          ]
+        }
+      ],
+      "source": "MovieBox",
+      "addedAt": "2026-10-30T14:05:25.245Z",
+      "createdAt": "2026-10-30T14:05:25.273Z"
+    },
+    {
+      "id": "mb-s-8126793059993537672",
+      "subjectId": "8126793059993537672",
+      "origSubjectId": "8126793059993537672",
+      "detailPath": "all-of-us-are-dead-Cn6l8bvNkG9",
+      "origDetailPath": "all-of-us-are-dead-Cn6l8bvNkG9",
+      "title": "All of Us Are Dead (Original Audio)",
+      "type": "series",
+      "category": "Korean Series",
+      "industry": "Korean",
+      "country": "Korea",
+      "language": "Korean",
+      "audio": "Original Korean Audio",
+      "year": "2022",
+      "rating": "8.5",
+      "imdbRating": "8.5",
+      "genre": "Action & Adventure, Drama, Sci-Fi & Fantasy, Horror",
+      "poster": "https://image.tmdb.org/t/p/w500/pTEFqAjLd5YTsMD6NSUxV6Dq7A6.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/8hp2CuGnw1iP5dLBVMAPUv23swx.jpg",
+      "banner": "https://image.tmdb.org/t/p/original/8hp2CuGnw1iP5dLBVMAPUv23swx.jpg",
+      "cover": "https://image.tmdb.org/t/p/original/8hp2CuGnw1iP5dLBVMAPUv23swx.jpg",
+      "description": "A high school becomes ground zero for a zombie virus outbreak. Trapped students must fight their way out or turn into one of the rabid infected. Featuring authentic Korean audio with multi-language subtitles. Includes Complete Season 1 + Season 2 Official Netflix Teaser.",
+      "totalEpisodes": 13,
+      "seasonsCount": 2,
+      "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=1&q=720",
+      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/1874e8699cc1e48799a11861220bee6b.mp4?sign=5f902a2f5027e24e754c95ffeacc2315&t=1793366587",
+      "audioTracks": [
+        "Original Audio",
+        "Hindi dub"
+      ],
+      "selectedAudio": "Original Audio",
+      "seasons": [
+        {
+          "season": 1,
+          "seasonNumber": 1,
+          "name": "Season 1 (Original Korean Audio)",
+          "title": "Season 1",
+          "episodes": [
+            {
+              "id": "ep-aouad-orig-1-1",
+              "number": "01",
+              "episode": 1,
+              "episodeNumber": 1,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 1",
+              "name": "Episode 1",
+              "duration": "66m",
+              "overview": "Inside Lee Byeong-chan's science lab, a student incurs a seemingly harmless bite. Shortly after, a fast-spreading outbreak soaks the school in blood.",
+              "still": "https://image.tmdb.org/t/p/original/eTCe1kQo3Rzm1sqcOycSEgKzF3z.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/eTCe1kQo3Rzm1sqcOycSEgKzF3z.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=1&q=720",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/1874e8699cc1e48799a11861220bee6b.mp4?sign=5f902a2f5027e24e754c95ffeacc2315&t=1793366587",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Original Audio",
+              "servers": [
+                {
+                  "name": "Server 1 (Fast Direct CDN 1080p - Original Audio)",
+                  "url": "https://bcdnxw.hakunaymatata.com/bt/1874e8699cc1e48799a11861220bee6b.mp4?sign=5f902a2f5027e24e754c95ffeacc2315&t=1793366587",
+                  "quality": "1080p",
+                  "audio": "Original Audio",
+                  "isDirect": true
+                },
+                {
+                  "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=1&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=1&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-orig-1-2",
+              "number": "02",
+              "episode": 2,
+              "episodeNumber": 2,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 2",
+              "name": "Episode 2",
+              "duration": "70m",
+              "overview": "The infected multiply in droves. Scrambling for their lives, Nam On-jo and Lee Cheong-san find safety with others inside a classroom — but not for long.",
+              "still": "https://image.tmdb.org/t/p/original/s1ejjHUlB4S6SxkOkGmPQ7CfRgu.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/s1ejjHUlB4S6SxkOkGmPQ7CfRgu.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=2&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Original Audio",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=2&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=2&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-orig-1-3",
+              "number": "03",
+              "episode": 3,
+              "episodeNumber": 3,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 3",
+              "name": "Episode 3",
+              "duration": "62m",
+              "overview": "When one of the group is scratched while fighting a zombie, Lee Na-yeon demands they kick him out. Outside, the virus swallows up the city.",
+              "still": "https://image.tmdb.org/t/p/original/cvNAL8Osgrca3uXUS4qGy8qrgNY.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/cvNAL8Osgrca3uXUS4qGy8qrgNY.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=3&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Original Audio",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=3&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=3&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-orig-1-4",
+              "number": "04",
+              "episode": 4,
+              "episodeNumber": 4,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 4",
+              "name": "Episode 4",
+              "duration": "72m",
+              "overview": "In need of a cellphone, two students take a risky journey to the teachers' office. Byeong-chan passes on critical information to Detective Song Jae-ik.",
+              "still": "https://image.tmdb.org/t/p/original/2MA0irna8738Zr6FO9v9YfygdNV.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/2MA0irna8738Zr6FO9v9YfygdNV.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=4&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Original Audio",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=4&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=4&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-orig-1-5",
+              "number": "05",
+              "episode": 5,
+              "episodeNumber": 5,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 5",
+              "name": "Episode 5",
+              "duration": "56m",
+              "overview": "Martial law is imposed on the city. When Cheong-san is separated from the rest of the group, On-jo leads a mission to use a drone to locate him.",
+              "still": "https://image.tmdb.org/t/p/original/inEDM5TP6uk0CFnvRwedE8yVvrU.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/inEDM5TP6uk0CFnvRwedE8yVvrU.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=5&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Original Audio",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=5&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=5&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-orig-1-6",
+              "number": "06",
+              "episode": 6,
+              "episodeNumber": 6,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 6",
+              "name": "Episode 6",
+              "duration": "67m",
+              "overview": "The group clears a path to Cheong-san using sound to draw away zombies, but a new type of threat surfaces. Nam So-ju breaks out of the quarantine camp.",
+              "still": "https://image.tmdb.org/t/p/original/e6b835B0LWhflIrq2knNQL3VLCX.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/e6b835B0LWhflIrq2knNQL3VLCX.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=6&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Original Audio",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=6&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=6&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-orig-1-7",
+              "number": "07",
+              "episode": 7,
+              "episodeNumber": 7,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 7",
+              "name": "Episode 7",
+              "duration": "60m",
+              "overview": "To make it out of the music room and onto the roof, the students put into action their most perilous plan yet. Elsewhere, Jae-ik comes across a setback.",
+              "still": "https://image.tmdb.org/t/p/original/jm5s8jAhUPQBUJJPH8wOpEnlt0v.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/jm5s8jAhUPQBUJJPH8wOpEnlt0v.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=7&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Original Audio",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=7&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=7&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-orig-1-8",
+              "number": "08",
+              "episode": 8,
+              "episodeNumber": 8,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 8",
+              "name": "Episode 8",
+              "duration": "58m",
+              "overview": "Jae-ik and his crew run into a student from the school. Na-yeon works up the courage to face her peers. The group shares confessions around a fire.",
+              "still": "https://image.tmdb.org/t/p/original/gO0onHP51fbSTITwJJ289kUriDL.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/gO0onHP51fbSTITwJJ289kUriDL.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=8&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Original Audio",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=8&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=8&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-orig-1-9",
+              "number": "09",
+              "episode": 9,
+              "episodeNumber": 9,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 9",
+              "name": "Episode 9",
+              "duration": "61m",
+              "overview": "A disturbance at the camp shifts the military's understanding of the virus. A thunderstorm provides cover as the group agrees to keep on moving.",
+              "still": "https://image.tmdb.org/t/p/original/hTjFMfoL9Js4gQrMqRNxZPM8VRo.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/hTjFMfoL9Js4gQrMqRNxZPM8VRo.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=9&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Original Audio",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=9&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=9&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-orig-1-10",
+              "number": "10",
+              "episode": 10,
+              "episodeNumber": 10,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 10",
+              "name": "Episode 10",
+              "duration": "54m",
+              "overview": "The auditorium quickly becomes a trap for the two newly united teams of survivors. Byeong-chan's video logs reveal a drastic solution to the crisis.",
+              "still": "https://image.tmdb.org/t/p/original/fd5lPDdoXgKOKe39LrWoBTiMEJE.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/fd5lPDdoXgKOKe39LrWoBTiMEJE.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=10&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Original Audio",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=10&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=10&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-orig-1-11",
+              "number": "11",
+              "episode": 11,
+              "episodeNumber": 11,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 11",
+              "name": "Episode 11",
+              "duration": "56m",
+              "overview": "Though a surprise protector provides the group safe passage to their next stop, Yoon Gwi-nam is not far behind. The military makes a grave decision.",
+              "still": "https://image.tmdb.org/t/p/original/1v95gKxVA5vPevto1iQB7s8Xa7i.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/1v95gKxVA5vPevto1iQB7s8Xa7i.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=11&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Original Audio",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=11&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=11&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                }
+              ]
+            },
+            {
+              "id": "ep-aouad-orig-1-12",
+              "number": "12",
+              "episode": 12,
+              "episodeNumber": 12,
+              "season": 1,
+              "seasonNumber": 1,
+              "title": "Episode 12",
+              "name": "Episode 12",
+              "duration": "53m",
+              "overview": "The students make it to the quarantine camp, each of them weighed down by tragic loss. Months later, they hang on to hope for a survivor.",
+              "still": "https://image.tmdb.org/t/p/original/qXf3fb6dXPOIUWRtnMvCAxA9MUN.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/qXf3fb6dXPOIUWRtnMvCAxA9MUN.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=12&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Original Audio",
+              "servers": [
+                {
+                  "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=12&q=720",
+                  "quality": "720p",
+                  "audio": "Original Audio"
+                },
+                {
+                  "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=12&q=720",
+                  "quality": "720p",
+                  "audio": "Hindi dub"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "season": 2,
+          "seasonNumber": 2,
+          "name": "Season 2 (Netflix Preview)",
+          "title": "Season 2",
+          "episodes": [
+            {
+              "id": "ep-aouad-orig-2-1",
+              "number": "01",
+              "episode": 1,
+              "episodeNumber": 1,
+              "season": 2,
+              "seasonNumber": 2,
+              "title": "Season 2 — Official Netflix Announcement & Teaser Preview",
+              "name": "Season 2 — Official Netflix Announcement & Teaser Preview",
+              "duration": "3m",
+              "overview": "Netflix officially announced All of Us Are Dead Season 2! The zombie apocalypse continues as Yoon Chan-young (Cheong-san), Park Ji-hu (On-jo), and Cho Yi-hyun (Nam-ra) return. Production is underway with new episodes coming soon to FOBS TV.",
+              "still": "https://image.tmdb.org/t/p/original/eTCe1kQo3Rzm1sqcOycSEgKzF3z.jpg",
+              "stillPath": "https://image.tmdb.org/t/p/original/eTCe1kQo3Rzm1sqcOycSEgKzF3z.jpg",
+              "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=12&q=720",
+              "audioTracks": [
+                "Hindi dub",
+                "Original Audio"
+              ],
+              "selectedAudio": "Original Audio",
+              "servers": [
+                {
+                  "name": "Server 1 (Netflix Season 2 Official Announcement & Special Preview)",
+                  "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=12&q=720",
+                  "quality": "1080p",
+                  "audio": "Original Audio"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "episodes": [
+        {
+          "id": "ep-aouad-orig-1-1",
+          "number": "01",
+          "episode": 1,
+          "episodeNumber": 1,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 1",
+          "name": "Episode 1",
+          "duration": "66m",
+          "overview": "Inside Lee Byeong-chan's science lab, a student incurs a seemingly harmless bite. Shortly after, a fast-spreading outbreak soaks the school in blood.",
+          "still": "https://image.tmdb.org/t/p/original/eTCe1kQo3Rzm1sqcOycSEgKzF3z.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/eTCe1kQo3Rzm1sqcOycSEgKzF3z.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=1&q=720",
+          "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/1874e8699cc1e48799a11861220bee6b.mp4?sign=5f902a2f5027e24e754c95ffeacc2315&t=1793366587",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Original Audio",
+          "servers": [
+            {
+              "name": "Server 1 (Fast Direct CDN 1080p - Original Audio)",
+              "url": "https://bcdnxw.hakunaymatata.com/bt/1874e8699cc1e48799a11861220bee6b.mp4?sign=5f902a2f5027e24e754c95ffeacc2315&t=1793366587",
+              "quality": "1080p",
+              "audio": "Original Audio",
+              "isDirect": true
+            },
+            {
+              "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=1&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=1&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-orig-1-2",
+          "number": "02",
+          "episode": 2,
+          "episodeNumber": 2,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 2",
+          "name": "Episode 2",
+          "duration": "70m",
+          "overview": "The infected multiply in droves. Scrambling for their lives, Nam On-jo and Lee Cheong-san find safety with others inside a classroom — but not for long.",
+          "still": "https://image.tmdb.org/t/p/original/s1ejjHUlB4S6SxkOkGmPQ7CfRgu.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/s1ejjHUlB4S6SxkOkGmPQ7CfRgu.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=2&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Original Audio",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=2&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=2&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-orig-1-3",
+          "number": "03",
+          "episode": 3,
+          "episodeNumber": 3,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 3",
+          "name": "Episode 3",
+          "duration": "62m",
+          "overview": "When one of the group is scratched while fighting a zombie, Lee Na-yeon demands they kick him out. Outside, the virus swallows up the city.",
+          "still": "https://image.tmdb.org/t/p/original/cvNAL8Osgrca3uXUS4qGy8qrgNY.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/cvNAL8Osgrca3uXUS4qGy8qrgNY.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=3&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Original Audio",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=3&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=3&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-orig-1-4",
+          "number": "04",
+          "episode": 4,
+          "episodeNumber": 4,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 4",
+          "name": "Episode 4",
+          "duration": "72m",
+          "overview": "In need of a cellphone, two students take a risky journey to the teachers' office. Byeong-chan passes on critical information to Detective Song Jae-ik.",
+          "still": "https://image.tmdb.org/t/p/original/2MA0irna8738Zr6FO9v9YfygdNV.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/2MA0irna8738Zr6FO9v9YfygdNV.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=4&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Original Audio",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=4&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=4&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-orig-1-5",
+          "number": "05",
+          "episode": 5,
+          "episodeNumber": 5,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 5",
+          "name": "Episode 5",
+          "duration": "56m",
+          "overview": "Martial law is imposed on the city. When Cheong-san is separated from the rest of the group, On-jo leads a mission to use a drone to locate him.",
+          "still": "https://image.tmdb.org/t/p/original/inEDM5TP6uk0CFnvRwedE8yVvrU.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/inEDM5TP6uk0CFnvRwedE8yVvrU.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=5&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Original Audio",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=5&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=5&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-orig-1-6",
+          "number": "06",
+          "episode": 6,
+          "episodeNumber": 6,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 6",
+          "name": "Episode 6",
+          "duration": "67m",
+          "overview": "The group clears a path to Cheong-san using sound to draw away zombies, but a new type of threat surfaces. Nam So-ju breaks out of the quarantine camp.",
+          "still": "https://image.tmdb.org/t/p/original/e6b835B0LWhflIrq2knNQL3VLCX.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/e6b835B0LWhflIrq2knNQL3VLCX.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=6&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Original Audio",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=6&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=6&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-orig-1-7",
+          "number": "07",
+          "episode": 7,
+          "episodeNumber": 7,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 7",
+          "name": "Episode 7",
+          "duration": "60m",
+          "overview": "To make it out of the music room and onto the roof, the students put into action their most perilous plan yet. Elsewhere, Jae-ik comes across a setback.",
+          "still": "https://image.tmdb.org/t/p/original/jm5s8jAhUPQBUJJPH8wOpEnlt0v.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/jm5s8jAhUPQBUJJPH8wOpEnlt0v.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=7&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Original Audio",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=7&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=7&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-orig-1-8",
+          "number": "08",
+          "episode": 8,
+          "episodeNumber": 8,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 8",
+          "name": "Episode 8",
+          "duration": "58m",
+          "overview": "Jae-ik and his crew run into a student from the school. Na-yeon works up the courage to face her peers. The group shares confessions around a fire.",
+          "still": "https://image.tmdb.org/t/p/original/gO0onHP51fbSTITwJJ289kUriDL.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/gO0onHP51fbSTITwJJ289kUriDL.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=8&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Original Audio",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=8&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=8&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-orig-1-9",
+          "number": "09",
+          "episode": 9,
+          "episodeNumber": 9,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 9",
+          "name": "Episode 9",
+          "duration": "61m",
+          "overview": "A disturbance at the camp shifts the military's understanding of the virus. A thunderstorm provides cover as the group agrees to keep on moving.",
+          "still": "https://image.tmdb.org/t/p/original/hTjFMfoL9Js4gQrMqRNxZPM8VRo.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/hTjFMfoL9Js4gQrMqRNxZPM8VRo.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=9&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Original Audio",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=9&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=9&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-orig-1-10",
+          "number": "10",
+          "episode": 10,
+          "episodeNumber": 10,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 10",
+          "name": "Episode 10",
+          "duration": "54m",
+          "overview": "The auditorium quickly becomes a trap for the two newly united teams of survivors. Byeong-chan's video logs reveal a drastic solution to the crisis.",
+          "still": "https://image.tmdb.org/t/p/original/fd5lPDdoXgKOKe39LrWoBTiMEJE.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/fd5lPDdoXgKOKe39LrWoBTiMEJE.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=10&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Original Audio",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=10&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=10&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-orig-1-11",
+          "number": "11",
+          "episode": 11,
+          "episodeNumber": 11,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 11",
+          "name": "Episode 11",
+          "duration": "56m",
+          "overview": "Though a surprise protector provides the group safe passage to their next stop, Yoon Gwi-nam is not far behind. The military makes a grave decision.",
+          "still": "https://image.tmdb.org/t/p/original/1v95gKxVA5vPevto1iQB7s8Xa7i.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/1v95gKxVA5vPevto1iQB7s8Xa7i.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=11&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Original Audio",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=11&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=11&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-orig-1-12",
+          "number": "12",
+          "episode": 12,
+          "episodeNumber": 12,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 12",
+          "name": "Episode 12",
+          "duration": "53m",
+          "overview": "The students make it to the quarantine camp, each of them weighed down by tragic loss. Months later, they hang on to hope for a survivor.",
+          "still": "https://image.tmdb.org/t/p/original/qXf3fb6dXPOIUWRtnMvCAxA9MUN.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/qXf3fb6dXPOIUWRtnMvCAxA9MUN.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=12&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Original Audio",
+          "servers": [
+            {
+              "name": "Server 1 (Auto-Renewing Original Korean Audio)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=12&q=720",
+              "quality": "720p",
+              "audio": "Original Audio"
+            },
+            {
+              "name": "Server 2 (Auto-Renewing Hindi Dubbed)",
+              "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=12&q=720",
+              "quality": "720p",
+              "audio": "Hindi dub"
+            }
+          ]
+        },
+        {
+          "id": "ep-aouad-orig-2-1",
+          "number": "01",
+          "episode": 1,
+          "episodeNumber": 1,
+          "season": 2,
+          "seasonNumber": 2,
+          "title": "Season 2 — Official Netflix Announcement & Teaser Preview",
+          "name": "Season 2 — Official Netflix Announcement & Teaser Preview",
+          "duration": "3m",
+          "overview": "Netflix officially announced All of Us Are Dead Season 2! The zombie apocalypse continues as Yoon Chan-young (Cheong-san), Park Ji-hu (On-jo), and Cho Yi-hyun (Nam-ra) return. Production is underway with new episodes coming soon to FOBS TV.",
+          "still": "https://image.tmdb.org/t/p/original/eTCe1kQo3Rzm1sqcOycSEgKzF3z.jpg",
+          "stillPath": "https://image.tmdb.org/t/p/original/eTCe1kQo3Rzm1sqcOycSEgKzF3z.jpg",
+          "streamUrl": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=12&q=720",
+          "audioTracks": [
+            "Hindi dub",
+            "Original Audio"
+          ],
+          "selectedAudio": "Original Audio",
+          "servers": [
+            {
+              "name": "Server 1 (Netflix Season 2 Official Announcement & Special Preview)",
+              "url": "/api/moviebox/stream?id=8126793059993537672&path=all-of-us-are-dead-Cn6l8bvNkG9&se=1&ep=12&q=720",
+              "quality": "1080p",
+              "audio": "Original Audio"
+            }
+          ]
+        }
+      ],
+      "source": "MovieBox",
+      "addedAt": "2026-10-30T14:05:25.273Z",
+      "createdAt": "2026-10-30T14:05:25.273Z"
+    },
+    {
       "id": "series-mithai-bengali-875",
       "subjectId": "2033195013856708224",
       "detailPath": "mithai-bengali-OlawFoo3cq2",
@@ -313130,803 +315016,6 @@
         }
       ],
       "addedAt": "2026-10-30T03:31:43.372Z"
-    },
-    {
-      "id": "mb-s-8802963787692345120",
-      "subjectId": "8802963787692345120",
-      "title": "All of Us Are Dead [Hindi]",
-      "description": "A high school becomes ground zero for a zombie virus outbreak. Trapped students must fight their way out or turn into one of the rabid infected.",
-      "poster": "https://pbcdnw.aoneroom.com/image/2026/01/26/be0ec1c9e43f705020d63c3b5a940294.jpg",
-      "banner": "https://pbcdnw.aoneroom.com/image/2026/01/26/be0ec1c9e43f705020d63c3b5a940294.jpg",
-      "badgeLeft": "SERIES",
-      "badgeRight": "12 Episodes",
-      "industry": "Korean",
-      "category": "K-Drama & Asian",
-      "genre": "Action / Horror / Sci-Fi",
-      "year": "2022",
-      "rating": "8.6",
-      "type": "series",
-      "detailPath": "all-of-us-are-dead-hindi-Y4Pcy1oFhua",
-      "seasons": [
-        {
-          "season": 1,
-          "seasonNumber": 1,
-          "name": "Season 1",
-          "episodes": [
-            {
-              "title": "Episode 1",
-              "episode": 1,
-              "episodeNumber": 1,
-              "season": 1,
-              "seasonNumber": 1,
-              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=01&q=480",
-              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/57f994229d02d4f04018d7324cc4473f.mp4?sign=405af706bcfa521aacd32e29a8f1c99e&t=1793085056",
-              "resolution": 1080,
-              "subtitles": [],
-              "servers": [
-                {
-                  "name": "Server 2 (360p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=01&q=480",
-                  "quality": "360p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 1 (Direct CDN 1080p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=01&q=480",
-                  "quality": "1080p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 2 (Auto-Renewing Stream)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=1",
-                  "quality": "1080p",
-                  "audio": "Hindi dub"
-                }
-              ],
-              "number": "01",
-              "id": "mb-s-8802963787692345120-s1-e1"
-            },
-            {
-              "title": "Episode 2",
-              "episode": 2,
-              "episodeNumber": 2,
-              "season": 1,
-              "seasonNumber": 1,
-              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=02&q=480",
-              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/79e3eed0685248ee94f094ff62909555.mp4?sign=5bd506d6c70178dcf9bceab9354f7226&t=1793083568",
-              "resolution": 1080,
-              "subtitles": [],
-              "servers": [
-                {
-                  "name": "Server 2 (360p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=02&q=480",
-                  "quality": "360p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 1 (Direct CDN 1080p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=02&q=480",
-                  "quality": "1080p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 2 (Auto-Renewing Stream)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=2",
-                  "quality": "1080p",
-                  "audio": "Hindi dub"
-                }
-              ],
-              "number": "02",
-              "id": "mb-s-8802963787692345120-s1-e2"
-            },
-            {
-              "title": "Episode 3",
-              "episode": 3,
-              "episodeNumber": 3,
-              "season": 1,
-              "seasonNumber": 1,
-              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=03&q=480",
-              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/e184f66d0775d4165962ae2d636e4816.mp4?sign=7ff503d91ad775b8e24bba17139d655e&t=1793084883",
-              "resolution": 1080,
-              "subtitles": [],
-              "servers": [
-                {
-                  "name": "Server 2 (360p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=03&q=480",
-                  "quality": "360p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 1 (Direct CDN 1080p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=03&q=480",
-                  "quality": "1080p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 2 (Auto-Renewing Stream)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=3",
-                  "quality": "1080p",
-                  "audio": "Hindi dub"
-                }
-              ],
-              "number": "03",
-              "id": "mb-s-8802963787692345120-s1-e3"
-            },
-            {
-              "title": "Episode 4",
-              "episode": 4,
-              "episodeNumber": 4,
-              "season": 1,
-              "seasonNumber": 1,
-              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=04&q=480",
-              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/f1a5eac01fca2c75eca33637c682c48f.mp4?sign=3046dca1b7eb3057801b8525a440c19e&t=1793085150",
-              "resolution": 1080,
-              "subtitles": [],
-              "servers": [
-                {
-                  "name": "Server 2 (360p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=04&q=480",
-                  "quality": "360p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 1 (Direct CDN 1080p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=04&q=480",
-                  "quality": "1080p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 2 (Auto-Renewing Stream)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=4",
-                  "quality": "1080p",
-                  "audio": "Hindi dub"
-                }
-              ],
-              "number": "04",
-              "id": "mb-s-8802963787692345120-s1-e4"
-            },
-            {
-              "title": "Episode 5",
-              "episode": 5,
-              "episodeNumber": 5,
-              "season": 1,
-              "seasonNumber": 1,
-              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=05&q=480",
-              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/59df936aa054ca824bd10148e8ec20f5.mp4?sign=3c4ed2aa1b665b879c376bdacf41fd97&t=1793081755",
-              "resolution": 1080,
-              "subtitles": [],
-              "servers": [
-                {
-                  "name": "Server 2 (360p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=05&q=480",
-                  "quality": "360p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 1 (Direct CDN 1080p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=05&q=480",
-                  "quality": "1080p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 2 (Auto-Renewing Stream)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=5",
-                  "quality": "1080p",
-                  "audio": "Hindi dub"
-                }
-              ],
-              "number": "05",
-              "id": "mb-s-8802963787692345120-s1-e5"
-            },
-            {
-              "title": "Episode 6",
-              "episode": 6,
-              "episodeNumber": 6,
-              "season": 1,
-              "seasonNumber": 1,
-              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=06&q=480",
-              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/e0cb7acc5862bab1856cc9d117ec0534.mp4?sign=78181b80db969793c7fbe38f4a1ebef2&t=1793085144",
-              "resolution": 1080,
-              "subtitles": [],
-              "servers": [
-                {
-                  "name": "Server 2 (360p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=06&q=480",
-                  "quality": "360p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 1 (Direct CDN 1080p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=06&q=480",
-                  "quality": "1080p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 2 (Auto-Renewing Stream)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=6",
-                  "quality": "1080p",
-                  "audio": "Hindi dub"
-                }
-              ],
-              "number": "06",
-              "id": "mb-s-8802963787692345120-s1-e6"
-            },
-            {
-              "title": "Episode 7",
-              "episode": 7,
-              "episodeNumber": 7,
-              "season": 1,
-              "seasonNumber": 1,
-              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=07&q=480",
-              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/b4512b020980cd2c1050560b90ae9b5c.mp4?sign=12e8d4e272fef41e9791ef7774f42b45&t=1793083457",
-              "resolution": 1080,
-              "subtitles": [],
-              "servers": [
-                {
-                  "name": "Server 2 (360p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=07&q=480",
-                  "quality": "360p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 1 (Direct CDN 1080p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=07&q=480",
-                  "quality": "1080p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 2 (Auto-Renewing Stream)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=7",
-                  "quality": "1080p",
-                  "audio": "Hindi dub"
-                }
-              ],
-              "number": "07",
-              "id": "mb-s-8802963787692345120-s1-e7"
-            },
-            {
-              "title": "Episode 8",
-              "episode": 8,
-              "episodeNumber": 8,
-              "season": 1,
-              "seasonNumber": 1,
-              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=08&q=480",
-              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/5696c506bcd70a351e9613bf0f016505.mp4?sign=7a40bbe4b0c5e2832c7079a3412ea1be&t=1793082343",
-              "resolution": 1080,
-              "subtitles": [],
-              "servers": [
-                {
-                  "name": "Server 2 (360p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=08&q=480",
-                  "quality": "360p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 1 (Direct CDN 1080p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=08&q=480",
-                  "quality": "1080p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 2 (Auto-Renewing Stream)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=8",
-                  "quality": "1080p",
-                  "audio": "Hindi dub"
-                }
-              ],
-              "number": "08",
-              "id": "mb-s-8802963787692345120-s1-e8"
-            },
-            {
-              "title": "Episode 9",
-              "episode": 9,
-              "episodeNumber": 9,
-              "season": 1,
-              "seasonNumber": 1,
-              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=09&q=480",
-              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/47e2538e8558f5fd34cd488d18c170af.mp4?sign=9fe059b1b3603af236d833a14e47e874&t=1793081820",
-              "resolution": 1080,
-              "subtitles": [],
-              "servers": [
-                {
-                  "name": "Server 2 (360p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=09&q=480",
-                  "quality": "360p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 1 (Direct CDN 1080p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=09&q=480",
-                  "quality": "1080p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 2 (Auto-Renewing Stream)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=9",
-                  "quality": "1080p",
-                  "audio": "Hindi dub"
-                }
-              ],
-              "number": "09",
-              "id": "mb-s-8802963787692345120-s1-e9"
-            },
-            {
-              "title": "Episode 10",
-              "episode": 10,
-              "episodeNumber": 10,
-              "season": 1,
-              "seasonNumber": 1,
-              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=10&q=480",
-              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/a99e0c02a359a564172c6750d98b7b7f.mp4?sign=65f9a27ac66c7a4588e6df99c6fcea65&t=1793085223",
-              "resolution": 1080,
-              "subtitles": [],
-              "servers": [
-                {
-                  "name": "Server 2 (360p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=10&q=480",
-                  "quality": "360p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 1 (Direct CDN 1080p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=10&q=480",
-                  "quality": "1080p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 2 (Auto-Renewing Stream)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=10",
-                  "quality": "1080p",
-                  "audio": "Hindi dub"
-                }
-              ],
-              "number": "10",
-              "id": "mb-s-8802963787692345120-s1-e10"
-            },
-            {
-              "title": "Episode 11",
-              "episode": 11,
-              "episodeNumber": 11,
-              "season": 1,
-              "seasonNumber": 1,
-              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=11&q=480",
-              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/e423f63f87e8c149a6fadaf9ed91748d.mp4?sign=d43569b7cc241bdecb1137008f99b2a3&t=1793081288",
-              "resolution": 1080,
-              "subtitles": [],
-              "servers": [
-                {
-                  "name": "Server 2 (360p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=11&q=480",
-                  "quality": "360p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 1 (Direct CDN 1080p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=11&q=480",
-                  "quality": "1080p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 2 (Auto-Renewing Stream)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=11",
-                  "quality": "1080p",
-                  "audio": "Hindi dub"
-                }
-              ],
-              "number": "11",
-              "id": "mb-s-8802963787692345120-s1-e11"
-            },
-            {
-              "title": "Episode 12",
-              "episode": 12,
-              "episodeNumber": 12,
-              "season": 1,
-              "seasonNumber": 1,
-              "streamUrl": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=12&q=480",
-              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/a7e2c8f0d1a7350233e6ec4559cd0d62.mp4?sign=73c57d3cde377fce6fde9b14c82b8580&t=1793083966",
-              "resolution": 1080,
-              "subtitles": [],
-              "servers": [
-                {
-                  "name": "Server 2 (360p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=12&q=480",
-                  "quality": "360p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 1 (Direct CDN 1080p)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=12&q=480",
-                  "quality": "1080p",
-                  "audio": "Hindi dub",
-                  "isDirect": true
-                },
-                {
-                  "name": "Server 2 (Auto-Renewing Stream)",
-                  "url": "/api/moviebox/stream?id=8802963787692345120&path=all-of-us-are-dead-hindi-Y4Pcy1oFhua&se=1&ep=12",
-                  "quality": "1080p",
-                  "audio": "Hindi dub"
-                }
-              ],
-              "number": "12",
-              "id": "mb-s-8802963787692345120-s1-e12"
-            }
-          ]
-        }
-      ],
-      "episodes": [
-        {
-          "title": "Episode 1",
-          "episode": 1,
-          "episodeNumber": 1,
-          "season": 1,
-          "seasonNumber": 1,
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/815b3357d656a6beae06655667786205.mp4?sign=a98104058821d527cec0bcaad816eebd&t=1793085148",
-          "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/57f994229d02d4f04018d7324cc4473f.mp4?sign=405af706bcfa521aacd32e29a8f1c99e&t=1793085056",
-          "resolution": 1080,
-          "subtitles": [],
-          "servers": [
-            {
-              "name": "Server 2 (360p)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/57f994229d02d4f04018d7324cc4473f.mp4?sign=405af706bcfa521aacd32e29a8f1c99e&t=1793085056",
-              "quality": "360p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            },
-            {
-              "name": "Server 1 (Direct CDN 1080p)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/815b3357d656a6beae06655667786205.mp4?sign=a98104058821d527cec0bcaad816eebd&t=1793085148",
-              "quality": "1080p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            }
-          ],
-          "number": "01",
-          "id": "mb-s-8802963787692345120-s1-e1"
-        },
-        {
-          "title": "Episode 2",
-          "episode": 2,
-          "episodeNumber": 2,
-          "season": 1,
-          "seasonNumber": 1,
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/7f280fb83a496c8e7fa26216eabc1adc.mp4?sign=5a2f0fdde6f9a6cd7e3747aa7c3ac15d&t=1793083568",
-          "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/79e3eed0685248ee94f094ff62909555.mp4?sign=5bd506d6c70178dcf9bceab9354f7226&t=1793083568",
-          "resolution": 1080,
-          "subtitles": [],
-          "servers": [
-            {
-              "name": "Server 2 (360p)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/79e3eed0685248ee94f094ff62909555.mp4?sign=5bd506d6c70178dcf9bceab9354f7226&t=1793083568",
-              "quality": "360p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            },
-            {
-              "name": "Server 1 (Direct CDN 1080p)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/7f280fb83a496c8e7fa26216eabc1adc.mp4?sign=5a2f0fdde6f9a6cd7e3747aa7c3ac15d&t=1793083568",
-              "quality": "1080p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            }
-          ],
-          "number": "02",
-          "id": "mb-s-8802963787692345120-s1-e2"
-        },
-        {
-          "title": "Episode 3",
-          "episode": 3,
-          "episodeNumber": 3,
-          "season": 1,
-          "seasonNumber": 1,
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/2361cfaacb22c9856d8547114718f863.mp4?sign=c27e3446a681f311571817f099999976&t=1793084268",
-          "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/e184f66d0775d4165962ae2d636e4816.mp4?sign=7ff503d91ad775b8e24bba17139d655e&t=1793084883",
-          "resolution": 1080,
-          "subtitles": [],
-          "servers": [
-            {
-              "name": "Server 2 (360p)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/e184f66d0775d4165962ae2d636e4816.mp4?sign=7ff503d91ad775b8e24bba17139d655e&t=1793084883",
-              "quality": "360p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            },
-            {
-              "name": "Server 1 (Direct CDN 1080p)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/2361cfaacb22c9856d8547114718f863.mp4?sign=c27e3446a681f311571817f099999976&t=1793084268",
-              "quality": "1080p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            }
-          ],
-          "number": "03",
-          "id": "mb-s-8802963787692345120-s1-e3"
-        },
-        {
-          "title": "Episode 4",
-          "episode": 4,
-          "episodeNumber": 4,
-          "season": 1,
-          "seasonNumber": 1,
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/bceb190f82a73b2a3293f68f75d91754.mp4?sign=920937db9a43fde287a05719290da390&t=1793085223",
-          "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/f1a5eac01fca2c75eca33637c682c48f.mp4?sign=3046dca1b7eb3057801b8525a440c19e&t=1793085150",
-          "resolution": 1080,
-          "subtitles": [],
-          "servers": [
-            {
-              "name": "Server 2 (360p)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/f1a5eac01fca2c75eca33637c682c48f.mp4?sign=3046dca1b7eb3057801b8525a440c19e&t=1793085150",
-              "quality": "360p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            },
-            {
-              "name": "Server 1 (Direct CDN 1080p)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/bceb190f82a73b2a3293f68f75d91754.mp4?sign=920937db9a43fde287a05719290da390&t=1793085223",
-              "quality": "1080p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            }
-          ],
-          "number": "04",
-          "id": "mb-s-8802963787692345120-s1-e4"
-        },
-        {
-          "title": "Episode 5",
-          "episode": 5,
-          "episodeNumber": 5,
-          "season": 1,
-          "seasonNumber": 1,
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/ff7fc2d09ebda46f25b89c72fac48b5b.mp4?sign=26cb13a9d10e91e1fe01a9da43693c2f&t=1793085223",
-          "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/59df936aa054ca824bd10148e8ec20f5.mp4?sign=3c4ed2aa1b665b879c376bdacf41fd97&t=1793081755",
-          "resolution": 1080,
-          "subtitles": [],
-          "servers": [
-            {
-              "name": "Server 2 (360p)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/59df936aa054ca824bd10148e8ec20f5.mp4?sign=3c4ed2aa1b665b879c376bdacf41fd97&t=1793081755",
-              "quality": "360p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            },
-            {
-              "name": "Server 1 (Direct CDN 1080p)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/ff7fc2d09ebda46f25b89c72fac48b5b.mp4?sign=26cb13a9d10e91e1fe01a9da43693c2f&t=1793085223",
-              "quality": "1080p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            }
-          ],
-          "number": "05",
-          "id": "mb-s-8802963787692345120-s1-e5"
-        },
-        {
-          "title": "Episode 6",
-          "episode": 6,
-          "episodeNumber": 6,
-          "season": 1,
-          "seasonNumber": 1,
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/1002644f1ff6392ad79b7a901f300653.mp4?sign=20a470daa25e7a2a7e2ef9185704a29b&t=1793081916",
-          "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/e0cb7acc5862bab1856cc9d117ec0534.mp4?sign=78181b80db969793c7fbe38f4a1ebef2&t=1793085144",
-          "resolution": 1080,
-          "subtitles": [],
-          "servers": [
-            {
-              "name": "Server 2 (360p)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/e0cb7acc5862bab1856cc9d117ec0534.mp4?sign=78181b80db969793c7fbe38f4a1ebef2&t=1793085144",
-              "quality": "360p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            },
-            {
-              "name": "Server 1 (Direct CDN 1080p)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/1002644f1ff6392ad79b7a901f300653.mp4?sign=20a470daa25e7a2a7e2ef9185704a29b&t=1793081916",
-              "quality": "1080p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            }
-          ],
-          "number": "06",
-          "id": "mb-s-8802963787692345120-s1-e6"
-        },
-        {
-          "title": "Episode 7",
-          "episode": 7,
-          "episodeNumber": 7,
-          "season": 1,
-          "seasonNumber": 1,
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/a92fc009a54eb4e4bd697094d990112c.mp4?sign=c6b66e9b75fb0a6d12a6a831c97a028d&t=1793082988",
-          "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/b4512b020980cd2c1050560b90ae9b5c.mp4?sign=12e8d4e272fef41e9791ef7774f42b45&t=1793083457",
-          "resolution": 1080,
-          "subtitles": [],
-          "servers": [
-            {
-              "name": "Server 2 (360p)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/b4512b020980cd2c1050560b90ae9b5c.mp4?sign=12e8d4e272fef41e9791ef7774f42b45&t=1793083457",
-              "quality": "360p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            },
-            {
-              "name": "Server 1 (Direct CDN 1080p)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/a92fc009a54eb4e4bd697094d990112c.mp4?sign=c6b66e9b75fb0a6d12a6a831c97a028d&t=1793082988",
-              "quality": "1080p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            }
-          ],
-          "number": "07",
-          "id": "mb-s-8802963787692345120-s1-e7"
-        },
-        {
-          "title": "Episode 8",
-          "episode": 8,
-          "episodeNumber": 8,
-          "season": 1,
-          "seasonNumber": 1,
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/6a7827126f7ee96758f17c2215c802a2.mp4?sign=5148f5be373b1c6d15c318193de58125&t=1793081518",
-          "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/5696c506bcd70a351e9613bf0f016505.mp4?sign=7a40bbe4b0c5e2832c7079a3412ea1be&t=1793082343",
-          "resolution": 1080,
-          "subtitles": [],
-          "servers": [
-            {
-              "name": "Server 2 (360p)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/5696c506bcd70a351e9613bf0f016505.mp4?sign=7a40bbe4b0c5e2832c7079a3412ea1be&t=1793082343",
-              "quality": "360p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            },
-            {
-              "name": "Server 1 (Direct CDN 1080p)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/6a7827126f7ee96758f17c2215c802a2.mp4?sign=5148f5be373b1c6d15c318193de58125&t=1793081518",
-              "quality": "1080p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            }
-          ],
-          "number": "08",
-          "id": "mb-s-8802963787692345120-s1-e8"
-        },
-        {
-          "title": "Episode 9",
-          "episode": 9,
-          "episodeNumber": 9,
-          "season": 1,
-          "seasonNumber": 1,
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/775262b61a8b9e784af76018c5e478ff.mp4?sign=87e90ef8ac92990b99e54174d8b7c31b&t=1793084501",
-          "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/47e2538e8558f5fd34cd488d18c170af.mp4?sign=9fe059b1b3603af236d833a14e47e874&t=1793081820",
-          "resolution": 1080,
-          "subtitles": [],
-          "servers": [
-            {
-              "name": "Server 2 (360p)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/47e2538e8558f5fd34cd488d18c170af.mp4?sign=9fe059b1b3603af236d833a14e47e874&t=1793081820",
-              "quality": "360p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            },
-            {
-              "name": "Server 1 (Direct CDN 1080p)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/775262b61a8b9e784af76018c5e478ff.mp4?sign=87e90ef8ac92990b99e54174d8b7c31b&t=1793084501",
-              "quality": "1080p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            }
-          ],
-          "number": "09",
-          "id": "mb-s-8802963787692345120-s1-e9"
-        },
-        {
-          "title": "Episode 10",
-          "episode": 10,
-          "episodeNumber": 10,
-          "season": 1,
-          "seasonNumber": 1,
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/4a4ba0207a0206b89f555519be64a037.mp4?sign=6336f530ce5a2a0c6a47b8551e3973c0&t=1793085223",
-          "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/a99e0c02a359a564172c6750d98b7b7f.mp4?sign=65f9a27ac66c7a4588e6df99c6fcea65&t=1793085223",
-          "resolution": 1080,
-          "subtitles": [],
-          "servers": [
-            {
-              "name": "Server 2 (360p)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/a99e0c02a359a564172c6750d98b7b7f.mp4?sign=65f9a27ac66c7a4588e6df99c6fcea65&t=1793085223",
-              "quality": "360p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            },
-            {
-              "name": "Server 1 (Direct CDN 1080p)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/4a4ba0207a0206b89f555519be64a037.mp4?sign=6336f530ce5a2a0c6a47b8551e3973c0&t=1793085223",
-              "quality": "1080p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            }
-          ],
-          "number": "10",
-          "id": "mb-s-8802963787692345120-s1-e10"
-        },
-        {
-          "title": "Episode 11",
-          "episode": 11,
-          "episodeNumber": 11,
-          "season": 1,
-          "seasonNumber": 1,
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/2cde7bbb5142fcbc14aa25fcc7fc92bb.mp4?sign=a4acbde0310e633963e54f52afe6c7dc&t=1793085076",
-          "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/e423f63f87e8c149a6fadaf9ed91748d.mp4?sign=d43569b7cc241bdecb1137008f99b2a3&t=1793081288",
-          "resolution": 1080,
-          "subtitles": [],
-          "servers": [
-            {
-              "name": "Server 2 (360p)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/e423f63f87e8c149a6fadaf9ed91748d.mp4?sign=d43569b7cc241bdecb1137008f99b2a3&t=1793081288",
-              "quality": "360p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            },
-            {
-              "name": "Server 1 (Direct CDN 1080p)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/2cde7bbb5142fcbc14aa25fcc7fc92bb.mp4?sign=a4acbde0310e633963e54f52afe6c7dc&t=1793085076",
-              "quality": "1080p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            }
-          ],
-          "number": "11",
-          "id": "mb-s-8802963787692345120-s1-e11"
-        },
-        {
-          "title": "Episode 12",
-          "episode": 12,
-          "episodeNumber": 12,
-          "season": 1,
-          "seasonNumber": 1,
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/516bcbf16638711ff437c2ba613ad922.mp4?sign=9edb905f5bf571dfe3d894137e3bd31c&t=1793084739",
-          "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/a7e2c8f0d1a7350233e6ec4559cd0d62.mp4?sign=73c57d3cde377fce6fde9b14c82b8580&t=1793083966",
-          "resolution": 1080,
-          "subtitles": [],
-          "servers": [
-            {
-              "name": "Server 2 (360p)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/a7e2c8f0d1a7350233e6ec4559cd0d62.mp4?sign=73c57d3cde377fce6fde9b14c82b8580&t=1793083966",
-              "quality": "360p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            },
-            {
-              "name": "Server 1 (Direct CDN 1080p)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/516bcbf16638711ff437c2ba613ad922.mp4?sign=9edb905f5bf571dfe3d894137e3bd31c&t=1793084739",
-              "quality": "1080p",
-              "audio": "Hindi dub",
-              "isDirect": true
-            }
-          ],
-          "number": "12",
-          "id": "mb-s-8802963787692345120-s1-e12"
-        }
-      ],
-      "addedAt": "2026-10-30T03:30:43.372Z"
     },
     {
       "id": "mb-s-341274161781817952",
@@ -719825,6 +720914,47 @@
     }
   ],
   "upcoming": [
+    {
+      "id": "up-aouad-season-2",
+      "subjectId": "8126793059993537672",
+      "title": "All of Us Are Dead (Season 2) [Hindi & Original Audio]",
+      "year": "2026",
+      "genre": "Action, Horror, Sci-Fi & Fantasy",
+      "language": "Hindi / Korean",
+      "dubLanguage": "Hindi Dubbed & Original Audio",
+      "badgeLeft": "Hindi / Korean",
+      "badgeRight": "Netflix Coming Soon",
+      "releaseMonth": "Season 2",
+      "releaseDay": "2026",
+      "rating": "8.8",
+      "imdbRating": "8.8",
+      "poster": "https://image.tmdb.org/t/p/w500/pTEFqAjLd5YTsMD6NSUxV6Dq7A6.jpg",
+      "backdrop": "https://image.tmdb.org/t/p/original/8hp2CuGnw1iP5dLBVMAPUv23swx.jpg",
+      "description": "The viral zombie phenomenon returns! Director Lee JQ confirms that Season 2 will focus on the survival of the half-zombies (hambies) led by Choi Nam-ra, and the perilous journey of Cheong-san and On-jo in the quarantined ruins of Hyosan.",
+      "cast": [
+        {
+          "name": "Yoon Chan-young",
+          "character": "Lee Cheong-san",
+          "photo": "https://image.tmdb.org/t/p/w185/dkl0K6K3Q3b8O8JgY0gD9Xk7m5C.jpg"
+        },
+        {
+          "name": "Park Ji-hu",
+          "character": "Nam On-jo",
+          "photo": "https://image.tmdb.org/t/p/w185/xP6C6Gg4A3TzGqj4cZgL6tZ9xU9.jpg"
+        },
+        {
+          "name": "Cho Yi-hyun",
+          "character": "Choi Nam-ra",
+          "photo": "https://image.tmdb.org/t/p/w185/n6V1aN7qU5iB2rJ6m3H7eT5xZ5.jpg"
+        },
+        {
+          "name": "Lomon (Park Solomon)",
+          "character": "Lee Su-hyeok",
+          "photo": "https://image.tmdb.org/t/p/w185/rK4B6W2yT8zJ4kE5cZ4uY8fT6v7.jpg"
+        }
+      ],
+      "type": "upcoming"
+    },
     {
       "id": "mb-up-9174873168975128800",
       "subjectId": "9174873168975128800",
