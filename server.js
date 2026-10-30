@@ -3019,7 +3019,7 @@ app.all('/api/deploy', (req, res) => {
     console.log('✅ Deploy output:\n', stdout);
     res.json({ success: true, message: 'Deploy completed successfully', stdout, stderr });
     setTimeout(() => {
-      try { exec('pm2 restart all'); } catch(e) {}
+      try { exec('pm2 restart fobs-tv || pm2 restart all'); } catch(e) {}
       setTimeout(() => { process.exit(0); }, 300);
     }, 500);
   });

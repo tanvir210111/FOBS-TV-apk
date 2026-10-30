@@ -406,19 +406,17 @@ class MovieBoxService {
 
     for (const domain of candidateDomains) {
       try {
-        const playUrl = `${domain}/wefeed-h5api-bff/subject/play?subjectId=${cleanId}&se=${season}&ep=${episode}&detailPath=${encodeURIComponent(detailPath || '')}&streamSignType=1&supportCodecs%5Bhevc%5D=0&supportCodecs%5Bh264%5D=1`;
+        const playUrl = `${domain}/wefeed-h5api-bff/subject/play?subjectId=${cleanId}&se=${season}&ep=${episode}&detailPath=${encodeURIComponent(detailPath || '')}`;
         const referer = detailPath ? `${domain}/spa/videoPlayPage/movies/${detailPath}` : `${domain}/`;
         const res = await axios.get(playUrl, {
           headers: {
             'User-Agent': UA,
-            'Referer': referer,
-            'Origin': domain,
-            'Accept': 'application/json, text/plain, */*',
-            'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
-            'Cookie': 'uuid=d8c3539e-2e46-4000-af20-7046a856e30a'
+            'referer': referer,
+            'accept': 'application/json',
+            'x-client-info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
+            'cookie': 'uuid=d8c3539e-2e46-4000-af20-7046a856e30a'
           },
-          httpsAgent: cleanAgent,
-          timeout: 4500
+          timeout: 5000
         });
 
         const data = res.data?.data;
