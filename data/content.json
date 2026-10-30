@@ -841,48 +841,6 @@
   },
   "movies": [
     {
-      "id": "mb-m-3590571802021479400",
-      "subjectId": "3590571802021479400",
-      "title": "Hypnotic Dance Club [Hindi]",
-      "type": "movie",
-      "category": "Korean (Dubbed) Movies",
-      "industry": "Korean",
-      "country": "Korea",
-      "language": "Korean",
-      "audio": "Hindi",
-      "year": "2020",
-      "duration": "1h 55m",
-      "rating": "5.1",
-      "genre": "Korean Movie, Mystery, Drama, Hindi Dubbed",
-      "poster": "https://pbcdnw.aoneroom.com/image/2023/08/10/0255a93444b4e44723999ec53387cf77.jpg",
-      "backdrop": "https://pbcdnw.aoneroom.com/image/2023/08/10/0255a93444b4e44723999ec53387cf77.jpg",
-      "banner": "https://pbcdnw.aoneroom.com/image/2023/08/10/0255a93444b4e44723999ec53387cf77.jpg",
-      "description": "Ki Dal-hee is a reclusive, lonely living living in a small rooftop room and blocking contact with the outside. In Ki Dal-hee's eyes, an excited angel, Geum Seon-ja, who will save him, sneaks into her house and starts a dangerous stalking while looking at her every move. For Ki Dal-hee, Geum Soon-ja became the reason for existence and her energy for a happy life. Ki Dal-hee's daring behavior that permeates her house like a parasite eventually crosses the line, and Geum Soon-ja, who feels ashamed, kidnaps and confines her. Geum Soon-ja imprisoned Ki Dal-hee in prison uniform and condemned her. The femme fatal of Geum Seon-ja is increasingly mysterious, including her maid O Dal-rae as a watchman and having her write a reflection statement. Breaking the line between reality and imagination, the story falls into an uncontrollable labyrinth.",
-      "streamUrl": "/api/moviebox/stream?id=3590571802021479400&path=hypnotic-dance-club-hindi-Emp1l68Reh4&se=0&ep=0&q=480",
-      "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/301ed10ba6b090fab2e9e354d69baef8.mp4?sign=05d2cd9a05ce96ba5288903e70cbb260&t=1793335721",
-      "servers": [
-        {
-          "name": "Server 1 (Auto-Renewing Hindi Stream)",
-          "url": "/api/moviebox/stream?id=3590571802021479400&path=hypnotic-dance-club-hindi-Emp1l68Reh4&se=0&ep=0&q=480",
-          "quality": "360p",
-          "audio": "Hindi dub"
-        },
-        {
-          "name": "Server 2 (Hindi Dub - Fast 360p)",
-          "url": "https://bcdnxw.hakunaymatata.com/resource/301ed10ba6b090fab2e9e354d69baef8.mp4?sign=05d2cd9a05ce96ba5288903e70cbb260&t=1793335721",
-          "quality": "360p",
-          "audio": "Hindi dub",
-          "isDirect": true
-        }
-      ],
-      "subtitles": [],
-      "captions": [],
-      "detailPath": "hypnotic-dance-club-hindi-Emp1l68Reh4",
-      "source": "moviebox",
-      "createdAt": "2026-10-30T05:32:00.899Z",
-      "addedAt": "2026-10-30T05:32:00.899Z"
-    },
-    {
       "id": "mb-m-6099762833888084368",
       "subjectId": "6099762833888084368",
       "title": "The Closet [Hindi]",
