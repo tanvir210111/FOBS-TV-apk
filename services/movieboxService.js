@@ -207,6 +207,7 @@ class MovieBoxService {
           if (suggestions.length > 0) return suggestions;
         }
       } catch (e) {
+        this.lastError = { message: e.message, status: e.response?.status, data: e.response?.data };
         if (e.response?.status === 429 || e.response?.data?.code === 429) {
           // If domain returned 429 rate limit, stop immediately and fall back to content.json
           break;
@@ -429,6 +430,7 @@ class MovieBoxService {
           };
         }
       } catch (e) {
+        this.lastError = { message: e.message, status: e.response?.status, data: e.response?.data };
         if (e.response?.status === 429 || e.response?.data?.code === 429) {
           // If domain returned 429 rate limit, stop immediately and fall back to content.json
           break;
