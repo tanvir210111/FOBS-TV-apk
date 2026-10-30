@@ -3019,7 +3019,8 @@ app.all('/api/deploy', (req, res) => {
     console.log('✅ Deploy output:\n', stdout);
     res.json({ success: true, message: 'Deploy completed successfully', stdout, stderr });
     setTimeout(() => {
-      exec('pm2 reload all');
+      try { exec('pm2 restart all'); } catch(e) {}
+      setTimeout(() => { process.exit(0); }, 300);
     }, 500);
   });
 });
@@ -3027,47 +3028,6 @@ app.all('/api/deploy', (req, res) => {
 // Automated 1-Hour MovieBox Sync Engine is disabled as requested by user
 // Content will only be synced when explicitly requested
 // syncService.startHourlySyncTimer();
-
-
-
-
-
-
-app.get('/api/test-diag', async (req, res) => {
-  const cleanId = '827989737410544464';
-  const detailPath = 'i-hear-your-voice-K51RdEvcaZ';
-  const out = {};
-  
-  try {
-    const d = await movieboxService.discoverDomain();
-    out.discoveredDomain = d;
-  } catch(e) {
-    out.discoverDomainErr = e.message;
-  }
-
-  const domains = [movieboxService.activePlayDomain || 'https://mzfi.me', 'https://mzfi.me', 'https://h5-api.aoneroom.com'];
-  for (const dom of domains) {
-    try {
-      const pUrl = `${dom}/wefeed-h5api-bff/subject/play?subjectId=${cleanId}&se=1&ep=1&detailPath=${encodeURIComponent(detailPath)}`;
-      const r = await axios.get(pUrl, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-          'Referer': `${dom}/spa/videoPlayPage/movies/${detailPath}`,
-          'Origin': dom,
-          'Accept': 'application/json',
-          'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
-          'Cookie': 'uuid=d8c3539e-2e46-4000-af20-7046a856e30a'
-        },
-        timeout: 4000
-      });
-      out[dom] = { status: r.status, streams: r.data?.data?.streams?.length, code: r.data?.code };
-    } catch(e) {
-      out[dom] = { error: e.message, status: e.response?.status, data: e.response?.data };
-    }
-  }
-
-  res.json(out);
-});
 
 app.listen(PORT, () => {
   console.log(`🎬 FOBS TV Streaming App running at http://localhost:${PORT}`);

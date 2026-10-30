@@ -394,10 +394,11 @@ class MovieBoxService {
     const cleanId = String(subjectId).replace(/^mb-[s|m]-/, '');
     const activeDomain = await this.discoverDomain();
     const candidateDomains = [
+      'https://h5-api.aoneroom.com',
+      'https://h5.aoneroom.com',
       activeDomain,
       'https://mzfi.me',
       'https://123movienow.cc',
-      'https://h5-api.aoneroom.com',
       'https://moviebox.ph'
     ].filter((v, i, a) => a.indexOf(v) === i);
 
