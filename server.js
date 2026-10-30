@@ -3020,12 +3020,54 @@ app.all('/api/deploy', (req, res) => {
 
 
 app.get('/api/debug-diag', async (req, res) => {
-  try {
-    const playRes = await movieboxService._fetchPlayStream('3047413809519411560', 'seoul-vibe-hindi-SLYka3Db7D3', 0, 0);
-    res.json({ success: !!playRes, playRes, lastError: movieboxService.lastError });
-  } catch(e) {
-    res.json({ error: e.message, status: e.response?.status, data: e.response?.data });
+  const results = {};
+  const testId = '377309';
+  const detailPath = 'final-table-hindi-OjBf6HXSeV3';
+  const domains = [
+    'https://movie-box.co',
+    'https://h5-api.aoneroom.com',
+    'https://h5.aoneroom.com',
+    'https://movieboxapp.in'
+  ];
+
+  for (const d of domains) {
+    // Test 1: play endpoint
+    try {
+      const pUrl = `${d}/wefeed-h5api-bff/subject/play?subjectId=${testId}&se=0&ep=0&detailPath=${encodeURIComponent(detailPath)}&streamSignType=1`;
+      const r = await axios.get(pUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/126.0.0.0 Safari/537.36',
+          'Referer': `${d}/movies/${detailPath}`,
+          'Origin': d,
+          'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
+          'X-Source': '',
+          'X-Vip-Restrict': '0'
+        },
+        timeout: 4000
+      });
+      results[`${d}_play`] = { status: r.status, streams: r.data?.data?.streams?.length || 0, code: r.data?.code };
+    } catch (e) {
+      results[`${d}_play`] = { error: e.message, status: e.response?.status, code: e.response?.data?.code };
+    }
+
+    // Test 2: download endpoint
+    try {
+      const dlUrl = `${d}/wefeed-h5-bff/web/subject/download?subjectId=${testId}&se=0&ep=0`;
+      const r = await axios.get(dlUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/126.0.0.0 Safari/537.36',
+          'Referer': `${d}/movies/${detailPath}`,
+          'Origin': d
+        },
+        timeout: 4000
+      });
+      results[`${d}_download`] = { status: r.status, downloads: r.data?.data?.downloads?.length || 0, code: r.data?.code };
+    } catch (e) {
+      results[`${d}_download`] = { error: e.message, status: e.response?.status, code: e.response?.data?.code };
+    }
   }
+
+  res.json(results);
 });
 
 app.listen(PORT, () => {
