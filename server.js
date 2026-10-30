@@ -3011,16 +3011,15 @@ app.all('/api/deploy', (req, res) => {
 
   const { exec } = require('child_process');
   console.log('🚀 Triggering automated git pull & PM2 restart...');
-  exec('git fetch origin main && git reset --hard origin/main', { cwd: __dirname }, (error, stdout, stderr) => {
+  exec('git fetch origin main && git reset --hard origin/main && pm2 list && pm2 reload all --update-env', { cwd: __dirname }, (error, stdout, stderr) => {
     if (error) {
       console.error('❌ Deploy execution error:', error.message);
-      return res.status(500).json({ success: false, error: error.message, stderr, stdout });
+      return res.status(500).json({ success: false, error: error.message, stderr, stdout, cwd: __dirname });
     }
     console.log('✅ Deploy output:\n', stdout);
-    res.json({ success: true, message: 'Deploy completed successfully', stdout, stderr });
+    res.json({ success: true, message: 'Deploy completed successfully', stdout, stderr, cwd: __dirname });
     setTimeout(() => {
-      try { exec('pm2 restart fobs-tv || pm2 restart all'); } catch(e) {}
-      setTimeout(() => { process.exit(0); }, 300);
+      try { exec('pm2 restart all --update-env'); } catch(e) {}
     }, 500);
   });
 });
