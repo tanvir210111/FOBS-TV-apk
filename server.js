@@ -3020,53 +3020,46 @@ app.all('/api/deploy', (req, res) => {
 
 
 app.get('/api/debug-diag', async (req, res) => {
-  const results = {};
-  const testId = '377309';
-  const detailPath = 'final-table-hindi-OjBf6HXSeV3';
-  const domains = [
-    'https://movie-box.co',
-    'https://h5-api.aoneroom.com',
-    'https://h5.aoneroom.com',
-    'https://movieboxapp.in'
+  const domain = 'https://h5-api.aoneroom.com';
+  const tests = [
+    { name: 'Hidden Face (Movie)', id: '809301786023658480', path: 'hidden-face-cegwEMRBMX', se: 0, ep: 0 },
+    { name: 'Confidential Assignment 2 (Movie)', id: '2414759826828967984', path: 'confidential-assignment-2-international-hindi-qj3u6UMCnS2', se: 0, ep: 0 },
+    { name: 'Final Table (Series Ep 1)', id: '621608156268691750', path: 'final-table-a1G9iGEikF1', se: 1, ep: 1 },
+    { name: 'Final Table Hindi (Series Ep 1)', id: '3292762350108954536', path: 'final-table-hindi-OjBf6HXSeV3', se: 1, ep: 1 },
+    { name: 'I Hear Your Voice (Series Ep 1)', id: '827989737410544464', path: 'i-hear-your-voice-K51RdEvcaZ', se: 1, ep: 1 }
   ];
 
-  for (const d of domains) {
-    // Test 1: play endpoint
+  const results = {};
+  for (const t of tests) {
     try {
-      const pUrl = `${d}/wefeed-h5api-bff/subject/play?subjectId=${testId}&se=0&ep=0&detailPath=${encodeURIComponent(detailPath)}&streamSignType=1`;
+      const pUrl = `${domain}/wefeed-h5api-bff/subject/play?subjectId=${t.id}&se=${t.se}&ep=${t.ep}&detailPath=${encodeURIComponent(t.path)}&streamSignType=1`;
       const r = await axios.get(pUrl, {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/126.0.0.0 Safari/537.36',
-          'Referer': `${d}/movies/${detailPath}`,
-          'Origin': d,
+          'Referer': `${domain}/movies/${t.path}`,
+          'Origin': domain,
           'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
           'X-Source': '',
           'X-Vip-Restrict': '0'
         },
-        timeout: 4000
+        timeout: 5000
       });
-      results[`${d}_play`] = { status: r.status, streams: r.data?.data?.streams?.length || 0, code: r.data?.code };
+      const streams = r.data?.data?.streams || [];
+      results[t.name] = {
+        status: r.status,
+        code: r.data?.code,
+        streamsCount: streams.length,
+        firstStream: streams[0]?.url ? streams[0].url.slice(0, 70) + '...' : null,
+        captionsCount: (r.data?.data?.captions || []).length
+      };
     } catch (e) {
-      results[`${d}_play`] = { error: e.message, status: e.response?.status, code: e.response?.data?.code };
-    }
-
-    // Test 2: download endpoint
-    try {
-      const dlUrl = `${d}/wefeed-h5-bff/web/subject/download?subjectId=${testId}&se=0&ep=0`;
-      const r = await axios.get(dlUrl, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/126.0.0.0 Safari/537.36',
-          'Referer': `${d}/movies/${detailPath}`,
-          'Origin': d
-        },
-        timeout: 4000
-      });
-      results[`${d}_download`] = { status: r.status, downloads: r.data?.data?.downloads?.length || 0, code: r.data?.code };
-    } catch (e) {
-      results[`${d}_download`] = { error: e.message, status: e.response?.status, code: e.response?.data?.code };
+      results[t.name] = {
+        error: e.message,
+        status: e.response?.status,
+        code: e.response?.data?.code
+      };
     }
   }
-
   res.json(results);
 });
 
