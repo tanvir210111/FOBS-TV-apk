@@ -12,17 +12,16 @@ const ffmpegPath = require('ffmpeg-static');
 const compression = require('compression');
 
 const streamHttpsAgent = new https.Agent({
-  keepAlive: true,
-  maxSockets: 100,
-  maxFreeSockets: 40,
-  timeout: 30000,
-  keepAliveMsecs: 15000,
+  keepAlive: false, // Must be false for media streaming so aborted seek requests instantly close TCP sockets
+  maxSockets: 250,
+  timeout: 15000,
   rejectUnauthorized: false
 });
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 const movieboxService = require('./services/movieboxService');
+const movieboxStreamCache = new Map(); // key -> { media, timestamp }
 const liveTvService = require('./services/liveTvService');
 const syncService = require('./services/syncService');
 const dbService = require('./services/dbService');
@@ -1163,15 +1162,25 @@ app.get('/api/moviebox/stream', async (req, res) => {
     }
     const requestedQ = parseInt(req.query.q || req.query.quality || '0', 10);
     // Try requested se/ep first, then fallbacks
-    let media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);
-    if (!media || !media.streamUrl) {
-      if (seNum !== 0 || epNum !== 0) {
-        media = await movieboxService.resolveMedia(id, resolvedPath || '', 0, epNum);
+        const cacheKey = `${id}_${resolvedPath}_${seNum}_${epNum}_${requestedQ}`;
+    let media = null;
+    const cachedEntry = movieboxStreamCache.get(cacheKey);
+    if (cachedEntry && (Date.now() - cachedEntry.timestamp < 15 * 60 * 1000)) {
+      media = cachedEntry.media;
+    } else {
+      media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);
+      if (!media || !media.streamUrl) {
+        if (seNum !== 0 || epNum !== 0) {
+          media = await movieboxService.resolveMedia(id, resolvedPath || '', 0, epNum);
+        }
       }
-    }
-    if (!media || !media.streamUrl) {
-      if (seNum !== 0 || epNum !== 0) {
-        media = await movieboxService.resolveMedia(id, resolvedPath || '', 0, 0);
+      if (!media || !media.streamUrl) {
+        if (seNum !== 0 || epNum !== 0) {
+          media = await movieboxService.resolveMedia(id, resolvedPath || '', 0, 0);
+        }
+      }
+      if (media && media.streamUrl) {
+        movieboxStreamCache.set(cacheKey, { media, timestamp: Date.now() });
       }
     }
     if (!media || !media.streamUrl) {
@@ -1729,15 +1738,22 @@ async function streamMediaDirect(req, res, inputTargetUrl) {
 
       res.writeHead(206, headersToSend);
       if (typeof res.flushHeaders === 'function') res.flushHeaders();
-      response.data.on('error', () => {
-        try { res.end(); } catch (_) {}
-      });
-      res.on('error', () => {
-        try { response.data.destroy(); } catch (_) {}
-      });
-      req.on('close', () => {
-        try { response.data.destroy(); } catch (_) {}
-      });
+
+      const cleanupStream = () => {
+        try {
+          if (response) {
+            if (response.data && typeof response.data.destroy === 'function') response.data.destroy();
+            if (response.socket && typeof response.socket.destroy === 'function') response.socket.destroy();
+            if (response.request && typeof response.request.destroy === 'function') response.request.destroy();
+          }
+        } catch (_) {}
+      };
+
+      response.data.on('error', cleanupStream);
+      res.on('error', cleanupStream);
+      res.on('close', cleanupStream);
+      req.on('close', cleanupStream);
+
       response.data.pipe(res);
       return;
     }

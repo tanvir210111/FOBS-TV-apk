@@ -4153,6 +4153,8 @@ function seekToAbsoluteTime(targetSeconds) {
   // Apply seek to video element directly via currentTime without tearing down decoder or pausing network
   try {
     video.currentTime = safeTarget;
+    // Resume immediately without decoder stall
+    video.play().catch(() => {});
   } catch (err) {
     console.warn('Direct seek error:', err);
     finishSeek();
@@ -4202,6 +4204,9 @@ function setupLandscapeProgressScrubbing() {
     const commitSeek = (clientX) => {
       if (!isScrubbingProgress) return;
       isScrubbingProgress = false;
+      const now = Date.now();
+      if (now - lastSeekCommitTime < 200) return; // Prevent double-execution from pointerup + touchend
+      lastSeekCommitTime = now;
 
       let finalPos = lastScrubPos;
       if (clientX && clientX > 0) {
@@ -4686,15 +4691,17 @@ async function setupSubtitlesForMedia(media) {
       // Allow English, Bangla, and Hindi subtitles from MovieBox!
       if (!isEn && !isBn && !isHi) return;
 
-      const displayName = isBn ? 'Bangla (বাংলা)' : (isHi ? 'Hindi (हिन्दी)' : 'English');
-      const code = isBn ? 'bn' : (isHi ? 'hi' : 'en');
+      const isAi = !!c.isAi || (c.label && c.label.includes('AI'));
+      const displayName = isBn ? (isAi ? 'Bangla (বাংলা - AI)' : 'Bangla (বাংলা)') : (isHi ? 'Hindi (हिन्दी)' : 'English');
+      const code = isBn ? (isAi ? 'bn_ai' : 'bn') : (isHi ? 'hi' : 'en');
+      const trackId = c.id || `ep_cap_${code}_${idx}`;
 
-      if (!tracks.some(t => t.langCode === code)) {
+      if (!tracks.some(t => t.id === trackId)) {
         tracks.push({
-          id: `ep_cap_${code}_${idx}`,
+          id: trackId,
           language: displayName,
-          langCode: code,
-          source: 'MovieBox / CDN',
+          langCode: isBn ? 'bn' : code,
+          source: isAi ? 'AI Subtitles' : 'MovieBox / SubSource',
           url: c.src || c.url,
           format: (c.src || c.url || '').includes('.srt') ? 'srt' : 'vtt'
         });
@@ -4935,7 +4942,21 @@ async function selectSubtitleTrack(trackId) {
 
   if (loadedCues.length > 0) {
     subtitleState.cues = loadedCues;
-    showToast(`${track.language} Subtitles Loaded! (${loadedCues.length} cues) 💬`);
+    showToast(`💬 ${track.language} সাবটাইটেল সক্রিয় (${loadedCues.length} লাইন)`);
+
+    // If dialogue starts after 3 seconds, show an instant visual confirmation cue from 0.5s to 3.5s!
+    const firstCue = loadedCues[0];
+    if (firstCue && firstCue.startTime > 3) {
+      const isBn = track.language.includes('Bangla') || track.langCode === 'bn';
+      const introText = isBn ? '[ বাংলা সাবটাইটেল সক্রিয় ]' : '[ Subtitles Active ]';
+      if (!subtitleState.cues.some(c => c.startTime === 0.5)) {
+        subtitleState.cues.unshift({
+          startTime: 0.5,
+          endTime: Math.min(3.5, firstCue.startTime - 0.5),
+          text: introText
+        });
+      }
+    }
 
     // Immediate render for current playback position
     const vp = document.getElementById('mainVideoPlayer');
