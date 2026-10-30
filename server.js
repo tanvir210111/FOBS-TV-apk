@@ -3029,6 +3029,50 @@ app.all('/api/deploy', (req, res) => {
 // Content will only be synced when explicitly requested
 // syncService.startHourlySyncTimer();
 
+app.get('/api/debug-stream', async (req, res) => {
+  const id = req.query.id || '809301786023658480';
+  const p = req.query.path || 'hidden-face-cegwEMRBMX';
+  const out = { id, p, log: [] };
+  try {
+    const domain = await movieboxService.discoverDomain();
+    out.discoveredDomain = domain;
+  } catch(e) {
+    out.discoverDomainErr = e.message;
+  }
+  
+  const domains = ['https://h5-api.aoneroom.com', 'https://h5.aoneroom.com', 'https://mzfi.me', 'https://123movienow.cc'];
+  const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+  
+  for (const d of domains) {
+    const pUrl = `${d}/wefeed-h5api-bff/subject/play?subjectId=${id}&se=0&ep=0&detailPath=${encodeURIComponent(p)}`;
+    try {
+      const t0 = Date.now();
+      const r = await axios.get(pUrl, {
+        headers: {
+          'User-Agent': UA,
+          'referer': `${d}/spa/videoPlayPage/movies/${p}`,
+          'accept': 'application/json',
+          'x-client-info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
+          'cookie': 'uuid=d8c3539e-2e46-4000-af20-7046a856e30a'
+        },
+        timeout: 4000
+      });
+      out.log.push({ domain: d, time: Date.now() - t0, status: r.status, code: r.data?.code, streams: r.data?.data?.streams?.length, sample: r.data?.data?.streams?.[0]?.url?.substring(0, 50) });
+    } catch(err) {
+      out.log.push({ domain: d, err: err.message, status: err.response?.status, data: err.response?.data });
+    }
+  }
+
+  try {
+    const media = await movieboxService.resolveMedia(id, p, 0, 0);
+    out.resolveMediaResult = media ? { streamUrl: media.streamUrl?.substring(0, 60), qCount: media.qualities?.length } : null;
+  } catch(e) {
+    out.resolveMediaErr = e.message;
+  }
+
+  res.json(out);
+});
+
 app.listen(PORT, () => {
   console.log(`🎬 FOBS TV Streaming App running at http://localhost:${PORT}`);
 });
