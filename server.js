@@ -2714,7 +2714,8 @@ app.post('/api/moviebox/sync', async (req, res) => {
 // ============================================================
 
 // Static Admin Entry
-app.get('/admin', (req, res) => {
+app.use('/admin', express.static(path.join(__dirname, 'public', 'admin')));
+app.get(['/admin', '/admin/', '/admin/index.html'], (req, res) => {
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
   res.sendFile(path.join(__dirname, 'public', 'admin', 'index.html'));
 });
