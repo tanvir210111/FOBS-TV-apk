@@ -3023,6 +3023,26 @@ app.all('/api/deploy', (req, res) => {
 // Content will only be synced when explicitly requested
 // syncService.startHourlySyncTimer();
 
+
+app.get('/api/debug-moviebox', async (req, res) => {
+  const results = {};
+  const domains = ['https://movie-box.co', 'https://h5-api.aoneroom.com', 'https://movieboxapp.in'];
+  for (const d of domains) {
+    try {
+      const s = Date.now();
+      const r = await axios.get(d + '/wefeed-h5api-bff/subject/play?subjectId=621608156268691750&se=1&ep=1&detailPath=final-table-a1G9iGEikF1&streamSignType=1', {
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', 'Referer': d + '/' },
+        timeout: 5000,
+        httpsAgent: new https.Agent({ family: 4, rejectUnauthorized: false })
+      });
+      results[d] = { status: r.status, time: Date.now() - s, dataPreview: typeof r.data === 'object' ? Object.keys(r.data) : String(r.data).substring(0, 100) };
+    } catch (err) {
+      results[d] = { error: err.message, status: err.response?.status, data: typeof err.response?.data === 'string' ? err.response.data.substring(0, 150) : err.response?.data };
+    }
+  }
+  res.json(results);
+});
+
 app.listen(PORT, () => {
   console.log(`🎬 FOBS TV Streaming App running at http://localhost:${PORT}`);
 });
