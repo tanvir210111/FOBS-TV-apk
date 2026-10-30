@@ -358,31 +358,21 @@ class MovieBoxService {
     const cleanId = String(subjectId).replace(/^mb-[s|m]-/, '');
     for (const domain of PLAY_DOMAINS) {
       try {
-        const randDid = 'd_' + Math.random().toString(36).substring(2, 16);
-        const randUid = 'u_' + Math.random().toString(36).substring(2, 12);
-        const randIp = `${Math.floor(Math.random() * 150 + 50)}.${Math.floor(Math.random() * 200 + 10)}.${Math.floor(Math.random() * 200 + 10)}.${Math.floor(Math.random() * 250 + 1)}`;
         const playUrl = `${domain}/wefeed-h5api-bff/subject/play?subjectId=${cleanId}&se=${season}&ep=${episode}&detailPath=${encodeURIComponent(detailPath || '')}&streamSignType=1&supportCodecs%5Bhevc%5D=0&supportCodecs%5Bh264%5D=1`;
-        const referer = detailPath ? `${domain}/movies/${detailPath}?id=${cleanId}&type=/movie/detail&lang=en` : `${domain}/`;
+        const referer = detailPath ? `${domain}/movies/${detailPath}` : `${domain}/`;
         const res = await axios.get(playUrl, {
           headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
             'Referer': referer,
             'Origin': domain,
             'Accept': 'application/json, text/plain, */*',
-            'x-client-info': JSON.stringify({ timezone: 'Asia/Dhaka', deviceId: randDid }),
-            'x-device-id': randDid,
-            'x-user-id': randUid,
-            'x-forwarded-for': randIp,
-            'x-real-ip': randIp,
-            'cf-connecting-ip': randIp,
-            'client-ip': randIp,
-            'x-request-lang': 'en',
-            'x-vip-restrict': '0',
-            'x-no-high-risk-restrict': '0',
-            'x-source': 'moviebox'
+            'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
+            'X-Source': '',
+            'X-Vip-Restrict': '0',
+            'X-Request-Lang': 'en'
           },
           httpsAgent: cleanAgent,
-          timeout: 4000
+          timeout: 4500
         });
 
         const data = res.data?.data;
