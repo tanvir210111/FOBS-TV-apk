@@ -18,6 +18,7 @@ android/captures/
 *.jpg
 *.mkv
 data/stream_cache/
+data/subtitles/
 scratch/
 
 # Local persistent runtime data (immune to git stash/pull)
