@@ -259954,9 +259954,76 @@
               "directStreamUrl": "https://bcdnxw.hakunaymatata.com/mkvdrama/21b8ff8301e37937dbfe1cddf20e86d1.mp4?sign=309d2c971f18a72c119102a5b032a613&t=1793035311",
               "resolution": 1080,
               "seasonNumber": 1
+            },
+            {
+              "number": "09",
+              "episode": 9,
+              "season": 1,
+              "title": "Episode 9",
+              "duration": "60 min",
+              "streamUrl": "/api/moviebox/stream?id=3870036899930730728&path=dive-to-you-G56UVRdOSB4&se=1&ep=9",
+              "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "/api/moviebox/stream?id=3870036899930730728&path=dive-to-you-G56UVRdOSB4&se=1&ep=09&q=480",
+                  "quality": "1080p",
+                  "audio": "Original audio",
+                  "isDirect": true
+                },
+                {
+                  "name": "Server 2 (HD - Auto-Renewing 1080p)",
+                  "url": "/api/moviebox/stream?id=3870036899930730728&path=dive-to-you-G56UVRdOSB4&se=1&ep=9",
+                  "quality": "1080p",
+                  "audio": "Original Korean Audio",
+                  "isDirect": true
+                }
+              ],
+              "audioTracks": {
+                "Original audio": "/api/moviebox/stream?id=3870036899930730728&se=1&ep=9",
+                "Korean": "/api/moviebox/stream?id=3870036899930730728&se=1&ep=9"
+              },
+              "episodeNumber": 9,
+              "id": "mb-s-3870036899930730728-s1-e9",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/8aef815d8a9edb5f1ec5cec965e849c4.mp4?sign=af6f4aa98dd85cbc92fbeac9d60bf5d5&t=1793335081",
+              "resolution": 1080,
+              "seasonNumber": 1
+            },
+            {
+              "number": "10",
+              "episode": 10,
+              "season": 1,
+              "title": "Episode 10",
+              "duration": "60 min",
+              "streamUrl": "/api/moviebox/stream?id=3870036899930730728&path=dive-to-you-G56UVRdOSB4&se=1&ep=10",
+              "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "/api/moviebox/stream?id=3870036899930730728&path=dive-to-you-G56UVRdOSB4&se=1&ep=10&q=480",
+                  "quality": "1080p",
+                  "audio": "Original audio",
+                  "isDirect": true
+                },
+                {
+                  "name": "Server 2 (HD - Auto-Renewing 1080p)",
+                  "url": "/api/moviebox/stream?id=3870036899930730728&path=dive-to-you-G56UVRdOSB4&se=1&ep=10",
+                  "quality": "1080p",
+                  "audio": "Original Korean Audio",
+                  "isDirect": true
+                }
+              ],
+              "audioTracks": {
+                "Original audio": "/api/moviebox/stream?id=3870036899930730728&se=1&ep=10",
+                "Korean": "/api/moviebox/stream?id=3870036899930730728&se=1&ep=10"
+              },
+              "episodeNumber": 10,
+              "id": "mb-s-3870036899930730728-s1-e10",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/31e0cb04a12032309f6caead2188d2e4.mp4?sign=0f23e5e02beb179ef7742e35816ec3ec&t=1793334423",
+              "resolution": 1080,
+              "seasonNumber": 1
             }
           ],
-          "season": 1
+          "season": 1,
+          "episodeCount": 10
         }
       ],
       "episodes": [
@@ -261460,7 +261527,8 @@
       "type": "series",
       "addedAt": "2026-10-25T05:43:06.588Z",
       "episodesCount": 8,
-      "detailPath": "dive-to-you-G56UVRdOSB4"
+      "detailPath": "dive-to-you-G56UVRdOSB4",
+      "totalEpisodes": 10
     },
     {
       "id": "mb-s-13309505576601376",
@@ -305029,7 +305097,7 @@
         {
           "seasonNumber": 1,
           "name": "Season 1",
-          "episodeCount": 2,
+          "episodeCount": 4,
           "episodes": [
             {
               "number": "01",
@@ -305106,6 +305174,82 @@
               "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/c94ac777f24d6f60fde98a7e9355b60b.mp4?sign=13e625c0ad422c2d772c3a5e0e770daa&t=1793066531",
               "resolution": 1080,
               "seasonNumber": 1
+            },
+            {
+              "number": "03",
+              "season": 1,
+              "title": "Episode 3",
+              "streamUrl": "/api/moviebox/stream?id=1295982060779237904&path=love-in-disguise-hindi-ww61uWUBJx1&se=1&ep=3",
+              "audioTracks": {
+                "Hindi dub": "/api/moviebox/stream?id=1295982060779237904&path=love-in-disguise-hindi-ww61uWUBJx1&se=1&ep=3"
+              },
+              "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "/api/moviebox/stream?id=1295982060779237904&path=love-in-disguise-hindi-ww61uWUBJx1&se=1&ep=03&q=480",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
+                  "name": "Server 2 (480p)",
+                  "url": "/api/moviebox/stream?id=1295982060779237904&path=love-in-disguise-hindi-ww61uWUBJx1&se=1&ep=03&q=480",
+                  "quality": "480p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
+                  "name": "Server 3 (HD - Auto-Renewing 1080p)",
+                  "url": "/api/moviebox/stream?id=1295982060779237904&path=love-in-disguise-hindi-ww61uWUBJx1&se=1&ep=3",
+                  "quality": "1080p",
+                  "audio": "Hindi",
+                  "isDirect": true
+                }
+              ],
+              "episode": 3,
+              "episodeNumber": 3,
+              "id": "mb-s-1295982060779237904-s1-e3",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/e1a2f57e089b1bfaaef1d4b58d09b047.mp4?sign=9e9c5f9564ebfb10a66cf5dd36da5004&t=1793334877",
+              "resolution": 1080,
+              "seasonNumber": 1
+            },
+            {
+              "number": "04",
+              "season": 1,
+              "title": "Episode 4",
+              "streamUrl": "/api/moviebox/stream?id=1295982060779237904&path=love-in-disguise-hindi-ww61uWUBJx1&se=1&ep=4",
+              "audioTracks": {
+                "Hindi dub": "/api/moviebox/stream?id=1295982060779237904&path=love-in-disguise-hindi-ww61uWUBJx1&se=1&ep=4"
+              },
+              "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "/api/moviebox/stream?id=1295982060779237904&path=love-in-disguise-hindi-ww61uWUBJx1&se=1&ep=04&q=480",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
+                  "name": "Server 2 (480p)",
+                  "url": "/api/moviebox/stream?id=1295982060779237904&path=love-in-disguise-hindi-ww61uWUBJx1&se=1&ep=04&q=480",
+                  "quality": "480p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
+                  "name": "Server 3 (HD - Auto-Renewing 1080p)",
+                  "url": "/api/moviebox/stream?id=1295982060779237904&path=love-in-disguise-hindi-ww61uWUBJx1&se=1&ep=4",
+                  "quality": "1080p",
+                  "audio": "Hindi",
+                  "isDirect": true
+                }
+              ],
+              "episode": 4,
+              "episodeNumber": 4,
+              "id": "mb-s-1295982060779237904-s1-e4",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/8e258a398f1e93d2fb938581ff078698.mp4?sign=50419cbeae2826b759c846191b60c827&t=1793334613",
+              "resolution": 1080,
+              "seasonNumber": 1
             }
           ],
           "season": 1
@@ -305118,7 +305262,8 @@
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2026-10-19",
       "subjectId": "1295982060779237904",
-      "detailPath": "love-in-disguise-hindi-ww61uWUBJx1"
+      "detailPath": "love-in-disguise-hindi-ww61uWUBJx1",
+      "totalEpisodes": 4
     },
     {
       "id": "mb-s-1131798723912254248",
@@ -311504,7 +311649,7 @@
         {
           "seasonNumber": 1,
           "name": "Season 1",
-          "episodeCount": 10,
+          "episodeCount": 12,
           "episodes": [
             {
               "number": "01",
@@ -311885,6 +312030,82 @@
               "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/50b66f26abdabb7708ed2159bae14bf4.mp4?sign=3a1206d9ba564ad3537fc64d7c63af02&t=1793069299",
               "resolution": 1080,
               "seasonNumber": 1
+            },
+            {
+              "number": "11",
+              "season": 1,
+              "title": "Episode 11",
+              "streamUrl": "/api/moviebox/stream?id=6067650409777220448&path=a-love-other-than-yours-hindi-wOV0K50Ude7&se=1&ep=11",
+              "audioTracks": {
+                "Hindi dub": "/api/moviebox/stream?id=6067650409777220448&path=a-love-other-than-yours-hindi-wOV0K50Ude7&se=1&ep=11"
+              },
+              "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "/api/moviebox/stream?id=6067650409777220448&path=a-love-other-than-yours-hindi-wOV0K50Ude7&se=1&ep=11&q=480",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
+                  "name": "Server 2 (480p)",
+                  "url": "/api/moviebox/stream?id=6067650409777220448&path=a-love-other-than-yours-hindi-wOV0K50Ude7&se=1&ep=11&q=480",
+                  "quality": "480p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
+                  "name": "Server 3 (HD - Auto-Renewing 1080p)",
+                  "url": "/api/moviebox/stream?id=6067650409777220448&path=a-love-other-than-yours-hindi-wOV0K50Ude7&se=1&ep=11",
+                  "quality": "1080p",
+                  "audio": "Hindi",
+                  "isDirect": true
+                }
+              ],
+              "episode": 11,
+              "episodeNumber": 11,
+              "id": "mb-s-6067650409777220448-s1-e11",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/71b0224925ccb2f3ae40afba8f7b7417.mp4?sign=29e33943a79b129e74402c64deabf693&t=1793331991",
+              "resolution": 1080,
+              "seasonNumber": 1
+            },
+            {
+              "number": "12",
+              "season": 1,
+              "title": "Episode 12",
+              "streamUrl": "/api/moviebox/stream?id=6067650409777220448&path=a-love-other-than-yours-hindi-wOV0K50Ude7&se=1&ep=12",
+              "audioTracks": {
+                "Hindi dub": "/api/moviebox/stream?id=6067650409777220448&path=a-love-other-than-yours-hindi-wOV0K50Ude7&se=1&ep=12"
+              },
+              "servers": [
+                {
+                  "name": "Server 1 (Direct CDN 1080p)",
+                  "url": "/api/moviebox/stream?id=6067650409777220448&path=a-love-other-than-yours-hindi-wOV0K50Ude7&se=1&ep=12&q=480",
+                  "quality": "1080p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
+                  "name": "Server 2 (480p)",
+                  "url": "/api/moviebox/stream?id=6067650409777220448&path=a-love-other-than-yours-hindi-wOV0K50Ude7&se=1&ep=12&q=480",
+                  "quality": "480p",
+                  "audio": "Hindi dub",
+                  "isDirect": true
+                },
+                {
+                  "name": "Server 3 (HD - Auto-Renewing 1080p)",
+                  "url": "/api/moviebox/stream?id=6067650409777220448&path=a-love-other-than-yours-hindi-wOV0K50Ude7&se=1&ep=12",
+                  "quality": "1080p",
+                  "audio": "Hindi",
+                  "isDirect": true
+                }
+              ],
+              "episode": 12,
+              "episodeNumber": 12,
+              "id": "mb-s-6067650409777220448-s1-e12",
+              "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/fb5bf9949d529885c19918070fa467d5.mp4?sign=bbb129d23f214abfd913bd62e81a431a&t=1793332142",
+              "resolution": 1080,
+              "seasonNumber": 1
             }
           ],
           "season": 1
@@ -311897,7 +312118,8 @@
       "addedAt": "2026-10-22T16:39:47.000Z",
       "originalReleaseDate": "2026-09-12",
       "subjectId": "6067650409777220448",
-      "detailPath": "a-love-other-than-yours-hindi-wOV0K50Ude7"
+      "detailPath": "a-love-other-than-yours-hindi-wOV0K50Ude7",
+      "totalEpisodes": 12
     },
     {
       "id": "mb-s-7598175474724358640",
