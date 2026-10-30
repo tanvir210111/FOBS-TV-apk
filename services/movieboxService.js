@@ -53,6 +53,40 @@ class MovieBoxService {
     this.detailCache = new Map();
     this.inFlightRequests = new Map();
     this.detailPathMap = new Map();
+    this.activePlayDomain = 'https://mzfi.me';
+    this.domainExpireAt = 0;
+  }
+
+  /**
+   * Dynamically discovers the active MovieBox streaming mirror domain
+   */
+  async discoverDomain() {
+    if (this.activePlayDomain && this.domainExpireAt && this.domainExpireAt > Date.now()) {
+      return this.activePlayDomain;
+    }
+    const candidateBffs = [
+      'https://h5-api.aoneroom.com',
+      'https://h5.aoneroom.com',
+      'https://moviebox.ph'
+    ];
+    for (const bff of candidateBffs) {
+      try {
+        const resp = await axios.get(`${bff}/wefeed-h5api-bff/media-player/get-domain`, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+            'X-Client-Type': 'h5'
+          },
+          httpsAgent: cleanAgent,
+          timeout: 3000
+        });
+        if (resp.data?.data && typeof resp.data.data === 'string' && resp.data.data.startsWith('http')) {
+          this.activePlayDomain = resp.data.data.replace(/\/+$/, '');
+          this.domainExpireAt = Date.now() + 30 * 60 * 1000;
+          return this.activePlayDomain;
+        }
+      } catch (e) {}
+    }
+    return this.activePlayDomain || 'https://mzfi.me';
   }
 
   /**
@@ -358,20 +392,29 @@ class MovieBoxService {
    */
   async _fetchPlayStream(subjectId, detailPath, season, episode) {
     const cleanId = String(subjectId).replace(/^mb-[s|m]-/, '');
-    for (const domain of PLAY_DOMAINS) {
+    const activeDomain = await this.discoverDomain();
+    const candidateDomains = [
+      activeDomain,
+      'https://mzfi.me',
+      'https://123movienow.cc',
+      'https://h5-api.aoneroom.com',
+      'https://moviebox.ph'
+    ].filter((v, i, a) => a.indexOf(v) === i);
+
+    const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+
+    for (const domain of candidateDomains) {
       try {
         const playUrl = `${domain}/wefeed-h5api-bff/subject/play?subjectId=${cleanId}&se=${season}&ep=${episode}&detailPath=${encodeURIComponent(detailPath || '')}&streamSignType=1&supportCodecs%5Bhevc%5D=0&supportCodecs%5Bh264%5D=1`;
-        const referer = detailPath ? `${domain}/movies/${detailPath}` : `${domain}/`;
+        const referer = detailPath ? `${domain}/spa/videoPlayPage/movies/${detailPath}` : `${domain}/`;
         const res = await axios.get(playUrl, {
           headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+            'User-Agent': UA,
             'Referer': referer,
             'Origin': domain,
             'Accept': 'application/json, text/plain, */*',
             'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
-            'X-Source': '',
-            'X-Vip-Restrict': '0',
-            'X-Request-Lang': 'en'
+            'Cookie': 'uuid=d8c3539e-2e46-4000-af20-7046a856e30a'
           },
           httpsAgent: cleanAgent,
           timeout: 4500
@@ -405,20 +448,48 @@ class MovieBoxService {
               resolution: parseInt(st.resolutions || st.resolution, 10) || 1080,
               url: st.url,
               size: parseInt(st.size, 10) || 0,
+              id: st.id || null,
               codec: st.codecName || 'h264'
             };
           });
 
-          const playCaptions = (data.captions || []).map(function(c) {
-            return {
+          // Fetch official subtitles if stream ID is available
+          let playCaptions = [];
+          if (Array.isArray(data.captions) && data.captions.length > 0) {
+            playCaptions = data.captions.map(c => ({
               language: c.language || c.lan,
+              lan: c.lan,
               url: c.url
-            };
-          });
+            }));
+          } else {
+            const streamId = fastStart.id || sortedDesc[0]?.id;
+            if (streamId && detailPath) {
+              try {
+                const capUrl = `https://h5-api.aoneroom.com/wefeed-h5api-bff/subject/caption?subjectId=${cleanId}&id=${streamId}&detailPath=${encodeURIComponent(detailPath)}`;
+                const capRes = await axios.get(capUrl, {
+                  headers: {
+                    'User-Agent': UA,
+                    'Accept': 'application/json',
+                    'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
+                    'Cookie': 'uuid=d8c3539e-2e46-4000-af20-7046a856e30a'
+                  },
+                  httpsAgent: cleanAgent,
+                  timeout: 3000
+                });
+                const rawCaps = capRes.data?.data?.captions || capRes.data?.data?.subtitles || [];
+                playCaptions = rawCaps.map(c => ({
+                  language: c.lanName || c.lan || c.language,
+                  lan: c.lan,
+                  url: c.url
+                }));
+              } catch (capErr) {}
+            }
+          }
 
           return {
             subjectId: cleanId,
             detailPath: detailPath || '',
+            streamDomain: domain,
             streamUrl: fastStart.url,
             resolution: parseInt(fastStart.resolutions || fastStart.resolution, 10) || 480,
             codec: fastStart.codecName || 'h264',
@@ -426,16 +497,14 @@ class MovieBoxService {
             qualities: playQualities,
             captions: playCaptions,
             headers: {
-              'Referer': 'https://movie-box.co/'
+              'Referer': `${domain}/`,
+              'Origin': domain
             }
           };
         }
       } catch (e) {
         this.lastError = { message: e.message, status: e.response?.status, data: e.response?.data };
-        if (e.response?.status === 429 || e.response?.data?.code === 429) {
-          // If domain returned 429 rate limit, continue to fallback mirror
-          continue;
-        }
+        continue;
       }
     }
     return null;
@@ -605,7 +674,7 @@ class MovieBoxService {
         if (result) {
           this.cache.set(cacheKey, {
             data: result,
-            expireAt: Date.now() + 6 * 60 * 60 * 1000
+            expireAt: Date.now() + 45 * 60 * 1000
           });
           return result;
         }

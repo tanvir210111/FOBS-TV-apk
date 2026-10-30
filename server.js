@@ -1175,13 +1175,21 @@ app.get('/api/moviebox/stream', async (req, res) => {
       }
     }
     if (!media || !media.streamUrl) {
-      // Smart Fallback: Look up directStreamUrl or servers from content.json
+      // Retry once bypassing cache with fresh domain discovery
+      media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum, { forceRefresh: true });
+      if (media && media.streamUrl) {
+        movieboxStreamCache.set(cacheKey, { media, timestamp: Date.now() });
+      }
+    }
+    if (!media || !media.streamUrl) {
+      // Fallback: Look up permanent non-expired servers from content.json
       try {
         const content = getContentData();
         let foundMovie = (content.movies || []).find(m => String(m.subjectId) === String(id));
         if (foundMovie && (foundMovie.directStreamUrl || foundMovie.servers?.[0]?.url)) {
           const direct = foundMovie.directStreamUrl || foundMovie.servers[0].url;
-          if (direct && direct.startsWith('http')) {
+          // Do not use expired hakunaymatata CDN links
+          if (direct && direct.startsWith('http') && !direct.includes('hakunaymatata') && !direct.includes('bcdnxw')) {
             media = { streamUrl: direct, resolution: 1080 };
             movieboxStreamCache.set(cacheKey, { media, timestamp: Date.now() });
           }
@@ -1192,7 +1200,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
             const epObj = (season?.episodes || []).find(e => (e.episodeNumber || e.episode) === epNum) || season?.episodes?.[epNum - 1] || season?.episodes?.[0];
             if (epObj && (epObj.directStreamUrl || epObj.servers?.[0]?.url)) {
               const direct = epObj.directStreamUrl || epObj.servers[0].url;
-              if (direct && direct.startsWith('http')) {
+              if (direct && direct.startsWith('http') && !direct.includes('hakunaymatata') && !direct.includes('bcdnxw')) {
                 media = { streamUrl: direct, resolution: 1080 };
                 movieboxStreamCache.set(cacheKey, { media, timestamp: Date.now() });
               }
@@ -1641,8 +1649,9 @@ async function streamMediaDirect(req, res, inputTargetUrl) {
     resolvedUrl.includes('stormshade') || 
     (targetUrl && targetUrl.includes('moviebox'))
   ) {
-    requestHeaders['Referer'] = 'https://movie-box.co/';
-    requestHeaders['Origin'] = 'https://movie-box.co';
+    const activeDomain = movieboxService.activePlayDomain || 'https://mzfi.me';
+    requestHeaders['Referer'] = `${activeDomain}/`;
+    requestHeaders['Origin'] = activeDomain;
   }
 
   // Transparent Range Forwarding: Continuous full-speed streaming without artificial chunk cutoffs
