@@ -12,6 +12,7 @@
 
 const axios = require('axios');
 const https = require('https');
+const crypto = require('crypto');
 
 // Reusable HTTPS agent with Keep-Alive connection pool for instant latency
 const cleanAgent = new https.Agent({
@@ -55,6 +56,52 @@ class MovieBoxService {
     this.detailPathMap = new Map();
     this.activePlayDomain = 'https://mzfi.me';
     this.domainExpireAt = 0;
+    this.sessionToken = null;
+    this.sessionTokenExpire = 0;
+  }
+
+  /**
+   * Acquire official session bearer token using X-Client-Token exchange
+   */
+  async getMovieBoxToken() {
+    if (this.sessionToken && this.sessionTokenExpire > Date.now()) {
+      return this.sessionToken;
+    }
+
+    const tokenDomains = ['https://h5-api.aoneroom.com', 'https://movie-box.co'];
+    for (const domain of tokenDomains) {
+      try {
+        const e = Math.floor(Date.now() / 1000);
+        const r = String(e).split('').reverse().join('');
+        const n = crypto.createHash('md5').update(r).digest('hex');
+        const clientToken = `${e},${n}`;
+
+        const res = await axios.get(`${domain}/wefeed-h5api-bff/home?host=h5.aoneroom.com`, {
+          headers: {
+            'Accept': 'application/json',
+            'X-Client-Token': clientToken,
+            'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
+            'X-Request-Lang': 'en',
+            'User-Agent': HEADERS['User-Agent'],
+            'Origin': 'https://h5.aoneroom.com',
+            'Referer': 'https://h5.aoneroom.com/'
+          },
+          httpsAgent: cleanAgent,
+          timeout: 4500
+        });
+
+        const userHeader = res.headers['x-user'];
+        if (userHeader) {
+          const user = typeof userHeader === 'string' ? JSON.parse(userHeader) : userHeader;
+          if (user && user.token) {
+            this.sessionToken = user.token;
+            this.sessionTokenExpire = Date.now() + 24 * 60 * 60 * 1000;
+            return this.sessionToken;
+          }
+        }
+      } catch (err) {}
+    }
+    return null;
   }
 
   /**
@@ -150,50 +197,73 @@ class MovieBoxService {
   }
 
   /**
-   * Searches MovieBox catalog with multi-domain resilient fallback
+   * Searches MovieBox catalog with authenticated session token & multi-domain fallback
    */
   async search(query) {
     if (!query) return [];
     const cleanQuery = query.trim();
 
-    // 1. Direct search across search domains
+    // 1. Acquire authenticated MovieBox Bearer token
+    const sessionToken = await this.getMovieBoxToken();
+
     for (const domain of SEARCH_DOMAINS) {
       try {
+        const e = Math.floor(Date.now() / 1000);
+        const r = String(e).split('').reverse().join('');
+        const clientToken = `${e},${crypto.createHash('md5').update(r).digest('hex')}`;
+
+        const reqHeaders = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'User-Agent': HEADERS['User-Agent'],
+          'Origin': 'https://h5.aoneroom.com',
+          'Referer': 'https://h5.aoneroom.com/',
+          'X-Client-Token': clientToken,
+          'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
+          'X-Request-Lang': 'en'
+        };
+
+        if (sessionToken) {
+          reqHeaders['Authorization'] = `Bearer ${sessionToken}`;
+        }
+
         const res = await axios.post(`${domain}/wefeed-h5api-bff/subject/search`, {
           keyword: cleanQuery,
           page: 1,
-          perPage: 20,
+          perPage: 25,
           subjectType: 0
         }, {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'User-Agent': HEADERS['User-Agent'],
-            'Origin': domain,
-            'Referer': `${domain}/`
-          },
+          headers: reqHeaders,
           httpsAgent: cleanAgent,
-          timeout: 4500
+          timeout: 5500
         });
+
         const items = res.data?.data?.items || [];
         if (Array.isArray(items) && items.length > 0) {
-          return items.map(it => ({
-            id: String(it.subjectId || it.id),
-            subjectId: String(it.subjectId || it.id),
-            title: it.title,
-            type: it.subjectType === 2 ? 'series' : 'movie',
-            year: it.releaseDate ? it.releaseDate.substring(0, 4) : '2026',
-            rating: String(it.imdbRatingValue || '7.5'),
-            poster: it.cover?.url || it.image?.url || '',
-            detailPath: it.detailPath || ''
-          }));
+          const parsed = items.map(it => {
+            const sid = String(it.subjectId || it.id || '');
+            if (!sid || sid === '0' || sid === 'undefined') return null;
+            return {
+              id: sid,
+              subjectId: sid,
+              title: it.title,
+              type: it.subjectType === 2 ? 'series' : 'movie',
+              year: it.releaseDate ? it.releaseDate.substring(0, 4) : '2026',
+              rating: String(it.imdbRatingValue || '7.5'),
+              poster: it.cover?.url || it.image?.url || '',
+              backdrop: it.stills?.[0]?.url || it.cover?.url || '',
+              detailPath: it.detailPath || ''
+            };
+          }).filter(Boolean);
+
+          if (parsed.length > 0) return parsed;
         }
       } catch (err) {
         // Continue to fallback
       }
     }
 
-    // 2. Resilient fallback: search-suggest endpoint (always available without session token)
+    // 2. Resilient fallback: search-suggest endpoint
     for (const domain of SEARCH_DOMAINS) {
       try {
         const res = await axios.post(`${domain}/wefeed-h5api-bff/subject/search-suggest`, {
@@ -204,8 +274,8 @@ class MovieBoxService {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'User-Agent': HEADERS['User-Agent'],
-            'Origin': domain,
-            'Referer': `${domain}/`
+            'Origin': 'https://h5.aoneroom.com',
+            'Referer': 'https://h5.aoneroom.com/'
           },
           httpsAgent: cleanAgent,
           timeout: 4000
@@ -215,10 +285,11 @@ class MovieBoxService {
           const suggestions = [];
           for (const it of items) {
             const sub = it.subject;
-            if (sub && sub.subjectId) {
+            const sid = sub ? String(sub.subjectId || sub.id || '') : '';
+            if (sid && sid !== '0' && sid !== 'undefined') {
               suggestions.push({
-                id: String(sub.subjectId || sub.id),
-                subjectId: String(sub.subjectId || sub.id),
+                id: sid,
+                subjectId: sid,
                 title: sub.title || it.word,
                 type: sub.subjectType === 2 ? 'series' : 'movie',
                 year: sub.releaseDate ? sub.releaseDate.substring(0, 4) : '2026',
@@ -226,27 +297,12 @@ class MovieBoxService {
                 poster: sub.cover?.url || sub.image?.url || '',
                 detailPath: sub.detailPath || ''
               });
-            } else if (it.word) {
-              suggestions.push({
-                id: '',
-                subjectId: '',
-                title: it.word,
-                type: 'movie',
-                year: '2026',
-                rating: '7.5',
-                poster: '',
-                detailPath: ''
-              });
             }
           }
           if (suggestions.length > 0) return suggestions;
         }
       } catch (e) {
         this.lastError = { message: e.message, status: e.response?.status, data: e.response?.data };
-        if (e.response?.status === 429 || e.response?.data?.code === 429) {
-          // If domain returned 429 rate limit, continue to fallback mirror
-          continue;
-        }
       }
     }
 

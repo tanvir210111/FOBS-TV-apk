@@ -1261,7 +1261,7 @@
         <div class="autodetect-bar glass">
           <div class="autodetect-input-wrap">
             <i class="fa-solid fa-wand-magic-sparkles text-amber"></i>
-            <input type="text" id="m-autodetect-input" placeholder="Search MovieBox title or paste Subject ID to auto-detect all fields..." onkeypress="if(event.key==='Enter'){event.preventDefault();autoDetectMovieFromInput();}">
+            <input type="text" id="m-autodetect-input" placeholder="Type movie name or MovieBox ID to auto-detect TMDb poster &amp; streams..." onkeypress="if(event.key==='Enter'){event.preventDefault();autoDetectMovieFromInput();}">
           </div>
           <button type="button" class="btn-cyan glow-sm" onclick="autoDetectMovieFromInput()">
             <i class="fa-solid fa-bolt"></i>
@@ -1327,11 +1327,19 @@
         <div class="form-row">
           <div class="input-group">
             <label for="m-poster"><i class="fa-solid fa-file-image"></i> Poster URL *</label>
-            <input type="url" id="m-poster" required placeholder="https://image.tmdb.org/t/p/w500/...">
+            <input type="url" id="m-poster" required placeholder="https://image.tmdb.org/t/p/w500/..." oninput="updateMoviePosterPreview()">
           </div>
           <div class="input-group">
             <label for="m-backdrop"><i class="fa-solid fa-image"></i> Backdrop URL</label>
             <input type="url" id="m-backdrop" placeholder="https://image.tmdb.org/t/p/original/...">
+          </div>
+        </div>
+
+        <div class="poster-preview-box" id="m-preview-box" style="display: none;">
+          <img id="m-poster-preview" src="" alt="Poster Preview">
+          <div class="poster-preview-info">
+            <strong id="m-preview-title">Preview Title</strong>
+            <span id="m-preview-meta" class="text-muted">2026 • Rating</span>
           </div>
         </div>
 
@@ -1386,7 +1394,7 @@
         <div class="autodetect-bar glass">
           <div class="autodetect-input-wrap">
             <i class="fa-solid fa-wand-magic-sparkles text-cyan"></i>
-            <input type="text" id="s-autodetect-input" placeholder="Search MovieBox title or paste Subject ID to auto-detect seasons &amp; episodes..." onkeypress="if(event.key==='Enter'){event.preventDefault();autoDetectSeriesFromInput();}">
+            <input type="text" id="s-autodetect-input" placeholder="Type series name or MovieBox ID to auto-detect TMDb poster &amp; episodes..." onkeypress="if(event.key==='Enter'){event.preventDefault();autoDetectSeriesFromInput();}">
           </div>
           <button type="button" class="btn-cyan glow-sm" onclick="autoDetectSeriesFromInput()">
             <i class="fa-solid fa-bolt"></i>
@@ -1441,11 +1449,19 @@
         <div class="form-row">
           <div class="input-group">
             <label for="s-poster"><i class="fa-solid fa-file-image"></i> Poster URL *</label>
-            <input type="url" id="s-poster" required placeholder="https://image.tmdb.org/t/p/w500/...">
+            <input type="url" id="s-poster" required placeholder="https://image.tmdb.org/t/p/w500/..." oninput="updateSeriesPosterPreview()">
           </div>
           <div class="input-group">
             <label for="s-backdrop"><i class="fa-solid fa-image"></i> Backdrop URL</label>
             <input type="url" id="s-backdrop" placeholder="https://image.tmdb.org/t/p/original/...">
+          </div>
+        </div>
+
+        <div class="poster-preview-box" id="s-preview-box" style="display: none;">
+          <img id="s-poster-preview" src="" alt="Poster Preview">
+          <div class="poster-preview-info">
+            <strong id="s-preview-title">Preview Title</strong>
+            <span id="s-preview-meta" class="text-muted">2026 • Rating</span>
           </div>
         </div>
 

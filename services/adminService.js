@@ -557,14 +557,191 @@ class AdminService {
       ...(content.series || []).map(s => String(s.subjectId || s.id))
     ]);
 
-    const formatted = items.map(it => ({
-      ...it,
-      alreadyImported: existingIds.has(String(it.subjectId || it.id)) ||
-        existingIds.has(`mb-m-${it.subjectId || it.id}`) ||
-        existingIds.has(`mb-s-${it.subjectId || it.id}`)
+    // Enrich items with official TMDb HD poster & backdrop
+    const enriched = await Promise.all(items.slice(0, 25).map(async it => {
+      let poster = it.poster;
+      let backdrop = it.backdrop || it.cover;
+      let tmdbRating = it.rating;
+      let tmdbOverview = '';
+
+      try {
+        const cleanName = (it.title || '').replace(/\[.*?\]|\(.*?\)/g, '').trim();
+        const tmdbType = it.type === 'series' ? 'tv' : 'movie';
+        const tmdbRes = await axios.get(`https://api.themoviedb.org/3/search/${tmdbType}?api_key=6e766190399843a3e1d85b68eaa3de69&query=${encodeURIComponent(cleanName)}`, { timeout: 2500 });
+        const tmdbItem = tmdbRes.data?.results?.[0];
+        if (tmdbItem) {
+          if (tmdbItem.poster_path) {
+            poster = `https://image.tmdb.org/t/p/w500${tmdbItem.poster_path}`;
+          }
+          if (tmdbItem.backdrop_path) {
+            backdrop = `https://image.tmdb.org/t/p/original${tmdbItem.backdrop_path}`;
+          }
+          if (tmdbItem.vote_average) {
+            tmdbRating = tmdbItem.vote_average.toFixed(1);
+          }
+          if (tmdbItem.overview) {
+            tmdbOverview = tmdbItem.overview;
+          }
+        }
+      } catch (e) {}
+
+      return {
+        ...it,
+        poster: poster || it.poster,
+        backdrop: backdrop || it.backdrop || poster || it.poster,
+        cover: backdrop || it.backdrop || poster || it.poster,
+        rating: tmdbRating || it.rating || '8.5',
+        overview: tmdbOverview || it.description || '',
+        alreadyImported: existingIds.has(String(it.subjectId || it.id)) ||
+          existingIds.has(`mb-m-${it.subjectId || it.id}`) ||
+          existingIds.has(`mb-s-${it.subjectId || it.id}`)
+      };
     }));
 
-    return { success: true, items: formatted };
+    return { success: true, items: enriched };
+  }
+
+  /**
+   * Unified Auto-Detect Engine:
+   * Combines TMDb (Official Title, HD Poster, Backdrop, Year, Rating, Genres, Overview)
+   * with MovieBox (Subject ID, DetailPath, Stream URL, Seasons/Episodes)
+   */
+  async autoDetectMedia(query, type = 'movie') {
+    if (!query) throw new Error('Query or Subject ID is required');
+    const cleanQ = query.trim();
+    const isSubjectId = /^\d+$/.test(cleanQ);
+
+    let mbItem = null;
+    let mbDetail = null;
+    let searchTitle = cleanQ;
+
+    if (isSubjectId) {
+      mbDetail = await movieboxService.getDetail(cleanQ);
+      if (mbDetail && mbDetail.title) {
+        searchTitle = mbDetail.title;
+        mbItem = {
+          subjectId: cleanQ,
+          title: mbDetail.title,
+          detailPath: mbDetail.detailPath || '',
+          type: mbDetail.type || type
+        };
+      }
+    } else {
+      // Search MovieBox for best stream match
+      try {
+        const mbResults = await movieboxService.search(cleanQ);
+        if (mbResults && mbResults.length > 0) {
+          const filtered = mbResults.filter(it => type === 'series' ? (it.type === 'series') : (it.type === 'movie'));
+          mbItem = filtered[0] || mbResults[0];
+          if (mbItem && mbItem.subjectId) {
+            mbDetail = await movieboxService.getDetail(mbItem.subjectId, mbItem.detailPath);
+          }
+        }
+      } catch (e) {}
+    }
+
+    // Clean searchTitle for TMDb
+    const cleanName = (searchTitle || cleanQ).replace(/\[.*?\]|\(.*?\)/g, '').trim();
+    const tmdbType = (type === 'series' || (mbItem && mbItem.type === 'series')) ? 'tv' : 'movie';
+
+    let tmdbData = null;
+    try {
+      const tmdbSearch = await axios.get(`https://api.themoviedb.org/3/search/${tmdbType}`, {
+        params: {
+          api_key: '6e766190399843a3e1d85b68eaa3de69',
+          query: cleanName
+        },
+        timeout: 4500
+      });
+      const match = tmdbSearch.data?.results?.[0];
+      if (match) {
+        const tmdbDetails = await axios.get(`https://api.themoviedb.org/3/${tmdbType}/${match.id}`, {
+          params: {
+            api_key: '6e766190399843a3e1d85b68eaa3de69',
+            append_to_response: 'credits'
+          },
+          timeout: 4500
+        });
+        tmdbData = tmdbDetails.data;
+      }
+    } catch (e) {}
+
+    // Combine metadata
+    const finalTitle = tmdbData?.name || tmdbData?.title || mbDetail?.title || mbItem?.title || cleanName;
+    const finalYear = (tmdbData?.first_air_date || tmdbData?.release_date || '').split('-')[0] || mbDetail?.year || mbItem?.year || '2026';
+    const finalRating = tmdbData?.vote_average ? tmdbData.vote_average.toFixed(1) : (mbDetail?.rating || mbItem?.rating || '8.5');
+    const finalGenres = (tmdbData?.genres || []).map(g => g.name).join(', ') || mbDetail?.genre || 'Drama';
+
+    let finalPoster = '';
+    if (tmdbData?.poster_path) {
+      finalPoster = `https://image.tmdb.org/t/p/w500${tmdbData.poster_path}`;
+    } else if (mbDetail?.poster) {
+      finalPoster = mbDetail.poster;
+    } else if (mbItem?.poster) {
+      finalPoster = mbItem.poster;
+    }
+
+    let finalBackdrop = '';
+    if (tmdbData?.backdrop_path) {
+      finalBackdrop = `https://image.tmdb.org/t/p/original${tmdbData.backdrop_path}`;
+    } else if (mbDetail?.cover || mbDetail?.backdrop) {
+      finalBackdrop = mbDetail.cover || mbDetail.backdrop;
+    } else if (finalPoster) {
+      finalBackdrop = finalPoster;
+    }
+
+    const finalOverview = tmdbData?.overview || mbDetail?.description || '';
+
+    // Detect Industry & Category
+    const originCountries = tmdbData?.origin_country || [];
+    const prodCountries = (tmdbData?.production_countries || []).map(p => p.name);
+    const countryStr = prodCountries.join(' ');
+    const isKorean = originCountries.includes('KR') || /korea/i.test(countryStr) || /k-drama|kdrama/i.test(finalGenres + ' ' + finalOverview);
+    const isBollywood = originCountries.includes('IN') || /india/i.test(countryStr) || /hindi/i.test(finalTitle);
+    const isAnime = originCountries.includes('JP') || /japan/i.test(countryStr) || /anime/i.test(finalGenres);
+    const isChinese = originCountries.includes('CN') || originCountries.includes('TW') || /china/i.test(countryStr);
+    const isTurkish = originCountries.includes('TR') || /turkey|turkish/i.test(countryStr);
+
+    let detectedIndustry = 'Hollywood';
+    if (isKorean) detectedIndustry = 'Korean';
+    else if (isBollywood) detectedIndustry = 'Bollywood';
+    else if (isAnime) detectedIndustry = 'Anime';
+    else if (isChinese) detectedIndustry = 'Chinese';
+    else if (isTurkish) detectedIndustry = 'Turkish';
+
+    const isHindiDubbed = /hindi/i.test(finalTitle) || (mbDetail && mbDetail.isHindi);
+    let detectedCategory = type === 'series'
+      ? (isHindiDubbed ? `${detectedIndustry} (Dubbed) Series` : `${detectedIndustry} Series`)
+      : (isHindiDubbed ? `${detectedIndustry} (Dubbed) Movies` : `${detectedIndustry} Movies`);
+
+    const sId = mbItem?.subjectId || mbDetail?.subjectId || (isSubjectId ? cleanQ : '');
+    const dPath = mbItem?.detailPath || mbDetail?.detailPath || '';
+    const streamUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${dPath}` : '';
+
+    return {
+      success: true,
+      data: {
+        title: finalTitle,
+        year: finalYear,
+        rating: finalRating,
+        genre: finalGenres,
+        industry: detectedIndustry,
+        category: detectedCategory,
+        poster: finalPoster,
+        backdrop: finalBackdrop,
+        cover: finalBackdrop,
+        description: finalOverview,
+        duration: tmdbData?.runtime ? `${tmdbData.runtime} min` : '120 min',
+        subjectId: sId,
+        detailPath: dPath,
+        streamUrl: streamUrl,
+        isHindi: isHindiDubbed,
+        type: tmdbType === 'tv' ? 'series' : 'movie',
+        seasonsCount: mbDetail?.seasons?.length || tmdbData?.number_of_seasons || 1,
+        totalEpisodes: mbDetail?.totalEpisodes || tmdbData?.number_of_episodes || 10,
+        seasons: mbDetail?.seasons || []
+      }
+    };
   }
 
   /**

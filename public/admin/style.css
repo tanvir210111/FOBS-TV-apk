@@ -2211,5 +2211,44 @@ body {
   50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
 }
 
+/* POSTER & BACKDROP LIVE PREVIEW */
+.poster-preview-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  margin-top: -6px;
+  margin-bottom: 16px;
+}
+.poster-preview-box img {
+  width: 58px;
+  height: 84px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+}
+.poster-preview-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+}
+.poster-preview-info strong {
+  font-size: 1rem;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.poster-preview-info span {
+  font-size: 0.85rem;
+}
+
+
 
 

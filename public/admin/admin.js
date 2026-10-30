@@ -767,8 +767,51 @@ async function handleImportSubmit(e) {
 }
 
 // ============================================================
+// ============================================================
 // AUTO-DETECT TOOLBAR FOR ADD MOVIE & ADD SERIES
 // ============================================================
+function updateMoviePosterPreview() {
+  const posterUrl = document.getElementById('m-poster')?.value.trim();
+  const title = document.getElementById('m-title')?.value.trim() || 'Movie Title';
+  const year = document.getElementById('m-year')?.value.trim() || '2026';
+  const rating = document.getElementById('m-rating')?.value.trim() || '8.5';
+  const box = document.getElementById('m-preview-box');
+  const img = document.getElementById('m-poster-preview');
+  const titleEl = document.getElementById('m-preview-title');
+  const metaEl = document.getElementById('m-preview-meta');
+
+  if (posterUrl && box && img) {
+    img.src = posterUrl;
+    img.onerror = () => { box.style.display = 'none'; };
+    img.onload = () => { box.style.display = 'flex'; };
+    if (titleEl) titleEl.innerText = title;
+    if (metaEl) metaEl.innerText = `${year} • ★ ${rating}`;
+  } else if (box) {
+    box.style.display = 'none';
+  }
+}
+
+function updateSeriesPosterPreview() {
+  const posterUrl = document.getElementById('s-poster')?.value.trim();
+  const title = document.getElementById('s-title')?.value.trim() || 'Series Title';
+  const year = document.getElementById('s-year')?.value.trim() || '2026';
+  const rating = document.getElementById('s-rating')?.value.trim() || '8.8';
+  const box = document.getElementById('s-preview-box');
+  const img = document.getElementById('s-poster-preview');
+  const titleEl = document.getElementById('s-preview-title');
+  const metaEl = document.getElementById('s-preview-meta');
+
+  if (posterUrl && box && img) {
+    img.src = posterUrl;
+    img.onerror = () => { box.style.display = 'none'; };
+    img.onload = () => { box.style.display = 'flex'; };
+    if (titleEl) titleEl.innerText = title;
+    if (metaEl) metaEl.innerText = `${year} • ★ ${rating}`;
+  } else if (box) {
+    box.style.display = 'none';
+  }
+}
+
 async function autoDetectMovieFromInput() {
   const query = document.getElementById('m-autodetect-input').value.trim();
   if (!query) {
@@ -776,41 +819,31 @@ async function autoDetectMovieFromInput() {
     return;
   }
 
-  showToast(`Auto-detecting movie "${query}" from MovieBox...`, 'info', 2500);
+  showToast(`Auto-detecting movie "${query}" from TMDb & MovieBox...`, 'info', 2500);
 
   try {
-    let sId = query;
-    let detailPath = '';
-    let movieData = null;
+    const res = await apiFetch(`/api/admin/auto-detect?q=${encodeURIComponent(query)}&type=movie`);
+    if (!res.success || !res.data) throw new Error(res.error || 'No matching metadata found');
+    const d = res.data;
 
-    if (!/^\d+$/.test(query)) {
-      // It's a text query, search MovieBox first
-      const searchRes = await apiFetch(`/api/admin/moviebox/search?q=${encodeURIComponent(query)}`);
-      const items = (searchRes.items || []).filter(i => i.type === 'movie' || (i.category && !i.category.includes('Series')));
-      const match = items[0] || (searchRes.items || [])[0];
-      if (!match) throw new Error(`No matching movie found for "${query}"`);
-      sId = match.subjectId || match.id;
-      detailPath = match.detailPath || '';
-      movieData = match;
-    }
-
-    const detailRes = await apiFetch(`/api/admin/moviebox/detail?subjectId=${encodeURIComponent(sId)}`);
-    const d = detailRes.detail || movieData || {};
-
-    document.getElementById('m-subject-id').value = sId;
-    document.getElementById('m-title').value = d.title || movieData?.title || query;
-    document.getElementById('m-year').value = d.year || movieData?.year || '2026';
-    document.getElementById('m-rating').value = d.rating || movieData?.rating || '8.5';
+    if (d.subjectId) document.getElementById('m-subject-id').value = d.subjectId;
+    document.getElementById('m-title').value = d.title || query;
+    document.getElementById('m-year').value = d.year || '2026';
+    document.getElementById('m-rating').value = d.rating || '8.5';
     document.getElementById('m-duration').value = d.duration || '120 min';
+    document.getElementById('m-genre').value = d.genre || 'Drama';
     document.getElementById('m-industry').value = d.industry || 'Korean';
     document.getElementById('m-category').value = d.category || 'Korean Movies';
-    document.getElementById('m-language').value = d.isHindi ? 'Hindi Dubbed' : (d.language || 'Original Audio');
-    document.getElementById('m-poster').value = d.poster || movieData?.poster || '';
-    document.getElementById('m-backdrop').value = d.cover || d.backdrop || d.poster || movieData?.poster || '';
-    document.getElementById('m-description').value = d.overview || d.description || `${d.title} streaming in HD on FOBS TV.`;
-    document.getElementById('m-stream-url').value = `/api/moviebox/stream?id=${sId}&path=${d.detailPath || detailPath}`;
+    document.getElementById('m-language').value = d.isHindi ? 'Hindi Dubbed' : 'Original Audio';
+    document.getElementById('m-poster').value = d.poster || '';
+    document.getElementById('m-backdrop').value = d.backdrop || d.poster || '';
+    document.getElementById('m-description').value = d.description || `${d.title} streaming in HD on FOBS TV.`;
+    if (d.streamUrl) {
+      document.getElementById('m-stream-url').value = d.streamUrl;
+    }
 
-    showToast(`✨ Auto-detected: "${d.title || query}"! Review and click Save.`, 'success', 4000);
+    updateMoviePosterPreview();
+    showToast(`✨ Auto-detected: "${d.title}" (${d.year}) with official TMDb poster & metadata!`, 'success', 4500);
   } catch (err) {
     showToast(`Auto-detect error: ${err.message}`, 'error', 4500);
   }
@@ -823,37 +856,32 @@ async function autoDetectSeriesFromInput() {
     return;
   }
 
-  showToast(`Auto-detecting TV Series "${query}" from MovieBox...`, 'info', 2500);
+  showToast(`Auto-detecting TV Series "${query}" from TMDb & MovieBox...`, 'info', 2500);
 
   try {
-    let sId = query;
-    let seriesData = null;
+    const res = await apiFetch(`/api/admin/auto-detect?q=${encodeURIComponent(query)}&type=series`);
+    if (!res.success || !res.data) throw new Error(res.error || 'No matching series metadata found');
+    const d = res.data;
 
-    if (!/^\d+$/.test(query)) {
-      const searchRes = await apiFetch(`/api/admin/moviebox/search?q=${encodeURIComponent(query)}`);
-      const items = (searchRes.items || []).filter(i => i.type === 'series' || (i.category && i.category.includes('Series')));
-      const match = items[0] || (searchRes.items || [])[0];
-      if (!match) throw new Error(`No matching TV series found for "${query}"`);
-      sId = match.subjectId || match.id;
-      seriesData = match;
-    }
-
-    const detailRes = await apiFetch(`/api/admin/moviebox/detail?subjectId=${encodeURIComponent(sId)}`);
-    const d = detailRes.detail || seriesData || {};
-
-    document.getElementById('s-subject-id').value = sId;
-    document.getElementById('s-title').value = d.title || seriesData?.title || query;
-    document.getElementById('s-year').value = d.year || seriesData?.year || '2026';
-    document.getElementById('s-rating').value = d.rating || seriesData?.rating || '8.8';
+    if (d.subjectId) document.getElementById('s-subject-id').value = d.subjectId;
+    document.getElementById('s-title').value = d.title || query;
+    document.getElementById('s-year').value = d.year || '2026';
+    document.getElementById('s-rating').value = d.rating || '8.8';
+    document.getElementById('s-genre').value = d.genre || 'Drama';
     document.getElementById('s-industry').value = d.industry || 'Korean';
     document.getElementById('s-category').value = d.category || 'Korean Series';
-    document.getElementById('s-poster').value = d.poster || seriesData?.poster || '';
-    document.getElementById('s-backdrop').value = d.cover || d.backdrop || d.poster || seriesData?.poster || '';
-    document.getElementById('s-description').value = d.overview || d.description || `${d.title} streaming in HD on FOBS TV.`;
+    document.getElementById('s-poster').value = d.poster || '';
+    document.getElementById('s-backdrop').value = d.backdrop || d.poster || '';
+    document.getElementById('s-description').value = d.description || `${d.title} streaming in HD on FOBS TV.`;
 
-    const seCount = d.seasons ? d.seasons.length : 1;
-    const epCount = d.totalEpisodes || 16;
-    showToast(`✨ Auto-detected: "${d.title}" (${seCount} Seasons • ${epCount} Episodes)!`, 'success', 4000);
+    if (d.seasons && d.seasons.length > 0) {
+      state.lastDetectedSeriesSeasons = d.seasons;
+    }
+
+    updateSeriesPosterPreview();
+    const seCount = d.seasonsCount || 1;
+    const epCount = d.totalEpisodes || 10;
+    showToast(`✨ Auto-detected: "${d.title}" (${d.year}) • ${seCount} Season(s), ${epCount} Episodes!`, 'success', 4500);
   } catch (err) {
     showToast(`Auto-detect error: ${err.message}`, 'error', 4500);
   }
@@ -999,6 +1027,8 @@ function openMovieModal() {
   document.getElementById('movie-form').reset();
   document.getElementById('m-id').value = '';
   document.getElementById('m-subject-id').value = '';
+  const prevBox = document.getElementById('m-preview-box');
+  if (prevBox) prevBox.style.display = 'none';
   document.getElementById('movie-modal').classList.add('active');
 }
 
@@ -1026,6 +1056,7 @@ function editMovieById(id) {
   document.getElementById('m-description').value = m.description || '';
   document.getElementById('m-featured').checked = state.content.featured?.id === m.id;
 
+  updateMoviePosterPreview();
   document.getElementById('movie-modal').classList.add('active');
 }
 
@@ -1245,6 +1276,9 @@ function openSeriesModal() {
   document.getElementById('series-form').reset();
   document.getElementById('s-id').value = '';
   document.getElementById('s-subject-id').value = '';
+  state.lastDetectedSeriesSeasons = null;
+  const prevBox = document.getElementById('s-preview-box');
+  if (prevBox) prevBox.style.display = 'none';
   document.getElementById('series-modal').classList.add('active');
 }
 
@@ -1267,6 +1301,7 @@ function editSeriesById(id) {
   document.getElementById('s-description').value = s.description || '';
   document.getElementById('s-featured').checked = state.content.featured?.id === s.id;
 
+  updateSeriesPosterPreview();
   document.getElementById('series-modal').classList.add('active');
 }
 
@@ -1294,6 +1329,15 @@ async function handleSeriesSubmit(e) {
     description: document.getElementById('s-description').value.trim(),
     isFeatured: document.getElementById('s-featured').checked
   };
+
+  // If newly adding a series and episodes were detected during auto-detect, attach them!
+  if (!series.id && state.lastDetectedSeriesSeasons && state.lastDetectedSeriesSeasons.length > 0) {
+    series.seasons = state.lastDetectedSeriesSeasons;
+    series.episodes = series.seasons[0]?.episodes || [];
+    series.streamUrl = series.episodes[0]?.streamUrl || '';
+    series.seasonsCount = series.seasons.length;
+    series.episodesCount = series.seasons.reduce((sum, s) => sum + (s.episodes?.length || 0), 0);
+  }
 
   try {
     const res = await apiFetch('/api/admin/series', {

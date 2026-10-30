@@ -2062,6 +2062,7 @@ app.get('/api/tmdb-details', async (req, res) => {
       country: data.production_countries?.[0]?.name || (data.origin_country?.[0] === 'KR' ? 'Korea' : 'India'),
       genres: data.genres?.map(g => g.name).join(', ') || 'Drama',
       poster: data.poster_path ? `https://image.tmdb.org/t/p/w500${data.poster_path}` : null,
+      backdrop: data.backdrop_path ? `https://image.tmdb.org/t/p/original${data.backdrop_path}` : (data.poster_path ? `https://image.tmdb.org/t/p/w500${data.poster_path}` : null),
       cast
     });
   } catch (err) {
@@ -2835,6 +2836,18 @@ app.get('/api/admin/moviebox/resolve', adminService.authenticate, async (req, re
 app.post('/api/admin/moviebox/import', adminService.authenticate, async (req, res) => {
   try {
     const result = await adminService.importFromMovieBox(req.body);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Unified Auto-Detect for Add Movie & Add Series Modals
+app.get('/api/admin/auto-detect', adminService.authenticate, async (req, res) => {
+  try {
+    const { q, type } = req.query;
+    if (!q) return res.status(400).json({ success: false, error: 'Query is required' });
+    const result = await adminService.autoDetectMedia(q, type || 'movie');
     res.json(result);
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
