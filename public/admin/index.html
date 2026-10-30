@@ -1126,6 +1126,111 @@
   <!-- MODALS -->
   <!-- ======================================================== -->
 
+  <!-- 0. MOVIEBOX IMPORT & AUTO-DETECT MODAL -->
+  <div id="import-modal" class="modal-backdrop">
+    <div class="modal-card glass modal-lg">
+      <div class="modal-header">
+        <h3 id="import-modal-title"><i class="fa-solid fa-wand-magic-sparkles text-amber"></i> Import &amp; Auto-Detect</h3>
+        <button class="btn-close" onclick="closeImportModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="import-form" onsubmit="handleImportSubmit(event)">
+        <input type="hidden" id="imp-subjectId">
+        <input type="hidden" id="imp-detailPath">
+        <input type="hidden" id="imp-poster">
+
+        <!-- SMART AUTO-DETECT STATUS BADGE -->
+        <div id="import-autodetect-box" class="autodetect-banner glass">
+          <div class="autodetect-icon"><i class="fa-solid fa-robot"></i></div>
+          <div class="autodetect-info">
+            <span class="autodetect-title">Smart Auto-Detect Engine</span>
+            <p id="imp-autodetect-status"><i class="fa-solid fa-spinner fa-spin"></i> Auto-detecting uploaded seasons, episodes, language &amp; categories...</p>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="input-group">
+            <label for="imp-title"><i class="fa-solid fa-heading"></i> Title in FOBS TV *</label>
+            <input type="text" id="imp-title" required placeholder="Title">
+          </div>
+          <div class="input-group">
+            <label for="imp-year"><i class="fa-solid fa-calendar"></i> Release Year</label>
+            <input type="text" id="imp-year" placeholder="2026">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="input-group">
+            <label for="imp-type"><i class="fa-solid fa-film"></i> Type</label>
+            <select id="imp-type" onchange="toggleImportType(this.value)">
+              <option value="movie">Movie</option>
+              <option value="series">Series / TV Show</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="imp-industry"><i class="fa-solid fa-globe"></i> Industry</label>
+            <select id="imp-industry">
+              <option value="Korean">Korean</option>
+              <option value="Hollywood">Hollywood</option>
+              <option value="Bollywood">Bollywood</option>
+              <option value="Tollywood">South Indian</option>
+              <option value="Chinese">Chinese</option>
+              <option value="Anime">Anime</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="imp-category"><i class="fa-solid fa-folder"></i> Category</label>
+            <input type="text" id="imp-category" placeholder="Korean Series">
+          </div>
+        </div>
+
+        <!-- SERIES SEASONS AUTO-DETECT ROW -->
+        <div class="form-row" id="imp-series-row" style="display: none;">
+          <div class="input-group">
+            <label for="imp-season-mode"><i class="fa-solid fa-layer-group text-cyan"></i> Seasons to Import</label>
+            <select id="imp-season-mode">
+              <option value="all">🌟 All Seasons (Auto-Detecting...)</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="imp-episodes"><i class="fa-solid fa-list-ol"></i> Episodes Count</label>
+            <input type="number" id="imp-episodes" value="16" min="1">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="imp-cover"><i class="fa-solid fa-image"></i> Backdrop / Landscape Cover URL (16:9)</label>
+          <input type="url" id="imp-cover" placeholder="https://image.tmdb.org/t/p/w1280/...">
+        </div>
+
+        <div class="form-row">
+          <div class="toggle-group glass">
+            <label for="imp-ishindi">
+              <strong>Hindi Dubbed Audio</strong>
+              <small>Auto-detected Hindi audio stream</small>
+            </label>
+            <input type="checkbox" id="imp-ishindi" class="toggle-switch">
+          </div>
+          <div class="toggle-group glass">
+            <label for="imp-featured">
+              <strong>Set as Hero Spotlight</strong>
+              <small>Publish as top app banner</small>
+            </label>
+            <input type="checkbox" id="imp-featured" class="toggle-switch">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeImportModal()">Cancel</button>
+          <button type="submit" id="btn-confirm-import" class="btn-primary glow">
+            <i class="fa-solid fa-download"></i>
+            <span>Confirm &amp; Import to App</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- 1. MOVIE MODAL (ADD / EDIT) -->
   <div id="movie-modal" class="modal-backdrop">
     <div class="modal-card glass modal-lg">
@@ -1136,6 +1241,18 @@
       <form id="movie-form" onsubmit="handleMovieSubmit(event)">
         <input type="hidden" id="m-id">
         <input type="hidden" id="m-subject-id">
+
+        <!-- SMART AUTO-DETECT TOOLBAR FOR MOVIE -->
+        <div class="autodetect-bar glass">
+          <div class="autodetect-input-wrap">
+            <i class="fa-solid fa-wand-magic-sparkles text-amber"></i>
+            <input type="text" id="m-autodetect-input" placeholder="Search MovieBox title or paste Subject ID to auto-detect all fields..." onkeypress="if(event.key==='Enter'){event.preventDefault();autoDetectMovieFromInput();}">
+          </div>
+          <button type="button" class="btn-cyan glow-sm" onclick="autoDetectMovieFromInput()">
+            <i class="fa-solid fa-bolt"></i>
+            <span>Auto-Detect</span>
+          </button>
+        </div>
 
         <div class="form-row">
           <div class="input-group">
@@ -1249,6 +1366,18 @@
       <form id="series-form" onsubmit="handleSeriesSubmit(event)">
         <input type="hidden" id="s-id">
         <input type="hidden" id="s-subject-id">
+
+        <!-- SMART AUTO-DETECT TOOLBAR FOR SERIES -->
+        <div class="autodetect-bar glass">
+          <div class="autodetect-input-wrap">
+            <i class="fa-solid fa-wand-magic-sparkles text-cyan"></i>
+            <input type="text" id="s-autodetect-input" placeholder="Search MovieBox title or paste Subject ID to auto-detect seasons &amp; episodes..." onkeypress="if(event.key==='Enter'){event.preventDefault();autoDetectSeriesFromInput();}">
+          </div>
+          <button type="button" class="btn-cyan glow-sm" onclick="autoDetectSeriesFromInput()">
+            <i class="fa-solid fa-bolt"></i>
+            <span>Auto-Detect</span>
+          </button>
+        </div>
 
         <div class="form-row">
           <div class="input-group">

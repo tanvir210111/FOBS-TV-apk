@@ -2118,3 +2118,67 @@ body {
   border-radius: 4px;
 }
 
+/* SMART AUTO-DETECT ENGINE STYLES */
+.autodetect-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  margin-bottom: 18px;
+}
+.autodetect-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #10B981;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.autodetect-info {
+  flex: 1;
+}
+.autodetect-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #10B981;
+  display: block;
+  margin-bottom: 2px;
+}
+.autodetect-info p {
+  font-size: 0.82rem;
+  color: var(--text-main);
+  margin: 0;
+}
+.autodetect-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background: rgba(6, 182, 212, 0.08);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  margin-bottom: 20px;
+}
+.autodetect-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+.autodetect-input-wrap input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 0.88rem;
+  width: 100%;
+}
+
+
