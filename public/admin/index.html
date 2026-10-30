@@ -3,18 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FOBS TV — Web Admin Control Panel</title>
-  <meta name="description" content="Central Administration and Content Management for FOBS TV Streaming Network">
+  <title>FOBS TV — Master Web Admin Hub</title>
+  <meta name="description" content="Central Control, Content Management, Stream Studio and Deployment for FOBS TV Streaming Network">
   <link rel="icon" type="image/png" href="https://movieboxapp.in/favicon.ico">
-  <!-- Fonts -->
+  
+  <!-- Modern Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <!-- HLS.js for Live TV testing -->
+  
+  <!-- HLS.js for Live TV & Stream Playback -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <link rel="stylesheet" href="/admin/style.css?v=2.3">
+  
+  <!-- Admin Stylesheet -->
+  <link rel="stylesheet" href="/admin/style.css?v=3.2">
 </head>
 <body>
 
@@ -22,25 +27,25 @@
   <div id="login-modal" class="modal-backdrop active">
     <div class="login-card glass">
       <div class="login-header">
-        <div class="brand-logo">
+        <div class="brand-logo pulse-glow">
           <i class="fa-solid fa-play"></i>
         </div>
         <h2>FOBS TV <span>Admin</span></h2>
-        <p>Enter master password to access system controls</p>
+        <p>Master Control &amp; Streaming Operations Hub</p>
       </div>
       <form id="login-form">
         <div class="input-group">
-          <label for="admin-password"><i class="fa-solid fa-key"></i> Admin Password</label>
+          <label for="admin-password"><i class="fa-solid fa-key"></i> Master Password</label>
           <input type="password" id="admin-password" placeholder="••••••••••••" required autocomplete="current-password">
         </div>
         <button type="submit" id="btn-login" class="btn-primary glow">
-          <span>Authorize Access</span>
+          <span>Authorize Master Access</span>
           <i class="fa-solid fa-arrow-right"></i>
         </button>
         <p id="login-error" class="error-text"></p>
       </form>
       <div class="login-footer">
-        <span class="security-badge"><i class="fa-solid fa-shield-halved"></i> 256-bit JWT Protected</span>
+        <span class="security-badge"><i class="fa-solid fa-shield-halved"></i> 256-bit JWT Session Protected</span>
       </div>
     </div>
   </div>
@@ -56,20 +61,23 @@
         </div>
         <div class="brand-text">
           <h2>FOBS <span>TV</span></h2>
-          <small>v3.0.0 Control Hub</small>
+          <small>v3.2.0 Master Control</small>
         </div>
       </div>
 
       <nav class="sidebar-nav">
+        <div class="nav-section-label">CORE OPS</div>
         <a href="#overview" class="nav-item active" data-tab="overview">
           <i class="fa-solid fa-chart-pie"></i>
-          <span>Overview</span>
+          <span>Dashboard</span>
         </a>
         <a href="#moviebox" class="nav-item highlight" data-tab="moviebox">
           <i class="fa-solid fa-wand-magic-sparkles"></i>
-          <span>Recent Importer</span>
+          <span>MovieBox Importer</span>
           <span class="badge-pill pulse">Live</span>
         </a>
+
+        <div class="nav-section-label">CATALOG &amp; MEDIA</div>
         <a href="#movies" class="nav-item" data-tab="movies">
           <i class="fa-solid fa-film"></i>
           <span>Movies</span>
@@ -77,7 +85,7 @@
         </a>
         <a href="#series" class="nav-item" data-tab="series">
           <i class="fa-solid fa-tv"></i>
-          <span>Series & TV</span>
+          <span>Series &amp; TV Studio</span>
           <span id="badge-series-count" class="badge-count">0</span>
         </a>
         <a href="#livetv" class="nav-item" data-tab="livetv">
@@ -85,24 +93,41 @@
           <span>Live Channels</span>
           <span id="badge-channels-count" class="badge-count">0</span>
         </a>
-        <a href="#requests" class="nav-item" data-tab="requests">
-          <i class="fa-solid fa-inbox"></i>
-          <span>User Requests</span>
-          <span id="badge-requests-count" class="badge-count alert">0</span>
+        <a href="#featured" class="nav-item" data-tab="featured">
+          <i class="fa-solid fa-star text-amber"></i>
+          <span>Hero Spotlight</span>
         </a>
-                <a href="#reports" class="nav-item" data-tab="reports">
-          <i class="fa-solid fa-triangle-exclamation" style="color: #ff4757;"></i>
-          <span>Video Reports</span>
-          <span id="badge-reports-count" class="badge-count alert">0</span>
+        <a href="#upcoming" class="nav-item" data-tab="upcoming">
+          <i class="fa-solid fa-calendar-days"></i>
+          <span>Upcoming Releases</span>
+          <span id="badge-upcoming-count" class="badge-count">0</span>
+        </a>
+
+        <div class="nav-section-label">APP &amp; COMMUNITY</div>
+        <a href="#notifications" class="nav-item" data-tab="notifications">
+          <i class="fa-solid fa-bullhorn"></i>
+          <span>Announcements</span>
+          <span id="badge-notif-count" class="badge-count">0</span>
+        </a>
+        <a href="#feedback" class="nav-item" data-tab="feedback">
+          <i class="fa-solid fa-inbox"></i>
+          <span>Requests &amp; Reports</span>
+          <span id="badge-feedback-count" class="badge-count alert">0</span>
         </a>
         <a href="#users" class="nav-item" data-tab="users">
           <i class="fa-solid fa-users"></i>
           <span>App Users</span>
-          <span class="badge-count" id="badge-users-count">0</span>
+          <span id="badge-users-count" class="badge-count">0</span>
         </a>
-        <a href="#notifications" class="nav-item" data-tab="notifications">
-          <i class="fa-solid fa-bullhorn"></i>
-          <span>Announcements</span>
+
+        <div class="nav-section-label">SYSTEM &amp; CLOUD</div>
+        <a href="#settings" class="nav-item" data-tab="settings">
+          <i class="fa-solid fa-sliders"></i>
+          <span>App Settings &amp; Update</span>
+        </a>
+        <a href="#system" class="nav-item" data-tab="system">
+          <i class="fa-solid fa-server"></i>
+          <span>Cloud Deploy &amp; Backups</span>
         </a>
       </nav>
 
@@ -110,11 +135,11 @@
         <div class="server-status">
           <div class="status-dot online"></div>
           <div class="status-info">
-            <span class="status-title">Server Online</span>
+            <span class="status-title">System Online</span>
             <span id="status-uptime" class="status-sub">Uptime: --</span>
           </div>
         </div>
-        <button id="btn-logout" class="btn-logout" title="Logout">
+        <button id="btn-logout" class="btn-logout" title="Sign Out">
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
         </button>
       </div>
@@ -130,656 +155,1080 @@
             <i class="fa-solid fa-bars"></i>
           </button>
           <div class="page-title-box">
-            <h1 id="page-title">System Overview</h1>
+            <h1 id="page-title">Master Dashboard</h1>
             <p id="page-subtitle">Real-time statistics and streaming engine status</p>
           </div>
         </div>
         <div class="topbar-right">
-          <div class="server-metrics">
+          <div class="server-metrics desktop-only">
             <span class="metric-pill"><i class="fa-solid fa-microchip"></i> Node <strong id="node-ver">v22</strong></span>
             <span class="metric-pill"><i class="fa-solid fa-memory"></i> RAM <strong id="ram-usage">-- MB</strong></span>
           </div>
-          <button id="btn-repair-streams" class="btn-warning" onclick="triggerRepairStreams()" title="1-Click Auto-Repair All Playback Errors & Expired Streams">
+          <button id="btn-repair-streams" class="btn-warning" onclick="triggerRepairStreams()" title="1-Click Auto-Repair All Playback Streams">
             <i class="fa-solid fa-screwdriver-wrench"></i>
-            <span>Fix Playback</span>
+            <span>Fix Streams</span>
           </button>
-          <button id="btn-featured-modal" class="btn-secondary" onclick="openFeaturedModal()" title="Manage Hero Spotlight Banner">
-            <i class="fa-solid fa-star text-amber"></i>
-            <span>Hero Spotlight</span>
+          <button id="btn-backup-quick" class="btn-secondary desktop-only" onclick="downloadBackup()" title="Download Catalog JSON Backup">
+            <i class="fa-solid fa-cloud-arrow-down"></i>
+            <span>Backup</span>
           </button>
-          <button id="btn-refresh" class="btn-secondary" title="Refresh Data">
+          <button id="btn-deploy-quick" class="btn-cyan glow-sm desktop-only" onclick="triggerVpsDeploy()" title="1-Click Deploy to Live VPS">
+            <i class="fa-solid fa-cloud-bolt"></i>
+            <span>Deploy VPS</span>
+          </button>
+          <button id="btn-refresh" class="btn-secondary" title="Refresh All Data">
             <i class="fa-solid fa-rotate"></i>
-            <span>Refresh</span>
           </button>
-          <a href="http://187.127.114.52/download/apk" target="_blank" class="btn-primary glow-sm">
+          <a href="http://187.127.114.52/download/apk" target="_blank" class="btn-primary glow-sm" title="Download latest Android APK">
             <i class="fa-solid fa-download"></i>
-            <span>Get APK</span>
+            <span>APK</span>
           </a>
         </div>
       </header>
 
       <!-- TAB 1: OVERVIEW -->
       <section id="tab-overview" class="tab-pane active">
-        <!-- STATS GRID -->
+        <!-- REPAIR BANNER -->
         <div class="repair-banner glass">
           <div class="repair-banner-left">
             <div class="repair-banner-icon">
               <i class="fa-solid fa-wand-magic-sparkles"></i>
             </div>
             <div class="repair-banner-info">
-              <h4>1-Click Playback & Stream Repair</h4>
-              <p>Experiencing playback errors on older series or movies? Click to scan and renew all MovieBox streams automatically.</p>
+              <h4>Auto-Healing Playback Engine</h4>
+              <p>One-click token renovation and CDN signature rebuild across all 570+ Movies and TV Series.</p>
             </div>
           </div>
-          <button class="btn-warning" onclick="triggerRepairStreams()">
-            <i class="fa-solid fa-bolt"></i>
-            <span>Fix All Streams Now</span>
-          </button>
+          <div class="repair-banner-right">
+            <button class="btn-warning glow" onclick="triggerRepairStreams()">
+              <i class="fa-solid fa-bolt"></i>
+              <span>Auto-Repair All Streams</span>
+            </button>
+          </div>
         </div>
 
+        <!-- STATS GRID -->
         <div class="stats-grid">
-          <div class="stat-card glass">
-            <div class="stat-icon movie-accent"><i class="fa-solid fa-film"></i></div>
-            <div class="stat-data">
+          <div class="stat-card glass" onclick="switchTab('movies')">
+            <div class="stat-icon-wrapper bg-amber">
+              <i class="fa-solid fa-film"></i>
+            </div>
+            <div class="stat-details">
               <span class="stat-label">Total Movies</span>
-              <h3 id="stat-movies">--</h3>
-              <small class="stat-sub text-success">Catalog synced</small>
+              <h3 id="stat-movies-count" class="stat-value">--</h3>
+              <span class="stat-sub text-amber"><i class="fa-solid fa-arrow-trend-up"></i> Multi-quality 1080p</span>
             </div>
           </div>
-          <div class="stat-card glass">
-            <div class="stat-icon series-accent"><i class="fa-solid fa-tv"></i></div>
-            <div class="stat-data">
-              <span class="stat-label">TV Series</span>
-              <h3 id="stat-series">--</h3>
-              <small class="stat-sub text-success">Multi-episode</small>
+
+          <div class="stat-card glass" onclick="switchTab('series')">
+            <div class="stat-icon-wrapper bg-cyan">
+              <i class="fa-solid fa-tv"></i>
+            </div>
+            <div class="stat-details">
+              <span class="stat-label">Series &amp; TV Shows</span>
+              <h3 id="stat-series-count" class="stat-value">--</h3>
+              <span class="stat-sub text-cyan"><i class="fa-solid fa-layer-group"></i> With Seasons &amp; Episodes</span>
             </div>
           </div>
-          <div class="stat-card glass">
-            <div class="stat-icon tv-accent"><i class="fa-solid fa-satellite-dish"></i></div>
-            <div class="stat-data">
+
+          <div class="stat-card glass" onclick="switchTab('livetv')">
+            <div class="stat-icon-wrapper bg-emerald">
+              <i class="fa-solid fa-satellite-dish"></i>
+            </div>
+            <div class="stat-details">
               <span class="stat-label">Live Channels</span>
-              <h3 id="stat-channels">--</h3>
-              <small class="stat-sub text-success">Active HLS streams</small>
+              <h3 id="stat-channels-count" class="stat-value">--</h3>
+              <span class="stat-sub text-emerald"><i class="fa-solid fa-circle-play"></i> Sports, News, Bangla</span>
             </div>
           </div>
-          <div class="stat-card glass">
-            <div class="stat-icon users-accent"><i class="fa-solid fa-users"></i></div>
-            <div class="stat-data">
-              <span class="stat-label">Total App Users</span>
-              <h3 id="stat-users">--</h3>
-              <small class="stat-sub text-success" id="stat-users-sub">Registered & Active</small>
+
+          <div class="stat-card glass" onclick="switchTab('feedback')">
+            <div class="stat-icon-wrapper bg-rose">
+              <i class="fa-solid fa-triangle-exclamation"></i>
             </div>
-          </div>
-          <div class="stat-card glass">
-            <div class="stat-icon views-accent"><i class="fa-solid fa-fire"></i></div>
-            <div class="stat-data">
-              <span class="stat-label">Total Media Views</span>
-              <h3 id="stat-views">--</h3>
-              <small class="stat-sub">Across all devices</small>
-            </div>
-          </div>
-          <div class="stat-card glass">
-            <div class="stat-icon requests-accent"><i class="fa-solid fa-hourglass-half"></i></div>
-            <div class="stat-data">
-              <span class="stat-label">Pending Requests</span>
-              <h3 id="stat-requests">--</h3>
-              <small class="stat-sub text-warning">Awaiting import</small>
-            </div>
-          </div>
-          <div class="stat-card glass">
-            <div class="stat-icon notif-accent"><i class="fa-solid fa-bullhorn"></i></div>
-            <div class="stat-data">
-              <span class="stat-label">Announcements</span>
-              <h3 id="stat-notifs">--</h3>
-              <small class="stat-sub">Broadcast messages</small>
+            <div class="stat-details">
+              <span class="stat-label">Video Reports &amp; Requests</span>
+              <h3 id="stat-reports-count" class="stat-value">--</h3>
+              <span class="stat-sub text-rose"><i class="fa-solid fa-bell"></i> User submitted reports</span>
             </div>
           </div>
         </div>
 
-        <!-- QUICK SHORTCUTS & ACTION BAR -->
-        <div class="overview-panels">
-          <div class="panel glass flex-2">
-            <div class="panel-header">
-              <h3><i class="fa-solid fa-wand-magic-sparkles text-amber"></i> Quick 1-Click MovieBox Importer</h3>
-              <span class="badge-pill">Instant Sync</span>
+        <!-- QUICK LAUNCH ACTIONS -->
+        <div class="section-header">
+          <h3><i class="fa-solid fa-bolt text-amber"></i> Quick Administrative Actions</h3>
+        </div>
+        <div class="quick-actions-grid">
+          <div class="action-card glass" onclick="openMovieModal()">
+            <div class="action-icon bg-amber"><i class="fa-solid fa-plus"></i></div>
+            <div class="action-meta">
+              <h4>Add Movie</h4>
+              <p>Upload or link custom movie with multi-server streams</p>
             </div>
-            <p class="panel-desc">Quickly search MovieBox's massive library for any Bollywood, Hollywood or Kdrama title and import directly with stream links and multi-language subtitles.</p>
-            <div class="quick-search-box">
-              <input type="text" id="quick-import-input" placeholder="e.g. Colony, Resident Evil, Take Charge of My Heart, Dune...">
-              <button id="btn-quick-search" class="btn-primary">
-                <i class="fa-solid fa-search"></i>
-                <span>Search Catalog</span>
-              </button>
+          </div>
+          <div class="action-card glass" onclick="openSeriesModal()">
+            <div class="action-icon bg-cyan"><i class="fa-solid fa-plus"></i></div>
+            <div class="action-meta">
+              <h4>Add TV Series</h4>
+              <p>Create new series and configure full seasons &amp; episodes</p>
+            </div>
+          </div>
+          <div class="action-card glass" onclick="openChannelModal()">
+            <div class="action-icon bg-emerald"><i class="fa-solid fa-plus"></i></div>
+            <div class="action-meta">
+              <h4>Add Live TV Channel</h4>
+              <p>Add HLS / m3u8 stream with custom headers</p>
+            </div>
+          </div>
+          <div class="action-card glass" onclick="switchTab('moviebox')">
+            <div class="action-icon bg-violet"><i class="fa-solid fa-magnifying-glass"></i></div>
+            <div class="action-meta">
+              <h4>MovieBox Search &amp; Import</h4>
+              <p>1-Click instant import from worldwide streaming catalog</p>
+            </div>
+          </div>
+          <div class="action-card glass" onclick="switchTab('settings')">
+            <div class="action-icon bg-rose"><i class="fa-solid fa-mobile-screen-button"></i></div>
+            <div class="action-meta">
+              <h4>App Version &amp; Update</h4>
+              <p>Push instant update popup or force update to app users</p>
+            </div>
+          </div>
+          <div class="action-card glass" onclick="triggerVpsDeploy()">
+            <div class="action-icon bg-cyan"><i class="fa-solid fa-cloud-bolt"></i></div>
+            <div class="action-meta">
+              <h4>1-Click VPS Deploy</h4>
+              <p>Sync code, pull from GitHub, and restart cloud instance</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SYSTEM HEALTH & ACTIVE SPOTLIGHT -->
+        <div class="dashboard-split-grid">
+          <div class="card glass">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-shield-heart text-emerald"></i>
+                <span>Streaming Engine Health</span>
+              </div>
+              <button class="btn-sm btn-secondary" onclick="triggerRefreshCdn()">Refresh CDN Tokens</button>
+            </div>
+            <div class="health-list">
+              <div class="health-item">
+                <span class="health-title"><i class="fa-solid fa-server"></i> Primary Web Server</span>
+                <span class="badge-status success"><i class="fa-solid fa-circle-check"></i> Operational</span>
+              </div>
+              <div class="health-item">
+                <span class="health-title"><i class="fa-solid fa-bolt"></i> MovieBox API Gateway</span>
+                <span class="badge-status success"><i class="fa-solid fa-circle-check"></i> Connected</span>
+              </div>
+              <div class="health-item">
+                <span class="health-title"><i class="fa-solid fa-database"></i> JSON Anti-Loss Storage</span>
+                <span class="badge-status success"><i class="fa-solid fa-circle-check"></i> 3-Way Mirrored</span>
+              </div>
+              <div class="health-item">
+                <span class="health-title"><i class="fa-solid fa-cloud"></i> Live Cloud VPS Instance</span>
+                <span class="badge-status success"><i class="fa-solid fa-circle-check"></i> 187.127.114.52 (Online)</span>
+              </div>
             </div>
           </div>
 
-          <div class="panel glass flex-1">
-            <div class="panel-header">
-              <h3><i class="fa-solid fa-bolt text-cyan"></i> System Controls</h3>
+          <div class="card glass">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-star text-amber"></i>
+                <span>Active Hero Spotlight Banner</span>
+              </div>
+              <button class="btn-sm btn-primary" onclick="switchTab('featured')">Manage Banner</button>
             </div>
-            <div class="system-actions">
-              <button class="btn-panel-action" onclick="switchTab('moviebox')">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                <span>Recent & Trending Importer</span>
-              </button>
-              <button class="btn-panel-action" onclick="openMovieModal()">
-                <i class="fa-solid fa-film"></i>
-                <span>Add Custom Movie</span>
-              </button>
-              <button class="btn-panel-action" onclick="openChannelModal()">
-                <i class="fa-solid fa-satellite-dish"></i>
-                <span>Add Live Channel</span>
-              </button>
-              <button class="btn-panel-action" onclick="openNotifModal()">
-                <i class="fa-solid fa-bell"></i>
-                <span>Broadcast Notice</span>
-              </button>
+            <div id="overview-hero-preview" class="overview-hero-box">
+              <div class="hero-box-backdrop" id="ov-hero-bg"></div>
+              <div class="hero-box-overlay">
+                <span id="ov-hero-badge" class="badge-pill bg-amber">Spotlight</span>
+                <h3 id="ov-hero-title">No Hero Set</h3>
+                <p id="ov-hero-meta">--</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- TAB 2: RECENT & TRENDING MOVIEBOX IMPORTER -->
+      <!-- TAB 2: MOVIEBOX IMPORTER -->
       <section id="tab-moviebox" class="tab-pane">
-        <div class="importer-header glass">
-          <div class="importer-header-top">
-            <div class="importer-title">
-              <h2><i class="fa-solid fa-wand-magic-sparkles text-amber"></i> Recent & Trending MovieBox Importer</h2>
-              <p>Real-time feed of 220+ newly released titles on MovieBox. Click 1-Click Import to add them instantly to FOBS TV with Hindi dubs and auto-renewing streams.</p>
-            </div>
-            <div class="importer-batch-actions">
-              <button id="btn-batch-import-5" class="btn-primary glow-sm" title="Automatically import top 5 unimported movies">
-                <i class="fa-solid fa-bolt"></i>
-                <span>Auto-Import Top 5 Recent</span>
-              </button>
-              <button id="btn-refresh-recent-feed" class="btn-secondary" title="Refresh Live Feed">
-                <i class="fa-solid fa-rotate"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Feed Category Filters -->
-          <div class="feed-filter-bar">
-            <button class="feed-filter-btn active" data-filter="all">
-              <i class="fa-solid fa-fire text-amber"></i>
-              <span>All Recent (<span id="count-all">220</span>)</span>
-            </button>
-            <button class="feed-filter-btn" data-filter="trending">
-              <i class="fa-solid fa-chart-line text-cyan"></i>
-              <span>Trending Now</span>
-            </button>
-            <button class="feed-filter-btn" data-filter="cinema">
-              <i class="fa-solid fa-film text-rose"></i>
-              <span>Latest Cinema</span>
-            </button>
-            <button class="feed-filter-btn" data-filter="bollywood">
-              <i class="fa-solid fa-om text-warning"></i>
-              <span>Bollywood & Hindi</span>
-            </button>
-            <button class="feed-filter-btn" data-filter="hollywood">
-              <i class="fa-solid fa-clapperboard text-cyan"></i>
-              <span>Hollywood</span>
-            </button>
-            <button class="feed-filter-btn" data-filter="series">
-              <i class="fa-solid fa-tv text-emerald"></i>
-              <span>TV Series & Drama</span>
-            </button>
-            <button class="feed-filter-btn" data-filter="anime">
-              <i class="fa-solid fa-dragon text-violet"></i>
-              <span>Anime</span>
-            </button>
-            <label class="filter-toggle" title="When checked, titles already in FOBS TV will be hidden">
-              <input type="checkbox" id="toggle-hide-imported" checked>
-              <span><i class="fa-solid fa-filter"></i> Hide Already in App</span>
-            </label>
-          </div>
-
-          <!-- Manual Search Bar -->
+        <div class="card glass">
           <div class="importer-search-bar">
             <div class="search-input-wrapper">
               <i class="fa-solid fa-magnifying-glass"></i>
-              <input type="text" id="mb-search-input" placeholder="Or search specific title (e.g. Avatar, Inception, Solo Leveling, Colony)...">
+              <input type="text" id="mb-search-input" placeholder="Search any Movie, Drama or Series across the world (e.g. Goblin, Descendants of the Sun, Extraction)...">
+              <button id="btn-mb-search" class="btn-primary" onclick="searchMovieBoxFromInput()">
+                <span>Search</span>
+              </button>
             </div>
-            <button id="btn-mb-search" class="btn-primary glow">
-              <i class="fa-solid fa-search"></i>
-              <span>Search MovieBox</span>
-            </button>
+            <div class="batch-importer-tools">
+              <select id="mb-batch-count" class="select-sm">
+                <option value="5">Batch: Top 5 Items</option>
+                <option value="10">Batch: Top 10 Items</option>
+                <option value="20">Batch: Top 20 Items</option>
+              </select>
+              <button class="btn-secondary" onclick="handleBatchImportRecent()">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Auto-Batch Import</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- CATEGORY FILTER PILLS -->
+          <div class="filter-pills-row" id="mb-filter-pills">
+            <button class="pill active" data-filter="all" onclick="loadMovieBoxRecent('all', this)">All Feeds</button>
+            <button class="pill" data-filter="trending" onclick="loadMovieBoxRecent('trending', this)">🔥 Trending</button>
+            <button class="pill" data-filter="kdrama" onclick="loadMovieBoxRecent('kdrama', this)">🇰🇷 K-Drama</button>
+            <button class="pill" data-filter="movies" onclick="loadMovieBoxRecent('movies', this)">🎬 Movies</button>
+            <button class="pill" data-filter="anime" onclick="loadMovieBoxRecent('anime', this)">⚡ Anime</button>
+            <button class="pill" data-filter="bollywood" onclick="loadMovieBoxRecent('bollywood', this)">🇮🇳 Bollywood</button>
           </div>
         </div>
 
-        <!-- Search / Feed Status / Loader -->
-        <div id="mb-loading" class="loading-state" style="display: none;">
-          <div class="spinner"></div>
-          <p id="mb-loading-text">Fetching live MovieBox recent releases...</p>
-        </div>
-
-        <!-- Feed Info Bar -->
-        <div id="mb-feed-meta" class="feed-meta-bar" style="display: none;">
-          <span id="feed-meta-title">Showing: <strong>All Recent Releases</strong></span>
-          <span id="feed-meta-unimported" class="badge-pill">-- new available</span>
-        </div>
-
-        <!-- Search Results Grid -->
-        <div id="mb-results" class="mb-results-grid"></div>
-
-        <!-- Empty Placeholder -->
-        <div id="mb-empty" class="empty-state" style="display: none;">
-          <i class="fa-solid fa-film-simple"></i>
-          <h3>No titles found</h3>
-          <p>Try selecting another category filter or searching with a different keyword.</p>
+        <!-- RESULTS GRID -->
+        <div class="importer-results-container">
+          <div class="results-header">
+            <h4><i class="fa-solid fa-list text-cyan"></i> Discover &amp; 1-Click Import</h4>
+            <span id="mb-results-count" class="results-count-text">Ready to search</span>
+          </div>
+          <div id="moviebox-results" class="importer-grid">
+            <div class="empty-state">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <h3>Search or pick a category above</h3>
+              <p>Type a movie or series title, or click "Trending" to view recent releases available for 1-click import.</p>
+            </div>
+          </div>
         </div>
       </section>
 
       <!-- TAB 3: MOVIES -->
       <section id="tab-movies" class="tab-pane">
-        <div class="table-controls glass">
-          <div class="search-filter">
-            <i class="fa-solid fa-search"></i>
-            <input type="text" id="movies-search" placeholder="Filter movies by title, year, category...">
-          </div>
-          <div class="controls-actions">
-            <select id="movies-category-filter" class="select-glass">
-              <option value="">All Categories</option>
+        <div class="table-toolbar glass">
+          <div class="toolbar-left">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="movies-search" placeholder="Search movies by title, year or genre..." oninput="filterMoviesTable(this.value)">
+            </div>
+            <select id="movies-genre-filter" class="select-filter" onchange="filterMoviesTable()">
+              <option value="">All Genres</option>
             </select>
-            <button class="btn-primary" onclick="openMovieModal()">
+            <select id="movies-industry-filter" class="select-filter" onchange="filterMoviesTable()">
+              <option value="">All Industries</option>
+              <option value="Korean">Korean</option>
+              <option value="Hollywood">Hollywood</option>
+              <option value="Bollywood">Bollywood</option>
+              <option value="Tollywood">South Indian</option>
+              <option value="Chinese">Chinese</option>
+            </select>
+          </div>
+          <div class="toolbar-right">
+            <span id="movies-pagination-info" class="pagination-info">Showing 0 of 0</span>
+            <button class="btn-primary glow-sm" onclick="openMovieModal()">
               <i class="fa-solid fa-plus"></i>
-              <span>Add Custom Movie</span>
+              <span>Add Movie</span>
             </button>
           </div>
         </div>
 
-        <div class="table-wrapper glass">
-          <table class="data-table">
+        <!-- MOVIES TABLE -->
+        <div class="table-container glass">
+          <table class="data-table" id="movies-table">
             <thead>
               <tr>
                 <th width="70">Poster</th>
-                <th>Title & Info</th>
-                <th>Category</th>
+                <th>Title &amp; Year</th>
+                <th>Genre</th>
                 <th>Industry</th>
-                <th>Audio Track</th>
                 <th>Rating</th>
-                <th><i class="fa-solid fa-eye text-cyan"></i> Views</th>
-                <th>Servers</th>
-                <th width="140" class="text-right">Actions</th>
+                <th>Views</th>
+                <th>Added</th>
+                <th width="190" class="text-right">Actions</th>
               </tr>
             </thead>
-            <tbody id="movies-table-body">
-              <tr><td colspan="9" class="text-center py-4">Loading movies...</td></tr>
+            <tbody id="movies-tbody">
+              <!-- Dynamically populated -->
             </tbody>
           </table>
+        </div>
+
+        <!-- PAGINATION BAR -->
+        <div class="pagination-bar glass" id="movies-pagination">
+          <button class="btn-icon" id="movies-prev-page" onclick="prevMoviesPage()"><i class="fa-solid fa-chevron-left"></i></button>
+          <span id="movies-page-display">Page 1 of 1</span>
+          <button class="btn-icon" id="movies-next-page" onclick="nextMoviesPage()"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
       </section>
 
-      <!-- TAB 4: SERIES -->
+      <!-- TAB 4: SERIES & TV STUDIO -->
       <section id="tab-series" class="tab-pane">
-        <div class="table-controls glass">
-          <div class="search-filter">
-            <i class="fa-solid fa-search"></i>
-            <input type="text" id="series-search" placeholder="Filter series by title...">
+        <div class="table-toolbar glass">
+          <div class="toolbar-left">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="series-search" placeholder="Search series by title, year or genre..." oninput="filterSeriesTable(this.value)">
+            </div>
+            <select id="series-industry-filter" class="select-filter" onchange="filterSeriesTable()">
+              <option value="">All Industries</option>
+              <option value="Korean">Korean</option>
+              <option value="Hollywood">Hollywood</option>
+              <option value="Bollywood">Bollywood</option>
+              <option value="Chinese">Chinese</option>
+              <option value="Anime">Anime</option>
+            </select>
           </div>
-          <div class="controls-actions">
-            <button class="btn-secondary" onclick="autoSyncAllSeries()" title="Scan MovieBox for newly released episodes across all series in FOBS TV">
-              <i class="fa-solid fa-arrows-rotate text-cyan"></i>
+          <div class="toolbar-right">
+            <button class="btn-secondary" onclick="autoSyncAllSeries()" title="Auto-scan MovieBox and update any series with new episodes">
+              <i class="fa-solid fa-arrows-rotate"></i>
               <span>Auto-Sync All Series</span>
             </button>
-            <button class="btn-primary" onclick="openSeriesModal()">
+            <span id="series-pagination-info" class="pagination-info">Showing 0 of 0</span>
+            <button class="btn-primary glow-sm" onclick="openSeriesModal()">
               <i class="fa-solid fa-plus"></i>
-              <span>Add Custom Series</span>
+              <span>Add Series</span>
             </button>
           </div>
         </div>
 
-        <div class="table-wrapper glass">
-          <table class="data-table">
+        <!-- SERIES TABLE -->
+        <div class="table-container glass">
+          <table class="data-table" id="series-table">
             <thead>
               <tr>
                 <th width="70">Poster</th>
-                <th>Series Title</th>
-                <th>Category</th>
-                <th>Duration</th>
-                <th>Seasons</th>
-                <th>Episodes</th>
-                <th><i class="fa-solid fa-eye text-cyan"></i> Views</th>
-                <th width="140" class="text-right">Actions</th>
+                <th>Title &amp; Year</th>
+                <th>Seasons &amp; Episodes</th>
+                <th>Industry / Language</th>
+                <th>Rating</th>
+                <th>Views</th>
+                <th width="260" class="text-right">Actions</th>
               </tr>
             </thead>
-            <tbody id="series-table-body">
-              <tr><td colspan="8" class="text-center py-4">Loading series...</td></tr>
+            <tbody id="series-tbody">
+              <!-- Dynamically populated -->
             </tbody>
           </table>
+        </div>
+
+        <!-- PAGINATION BAR -->
+        <div class="pagination-bar glass" id="series-pagination">
+          <button class="btn-icon" id="series-prev-page" onclick="prevSeriesPage()"><i class="fa-solid fa-chevron-left"></i></button>
+          <span id="series-page-display">Page 1 of 1</span>
+          <button class="btn-icon" id="series-next-page" onclick="nextSeriesPage()"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
       </section>
 
       <!-- TAB 5: LIVE TV CHANNELS -->
       <section id="tab-livetv" class="tab-pane">
-        <div class="table-controls glass">
-          <div class="search-filter">
-            <i class="fa-solid fa-search"></i>
-            <input type="text" id="channels-search" placeholder="Filter channels by name, category...">
+        <div class="table-toolbar glass">
+          <div class="toolbar-left">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="channels-search" placeholder="Search live channels by name..." oninput="filterChannelsGrid(this.value)">
+            </div>
+            <select id="channels-category-filter" class="select-filter" onchange="filterChannelsGrid()">
+              <option value="">All Categories</option>
+              <option value="Sports">Sports</option>
+              <option value="Bangla">Bangla Channels</option>
+              <option value="News">News</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Movies">Movies</option>
+              <option value="Kids">Kids</option>
+              <option value="Infotainment">Infotainment</option>
+            </select>
           </div>
-          <div class="controls-actions">
-            <button class="btn-primary" onclick="openChannelModal()">
+          <div class="toolbar-right">
+            <span id="channels-count-info" class="pagination-info">0 channels</span>
+            <button class="btn-primary glow-sm" onclick="openChannelModal()">
               <i class="fa-solid fa-plus"></i>
-              <span>Add Channel</span>
+              <span>Add Live Channel</span>
             </button>
           </div>
         </div>
 
-        <div class="channels-grid" id="channels-grid">
-          <!-- Live TV Channel Cards rendered via JS -->
+        <!-- CHANNELS GRID -->
+        <div class="channels-grid" id="channels-container">
+          <!-- Dynamically populated -->
         </div>
       </section>
 
-      <!-- TAB 6: USER REQUESTS -->
-      <section id="tab-requests" class="tab-pane">
-        <div class="table-controls glass">
-          <div class="search-filter">
-            <i class="fa-solid fa-search"></i>
-            <input type="text" id="requests-search" placeholder="Search user requests...">
+      <!-- TAB 6: HERO SPOTLIGHT BANNER -->
+      <section id="tab-featured" class="tab-pane">
+        <div class="hero-editor-container">
+          <div class="card glass">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-wand-magic-sparkles text-amber"></i>
+                <span>Hero Spotlight Banner Configuration</span>
+              </div>
+              <span class="badge-pill bg-amber">App Top Banner</span>
+            </div>
+            <p class="card-desc">This item appears on the main hero banner at the very top of the FOBS TV Mobile &amp; Web App.</p>
+
+            <form id="hero-banner-form" onsubmit="handleHeroSubmit(event)">
+              <div class="form-row">
+                <div class="input-group">
+                  <label for="hero-title"><i class="fa-solid fa-heading"></i> Banner Title *</label>
+                  <input type="text" id="hero-title" required placeholder="e.g. Queen of Tears">
+                </div>
+                <div class="input-group">
+                  <label for="hero-year"><i class="fa-solid fa-calendar"></i> Release Year</label>
+                  <input type="text" id="hero-year" placeholder="2026">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="input-group">
+                  <label for="hero-badge-left"><i class="fa-solid fa-tag"></i> Left Badge (e.g. Trending / New Release)</label>
+                  <input type="text" id="hero-badge-left" placeholder="Trending">
+                </div>
+                <div class="input-group">
+                  <label for="hero-badge-right"><i class="fa-solid fa-globe"></i> Right Badge (e.g. Hindi Dubbed / Korean)</label>
+                  <input type="text" id="hero-badge-right" placeholder="Hindi Dubbed">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="input-group">
+                  <label for="hero-rating"><i class="fa-solid fa-star"></i> IMDB Rating</label>
+                  <input type="text" id="hero-rating" placeholder="9.2">
+                </div>
+                <div class="input-group">
+                  <label for="hero-category"><i class="fa-solid fa-folder"></i> Category / Section</label>
+                  <input type="text" id="hero-category" placeholder="Korean Drama">
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label for="hero-cover"><i class="fa-solid fa-image"></i> Backdrop / Banner Image URL *</label>
+                <input type="url" id="hero-cover" required placeholder="https://image.tmdb.org/t/p/original/..." oninput="updateHeroPreview(this.value)">
+              </div>
+
+              <div class="input-group">
+                <label for="hero-poster"><i class="fa-solid fa-file-image"></i> Vertical Poster URL</label>
+                <input type="url" id="hero-poster" placeholder="https://image.tmdb.org/t/p/w500/...">
+              </div>
+
+              <div class="input-group">
+                <label for="hero-stream-url"><i class="fa-solid fa-play"></i> Direct Play Stream URL</label>
+                <input type="text" id="hero-stream-url" placeholder="/api/moviebox/stream?id=... or direct m3u8">
+              </div>
+
+              <div class="input-group">
+                <label for="hero-description"><i class="fa-solid fa-align-left"></i> Overview / Tagline</label>
+                <textarea id="hero-description" rows="3" placeholder="Enter short synopsis for the spotlight hero..."></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn-secondary" onclick="pickHeroFromCatalog()">
+                  <i class="fa-solid fa-list"></i>
+                  <span>Pick From Existing Catalog</span>
+                </button>
+                <button type="submit" class="btn-primary glow">
+                  <i class="fa-solid fa-floppy-disk"></i>
+                  <span>Save Spotlight Banner</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- LIVE PREVIEW MOCKUP -->
+          <div class="hero-live-preview glass">
+            <h4><i class="fa-solid fa-eye text-cyan"></i> Live App Banner Preview</h4>
+            <div class="app-mockup-hero" id="app-hero-mockup">
+              <div class="mockup-bg" id="mockup-hero-bg"></div>
+              <div class="mockup-content">
+                <div class="mockup-badges">
+                  <span id="mockup-badge-left" class="badge-pill bg-amber">Trending</span>
+                  <span id="mockup-badge-right" class="badge-pill bg-cyan">Hindi Dubbed</span>
+                </div>
+                <h2 id="mockup-title">Banner Title</h2>
+                <div class="mockup-meta">
+                  <span id="mockup-year">2026</span> • <span id="mockup-rating">★ 9.2</span> • <span id="mockup-category">Korean Drama</span>
+                </div>
+                <p id="mockup-desc">Banner overview description will appear here inside the FOBS TV Mobile &amp; Web App hero section.</p>
+                <div class="mockup-buttons">
+                  <button class="btn-play-preview"><i class="fa-solid fa-play"></i> Watch Now</button>
+                  <button class="btn-info-preview"><i class="fa-solid fa-circle-info"></i> Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 7: UPCOMING RELEASES -->
+      <section id="tab-upcoming" class="tab-pane">
+        <div class="table-toolbar glass">
+          <div class="toolbar-left">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="upcoming-search" placeholder="Search upcoming titles..." oninput="filterUpcomingTable(this.value)">
+            </div>
+          </div>
+          <div class="toolbar-right">
+            <span id="upcoming-count-info" class="pagination-info">0 upcoming items</span>
+            <button class="btn-primary glow-sm" onclick="openUpcomingModal()">
+              <i class="fa-solid fa-plus"></i>
+              <span>Add Upcoming Release</span>
+            </button>
           </div>
         </div>
 
-        <div class="table-wrapper glass">
-          <table class="data-table">
+        <div class="table-container glass">
+          <table class="data-table" id="upcoming-table">
             <thead>
               <tr>
-                <th>Requested Title</th>
-                <th>Type</th>
+                <th width="70">Poster</th>
+                <th>Title</th>
+                <th>Release Schedule</th>
                 <th>Year</th>
-                <th>Language / Audio</th>
-                <th>User / Notes</th>
-                <th>Status</th>
-                <th width="180" class="text-right">Update Status</th>
+                <th>Genre</th>
+                <th>Rating</th>
+                <th width="150" class="text-right">Actions</th>
               </tr>
             </thead>
-            <tbody id="requests-table-body">
-              <tr><td colspan="7" class="text-center py-4">No requests found.</td></tr>
+            <tbody id="upcoming-tbody">
+              <!-- Dynamically populated -->
             </tbody>
           </table>
         </div>
       </section>
 
-      <!-- TAB 7: ANNOUNCEMENTS -->
-      
-      <!-- VIDEO ISSUE REPORTS TAB -->
-      <section id="tab-reports" class="tab-pane">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">Video Problem Reports</h2>
-            <p class="section-desc">User-submitted playback, audio, and subtitle issues from mobile app</p>
-          </div>
-          <button class="btn btn-secondary" onclick="loadReports()"><i class="fa-solid fa-rotate"></i> Refresh Reports</button>
-        </div>
-
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Video Title</th>
-                <th>Issue Reason</th>
-                <th>User Details</th>
-                <th>Reporter</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="reports-table-body">
-              <tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Loading reports...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- APP USERS TAB -->
-      <section id="tab-users" class="tab-pane">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">App Users & Active Audience</h2>
-            <p class="section-desc">Real-time registered users, active device installations, and audience analytics</p>
-          </div>
-          <button class="btn btn-secondary" onclick="loadUsers()"><i class="fa-solid fa-rotate"></i> Refresh Users</button>
-        </div>
-
-        <div class="data-table-container glass">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>User / Device</th>
-                <th>Email / Device IP</th>
-                <th>Platform</th>
-                <th>Watchlist</th>
-                <th>Joined Date</th>
-                <th>Last Active</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="users-table-body">
-              <tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Loading users...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
+      <!-- TAB 8: ANNOUNCEMENTS -->
       <section id="tab-notifications" class="tab-pane">
-        <div class="table-controls glass">
-          <div>
-            <h3>Active Broadcast Announcements</h3>
-            <p>Sent to all FOBS TV mobile app users instantaneously</p>
+        <div class="notifications-layout">
+          <div class="card glass">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-bullhorn text-amber"></i>
+                <span>Create New Announcement</span>
+              </div>
+            </div>
+            <form id="announcement-form" onsubmit="handleAnnouncementSubmit(event)">
+              <div class="input-group">
+                <label for="notif-title"><i class="fa-solid fa-heading"></i> Announcement Title *</label>
+                <input type="text" id="notif-title" required placeholder="e.g. Welcome to FOBS TV v3.2!">
+              </div>
+              <div class="form-row">
+                <div class="input-group">
+                  <label for="notif-tag"><i class="fa-solid fa-tag"></i> Tag / Badge</label>
+                  <select id="notif-tag">
+                    <option value="System">System</option>
+                    <option value="Update">Update</option>
+                    <option value="Release">New Release</option>
+                    <option value="Alert">Alert</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label for="notif-link"><i class="fa-solid fa-link"></i> Action Link (Optional)</label>
+                  <input type="text" id="notif-link" placeholder="https://... or in-app path">
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="notif-message"><i class="fa-solid fa-message"></i> Message Body *</label>
+                <textarea id="notif-message" rows="4" required placeholder="Enter announcement text to display in app notifications bell..."></textarea>
+              </div>
+              <button type="submit" class="btn-primary glow">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span>Broadcast Announcement</span>
+              </button>
+            </form>
           </div>
-          <button class="btn-primary" onclick="openNotifModal()">
-            <i class="fa-solid fa-plus"></i>
-            <span>Create Notice</span>
+
+          <div class="card glass">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-list text-cyan"></i>
+                <span>Active Announcements in App</span>
+              </div>
+            </div>
+            <div class="notifications-list" id="notifications-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 9: REQUESTS & REPORTS -->
+      <section id="tab-feedback" class="tab-pane">
+        <div class="feedback-subtabs">
+          <button class="subtab-btn active" onclick="switchFeedbackSubtab('reports', this)">
+            <i class="fa-solid fa-triangle-exclamation text-rose"></i>
+            <span>Broken Video Reports</span>
+            <span id="badge-sub-reports" class="badge-count alert">0</span>
+          </button>
+          <button class="subtab-btn" onclick="switchFeedbackSubtab('requests', this)">
+            <i class="fa-solid fa-inbox text-cyan"></i>
+            <span>User Content Requests</span>
+            <span id="badge-sub-requests" class="badge-count">0</span>
           </button>
         </div>
 
-        <div class="notifs-list" id="notifs-list"></div>
+        <!-- SUBTAB: REPORTS -->
+        <div id="subtab-reports-pane" class="subtab-pane active">
+          <div class="table-container glass">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Content Title</th>
+                  <th>Media ID / Path</th>
+                  <th>Issue Description</th>
+                  <th>User IP / Date</th>
+                  <th>Status</th>
+                  <th width="200" class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="reports-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SUBTAB: REQUESTS -->
+        <div id="subtab-requests-pane" class="subtab-pane" style="display: none;">
+          <div class="table-container glass">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Requested Title</th>
+                  <th>Type</th>
+                  <th>User IP</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th width="220" class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="requests-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 10: APP USERS & AUDIENCE -->
+      <section id="tab-users" class="tab-pane">
+        <div class="stats-grid">
+          <div class="stat-card glass">
+            <div class="stat-icon-wrapper bg-cyan"><i class="fa-solid fa-users"></i></div>
+            <div class="stat-details">
+              <span class="stat-label">Total Unique Devices</span>
+              <h3 id="stat-total-devices" class="stat-value">--</h3>
+              <span class="stat-sub text-cyan">Registered viewers</span>
+            </div>
+          </div>
+          <div class="stat-card glass">
+            <div class="stat-icon-wrapper bg-emerald"><i class="fa-solid fa-mobile-screen"></i></div>
+            <div class="stat-details">
+              <span class="stat-label">Active on Latest v3.1.1</span>
+              <h3 id="stat-latest-devices" class="stat-value">--</h3>
+              <span class="stat-sub text-emerald">Compliant users</span>
+            </div>
+          </div>
+          <div class="stat-card glass">
+            <div class="stat-icon-wrapper bg-rose"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <div class="stat-details">
+              <span class="stat-label">Outdated Version Devices</span>
+              <h3 id="stat-outdated-devices" class="stat-value">--</h3>
+              <span class="stat-sub text-rose">Below v3.1.1</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-toolbar glass">
+          <div class="toolbar-left">
+            <h4><i class="fa-solid fa-network-wired text-cyan"></i> Connected Viewer Devices</h4>
+          </div>
+          <div class="toolbar-right">
+            <button class="btn-warning glow-sm" onclick="purgeOutdatedDevices()">
+              <i class="fa-solid fa-trash-can"></i>
+              <span>Purge Outdated Devices</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container glass">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Device ID</th>
+                <th>Platform</th>
+                <th>App Version</th>
+                <th>IP Address</th>
+                <th>Last Active</th>
+              </tr>
+            </thead>
+            <tbody id="users-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 11: APP SETTINGS & UPDATE -->
+      <section id="tab-settings" class="tab-pane">
+        <div class="settings-grid">
+          <!-- CARD 1: REMOTE APP UPDATE ENGINE -->
+          <div class="card glass">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-cloud-arrow-up text-amber"></i>
+                <span>Remote APK Update Engine</span>
+              </div>
+              <span class="badge-pill bg-amber">Mobile App Control</span>
+            </div>
+            <p class="card-desc">Control what version is required on user phones. If Force Update is active, older versions are blocked until the user updates.</p>
+
+            <form id="app-update-form" onsubmit="handleAppSettingsSubmit(event)">
+              <div class="form-row">
+                <div class="input-group">
+                  <label for="up-version-name"><i class="fa-solid fa-code-branch"></i> Latest Version Name *</label>
+                  <input type="text" id="up-version-name" required placeholder="3.1.1">
+                </div>
+                <div class="input-group">
+                  <label for="up-version-code"><i class="fa-solid fa-hashtag"></i> Latest Version Code *</label>
+                  <input type="number" id="up-version-code" required placeholder="9">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="input-group">
+                  <label for="up-min-code"><i class="fa-solid fa-shield"></i> Minimum Required Version Code *</label>
+                  <input type="number" id="up-min-code" required placeholder="9">
+                </div>
+                <div class="input-group">
+                  <label for="up-file-size"><i class="fa-solid fa-file"></i> APK File Size</label>
+                  <input type="text" id="up-file-size" placeholder="6.1 MB">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="toggle-group glass">
+                  <label for="up-force-toggle">
+                    <strong>Force Update Modal</strong>
+                    <small>User cannot dismiss the popup without updating</small>
+                  </label>
+                  <input type="checkbox" id="up-force-toggle" class="toggle-switch">
+                </div>
+                <div class="toggle-group glass">
+                  <label for="up-enabled-toggle">
+                    <strong>Update Alert Enabled</strong>
+                    <small>Show update prompt on app launch</small>
+                  </label>
+                  <input type="checkbox" id="up-enabled-toggle" class="toggle-switch">
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label for="up-title"><i class="fa-solid fa-heading"></i> Update Dialog Title</label>
+                <input type="text" id="up-title" placeholder="New FOBS TV Update (v3.1.1) Available!">
+              </div>
+
+              <div class="input-group">
+                <label for="up-message"><i class="fa-solid fa-align-left"></i> Update Dialog Message</label>
+                <textarea id="up-message" rows="3" placeholder="FOBS TV-র নতুন v3.1.1 ভার্সন চলে এসেছে! আগের অ্যাপটি আনইনস্টল করে নতুন অ্যাপ ইনস্টল করুন..."></textarea>
+              </div>
+
+              <div class="input-group">
+                <label for="up-release-notes"><i class="fa-solid fa-list-check"></i> Release Notes (1 per line)</label>
+                <textarea id="up-release-notes" rows="4" placeholder="⚠️ আগের অ্যাপটি আনইনস্টল করে নতুন v3.1.1 ইনস্টল করুন&#10;MX Player Style: সাবটাইটেল টেনে উপরে নিচে সরানোর সুবিধা&#10;ইনস্ট্যান্ট প্লেব্যাক ও কোনো ধরনের বাফারিং সমস্যা নেই"></textarea>
+              </div>
+
+              <div class="input-group">
+                <label for="up-download-url"><i class="fa-solid fa-link"></i> Primary APK Download URL *</label>
+                <input type="url" id="up-download-url" required placeholder="https://fobs-apk-download.vercel.app/">
+              </div>
+
+              <div class="input-group">
+                <label for="up-fallback-url"><i class="fa-solid fa-link"></i> Fallback Direct Mirror URL</label>
+                <input type="url" id="up-fallback-url" placeholder="http://187.127.114.52/download/apk">
+              </div>
+
+              <!-- CARD 2: APP REMOTE SETTINGS -->
+              <div class="section-divider"></div>
+              <h4><i class="fa-solid fa-sliders text-cyan"></i> Global Remote App Configurations</h4>
+
+              <div class="form-row">
+                <div class="input-group">
+                  <label for="st-app-name"><i class="fa-solid fa-tv"></i> App Name</label>
+                  <input type="text" id="st-app-name" placeholder="FOBS TV">
+                </div>
+                <div class="input-group">
+                  <label for="st-tagline"><i class="fa-solid fa-quote-left"></i> Tagline</label>
+                  <input type="text" id="st-tagline" placeholder="Infinite Entertainment Stream">
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label for="st-marquee"><i class="fa-solid fa-bullhorn text-amber"></i> Top Marquee Announcement Bar (App Home)</label>
+                <input type="text" id="st-marquee" placeholder="🔥 Welcome to FOBS TV! Watch Movies, Series & Live TV in HD without buffering.">
+              </div>
+
+              <div class="form-row">
+                <div class="input-group">
+                  <label for="st-telegram"><i class="fa-brands fa-telegram"></i> Telegram Support Channel</label>
+                  <input type="url" id="st-telegram" placeholder="https://t.me/fobs_support">
+                </div>
+                <div class="input-group">
+                  <label for="st-whatsapp"><i class="fa-brands fa-whatsapp"></i> WhatsApp Help Link</label>
+                  <input type="url" id="st-whatsapp" placeholder="https://wa.me/...">
+                </div>
+              </div>
+
+              <div class="toggle-group glass">
+                <label for="st-maintenance-toggle">
+                  <strong>Maintenance Mode</strong>
+                  <small>Temporarily show maintenance screen to all app viewers</small>
+                </label>
+                <input type="checkbox" id="st-maintenance-toggle" class="toggle-switch">
+              </div>
+
+              <div class="input-group" id="maintenance-msg-group" style="display: none;">
+                <label for="st-maintenance-msg"><i class="fa-solid fa-wrench"></i> Maintenance Notice Message</label>
+                <input type="text" id="st-maintenance-msg" placeholder="System maintenance in progress. We will be back shortly!">
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn-primary glow">
+                  <i class="fa-solid fa-floppy-disk"></i>
+                  <span>Save All App Settings</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 12: DEPLOYMENT & SYSTEM -->
+      <section id="tab-system" class="tab-pane">
+        <div class="system-grid">
+          <!-- 1-CLICK VPS DEPLOY -->
+          <div class="card glass">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-cloud-bolt text-cyan"></i>
+                <span>1-Click Cloud VPS Deployment</span>
+              </div>
+              <span class="badge-pill bg-cyan">Live Production</span>
+            </div>
+            <p class="card-desc">Execute instant Git pull and PM2 reload on the live VPS (187.127.114.52) without touching terminal.</p>
+            
+            <div class="deploy-box glass">
+              <div class="deploy-meta">
+                <span>Target: <strong>http://187.127.114.52</strong></span>
+                <span>Branch: <strong>origin/main</strong></span>
+              </div>
+              <button class="btn-cyan glow" id="btn-run-deploy" onclick="triggerVpsDeploy()">
+                <i class="fa-solid fa-rocket"></i>
+                <span>Deploy Latest Commit Now</span>
+              </button>
+            </div>
+
+            <div class="terminal-box" id="deploy-terminal" style="display: none;">
+              <div class="terminal-header">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+                <span class="terminal-title">VPS Deploy Console</span>
+              </div>
+              <pre id="deploy-log" class="terminal-output">Waiting for deployment trigger...</pre>
+            </div>
+          </div>
+
+          <!-- STREAMING REPAIR & CDN TOOLS -->
+          <div class="card glass">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-screwdriver-wrench text-amber"></i>
+                <span>Stream Token &amp; CDN Operations</span>
+              </div>
+            </div>
+            <p class="card-desc">Run manual repair routines to fix expired CloudFront/MovieBox stream tokens or purge stale stream cache.</p>
+            
+            <div class="system-tools-list">
+              <div class="tool-item glass">
+                <div class="tool-info">
+                  <h4>Auto-Repair Playback Streams</h4>
+                  <p>Resolves expired tokens across all movies and TV series catalog.</p>
+                </div>
+                <button class="btn-warning" onclick="triggerRepairStreams()">
+                  <i class="fa-solid fa-wrench"></i> Run Repair
+                </button>
+              </div>
+
+              <div class="tool-item glass">
+                <div class="tool-info">
+                  <h4>Refresh 15-Min CDN Signatures</h4>
+                  <p>Renews AWS CloudFront signed cookies and keys for instant streaming.</p>
+                </div>
+                <button class="btn-secondary" onclick="triggerRefreshCdn()">
+                  <i class="fa-solid fa-rotate"></i> Refresh Signatures
+                </button>
+              </div>
+
+              <div class="tool-item glass">
+                <div class="tool-info">
+                  <h4>Auto-Sync All Series Episodes</h4>
+                  <p>Scans MovieBox API for newly aired episodes and updates FOBS TV catalog.</p>
+                </div>
+                <button class="btn-secondary" onclick="autoSyncAllSeries()">
+                  <i class="fa-solid fa-arrows-rotate"></i> Sync Episodes
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- DATABASE BACKUP & RESTORE -->
+          <div class="card glass full-width">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-database text-emerald"></i>
+                <span>Database Backup &amp; Safe Restore</span>
+              </div>
+              <span class="badge-pill bg-emerald">Triple-Vault Protected</span>
+            </div>
+            <p class="card-desc">Download a snapshot of the entire FOBS TV catalog (movies, series, channels, settings) or restore from a previously downloaded JSON file.</p>
+
+            <div class="backup-actions-row">
+              <div class="backup-col glass">
+                <i class="fa-solid fa-cloud-arrow-down backup-icon text-cyan"></i>
+                <h4>Download Complete Catalog Snapshot</h4>
+                <p>Creates a full JSON backup including all metadata, stream servers, seasons, and episodes.</p>
+                <button class="btn-primary glow" onclick="downloadBackup()">
+                  <i class="fa-solid fa-download"></i>
+                  <span>Download Backup JSON</span>
+                </button>
+              </div>
+
+              <div class="backup-col glass">
+                <i class="fa-solid fa-cloud-arrow-up backup-icon text-amber"></i>
+                <h4>Restore Catalog From Backup</h4>
+                <p>Select a valid FOBS TV catalog JSON file to restore items safely.</p>
+                <label for="restore-file-input" class="btn-secondary file-upload-btn">
+                  <i class="fa-solid fa-file-arrow-up"></i>
+                  <span>Select JSON File to Restore</span>
+                </label>
+                <input type="file" id="restore-file-input" accept=".json" style="display: none;" onchange="handleRestoreFile(event)">
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
     </main>
   </div>
 
-  <!-- VIDEO STREAM TESTER MODAL -->
-  <div id="player-modal" class="modal-backdrop">
-    <div class="player-card glass">
-      <div class="modal-header">
-        <h3 id="player-title"><i class="fa-solid fa-play-circle text-amber"></i> Stream Playback Test</h3>
-        <button class="btn-close" onclick="closePlayerModal()"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="player-body">
-        <video id="test-video" controls autoplay playsinline preload="auto"></video>
-        <div class="player-meta">
-          <p id="player-url" class="stream-url-display"></p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- ======================================================== -->
+  <!-- MODALS -->
+  <!-- ======================================================== -->
 
-  <!-- 1-CLICK IMPORT CUSTOMIZE MODAL -->
-  <div id="import-modal" class="modal-backdrop">
-    <div class="modal-card glass">
-      <div class="modal-header">
-        <h3 id="import-modal-title"><i class="fa-solid fa-wand-magic-sparkles text-amber"></i> Import Content</h3>
-        <button class="btn-close" onclick="closeImportModal()"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <form id="import-form">
-        <input type="hidden" id="imp-subjectId">
-        <input type="hidden" id="imp-detailPath">
-        <input type="hidden" id="imp-poster">
-
-        <div class="form-row">
-          <div class="input-group flex-2">
-            <label>Title in FOBS TV</label>
-            <input type="text" id="imp-title" required>
-          </div>
-        </div>
-
-        <div class="input-group">
-          <label><i class="fa-solid fa-image text-cyan"></i> Cover / Landscape Banner URL (16:9 for Featured Hero)</label>
-          <input type="url" id="imp-cover" placeholder="https://image.tmdb.org/t/p/w1280/... (Auto-fetched from TMDB if blank)">
-        </div>
-        <div class="form-row">
-          <div class="input-group flex-1">
-            <label>Type</label>
-            <select id="imp-type">
-              <option value="movie">Movie</option>
-              <option value="series">Series</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="input-group">
-            <label>Category</label>
-            <select id="imp-category">
-              <option value="Hollywood Movies">Hollywood Movies</option>
-              <option value="Hollywood (Dubbed) Movies">Hollywood (Dubbed) Movies</option>
-              <option value="Bollywood Movies">Bollywood Movies</option>
-              <option value="South Indian Hindi Dubbed">South Indian Hindi Dubbed</option>
-              <option value="South (Dubbed) Movies">South (Dubbed) Movies</option>
-              <option value="Korean Drama">Korean Drama</option>
-              <option value="Korean (Dubbed) Series">Korean (Dubbed) Series</option>
-              <option value="Korean Series">Korean Series</option>
-              <option value="Chinese Drama">Chinese Drama</option>
-              <option value="Chinese (Dubbed) Series">Chinese (Dubbed) Series</option>
-              <option value="Chinese Series">Chinese Series</option>
-              <option value="Turkish Series">Turkish Series</option>
-              <option value="Web Series">Web Series</option>
-              <option value="Animation & Anime">Animation & Anime</option>
-              <option value="Anime Series (Hindi Dub)">Anime Series (Hindi Dub)</option>
-              <option value="Anime Movies (Hindi Dub)">Anime Movies (Hindi Dub)</option>
-              <option value="South Indian Series">South Indian Series</option>
-              <option value="Japanese Series">Japanese Series</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label>Industry</label>
-            <select id="imp-industry">
-              <option value="Hollywood">Hollywood</option>
-              <option value="Bollywood">Bollywood</option>
-              <option value="Tollywood">Tollywood</option>
-              <option value="South Indian">South Indian</option>
-              <option value="Korean">Korean</option>
-              <option value="Kdrama">Kdrama</option>
-              <option value="Chinese">Chinese</option>
-              <option value="Turkish">Turkish</option>
-              <option value="Anime">Anime</option>
-              <option value="Japanese">Japanese</option>
-              <option value="Others">Others</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label>Release Year</label>
-            <input type="text" id="imp-year" value="2026">
-          </div>
-        </div>
-
-        <div class="form-row" id="series-episodes-row" style="display: none;">
-          <div class="input-group flex-1" id="series-season-group">
-            <label><i class="fa-solid fa-layer-group text-amber"></i> Season Option</label>
-            <select id="imp-season-mode">
-              <option value="all">🌟 All Seasons (Full Multi-Season Series)</option>
-            </select>
-          </div>
-          <div class="input-group flex-1" id="series-episodes-group">
-            <label id="imp-episodes-label"><i class="fa-solid fa-film text-cyan"></i> Episodes Count</label>
-            <input type="number" id="imp-episodes" min="1" max="250" value="10">
-          </div>
-        </div>
-        <div id="series-episodes-hint-row" style="display: none; margin-top: -8px; margin-bottom: 14px;">
-          <small id="imp-episodes-hint" style="color: #10b981; display: block; font-weight: 500; font-size: 12.5px; line-height: 1.5; background: rgba(16, 185, 129, 0.08); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.2);">
-            <i class="fa-solid fa-spinner fa-spin"></i> Detecting uploaded seasons & episodes from MovieBox...
-          </small>
-        </div>
-
-        <div class="form-checkboxes">
-          <label class="checkbox-container">
-            <input type="checkbox" id="imp-ishindi" checked>
-            <span class="checkmark"></span>
-            <span>Tag as Hindi Dubbed (Adds "[Hindi]" label & sets default Hindi audio track)</span>
-          </label>
-          <label class="checkbox-container" style="margin-top: 10px;">
-            <input type="checkbox" id="imp-featured">
-            <span class="checkmark"></span>
-            <span><i class="fa-solid fa-star text-amber"></i> Set as Hero Spotlight (Featured Banner on Home Screen)</span>
-          </label>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn-secondary" onclick="closeImportModal()">Cancel</button>
-          <button type="submit" id="btn-confirm-import" class="btn-primary glow">
-            <i class="fa-solid fa-download"></i>
-            <span>Import Now to FOBS TV</span>
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MOVIE EDIT/ADD MODAL -->
+  <!-- 1. MOVIE MODAL (ADD / EDIT) -->
   <div id="movie-modal" class="modal-backdrop">
-    <div class="modal-card glass">
+    <div class="modal-card glass modal-lg">
       <div class="modal-header">
         <h3 id="movie-modal-title"><i class="fa-solid fa-film text-amber"></i> Add / Edit Movie</h3>
         <button class="btn-close" onclick="closeMovieModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <form id="movie-form">
-        <input type="hidden" id="movie-id">
+      <form id="movie-form" onsubmit="handleMovieSubmit(event)">
+        <input type="hidden" id="m-id">
+        <input type="hidden" id="m-subject-id">
+
         <div class="form-row">
-          <div class="input-group flex-2">
-            <label>Movie Title</label>
-            <input type="text" id="movie-title" required placeholder="e.g. Colony [Hindi]">
+          <div class="input-group">
+            <label for="m-title"><i class="fa-solid fa-heading"></i> Movie Title *</label>
+            <input type="text" id="m-title" required placeholder="e.g. Parasite">
           </div>
-          <div class="input-group flex-1">
-            <label>Year</label>
-            <input type="text" id="movie-year" placeholder="2026">
-          </div>
-          <div class="input-group flex-1">
-            <label>Rating</label>
-            <input type="text" id="movie-rating" placeholder="8.5">
-          </div>
-          <div class="input-group flex-1">
-            <label><i class="fa-solid fa-eye text-cyan"></i> Views</label>
-            <input type="number" id="movie-views" placeholder="0" min="0">
+          <div class="input-group">
+            <label for="m-year"><i class="fa-solid fa-calendar"></i> Release Year *</label>
+            <input type="text" id="m-year" required placeholder="2019">
           </div>
         </div>
 
         <div class="form-row">
-          <div class="input-group flex-1">
-            <label>Category</label>
-            <input type="text" id="movie-category" placeholder="Hollywood Movies">
+          <div class="input-group">
+            <label for="m-genre"><i class="fa-solid fa-masks-theater"></i> Genres (comma separated)</label>
+            <input type="text" id="m-genre" placeholder="Thriller, Drama, Comedy">
           </div>
-          <div class="input-group flex-1">
-            <label>Industry</label>
-            <input type="text" id="movie-industry" placeholder="Hollywood">
+          <div class="input-group">
+            <label for="m-industry"><i class="fa-solid fa-globe"></i> Industry</label>
+            <select id="m-industry">
+              <option value="Korean">Korean</option>
+              <option value="Hollywood">Hollywood</option>
+              <option value="Bollywood">Bollywood</option>
+              <option value="Tollywood">South Indian</option>
+              <option value="Chinese">Chinese</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
-          <div class="input-group flex-1">
-            <label>Audio</label>
-            <input type="text" id="movie-audio" placeholder="Hindi dub">
+        </div>
+
+        <div class="form-row">
+          <div class="input-group">
+            <label for="m-rating"><i class="fa-solid fa-star"></i> IMDB Rating</label>
+            <input type="text" id="m-rating" placeholder="8.5">
+          </div>
+          <div class="input-group">
+            <label for="m-duration"><i class="fa-solid fa-clock"></i> Duration</label>
+            <input type="text" id="m-duration" placeholder="132 min">
+          </div>
+          <div class="input-group">
+            <label for="m-views"><i class="fa-solid fa-eye"></i> Views Count</label>
+            <input type="number" id="m-views" placeholder="1250">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="input-group">
+            <label for="m-language"><i class="fa-solid fa-language"></i> Audio Language</label>
+            <input type="text" id="m-language" placeholder="Hindi Dubbed / Korean">
+          </div>
+          <div class="input-group">
+            <label for="m-category"><i class="fa-solid fa-folder"></i> Category</label>
+            <input type="text" id="m-category" placeholder="Korean Movies">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="input-group">
+            <label for="m-poster"><i class="fa-solid fa-file-image"></i> Poster URL *</label>
+            <input type="url" id="m-poster" required placeholder="https://image.tmdb.org/t/p/w500/...">
+          </div>
+          <div class="input-group">
+            <label for="m-backdrop"><i class="fa-solid fa-image"></i> Backdrop URL</label>
+            <input type="url" id="m-backdrop" placeholder="https://image.tmdb.org/t/p/original/...">
           </div>
         </div>
 
         <div class="input-group">
-          <label><i class="fa-solid fa-image text-cyan"></i> Cover / Landscape Banner URL (16:9 for Featured Hero Spotlight)</label>
-          <input type="url" id="movie-cover" placeholder="https://image.tmdb.org/t/p/w1280/... (Landscape 16:9)">
+          <label for="m-stream-url"><i class="fa-solid fa-play"></i> Primary Stream URL (Server 1) *</label>
+          <input type="text" id="m-stream-url" required placeholder="/api/moviebox/stream?id=... or direct MP4/m3u8">
         </div>
 
         <div class="input-group">
-          <label>Poster Image URL (Vertical 2:3)</label>
-          <input type="url" id="movie-poster" placeholder="https://image.tmdb.org/t/p/w500/...">
+          <label for="m-server2-url"><i class="fa-solid fa-server"></i> Backup Stream URL (Server 2 Optional)</label>
+          <input type="text" id="m-server2-url" placeholder="Direct Fast CDN mirror URL">
         </div>
 
         <div class="input-group">
-          <label>Direct Stream URL (CDN or .mp4 or .m3u8)</label>
-          <input type="url" id="movie-stream" required placeholder="https://... or /api/moviebox/stream?id=...">
+          <label for="m-subtitle-url"><i class="fa-solid fa-closed-captioning"></i> Subtitles URL (.srt / .vtt)</label>
+          <input type="text" id="m-subtitle-url" placeholder="https://... English / Bangla subtitle track">
         </div>
 
-        <div class="form-checkboxes" style="margin-top: 10px;">
-          <label class="checkbox-container">
-            <input type="checkbox" id="movie-featured">
-            <span class="checkmark"></span>
-            <span><i class="fa-solid fa-star text-amber"></i> Set as Hero Spotlight (Featured Banner on Home Screen)</span>
+        <div class="input-group">
+          <label for="m-description"><i class="fa-solid fa-align-left"></i> Movie Synopsis / Overview</label>
+          <textarea id="m-description" rows="3" placeholder="Enter storyline description..."></textarea>
+        </div>
+
+        <div class="toggle-group glass">
+          <label for="m-featured">
+            <strong>Set as Hero Spotlight Banner</strong>
+            <small>Display this movie on the top spotlight banner of the app</small>
           </label>
+          <input type="checkbox" id="m-featured" class="toggle-switch">
         </div>
 
         <div class="modal-footer">
@@ -790,142 +1239,359 @@
     </div>
   </div>
 
-  <!-- LIVE CHANNEL ADD/EDIT MODAL -->
-  <div id="channel-modal" class="modal-backdrop">
-    <div class="modal-card glass">
+  <!-- 2. SERIES MODAL (ADD / EDIT) -->
+  <div id="series-modal" class="modal-backdrop">
+    <div class="modal-card glass modal-lg">
       <div class="modal-header">
-        <h3 id="channel-modal-title"><i class="fa-solid fa-satellite-dish text-cyan"></i> Add / Edit Channel</h3>
-        <button class="btn-close" onclick="closeChannelModal()"><i class="fa-solid fa-xmark"></i></button>
+        <h3 id="series-modal-title"><i class="fa-solid fa-tv text-cyan"></i> Add / Edit Series</h3>
+        <button class="btn-close" onclick="closeSeriesModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <form id="channel-form">
-        <input type="hidden" id="channel-id">
-        <div class="form-row">
-          <div class="input-group flex-2">
-            <label>Channel Name</label>
-            <input type="text" id="channel-name" required placeholder="e.g. T Sports HD, Star Sports 1">
-          </div>
-          <div class="input-group flex-1">
-            <label>Category</label>
-            <input type="text" id="channel-category" required placeholder="Sports, News, Entertainment">
-          </div>
-        </div>
-
-        <div class="input-group">
-          <label>Logo URL</label>
-          <input type="url" id="channel-logo" placeholder="https://...">
-        </div>
-
-        <div class="input-group">
-          <label>HLS Stream URL (.m3u8)</label>
-          <input type="url" id="channel-stream" required placeholder="https://.../index.m3u8">
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn-secondary" onclick="closeChannelModal()">Cancel</button>
-          <button type="submit" class="btn-primary glow">Save Channel</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- BROADCAST ANNOUNCEMENT MODAL -->
-  <div id="notif-modal" class="modal-backdrop">
-    <div class="modal-card glass">
-      <div class="modal-header">
-        <h3><i class="fa-solid fa-bullhorn text-amber"></i> Broadcast Announcement</h3>
-        <button class="btn-close" onclick="closeNotifModal()"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <form id="notif-form">
-        <div class="form-row">
-          <div class="input-group flex-2">
-            <label>Notice Title</label>
-            <input type="text" id="notif-title" required placeholder="e.g. New Hindi Movies Added! 🎬">
-          </div>
-          <div class="input-group flex-1">
-            <label>Tag / Category</label>
-            <input type="text" id="notif-tag" placeholder="Update, System, New">
-          </div>
-        </div>
-
-        <div class="input-group">
-          <label>Message Content</label>
-          <textarea id="notif-message" rows="3" required placeholder="Enter message to broadcast to all mobile users..."></textarea>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn-secondary" onclick="closeNotifModal()">Cancel</button>
-          <button type="submit" class="btn-primary glow">Broadcast Notice</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- TOAST NOTIFICATIONS -->
-  <div id="toast-container"></div>
-
-  <script src="/admin/admin.js?v=2.3"></script>
-
-  <!-- HERO SPOTLIGHT / FEATURED BANNER MODAL -->
-  <div id="featured-modal" class="modal-backdrop">
-    <div class="modal-card glass" style="max-width: 580px;">
-      <div class="modal-header">
-        <h3><i class="fa-solid fa-star text-amber"></i> Hero Spotlight (Featured Banner)</h3>
-        <button class="btn-close" onclick="closeFeaturedModal()"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <form id="featured-form">
-        <input type="hidden" id="feat-id">
+      <form id="series-form" onsubmit="handleSeriesSubmit(event)">
+        <input type="hidden" id="s-id">
+        <input type="hidden" id="s-subject-id">
 
         <div class="form-row">
-          <div class="input-group flex-2">
-            <label>Title</label>
-            <input type="text" id="feat-title" required placeholder="e.g. Hope">
+          <div class="input-group">
+            <label for="s-title"><i class="fa-solid fa-heading"></i> Series Title *</label>
+            <input type="text" id="s-title" required placeholder="e.g. Crash Landing on You">
           </div>
-          <div class="input-group flex-1">
-            <label>Type</label>
-            <select id="feat-type">
-              <option value="movie">Movie</option>
-              <option value="series">Series</option>
+          <div class="input-group">
+            <label for="s-year"><i class="fa-solid fa-calendar"></i> Release Year *</label>
+            <input type="text" id="s-year" required placeholder="2019">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="input-group">
+            <label for="s-genre"><i class="fa-solid fa-masks-theater"></i> Genres</label>
+            <input type="text" id="s-genre" placeholder="Romance, Drama, Comedy">
+          </div>
+          <div class="input-group">
+            <label for="s-industry"><i class="fa-solid fa-globe"></i> Industry</label>
+            <select id="s-industry">
+              <option value="Korean">Korean</option>
+              <option value="Hollywood">Hollywood</option>
+              <option value="Bollywood">Bollywood</option>
+              <option value="Chinese">Chinese</option>
+              <option value="Anime">Anime</option>
+              <option value="Other">Other</option>
             </select>
           </div>
         </div>
 
-        <div class="input-group">
-          <label><i class="fa-solid fa-image text-cyan"></i> 16:9 Landscape Cover / Backdrop URL</label>
-          <input type="url" id="feat-cover" required placeholder="https://image.tmdb.org/t/p/w1280/... or https://..." oninput="updateFeatCoverPreview(this.value)">
-          <div id="feat-cover-preview-wrap" style="margin-top: 10px; border-radius: 8px; overflow: hidden; height: 160px; background: #111; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1);">
-            <img id="feat-cover-preview" src="" style="width: 100%; height: 100%; object-fit: cover; display: none;">
-            <span id="feat-cover-placeholder" style="color: var(--text-muted); font-size: 0.85rem;"><i class="fa-solid fa-image"></i> 16:9 Live Banner Preview</span>
+        <div class="form-row">
+          <div class="input-group">
+            <label for="s-rating"><i class="fa-solid fa-star"></i> Rating</label>
+            <input type="text" id="s-rating" placeholder="8.7">
+          </div>
+          <div class="input-group">
+            <label for="s-views"><i class="fa-solid fa-eye"></i> Views</label>
+            <input type="number" id="s-views" placeholder="1250">
+          </div>
+          <div class="input-group">
+            <label for="s-category"><i class="fa-solid fa-folder"></i> Category</label>
+            <input type="text" id="s-category" placeholder="Korean Series">
           </div>
         </div>
 
         <div class="form-row">
-          <div class="input-group flex-1">
-            <label>Portrait Poster URL (2:3)</label>
-            <input type="url" id="feat-poster" placeholder="https://image.tmdb.org/t/p/w500/...">
+          <div class="input-group">
+            <label for="s-poster"><i class="fa-solid fa-file-image"></i> Poster URL *</label>
+            <input type="url" id="s-poster" required placeholder="https://image.tmdb.org/t/p/w500/...">
           </div>
-          <div class="input-group flex-1">
-            <label>Release Year</label>
-            <input type="text" id="feat-year" value="2026">
+          <div class="input-group">
+            <label for="s-backdrop"><i class="fa-solid fa-image"></i> Backdrop URL</label>
+            <input type="url" id="s-backdrop" placeholder="https://image.tmdb.org/t/p/original/...">
           </div>
         </div>
 
         <div class="input-group">
-          <label>Direct Stream URL</label>
-          <input type="url" id="feat-stream" placeholder="https://... or /api/moviebox/stream?id=...">
+          <label for="s-description"><i class="fa-solid fa-align-left"></i> Overview / Description</label>
+          <textarea id="s-description" rows="3" placeholder="Enter series synopsis..."></textarea>
         </div>
 
-        <div class="input-group">
-          <label>Overview / Synopsis</label>
-          <textarea id="feat-desc" rows="2" placeholder="Synopsis shown on hero banner..."></textarea>
+        <div class="toggle-group glass">
+          <label for="s-featured">
+            <strong>Set as Hero Spotlight Banner</strong>
+            <small>Display this series on the top hero banner in the app</small>
+          </label>
+          <input type="checkbox" id="s-featured" class="toggle-switch">
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn-secondary" onclick="closeFeaturedModal()">Cancel</button>
-          <button type="submit" class="btn-primary glow"><i class="fa-solid fa-check"></i> Set as Live Hero Spotlight</button>
+          <button type="button" class="btn-secondary" onclick="closeSeriesModal()">Cancel</button>
+          <button type="submit" class="btn-primary glow">Save Series Metadata</button>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- 3. EPISODE STUDIO MODAL (DEEP SEASONS & EPISODES MANAGER) -->
+  <div id="episodes-studio-modal" class="modal-backdrop">
+    <div class="modal-card glass modal-xl">
+      <div class="modal-header">
+        <div>
+          <h3 id="studio-series-title"><i class="fa-solid fa-tv text-cyan"></i> Episode Studio: Series</h3>
+          <p id="studio-series-meta">Manage seasons, episodes, streaming servers and subtitles</p>
+        </div>
+        <button class="btn-close" onclick="closeEpisodeStudio()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="studio-body">
+        <!-- SEASONS TABS HEADER -->
+        <div class="studio-seasons-bar">
+          <div class="seasons-tab-list" id="studio-seasons-tabs">
+            <!-- Dynamically populated Season buttons -->
+          </div>
+          <div class="seasons-bar-actions">
+            <button class="btn-sm btn-secondary" onclick="addNewSeasonToStudio()">
+              <i class="fa-solid fa-plus"></i> Add Season
+            </button>
+            <button class="btn-sm btn-primary glow-sm" onclick="openAddEpisodeForm()">
+              <i class="fa-solid fa-plus"></i> Add Episode
+            </button>
+          </div>
+        </div>
+
+        <!-- EPISODES LIST -->
+        <div class="studio-episodes-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th width="60">Ep #</th>
+                <th>Title</th>
+                <th>Duration</th>
+                <th>Server 1 Stream URL</th>
+                <th>Subtitles</th>
+                <th width="150" class="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="studio-episodes-tbody">
+              <!-- Dynamically populated episodes -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="syncSeriesWithMovieBoxInStudio()">
+          <i class="fa-solid fa-arrows-rotate"></i> 1-Click Sync With MovieBox
+        </button>
+        <button type="button" class="btn-primary glow" onclick="saveAllStudioEpisodes()">
+          <i class="fa-solid fa-floppy-disk"></i> Save All Seasons &amp; Episodes
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. ADD / EDIT SINGLE EPISODE MODAL -->
+  <div id="single-episode-modal" class="modal-backdrop">
+    <div class="modal-card glass modal-md">
+      <div class="modal-header">
+        <h3 id="single-ep-modal-title"><i class="fa-solid fa-film text-cyan"></i> Edit Episode</h3>
+        <button class="btn-close" onclick="closeSingleEpisodeModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="single-ep-form" onsubmit="handleSingleEpSubmit(event)">
+        <input type="hidden" id="ep-index">
+        <input type="hidden" id="ep-season-idx">
+
+        <div class="form-row">
+          <div class="input-group">
+            <label for="ep-number"><i class="fa-solid fa-hashtag"></i> Episode Number *</label>
+            <input type="number" id="ep-number" required placeholder="1">
+          </div>
+          <div class="input-group">
+            <label for="ep-duration"><i class="fa-solid fa-clock"></i> Duration</label>
+            <input type="text" id="ep-duration" placeholder="45 min">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="ep-title"><i class="fa-solid fa-heading"></i> Episode Title *</label>
+          <input type="text" id="ep-title" required placeholder="Episode 1">
+        </div>
+
+        <div class="input-group">
+          <label for="ep-stream-url"><i class="fa-solid fa-play"></i> Primary Stream URL *</label>
+          <input type="text" id="ep-stream-url" required placeholder="/api/moviebox/stream?id=...&se=1&ep=1 or direct MP4/m3u8">
+        </div>
+
+        <div class="input-group">
+          <label for="ep-server2-url"><i class="fa-solid fa-server"></i> Server 2 Direct CDN Stream (Optional)</label>
+          <input type="text" id="ep-server2-url" placeholder="Direct fast CDN url">
+        </div>
+
+        <div class="input-group">
+          <label for="ep-sub-url"><i class="fa-solid fa-closed-captioning"></i> Subtitles URL (.srt / .vtt)</label>
+          <input type="text" id="ep-sub-url" placeholder="https://... subtitle url">
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeSingleEpisodeModal()">Cancel</button>
+          <button type="submit" class="btn-primary glow">Save Episode</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. LIVE CHANNEL MODAL (ADD / EDIT) -->
+  <div id="channel-modal" class="modal-backdrop">
+    <div class="modal-card glass modal-md">
+      <div class="modal-header">
+        <h3 id="channel-modal-title"><i class="fa-solid fa-satellite-dish text-emerald"></i> Add / Edit Live Channel</h3>
+        <button class="btn-close" onclick="closeChannelModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="channel-form" onsubmit="handleChannelSubmit(event)">
+        <input type="hidden" id="ch-id">
+
+        <div class="input-group">
+          <label for="ch-name"><i class="fa-solid fa-heading"></i> Channel Name *</label>
+          <input type="text" id="ch-name" required placeholder="e.g. T Sports HD Live">
+        </div>
+
+        <div class="form-row">
+          <div class="input-group">
+            <label for="ch-category"><i class="fa-solid fa-folder"></i> Category *</label>
+            <select id="ch-category" required>
+              <option value="Sports">Sports</option>
+              <option value="Bangla">Bangla Channels</option>
+              <option value="News">News</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Movies">Movies</option>
+              <option value="Kids">Kids</option>
+              <option value="Infotainment">Infotainment</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="ch-badge"><i class="fa-solid fa-tag"></i> Badge</label>
+            <input type="text" id="ch-badge" placeholder="LIVE / HD">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="ch-stream-url"><i class="fa-solid fa-play"></i> Stream URL (.m3u8 HLS) *</label>
+          <input type="url" id="ch-stream-url" required placeholder="https://.../index.m3u8">
+        </div>
+
+        <div class="input-group">
+          <label for="ch-logo"><i class="fa-solid fa-image"></i> Channel Logo URL</label>
+          <input type="text" id="ch-logo" placeholder="assets/channels/tsports.svg or https://...">
+        </div>
+
+        <div class="form-row">
+          <div class="input-group">
+            <label for="ch-referer"><i class="fa-solid fa-link"></i> Referer Header (Optional)</label>
+            <input type="text" id="ch-referer" placeholder="e.g. https://tsports.com/">
+          </div>
+          <div class="input-group">
+            <label for="ch-user-agent"><i class="fa-solid fa-user-gear"></i> User-Agent (Optional)</label>
+            <input type="text" id="ch-user-agent" placeholder="Mozilla/5.0...">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeChannelModal()">Cancel</button>
+          <button type="submit" class="btn-primary glow">Save Live Channel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6. UPCOMING RELEASE MODAL -->
+  <div id="upcoming-modal" class="modal-backdrop">
+    <div class="modal-card glass modal-md">
+      <div class="modal-header">
+        <h3 id="upcoming-modal-title"><i class="fa-solid fa-calendar-days text-cyan"></i> Add Upcoming Release</h3>
+        <button class="btn-close" onclick="closeUpcomingModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="upcoming-form" onsubmit="handleUpcomingSubmit(event)">
+        <input type="hidden" id="upc-id">
+
+        <div class="input-group">
+          <label for="upc-title"><i class="fa-solid fa-heading"></i> Title *</label>
+          <input type="text" id="upc-title" required placeholder="e.g. Sweet Home Season 4">
+        </div>
+
+        <div class="form-row">
+          <div class="input-group">
+            <label for="upc-year"><i class="fa-solid fa-calendar"></i> Year</label>
+            <input type="text" id="upc-year" placeholder="2026">
+          </div>
+          <div class="input-group">
+            <label for="upc-genre"><i class="fa-solid fa-masks-theater"></i> Genre</label>
+            <input type="text" id="upc-genre" placeholder="Sci-Fi, Action">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="input-group">
+            <label for="upc-month"><i class="fa-solid fa-clock"></i> Release Month</label>
+            <input type="text" id="upc-month" placeholder="Nov">
+          </div>
+          <div class="input-group">
+            <label for="upc-day"><i class="fa-solid fa-hashtag"></i> Release Day</label>
+            <input type="text" id="upc-day" placeholder="15">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="upc-poster"><i class="fa-solid fa-file-image"></i> Poster URL *</label>
+          <input type="url" id="upc-poster" required placeholder="https://image.tmdb.org/t/p/w500/...">
+        </div>
+
+        <div class="input-group">
+          <label for="upc-description"><i class="fa-solid fa-align-left"></i> Description</label>
+          <textarea id="upc-description" rows="3" placeholder="Enter upcoming release description..."></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeUpcomingModal()">Cancel</button>
+          <button type="submit" class="btn-primary glow">Save Upcoming</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 7. IN-ADMIN VIDEO PREVIEW PLAYER MODAL -->
+  <div id="player-modal" class="modal-backdrop">
+    <div class="modal-card glass modal-player">
+      <div class="modal-header">
+        <div>
+          <h3 id="player-title"><i class="fa-solid fa-circle-play text-emerald"></i> In-Admin Stream Preview</h3>
+          <p id="player-stream-url" class="stream-url-text">Loading...</p>
+        </div>
+        <button class="btn-close" onclick="closeVideoPlayer()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="player-wrapper">
+        <video id="preview-video" controls autoplay playsinline class="video-element"></video>
+      </div>
+      <div class="player-status-bar">
+        <span id="player-status-badge" class="badge-status success"><i class="fa-solid fa-circle-check"></i> Stream Ready</span>
+        <span id="player-info-text">HLS.js / Native MP4 Playback Engine</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. CATALOG PICKER MODAL (FOR HERO SPOTLIGHT) -->
+  <div id="picker-modal" class="modal-backdrop">
+    <div class="modal-card glass modal-lg">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-star text-amber"></i> Pick Item for Hero Spotlight</h3>
+        <button class="btn-close" onclick="closeCatalogPicker()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="picker-search-bar">
+        <input type="text" id="picker-search-input" placeholder="Search catalog to set as Hero..." oninput="filterPickerList(this.value)">
+      </div>
+      <div class="picker-list-container" id="picker-items-list">
+        <!-- Dynamically populated -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. TOAST NOTIFICATIONS CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Admin JavaScript -->
+  <script src="/admin/admin.js?v=3.2"></script>
 </body>
 </html>

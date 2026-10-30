@@ -1581,6 +1581,223 @@ class AdminService {
     };
   }
 
+  /**
+   * App Settings & Remote Config
+   */
+  getAppSettings() {
+    const content = readContent();
+    const appUpdate = content.appUpdate || {
+      enabled: true,
+      latestVersionCode: 9,
+      latestVersionName: "3.1.1",
+      minVersionCode: 9,
+      forceUpdate: true,
+      title: "New FOBS TV Update (v3.1.1) Available!",
+      message: "Please update FOBS TV to the latest version.",
+      releaseNotes: [
+        "⚠️ আগের অ্যাপটি আনইনস্টল করে নতুন v3.1.1 ইনস্টল করুন",
+        "MX Player Style: সাবটাইটেল টেনে উপরে নিচে সরানোর সুবিধা",
+        "ইনস্ট্যান্ট প্লেব্যাক ও কোনো ধরনের বাফারিং সমস্যা নেই",
+        "ইন-অ্যাপ অফলাইন ডাউনলোড এবং অফলাইন ওয়াচিং",
+        "মাল্টি-অডিও ও আল্ট্রা ফাস্ট স্ট্রিমিং"
+      ],
+      downloadUrl: "https://fobs-apk-download.vercel.app/",
+      fallbackUrl: "http://187.127.114.52/download/apk",
+      fileSize: "6.1 MB"
+    };
+
+    const settings = content.settings || {
+      appName: 'FOBS TV',
+      appTagline: 'Infinite Entertainment Stream',
+      marqueeNotice: '🔥 Welcome to FOBS TV! Watch Movies, Series & Live TV in HD without buffering.',
+      maintenanceMode: false,
+      maintenanceMessage: 'System maintenance in progress. We will be back shortly!',
+      supportTelegram: 'https://t.me/fobs_support',
+      supportWhatsApp: '',
+      officialApkUrl: 'http://187.127.114.52/download/apk',
+      defaultAudioLang: 'Hindi'
+    };
+
+    return { success: true, appUpdate, settings };
+  }
+
+  saveAppSettings({ appUpdate, settings }) {
+    const content = readContent();
+    if (appUpdate && typeof appUpdate === 'object') {
+      content.appUpdate = {
+        ...(content.appUpdate || {}),
+        ...appUpdate
+      };
+      if (content.appUpdate.latestVersionCode !== undefined) {
+        content.appUpdate.latestVersionCode = parseInt(content.appUpdate.latestVersionCode, 10) || 9;
+      }
+      if (content.appUpdate.minVersionCode !== undefined) {
+        content.appUpdate.minVersionCode = parseInt(content.appUpdate.minVersionCode, 10) || 9;
+      }
+      if (typeof content.appUpdate.forceUpdate === 'string') {
+        content.appUpdate.forceUpdate = content.appUpdate.forceUpdate === 'true';
+      }
+      if (typeof content.appUpdate.enabled === 'string') {
+        content.appUpdate.enabled = content.appUpdate.enabled === 'true';
+      }
+      if (typeof content.appUpdate.releaseNotes === 'string') {
+        content.appUpdate.releaseNotes = content.appUpdate.releaseNotes.split('\n').map(s => s.trim()).filter(Boolean);
+      }
+    }
+
+    if (settings && typeof settings === 'object') {
+      content.settings = {
+        ...(content.settings || {}),
+        ...settings
+      };
+      if (typeof content.settings.maintenanceMode === 'string') {
+        content.settings.maintenanceMode = content.settings.maintenanceMode === 'true';
+      }
+    }
+
+    writeContent(content);
+    return { success: true, appUpdate: content.appUpdate, settings: content.settings };
+  }
+
+  /**
+   * Upcoming Management
+   */
+  getUpcoming() {
+    const content = readContent();
+    return content.upcoming || [];
+  }
+
+  saveUpcoming(item) {
+    if (!item || !item.title) throw new Error('Upcoming title is required');
+    const content = readContent();
+    if (!content.upcoming) content.upcoming = [];
+    if (!item.id) {
+      item.id = `up_${Date.now()}`;
+    }
+    item.type = 'upcoming';
+    const idx = content.upcoming.findIndex(u => u.id === item.id);
+    if (idx >= 0) {
+      content.upcoming[idx] = { ...content.upcoming[idx], ...item };
+    } else {
+      content.upcoming.unshift(item);
+    }
+    writeContent(content);
+    return { success: true, item };
+  }
+
+  deleteUpcoming(id) {
+    const content = readContent();
+    content.upcoming = (content.upcoming || []).filter(u => u.id !== id);
+    writeContent(content);
+    return { success: true };
+  }
+
+  /**
+   * Deep Season & Episode Studio Management
+   */
+  getSeriesDetails(id) {
+    const content = readContent();
+    const series = (content.series || []).find(s => s.id === id);
+    if (!series) throw new Error(`Series not found with ID: ${id}`);
+    return { success: true, series };
+  }
+
+  saveSeriesEpisodes(seriesId, seasons) {
+    if (!Array.isArray(seasons)) throw new Error('Seasons must be an array');
+    const content = readContent();
+    const series = (content.series || []).find(s => s.id === seriesId);
+    if (!series) throw new Error(`Series not found with ID: ${seriesId}`);
+
+    let totalEps = 0;
+    seasons.forEach((season, sIdx) => {
+      season.seasonNumber = season.seasonNumber !== undefined ? parseInt(season.seasonNumber, 10) : (sIdx + 1);
+      season.title = season.title || `Season ${season.seasonNumber}`;
+      season.name = season.name || season.title;
+      if (Array.isArray(season.episodes)) {
+        totalEps += season.episodes.length;
+        season.episodesCount = season.episodes.length;
+        season.episodes.forEach((ep, eIdx) => {
+          ep.episode = ep.episode !== undefined ? parseInt(ep.episode, 10) : (eIdx + 1);
+          ep.episodeNumber = ep.episode;
+          ep.number = ep.number || String(ep.episode).padStart(2, '0');
+          ep.title = ep.title || `Episode ${ep.episode}`;
+          ep.season = season.seasonNumber;
+          if (!ep.servers || !Array.isArray(ep.servers) || ep.servers.length === 0) {
+            if (ep.streamUrl) {
+              ep.servers = [{ name: 'Server 1 (HD)', url: ep.streamUrl, quality: '1080p', isDirect: true }];
+            }
+          }
+        });
+      } else {
+        season.episodes = [];
+        season.episodesCount = 0;
+      }
+    });
+
+    series.seasons = seasons;
+    series.seasonsCount = seasons.length;
+    series.episodesCount = totalEps;
+    series.totalEpisodes = totalEps;
+    if (seasons.length > 0 && seasons[0].episodes && seasons[0].episodes.length > 0) {
+      series.episodes = seasons[0].episodes;
+      series.streamUrl = series.episodes[0].streamUrl || series.streamUrl;
+      series.servers = series.episodes[0].servers || series.servers;
+    }
+    series.duration = seasons.length > 1 ? `${seasons.length} Seasons (${totalEps} Episodes)` : `${totalEps} Episodes`;
+
+    writeContent(content);
+    return { success: true, series, totalEpisodes: totalEps, seasonsCount: seasons.length };
+  }
+
+  /**
+   * Backup & Restore
+   */
+  getBackupCatalog() {
+    return readContent();
+  }
+
+  restoreBackupCatalog(catalogData) {
+    if (!catalogData || typeof catalogData !== 'object') {
+      throw new Error('Invalid catalog data');
+    }
+    if (!Array.isArray(catalogData.movies) || !Array.isArray(catalogData.series)) {
+      throw new Error('Backup data must contain movies and series arrays');
+    }
+    catalogData.movies = catalogData.movies || [];
+    catalogData.series = catalogData.series || [];
+    catalogData.liveTv = Array.isArray(catalogData.liveTv) ? catalogData.liveTv : [];
+    catalogData.upcoming = Array.isArray(catalogData.upcoming) ? catalogData.upcoming : [];
+    writeContent(catalogData);
+    return {
+      success: true,
+      stats: {
+        movies: catalogData.movies.length,
+        series: catalogData.series.length,
+        liveTv: catalogData.liveTv.length,
+        upcoming: catalogData.upcoming.length
+      }
+    };
+  }
+
+  /**
+   * 1-Click Cloud Deployment to VPS
+   */
+  async triggerVpsDeploy() {
+    try {
+      const resp = await axios.post('http://187.127.114.52/api/deploy', {
+        secret: 'fobs_deploy_2026'
+      }, {
+        headers: { 'x-deploy-secret': 'fobs_deploy_2026' },
+        timeout: 45000
+      });
+      return { success: true, data: resp.data };
+    } catch (err) {
+      return {
+        success: false,
+        error: err.response?.data?.error || err.message || 'VPS deployment request failed'
+      };
+    }
+  }
 
 }
 

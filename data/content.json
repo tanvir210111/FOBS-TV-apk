@@ -662760,5 +662760,9 @@
       "poster": "https://i.imgur.com/sh0yFSf.png",
       "badge": "LIVE"
     }
-  ]
+  ],
+  "settings": {
+    "appName": "FOBS TV",
+    "marqueeNotice": "🔥 Welcome to FOBS TV v3.2!"
+  }
 }

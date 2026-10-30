@@ -3009,6 +3009,119 @@ app.post('/api/admin/series/sync-all', adminService.authenticate, async (req, re
   }
 });
 
+// ==========================================
+// NEW ADMIN & APP CONTROL ENDPOINTS
+// ==========================================
+
+// Public App Settings (used by mobile app & web player)
+app.get('/api/app-settings', (req, res) => {
+  try {
+    const data = adminService.getAppSettings();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin App Settings CRUD
+app.get('/api/admin/app-settings', adminService.authenticate, (req, res) => {
+  try {
+    const data = adminService.getAppSettings();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/admin/app-settings', adminService.authenticate, (req, res) => {
+  try {
+    const data = adminService.saveAppSettings(req.body);
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin Series Episodes Studio
+app.get('/api/admin/series/:id', adminService.authenticate, (req, res) => {
+  try {
+    const data = adminService.getSeriesDetails(req.params.id);
+    res.json(data);
+  } catch (err) {
+    res.status(404).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/admin/series/:id/episodes', adminService.authenticate, (req, res) => {
+  try {
+    const { seasons } = req.body;
+    const data = adminService.saveSeriesEpisodes(req.params.id, seasons);
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin Upcoming Releases CRUD
+app.get('/api/admin/upcoming', adminService.authenticate, (req, res) => {
+  try {
+    const data = adminService.getUpcoming();
+    res.json({ success: true, upcoming: data });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/admin/upcoming', adminService.authenticate, (req, res) => {
+  try {
+    const data = adminService.saveUpcoming(req.body);
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.delete('/api/admin/upcoming/:id', adminService.authenticate, (req, res) => {
+  try {
+    const data = adminService.deleteUpcoming(req.params.id);
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Database Full Backup Download & Restore
+app.get('/api/admin/backup/download', adminService.authenticate, (req, res) => {
+  try {
+    const catalog = adminService.getBackupCatalog();
+    const filename = `fobs_tv_catalog_backup_${new Date().toISOString().split('T')[0]}.json`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(catalog, null, 2));
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/admin/backup/restore', adminService.authenticate, (req, res) => {
+  try {
+    const result = adminService.restoreBackupCatalog(req.body);
+    res.json(result);
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+});
+
+// 1-Click Trigger VPS Deployment from Admin
+app.post('/api/admin/deploy-vps', adminService.authenticate, async (req, res) => {
+  try {
+    const result = await adminService.triggerVpsDeploy();
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // One-Click / Webhook Auto-Deploy to VPS
 app.all('/api/deploy', (req, res) => {
   const secret = req.query.secret || req.body?.secret || req.headers['x-deploy-secret'];
@@ -3066,3 +3179,5 @@ if (isPrimaryWorker) setTimeout(async () => {
     console.error('[Auto-Refresh Worker] Initial refresh error:', e.message);
   }
 }, 3000);
+
+module.exports = app;
