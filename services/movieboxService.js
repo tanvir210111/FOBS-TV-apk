@@ -30,11 +30,7 @@ const BACKUP_URL_2 = 'https://movieboxapp.in';
 // Domains ranked by lowest TTFB response time (<700ms first)
 const PLAY_DOMAINS = [
   'https://movie-box.co',
-  'https://h5-api.aoneroom.com',
-  'https://movieboxapp.in',
-  'https://123moviesfree.club',
-  'https://movieboxonline.net',
-  'https://sflix.film'
+  'https://h5-api.aoneroom.com'
 ];
 
 const SEARCH_DOMAINS = [
@@ -211,7 +207,10 @@ class MovieBoxService {
           if (suggestions.length > 0) return suggestions;
         }
       } catch (e) {
-        // Try next domain
+        if (e.response?.status === 429 || e.response?.data?.code === 429) {
+          // If domain returned 429 rate limit, stop immediately and fall back to content.json
+          break;
+        }
       }
     }
 
@@ -435,7 +434,10 @@ class MovieBoxService {
           };
         }
       } catch (e) {
-        // Try next domain
+        if (e.response?.status === 429 || e.response?.data?.code === 429) {
+          // If domain returned 429 rate limit, stop immediately and fall back to content.json
+          break;
+        }
       }
     }
     return null;

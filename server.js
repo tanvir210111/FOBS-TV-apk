@@ -1170,16 +1170,6 @@ app.get('/api/moviebox/stream', async (req, res) => {
       media = cachedEntry.media;
     } else {
       media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);
-      if (!media || !media.streamUrl) {
-        if (seNum !== 0 || epNum !== 0) {
-          media = await movieboxService.resolveMedia(id, resolvedPath || '', 0, epNum);
-        }
-      }
-      if (!media || !media.streamUrl) {
-        if (seNum !== 0 || epNum !== 0) {
-          media = await movieboxService.resolveMedia(id, resolvedPath || '', 0, 0);
-        }
-      }
       if (media && media.streamUrl) {
         movieboxStreamCache.set(cacheKey, { media, timestamp: Date.now() });
       }
@@ -3027,15 +3017,7 @@ app.all('/api/deploy', (req, res) => {
 // syncService.startHourlySyncTimer();
 
 
-app.get('/api/debug-moviebox', async (req, res) => {
-  try {
-    const s = Date.now();
-    const media = await movieboxService.resolveMedia('621608156268691750', 'final-table-a1G9iGEikF1', 1, 1);
-    res.json({ time: Date.now() - s, media });
-  } catch (err) {
-    res.json({ error: err.message, status: err.response?.status, data: err.response?.data });
-  }
-});
+
 
 app.listen(PORT, () => {
   console.log(`🎬 FOBS TV Streaming App running at http://localhost:${PORT}`);
