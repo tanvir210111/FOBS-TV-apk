@@ -538,10 +538,7 @@
             <h2 class="section-title">App Users & Active Audience</h2>
             <p class="section-desc">Real-time registered users, active device installations, and audience analytics</p>
           </div>
-          <div style="display:flex; gap:10px; align-items:center;">
-            <button class="btn btn-secondary" onclick="loadUsers()"><i class="fa-solid fa-rotate"></i> Refresh Users</button>
-            <button class="btn btn-danger" onclick="purgeOldUsers()"><i class="fa-solid fa-trash-can"></i> Purge Older Versions (Keep v3.1.1)</button>
-          </div>
+          <button class="btn btn-secondary" onclick="loadUsers()"><i class="fa-solid fa-rotate"></i> Refresh Users</button>
         </div>
 
         <div class="data-table-container glass">
@@ -550,7 +547,6 @@
               <tr>
                 <th>User / Device</th>
                 <th>Email / Device IP</th>
-                <th>App Version</th>
                 <th>Platform</th>
                 <th>Watchlist</th>
                 <th>Joined Date</th>
@@ -559,7 +555,7 @@
               </tr>
             </thead>
             <tbody id="users-table-body">
-              <tr><td colspan="8" class="text-center py-4 text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Loading users...</td></tr>
+              <tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Loading users...</td></tr>
             </tbody>
           </table>
         </div>

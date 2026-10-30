@@ -756,7 +756,7 @@ function renderSeriesTable(seriesList) {
   tbody.innerHTML = '';
 
   if (!seriesList || seriesList.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4">No series found.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4">No series found.</td></tr>';
     return;
   }
 
@@ -1098,7 +1098,7 @@ function renderRequestsTable(requests) {
   tbody.innerHTML = '';
 
   if (!requests || requests.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4">No user requests pending.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4">No user requests pending.</td></tr>';
     return;
   }
 
@@ -1421,16 +1421,14 @@ async function autoSyncAllSeries() {
 async function loadUsers() {
   const tbody = document.getElementById('users-table-body');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4 text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Loading users and mobile app devices...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Loading users and mobile app devices...</td></tr>';
 
   try {
     const res = await apiFetch('/api/admin/users');
-    // Strictly keep registered v3.1.1 signed-in members and filter out anonymous older devices
-    const rawUsers = (res && res.users) || [];
-    const users = rawUsers.filter(u => u.type === 'Registered Member' || u.appVersion === '3.1.1' || String(u.appVersion || '').includes('3.1.1'));
+    const users = (res && res.users) || [];
 
     if (users.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4 text-muted"><i class="fa-solid fa-mobile-screen"></i> No active users recorded yet. Launching the mobile app will automatically register your device here!</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-mobile-screen"></i> No active users recorded yet. Launching the mobile app will automatically register your device here!</td></tr>';
       return;
     }
 
@@ -1439,12 +1437,6 @@ async function loadUsers() {
       const joined = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'N/A';
       const lastActive = u.lastActive ? new Date(u.lastActive).toLocaleString() : (u.lastLogin ? new Date(u.lastLogin).toLocaleString() : 'N/A');
       const isOnline = u.status === 'Online Now' || (u.lastActive && (Date.now() - new Date(u.lastActive).getTime() < 15 * 60 * 1000));
-      const rawVer = u.appVersion || '';
-      const isV311 = rawVer === '3.1.1' || rawVer === 'v3.1.1' || String(rawVer).includes('3.1.1');
-      const ver = isV311 ? '3.1.1' : (rawVer || 'Older');
-      const verBadge = isV311
-        ? `<span class="badge" style="background:rgba(16,185,129,0.15); color:#10B981; font-weight:600;"><i class="fa-solid fa-circle-check"></i> v3.1.1</span>`
-        : `<span class="badge" style="background:rgba(239,68,68,0.15); color:#EF4444;"><i class="fa-solid fa-triangle-exclamation"></i> ${escapeHtml(ver)}</span>`;
 
       return `
         <tr>
@@ -1458,7 +1450,6 @@ async function loadUsers() {
             </div>
           </td>
           <td style="color:var(--text-secondary); font-family:monospace; font-size:12px;">${escapeHtml(u.email || u.id || 'N/A')}</td>
-          <td>${verBadge}</td>
           <td><span class="badge" style="background:rgba(59,130,246,0.15); color:#3B82F6;"><i class="fa-brands fa-android"></i> ${escapeHtml(u.platform || 'Android App')}</span></td>
           <td><span class="badge" style="background:rgba(139,92,246,0.15); color:#8B5CF6;">${u.watchlistCount || 0} items</span></td>
           <td style="color:var(--text-muted); font-size:12px;">${joined}</td>
@@ -1472,33 +1463,7 @@ async function loadUsers() {
       `;
     }).join('');
   } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-danger">Failed to load users: ${err.message}</td></tr>`;
-  }
-}
-
-async function purgeOldUsers() {
-  const confirmed = confirm('Are you sure you want to delete all users and devices from older app versions?\n\nThis will permanently keep only v3.1.1 users and devices.');
-  if (!confirmed) return;
-
-  try {
-    const res = await apiFetch('/api/admin/users/purge-old', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ version: '3.1.1' })
-    });
-    if (res && res.success) {
-      showToast(`Cleaned successfully: ${res.deletedUsers} older users and ${res.deletedDevices} old devices removed. Kept ${res.keptUsers} v3.1.1 users.`, 'success');
-      loadUsers();
-      if (typeof apiFetch === 'function') {
-        apiFetch('/api/admin/stats').then(st => {
-          if (st && st.stats) renderStats(st.stats);
-        }).catch(() => {});
-      }
-    } else {
-      showToast('Purge failed: ' + (res?.error || 'Unknown error'), 'error');
-    }
-  } catch (err) {
-    showToast('Failed to purge: ' + err.message, 'error');
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Failed to load users: ${err.message}</td></tr>`;
   }
 }
 
@@ -1521,7 +1486,7 @@ let videoReportsList = [];
 async function loadReports() {
   const tbody = document.getElementById('reports-table-body');
   const badge = document.getElementById('badge-reports-count');
-  if (tbody) tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4 text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Loading video reports...</td></tr>';
+  if (tbody) tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Loading video reports...</td></tr>';
 
   try {
     const res = await apiFetch('/api/admin/reports');
@@ -1531,7 +1496,7 @@ async function loadReports() {
 
     if (!tbody) return;
     if (videoReportsList.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4 text-muted"><i class="fa-solid fa-circle-check" style="color: #00d26a;"></i> No issue reports submitted. Everything running smoothly!</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa-solid fa-circle-check" style="color: #00d26a;"></i> No issue reports submitted. Everything running smoothly!</td></tr>';
       return;
     }
 
@@ -1567,7 +1532,7 @@ async function loadReports() {
       `;
     }).join('');
   } catch (err) {
-    if (tbody) tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-danger">Failed to load reports: ${err.message}</td></tr>`;
+    if (tbody) tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Failed to load reports: ${err.message}</td></tr>`;
   }
 }
 

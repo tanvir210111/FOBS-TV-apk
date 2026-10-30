@@ -84,31 +84,57 @@ function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android',
 
 async function getUserStats() {
   const usersMap = getLocalUsersMap();
+  const devicesMap = getDevicesMap();
   const registeredUsers = Object.values(usersMap);
+  const devices = Object.values(devicesMap);
 
-  // Strictly v3.1.1 registered members who signed in
-  const v311Users = registeredUsers.map(u => ({
-    id: u._id || u.googleId,
-    name: u.name || 'Registered Member',
-    email: u.email || 'Google User',
-    picture: u.picture || '',
-    type: 'Registered Member',
-    platform: 'Google Account',
-    appVersion: '3.1.1',
-    watchlistCount: Array.isArray(u.watchlist) ? u.watchlist.length : 0,
-    historyCount: Array.isArray(u.history) ? u.history.length : 0,
-    createdAt: u.createdAt || u.lastLogin || new Date().toISOString(),
-    lastActive: u.lastLogin || u.createdAt || new Date().toISOString(),
-    status: 'Active Member'
-  }));
+  const totalRegistered = registeredUsers.length;
+  const totalDevices = devices.length;
+  const totalUsers = Math.max(totalRegistered + totalDevices, totalDevices, totalRegistered, totalRegistered > 0 ? totalRegistered : 0);
 
-  v311Users.sort((a, b) => new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime());
+  // Combine registered Google users + active mobile app devices exactly as original
+  const combinedList = [
+    ...registeredUsers.map(u => {
+      const isOnline = u.lastLogin && (Date.now() - new Date(u.lastLogin).getTime() < 15 * 60 * 1000);
+      return {
+        id: u._id || u.googleId,
+        name: u.name || 'User',
+        email: u.email || 'Google User',
+        picture: u.picture || '',
+        type: 'Registered Member',
+        platform: 'Google Account',
+        watchlistCount: Array.isArray(u.watchlist) ? u.watchlist.length : 0,
+        historyCount: Array.isArray(u.history) ? u.history.length : 0,
+        createdAt: u.createdAt || u.lastLogin || new Date().toISOString(),
+        lastActive: u.lastLogin || u.createdAt || new Date().toISOString(),
+        status: isOnline ? 'Online Now' : 'Active'
+      };
+    }),
+    ...devices.map(d => {
+      const isOnline = d.lastActive && (Date.now() - new Date(d.lastActive).getTime() < 15 * 60 * 1000);
+      return {
+        id: d.id,
+        name: `Mobile App User (${d.platform || 'Android App'})`,
+        email: d.ip ? `IP: ${d.ip.replace('::ffff:', '')}` : d.id,
+        picture: '',
+        type: 'App Installation',
+        platform: d.platform || 'Android App',
+        watchlistCount: 0,
+        historyCount: 0,
+        createdAt: d.firstSeen || d.lastActive || new Date().toISOString(),
+        lastActive: d.lastActive || d.firstSeen || new Date().toISOString(),
+        status: isOnline ? 'Online Now' : 'Active'
+      };
+    })
+  ];
+
+  combinedList.sort((a, b) => new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime());
 
   return {
-    totalUsers: v311Users.length,
-    totalRegistered: v311Users.length,
-    totalDevices: 0,
-    users: v311Users
+    totalUsers,
+    totalRegistered,
+    totalDevices,
+    users: combinedList
   };
 }
 
