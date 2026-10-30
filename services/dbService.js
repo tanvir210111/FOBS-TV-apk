@@ -114,11 +114,13 @@ async function getUserStats() {
       const isOnline = d.lastActive && (Date.now() - new Date(d.lastActive).getTime() < 15 * 60 * 1000);
       return {
         id: d.id,
+        deviceId: d.id,
         name: `Mobile App User (${d.platform || 'Android App'})`,
         email: d.ip ? `IP: ${d.ip.replace('::ffff:', '')}` : d.id,
         picture: '',
         type: 'App Installation',
         platform: d.platform || 'Android App',
+        appVersion: d.appVersion || '3.1.1',
         watchlistCount: 0,
         historyCount: 0,
         createdAt: d.firstSeen || d.lastActive || new Date().toISOString(),
@@ -130,10 +132,16 @@ async function getUserStats() {
 
   combinedList.sort((a, b) => new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime());
 
+  const compliantDevices = devices.filter(d => (d.appVersion || '').includes('3.1.1')).length;
+  const outdatedDevices = devices.length - compliantDevices;
+
   return {
     totalUsers,
     totalRegistered,
     totalDevices,
+    compliantDevices,
+    outdatedDevices,
+    devices,
     users: combinedList
   };
 }

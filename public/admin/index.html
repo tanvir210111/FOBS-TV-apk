@@ -816,37 +816,51 @@
           <div class="stat-card glass">
             <div class="stat-icon-wrapper bg-cyan"><i class="fa-solid fa-users"></i></div>
             <div class="stat-details">
-              <span class="stat-label">Total Unique Devices</span>
+              <span class="stat-label">Total Active Viewers</span>
               <h3 id="stat-total-devices" class="stat-value">--</h3>
-              <span class="stat-sub text-cyan">Registered viewers</span>
+              <span class="stat-sub text-cyan">All App Installations</span>
             </div>
           </div>
           <div class="stat-card glass">
-            <div class="stat-icon-wrapper bg-emerald"><i class="fa-solid fa-mobile-screen"></i></div>
+            <div class="stat-icon-wrapper bg-emerald"><i class="fa-solid fa-signal"></i></div>
             <div class="stat-details">
-              <span class="stat-label">Active on Latest v3.1.1</span>
+              <span class="stat-label">Online Now</span>
               <h3 id="stat-latest-devices" class="stat-value">--</h3>
-              <span class="stat-sub text-emerald">Compliant users</span>
+              <span class="stat-sub text-emerald">Active in last 15 min</span>
             </div>
           </div>
           <div class="stat-card glass">
-            <div class="stat-icon-wrapper bg-rose"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <div class="stat-icon-wrapper bg-amber"><i class="fa-solid fa-user-check"></i></div>
             <div class="stat-details">
-              <span class="stat-label">Outdated Version Devices</span>
+              <span class="stat-label">Registered Members</span>
               <h3 id="stat-outdated-devices" class="stat-value">--</h3>
-              <span class="stat-sub text-rose">Below v3.1.1</span>
+              <span class="stat-sub text-amber">Google Accounts</span>
             </div>
           </div>
         </div>
 
         <div class="table-toolbar glass">
           <div class="toolbar-left">
-            <h4><i class="fa-solid fa-network-wired text-cyan"></i> Connected Viewer Devices</h4>
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="users-search" placeholder="Search viewers by Name, ID or IP..." oninput="filterUsersTable(this.value)">
+            </div>
+            <select id="users-type-filter" class="select-filter" onchange="filterUsersTable()">
+              <option value="">All Viewers (All Types)</option>
+              <option value="Online">Online Now</option>
+              <option value="Registered Member">Registered Members</option>
+              <option value="App Installation">App Installations</option>
+            </select>
           </div>
           <div class="toolbar-right">
+            <span id="users-count-display" class="pagination-info">0 users</span>
+            <button class="btn-secondary" onclick="loadUsers()" title="Refresh Live Users List">
+              <i class="fa-solid fa-rotate"></i>
+              <span>Refresh</span>
+            </button>
             <button class="btn-warning glow-sm" onclick="purgeOutdatedDevices()">
               <i class="fa-solid fa-trash-can"></i>
-              <span>Purge Outdated Devices</span>
+              <span>Purge Outdated</span>
             </button>
           </div>
         </div>
@@ -855,10 +869,11 @@
           <table class="data-table">
             <thead>
               <tr>
-                <th>Device ID</th>
+                <th>User / Device</th>
+                <th>Type</th>
                 <th>Platform</th>
-                <th>App Version</th>
-                <th>IP Address</th>
+                <th>IP / Email</th>
+                <th>Status</th>
                 <th>Last Active</th>
               </tr>
             </thead>

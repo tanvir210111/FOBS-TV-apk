@@ -251,7 +251,12 @@ function switchTab(tabName) {
   if (tabName === 'upcoming') loadUpcoming();
   if (tabName === 'notifications') renderNotificationsList();
   if (tabName === 'feedback') renderReportsAndRequests();
-  if (tabName === 'users') loadUsers();
+  if (tabName === 'users') {
+    loadUsers();
+    startUsersLivePolling();
+  } else {
+    stopUsersLivePolling();
+  }
   if (tabName === 'settings') loadAppSettings();
 }
 
@@ -2280,61 +2285,150 @@ async function updateRequestStatus(id, status) {
 // ============================================================
 // TAB 10: APP USERS & AUDIENCE
 // ============================================================
-async function loadUsers() {
-  try {
-    const data = await apiFetch('/api/admin/users');
-    state.usersData = data;
+let usersPollInterval = null;
 
-    document.getElementById('stat-total-devices').innerText = (data.totalDevices || 0).toLocaleString();
-    document.getElementById('stat-latest-devices').innerText = (data.compliantDevices || 0).toLocaleString();
-    document.getElementById('stat-outdated-devices').innerText = (data.outdatedDevices || 0).toLocaleString();
-    document.getElementById('badge-users-count').innerText = data.totalDevices || 0;
+function startUsersLivePolling() {
+  stopUsersLivePolling();
+  usersPollInterval = setInterval(() => {
+    if (state.activeTab === 'users') {
+      loadUsers(true);
+    }
+  }, 15000);
+}
 
-    renderUsersTable(data.devices || []);
-  } catch (err) {
-    console.error('Failed to load users:', err);
+function stopUsersLivePolling() {
+  if (usersPollInterval) {
+    clearInterval(usersPollInterval);
+    usersPollInterval = null;
   }
 }
 
-function renderUsersTable(devices) {
+async function loadUsers(silent = false) {
+  try {
+    const data = await apiFetch('/api/admin/users');
+    state.usersData = data;
+    const list = data.users || data.devices || [];
+
+    const onlineCount = list.filter(u => {
+      if (u.status === 'Online Now') return true;
+      if (u.lastActive) {
+        return (Date.now() - new Date(u.lastActive).getTime()) < 15 * 60 * 1000;
+      }
+      return false;
+    }).length;
+
+    const regCount = data.totalRegistered !== undefined ? data.totalRegistered : list.filter(u => u.type === 'Registered Member').length;
+    const totalCount = data.totalUsers !== undefined ? data.totalUsers : list.length;
+
+    const elTotal = document.getElementById('stat-total-devices');
+    const elOnline = document.getElementById('stat-latest-devices');
+    const elReg = document.getElementById('stat-outdated-devices');
+    const elBadge = document.getElementById('badge-users-count');
+
+    if (elTotal) elTotal.innerText = totalCount.toLocaleString();
+    if (elOnline) elOnline.innerText = onlineCount.toLocaleString();
+    if (elReg) elReg.innerText = regCount.toLocaleString();
+    if (elBadge) elBadge.innerText = totalCount.toLocaleString();
+
+    state.usersList = list;
+    filterUsersTable();
+  } catch (err) {
+    if (!silent) console.error('Failed to load users:', err);
+  }
+}
+
+function filterUsersTable(query = null) {
+  if (!state.usersList) state.usersList = state.usersData?.users || state.usersData?.devices || [];
+  const q = (query !== null ? query : (document.getElementById('users-search')?.value || '')).toLowerCase().trim();
+  const typeFilter = document.getElementById('users-type-filter')?.value || '';
+
+  const filtered = state.usersList.filter(u => {
+    const nameStr = (u.name || '').toLowerCase();
+    const idStr = String(u.id || u.deviceId || '').toLowerCase();
+    const emailStr = (u.email || '').toLowerCase();
+    const ipStr = (u.ip || '').toLowerCase();
+
+    const matchQ = !q || nameStr.includes(q) || idStr.includes(q) || emailStr.includes(q) || ipStr.includes(q);
+
+    let matchType = true;
+    if (typeFilter === 'Online') {
+      matchType = u.status === 'Online Now' || (u.lastActive && (Date.now() - new Date(u.lastActive).getTime() < 15 * 60 * 1000));
+    } else if (typeFilter) {
+      matchType = u.type === typeFilter;
+    }
+
+    return matchQ && matchType;
+  });
+
+  const countDisplay = document.getElementById('users-count-display');
+  if (countDisplay) countDisplay.innerText = `${filtered.length} viewers`;
+
+  renderUsersTable(filtered);
+}
+
+function renderUsersTable(users) {
   const tbody = document.getElementById('users-tbody');
-  if (!devices || devices.length === 0) {
+  if (!tbody) return;
+  if (!users || users.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="5" class="empty-table-cell">
-          <p>No active devices registered yet.</p>
+        <td colspan="6" class="empty-table-cell">
+          <p><i class="fa-solid fa-users-slash text-muted mb-2" style="font-size: 2rem;"></i><br>No active users or devices found matching criteria.</p>
         </td>
       </tr>
     `;
     return;
   }
 
-  tbody.innerHTML = devices.slice(0, 50).map(d => {
-    const isLatest = d.appVersion === '3.1.1';
-    const lastActive = d.lastActive ? new Date(d.lastActive).toLocaleString() : 'Recently';
+  tbody.innerHTML = users.slice(0, 100).map(u => {
+    const isOnline = u.status === 'Online Now' || (u.lastActive && (Date.now() - new Date(u.lastActive).getTime() < 15 * 60 * 1000));
+    const lastActiveStr = u.lastActive ? new Date(u.lastActive).toLocaleString() : 'Recently';
+    const isGoogle = u.type === 'Registered Member' || u.platform === 'Google Account';
+    const displayEmail = (u.email || u.ip || 'Local/Cloud').replace(/^IP:\s*/, '');
+    const cleanId = u.id || u.deviceId || '--';
+    const shortId = cleanId.length > 20 ? cleanId.substring(0, 16) + '...' : cleanId;
 
     return `
       <tr>
-        <td><code>${d.deviceId || 'viewer'}</code></td>
-        <td><i class="fa-brands fa-android text-emerald"></i> ${d.platform || 'Android'}</td>
         <td>
-          <span class="badge-status ${isLatest ? 'success' : 'alert'}">
-            v${d.appVersion || 'Unknown'}
+          <div class="user-row-meta">
+            ${u.picture ? `<img src="${u.picture}" class="user-avatar-mini" alt="" onerror="this.onerror=null;this.src='';this.className='hidden';">` : `<div class="user-avatar-mini placeholder"><i class="fa-solid ${isGoogle ? 'fa-user' : 'fa-mobile-screen'}"></i></div>`}
+            <div>
+              <strong>${u.name || (isGoogle ? 'Member' : 'App Viewer')}</strong>
+              <small class="d-block text-muted">ID: <code title="${cleanId}">${shortId}</code></small>
+            </div>
+          </div>
+        </td>
+        <td>
+          <span class="badge-pill ${isGoogle ? 'bg-amber' : 'bg-cyan'}">
+            <i class="fa-solid ${isGoogle ? 'fa-id-badge' : 'fa-mobile-screen'}"></i> ${u.type || 'App Viewer'}
           </span>
         </td>
-        <td><small class="text-muted">${d.ip || 'Local/Cloud'}</small></td>
-        <td><small class="text-muted">${lastActive}</small></td>
+        <td>
+          <span><i class="fa-brands ${isGoogle ? 'fa-google text-amber' : 'fa-android text-emerald'}"></i> ${u.platform || 'Android'}</span>
+        </td>
+        <td>
+          <code class="text-cyan">${displayEmail}</code>
+        </td>
+        <td>
+          <span class="badge-status ${isOnline ? 'success pulse' : 'alert'}">
+            <i class="fa-solid ${isOnline ? 'fa-circle-dot' : 'fa-circle'}"></i> ${isOnline ? 'Online Now' : 'Active'}
+          </span>
+        </td>
+        <td>
+          <small class="text-muted">${lastActiveStr}</small>
+        </td>
       </tr>
     `;
   }).join('');
 }
 
 async function purgeOutdatedDevices() {
-  if (!confirm('Purge all device records that are on versions older than v3.1.1?')) return;
+  if (!confirm('Purge all inactive device records?')) return;
 
   try {
     const res = await apiFetch('/api/admin/users/purge-old', { method: 'POST' });
-    showToast(res.message || 'Outdated devices purged', 'success');
+    showToast(res.message || 'Inactive devices purged', 'success');
     loadUsers();
   } catch (err) {
     showToast(`Failed: ${err.message}`, 'error');
