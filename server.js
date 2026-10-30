@@ -3019,6 +3019,15 @@ app.all('/api/deploy', (req, res) => {
 
 
 
+app.get('/api/debug-diag', async (req, res) => {
+  try {
+    const playRes = await movieboxService._fetchPlayStream('3047413809519411560', 'seoul-vibe-hindi-SLYka3Db7D3', 0, 0);
+    res.json({ success: !!playRes, playRes });
+  } catch(e) {
+    res.json({ error: e.message, status: e.response?.status, data: e.response?.data });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`🎬 FOBS TV Streaming App running at http://localhost:${PORT}`);
 });
