@@ -3002,13 +3002,16 @@ app.all('/api/deploy', (req, res) => {
 
   const { exec } = require('child_process');
   console.log('🚀 Triggering automated git pull & PM2 restart...');
-  exec('git fetch origin main && git reset --hard origin/main && pm2 restart all', { cwd: __dirname }, (error, stdout, stderr) => {
+  exec('git fetch origin main && git reset --hard origin/main', { cwd: __dirname }, (error, stdout, stderr) => {
     if (error) {
       console.error('❌ Deploy execution error:', error.message);
       return res.status(500).json({ success: false, error: error.message, stderr, stdout });
     }
     console.log('✅ Deploy output:\n', stdout);
     res.json({ success: true, message: 'Deploy completed successfully', stdout, stderr });
+    setTimeout(() => {
+      exec('pm2 reload all');
+    }, 500);
   });
 });
 
@@ -3019,49 +3022,7 @@ app.all('/api/deploy', (req, res) => {
 
 
 
-app.get('/api/debug-diag', async (req, res) => {
-  const domain = 'https://h5-api.aoneroom.com';
-  const tests = [
-    { name: 'Hidden Face (Movie)', id: '809301786023658480', path: 'hidden-face-cegwEMRBMX', se: 0, ep: 0 },
-    { name: 'Confidential Assignment 2 (Movie)', id: '2414759826828967984', path: 'confidential-assignment-2-international-hindi-qj3u6UMCnS2', se: 0, ep: 0 },
-    { name: 'Final Table (Series Ep 1)', id: '621608156268691750', path: 'final-table-a1G9iGEikF1', se: 1, ep: 1 },
-    { name: 'Final Table Hindi (Series Ep 1)', id: '3292762350108954536', path: 'final-table-hindi-OjBf6HXSeV3', se: 1, ep: 1 },
-    { name: 'I Hear Your Voice (Series Ep 1)', id: '827989737410544464', path: 'i-hear-your-voice-K51RdEvcaZ', se: 1, ep: 1 }
-  ];
 
-  const results = {};
-  for (const t of tests) {
-    try {
-      const pUrl = `${domain}/wefeed-h5api-bff/subject/play?subjectId=${t.id}&se=${t.se}&ep=${t.ep}&detailPath=${encodeURIComponent(t.path)}&streamSignType=1`;
-      const r = await axios.get(pUrl, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/126.0.0.0 Safari/537.36',
-          'Referer': `${domain}/movies/${t.path}`,
-          'Origin': domain,
-          'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
-          'X-Source': '',
-          'X-Vip-Restrict': '0'
-        },
-        timeout: 5000
-      });
-      const streams = r.data?.data?.streams || [];
-      results[t.name] = {
-        status: r.status,
-        code: r.data?.code,
-        streamsCount: streams.length,
-        firstStream: streams[0]?.url ? streams[0].url.slice(0, 70) + '...' : null,
-        captionsCount: (r.data?.data?.captions || []).length
-      };
-    } catch (e) {
-      results[t.name] = {
-        error: e.message,
-        status: e.response?.status,
-        code: e.response?.data?.code
-      };
-    }
-  }
-  res.json(results);
-});
 
 app.listen(PORT, () => {
   console.log(`🎬 FOBS TV Streaming App running at http://localhost:${PORT}`);

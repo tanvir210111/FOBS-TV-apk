@@ -23,20 +23,21 @@ const cleanAgent = new https.Agent({
   rejectUnauthorized: false
 });
 
-const BASE_URL = 'https://movie-box.co';
+const BASE_URL = 'https://h5-api.aoneroom.com';
 const BACKUP_URL_1 = 'https://h5.aoneroom.com';
-const BACKUP_URL_2 = 'https://movieboxapp.in';
+const BACKUP_URL_2 = 'https://movie-box.co';
 
-// Domains ranked by lowest TTFB response time (<700ms first)
+// Domains ranked by lowest TTFB response time & rate-limit resilience
 const PLAY_DOMAINS = [
-  'https://movie-box.co',
-  'https://h5-api.aoneroom.com'
+  'https://h5-api.aoneroom.com',
+  'https://h5.aoneroom.com',
+  'https://movie-box.co'
 ];
 
 const SEARCH_DOMAINS = [
-  'https://movie-box.co',
   'https://h5-api.aoneroom.com',
-  'https://movieboxapp.in'
+  'https://h5.aoneroom.com',
+  'https://movie-box.co'
 ];
 
 const HEADERS = {
@@ -209,8 +210,8 @@ class MovieBoxService {
       } catch (e) {
         this.lastError = { message: e.message, status: e.response?.status, data: e.response?.data };
         if (e.response?.status === 429 || e.response?.data?.code === 429) {
-          // If domain returned 429 rate limit, stop immediately and fall back to content.json
-          break;
+          // If domain returned 429 rate limit, continue to fallback mirror
+          continue;
         }
       }
     }
@@ -432,8 +433,8 @@ class MovieBoxService {
       } catch (e) {
         this.lastError = { message: e.message, status: e.response?.status, data: e.response?.data };
         if (e.response?.status === 429 || e.response?.data?.code === 429) {
-          // If domain returned 429 rate limit, stop immediately and fall back to content.json
-          break;
+          // If domain returned 429 rate limit, continue to fallback mirror
+          continue;
         }
       }
     }
