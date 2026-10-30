@@ -4726,7 +4726,7 @@ async function setupSubtitlesForMedia(media) {
       data.subtitles.forEach(sub => {
         // User requested: ONLY English and Bangla
         if (sub.langCode !== 'en' && sub.langCode !== 'bn') return;
-        if (!tracks.some(t => t.langCode === sub.langCode)) {
+        if (!tracks.some(t => t.id === sub.id || t.url === sub.url)) {
           tracks.push(sub);
         }
       });

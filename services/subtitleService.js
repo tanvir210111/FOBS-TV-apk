@@ -66,20 +66,29 @@ class SubtitleService {
         const mbMedia = await movieboxService.resolveMedia(cleanSubjectId, detailPath, isMovie ? 0 : (seNum || 1), isMovie ? 0 : (epNum || 1));
         if (mbMedia && Array.isArray(mbMedia.captions)) {
           for (const cap of mbMedia.captions) {
+            const lan = (cap.lan || '').toLowerCase();
             const langLower = (cap.language || '').toLowerCase();
-            const isEnglish = langLower.includes('en') || langLower.includes('eng');
-            const isBangla = langLower.includes('bn') || langLower.includes('bangla') || langLower.includes('bengali');
+            const lanName = (cap.lanName || '').toLowerCase();
+
+            const isEnglish = lan === 'en' || langLower.includes('en') || langLower.includes('eng') || lanName.includes('english');
+            const isBangla = lan === 'bn' || langLower.includes('bn') || langLower.includes('bangla') || langLower.includes('bengali') || (cap.language || '').includes('বাংলা') || (cap.lanName || '').includes('বাংলা');
 
             if (isEnglish || isBangla) {
               const code = isBangla ? 'bn' : 'en';
-              if (!availableSubtitles.some(s => s.langCode === code)) {
+              const isAiSub = cap.url && cap.url.includes('/msubt/');
+              const label = isBangla 
+                ? (isAiSub ? 'Bangla (বাংলা) - MovieBox AI Sub' : 'Bangla (বাংলা) - Official Sub')
+                : (isAiSub ? 'English - MovieBox AI Sub' : 'English - Official Sub');
+
+              if (!availableSubtitles.some(s => s.url === cap.url)) {
                 availableSubtitles.push({
                   id: `mb_${code}_${availableSubtitles.length + 1}`,
-                  language: isBangla ? 'Bangla (বাংলা)' : 'English',
+                  language: label,
                   langCode: code,
-                  source: 'MovieBox / Official',
+                  source: isAiSub ? 'MovieBox (AI)' : 'MovieBox (Official)',
                   url: cap.url,
-                  format: cap.url && cap.url.endsWith('.srt') ? 'srt' : 'vtt'
+                  format: cap.url && cap.url.endsWith('.srt') ? 'srt' : 'vtt',
+                  isAi: isAiSub
                 });
               }
             }
@@ -90,31 +99,43 @@ class SubtitleService {
       }
     }
 
-    // 2. Fetch top results from OpenSubtitles / SubSource
+    // 2. Fetch top results from OpenSubtitles / SubSource (Human Subtitles)
     try {
       const onlineResults = await this.searchOnlineSubtitles({ title: cleanTitle, season: seNum, episode: epNum, year, type: isMovie ? 'movie' : 'series' });
-      if (onlineResults.english && onlineResults.english.length > 0 && !availableSubtitles.some(s => s.langCode === 'en')) {
-        availableSubtitles.push(onlineResults.english[0]);
+      if (onlineResults.english && onlineResults.english.length > 0) {
+        onlineResults.english.slice(0, 2).forEach(en => {
+          if (!availableSubtitles.some(s => s.url === en.url || s.downloadUrl === en.downloadUrl)) {
+            availableSubtitles.push({
+              ...en,
+              language: en.language.includes('Human') ? en.language : `${en.language} - OpenSubtitles (Human)`
+            });
+          }
+        });
       }
-      if (onlineResults.bangla && onlineResults.bangla.length > 0 && !availableSubtitles.some(s => s.langCode === 'bn')) {
-        availableSubtitles.push(onlineResults.bangla[0]);
+      if (onlineResults.bangla && onlineResults.bangla.length > 0) {
+        onlineResults.bangla.slice(0, 2).forEach(bn => {
+          if (!availableSubtitles.some(s => s.url === bn.url || s.downloadUrl === bn.downloadUrl)) {
+            availableSubtitles.push({
+              ...bn,
+              language: bn.language.includes('Human') ? bn.language : `${bn.language} - SubSource (Human)`
+            });
+          }
+        });
       }
     } catch (e) {
       console.warn('Online subtitle prefetch warning:', e.message);
     }
 
-
-    // 3. FOBS AI Auto-Translate fallback if no Bangla subtitle exists
-    const hasBn = availableSubtitles.some(s => s.langCode === 'bn');
-    const enSub = availableSubtitles.find(s => s.langCode === 'en');
-    if (!hasBn && enSub) {
+    // 3. FOBS AI Auto-Translate fallback if user wants AI subtitle
+    const enSub = availableSubtitles.find(s => s.langCode === 'en' && !s.isAi) || availableSubtitles.find(s => s.langCode === 'en');
+    if (enSub) {
       const enUrl = enSub.url || enSub.downloadUrl;
-      if (enUrl) {
+      if (enUrl && !availableSubtitles.some(s => s.id && s.id.startsWith('ai_bn_'))) {
         availableSubtitles.push({
-          id: `ai_bn_${availableSubtitles.length + 1}`,
-          language: 'Bangla (বাংলা)',
+          id: `ai_bn_generated`,
+          language: 'Bangla (বাংলা) - AI Auto-Translate',
           langCode: 'bn',
-          source: 'SubSource (বাংলা)',
+          source: 'FOBS AI Translate',
           url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanTitle)}&season=${seNum}&episode=${epNum}`,
           format: 'vtt',
           isAi: true

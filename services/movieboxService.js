@@ -23,9 +23,9 @@ const cleanAgent = new https.Agent({
   rejectUnauthorized: false
 });
 
-const BASE_URL = 'https://h5-api.aoneroom.com';
-const BACKUP_URL_1 = 'https://h5.aoneroom.com';
-const BACKUP_URL_2 = 'https://movie-box.co';
+const BASE_URL = 'https://h5.aoneroom.com';
+const BACKUP_URL_1 = 'https://movie-box.co';
+const BACKUP_URL_2 = 'https://h5-api.aoneroom.com';
 
 // Domains ranked by lowest TTFB response time & rate-limit resilience
 const PLAY_DOMAINS = [
@@ -564,7 +564,10 @@ class MovieBoxService {
 
         const dlCaptions = (data.captions || []).map(function(c) {
           return {
-            language: c.language || c.lan,
+            id: c.id,
+            language: c.lanName || c.language || c.lan,
+            lan: c.lan,
+            lanName: c.lanName,
             url: c.url
           };
         });
@@ -572,14 +575,16 @@ class MovieBoxService {
         return {
           subjectId: cleanId,
           detailPath: detailPath || '',
+          streamDomain: domain,
           streamUrl: fastStart.url,
-          resolution: fastStart.resolution,
+          resolution: parseInt(fastStart.resolution, 10) || 360,
           codec: 'h264',
           duration: fastStart.duration || 0,
           qualities: dlQualities,
           captions: dlCaptions,
           headers: {
-            'Referer': 'https://movieboxapp.in/'
+            'Referer': `${domain}/`,
+            'Origin': domain
           }
         };
       } catch (e) {
@@ -633,9 +638,9 @@ class MovieBoxService {
           }
         }
 
-        // 1. High-Speed Priority: _fetchPlayStream resolves in ~300ms (fast native streaming)
-        let result = await this._fetchPlayStream(cleanId, activeDetailPath, seNum, epNum);
-        if (!result) result = await this._fetchDownload(cleanId, activeDetailPath, seNum, epNum);
+        // 1. High-Speed Priority: _fetchDownload on h5.aoneroom.com resolves in ~200ms without WAF 429
+        let result = await this._fetchDownload(cleanId, activeDetailPath, seNum, epNum);
+        if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, seNum, epNum);
 
         // Path Repair: If initial query failed and detailPath was provided, verify with fresh getDetail
         if (!result && activeDetailPath) {
@@ -643,31 +648,31 @@ class MovieBoxService {
           if (freshDetail && freshDetail.detailPath && freshDetail.detailPath !== activeDetailPath) {
             activeDetailPath = freshDetail.detailPath;
             this.detailPathMap.set(cleanId, activeDetailPath);
-            result = await this._fetchPlayStream(cleanId, activeDetailPath, seNum, epNum);
-            if (!result) result = await this._fetchDownload(cleanId, activeDetailPath, seNum, epNum);
+            result = await this._fetchDownload(cleanId, activeDetailPath, seNum, epNum);
+            if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, seNum, epNum);
           }
         }
 
         // Season/Episode Permutation Fallbacks:
         // Case A: season=1 & ep>0 returned nothing -> try season=0 & ep-1 (0-based)
         if (!result && seNum === 1 && epNum > 0) {
-          result = await this._fetchPlayStream(cleanId, activeDetailPath, 0, epNum - 1);
-          if (!result) result = await this._fetchDownload(cleanId, activeDetailPath, 0, epNum - 1);
+          result = await this._fetchDownload(cleanId, activeDetailPath, 0, epNum - 1);
+          if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, 0, epNum - 1);
         }
         // Case B: season=0 & ep>0 returned nothing -> try season=1 & ep
         if (!result && seNum === 0 && epNum > 0) {
-          result = await this._fetchPlayStream(cleanId, activeDetailPath, 1, epNum);
-          if (!result) result = await this._fetchDownload(cleanId, activeDetailPath, 1, epNum);
+          result = await this._fetchDownload(cleanId, activeDetailPath, 1, epNum);
+          if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, 1, epNum);
         }
         // Case C: season=0 & ep=0 returned nothing -> try season=1 & ep=1
         if (!result && seNum === 0 && epNum === 0) {
-          result = await this._fetchPlayStream(cleanId, activeDetailPath, 1, 1);
-          if (!result) result = await this._fetchDownload(cleanId, activeDetailPath, 1, 1);
+          result = await this._fetchDownload(cleanId, activeDetailPath, 1, 1);
+          if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, 1, 1);
         }
         // Case D: season>1 returned nothing -> try season=1 & ep
         if (!result && seNum > 1 && epNum > 0) {
-          result = await this._fetchPlayStream(cleanId, activeDetailPath, 1, epNum);
-          if (!result) result = await this._fetchDownload(cleanId, activeDetailPath, 1, epNum);
+          result = await this._fetchDownload(cleanId, activeDetailPath, 1, epNum);
+          if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, 1, epNum);
         }
 
         if (result) {

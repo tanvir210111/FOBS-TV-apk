@@ -4724,9 +4724,9 @@ async function setupSubtitlesForMedia(media) {
     const data = await res.json();
     if (data && data.success && Array.isArray(data.subtitles)) {
       data.subtitles.forEach(sub => {
-        // User requested: ONLY English and Bangla
+        // User requested: ONLY English and Bangla (both Human & AI options)
         if (sub.langCode !== 'en' && sub.langCode !== 'bn') return;
-        if (!tracks.some(t => t.langCode === sub.langCode)) {
+        if (!tracks.some(t => t.id === sub.id || t.url === sub.url)) {
           tracks.push(sub);
         }
       });

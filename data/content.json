@@ -15516,10 +15516,10 @@
   ],
   "series": [
     {
-      "id": "mb-s-621608156268691750",
+      "id": "mb-s-1398752416195038344",
       "title": "Final Table",
       "originalTitle": "파이널 테이블",
-      "subjectId": "621608156268691750",
+      "subjectId": "1398752416195038344",
       "detailPath": "final-table-a1G9iGEikF1",
       "type": "series",
       "year": "2026",
@@ -15547,7 +15547,7 @@
           "title": "Season 1",
           "episodes": [
             {
-              "id": "mb-s-621608156268691750-s1-e1",
+              "id": "mb-s-1398752416195038344-s1-e1",
               "episodeNumber": 1,
               "seasonNumber": 1,
               "number": "01",
@@ -15557,41 +15557,41 @@
               "duration": "65 min",
               "still": "https://pbcdnw.aoneroom.com/image/2026/10/25/527d29143b34ac60780899f45d2c0a2d.jpg",
               "stillPath": "https://pbcdnw.aoneroom.com/image/2026/10/25/527d29143b34ac60780899f45d2c0a2d.jpg",
-              "streamUrl": "/api/moviebox/stream?id=621608156268691750&path=final-table-a1G9iGEikF1&se=1&ep=01&q=480",
+              "streamUrl": "/api/moviebox/stream?id=1398752416195038344&path=final-table-a1G9iGEikF1&se=1&ep=01&q=480",
               "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/17cd345fdb14e0196db05e1335bcdc2f.mp4?sign=e731f4456b4e7b56e5862347c0e68d00&t=1793325135",
               "resolution": 1080,
               "servers": [
                 {
                   "name": "Server 1 (Original Audio - Auto Fast)",
-                  "url": "/api/moviebox/stream?id=621608156268691750&path=final-table-a1G9iGEikF1&se=1&ep=01&q=480",
+                  "url": "/api/moviebox/stream?id=1398752416195038344&path=final-table-a1G9iGEikF1&se=1&ep=01&q=480",
                   "quality": "480p",
                   "audio": "Original Audio (Korean)",
                   "isDirect": true
                 },
                 {
                   "name": "Server 2 (Original Audio - 1080p FHD)",
-                  "url": "/api/moviebox/stream?id=621608156268691750&path=final-table-a1G9iGEikF1&se=1&ep=01&q=480",
+                  "url": "/api/moviebox/stream?id=1398752416195038344&path=final-table-a1G9iGEikF1&se=1&ep=01&q=480",
                   "quality": "1080p",
                   "audio": "Original Audio (Korean)",
                   "isDirect": true
                 },
                 {
                   "name": "Server 3 (Original Audio - 720p HD)",
-                  "url": "/api/moviebox/stream?id=621608156268691750&path=final-table-a1G9iGEikF1&se=1&ep=01&q=480",
+                  "url": "/api/moviebox/stream?id=1398752416195038344&path=final-table-a1G9iGEikF1&se=1&ep=01&q=480",
                   "quality": "720p",
                   "audio": "Original Audio (Korean)",
                   "isDirect": true
                 },
                 {
                   "name": "Server 4 (Original Audio - 480p)",
-                  "url": "/api/moviebox/stream?id=621608156268691750&path=final-table-a1G9iGEikF1&se=1&ep=01&q=480",
+                  "url": "/api/moviebox/stream?id=1398752416195038344&path=final-table-a1G9iGEikF1&se=1&ep=01&q=480",
                   "quality": "480p",
                   "audio": "Original Audio (Korean)",
                   "isDirect": true
                 },
                 {
                   "name": "Server 5 (Original Audio - 360p Fast)",
-                  "url": "/api/moviebox/stream?id=621608156268691750&path=final-table-a1G9iGEikF1&se=1&ep=01&q=480",
+                  "url": "/api/moviebox/stream?id=1398752416195038344&path=final-table-a1G9iGEikF1&se=1&ep=01&q=480",
                   "quality": "360p",
                   "audio": "Original Audio (Korean)",
                   "isDirect": true
@@ -15622,7 +15622,7 @@
               ]
             },
             {
-              "id": "mb-s-621608156268691750-s1-e2",
+              "id": "mb-s-1398752416195038344-s1-e2",
               "episodeNumber": 2,
               "seasonNumber": 1,
               "number": "02",
@@ -15632,41 +15632,41 @@
               "duration": "65 min",
               "still": "https://pbcdnw.aoneroom.com/image/2026/10/25/527d29143b34ac60780899f45d2c0a2d.jpg",
               "stillPath": "https://pbcdnw.aoneroom.com/image/2026/10/25/527d29143b34ac60780899f45d2c0a2d.jpg",
-              "streamUrl": "/api/moviebox/stream?id=621608156268691750&path=final-table-a1G9iGEikF1&se=1&ep=02&q=480",
+              "streamUrl": "/api/moviebox/stream?id=1398752416195038344&path=final-table-a1G9iGEikF1&se=1&ep=02&q=480",
               "directStreamUrl": "https://bcdnxw.hakunaymatata.com/bt/ebe1ca3addd0f740eb50456f817f907c.mp4?sign=d924fe9fdff81ee79124ee209bde979c&t=1793325361",
               "resolution": 1080,
               "servers": [
                 {
                   "name": "Server 1 (Original Audio - Auto Fast)",
-                  "url": "/api/moviebox/stream?id=621608156268691750&path=final-table-a1G9iGEikF1&se=1&ep=02&q=480",
+                  "url": "/api/moviebox/stream?id=1398752416195038344&path=final-table-a1G9iGEikF1&se=1&ep=02&q=480",
                   "quality": "480p",
                   "audio": "Original Audio (Korean)",
                   "isDirect": true
                 },
                 {
                   "name": "Server 2 (Original Audio - 1080p FHD)",
-                  "url": "/api/moviebox/stream?id=621608156268691750&path=final-table-a1G9iGEikF1&se=1&ep=02&q=480",
+                  "url": "/api/moviebox/stream?id=1398752416195038344&path=final-table-a1G9iGEikF1&se=1&ep=02&q=480",
                   "quality": "1080p",
                   "audio": "Original Audio (Korean)",
                   "isDirect": true
                 },
                 {
                   "name": "Server 3 (Original Audio - 720p HD)",
-                  "url": "/api/moviebox/stream?id=621608156268691750&path=final-table-a1G9iGEikF1&se=1&ep=02&q=480",
+                  "url": "/api/moviebox/stream?id=1398752416195038344&path=final-table-a1G9iGEikF1&se=1&ep=02&q=480",
                   "quality": "720p",
                   "audio": "Original Audio (Korean)",
                   "isDirect": true
                 },
                 {
                   "name": "Server 4 (Original Audio - 480p)",
-                  "url": "/api/moviebox/stream?id=621608156268691750&path=final-table-a1G9iGEikF1&se=1&ep=02&q=480",
+                  "url": "/api/moviebox/stream?id=1398752416195038344&path=final-table-a1G9iGEikF1&se=1&ep=02&q=480",
                   "quality": "480p",
                   "audio": "Original Audio (Korean)",
                   "isDirect": true
                 },
                 {
                   "name": "Server 5 (Original Audio - 360p Fast)",
-                  "url": "/api/moviebox/stream?id=621608156268691750&path=final-table-a1G9iGEikF1&se=1&ep=02&q=480",
+                  "url": "/api/moviebox/stream?id=1398752416195038344&path=final-table-a1G9iGEikF1&se=1&ep=02&q=480",
                   "quality": "360p",
                   "audio": "Original Audio (Korean)",
                   "isDirect": true
