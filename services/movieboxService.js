@@ -18,7 +18,8 @@ const cleanAgent = new https.Agent({
   keepAlive: true,
   maxSockets: 64,
   maxFreeSockets: 16,
-  freeSocketTimeout: 30000,
+  timeout: 5000,
+  family: 4, // Force IPv4 to prevent 18-second IPv6 timeout on VPS
   rejectUnauthorized: false
 });
 

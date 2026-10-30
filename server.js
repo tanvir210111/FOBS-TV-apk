@@ -14,7 +14,8 @@ const compression = require('compression');
 const streamHttpsAgent = new https.Agent({
   keepAlive: false, // Must be false for media streaming so aborted seek requests instantly close TCP sockets
   maxSockets: 250,
-  timeout: 15000,
+  timeout: 10000,
+  family: 4, // Force IPv4 to prevent 18-second IPv6 timeout on VPS
   rejectUnauthorized: false
 });
 const app = express();
