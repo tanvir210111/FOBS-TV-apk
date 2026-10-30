@@ -317,7 +317,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v71';
+const CACHE_KEY = 'fobs_tv_content_cache_v72';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 let isSyncing = false;
@@ -3038,7 +3038,11 @@ function getActiveEpisodeStream(ep, audioTrack) {
     return `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480`;
   }
 
-  return (lowestServer && lowestServer.url) || ep.streamUrl || '';
+  const rawFallback = (lowestServer && lowestServer.url) || ep.streamUrl || '';
+  if (rawFallback && (rawFallback.includes('hakunaymatata') || rawFallback.includes('bcdnxw'))) {
+    return `/api/stream?url=${encodeURIComponent(rawFallback)}`;
+  }
+  return rawFallback;
 }
 
 // Switch Active Season (Season 1 / Season 2)
@@ -3328,6 +3332,9 @@ function openPlayer(media, episodeIndex = 0) {
         appState.currentQuality = `${res}p`;
       } else {
         initialUrl = media.streamUrl || media.driveUrl;
+        if (initialUrl && (initialUrl.includes('hakunaymatata') || initialUrl.includes('bcdnxw'))) {
+          initialUrl = `/api/stream?url=${encodeURIComponent(initialUrl)}`;
+        }
       }
     }
 

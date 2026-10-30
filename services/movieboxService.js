@@ -360,6 +360,7 @@ class MovieBoxService {
       try {
         const randDid = 'd_' + Math.random().toString(36).substring(2, 16);
         const randUid = 'u_' + Math.random().toString(36).substring(2, 12);
+        const randIp = `${Math.floor(Math.random() * 150 + 50)}.${Math.floor(Math.random() * 200 + 10)}.${Math.floor(Math.random() * 200 + 10)}.${Math.floor(Math.random() * 250 + 1)}`;
         const playUrl = `${domain}/wefeed-h5api-bff/subject/play?subjectId=${cleanId}&se=${season}&ep=${episode}&detailPath=${encodeURIComponent(detailPath || '')}&streamSignType=1&supportCodecs%5Bhevc%5D=0&supportCodecs%5Bh264%5D=1`;
         const referer = detailPath ? `${domain}/movies/${detailPath}?id=${cleanId}&type=/movie/detail&lang=en` : `${domain}/`;
         const res = await axios.get(playUrl, {
@@ -371,13 +372,17 @@ class MovieBoxService {
             'x-client-info': JSON.stringify({ timezone: 'Asia/Dhaka', deviceId: randDid }),
             'x-device-id': randDid,
             'x-user-id': randUid,
+            'x-forwarded-for': randIp,
+            'x-real-ip': randIp,
+            'cf-connecting-ip': randIp,
+            'client-ip': randIp,
             'x-request-lang': 'en',
             'x-vip-restrict': '0',
             'x-no-high-risk-restrict': '0',
             'x-source': 'moviebox'
           },
           httpsAgent: cleanAgent,
-          timeout: 2500
+          timeout: 4000
         });
 
         const data = res.data?.data;
