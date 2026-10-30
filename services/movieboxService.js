@@ -378,7 +378,7 @@ class MovieBoxService {
             'x-source': 'moviebox'
           },
           httpsAgent: cleanAgent,
-          timeout: 4500
+          timeout: 2500
         });
 
         const data = res.data?.data;
@@ -430,7 +430,7 @@ class MovieBoxService {
             qualities: playQualities,
             captions: playCaptions,
             headers: {
-              'Referer': 'https://movieboxapp.in/'
+              'Referer': 'https://movie-box.co/'
             }
           };
         }
@@ -473,7 +473,7 @@ class MovieBoxService {
             'Referer': refPath
           },
           httpsAgent: cleanAgent,
-          timeout: 4500
+          timeout: 2500
         });
 
         const data = res.data?.data;

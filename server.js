@@ -1193,6 +1193,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
           const direct = foundMovie.directStreamUrl || foundMovie.servers[0].url;
           if (direct && direct.startsWith('http')) {
             media = { streamUrl: direct, resolution: 1080 };
+            movieboxStreamCache.set(cacheKey, { media, timestamp: Date.now() });
           }
         } else {
           let foundSeries = (content.series || []).find(s => String(s.subjectId) === String(id));
@@ -1203,6 +1204,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
               const direct = epObj.directStreamUrl || epObj.servers[0].url;
               if (direct && direct.startsWith('http')) {
                 media = { streamUrl: direct, resolution: 1080 };
+                movieboxStreamCache.set(cacheKey, { media, timestamp: Date.now() });
               }
             }
           }
@@ -1649,7 +1651,8 @@ async function streamMediaDirect(req, res, inputTargetUrl) {
     resolvedUrl.includes('stormshade') || 
     (targetUrl && targetUrl.includes('moviebox'))
   ) {
-    requestHeaders['Referer'] = 'https://movieboxapp.in/';
+    requestHeaders['Referer'] = 'https://movie-box.co/';
+    requestHeaders['Origin'] = 'https://movie-box.co';
   }
 
   // Transparent Range Forwarding: Continuous full-speed streaming without artificial chunk cutoffs
