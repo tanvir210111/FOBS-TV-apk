@@ -2817,6 +2817,7 @@ app.get('/api/admin/moviebox/detail', adminService.authenticate, async (req, res
     const sId = subjectId || id;
     const dPath = path || detailPath || '';
     if (!sId) return res.status(400).json({ success: false, error: 'subjectId is required' });
+    try { movieboxService.invalidateCache(sId); } catch (_) {}
     const detail = await movieboxService.getDetail(sId, dPath, { forceRefresh: true });
     if (!detail) return res.status(404).json({ success: false, error: 'Detail not found on MovieBox' });
     res.json({ success: true, detail });
@@ -3155,10 +3156,11 @@ app.all('/api/deploy', (req, res) => {
     try { movieboxService.invalidateCache(); } catch (_) {}
     res.json({ success: true, message: 'Deploy completed successfully', stdout, stderr });
     setTimeout(() => {
-      exec('pm2 reload all --update-env || pm2 restart all --update-env || /root/.nvm/versions/node/v22.23.2/bin/pm2 reload all', () => {
-        setTimeout(() => { process.exit(0); }, 300);
-      });
-    }, 500);
+      exec('pm2 reload all --update-env || pm2 restart all --update-env || pm2 restart fobs-tv || /root/.nvm/versions/node/v22.23.2/bin/pm2 reload all');
+      setTimeout(() => {
+        process.exit(0);
+      }, 800);
+    }, 400);
   });
 });
 
