@@ -769,7 +769,7 @@ class AdminService {
       industry = 'Hollywood',
       audio = 'Hindi dub',
       isHindi = false,
-      episodesCount = 1
+      episodesCount
     } = payload;
 
     if (!subjectId) {
@@ -793,7 +793,7 @@ class AdminService {
     }
 
     if (!title) title = 'Untitled Content';
-    if (!episodesCount || episodesCount <= 0) episodesCount = type === 'series' ? 10 : 1;
+    if (!episodesCount || episodesCount <= 0) episodesCount = type === 'series' ? (autoDetail?.totalEpisodes || 16) : 1;
 
     const content = readContent();
 
@@ -905,16 +905,28 @@ class AdminService {
           const seNum = parseInt(seasonMode, 10);
           const found = autoDetail.seasons.find(s => s.se === seNum);
           if (found) {
-            targetSeasons = [{ se: found.se, maxEp: episodesCount || found.maxEp }];
+            let mEp = parseInt(found.maxEp, 10) || 0;
+            if (found.allEp) {
+              const sc = found.allEp.split(',').filter(Boolean).length;
+              if (sc > mEp) mEp = sc;
+            }
+            targetSeasons = [{ se: found.se, maxEp: Math.max(mEp, episodesCount || 0) || 16 }];
           } else {
-            targetSeasons = [{ se: seNum, maxEp: episodesCount || 10 }];
+            targetSeasons = [{ se: seNum, maxEp: episodesCount || autoDetail.totalEpisodes || 16 }];
           }
         } else {
-          targetSeasons = autoDetail.seasons.map(s => ({ se: s.se, maxEp: s.maxEp }));
+          targetSeasons = autoDetail.seasons.map(s => {
+            let mEp = parseInt(s.maxEp, 10) || 0;
+            if (s.allEp) {
+              const sc = s.allEp.split(',').filter(Boolean).length;
+              if (sc > mEp) mEp = sc;
+            }
+            return { se: s.se, maxEp: Math.max(mEp, episodesCount || 0) || 16 };
+          });
         }
       } else {
         const seNum = seasonMode !== 'all' ? (parseInt(seasonMode, 10) || 1) : 1;
-        targetSeasons = [{ se: seNum, maxEp: episodesCount || 10 }];
+        targetSeasons = [{ se: seNum, maxEp: episodesCount || (autoDetail ? autoDetail.totalEpisodes : 16) || 16 }];
       }
 
       const seasons = [];
@@ -922,7 +934,7 @@ class AdminService {
 
       for (const sInfo of targetSeasons) {
         const seNum = sInfo.se;
-        const maxEp = Math.min(Math.max(parseInt(sInfo.maxEp, 10) || 1, 1), 150);
+        const maxEp = Math.max(parseInt(sInfo.maxEp, 10) || 1, 1);
         const seasonEpisodes = [];
 
         // Pre-resolve episode 1 of this season for resolution, sample duration, and subtitle tracks
@@ -1093,7 +1105,7 @@ class AdminService {
           category,
           industry,
           isHindi,
-          episodesCount: isSeries ? 10 : 1
+          episodesCount: isSeries ? undefined : 1
         });
         results.push({ id: item.id, title: item.title, success: true });
       } catch (e) {
@@ -1726,19 +1738,34 @@ class AdminService {
 
       try {
         const d = await movieboxService.getDetail(sId);
-        if (!d || !d.totalEpisodes) continue;
+        if (!d) continue;
+
+        let dTotal = d.totalEpisodes || 0;
+        if (Array.isArray(d.seasons)) {
+          let sSum = 0;
+          for (const sea of d.seasons) {
+            let mEp = parseInt(sea.maxEp, 10) || 0;
+            if (sea.allEp) {
+              const count = sea.allEp.split(',').filter(Boolean).length;
+              if (count > mEp) mEp = count;
+            }
+            sSum += mEp;
+          }
+          if (sSum > dTotal) dTotal = sSum;
+        }
+        if (!dTotal && !d.seasonsCount) continue;
 
         const curEps = s.episodesCount || (s.seasons ? s.seasons.reduce((acc, sea) => acc + (sea.episodes ? sea.episodes.length : 0), 0) : 0);
         const curSeasons = s.seasonsCount || (s.seasons ? s.seasons.length : 1);
 
-        if (d.totalEpisodes > curEps || (d.seasonsCount && d.seasonsCount > curSeasons)) {
-          console.log(`[Auto-Sync] Detected new release for ${s.title}: ${curEps} -> ${d.totalEpisodes} eps`);
+        if (dTotal > curEps || (d.seasonsCount && d.seasonsCount > curSeasons)) {
+          console.log(`[Auto-Sync] Detected new release for ${s.title}: ${curEps} -> ${dTotal} eps`);
           const syncRes = await this.syncSeriesEpisodes(s.id);
           if (syncRes.success && syncRes.isUpdated) {
             updatedSeries.push({
               title: s.title,
               oldEps: curEps,
-              newEps: d.totalEpisodes,
+              newEps: dTotal,
               added: syncRes.diffEps
             });
           }
