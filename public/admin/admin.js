@@ -114,7 +114,7 @@ async function verifyAuth() {
     const data = await apiFetch('/api/admin/stats');
     state.stats = data;
     hideLoginModal();
-    initApp();
+    await initApp();
   } catch (err) {
     console.warn('Auth check failed:', err.message);
     state.token = null;
@@ -163,17 +163,18 @@ function showToast(message, type = 'info', duration = 4000) {
 // APP INITIALIZATION
 // ============================================================
 async function initApp() {
-  setupNavigation();
-  setupEventListeners();
-
-  // Load Initial Core Catalog & Stats
-  await Promise.all([
-    loadStats(),
-    loadContent(),
-    loadNotifications(),
-    loadReportsAndRequests(),
-    loadAppSettings()
-  ]);
+  try {
+    // Load Initial Core Catalog & Stats in parallel
+    await Promise.allSettled([
+      loadStats(),
+      loadContent(),
+      loadNotifications(),
+      loadReportsAndRequests(),
+      loadAppSettings()
+    ]);
+  } catch (err) {
+    console.warn('Initial data load warning:', err);
+  }
 
   // Handle Initial Route from URL Hash
   const hash = window.location.hash.replace('#', '') || 'overview';
@@ -293,10 +294,12 @@ function setupEventListeners() {
       state.token = data.token;
       localStorage.setItem('fobs_admin_token', data.token);
       hideLoginModal();
-      initApp();
-      showToast('Authorized master access', 'success');
+      await initApp();
+      showToast('Welcome to FOBS TV Master Control', 'success');
     } catch (err) {
-      errText.innerText = err.message;
+      errText.innerText = err.message || 'Access denied';
+      showToast(err.message || 'Login failed', 'error');
+    } finally {
       btn.disabled = false;
       btn.innerHTML = '<span>Authorize Master Access</span> <i class="fa-solid fa-arrow-right"></i>';
     }
@@ -2694,5 +2697,7 @@ function closeVideoPlayer() {
 // STARTUP BOOTSTRAP
 // ============================================================
 window.addEventListener('DOMContentLoaded', () => {
+  setupNavigation();
+  setupEventListeners();
   verifyAuth();
 });

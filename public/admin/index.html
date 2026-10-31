@@ -19,7 +19,7 @@
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   
   <!-- Admin Stylesheet -->
-  <link rel="stylesheet" href="/admin/style.css?v=3.2.1">
+  <link rel="stylesheet" href="/admin/style.css?v=3.2.2">
 </head>
 <body>
 
@@ -33,7 +33,7 @@
         <h2>FOBS TV <span>Admin</span></h2>
         <p>Master Control &amp; Streaming Operations Hub</p>
       </div>
-      <form id="login-form">
+      <form id="login-form" onsubmit="event.preventDefault();">
         <div class="input-group">
           <label for="admin-password"><i class="fa-solid fa-key"></i> Master Password</label>
           <input type="password" id="admin-password" placeholder="••••••••••••" required autocomplete="current-password">
@@ -1752,6 +1752,6 @@
   <div id="toast-container" class="toast-container"></div>
 
   <!-- Admin JavaScript -->
-  <script src="/admin/admin.js?v=3.2.1"></script>
+  <script src="/admin/admin.js?v=3.2.2"></script>
 </body>
 </html>
