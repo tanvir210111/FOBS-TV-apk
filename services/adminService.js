@@ -662,7 +662,7 @@ class AdminService {
     let searchTitle = cleanQ;
 
     if (isSubjectId) {
-      mbDetail = await movieboxService.getDetail(cleanQ);
+      mbDetail = await movieboxService.getDetail(cleanQ, '', { forceRefresh: true });
       if (mbDetail && mbDetail.title) {
         searchTitle = mbDetail.title;
         mbItem = {
@@ -681,7 +681,7 @@ class AdminService {
           const filtered = list.filter(it => type === 'series' ? (it.type === 'series') : (it.type === 'movie'));
           mbItem = filtered[0] || list[0];
           if (mbItem && mbItem.subjectId) {
-            mbDetail = await movieboxService.getDetail(mbItem.subjectId, mbItem.detailPath);
+            mbDetail = await movieboxService.getDetail(mbItem.subjectId, mbItem.detailPath, { forceRefresh: true });
           }
         }
       } catch (e) {}
@@ -916,7 +916,7 @@ class AdminService {
     }
 
     // Auto-fetch full metadata, total uploaded episodes, and categories from MovieBox
-    const autoDetail = await movieboxService.getDetail(subjectId, detailPath);
+    const autoDetail = await movieboxService.getDetail(subjectId, detailPath, { forceRefresh: true });
     if (autoDetail) {
       if (!title) title = autoDetail.title;
       if (!type) type = autoDetail.type;

@@ -312,14 +312,17 @@ class MovieBoxService {
   /**
    * Fetches full metadata, total uploaded episodes, and auto-detected categories with 24-hour cache
    */
-  async getDetail(subjectId, detailPath = '') {
+  async getDetail(subjectId, detailPath = '', options = {}) {
     if (!subjectId) return null;
     const cleanId = String(subjectId).replace(/^mb-[s|m]-/, '');
     const cacheKey = `detail_${cleanId}`;
 
-    if (this.detailCache.has(cacheKey)) {
+    const forceRefresh = options && (options.forceRefresh || options.refresh);
+    if (!forceRefresh && this.detailCache.has(cacheKey)) {
       const entry = this.detailCache.get(cacheKey);
-      if (entry && entry.expireAt > Date.now()) return entry.data;
+      if (entry && entry.expireAt > Date.now() && entry.data && Array.isArray(entry.data.seasons) && entry.data.seasons.length > 0) {
+        return entry.data;
+      }
     }
 
     const domains = [BASE_URL, BACKUP_URL_1, BACKUP_URL_2];

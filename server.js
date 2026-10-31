@@ -2817,7 +2817,7 @@ app.get('/api/admin/moviebox/detail', adminService.authenticate, async (req, res
     const sId = subjectId || id;
     const dPath = path || detailPath || '';
     if (!sId) return res.status(400).json({ success: false, error: 'subjectId is required' });
-    const detail = await movieboxService.getDetail(sId, dPath);
+    const detail = await movieboxService.getDetail(sId, dPath, { forceRefresh: true });
     if (!detail) return res.status(404).json({ success: false, error: 'Detail not found on MovieBox' });
     res.json({ success: true, detail });
   } catch (err) {
@@ -3152,6 +3152,7 @@ app.all('/api/deploy', (req, res) => {
       return res.status(500).json({ success: false, error: error.message, stderr, stdout });
     }
     console.log('✅ Deploy output:\n', stdout);
+    try { movieboxService.invalidateCache(); } catch (_) {}
     res.json({ success: true, message: 'Deploy completed successfully', stdout, stderr });
     setTimeout(() => {
       exec('pm2 reload all --update-env || pm2 restart all --update-env || /root/.nvm/versions/node/v22.23.2/bin/pm2 reload all', () => {
