@@ -700,7 +700,28 @@ class AdminService {
         },
         timeout: 4500
       });
-      const match = tmdbSearch.data?.results?.[0];
+      let match = tmdbSearch.data?.results?.[0];
+      if (!match && /to you/i.test(cleanName)) {
+        try {
+          const altRes = await axios.get(`https://api.themoviedb.org/3/search/${tmdbType}`, {
+            params: { api_key: '6e766190399843a3e1d85b68eaa3de69', query: cleanName.replace(/to you/i, 'into you') },
+            timeout: 3000
+          });
+          match = altRes.data?.results?.[0];
+        } catch (_) {}
+      }
+      if (!match) {
+        const words = cleanName.split(/\s+/);
+        if (words.length > 2) {
+          try {
+            const shortRes = await axios.get(`https://api.themoviedb.org/3/search/${tmdbType}`, {
+              params: { api_key: '6e766190399843a3e1d85b68eaa3de69', query: words.slice(0, 3).join(' ') },
+              timeout: 3000
+            });
+            match = shortRes.data?.results?.[0];
+          } catch (_) {}
+        }
+      }
       if (match) {
         const tmdbDetails = await axios.get(`https://api.themoviedb.org/3/${tmdbType}/${match.id}`, {
           params: {
@@ -766,10 +787,16 @@ class AdminService {
     const streamUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}` : '';
 
     let finalSeasons = [];
-    let detectedTotalEps = mbDetail?.totalEpisodes || tmdbData?.number_of_episodes || 0;
+    const tmdbEps = parseInt(tmdbData?.number_of_episodes, 10) || 0;
+    const mbEps = parseInt(mbDetail?.totalEpisodes, 10) || 0;
+    let detectedTotalEps = Math.max(mbEps, tmdbEps);
 
     if (tmdbType === 'tv') {
       if (mbDetail && Array.isArray(mbDetail.seasons) && mbDetail.seasons.length > 0) {
+        if (detectedTotalEps > 1 && mbDetail.seasons.length === 1 && (mbDetail.seasons[0].maxEp || 0) <= 1) {
+          mbDetail.seasons[0].maxEp = detectedTotalEps;
+        }
+
         finalSeasons = mbDetail.seasons.map(s => {
           const maxEp = Math.max(parseInt(s.maxEp, 10) || 1, 1);
           const eps = [];
@@ -1022,6 +1049,11 @@ class AdminService {
               const sc = found.allEp.split(',').filter(Boolean).length;
               if (sc > mEp) mEp = sc;
             }
+            if (Array.isArray(found.resolutions)) {
+              for (const r of found.resolutions) {
+                if (r.epNum && r.epNum > mEp) mEp = r.epNum;
+              }
+            }
             targetSeasons = [{ se: found.se, maxEp: Math.max(mEp, episodesCount || 0) || 16 }];
           } else {
             targetSeasons = [{ se: seNum, maxEp: episodesCount || autoDetail.totalEpisodes || 16 }];
@@ -1032,6 +1064,11 @@ class AdminService {
             if (s.allEp) {
               const sc = s.allEp.split(',').filter(Boolean).length;
               if (sc > mEp) mEp = sc;
+            }
+            if (Array.isArray(s.resolutions)) {
+              for (const r of s.resolutions) {
+                if (r.epNum && r.epNum > mEp) mEp = r.epNum;
+              }
             }
             return { se: s.se, maxEp: Math.max(mEp, episodesCount || 0) || 16 };
           });

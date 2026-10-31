@@ -343,7 +343,20 @@ class MovieBoxService {
         let totalEpisodes = 1;
         if (isSeries) {
           if (seasons.length > 0) {
-            totalEpisodes = seasons.reduce((sum, s) => sum + (s.maxEp || 0), 0) || seasons[0]?.maxEp || 1;
+            totalEpisodes = seasons.reduce((sum, s) => {
+              let m = parseInt(s.maxEp, 10) || 0;
+              if (s.allEp) {
+                const sc = s.allEp.split(',').filter(Boolean).length;
+                if (sc > m) m = sc;
+              }
+              if (Array.isArray(s.resolutions)) {
+                for (const r of s.resolutions) {
+                  if (r.epNum && r.epNum > m) m = r.epNum;
+                }
+              }
+              s.maxEp = m || 1;
+              return sum + (m || 1);
+            }, 0) || seasons[0]?.maxEp || sub.episodeCount || sub.maxEp || 1;
           } else {
             totalEpisodes = sub.episodeCount || sub.maxEp || 1;
           }

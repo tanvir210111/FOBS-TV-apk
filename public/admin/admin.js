@@ -714,10 +714,33 @@ async function openImportModal(item) {
 
   // Asynchronously query MovieBox for exact uploaded episode count, industry, category, and year
   try {
-    const data = await apiFetch(`/api/admin/moviebox/detail?subjectId=${encodeURIComponent(sId)}&detailPath=${encodeURIComponent(dPath)}`);
-    if (data && data.success && data.detail) {
-      const d = data.detail;
+    let d = null;
+    try {
+      const data = await apiFetch(`/api/admin/moviebox/detail?subjectId=${encodeURIComponent(sId)}&detailPath=${encodeURIComponent(dPath)}`);
+      if (data && data.success && data.detail) {
+        d = data.detail;
+      }
+    } catch (_) {}
 
+    // Resilient fallback: if MovieBox direct detail lookup failed or returned <= 1 episode for a series, query auto-detect (TMDb + MovieBox)
+    if (!d || (isSeries && (!d.totalEpisodes || d.totalEpisodes <= 1))) {
+      try {
+        const autoRes = await apiFetch(`/api/admin/auto-detect?q=${encodeURIComponent(item.title || '')}&type=${isSeries ? 'series' : 'movie'}`);
+        if (autoRes && autoRes.success && autoRes.data) {
+          const ad = autoRes.data;
+          if (!d) {
+            d = ad;
+          } else if (ad.totalEpisodes && ad.totalEpisodes > (d.totalEpisodes || 1)) {
+            d.totalEpisodes = ad.totalEpisodes;
+            if (ad.seasons && ad.seasons.length > 0) d.seasons = ad.seasons;
+            if (ad.industry && (!d.industry || d.industry === 'Hollywood')) d.industry = ad.industry;
+            if (ad.category && (!d.category || d.category === 'Web Series')) d.category = ad.category;
+          }
+        }
+      } catch (_) {}
+    }
+
+    if (d) {
       if (d.type) {
         document.getElementById('imp-type').value = d.type;
         document.getElementById('imp-series-row').style.display = (d.type === 'series') ? 'flex' : 'none';
@@ -733,12 +756,12 @@ async function openImportModal(item) {
 
           d.seasons.forEach(s => {
             const opt = document.createElement('option');
-            opt.value = String(s.se);
-            opt.textContent = `Season ${s.se} (${s.maxEp || 0} Episodes)`;
+            opt.value = String(s.seasonNumber || s.se);
+            opt.textContent = `Season ${s.seasonNumber || s.se} (${s.episodesCount || s.maxEp || 0} Episodes)`;
             seasonSel.appendChild(opt);
           });
         } else {
-          const detectedEp = d.totalEpisodes || 1;
+          const detectedEp = d.totalEpisodes || (isSeries ? 16 : 1);
           const opt = document.createElement('option');
           opt.value = 'all';
           opt.textContent = `🌟 Season 1 (${detectedEp} Episode${detectedEp > 1 ? 's' : ''})`;
@@ -754,10 +777,11 @@ async function openImportModal(item) {
       if (d.cover && !document.getElementById('imp-cover').value) document.getElementById('imp-cover').value = d.cover;
 
       if (d.seasons && d.seasons.length > 1) {
-        const breakdown = d.seasons.map(s => `S${s.se}: ${s.maxEp} eps`).join(' • ');
+        const breakdown = d.seasons.map(s => `S${s.seasonNumber || s.se}: ${s.episodesCount || s.maxEp} eps`).join(' • ');
         statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald"></i> <strong>Auto-Detected:</strong> ${d.seasons.length} Seasons (${d.totalEpisodes} Episodes Total)<br><small class="text-muted">${breakdown} • ${d.industry} (${d.category})</small>`;
       } else {
-        statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald"></i> <strong>Auto-Detected:</strong> ${d.totalEpisodes || 1} Episode(s) • ${d.industry} (${d.category})`;
+        const totalEpText = d.totalEpisodes || (isSeries ? 16 : 1);
+        statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald"></i> <strong>Auto-Detected:</strong> ${totalEpText} Episode(s) • ${d.industry} (${d.category})`;
       }
     }
   } catch (err) {
