@@ -573,6 +573,14 @@ async function loadMovieBoxRecent(filter = 'all', pillBtn = null) {
       filtered = state.mbSearchItems.filter(i => i.type === 'movie');
     } else if (filter === 'series') {
       filtered = state.mbSearchItems.filter(i => i.type === 'series');
+    } else if (filter === 'kdrama-hindi') {
+      filtered = state.mbSearchItems.filter(i => /korean|kdrama|k-drama/i.test(i.title + ' ' + (i.section || '')) && /hindi/i.test(i.title + ' ' + (i.section || '')));
+    } else if (filter === 'cdrama-hindi') {
+      filtered = state.mbSearchItems.filter(i => /chinese|c-drama|cdrama/i.test(i.title + ' ' + (i.section || '')) && /hindi/i.test(i.title + ' ' + (i.section || '')));
+    } else if (filter === 'turkish-hindi') {
+      filtered = state.mbSearchItems.filter(i => /turkish|turkey/i.test(i.title + ' ' + (i.section || '')) && /hindi/i.test(i.title + ' ' + (i.section || '')));
+    } else if (filter === 'hindi') {
+      filtered = state.mbSearchItems.filter(i => /hindi/i.test(i.title + ' ' + (i.section || '')));
     } else if (filter === 'kdrama') {
       filtered = state.mbSearchItems.filter(i => /korean|kdrama|k-drama/i.test(i.title + ' ' + (i.section || '')));
     } else if (filter === 'cdrama') {
@@ -986,8 +994,24 @@ function filterMoviesTable(query = null) {
     let matchIndustry = true;
     if (state.movies.industry) {
       const selInd = state.movies.industry.toLowerCase();
-      if (selInd === 'korean') {
+      if (selInd === 'korean-hindi') {
+        const isKorean = industry.includes('korean') || industry.includes('kdrama') || category.includes('korean') || /korean|kdrama|k-drama/i.test(title);
+        const isHindi = title.includes('hindi') || category.includes('dubbed') || category.includes('hindi');
+        matchIndustry = isKorean && isHindi;
+      } else if (selInd === 'chinese-hindi') {
+        const isChinese = industry.includes('chinese') || category.includes('chinese') || /chinese|cdrama|c-drama/i.test(title);
+        const isHindi = title.includes('hindi') || category.includes('dubbed') || category.includes('hindi');
+        matchIndustry = isChinese && isHindi;
+      } else if (selInd === 'turkish-hindi') {
+        const isTurkish = industry.includes('turkish') || category.includes('turkish') || /turkish|turkey/i.test(title);
+        const isHindi = title.includes('hindi') || category.includes('dubbed') || category.includes('hindi');
+        matchIndustry = isTurkish && isHindi;
+      } else if (selInd === 'hindi') {
+        matchIndustry = title.includes('hindi') || category.includes('hindi') || category.includes('dubbed') || industry.includes('bollywood');
+      } else if (selInd === 'korean') {
         matchIndustry = industry.includes('korean') || industry.includes('kdrama') || category.includes('korean');
+      } else if (selInd === 'turkish') {
+        matchIndustry = industry.includes('turkish') || category.includes('turkish');
       } else if (selInd === 'tollywood' || selInd === 'south indian') {
         matchIndustry = industry.includes('tollywood') || industry.includes('south') || category.includes('south');
       } else if (selInd === 'bollywood') {
@@ -1258,7 +1282,21 @@ function filterSeriesTable(query = null) {
     let matchIndustry = true;
     if (state.series.industry) {
       const selInd = state.series.industry.toLowerCase();
-      if (selInd === 'korean') {
+      if (selInd === 'korean-hindi') {
+        const isKorean = industry.includes('korean') || industry.includes('kdrama') || category.includes('korean') || /korean|kdrama|k-drama/i.test(title);
+        const isHindi = title.includes('hindi') || category.includes('dubbed') || category.includes('hindi');
+        matchIndustry = isKorean && isHindi;
+      } else if (selInd === 'chinese-hindi') {
+        const isChinese = industry.includes('chinese') || category.includes('chinese') || /chinese|cdrama|c-drama/i.test(title);
+        const isHindi = title.includes('hindi') || category.includes('dubbed') || category.includes('hindi');
+        matchIndustry = isChinese && isHindi;
+      } else if (selInd === 'turkish-hindi') {
+        const isTurkish = industry.includes('turkish') || category.includes('turkish') || /turkish|turkey/i.test(title);
+        const isHindi = title.includes('hindi') || category.includes('dubbed') || category.includes('hindi');
+        matchIndustry = isTurkish && isHindi;
+      } else if (selInd === 'hindi') {
+        matchIndustry = title.includes('hindi') || category.includes('hindi') || category.includes('dubbed') || industry.includes('bollywood');
+      } else if (selInd === 'korean') {
         matchIndustry = industry.includes('korean') || industry.includes('kdrama') || category.includes('korean');
       } else if (selInd === 'tollywood' || selInd === 'south indian') {
         matchIndustry = industry.includes('tollywood') || industry.includes('south') || category.includes('south');

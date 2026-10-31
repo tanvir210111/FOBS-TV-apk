@@ -383,6 +383,10 @@
             <button class="pill" data-filter="trending" onclick="loadMovieBoxRecent('trending', this)">🔥 Trending</button>
             <button class="pill" data-filter="movies" onclick="loadMovieBoxRecent('movies', this)">🎬 Movies</button>
             <button class="pill" data-filter="series" onclick="loadMovieBoxRecent('series', this)">📺 Series</button>
+            <button class="pill" data-filter="kdrama-hindi" onclick="loadMovieBoxRecent('kdrama-hindi', this)">🇰🇷 K-Drama (Hindi)</button>
+            <button class="pill" data-filter="cdrama-hindi" onclick="loadMovieBoxRecent('cdrama-hindi', this)">🇨🇳 C-Drama (Hindi)</button>
+            <button class="pill" data-filter="turkish-hindi" onclick="loadMovieBoxRecent('turkish-hindi', this)">🇹🇷 Turkish (Hindi)</button>
+            <button class="pill" data-filter="hindi" onclick="loadMovieBoxRecent('hindi', this)">🇮🇳 Hindi Dubbed</button>
             <button class="pill" data-filter="kdrama" onclick="loadMovieBoxRecent('kdrama', this)">🇰🇷 K-Drama</button>
             <button class="pill" data-filter="cdrama" onclick="loadMovieBoxRecent('cdrama', this)">🇨🇳 C-Drama</button>
             <button class="pill" data-filter="turkish" onclick="loadMovieBoxRecent('turkish', this)">🇹🇷 Turkish</button>
@@ -420,6 +424,10 @@
             </select>
             <select id="movies-industry-filter" class="select-filter" onchange="filterMoviesTable()">
               <option value="">All Industries</option>
+              <option value="korean-hindi">🇰🇷 K-Drama (Hindi Dub)</option>
+              <option value="chinese-hindi">🇨🇳 C-Drama (Hindi Dub)</option>
+              <option value="turkish-hindi">🇹🇷 Turkish Drama (Hindi Dub)</option>
+              <option value="hindi">🇮🇳 All Hindi Dubbed</option>
               <option value="Korean">Korean / K-Drama</option>
               <option value="Chinese">Chinese / C-Drama</option>
               <option value="Turkish">Turkish Drama</option>
@@ -477,6 +485,10 @@
             </div>
             <select id="series-industry-filter" class="select-filter" onchange="filterSeriesTable()">
               <option value="">All Industries</option>
+              <option value="korean-hindi">🇰🇷 K-Drama (Hindi Dub)</option>
+              <option value="chinese-hindi">🇨🇳 C-Drama (Hindi Dub)</option>
+              <option value="turkish-hindi">🇹🇷 Turkish Drama (Hindi Dub)</option>
+              <option value="hindi">🇮🇳 All Hindi Dubbed</option>
               <option value="Korean">Korean / K-Drama</option>
               <option value="Chinese">Chinese / C-Drama</option>
               <option value="Turkish">Turkish Drama</option>
@@ -1759,6 +1771,6 @@
   <div id="toast-container" class="toast-container"></div>
 
   <!-- Admin JavaScript -->
-  <script src="/admin/admin.js?v=3.2.5"></script>
+  <script src="/admin/admin.js?v=3.2.6"></script>
 </body>
 </html>
