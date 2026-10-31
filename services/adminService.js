@@ -763,7 +763,71 @@ class AdminService {
 
     const sId = mbItem?.subjectId || mbDetail?.subjectId || (isSubjectId ? cleanQ : '');
     const dPath = mbItem?.detailPath || mbDetail?.detailPath || '';
-    const streamUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${dPath}` : '';
+    const streamUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}` : '';
+
+    let finalSeasons = [];
+    let detectedTotalEps = mbDetail?.totalEpisodes || tmdbData?.number_of_episodes || 0;
+
+    if (tmdbType === 'tv') {
+      if (mbDetail && Array.isArray(mbDetail.seasons) && mbDetail.seasons.length > 0) {
+        finalSeasons = mbDetail.seasons.map(s => {
+          const maxEp = Math.max(parseInt(s.maxEp, 10) || 1, 1);
+          const eps = [];
+          for (let ep = 1; ep <= maxEp; ep++) {
+            const epUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${s.se}&ep=${ep}` : '';
+            eps.push({
+              number: String(ep).padStart(2, '0'),
+              episode: ep,
+              season: s.se,
+              title: `Episode ${ep}`,
+              duration: '45 min',
+              still: finalPoster,
+              streamUrl: epUrl,
+              servers: [
+                { name: `Server 1 (${isHindiDubbed ? 'Hindi Dub' : 'HD'})`, url: epUrl, quality: '1080p', isDirect: true },
+                { name: 'Server 2 (Auto Failover)', url: epUrl, quality: '1080p', isDirect: true }
+              ]
+            });
+          }
+          return {
+            seasonNumber: s.se,
+            title: `Season ${s.se}`,
+            name: `Season ${s.se}`,
+            episodesCount: eps.length,
+            episodes: eps
+          };
+        });
+        detectedTotalEps = finalSeasons.reduce((sum, s) => sum + s.episodesCount, 0);
+      } else if (detectedTotalEps > 0) {
+        const eps = [];
+        for (let ep = 1; ep <= detectedTotalEps; ep++) {
+          const epUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=1&ep=${ep}` : '';
+          eps.push({
+            number: String(ep).padStart(2, '0'),
+            episode: ep,
+            season: 1,
+            title: `Episode ${ep}`,
+            duration: '45 min',
+            still: finalPoster,
+            streamUrl: epUrl,
+            servers: [
+              { name: `Server 1 (${isHindiDubbed ? 'Hindi Dub' : 'HD'})`, url: epUrl, quality: '1080p', isDirect: true }
+            ]
+          });
+        }
+        finalSeasons = [{
+          seasonNumber: 1,
+          title: 'Season 1',
+          name: 'Season 1',
+          episodesCount: eps.length,
+          episodes: eps
+        }];
+      }
+    }
+
+    if (!detectedTotalEps) {
+      detectedTotalEps = finalSeasons.length > 0 ? finalSeasons.reduce((sum, s) => sum + s.episodesCount, 0) : (tmdbType === 'tv' ? 16 : 1);
+    }
 
     return {
       success: true,
@@ -784,9 +848,10 @@ class AdminService {
         streamUrl: streamUrl,
         isHindi: isHindiDubbed,
         type: tmdbType === 'tv' ? 'series' : 'movie',
-        seasonsCount: mbDetail?.seasons?.length || tmdbData?.number_of_seasons || 1,
-        totalEpisodes: mbDetail?.totalEpisodes || tmdbData?.number_of_episodes || 10,
-        seasons: mbDetail?.seasons || []
+        seasonsCount: finalSeasons.length || 1,
+        totalEpisodes: detectedTotalEps,
+        seasons: finalSeasons,
+        episodes: finalSeasons[0]?.episodes || []
       }
     };
   }
@@ -824,7 +889,7 @@ class AdminService {
     }
 
     // Auto-fetch full metadata, total uploaded episodes, and categories from MovieBox
-    const autoDetail = await movieboxService.getDetail(subjectId);
+    const autoDetail = await movieboxService.getDetail(subjectId, detailPath);
     if (autoDetail) {
       if (!title) title = autoDetail.title;
       if (!type) type = autoDetail.type;
@@ -990,7 +1055,10 @@ class AdminService {
         let sampleCaptions = [];
         let directSampleUrl = '';
         try {
-          const sampleMb = await movieboxService.resolveMedia(subjectId, detailPath, seNum, 1);
+          const sampleMb = await Promise.race([
+            movieboxService.resolveMedia(subjectId, detailPath, seNum, 1),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('Sample timeout')), 6000))
+          ]);
           if (sampleMb) {
             if (sampleMb.resolution) sampleRes = sampleMb.resolution;
             if (sampleMb.duration) sampleDuration = sampleMb.duration;
@@ -1235,6 +1303,43 @@ class AdminService {
     series.badgeLeft = series.badgeLeft || 'Trending';
     series.views = series.views !== undefined ? parseInt(series.views, 10) : 1250;
     series.type = 'series';
+
+    // Auto-repair episodes if subjectId exists and episodes are missing or empty
+    if (series.subjectId && (!series.episodes || series.episodes.length === 0)) {
+      const sId = series.subjectId;
+      const dPath = series.detailPath || '';
+      if (!Array.isArray(series.seasons) || series.seasons.length === 0) {
+        series.seasons = [{ seasonNumber: 1, title: 'Season 1', episodesCount: 16, episodes: [] }];
+      }
+      series.seasons.forEach((season, sIdx) => {
+        const seNum = season.seasonNumber || (sIdx + 1);
+        if (!Array.isArray(season.episodes) || season.episodes.length === 0) {
+          const maxEp = Math.max(parseInt(season.maxEp || season.episodesCount, 10) || 16, 1);
+          season.episodes = [];
+          for (let ep = 1; ep <= maxEp; ep++) {
+            const epUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${ep}`;
+            season.episodes.push({
+              number: String(ep).padStart(2, '0'),
+              episode: ep,
+              season: seNum,
+              title: `Episode ${ep}`,
+              duration: '45 min',
+              still: series.poster,
+              streamUrl: epUrl,
+              servers: [
+                { name: 'Server 1 (Auto-Renewing HD)', url: epUrl, quality: '1080p', isDirect: true },
+                { name: 'Server 2 (Auto Failover)', url: epUrl, quality: '1080p', isDirect: true }
+              ]
+            });
+          }
+          season.episodesCount = season.episodes.length;
+        }
+      });
+      series.episodes = series.seasons[0]?.episodes || [];
+      series.streamUrl = series.episodes[0]?.streamUrl || '';
+      series.seasonsCount = series.seasons.length;
+      series.episodesCount = series.seasons.reduce((sum, s) => sum + (s.episodes?.length || 0), 0);
+    }
 
     if (series.views !== undefined) {
       const viewsMap = readViewsMap();

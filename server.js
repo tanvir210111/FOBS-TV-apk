@@ -2813,10 +2813,11 @@ app.get('/api/admin/moviebox/search', adminService.authenticate, async (req, res
 
 app.get('/api/admin/moviebox/detail', adminService.authenticate, async (req, res) => {
   try {
-    const { id, subjectId } = req.query;
+    const { id, subjectId, path, detailPath } = req.query;
     const sId = subjectId || id;
+    const dPath = path || detailPath || '';
     if (!sId) return res.status(400).json({ success: false, error: 'subjectId is required' });
-    const detail = await movieboxService.getDetail(sId);
+    const detail = await movieboxService.getDetail(sId, dPath);
     if (!detail) return res.status(404).json({ success: false, error: 'Detail not found on MovieBox' });
     res.json({ success: true, detail });
   } catch (err) {

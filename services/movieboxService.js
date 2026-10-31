@@ -343,9 +343,9 @@ class MovieBoxService {
         let totalEpisodes = 1;
         if (isSeries) {
           if (seasons.length > 0) {
-            totalEpisodes = seasons.reduce((sum, s) => sum + (s.maxEp || 0), 0) || seasons[0]?.maxEp || 10;
+            totalEpisodes = seasons.reduce((sum, s) => sum + (s.maxEp || 0), 0) || seasons[0]?.maxEp || 1;
           } else {
-            totalEpisodes = 10;
+            totalEpisodes = sub.episodeCount || sub.maxEp || 1;
           }
         }
 

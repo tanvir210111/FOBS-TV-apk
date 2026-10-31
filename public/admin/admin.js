@@ -714,7 +714,7 @@ async function openImportModal(item) {
 
   // Asynchronously query MovieBox for exact uploaded episode count, industry, category, and year
   try {
-    const data = await apiFetch(`/api/admin/moviebox/detail?subjectId=${encodeURIComponent(sId)}`);
+    const data = await apiFetch(`/api/admin/moviebox/detail?subjectId=${encodeURIComponent(sId)}&detailPath=${encodeURIComponent(dPath)}`);
     if (data && data.success && data.detail) {
       const d = data.detail;
 
@@ -738,9 +738,10 @@ async function openImportModal(item) {
             seasonSel.appendChild(opt);
           });
         } else {
+          const detectedEp = d.totalEpisodes || 1;
           const opt = document.createElement('option');
           opt.value = 'all';
-          opt.textContent = `🌟 Season 1 (${d.totalEpisodes || 10} Episodes)`;
+          opt.textContent = `🌟 Season 1 (${detectedEp} Episode${detectedEp > 1 ? 's' : ''})`;
           seasonSel.appendChild(opt);
         }
       }
@@ -935,8 +936,8 @@ async function autoDetectSeriesFromInput() {
     }
 
     updateSeriesPosterPreview();
-    const seCount = d.seasonsCount || 1;
-    const epCount = d.totalEpisodes || 10;
+    const seCount = d.seasonsCount || (d.seasons ? d.seasons.length : 1);
+    const epCount = d.totalEpisodes || (d.seasons ? d.seasons.reduce((sum, s) => sum + (s.episodesCount || (s.episodes ? s.episodes.length : 0)), 0) : 1);
     showToast(`✨ Auto-detected: "${d.title}" (${d.year}) • ${seCount} Season(s), ${epCount} Episodes!`, 'success', 4500);
   } catch (err) {
     showToast(`Auto-detect error: ${err.message}`, 'error', 4500);
@@ -1479,11 +1480,43 @@ async function handleSeriesSubmit(e) {
 
   // If newly adding a series and episodes were detected during auto-detect, attach them!
   if (!series.id && state.lastDetectedSeriesSeasons && state.lastDetectedSeriesSeasons.length > 0) {
-    series.seasons = state.lastDetectedSeriesSeasons;
+    const sId = series.subjectId || '';
+    const dPath = document.getElementById('s-detail-path')?.value || '';
+    series.seasons = state.lastDetectedSeriesSeasons.map(s => {
+      const seNum = s.seasonNumber || s.se || 1;
+      let episodes = s.episodes;
+      if (!Array.isArray(episodes) || episodes.length === 0) {
+        const maxEp = Math.max(parseInt(s.maxEp || s.episodesCount, 10) || 16, 1);
+        episodes = [];
+        for (let ep = 1; ep <= maxEp; ep++) {
+          const sUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${ep}` : '';
+          episodes.push({
+            number: String(ep).padStart(2, '0'),
+            episode: ep,
+            season: seNum,
+            title: `Episode ${ep}`,
+            duration: '45 min',
+            still: series.poster,
+            streamUrl: sUrl,
+            servers: [
+              { name: 'Server 1 (Auto-Renewing HD)', url: sUrl, quality: '1080p', isDirect: true },
+              { name: 'Server 2 (Auto Failover)', url: sUrl, quality: '1080p', isDirect: true }
+            ]
+          });
+        }
+      }
+      return {
+        seasonNumber: seNum,
+        title: s.title || `Season ${seNum}`,
+        name: s.name || `Season ${seNum}`,
+        episodesCount: episodes.length,
+        episodes
+      };
+    });
     series.episodes = series.seasons[0]?.episodes || [];
     series.streamUrl = series.episodes[0]?.streamUrl || '';
     series.seasonsCount = series.seasons.length;
-    series.episodesCount = series.seasons.reduce((sum, s) => sum + (s.episodes?.length || 0), 0);
+    series.episodesCount = series.seasons.reduce((sum, s) => sum + (s.episodes?.length || s.episodesCount || 0), 0);
   }
 
   try {
