@@ -463,17 +463,19 @@ class AdminService {
 
     let filtered = allItems;
     if (filter === 'trending') {
-      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('trending') || (i.section || '').toLowerCase().includes('top'));
-    } else if (filter === 'cinema') {
-      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('cinema'));
-    } else if (filter === 'bollywood') {
-      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('bollywood') || (i.section || '').toLowerCase().includes('south') || (i.title || '').toLowerCase().includes('hindi'));
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('trending') || (i.section || '').toLowerCase().includes('top') || (i.section || '').toLowerCase().includes('hot'));
+    } else if (filter === 'movies' || filter === 'cinema') {
+      filtered = allItems.filter(i => i.type === 'movie' || (i.section || '').toLowerCase().includes('cinema') || (i.section || '').toLowerCase().includes('movie'));
+    } else if (filter === 'series' || filter === 'tv') {
+      filtered = allItems.filter(i => i.type === 'series' || (i.section || '').toLowerCase().includes('series') || (i.section || '').toLowerCase().includes('drama') || (i.section || '').toLowerCase().includes('show'));
+    } else if (filter === 'kdrama' || filter === 'korean') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('korean') || (i.section || '').toLowerCase().includes('kdrama') || (i.section || '').toLowerCase().includes('k-drama') || (i.title || '').toLowerCase().includes('korean'));
+    } else if (filter === 'bollywood' || filter === 'hindi') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('bollywood') || (i.section || '').toLowerCase().includes('south') || (i.section || '').toLowerCase().includes('hindi') || (i.title || '').toLowerCase().includes('hindi'));
     } else if (filter === 'hollywood') {
       filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('hollywood') || (i.section || '').toLowerCase().includes('western'));
-    } else if (filter === 'series') {
-      filtered = allItems.filter(i => i.type === 'series' || (i.section || '').toLowerCase().includes('series') || (i.section || '').toLowerCase().includes('drama'));
     } else if (filter === 'anime') {
-      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('anime'));
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('anime') || (i.title || '').toLowerCase().includes('anime'));
     }
 
     const unimportedCount = filtered.filter(i => !i.alreadyImported).length;
@@ -522,17 +524,19 @@ class AdminService {
 
     let filtered = allItems;
     if (filter === 'trending') {
-      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('trending') || (i.section || '').toLowerCase().includes('top'));
-    } else if (filter === 'cinema') {
-      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('cinema'));
-    } else if (filter === 'bollywood') {
-      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('bollywood') || (i.section || '').toLowerCase().includes('south') || (i.title || '').toLowerCase().includes('hindi'));
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('trending') || (i.section || '').toLowerCase().includes('top') || (i.section || '').toLowerCase().includes('hot'));
+    } else if (filter === 'movies' || filter === 'cinema') {
+      filtered = allItems.filter(i => i.type === 'movie' || (i.section || '').toLowerCase().includes('cinema') || (i.section || '').toLowerCase().includes('movie'));
+    } else if (filter === 'series' || filter === 'tv') {
+      filtered = allItems.filter(i => i.type === 'series' || (i.section || '').toLowerCase().includes('series') || (i.section || '').toLowerCase().includes('drama') || (i.section || '').toLowerCase().includes('show'));
+    } else if (filter === 'kdrama' || filter === 'korean') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('korean') || (i.section || '').toLowerCase().includes('kdrama') || (i.section || '').toLowerCase().includes('k-drama') || (i.title || '').toLowerCase().includes('korean'));
+    } else if (filter === 'bollywood' || filter === 'hindi') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('bollywood') || (i.section || '').toLowerCase().includes('south') || (i.section || '').toLowerCase().includes('hindi') || (i.title || '').toLowerCase().includes('hindi'));
     } else if (filter === 'hollywood') {
       filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('hollywood') || (i.section || '').toLowerCase().includes('western'));
-    } else if (filter === 'series') {
-      filtered = allItems.filter(i => i.type === 'series' || (i.section || '').toLowerCase().includes('series') || (i.section || '').toLowerCase().includes('drama'));
     } else if (filter === 'anime') {
-      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('anime'));
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('anime') || (i.title || '').toLowerCase().includes('anime'));
     }
 
     return {

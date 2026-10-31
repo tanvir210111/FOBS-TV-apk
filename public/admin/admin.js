@@ -535,6 +535,13 @@ async function searchMovieBox(query) {
   try {
     const data = await apiFetch(`/api/admin/moviebox/search?q=${encodeURIComponent(query)}`);
     const items = data.items || [];
+    state.mbSearchItems = items;
+    state.mbCurrentQuery = query;
+
+    // Reset filter pills to All
+    document.querySelectorAll('#mb-filter-pills .pill').forEach(p => p.classList.remove('active'));
+    document.querySelector('#mb-filter-pills .pill[data-filter="all"]')?.classList.add('active');
+
     countDisplay.innerText = `Found ${items.length} titles`;
     renderMovieBoxGrid(items);
   } catch (err) {
@@ -557,6 +564,34 @@ async function loadMovieBoxRecent(filter = 'all', pillBtn = null) {
 
   const container = document.getElementById('moviebox-results');
   const countDisplay = document.getElementById('mb-results-count');
+  const searchInputVal = document.getElementById('mb-search-input')?.value?.trim();
+
+  // If there are search results active and user clicks a filter pill, filter the search results!
+  if (searchInputVal && state.mbSearchItems && state.mbSearchItems.length > 0) {
+    let filtered = state.mbSearchItems;
+    if (filter === 'movies') {
+      filtered = state.mbSearchItems.filter(i => i.type === 'movie');
+    } else if (filter === 'series') {
+      filtered = state.mbSearchItems.filter(i => i.type === 'series');
+    } else if (filter === 'kdrama') {
+      filtered = state.mbSearchItems.filter(i => /korean|kdrama|k-drama/i.test(i.title + ' ' + (i.section || '')));
+    } else if (filter === 'anime') {
+      filtered = state.mbSearchItems.filter(i => /anime/i.test(i.title + ' ' + (i.section || '')));
+    } else if (filter === 'bollywood') {
+      filtered = state.mbSearchItems.filter(i => /hindi|bollywood|south/i.test(i.title + ' ' + (i.section || '')));
+    }
+    countDisplay.innerText = `${filtered.length} titles matching "${filter}"`;
+    renderMovieBoxGrid(filtered);
+    return;
+  }
+
+  // Clear search items when loading feed
+  state.mbSearchItems = null;
+  state.mbCurrentQuery = '';
+  if (document.getElementById('mb-search-input')) {
+    document.getElementById('mb-search-input').value = '';
+  }
+
   container.innerHTML = `
     <div class="loading-state">
       <div class="spinner"></div>
@@ -921,18 +956,48 @@ async function handleBatchImportRecent() {
 // TAB 3: MOVIES MANAGEMENT
 // ============================================================
 function filterMoviesTable(query = null) {
-  if (query !== null) state.movies.search = query.toLowerCase();
-  state.movies.genre = document.getElementById('movies-genre-filter').value;
-  state.movies.industry = document.getElementById('movies-industry-filter').value;
+  const searchInput = document.getElementById('movies-search');
+  const searchVal = (query !== null && typeof query === 'string' ? query : (searchInput?.value || '')).toLowerCase().trim();
+  state.movies.search = searchVal;
+
+  state.movies.genre = document.getElementById('movies-genre-filter')?.value || '';
+  state.movies.industry = document.getElementById('movies-industry-filter')?.value || '';
 
   state.movies.filtered = (state.content.movies || []).filter(m => {
+    const title = (m.title || '').toLowerCase();
+    const year = String(m.year || '');
+    const genre = (m.genre || '').toLowerCase();
+    const category = (m.category || '').toLowerCase();
+    const industry = (m.industry || '').toLowerCase();
+
     const matchSearch = !state.movies.search ||
-      (m.title && m.title.toLowerCase().includes(state.movies.search)) ||
-      (m.year && String(m.year).includes(state.movies.search)) ||
-      (m.genre && m.genre.toLowerCase().includes(state.movies.search));
+      title.includes(state.movies.search) ||
+      year.includes(state.movies.search) ||
+      genre.includes(state.movies.search) ||
+      category.includes(state.movies.search) ||
+      industry.includes(state.movies.search);
     
-    const matchGenre = !state.movies.genre || (m.genre && m.genre.includes(state.movies.genre));
-    const matchIndustry = !state.movies.industry || (m.industry && m.industry.toLowerCase() === state.movies.industry.toLowerCase());
+    const matchGenre = !state.movies.genre || genre.includes(state.movies.genre.toLowerCase());
+
+    let matchIndustry = true;
+    if (state.movies.industry) {
+      const selInd = state.movies.industry.toLowerCase();
+      if (selInd === 'korean') {
+        matchIndustry = industry.includes('korean') || industry.includes('kdrama') || category.includes('korean');
+      } else if (selInd === 'tollywood' || selInd === 'south indian') {
+        matchIndustry = industry.includes('tollywood') || industry.includes('south') || category.includes('south');
+      } else if (selInd === 'bollywood') {
+        matchIndustry = industry.includes('bollywood') || category.includes('bollywood') || title.includes('hindi');
+      } else if (selInd === 'hollywood') {
+        matchIndustry = industry.includes('hollywood') || category.includes('hollywood');
+      } else if (selInd === 'chinese') {
+        matchIndustry = industry.includes('chinese') || category.includes('chinese');
+      } else if (selInd === 'anime') {
+        matchIndustry = industry.includes('anime') || industry.includes('japanese') || category.includes('anime');
+      } else {
+        matchIndustry = industry === selInd || category.includes(selInd);
+      }
+    }
 
     return matchSearch && matchGenre && matchIndustry;
   });
@@ -1166,16 +1231,47 @@ async function editMovieViews(id, curViews) {
 // TAB 4: SERIES & TV STUDIO
 // ============================================================
 function filterSeriesTable(query = null) {
-  if (query !== null) state.series.search = query.toLowerCase();
-  state.series.industry = document.getElementById('series-industry-filter').value;
+  const searchInput = document.getElementById('series-search');
+  const searchVal = (query !== null && typeof query === 'string' ? query : (searchInput?.value || '')).toLowerCase().trim();
+  state.series.search = searchVal;
+
+  state.series.industry = document.getElementById('series-industry-filter')?.value || '';
 
   state.series.filtered = (state.content.series || []).filter(s => {
-    const matchSearch = !state.series.search ||
-      (s.title && s.title.toLowerCase().includes(state.series.search)) ||
-      (s.year && String(s.year).includes(state.series.search)) ||
-      (s.genre && s.genre.toLowerCase().includes(state.series.search));
+    const title = (s.title || '').toLowerCase();
+    const year = String(s.year || '');
+    const genre = (s.genre || '').toLowerCase();
+    const category = (s.category || '').toLowerCase();
+    const industry = (s.industry || '').toLowerCase();
 
-    const matchIndustry = !state.series.industry || (s.industry && s.industry.toLowerCase() === state.series.industry.toLowerCase());
+    const matchSearch = !state.series.search ||
+      title.includes(state.series.search) ||
+      year.includes(state.series.search) ||
+      genre.includes(state.series.search) ||
+      category.includes(state.series.search) ||
+      industry.includes(state.series.search);
+
+    let matchIndustry = true;
+    if (state.series.industry) {
+      const selInd = state.series.industry.toLowerCase();
+      if (selInd === 'korean') {
+        matchIndustry = industry.includes('korean') || industry.includes('kdrama') || category.includes('korean');
+      } else if (selInd === 'tollywood' || selInd === 'south indian') {
+        matchIndustry = industry.includes('tollywood') || industry.includes('south') || category.includes('south');
+      } else if (selInd === 'bollywood') {
+        matchIndustry = industry.includes('bollywood') || category.includes('bollywood') || title.includes('hindi');
+      } else if (selInd === 'hollywood') {
+        matchIndustry = industry.includes('hollywood') || category.includes('hollywood');
+      } else if (selInd === 'chinese') {
+        matchIndustry = industry.includes('chinese') || category.includes('chinese');
+      } else if (selInd === 'anime') {
+        matchIndustry = industry.includes('anime') || industry.includes('japanese') || category.includes('anime');
+      } else if (selInd === 'turkish') {
+        matchIndustry = industry.includes('turkish') || category.includes('turkish');
+      } else {
+        matchIndustry = industry === selInd || category.includes(selInd);
+      }
+    }
 
     return matchSearch && matchIndustry;
   });
