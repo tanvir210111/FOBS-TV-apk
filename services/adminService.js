@@ -269,7 +269,7 @@ class AdminService {
    */
   authenticate(req, res, next) {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1] ? authHeader.split(' ')[1] : req.cookies?.adminToken || req.query.admin_token;
+    const token = (authHeader && authHeader.split(' ')[1]) ? authHeader.split(' ')[1] : (req.cookies?.adminToken || req.query.admin_token || req.query.token);
     if (!token) {
       return res.status(401).json({ success: false, error: 'Admin access required. Please login.' });
     }
@@ -630,9 +630,10 @@ class AdminService {
       // Search MovieBox for best stream match
       try {
         const mbResults = await movieboxService.search(cleanQ);
-        if (mbResults && mbResults.length > 0) {
-          const filtered = mbResults.filter(it => type === 'series' ? (it.type === 'series') : (it.type === 'movie'));
-          mbItem = filtered[0] || mbResults[0];
+        const list = Array.isArray(mbResults) ? mbResults : (mbResults?.items || []);
+        if (list && list.length > 0) {
+          const filtered = list.filter(it => type === 'series' ? (it.type === 'series') : (it.type === 'movie'));
+          mbItem = filtered[0] || list[0];
           if (mbItem && mbItem.subjectId) {
             mbDetail = await movieboxService.getDetail(mbItem.subjectId, mbItem.detailPath);
           }

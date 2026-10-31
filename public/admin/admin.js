@@ -244,6 +244,12 @@ function switchTab(tabName) {
 
   // Load tab-specific dynamic data
   if (tabName === 'overview') renderOverview();
+  if (tabName === 'moviebox') {
+    const mbResults = document.getElementById('moviebox-results');
+    if (!mbResults || !mbResults.children.length || mbResults.querySelector('.empty-state')) {
+      loadMovieBoxRecent('all');
+    }
+  }
   if (tabName === 'movies') renderMoviesTable();
   if (tabName === 'series') renderSeriesTable();
   if (tabName === 'livetv') renderChannelsGrid();
@@ -2578,7 +2584,8 @@ async function triggerRefreshCdn() {
 
 function downloadBackup() {
   showToast('Preparing catalog backup snapshot for download...', 'info', 2000);
-  window.open('/api/admin/backup/download', '_blank');
+  const tokenParam = state.token ? `?admin_token=${encodeURIComponent(state.token)}` : '';
+  window.open(`/api/admin/backup/download${tokenParam}`, '_blank');
 }
 
 function handleRestoreFile(e) {
