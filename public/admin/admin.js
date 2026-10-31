@@ -575,6 +575,10 @@ async function loadMovieBoxRecent(filter = 'all', pillBtn = null) {
       filtered = state.mbSearchItems.filter(i => i.type === 'series');
     } else if (filter === 'kdrama') {
       filtered = state.mbSearchItems.filter(i => /korean|kdrama|k-drama/i.test(i.title + ' ' + (i.section || '')));
+    } else if (filter === 'cdrama') {
+      filtered = state.mbSearchItems.filter(i => /chinese|c-drama|cdrama/i.test(i.title + ' ' + (i.section || '')));
+    } else if (filter === 'turkish') {
+      filtered = state.mbSearchItems.filter(i => /turkish|turkey/i.test(i.title + ' ' + (i.section || '')));
     } else if (filter === 'anime') {
       filtered = state.mbSearchItems.filter(i => /anime/i.test(i.title + ' ' + (i.section || '')));
     } else if (filter === 'bollywood') {

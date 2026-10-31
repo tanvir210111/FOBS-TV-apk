@@ -19,7 +19,7 @@
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   
   <!-- Admin Stylesheet -->
-  <link rel="stylesheet" href="/admin/style.css?v=3.2.4">
+  <link rel="stylesheet" href="/admin/style.css?v=3.2.5">
 </head>
 <body>
 
@@ -384,6 +384,8 @@
             <button class="pill" data-filter="movies" onclick="loadMovieBoxRecent('movies', this)">🎬 Movies</button>
             <button class="pill" data-filter="series" onclick="loadMovieBoxRecent('series', this)">📺 Series</button>
             <button class="pill" data-filter="kdrama" onclick="loadMovieBoxRecent('kdrama', this)">🇰🇷 K-Drama</button>
+            <button class="pill" data-filter="cdrama" onclick="loadMovieBoxRecent('cdrama', this)">🇨🇳 C-Drama</button>
+            <button class="pill" data-filter="turkish" onclick="loadMovieBoxRecent('turkish', this)">🇹🇷 Turkish</button>
             <button class="pill" data-filter="anime" onclick="loadMovieBoxRecent('anime', this)">⚡ Anime</button>
             <button class="pill" data-filter="bollywood" onclick="loadMovieBoxRecent('bollywood', this)">🇮🇳 Bollywood</button>
           </div>
@@ -418,11 +420,13 @@
             </select>
             <select id="movies-industry-filter" class="select-filter" onchange="filterMoviesTable()">
               <option value="">All Industries</option>
-              <option value="Korean">Korean</option>
+              <option value="Korean">Korean / K-Drama</option>
+              <option value="Chinese">Chinese / C-Drama</option>
+              <option value="Turkish">Turkish Drama</option>
               <option value="Hollywood">Hollywood</option>
               <option value="Bollywood">Bollywood</option>
               <option value="Tollywood">South Indian</option>
-              <option value="Chinese">Chinese</option>
+              <option value="Anime">Anime</option>
             </select>
           </div>
           <div class="toolbar-right">
@@ -473,10 +477,12 @@
             </div>
             <select id="series-industry-filter" class="select-filter" onchange="filterSeriesTable()">
               <option value="">All Industries</option>
-              <option value="Korean">Korean</option>
+              <option value="Korean">Korean / K-Drama</option>
+              <option value="Chinese">Chinese / C-Drama</option>
+              <option value="Turkish">Turkish Drama</option>
               <option value="Hollywood">Hollywood</option>
               <option value="Bollywood">Bollywood</option>
-              <option value="Chinese">Chinese</option>
+              <option value="Tollywood">South Indian</option>
               <option value="Anime">Anime</option>
             </select>
           </div>
@@ -1753,6 +1759,6 @@
   <div id="toast-container" class="toast-container"></div>
 
   <!-- Admin JavaScript -->
-  <script src="/admin/admin.js?v=3.2.4"></script>
+  <script src="/admin/admin.js?v=3.2.5"></script>
 </body>
 </html>

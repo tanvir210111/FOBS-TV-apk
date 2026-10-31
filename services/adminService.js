@@ -470,6 +470,10 @@ class AdminService {
       filtered = allItems.filter(i => i.type === 'series' || (i.section || '').toLowerCase().includes('series') || (i.section || '').toLowerCase().includes('drama') || (i.section || '').toLowerCase().includes('show'));
     } else if (filter === 'kdrama' || filter === 'korean') {
       filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('korean') || (i.section || '').toLowerCase().includes('kdrama') || (i.section || '').toLowerCase().includes('k-drama') || (i.title || '').toLowerCase().includes('korean'));
+    } else if (filter === 'cdrama' || filter === 'chinese') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('chinese') || (i.section || '').toLowerCase().includes('c-drama') || (i.section || '').toLowerCase().includes('cdrama') || (i.title || '').toLowerCase().includes('chinese'));
+    } else if (filter === 'turkish') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('turkish') || (i.section || '').toLowerCase().includes('turkey') || (i.title || '').toLowerCase().includes('turkish'));
     } else if (filter === 'bollywood' || filter === 'hindi') {
       filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('bollywood') || (i.section || '').toLowerCase().includes('south') || (i.section || '').toLowerCase().includes('hindi') || (i.title || '').toLowerCase().includes('hindi'));
     } else if (filter === 'hollywood') {
@@ -531,6 +535,10 @@ class AdminService {
       filtered = allItems.filter(i => i.type === 'series' || (i.section || '').toLowerCase().includes('series') || (i.section || '').toLowerCase().includes('drama') || (i.section || '').toLowerCase().includes('show'));
     } else if (filter === 'kdrama' || filter === 'korean') {
       filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('korean') || (i.section || '').toLowerCase().includes('kdrama') || (i.section || '').toLowerCase().includes('k-drama') || (i.title || '').toLowerCase().includes('korean'));
+    } else if (filter === 'cdrama' || filter === 'chinese') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('chinese') || (i.section || '').toLowerCase().includes('c-drama') || (i.section || '').toLowerCase().includes('cdrama') || (i.title || '').toLowerCase().includes('chinese'));
+    } else if (filter === 'turkish') {
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('turkish') || (i.section || '').toLowerCase().includes('turkey') || (i.title || '').toLowerCase().includes('turkish'));
     } else if (filter === 'bollywood' || filter === 'hindi') {
       filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('bollywood') || (i.section || '').toLowerCase().includes('south') || (i.section || '').toLowerCase().includes('hindi') || (i.title || '').toLowerCase().includes('hindi'));
     } else if (filter === 'hollywood') {
