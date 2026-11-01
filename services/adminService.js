@@ -146,7 +146,8 @@ function writeContent(content) {
   } catch (e) {}
 
   try {
-    const jsonStr = JSON.stringify(content, null, 2);
+    // Write high-performance compact JSON to keep file size < 60MB and eliminate git/disk bloat
+    const jsonStr = JSON.stringify(content);
 
     // 1. Atomically update main content.json
     atomicWriteFile(CONTENT_FILE, jsonStr);
@@ -1152,9 +1153,7 @@ class AdminService {
                 audio: isHindi ? 'Hindi dub' : 'Original Audio',
                 isDirect: true
               }
-            ],
-            captions: epCaptions,
-            subtitles: epCaptions
+            ]
           });
         }
 
