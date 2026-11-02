@@ -317,7 +317,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v78';
+const CACHE_KEY = 'fobs_tv_content_cache_v79';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 60 * 1000; // 1 minute TTL
 let isSyncing = false;
