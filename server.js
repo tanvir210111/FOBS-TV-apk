@@ -3145,7 +3145,7 @@ app.all('/api/deploy', (req, res) => {
 
   const { exec } = require('child_process');
   console.log('🚀 Triggering automated git pull & PM2 restart...');
-  exec('git fetch origin main && git reset --hard origin/main', { cwd: __dirname }, (error, stdout, stderr) => {
+  exec('git fetch origin main && git reset --hard origin/main && cp -f data/content.json data/content.backup.json && cp -f data/content.json data/content.local.json && node scripts/optimize_content_size.js', { cwd: __dirname }, (error, stdout, stderr) => {
     if (error) {
       console.error('❌ Deploy execution error:', error.message);
       return res.status(500).json({ success: false, error: error.message, stderr, stdout });
