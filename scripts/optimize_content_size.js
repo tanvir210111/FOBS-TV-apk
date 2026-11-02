@@ -73,3 +73,4 @@ for (const sp of seedPaths) {
 }
 
 console.log('✅ Content optimization complete!');
+
