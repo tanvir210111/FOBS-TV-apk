@@ -1654,9 +1654,8 @@ async function streamMediaDirect(req, res, inputTargetUrl) {
     resolvedUrl.includes('stormshade') || 
     (targetUrl && targetUrl.includes('moviebox'))
   ) {
-    const activeDomain = movieboxService.activePlayDomain || 'https://mzfi.me';
-    requestHeaders['Referer'] = `${activeDomain}/`;
-    requestHeaders['Origin'] = activeDomain;
+    requestHeaders['Referer'] = 'https://movieboxapp.in/';
+    requestHeaders['Origin'] = 'https://movieboxapp.in';
   }
 
   // Transparent Range Forwarding: Continuous full-speed streaming without artificial chunk cutoffs
@@ -1695,6 +1694,8 @@ async function streamMediaDirect(req, res, inputTargetUrl) {
         console.warn(`MovieBox stream fetch failed (${initialErr.message}). Invalidating cache and retrying with fresh token...`);
         movieboxService.invalidateCache();
         streamUrlCache.delete(targetUrl);
+        requestHeaders['Referer'] = 'https://movieboxapp.in/';
+        requestHeaders['Origin'] = 'https://movieboxapp.in';
         const freshUrl = await resolveStreamUrl(targetUrl);
         if (freshUrl && freshUrl !== streamFetchUrl) {
           streamFetchUrl = freshUrl;

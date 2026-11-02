@@ -3633,18 +3633,29 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     }
     videoPlayer.play().catch(() => {});
 
-    // Asynchronously discover qualities in background without blocking video start
-    fetch(jsonUrl, { cache: 'no-store' })
-      .then(r => r.json())
-      .then(data => {
-        if (data && data.ok) {
-          if (Array.isArray(data.qualities) && data.qualities.length > 0) {
-            appState.availableQualities = data.qualities;
+    // Asynchronously discover qualities in background without competing with initial video buffer
+    let qualityFetched = false;
+    const loadQualities = () => {
+      if (qualityFetched) return;
+      qualityFetched = true;
+      fetch(jsonUrl, { cache: 'no-store' })
+        .then(r => r.json())
+        .then(data => {
+          if (data && data.ok) {
+            if (Array.isArray(data.qualities) && data.qualities.length > 0) {
+              appState.availableQualities = data.qualities;
+            }
+            if (data.resolution) updateQualityDisplay(data.resolution);
           }
-          if (data.resolution) updateQualityDisplay(data.resolution);
-        }
-      })
-      .catch(() => {});
+        })
+        .catch(() => {});
+    };
+    if (videoPlayer.readyState >= 2) {
+      setTimeout(loadQualities, 1000);
+    } else {
+      videoPlayer.addEventListener('canplay', loadQualities, { once: true });
+      setTimeout(loadQualities, 3500);
+    }
 
     return;
   }

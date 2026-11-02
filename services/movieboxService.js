@@ -568,8 +568,8 @@ class MovieBoxService {
             qualities: playQualities,
             captions: playCaptions,
             headers: {
-              'Referer': `${domain}/`,
-              'Origin': domain
+              'Referer': 'https://movieboxapp.in/',
+              'Origin': 'https://movieboxapp.in'
             }
           };
         }
@@ -655,8 +655,8 @@ class MovieBoxService {
           qualities: dlQualities,
           captions: dlCaptions,
           headers: {
-            'Referer': `${domain}/`,
-            'Origin': domain
+            'Referer': 'https://movieboxapp.in/',
+            'Origin': 'https://movieboxapp.in'
           }
         };
       } catch (e) {
