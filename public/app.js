@@ -317,7 +317,7 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
-const CACHE_KEY = 'fobs_tv_content_cache_v79';
+const CACHE_KEY = 'fobs_tv_content_cache_v80';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 60 * 1000; // 1 minute TTL
 let isSyncing = false;
@@ -469,7 +469,23 @@ function saveContentToCache(data) {
     localStorage.setItem(CACHE_KEY, JSON.stringify(data));
     localStorage.setItem(SYNC_KEY, Date.now().toString());
   } catch (e) {
-    console.warn('Error saving content cache:', e);
+    console.warn('Full cache exceeded quota, saving lightweight catalog:', e);
+    try {
+      const light = {
+        featured: data.featured,
+        movies: data.movies,
+        series: (data.series || []).map(s => {
+          const { seasons, episodes, ...rest } = s;
+          return rest;
+        }),
+        liveTv: data.liveTv,
+        upcoming: data.upcoming
+      };
+      localStorage.setItem(CACHE_KEY, JSON.stringify(light));
+      localStorage.setItem(SYNC_KEY, Date.now().toString());
+    } catch (err2) {
+      console.warn('Lightweight cache also failed:', err2);
+    }
   }
 }
 

@@ -30,7 +30,19 @@ function atomicWriteFile(targetFile, dataStr) {
   fs.renameSync(tmpFile, targetFile);
 }
 
+let _cachedContentData = null;
+let _cachedMtimeMs = 0;
+
 function readContent() {
+  try {
+    if (fs.existsSync(CONTENT_FILE)) {
+      const stat = fs.statSync(CONTENT_FILE);
+      if (_cachedContentData && stat.mtimeMs > 0 && stat.mtimeMs === _cachedMtimeMs) {
+        return _cachedContentData;
+      }
+    }
+  } catch (e) {}
+
   let mainData = null;
 
   try {
@@ -119,13 +131,22 @@ function readContent() {
 
   if (needsSyncBack) {
     try {
-      const jsonStr = JSON.stringify(mainData, null, 2);
+      const jsonStr = JSON.stringify(mainData);
       atomicWriteFile(CONTENT_FILE, jsonStr);
       atomicWriteFile(CONTENT_BACKUP_FILE, jsonStr);
       atomicWriteFile(CONTENT_LOCAL_FILE, jsonStr);
       console.log(`[readContent] Auto-healed catalog! Total movies: ${mainData.movies.length}, series: ${mainData.series.length}`);
     } catch (e) {}
   }
+
+  try {
+    if (fs.existsSync(CONTENT_FILE)) {
+      _cachedMtimeMs = fs.statSync(CONTENT_FILE).mtimeMs;
+    } else {
+      _cachedMtimeMs = Date.now();
+    }
+    _cachedContentData = mainData;
+  } catch (e) {}
 
   return mainData;
 }
@@ -161,6 +182,15 @@ function writeContent(content) {
     try {
       atomicWriteFile(CONTENT_LOCAL_FILE, jsonStr);
     } catch(e) {}
+
+    try {
+      if (fs.existsSync(CONTENT_FILE)) {
+        _cachedMtimeMs = fs.statSync(CONTENT_FILE).mtimeMs;
+      } else {
+        _cachedMtimeMs = Date.now();
+      }
+      _cachedContentData = content;
+    } catch (e) {}
 
     return true;
   } catch (err) {

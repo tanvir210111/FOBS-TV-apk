@@ -933,9 +933,7 @@ app.get('/api/content', async (req, res) => {
       }
     } catch(e) {}
 
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
+    res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=120');
 
     const data = getContentData();
     const nowMs = Date.now();
