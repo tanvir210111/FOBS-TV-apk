@@ -6694,9 +6694,23 @@ function setupVideoListeners() {
     if (typeof startLiveHeartbeat === 'function') {
       startLiveHeartbeat();
     }
+
+    // Start real active watch time tracking
+    if (typeof startWatchTimeTracker === 'function') {
+      startWatchTimeTracker();
+    }
+  });
+
+  videoPlayer.addEventListener('pause', () => {
+    if (typeof stopWatchTimeTracker === 'function') {
+      stopWatchTimeTracker();
+    }
   });
 
   videoPlayer.addEventListener('ended', () => {
+    if (typeof stopWatchTimeTracker === 'function') {
+      stopWatchTimeTracker();
+    }
     if (typeof saveWatchHistoryProgress === 'function') {
       saveWatchHistoryProgress(true);
     }
@@ -6881,6 +6895,9 @@ function setupVideoListeners() {
 
 // Close Video Player Overlay
 function closePlayer() {
+  if (typeof stopWatchTimeTracker === 'function') {
+    stopWatchTimeTracker();
+  }
   try {
     if (typeof saveWatchHistoryProgress === 'function') {
       saveWatchHistoryProgress();
@@ -10502,7 +10519,7 @@ function updateAuthUI() {
   if (meDownloadsCount) meDownloadsCount.textContent = downloads.length;
   if (meWatchlistCount) meWatchlistCount.textContent = effectiveWatchlist.length;
   if (meHistoryCount) meHistoryCount.textContent = effectiveHistory.length;
-  if (meActivityCount) meActivityCount.textContent = effectiveHistory.length + effectiveWatchlist.length;
+  if (meActivityCount) meActivityCount.textContent = (typeof formatWatchTime === 'function' && typeof getTotalWatchSeconds === 'function') ? formatWatchTime(getTotalWatchSeconds()) : '0m';
   if (meCommunityCount) meCommunityCount.textContent = 'Join';
   if (typeof updateMeBookingsCount === 'function') updateMeBookingsCount();
 
@@ -11497,15 +11514,100 @@ function closeActivityModal(e) {
 }
 window.closeActivityModal = closeActivityModal;
 
+// ============================================================
+// REAL ACTIVITY WATCH TIME TRACKER (ACTIVE PLAYBACK ENGINE)
+// ============================================================
+let _activeWatchTimer = null;
+let _lastWatchTick = 0;
+
+function formatWatchTime(totalSeconds) {
+  if (!totalSeconds || totalSeconds <= 0) return '0m';
+  if (totalSeconds < 60) return `${totalSeconds}s`;
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  if (hours > 0) {
+    return minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`;
+  }
+  return `${minutes}m`;
+}
+window.formatWatchTime = formatWatchTime;
+
+function getTotalWatchSeconds() {
+  let stored = parseInt(localStorage.getItem('fobs_total_watch_seconds') || '0', 10);
+  if (!stored || stored <= 0) {
+    const localHistory = JSON.parse(localStorage.getItem('fobs_watch_history') || '[]');
+    const list = (currentUser && userHistory && userHistory.length > 0) ? userHistory : localHistory;
+    let initialSec = 0;
+    list.forEach(h => { initialSec += Math.round(h.progressSeconds || 0); });
+    if (initialSec > 0) {
+      stored = initialSec;
+      localStorage.setItem('fobs_total_watch_seconds', stored);
+    }
+  }
+  return stored || 0;
+}
+window.getTotalWatchSeconds = getTotalWatchSeconds;
+
+function getTodayWatchSeconds() {
+  const todayKey = 'fobs_watch_today_' + new Date().toISOString().slice(0, 10);
+  return parseInt(localStorage.getItem(todayKey) || '0', 10);
+}
+window.getTodayWatchSeconds = getTodayWatchSeconds;
+
+function startWatchTimeTracker() {
+  if (_activeWatchTimer) clearInterval(_activeWatchTimer);
+  _lastWatchTick = Date.now();
+  _activeWatchTimer = setInterval(() => {
+    const video = document.getElementById('mainVideoPlayer');
+    const embedFrame = document.getElementById('mainEmbedPlayer');
+    const isVideoPlaying = video && !video.paused && !video.ended && video.readyState >= 2;
+    const isEmbedPlaying = embedFrame && embedFrame.style.display !== 'none' && embedFrame.src;
+
+    if (!isVideoPlaying && !isEmbedPlaying) return;
+
+    const now = Date.now();
+    const deltaSec = Math.min(3, Math.max(1, Math.round((now - _lastWatchTick) / 1000)));
+    _lastWatchTick = now;
+
+    // 1. All-time total watch seconds
+    let totalSec = parseInt(localStorage.getItem('fobs_total_watch_seconds') || '0', 10);
+    totalSec += deltaSec;
+    localStorage.setItem('fobs_total_watch_seconds', totalSec);
+
+    // 2. Today's watch seconds
+    const todayKey = 'fobs_watch_today_' + new Date().toISOString().slice(0, 10);
+    let todaySec = parseInt(localStorage.getItem(todayKey) || '0', 10);
+    todaySec += deltaSec;
+    localStorage.setItem(todayKey, todaySec);
+
+    // 3. Update real-time displays if visible
+    const hEl = document.getElementById('actTotalHours');
+    if (hEl) hEl.textContent = formatWatchTime(totalSec);
+    const todayEl = document.getElementById('actTodayWatchTime');
+    if (todayEl) todayEl.textContent = formatWatchTime(todaySec);
+    const meAct = document.getElementById('meActivityCount');
+    if (meAct) meAct.textContent = formatWatchTime(totalSec);
+  }, 1000);
+}
+window.startWatchTimeTracker = startWatchTimeTracker;
+
+function stopWatchTimeTracker() {
+  if (_activeWatchTimer) {
+    clearInterval(_activeWatchTimer);
+    _activeWatchTimer = null;
+  }
+}
+window.stopWatchTimeTracker = stopWatchTimeTracker;
+
 function renderActivityStats() {
   const localHistory = JSON.parse(localStorage.getItem('fobs_watch_history') || '[]');
   const list = (currentUser && userHistory && userHistory.length > 0) ? userHistory : localHistory;
 
-  let totalSeconds = 0;
-  list.forEach(h => {
-    totalSeconds += (h.progressSeconds || 0);
-  });
-  const hours = (totalSeconds / 3600).toFixed(1);
+  const totalSeconds = getTotalWatchSeconds();
+  const todaySeconds = getTodayWatchSeconds();
+  const formattedTotal = formatWatchTime(totalSeconds);
+  const formattedToday = formatWatchTime(todaySeconds);
+
   const titles = list.length;
   const watchlist = (currentUser && userWatchlist && userWatchlist.length > 0) ? userWatchlist.length : JSON.parse(localStorage.getItem('fobs_guest_watchlist') || '[]').length;
   const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]').length;
@@ -11514,14 +11616,16 @@ function renderActivityStats() {
   const wEl = document.getElementById('actWatchedCount');
   const wlEl = document.getElementById('actWatchlistCount');
   const dEl = document.getElementById('actDownloadsCount');
+  const todayEl = document.getElementById('actTodayWatchTime');
 
-  if (hEl) hEl.textContent = `${hours}h`;
+  if (hEl) hEl.textContent = formattedTotal;
   if (wEl) wEl.textContent = titles;
   if (wlEl) wlEl.textContent = watchlist;
   if (dEl) dEl.textContent = downloads;
+  if (todayEl) todayEl.textContent = formattedToday;
 
   const meAct = document.getElementById('meActivityCount');
-  if (meAct) meAct.textContent = `${hours}h`;
+  if (meAct) meAct.textContent = formattedTotal;
 }
 window.renderActivityStats = renderActivityStats;
 
