@@ -7934,6 +7934,7 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     downloads.unshift(currentItem);
   } else {
     currentItem.status = 'downloading';
+    currentItem.downloaded = false;
     currentItem.statusText = currentItem.progress > 0 ? `Downloading... ${currentItem.progress}%` : 'Connecting...';
     currentItem.failed = false;
     currentItem.paused = false;
@@ -8060,7 +8061,9 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     let chunkBufferSize = 0;
 
     while (true) {
-      if (activeDownloadTasks[downloadId]?.isPaused) break;
+      if (activeDownloadTasks[downloadId]?.isPaused) {
+        throw new Error('paused');
+      }
 
       // 20-second chunk watchdog: Prevents app/UI freezing if cellular network drops or socket dies during screen off
       let readTimeoutTimer = null;
@@ -8077,7 +8080,9 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
         if (readTimeoutTimer) clearTimeout(readTimeoutTimer);
       }
 
-      if (activeDownloadTasks[downloadId]?.isPaused) break;
+      if (activeDownloadTasks[downloadId]?.isPaused) {
+        throw new Error('paused');
+      }
 
       const { done, value } = readResult;
       if (done) break;
@@ -8119,6 +8124,14 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
           localStorage.setItem('fobs_downloads', JSON.stringify(curDownloads));
         }
       }
+    }
+
+    // CRITICAL: Safety verification before marking complete!
+    if (activeDownloadTasks[downloadId]?.isPaused) {
+      throw new Error('paused');
+    }
+    if (totalBytes > 0 && receivedBytes < totalBytes * 0.95) {
+      throw new Error(`Incomplete download: received ${receivedBytes} of ${totalBytes} bytes`);
     }
 
     if (chunkBuffer.length > 0) {
@@ -8242,19 +8255,24 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     showToast(`✅ "${title}" ডাউনলোড সম্পন্ন (${finalMb} MB)! Me > Downloads এ দেখুন।`);
 
   } catch (err) {
-    const isPaused = activeDownloadTasks[downloadId]?.isPaused;
-    if (isPaused || err.name === 'AbortError' || err.message === 'paused') {
+    const isPaused = activeDownloadTasks[downloadId]?.isPaused || err.name === 'AbortError' || err.message === 'paused';
+    if (isPaused) {
       console.log('Download was paused by user:', downloadId);
       // Save partial chunks to IndexedDB temp so user can resume anytime
       try {
+        if (chunkBuffer.length > 0 && activeDownloadTasks[downloadId]) {
+          activeDownloadTasks[downloadId].chunks.push(new Blob(chunkBuffer, { type: 'video/mp4' }));
+          chunkBuffer = [];
+        }
         const currentChunks = activeDownloadTasks[downloadId]?.chunks || [];
         if (currentChunks.length > 0) {
           const partialBlob = new Blob(currentChunks, { type: 'video/mp4' });
           await saveOfflineMedia({
             id: 'temp_' + downloadId,
             chunks: partialBlob,
-            receivedBytes: activeDownloadTasks[downloadId]?.receivedBytes || 0,
-            totalBytes: activeDownloadTasks[downloadId]?.totalBytes || 0
+            receivedBytes: receivedBytes,
+            totalBytes: totalBytes,
+            quality: quality
           });
         }
       } catch (saveErr) {}
@@ -8265,6 +8283,12 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
         item.status = 'paused';
         item.paused = true;
         item.failed = false;
+        item.downloaded = false;
+        item.receivedBytes = receivedBytes;
+        item.totalBytes = totalBytes;
+        const downMb = (receivedBytes / (1024 * 1024)).toFixed(1);
+        const totMb = totalBytes > 0 ? (totalBytes / (1024 * 1024)).toFixed(1) : '?';
+        item.sizeText = `${downMb} MB / ${totMb} MB`;
         item.statusText = `Paused (${item.progress || 0}%)`;
         localStorage.setItem('fobs_downloads', JSON.stringify(curDownloads));
       }
@@ -8277,14 +8301,18 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     console.error('In-app real download failed:', err);
     try {
       // Save partial chunks to IndexedDB temp so user can retry from the exact byte and exact pixel!
+      if (chunkBuffer.length > 0 && activeDownloadTasks[downloadId]) {
+        activeDownloadTasks[downloadId].chunks.push(new Blob(chunkBuffer, { type: 'video/mp4' }));
+        chunkBuffer = [];
+      }
       const currentChunks = activeDownloadTasks[downloadId]?.chunks || [];
       if (currentChunks.length > 0) {
         const partialBlob = new Blob(currentChunks, { type: 'video/mp4' });
         await saveOfflineMedia({
           id: 'temp_' + downloadId,
           chunks: partialBlob,
-          receivedBytes: activeDownloadTasks[downloadId]?.receivedBytes || 0,
-          totalBytes: activeDownloadTasks[downloadId]?.totalBytes || 0,
+          receivedBytes: receivedBytes,
+          totalBytes: totalBytes,
           quality: quality
         });
       }
@@ -8318,14 +8346,20 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
         item.status = 'failed';
         item.failed = true;
         item.paused = false;
-        item.statusText = 'Download Failed • Tap Retry';
+        item.downloaded = false;
+        item.receivedBytes = receivedBytes;
+        item.totalBytes = totalBytes;
+        const downMb = (receivedBytes / (1024 * 1024)).toFixed(1);
+        const totMb = totalBytes > 0 ? (totalBytes / (1024 * 1024)).toFixed(1) : '?';
+        item.sizeText = `${downMb} MB / ${totMb} MB`;
+        item.statusText = `Failed • Tap Retry (${item.progress || 0}%)`;
         localStorage.setItem('fobs_downloads', JSON.stringify(curDownloads));
       }
       if (activeDownloadTasks[downloadId]) activeDownloadTasks[downloadId].isDownloading = false;
       releaseWakeLockIfNoActiveDownloads();
       renderDownloadsList();
     } catch (e) {}
-    showToast(`❌ ডাউনলোড আটকে গেছে বা ব্যর্থ হয়েছে। Retry বাটনে চাপুন।`);
+    showToast(`❌ ডাউনলোড বিঘ্নিত হয়েছে। Retry বাটনে চাপুন।`);
   }
 }
 window.downloadMedia = downloadMedia;
@@ -8361,6 +8395,7 @@ async function pauseDownload(id, e) {
     item.status = 'paused';
     item.paused = true;
     item.failed = false;
+    item.downloaded = false;
     item.statusText = `Paused (${item.progress || 0}%)`;
     localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
   }
@@ -8380,7 +8415,9 @@ async function resumeDownload(id, e) {
   item.status = 'downloading';
   item.paused = false;
   item.failed = false;
-  item.statusText = 'Resuming...';
+  item.downloaded = false;
+  const currentQuality = item.quality || item.options?.quality || '480P';
+  item.statusText = item.progress > 0 ? `Resuming ${currentQuality} (${item.progress}%)...` : `Connecting ${currentQuality}...`;
   localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
   renderDownloadsList();
 
@@ -8401,6 +8438,7 @@ async function retryDownload(id, e) {
   item.status = 'downloading';
   item.failed = false;
   item.paused = false;
+  item.downloaded = false;
   item.statusText = progressPercent > 0 ? `Resuming ${currentQuality} (${progressPercent}%)...` : `Connecting ${currentQuality}...`;
   localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
   renderDownloadsList();
@@ -8688,9 +8726,9 @@ function renderDownloadsList() {
   }
 
   container.innerHTML = downloads.map(item => {
-    const isReady = item.status === 'Ready (Offline)' || item.progress === 100;
     const isPaused = item.status === 'paused' || !!item.paused;
     const isFailed = item.status === 'failed' || !!item.failed;
+    const isReady = !isPaused && !isFailed && (item.status === 'Ready (Offline)' || (item.progress === 100 && item.downloaded === true));
     const isDownloading = !isReady && !isPaused && !isFailed;
 
     let statusColor = '#00f2fe';
