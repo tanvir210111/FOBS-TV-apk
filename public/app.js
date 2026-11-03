@@ -235,15 +235,18 @@ async function submitSimpleLogin() {
     return;
   }
   if (!email) {
-    showToast('⚠️ অনুগ্রহ করে আপনার ইমেইল বা ফোন নম্বর লিখুন');
+    showToast('⚠️ অনুগ্রহ করে আপনার জিমেইল লিখুন');
     emailInput?.focus();
     return;
   }
 
-  // If user entered phone number or username without @, adapt into a valid handle
-  if (!email.includes('@')) {
-    email = `${email.replace(/[^a-zA-Z0-9_\-]/g, '')}@fobstv.user`;
+  const cleanEmail = email.trim().toLowerCase();
+  if (!cleanEmail.endsWith('@gmail.com') || cleanEmail === '@gmail.com') {
+    showToast('⚠️ ইমেইলের শেষে অবশ্যই @gmail.com থাকতে হবে!');
+    emailInput?.focus();
+    return;
   }
+  email = cleanEmail;
 
   const btn = document.getElementById('btnSubmitSimpleLogin');
   if (btn) {
@@ -7606,6 +7609,19 @@ window.closeDownloadOptionsModal = closeDownloadOptionsModal;
 // In-memory registry of active download tasks
 const activeDownloadTasks = {};
 
+function releaseWakeLockIfNoActiveDownloads() {
+  const isAnyActive = Object.values(activeDownloadTasks).some(t => t && t.isDownloading);
+  if (!isAnyActive) {
+    if (window.AndroidApp && typeof window.AndroidApp.releaseWakeLock === 'function') {
+      try { window.AndroidApp.releaseWakeLock(); } catch(e) {}
+    }
+    if (appState._screenWakeLock) {
+      try { appState._screenWakeLock.release(); } catch(e) {}
+      appState._screenWakeLock = null;
+    }
+  }
+}
+
 function confirmStartDownload() {
   const pending = appState._pendingDownload;
   if (!pending || !pending.url) {
@@ -7706,6 +7722,18 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     showToast(`▶️ ডাউনলোড আবার শুরু হয়েছে: "${title}"`);
   }
 
+  // Keep CPU and background download alive even when screen is locked or turned off
+  if (window.AndroidApp && typeof window.AndroidApp.acquireWakeLock === 'function') {
+    try { window.AndroidApp.acquireWakeLock(); } catch(e) {}
+  }
+  if ('wakeLock' in navigator) {
+    try {
+      if (!appState._screenWakeLock) {
+        navigator.wakeLock.request('screen').then(wl => { appState._screenWakeLock = wl; }).catch(() => {});
+      }
+    } catch(e) {}
+  }
+
   // Restore existing chunks if resuming
   let existingBlobChunks = [];
   let existingBytes = 0;
@@ -7784,15 +7812,24 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     let receivedBytes = existingBytes;
     let lastUiUpdate = 0;
     let lastStorageUpdate = 0;
+    let chunkBuffer = [];
+    let chunkBufferSize = 0;
 
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
 
-      // Wrap in small Blob to keep memory in disk-backed Blob buffer instead of overflowing JS array RAM
-      activeDownloadTasks[downloadId].chunks.push(new Blob([value], { type: 'video/mp4' }));
+      chunkBuffer.push(value);
+      chunkBufferSize += value.length;
       receivedBytes += value.length;
       activeDownloadTasks[downloadId].receivedBytes = receivedBytes;
+
+      // Batch every 2MB into disk-backed Blob pieces for maximum download speed and zero RAM lag
+      if (chunkBufferSize >= 2 * 1024 * 1024) {
+        activeDownloadTasks[downloadId].chunks.push(new Blob(chunkBuffer, { type: 'video/mp4' }));
+        chunkBuffer = [];
+        chunkBufferSize = 0;
+      }
 
       const now = Date.now();
       if (now - lastUiUpdate > 350) {
@@ -7819,6 +7856,12 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
           localStorage.setItem('fobs_downloads', JSON.stringify(curDownloads));
         }
       }
+    }
+
+    if (chunkBuffer.length > 0) {
+      activeDownloadTasks[downloadId].chunks.push(new Blob(chunkBuffer, { type: 'video/mp4' }));
+      chunkBuffer = [];
+      chunkBufferSize = 0;
     }
 
     // Assemble final video Blob from chunks
@@ -7909,6 +7952,7 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     // Remove any temporary partial cache
     await removeOfflineMedia('temp_' + downloadId);
     delete activeDownloadTasks[downloadId];
+    releaseWakeLockIfNoActiveDownloads();
 
     const finalMb = (receivedBytes / (1024 * 1024)).toFixed(1);
     const curDownloads = getStoredDownloadsList();
@@ -7954,6 +7998,7 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
         localStorage.setItem('fobs_downloads', JSON.stringify(curDownloads));
       }
       if (activeDownloadTasks[downloadId]) activeDownloadTasks[downloadId].isDownloading = false;
+      releaseWakeLockIfNoActiveDownloads();
       renderDownloadsList();
       showToast(`⏸️ ডাউনলোড পজ করা হয়েছে: ${title}`);
       return;
@@ -7971,6 +8016,7 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
         localStorage.setItem('fobs_downloads', JSON.stringify(curDownloads));
       }
       if (activeDownloadTasks[downloadId]) activeDownloadTasks[downloadId].isDownloading = false;
+      releaseWakeLockIfNoActiveDownloads();
       renderDownloadsList();
     } catch (e) {}
     showToast(`❌ ডাউনলোড আটকে গেছে বা ব্যর্থ হয়েছে। Retry বাটনে চাপুন।`);
@@ -8006,6 +8052,7 @@ async function pauseDownload(id, e) {
     }
     renderDownloadsList();
   }
+  releaseWakeLockIfNoActiveDownloads();
 }
 window.pauseDownload = pauseDownload;
 
@@ -8153,6 +8200,7 @@ async function deleteDownload(id, e) {
     if (activeDownloadTasks[id].controller) activeDownloadTasks[id].controller.abort();
     delete activeDownloadTasks[id];
   }
+  releaseWakeLockIfNoActiveDownloads();
   await removeOfflineMedia(id);
   await removeOfflineMedia('temp_' + id);
   try {
@@ -10278,8 +10326,10 @@ async function handleDirectEmailAuth(event) {
   const email = (emailInput ? emailInput.value : '').trim();
   const name = (nameInput ? nameInput.value : '').trim();
 
-  if (!email || !email.includes('@')) {
-    showToast('Please enter a valid email address');
+  const cleanEmail = email.trim().toLowerCase();
+  if (!cleanEmail || !cleanEmail.endsWith('@gmail.com') || cleanEmail === '@gmail.com') {
+    showToast('⚠️ ইমেইলের শেষে অবশ্যই @gmail.com থাকতে হবে!');
+    emailInput?.focus();
     return;
   }
 

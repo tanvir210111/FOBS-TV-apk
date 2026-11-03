@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.PowerManager;
 import android.webkit.CookieManager;
 import android.widget.Toast;
 import androidx.core.content.FileProvider;
@@ -440,6 +441,41 @@ public class MainActivity extends BridgeActivity {
                     installDownloadedApk(apkFile);
                 } else if (pendingInstallApk != null && pendingInstallApk.exists()) {
                     installDownloadedApk(pendingInstallApk);
+                }
+            });
+        }
+
+        private PowerManager.WakeLock downloadWakeLock = null;
+
+        @JavascriptInterface
+        public void acquireWakeLock() {
+            runOnUiThread(() -> {
+                try {
+                    if (downloadWakeLock == null) {
+                        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+                        if (pm != null) {
+                            downloadWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "FobsTV:DownloadWakeLock");
+                            downloadWakeLock.acquire(120 * 60 * 1000L); // 2 hours safety limit
+                        }
+                    }
+                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void releaseWakeLock() {
+            runOnUiThread(() -> {
+                try {
+                    if (downloadWakeLock != null && downloadWakeLock.isHeld()) {
+                        downloadWakeLock.release();
+                    }
+                    downloadWakeLock = null;
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
         }

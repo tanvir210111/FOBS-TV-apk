@@ -1411,6 +1411,13 @@ async function streamMediaDirect(req, res, inputTargetUrl) {
   res.setHeader('X-Accel-Buffering', 'no');
   res.setHeader('Cache-Control', 'public, max-age=86400, no-transform');
 
+  if (req.socket && typeof req.socket.setNoDelay === 'function') {
+    try { req.socket.setNoDelay(true); } catch(e) {}
+  }
+  if (res.socket && typeof res.socket.setNoDelay === 'function') {
+    try { res.socket.setNoDelay(true); } catch(e) {}
+  }
+
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
@@ -1924,6 +1931,13 @@ app.get('/api/download', async (req, res) => {
   res.setHeader('X-Accel-Buffering', 'no');
   res.setHeader('Cache-Control', 'public, max-age=86400, no-transform');
 
+  if (req.socket && typeof req.socket.setNoDelay === 'function') {
+    try { req.socket.setNoDelay(true); } catch(e) {}
+  }
+  if (res.socket && typeof res.socket.setNoDelay === 'function') {
+    try { res.socket.setNoDelay(true); } catch(e) {}
+  }
+
   let downloadFetchUrl = resolvedUrl;
   let response;
   try {
@@ -1993,6 +2007,13 @@ app.get('/api/download', async (req, res) => {
         }
       } catch (e) {}
     });
+
+    try {
+      if (response && response.data) {
+        response.data.readableHighWaterMark = 1048576; // 1 MB high-speed streaming buffer
+      }
+      res.writableHighWaterMark = 1048576;
+    } catch (e) {}
 
     response.data.pipe(res);
   } catch (err) {
@@ -2169,10 +2190,10 @@ app.delete('/api/admin/reports/:id', adminService.authenticate, async (req, res)
 app.post('/api/auth/simple-login', async (req, res) => {
   try {
     const { email, name } = req.body;
-    if (!email || !email.includes('@')) {
-      return res.status(400).json({ error: 'Valid email address is required' });
+    const cleanEmail = (email || '').trim().toLowerCase();
+    if (!cleanEmail || !cleanEmail.endsWith('@gmail.com') || cleanEmail === '@gmail.com') {
+      return res.status(400).json({ error: 'অ্যাকাউন্ট তৈরি করতে ইমেইলের শেষে অবশ্যই @gmail.com থাকতে হবে!' });
     }
-    const cleanEmail = email.trim().toLowerCase();
     const cleanName = (name && name.trim()) ? name.trim() : cleanEmail.split('@')[0];
     const googleId = 'usr_' + crypto.createHash('md5').update(cleanEmail).digest('hex').substring(0, 16);
     const picture = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(cleanName)}`;
@@ -2239,10 +2260,10 @@ app.post('/api/auth/google', async (req, res) => {
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, name } = req.body;
-    if (!email || !email.includes('@')) {
-      return res.status(400).json({ error: 'Valid email address is required' });
+    const cleanEmail = (email || '').trim().toLowerCase();
+    if (!cleanEmail || !cleanEmail.endsWith('@gmail.com') || cleanEmail === '@gmail.com') {
+      return res.status(400).json({ error: 'অ্যাকাউন্ট তৈরি করতে ইমেইলের শেষে অবশ্যই @gmail.com থাকতে হবে!' });
     }
-    const cleanEmail = email.trim().toLowerCase();
     const cleanName = (name && name.trim()) ? name.trim() : cleanEmail.split('@')[0];
     const googleId = 'usr_' + crypto.createHash('md5').update(cleanEmail).digest('hex').substring(0, 16);
     const picture = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(cleanName)}`;
