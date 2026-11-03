@@ -300,7 +300,7 @@ window.submitSimpleLogin = submitSimpleLogin;
 
 // FOBS TV Mobile Application Client Logic
 
-const BACKEND_URL = 'http://187.127.114.52';
+const BACKEND_URL = 'https://fobstv.duckdns.org';
 
 // Dynamically determine the backend API base URL
 // - If running on localhost with a custom port (e.g. node dev server localhost:3000), use ''
@@ -311,7 +311,7 @@ const API_BASE_URL = (() => {
                             window.location.port && 
                             window.location.port !== '80' && 
                             window.location.port !== '443';
-  if (isCustomLocalPort || window.location.hostname.includes('187.127.114.52')) {
+  if (isCustomLocalPort || window.location.hostname.includes('187.127.114.52') || window.location.hostname.includes('duckdns.org')) {
     return '';
   }
   return BACKEND_URL;
@@ -7244,7 +7244,7 @@ function closeDownloadOptionsModal(e) {
 }
 window.closeDownloadOptionsModal = closeDownloadOptionsModal;
 
-function confirmStartDownload() {
+function confirmStartDownload(target = 'in-app') {
   const pending = appState._pendingDownload;
   if (!pending || !pending.url) {
     showToast('Download could not be initiated.');
@@ -7262,6 +7262,21 @@ function confirmStartDownload() {
     const epMatch = pending.title.match(/Ep(?:isode)?\s*(\d+)/i);
     const epNum = epMatch ? epMatch[1] : '1';
     finalDownloadUrl = `/api/moviebox/stream?id=1932866268428649968&se=1&ep=${epNum}`;
+  }
+
+  const fullDownloadUrl = finalDownloadUrl.startsWith('http') ? finalDownloadUrl : `${API_BASE_URL}${finalDownloadUrl.startsWith('/') ? '' : '/'}${finalDownloadUrl}`;
+
+  if (target === 'device') {
+    const safeTitle = (pending.title || 'video').replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_');
+    const directDownloadEndpoint = `${API_BASE_URL}/api/download?url=${encodeURIComponent(fullDownloadUrl)}&title=${encodeURIComponent(safeTitle)}`;
+    if (window.AndroidApp && typeof window.AndroidApp.downloadFile === 'function') {
+      window.AndroidApp.downloadFile(directDownloadEndpoint, `${safeTitle}.mp4`);
+    } else {
+      window.open(directDownloadEndpoint, '_blank');
+    }
+    showToast(`📥 ডিভাইসে ডাউনলোড শুরু হয়েছে: ${pending.title}`);
+    closeDownloadOptionsModal();
+    return;
   }
 
   downloadMedia(finalDownloadUrl, pending.title, {
@@ -7286,6 +7301,9 @@ function updateDownloadProgress(id, percent, sizeText = '') {
 }
 
 async function downloadMedia(url, title, options = {}) {
+  if (navigator.storage && navigator.storage.persist) {
+    try { await navigator.storage.persist(); } catch (e) {}
+  }
   if (!url) return;
   const quality = options.quality || '480P';
   const poster = options.poster || 'assets/fobs_logo.png';
@@ -7373,6 +7391,7 @@ async function downloadMedia(url, title, options = {}) {
     }
 
     const videoBlob = new Blob(chunks, { type: 'video/mp4' });
+    chunks.length = 0; // Release memory immediately
 
     // 3. Dual Subtitle Download: Both Bangla (Human or AI) and English for 100% offline freedom!
     let bnVttText = '';
@@ -7495,12 +7514,48 @@ async function playDownloadedMedia(id) {
   if (offlineItem && offlineItem.videoBlob) {
     const videoUrl = URL.createObjectURL(offlineItem.videoBlob);
     const videoPlayer = document.getElementById('mainVideoPlayer');
-    if (videoPlayer) {
+    const playerOverlay = document.getElementById('playerOverlay');
+    const embedFrame = document.getElementById('mainEmbedPlayer');
+    const loader = document.getElementById('videoLoader');
+
+    if (videoPlayer && playerOverlay) {
+      if (embedFrame) {
+        embedFrame.src = '';
+        embedFrame.style.display = 'none';
+      }
+      if (loader) loader.classList.remove('active');
+
+      videoPlayer.style.display = 'block';
       videoPlayer.pause();
       videoPlayer.removeAttribute('src');
       videoPlayer.src = videoUrl;
       videoPlayer.load();
-      videoPlayer.play().catch(() => {});
+      videoPlayer.play().catch(e => console.warn('Offline autoplay:', e));
+
+      appState.currentMedia = {
+        id: offlineItem.mediaId || offlineItem.id,
+        title: offlineItem.title,
+        poster: offlineItem.poster,
+        isOffline: true
+      };
+
+      playerOverlay.classList.add('open');
+      document.body.classList.add('player-open');
+
+      if (window.innerWidth > window.innerHeight) {
+        enterFullscreenMode({ skipRotate: true });
+      }
+
+      const titleEl = document.getElementById('playerMediaTitle');
+      if (titleEl) titleEl.innerText = `${offlineItem.title} (অফলাইন)`;
+      
+      const metaEl = document.getElementById('playerMediaMeta');
+      if (metaEl) {
+        metaEl.innerHTML = `<i class="fa-solid fa-tv"></i> <span><i class="fa-solid fa-cloud-arrow-down"></i> Offline Playback</span> <span>${offlineItem.quality || '1080P'}</span>`;
+      }
+
+      const seriesEpisodesWrapper = document.getElementById('seriesEpisodesWrapper');
+      if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'none';
 
       // Build offline subtitle tracks for full switching freedom!
       const offlineTracks = [];
@@ -7541,10 +7596,6 @@ async function playDownloadedMedia(id) {
         selectSubtitleTrack('off');
       }
 
-      const modal = document.getElementById('playerModal');
-      if (modal) modal.classList.add('open');
-      const titleEl = document.getElementById('playerMediaTitle');
-      if (titleEl) titleEl.innerText = `${offlineItem.title} (অফলাইন)`;
       showToast(`⚡ ইন্টারনেট ছাড়াই চলছে: ${offlineItem.title}`);
       return;
     }

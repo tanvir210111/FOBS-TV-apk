@@ -1649,10 +1649,14 @@
           </div>
         </div>
 
-        <div class="download-action-wrap">
-          <button class="btn-start-download" id="btnStartDownload" onclick="confirmStartDownload()">
+        <div class="download-action-wrap" style="display: flex; flex-direction: column; gap: 10px;">
+          <button class="btn-start-download" id="btnStartDownload" onclick="confirmStartDownload('in-app')">
             <i class="fa-solid fa-arrow-down-to-line"></i>
-            <span id="btnStartDownloadText">Download 1080P Full HD</span>
+            <span id="btnStartDownloadText">📥 ইন-অ্যাপ অফলাইনে সেভ করুন</span>
+          </button>
+          <button class="btn-start-download" id="btnDeviceDownload" onclick="confirmStartDownload('device')" style="background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.25); color: #fff;">
+            <i class="fa-solid fa-download"></i>
+            <span>💾 ফোন স্টোরেজে ডাউনলোড (Gallery / Files)</span>
           </button>
         </div>
       </div>

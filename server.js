@@ -760,7 +760,7 @@ async function resolveStreamUrl(rawUrl) {
   ) {
     if (rawUrl.includes('/api/moviebox/stream')) {
       try {
-        const urlObj = new URL(rawUrl, 'http://187.127.114.52');
+        const urlObj = new URL(rawUrl, 'https://fobstv.duckdns.org');
         let id = urlObj.searchParams.get('id');
         let detailPath = urlObj.searchParams.get('path') || getMovieBoxDetailPath(id) || '';
         const se = parseInt(urlObj.searchParams.get('se') || '1', 10);
@@ -1219,8 +1219,8 @@ app.get('/api/moviebox/stream', async (req, res) => {
     if (!media || !media.streamUrl) {
       return res.status(404).send('Stream not available for this episode yet');
     }
-    const host = req.get('x-forwarded-host') || req.get('host') || '187.127.114.52';
-    const proto = req.get('x-forwarded-proto') || req.protocol || 'http';
+    const host = req.get('x-forwarded-host') || req.get('host') || 'fobstv.duckdns.org';
+    const proto = req.get('x-forwarded-proto') || req.protocol || 'https';
     const baseUrl = `${proto}://${host}`;
     let chosenStream = media.streamUrl;
     let chosenRes = media.resolution || 1080;
@@ -1410,7 +1410,7 @@ async function streamMediaDirect(req, res, inputTargetUrl) {
   // Prevent double-proxy loops: unwrap any nested /api/stream?url=
   while (typeof targetUrl === 'string' && targetUrl.includes('/api/stream?url=')) {
     try {
-      const urlObj = new URL(targetUrl, 'http://187.127.114.52');
+      const urlObj = new URL(targetUrl, 'https://fobstv.duckdns.org');
       const inner = urlObj.searchParams.get('url');
       if (inner && inner !== targetUrl) {
         targetUrl = decodeURIComponent(inner);
@@ -1425,7 +1425,7 @@ async function streamMediaDirect(req, res, inputTargetUrl) {
   // Direct resolve if targetUrl is /api/moviebox/stream to avoid double proxying
   if (typeof targetUrl === 'string' && targetUrl.includes('/api/moviebox/stream')) {
     try {
-      const urlObj = new URL(targetUrl, 'http://187.127.114.52');
+      const urlObj = new URL(targetUrl, 'https://fobstv.duckdns.org');
       const mbId = urlObj.searchParams.get('id');
       const mbPath = urlObj.searchParams.get('path') || getMovieBoxDetailPath(mbId) || '';
       const mbSe = parseInt(urlObj.searchParams.get('se') || '1', 10);
@@ -1855,7 +1855,7 @@ app.get('/api/download', async (req, res) => {
   // If proxy url /api/stream?url=...
   if (targetUrl.includes('/api/stream?url=')) {
     try {
-      const urlObj = new URL(targetUrl, 'http://187.127.114.52');
+      const urlObj = new URL(targetUrl, 'https://fobstv.duckdns.org');
       targetUrl = decodeURIComponent(urlObj.searchParams.get('url') || targetUrl);
     } catch(e) {}
   }
@@ -1865,7 +1865,7 @@ app.get('/api/download', async (req, res) => {
   // If still wrapped in /api/stream?url=...
   if (resolvedUrl.includes('/api/stream?url=')) {
     try {
-      const urlObj = new URL(resolvedUrl, 'http://187.127.114.52');
+      const urlObj = new URL(resolvedUrl, 'https://fobstv.duckdns.org');
       resolvedUrl = decodeURIComponent(urlObj.searchParams.get('url') || resolvedUrl);
     } catch(e) {}
   }
@@ -1873,7 +1873,7 @@ app.get('/api/download', async (req, res) => {
   // If still a relative MovieBox route, resolve it directly to the real CDN URL
   if (resolvedUrl.includes('/api/moviebox/stream')) {
     try {
-      const urlObj = new URL(resolvedUrl, 'http://187.127.114.52');
+      const urlObj = new URL(resolvedUrl, 'https://fobstv.duckdns.org');
       const id = urlObj.searchParams.get('id');
       const detailPath = urlObj.searchParams.get('path') || getMovieBoxDetailPath(id) || '';
       const se = parseInt(urlObj.searchParams.get('se') || '1', 10);

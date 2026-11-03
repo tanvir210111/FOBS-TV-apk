@@ -8,6 +8,8 @@
     </base-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">187.127.114.52</domain>
+        <domain includeSubdomains="true">fobstv.duckdns.org</domain>
+        <domain includeSubdomains="true">duckdns.org</domain>
         <domain includeSubdomains="true">localhost</domain>
         <domain includeSubdomains="true">movieboxapp.in</domain>
         <domain includeSubdomains="true">hakunaymatata.com</domain>
