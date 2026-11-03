@@ -154,6 +154,25 @@ public class MainActivity extends BridgeActivity {
         }
 
         @JavascriptInterface
+        public void setSystemBarColors(String statusBarColor, String navBarColor) {
+            runOnUiThread(() -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    try {
+                        Window window = getWindow();
+                        if (window != null) {
+                            if (statusBarColor != null && !statusBarColor.trim().isEmpty()) {
+                                window.setStatusBarColor(Color.parseColor(statusBarColor.trim()));
+                            }
+                            if (navBarColor != null && !navBarColor.trim().isEmpty()) {
+                                window.setNavigationBarColor(Color.parseColor(navBarColor.trim()));
+                            }
+                        }
+                    } catch (Exception ignored) {}
+                }
+            });
+        }
+
+        @JavascriptInterface
         public void setWindowBrightness(float brightness) {
             runOnUiThread(() -> {
                 try {
@@ -567,6 +586,14 @@ public class MainActivity extends BridgeActivity {
         } catch (Exception ignored) {}
 
         super.onCreate(savedInstanceState);
+        
+        // Match status and navigation bar color with intro video background seamlessly (#020C1C)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            try {
+                getWindow().setStatusBarColor(Color.parseColor("#020C1C"));
+                getWindow().setNavigationBarColor(Color.parseColor("#020C1C"));
+            } catch (Exception ignored) {}
+        }
         
         // Force hardware acceleration at window level
         getWindow().setFlags(

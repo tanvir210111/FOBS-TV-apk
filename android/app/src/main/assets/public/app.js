@@ -416,6 +416,14 @@ function playAppIntroAndSync() {
     return;
   }
 
+  // Ensure intro active state and unified background color across whole window
+  document.body.classList.add('intro-active');
+  if (window.AndroidApp && typeof window.AndroidApp.setSystemBarColors === 'function') {
+    window.AndroidApp.setSystemBarColors('#020c1c', '#020c1c');
+  }
+  const themeMeta = document.getElementById('themeColorMeta');
+  if (themeMeta) themeMeta.setAttribute('content', '#020c1c');
+
   // Pre-load local cached or seed content so UI is ready behind the scenes
   const hasCache = loadCachedContent();
   if (!hasCache) {
@@ -494,12 +502,20 @@ function finishIntroAndShowApp() {
 
   if (overlay) {
     overlay.classList.add('fade-out');
+    document.body.classList.remove('intro-active');
+    if (window.AndroidApp && typeof window.AndroidApp.setSystemBarColors === 'function') {
+      window.AndroidApp.setSystemBarColors('#07070a', '#0b0c10');
+    }
+    const themeMeta = document.getElementById('themeColorMeta');
+    if (themeMeta) themeMeta.setAttribute('content', '#07070a');
     setTimeout(() => {
       overlay.style.display = 'none';
       if (video) {
         video.src = '';
       }
     }, 550);
+  } else {
+    document.body.classList.remove('intro-active');
   }
 
   renderAllViews();
