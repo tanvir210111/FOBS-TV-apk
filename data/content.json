@@ -4,18 +4,18 @@
     "latestVersionCode": 11,
     "latestVersionName": "3.1.3",
     "minVersionCode": 11,
-    "forceUpdate": false,
-    "title": "New FOBS TV Update (v3.1.3) Available!",
-    "message": "FOBS TV-র নতুন v3.1.3 ভার্সন চলে এসেছে! নতুন জেরির লোগো, নতুন অ্যাপ আইকন এবং সুপার স্মুথ ইন্ট্রো পেতে নতুন v3.1.3 ইনস্টল করুন।",
+    "forceUpdate": true,
+    "title": "জরুরি আপডেট: FOBS TV v3.1.3",
+    "message": "FOBS TV-র নতুন v3.1.3 ভার্সন চলে এসেছে! আপনার মোবাইলে থাকা আগের অ্যাপটি আনইনস্টল (Uninstall) করে নিচের লিংক থেকে নতুন v3.1.3 অ্যাপটি ডাউনলোড করে ইনস্টল করুন।",
     "releaseNotes": [
-      "নতুন ব্র্যান্ডেড অ্যাপ আইকন (Jerry Retro TV)",
-      "ইন্ট্রো ভিডিও স্টার্টআপ সম্পূর্ণ স্মুথ ও ফ্লিকার-ফ্রি (Zero Flash)",
-      "হেডারে নতুন লোগো ও ক্লিন লুক",
-      "অফলাইন ডাউনলোড ও রেজ্যুম সাপোর্ট"
+      "⚠️ আগের অ্যাপটি আনইনস্টল (Uninstall) করে নতুন v3.1.3 ইনস্টল করুন",
+      "⚡ ইনস্ট্যান্ট ভিডিও প্লেব্যাক ও বাফারিং অপ্টিমাইজেশন",
+      "📺 নতুন রেট্রো লোগো এবং ফুলস্ক্রিন সোয়াইপ কন্ট্রোল",
+      "📥 অফলাইন ভিডিও ডাউনলোড ও অটো-রিজিউম আপডেট"
     ],
-    "downloadUrl": "/download/apk",
+    "downloadUrl": "https://fobs-apk-download.vercel.app/",
     "fallbackUrl": "https://fobs-apk-download.vercel.app/",
-    "fileSize": "6.1 MB"
+    "fileSize": "9.2 MB"
   },
   "featured": {
     "id": "mb-s-3292762350108954536",

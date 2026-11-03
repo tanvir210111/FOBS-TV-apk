@@ -1309,18 +1309,18 @@ app.get('/api/app-update', (req, res) => {
     latestVersionCode: 11,
     latestVersionName: '3.1.3',
     minVersionCode: 11,
-    forceUpdate: false,
-    title: 'New FOBS TV Update (v3.1.3) Available!',
-    message: 'FOBS TV-র নতুন v3.1.3 ভার্সন চলে এসেছে! নতুন রেট্রো লোগো, ফুলস্ক্রিন ফিক্স এবং বাটার-স্মুথ স্ক্রলিং আপডেট।',
+    forceUpdate: true,
+    title: 'জরুরি আপডেট: FOBS TV v3.1.3',
+    message: 'FOBS TV-র নতুন v3.1.3 ভার্সন চলে এসেছে! আপনার মোবাইলে থাকা আগের অ্যাপটি আনইনস্টল (Uninstall) করে নিচের লিংক থেকে নতুন v3.1.3 অ্যাপটি ডাউনলোড করে ইনস্টল করুন।',
     releaseNotes: [
-      '📺 নতুন অফিশিয়াল রেট্রো লোগো (Jerry Retro TV)',
-      '⚡ বাটার-স্মুথ টাচ স্ক্রলিং সম্পূর্ণ ফিক্সড',
-      '🎬 সিনেমাটিক ইন্ট্রো ট্যাপ-টু-স্কিপ সাপোর্ট',
-      '📥 অফলাইন ভিডিও ডাউনলোড ও প্লেয়ার আপডেট'
+      '⚠️ আগের অ্যাপটি আনইনস্টল (Uninstall) করে নতুন v3.1.3 ইনস্টল করুন',
+      '⚡ ইনস্ট্যান্ট ভিডিও প্লেব্যাক ও বাফারিং অপ্টিমাইজেশন',
+      '📺 নতুন রেট্রো লোগো এবং ফুলস্ক্রিন সোয়াইপ কন্ট্রোল',
+      '📥 অফলাইন ভিডিও ডাউনলোড ও অটো-রিজিউম আপডেট'
     ],
-    downloadUrl: '/download/apk',
+    downloadUrl: 'https://fobs-apk-download.vercel.app/',
     fallbackUrl: 'https://fobs-apk-download.vercel.app/',
-    fileSize: '8.7 MB'
+    fileSize: '9.2 MB'
   };
     res.json(data.appUpdate || defaultUpdate);
 });
@@ -1342,15 +1342,21 @@ app.post('/api/app-update', (req, res) => {
 
 // Direct APK Download route
 app.get('/download/apk', (req, res) => {
-  const localApk = path.join(__dirname, 'public', 'download', 'app-debug.apk');
-  if (fs.existsSync(localApk)) {
-    res.setHeader('Content-Disposition', 'attachment; filename="FOBS-TV-v3.1.3.apk"');
-    return res.sendFile(localApk);
+  const candidates = [
+    path.join(__dirname, 'public', 'download', 'fobs-tv-debug.apk'),
+    path.join(__dirname, 'public', 'apk', 'fobs-tv-debug.apk'),
+    path.join(__dirname, 'public', 'download', 'app-debug.apk')
+  ];
+  for (const apkPath of candidates) {
+    if (fs.existsSync(apkPath)) {
+      res.setHeader('Content-Disposition', 'attachment; filename="FOBS-TV-v3.1.3.apk"');
+      return res.sendFile(apkPath);
+    }
   }
   const data = getContentData();
   const directApkUrl = (data.appUpdate && data.appUpdate.downloadUrl && !data.appUpdate.downloadUrl.includes('/download/apk'))
     ? data.appUpdate.downloadUrl
-    : 'https://github.com/tanvir210111/FOBS-TV-apk/releases/download/latest/app-debug.apk';
+    : 'https://fobs-apk-download.vercel.app/';
   return res.redirect(directApkUrl);
 });
 
