@@ -9879,18 +9879,27 @@ body.intro-active {
    ============================================================ */
 .app-intro-overlay {
   position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
   z-index: 999999999;
-  background: #020c1c;
+  background-color: #020c1c;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s ease;
   overflow: hidden;
   user-select: none;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  contain: strict;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s ease;
 }
 
 .app-intro-overlay.fade-out {
@@ -9902,10 +9911,16 @@ body.intro-active {
 .app-intro-video {
   width: 100%;
   height: 100%;
+  max-width: 100vw;
+  max-height: 100vh;
   object-fit: contain;
-  background: #020c1c;
+  background-color: #020c1c;
   border: none;
   outline: none;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .app-intro-top-bar {

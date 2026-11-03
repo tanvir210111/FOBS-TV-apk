@@ -375,6 +375,8 @@ let appState = {
 };
 
 // Android 3-Button & System Navigation Bar Insets Management
+let _pendingNavBarInset = null;
+
 function applyNavigationBarInset(bottomDp) {
   let inset = 0;
   if (typeof bottomDp === 'number' && bottomDp >= 0) {
@@ -383,6 +385,12 @@ function applyNavigationBarInset(bottomDp) {
     try {
       inset = window.AndroidApp.getNavigationBarHeight() || 0;
     } catch (e) {}
+  }
+
+  // Defer DOM changes during startup cinematic intro to prevent initial layout reflow / jerk
+  if (!_introFinished) {
+    _pendingNavBarInset = inset;
+    return;
   }
 
   if (inset > 0) {
@@ -537,6 +545,11 @@ function finishIntroAndShowApp() {
   }
   const themeMeta = document.getElementById('themeColorMeta');
   if (themeMeta) themeMeta.setAttribute('content', '#07070a');
+
+  if (_pendingNavBarInset !== null) {
+    applyNavigationBarInset(_pendingNavBarInset);
+    _pendingNavBarInset = null;
+  }
 
   renderAllViews();
   checkAppUpdate(appState.content);

@@ -846,89 +846,87 @@ public class MainActivity extends BridgeActivity {
         };
 
         getOnBackPressedDispatcher().addCallback(this, backPressedCallback);
+
+        // Dispatch navigation bar insets to web app once registered in onCreate
+        getWindow().getDecorView().setOnApplyWindowInsetsListener((v, insets) -> {
+            int bottomPx = 0;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                bottomPx = insets.getInsets(WindowInsets.Type.navigationBars()).bottom;
+            } else {
+                bottomPx = insets.getSystemWindowInsetBottom();
+            }
+            float density = getResources().getDisplayMetrics().density;
+            final int bottomDp = (int) (bottomPx / (density > 0 ? density : 1.0f));
+            v.post(() -> {
+                try {
+                    WebView wv = getBridge() != null ? getBridge().getWebView() : null;
+                    if (wv != null && bottomDp >= 0) {
+                        wv.evaluateJavascript(
+                            "(function() { if (typeof window.applyNavigationBarInset === 'function') window.applyNavigationBarInset(" + bottomDp + "); })();",
+                            null
+                        );
+                    }
+                } catch (Exception ignored) {}
+            });
+            return insets;
+        });
+
+        configureWebViewIfNeeded();
+    }
+
+    private boolean isWebViewConfigured = false;
+
+    private void configureWebViewIfNeeded() {
+        if (isWebViewConfigured) return;
+        try {
+            if (getBridge() == null) return;
+            WebView webView = getBridge().getWebView();
+            if (webView == null) return;
+
+            // Maintain direct hardware compositor without offscreen buffering
+            WebSettings settings = webView.getSettings();
+            settings.setMediaPlaybackRequiresUserGesture(false);
+            settings.setJavaScriptCanOpenWindowsAutomatically(true);
+            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+            settings.setDomStorageEnabled(true);
+            settings.setDatabaseEnabled(true);
+            settings.setAllowFileAccess(true);
+            settings.setAllowContentAccess(true);
+
+            try {
+                CookieManager cookieManager = CookieManager.getInstance();
+                cookieManager.setAcceptCookie(true);
+                cookieManager.setAcceptThirdPartyCookies(webView, true);
+            } catch (Exception ignored) {}
+
+            String defaultUa = settings.getUserAgentString();
+            if (defaultUa != null) {
+                String cleanUa = defaultUa.replace("; wv", "").replace("Version/4.0 ", "");
+                settings.setUserAgentString(cleanUa);
+            }
+
+            webView.addJavascriptInterface(new WebAppInterface(), "AndroidApp");
+
+            webView.setDownloadListener((downloadUrl, userAgent, contentDisposition, mimetype, contentLength) -> {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl));
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                } catch (Exception err) {
+                    err.printStackTrace();
+                }
+            });
+
+            isWebViewConfigured = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        try {
-            WebView webView = getBridge().getWebView();
-            if (webView != null) {
-                // Force hardware layer on WebView for video rendering on Samsung/Galaxy devices
-                webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-                
-                WebSettings settings = webView.getSettings();
-                settings.setMediaPlaybackRequiresUserGesture(false);
-                settings.setJavaScriptCanOpenWindowsAutomatically(true);
-                settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-                settings.setDomStorageEnabled(true);
-                settings.setDatabaseEnabled(true);
-                settings.setAllowFileAccess(true);
-                settings.setAllowContentAccess(true);
-
-                try {
-                    CookieManager cookieManager = CookieManager.getInstance();
-                    cookieManager.setAcceptCookie(true);
-                    cookieManager.setAcceptThirdPartyCookies(webView, true);
-                } catch (Exception ignored) {}
-
-                // Set standard mobile Chrome User-Agent to avoid WebView bot/embed blocks on video CDNs
-                String defaultUa = settings.getUserAgentString();
-                if (defaultUa != null) {
-                    String cleanUa = defaultUa.replace("; wv", "").replace("Version/4.0 ", "");
-                    settings.setUserAgentString(cleanUa);
-                }
-
-                // Add Javascript interface for landscape/portrait orientation control & immersive fullscreen
-                webView.addJavascriptInterface(new WebAppInterface(), "AndroidApp");
-
-                // Set our custom WebChromeClient for true native HTML5 video fullscreen support
-                if (customChromeClient == null) {
-                    customChromeClient = new FullscreenWebChromeClient(getBridge());
-                }
-                webView.setWebChromeClient(customChromeClient);
-
-                // Set our custom BridgeWebViewClient to intercept MovieBox streams with required Referer header
-                webView.setWebViewClient(new CustomBridgeWebViewClient(getBridge()));
-
-                // Set download listener so direct download links open native Android download manager
-                webView.setDownloadListener((downloadUrl, userAgent, contentDisposition, mimetype, contentLength) -> {
-                    try {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl));
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    } catch (Exception err) {
-                        err.printStackTrace();
-                    }
-                });
-
-                // Dispatch navigation bar insets to web app so 3-button system bar never overlaps footer
-                getWindow().getDecorView().setOnApplyWindowInsetsListener((v, insets) -> {
-                    int bottomPx = 0;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        bottomPx = insets.getInsets(WindowInsets.Type.navigationBars()).bottom;
-                    } else {
-                        bottomPx = insets.getSystemWindowInsetBottom();
-                    }
-                    float density = getResources().getDisplayMetrics().density;
-                    final int bottomDp = (int) (bottomPx / (density > 0 ? density : 1.0f));
-                    v.post(() -> {
-                        try {
-                            WebView wv = getBridge() != null ? getBridge().getWebView() : null;
-                            if (wv != null && bottomDp >= 0) {
-                                wv.evaluateJavascript(
-                                    "(function() { if (typeof window.applyNavigationBarInset === 'function') window.applyNavigationBarInset(" + bottomDp + "); })();",
-                                    null
-                                );
-                            }
-                        } catch (Exception ignored) {}
-                    });
-                    return insets;
-                });
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        configureWebViewIfNeeded();
     }
 
     @Override
