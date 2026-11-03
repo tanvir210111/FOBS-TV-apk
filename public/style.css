@@ -9864,6 +9864,9 @@ body.is-fullscreen #subtitleModal .subtitle-modal-container {
 
 body.intro-active {
   background-color: #020c1c !important;
+  overflow: hidden !important;
+  height: 100vh !important;
+  touch-action: none !important;
 }
 
 /* ============================================================

@@ -506,9 +506,15 @@ function finishIntroAndShowApp() {
     } catch(e) {}
   }
 
+  document.body.classList.remove('intro-active');
+  document.body.style.overflow = '';
+  document.body.style.overflowY = 'auto';
+  document.documentElement.style.overflow = '';
+  document.documentElement.style.overflowY = 'auto';
+
   if (overlay) {
     overlay.classList.add('fade-out');
-    document.body.classList.remove('intro-active');
+    overlay.style.pointerEvents = 'none';
     if (window.AndroidApp && typeof window.AndroidApp.setSystemBarColors === 'function') {
       window.AndroidApp.setSystemBarColors('#07070a', '#0b0c10');
     }
@@ -520,8 +526,6 @@ function finishIntroAndShowApp() {
         video.src = '';
       }
     }, 550);
-  } else {
-    document.body.classList.remove('intro-active');
   }
 
   renderAllViews();
