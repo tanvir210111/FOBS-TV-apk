@@ -21,9 +21,11 @@ import android.widget.FrameLayout;
 import androidx.activity.OnBackPressedCallback;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Environment;
+import android.webkit.CookieManager;
 import android.widget.Toast;
 import androidx.core.content.FileProvider;
 import com.getcapacitor.Bridge;
@@ -204,6 +206,25 @@ public class MainActivity extends BridgeActivity {
         @JavascriptInterface
         public void setAudioBoost(int boostPercent) {
             // Handled cleanly via HTML5 video volume to avoid hardware audio conflicts
+        }
+
+        @JavascriptInterface
+        public void saveUserSession(String userJson) {
+            try {
+                if (userJson != null) {
+                    SharedPreferences prefs = getSharedPreferences("fobs_app_prefs", Context.MODE_PRIVATE);
+                    prefs.edit().putString("fobs_user", userJson).apply();
+                }
+            } catch (Exception ignored) {}
+        }
+
+        @JavascriptInterface
+        public String getUserSession() {
+            try {
+                SharedPreferences prefs = getSharedPreferences("fobs_app_prefs", Context.MODE_PRIVATE);
+                return prefs.getString("fobs_user", "");
+            } catch (Exception ignored) {}
+            return "";
         }
 
         @JavascriptInterface
@@ -615,6 +636,12 @@ public class MainActivity extends BridgeActivity {
                 settings.setDatabaseEnabled(true);
                 settings.setAllowFileAccess(true);
                 settings.setAllowContentAccess(true);
+
+                try {
+                    CookieManager cookieManager = CookieManager.getInstance();
+                    cookieManager.setAcceptCookie(true);
+                    cookieManager.setAcceptThirdPartyCookies(webView, true);
+                } catch (Exception ignored) {}
 
                 // Set standard mobile Chrome User-Agent to avoid WebView bot/embed blocks on video CDNs
                 String defaultUa = settings.getUserAgentString();

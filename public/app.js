@@ -159,17 +159,36 @@ window.submitVideoReport = submitVideoReport;
 // ----------------------------------------------------
 function isUserLoggedIn() {
   if (!currentUser) {
+    // 1. Check in localStorage
     try {
       const raw = localStorage.getItem('fobs_user');
       if (raw) currentUser = JSON.parse(raw);
     } catch(e) {}
+
+    // 2. Fallback to document.cookie (survives when localStorage is cleared by browser cleaners)
+    if (!currentUser) {
+      try {
+        const match = document.cookie.match(/fobs_user=([^;]+)/);
+        if (match) currentUser = JSON.parse(decodeURIComponent(match[1]));
+      } catch(e) {}
+    }
+
+    // 3. Fallback to Android Native SharedPreferences (100% persistent in APK)
+    if (!currentUser && window.AndroidApp && typeof window.AndroidApp.getUserSession === 'function') {
+      try {
+        const nativeRaw = window.AndroidApp.getUserSession();
+        if (nativeRaw) currentUser = JSON.parse(nativeRaw);
+      } catch(e) {}
+    }
   }
+
   if (!currentUser || typeof currentUser !== 'object') return false;
-  const email = (currentUser.email || '').trim().toLowerCase();
   const name = (currentUser.name || '').trim();
-  if (!email || !name || !email.includes('@') || !email.includes('.')) return false;
-  // If email was an anonymous dummy generator without real user input
-  if (email.startsWith('viewer') && email.endsWith('@fobstv.app')) return false;
+  const email = (currentUser.email || '').trim().toLowerCase();
+  
+  // If user has a name and either an email or an account ID, they are fully authenticated!
+  if (!name) return false;
+  if (!email && !currentUser.googleId && !currentUser.id) return false;
   return true;
 }
 window.isUserLoggedIn = isUserLoggedIn;
@@ -208,17 +227,22 @@ async function submitSimpleLogin() {
   const nameInput = document.getElementById('simpleLoginNameInput');
   const emailInput = document.getElementById('simpleLoginEmailInput');
   const name = nameInput ? nameInput.value.trim() : '';
-  const email = emailInput ? emailInput.value.trim() : '';
+  let email = emailInput ? emailInput.value.trim() : '';
 
   if (!name) {
     showToast('⚠️ অনুগ্রহ করে আপনার নাম লিখুন');
     nameInput?.focus();
     return;
   }
-  if (!email || !email.includes('@') || !email.includes('.')) {
-    showToast('⚠️ অনুগ্রহ করে সঠিক ইমেইল এড্রেস লিখুন');
+  if (!email) {
+    showToast('⚠️ অনুগ্রহ করে আপনার ইমেইল বা ফোন নম্বর লিখুন');
     emailInput?.focus();
     return;
+  }
+
+  // If user entered phone number or username without @, adapt into a valid handle
+  if (!email.includes('@')) {
+    email = `${email.replace(/[^a-zA-Z0-9_\-]/g, '')}@fobstv.user`;
   }
 
   const btn = document.getElementById('btnSubmitSimpleLogin');
@@ -9827,16 +9851,32 @@ function initGoogleAuth() {
   });
 }
 
-// Restore saved JWT session from localStorage
 // Restore saved JWT session or local user from localStorage
 async function restoreUserSession() {
   try {
     const savedUserRaw = localStorage.getItem('fobs_user');
     if (savedUserRaw) {
       currentUser = JSON.parse(savedUserRaw);
-      updateAuthUI();
     }
   } catch (e) {}
+
+  if (!currentUser) {
+    try {
+      const match = document.cookie.match(/fobs_user=([^;]+)/);
+      if (match) currentUser = JSON.parse(decodeURIComponent(match[1]));
+    } catch(e) {}
+  }
+
+  if (!currentUser && window.AndroidApp && typeof window.AndroidApp.getUserSession === 'function') {
+    try {
+      const nativeRaw = window.AndroidApp.getUserSession();
+      if (nativeRaw) currentUser = JSON.parse(nativeRaw);
+    } catch(e) {}
+  }
+
+  if (currentUser) {
+    updateAuthUI();
+  }
 
   const token = localStorage.getItem(AUTH_TOKEN_KEY);
   if (!token) return;
@@ -9861,13 +9901,6 @@ async function restoreUserSession() {
       userWatchlist = Array.isArray(data.watchlist) ? data.watchlist : [];
       userHistory = Array.isArray(data.history) ? data.history : [];
       updateAuthUI();
-    } else if (res.status === 401 || res.status === 403) {
-      if (token && !token.startsWith('fobs_')) {
-        localStorage.removeItem(AUTH_TOKEN_KEY);
-        localStorage.removeItem('fobs_user');
-        currentUser = null;
-        updateAuthUI();
-      }
     }
   } catch (err) {
     console.warn('Auth session restore failed:', err.message);
@@ -9925,6 +9958,16 @@ function loginUserSuccess(user, token) {
   try {
     localStorage.setItem('fobs_user', JSON.stringify(user));
     if (token) localStorage.setItem(AUTH_TOKEN_KEY, token);
+  } catch (e) {}
+
+  try {
+    document.cookie = `fobs_user=${encodeURIComponent(JSON.stringify(user))}; path=/; max-age=31536000; SameSite=Lax`;
+  } catch (e) {}
+
+  try {
+    if (window.AndroidApp && typeof window.AndroidApp.saveUserSession === 'function') {
+      window.AndroidApp.saveUserSession(JSON.stringify(user));
+    }
   } catch (e) {}
 
   updateAuthUI();
@@ -10161,6 +10204,14 @@ function handleUserLogout(e) {
   if (e) e.stopPropagation();
   localStorage.removeItem(AUTH_TOKEN_KEY);
   localStorage.removeItem('fobs_user');
+  try {
+    document.cookie = 'fobs_user=; path=/; max-age=0; SameSite=Lax';
+  } catch(e) {}
+  try {
+    if (window.AndroidApp && typeof window.AndroidApp.saveUserSession === 'function') {
+      window.AndroidApp.saveUserSession('');
+    }
+  } catch(e) {}
   currentUser = null;
   userWatchlist = [];
   userHistory = [];
