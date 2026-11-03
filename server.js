@@ -1325,6 +1325,11 @@ app.post('/api/app-update', (req, res) => {
 
 // Direct APK Download route
 app.get('/download/apk', (req, res) => {
+  const localApk = path.join(__dirname, 'public', 'download', 'app-debug.apk');
+  if (fs.existsSync(localApk)) {
+    res.setHeader('Content-Disposition', 'attachment; filename="FOBS-TV-v3.1.3.apk"');
+    return res.sendFile(localApk);
+  }
   const data = getContentData();
   const directApkUrl = (data.appUpdate && data.appUpdate.downloadUrl && !data.appUpdate.downloadUrl.includes('/download/apk'))
     ? data.appUpdate.downloadUrl

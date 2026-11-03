@@ -3,6 +3,7 @@ package com.fobstv.stream;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -594,6 +595,17 @@ public class MainActivity extends BridgeActivity {
                 getWindow().setNavigationBarColor(Color.parseColor("#020C1C"));
             } catch (Exception ignored) {}
         }
+
+        // Lock window and webview background to #020C1C to eliminate all white flashes on cold start
+        try {
+            getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#020C1C")));
+            WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+            if (webView != null) {
+                webView.setBackgroundColor(Color.parseColor("#020C1C"));
+                WebSettings settings = webView.getSettings();
+                settings.setMediaPlaybackRequiresUserGesture(false);
+            }
+        } catch (Exception ignored) {}
         
         // Force hardware acceleration at window level
         getWindow().setFlags(

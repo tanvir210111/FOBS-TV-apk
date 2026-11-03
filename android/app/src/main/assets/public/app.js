@@ -347,8 +347,8 @@ const CACHE_TTL_MS = 60 * 1000; // 1 minute TTL
 let isSyncing = false;
 
 // App Versioning & In-App Force Update Configuration
-const CURRENT_APP_VERSION_CODE = 10;
-const CURRENT_APP_VERSION_NAME = '3.1.2';
+const CURRENT_APP_VERSION_CODE = 11;
+const CURRENT_APP_VERSION_NAME = '3.1.3';
 window.CURRENT_APP_VERSION_CODE = CURRENT_APP_VERSION_CODE;
 window.CURRENT_APP_VERSION_NAME = CURRENT_APP_VERSION_NAME;
 let currentAppUpdateConfig = null;
@@ -430,20 +430,26 @@ function playAppIntroAndSync() {
     loadSeedContent().catch(() => {});
   }
 
-  // Start intro video playback
+  // Start intro video playback smoothly without stutter
   video.currentTime = 0;
-  video.muted = false;
+  video.muted = true;
 
-  const playPromise = video.play();
-  if (playPromise !== undefined) {
-    playPromise.catch(() => {
-      // If browser/device policy blocks unmuted autoplay, mute and continue playing smoothly
-      video.muted = true;
-      video.play().catch(() => {
-        finishIntroAndShowApp();
+  const startPlay = () => {
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        setTimeout(() => {
+          try { video.muted = false; } catch (_) {}
+        }, 80);
+      }).catch(() => {
+        video.muted = true;
+        video.play().catch(() => {
+          finishIntroAndShowApp();
+        });
       });
-    });
-  }
+    }
+  };
+  startPlay();
 
   // Update progress bar as video plays
   video.ontimeupdate = () => {
