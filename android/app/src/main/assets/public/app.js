@@ -3473,6 +3473,7 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
   }
 
   const overlay = document.getElementById('playerOverlay');
+  overlay.style.setProperty('display', 'flex', 'important');
   overlay.classList.add('open');
   document.body.classList.add('player-open');
 
@@ -6935,7 +6936,10 @@ function closePlayer() {
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = null;
 
-  if (overlay) overlay.classList.remove('open');
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.style.setProperty('display', 'none', 'important');
+  }
 }
 
 // Open "More details" Sheet Modal (Screenshot 2 Match with TMDB Data)
@@ -7030,7 +7034,10 @@ function closeDetailsSheet(e) {
     return;
   }
   const overlay = document.getElementById('moreDetailsOverlay');
-  if (overlay) overlay.classList.remove('open');
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.style.setProperty('display', 'none', 'important');
+  }
 }
 
 // Render "For You" Recommendations
@@ -7858,6 +7865,7 @@ async function playDownloadedMedia(id) {
         isOffline: true
       };
 
+      playerOverlay.style.setProperty('display', 'flex', 'important');
       playerOverlay.classList.add('open');
       document.body.classList.add('player-open');
 
@@ -8276,7 +8284,10 @@ function openQualitySheet() {
 function closeQualitySheet(event) {
   if (event && event.target !== event.currentTarget && !event.target.closest('.sheet-close-btn')) return;
   const overlay = document.getElementById('qualitySheetOverlay');
-  if (overlay) overlay.classList.remove('open');
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.style.setProperty('display', 'none', 'important');
+  }
 }
 
 function autoFallbackTo720p() {
@@ -8295,7 +8306,10 @@ function selectVideoQuality(quality, isAuto = false) {
   updateQualityDisplay(`${targetResNum}p`);
 
   const overlay = document.getElementById('qualitySheetOverlay');
-  if (overlay) overlay.classList.remove('open');
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.style.setProperty('display', 'none', 'important');
+  }
 
   if (!isAuto && typeof showToast === 'function') {
     showToast(`Quality set to ${targetResNum}p ${targetResNum >= 1080 ? 'FHD' : targetResNum >= 720 ? 'HD' : 'SD'}`);
@@ -8758,7 +8772,10 @@ function closeCommunity(e) {
     return;
   }
   const overlay = document.getElementById('communityOverlay');
-  if (overlay) overlay.classList.remove('open');
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.style.setProperty('display', 'none', 'important');
+  }
 }
 
 // ============================================================
