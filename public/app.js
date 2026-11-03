@@ -430,10 +430,6 @@ function playAppIntroAndSync() {
     loadSeedContent().catch(() => {});
   }
 
-  // Allow user to tap/touch screen anywhere to immediately enter app without waiting
-  overlay.addEventListener('click', () => finishIntroAndShowApp(), { passive: true });
-  overlay.addEventListener('touchstart', () => finishIntroAndShowApp(), { passive: true });
-
   // Start intro video playback smoothly without stutter
   video.currentTime = 0;
   video.muted = true;
@@ -485,12 +481,12 @@ function playAppIntroAndSync() {
     }
   })();
 
-  // Failsafe timeout: Max 5.5 seconds (or ends when video ends)
+  // Failsafe timeout: Max 9.5 seconds (video is ~7.9s, ends smoothly onended)
   setTimeout(() => {
     if (!_introFinished) {
       finishIntroAndShowApp();
     }
-  }, 5500);
+  }, 9500);
 }
 window.playAppIntroAndSync = playAppIntroAndSync;
 

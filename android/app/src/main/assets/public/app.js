@@ -163,14 +163,14 @@ function isUserLoggedIn() {
     try {
       const raw = localStorage.getItem('fobs_user');
       if (raw) currentUser = JSON.parse(raw);
-    } catch(e) {}
+    } catch (e) { }
 
     // 2. Fallback to document.cookie (survives when localStorage is cleared by browser cleaners)
     if (!currentUser) {
       try {
         const match = document.cookie.match(/fobs_user=([^;]+)/);
         if (match) currentUser = JSON.parse(decodeURIComponent(match[1]));
-      } catch(e) {}
+      } catch (e) { }
     }
 
     // 3. Fallback to Android Native SharedPreferences (100% persistent in APK)
@@ -178,14 +178,14 @@ function isUserLoggedIn() {
       try {
         const nativeRaw = window.AndroidApp.getUserSession();
         if (nativeRaw) currentUser = JSON.parse(nativeRaw);
-      } catch(e) {}
+      } catch (e) { }
     }
   }
 
   if (!currentUser || typeof currentUser !== 'object') return false;
   const name = (currentUser.name || '').trim();
   const email = (currentUser.email || '').trim().toLowerCase();
-  
+
   // If user has a name and either an email or an account ID, they are fully authenticated!
   if (!name) return false;
   if (!email && !currentUser.googleId && !currentUser.id) return false;
@@ -205,7 +205,7 @@ function openSimpleLoginModal() {
   }
   const vp = document.getElementById('mainVideoPlayer');
   if (vp && !vp.paused) {
-    try { vp.pause(); } catch(e) {}
+    try { vp.pause(); } catch (e) { }
   }
   const loader = document.getElementById('videoLoader');
   if (loader) loader.classList.remove('active');
@@ -266,7 +266,7 @@ async function submitSimpleLogin() {
       loginUserSuccess(data.user, data.token);
       closeSimpleLoginModal();
       showToast(`🎉 স্বাগতম ${data.user.name}!`);
-      
+
       // Auto-resume pending video playback or open pending media
       if (appState.pendingOpenMedia) {
         const { type, id, media, episodeIndex } = appState.pendingOpenMedia;
@@ -331,10 +331,10 @@ const BACKEND_URL = 'https://fobstv.duckdns.org';
 // - If running on remote server in a web browser, use ''
 // - If running inside Capacitor APK on mobile (origin is localhost without port, or capacitor://), point to VPS backend
 const API_BASE_URL = (() => {
-  const isCustomLocalPort = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && 
-                            window.location.port && 
-                            window.location.port !== '80' && 
-                            window.location.port !== '443';
+  const isCustomLocalPort = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
+    window.location.port &&
+    window.location.port !== '80' &&
+    window.location.port !== '443';
   if (isCustomLocalPort || window.location.hostname.includes('187.127.114.52') || window.location.hostname.includes('duckdns.org')) {
     return '';
   }
@@ -379,7 +379,7 @@ function applyNavigationBarInset(bottomDp) {
   } else if (window.AndroidApp && typeof window.AndroidApp.getNavigationBarHeight === 'function') {
     try {
       inset = window.AndroidApp.getNavigationBarHeight() || 0;
-    } catch (e) {}
+    } catch (e) { }
   }
 
   if (inset > 0) {
@@ -427,12 +427,8 @@ function playAppIntroAndSync() {
   // Pre-load local cached or seed content so UI is ready behind the scenes
   const hasCache = loadCachedContent();
   if (!hasCache) {
-    loadSeedContent().catch(() => {});
+    loadSeedContent().catch(() => { });
   }
-
-  // Allow user to tap/touch screen anywhere to immediately enter app without waiting
-  overlay.addEventListener('click', () => finishIntroAndShowApp(), { passive: true });
-  overlay.addEventListener('touchstart', () => finishIntroAndShowApp(), { passive: true });
 
   // Start intro video playback smoothly without stutter
   video.currentTime = 0;
@@ -443,7 +439,7 @@ function playAppIntroAndSync() {
     if (playPromise !== undefined) {
       playPromise.then(() => {
         setTimeout(() => {
-          try { video.muted = false; } catch (_) {}
+          try { video.muted = false; } catch (_) { }
         }, 80);
       }).catch(() => {
         video.muted = true;
@@ -485,12 +481,13 @@ function playAppIntroAndSync() {
     }
   })();
 
-  // Failsafe timeout: Max 5.5 seconds (or ends when video ends)
+  // Failsafe timeout: Max 8.8 seconds (video is ~7.9s)
+  // Failsafe timeout: Max 9.5 seconds (video is ~7.9s, ends smoothly onended)
   setTimeout(() => {
     if (!_introFinished) {
       finishIntroAndShowApp();
     }
-  }, 5500);
+  }, 9500);
 }
 window.playAppIntroAndSync = playAppIntroAndSync;
 
@@ -507,10 +504,14 @@ function finishIntroAndShowApp() {
       video.ontimeupdate = null;
       video.onended = null;
       video.onerror = null;
-    } catch(e) {}
+    } catch (e) { }
   }
 
   document.body.classList.remove('intro-active');
+  document.body.style.overflow = '';
+  document.body.style.overflowY = 'auto';
+  document.documentElement.style.overflow = '';
+  document.documentElement.style.overflowY = 'auto';
   document.body.style.setProperty('overflow', 'visible', 'important');
   document.body.style.setProperty('overflow-x', 'clip', 'important');
   document.body.style.setProperty('overflow-y', 'visible', 'important');
@@ -528,7 +529,8 @@ function finishIntroAndShowApp() {
         overlay.remove();
       }
     } catch (_) {
-      try { overlay.remove(); } catch (e) {}
+      overlay.style.display = 'none';
+      try { overlay.remove(); } catch (e) { }
     }
   }
 
@@ -560,8 +562,8 @@ async function initApp() {
         'x-app-version': appVer
       },
       body: JSON.stringify({ viewerId: pingViewerId, platform: 'Android App', appVersion: appVer })
-    }).catch(() => {});
-  } catch(e) {}
+    }).catch(() => { });
+  } catch (e) { }
   setupVideoListeners();
   setupHeroSwipeGestures();
   setupMovieHeroSwipeGestures();
@@ -581,7 +583,7 @@ async function initApp() {
         localStorage.removeItem(k);
       }
     }
-  } catch (e) {}
+  } catch (e) { }
 
   // Cinematic Intro Video Splash with background refresh
   playAppIntroAndSync();
@@ -869,9 +871,9 @@ function setupPullToRefresh() {
   };
 
   const isPlayerOpen = () => {
-    return document.body.classList.contains('player-open') || 
-           document.getElementById('playerOverlay')?.classList.contains('open') ||
-           document.getElementById('detailsSheetOverlay')?.classList.contains('open');
+    return document.body.classList.contains('player-open') ||
+      document.getElementById('playerOverlay')?.classList.contains('open') ||
+      document.getElementById('detailsSheetOverlay')?.classList.contains('open');
   };
 
   // Touch Start
@@ -1155,7 +1157,7 @@ function getValidBackdropUrl(slide) {
 function renderHeroBanner() {
   const movies = appState.content.movies || [];
   const series = appState.content.series || [];
-  
+
   // Home hero: Featured item first (with TMDB cover photo), then recent movies + series
   const featured = appState.content.featured;
   const recentMovies = movies.slice(0, 2);
@@ -1967,19 +1969,19 @@ function getCardBadgeRightHtml(item, fallback = '') {
   const badgeRight = (item?.badgeRight || '').toLowerCase();
 
   const isExplicitOriginal = (
-    title.includes('original audio') || 
-    title.includes('[original') || 
-    tag.includes('original') || 
+    title.includes('original audio') ||
+    title.includes('[original') ||
+    tag.includes('original') ||
     badgeRight.includes('original') ||
     (item?.selectedAudio && item.selectedAudio.toLowerCase().includes('original'))
   );
 
   const isExplicitHindi = (
-    title.includes('[hindi]') || 
-    title.includes('hindi dubbed') || 
-    tag.includes('hindi') || 
-    dub.includes('hindi') || 
-    cat.includes('(dubbed)') || 
+    title.includes('[hindi]') ||
+    title.includes('hindi dubbed') ||
+    tag.includes('hindi') ||
+    dub.includes('hindi') ||
+    cat.includes('(dubbed)') ||
     cat.includes('dubbed')
   );
 
@@ -2297,54 +2299,19 @@ function getRecentlyAddedSeries(limit) {
   return typeof limit === 'number' ? items.slice(0, limit) : items;
 }
 
-// Release Date Helper: Extract genuine theatrical/TMDB release date (YYYY-MM-DD) avoiding upload timestamps
-function getMediaReleaseDate(item) {
-  if (!item) return '2000-01-01';
-  let d = item.originalReleaseDate || item.releaseDate;
-  const year = parseInt(item.year || 0, 10);
-  if (d && typeof d === 'string' && d.includes('T')) {
-    const dYear = new Date(d).getFullYear();
-    if (year && year > 1900 && year !== dYear) {
-      return `${year}-01-01`;
-    }
-    return d.split('T')[0];
-  }
-  if (d && typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d)) {
-    return d.substring(0, 10);
-  }
-  if (year && year > 1900) {
-    return `${year}-01-01`;
-  }
-  return '2000-01-01';
-}
-
 // Release Date Descending Sorter (Latest Releases Strictly First: 2026, 2025, 2024...)
 function sortByReleaseDateDesc(list) {
   if (!Array.isArray(list)) return [];
   return [...list].sort((a, b) => {
-    // 1. Compare Year first (2026 > 2025 > 2024 > 2023...)
     const yearA = parseInt(a.year || 0, 10);
     const yearB = parseInt(b.year || 0, 10);
     if (yearA > 1900 && yearB > 1900 && yearA !== yearB) {
       return yearB - yearA;
     }
-    // 2. Compare exact release date string (YYYY-MM-DD)
-    const dateA = getMediaReleaseDate(a);
-    const dateB = getMediaReleaseDate(b);
+    const dateA = a.releaseDate || (yearA ? `${yearA}-01-01` : '2000-01-01');
+    const dateB = b.releaseDate || (yearB ? `${yearB}-01-01` : '2000-01-01');
     if (dateB !== dateA) {
       return dateB.localeCompare(dateA);
-    }
-    // 3. Compare popularity / ratings
-    const ratingA = parseFloat(a.imdbRating || a.rating || 0);
-    const ratingB = parseFloat(b.imdbRating || b.rating || 0);
-    if (ratingA !== ratingB) {
-      return ratingB - ratingA;
-    }
-    // 4. Compare views
-    const viewsA = parseInt(a.views || 0, 10);
-    const viewsB = parseInt(b.views || 0, 10);
-    if (viewsA !== viewsB) {
-      return viewsB - viewsA;
     }
     return (b.id || '').localeCompare(a.id || '');
   });
@@ -2370,8 +2337,8 @@ const isTurkishMedia = x => {
   const title = (x.title || '').toLowerCase();
   const desc = (x.description || '').toLowerCase();
   return cat.includes('turkish') || ind.includes('turkish') || ctry.includes('turkey') || ctry.includes('türkiye') ||
-         title.includes('ertugrul') || title.includes('osman') || title.includes('golden boy') || title.includes('arafta') ||
-         title.includes('sen cal kapimi') || title.includes('hercai') || title.includes('ask laftan') || desc.includes('turkish');
+    title.includes('ertugrul') || title.includes('osman') || title.includes('golden boy') || title.includes('arafta') ||
+    title.includes('sen cal kapimi') || title.includes('hercai') || title.includes('ask laftan') || desc.includes('turkish');
 };
 
 const isBollywoodMedia = m => {
@@ -2753,7 +2720,7 @@ function openSectionDetail(sectionKey, title) {
   // Push history state so Android hardware back key or browser back returns
   try {
     history.pushState({ screen: 'sectionDetail', sectionKey, title }, '');
-  } catch (e) {}
+  } catch (e) { }
 }
 
 function closeSectionDetail() {
@@ -2887,11 +2854,11 @@ function renderLiveTv() {
   const grid = document.getElementById('liveTvGrid');
   if (!grid) return;
 
-  const filtered = currentLiveTvCategory === 'All' 
-    ? liveTv 
-    : liveTv.filter(c => (c.category && c.category.toLowerCase().includes(currentLiveTvCategory.toLowerCase())) || 
-                         (currentLiveTvCategory === 'Bangladesh' && (c.country === 'bd' || c.language === 'Bangla')) ||
-                         (currentLiveTvCategory === 'India' && (c.country === 'in' || c.language === 'Hindi')));
+  const filtered = currentLiveTvCategory === 'All'
+    ? liveTv
+    : liveTv.filter(c => (c.category && c.category.toLowerCase().includes(currentLiveTvCategory.toLowerCase())) ||
+      (currentLiveTvCategory === 'Bangladesh' && (c.country === 'bd' || c.language === 'Bangla')) ||
+      (currentLiveTvCategory === 'India' && (c.country === 'in' || c.language === 'Hindi')));
 
   const countBadge = document.getElementById('liveTvCountBadge');
   if (countBadge) {
@@ -2918,7 +2885,7 @@ function renderLiveTv() {
 // Filter helper
 function filterContentByGenre(list) {
   if (appState.activeGenre === 'All') return list;
-  return list.filter(item => 
+  return list.filter(item =>
     (item.genre && item.genre.toLowerCase().includes(appState.activeGenre.toLowerCase())) ||
     (item.language && item.language.toLowerCase().includes(appState.activeGenre.toLowerCase())) ||
     (item.category && item.category.toLowerCase().includes(appState.activeGenre.toLowerCase()))
@@ -2993,7 +2960,7 @@ function switchMainTab(tabName) {
   if (tabName !== 'home') {
     try {
       history.pushState({ screen: 'tab', tab: tabName }, '');
-    } catch (e) {}
+    } catch (e) { }
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -3019,7 +2986,7 @@ async function loadMediaViews(mediaId) {
       localStorage.setItem(localKey, currentViews.toString());
       if (viewsEl) viewsEl.innerText = `${formatViewsCount(currentViews)} Views`;
     }
-  } catch (e) {}
+  } catch (e) { }
 
   // 3. Reset existing heartbeat poller
   if (appState.viewsPollTimer) {
@@ -3044,7 +3011,7 @@ async function loadMediaViews(mediaId) {
         const el = document.getElementById('mediaViewsCount');
         if (el) el.innerText = `${formatViewsCount(currentViews)} Views`;
       }
-    } catch (e) {}
+    } catch (e) { }
   }, 60000);
 }
 
@@ -3071,7 +3038,7 @@ async function incrementAppMediaViews(mediaId) {
       localStorage.setItem(localKey, currentViews.toString());
       if (viewsEl) viewsEl.innerText = `${formatViewsCount(currentViews)} Views`;
     }
-  } catch (e) {}
+  } catch (e) { }
 }
 
 const updateMediaViews = loadMediaViews;
@@ -3185,7 +3152,7 @@ function getLowestResolutionServer(activeObj, isOrig) {
 
   let candidateServers = servers;
   if (isOrig !== undefined) {
-    const audioMatched = servers.filter(s => isOrig 
+    const audioMatched = servers.filter(s => isOrig
       ? (s.audio === 'Original audio' || /original|korean/i.test(s.name || ''))
       : (s.audio === 'Hindi dub' || /hindi/i.test(s.name || ''))
     );
@@ -3219,9 +3186,9 @@ function getActiveEpisodeStream(ep, audioTrack) {
 
   // 1. High Priority: Auto-renewing MovieBox endpoint (always fresh token & lowest 480p/360p first)
   if (ep.servers && Array.isArray(ep.servers)) {
-    const autoRenewingServer = ep.servers.find(s => 
+    const autoRenewingServer = ep.servers.find(s =>
       s.url && s.url.includes('/api/moviebox/stream') && (
-        isOrig 
+        isOrig
           ? (s.audio === 'Original audio' || /original|korean/i.test(s.name))
           : (s.audio === 'Hindi dub' || /hindi/i.test(s.name))
       )
@@ -3485,7 +3452,7 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
     } else if (window.AndroidApp && typeof window.AndroidApp.setWindowBrightness === 'function') {
       window.AndroidApp.setWindowBrightness(-1);
     }
-  } catch (e) {}
+  } catch (e) { }
 
   // Reset video scale to default "Fit" mode (contain, perfectly centered without crop)
   const mainVideo = document.getElementById('mainVideoPlayer');
@@ -3539,7 +3506,7 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
 
   try {
     history.pushState({ screen: 'player' }, '');
-  } catch (e) {}
+  } catch (e) { }
 
   const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && (media.id.startsWith('kmdl-s-') || media.id.startsWith('mb-s-'))) || (media.seasons && media.seasons.length > 0);
   if (isSeries) {
@@ -3553,7 +3520,7 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
   const ongoingTag = (media.isOngoing || media.badgeRight === 'ONGOING' || media.status === 'Ongoing') && !media.title.toLowerCase().includes('ongoing') ? ' [Ongoing]' : '';
   const titleText = `${formatCleanMediaTitle(media.title, media.dubLanguage)}${ongoingTag}`;
   document.getElementById('playerMediaTitle').innerText = titleText;
-  
+
   const seasonText = isSeries ? (media.isOngoing ? `${media.episodes ? media.episodes.length : 2} eps (Ongoing)` : `${media.seasonsCount || (media.seasons ? media.seasons.length : 1)} seasons`) : (media.duration || '2h 21m');
   const ratingText = media.imdbRating || media.rating || '8.1';
   const ongoingBadge = (media.isOngoing || media.badgeRight === 'ONGOING' || media.status === 'Ongoing') ? `<span class="player-ongoing-badge" style="background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.5px; margin-left: 4px;">ONGOING</span>` : '';
@@ -3688,7 +3655,7 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
           badge.textContent = d.comments.length;
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }
 
   // Setup MovieBox Subtitles and Quality options
@@ -3714,18 +3681,18 @@ function renderEpisodePills(episodes, activeIndex) {
   row.innerHTML = `
     <button class="ep-pill ep-all">All</button>
     ${episodes.map((ep, idx) => {
-      const rawNum = ep ? (ep.number ?? ep.episodeNumber ?? ep.episode ?? (idx + 1)) : (idx + 1);
-      const isBad = rawNum === undefined || rawNum === null || String(rawNum).trim() === '' || String(rawNum).toLowerCase() === 'undefined';
-      const cleanNum = isBad ? (idx + 1) : rawNum;
-      const formatted = typeof cleanNum === 'number'
-        ? (cleanNum < 10 ? '0' + cleanNum : String(cleanNum))
-        : String(cleanNum).replace(/^ep\s*/i, '').padStart(2, '0');
-      return `
+    const rawNum = ep ? (ep.number ?? ep.episodeNumber ?? ep.episode ?? (idx + 1)) : (idx + 1);
+    const isBad = rawNum === undefined || rawNum === null || String(rawNum).trim() === '' || String(rawNum).toLowerCase() === 'undefined';
+    const cleanNum = isBad ? (idx + 1) : rawNum;
+    const formatted = typeof cleanNum === 'number'
+      ? (cleanNum < 10 ? '0' + cleanNum : String(cleanNum))
+      : String(cleanNum).replace(/^ep\s*/i, '').padStart(2, '0');
+    return `
         <button class="ep-pill ${idx === activeIndex ? 'active' : ''}" onclick="selectEpisode(${idx})">
           ${formatted}
         </button>
       `;
-    }).join('')}
+  }).join('')}
   `;
 }
 
@@ -3882,12 +3849,12 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
 
   // Determine active audio index
   const activeAudio = (audioIndex !== null && audioIndex !== undefined)
-    ? audioIndex 
+    ? audioIndex
     : (appState.selectedAudioIndex !== undefined ? appState.selectedAudioIndex : (appState.currentAudioTrack?.toLowerCase().includes('english') ? 1 : 0));
 
   // Cleanup any active HLS.js instance
   if (window.activeHlsPlayer) {
-    try { window.activeHlsPlayer.destroy(); } catch (e) {}
+    try { window.activeHlsPlayer.destroy(); } catch (e) { }
     window.activeHlsPlayer = null;
   }
 
@@ -3903,7 +3870,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     hls.attachMedia(videoPlayer);
     hls.on(window.Hls.Events.MANIFEST_PARSED, () => {
       if (seekTime && seekTime > 0) videoPlayer.currentTime = seekTime;
-      videoPlayer.play().catch(() => {});
+      videoPlayer.play().catch(() => { });
       if (loader) loader.classList.remove('active');
     });
     hls.on(window.Hls.Events.ERROR, (event, data) => {
@@ -3940,7 +3907,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
           } else {
             videoPlayer.currentTime = seekTime;
           }
-        } catch (e) {}
+        } catch (e) { }
       };
       videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
       videoPlayer.addEventListener('canplay', applySeek, { once: true });
@@ -3949,7 +3916,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
         applySeek();
       }
     }
-    videoPlayer.play().catch(() => {});
+    videoPlayer.play().catch(() => { });
 
     // Asynchronously discover qualities in background without competing with initial video buffer
     let qualityFetched = false;
@@ -3966,7 +3933,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
             if (data.resolution) updateQualityDisplay(data.resolution);
           }
         })
-        .catch(() => {});
+        .catch(() => { });
     };
     if (videoPlayer.readyState >= 2) {
       setTimeout(loadQualities, 1000);
@@ -3996,7 +3963,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
           } else {
             videoPlayer.currentTime = seekTime;
           }
-        } catch (e) {}
+        } catch (e) { }
       };
       videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
       videoPlayer.addEventListener('canplay', applySeek, { once: true });
@@ -4005,7 +3972,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
         applySeek();
       }
     }
-    videoPlayer.play().catch(() => {});
+    videoPlayer.play().catch(() => { });
     return;
   }
 
@@ -4021,13 +3988,13 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     playableUrl.includes('kmdl.eu.org') ||
     playableUrl.includes('koyeb.app') ||
     playableUrl.includes('filetolink') ||
-    (playableUrl.includes('.mp4') && 
-     !playableUrl.includes('drive.google.com') && 
-     !playableUrl.includes('vcloud.you') && 
-     !playableUrl.includes('vkuser.net') && 
-     !playableUrl.includes('okcdn.ru') &&
-     !playableUrl.includes('vkpluscdn') &&
-     !playableUrl.includes('vkcdn'))
+    (playableUrl.includes('.mp4') &&
+      !playableUrl.includes('drive.google.com') &&
+      !playableUrl.includes('vcloud.you') &&
+      !playableUrl.includes('vkuser.net') &&
+      !playableUrl.includes('okcdn.ru') &&
+      !playableUrl.includes('vkpluscdn') &&
+      !playableUrl.includes('vkcdn'))
   );
   if (isDirectMp4Source && !playableUrl.includes('googleusercontent.com')) {
     appState.streamSeekOffset = 0;
@@ -4036,14 +4003,14 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     // always stream through VPS proxy to prevent 429 Too Many Requests and ensure instant seeking!
     if (
       playableUrl.includes('/api/moviebox/stream') ||
-      playableUrl.includes('hakunaymatata') || 
-      playableUrl.includes('bcdnxw') || 
-      playableUrl.includes('haildrop') || 
-      playableUrl.includes('fogtwist') || 
-      playableUrl.includes('sunburst') || 
+      playableUrl.includes('hakunaymatata') ||
+      playableUrl.includes('bcdnxw') ||
+      playableUrl.includes('haildrop') ||
+      playableUrl.includes('fogtwist') ||
+      playableUrl.includes('sunburst') ||
       playableUrl.includes('stormshade')
     ) {
-      const proxyUrl = playableUrl.includes('/api/stream') 
+      const proxyUrl = playableUrl.includes('/api/stream')
         ? (playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`)
         : `${API_BASE_URL}/api/stream?url=${encodeURIComponent(playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`)}`;
       console.log('Playing MovieBox stream via server proxy:', proxyUrl);
@@ -4060,12 +4027,12 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
             } else {
               videoPlayer.currentTime = seekTime;
             }
-          } catch (e) {}
+          } catch (e) { }
         };
         videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
         videoPlayer.addEventListener('canplay', applySeek, { once: true });
       }
-      videoPlayer.play().catch(() => {});
+      videoPlayer.play().catch(() => { });
       return;
     }
 
@@ -4085,7 +4052,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
           } else {
             videoPlayer.currentTime = seekTime;
           }
-        } catch (e) {}
+        } catch (e) { }
       };
       videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
       videoPlayer.addEventListener('canplay', applySeek, { once: true });
@@ -4137,7 +4104,7 @@ function setVideoOrientationLandscape() {
   }
   if (screen.orientation && screen.orientation.lock) {
     screen.orientation.lock('sensor-landscape').catch(() => {
-      screen.orientation.lock('landscape').catch(() => {});
+      screen.orientation.lock('landscape').catch(() => { });
     });
   }
 }
@@ -4151,7 +4118,7 @@ function setVideoOrientationPortrait() {
   if (screen.orientation && screen.orientation.unlock) {
     try {
       screen.orientation.unlock();
-    } catch (e) {}
+    } catch (e) { }
   }
 }
 
@@ -4240,7 +4207,7 @@ function togglePlayPauseVideo() {
   const loader = document.getElementById('videoLoader');
   if (video.paused) {
     if (loader) loader.classList.remove('active');
-    video.play().catch(() => {});
+    video.play().catch(() => { });
   } else {
     video.pause();
   }
@@ -4362,7 +4329,7 @@ function updateLandscapeProgress() {
         const bufPct = Math.min(100, Math.max(0, (bufEnd / duration) * 100));
         if (bufEl) bufEl.style.width = `${bufPct}%`;
         if (ptBufEl) ptBufEl.style.width = `${bufPct}%`;
-      } catch (e) {}
+      } catch (e) { }
     }
   }
 }
@@ -4377,7 +4344,7 @@ function isTimeBuffered(video, targetRelTime) {
         return true;
       }
     }
-  } catch (e) {}
+  } catch (e) { }
   return false;
 }
 
@@ -4464,7 +4431,7 @@ function seekToAbsoluteTime(targetSeconds) {
 
   // If already at or very close to target (< 0.25s), simply resume playback
   if (Math.abs((video.currentTime || 0) - safeTarget) < 0.25) {
-    video.play().catch(() => {});
+    video.play().catch(() => { });
     return;
   }
 
@@ -4500,7 +4467,7 @@ function seekToAbsoluteTime(targetSeconds) {
     appState.pendingSeekTime = null;
     updateLandscapeProgress();
     syncPlayPauseIcons();
-    video.play().catch(() => {});
+    video.play().catch(() => { });
   };
 
   video.addEventListener('seeked', finishSeek, { once: true });
@@ -4516,7 +4483,7 @@ function seekToAbsoluteTime(targetSeconds) {
   try {
     video.currentTime = safeTarget;
     // Resume immediately without decoder stall
-    video.play().catch(() => {});
+    video.play().catch(() => { });
   } catch (err) {
     console.warn('Direct seek error:', err);
     finishSeek();
@@ -4586,7 +4553,7 @@ function setupLandscapeProgressScrubbing() {
     wrapper.addEventListener('pointerdown', (e) => {
       e.stopPropagation();
       isScrubbingProgress = true;
-      try { wrapper.setPointerCapture(e.pointerId); } catch (err) {}
+      try { wrapper.setPointerCapture(e.pointerId); } catch (err) { }
       handleScrub(e.clientX);
       resetLandscapeControlsTimer();
     });
@@ -4602,7 +4569,7 @@ function setupLandscapeProgressScrubbing() {
     const onPointerUp = (e) => {
       if (isScrubbingProgress) {
         e.stopPropagation();
-        try { wrapper.releasePointerCapture(e.pointerId); } catch (err) {}
+        try { wrapper.releasePointerCapture(e.pointerId); } catch (err) { }
         commitSeek(e.clientX);
       }
     };
@@ -4876,7 +4843,7 @@ function restoreSubtitleSettings() {
     if (saved.verticalOffset !== undefined) subtitleState.verticalOffset = saved.verticalOffset;
     applySubtitlePosition();
     updatePositionUI();
-  } catch (e) {}
+  } catch (e) { }
 }
 
 // Save settings to localStorage
@@ -4891,7 +4858,7 @@ function saveSubtitleSettings() {
       position: subtitleState.position,
       verticalOffset: subtitleState.verticalOffset
     }));
-  } catch (e) {}
+  } catch (e) { }
 }
 
 // Client-side SRT and WebVTT Parser
@@ -4954,7 +4921,7 @@ function handleManualSrtUpload(event) {
   if (!file) return;
 
   const reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = function (e) {
     try {
       const rawText = e.target.result;
       const cues = parseSubtitleTextToCues(rawText);
@@ -4993,7 +4960,7 @@ function handleManualSrtUpload(event) {
     }
   };
 
-  reader.onerror = function() {
+  reader.onerror = function () {
     showToast('⚠️ Error reading selected file from device storage.');
   };
 
@@ -5164,7 +5131,7 @@ function renderSubtitleLists() {
   const lsList = document.getElementById('lsSubtitleOptionsList');
 
   // Strictly allow ONLY English, Bangla (বাংলা), and custom manually uploaded subtitles
-  const filteredTracks = (subtitleState.availableTracks || []).filter(t => 
+  const filteredTracks = (subtitleState.availableTracks || []).filter(t =>
     t.isCustom || t.langCode === 'en' || t.langCode === 'bn' || t.language === 'English' || t.language === 'Bangla (বাংলা)'
   );
 
@@ -5699,9 +5666,9 @@ function renderOnlineSubtitlesHtml() {
           <span>${title} (${items.length})</span>
         </div>
         ${items.map(sub => {
-          const isDownloaded = subtitleState.activeSubId === sub.id;
-          const cleanSubTitle = (sub.title || '').replace(/'/g, "\\'");
-          return `
+      const isDownloaded = subtitleState.activeSubId === sub.id;
+      const cleanSubTitle = (sub.title || '').replace(/'/g, "\\'");
+      return `
             <div class="online-sub-item">
               <div class="online-sub-info">
                 <span class="online-sub-title" title="${cleanSubTitle}">${sub.title}</span>
@@ -5719,7 +5686,7 @@ function renderOnlineSubtitlesHtml() {
               </button>
             </div>
           `;
-        }).join('')}
+    }).join('')}
       </div>
     `;
   };
@@ -5826,7 +5793,7 @@ function adjustSubtitleSync(delta) {
   updateSyncUI();
   const sign = subtitleState.syncOffset >= 0 ? '+' : '';
   showToast(`Subtitle Delay: ${sign}${subtitleState.syncOffset.toFixed(1)}s (MX Sync)`);
-  
+
   // Immediately update cue
   const vp = document.getElementById('mainVideoPlayer');
   if (vp) {
@@ -5931,7 +5898,7 @@ function enterFullscreenMode(options = {}) {
   // Request native fullscreen on videoContainer so MovieBox controls and drawers are visible
   if (!options.skipNativeFs && videoContainer) {
     if (videoContainer.requestFullscreen) {
-      videoContainer.requestFullscreen().catch(() => {});
+      videoContainer.requestFullscreen().catch(() => { });
     } else if (videoContainer.webkitRequestFullscreen) {
       videoContainer.webkitRequestFullscreen();
     } else if (videoContainer.mozRequestFullScreen) {
@@ -5955,8 +5922,8 @@ function enterFullscreenMode(options = {}) {
     const cleanBase = formatCleanMediaTitle(media.title, media.dubLanguage);
     const epPad = epNum < 10 ? `0${epNum}` : epNum;
     const sePad = seasonNum < 10 ? `0${seasonNum}` : seasonNum;
-    titleEl.innerText = isSeries 
-      ? `${cleanBase} S${sePad} E${epPad}` 
+    titleEl.innerText = isSeries
+      ? `${cleanBase} S${sePad} E${epPad}`
       : cleanBase;
   }
 
@@ -5987,7 +5954,7 @@ function exitFullscreenMode(options = {}) {
   if (!options.skipNativeFs) {
     if (document.fullscreenElement || document.webkitFullscreenElement) {
       if (document.exitFullscreen) {
-        document.exitFullscreen().catch(() => {});
+        document.exitFullscreen().catch(() => { });
       } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
       }
@@ -6034,7 +6001,7 @@ function handlePlayerBackClick() {
 }
 
 // Global bridges called from Android MainActivity
-window.onNativeFullscreenChange = function(isActive) {
+window.onNativeFullscreenChange = function (isActive) {
   if (isActive && !document.body.classList.contains('is-fullscreen')) {
     enterFullscreenMode({ skipRotate: true });
   } else if (!isActive && document.body.classList.contains('is-fullscreen')) {
@@ -6042,7 +6009,7 @@ window.onNativeFullscreenChange = function(isActive) {
   }
 };
 
-window.onOrientationChanged = function(orientation) {
+window.onOrientationChanged = function (orientation) {
   const isPlayerOpen = document.getElementById('playerOverlay')?.classList.contains('open');
   if (!isPlayerOpen) return;
 
@@ -6063,11 +6030,11 @@ let lastTapInfo = { time: 0, x: 0, y: 0, side: null };
 
 function applyPlayerBrightness(val) {
   playerBrightness = Math.max(0.05, Math.min(1.0, Number(val)));
-  
+
   // 1. Update in-player video element brightness and smooth dark overlay
   const video = document.getElementById('mainVideoPlayer');
   const overlay = document.getElementById('playerBrightnessOverlay');
-  
+
   if (video) {
     // Normal 100% gives clean vivid picture (1.12), 50% gives 0.8, 5% gives 0.3
     const filterVal = (0.28 + (playerBrightness * 0.84)).toFixed(2);
@@ -6079,13 +6046,13 @@ function applyPlayerBrightness(val) {
     const dimAlpha = Math.max(0, (1.0 - playerBrightness) * 0.88);
     overlay.style.backgroundColor = `rgba(0, 0, 0, ${dimAlpha.toFixed(3)})`;
   }
-  
+
   // Keep phone's actual system screen brightness at default - never hijack device backlight
   try {
     if (window.AndroidApp && typeof window.AndroidApp.resetWindowBrightness === 'function') {
       window.AndroidApp.resetWindowBrightness();
     }
-  } catch (e) {}
+  } catch (e) { }
 
   return playerBrightness;
 }
@@ -6185,8 +6152,8 @@ function handleSinglePlayerTap() {
     return;
   }
 
-  const isLandscape = document.body.classList.contains('is-fullscreen') || 
-                      (window.innerWidth > window.innerHeight);
+  const isLandscape = document.body.classList.contains('is-fullscreen') ||
+    (window.innerWidth > window.innerHeight);
 
   if (isLandscape && lsUi) {
     const isHidden = lsUi.classList.contains('controls-hidden');
@@ -6206,8 +6173,8 @@ function handleSinglePlayerTap() {
   }
 
   // Portrait mode toggle
-  const isPtHidden = (topHeader && topHeader.classList.contains('controls-hidden')) || 
-                     (ptBottom && ptBottom.classList.contains('controls-hidden'));
+  const isPtHidden = (topHeader && topHeader.classList.contains('controls-hidden')) ||
+    (ptBottom && ptBottom.classList.contains('controls-hidden'));
   if (isPtHidden) {
     if (topHeader) topHeader.classList.remove('controls-hidden');
     if (ptBottom) ptBottom.classList.remove('controls-hidden');
@@ -6333,7 +6300,7 @@ function setupPlayerGestures() {
 
     try {
       currentDetector.setPointerCapture(e.pointerId);
-    } catch (err) {}
+    } catch (err) { }
 
     isPointerDown = true;
     isDragging = false;
@@ -6363,7 +6330,7 @@ function setupPlayerGestures() {
           show2xSpeedHud(true);
           try {
             if (navigator.vibrate) navigator.vibrate(30);
-          } catch (err) {}
+          } catch (err) { }
         }
       }, 400);
     }
@@ -6463,7 +6430,7 @@ function setupPlayerGestures() {
 
     try {
       if (currentDetector) currentDetector.releasePointerCapture(e.pointerId);
-    } catch (err) {}
+    } catch (err) { }
 
     // Clear long-press timer
     if (longPressTimer) {
@@ -6719,7 +6686,7 @@ function setupVideoListeners() {
       }
       // If video has sufficient buffered data to resume, unpause it cleanly
       if (!videoPlayer.paused && videoPlayer.readyState >= 2) {
-        videoPlayer.play().catch(() => {});
+        videoPlayer.play().catch(() => { });
       }
     }, 3500);
   };
@@ -6759,7 +6726,7 @@ function setupVideoListeners() {
     if (loader) loader.classList.remove('active');
     updateLandscapeProgress();
     syncPlayPauseIcons();
-    videoPlayer.play().catch(() => {});
+    videoPlayer.play().catch(() => { });
   });
 
   videoPlayer.addEventListener('canplay', () => {
@@ -6820,8 +6787,8 @@ function setupVideoListeners() {
         playStreamUrl(targetUrl, null, resumeTime);
         return;
       }
-      const proxyUrl = targetUrl.includes('/api/stream') 
-        ? targetUrl 
+      const proxyUrl = targetUrl.includes('/api/stream')
+        ? targetUrl
         : `${API_BASE_URL}/api/stream?url=${encodeURIComponent(targetUrl)}`;
 
       videoPlayer.src = proxyUrl;
@@ -6829,11 +6796,11 @@ function setupVideoListeners() {
       if (resumeTime > 0) {
         const onLoaded = () => {
           videoPlayer.removeEventListener('loadedmetadata', onLoaded);
-          try { videoPlayer.currentTime = resumeTime; } catch(err) {}
+          try { videoPlayer.currentTime = resumeTime; } catch (err) { }
         };
         videoPlayer.addEventListener('loadedmetadata', onLoaded);
       }
-      videoPlayer.play().catch(() => {});
+      videoPlayer.play().catch(() => { });
       return;
     }
 
@@ -6886,7 +6853,7 @@ function closePlayer() {
     if (typeof saveWatchHistoryProgress === 'function') {
       saveWatchHistoryProgress();
     }
-  } catch (e) {}
+  } catch (e) { }
 
   const overlay = document.getElementById('playerOverlay');
   const videoPlayer = document.getElementById('mainVideoPlayer');
@@ -6926,7 +6893,7 @@ function closePlayer() {
     } else if (window.AndroidApp && typeof window.AndroidApp.setWindowBrightness === 'function') {
       window.AndroidApp.setWindowBrightness(-1);
     }
-  } catch (e) {}
+  } catch (e) { }
 
   if (singleTapTimer) {
     clearTimeout(singleTapTimer);
@@ -6962,7 +6929,7 @@ function closePlayer() {
       window.activeHlsPlayer.stopLoad();
       window.activeHlsPlayer.detachMedia();
       window.activeHlsPlayer.destroy();
-    } catch (e) {}
+    } catch (e) { }
     window.activeHlsPlayer = null;
   }
 
@@ -6979,7 +6946,7 @@ function closePlayer() {
     videoPlayer.pause();
     videoPlayer.src = '';
     videoPlayer.removeAttribute('src');
-    try { videoPlayer.srcObject = null; } catch(e) {}
+    try { videoPlayer.srcObject = null; } catch (e) { }
     videoPlayer.load();
     setTimeout(() => {
       if (videoPlayer) videoPlayer._isClosing = false;
@@ -7081,7 +7048,7 @@ function openDetailsSheet(customMedia = null) {
   overlay.classList.add('open');
   try {
     history.pushState({ screen: 'details' }, '');
-  } catch (e) {}
+  } catch (e) { }
 }
 
 function closeDetailsSheet(e) {
@@ -7099,7 +7066,7 @@ function closeDetailsSheet(e) {
 function renderForYouRecommendations() {
   const container = document.getElementById('forYouGrid');
   const allItems = [...(appState.content.movies || []), ...(appState.content.series || [])];
-  
+
   // Shuffle or slice
   const recs = allItems.slice(0, 6);
   container.innerHTML = recs.map(item => `
@@ -7303,9 +7270,9 @@ function handleCommentImageSelected(event) {
   }
 
   const reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = function (e) {
     const img = new Image();
-    img.onload = function() {
+    img.onload = function () {
       const maxDim = 1200;
       let width = img.width;
       let height = img.height;
@@ -7517,7 +7484,7 @@ function triggerDownload() {
   if (previewPoster) previewPoster.src = activePoster;
 
   const isHindi = (
-    activeTitle.toLowerCase().includes('hindi') || 
+    activeTitle.toLowerCase().includes('hindi') ||
     (appState.currentAudioTrack && appState.currentAudioTrack.toLowerCase().includes('hindi'))
   );
 
@@ -7670,7 +7637,7 @@ function updateDownloadProgress(id, percent, sizeText = '') {
 
 async function downloadMedia(url, title, options = {}) {
   if (navigator.storage && navigator.storage.persist) {
-    try { await navigator.storage.persist(); } catch (e) {}
+    try { await navigator.storage.persist(); } catch (e) { }
   }
   if (!url) return;
   const quality = options.quality || '480P';
@@ -7698,7 +7665,7 @@ async function downloadMedia(url, title, options = {}) {
     });
     localStorage.setItem('fobs_downloads', JSON.stringify(filtered.slice(0, 30)));
     renderDownloadsList();
-  } catch (e) {}
+  } catch (e) { }
 
   try {
     // 1. Resolve direct downloadable stream URL
@@ -7707,8 +7674,8 @@ async function downloadMedia(url, title, options = {}) {
     // If it's a MovieBox endpoint, resolve direct quality stream URL with known file size
     if (streamFetchUrl.includes('/api/moviebox/stream')) {
       const qNum = parseInt(quality, 10) || 480;
-      const jsonFetchUrl = streamFetchUrl.includes('?') 
-        ? `${streamFetchUrl}&json=1&q=${qNum}` 
+      const jsonFetchUrl = streamFetchUrl.includes('?')
+        ? `${streamFetchUrl}&json=1&q=${qNum}`
         : `${streamFetchUrl}?json=1&q=${qNum}`;
       try {
         const rRes = await fetch(jsonFetchUrl, { headers: { 'Accept': 'application/json' } });
@@ -7833,7 +7800,7 @@ async function downloadMedia(url, title, options = {}) {
           const aiUrl = `${API_BASE_URL}/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanT)}&season=${dlSeason}&episode=${dlEpisode}`;
           const aiRes = await fetch(aiUrl);
           if (aiRes.ok) bnVttText = await aiRes.text();
-        } catch(aiErr) {}
+        } catch (aiErr) { }
       }
     } catch (subErr) {
       console.warn('Offline dual subtitle sync warning:', subErr.message);
@@ -7881,7 +7848,7 @@ async function downloadMedia(url, title, options = {}) {
         localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
       }
       renderDownloadsList();
-    } catch (e) {}
+    } catch (e) { }
     showToast(`❌ ডাউনলোড সম্পন্ন হতে পারেনি: ${err.message}`);
   }
 }
@@ -7930,7 +7897,7 @@ async function playDownloadedMedia(id) {
 
       const titleEl = document.getElementById('playerMediaTitle');
       if (titleEl) titleEl.innerText = `${offlineItem.title} (অফলাইন)`;
-      
+
       const metaEl = document.getElementById('playerMediaMeta');
       if (metaEl) {
         metaEl.innerHTML = `<i class="fa-solid fa-tv"></i> <span><i class="fa-solid fa-cloud-arrow-down"></i> Offline Playback</span> <span>${offlineItem.quality || '1080P'}</span>`;
@@ -7994,7 +7961,7 @@ async function deleteDownload(id, e) {
     const raw = localStorage.getItem('fobs_downloads') || '[]';
     const downloads = JSON.parse(raw).filter(d => d.id !== id);
     localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
-  } catch (e) {}
+  } catch (e) { }
   renderDownloadsList();
   showToast('ডাউনলোড মুছে ফেলা হয়েছে');
 }
@@ -8097,7 +8064,7 @@ function openChromeDownloadsInfo() {
   } else {
     try {
       window.open('chrome://downloads', '_blank');
-    } catch (e) {}
+    } catch (e) { }
   }
 }
 window.openChromeDownloadsInfo = openChromeDownloadsInfo;
@@ -8110,7 +8077,7 @@ async function clearDownloadsHistory() {
       for (const item of downloads) {
         await removeOfflineMedia(item.id);
       }
-    } catch(e) {}
+    } catch (e) { }
     localStorage.removeItem('fobs_downloads');
     const meDlCount = document.getElementById('meDownloadsCount');
     if (meDlCount) meDlCount.innerText = '0';
@@ -8184,9 +8151,9 @@ function renderAudioTrackOptions(media) {
 
   // Only add Hindi dub if the media is actually tagged as Hindi or has Hindi dub
   const hasHindiAudio = (media.isHindi === true) ||
-                        (media.dubLanguage && /hindi/i.test(media.dubLanguage)) ||
-                        titleLower.includes('[hindi') ||
-                        (Array.isArray(media.audioTracks) && media.audioTracks.some(t => /hindi/i.test(t)));
+    (media.dubLanguage && /hindi/i.test(media.dubLanguage)) ||
+    titleLower.includes('[hindi') ||
+    (Array.isArray(media.audioTracks) && media.audioTracks.some(t => /hindi/i.test(t)));
 
   if (hasHindiAudio && !tracks.some(t => /hindi/i.test(t))) {
     tracks.unshift('Hindi dub');
@@ -8259,7 +8226,7 @@ function switchAudioTrack(lang) {
     videoPlayer._retryCount = 0;
     videoPlayer._ignoreErrors = true;
     videoPlayer._isChangingTrack = true;
-    try { videoPlayer.pause(); } catch (e) {}
+    try { videoPlayer.pause(); } catch (e) { }
     const onTrackReady = () => {
       if (videoPlayer) {
         videoPlayer._ignoreErrors = false;
@@ -8314,9 +8281,9 @@ function switchAudioTrack(lang) {
   const currentEp = appState.currentEpisode;
   const rawUrl = getActiveEpisodeStream(currentEp, lang)
     || (currentEp?.servers && currentEp.servers[targetAudioIndex] && currentEp.servers[targetAudioIndex].url)
-    || currentEp?.streamUrl 
+    || currentEp?.streamUrl
     || (appState.currentMedia?.servers && appState.currentMedia.servers[targetAudioIndex] && appState.currentMedia.servers[targetAudioIndex].url)
-    || appState.currentMedia?.streamUrl 
+    || appState.currentMedia?.streamUrl
     || appState.currentMedia?.driveUrl;
 
   if (rawUrl && videoPlayer) {
@@ -8429,7 +8396,7 @@ function selectVideoQuality(quality, isAuto = false) {
 
     playStreamUrl(targetStreamUrl, null, seekPos);
     if (!isPaused) {
-      setTimeout(() => { videoPlayer.play().catch(() => {}); }, 150);
+      setTimeout(() => { videoPlayer.play().catch(() => { }); }, 150);
     }
   } else {
     console.warn(`[Quality Switch] No stream URL found for ${targetResNum}p`);
@@ -8473,7 +8440,7 @@ function shareApp() {
       window.AndroidApp.shareText(shareTitle, shareText);
       return;
     }
-  } catch (e) {}
+  } catch (e) { }
 
   if (navigator.share) {
     navigator.share({
@@ -8735,7 +8702,7 @@ async function submitNewMedia(e) {
       closeAddModal();
       showToast(`Added "${title}" successfully!`);
       await fetchAppContent();
-      
+
       // Auto open player for newly added item
       openPlayer(result.item);
     } else {
@@ -8796,7 +8763,7 @@ function openExternalUrl(url) {
       window.AndroidApp.openExternalUrl(url);
       return;
     }
-  } catch (e) {}
+  } catch (e) { }
 
   try {
     if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
@@ -8895,7 +8862,7 @@ async function loadAllBookingsRealtime() {
         }
       });
     }
-  } catch (e) {}
+  } catch (e) { }
 }
 window.loadAllBookingsRealtime = loadAllBookingsRealtime;
 
@@ -9061,7 +9028,7 @@ async function shareComingSoonMovie() {
         url: shareUrl
       });
       return;
-    } catch (e) {}
+    } catch (e) { }
   }
 
   try {
@@ -9139,7 +9106,7 @@ function openPreBookingsModal() {
   modal.style.display = 'flex';
   try {
     history.pushState({ screen: 'preBookingsModal' }, '');
-  } catch (e) {}
+  } catch (e) { }
 }
 
 function closePreBookingsModal(e) {
@@ -9243,7 +9210,7 @@ async function openUpcomingBookingModal(itemOrId) {
   // Push history state so Android back button closes this modal
   try {
     history.pushState({ screen: 'bookingModal', id: item.id }, '');
-  } catch (e) {}
+  } catch (e) { }
 
   // Fetch real-time authoritative booking count from backend
   try {
@@ -9259,7 +9226,7 @@ async function openUpcomingBookingModal(itemOrId) {
       const badgeDetail = document.getElementById(`bookedBadgeDetail_${item.id}`);
       if (badgeDetail) badgeDetail.innerText = `${currentCount}`;
     }
-  } catch (e) {}
+  } catch (e) { }
 
   // Real-time polling while modal is open (every 3.5 seconds)
   if (bookingPollingTimer) clearInterval(bookingPollingTimer);
@@ -9282,7 +9249,7 @@ async function openUpcomingBookingModal(itemOrId) {
         const badgeDetail = document.getElementById(`bookedBadgeDetail_${item.id}`);
         if (badgeDetail) badgeDetail.innerText = `${currentCount}`;
       }
-    } catch (e) {}
+    } catch (e) { }
   }, 3500);
 }
 
@@ -9375,7 +9342,7 @@ async function submitBooking() {
       if (cardBadge) cardBadge.innerText = `${currentCount}`;
       if (detailBadge) detailBadge.innerText = `${currentCount}`;
     }
-  } catch (e) {}
+  } catch (e) { }
 }
 
 
@@ -9383,7 +9350,7 @@ async function submitBooking() {
 // ============================================================
 // ANDROID & MOBILE BACK GESTURE (SWIPE BACK) / SYSTEM BACK HANDLER
 // ============================================================
-window.handleAndroidBack = function() {
+window.handleAndroidBack = function () {
   // -1. Mandatory app update modal: strictly block back gesture/button
   const updateModal = document.getElementById('appUpdateModal');
   if (updateModal && !updateModal.classList.contains('hidden')) {
@@ -9600,7 +9567,7 @@ window.handleAndroidBack = function() {
 };
 
 // Listen to browser & WebView popstate (for back gesture navigation)
-window.addEventListener('popstate', function(event) {
+window.addEventListener('popstate', function (event) {
   window.handleAndroidBack();
 });
 
@@ -9642,9 +9609,9 @@ function checkAppUpdate(data) {
 
   // Detect whether running in native Android / Capacitor environment
   const isNative = (typeof window.Capacitor !== 'undefined' && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) ||
-                   window.location.protocol === 'capacitor:' ||
-                   window.location.protocol === 'ionic:' ||
-                   (window.location.hostname === 'localhost' && !window.location.port);
+    window.location.protocol === 'capacitor:' ||
+    window.location.protocol === 'ionic:' ||
+    (window.location.hostname === 'localhost' && !window.location.port);
 
   // If in a regular web browser, do not show blocking APK update modal
   if (!isNative) {
@@ -9754,15 +9721,15 @@ function startAppUpdate() {
     if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Browser) {
       window.Capacitor.Plugins.Browser.open({ url: apkUrl });
     }
-  } catch (e) {}
+  } catch (e) { }
 
   try {
     window.open(apkUrl, '_system');
-  } catch (e) {}
+  } catch (e) { }
 
   try {
     window.open(apkUrl, '_blank');
-  } catch (e) {}
+  } catch (e) { }
 
   // 2. Direct browser anchor download fallback
   try {
@@ -9776,7 +9743,7 @@ function startAppUpdate() {
     setTimeout(() => {
       if (document.body.contains(a)) document.body.removeChild(a);
     }, 1500);
-  } catch (e) {}
+  } catch (e) { }
 }
 
 function simulateBrowserUpdate(apkUrl) {
@@ -9822,7 +9789,7 @@ function simulateBrowserUpdate(apkUrl) {
 }
 
 // Native Android Callbacks (Invoked from MainActivity.java)
-window.onNativeApkDownloadProgress = function(percent, downloadedBytes, totalBytes) {
+window.onNativeApkDownloadProgress = function (percent, downloadedBytes, totalBytes) {
   const fill = document.getElementById('updateProgressBarFill');
   const percentText = document.getElementById('updateProgressPercent');
   const labelText = document.getElementById('updateProgressLabel');
@@ -9846,7 +9813,7 @@ window.onNativeApkDownloadProgress = function(percent, downloadedBytes, totalByt
   }
 };
 
-window.onNativeApkDownloadComplete = function() {
+window.onNativeApkDownloadComplete = function () {
   const fill = document.getElementById('updateProgressBarFill');
   const percentText = document.getElementById('updateProgressPercent');
   const labelText = document.getElementById('updateProgressLabel');
@@ -9861,7 +9828,7 @@ window.onNativeApkDownloadComplete = function() {
   if (btnStart) {
     btnStart.style.display = 'flex';
     btnStart.innerHTML = '<i class="fa-solid fa-download"></i> <span>Install Now</span>';
-    btnStart.onclick = function() {
+    btnStart.onclick = function () {
       if (window.AndroidApp && typeof window.AndroidApp.installDownloadedApkNow === 'function') {
         window.AndroidApp.installDownloadedApkNow();
       } else {
@@ -9871,7 +9838,7 @@ window.onNativeApkDownloadComplete = function() {
   }
 };
 
-window.onNativeApkDownloadError = function(errorMsg) {
+window.onNativeApkDownloadError = function (errorMsg) {
   isUpdatingApp = false;
   const btnStart = document.getElementById('btnStartUpdate');
   const progContainer = document.getElementById('updateProgressContainer');
@@ -9953,20 +9920,20 @@ async function restoreUserSession() {
     if (savedUserRaw) {
       currentUser = JSON.parse(savedUserRaw);
     }
-  } catch (e) {}
+  } catch (e) { }
 
   if (!currentUser) {
     try {
       const match = document.cookie.match(/fobs_user=([^;]+)/);
       if (match) currentUser = JSON.parse(decodeURIComponent(match[1]));
-    } catch(e) {}
+    } catch (e) { }
   }
 
   if (!currentUser && window.AndroidApp && typeof window.AndroidApp.getUserSession === 'function') {
     try {
       const nativeRaw = window.AndroidApp.getUserSession();
       if (nativeRaw) currentUser = JSON.parse(nativeRaw);
-    } catch(e) {}
+    } catch (e) { }
   }
 
   if (currentUser) {
@@ -10053,17 +10020,17 @@ function loginUserSuccess(user, token) {
   try {
     localStorage.setItem('fobs_user', JSON.stringify(user));
     if (token) localStorage.setItem(AUTH_TOKEN_KEY, token);
-  } catch (e) {}
+  } catch (e) { }
 
   try {
     document.cookie = `fobs_user=${encodeURIComponent(JSON.stringify(user))}; path=/; max-age=31536000; SameSite=Lax`;
-  } catch (e) {}
+  } catch (e) { }
 
   try {
     if (window.AndroidApp && typeof window.AndroidApp.saveUserSession === 'function') {
       window.AndroidApp.saveUserSession(JSON.stringify(user));
     }
-  } catch (e) {}
+  } catch (e) { }
 
   updateAuthUI();
   closeAuthModal();
@@ -10140,10 +10107,10 @@ async function syncGuestWatchlistToAccount(token) {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(it)
-      }).catch(() => {});
+      }).catch(() => { });
     }
     localStorage.removeItem('fobs_guest_watchlist');
-  } catch (e) {}
+  } catch (e) { }
 }
 
 // Handle Google ID Token received from Google One-Tap or Sign-In button
@@ -10301,12 +10268,12 @@ function handleUserLogout(e) {
   localStorage.removeItem('fobs_user');
   try {
     document.cookie = 'fobs_user=; path=/; max-age=0; SameSite=Lax';
-  } catch(e) {}
+  } catch (e) { }
   try {
     if (window.AndroidApp && typeof window.AndroidApp.saveUserSession === 'function') {
       window.AndroidApp.saveUserSession('');
     }
-  } catch(e) {}
+  } catch (e) { }
   currentUser = null;
   userWatchlist = [];
   userHistory = [];
@@ -10320,8 +10287,8 @@ function handleUserLogout(e) {
 
 function isMediaInWatchlist(mediaId) {
   if (!mediaId) return false;
-  const list = (currentUser && userWatchlist && userWatchlist.length > 0) 
-    ? userWatchlist 
+  const list = (currentUser && userWatchlist && userWatchlist.length > 0)
+    ? userWatchlist
     : JSON.parse(localStorage.getItem('fobs_guest_watchlist') || '[]');
   return list.some(item => item.mediaId === mediaId.toString());
 }
@@ -10344,7 +10311,7 @@ async function toggleMediaWatchlist(media) {
     let localList = [];
     try {
       localList = JSON.parse(localStorage.getItem('fobs_guest_watchlist') || '[]');
-    } catch(e) {
+    } catch (e) {
       localList = [];
     }
     const idx = localList.findIndex(item => item.mediaId === mediaId);
@@ -10446,8 +10413,8 @@ function renderWatchlistItems() {
   const countBadge = document.getElementById('meWatchlistHeaderCount');
   if (!container) return;
 
-  const currentList = (currentUser && userWatchlist && userWatchlist.length > 0) 
-    ? userWatchlist 
+  const currentList = (currentUser && userWatchlist && userWatchlist.length > 0)
+    ? userWatchlist
     : JSON.parse(localStorage.getItem('fobs_guest_watchlist') || '[]');
 
   if (countBadge) countBadge.textContent = `${currentList.length} ${currentList.length === 1 ? 'Title' : 'Titles'}`;
@@ -10694,7 +10661,7 @@ async function saveWatchHistoryProgress(isCompleted = false) {
 
   if (progressSeconds < 3 && !isCompleted) return;
 
-  const currentEpNum = appState.currentEpisodeNumber 
+  const currentEpNum = appState.currentEpisodeNumber
     || (appState.currentEpisode && (appState.currentEpisode.episode ?? appState.currentEpisode.episodeNumber ?? appState.currentEpisode.number))
     || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1);
 
@@ -10720,7 +10687,7 @@ async function saveWatchHistoryProgress(isCompleted = false) {
     localStorage.setItem('fobs_watch_history', JSON.stringify(filtered.slice(0, 50)));
 
     renderMeHistorySlider();
-  } catch (e) {}
+  } catch (e) { }
 
   // 2. Sync to MongoDB if logged in
   const token = localStorage.getItem(AUTH_TOKEN_KEY);
@@ -10743,7 +10710,7 @@ async function saveWatchHistoryProgress(isCompleted = false) {
         updateAuthUI();
       }
     }
-  } catch (err) {}
+  } catch (err) { }
 }
 window.saveWatchHistoryProgress = saveWatchHistoryProgress;
 
@@ -10791,7 +10758,7 @@ async function sendActiveViewerHeartbeat() {
         viewsEl.innerText = `${formatViewsCount(data.totalViews)} Views`;
       }
     }
-  } catch (err) {}
+  } catch (err) { }
 }
 
 // ============================================================
@@ -11367,7 +11334,7 @@ async function submitMediaRequest() {
         createdAt: new Date().toISOString()
       });
       localStorage.setItem('fobs_my_requests', JSON.stringify(localReqs.slice(0, 30)));
-    } catch (e) {}
+    } catch (e) { }
 
     showToast('আপনার রিকোয়েস্ট জমা হয়েছে! শীঘ্রই অ্যাড করা হবে 🎉');
 
@@ -11404,7 +11371,7 @@ async function renderMyRequestsList() {
         list = data.requests;
       }
     }
-  } catch (e) {}
+  } catch (e) { }
 
   if (!list || list.length === 0) {
     container.innerHTML = `
@@ -11528,7 +11495,7 @@ function getClientUserIdentifier() {
   let guestId = localStorage.getItem('fobs_guest_uid');
   if (!guestId) {
     guestId = 'guest_' + Math.random().toString(36).substring(2, 9);
-    try { localStorage.setItem('fobs_guest_uid', guestId); } catch(e) {}
+    try { localStorage.setItem('fobs_guest_uid', guestId); } catch (e) { }
   }
   return guestId;
 }
@@ -11775,7 +11742,7 @@ function dismissAnnouncementPopup() {
   if (currentActiveAnnouncement && currentActiveAnnouncement.id) {
     try {
       localStorage.setItem(`fobs_dismissed_notice_${currentActiveAnnouncement.id}`, 'true');
-    } catch(e) {}
+    } catch (e) { }
   }
   closeAnnouncementPopup();
   showToast('নোটিশ ডিসমিস করা হয়েছে 👍');

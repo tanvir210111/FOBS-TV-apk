@@ -16,6 +16,8 @@ android/captures/
 *.apk
 !public/apk/app-release.apk
 !public/apk/FOBS-TV.apk
+android/app/src/main/assets/public/apk/
+android/app/src/main/assets/public/download/
 *.jpeg
 *.jpg
 *.mkv
