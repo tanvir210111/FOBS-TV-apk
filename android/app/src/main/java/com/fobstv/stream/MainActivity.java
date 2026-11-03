@@ -265,18 +265,14 @@ public class MainActivity extends BridgeActivity {
 
         @JavascriptInterface
         public void setWindowBrightness(float brightness) {
+            // Keep window brightness strictly at BRIGHTNESS_OVERRIDE_NONE so the phone backlight
+            // and the rest of the app/system UI are NEVER modified.
             runOnUiThread(() -> {
                 try {
                     Window window = getWindow();
                     if (window != null) {
                         WindowManager.LayoutParams lp = window.getAttributes();
-                        // Values from 0.01f to 1.0f (full physical max brightness of device)
-                        // If negative, restores system default
-                        if (brightness < 0) {
-                            lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-                        } else {
-                            lp.screenBrightness = Math.max(0.01f, Math.min(1.0f, brightness));
-                        }
+                        lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
                         window.setAttributes(lp);
                     }
                 } catch (Exception ignored) {}

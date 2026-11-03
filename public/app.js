@@ -3472,19 +3472,9 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = null;
 
-  // Preserve user's system device brightness — do NOT force 100%
-  playerBrightness = 1.0;
-  const brOverlay = document.getElementById('playerBrightnessOverlay');
-  if (brOverlay) brOverlay.style.backgroundColor = 'transparent';
-  const mainVidInit = document.getElementById('mainVideoPlayer');
-  if (mainVidInit) mainVidInit.style.filter = '';
-  try {
-    if (window.AndroidApp && typeof window.AndroidApp.resetWindowBrightness === 'function') {
-      window.AndroidApp.resetWindowBrightness();
-    } else if (window.AndroidApp && typeof window.AndroidApp.setWindowBrightness === 'function') {
-      window.AndroidApp.setWindowBrightness(-1);
-    }
-  } catch (e) {}
+  // Preserve user's system device brightness and set video picture brightness to baseline 50% (1.0x natural)
+  playerBrightness = 0.5;
+  applyPlayerBrightness(0.5);
 
   // Reset video scale to default "Fit" mode (contain, perfectly centered without crop)
   const mainVideo = document.getElementById('mainVideoPlayer');
@@ -4281,6 +4271,12 @@ async function togglePictureInPicture() {
 function getMediaTotalDurationSeconds() {
   const video = document.getElementById('mainVideoPlayer');
   const duration = (video && isFinite(video.duration) && video.duration > 0) ? video.duration : 0;
+
+  // For offline downloaded videos, the video element's duration is the exact and authoritative length
+  if (appState.currentMedia && appState.currentMedia.isOffline && duration > 0) {
+    return duration;
+  }
+
   const epDur = appState.currentEpisode?.duration || appState.currentMedia?.duration;
   let parsedSec = 0;
 
@@ -4300,8 +4296,8 @@ function getMediaTotalDurationSeconds() {
     }
   }
 
-  // If video element has an active finite duration (> 60s), that is the most accurate duration
-  if (duration > 60) {
+  // If video element has an active finite duration (> 1s), that is the most accurate duration
+  if (duration > 1) {
     return duration;
   }
 
@@ -4473,8 +4469,42 @@ function seekToAbsoluteTime(targetSeconds) {
   if (window.seekStallRecoveryTimeout) clearTimeout(window.seekStallRecoveryTimeout);
   if (window.seekFallbackTimeout) clearTimeout(window.seekFallbackTimeout);
 
-  // Show subtle loader spinner ONLY if decoding keyframe takes longer than 200ms
   const loader = document.getElementById('videoLoader');
+
+  // SPECIAL OFFLINE VIDEO SEEKING LOGIC:
+  // For downloaded offline videos, there is zero network latency. Never show loader spinner and resume immediately.
+  if (appState.currentMedia && appState.currentMedia.isOffline) {
+    if (loader) loader.classList.remove('active');
+    appState.pendingSeekTime = null;
+
+    const offlineDur = (video.duration && isFinite(video.duration) && video.duration > 0) ? video.duration : duration;
+    const finalSafeTarget = Math.max(0, Math.min(offlineDur > 1 ? offlineDur - 0.5 : offlineDur, safeTarget));
+
+    let offlineSeekSettled = false;
+    const finishOfflineSeek = () => {
+      if (offlineSeekSettled) return;
+      offlineSeekSettled = true;
+      if (loader) loader.classList.remove('active');
+      appState.pendingSeekTime = null;
+      updateLandscapeProgress();
+      syncPlayPauseIcons();
+      video.play().catch(() => {});
+    };
+
+    video.addEventListener('seeked', finishOfflineSeek, { once: true });
+    video.addEventListener('canplay', finishOfflineSeek, { once: true });
+    setTimeout(finishOfflineSeek, 250);
+
+    try {
+      video.currentTime = finalSafeTarget;
+    } catch (e) {
+      console.warn('Offline seek error:', e);
+      finishOfflineSeek();
+    }
+    return;
+  }
+
+  // Show subtle loader spinner ONLY if decoding keyframe takes longer than 200ms
   window.seekLoaderDebounceTimer = setTimeout(() => {
     if (video.seeking || video.readyState < 3) {
       if (loader) {
@@ -6131,38 +6161,54 @@ window.onOrientationChanged = function(orientation) {
 // ============================================================
 // MOVIEBOX / MX PLAYER STYLE GESTURES & HUD (BRIGHTNESS, SOUND, DOUBLE TAP)
 // ============================================================
-let playerBrightness = 1.0;
+let playerBrightness = 0.5;
 let gestureHudTimer = null;
 let singleTapTimer = null;
 let lastTapInfo = { time: 0, x: 0, y: 0, side: null };
 
 function applyPlayerBrightness(val) {
   playerBrightness = Math.max(0.01, Math.min(1.0, Number(val)));
-  
-  // 1. Android physical screen backlight (1% to 100% full panel brightness like MX Player / MovieBox)
-  // This changes ONLY this player window; never affects the rest of the app or phone when closed!
+
+  // Keep phone/Android physical screen backlight strictly at system default (never alter app/system brightness)
   try {
-    if (window.AndroidApp && typeof window.AndroidApp.setWindowBrightness === 'function') {
-      window.AndroidApp.setWindowBrightness(playerBrightness);
+    if (window.AndroidApp && typeof window.AndroidApp.resetWindowBrightness === 'function') {
+      window.AndroidApp.resetWindowBrightness();
     }
   } catch (e) {}
 
-  // 2. Video element CSS brightness & contrast filter for extra vivid, ultra-bright HDR punch
+  // Pure in-player video picture brightness boost
+  // 0.50 (50%) = 1.00 standard natural video brightness
+  // 1.00 (100%) = 1.65 vivid HDR boost with rich contrast and saturation
+  // 0.00 (0%) = 0.25 dim night watching
   const video = document.getElementById('mainVideoPlayer');
   const overlay = document.getElementById('playerBrightnessOverlay');
-  
+
   if (video) {
-    // Scales from 0.35 (night dim) to 1.45 (super bright vivid boost!)
-    const filterVal = (0.35 + (playerBrightness * 1.10)).toFixed(2);
-    const contrastVal = playerBrightness > 0.6 ? '1.04' : '1.0';
-    video.style.filter = `brightness(${filterVal}) contrast(${contrastVal})`;
+    let filterBrightness = '1.00';
+    let contrastVal = '1.00';
+    let saturateVal = '1.00';
+
+    if (playerBrightness >= 0.5) {
+      // 0.5 -> 1.0 maps to 1.00 -> 1.65 brightness
+      const boostRatio = (playerBrightness - 0.5) / 0.5; // 0.0 to 1.0
+      filterBrightness = (1.00 + (boostRatio * 0.65)).toFixed(2);
+      contrastVal = (1.00 + (boostRatio * 0.12)).toFixed(2);
+      saturateVal = (1.00 + (boostRatio * 0.08)).toFixed(2);
+    } else {
+      // 0.0 -> 0.5 maps to 0.25 -> 1.00 brightness
+      const dimRatio = playerBrightness / 0.5; // 0.0 to 1.0
+      filterBrightness = (0.25 + (dimRatio * 0.75)).toFixed(2);
+      contrastVal = (0.90 + (dimRatio * 0.10)).toFixed(2);
+      saturateVal = '1.00';
+    }
+
+    video.style.filter = `brightness(${filterBrightness}) contrast(${contrastVal}) saturate(${saturateVal})`;
   }
 
   if (overlay) {
-    // Only apply smooth dark tint when user deliberately drags down low for night watching (< 45%)
-    if (playerBrightness < 0.45) {
-      const dimAlpha = (0.45 - playerBrightness) * 1.4;
-      overlay.style.backgroundColor = `rgba(0, 0, 0, ${dimAlpha.toFixed(3)})`;
+    if (playerBrightness < 0.35) {
+      const dimAlpha = ((0.35 - playerBrightness) / 0.35) * 0.45;
+      overlay.style.backgroundColor = `rgba(0, 0, 0, ${dimAlpha.toFixed(2)})`;
     } else {
       overlay.style.backgroundColor = 'transparent';
     }
@@ -6416,7 +6462,7 @@ function setupPlayerGestures() {
   let startY = 0;
   let startTime = 0;
   let activeSide = null; // 'left' or 'right'
-  let startBrightness = 1.0;
+  let startBrightness = 0.5;
   let startVolume = 1.0;
   let startVideoTime = 0;
   let targetSeekTime = 0;
@@ -6846,6 +6892,12 @@ function setupVideoListeners() {
   };
 
   videoPlayer.addEventListener('waiting', () => {
+    // If offline media, never show loading spinner and resume playback immediately
+    if (appState.currentMedia && appState.currentMedia.isOffline) {
+      if (loader) loader.classList.remove('active');
+      videoPlayer.play().catch(() => {});
+      return;
+    }
     if (waitLoaderTimer) clearTimeout(waitLoaderTimer);
     waitLoaderTimer = setTimeout(() => {
       if (videoPlayer.paused || videoPlayer.seeking || videoPlayer.readyState < 3) {
@@ -6856,6 +6908,12 @@ function setupVideoListeners() {
   });
 
   videoPlayer.addEventListener('stalled', () => {
+    // If offline media, never show loading spinner and resume playback immediately
+    if (appState.currentMedia && appState.currentMedia.isOffline) {
+      if (loader) loader.classList.remove('active');
+      videoPlayer.play().catch(() => {});
+      return;
+    }
     console.warn('Video stream playback stalled');
     if (!videoPlayer.paused && videoPlayer.readyState < 3) {
       if (loader) loader.classList.add('active');
@@ -6864,6 +6922,11 @@ function setupVideoListeners() {
   });
 
   videoPlayer.addEventListener('seeking', () => {
+    // If offline media, never show loader spinner during seek
+    if (appState.currentMedia && appState.currentMedia.isOffline) {
+      if (loader) loader.classList.remove('active');
+      return;
+    }
     // Only show loader if seek takes more than a split second
     if (waitLoaderTimer) clearTimeout(waitLoaderTimer);
     waitLoaderTimer = setTimeout(() => {
@@ -7040,7 +7103,7 @@ function closePlayer() {
   }
   appState.currentSessionTrackedId = null;
 
-  playerBrightness = 1.0;
+  playerBrightness = 0.5;
   const overlayEl = document.getElementById('playerBrightnessOverlay');
   if (overlayEl) {
     overlayEl.style.backgroundColor = 'transparent';
@@ -8401,11 +8464,16 @@ async function playDownloadedMedia(id) {
 
       videoPlayer._retryCount = 0;
       videoPlayer._ignoreErrors = true;
+      videoPlayer.preload = 'auto';
       videoPlayer.style.display = 'block';
       videoPlayer.pause();
       videoPlayer.removeAttribute('src');
       videoPlayer.src = videoUrl;
       videoPlayer.load();
+
+      // Reset in-player video brightness to natural baseline (50% = 1.0x)
+      playerBrightness = 0.5;
+      applyPlayerBrightness(0.5);
 
       const hideLoader = () => {
         if (loader) loader.classList.remove('active');
