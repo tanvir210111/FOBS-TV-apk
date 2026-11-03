@@ -2884,10 +2884,10 @@ app.post('/api/app-ping', (req, res) => {
   }
 });
 
-// Purge Older Version Users & Devices (Keep v3.1.1)
+// Purge Older Version Users & Devices (Keep v3.1.3)
 app.post('/api/admin/users/purge-old', adminService.authenticate, async (req, res) => {
   try {
-    const targetVersion = req.body?.version || req.query?.version || '3.1.1';
+    const targetVersion = req.body?.version || req.query?.version || '3.1.3';
     const result = await dbService.purgeOldVersionUsers(targetVersion);
     res.json(result);
   } catch (err) {

@@ -457,10 +457,10 @@ async function loadAppSettings() {
     const settings = data.settings || {};
 
     // Fill App Update Fields
-    document.getElementById('up-version-name').value = update.latestVersionName || '3.1.1';
-    document.getElementById('up-version-code').value = update.latestVersionCode || 9;
-    document.getElementById('up-min-code').value = update.minVersionCode || 9;
-    document.getElementById('up-file-size').value = update.fileSize || '6.1 MB';
+    document.getElementById('up-version-name').value = update.latestVersionName || '3.1.3';
+    document.getElementById('up-version-code').value = update.latestVersionCode || 11;
+    document.getElementById('up-min-code').value = update.minVersionCode || 11;
+    document.getElementById('up-file-size').value = update.fileSize || '9.2 MB';
     document.getElementById('up-force-toggle').checked = !!update.forceUpdate;
     document.getElementById('up-enabled-toggle').checked = update.enabled !== false;
     document.getElementById('up-title').value = update.title || '';

@@ -255,7 +255,7 @@ async function submitSimpleLogin() {
   }
 
   try {
-    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.1');
+    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.3');
     const res = await fetch(`${API_BASE_URL}/api/auth/simple-login`, {
       method: 'POST',
       headers: {
@@ -577,7 +577,7 @@ async function initApp() {
       pingViewerId = 'v_' + Math.random().toString(36).substring(2, 10);
       localStorage.setItem('fobs_viewer_uuid', pingViewerId);
     }
-    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.2');
+    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.3');
     fetch(`${API_BASE_URL}/api/app-ping`, {
       method: 'POST',
       headers: {
@@ -10576,7 +10576,7 @@ function checkAppUpdate(data) {
     return;
   }
 
-  // Strict guard: If running current v3.1.1 (versionCode >= latestVersionCode), NEVER show update modal
+  // Strict guard: If running current v3.1.3 (versionCode >= latestVersionCode), NEVER show update modal
   if (CURRENT_APP_VERSION_CODE >= updateInfo.latestVersionCode) {
     const modal = document.getElementById('appUpdateModal');
     if (modal) modal.classList.add('hidden');
@@ -10626,7 +10626,7 @@ function checkAppUpdate(data) {
     if (currentTag) currentTag.textContent = `v${CURRENT_APP_VERSION_NAME}`;
 
     const latestTag = document.getElementById('latestVersionTag');
-    if (latestTag) latestTag.textContent = `v${updateInfo.latestVersionName || '3.1.1'}`;
+    if (latestTag) latestTag.textContent = `v${updateInfo.latestVersionName || '3.1.3'}`;
 
     const sizeTag = document.getElementById('updateFileSize');
     if (sizeTag && updateInfo.fileSize) sizeTag.textContent = updateInfo.fileSize;
@@ -10689,7 +10689,7 @@ function startAppUpdate() {
     apkUrl = `${API_BASE_URL}${apkUrl.startsWith('/') ? '' : '/'}${apkUrl}`;
   }
 
-  showToast('Opening browser to download FOBS TV v3.1.1 (6.1 MB)...');
+  showToast(`Opening browser to download FOBS TV v${currentAppUpdateConfig?.latestVersionName || '3.1.3'} (${currentAppUpdateConfig?.fileSize || '9.2 MB'})...`);
 
   if (fill) fill.style.width = '100%';
   if (percentText) percentText.textContent = '100%';
