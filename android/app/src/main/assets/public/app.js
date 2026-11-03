@@ -3304,8 +3304,63 @@ function formatCleanMediaTitle(rawTitle, dubLanguage = 'Hindi') {
   return `${clean} ${tag}`;
 }
 
+// Helper to retrieve saved watch progress for auto-resuming videos & series
+function getSavedWatchProgress(media) {
+  if (!media) return null;
+  try {
+    const raw = localStorage.getItem('fobs_watch_history') || '[]';
+    const list = JSON.parse(raw);
+    const activeHistory = (typeof currentUser !== 'undefined' && currentUser && Array.isArray(userHistory) && userHistory.length > 0) ? userHistory : list;
+    if (!Array.isArray(activeHistory) || activeHistory.length === 0) return null;
+
+    const targetId = String(media.id || '').trim();
+    const cleanT = (media.title || '').toLowerCase().replace(/\[.*?\]|\(.*?\)/g, '').trim();
+
+    const matched = activeHistory.find(h => {
+      const hId = String(h.mediaId || h.id || '').trim();
+      if (targetId && hId && (targetId === hId || targetId.includes(hId) || hId.includes(targetId))) return true;
+      if (cleanT && h.title) {
+        const hTitle = h.title.toLowerCase().replace(/\[.*?\]|\(.*?\)/g, '').trim();
+        return hTitle === cleanT || hTitle.includes(cleanT) || cleanT.includes(hTitle);
+      }
+      return false;
+    });
+
+    if (!matched) return null;
+
+    const prog = Number(matched.progressSeconds || 0);
+    const dur = Number(matched.durationSeconds || 0);
+    const epNum = Number(matched.episodeNumber || matched.episode || 1);
+    const seNum = Number(matched.seasonNumber || 1);
+
+    // If completed (>95% duration)
+    if (dur > 0 && (prog / dur) >= 0.95) {
+      return {
+        progressSeconds: 0,
+        durationSeconds: dur,
+        episodeNumber: epNum + 1,
+        seasonNumber: seNum,
+        isNextEpisode: true
+      };
+    }
+
+    if (prog < 5) return null;
+
+    return {
+      progressSeconds: prog,
+      durationSeconds: dur,
+      episodeNumber: epNum,
+      seasonNumber: seNum,
+      isResume: true
+    };
+  } catch (e) {
+    return null;
+  }
+}
+window.getSavedWatchProgress = getSavedWatchProgress;
+
 // Open Player & Details Overlay
-function openPlayer(media, episodeIndex = 0) {
+function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
   if (!media) return;
   // If upcoming or coming soon, redirect to dedicated Pre-Booking modal (no player controls/download/share/dub/servers)
   if (media.type === 'upcoming' || (media.badgeRight && media.badgeRight.toLowerCase().includes('coming'))) {
@@ -3315,7 +3370,7 @@ function openPlayer(media, episodeIndex = 0) {
 
   // 1-Step Guest Login Enforcement: Must login to play video
   if (typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
-    appState.pendingOpenMedia = { media, episodeIndex };
+    appState.pendingOpenMedia = { media, episodeIndex, resumeSeekTime };
     openSimpleLoginModal();
     return;
   }
@@ -3421,28 +3476,66 @@ function openPlayer(media, episodeIndex = 0) {
   renderAudioTrackOptions(media);
 
   // Initialize and Render Season Dropdown
-  appState.currentSeason = 1;
+  const savedProgress = getSavedWatchProgress(media);
+  appState.currentSeason = (savedProgress && savedProgress.seasonNumber) ? savedProgress.seasonNumber : 1;
   renderSeasonDropdown(media);
 
   // Handle Series vs Movie UI
   const seriesEpisodesWrapper = document.getElementById('seriesEpisodesWrapper');
   const activeEpisodes = getActiveSeasonEpisodes(media);
 
+  let targetEpIndex = (episodeIndex !== null && episodeIndex !== undefined) ? episodeIndex : 0;
+  let targetSeekTime = (resumeSeekTime !== null && resumeSeekTime !== undefined) ? resumeSeekTime : null;
+
   if (isSeries && activeEpisodes && activeEpisodes.length > 0) {
+    if (episodeIndex === null || episodeIndex === undefined) {
+      if (savedProgress && savedProgress.episodeNumber) {
+        const foundIdx = activeEpisodes.findIndex(ep => {
+          const num = ep ? (ep.episode ?? ep.episodeNumber ?? ep.number) : null;
+          return String(num) === String(savedProgress.episodeNumber);
+        });
+        if (foundIdx !== -1) {
+          targetEpIndex = foundIdx;
+        }
+      }
+    }
+
+    if (targetSeekTime === null && savedProgress) {
+      const activeEp = activeEpisodes[targetEpIndex];
+      const epNum = activeEp ? (activeEp.episode ?? activeEp.episodeNumber ?? activeEp.number ?? (targetEpIndex + 1)) : (targetEpIndex + 1);
+      if (String(epNum) === String(savedProgress.episodeNumber) && savedProgress.progressSeconds > 5) {
+        targetSeekTime = savedProgress.progressSeconds;
+      }
+    }
+
     if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'block';
-    appState.currentEpisode = activeEpisodes[episodeIndex] || activeEpisodes[0];
-    appState.currentEpisodeIndex = episodeIndex;
-    appState.currentEpisodeNumber = (appState.currentEpisode?.episode ?? appState.currentEpisode?.episodeNumber ?? appState.currentEpisode?.number ?? (episodeIndex + 1));
+    appState.currentEpisode = activeEpisodes[targetEpIndex] || activeEpisodes[0];
+    appState.currentEpisodeIndex = targetEpIndex;
+    appState.currentEpisodeNumber = (appState.currentEpisode?.episode ?? appState.currentEpisode?.episodeNumber ?? appState.currentEpisode?.number ?? (targetEpIndex + 1));
     appState.activeServerIndex = 0;
-    renderEpisodePills(activeEpisodes, episodeIndex);
+    renderEpisodePills(activeEpisodes, targetEpIndex);
     renderServerPills(media);
     const activeEpStream = getActiveEpisodeStream(appState.currentEpisode);
-    playStreamUrl(activeEpStream);
+    playStreamUrl(activeEpStream, null, targetSeekTime);
+
+    if (targetSeekTime && targetSeekTime > 5) {
+      setTimeout(() => {
+        showToast(`⏱️ Resumed Ep ${appState.currentEpisodeNumber} from ${formatPlayerTime(targetSeekTime)}`);
+      }, 600);
+    } else if (savedProgress && savedProgress.isNextEpisode) {
+      setTimeout(() => {
+        showToast(`▶️ Playing Next: Episode ${appState.currentEpisodeNumber}`);
+      }, 600);
+    }
   } else {
     if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'none';
     appState.currentEpisode = null;
     appState.activeServerIndex = 0;
     renderServerPills(media);
+
+    if (targetSeekTime === null && savedProgress && savedProgress.progressSeconds > 5) {
+      targetSeekTime = savedProgress.progressSeconds;
+    }
 
     // Instant zero-delay stream: Use auto-renewing 480p stream (instant TTFB, zero 403 retries)
     const sId = media?.subjectId || media?.mbSubjectId || (media?.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null);
@@ -3470,7 +3563,13 @@ function openPlayer(media, episodeIndex = 0) {
       }
     }
 
-    playStreamUrl(initialUrl);
+    playStreamUrl(initialUrl, null, targetSeekTime);
+
+    if (targetSeekTime && targetSeekTime > 5) {
+      setTimeout(() => {
+        showToast(`⏱️ Resumed from ${formatPlayerTime(targetSeekTime)}`);
+      }, 600);
+    }
   }
 
   // Populate "For You" & "Coming Soon" recommendations
@@ -3734,6 +3833,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     videoPlayer.src = fullUrl;
     videoPlayer.load();
     if (seekTime && seekTime > 0) {
+      appState.pendingSeekTime = seekTime;
       let seekApplied = false;
       const applySeek = () => {
         if (seekApplied) return;
@@ -3748,6 +3848,10 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       };
       videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
       videoPlayer.addEventListener('canplay', applySeek, { once: true });
+      videoPlayer.addEventListener('playing', applySeek, { once: true });
+      if (videoPlayer.readyState >= 1) {
+        applySeek();
+      }
     }
     videoPlayer.play().catch(() => {});
 
@@ -3785,6 +3889,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     videoPlayer.src = proxyStreamUrl;
     videoPlayer.load();
     if (seekTime && seekTime > 0) {
+      appState.pendingSeekTime = seekTime;
       let seekApplied = false;
       const applySeek = () => {
         if (seekApplied) return;
@@ -3799,6 +3904,10 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       };
       videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
       videoPlayer.addEventListener('canplay', applySeek, { once: true });
+      videoPlayer.addEventListener('playing', applySeek, { once: true });
+      if (videoPlayer.readyState >= 1) {
+        applySeek();
+      }
     }
     videoPlayer.play().catch(() => {});
     return;
@@ -3869,6 +3978,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     videoPlayer.src = finalDirectUrl;
     videoPlayer.load();
     if (seekTime && seekTime > 0) {
+      appState.pendingSeekTime = seekTime;
       let seekApplied = false;
       const applySeek = () => {
         if (seekApplied) return;
@@ -3883,6 +3993,10 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       };
       videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
       videoPlayer.addEventListener('canplay', applySeek, { once: true });
+      videoPlayer.addEventListener('playing', applySeek, { once: true });
+      if (videoPlayer.readyState >= 1) {
+        applySeek();
+      }
     }
     videoPlayer.play().catch(err => {
       console.log('Autoplay deferred until user taps video controls:', err.message);
@@ -6564,6 +6678,20 @@ function setupVideoListeners() {
   videoPlayer.addEventListener('pause', () => {
     syncPlayPauseIcons();
     resetLandscapeControlsTimer();
+    if (typeof saveWatchHistoryProgress === 'function') {
+      saveWatchHistoryProgress();
+    }
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && typeof saveWatchHistoryProgress === 'function') {
+      saveWatchHistoryProgress();
+    }
+  });
+  window.addEventListener('pagehide', () => {
+    if (typeof saveWatchHistoryProgress === 'function') {
+      saveWatchHistoryProgress();
+    }
   });
 
   videoPlayer.addEventListener('error', (e) => {
@@ -7307,11 +7435,22 @@ function triggerDownload() {
     }
   });
 
+  const dlEp = (isSeries && appState.currentEpisode) ? appState.currentEpisode : null;
+  const dlEpNum = dlEp ? (dlEp.episode ?? dlEp.episodeNumber ?? dlEp.number ?? (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1)) : 1;
+  const dlSeNum = appState.currentSeason || 1;
+  const dlSubjectId = media?.subjectId || media?.mbSubjectId || (media?.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || (media?.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '').replace(/-hindi$/, '') : null) || '';
+  const dlDetailPath = media?.detailPath || media?.mbDetailPath || '';
+
   appState._pendingDownload = {
     url: targetUrl,
     title: activeTitle,
     poster: activePoster,
-    mediaId: media.id
+    mediaId: media.id,
+    season: dlSeNum,
+    episode: dlEpNum,
+    subjectId: dlSubjectId,
+    detailPath: dlDetailPath,
+    isSeries: isSeries
   };
 
   if (modal) {
@@ -7406,7 +7545,10 @@ function confirmStartDownload(target = 'in-app') {
     poster: pending.poster,
     mediaId: pending.mediaId,
     season: pending.season || appState.currentSeason || 1,
-    episode: pending.episode || pending.episodeNumber || appState.currentEpisodeNumber || 1
+    episode: pending.episode || pending.episodeNumber || appState.currentEpisodeNumber || 1,
+    subjectId: pending.subjectId || '',
+    detailPath: pending.detailPath || '',
+    isSeries: pending.isSeries !== undefined ? pending.isSeries : false
   });
 
   closeDownloadOptionsModal();
@@ -7536,18 +7678,32 @@ async function downloadMedia(url, title, options = {}) {
     };
 
     try {
-      let available = subtitleState.availableTracks || [];
+      const dlSeason = options.season || 1;
+      const dlEpisode = options.episode || 1;
+      const dlSubjectId = options.subjectId || (mediaId ? String(mediaId).replace(/^mb-[s|m]-/, '') : '');
+      const dlDetailPath = options.detailPath || '';
+      const dlIsSeries = options.isSeries || false;
 
-      // If available tracks not populated, query Subtitles API directly
-      if (available.length === 0) {
-        const cleanT = (title || '').replace(/\[.*?\]|\(.*?\)/g, '').replace(/ - Ep.*/i, '').trim();
-        const sRes = await fetch(`${API_BASE_URL}/api/subtitles?title=${encodeURIComponent(cleanT)}`);
+      let available = [];
+      const cleanT = (title || '').replace(/\[.*?\]|\(.*?\)/g, '').replace(/ - Ep.*/i, '').trim();
+
+      // ALWAYS fetch the exact episode's subtitles from the API using season and episode
+      const subApiUrl = `${API_BASE_URL}/api/subtitles?title=${encodeURIComponent(cleanT)}&season=${dlSeason}&episode=${dlEpisode}&subjectId=${encodeURIComponent(dlSubjectId)}&detailPath=${encodeURIComponent(dlDetailPath)}&type=${dlIsSeries ? 'series' : 'movie'}`;
+      try {
+        const sRes = await fetch(subApiUrl);
         if (sRes.ok) {
           const sData = await sRes.json();
-          if (sData && Array.isArray(sData.subtitles)) {
+          if (sData && Array.isArray(sData.subtitles) && sData.subtitles.length > 0) {
             available = sData.subtitles;
           }
         }
+      } catch (e) {
+        console.warn('Failed to query subtitle API for download:', e.message);
+      }
+
+      // If still empty and player has tracks loaded for this exact episode
+      if (available.length === 0 && subtitleState.availableTracks && subtitleState.availableTracks.length > 0) {
+        available = subtitleState.availableTracks;
       }
 
       // Priority 1: Human-made Bangla subtitle (not AI translated)
@@ -7572,10 +7728,7 @@ async function downloadMedia(url, title, options = {}) {
       if (!bnVttText && enSub && (enSub.url || enSub.downloadUrl)) {
         try {
           const enUrl = enSub.url || enSub.downloadUrl;
-          const cleanT = (title || '').replace(/\[.*?\]|\(.*?\)/g, '').replace(/ - Ep.*/i, '').trim();
-          const dlSe = options.season || 0;
-          const dlEp = options.episode || 0;
-          const aiUrl = `${API_BASE_URL}/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanT)}&season=${dlSe}&episode=${dlEp}`;
+          const aiUrl = `${API_BASE_URL}/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanT)}&season=${dlSeason}&episode=${dlEpisode}`;
           const aiRes = await fetch(aiUrl);
           if (aiRes.ok) bnVttText = await aiRes.text();
         } catch(aiErr) {}
@@ -10395,13 +10548,17 @@ async function saveWatchHistoryProgress(isCompleted = false) {
 
   if (progressSeconds < 3 && !isCompleted) return;
 
+  const currentEpNum = appState.currentEpisodeNumber 
+    || (appState.currentEpisode && (appState.currentEpisode.episode ?? appState.currentEpisode.episodeNumber ?? appState.currentEpisode.number))
+    || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1);
+
   const historyItem = {
     mediaId: (media.id || '').toString(),
     title: media.title || 'Untitled',
     poster: media.poster || '',
     type: media.type || (media.episodes ? 'series' : 'movie'),
     seasonNumber: appState.currentSeason || 1,
-    episodeNumber: (appState.currentEpisode && appState.currentEpisode.episodeNumber) || 1,
+    episodeNumber: Number(currentEpNum) || 1,
     progressSeconds,
     durationSeconds: durationSeconds || progressSeconds,
     updatedAt: Date.now(),
