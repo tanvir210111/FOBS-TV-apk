@@ -3550,13 +3550,14 @@ body.is-fullscreen .ls-bottom-bar {
 }
 
 .ls-quality-pill {
-  border: 1.5px solid rgba(255, 255, 255, 0.65) !important;
-  border-radius: 4px !important;
-  padding: 2px 7px !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  color: #ffffff !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
   letter-spacing: 0.5px;
+  transition: all 0.25s ease;
 }
 
 /* Drawer Backdrop Overlay: dims screen behind side drawers & intercepts taps outside to close */

@@ -4766,21 +4766,72 @@ function setLandscapeQuality(quality) {
   resetLandscapeControlsTimer();
 }
 
+function getQualityBadgeStyle(qualityStr) {
+  const qStr = String(qualityStr || '').toUpperCase();
+  const qNum = parseInt(qStr, 10) || 480;
+
+  if (qNum >= 1080 || qStr.includes('1080') || qStr.includes('FHD') || qStr.includes('4K')) {
+    return {
+      pixel: '1080P',
+      label: '1080P FHD',
+      color: '#00f2fe',
+      bg: 'rgba(0, 242, 254, 0.16)',
+      border: '1px solid rgba(0, 242, 254, 0.5)',
+      glow: '0 0 10px rgba(0, 242, 254, 0.25)'
+    };
+  } else if (qNum >= 720 || qStr.includes('720') || qStr.includes('HD')) {
+    return {
+      pixel: '720P',
+      label: '720P HD',
+      color: '#00d26a',
+      bg: 'rgba(0, 210, 106, 0.16)',
+      border: '1px solid rgba(0, 210, 106, 0.5)',
+      glow: '0 0 10px rgba(0, 210, 106, 0.25)'
+    };
+  } else if (qNum >= 480 || qStr.includes('480') || qStr.includes('SD')) {
+    return {
+      pixel: '480P',
+      label: '480P SD',
+      color: '#fbbf24',
+      bg: 'rgba(251, 191, 36, 0.16)',
+      border: '1px solid rgba(251, 191, 36, 0.5)',
+      glow: '0 0 10px rgba(251, 191, 36, 0.25)'
+    };
+  } else {
+    return {
+      pixel: '360P',
+      label: '360P',
+      color: '#fb923c',
+      bg: 'rgba(251, 146, 60, 0.16)',
+      border: '1px solid rgba(251, 146, 60, 0.5)',
+      glow: '0 0 10px rgba(251, 146, 60, 0.25)'
+    };
+  }
+}
+window.getQualityBadgeStyle = getQualityBadgeStyle;
+
 function updateQualityDisplay(quality) {
   const targetQ = (quality || appState.currentQuality || '480p').toLowerCase();
   const qNum = parseInt(targetQ, 10) || 480;
   appState.currentQuality = `${qNum}p`;
+  const qStyle = getQualityBadgeStyle(appState.currentQuality);
 
-  // 1. Update portrait dropdown button text
+  // 1. Update portrait dropdown button text & color
   const currentText = document.getElementById('currentQualityText');
   if (currentText) {
     currentText.innerText = `${qNum}p`;
+    if (qStyle) currentText.style.color = qStyle.color;
   }
 
-  // 2. Update Landscape quality badge
+  // 2. Update Landscape quality badge & dynamic pixel color
   const lsBadge = document.getElementById('lsQualityBadge');
   if (lsBadge) {
-    lsBadge.innerText = `${qNum}P`;
+    lsBadge.innerText = qStyle.pixel;
+    lsBadge.style.setProperty('color', qStyle.color, 'important');
+    lsBadge.style.setProperty('background', qStyle.bg, 'important');
+    lsBadge.style.setProperty('border', qStyle.border, 'important');
+    lsBadge.style.setProperty('box-shadow', qStyle.glow, 'important');
+    lsBadge.style.setProperty('font-weight', '800', 'important');
   }
 
   // 3. Update Landscape drawer options (lsQualityOptionsList)
@@ -4793,7 +4844,7 @@ function updateQualityDisplay(quality) {
       btn.classList.toggle('active', isActive);
       const icon = btn.querySelector('.fa-check');
       if (isActive && !icon) {
-        btn.insertAdjacentHTML('beforeend', '<i class="fa-solid fa-check" style="color: #00d26a; font-size: 13px; margin-left: 8px;"></i>');
+        btn.insertAdjacentHTML('beforeend', `<i class="fa-solid fa-check" style="color: ${qStyle.color}; font-size: 13px; margin-left: 8px;"></i>`);
       } else if (!isActive && icon) {
         icon.remove();
       }
@@ -5948,15 +5999,40 @@ function enterFullscreenMode(options = {}) {
   // Sync MovieBox title
   if (titleEl && appState.currentMedia) {
     const media = appState.currentMedia;
-    const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-'));
-    const epNum = appState.currentEpisode?.number || appState.currentEpisode?.episodeNumber || 1;
-    const seasonNum = appState.currentSeason || 1;
-    const cleanBase = formatCleanMediaTitle(media.title, media.dubLanguage);
-    const epPad = epNum < 10 ? `0${epNum}` : epNum;
-    const sePad = seasonNum < 10 ? `0${seasonNum}` : seasonNum;
-    titleEl.innerText = isSeries 
-      ? `${cleanBase} S${sePad} E${epPad}` 
-      : cleanBase;
+    if (media.isOffline) {
+      const qStyle = getQualityBadgeStyle(media.quality || '480P');
+      const isSeries = media.isSeries;
+      const epNum = media.episode;
+      let lsClean = media.title || 'FOBS TV';
+      if (isSeries && epNum && !lsClean.toLowerCase().includes('ep')) {
+        lsClean = `${lsClean} • Ep ${epNum}`;
+      }
+      titleEl.innerHTML = `
+        <span>${lsClean}</span>
+        <span style="margin-left: 8px; background: rgba(0, 210, 106, 0.2); color: #00d26a; border: 1px solid rgba(0, 210, 106, 0.5); padding: 2px 8px; border-radius: 5px; font-size: 10.5px; font-weight: 700;"><i class="fa-solid fa-cloud-arrow-down"></i> Downloaded</span>
+        <span style="margin-left: 6px; background: ${qStyle.bg}; color: ${qStyle.color}; border: ${qStyle.border}; padding: 2px 8px; border-radius: 5px; font-size: 10.5px; font-weight: 800;">${qStyle.pixel}</span>
+        ${(isSeries && epNum) ? `<span style="margin-left: 6px; background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.5); padding: 2px 8px; border-radius: 5px; font-size: 10.5px; font-weight: 700;">Ep ${epNum}</span>` : ''}
+      `;
+      const lsBadge = document.getElementById('lsQualityBadge');
+      if (lsBadge) {
+        lsBadge.innerText = qStyle.pixel;
+        lsBadge.style.setProperty('color', qStyle.color, 'important');
+        lsBadge.style.setProperty('background', qStyle.bg, 'important');
+        lsBadge.style.setProperty('border', qStyle.border, 'important');
+        lsBadge.style.setProperty('box-shadow', qStyle.glow, 'important');
+        lsBadge.style.setProperty('font-weight', '800', 'important');
+      }
+    } else {
+      const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-'));
+      const epNum = appState.currentEpisode?.number || appState.currentEpisode?.episodeNumber || 1;
+      const seasonNum = appState.currentSeason || 1;
+      const cleanBase = formatCleanMediaTitle(media.title, media.dubLanguage);
+      const epPad = epNum < 10 ? `0${epNum}` : epNum;
+      const sePad = seasonNum < 10 ? `0${seasonNum}` : seasonNum;
+      titleEl.innerText = isSeries 
+        ? `${cleanBase} S${sePad} E${epPad}` 
+        : cleanBase;
+    }
   }
 
   if (!options.skipRotate) {
@@ -6805,6 +6881,13 @@ function setupVideoListeners() {
 
   videoPlayer.addEventListener('error', (e) => {
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
+
+    // If offline media playback, prevent any network retry or "Playback error" toast!
+    if (appState.currentMedia && appState.currentMedia.isOffline) {
+      console.warn('Offline video playback error intercepted gracefully:', e);
+      if (loader) loader.classList.remove('active');
+      return;
+    }
 
     // If player is closing, ignoring errors, changing audio track, or iframe embed player is active, DO NOT attempt fallback retry!
     if (videoPlayer._isClosing || videoPlayer._ignoreErrors || videoPlayer._isChangingTrack || !appState.currentMedia || (embedFrame && embedFrame.style.display === 'block') || videoPlayer.style.display === 'none') {
@@ -7738,6 +7821,10 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       title,
       poster,
       quality,
+      resolution: options.resolution || parseInt(quality, 10) || 480,
+      season: options.season,
+      episode: options.episode,
+      isSeries: options.isSeries,
       url,
       progress: 1,
       receivedBytes: 0,
@@ -7985,6 +8072,10 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       title,
       poster,
       quality,
+      resolution: options.resolution || parseInt(quality, 10) || 480,
+      season: options.season,
+      episode: options.episode,
+      isSeries: options.isSeries,
       videoBlob,
       bnVttText,
       enVttText,
@@ -8009,6 +8100,10 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       item.downloaded = true;
       item.failed = false;
       item.paused = false;
+      item.quality = quality;
+      item.season = options.season;
+      item.episode = options.episode;
+      item.isSeries = options.isSeries;
       localStorage.setItem('fobs_downloads', JSON.stringify(curDownloads));
     }
     renderDownloadsList();
@@ -8159,9 +8254,21 @@ async function playDownloadedMedia(id) {
   closeDownloadsView();
   showToast('অফলাইন ভিডিও লোড হচ্ছে...');
 
-  const offlineItem = await getOfflineMedia(id);
-  if (offlineItem && offlineItem.videoBlob) {
-    const videoUrl = URL.createObjectURL(offlineItem.videoBlob);
+  let offlineItem = await getOfflineMedia(id);
+  const storedList = getStoredDownloadsList();
+  const storedItem = storedList.find(d => d.id === id);
+
+  if (storedItem) {
+    offlineItem = { ...storedItem, ...(offlineItem || {}) };
+  }
+
+  let videoBlob = offlineItem ? (offlineItem.videoBlob || offlineItem.chunks || offlineItem.blob) : null;
+  if (videoBlob && !(videoBlob instanceof Blob)) {
+    videoBlob = new Blob([videoBlob], { type: 'video/mp4' });
+  }
+
+  if (offlineItem && videoBlob) {
+    const videoUrl = URL.createObjectURL(videoBlob);
     const videoPlayer = document.getElementById('mainVideoPlayer');
     const playerOverlay = document.getElementById('playerOverlay');
     const embedFrame = document.getElementById('mainEmbedPlayer');
@@ -8172,21 +8279,87 @@ async function playDownloadedMedia(id) {
         embedFrame.src = '';
         embedFrame.style.display = 'none';
       }
-      if (loader) loader.classList.remove('active');
 
+      const quality = offlineItem.quality || storedItem?.quality || '480P';
+      const qStyle = getQualityBadgeStyle(quality);
+
+      let isSeries = !!(offlineItem.isSeries || storedItem?.isSeries || offlineItem.season || offlineItem.episode);
+      let epNum = offlineItem.episode || storedItem?.episode || storedItem?.options?.episode;
+      let seNum = offlineItem.season || storedItem?.season || storedItem?.options?.season;
+
+      // Fallback regex extraction from title if episode wasn't saved explicitly
+      if (!epNum && offlineItem.title) {
+        const epMatch = offlineItem.title.match(/(?:ep(?:isode)?\.?\s*|e)(\d+)/i);
+        if (epMatch) {
+          epNum = parseInt(epMatch[1], 10);
+          isSeries = true;
+        }
+        const seMatch = offlineItem.title.match(/(?:s(?:eason)?\.?\s*)(\d+)/i);
+        if (seMatch) {
+          seNum = parseInt(seMatch[1], 10);
+          isSeries = true;
+        }
+      }
+
+      // 1. Set currentMedia state BEFORE attaching src so all error handlers know it is offline
+      appState.currentMedia = {
+        id: offlineItem.mediaId || offlineItem.id,
+        title: offlineItem.title,
+        poster: offlineItem.poster,
+        isOffline: true,
+        quality: qStyle.pixel,
+        isSeries: isSeries,
+        season: seNum || 1,
+        episode: epNum || 1
+      };
+
+      if (isSeries && epNum) {
+        appState.currentEpisode = {
+          number: epNum,
+          episodeNumber: epNum,
+          title: `Episode ${epNum}`
+        };
+      } else {
+        appState.currentEpisode = null;
+      }
+
+      // 2. Teardown active HLS and clear cold start timers
+      if (window.activeHlsPlayer) {
+        try { window.activeHlsPlayer.destroy(); } catch(e) {}
+        window.activeHlsPlayer = null;
+      }
+      if (window.videoStreamColdStartTimer) {
+        clearTimeout(window.videoStreamColdStartTimer);
+        window.videoStreamColdStartTimer = null;
+      }
+
+      // Revoke prior blob URL to prevent memory leaks
+      if (window._currentOfflineBlobUrl) {
+        try { URL.revokeObjectURL(window._currentOfflineBlobUrl); } catch(e) {}
+      }
+      window._currentOfflineBlobUrl = videoUrl;
+
+      videoPlayer._retryCount = 0;
+      videoPlayer._ignoreErrors = true;
       videoPlayer.style.display = 'block';
       videoPlayer.pause();
       videoPlayer.removeAttribute('src');
       videoPlayer.src = videoUrl;
       videoPlayer.load();
-      videoPlayer.play().catch(e => console.warn('Offline autoplay:', e));
 
-      appState.currentMedia = {
-        id: offlineItem.mediaId || offlineItem.id,
-        title: offlineItem.title,
-        poster: offlineItem.poster,
-        isOffline: true
+      const hideLoader = () => {
+        if (loader) loader.classList.remove('active');
+        videoPlayer._ignoreErrors = false;
       };
+      videoPlayer.addEventListener('loadeddata', hideLoader, { once: true });
+      videoPlayer.addEventListener('canplay', hideLoader, { once: true });
+
+      videoPlayer.play().then(() => {
+        hideLoader();
+      }).catch(e => {
+        console.warn('Offline autoplay note:', e);
+        hideLoader();
+      });
 
       playerOverlay.style.setProperty('display', 'flex', 'important');
       playerOverlay.classList.add('open');
@@ -8196,12 +8369,59 @@ async function playDownloadedMedia(id) {
         enterFullscreenMode({ skipRotate: true });
       }
 
+      // Title formatting
+      let displayTitle = offlineItem.title || 'Offline Video';
+      if (isSeries && epNum && !displayTitle.toLowerCase().includes('ep')) {
+        displayTitle = `${displayTitle} • Ep ${epNum}`;
+      }
+
       const titleEl = document.getElementById('playerMediaTitle');
-      if (titleEl) titleEl.innerText = `${offlineItem.title} (অফলাইন)`;
-      
+      if (titleEl) titleEl.innerText = `${displayTitle} (Downloaded)`;
+
+      // Portrait meta badges: Downloaded (green), Pixel (dynamic color), Episode (purple)
       const metaEl = document.getElementById('playerMediaMeta');
       if (metaEl) {
-        metaEl.innerHTML = `<i class="fa-solid fa-tv"></i> <span><i class="fa-solid fa-cloud-arrow-down"></i> Offline Playback</span> <span>${offlineItem.quality || '1080P'}</span>`;
+        metaEl.innerHTML = `
+          <span style="background: rgba(0, 210, 106, 0.18); color: #00d26a; border: 1px solid rgba(0, 210, 106, 0.5); box-shadow: 0 0 10px rgba(0, 210, 106, 0.2); padding: 3px 10px; border-radius: 6px; font-weight: 700; font-size: 11px; display: inline-flex; align-items: center; gap: 5px;">
+            <i class="fa-solid fa-cloud-arrow-down"></i> Downloaded
+          </span>
+          <span style="background: ${qStyle.bg}; color: ${qStyle.color}; border: ${qStyle.border}; box-shadow: ${qStyle.glow}; padding: 3px 10px; border-radius: 6px; font-weight: 800; font-size: 11px; display: inline-flex; align-items: center; gap: 5px;">
+            <i class="fa-solid fa-sliders"></i> ${qStyle.label}
+          </span>
+          ${(isSeries && epNum) ? `
+          <span style="background: rgba(168, 85, 247, 0.18); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.5); box-shadow: 0 0 10px rgba(168, 85, 247, 0.2); padding: 3px 10px; border-radius: 6px; font-weight: 700; font-size: 11px; display: inline-flex; align-items: center; gap: 5px;">
+            <i class="fa-solid fa-film"></i> ${seNum ? `S${seNum}:Ep ${epNum}` : `Ep ${epNum}`}
+          </span>` : ''}
+        `;
+      }
+
+      // Landscape title and badges
+      const lsTitle = document.getElementById('lsVideoTitle');
+      if (lsTitle) {
+        lsTitle.innerHTML = `
+          <span>${displayTitle}</span>
+          <span style="margin-left: 8px; background: rgba(0, 210, 106, 0.2); color: #00d26a; border: 1px solid rgba(0, 210, 106, 0.5); padding: 2px 8px; border-radius: 5px; font-size: 10.5px; font-weight: 700;">
+            <i class="fa-solid fa-cloud-arrow-down"></i> Downloaded
+          </span>
+          <span style="margin-left: 6px; background: ${qStyle.bg}; color: ${qStyle.color}; border: ${qStyle.border}; padding: 2px 8px; border-radius: 5px; font-size: 10.5px; font-weight: 800;">
+            ${qStyle.pixel}
+          </span>
+          ${(isSeries && epNum) ? `
+          <span style="margin-left: 6px; background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.5); padding: 2px 8px; border-radius: 5px; font-size: 10.5px; font-weight: 700;">
+            Ep ${epNum}
+          </span>` : ''}
+        `;
+      }
+
+      // Landscape quality badge button
+      const lsBadge = document.getElementById('lsQualityBadge');
+      if (lsBadge) {
+        lsBadge.innerText = qStyle.pixel;
+        lsBadge.style.setProperty('color', qStyle.color, 'important');
+        lsBadge.style.setProperty('background', qStyle.bg, 'important');
+        lsBadge.style.setProperty('border', qStyle.border, 'important');
+        lsBadge.style.setProperty('box-shadow', qStyle.glow, 'important');
+        lsBadge.style.setProperty('font-weight', '800', 'important');
       }
 
       const seriesEpisodesWrapper = document.getElementById('seriesEpisodesWrapper');
@@ -8246,7 +8466,7 @@ async function playDownloadedMedia(id) {
         selectSubtitleTrack('off');
       }
 
-      showToast(`⚡ ইন্টারনেট ছাড়াই চলছে: ${offlineItem.title}`);
+      showToast(`⚡ ইন্টারনেট ছাড়াই চলছে: ${offlineItem.title} (${qStyle.pixel})`);
       return;
     }
   }
@@ -8327,6 +8547,13 @@ function renderDownloadsList() {
     }
 
     const sizeInfo = item.sizeText ? ` • ${item.sizeText}` : '';
+    const qStyle = getQualityBadgeStyle(item.quality || '480P');
+    let epNum = item.episode || item.options?.episode;
+    if (!epNum && item.title) {
+      const match = item.title.match(/(?:ep(?:isode)?\.?\s*|e)(\d+)/i);
+      if (match) epNum = parseInt(match[1], 10);
+    }
+    const epBadge = (item.isSeries || epNum) ? `<span style="font-size: 10.5px; font-weight: 700; background: rgba(168, 85, 247, 0.18); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.5); padding: 2px 7px; border-radius: 5px;">Ep ${epNum || 1}</span>` : '';
 
     // Action button logic: Pause, Resume, Retry, Play
     let actionButtonsHtml = '';
@@ -8384,8 +8611,9 @@ function renderDownloadsList() {
       </div>
       <div class="mb-dl-card-info" style="flex: 1; min-width: 0;">
         <div style="font-size: 14px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px;">${item.title}</div>
-        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-          <span style="font-size: 10.5px; font-weight: 700; background: rgba(0, 242, 254, 0.15); color: #00f2fe; padding: 2px 6px; border-radius: 5px;">${item.quality || '480P'}</span>
+        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
+          <span style="font-size: 10.5px; font-weight: 800; background: ${qStyle.bg}; color: ${qStyle.color}; border: ${qStyle.border}; padding: 2px 7px; border-radius: 5px;">${qStyle.pixel}</span>
+          ${epBadge}
           <span style="font-size: 11px; color: #8b95a5;">${item.date || 'Today'}${sizeInfo}</span>
         </div>
         <div id="dl_status_${item.id}" style="font-size: 11.5px; color: ${statusColor}; display: flex; align-items: center; gap: 5px; font-weight: 600;">
@@ -8662,6 +8890,17 @@ function autoFallbackTo720p() {
 }
 
 function selectVideoQuality(quality, isAuto = false) {
+  if (appState.currentMedia && appState.currentMedia.isOffline) {
+    const qBadge = typeof getQualityBadgeStyle === 'function' ? getQualityBadgeStyle(appState.currentMedia.quality) : null;
+    showToast(`⚡ অফলাইন ভিডিও: ${qBadge ? qBadge.pixel : 'ডাউনলোড করা'} কোয়ালিটিতে চলছে`);
+    const overlay = document.getElementById('qualitySheetOverlay');
+    if (overlay) {
+      overlay.classList.remove('open');
+      overlay.style.setProperty('display', 'none', 'important');
+    }
+    return;
+  }
+
   const targetQ = (quality || '480p').toLowerCase();
   const targetResNum = parseInt(targetQ, 10) || (targetQ === 'auto' ? 480 : 720);
   appState.currentQuality = `${targetResNum}p`;
