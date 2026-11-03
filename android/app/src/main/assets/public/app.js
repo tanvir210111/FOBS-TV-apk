@@ -2297,19 +2297,54 @@ function getRecentlyAddedSeries(limit) {
   return typeof limit === 'number' ? items.slice(0, limit) : items;
 }
 
+// Release Date Helper: Extract genuine theatrical/TMDB release date (YYYY-MM-DD) avoiding upload timestamps
+function getMediaReleaseDate(item) {
+  if (!item) return '2000-01-01';
+  let d = item.originalReleaseDate || item.releaseDate;
+  const year = parseInt(item.year || 0, 10);
+  if (d && typeof d === 'string' && d.includes('T')) {
+    const dYear = new Date(d).getFullYear();
+    if (year && year > 1900 && year !== dYear) {
+      return `${year}-01-01`;
+    }
+    return d.split('T')[0];
+  }
+  if (d && typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d)) {
+    return d.substring(0, 10);
+  }
+  if (year && year > 1900) {
+    return `${year}-01-01`;
+  }
+  return '2000-01-01';
+}
+
 // Release Date Descending Sorter (Latest Releases Strictly First: 2026, 2025, 2024...)
 function sortByReleaseDateDesc(list) {
   if (!Array.isArray(list)) return [];
   return [...list].sort((a, b) => {
+    // 1. Compare Year first (2026 > 2025 > 2024 > 2023...)
     const yearA = parseInt(a.year || 0, 10);
     const yearB = parseInt(b.year || 0, 10);
     if (yearA > 1900 && yearB > 1900 && yearA !== yearB) {
       return yearB - yearA;
     }
-    const dateA = a.releaseDate || (yearA ? `${yearA}-01-01` : '2000-01-01');
-    const dateB = b.releaseDate || (yearB ? `${yearB}-01-01` : '2000-01-01');
+    // 2. Compare exact release date string (YYYY-MM-DD)
+    const dateA = getMediaReleaseDate(a);
+    const dateB = getMediaReleaseDate(b);
     if (dateB !== dateA) {
       return dateB.localeCompare(dateA);
+    }
+    // 3. Compare popularity / ratings
+    const ratingA = parseFloat(a.imdbRating || a.rating || 0);
+    const ratingB = parseFloat(b.imdbRating || b.rating || 0);
+    if (ratingA !== ratingB) {
+      return ratingB - ratingA;
+    }
+    // 4. Compare views
+    const viewsA = parseInt(a.views || 0, 10);
+    const viewsB = parseInt(b.views || 0, 10);
+    if (viewsA !== viewsB) {
+      return viewsB - viewsA;
     }
     return (b.id || '').localeCompare(a.id || '');
   });

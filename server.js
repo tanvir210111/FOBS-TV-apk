@@ -944,8 +944,13 @@ app.get('/api/content', async (req, res) => {
         if (!m.addedAt) {
           m.addedAt = new Date(nowMs - idx * 60000).toISOString();
         }
-        if (!m.originalReleaseDate) m.originalReleaseDate = m.releaseDate;
-        m.releaseDate = m.addedAt;
+        // Preserve actual theatrical / TMDB release date - NEVER overwrite with upload addedAt!
+        if (m.originalReleaseDate) {
+          m.releaseDate = m.originalReleaseDate;
+        } else if (!m.releaseDate || m.releaseDate === m.addedAt) {
+          m.releaseDate = m.year ? `${m.year}-01-01` : '2024-01-01';
+          m.originalReleaseDate = m.releaseDate;
+        }
       });
     }
     if (data.series) {
@@ -958,8 +963,13 @@ app.get('/api/content', async (req, res) => {
         if (!s.addedAt) {
           s.addedAt = new Date(nowMs - idx * 60000).toISOString();
         }
-        if (!s.originalReleaseDate) s.originalReleaseDate = s.releaseDate;
-        s.releaseDate = s.addedAt;
+        // Preserve actual theatrical / TMDB release date - NEVER overwrite with upload addedAt!
+        if (s.originalReleaseDate) {
+          s.releaseDate = s.originalReleaseDate;
+        } else if (!s.releaseDate || s.releaseDate === s.addedAt) {
+          s.releaseDate = s.year ? `${s.year}-01-01` : '2024-01-01';
+          s.originalReleaseDate = s.releaseDate;
+        }
       });
     }
     if (data.upcoming) data.upcoming.forEach(u => u.type = u.type || 'series');
