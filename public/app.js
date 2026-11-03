@@ -408,6 +408,11 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================================
 let _introFinished = false;
 
+window.isMainPlayerActive = function() {
+  const player = document.getElementById('playerOverlay');
+  return !!(player && (player.classList.contains('open') || document.body.classList.contains('player-open')));
+};
+
 function playAppIntroAndSync() {
   const overlay = document.getElementById('appIntroOverlay');
   const video = document.getElementById('appIntroVideo');
@@ -433,18 +438,14 @@ function playAppIntroAndSync() {
     loadSeedContent().catch(() => {});
   }
 
-  // Start intro video playback smoothly without stutter
-  video.currentTime = 0;
-  video.muted = true;
-
+  // Smooth playback: If already playing via HTML autoplay, keep playing without resetting currentTime!
   const startPlay = () => {
+    if (!video.paused && video.currentTime > 0) {
+      return; // Already playing smoothly
+    }
     const playPromise = video.play();
     if (playPromise !== undefined) {
-      playPromise.then(() => {
-        setTimeout(() => {
-          try { video.muted = false; } catch (_) {}
-        }, 80);
-      }).catch(() => {
+      playPromise.catch(() => {
         video.muted = true;
         video.play().catch(() => {
           finishIntroAndShowApp();

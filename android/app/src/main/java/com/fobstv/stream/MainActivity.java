@@ -148,23 +148,30 @@ public class MainActivity extends BridgeActivity {
 
         @Override
         public void onShowCustomView(View view, CustomViewCallback callback) {
-            if (callback != null) {
-                try {
-                    callback.onCustomViewHidden();
-                } catch (Exception ignored) {}
+            WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+            if (webView != null) {
+                webView.evaluateJavascript(
+                    "(function() { return (typeof window.isMainPlayerActive === 'function' && window.isMainPlayerActive()); })();",
+                    result -> {
+                        boolean isPlayerActive = "true".equalsIgnoreCase(String.valueOf(result).replace("\"", "").trim());
+                        if (isPlayerActive) {
+                            if (callback != null) {
+                                try {
+                                    callback.onCustomViewHidden();
+                                } catch (Exception ignored) {}
+                            }
+                            runOnUiThread(() -> {
+                                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+                                hideSystemUI();
+                                webView.evaluateJavascript(
+                                    "(function() { if (typeof window.enterFullscreenMode === 'function') window.enterFullscreenMode({ skipRotate: true }); })();",
+                                    null
+                                );
+                            });
+                        }
+                    }
+                );
             }
-
-            runOnUiThread(() -> {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-                hideSystemUI();
-                WebView webView = getBridge() != null ? getBridge().getWebView() : null;
-                if (webView != null) {
-                    webView.evaluateJavascript(
-                        "(function() { if (typeof window.enterFullscreenMode === 'function') window.enterFullscreenMode({ skipRotate: true }); })();",
-                        null
-                    );
-                }
-            });
         }
 
         @Override
@@ -769,6 +776,7 @@ public class MainActivity extends BridgeActivity {
         } catch (Exception ignored) {}
 
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         
         // Match status and navigation bar color with intro video background seamlessly (#020C1C)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
