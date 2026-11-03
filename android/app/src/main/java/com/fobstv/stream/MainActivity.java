@@ -573,6 +573,16 @@ public class MainActivity extends BridgeActivity {
             runOnUiThread(() -> {
                 try {
                     isDownloadActive = true;
+                    // Start official Android Foreground Service for guaranteed background/screen-off network execution
+                    Intent serviceIntent = new Intent(MainActivity.this, DownloadForegroundService.class);
+                    serviceIntent.setAction(DownloadForegroundService.ACTION_START);
+                    serviceIntent.putExtra(DownloadForegroundService.EXTRA_TITLE, title);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(serviceIntent);
+                    } else {
+                        startService(serviceIntent);
+                    }
+
                     if (downloadWakeLock == null) {
                         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
                         if (pm != null) {
@@ -583,7 +593,6 @@ public class MainActivity extends BridgeActivity {
                     } else if (!downloadWakeLock.isHeld()) {
                         downloadWakeLock.acquire(180 * 60 * 1000L);
                     }
-                    showDownloadNotification(title);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -595,11 +604,15 @@ public class MainActivity extends BridgeActivity {
             runOnUiThread(() -> {
                 try {
                     isDownloadActive = false;
+                    // Stop Foreground Service
+                    Intent serviceIntent = new Intent(MainActivity.this, DownloadForegroundService.class);
+                    serviceIntent.setAction(DownloadForegroundService.ACTION_STOP);
+                    startService(serviceIntent);
+
                     if (downloadWakeLock != null && downloadWakeLock.isHeld()) {
                         downloadWakeLock.release();
                     }
                     downloadWakeLock = null;
-                    cancelDownloadNotification();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -612,6 +625,13 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onResume() {
         super.onResume();
+        try {
+            WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+            if (webView != null) {
+                webView.onResume();
+                webView.resumeTimers();
+            }
+        } catch (Exception ignored) {}
         if (pendingInstallApk != null && pendingInstallApk.exists()) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || getPackageManager().canRequestPackageInstalls()) {
                 File apkToInstall = pendingInstallApk;

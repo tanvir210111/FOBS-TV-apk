@@ -7975,12 +7975,14 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     } catch (tErr) {}
   }
 
+  const priorRetries = activeDownloadTasks[downloadId]?._autoRetries || 0;
   const controller = new AbortController();
   activeDownloadTasks[downloadId] = {
     id: downloadId,
     controller,
     isDownloading: true,
     isPaused: false,
+    _autoRetries: priorRetries,
     chunks: existingBlobChunks,
     receivedBytes: existingBytes,
     totalBytes: currentItem.totalBytes || 0,
@@ -8049,6 +8051,7 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     activeDownloadTasks[downloadId].totalBytes = totalBytes;
 
     const reader = response.body.getReader();
+    activeDownloadTasks[downloadId].reader = reader;
     let receivedBytes = existingBytes;
     let lastUiUpdate = 0;
     let lastStorageUpdate = 0;
@@ -8056,7 +8059,26 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     let chunkBufferSize = 0;
 
     while (true) {
-      const { done, value } = await reader.read();
+      if (activeDownloadTasks[downloadId]?.isPaused) break;
+
+      // 20-second chunk watchdog: Prevents app/UI freezing if cellular network drops or socket dies during screen off
+      let readTimeoutTimer = null;
+      const timeoutPromise = new Promise((_, reject) => {
+        readTimeoutTimer = setTimeout(() => {
+          reject(new Error('Download stream stalled or timed out'));
+        }, 20000);
+      });
+
+      let readResult;
+      try {
+        readResult = await Promise.race([reader.read(), timeoutPromise]);
+      } finally {
+        if (readTimeoutTimer) clearTimeout(readTimeoutTimer);
+      }
+
+      if (activeDownloadTasks[downloadId]?.isPaused) break;
+
+      const { done, value } = readResult;
       if (done) break;
 
       chunkBuffer.push(value);
@@ -8220,7 +8242,7 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
 
   } catch (err) {
     const isPaused = activeDownloadTasks[downloadId]?.isPaused;
-    if (isPaused || err.name === 'AbortError') {
+    if (isPaused || err.name === 'AbortError' || err.message === 'paused') {
       console.log('Download was paused by user:', downloadId);
       // Save partial chunks to IndexedDB temp so user can resume anytime
       try {
@@ -8248,7 +8270,6 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       if (activeDownloadTasks[downloadId]) activeDownloadTasks[downloadId].isDownloading = false;
       releaseWakeLockIfNoActiveDownloads();
       renderDownloadsList();
-      showToast(`⏸️ ডাউনলোড পজ করা হয়েছে: ${title}`);
       return;
     }
 
@@ -8274,6 +8295,13 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     if (autoRetries < 3 && !curTask?.isPaused) {
       if (curTask) curTask._autoRetries = autoRetries + 1;
       console.log(`Auto-resuming background download ${downloadId} (attempt ${autoRetries + 1}/3)...`);
+      const curDownloads = getStoredDownloadsList();
+      const item = curDownloads.find(d => d.id === downloadId);
+      if (item) {
+        item.statusText = 'Reconnecting...';
+        localStorage.setItem('fobs_downloads', JSON.stringify(curDownloads));
+        renderDownloadsList();
+      }
       setTimeout(() => {
         if (!activeDownloadTasks[downloadId]?.isPaused) {
           downloadMedia(url, title, options, downloadId);
@@ -8314,22 +8342,30 @@ function getStoredDownloadsList() {
 async function pauseDownload(id, e) {
   if (e) e.stopPropagation();
   const task = activeDownloadTasks[id];
-  if (task && task.controller) {
+  if (task) {
     task.isPaused = true;
-    task.controller.abort();
-  } else {
-    // If controller already dead or page reloaded
-    const downloads = getStoredDownloadsList();
-    const item = downloads.find(d => d.id === id);
-    if (item) {
-      item.status = 'paused';
-      item.paused = true;
-      item.statusText = `Paused (${item.progress || 0}%)`;
-      localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+    task.isDownloading = false;
+    if (task.reader) {
+      try { task.reader.cancel('paused'); } catch (re) {}
     }
-    renderDownloadsList();
+    if (task.controller) {
+      try { task.controller.abort(); } catch (ce) {}
+    }
   }
+
+  // Immediately update stored status and re-render list so the button never stays stuck
+  const downloads = getStoredDownloadsList();
+  const item = downloads.find(d => d.id === id);
+  if (item) {
+    item.status = 'paused';
+    item.paused = true;
+    item.failed = false;
+    item.statusText = `Paused (${item.progress || 0}%)`;
+    localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+  }
+  renderDownloadsList();
   releaseWakeLockIfNoActiveDownloads();
+  showToast('⏸️ ডাউনলোড পজ করা হয়েছে');
 }
 window.pauseDownload = pauseDownload;
 
