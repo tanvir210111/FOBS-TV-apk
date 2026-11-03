@@ -46,9 +46,13 @@ try {
 
     // 2. Run certbot for fobstv.duckdns.org
     console.log('\nRequesting Let\'s Encrypt SSL via Certbot...');
-    const certbotCmd = 'certbot --nginx -d fobstv.duckdns.org --non-interactive --agree-tos -m tanvir210111@gmail.com --redirect 2>&1';
-    const certbotOut = cp.execSync(certbotCmd).toString();
-    console.log('Certbot output:\n', certbotOut);
+    const certbotCmd = 'certbot --nginx -d fobstv.duckdns.org --non-interactive --agree-tos -m tanvir210111@gmail.com --redirect';
+    try {
+      const certbotOut = cp.execSync(certbotCmd, { encoding: 'utf8' });
+      console.log('Certbot output:\n', certbotOut);
+    } catch (certErr) {
+      console.log('Certbot stderr/stdout:\n', certErr.stdout || certErr.stderr || certErr.message);
+    }
 
   } catch (err) {
     console.error('Nginx/Certbot setup note:', err.message);
