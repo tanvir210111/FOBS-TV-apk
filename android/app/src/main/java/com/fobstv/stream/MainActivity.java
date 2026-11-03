@@ -158,11 +158,8 @@ public class MainActivity extends BridgeActivity {
                     Window window = getWindow();
                     if (window != null) {
                         WindowManager.LayoutParams lp = window.getAttributes();
-                        if (brightness < 0) {
-                            lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-                        } else {
-                            lp.screenBrightness = Math.max(0.01f, Math.min(1.0f, brightness));
-                        }
+                        // Do not hijack phone's global screen brightness - keep system default
+                        lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
                         window.setAttributes(lp);
                     }
                 } catch (Exception ignored) {}
@@ -185,17 +182,7 @@ public class MainActivity extends BridgeActivity {
 
         @JavascriptInterface
         public void setAudioBoost(int boostPercent) {
-            runOnUiThread(() -> {
-                try {
-                    AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-                    if (am != null) {
-                        int maxVol = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-                        // Scale 0 to 100% cleanly across hardware steps; >=100% sets to maxVol
-                        int vol = Math.max(0, Math.min(maxVol, Math.round((Math.min(100, boostPercent) / 100.0f) * maxVol)));
-                        am.setStreamVolume(AudioManager.STREAM_MUSIC, vol, 0);
-                    }
-                } catch (Exception ignored) {}
-            });
+            // Handled cleanly via HTML5 video volume to avoid hardware audio conflicts
         }
 
         @JavascriptInterface

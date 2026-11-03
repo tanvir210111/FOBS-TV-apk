@@ -3215,6 +3215,8 @@ function openPlayer(media, episodeIndex = 0) {
   playerBrightness = 1.0;
   const brOverlay = document.getElementById('playerBrightnessOverlay');
   if (brOverlay) brOverlay.style.backgroundColor = 'transparent';
+  const mainVidInit = document.getElementById('mainVideoPlayer');
+  if (mainVidInit) mainVidInit.style.filter = '';
   try {
     if (window.AndroidApp && typeof window.AndroidApp.resetWindowBrightness === 'function') {
       window.AndroidApp.resetWindowBrightness();
@@ -4751,7 +4753,7 @@ async function setupSubtitlesForMedia(media) {
     const data = await res.json();
     if (data && data.success && Array.isArray(data.subtitles)) {
       data.subtitles.forEach(sub => {
-        // User requested: ONLY English and Bangla
+        // User requested: ONLY English and Bangla (both Human & AI options)
         if (sub.langCode !== 'en' && sub.langCode !== 'bn') return;
         if (!tracks.some(t => t.id === sub.id || t.url === sub.url)) {
           tracks.push(sub);
@@ -5730,44 +5732,43 @@ let lastTapInfo = { time: 0, x: 0, y: 0, side: null };
 function applyPlayerBrightness(val) {
   playerBrightness = Math.max(0.05, Math.min(1.0, Number(val)));
   
-  // 1. Update dark overlay for web view dimming
+  // 1. Update in-player video element brightness and smooth dark overlay
+  const video = document.getElementById('mainVideoPlayer');
   const overlay = document.getElementById('playerBrightnessOverlay');
+  
+  if (video) {
+    // Normal 100% gives clean vivid picture (1.12), 50% gives 0.8, 5% gives 0.3
+    const filterVal = (0.28 + (playerBrightness * 0.84)).toFixed(2);
+    video.style.filter = `brightness(${filterVal})`;
+  }
+
   if (overlay) {
-    const dimAlpha = Math.max(0, (1.0 - playerBrightness) * 0.92);
+    // Smooth in-player dimming - NEVER changes phone's physical screen backlight!
+    const dimAlpha = Math.max(0, (1.0 - playerBrightness) * 0.88);
     overlay.style.backgroundColor = `rgba(0, 0, 0, ${dimAlpha.toFixed(3)})`;
   }
   
-  // 2. Set actual hardware screen brightness directly on Android (fixes brightness drop at 100%)
+  // Keep phone's actual system screen brightness at default - never hijack device backlight
   try {
-    if (window.AndroidApp && typeof window.AndroidApp.setWindowBrightness === 'function') {
-      window.AndroidApp.setWindowBrightness(playerBrightness);
+    if (window.AndroidApp && typeof window.AndroidApp.resetWindowBrightness === 'function') {
+      window.AndroidApp.resetWindowBrightness();
     }
   } catch (e) {}
 
   return playerBrightness;
 }
 
-let playerSoundLevel = 1.0; // 0.0 to 2.0 (0% to 200% sound boost)
+let playerSoundLevel = 1.0; // 0.0 to 1.0 (0% to 100%)
 
 function applyPlayerVolume(val) {
   const video = document.getElementById('mainVideoPlayer');
-  const safeVol = Math.max(0, Math.min(2.0, Number(val)));
+  const safeVol = Math.max(0, Math.min(1.0, Number(val)));
   playerSoundLevel = safeVol;
 
   if (video) {
-    // HTML5 native video volume: 0.0 to 1.0
-    // Always keep video.volume at direct ratio without Web Audio hijacking
-    const nativeVol = Math.max(0, Math.min(1.0, safeVol <= 1.0 ? safeVol : 1.0));
-    video.volume = nativeVol;
+    video.volume = safeVol;
     video.muted = (safeVol <= 0);
   }
-
-  // Native Android hardware volume adjustment (MovieBox style)
-  try {
-    if (window.AndroidApp && typeof window.AndroidApp.setAudioBoost === 'function') {
-      window.AndroidApp.setAudioBoost(Math.round(safeVol * 100));
-    }
-  } catch (e) {}
 
   return safeVol;
 }
@@ -5786,25 +5787,14 @@ function showGestureHud(type, value) {
     fill.style.width = `${pct}%`;
     valText.innerText = `${pct}%`;
   } else if (type === 'volume') {
-    const pct = Math.round(value * 100); // 0 to 200%
-
-    if (pct > 100) {
-      // MovieBox 200% Sound Boost Mode!
-      hud.classList.add('boost-mode');
-      icon.innerHTML = '<i class="fa-solid fa-bolt"></i>';
-      valText.innerHTML = `${pct}% <span class="boost-hud-tag">BOOST</span>`;
-      // Fill bar represents 0% to 200%
-      const fillPct = Math.min(100, Math.round((pct / 200) * 100));
-      fill.style.width = `${fillPct}%`;
-    } else {
-      hud.classList.remove('boost-mode');
-      let iconClass = 'fa-volume-high';
-      if (pct <= 0) iconClass = 'fa-volume-xmark';
-      else if (pct < 50) iconClass = 'fa-volume-low';
-      icon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
-      fill.style.width = `${pct}%`;
-      valText.innerText = `${pct}%`;
-    }
+    hud.classList.remove('boost-mode');
+    const pct = Math.round(value * 100); // 0 to 100%
+    let iconClass = 'fa-volume-high';
+    if (pct <= 0) iconClass = 'fa-volume-xmark';
+    else if (pct < 50) iconClass = 'fa-volume-low';
+    icon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+    fill.style.width = `${pct}%`;
+    valText.innerText = `${pct}%`;
   }
 
   hud.classList.add('visible');
@@ -6119,16 +6109,16 @@ function setupPlayerGestures() {
           if (ptTimeEl) ptTimeEl.innerText = `${curFormatted}/${durFormatted}`;
         }
       } else if (dragType === 'vertical') {
-        const sensitivityRange = (rect.height || 220) * 0.65;
+        const sensitivityRange = Math.max(160, (rect.height || 260) * 0.85);
         const deltaRatio = -deltaY / sensitivityRange;
 
         if (activeSide === 'left') {
-          // Left side: Brightness up to 100%
+          // Left side: In-player Video Brightness 0% to 100%
           const newBrightness = applyPlayerBrightness(startBrightness + deltaRatio);
           showGestureHud('brightness', newBrightness);
         } else {
-          // Right side: Volume up to 200% (with sound boost mode)
-          const newVolume = applyPlayerVolume(startVolume + deltaRatio * 1.6);
+          // Right side: Video Player Volume 0% to 100% (smooth linear tracking)
+          const newVolume = applyPlayerVolume(startVolume + deltaRatio);
           showGestureHud('volume', newVolume);
         }
       }
@@ -6576,7 +6566,11 @@ function closePlayer() {
   playerBrightness = 1.0;
   const overlayEl = document.getElementById('playerBrightnessOverlay');
   if (overlayEl) {
-    overlayEl.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+    overlayEl.style.backgroundColor = 'transparent';
+  }
+  const mainVideoEl = document.getElementById('mainVideoPlayer');
+  if (mainVideoEl) {
+    mainVideoEl.style.filter = '';
   }
 
   // Restore phone screen brightness back to normal system brightness
