@@ -31,9 +31,8 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-html, body {
-  overscroll-behavior-x: none !important;
-  overscroll-behavior: none !important;
+html {
+  overflow-x: hidden;
 }
 
 body {
@@ -43,11 +42,11 @@ body {
   font-size: 14px;
   line-height: 1.4;
   overflow-x: hidden;
+  overflow-y: auto !important;
   display: flex;
   justify-content: center;
   min-height: 100vh;
-  overscroll-behavior-x: none !important;
-  overscroll-behavior: none !important;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Constrained to mobile dimensions for authentic mobile app feel */
@@ -9864,9 +9863,6 @@ body.is-fullscreen #subtitleModal .subtitle-modal-container {
 
 body.intro-active {
   background-color: #020c1c !important;
-  overflow: hidden !important;
-  height: 100vh !important;
-  touch-action: none !important;
 }
 
 /* ============================================================

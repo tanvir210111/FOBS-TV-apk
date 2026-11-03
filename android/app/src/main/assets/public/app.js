@@ -515,18 +515,23 @@ function finishIntroAndShowApp() {
   if (overlay) {
     overlay.classList.add('fade-out');
     overlay.style.pointerEvents = 'none';
-    if (window.AndroidApp && typeof window.AndroidApp.setSystemBarColors === 'function') {
-      window.AndroidApp.setSystemBarColors('#07070a', '#0b0c10');
-    }
-    const themeMeta = document.getElementById('themeColorMeta');
-    if (themeMeta) themeMeta.setAttribute('content', '#07070a');
-    setTimeout(() => {
-      overlay.style.display = 'none';
-      if (video) {
-        video.src = '';
+    overlay.style.setProperty('display', 'none', 'important');
+    try {
+      if (overlay.parentNode) {
+        overlay.parentNode.removeChild(overlay);
+      } else {
+        overlay.remove();
       }
-    }, 550);
+    } catch (_) {
+      overlay.style.display = 'none';
+    }
   }
+
+  if (window.AndroidApp && typeof window.AndroidApp.setSystemBarColors === 'function') {
+    window.AndroidApp.setSystemBarColors('#07070a', '#0b0c10');
+  }
+  const themeMeta = document.getElementById('themeColorMeta');
+  if (themeMeta) themeMeta.setAttribute('content', '#07070a');
 
   renderAllViews();
   checkAppUpdate(appState.content);
