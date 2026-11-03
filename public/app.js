@@ -446,14 +446,26 @@ function playAppIntroAndSync() {
     loadSeedContent().catch(() => {});
   }
 
+  // Intro Sound: Unmute audio by default for cinematic FOBS TV intro experience
+  try {
+    video.muted = false;
+    video.volume = 1.0;
+  } catch (e) {}
+
   // Smooth playback: If already playing via HTML autoplay, keep playing without resetting currentTime!
   const startPlay = () => {
+    try {
+      video.muted = false;
+      video.volume = 1.0;
+    } catch (e) {}
+
     if (!video.paused && video.currentTime > 0) {
       return; // Already playing smoothly
     }
     const playPromise = video.play();
     if (playPromise !== undefined) {
-      playPromise.catch(() => {
+      playPromise.catch((err) => {
+        console.warn('Intro sound autoplay policy fallback, retrying:', err);
         video.muted = true;
         video.play().catch(() => {
           finishIntroAndShowApp();
@@ -3295,6 +3307,7 @@ function switchSeason(seasonNumber) {
   setupSubtitlesForMedia(appState.currentMedia);
   renderEpisodePills(episodes, 0);
   renderServerPills(appState.currentMedia);
+  if (typeof syncPlayerTitles === 'function') syncPlayerTitles();
 
   if (appState.currentEpisode) {
     const activeEpStream = getActiveEpisodeStream(appState.currentEpisode);
@@ -3614,6 +3627,7 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
     appState.activeServerIndex = 0;
     renderEpisodePills(activeEpisodes, targetEpIndex);
     renderServerPills(media);
+    if (typeof syncPlayerTitles === 'function') syncPlayerTitles();
     const activeEpStream = getActiveEpisodeStream(appState.currentEpisode);
     playStreamUrl(activeEpStream, null, targetSeekTime);
 
@@ -3631,6 +3645,7 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
     appState.currentEpisode = null;
     appState.activeServerIndex = 0;
     renderServerPills(media);
+    if (typeof syncPlayerTitles === 'function') syncPlayerTitles();
 
     if (targetSeekTime === null && savedProgress && savedProgress.progressSeconds > 5) {
       targetSeekTime = savedProgress.progressSeconds;
@@ -3751,6 +3766,7 @@ function selectEpisode(idx) {
   setupSubtitlesForMedia(appState.currentMedia);
   renderEpisodePills(currentEpisodes, idx);
   renderServerPills(appState.currentMedia);
+  if (typeof syncPlayerTitles === 'function') syncPlayerTitles();
   const activeEpStream = getActiveEpisodeStream(appState.currentEpisode);
   playStreamUrl(activeEpStream);
 }
@@ -6012,11 +6028,101 @@ function switchSubtitleModalTab(tab) {
   if (tab === 'sync') updateSyncUI();
 }
 
+// ============================================================
+// DYNAMIC PLAYER TITLES SYNC (LANDSCAPE & PORTRAIT)
+// Correctly maps Season & Episode numbers for Series and Movies
+// ============================================================
+function syncPlayerTitles() {
+  const media = appState.currentMedia;
+  if (!media) return;
+
+  const lsTitleEl = document.getElementById('lsVideoTitle');
+  const ptTitleEl = document.getElementById('playerMediaTitle');
+
+  if (media.isOffline) {
+    const qStyle = getQualityBadgeStyle(media.quality || '480P');
+    const isSeries = media.isSeries;
+    const epNum = media.episode || appState.currentEpisodeNumber || 1;
+    let lsClean = media.title || 'FOBS TV';
+    if (isSeries && epNum && !lsClean.toLowerCase().includes('ep')) {
+      lsClean = `${lsClean} • Ep ${epNum}`;
+    }
+    const offlineHtml = `
+      <span>${lsClean}</span>
+      <span style="margin-left: 8px; background: rgba(0, 210, 106, 0.2); color: #00d26a; border: 1px solid rgba(0, 210, 106, 0.5); padding: 2px 8px; border-radius: 5px; font-size: 10.5px; font-weight: 700;"><i class="fa-solid fa-cloud-arrow-down"></i> Downloaded</span>
+      <span style="margin-left: 6px; background: ${qStyle.bg}; color: ${qStyle.color}; border: ${qStyle.border}; padding: 2px 8px; border-radius: 5px; font-size: 10.5px; font-weight: 800;">${qStyle.pixel}</span>
+      ${(isSeries && epNum) ? `<span style="margin-left: 6px; background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.5); padding: 2px 8px; border-radius: 5px; font-size: 10.5px; font-weight: 700;">Ep ${epNum}</span>` : ''}
+    `;
+    if (lsTitleEl) lsTitleEl.innerHTML = offlineHtml;
+    if (ptTitleEl) ptTitleEl.innerText = lsClean;
+
+    const lsBadge = document.getElementById('lsQualityBadge');
+    if (lsBadge) {
+      lsBadge.innerText = qStyle.pixel;
+      lsBadge.style.setProperty('color', qStyle.color, 'important');
+      lsBadge.style.setProperty('background', qStyle.bg, 'important');
+      lsBadge.style.setProperty('border', qStyle.border, 'important');
+      lsBadge.style.setProperty('box-shadow', qStyle.glow, 'important');
+      lsBadge.style.setProperty('font-weight', '800', 'important');
+    }
+    return;
+  }
+
+  const isSeries = media.type === 'series' 
+    || media.type === 'tv' 
+    || !!media.isSeries 
+    || !!(media.seasons && media.seasons.length > 0) 
+    || !!(media.episodes && media.episodes.length > 0) 
+    || (media.id && (String(media.id).startsWith('kmdl-s-') || String(media.id).startsWith('mb-s-')));
+
+  const cleanBase = formatCleanMediaTitle(media.title, media.dubLanguage);
+
+  if (!isSeries) {
+    if (lsTitleEl) lsTitleEl.innerText = cleanBase;
+    if (ptTitleEl) ptTitleEl.innerText = cleanBase;
+    return;
+  }
+
+  // 1. Bulletproof Season Number Resolution
+  const seasonRaw = appState.currentSeason 
+    ?? appState.currentSeasonNumber 
+    ?? appState.currentEpisode?.season 
+    ?? appState.currentEpisode?.seasonNumber 
+    ?? 1;
+  const parsedSeason = parseInt(String(seasonRaw).replace(/\D+/g, ''), 10);
+  const seasonNum = (!isNaN(parsedSeason) && parsedSeason > 0) ? parsedSeason : 1;
+
+  // 2. Bulletproof Episode Number Resolution (Matches clicked episode accurately)
+  const epObj = appState.currentEpisode;
+  let rawEp = appState.currentEpisodeNumber
+    ?? epObj?.episode
+    ?? epObj?.episodeNumber
+    ?? epObj?.number
+    ?? epObj?.ep
+    ?? (appState.currentEpisodeIndex !== undefined && appState.currentEpisodeIndex !== null ? appState.currentEpisodeIndex + 1 : null);
+
+  if (rawEp === null || rawEp === undefined) {
+    if (epObj?.title) {
+      const m = String(epObj.title).match(/(?:ep(?:isode)?\.?\s*|\bE)(\d+)/i);
+      if (m) rawEp = parseInt(m[1], 10);
+    }
+  }
+  const parsedEp = parseInt(String(rawEp).replace(/\D+/g, ''), 10);
+  const epNum = (!isNaN(parsedEp) && parsedEp > 0) ? parsedEp : 1;
+
+  const epPad = epNum < 10 ? `0${epNum}` : epNum;
+  const sePad = seasonNum < 10 ? `0${seasonNum}` : seasonNum;
+  const fullTitle = `${cleanBase} S${sePad} E${epPad}`;
+
+  if (lsTitleEl) lsTitleEl.innerText = fullTitle;
+  if (ptTitleEl) ptTitleEl.innerText = cleanBase;
+}
+window.syncPlayerTitles = syncPlayerTitles;
+
 function enterFullscreenMode(options = {}) {
   const videoPlayer = document.getElementById('mainVideoPlayer');
   const videoContainer = document.getElementById('videoContainer');
   const playerOverlay = document.getElementById('playerOverlay');
-  const titleEl = document.getElementById('lsVideoTitle');
 
   document.body.classList.add('is-fullscreen');
   if (playerOverlay) playerOverlay.classList.add('is-fullscreen');
@@ -6040,44 +6146,8 @@ function enterFullscreenMode(options = {}) {
     videoPlayer.removeAttribute('controls');
   }
 
-  // Sync MovieBox title
-  if (titleEl && appState.currentMedia) {
-    const media = appState.currentMedia;
-    if (media.isOffline) {
-      const qStyle = getQualityBadgeStyle(media.quality || '480P');
-      const isSeries = media.isSeries;
-      const epNum = media.episode;
-      let lsClean = media.title || 'FOBS TV';
-      if (isSeries && epNum && !lsClean.toLowerCase().includes('ep')) {
-        lsClean = `${lsClean} • Ep ${epNum}`;
-      }
-      titleEl.innerHTML = `
-        <span>${lsClean}</span>
-        <span style="margin-left: 8px; background: rgba(0, 210, 106, 0.2); color: #00d26a; border: 1px solid rgba(0, 210, 106, 0.5); padding: 2px 8px; border-radius: 5px; font-size: 10.5px; font-weight: 700;"><i class="fa-solid fa-cloud-arrow-down"></i> Downloaded</span>
-        <span style="margin-left: 6px; background: ${qStyle.bg}; color: ${qStyle.color}; border: ${qStyle.border}; padding: 2px 8px; border-radius: 5px; font-size: 10.5px; font-weight: 800;">${qStyle.pixel}</span>
-        ${(isSeries && epNum) ? `<span style="margin-left: 6px; background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.5); padding: 2px 8px; border-radius: 5px; font-size: 10.5px; font-weight: 700;">Ep ${epNum}</span>` : ''}
-      `;
-      const lsBadge = document.getElementById('lsQualityBadge');
-      if (lsBadge) {
-        lsBadge.innerText = qStyle.pixel;
-        lsBadge.style.setProperty('color', qStyle.color, 'important');
-        lsBadge.style.setProperty('background', qStyle.bg, 'important');
-        lsBadge.style.setProperty('border', qStyle.border, 'important');
-        lsBadge.style.setProperty('box-shadow', qStyle.glow, 'important');
-        lsBadge.style.setProperty('font-weight', '800', 'important');
-      }
-    } else {
-      const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-'));
-      const epNum = appState.currentEpisode?.number || appState.currentEpisode?.episodeNumber || 1;
-      const seasonNum = appState.currentSeason || 1;
-      const cleanBase = formatCleanMediaTitle(media.title, media.dubLanguage);
-      const epPad = epNum < 10 ? `0${epNum}` : epNum;
-      const sePad = seasonNum < 10 ? `0${seasonNum}` : seasonNum;
-      titleEl.innerText = isSeries 
-        ? `${cleanBase} S${sePad} E${epPad}` 
-        : cleanBase;
-    }
-  }
+  // Sync MovieBox Landscape and Portrait titles (Right Season & Right Episode)
+  syncPlayerTitles();
 
   if (!options.skipRotate) {
     setVideoOrientationLandscape();
