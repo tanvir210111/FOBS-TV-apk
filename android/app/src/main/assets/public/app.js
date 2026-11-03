@@ -6137,41 +6137,73 @@ let singleTapTimer = null;
 let lastTapInfo = { time: 0, x: 0, y: 0, side: null };
 
 function applyPlayerBrightness(val) {
-  playerBrightness = Math.max(0.05, Math.min(1.0, Number(val)));
+  playerBrightness = Math.max(0.01, Math.min(1.0, Number(val)));
   
-  // 1. Update in-player video element brightness and smooth dark overlay
+  // 1. Android physical screen backlight (1% to 100% full panel brightness like MX Player / MovieBox)
+  // This changes ONLY this player window; never affects the rest of the app or phone when closed!
+  try {
+    if (window.AndroidApp && typeof window.AndroidApp.setWindowBrightness === 'function') {
+      window.AndroidApp.setWindowBrightness(playerBrightness);
+    }
+  } catch (e) {}
+
+  // 2. Video element CSS brightness & contrast filter for extra vivid, ultra-bright HDR punch
   const video = document.getElementById('mainVideoPlayer');
   const overlay = document.getElementById('playerBrightnessOverlay');
   
   if (video) {
-    // Normal 100% gives clean vivid picture (1.12), 50% gives 0.8, 5% gives 0.3
-    const filterVal = (0.28 + (playerBrightness * 0.84)).toFixed(2);
-    video.style.filter = `brightness(${filterVal})`;
+    // Scales from 0.35 (night dim) to 1.45 (super bright vivid boost!)
+    const filterVal = (0.35 + (playerBrightness * 1.10)).toFixed(2);
+    const contrastVal = playerBrightness > 0.6 ? '1.04' : '1.0';
+    video.style.filter = `brightness(${filterVal}) contrast(${contrastVal})`;
   }
 
   if (overlay) {
-    // Smooth in-player dimming - NEVER changes phone's physical screen backlight!
-    const dimAlpha = Math.max(0, (1.0 - playerBrightness) * 0.88);
-    overlay.style.backgroundColor = `rgba(0, 0, 0, ${dimAlpha.toFixed(3)})`;
-  }
-  
-  // Keep phone's actual system screen brightness at default - never hijack device backlight
-  try {
-    if (window.AndroidApp && typeof window.AndroidApp.resetWindowBrightness === 'function') {
-      window.AndroidApp.resetWindowBrightness();
+    // Only apply smooth dark tint when user deliberately drags down low for night watching (< 45%)
+    if (playerBrightness < 0.45) {
+      const dimAlpha = (0.45 - playerBrightness) * 1.4;
+      overlay.style.backgroundColor = `rgba(0, 0, 0, ${dimAlpha.toFixed(3)})`;
+    } else {
+      overlay.style.backgroundColor = 'transparent';
     }
-  } catch (e) {}
+  }
 
   return playerBrightness;
 }
 
 let playerSoundLevel = 1.0; // 0.0 to 1.0 (0% to 100%)
 
-function applyPlayerVolume(val) {
+function getPlayerVolume() {
+  // 1. Read native Android device media stream volume (AudioManager.STREAM_MUSIC)
+  try {
+    if (window.AndroidApp && typeof window.AndroidApp.getDeviceVolume === 'function') {
+      const devVol = window.AndroidApp.getDeviceVolume();
+      if (typeof devVol === 'number' && !isNaN(devVol)) {
+        playerSoundLevel = Math.max(0, Math.min(1.0, devVol));
+        return playerSoundLevel;
+      }
+    }
+  } catch (e) {}
+
+  // 2. Fallback to HTML5 video volume on web browsers
   const video = document.getElementById('mainVideoPlayer');
+  if (video && video.muted) return 0;
+  return playerSoundLevel !== undefined ? playerSoundLevel : (video ? video.volume : 1.0);
+}
+
+function applyPlayerVolume(val) {
   const safeVol = Math.max(0, Math.min(1.0, Number(val)));
   playerSoundLevel = safeVol;
 
+  // 1. Android hardware media stream volume (AudioManager.STREAM_MUSIC) for real hardware audio
+  try {
+    if (window.AndroidApp && typeof window.AndroidApp.setDeviceVolume === 'function') {
+      window.AndroidApp.setDeviceVolume(safeVol);
+    }
+  } catch (e) {}
+
+  // 2. HTML5 Video element volume (for web/browser fallback)
+  const video = document.getElementById('mainVideoPlayer');
   if (video) {
     video.volume = safeVol;
     video.muted = (safeVol <= 0);
@@ -6421,8 +6453,8 @@ function setupPlayerGestures() {
     activeSide = relX < (rect.width / 2) ? 'left' : 'right';
 
     startBrightness = playerBrightness;
+    startVolume = getPlayerVolume();
     const video = document.getElementById('mainVideoPlayer');
-    startVolume = (video && video.muted) ? 0 : (playerSoundLevel !== undefined ? playerSoundLevel : (video ? video.volume : 1.0));
     startVideoTime = video ? video.currentTime : 0;
     targetSeekTime = startVideoTime;
 

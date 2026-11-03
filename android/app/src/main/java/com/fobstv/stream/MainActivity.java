@@ -52,6 +52,20 @@ public class MainActivity extends BridgeActivity {
     private FrameLayout fullscreenContainer;
     private FullscreenWebChromeClient customChromeClient;
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        // Restore window screen brightness back to system default when app is minimized or paused
+        try {
+            Window window = getWindow();
+            if (window != null) {
+                WindowManager.LayoutParams lp = window.getAttributes();
+                lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+                window.setAttributes(lp);
+            }
+        } catch (Exception ignored) {}
+    }
+
     private class FullscreenWebChromeClient extends BridgeWebChromeClient {
         public FullscreenWebChromeClient(Bridge bridge) {
             super(bridge);
@@ -181,8 +195,13 @@ public class MainActivity extends BridgeActivity {
                     Window window = getWindow();
                     if (window != null) {
                         WindowManager.LayoutParams lp = window.getAttributes();
-                        // Do not hijack phone's global screen brightness - keep system default
-                        lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+                        // Values from 0.01f to 1.0f (full physical max brightness of device)
+                        // If negative, restores system default
+                        if (brightness < 0) {
+                            lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+                        } else {
+                            lp.screenBrightness = Math.max(0.01f, Math.min(1.0f, brightness));
+                        }
                         window.setAttributes(lp);
                     }
                 } catch (Exception ignored) {}
@@ -201,6 +220,34 @@ public class MainActivity extends BridgeActivity {
                     }
                 } catch (Exception ignored) {}
             });
+        }
+
+        @JavascriptInterface
+        public void setDeviceVolume(float volumeRatio) {
+            runOnUiThread(() -> {
+                try {
+                    AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                    if (am != null) {
+                        int max = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+                        float safeRatio = Math.max(0.0f, Math.min(1.0f, volumeRatio));
+                        int target = Math.round(safeRatio * max);
+                        am.setStreamVolume(AudioManager.STREAM_MUSIC, target, 0);
+                    }
+                } catch (Exception ignored) {}
+            });
+        }
+
+        @JavascriptInterface
+        public float getDeviceVolume() {
+            try {
+                AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                if (am != null) {
+                    int max = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+                    int current = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+                    return max > 0 ? ((float) current / (float) max) : 0.5f;
+                }
+            } catch (Exception ignored) {}
+            return 0.5f;
         }
 
         @JavascriptInterface
