@@ -11,6 +11,8 @@ android/captures/
 .gradle/
 *.iml
 *.mp4
+!public/assets/intro.mp4
+!android/app/src/main/assets/public/assets/intro.mp4
 *.apk
 !public/apk/app-release.apk
 !public/apk/FOBS-TV.apk

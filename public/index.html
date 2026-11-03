@@ -19,6 +19,30 @@
 
 <body>
 
+  <!-- ============================================== -->
+  <!-- APP STARTUP CINEMATIC INTRO VIDEO SPLASH       -->
+  <!-- ============================================== -->
+  <div id="appIntroOverlay" class="app-intro-overlay">
+    <video id="appIntroVideo" class="app-intro-video" playsinline webkit-playsinline preload="auto">
+      <source src="assets/intro.mp4" type="video/mp4">
+    </video>
+    <div class="app-intro-top-bar">
+      <div class="app-intro-badge">
+        <span class="intro-pulse-dot"></span> FOBS TV Starting
+      </div>
+      <button id="btnSkipIntro" class="btn-skip-intro" onclick="finishIntroAndShowApp()">
+        <span>Skip</span>
+        <i class="fa-solid fa-forward-step"></i>
+      </button>
+    </div>
+    <div class="app-intro-loader-wrap">
+      <div class="app-intro-progress-bar">
+        <div class="app-intro-progress-fill" id="introProgressFill"></div>
+      </div>
+      <div class="app-intro-status-text" id="introStatusText">Refreshing latest movies & series...</div>
+    </div>
+  </div>
+
   <!-- Mobile Frame Container -->
   <div class="app-container">
 
@@ -32,13 +56,9 @@
 
         <div class="search-bar-wrapper">
           <i class="fa-solid fa-magnifying-glass search-icon"></i>
-          <input type="text" id="searchInput" placeholder="Type movie or series name..." autocomplete="off">
+          <input type="text" id="searchInput" placeholder="Search movies, series, anime..." autocomplete="off">
           <button class="search-btn" onclick="handleSearch()">Search</button>
         </div>
-
-        <button id="headerCommunityBtn" class="header-community-btn" onclick="openCommunity()" title="FOBS Community">
-          <i class="fa-solid fa-users"></i>
-        </button>
 
         <button id="headerUpdateBtn" class="header-update-btn hidden" onclick="openUpdateModal()" title="App Update Available">
           <i class="fa-solid fa-cloud-arrow-down"></i>

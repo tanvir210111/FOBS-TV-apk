@@ -1288,20 +1288,18 @@ app.get('/api/app-update', (req, res) => {
   const data = getContentData();
   const defaultUpdate = {
     enabled: true,
-    latestVersionCode: 9,
-    latestVersionName: '3.1.1',
+    latestVersionCode: 10,
+    latestVersionName: '3.1.2',
     minVersionCode: 9,
     forceUpdate: true,
-    title: 'New FOBS TV Update (v3.1.1) Available!',
-    message: 'FOBS TV-র নতুন v3.1.1 ভার্সন চলে এসেছে! আগের অ্যাপটি আনইনস্টল (Uninstall) করে নিচের লিংকে ক্লিক করে নতুন v3.1.1 অ্যাপটি ডাউনলোড করে ইনস্টল করুন। (Please uninstall the previous app before installing v3.1.1).',
+    title: 'New FOBS TV Update (v3.1.2) Available!',
+    message: 'FOBS TV-র নতুন v3.1.2 ভার্সন চলে এসেছে! নতুন সিনেমাটিক ইন্ট্রো ভিডিও, নতুন লোগো, বড় সার্চ বার এবং অফলাইন ডাউনলোড ও সাবটাইটেল ফিক্সড।',
     releaseNotes: [
-      '⚠️ আগের অ্যাপটি আনইনস্টল করে নতুন v3.1.1 ইনস্টল করুন',
-      'MX Player Style: সাবটাইটেল চেপে ধরে উপরে-নিচে ড্র্যাগ করার সুবিধা (Drag Subtitles)',
-      'ভিডিও প্লেব্যাকের সমস্ত লোডিং ও বাফারিং সমস্যা ফিক্সড (<350ms instant start)',
-      'ইন-অ্যাপ অফলাইন ডাউনলোড এবং অফলাইন ওয়াচিং',
-      'Bangla Subtitles + SubSource AI Translate',
-      'মাল্টি-অডিও ট্র্যাকিং (Hindi Dub, Original Audio, Bangla)',
-      'সকল মুভি ও সিরিজের ৪টি কোয়ালিটি (1080p, 720p, 480p, 360p)'
+      '🎬 নতুন সিনেমাটিক ইন্ট্রো ভিডিও ও ব্যাকগ্রাউন্ড রিফ্রেশ',
+      '📺 নতুন রেট্রো FOBS TV লোগো ও ব্র্যান্ডিং',
+      '🔍 বড় সার্চ বার (Wide Search Bar) - দ্রুত মুভি/সিরিজ খুঁজুন',
+      '📥 অফলাইন ভিডিও ডাউনলোড ও প্লেয়ার সম্পূর্ণ ফিক্সড',
+      '💬 বাংলা এআই সাবটাইটেল সব পর্বে আলাদা ও নিখুঁত সিঙ্ক'
     ],
     downloadUrl: 'https://fobs-apk-download.vercel.app/',
     fallbackUrl: 'https://fobs-apk-download.vercel.app/',

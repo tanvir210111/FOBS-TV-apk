@@ -323,8 +323,8 @@ const CACHE_TTL_MS = 60 * 1000; // 1 minute TTL
 let isSyncing = false;
 
 // App Versioning & In-App Force Update Configuration
-const CURRENT_APP_VERSION_CODE = 9;
-const CURRENT_APP_VERSION_NAME = '3.1.1';
+const CURRENT_APP_VERSION_CODE = 10;
+const CURRENT_APP_VERSION_NAME = '3.1.2';
 window.CURRENT_APP_VERSION_CODE = CURRENT_APP_VERSION_CODE;
 window.CURRENT_APP_VERSION_NAME = CURRENT_APP_VERSION_NAME;
 let currentAppUpdateConfig = null;
@@ -352,6 +352,114 @@ document.addEventListener('DOMContentLoaded', () => {
   initApp();
 });
 
+// ============================================================
+// APP STARTUP CINEMATIC INTRO VIDEO & BACKGROUND REFRESH
+// ============================================================
+let _introFinished = false;
+
+function playAppIntroAndSync() {
+  const overlay = document.getElementById('appIntroOverlay');
+  const video = document.getElementById('appIntroVideo');
+  const progressFill = document.getElementById('introProgressFill');
+  const statusText = document.getElementById('introStatusText');
+
+  if (!overlay || !video) {
+    finishIntroAndShowApp();
+    return;
+  }
+
+  // Pre-load local cached or seed content so UI is ready behind the scenes
+  const hasCache = loadCachedContent();
+  if (!hasCache) {
+    loadSeedContent().catch(() => {});
+  }
+
+  // Start intro video playback
+  video.currentTime = 0;
+  video.muted = false;
+
+  const playPromise = video.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(() => {
+      // If browser/device policy blocks unmuted autoplay, mute and continue playing smoothly
+      video.muted = true;
+      video.play().catch(() => {
+        finishIntroAndShowApp();
+      });
+    });
+  }
+
+  // Update progress bar as video plays
+  video.ontimeupdate = () => {
+    if (video.duration && isFinite(video.duration) && video.duration > 0) {
+      const pct = Math.min(100, Math.round((video.currentTime / video.duration) * 100));
+      if (progressFill) progressFill.style.width = `${pct}%`;
+    }
+  };
+
+  video.onended = () => {
+    finishIntroAndShowApp();
+  };
+
+  video.onerror = () => {
+    console.warn('Intro video playback notice, proceeding to app');
+    finishIntroAndShowApp();
+  };
+
+  // Background refresh: Fetch latest fresh content from backend while video plays!
+  (async () => {
+    try {
+      if (statusText) statusText.innerText = 'Refreshing new movies & series...';
+      const syncResult = await syncContentWithBackend({ isBackground: false, force: true });
+      if (syncResult && syncResult.updated) {
+        if (statusText) statusText.innerText = 'Fresh content loaded!';
+      }
+    } catch (err) {
+      console.warn('Intro background sync notice:', err.message);
+    }
+  })();
+
+  // Failsafe timeout: Max 8.8 seconds (video is ~7.9s)
+  setTimeout(() => {
+    if (!_introFinished) {
+      finishIntroAndShowApp();
+    }
+  }, 8800);
+}
+window.playAppIntroAndSync = playAppIntroAndSync;
+
+function finishIntroAndShowApp() {
+  if (_introFinished) return;
+  _introFinished = true;
+
+  const overlay = document.getElementById('appIntroOverlay');
+  const video = document.getElementById('appIntroVideo');
+
+  if (video) {
+    try {
+      video.pause();
+      video.ontimeupdate = null;
+      video.onended = null;
+      video.onerror = null;
+    } catch(e) {}
+  }
+
+  if (overlay) {
+    overlay.classList.add('fade-out');
+    setTimeout(() => {
+      overlay.style.display = 'none';
+      if (video) {
+        video.src = '';
+      }
+    }, 550);
+  }
+
+  renderAllViews();
+  checkAppUpdate(appState.content);
+  loadAllBookingsRealtime();
+}
+window.finishIntroAndShowApp = finishIntroAndShowApp;
+
 // App Startup Flow
 async function initApp() {
   try {
@@ -360,7 +468,7 @@ async function initApp() {
       pingViewerId = 'v_' + Math.random().toString(36).substring(2, 10);
       localStorage.setItem('fobs_viewer_uuid', pingViewerId);
     }
-    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.1');
+    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.2');
     fetch(`${API_BASE_URL}/api/app-ping`, {
       method: 'POST',
       headers: {
@@ -391,31 +499,8 @@ async function initApp() {
     }
   } catch (e) {}
 
-  // Step 1: Immediate local render from localStorage cache (0ms delay)
-  const hasCache = loadCachedContent();
-  if (hasCache) {
-    renderAllViews();
-    checkAppUpdate(appState.content);
-    loadAllBookingsRealtime();
-    // Non-blocking background sync if cache is older than 5 minutes
-    syncContentWithBackend({ isBackground: true });
-    return;
-  }
-
-  // Step 2: Immediate local render from bundled APK seed content (local asset fetch)
-  const hasSeed = await loadSeedContent();
-  if (hasSeed) {
-    renderAllViews();
-    checkAppUpdate(appState.content);
-    loadAllBookingsRealtime();
-    syncContentWithBackend({ isBackground: true });
-    return;
-  }
-
-  // Step 3: Cold start without any local cache (first run) - show branded FOBS TV loading overlay
-  await syncContentWithBackend({ isInitial: true, force: true });
-  checkAppUpdate(appState.content);
-  loadAllBookingsRealtime();
+  // Cinematic Intro Video Splash with background refresh
+  playAppIntroAndSync();
 }
 
 // Normalize content data structures
