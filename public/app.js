@@ -1940,9 +1940,9 @@ function setupPlayerSwipeToClose() {
     isTouching = false;
     isRightEdgeSwipe = false;
 
-    // ONLY Right-edge swipe towards left (deltaX must be negative, moving left by at least 65px)
+    // ONLY Right-edge swipe towards left (deltaX must be negative, moving left by at least 50px)
     // Left-to-right swipe (deltaX > 0) is completely ignored!
-    if (startX >= (window.innerWidth - EXTREME_RIGHT_EDGE_WIDTH) && deltaX < -65 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3) {
+    if (startX >= (window.innerWidth - EXTREME_RIGHT_EDGE_WIDTH) && deltaX < -50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3) {
       closePlayer();
       return;
     }
@@ -6190,10 +6190,10 @@ function applyPlayerBrightness(val) {
     }
   } catch (e) {}
 
-  // Pure in-player video picture brightness boost
+  // Pure in-player video picture brightness boost (MX Player / MovieBox style)
   // 0.50 (50%) = 1.00 standard natural video brightness
-  // 1.00 (100%) = 1.65 vivid HDR boost with rich contrast and saturation
-  // 0.00 (0%) = 0.25 dim night watching
+  // 1.00 (100%) = 2.65 ultra vivid HDR boost with rich contrast and saturation
+  // 0.00 (0%) = 0.20 dim night watching
   const video = document.getElementById('mainVideoPlayer');
   const overlay = document.getElementById('playerBrightnessOverlay');
 
@@ -6203,15 +6203,15 @@ function applyPlayerBrightness(val) {
     let saturateVal = '1.00';
 
     if (playerBrightness >= 0.5) {
-      // 0.5 -> 1.0 maps to 1.00 -> 1.65 brightness
+      // 0.5 -> 1.0 maps to 1.00 -> 2.65 brightness (massive 165% visual boost)
       const boostRatio = (playerBrightness - 0.5) / 0.5; // 0.0 to 1.0
-      filterBrightness = (1.00 + (boostRatio * 0.65)).toFixed(2);
-      contrastVal = (1.00 + (boostRatio * 0.12)).toFixed(2);
-      saturateVal = (1.00 + (boostRatio * 0.08)).toFixed(2);
+      filterBrightness = (1.00 + (boostRatio * 1.65)).toFixed(2);
+      contrastVal = (1.00 + (boostRatio * 0.20)).toFixed(2);
+      saturateVal = (1.00 + (boostRatio * 0.14)).toFixed(2);
     } else {
-      // 0.0 -> 0.5 maps to 0.25 -> 1.00 brightness
+      // 0.0 -> 0.5 maps to 0.20 -> 1.00 brightness
       const dimRatio = playerBrightness / 0.5; // 0.0 to 1.0
-      filterBrightness = (0.25 + (dimRatio * 0.75)).toFixed(2);
+      filterBrightness = (0.20 + (dimRatio * 0.80)).toFixed(2);
       contrastVal = (0.90 + (dimRatio * 0.10)).toFixed(2);
       saturateVal = '1.00';
     }
@@ -6220,11 +6220,18 @@ function applyPlayerBrightness(val) {
   }
 
   if (overlay) {
-    if (playerBrightness < 0.35) {
-      const dimAlpha = ((0.35 - playerBrightness) / 0.35) * 0.45;
+    if (playerBrightness < 0.38) {
+      const dimAlpha = ((0.38 - playerBrightness) / 0.38) * 0.55;
       overlay.style.backgroundColor = `rgba(0, 0, 0, ${dimAlpha.toFixed(2)})`;
+      overlay.style.mixBlendMode = 'normal';
+    } else if (playerBrightness > 0.65) {
+      // MX Player / MovieBox HDR screen blend luminescence boost
+      const boostAlpha = ((playerBrightness - 0.65) / 0.35) * 0.22;
+      overlay.style.backgroundColor = `rgba(255, 255, 255, ${boostAlpha.toFixed(2)})`;
+      overlay.style.mixBlendMode = 'screen';
     } else {
       overlay.style.backgroundColor = 'transparent';
+      overlay.style.mixBlendMode = 'normal';
     }
   }
 
@@ -7121,6 +7128,7 @@ function closePlayer() {
   const overlayEl = document.getElementById('playerBrightnessOverlay');
   if (overlayEl) {
     overlayEl.style.backgroundColor = 'transparent';
+    overlayEl.style.mixBlendMode = 'normal';
   }
   const mainVideoEl = document.getElementById('mainVideoPlayer');
   if (mainVideoEl) {
@@ -12316,37 +12324,48 @@ async function renderMyRequestsList() {
 window.renderMyRequestsList = renderMyRequestsList;
 
 // ============================================================
-// NATIVE SWIPE-TO-BACK TOUCH GESTURE (LEFT EDGE TO RIGHT)
+// NATIVE SWIPE-TO-BACK TOUCH GESTURE (STRICT RIGHT CORNER EDGE ONLY)
+// RULES:
+// 1. Swiping from mobile's left side or middle does ABSOLUTELY NOTHING.
+// 2. Back only triggers when swiping from the extreme right corner edge (within 30px from rightmost edge).
+// 3. Gesture direction must be right-to-left: deltaX < -50px, horizontal > vertical * 1.3, within 600ms.
 // ============================================================
 function initFullscreenSwipeBackGesture() {
   let touchStartX = 0;
   let touchStartY = 0;
   let touchStartTime = 0;
-  let isSwiping = false;
+  let isRightCornerSwipe = false;
+
+  const RIGHT_CORNER_WIDTH = 30; // Strictly within 30px of the extreme right screen edge
 
   window.addEventListener('touchstart', (e) => {
     if (e.touches.length !== 1) return;
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
+    const t = e.touches[0];
+    touchStartX = t.clientX;
+    touchStartY = t.clientY;
     touchStartTime = Date.now();
-    // Allow swipe back if touch starts in the left 140px of screen
-    isSwiping = touchStartX < 140;
+
+    // STRICT: Only engage if touch begins at the extreme right corner edge. Left side touches are completely ignored!
+    isRightCornerSwipe = touchStartX >= (window.innerWidth - RIGHT_CORNER_WIDTH);
   }, { passive: true });
 
   window.addEventListener('touchend', (e) => {
-    if (!isSwiping || e.changedTouches.length !== 1) return;
+    if (!isRightCornerSwipe || e.changedTouches.length !== 1) {
+      isRightCornerSwipe = false;
+      return;
+    }
     const touch = e.changedTouches[0];
     const deltaX = touch.clientX - touchStartX;
     const deltaY = touch.clientY - touchStartY;
     const deltaTime = Date.now() - touchStartTime;
 
-    // Swipe right threshold: horizontal drag > 55px, horizontal > vertical * 1.3, within 500ms
-    if (deltaX > 55 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3 && deltaTime < 500) {
+    // Right-edge swipe towards left (deltaX must be negative and drag at least 50px inward)
+    if (deltaX < -50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3 && deltaTime < 600) {
       if (typeof window.handleAndroidBack === 'function') {
         window.handleAndroidBack();
       }
     }
-    isSwiping = false;
+    isRightCornerSwipe = false;
   }, { passive: true });
 }
 window.initFullscreenSwipeBackGesture = initFullscreenSwipeBackGesture;
