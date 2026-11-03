@@ -17,6 +17,10 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import androidx.core.app.NotificationCompat;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import androidx.activity.OnBackPressedCallback;
@@ -52,18 +56,89 @@ public class MainActivity extends BridgeActivity {
     private FrameLayout fullscreenContainer;
     private FullscreenWebChromeClient customChromeClient;
 
+    private PowerManager.WakeLock downloadWakeLock = null;
+    private boolean isDownloadActive = false;
+    private static final String DL_CHANNEL_ID = "fobs_download_channel";
+    private static final int DL_NOTIFICATION_ID = 9988;
+
+    private void showDownloadNotification(String title) {
+        try {
+            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            if (nm == null) return;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(
+                    DL_CHANNEL_ID,
+                    "FOBS TV Downloads",
+                    NotificationManager.IMPORTANCE_LOW
+                );
+                channel.setDescription("Background download in progress");
+                channel.setShowBadge(false);
+                nm.createNotificationChannel(channel);
+            }
+
+            Intent openIntent = new Intent(this, MainActivity.class);
+            openIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            PendingIntent pi = PendingIntent.getActivity(
+                this, 0, openIntent,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0
+            );
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, DL_CHANNEL_ID)
+                .setSmallIcon(android.R.drawable.stat_sys_download)
+                .setContentTitle("FOBS TV • Downloading Offline")
+                .setContentText(title != null && !title.trim().isEmpty() ? title.trim() : "Offline video download in progress...")
+                .setOngoing(true)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setContentIntent(pi);
+
+            nm.notify(DL_NOTIFICATION_ID, builder.build());
+        } catch (Exception ignored) {}
+    }
+
+    private void cancelDownloadNotification() {
+        try {
+            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            if (nm != null) {
+                nm.cancel(DL_NOTIFICATION_ID);
+            }
+        } catch (Exception ignored) {}
+    }
+
     @Override
     public void onPause() {
         super.onPause();
-        // Restore window screen brightness back to system default when app is minimized or paused
-        try {
-            Window window = getWindow();
-            if (window != null) {
-                WindowManager.LayoutParams lp = window.getAttributes();
-                lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-                window.setAttributes(lp);
+        // If an offline download is active, resume WebView so streaming reader and timers NEVER pause!
+        if (isDownloadActive) {
+            WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+            if (webView != null) {
+                webView.onResume();
+                webView.resumeTimers();
             }
-        } catch (Exception ignored) {}
+        } else {
+            // Restore window screen brightness back to system default when app is minimized or paused
+            try {
+                Window window = getWindow();
+                if (window != null) {
+                    WindowManager.LayoutParams lp = window.getAttributes();
+                    lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+                    window.setAttributes(lp);
+                }
+            } catch (Exception ignored) {}
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        // Keep WebView and timers running while screen is turned off by power button
+        if (isDownloadActive) {
+            WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+            if (webView != null) {
+                webView.onResume();
+                webView.resumeTimers();
+            }
+        }
     }
 
     private class FullscreenWebChromeClient extends BridgeWebChromeClient {
@@ -492,20 +567,27 @@ public class MainActivity extends BridgeActivity {
             });
         }
 
-        private PowerManager.WakeLock downloadWakeLock = null;
-
         @JavascriptInterface
         public void acquireWakeLock() {
+            acquireWakeLock("FOBS TV Video");
+        }
+
+        @JavascriptInterface
+        public void acquireWakeLock(String title) {
             runOnUiThread(() -> {
                 try {
+                    isDownloadActive = true;
                     if (downloadWakeLock == null) {
                         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
                         if (pm != null) {
                             downloadWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "FobsTV:DownloadWakeLock");
-                            downloadWakeLock.acquire(120 * 60 * 1000L); // 2 hours safety limit
+                            downloadWakeLock.setReferenceCounted(false);
+                            downloadWakeLock.acquire(180 * 60 * 1000L); // 3 hours safety limit
                         }
+                    } else if (!downloadWakeLock.isHeld()) {
+                        downloadWakeLock.acquire(180 * 60 * 1000L);
                     }
-                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    showDownloadNotification(title);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -516,11 +598,12 @@ public class MainActivity extends BridgeActivity {
         public void releaseWakeLock() {
             runOnUiThread(() -> {
                 try {
+                    isDownloadActive = false;
                     if (downloadWakeLock != null && downloadWakeLock.isHeld()) {
                         downloadWakeLock.release();
                     }
                     downloadWakeLock = null;
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    cancelDownloadNotification();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

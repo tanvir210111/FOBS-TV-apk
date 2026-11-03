@@ -7886,7 +7886,7 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
 
   // Keep CPU and background download alive even when screen is locked or turned off
   if (window.AndroidApp && typeof window.AndroidApp.acquireWakeLock === 'function') {
-    try { window.AndroidApp.acquireWakeLock(); } catch(e) {}
+    try { window.AndroidApp.acquireWakeLock(title); } catch(e) {}
   }
   if ('wakeLock' in navigator) {
     try {
@@ -7958,7 +7958,17 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       throw new Error(`Server returned status ${response.status}`);
     }
 
-    let totalBytes = 0;
+    // Critical fix: If server returned 200 OK (serving entire file from byte 0 instead of 206 Partial Content):
+    // Discard any existing partial chunks so the 280MB is NOT added onto 20MB, corrupting the file to 300MB!
+    if (existingBytes > 0 && response.status === 200) {
+      console.warn('Server does not support partial range (returned 200 OK). Starting cleanly from byte 0 to prevent file size inflation.');
+      existingBytes = 0;
+      activeDownloadTasks[downloadId].chunks = [];
+      activeDownloadTasks[downloadId].receivedBytes = 0;
+      await removeOfflineMedia('temp_' + downloadId);
+    }
+
+    let totalBytes = (currentItem && currentItem.totalBytes > 0) ? currentItem.totalBytes : 0;
     const contentRange = response.headers.get('content-range');
     if (contentRange) {
       const match = contentRange.match(/\/(\d+)/);
@@ -7968,6 +7978,10 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       const contentLength = response.headers.get('content-length');
       const addBytes = contentLength ? parseInt(contentLength, 10) : 0;
       totalBytes = existingBytes + addBytes;
+    }
+    // Safety clamp: Never let totalBytes inflate beyond previously recorded total size on retry!
+    if (currentItem && currentItem.totalBytes > 0 && totalBytes > currentItem.totalBytes) {
+      totalBytes = currentItem.totalBytes;
     }
     activeDownloadTasks[downloadId].totalBytes = totalBytes;
 
@@ -8190,6 +8204,20 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
         });
       }
     } catch (saveErr) {}
+
+    // Auto-recovery: If screen was turned off by power button or network had a momentary blip, auto-recover smoothly!
+    const curTask = activeDownloadTasks[downloadId];
+    const autoRetries = curTask ? (curTask._autoRetries || 0) : 0;
+    if (autoRetries < 3 && !curTask?.isPaused) {
+      if (curTask) curTask._autoRetries = autoRetries + 1;
+      console.log(`Auto-resuming background download ${downloadId} (attempt ${autoRetries + 1}/3)...`);
+      setTimeout(() => {
+        if (!activeDownloadTasks[downloadId]?.isPaused) {
+          downloadMedia(url, title, options, downloadId);
+        }
+      }, 1500);
+      return;
+    }
 
     try {
       const curDownloads = getStoredDownloadsList();
