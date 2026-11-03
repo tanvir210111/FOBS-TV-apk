@@ -3916,7 +3916,14 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     const hls = new window.Hls({
       enableWorker: true,
       lowLatencyMode: false,
-      startFragPrefetch: true
+      startFragPrefetch: true,
+      maxBufferLength: 30,
+      maxMaxBufferLength: 60,
+      maxBufferSize: 30 * 1000 * 1000,
+      manifestLoadingTimeOut: 6000,
+      manifestLoadingMaxRetry: 3,
+      levelLoadingTimeOut: 6000,
+      fragLoadingTimeOut: 10000
     });
     hls.loadSource(playableUrl);
     hls.attachMedia(videoPlayer);
@@ -3945,8 +3952,16 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     const jsonUrl = fullUrl.includes('?') ? (fullUrl + '&json=1') : (fullUrl + '?json=1');
 
     console.log('Playing MovieBox stream immediately:', fullUrl);
-    videoPlayer.src = fullUrl;
-    videoPlayer.load();
+    if (videoPlayer.src !== fullUrl) {
+      videoPlayer.src = fullUrl;
+    }
+    const onStreamReady = () => {
+      if (loader) loader.classList.remove('active');
+      videoPlayer.play().catch(() => {});
+    };
+    videoPlayer.addEventListener('loadedmetadata', onStreamReady, { once: true });
+    videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
+    videoPlayer.addEventListener('playing', onStreamReady, { once: true });
     if (seekTime && seekTime > 0) {
       appState.pendingSeekTime = seekTime;
       let seekApplied = false;
@@ -4001,8 +4016,16 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
   if (playableUrl.includes('/api/stream')) {
     const proxyStreamUrl = playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`;
     console.log('Playing stream via server proxy:', proxyStreamUrl);
-    videoPlayer.src = proxyStreamUrl;
-    videoPlayer.load();
+    if (videoPlayer.src !== proxyStreamUrl) {
+      videoPlayer.src = proxyStreamUrl;
+    }
+    const onStreamReady = () => {
+      if (loader) loader.classList.remove('active');
+      videoPlayer.play().catch(() => {});
+    };
+    videoPlayer.addEventListener('loadedmetadata', onStreamReady, { once: true });
+    videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
+    videoPlayer.addEventListener('playing', onStreamReady, { once: true });
     if (seekTime && seekTime > 0) {
       appState.pendingSeekTime = seekTime;
       let seekApplied = false;
@@ -4066,8 +4089,16 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
         ? (playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`)
         : `${API_BASE_URL}/api/stream?url=${encodeURIComponent(playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`)}`;
       console.log('Playing MovieBox stream via server proxy:', proxyUrl);
-      videoPlayer.src = proxyUrl;
-      videoPlayer.load();
+      if (videoPlayer.src !== proxyUrl) {
+        videoPlayer.src = proxyUrl;
+      }
+      const onStreamReady = () => {
+        if (loader) loader.classList.remove('active');
+        videoPlayer.play().catch(() => {});
+      };
+      videoPlayer.addEventListener('loadedmetadata', onStreamReady, { once: true });
+      videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
+      videoPlayer.addEventListener('playing', onStreamReady, { once: true });
       if (seekTime && seekTime > 0) {
         let seekApplied = false;
         const applySeek = () => {
@@ -4090,8 +4121,16 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
 
     const finalDirectUrl = playableUrl.startsWith('/') ? `${API_BASE_URL}${playableUrl}` : playableUrl;
     console.log('Playing direct CDN stream:', finalDirectUrl);
-    videoPlayer.src = finalDirectUrl;
-    videoPlayer.load();
+    if (videoPlayer.src !== finalDirectUrl) {
+      videoPlayer.src = finalDirectUrl;
+    }
+    const onStreamReady = () => {
+      if (loader) loader.classList.remove('active');
+      videoPlayer.play().catch(() => {});
+    };
+    videoPlayer.addEventListener('loadedmetadata', onStreamReady, { once: true });
+    videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
+    videoPlayer.addEventListener('playing', onStreamReady, { once: true });
     if (seekTime && seekTime > 0) {
       appState.pendingSeekTime = seekTime;
       let seekApplied = false;
@@ -4139,8 +4178,16 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     streamApiUrl += `&t=${seekTime}`;
   }
 
-  videoPlayer.src = streamApiUrl;
-  videoPlayer.load();
+  if (videoPlayer.src !== streamApiUrl) {
+    videoPlayer.src = streamApiUrl;
+  }
+  const onFinalStreamReady = () => {
+    if (loader) loader.classList.remove('active');
+    videoPlayer.play().catch(() => {});
+  };
+  videoPlayer.addEventListener('loadedmetadata', onFinalStreamReady, { once: true });
+  videoPlayer.addEventListener('canplay', onFinalStreamReady, { once: true });
+  videoPlayer.addEventListener('playing', onFinalStreamReady, { once: true });
   videoPlayer.play().catch(err => {
     console.log('Autoplay deferred until user taps video controls:', err.message);
     if (loader) loader.classList.remove('active');

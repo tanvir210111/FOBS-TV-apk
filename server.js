@@ -24,6 +24,7 @@ const PORT = process.env.PORT || 3000;
 
 const movieboxService = require('./services/movieboxService');
 const movieboxStreamCache = new Map(); // key -> { media, timestamp }
+const movieboxResolvingMap = new Map(); // key -> in-flight promise for deduplication
 const liveTvService = require('./services/liveTvService');
 const syncService = require('./services/syncService');
 const dbService = require('./services/dbService');
@@ -1177,23 +1178,30 @@ app.get('/api/moviebox/stream', async (req, res) => {
       else if (id === '8152231361013763208') resolvedPath = 'crash-landing-on-you-M2pZwJYidI9';
     }
     const requestedQ = parseInt(req.query.q || req.query.quality || '0', 10);
-    // Try requested se/ep first, then fallbacks
-        const cacheKey = `${id}_${resolvedPath}_${seNum}_${epNum}_${requestedQ}`;
+    // Unified cache key across all bitrates so all qualities/probes share one instant resolution
+    const mediaCacheKey = `${id}_s${seNum}_e${epNum}`;
     let media = null;
-    const cachedEntry = movieboxStreamCache.get(cacheKey);
-    if (cachedEntry && (Date.now() - cachedEntry.timestamp < 15 * 60 * 1000)) {
+    const cachedEntry = movieboxStreamCache.get(mediaCacheKey);
+    if (cachedEntry && (Date.now() - cachedEntry.timestamp < 24 * 60 * 60 * 1000)) {
       media = cachedEntry.media;
+    } else if (movieboxResolvingMap.has(mediaCacheKey)) {
+      media = await movieboxResolvingMap.get(mediaCacheKey);
     } else {
-      media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);
-      if (media && media.streamUrl) {
-        movieboxStreamCache.set(cacheKey, { media, timestamp: Date.now() });
+      const resolveTask = (async () => {
+        let m = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);
+        if (!m || !m.streamUrl) {
+          m = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum, { forceRefresh: true });
+        }
+        return m;
+      })();
+      movieboxResolvingMap.set(mediaCacheKey, resolveTask);
+      try {
+        media = await resolveTask;
+      } finally {
+        movieboxResolvingMap.delete(mediaCacheKey);
       }
-    }
-    if (!media || !media.streamUrl) {
-      // Retry once bypassing cache with fresh domain discovery
-      media = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum, { forceRefresh: true });
       if (media && media.streamUrl) {
-        movieboxStreamCache.set(cacheKey, { media, timestamp: Date.now() });
+        movieboxStreamCache.set(mediaCacheKey, { media, timestamp: Date.now() });
       }
     }
     if (!media || !media.streamUrl) {
@@ -1206,7 +1214,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
           // Do not use expired hakunaymatata CDN links
           if (direct && direct.startsWith('http') && !direct.includes('hakunaymatata') && !direct.includes('bcdnxw')) {
             media = { streamUrl: direct, resolution: 1080 };
-            movieboxStreamCache.set(cacheKey, { media, timestamp: Date.now() });
+            movieboxStreamCache.set(mediaCacheKey, { media, timestamp: Date.now() });
           }
         } else {
           let foundSeries = (content.series || []).find(s => String(s.subjectId) === String(id));
@@ -1217,7 +1225,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
               const direct = epObj.directStreamUrl || epObj.servers[0].url;
               if (direct && direct.startsWith('http') && !direct.includes('hakunaymatata') && !direct.includes('bcdnxw')) {
                 media = { streamUrl: direct, resolution: 1080 };
-                movieboxStreamCache.set(cacheKey, { media, timestamp: Date.now() });
+                movieboxStreamCache.set(mediaCacheKey, { media, timestamp: Date.now() });
               }
             }
           }

@@ -13,6 +13,10 @@
 const axios = require('axios');
 const https = require('https');
 const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path');
+
+const STREAM_CACHE_FILE = path.join(__dirname, '..', 'data', 'moviebox_stream_cache.json');
 
 // Reusable HTTPS agent with Keep-Alive connection pool for instant latency
 const cleanAgent = new https.Agent({
@@ -58,6 +62,44 @@ class MovieBoxService {
     this.domainExpireAt = 0;
     this.sessionToken = null;
     this.sessionTokenExpire = 0;
+    this._saveTimer = null;
+    this._loadDiskCache();
+  }
+
+  _loadDiskCache() {
+    try {
+      if (fs.existsSync(STREAM_CACHE_FILE)) {
+        const raw = JSON.parse(fs.readFileSync(STREAM_CACHE_FILE, 'utf8'));
+        const now = Date.now();
+        for (const [k, v] of Object.entries(raw)) {
+          if (v && v.expireAt > now) {
+            this.cache.set(k, v);
+            if (v.data && v.data.subjectId && v.data.detailPath) {
+              this.detailPathMap.set(String(v.data.subjectId), v.data.detailPath);
+            }
+          }
+        }
+      }
+    } catch (e) {}
+  }
+
+  _saveDiskCache() {
+    if (this._saveTimer) return;
+    this._saveTimer = setTimeout(() => {
+      this._saveTimer = null;
+      try {
+        const out = {};
+        const now = Date.now();
+        for (const [k, v] of this.cache.entries()) {
+          if (v && v.expireAt > now) {
+            out[k] = v;
+          }
+        }
+        const dir = path.dirname(STREAM_CACHE_FILE);
+        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+        fs.writeFile(STREAM_CACHE_FILE, JSON.stringify(out), () => {});
+      } catch (e) {}
+    }, 2000);
   }
 
   /**
@@ -468,202 +510,182 @@ class MovieBoxService {
     const candidateDomains = [
       'https://h5-api.aoneroom.com',
       'https://h5.aoneroom.com',
+      'https://movie-box.co',
       activeDomain,
       'https://mzfi.me',
-      'https://123movienow.cc',
-      'https://moviebox.ph'
-    ].filter((v, i, a) => a.indexOf(v) === i);
+      'https://123movienow.cc'
+    ].filter((v, i, a) => v && a.indexOf(v) === i);
 
     const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
 
-    for (const domain of candidateDomains) {
-      try {
-        const playUrl = `${domain}/wefeed-h5api-bff/subject/play?subjectId=${cleanId}&se=${season}&ep=${episode}&detailPath=${encodeURIComponent(detailPath || '')}`;
-        const referer = detailPath ? `${domain}/spa/videoPlayPage/movies/${detailPath}` : `${domain}/`;
-        const res = await axios.get(playUrl, {
-          headers: {
-            'User-Agent': UA,
-            'referer': referer,
-            'accept': 'application/json',
-            'x-client-info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
-            'cookie': 'uuid=d8c3539e-2e46-4000-af20-7046a856e30a'
-          },
-          timeout: 5000
-        });
+    const fetchDomain = async (domain) => {
+      const playUrl = `${domain}/wefeed-h5api-bff/subject/play?subjectId=${cleanId}&se=${season}&ep=${episode}&detailPath=${encodeURIComponent(detailPath || '')}`;
+      const referer = detailPath ? `${domain}/spa/videoPlayPage/movies/${detailPath}` : `${domain}/`;
+      const res = await axios.get(playUrl, {
+        headers: {
+          'User-Agent': UA,
+          'referer': referer,
+          'accept': 'application/json',
+          'x-client-info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
+          'cookie': 'uuid=d8c3539e-2e46-4000-af20-7046a856e30a'
+        },
+        httpsAgent: cleanAgent,
+        timeout: 2500
+      });
 
-        const data = res.data?.data;
-        if (data && Array.isArray(data.streams) && data.streams.length > 0) {
-          // Prefer unlocked streams and H.264 over HEVC
-          const unlocked = data.streams.filter(st => !st.vipLocked);
-          const candidateStreams = unlocked.length > 0 ? unlocked : data.streams;
-
-          // Sort by resolution descending, preferring H.264 if same resolution
-          const sortedDesc = [...candidateStreams].sort((a, b) => {
-            const resA = parseInt(a.resolutions || a.resolution, 10) || 0;
-            const resB = parseInt(b.resolutions || b.resolution, 10) || 0;
-            if (resB !== resA) return resB - resA;
-            const isA264 = (a.codecName || '').toLowerCase().includes('264');
-            const isB264 = (b.codecName || '').toLowerCase().includes('264');
-            if (isA264 && !isB264) return -1;
-            if (!isA264 && isB264) return 1;
-            return 0;
-          });
-
-          // Sort ascending for instant 360p/480p default start
-          const sortedAsc = [...sortedDesc].reverse();
-          const fastStart = sortedAsc.find(st => (parseInt(st.resolutions || st.resolution, 10) || 0) >= 360) || sortedAsc[0];
-          const duration = fastStart.duration || sortedDesc[0]?.duration || 0;
-
-          const playQualities = sortedDesc.map(function(st) {
-            return {
-              resolution: parseInt(st.resolutions || st.resolution, 10) || 1080,
-              url: st.url,
-              size: parseInt(st.size, 10) || 0,
-              id: st.id || null,
-              codec: st.codecName || 'h264'
-            };
-          });
-
-          // Fetch official subtitles if stream ID is available
-          let playCaptions = [];
-          if (Array.isArray(data.captions) && data.captions.length > 0) {
-            playCaptions = data.captions.map(c => ({
-              language: c.language || c.lan,
-              lan: c.lan,
-              url: c.url
-            }));
-          } else {
-            const streamId = fastStart.id || sortedDesc[0]?.id;
-            if (streamId && detailPath) {
-              try {
-                const capUrl = `https://h5-api.aoneroom.com/wefeed-h5api-bff/subject/caption?subjectId=${cleanId}&id=${streamId}&detailPath=${encodeURIComponent(detailPath)}`;
-                const capRes = await axios.get(capUrl, {
-                  headers: {
-                    'User-Agent': UA,
-                    'Accept': 'application/json',
-                    'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
-                    'Cookie': 'uuid=d8c3539e-2e46-4000-af20-7046a856e30a'
-                  },
-                  httpsAgent: cleanAgent,
-                  timeout: 3000
-                });
-                const rawCaps = capRes.data?.data?.captions || capRes.data?.data?.subtitles || [];
-                playCaptions = rawCaps.map(c => ({
-                  language: c.lanName || c.lan || c.language,
-                  lan: c.lan,
-                  url: c.url
-                }));
-              } catch (capErr) {}
-            }
-          }
-
-          return {
-            subjectId: cleanId,
-            detailPath: detailPath || '',
-            streamDomain: domain,
-            streamUrl: fastStart.url,
-            resolution: parseInt(fastStart.resolutions || fastStart.resolution, 10) || 480,
-            codec: fastStart.codecName || 'h264',
-            duration: duration,
-            qualities: playQualities,
-            captions: playCaptions,
-            headers: {
-              'Referer': 'https://movieboxapp.in/',
-              'Origin': 'https://movieboxapp.in'
-            }
-          };
-        }
-      } catch (e) {
-        this.lastError = { message: e.message, status: e.response?.status, data: e.response?.data };
-        continue;
+      const data = res.data?.data;
+      if (!data || !Array.isArray(data.streams) || data.streams.length === 0) {
+        throw new Error('No streams');
       }
+
+      // Prefer unlocked streams and H.264 over HEVC
+      const unlocked = data.streams.filter(st => !st.vipLocked);
+      const candidateStreams = unlocked.length > 0 ? unlocked : data.streams;
+
+      // Sort by resolution descending, preferring H.264 if same resolution
+      const sortedDesc = [...candidateStreams].sort((a, b) => {
+        const resA = parseInt(a.resolutions || a.resolution, 10) || 0;
+        const resB = parseInt(b.resolutions || b.resolution, 10) || 0;
+        if (resB !== resA) return resB - resA;
+        const isA264 = (a.codecName || '').toLowerCase().includes('264');
+        const isB264 = (b.codecName || '').toLowerCase().includes('264');
+        if (isA264 && !isB264) return -1;
+        if (!isA264 && isB264) return 1;
+        return 0;
+      });
+
+      // Sort ascending for instant 360p/480p default start
+      const sortedAsc = [...sortedDesc].reverse();
+      const fastStart = sortedAsc.find(st => (parseInt(st.resolutions || st.resolution, 10) || 0) >= 360) || sortedAsc[0];
+      const duration = fastStart.duration || sortedDesc[0]?.duration || 0;
+
+      const playQualities = sortedDesc.map(function(st) {
+        return {
+          resolution: parseInt(st.resolutions || st.resolution, 10) || 1080,
+          url: st.url,
+          size: parseInt(st.size, 10) || 0,
+          id: st.id || null,
+          codec: st.codecName || 'h264'
+        };
+      });
+
+      // Fetch official subtitles if stream ID is available
+      let playCaptions = [];
+      if (Array.isArray(data.captions) && data.captions.length > 0) {
+        playCaptions = data.captions.map(c => ({
+          language: c.language || c.lan,
+          lan: c.lan,
+          url: c.url
+        }));
+      }
+
+      return {
+        subjectId: cleanId,
+        detailPath: detailPath || '',
+        streamDomain: domain,
+        streamUrl: fastStart.url,
+        resolution: parseInt(fastStart.resolutions || fastStart.resolution, 10) || 480,
+        codec: fastStart.codecName || 'h264',
+        duration: duration,
+        qualities: playQualities,
+        captions: playCaptions,
+        headers: {
+          'Referer': 'https://movieboxapp.in/',
+          'Origin': 'https://movieboxapp.in'
+        }
+      };
+    };
+
+    try {
+      return await Promise.any(candidateDomains.slice(0, 3).map(d => fetchDomain(d)));
+    } catch (e) {
+      if (candidateDomains.length > 3) {
+        try {
+          return await Promise.any(candidateDomains.slice(3).map(d => fetchDomain(d)));
+        } catch (e2) {}
+      }
+      return null;
     }
-    return null;
   }
 
   /**
-   * Fallback download streams resolver
+   * Fast concurrent download streams resolver (<300ms response time)
    */
   async _fetchDownload(subjectId, detailPath, season, episode) {
     const cleanId = String(subjectId).replace(/^mb-[s|m]-/, '');
-    const urlsToTry = [
-      `${BASE_URL}/wefeed-h5-bff/web/subject/download`,
-      `${BACKUP_URL_1}/wefeed-h5-bff/web/subject/download`,
-      `${BACKUP_URL_2}/wefeed-h5-bff/web/subject/download`
+    const domains = [
+      'https://movie-box.co',
+      'https://h5.aoneroom.com'
     ];
 
-    for (const fetchUrl of urlsToTry) {
-      try {
-        let domain = BACKUP_URL_2;
-        if (fetchUrl.startsWith(BASE_URL)) {
-          domain = BASE_URL;
-        } else if (fetchUrl.startsWith(BACKUP_URL_1)) {
-          domain = BACKUP_URL_1;
-        }
-        const refPath = detailPath ? (domain + '/movies/' + detailPath) : (domain + '/');
-        const res = await axios.get(fetchUrl, {
-          params: {
-            subjectId: cleanId,
-            se: season,
-            ep: episode
-          },
-          headers: {
-            ...HEADERS,
-            'Origin': domain,
-            'Referer': refPath
-          },
-          httpsAgent: cleanAgent,
-          timeout: 2500
-        });
-
-        const data = res.data?.data;
-        if (!data || !data.downloads || data.downloads.length === 0) {
-          continue;
-        }
-
-        const sortedDownloads = [...data.downloads].sort((a, b) => (b.resolution || 0) - (a.resolution || 0));
-        const sortedAsc = [...data.downloads].sort((a, b) => (a.resolution || 0) - (b.resolution || 0));
-        const fastStart = sortedAsc.find(d => d.resolution >= 360) || sortedAsc[0];
-
-        const dlQualities = sortedDownloads.map(function(d) {
-          return {
-            resolution: d.resolution,
-            url: d.url,
-            size: d.size,
-            codec: 'h264'
-          };
-        });
-
-        const dlCaptions = (data.captions || []).map(function(c) {
-          return {
-            id: c.id,
-            language: c.lanName || c.language || c.lan,
-            lan: c.lan,
-            lanName: c.lanName,
-            url: c.url
-          };
-        });
-
-        return {
+    const fetchSingle = async (domain) => {
+      const refPath = detailPath ? (domain + '/movies/' + detailPath) : (domain + '/');
+      const res = await axios.get(`${domain}/wefeed-h5-bff/web/subject/download`, {
+        params: {
           subjectId: cleanId,
-          detailPath: detailPath || '',
-          streamDomain: domain,
-          streamUrl: fastStart.url,
-          resolution: parseInt(fastStart.resolution, 10) || 360,
-          codec: 'h264',
-          duration: fastStart.duration || 0,
-          qualities: dlQualities,
-          captions: dlCaptions,
-          headers: {
-            'Referer': 'https://movieboxapp.in/',
-            'Origin': 'https://movieboxapp.in'
-          }
-        };
-      } catch (e) {
-        // Continue to fallback
+          se: season,
+          ep: episode
+        },
+        headers: {
+          ...HEADERS,
+          'Origin': domain,
+          'Referer': refPath
+        },
+        httpsAgent: cleanAgent,
+        timeout: 2800
+      });
+
+      const data = res.data?.data;
+      if (!data || !data.downloads || data.downloads.length === 0) {
+        throw new Error('No downloads');
       }
+
+      const sortedDownloads = [...data.downloads].sort((a, b) => (b.resolution || 0) - (a.resolution || 0));
+      const sortedAsc = [...data.downloads].sort((a, b) => (a.resolution || 0) - (b.resolution || 0));
+      const fastStart = sortedAsc.find(d => d.resolution >= 360) || sortedAsc[0];
+
+      const dlQualities = sortedDownloads.map(function(d) {
+        return {
+          resolution: d.resolution,
+          url: d.url,
+          size: d.size,
+          codec: 'h264'
+        };
+      });
+
+      const dlCaptions = (data.captions || []).map(function(c) {
+        return {
+          id: c.id,
+          language: c.lanName || c.language || c.lan,
+          lan: c.lan,
+          lanName: c.lanName,
+          url: c.url
+        };
+      });
+
+      return {
+        subjectId: cleanId,
+        detailPath: detailPath || '',
+        streamDomain: domain,
+        streamUrl: fastStart.url,
+        resolution: parseInt(fastStart.resolution, 10) || 360,
+        codec: 'h264',
+        duration: fastStart.duration || 0,
+        qualities: dlQualities,
+        captions: dlCaptions,
+        headers: {
+          'Referer': 'https://movieboxapp.in/',
+          'Origin': 'https://movieboxapp.in'
+        }
+      };
+    };
+
+    try {
+      // Race domains concurrently with Promise.any - fastest responding mirror domain wins!
+      return await Promise.any(domains.map(d => fetchSingle(d)));
+    } catch (e) {
+      return null;
     }
-    return null;
   }
 
   /**
@@ -672,7 +694,7 @@ class MovieBoxService {
    * - Tries fast native playStream first (<500ms)
    * - Checks season/episode 0-based and 1-based permutations
    * - Automatically repairs outdated or invalid detailPaths
-   * - Caches for 6 hours
+   * - Caches for 24 hours with disk persistence
    */
   async resolveMedia(subjectId, detailPath = '', season = 0, episode = 0, options = {}) {
     if (!subjectId) return null;
@@ -710,12 +732,12 @@ class MovieBoxService {
           }
         }
 
-        // 1. High-Speed Priority: _fetchDownload on h5.aoneroom.com resolves in ~200ms without WAF 429
+        // 1. High-Speed Priority: concurrent domain race
         let result = await this._fetchDownload(cleanId, activeDetailPath, seNum, epNum);
         if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, seNum, epNum);
 
-        // Path Repair: If initial query failed and detailPath was provided, verify with fresh getDetail
-        if (!result && activeDetailPath) {
+        // Path Repair: If initial query failed, quickly verify with fresh getDetail
+        if (!result) {
           const freshDetail = await this.getDetail(cleanId);
           if (freshDetail && freshDetail.detailPath && freshDetail.detailPath !== activeDetailPath) {
             activeDetailPath = freshDetail.detailPath;
@@ -726,22 +748,18 @@ class MovieBoxService {
         }
 
         // Season/Episode Permutation Fallbacks:
-        // Case A: season=1 & ep>0 returned nothing -> try season=0 & ep-1 (0-based)
         if (!result && seNum === 1 && epNum > 0) {
           result = await this._fetchDownload(cleanId, activeDetailPath, 0, epNum - 1);
           if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, 0, epNum - 1);
         }
-        // Case B: season=0 & ep>0 returned nothing -> try season=1 & ep
         if (!result && seNum === 0 && epNum > 0) {
           result = await this._fetchDownload(cleanId, activeDetailPath, 1, epNum);
           if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, 1, epNum);
         }
-        // Case C: season=0 & ep=0 returned nothing -> try season=1 & ep=1
         if (!result && seNum === 0 && epNum === 0) {
           result = await this._fetchDownload(cleanId, activeDetailPath, 1, 1);
           if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, 1, 1);
         }
-        // Case D: season>1 returned nothing -> try season=1 & ep
         if (!result && seNum > 1 && epNum > 0) {
           result = await this._fetchDownload(cleanId, activeDetailPath, 1, epNum);
           if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, 1, epNum);
@@ -750,8 +768,9 @@ class MovieBoxService {
         if (result) {
           this.cache.set(cacheKey, {
             data: result,
-            expireAt: Date.now() + 45 * 60 * 1000
+            expireAt: Date.now() + 24 * 60 * 60 * 1000 // 24 hours
           });
+          this._saveDiskCache();
           return result;
         }
 
