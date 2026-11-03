@@ -8593,6 +8593,7 @@ async function playDownloadedMedia(id) {
       // 1. Set currentMedia state BEFORE attaching src so all error handlers know it is offline
       appState.currentMedia = {
         id: offlineItem.mediaId || offlineItem.id,
+        offlineDownloadId: offlineItem.id || id,
         title: offlineItem.title,
         poster: offlineItem.poster,
         isOffline: true,
@@ -8606,10 +8607,32 @@ async function playDownloadedMedia(id) {
         appState.currentEpisode = {
           number: epNum,
           episodeNumber: epNum,
+          episode: epNum,
           title: `Episode ${epNum}`
         };
+        appState.currentEpisodeNumber = epNum;
       } else {
         appState.currentEpisode = null;
+      }
+
+      // Check saved watch progress to resume downloaded video from last watched position
+      let resumeSeekTime = 0;
+      try {
+        const offlineKey = 'fobs_offline_resume_' + (offlineItem.id || id);
+        const savedOffline = JSON.parse(localStorage.getItem(offlineKey) || 'null');
+        if (savedOffline && savedOffline.progressSeconds > 5) {
+          if (!savedOffline.completed && (!savedOffline.durationSeconds || (savedOffline.progressSeconds / savedOffline.durationSeconds) < 0.95)) {
+            resumeSeekTime = savedOffline.progressSeconds;
+          }
+        }
+      } catch (e) {}
+
+      // Fallback: check general watch history
+      if (!resumeSeekTime) {
+        const genProgress = getSavedWatchProgress(appState.currentMedia);
+        if (genProgress && genProgress.progressSeconds > 5 && !genProgress.isNextEpisode) {
+          resumeSeekTime = genProgress.progressSeconds;
+        }
       }
 
       // 2. Teardown active HLS and clear cold start timers
@@ -8645,14 +8668,47 @@ async function playDownloadedMedia(id) {
         if (loader) loader.classList.remove('active');
         videoPlayer._ignoreErrors = false;
       };
-      videoPlayer.addEventListener('loadeddata', hideLoader, { once: true });
-      videoPlayer.addEventListener('canplay', hideLoader, { once: true });
+
+      let hasResumedSeek = false;
+      const doSeekResume = () => {
+        if (hasResumedSeek || resumeSeekTime <= 0) return;
+        hasResumedSeek = true;
+        try {
+          const dur = (videoPlayer.duration && isFinite(videoPlayer.duration) && videoPlayer.duration > 0)
+            ? videoPlayer.duration
+            : (resumeSeekTime + 10);
+          const target = Math.max(0, Math.min(dur > 1 ? dur - 1 : dur, resumeSeekTime));
+          videoPlayer.currentTime = target;
+          setTimeout(() => {
+            showToast(`⏱️ Resumed from ${formatPlayerTime(target)}`);
+          }, 400);
+        } catch (err) {
+          console.warn('Error applying offline resume time:', err);
+        }
+      };
+
+      videoPlayer.addEventListener('loadedmetadata', () => {
+        hideLoader();
+        doSeekResume();
+      }, { once: true });
+
+      videoPlayer.addEventListener('loadeddata', () => {
+        hideLoader();
+        doSeekResume();
+      }, { once: true });
+
+      videoPlayer.addEventListener('canplay', () => {
+        hideLoader();
+        doSeekResume();
+      }, { once: true });
 
       videoPlayer.play().then(() => {
         hideLoader();
+        doSeekResume();
       }).catch(e => {
         console.warn('Offline autoplay note:', e);
         hideLoader();
+        doSeekResume();
       });
 
       playerOverlay.style.setProperty('display', 'flex', 'important');
@@ -8780,6 +8836,9 @@ async function deleteDownload(id, e) {
   releaseWakeLockIfNoActiveDownloads();
   await removeOfflineMedia(id);
   await removeOfflineMedia('temp_' + id);
+  try {
+    localStorage.removeItem('fobs_offline_resume_' + id);
+  } catch (e) {}
   try {
     const raw = localStorage.getItem('fobs_downloads') || '[]';
     const downloads = JSON.parse(raw).filter(d => d.id !== id);
@@ -11540,6 +11599,19 @@ async function saveWatchHistoryProgress(isCompleted = false) {
   const currentEpNum = appState.currentEpisodeNumber 
     || (appState.currentEpisode && (appState.currentEpisode.episode ?? appState.currentEpisode.episodeNumber ?? appState.currentEpisode.number))
     || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1);
+
+  // If this is offline downloaded video, save dedicated offline resume key immediately
+  if (media.isOffline || media.offlineDownloadId) {
+    const offlineDlId = media.offlineDownloadId || media.id;
+    try {
+      localStorage.setItem('fobs_offline_resume_' + offlineDlId, JSON.stringify({
+        progressSeconds: isCompleted ? 0 : progressSeconds,
+        durationSeconds,
+        updatedAt: Date.now(),
+        completed: isCompleted
+      }));
+    } catch (e) {}
+  }
 
   const historyItem = {
     mediaId: (media.id || '').toString(),
