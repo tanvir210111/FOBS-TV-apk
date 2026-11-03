@@ -1900,6 +1900,9 @@ app.get('/api/download', async (req, res) => {
   const downloadHeaders = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
   };
+  if (req.headers.range) {
+    downloadHeaders['Range'] = req.headers.range;
+  }
   if (
     resolvedUrl.includes('hakunaymatata') || 
     resolvedUrl.includes('bcdnxw') || 
@@ -1967,9 +1970,29 @@ app.get('/api/download', async (req, res) => {
 
     res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(filename)}"`);
     res.setHeader('Content-Type', response.headers['content-type'] || 'video/mp4');
+    res.setHeader('Accept-Ranges', 'bytes');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type, Accept');
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Range, Content-Length, Accept-Ranges');
+    if (response.status === 206 || response.headers['content-range']) {
+      res.status(206);
+      if (response.headers['content-range']) {
+        res.setHeader('Content-Range', response.headers['content-range']);
+      }
+    } else {
+      res.status(response.status || 200);
+    }
     if (response.headers['content-length']) {
       res.setHeader('Content-Length', response.headers['content-length']);
     }
+
+    req.on('close', () => {
+      try {
+        if (response && response.data && typeof response.data.destroy === 'function') {
+          response.data.destroy();
+        }
+      } catch (e) {}
+    });
 
     response.data.pipe(res);
   } catch (err) {
