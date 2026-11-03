@@ -181,6 +181,27 @@ public class MainActivity extends BridgeActivity {
         }
 
         @JavascriptInterface
+        public int getNavigationBarHeight() {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    WindowInsets insets = getWindow().getDecorView().getRootWindowInsets();
+                    if (insets != null) {
+                        int bottom = insets.getInsets(WindowInsets.Type.navigationBars()).bottom;
+                        float density = getResources().getDisplayMetrics().density;
+                        return (int) (bottom / (density > 0 ? density : 1.0f));
+                    }
+                }
+                int resourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+                if (resourceId > 0) {
+                    int heightPx = getResources().getDimensionPixelSize(resourceId);
+                    float density = getResources().getDisplayMetrics().density;
+                    return (int) (heightPx / (density > 0 ? density : 1.0f));
+                }
+            } catch (Exception ignored) {}
+            return 0;
+        }
+
+        @JavascriptInterface
         public void setAudioBoost(int boostPercent) {
             // Handled cleanly via HTML5 video volume to avoid hardware audio conflicts
         }
@@ -623,6 +644,30 @@ public class MainActivity extends BridgeActivity {
                     } catch (Exception err) {
                         err.printStackTrace();
                     }
+                });
+
+                // Dispatch navigation bar insets to web app so 3-button system bar never overlaps footer
+                getWindow().getDecorView().setOnApplyWindowInsetsListener((v, insets) -> {
+                    int bottomPx = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        bottomPx = insets.getInsets(WindowInsets.Type.navigationBars()).bottom;
+                    } else {
+                        bottomPx = insets.getSystemWindowInsetBottom();
+                    }
+                    float density = getResources().getDisplayMetrics().density;
+                    final int bottomDp = (int) (bottomPx / (density > 0 ? density : 1.0f));
+                    v.post(() -> {
+                        try {
+                            WebView wv = getBridge() != null ? getBridge().getWebView() : null;
+                            if (wv != null && bottomDp >= 0) {
+                                wv.evaluateJavascript(
+                                    "(function() { if (typeof window.applyNavigationBarInset === 'function') window.applyNavigationBarInset(" + bottomDp + "); })();",
+                                    null
+                                );
+                            }
+                        } catch (Exception ignored) {}
+                    });
+                    return insets;
                 });
             }
         } catch (Exception e) {

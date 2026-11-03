@@ -347,8 +347,32 @@ let appState = {
   viewsPollTimer: null
 };
 
+// Android 3-Button & System Navigation Bar Insets Management
+function applyNavigationBarInset(bottomDp) {
+  let inset = 0;
+  if (typeof bottomDp === 'number' && bottomDp >= 0) {
+    inset = bottomDp;
+  } else if (window.AndroidApp && typeof window.AndroidApp.getNavigationBarHeight === 'function') {
+    try {
+      inset = window.AndroidApp.getNavigationBarHeight() || 0;
+    } catch (e) {}
+  }
+
+  if (inset > 0) {
+    document.documentElement.style.setProperty('--safe-bottom', `${inset}px`);
+    document.body.classList.add('has-system-nav-bar');
+  } else {
+    document.documentElement.style.setProperty('--safe-bottom', 'env(safe-area-inset-bottom, 0px)');
+    document.body.classList.remove('has-system-nav-bar');
+  }
+}
+window.applyNavigationBarInset = applyNavigationBarInset;
+
 // Initialize Application
 document.addEventListener('DOMContentLoaded', () => {
+  applyNavigationBarInset();
+  window.addEventListener('resize', () => applyNavigationBarInset());
+  window.addEventListener('orientationchange', () => setTimeout(applyNavigationBarInset, 200));
   initApp();
 });
 
