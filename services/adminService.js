@@ -1453,7 +1453,7 @@ class AdminService {
   }
 
   /**
-   * System Notifications
+   * System Notifications & In-App Announcements
    */
   getNotifications() {
     return { success: true, notifications: readNotifications() };
@@ -1462,16 +1462,35 @@ class AdminService {
   saveNotification(notif) {
     if (!notif.title || !notif.message) throw new Error('Notification title and message required');
     const list = readNotifications();
+    const id = notif.id || `notif_${Date.now()}`;
+    const existingIndex = list.findIndex(n => n.id === id);
+    const existing = existingIndex !== -1 ? list[existingIndex] : null;
+
     const newNotif = {
-      id: notif.id || `notif_${Date.now()}`,
-      title: notif.title,
-      message: notif.message,
-      tag: notif.tag || 'System',
+      id,
+      title: notif.title.trim(),
+      message: notif.message.trim(),
+      tag: notif.tag || 'Notice',
+      isPopup: notif.isPopup !== undefined ? !!notif.isPopup : true,
+      image: (notif.image || '').trim(),
+      link: (notif.link || '').trim(),
+      linkText: (notif.linkText || '').trim(),
+      active: notif.active !== undefined ? !!notif.active : true,
+      likes: existing?.likes || 0,
+      dislikes: existing?.dislikes || 0,
+      userReactions: existing?.userReactions || {},
+      comments: existing?.comments || [],
       time: 'Just now',
       unread: true,
-      createdAt: new Date().toISOString()
+      createdAt: existing?.createdAt || new Date().toISOString()
     };
-    list.unshift(newNotif);
+
+    if (existingIndex !== -1) {
+      list[existingIndex] = { ...list[existingIndex], ...newNotif };
+    } else {
+      list.unshift(newNotif);
+    }
+
     writeNotifications(list);
     return { success: true, notification: newNotif };
   }
@@ -1481,6 +1500,127 @@ class AdminService {
     list = list.filter(n => n.id !== id);
     writeNotifications(list);
     return { success: true };
+  }
+
+  toggleNotificationPopup(id) {
+    const list = readNotifications();
+    const item = list.find(n => n.id === id);
+    if (!item) return { success: false, error: 'Announcement not found' };
+    item.isPopup = !item.isPopup;
+    writeNotifications(list);
+    return { success: true, isPopup: item.isPopup };
+  }
+
+  reactToNotification(id, userId, reactionType) {
+    if (!id || !userId || !['like', 'dislike'].includes(reactionType)) {
+      return { success: false, error: 'Invalid reaction parameters' };
+    }
+    const list = readNotifications();
+    const item = list.find(n => n.id === id);
+    if (!item) return { success: false, error: 'Announcement not found' };
+
+    if (!item.userReactions) item.userReactions = {};
+    if (typeof item.likes !== 'number') item.likes = 0;
+    if (typeof item.dislikes !== 'number') item.dislikes = 0;
+
+    const prev = item.userReactions[userId];
+    let myReaction = null;
+
+    if (prev === reactionType) {
+      delete item.userReactions[userId];
+      if (reactionType === 'like') item.likes = Math.max(0, item.likes - 1);
+      if (reactionType === 'dislike') item.dislikes = Math.max(0, item.dislikes - 1);
+      myReaction = null;
+    } else {
+      if (prev === 'like') item.likes = Math.max(0, item.likes - 1);
+      if (prev === 'dislike') item.dislikes = Math.max(0, item.dislikes - 1);
+
+      item.userReactions[userId] = reactionType;
+      if (reactionType === 'like') item.likes += 1;
+      if (reactionType === 'dislike') item.dislikes += 1;
+      myReaction = reactionType;
+    }
+
+    writeNotifications(list);
+    return {
+      success: true,
+      likes: item.likes,
+      dislikes: item.dislikes,
+      myReaction
+    };
+  }
+
+  addNotificationComment(id, commentData) {
+    if (!id || !commentData || !commentData.text) {
+      return { success: false, error: 'Comment text is required' };
+    }
+    const list = readNotifications();
+    const item = list.find(n => n.id === id);
+    if (!item) return { success: false, error: 'Announcement not found' };
+
+    if (!Array.isArray(item.comments)) item.comments = [];
+    const newComment = {
+      id: `c_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+      name: (commentData.name || 'FOBS Member').trim(),
+      avatar: commentData.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(commentData.name || 'User')}`,
+      text: commentData.text.trim().substring(0, 500),
+      createdAt: new Date().toISOString()
+    };
+
+    item.comments.push(newComment);
+    writeNotifications(list);
+    return {
+      success: true,
+      comment: newComment,
+      commentsCount: item.comments.length
+    };
+  }
+
+  getNotificationComments(id) {
+    const list = readNotifications();
+    const item = list.find(n => n.id === id);
+    if (!item) return { success: false, error: 'Announcement not found', comments: [] };
+    return {
+      success: true,
+      comments: item.comments || []
+    };
+  }
+
+  deleteNotificationComment(id, commentId) {
+    const list = readNotifications();
+    const item = list.find(n => n.id === id);
+    if (!item) return { success: false, error: 'Announcement not found' };
+    item.comments = (item.comments || []).filter(c => c.id !== commentId);
+    writeNotifications(list);
+    return { success: true };
+  }
+
+  getActivePopupNotification(userId = null) {
+    const list = readNotifications();
+    const item = list.find(n => n.isPopup && n.active !== false);
+    if (!item) return { success: true, announcement: null };
+
+    const myReaction = (userId && item.userReactions && item.userReactions[userId]) ? item.userReactions[userId] : null;
+
+    return {
+      success: true,
+      announcement: {
+        id: item.id,
+        title: item.title,
+        message: item.message,
+        tag: item.tag || 'Notice',
+        isPopup: item.isPopup,
+        image: item.image || '',
+        link: item.link || '',
+        linkText: item.linkText || '',
+        likes: item.likes || 0,
+        dislikes: item.dislikes || 0,
+        myReaction,
+        commentsCount: (item.comments || []).length,
+        comments: item.comments || [],
+        createdAt: item.createdAt || ''
+      }
+    };
   }
 
   /**

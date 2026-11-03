@@ -9303,6 +9303,13 @@ window.handleAndroidBack = function() {
     return true;
   }
 
+  // -0.96. Live In-App Announcement & Notice Popup Modal
+  const annOverlay = document.getElementById('announcementPopupOverlay');
+  if (annOverlay && annOverlay.style.display !== 'none') {
+    closeAnnouncementPopup();
+    return true;
+  }
+
   // -0.95. Movie & Series Request Modal
   const mediaReqModal = document.getElementById('mediaRequestModal');
   if (mediaReqModal && (mediaReqModal.classList.contains('open') || mediaReqModal.style.display === 'flex')) {
@@ -11419,3 +11426,276 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// ============================================================
+// LIVE IN-APP ANNOUNCEMENT & NOTICE POPUP SYSTEM (WITH LIKE, DISLIKE & COMMENTS)
+// ============================================================
+let currentActiveAnnouncement = null;
+let isAnnouncementCommentsOpen = false;
+
+function getClientUserIdentifier() {
+  if (typeof currentUser !== 'undefined' && currentUser) {
+    return currentUser.googleId || currentUser.id || currentUser.email || 'user';
+  }
+  let guestId = localStorage.getItem('fobs_guest_uid');
+  if (!guestId) {
+    guestId = 'guest_' + Math.random().toString(36).substring(2, 9);
+    try { localStorage.setItem('fobs_guest_uid', guestId); } catch(e) {}
+  }
+  return guestId;
+}
+
+async function checkActiveAnnouncementPopup() {
+  try {
+    const uid = getClientUserIdentifier();
+    const res = await fetch(`${API_BASE_URL}/api/announcements/popup?userId=${encodeURIComponent(uid)}&_t=${Date.now()}`);
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data && data.success && data.announcement) {
+      const ann = data.announcement;
+      currentActiveAnnouncement = ann;
+
+      // Check if user already dismissed this specific announcement
+      const dismissed = localStorage.getItem(`fobs_dismissed_notice_${ann.id}`);
+      if (dismissed === 'true') {
+        return;
+      }
+
+      // If player is open or intro video is playing, defer popup until home is visible
+      const player = document.getElementById('playerOverlay');
+      if (player && (player.classList.contains('open') || document.body.classList.contains('player-open'))) {
+        return;
+      }
+
+      const intro = document.getElementById('appIntroOverlay');
+      if (intro && intro.style.display !== 'none') {
+        setTimeout(checkActiveAnnouncementPopup, 3000);
+        return;
+      }
+
+      openAnnouncementPopup(ann);
+    }
+  } catch (err) {
+    console.warn('Check announcement popup warning:', err.message);
+  }
+}
+window.checkActiveAnnouncementPopup = checkActiveAnnouncementPopup;
+
+function openAnnouncementPopup(ann) {
+  if (!ann) return;
+  currentActiveAnnouncement = ann;
+
+  const overlay = document.getElementById('announcementPopupOverlay');
+  if (!overlay) return;
+
+  const tagEl = document.getElementById('announcementTag');
+  const timeEl = document.getElementById('announcementTime');
+  const titleEl = document.getElementById('announcementTitle');
+  const msgEl = document.getElementById('announcementMessage');
+  const bannerWrap = document.getElementById('announcementBannerWrap');
+  const bannerImg = document.getElementById('announcementBannerImg');
+  const actionWrap = document.getElementById('announcementActionWrap');
+  const actionLink = document.getElementById('announcementActionLink');
+  const actionText = document.getElementById('announcementActionText');
+
+  if (tagEl) tagEl.innerText = ann.tag || 'NOTICE';
+  if (timeEl) timeEl.innerText = ann.createdAt ? new Date(ann.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric' }) : 'Just now';
+  if (titleEl) titleEl.innerText = ann.title || 'Notice';
+  if (msgEl) msgEl.innerText = ann.message || '';
+
+  if (bannerWrap && bannerImg) {
+    if (ann.image && ann.image.trim()) {
+      bannerImg.src = ann.image.trim();
+      bannerWrap.style.display = 'block';
+    } else {
+      bannerWrap.style.display = 'none';
+      bannerImg.src = '';
+    }
+  }
+
+  if (actionWrap && actionLink) {
+    if (ann.link && ann.link.trim()) {
+      actionLink.href = ann.link.trim();
+      if (actionText) actionText.innerText = ann.linkText || 'Explore Now';
+      actionWrap.style.display = 'block';
+    } else {
+      actionWrap.style.display = 'none';
+    }
+  }
+
+  // Update counters & reaction active state
+  updateAnnouncementReactionUI(ann.likes || 0, ann.dislikes || 0, ann.myReaction);
+
+  // Render comments count & comments drawer
+  updateAnnouncementCommentsUI(ann.comments || []);
+
+  // Ensure comments drawer is initially closed
+  isAnnouncementCommentsOpen = false;
+  const drawer = document.getElementById('announcementCommentsDrawer');
+  if (drawer) drawer.style.display = 'none';
+  const btnToggle = document.getElementById('btnAnnounceCommentsToggle');
+  if (btnToggle) btnToggle.classList.remove('active-comments');
+
+  overlay.style.display = 'flex';
+}
+window.openAnnouncementPopup = openAnnouncementPopup;
+
+function updateAnnouncementReactionUI(likes, dislikes, myReaction) {
+  const likeCountEl = document.getElementById('announceLikeCount');
+  const dislikeCountEl = document.getElementById('announceDislikeCount');
+  const btnLike = document.getElementById('btnAnnounceLike');
+  const btnDislike = document.getElementById('btnAnnounceDislike');
+
+  if (likeCountEl) likeCountEl.innerText = likes;
+  if (dislikeCountEl) dislikeCountEl.innerText = dislikes;
+
+  if (btnLike) {
+    btnLike.classList.toggle('active-like', myReaction === 'like');
+    const icon = btnLike.querySelector('i');
+    if (icon) {
+      icon.className = myReaction === 'like' ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up';
+    }
+  }
+
+  if (btnDislike) {
+    btnDislike.classList.toggle('active-dislike', myReaction === 'dislike');
+    const icon = btnDislike.querySelector('i');
+    if (icon) {
+      icon.className = myReaction === 'dislike' ? 'fa-solid fa-thumbs-down' : 'fa-regular fa-thumbs-down';
+    }
+  }
+}
+
+async function reactToCurrentAnnouncement(type) {
+  if (!currentActiveAnnouncement || !currentActiveAnnouncement.id) return;
+  const annId = currentActiveAnnouncement.id;
+  const uid = getClientUserIdentifier();
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/announcements/${encodeURIComponent(annId)}/react`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, userId: uid })
+    });
+    const data = await res.json();
+    if (data && data.success) {
+      currentActiveAnnouncement.likes = data.likes;
+      currentActiveAnnouncement.dislikes = data.dislikes;
+      currentActiveAnnouncement.myReaction = data.myReaction;
+      updateAnnouncementReactionUI(data.likes, data.dislikes, data.myReaction);
+    }
+  } catch (err) {
+    console.warn('React error:', err.message);
+  }
+}
+window.reactToCurrentAnnouncement = reactToCurrentAnnouncement;
+
+function toggleAnnouncementComments() {
+  const drawer = document.getElementById('announcementCommentsDrawer');
+  const btnToggle = document.getElementById('btnAnnounceCommentsToggle');
+  if (!drawer) return;
+
+  isAnnouncementCommentsOpen = !isAnnouncementCommentsOpen;
+  drawer.style.display = isAnnouncementCommentsOpen ? 'flex' : 'none';
+  if (btnToggle) {
+    btnToggle.classList.toggle('active-comments', isAnnouncementCommentsOpen);
+  }
+
+  if (isAnnouncementCommentsOpen) {
+    const input = document.getElementById('announcementCommentInput');
+    if (input) setTimeout(() => input.focus(), 150);
+  }
+}
+window.toggleAnnouncementComments = toggleAnnouncementComments;
+
+function updateAnnouncementCommentsUI(comments = []) {
+  const countEl = document.getElementById('announceCommentsCount');
+  const listEl = document.getElementById('announcementCommentsList');
+  if (countEl) countEl.innerText = comments.length;
+
+  if (listEl) {
+    if (comments.length === 0) {
+      listEl.innerHTML = `<div style="text-align: center; color: #64748b; font-size: 12px; padding: 12px 0;">কোনো মন্তব্য নেই। প্রথম মন্তব্যটি আপনি করুন! (No comments yet)</div>`;
+    } else {
+      listEl.innerHTML = comments.map(c => `
+        <div class="announcement-comment-item">
+          <img src="${c.avatar || 'assets/fobs_logo.png'}" alt="${c.name}" class="announcement-comment-avatar" onerror="this.src='assets/fobs_logo.png'">
+          <div class="announcement-comment-content">
+            <div class="announcement-comment-user">
+              <span>${c.name}</span>
+              <span class="announcement-comment-time">${c.createdAt ? new Date(c.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}</span>
+            </div>
+            <p class="announcement-comment-text">${c.text}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+}
+
+async function submitAnnouncementComment() {
+  if (!currentActiveAnnouncement || !currentActiveAnnouncement.id) return;
+  const input = document.getElementById('announcementCommentInput');
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) {
+    showToast('অনুগ্রহ করে মন্তব্য লিখুন!');
+    input.focus();
+    return;
+  }
+
+  const user = (typeof currentUser !== 'undefined' && currentUser) ? currentUser : null;
+  const name = user ? user.name : (localStorage.getItem('fobs_user') ? JSON.parse(localStorage.getItem('fobs_user')).name : 'FOBS Member');
+  const avatar = user ? user.picture : `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(name)}`;
+
+  input.value = '';
+  input.disabled = true;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/announcements/${encodeURIComponent(currentActiveAnnouncement.id)}/comments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, name, avatar })
+    });
+    const data = await res.json();
+    if (data && data.success) {
+      if (!Array.isArray(currentActiveAnnouncement.comments)) currentActiveAnnouncement.comments = [];
+      currentActiveAnnouncement.comments.push(data.comment);
+      updateAnnouncementCommentsUI(currentActiveAnnouncement.comments);
+      showToast('✅ আপনার মন্তব্য পোস্ট হয়েছে!');
+      const listEl = document.getElementById('announcementCommentsList');
+      if (listEl) listEl.scrollTop = listEl.scrollHeight;
+    } else {
+      showToast(data.error || 'মন্তব্য পাঠাতে সমস্যা হয়েছে');
+    }
+  } catch (err) {
+    showToast('মন্তব্য পোস্ট করা যায়নি: ' + err.message);
+  } finally {
+    input.disabled = false;
+    input.focus();
+  }
+}
+window.submitAnnouncementComment = submitAnnouncementComment;
+
+function closeAnnouncementPopup() {
+  const overlay = document.getElementById('announcementPopupOverlay');
+  if (overlay) overlay.style.display = 'none';
+}
+window.closeAnnouncementPopup = closeAnnouncementPopup;
+
+function dismissAnnouncementPopup() {
+  if (currentActiveAnnouncement && currentActiveAnnouncement.id) {
+    try {
+      localStorage.setItem(`fobs_dismissed_notice_${currentActiveAnnouncement.id}`, 'true');
+    } catch(e) {}
+  }
+  closeAnnouncementPopup();
+  showToast('নোটিশ ডিসমিস করা হয়েছে 👍');
+}
+window.dismissAnnouncementPopup = dismissAnnouncementPopup;
+
+// Trigger announcement check on app boot & periodically
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(checkActiveAnnouncementPopup, 2500);
+});
+setInterval(checkActiveAnnouncementPopup, 60000);

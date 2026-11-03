@@ -2492,6 +2492,81 @@
     </div>
 
     <!-- ============================================== -->
+    <!-- FOBS TV LIVE ANNOUNCEMENT & NOTICE POPUP MODAL -->
+    <!-- ============================================== -->
+    <div id="announcementPopupOverlay" class="announcement-popup-overlay" style="display: none;">
+      <div class="announcement-popup-card" id="announcementPopupCard">
+        <button class="announcement-close-btn" onclick="closeAnnouncementPopup()" aria-label="Close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="announcement-header">
+          <div class="announcement-badge-wrap">
+            <span class="announcement-tag" id="announcementTag">NOTICE</span>
+            <span class="announcement-time" id="announcementTime">Just now</span>
+          </div>
+          <h3 class="announcement-title" id="announcementTitle">Announcement Title</h3>
+        </div>
+
+        <div class="announcement-body-wrap">
+          <div class="announcement-banner-wrap" id="announcementBannerWrap" style="display: none;">
+            <img id="announcementBannerImg" src="" alt="Notice Banner" class="announcement-banner-img" />
+          </div>
+
+          <div class="announcement-message" id="announcementMessage">
+            <!-- Notice text -->
+          </div>
+
+          <div class="announcement-action-wrap" id="announcementActionWrap" style="display: none;">
+            <a id="announcementActionLink" href="#" target="_blank" class="announcement-action-btn">
+              <span id="announcementActionText">Explore Now</span>
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- REACTION ACTIONS: LIKE, DISLIKE, COMMENTS -->
+        <div class="announcement-reactions-bar">
+          <button class="announcement-react-btn" id="btnAnnounceLike" onclick="reactToCurrentAnnouncement('like')">
+            <i class="fa-regular fa-thumbs-up"></i>
+            <span>Like</span>
+            <span class="react-count" id="announceLikeCount">0</span>
+          </button>
+          <button class="announcement-react-btn" id="btnAnnounceDislike" onclick="reactToCurrentAnnouncement('dislike')">
+            <i class="fa-regular fa-thumbs-down"></i>
+            <span>Dislike</span>
+            <span class="react-count" id="announceDislikeCount">0</span>
+          </button>
+          <button class="announcement-react-btn" id="btnAnnounceCommentsToggle" onclick="toggleAnnouncementComments()">
+            <i class="fa-regular fa-comment-dots"></i>
+            <span>Comments</span>
+            <span class="react-count" id="announceCommentsCount">0</span>
+          </button>
+        </div>
+
+        <!-- COMMENTS DRAWER (EXPANDABLE) -->
+        <div class="announcement-comments-drawer" id="announcementCommentsDrawer" style="display: none;">
+          <div class="announcement-comments-list" id="announcementCommentsList">
+            <!-- Dynamically populated comments -->
+          </div>
+          <div class="announcement-comment-form">
+            <input type="text" id="announcementCommentInput" placeholder="আপনার মন্তব্য লিখুন (Write comment)..." maxlength="300" onkeydown="if(event.key==='Enter') submitAnnouncementComment()">
+            <button class="announcement-comment-send" onclick="submitAnnouncementComment()" title="Send Comment">
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- MODAL FOOTER DISMISS -->
+        <div class="announcement-footer">
+          <button class="announcement-dismiss-btn" onclick="dismissAnnouncementPopup()">
+            <i class="fa-solid fa-check"></i> ঠিক আছে, বুঝেছি (Dismiss)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
     <!-- REAL-TIME MESSAGES & NOTIFICATIONS MODAL       -->
     <!-- ============================================== -->
     <!-- ============================================== -->

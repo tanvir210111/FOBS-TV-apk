@@ -723,36 +723,53 @@
             <div class="card-header">
               <div class="card-title">
                 <i class="fa-solid fa-bullhorn text-amber"></i>
-                <span>Create New Announcement</span>
+                <span>Create New Announcement & Notice</span>
               </div>
             </div>
             <form id="announcement-form" onsubmit="handleAnnouncementSubmit(event)">
               <div class="input-group">
                 <label for="notif-title"><i class="fa-solid fa-heading"></i> Announcement Title *</label>
-                <input type="text" id="notif-title" required placeholder="e.g. Welcome to FOBS TV v3.2!">
+                <input type="text" id="notif-title" required placeholder="e.g. নতুন আপডেট এবং গুরুত্বপূর্ণ নোটিশ!">
               </div>
               <div class="form-row">
                 <div class="input-group">
                   <label for="notif-tag"><i class="fa-solid fa-tag"></i> Tag / Badge</label>
                   <select id="notif-tag">
-                    <option value="System">System</option>
-                    <option value="Update">Update</option>
-                    <option value="Release">New Release</option>
-                    <option value="Alert">Alert</option>
+                    <option value="Notice">Notice (নোটিশ)</option>
+                    <option value="Announcement">Announcement (ঘোষণা)</option>
+                    <option value="Update">App Update</option>
+                    <option value="News">News / রিলিজ</option>
+                    <option value="Alert">Alert (সতর্কতা)</option>
                   </select>
+                </div>
+                <div class="input-group" style="justify-content: flex-end;">
+                  <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-top: 26px; user-select: none;">
+                    <input type="checkbox" id="notif-popup" checked style="width: 18px; height: 18px; accent-color: #00f2fe;">
+                    <span style="font-weight: 700; color: #00f2fe;"><i class="fa-solid fa-window-maximize"></i> Show as In-App Popup</span>
+                  </label>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="input-group">
+                  <label for="notif-image"><i class="fa-solid fa-image"></i> Banner Image URL (Optional)</label>
+                  <input type="text" id="notif-image" placeholder="https://... image banner URL">
                 </div>
                 <div class="input-group">
                   <label for="notif-link"><i class="fa-solid fa-link"></i> Action Link (Optional)</label>
-                  <input type="text" id="notif-link" placeholder="https://... or in-app path">
+                  <input type="text" id="notif-link" placeholder="https://t.me/... or in-app link">
+                </div>
+                <div class="input-group">
+                  <label for="notif-link-text"><i class="fa-solid fa-arrow-pointer"></i> Button Text</label>
+                  <input type="text" id="notif-link-text" placeholder="e.g. Join Telegram / Check Update">
                 </div>
               </div>
               <div class="input-group">
                 <label for="notif-message"><i class="fa-solid fa-message"></i> Message Body *</label>
-                <textarea id="notif-message" rows="4" required placeholder="Enter announcement text to display in app notifications bell..."></textarea>
+                <textarea id="notif-message" rows="4" required placeholder="আপনার নোটিশ বা ঘোষণার বার্তা লিখুন..."></textarea>
               </div>
               <button type="submit" class="btn-primary glow">
                 <i class="fa-solid fa-paper-plane"></i>
-                <span>Broadcast Announcement</span>
+                <span>Broadcast Announcement & Popup</span>
               </button>
             </form>
           </div>
@@ -1763,6 +1780,19 @@
       </div>
       <div class="picker-list-container" id="picker-items-list">
         <!-- Dynamically populated -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 8b. ANNOUNCEMENT COMMENTS MODAL (FOR ADMIN) -->
+  <div id="admin-comments-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-card glass modal-md" style="max-height: 80vh; display: flex; flex-direction: column;">
+      <div class="modal-header">
+        <h3 id="admin-comments-title"><i class="fa-solid fa-comments text-cyan"></i> Announcement Comments</h3>
+        <button class="btn-close" onclick="closeAdminCommentsModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="admin-comments-list" style="overflow-y: auto; flex: 1; padding: 16px;">
+        <!-- Dynamically populated comments -->
       </div>
     </div>
   </div>

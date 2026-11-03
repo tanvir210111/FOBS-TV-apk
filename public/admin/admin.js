@@ -2331,16 +2331,42 @@ function renderNotificationsList() {
   }
 
   container.innerHTML = notifs.map(n => {
+    const commentsCount = Array.isArray(n.comments) ? n.comments.length : 0;
+    const isPopup = n.isPopup !== false;
+    const popupBadge = isPopup
+      ? `<span class="badge-status success" style="font-size: 11px; padding: 2px 8px; margin-left: 6px;"><i class="fa-solid fa-window-maximize"></i> App Popup Active</span>`
+      : `<span class="badge-status muted" style="font-size: 11px; padding: 2px 8px; margin-left: 6px;"><i class="fa-solid fa-bell-slash"></i> In-App List Only</span>`;
+
     return `
-      <div class="notif-card glass">
-        <div class="notif-main">
-          <h4><span class="notif-badge">${n.tag || 'System'}</span> ${n.title}</h4>
-          <p>${n.message}</p>
-          <small class="text-muted">${n.time || (n.createdAt ? new Date(n.createdAt).toLocaleDateString() : 'Active')}</small>
+      <div class="notif-card glass" style="margin-bottom: 12px; padding: 16px; border-radius: 12px;">
+        <div class="notif-main" style="flex: 1;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
+            <span class="notif-badge" style="background: rgba(0, 242, 254, 0.15); color: #00f2fe; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;">${n.tag || 'Notice'}</span>
+            ${popupBadge}
+            <small class="text-muted" style="margin-left: auto;">${n.time || (n.createdAt ? new Date(n.createdAt).toLocaleDateString() : 'Active')}</small>
+          </div>
+          <h4 style="margin: 0 0 6px 0; font-size: 15px; color: #fff;">${n.title}</h4>
+          ${n.image ? `<div style="margin-bottom: 8px;"><img src="${n.image}" alt="Banner" style="max-height: 100px; border-radius: 8px; max-width: 100%; object-fit: cover;"></div>` : ''}
+          <p style="margin: 0 0 10px 0; color: #94a3b8; font-size: 13px; line-height: 1.5;">${n.message}</p>
+          <div style="display: flex; align-items: center; gap: 14px; font-size: 13px;">
+            <span style="color: #00f2fe; display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-thumbs-up"></i> ${n.likes || 0}</span>
+            <span style="color: #f43f5e; display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-thumbs-down"></i> ${n.dislikes || 0}</span>
+            <span style="color: #c084fc; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="openAdminNotifCommentsModal('${n.id}')">
+              <i class="fa-solid fa-comments"></i> ${commentsCount} comments
+            </span>
+          </div>
         </div>
-        <button class="btn-table danger-btn" onclick="deleteNotification('${n.id}')" title="Delete Announcement">
-          <i class="fa-solid fa-trash"></i>
-        </button>
+        <div style="display: flex; flex-direction: column; gap: 6px; justify-content: center; margin-left: 12px;">
+          <button class="btn-table" onclick="toggleNotifPopup('${n.id}')" title="${isPopup ? 'Disable Popup' : 'Enable Popup'}" style="background: ${isPopup ? 'rgba(0, 242, 254, 0.2)' : 'rgba(255,255,255,0.06)'}; color: ${isPopup ? '#00f2fe' : '#94a3b8'};">
+            <i class="fa-solid fa-window-maximize"></i>
+          </button>
+          <button class="btn-table" onclick="openAdminNotifCommentsModal('${n.id}')" title="View Comments" style="color: #c084fc;">
+            <i class="fa-solid fa-comments"></i>
+          </button>
+          <button class="btn-table danger-btn" onclick="deleteNotification('${n.id}')" title="Delete Announcement">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
       </div>
     `;
   }).join('');
@@ -2351,22 +2377,100 @@ async function handleAnnouncementSubmit(e) {
   const title = document.getElementById('notif-title').value.trim();
   const message = document.getElementById('notif-message').value.trim();
   const tag = document.getElementById('notif-tag').value;
-  const link = document.getElementById('notif-link').value.trim();
+  const isPopup = document.getElementById('notif-popup') ? document.getElementById('notif-popup').checked : true;
+  const image = document.getElementById('notif-image') ? document.getElementById('notif-image').value.trim() : '';
+  const link = document.getElementById('notif-link') ? document.getElementById('notif-link').value.trim() : '';
+  const linkText = document.getElementById('notif-link-text') ? document.getElementById('notif-link-text').value.trim() : '';
 
   try {
     const res = await apiFetch('/api/admin/notifications', {
       method: 'POST',
-      body: JSON.stringify({ title, message, tag, link, time: 'Just now' })
+      body: JSON.stringify({ title, message, tag, isPopup, image, link, linkText, time: 'Just now' })
     });
 
     if (res.success) {
-      showToast('🎉 Broadcasted announcement to all app users!', 'success');
+      showToast('🎉 Broadcasted announcement & notice to all app users!', 'success');
       document.getElementById('announcement-form').reset();
+      if (document.getElementById('notif-popup')) document.getElementById('notif-popup').checked = true;
       await loadNotifications();
       renderNotificationsList();
     }
   } catch (err) {
     showToast(`Failed to broadcast: ${err.message}`, 'error');
+  }
+}
+
+async function toggleNotifPopup(id) {
+  try {
+    const res = await apiFetch(`/api/admin/notifications/${id}/toggle-popup`, { method: 'PATCH' });
+    if (res.success) {
+      showToast(`Popup mode ${res.isPopup ? 'enabled' : 'disabled'} for announcement`, 'success');
+      await loadNotifications();
+      renderNotificationsList();
+    }
+  } catch (err) {
+    showToast(`Failed to toggle popup: ${err.message}`, 'error');
+  }
+}
+
+let activeAdminCommentsNotifId = null;
+
+async function openAdminNotifCommentsModal(id) {
+  activeAdminCommentsNotifId = id;
+  const modal = document.getElementById('admin-comments-modal');
+  const listEl = document.getElementById('admin-comments-list');
+  const titleEl = document.getElementById('admin-comments-title');
+  if (!modal || !listEl) return;
+
+  const notif = (state.notifications || []).find(n => n.id === id);
+  if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-comments text-cyan"></i> Comments for "${notif ? notif.title : 'Announcement'}"`;
+
+  listEl.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> Loading comments...</div>';
+  modal.style.display = 'flex';
+
+  try {
+    const res = await apiFetch(`/api/announcements/${id}/comments`);
+    const comments = res.comments || [];
+    if (comments.length === 0) {
+      listEl.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 30px;">No comments posted on this announcement yet.</div>';
+      return;
+    }
+    listEl.innerHTML = comments.map(c => `
+      <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 10px;">
+        <img src="${c.avatar || 'assets/fobs_logo.png'}" alt="${c.name}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0;" onerror="this.src='assets/fobs_logo.png'">
+        <div style="flex: 1; min-width: 0;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <strong style="color: #fff; font-size: 13px;">${c.name}</strong>
+            <small style="color: #64748b; font-size: 11px;">${new Date(c.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</small>
+          </div>
+          <p style="margin: 0; color: #cbd5e1; font-size: 13px; line-height: 1.4;">${c.text}</p>
+        </div>
+        <button class="btn-table danger-btn" onclick="deleteAdminNotifComment('${id}', '${c.id}')" title="Delete comment" style="padding: 4px 8px; font-size: 11px;">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+    `).join('');
+  } catch (err) {
+    listEl.innerHTML = `<div style="color: #f43f5e; padding: 20px;">Failed to load comments: ${err.message}</div>`;
+  }
+}
+
+function closeAdminCommentsModal() {
+  const modal = document.getElementById('admin-comments-modal');
+  if (modal) modal.style.display = 'none';
+  activeAdminCommentsNotifId = null;
+}
+
+async function deleteAdminNotifComment(notifId, commentId) {
+  if (!confirm('Delete this user comment?')) return;
+  try {
+    await apiFetch(`/api/admin/notifications/${notifId}/comments/${commentId}`, { method: 'DELETE' });
+    showToast('Comment deleted', 'success');
+    await loadNotifications();
+    renderNotificationsList();
+    openAdminNotifCommentsModal(notifId);
+  } catch (err) {
+    showToast(`Failed to delete comment: ${err.message}`, 'error');
   }
 }
 

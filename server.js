@@ -2377,6 +2377,52 @@ app.get('/api/notifications', (req, res) => {
   }
 });
 
+// Active Announcement Popup for In-App Broadcast
+app.get('/api/announcements/popup', (req, res) => {
+  try {
+    const userId = req.query.userId || req.headers['x-user-id'] || req.ip;
+    const result = adminService.getActivePopupNotification(userId);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// React (Like / Dislike) to Announcement
+app.post('/api/announcements/:id/react', (req, res) => {
+  try {
+    const { id } = req.params;
+    const { type, userId } = req.body;
+    const effectiveUserId = userId || req.headers['x-user-id'] || req.ip;
+    const result = adminService.reactToNotification(id, effectiveUserId, type);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Get comments for an announcement
+app.get('/api/announcements/:id/comments', (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = adminService.getNotificationComments(id);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Post comment on an announcement
+app.post('/api/announcements/:id/comments', (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = adminService.addNotificationComment(id, req.body);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // ============================================================
 // REAL-TIME VIEW ENGINE & ACTIVE VIEWERS (REDIS)
 // ============================================================
@@ -2983,6 +3029,26 @@ app.post('/api/admin/notifications', adminService.authenticate, (req, res) => {
 app.delete('/api/admin/notifications/:id', adminService.authenticate, (req, res) => {
   try {
     const result = adminService.deleteNotification(req.params.id);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Toggle Popup active on/off
+app.patch('/api/admin/notifications/:id/toggle-popup', adminService.authenticate, (req, res) => {
+  try {
+    const result = adminService.toggleNotificationPopup(req.params.id);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Delete comment on announcement
+app.delete('/api/admin/notifications/:id/comments/:commentId', adminService.authenticate, (req, res) => {
+  try {
+    const result = adminService.deleteNotificationComment(req.params.id, req.params.commentId);
     res.json(result);
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
