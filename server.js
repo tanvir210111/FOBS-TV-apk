@@ -1889,7 +1889,9 @@ app.get('/api/download', async (req, res) => {
     } catch(e) {}
   }
 
-  // If still a relative MovieBox route, resolve it directly to the real CDN URL
+  const reqQ = parseInt(req.query.q || req.query.quality || '0', 10);
+
+  // If still a relative MovieBox route, resolve it directly to the real CDN URL for the requested quality
   if (resolvedUrl.includes('/api/moviebox/stream')) {
     try {
       const urlObj = new URL(resolvedUrl, 'https://fobstv.duckdns.org');
@@ -1897,9 +1899,19 @@ app.get('/api/download', async (req, res) => {
       const detailPath = urlObj.searchParams.get('path') || getMovieBoxDetailPath(id) || '';
       const se = parseInt(urlObj.searchParams.get('se') || '1', 10);
       const ep = parseInt(urlObj.searchParams.get('ep') || '1', 10);
+      const urlQ = parseInt(urlObj.searchParams.get('q') || urlObj.searchParams.get('quality') || '0', 10);
+      const targetRes = reqQ > 0 ? reqQ : urlQ;
+
       const media = await movieboxService.resolveMedia(id, detailPath, se, ep);
-      if (media && media.streamUrl) {
-        resolvedUrl = media.streamUrl;
+      if (media) {
+        if (targetRes > 0 && Array.isArray(media.qualities) && media.qualities.length > 0) {
+          const matchedQ = media.qualities.find(q => parseInt(q.resolution, 10) === targetRes)
+                        || media.qualities.find(q => parseInt(q.resolution, 10) <= targetRes)
+                        || media.qualities[media.qualities.length - 1];
+          resolvedUrl = matchedQ?.url || media.streamUrl;
+        } else if (media.streamUrl) {
+          resolvedUrl = media.streamUrl;
+        }
       }
     } catch(e) {}
   }

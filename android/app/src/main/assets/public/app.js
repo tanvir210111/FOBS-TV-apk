@@ -7630,19 +7630,45 @@ function confirmStartDownload() {
     return;
   }
 
+  const targetResNum = parseInt(currentDownloadQuality, 10) || 480;
   let finalDownloadUrl = pending.url;
-  if (currentDownloadQuality === '1080P' && pending.title && pending.title.toLowerCase().includes('dive into you')) {
-    const epMatch = pending.title.match(/Ep(?:isode)?\s*(\d+)/i);
-    const epNum = epMatch ? epMatch[1] : '1';
-    finalDownloadUrl = `/api/moviebox/stream?id=3870036899930730728&se=1&ep=${epNum}`;
-  } else if (currentDownloadQuality === '480P' && pending.title && pending.title.toLowerCase().includes('dive into you')) {
-    const epMatch = pending.title.match(/Ep(?:isode)?\s*(\d+)/i);
-    const epNum = epMatch ? epMatch[1] : '1';
-    finalDownloadUrl = `/api/moviebox/stream?id=1932866268428649968&se=1&ep=${epNum}`;
+
+  // 1. Check if appState.availableQualities has an exact match for selected resolution
+  if (Array.isArray(appState.availableQualities) && appState.availableQualities.length > 0) {
+    const matched = appState.availableQualities.find(q => parseInt(q.resolution, 10) === targetResNum);
+    if (matched && (matched.proxyUrl || matched.url)) {
+      finalDownloadUrl = matched.proxyUrl || matched.url;
+    }
+  }
+
+  // 2. Check if active media/episode servers list has the matching quality
+  const media = appState.currentMedia;
+  const isSeries = media && (media.type === 'series' || (media.seasons && media.seasons.length > 0) || pending.isSeries);
+  const activeObj = isSeries ? (appState.currentEpisode || (media?.seasons?.[0]?.episodes?.[0])) : media;
+  if (activeObj && Array.isArray(activeObj.servers)) {
+    const matchedServer = activeObj.servers.find(s => {
+      const qNum = parseInt(s.quality || '', 10);
+      const nameMatch = (s.name || '').includes(String(targetResNum));
+      return (qNum === targetResNum || nameMatch) && s.url;
+    });
+    if (matchedServer && matchedServer.url) {
+      finalDownloadUrl = matchedServer.url;
+    }
+  }
+
+  // 3. For MovieBox routes or subject IDs, attach &q=targetResNum so backend fetches that exact quality
+  if (finalDownloadUrl.includes('/api/moviebox/stream')) {
+    finalDownloadUrl = finalDownloadUrl.replace(/([?&])q=\d+/g, '');
+    finalDownloadUrl += (finalDownloadUrl.includes('?') ? '&' : '?') + `q=${targetResNum}`;
+  } else if (pending.subjectId) {
+    const seNum = pending.season || (isSeries ? (appState.currentSeasonNumber || 1) : 0);
+    const epNum = pending.episode || (isSeries ? (appState.currentEpisodeNumber || 1) : 0);
+    finalDownloadUrl = `/api/moviebox/stream?id=${encodeURIComponent(pending.subjectId)}&path=${encodeURIComponent(pending.detailPath || '')}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
   }
 
   downloadMedia(finalDownloadUrl, pending.title, {
     quality: currentDownloadQuality,
+    resolution: targetResNum,
     poster: pending.poster,
     mediaId: pending.mediaId,
     season: pending.season || appState.currentSeason || 1,
@@ -7769,8 +7795,9 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     const cleanSafeTitle = (title || 'video').replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_');
     let streamFetchUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
 
+    const qNum = options.resolution || parseInt(quality, 10) || 480;
     // Always route through /api/download proxy which handles upstream Referers, auto token refreshes, and Range slicing
-    const proxiedDownloadUrl = `${API_BASE_URL}/api/download?url=${encodeURIComponent(streamFetchUrl)}&title=${encodeURIComponent(cleanSafeTitle)}`;
+    const proxiedDownloadUrl = `${API_BASE_URL}/api/download?url=${encodeURIComponent(streamFetchUrl)}&q=${qNum}&title=${encodeURIComponent(cleanSafeTitle)}`;
 
     const fetchHeaders = {
       'Accept': 'video/mp4, video/*;q=0.9, */*;q=0.8'
@@ -8006,6 +8033,21 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
 
     console.error('In-app real download failed:', err);
     try {
+      // Save partial chunks to IndexedDB temp so user can retry from the exact byte and exact pixel!
+      const currentChunks = activeDownloadTasks[downloadId]?.chunks || [];
+      if (currentChunks.length > 0) {
+        const partialBlob = new Blob(currentChunks, { type: 'video/mp4' });
+        await saveOfflineMedia({
+          id: 'temp_' + downloadId,
+          chunks: partialBlob,
+          receivedBytes: activeDownloadTasks[downloadId]?.receivedBytes || 0,
+          totalBytes: activeDownloadTasks[downloadId]?.totalBytes || 0,
+          quality: quality
+        });
+      }
+    } catch (saveErr) {}
+
+    try {
       const curDownloads = getStoredDownloadsList();
       const item = curDownloads.find(d => d.id === downloadId);
       if (item) {
@@ -8081,14 +8123,18 @@ async function retryDownload(id, e) {
   const item = downloads.find(d => d.id === id);
   if (!item) return;
 
+  const currentQuality = item.quality || item.options?.quality || '480P';
+  const progressPercent = item.progress || 0;
+
   item.status = 'downloading';
   item.failed = false;
   item.paused = false;
-  item.statusText = 'Connecting...';
+  item.statusText = progressPercent > 0 ? `Resuming ${currentQuality} (${progressPercent}%)...` : `Connecting ${currentQuality}...`;
   localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
   renderDownloadsList();
 
-  downloadMedia(item.url, item.title, item.options || {}, id);
+  showToast(`🔄 ${currentQuality} এ যেখান থেকে থেমেছিল সেখান থেকেই ডাউনলোড চালু হচ্ছে (${progressPercent}%)...`);
+  downloadMedia(item.url, item.title, item.options || { quality: currentQuality }, id);
 }
 window.retryDownload = retryDownload;
 
