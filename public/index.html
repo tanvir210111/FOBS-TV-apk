@@ -13,14 +13,22 @@
     html {
       background-color: #020c1c !important;
       overflow-x: hidden;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
+      height: auto;
+      min-height: 100%;
     }
     body {
       margin: 0;
       padding: 0;
       background-color: #020c1c;
-      overflow-x: hidden;
-      overflow-y: auto !important;
+      overflow-x: clip;
+      overflow-y: visible !important;
       -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
+      height: auto;
+      min-height: 100%;
     }
     .player-view-overlay,
     #playerOverlay {
@@ -70,12 +78,12 @@
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest" defer></script>
 </head>
 
-<body class="intro-active">
+<body>
 
   <!-- ============================================== -->
   <!-- APP STARTUP CINEMATIC INTRO VIDEO SPLASH       -->
   <!-- ============================================== -->
-  <div id="appIntroOverlay" class="app-intro-overlay">
+  <div id="appIntroOverlay" class="app-intro-overlay" onclick="finishIntroAndShowApp()" style="cursor: pointer;">
     <video id="appIntroVideo" class="app-intro-video" autoplay muted playsinline webkit-playsinline preload="auto">
       <source src="assets/intro.mp4" type="video/mp4">
     </video>

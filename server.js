@@ -1288,22 +1288,21 @@ app.get('/api/app-update', (req, res) => {
   const data = getContentData();
   const defaultUpdate = {
     enabled: true,
-    latestVersionCode: 10,
-    latestVersionName: '3.1.2',
-    minVersionCode: 9,
-    forceUpdate: true,
-    title: 'New FOBS TV Update (v3.1.2) Available!',
-    message: 'FOBS TV-র নতুন v3.1.2 ভার্সন চলে এসেছে! নতুন সিনেমাটিক ইন্ট্রো ভিডিও, নতুন লোগো, বড় সার্চ বার এবং অফলাইন ডাউনলোড ও সাবটাইটেল ফিক্সড।',
+    latestVersionCode: 11,
+    latestVersionName: '3.1.3',
+    minVersionCode: 11,
+    forceUpdate: false,
+    title: 'New FOBS TV Update (v3.1.3) Available!',
+    message: 'FOBS TV-র নতুন v3.1.3 ভার্সন চলে এসেছে! নতুন রেট্রো লোগো, ফুলস্ক্রিন ফিক্স এবং বাটার-স্মুথ স্ক্রলিং আপডেট।',
     releaseNotes: [
-      '🎬 নতুন সিনেমাটিক ইন্ট্রো ভিডিও ও ব্যাকগ্রাউন্ড রিফ্রেশ',
-      '📺 নতুন রেট্রো FOBS TV লোগো ও ব্র্যান্ডিং',
-      '🔍 বড় সার্চ বার (Wide Search Bar) - দ্রুত মুভি/সিরিজ খুঁজুন',
-      '📥 অফলাইন ভিডিও ডাউনলোড ও প্লেয়ার সম্পূর্ণ ফিক্সড',
-      '💬 বাংলা এআই সাবটাইটেল সব পর্বে আলাদা ও নিখুঁত সিঙ্ক'
+      '📺 নতুন অফিশিয়াল রেট্রো লোগো (Jerry Retro TV)',
+      '⚡ বাটার-স্মুথ টাচ স্ক্রলিং সম্পূর্ণ ফিক্সড',
+      '🎬 সিনেমাটিক ইন্ট্রো ট্যাপ-টু-স্কিপ সাপোর্ট',
+      '📥 অফলাইন ভিডিও ডাউনলোড ও প্লেয়ার আপডেট'
     ],
-    downloadUrl: 'https://fobs-apk-download.vercel.app/',
+    downloadUrl: '/download/apk',
     fallbackUrl: 'https://fobs-apk-download.vercel.app/',
-    fileSize: '6.1 MB'
+    fileSize: '8.7 MB'
   };
     res.json(data.appUpdate || defaultUpdate);
 });

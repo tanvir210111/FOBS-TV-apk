@@ -13,7 +13,7 @@
       "হেডারে নতুন লোগো ও ক্লিন লুক",
       "অফলাইন ডাউনলোড ও রেজ্যুম সাপোর্ট"
     ],
-    "downloadUrl": "https://fobs-apk-download.vercel.app/",
+    "downloadUrl": "/download/apk",
     "fallbackUrl": "https://fobs-apk-download.vercel.app/",
     "fileSize": "6.1 MB"
   },

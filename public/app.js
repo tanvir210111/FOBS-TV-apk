@@ -430,6 +430,10 @@ function playAppIntroAndSync() {
     loadSeedContent().catch(() => {});
   }
 
+  // Allow user to tap/touch screen anywhere to immediately enter app without waiting
+  overlay.addEventListener('click', () => finishIntroAndShowApp(), { passive: true });
+  overlay.addEventListener('touchstart', () => finishIntroAndShowApp(), { passive: true });
+
   // Start intro video playback smoothly without stutter
   video.currentTime = 0;
   video.muted = true;
@@ -481,12 +485,12 @@ function playAppIntroAndSync() {
     }
   })();
 
-  // Failsafe timeout: Max 8.8 seconds (video is ~7.9s)
+  // Failsafe timeout: Max 5.5 seconds (or ends when video ends)
   setTimeout(() => {
     if (!_introFinished) {
       finishIntroAndShowApp();
     }
-  }, 8800);
+  }, 5500);
 }
 window.playAppIntroAndSync = playAppIntroAndSync;
 
@@ -507,10 +511,11 @@ function finishIntroAndShowApp() {
   }
 
   document.body.classList.remove('intro-active');
-  document.body.style.overflow = '';
-  document.body.style.overflowY = 'auto';
-  document.documentElement.style.overflow = '';
-  document.documentElement.style.overflowY = 'auto';
+  document.body.style.setProperty('overflow', 'visible', 'important');
+  document.body.style.setProperty('overflow-x', 'clip', 'important');
+  document.body.style.setProperty('overflow-y', 'visible', 'important');
+  document.documentElement.style.setProperty('overflow-x', 'hidden', 'important');
+  document.documentElement.style.setProperty('overflow-y', 'auto', 'important');
 
   if (overlay) {
     overlay.classList.add('fade-out');
@@ -523,7 +528,7 @@ function finishIntroAndShowApp() {
         overlay.remove();
       }
     } catch (_) {
-      overlay.style.display = 'none';
+      try { overlay.remove(); } catch (e) {}
     }
   }
 
