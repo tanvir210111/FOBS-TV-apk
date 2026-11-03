@@ -40,10 +40,17 @@ class SubtitleService {
 
     // 0. Check local bundled subtitles
     const normalizedName = cleanTitle.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
-    const localBnFiles = [
-      `${normalizedName}_${year || ''}_bn.vtt`.replace(/__+/g, '_'),
-      `${normalizedName}_bn.vtt`
-    ];
+    const localBnFiles = isMovie
+      ? [
+          `${normalizedName}_${year || ''}_bn.vtt`.replace(/__+/g, '_'),
+          `${normalizedName}_bn.vtt`
+        ]
+      : [
+          `${normalizedName}_s${seNum}_ep${epNum}_bn.vtt`,
+          `${normalizedName}_s${seNum}_e${epNum}_bn.vtt`,
+          `${normalizedName}_ep${epNum}_bn.vtt`,
+          `${normalizedName}_e${epNum}_bn.vtt`
+        ];
     for (const f of localBnFiles) {
       const p = path.join(__dirname, '..', 'public', 'subtitles', f);
       if (fs.existsSync(p)) {
@@ -277,14 +284,15 @@ class SubtitleService {
         results.bangla.push(...benSubs);
       }
 
-      // Fallback search without season filter if zero bangla subtitles found
-      if (results.bangla.length === 0 && seNum > 0) {
+      // Only for movies do we fallback search without season/episode filter
+      // (For series, searching without season/episode incorrectly attaches Episode 1 subtitle to all episodes!)
+      if (isMovie && results.bangla.length === 0) {
         const fallbackBen = await searchOs('ben', false);
         if (fallbackBen && fallbackBen.length > 0) {
           results.bangla.push(...fallbackBen);
         }
       }
-      if (results.english.length === 0 && seNum > 0) {
+      if (isMovie && results.english.length === 0) {
         const fallbackEng = await searchOs('eng', false);
         if (fallbackEng && fallbackEng.length > 0) {
           results.english.push(...fallbackEng);
@@ -462,7 +470,7 @@ class SubtitleService {
     const subtitlesDir = path.join(__dirname, '..', 'data', 'subtitles');
     if (!fs.existsSync(subtitlesDir)) fs.mkdirSync(subtitlesDir, { recursive: true });
 
-    const safeHash = crypto.createHash('md5').update(sourceUrl || cacheKey || 'unknown').digest('hex');
+    const safeHash = crypto.createHash('md5').update(`${cacheKey || ''}__${sourceUrl || 'unknown'}`).digest('hex');
     const diskFile = path.join(subtitlesDir, `bn_ai_${safeHash}.vtt`);
 
     if (fs.existsSync(diskFile)) {

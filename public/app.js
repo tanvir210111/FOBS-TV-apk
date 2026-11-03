@@ -3072,7 +3072,10 @@ function switchSeason(seasonNumber) {
 
   const episodes = getActiveSeasonEpisodes(appState.currentMedia);
   appState.currentEpisode = episodes[0] || null;
+  appState.currentEpisodeIndex = 0;
+  appState.currentEpisodeNumber = (episodes[0]?.episode ?? episodes[0]?.episodeNumber ?? episodes[0]?.number ?? 1);
   appState.activeServerIndex = 0;
+  setupSubtitlesForMedia(appState.currentMedia);
   renderEpisodePills(episodes, 0);
   renderServerPills(appState.currentMedia);
 
@@ -3319,6 +3322,8 @@ function openPlayer(media, episodeIndex = 0) {
   if (isSeries && activeEpisodes && activeEpisodes.length > 0) {
     if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'block';
     appState.currentEpisode = activeEpisodes[episodeIndex] || activeEpisodes[0];
+    appState.currentEpisodeIndex = episodeIndex;
+    appState.currentEpisodeNumber = (appState.currentEpisode?.episode ?? appState.currentEpisode?.episodeNumber ?? appState.currentEpisode?.number ?? (episodeIndex + 1));
     appState.activeServerIndex = 0;
     renderEpisodePills(activeEpisodes, episodeIndex);
     renderServerPills(media);
@@ -3433,6 +3438,8 @@ function selectEpisode(idx) {
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = null;
   appState.currentEpisode = currentEpisodes[idx];
+  appState.currentEpisodeIndex = idx;
+  appState.currentEpisodeNumber = (currentEpisodes[idx]?.episode ?? currentEpisodes[idx]?.episodeNumber ?? currentEpisodes[idx]?.number ?? (idx + 1));
   appState.activeServerIndex = 0;
   setupSubtitlesForMedia(appState.currentMedia);
   renderEpisodePills(currentEpisodes, idx);
@@ -4710,13 +4717,19 @@ async function setupSubtitlesForMedia(media) {
   const cleanTitle = (media.title || '').replace(/\[.*?\]|\(.*?\)/g, '').trim();
   const isSeries = media.type === 'series' || media.isSeries || (media.seasons && media.seasons.length > 0) || (media.totalEpisodes > 1);
   const season = isSeries ? (appState.currentSeason || 1) : 0;
-  const ep = isSeries ? (appState.currentEpisode ? appState.currentEpisode.number : 1) : 0;
+
   const currentEp = appState.currentEpisode;
+  const rawEpNum = currentEp ? (currentEp.episode ?? currentEp.episodeNumber ?? currentEp.number ?? (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1)) : 1;
+  const parsedEp = parseInt(String(rawEpNum).replace(/^ep\s*/i, ''), 10);
+  const ep = isSeries ? (!isNaN(parsedEp) && parsedEp > 0 ? parsedEp : 1) : 0;
 
   const tracks = [];
 
   // 1. Direct embedded captions from active Episode / Media (Instant & 100% Reliable)
-  const directCaps = currentEp?.captions || currentEp?.subtitles || media.captions || media.subtitles || [];
+  // For series, never use whole-media captions as they belong to Episode 1 or whole show
+  const directCaps = isSeries
+    ? (currentEp?.captions || currentEp?.subtitles || [])
+    : (media.captions || media.subtitles || currentEp?.captions || []);
   if (Array.isArray(directCaps) && directCaps.length > 0) {
     directCaps.forEach((c, idx) => {
       const langLower = (c.label || c.srclang || c.language || '').toLowerCase();
@@ -7282,7 +7295,9 @@ function confirmStartDownload(target = 'in-app') {
   downloadMedia(finalDownloadUrl, pending.title, {
     quality: currentDownloadQuality,
     poster: pending.poster,
-    mediaId: pending.mediaId
+    mediaId: pending.mediaId,
+    season: pending.season || appState.currentSeason || 1,
+    episode: pending.episode || pending.episodeNumber || appState.currentEpisodeNumber || 1
   });
 
   closeDownloadOptionsModal();
@@ -7449,7 +7464,9 @@ async function downloadMedia(url, title, options = {}) {
         try {
           const enUrl = enSub.url || enSub.downloadUrl;
           const cleanT = (title || '').replace(/\[.*?\]|\(.*?\)/g, '').replace(/ - Ep.*/i, '').trim();
-          const aiUrl = `${API_BASE_URL}/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanT)}&season=0&episode=0`;
+          const dlSe = options.season || 0;
+          const dlEp = options.episode || 0;
+          const aiUrl = `${API_BASE_URL}/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanT)}&season=${dlSe}&episode=${dlEp}`;
           const aiRes = await fetch(aiUrl);
           if (aiRes.ok) bnVttText = await aiRes.text();
         } catch(aiErr) {}
