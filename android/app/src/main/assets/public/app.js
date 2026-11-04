@@ -255,7 +255,7 @@ async function submitSimpleLogin() {
   }
 
   try {
-    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.3');
+    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.4');
     const res = await fetch(`${API_BASE_URL}/api/auth/simple-login`, {
       method: 'POST',
       headers: {
@@ -350,8 +350,8 @@ const CACHE_TTL_MS = 60 * 1000; // 1 minute TTL
 let isSyncing = false;
 
 // App Versioning & In-App Force Update Configuration
-const CURRENT_APP_VERSION_CODE = 11;
-const CURRENT_APP_VERSION_NAME = '3.1.3';
+const CURRENT_APP_VERSION_CODE = 12;
+const CURRENT_APP_VERSION_NAME = '3.1.4';
 window.CURRENT_APP_VERSION_CODE = CURRENT_APP_VERSION_CODE;
 window.CURRENT_APP_VERSION_NAME = CURRENT_APP_VERSION_NAME;
 let currentAppUpdateConfig = null;
@@ -577,7 +577,7 @@ async function initApp() {
       pingViewerId = 'v_' + Math.random().toString(36).substring(2, 10);
       localStorage.setItem('fobs_viewer_uuid', pingViewerId);
     }
-    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.3');
+    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.4');
     fetch(`${API_BASE_URL}/api/app-ping`, {
       method: 'POST',
       headers: {
@@ -10685,8 +10685,20 @@ function checkAppUpdate(data) {
     return;
   }
 
-  // Strict guard: If running current v3.1.3 (versionCode >= latestVersionCode), NEVER show update modal
-  if (CURRENT_APP_VERSION_CODE >= updateInfo.latestVersionCode) {
+  // Get active installed version (from native Android bridge if available, or client constant)
+  let activeVersionCode = CURRENT_APP_VERSION_CODE;
+  let activeVersionName = CURRENT_APP_VERSION_NAME;
+  if (window.AndroidBridge && typeof window.AndroidBridge.getAppVersionCode === 'function') {
+    try {
+      const vc = window.AndroidBridge.getAppVersionCode();
+      if (typeof vc === 'number' && vc > 0) activeVersionCode = vc;
+      const vn = window.AndroidBridge.getAppVersionName();
+      if (vn) activeVersionName = vn;
+    } catch (e) {}
+  }
+
+  // Strict guard: If running current v3.1.4+ (versionCode >= latestVersionCode), NEVER show update modal
+  if (activeVersionCode >= updateInfo.latestVersionCode) {
     const modal = document.getElementById('appUpdateModal');
     if (modal) modal.classList.add('hidden');
     const headerBtn = document.getElementById('headerUpdateBtn');
@@ -10709,7 +10721,7 @@ function checkAppUpdate(data) {
     return;
   }
 
-  const isOutdated = updateInfo.latestVersionCode > CURRENT_APP_VERSION_CODE;
+  const isOutdated = updateInfo.latestVersionCode > activeVersionCode;
 
   const headerBtn = document.getElementById('headerUpdateBtn');
   if (headerBtn) {
@@ -10732,10 +10744,10 @@ function checkAppUpdate(data) {
     if (desc && updateInfo.message) desc.textContent = updateInfo.message;
 
     const currentTag = document.getElementById('currentVersionTag');
-    if (currentTag) currentTag.textContent = `v${CURRENT_APP_VERSION_NAME}`;
+    if (currentTag) currentTag.textContent = `v${activeVersionName || CURRENT_APP_VERSION_NAME}`;
 
     const latestTag = document.getElementById('latestVersionTag');
-    if (latestTag) latestTag.textContent = `v${updateInfo.latestVersionName || '3.1.3'}`;
+    if (latestTag) latestTag.textContent = `v${updateInfo.latestVersionName || '3.1.4'}`;
 
     const sizeTag = document.getElementById('updateFileSize');
     if (sizeTag && updateInfo.fileSize) sizeTag.textContent = updateInfo.fileSize;

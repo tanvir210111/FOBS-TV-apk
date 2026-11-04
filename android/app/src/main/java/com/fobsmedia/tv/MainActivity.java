@@ -350,6 +350,24 @@ public class MainActivity extends BridgeActivity {
         }
 
         @JavascriptInterface
+        public int getAppVersionCode() {
+            try {
+                return getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+            } catch (Exception e) {
+                return 12;
+            }
+        }
+
+        @JavascriptInterface
+        public String getAppVersionName() {
+            try {
+                return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            } catch (Exception e) {
+                return "3.1.4";
+            }
+        }
+
+        @JavascriptInterface
         public void setAudioBoost(int boostPercent) {
             // Handled cleanly via HTML5 video volume to avoid hardware audio conflicts
         }
