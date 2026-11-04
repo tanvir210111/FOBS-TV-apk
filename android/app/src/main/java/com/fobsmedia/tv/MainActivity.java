@@ -142,26 +142,9 @@ public class MainActivity extends BridgeActivity {
             try {
                 Window window = getWindow();
                 if (window != null) {
-                    // 1. Immediately read real system brightness setting and apply it to window
-                    try {
-                        int sysBrightness = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, -1);
-                        if (sysBrightness >= 0) {
-                            WindowManager.LayoutParams tempLp = new WindowManager.LayoutParams();
-                            tempLp.copyFrom(window.getAttributes());
-                            tempLp.screenBrightness = Math.max(0.01f, Math.min(1.0f, (float) sysBrightness / 255.0f));
-                            window.setAttributes(tempLp);
-                        }
-                    } catch (Exception ignored) {}
-
-                    // 2. Clear override so system auto-brightness manages window directly
-                    window.getDecorView().post(() -> {
-                        try {
-                            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                            lp.copyFrom(window.getAttributes());
-                            lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-                            window.setAttributes(lp);
-                        } catch (Exception ignored) {}
-                    });
+                    WindowManager.LayoutParams lp = window.getAttributes();
+                    lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+                    window.setAttributes(lp);
                 }
             } catch (Exception ignored) {}
         });
@@ -172,8 +155,7 @@ public class MainActivity extends BridgeActivity {
             try {
                 Window window = getWindow();
                 if (window != null) {
-                    WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                    lp.copyFrom(window.getAttributes());
+                    WindowManager.LayoutParams lp = window.getAttributes();
                     if (brightness < 0) {
                         lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
                     } else {
@@ -619,6 +601,14 @@ public class MainActivity extends BridgeActivity {
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        WindowCompat.setDecorFitsSystemWindows(window, true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            WindowManager.LayoutParams lp = window.getAttributes();
+            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT;
+            window.setAttributes(lp);
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             WindowInsetsController controller = window.getInsetsController();
             if (controller != null) {
@@ -707,21 +697,6 @@ public class MainActivity extends BridgeActivity {
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
         );
 
-        // Enable edge-to-edge drawing so window extends behind status bar, navigation bar, and display cutouts
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-
-        // Allow window to draw across camera cutout / notch edges in landscape without black bars
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-            lp.copyFrom(getWindow().getAttributes());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
-            } else {
-                lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
-            }
-            getWindow().setAttributes(lp);
-        }
-
         // Handle Android swipe back gesture & system back button
         backPressedCallback = new OnBackPressedCallback(true) {
             @Override
@@ -762,8 +737,7 @@ public class MainActivity extends BridgeActivity {
 
         getOnBackPressedDispatcher().addCallback(this, backPressedCallback);
 
-        // Consume cutout insets so DecorView doesn't add padding on the camera side,
-        // and keep bottom inset strictly at 0 so bottom navigation bar never shifts upwards.
+        // In portrait mode, keep bottom inset strictly at 0 so the bottom navigation bar never shifts/floats upwards.
         getWindow().getDecorView().setOnApplyWindowInsetsListener((v, insets) -> {
             v.post(() -> {
                 try {
@@ -776,13 +750,7 @@ public class MainActivity extends BridgeActivity {
                     }
                 } catch (Exception ignored) {}
             });
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                return WindowInsets.CONSUMED;
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                return insets.consumeDisplayCutout();
-            } else {
-                return insets.consumeSystemWindowInsets();
-            }
+            return insets;
         });
 
         configureWebViewIfNeeded();
