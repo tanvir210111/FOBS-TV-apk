@@ -262,6 +262,7 @@ function getMovieBoxDetailPath(id) {
   const sId = String(id).trim();
   if (sId.includes('1398752416195038344') || sId.includes('621608156268691750')) return 'final-table-a1G9iGEikF1';
   if (sId.includes('3292762350108954536')) return 'final-table-hindi-OjBf6HXSeV3';
+  if (sId.includes('579116273137862480')) return 'the-remarried-empress-aVOAhKemMG';
   if (sId.includes('809301786023658480')) return 'hidden-face-cegwEMRBMX';
   if (sId === '7956543182215725408') return 'take-charge-of-my-heart-hindi-oIO9IBe3Lt9';
   if (sId === '6040954039821651336') return 'colony-hindi-WrHlMwhDfc7';
@@ -1069,6 +1070,10 @@ app.get('/api/moviebox/stream', async (req, res) => {
     if (String(id).includes('3292762350108954536') || String(id).includes('316702')) {
       id = '3292762350108954536';
       resolvedPath = 'final-table-hindi-OjBf6HXSeV3';
+    }
+    if (String(id).includes('579116273137862480')) {
+      id = '579116273137862480';
+      resolvedPath = 'the-remarried-empress-aVOAhKemMG';
     }
     if (String(id).includes('621608156268691750') || String(id).includes('1398752416195038344')) {
       id = '1398752416195038344';
