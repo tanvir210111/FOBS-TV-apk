@@ -77,10 +77,10 @@ body {
   z-index: 40;
   background-color: rgba(15, 16, 21, 0.95);
   backdrop-filter: blur(12px);
-  padding-top: max(10px, env(safe-area-inset-top, 0px));
-  padding-right: max(14px, env(safe-area-inset-right, 14px));
+  padding-top: 8px;
+  padding-right: 14px;
   padding-bottom: 8px;
-  padding-left: max(14px, env(safe-area-inset-left, 14px));
+  padding-left: 14px;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -310,10 +310,10 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding-top: max(12px, calc(env(safe-area-inset-top, 0px) + 8px));
-  padding-right: max(14px, env(safe-area-inset-right, 14px));
-  padding-bottom: 12px;
-  padding-left: max(14px, env(safe-area-inset-left, 14px));
+  padding-top: 10px;
+  padding-right: 14px;
+  padding-bottom: 10px;
+  padding-left: 14px;
   background: rgba(13, 14, 20, 0.96);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -3141,8 +3141,16 @@ body.is-fullscreen #playerTopHeader {
 body.is-fullscreen .video-container {
   position: fixed !important;
   inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
   z-index: 1000000 !important;
   background: #000 !important;
 }
@@ -6695,7 +6703,7 @@ body.is-fullscreen .ls-bottom-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: max(12px, calc(env(safe-area-inset-top, 0px) + 8px)) 16px 14px 16px;
+  padding: 12px 16px 14px 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   background: #0d0f14;
   position: sticky;
@@ -8983,7 +8991,7 @@ body.is-fullscreen #subtitleModal .subtitle-modal-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: max(12px, calc(env(safe-area-inset-top, 0px) + 8px)) 18px 16px 18px;
+  padding: 12px 18px 16px 18px;
   background: rgba(18, 20, 28, 0.96);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
