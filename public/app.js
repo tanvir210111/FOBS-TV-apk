@@ -255,7 +255,7 @@ async function submitSimpleLogin() {
   }
 
   try {
-    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.4');
+    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.5');
     const res = await fetch(`${API_BASE_URL}/api/auth/simple-login`, {
       method: 'POST',
       headers: {
@@ -350,8 +350,8 @@ const CACHE_TTL_MS = 60 * 1000; // 1 minute TTL
 let isSyncing = false;
 
 // App Versioning & In-App Force Update Configuration
-const CURRENT_APP_VERSION_CODE = 12;
-const CURRENT_APP_VERSION_NAME = '3.1.4';
+const CURRENT_APP_VERSION_CODE = 13;
+const CURRENT_APP_VERSION_NAME = '3.1.5';
 window.CURRENT_APP_VERSION_CODE = CURRENT_APP_VERSION_CODE;
 window.CURRENT_APP_VERSION_NAME = CURRENT_APP_VERSION_NAME;
 let currentAppUpdateConfig = null;
@@ -577,7 +577,7 @@ async function initApp() {
       pingViewerId = 'v_' + Math.random().toString(36).substring(2, 10);
       localStorage.setItem('fobs_viewer_uuid', pingViewerId);
     }
-    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.4');
+    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.5');
     fetch(`${API_BASE_URL}/api/app-ping`, {
       method: 'POST',
       headers: {
@@ -10681,7 +10681,7 @@ function checkAppUpdate(data) {
     } catch (e) {}
   }
 
-  // Strict guard: If running current v3.1.4+ (versionCode >= latestVersionCode), NEVER show update modal
+  // Strict guard: If running current v3.1.5+ (versionCode >= latestVersionCode), NEVER show update modal
   if (activeVersionCode >= updateInfo.latestVersionCode) {
     const modal = document.getElementById('appUpdateModal');
     if (modal) modal.classList.add('hidden');
@@ -10731,7 +10731,7 @@ function checkAppUpdate(data) {
     if (currentTag) currentTag.textContent = `v${activeVersionName || CURRENT_APP_VERSION_NAME}`;
 
     const latestTag = document.getElementById('latestVersionTag');
-    if (latestTag) latestTag.textContent = `v${updateInfo.latestVersionName || '3.1.4'}`;
+    if (latestTag) latestTag.textContent = `v${updateInfo.latestVersionName || '3.1.5'}`;
 
     const sizeTag = document.getElementById('updateFileSize');
     if (sizeTag && updateInfo.fileSize) sizeTag.textContent = updateInfo.fileSize;

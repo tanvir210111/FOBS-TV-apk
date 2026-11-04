@@ -1312,21 +1312,21 @@ app.get('/api/app-update', (req, res) => {
   const data = getContentData();
   const defaultUpdate = {
     enabled: true,
-    latestVersionCode: 11,
-    latestVersionName: '3.1.3',
-    minVersionCode: 11,
-    forceUpdate: true,
-    title: 'জরুরি আপডেট: FOBS TV v3.1.3',
-    message: 'FOBS TV-র নতুন v3.1.3 ভার্সন চলে এসেছে! আপনার মোবাইলে থাকা আগের অ্যাপটি আনইনস্টল (Uninstall) করে নিচের লিংক থেকে নতুন v3.1.3 অ্যাপটি ডাউনলোড করে ইনস্টল করুন।',
+    latestVersionCode: 13,
+    latestVersionName: '3.1.5',
+    minVersionCode: 13,
+    forceUpdate: false,
+    title: 'জরুরি আপডেট: FOBS TV v3.1.5',
+    message: 'নতুন v3.1.5 এ স্ক্রিন ব্রাইটনেস ও মুভি ডাউনলোড সমস্যার স্থায়ী সমাধান করা হয়েছে! নিচের বাটন থেকে আপডেট করে নিন।',
     releaseNotes: [
-      '⚠️ আগের অ্যাপটি আনইনস্টল (Uninstall) করে নতুন v3.1.3 ইনস্টল করুন',
-      '⚡ ইনস্ট্যান্ট ভিডিও প্লেব্যাক ও বাফারিং অপ্টিমাইজেশন',
-      '📺 নতুন রেট্রো লোগো এবং ফুলস্ক্রিন সোয়াইপ কন্ট্রোল',
-      '📥 অফলাইন ভিডিও ডাউনলোড ও অটো-রিজিউম আপডেট'
+      '☀️ প্লেয়ার স্ক্রিন হার্ডওয়্যার ব্রাইটনেস কন্ট্রোল ও কালার ওয়াশ ফিক্স',
+      '📥 মুভি/সিরিজ ডাউনলোড Reconnecting এরর ফিক্স',
+      '⚡ সুপারফাস্ট অফলাইন ভিডিও ডাউনলোড ও প্লেব্যাক',
+      '🛡️ সম্পূর্ণ ক্লিন প্যাকেজ ও গুগল প্লে প্রোটেক্ট ভেরিফাইড'
     ],
     downloadUrl: 'https://fobs-apk-download.vercel.app/',
     fallbackUrl: 'https://fobs-apk-download.vercel.app/',
-    fileSize: '9.2 MB'
+    fileSize: '7.20 MB'
   };
     res.json(data.appUpdate || defaultUpdate);
 });

@@ -1,21 +1,21 @@
 {
   "appUpdate": {
     "enabled": true,
-    "latestVersionCode": 12,
-    "latestVersionName": "3.1.4",
-    "minVersionCode": 12,
-    "forceUpdate": true,
-    "title": "জরুরি আপডেট: FOBS TV v3.1.4",
-    "message": "Play Protect সমস্যা স্থায়ীভাবে সমাধান করা হয়েছে! আগের অ্যাপটি আনইনস্টল (Uninstall) করে নিচের লিংক থেকে নতুন v3.1.4 অ্যাপটি ইনস্টল করুন।",
+    "latestVersionCode": 13,
+    "latestVersionName": "3.1.5",
+    "minVersionCode": 13,
+    "forceUpdate": false,
+    "title": "জরুরি আপডেট: FOBS TV v3.1.5",
+    "message": "নতুন v3.1.5 এ স্ক্রিন ব্রাইটনেস ও মুভি ডাউনলোড সমস্যার স্থায়ী সমাধান করা হয়েছে! নিচের বাটন থেকে আপডেট করে নিন।",
     "releaseNotes": [
-      "🛡️ Google Play Protect ব্লকিং সম্পূর্ণ সমাধান",
-      "💬 কোরিয়ান সিরিজ বাংলা সাবটাইটেল সিঙ্ক ও টাইমিং ফিক্স (+ / -)",
-      "🎨 সাবটাইটেল ব্যাকগ্রাউন্ড কালার চেঞ্জ ও অন/অফ সুইচ",
-      "📺 এক এপিসোডের সাবটাইটেল অন্য এপিসোডে না আসার ফিক্স"
+      "☀️ প্লেয়ার স্ক্রিন হার্ডওয়্যার ব্রাইটনেস কন্ট্রোল ও কালার ওয়াশ ফিক্স",
+      "📥 মুভি/সিরিজ ডাউনলোড Reconnecting এরর ফিক্স",
+      "⚡ সুপারফাস্ট অফলাইন ভিডিও ডাউনলোড ও প্লেব্যাক",
+      "🛡️ সম্পূর্ণ ক্লিন প্যাকেজ ও গুগল প্লে প্রোটেক্ট ভেরিফাইড"
     ],
     "downloadUrl": "https://fobs-apk-download.vercel.app/",
     "fallbackUrl": "https://fobs-apk-download.vercel.app/",
-    "fileSize": "7.8 MB"
+    "fileSize": "7.20 MB"
   },
   "featured": {
     "id": "mb-s-3292762350108954536",
