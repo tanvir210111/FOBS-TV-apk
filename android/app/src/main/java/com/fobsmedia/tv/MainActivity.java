@@ -142,9 +142,23 @@ public class MainActivity extends BridgeActivity {
             try {
                 Window window = getWindow();
                 if (window != null) {
-                    WindowManager.LayoutParams lp = window.getAttributes();
+                    WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                    lp.copyFrom(window.getAttributes());
                     lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
                     window.setAttributes(lp);
+                    View decor = window.getDecorView();
+                    if (decor != null) {
+                        decor.postInvalidate();
+                        decor.requestLayout();
+                        decor.postDelayed(() -> {
+                            try {
+                                WindowManager.LayoutParams delayedLp = new WindowManager.LayoutParams();
+                                delayedLp.copyFrom(window.getAttributes());
+                                delayedLp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+                                window.setAttributes(delayedLp);
+                            } catch (Exception ignored) {}
+                        }, 120);
+                    }
                 }
             } catch (Exception ignored) {}
         });
@@ -155,7 +169,8 @@ public class MainActivity extends BridgeActivity {
             try {
                 Window window = getWindow();
                 if (window != null) {
-                    WindowManager.LayoutParams lp = window.getAttributes();
+                    WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                    lp.copyFrom(window.getAttributes());
                     if (brightness < 0) {
                         lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
                     } else {
@@ -603,11 +618,13 @@ public class MainActivity extends BridgeActivity {
 
         WindowCompat.setDecorFitsSystemWindows(window, true);
 
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(window.getAttributes());
+        lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            WindowManager.LayoutParams lp = window.getAttributes();
             lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT;
-            window.setAttributes(lp);
         }
+        window.setAttributes(lp);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             WindowInsetsController controller = window.getInsetsController();

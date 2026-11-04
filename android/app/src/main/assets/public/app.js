@@ -6409,14 +6409,13 @@ function restoreSystemBrightness() {
 
   // Restore phone screen hardware brightness back to normal system default
   try {
-    const bridge = window.AndroidApp || window.AndroidBridge;
-    if (bridge) {
-      if (typeof bridge.resetWindowBrightness === 'function') {
-        bridge.resetWindowBrightness();
-      }
-      if (typeof bridge.setWindowBrightness === 'function') {
-        bridge.setWindowBrightness(-1);
-      }
+    if (window.AndroidApp) {
+      if (typeof window.AndroidApp.resetWindowBrightness === 'function') window.AndroidApp.resetWindowBrightness();
+      if (typeof window.AndroidApp.setWindowBrightness === 'function') window.AndroidApp.setWindowBrightness(-1);
+    }
+    if (window.AndroidBridge) {
+      if (typeof window.AndroidBridge.resetWindowBrightness === 'function') window.AndroidBridge.resetWindowBrightness();
+      if (typeof window.AndroidBridge.setWindowBrightness === 'function') window.AndroidBridge.setWindowBrightness(-1);
     }
   } catch (e) {}
 }
