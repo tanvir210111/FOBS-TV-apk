@@ -165,22 +165,9 @@ public class MainActivity extends BridgeActivity {
     }
 
     public void setWindowHardwareBrightness(float brightness) {
-        runOnUiThread(() -> {
-            try {
-                Window window = getWindow();
-                if (window != null) {
-                    WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                    lp.copyFrom(window.getAttributes());
-                    if (brightness < 0) {
-                        lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-                    } else {
-                        float safeBrightness = Math.max(0.01f, Math.min(1.0f, brightness));
-                        lp.screenBrightness = safeBrightness;
-                    }
-                    window.setAttributes(lp);
-                }
-            } catch (Exception ignored) {}
-        });
+        // Enforce BRIGHTNESS_OVERRIDE_NONE to guarantee Android OS and OEM auto-brightness
+        // are never locked or trapped, keeping system brightness 100% normal.
+        resetBrightnessToSystemDefault();
     }
 
     private class FullscreenWebChromeClient extends BridgeWebChromeClient {
