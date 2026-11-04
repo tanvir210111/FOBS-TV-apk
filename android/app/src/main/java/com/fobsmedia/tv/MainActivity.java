@@ -21,6 +21,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import androidx.core.app.NotificationCompat;
+import androidx.core.view.WindowCompat;
+import android.provider.Settings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import androidx.activity.OnBackPressedCallback;
@@ -140,10 +142,26 @@ public class MainActivity extends BridgeActivity {
             try {
                 Window window = getWindow();
                 if (window != null) {
-                    WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                    lp.copyFrom(window.getAttributes());
-                    lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-                    window.setAttributes(lp);
+                    // 1. Immediately read real system brightness setting and apply it to window
+                    try {
+                        int sysBrightness = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, -1);
+                        if (sysBrightness >= 0) {
+                            WindowManager.LayoutParams tempLp = new WindowManager.LayoutParams();
+                            tempLp.copyFrom(window.getAttributes());
+                            tempLp.screenBrightness = Math.max(0.01f, Math.min(1.0f, (float) sysBrightness / 255.0f));
+                            window.setAttributes(tempLp);
+                        }
+                    } catch (Exception ignored) {}
+
+                    // 2. Clear override so system auto-brightness manages window directly
+                    window.getDecorView().post(() -> {
+                        try {
+                            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                            lp.copyFrom(window.getAttributes());
+                            lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+                            window.setAttributes(lp);
+                        } catch (Exception ignored) {}
+                    });
                 }
             } catch (Exception ignored) {}
         });
@@ -242,6 +260,7 @@ public class MainActivity extends BridgeActivity {
             runOnUiThread(() -> {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 showSystemUI();
+                resetBrightnessToSystemDefault();
             });
         }
 
@@ -250,6 +269,7 @@ public class MainActivity extends BridgeActivity {
             runOnUiThread(() -> {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
                 showSystemUI();
+                resetBrightnessToSystemDefault();
             });
         }
 
@@ -270,6 +290,7 @@ public class MainActivity extends BridgeActivity {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                     showSystemUI();
                 }
+                resetBrightnessToSystemDefault();
             });
         }
 
@@ -298,8 +319,20 @@ public class MainActivity extends BridgeActivity {
         }
 
         @JavascriptInterface
+        public void setWindowBrightness(double brightness) {
+            setWindowHardwareBrightness((float) brightness);
+        }
+
+        @JavascriptInterface
         public void setWindowBrightness(float brightness) {
             setWindowHardwareBrightness(brightness);
+        }
+
+        @JavascriptInterface
+        public void setWindowBrightness(String brightness) {
+            try {
+                setWindowHardwareBrightness(Float.parseFloat(brightness));
+            } catch (Exception ignored) {}
         }
 
         @JavascriptInterface
@@ -545,8 +578,11 @@ public class MainActivity extends BridgeActivity {
         if (window == null) return;
 
         // Force window layout across display cutout / notch to eliminate black left/right pillarboxes
+        WindowCompat.setDecorFitsSystemWindows(window, false);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            WindowManager.LayoutParams lp = window.getAttributes();
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+            lp.copyFrom(window.getAttributes());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
             } else {
@@ -671,9 +707,13 @@ public class MainActivity extends BridgeActivity {
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
         );
 
+        // Enable edge-to-edge drawing so window extends behind status bar, navigation bar, and display cutouts
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
         // Allow window to draw across camera cutout / notch edges in landscape without black bars
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            WindowManager.LayoutParams lp = getWindow().getAttributes();
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+            lp.copyFrom(getWindow().getAttributes());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
             } else {
@@ -686,6 +726,8 @@ public class MainActivity extends BridgeActivity {
         backPressedCallback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
+                resetBrightnessToSystemDefault();
+
                 if (customView != null && customChromeClient != null) {
                     customChromeClient.onHideCustomView();
                     return;
@@ -720,8 +762,8 @@ public class MainActivity extends BridgeActivity {
 
         getOnBackPressedDispatcher().addCallback(this, backPressedCallback);
 
-        // In portrait mode, Android's WindowManager already places the WebView above the navigation bar.
-        // Keep bottom inset strictly at 0 so the bottom navigation bar never shifts/floats upwards into the screen.
+        // Consume cutout insets so DecorView doesn't add padding on the camera side,
+        // and keep bottom inset strictly at 0 so bottom navigation bar never shifts upwards.
         getWindow().getDecorView().setOnApplyWindowInsetsListener((v, insets) -> {
             v.post(() -> {
                 try {
@@ -734,7 +776,13 @@ public class MainActivity extends BridgeActivity {
                     }
                 } catch (Exception ignored) {}
             });
-            return insets;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                return WindowInsets.CONSUMED;
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                return insets.consumeDisplayCutout();
+            } else {
+                return insets.consumeSystemWindowInsets();
+            }
         });
 
         configureWebViewIfNeeded();

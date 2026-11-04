@@ -4183,10 +4183,11 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
 
 // Screen orientation handling for video fullscreen
 function setVideoOrientationLandscape() {
-  if (window.AndroidApp && typeof window.AndroidApp.enterFullscreen === 'function') {
-    window.AndroidApp.enterFullscreen();
-  } else if (window.AndroidApp && typeof window.AndroidApp.setLandscape === 'function') {
-    window.AndroidApp.setLandscape();
+  const bridge = window.AndroidApp || window.AndroidBridge;
+  if (bridge && typeof bridge.enterFullscreen === 'function') {
+    bridge.enterFullscreen();
+  } else if (bridge && typeof bridge.setLandscape === 'function') {
+    bridge.setLandscape();
   }
   if (screen.orientation && screen.orientation.lock) {
     screen.orientation.lock('sensor-landscape').catch(() => {
@@ -4196,16 +4197,18 @@ function setVideoOrientationLandscape() {
 }
 
 function setVideoOrientationPortrait() {
-  if (window.AndroidApp && typeof window.AndroidApp.exitFullscreen === 'function') {
-    window.AndroidApp.exitFullscreen();
-  } else if (window.AndroidApp && typeof window.AndroidApp.setPortrait === 'function') {
-    window.AndroidApp.setPortrait();
+  const bridge = window.AndroidApp || window.AndroidBridge;
+  if (bridge && typeof bridge.exitFullscreen === 'function') {
+    bridge.exitFullscreen();
+  } else if (bridge && typeof bridge.setPortrait === 'function') {
+    bridge.setPortrait();
   }
   if (screen.orientation && screen.orientation.unlock) {
     try {
       screen.orientation.unlock();
     } catch (e) {}
   }
+  restoreSystemBrightness();
 }
 
 let playerControlsTimer = null;
@@ -6410,7 +6413,8 @@ function restoreSystemBrightness() {
     if (bridge) {
       if (typeof bridge.resetWindowBrightness === 'function') {
         bridge.resetWindowBrightness();
-      } else if (typeof bridge.setWindowBrightness === 'function') {
+      }
+      if (typeof bridge.setWindowBrightness === 'function') {
         bridge.setWindowBrightness(-1);
       }
     }
@@ -10429,6 +10433,9 @@ async function submitBooking() {
 // ANDROID & MOBILE BACK GESTURE (SWIPE BACK) / SYSTEM BACK HANDLER
 // ============================================================
 window.handleAndroidBack = function() {
+  if (typeof restoreSystemBrightness === 'function') {
+    restoreSystemBrightness();
+  }
   // -1. Mandatory app update modal: strictly block back gesture/button
   const updateModal = document.getElementById('appUpdateModal');
   if (updateModal && !updateModal.classList.contains('hidden')) {
@@ -10565,6 +10572,7 @@ window.handleAndroidBack = function() {
   // 0. If video is currently in fullscreen, exit fullscreen and restore portrait
   if (document.body.classList.contains('is-fullscreen') || document.fullscreenElement || document.webkitFullscreenElement) {
     exitFullscreenMode();
+    restoreSystemBrightness();
     return true;
   }
 
