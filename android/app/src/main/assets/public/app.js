@@ -378,28 +378,10 @@ let appState = {
 let _pendingNavBarInset = null;
 
 function applyNavigationBarInset(bottomDp) {
-  let inset = 0;
-  if (typeof bottomDp === 'number' && bottomDp >= 0) {
-    inset = bottomDp;
-  } else if (window.AndroidApp && typeof window.AndroidApp.getNavigationBarHeight === 'function') {
-    try {
-      inset = window.AndroidApp.getNavigationBarHeight() || 0;
-    } catch (e) {}
-  }
-
-  // Defer DOM changes during startup cinematic intro to prevent initial layout reflow / jerk
-  if (!_introFinished) {
-    _pendingNavBarInset = inset;
-    return;
-  }
-
-  if (inset > 0) {
-    document.documentElement.style.setProperty('--safe-bottom', `${inset}px`);
-    document.body.classList.add('has-system-nav-bar');
-  } else {
-    document.documentElement.style.setProperty('--safe-bottom', 'env(safe-area-inset-bottom, 0px)');
-    document.body.classList.remove('has-system-nav-bar');
-  }
+  // Lock --safe-bottom to 0px so the bottom navigation bar never floats/shifts upwards into the screen.
+  // In Android, the WebView is already positioned naturally above the 3-button / gesture navigation bar.
+  document.documentElement.style.setProperty('--safe-bottom', '0px');
+  document.body.classList.remove('has-system-nav-bar');
 }
 window.applyNavigationBarInset = applyNavigationBarInset;
 

@@ -330,22 +330,7 @@ public class MainActivity extends BridgeActivity {
 
         @JavascriptInterface
         public int getNavigationBarHeight() {
-            try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    WindowInsets insets = getWindow().getDecorView().getRootWindowInsets();
-                    if (insets != null) {
-                        int bottom = insets.getInsets(WindowInsets.Type.navigationBars()).bottom;
-                        float density = getResources().getDisplayMetrics().density;
-                        return (int) (bottom / (density > 0 ? density : 1.0f));
-                    }
-                }
-                int resourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
-                if (resourceId > 0) {
-                    int heightPx = getResources().getDimensionPixelSize(resourceId);
-                    float density = getResources().getDisplayMetrics().density;
-                    return (int) (heightPx / (density > 0 ? density : 1.0f));
-                }
-            } catch (Exception ignored) {}
+            // Return 0 because Android WebView sits naturally above the system navigation bar
             return 0;
         }
 
@@ -728,22 +713,15 @@ public class MainActivity extends BridgeActivity {
 
         getOnBackPressedDispatcher().addCallback(this, backPressedCallback);
 
-        // Dispatch navigation bar insets to web app once registered in onCreate
+        // In portrait mode, Android's WindowManager already places the WebView above the navigation bar.
+        // Keep bottom inset strictly at 0 so the bottom navigation bar never shifts/floats upwards into the screen.
         getWindow().getDecorView().setOnApplyWindowInsetsListener((v, insets) -> {
-            int bottomPx = 0;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                bottomPx = insets.getInsets(WindowInsets.Type.navigationBars()).bottom;
-            } else {
-                bottomPx = insets.getSystemWindowInsetBottom();
-            }
-            float density = getResources().getDisplayMetrics().density;
-            final int bottomDp = (int) (bottomPx / (density > 0 ? density : 1.0f));
             v.post(() -> {
                 try {
                     WebView wv = getBridge() != null ? getBridge().getWebView() : null;
-                    if (wv != null && bottomDp >= 0) {
+                    if (wv != null) {
                         wv.evaluateJavascript(
-                            "(function() { if (typeof window.applyNavigationBarInset === 'function') window.applyNavigationBarInset(" + bottomDp + "); })();",
+                            "(function() { if (typeof window.applyNavigationBarInset === 'function') window.applyNavigationBarInset(0); })();",
                             null
                         );
                     }
