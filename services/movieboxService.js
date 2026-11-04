@@ -542,8 +542,12 @@ class MovieBoxService {
       const unlocked = data.streams.filter(st => !st.vipLocked);
       const candidateStreams = unlocked.length > 0 ? unlocked : data.streams;
 
+      // Filter out /bt/ (BitTorrent cache) streams which reject mobile players with 429 Too Many Requests
+      const nonBtStreams = candidateStreams.filter(st => !st.url.includes('/bt/'));
+      const activePool = nonBtStreams.length > 0 ? nonBtStreams : candidateStreams;
+
       // Sort by resolution descending, preferring H.264 if same resolution
-      const sortedDesc = [...candidateStreams].sort((a, b) => {
+      const sortedDesc = [...activePool].sort((a, b) => {
         const resA = parseInt(a.resolutions || a.resolution, 10) || 0;
         const resB = parseInt(b.resolutions || b.resolution, 10) || 0;
         if (resB !== resA) return resB - resA;
@@ -554,9 +558,11 @@ class MovieBoxService {
         return 0;
       });
 
-      // Sort ascending for instant 360p/480p default start
-      const sortedAsc = [...sortedDesc].reverse();
-      const fastStart = sortedAsc.find(st => (parseInt(st.resolutions || st.resolution, 10) || 0) >= 360) || sortedAsc[0];
+      // Prefer high-speed 720p or 1080p direct CDN streams (instant buffer without 429)
+      const fastStart = sortedDesc.find(st => {
+        const r = parseInt(st.resolutions || st.resolution, 10) || 0;
+        return (r === 720 || r === 1080) && !st.url.includes('/bt/');
+      }) || sortedDesc[0];
       const duration = fastStart.duration || sortedDesc[0]?.duration || 0;
 
       const playQualities = sortedDesc.map(function(st) {
@@ -640,9 +646,10 @@ class MovieBoxService {
         throw new Error('No downloads');
       }
 
-      const sortedDownloads = [...data.downloads].sort((a, b) => (b.resolution || 0) - (a.resolution || 0));
-      const sortedAsc = [...data.downloads].sort((a, b) => (a.resolution || 0) - (b.resolution || 0));
-      const fastStart = sortedAsc.find(d => d.resolution >= 360) || sortedAsc[0];
+      const nonBtDownloads = data.downloads.filter(d => !d.url.includes('/bt/'));
+      const downloadPool = nonBtDownloads.length > 0 ? nonBtDownloads : data.downloads;
+      const sortedDownloads = [...downloadPool].sort((a, b) => (b.resolution || 0) - (a.resolution || 0));
+      const fastStart = sortedDownloads.find(d => (d.resolution === 720 || d.resolution === 1080) && !d.url.includes('/bt/')) || sortedDownloads[0];
 
       const dlQualities = sortedDownloads.map(function(d) {
         return {

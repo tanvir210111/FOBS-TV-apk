@@ -1253,12 +1253,13 @@ app.get('/api/moviebox/stream', async (req, res) => {
           chosenRes = matchQ.resolution;
         }
       } else {
-        // Default to lowest resolution first (360p -> 480p -> 720p -> 1080p) for instant start!
-        const sortedLowToHigh = [...media.qualities].sort((a, b) => (parseInt(a.resolution, 10) || 0) - (parseInt(b.resolution, 10) || 0));
-        const lowestQ = sortedLowToHigh.find(q => q.resolution >= 360) || sortedLowToHigh[0];
-        if (lowestQ && lowestQ.url) {
-          chosenStream = lowestQ.url;
-          chosenRes = lowestQ.resolution;
+        // Prefer 720p or 1080p high-speed direct CDN stream (avoids /bt/ rate limits)
+        const nonBtQ = media.qualities.filter(q => !q.url.includes('/bt/'));
+        const poolQ = nonBtQ.length > 0 ? nonBtQ : media.qualities;
+        const bestQ = poolQ.find(q => q.resolution === 720 || q.resolution === 1080) || poolQ[0];
+        if (bestQ && bestQ.url) {
+          chosenStream = bestQ.url;
+          chosenRes = bestQ.resolution;
         }
       }
     }
@@ -1475,9 +1476,10 @@ async function streamMediaDirect(req, res, inputTargetUrl) {
                           || media.qualities[0];
             targetUrl = matchedQ?.url || media.streamUrl;
           } else {
-            const sortedQ = [...(media.qualities || [])].sort((a, b) => (parseInt(a.resolution, 10) || 0) - (parseInt(b.resolution, 10) || 0));
-            const lowestQ = sortedQ.find(q => q.resolution >= 360) || sortedQ[0];
-            targetUrl = lowestQ?.url || media.streamUrl;
+            const nonBtQ = (media.qualities || []).filter(q => !q.url.includes('/bt/'));
+            const poolQ = nonBtQ.length > 0 ? nonBtQ : (media.qualities || []);
+            const bestQ = poolQ.find(q => q.resolution === 720 || q.resolution === 1080) || poolQ[0];
+            targetUrl = bestQ?.url || media.streamUrl;
           }
         }
       }
