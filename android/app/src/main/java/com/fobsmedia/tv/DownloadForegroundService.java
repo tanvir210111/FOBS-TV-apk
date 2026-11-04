@@ -1,4 +1,4 @@
-package com.fobstv.stream;
+package com.fobsmedia.tv;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -15,8 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 public class DownloadForegroundService extends Service {
-    public static final String ACTION_START = "com.fobstv.stream.ACTION_START_DOWNLOAD";
-    public static final String ACTION_STOP = "com.fobstv.stream.ACTION_STOP_DOWNLOAD";
+    public static final String ACTION_START = "com.fobsmedia.tv.ACTION_START_DOWNLOAD";
+    public static final String ACTION_STOP = "com.fobsmedia.tv.ACTION_STOP_DOWNLOAD";
     public static final String EXTRA_TITLE = "EXTRA_TITLE";
     public static final String CHANNEL_ID = "fobs_download_channel";
     public static final int NOTIFICATION_ID = 9988;

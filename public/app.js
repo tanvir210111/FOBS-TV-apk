@@ -3763,6 +3763,12 @@ function selectEpisode(idx) {
   appState.currentEpisodeIndex = idx;
   appState.currentEpisodeNumber = (currentEpisodes[idx]?.episode ?? currentEpisodes[idx]?.episodeNumber ?? currentEpisodes[idx]?.number ?? (idx + 1));
   appState.activeServerIndex = 0;
+  // Immediately reset subtitles for clean episode transition
+  subtitleState.cues = [];
+  subtitleState.availableTracks = [];
+  subtitleState._loadToken = `ep_${idx}_${Date.now()}`;
+  subtitleState._trackToken = null;
+  hideSubtitleOverlay();
   setupSubtitlesForMedia(appState.currentMedia);
   renderEpisodePills(currentEpisodes, idx);
   renderServerPills(appState.currentMedia);
@@ -5013,11 +5019,15 @@ const subtitleState = {
   fontSize: 18,
   textColor: '#ffffff',
   borderColor: '#000000',
+  bgEnabled: false,
   bgStyle: 'transparent',
+  bgColor: 'rgba(0, 0, 0, 0.7)',
   position: 'bottom', // 'bottom', 'center', 'top'
   verticalOffset: 68, // px from bottom
   activeSubId: null,
-  onlineSubtitles: null
+  onlineSubtitles: null,
+  _loadToken: null,
+  _trackToken: null
 };
 
 // Restore saved settings from localStorage
@@ -5027,7 +5037,9 @@ function restoreSubtitleSettings() {
     if (saved.fontSize) subtitleState.fontSize = saved.fontSize;
     if (saved.textColor) subtitleState.textColor = saved.textColor;
     if (saved.borderColor !== undefined) subtitleState.borderColor = saved.borderColor;
+    if (saved.bgEnabled !== undefined) subtitleState.bgEnabled = !!saved.bgEnabled;
     if (saved.bgStyle) subtitleState.bgStyle = saved.bgStyle;
+    if (saved.bgColor) subtitleState.bgColor = saved.bgColor;
     if (saved.syncOffset !== undefined) subtitleState.syncOffset = saved.syncOffset;
     if (saved.position) subtitleState.position = saved.position;
     if (saved.verticalOffset !== undefined) subtitleState.verticalOffset = saved.verticalOffset;
@@ -5043,7 +5055,9 @@ function saveSubtitleSettings() {
       fontSize: subtitleState.fontSize,
       textColor: subtitleState.textColor,
       borderColor: subtitleState.borderColor,
+      bgEnabled: subtitleState.bgEnabled,
       bgStyle: subtitleState.bgStyle,
+      bgColor: subtitleState.bgColor,
       syncOffset: subtitleState.syncOffset,
       position: subtitleState.position,
       verticalOffset: subtitleState.verticalOffset
@@ -5199,6 +5213,9 @@ async function setupSubtitlesForMedia(media) {
   const parsedEp = parseInt(String(rawEpNum).replace(/^ep\s*/i, ''), 10);
   const ep = isSeries ? (!isNaN(parsedEp) && parsedEp > 0 ? parsedEp : 1) : 0;
 
+  const loadToken = `${media.id || ''}_s${season}_e${ep}_${Date.now()}`;
+  subtitleState._loadToken = loadToken;
+
   const tracks = [];
 
   // 1. Direct embedded captions from active Episode / Media (Instant & 100% Reliable)
@@ -5239,7 +5256,9 @@ async function setupSubtitlesForMedia(media) {
     const subjectId = (media.id || '').replace(/^mb-[s|m]-/, '');
     const detailPath = media.detailPath || '';
     const res = await fetch(`${API_BASE_URL}/api/subtitles?title=${encodeURIComponent(cleanTitle)}&year=${media.year || ''}&subjectId=${encodeURIComponent(subjectId)}&detailPath=${encodeURIComponent(detailPath)}&season=${season}&episode=${ep}&type=${isSeries ? 'series' : 'movie'}`);
+    if (subtitleState._loadToken !== loadToken) return;
     const data = await res.json();
+    if (subtitleState._loadToken !== loadToken) return;
     if (data && data.success && Array.isArray(data.subtitles)) {
       data.subtitles.forEach(sub => {
         // User requested: ONLY English and Bangla (both Human & AI options)
@@ -5373,6 +5392,7 @@ function showLandscapeSubView(view) {
   if (styleView) styleView.style.display = (view === 'style') ? 'flex' : 'none';
 
   if (view === 'sync') updateSyncUI();
+  if (view === 'style') updateBgUI();
 }
 
 // Select a Subtitle Track
@@ -5399,6 +5419,9 @@ async function selectSubtitleTrack(trackId) {
   const track = subtitleState.availableTracks.find(t => t.id === trackId || t.langCode === trackId);
   if (!track) return;
 
+  const trackLoadToken = `${track.id}_${subtitleState._loadToken || ''}_${Date.now()}`;
+  subtitleState._trackToken = trackLoadToken;
+
   subtitleState.enabled = true;
   subtitleState.currentTrackId = track.id;
   localStorage.setItem('fobs_subtitle_enabled', 'true');
@@ -5414,6 +5437,7 @@ async function selectSubtitleTrack(trackId) {
 
   // If custom uploaded SRT, apply immediately without network request
   if (track.rawCues && track.rawCues.length > 0) {
+    if (subtitleState._trackToken !== trackLoadToken) return;
     subtitleState.cues = track.rawCues;
     showToast(`💬 Subtitles Active: ${track.language} (${track.rawCues.length} lines)`);
     const vp = document.getElementById('mainVideoPlayer');
@@ -5465,6 +5489,8 @@ async function selectSubtitleTrack(trackId) {
     }
   }
 
+  if (subtitleState._trackToken !== trackLoadToken) return;
+
   if (loadedCues.length > 0) {
     subtitleState.cues = loadedCues;
     showToast(`💬 ${track.language} সাবটাইটেল সক্রিয় (${loadedCues.length} লাইন)`);
@@ -5499,8 +5525,16 @@ function renderActiveSubtitleCue(currentTime) {
     return;
   }
 
-  // Apply MX Player sync offset & seek offset
-  const syncedTime = (currentTime || 0) + (appState.streamSeekOffset || 0) + (subtitleState.syncOffset || 0);
+  // Use the passed time (which already includes streamSeekOffset when passed from loops)
+  // or fallback to player current time + seek offset
+  const vTime = typeof currentTime === 'number'
+    ? currentTime
+    : ((document.getElementById('mainVideoPlayer')?.currentTime || 0) + (appState.streamSeekOffset || 0));
+
+  // MX Player Sync Offset:
+  // Positive offset (+s) DELAYS subtitle so it appears later when dialogue is delayed.
+  // Negative offset (-s) ADVANCES subtitle so it appears earlier.
+  const syncedTime = vTime - (subtitleState.syncOffset || 0);
   const activeCue = subtitleState.cues.find(c => c.startTime <= syncedTime && syncedTime <= c.endTime);
 
   const overlay = document.getElementById('customSubtitleOverlay');
@@ -5702,6 +5736,16 @@ function updatePositionUI() {
   });
 }
 
+function hexToRgba(hex, alpha = 0.7) {
+  if (!hex || typeof hex !== 'string') return 'rgba(0,0,0,0.7)';
+  if (hex.startsWith('rgba') || hex.startsWith('rgb')) return hex;
+  let c = hex.replace('#', '').trim();
+  if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
+  const num = parseInt(c, 16);
+  if (isNaN(num)) return 'rgba(0,0,0,0.7)';
+  return `rgba(${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}, ${alpha})`;
+}
+
 // Apply chosen font size, colors, borders and background
 function applySubtitleStylesToElement(el) {
   if (!el) return;
@@ -5710,32 +5754,91 @@ function applySubtitleStylesToElement(el) {
 
   // Border & Text Outline
   if (subtitleState.borderColor === 'transparent') {
-    el.style.textShadow = '0 2px 5px rgba(0,0,0,0.85)';
+    el.style.setProperty('text-shadow', '0 2px 5px rgba(0,0,0,0.85)', 'important');
   } else if (subtitleState.borderColor === '#00f2fe') {
-    el.style.textShadow = '0 0 8px rgba(0, 242, 254, 0.9), 0 0 14px rgba(0, 242, 254, 0.6)';
+    el.style.setProperty('text-shadow', '0 0 8px rgba(0, 242, 254, 0.9), 0 0 14px rgba(0, 242, 254, 0.6)', 'important');
   } else {
     const bColor = subtitleState.borderColor;
-    el.style.textShadow = `
+    el.style.setProperty('text-shadow', `
       -1.5px -1.5px 0 ${bColor},
        1.5px -1.5px 0 ${bColor},
       -1.5px  1.5px 0 ${bColor},
        1.5px  1.5px 0 ${bColor},
        0px 2px 6px rgba(0,0,0,0.9)
-    `;
+    `, 'important');
   }
 
-  // Background Box
-  if (subtitleState.bgStyle === 'semi') {
-    el.style.backgroundColor = 'rgba(0, 0, 0, 0.55)';
-    el.style.backdropFilter = 'blur(4px)';
-    el.style.webkitBackdropFilter = 'blur(4px)';
-  } else if (subtitleState.bgStyle === 'solid') {
-    el.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-    el.style.backdropFilter = 'none';
+  // Background Box & Color Customizer (User can toggle OFF or choose color)
+  const isBgOff = !subtitleState.bgEnabled || subtitleState.bgStyle === 'transparent' || subtitleState.bgStyle === 'none';
+  if (isBgOff) {
+    el.style.setProperty('background-color', 'transparent', 'important');
+    el.style.setProperty('background', 'transparent', 'important');
+    el.style.setProperty('backdrop-filter', 'none', 'important');
+    el.style.setProperty('-webkit-backdrop-filter', 'none', 'important');
+    el.style.setProperty('box-shadow', 'none', 'important');
+  } else if (subtitleState.bgStyle === 'semi') {
+    const bgCol = hexToRgba(subtitleState.bgColor || '#000000', 0.6);
+    el.style.setProperty('background-color', bgCol, 'important');
+    el.style.setProperty('background', bgCol, 'important');
+    el.style.setProperty('backdrop-filter', 'blur(4px)', 'important');
+    el.style.setProperty('-webkit-backdrop-filter', 'blur(4px)', 'important');
+    el.style.setProperty('box-shadow', '0 2px 8px rgba(0,0,0,0.4)', 'important');
   } else {
-    el.style.backgroundColor = 'rgba(0, 0, 0, 0.45)';
-    el.style.backdropFilter = 'none';
+    // solid box
+    const bgCol = hexToRgba(subtitleState.bgColor || '#000000', 0.95);
+    el.style.setProperty('background-color', bgCol, 'important');
+    el.style.setProperty('background', bgCol, 'important');
+    el.style.setProperty('backdrop-filter', 'none', 'important');
+    el.style.setProperty('-webkit-backdrop-filter', 'none', 'important');
+    el.style.setProperty('box-shadow', '0 2px 10px rgba(0,0,0,0.6)', 'important');
   }
+}
+
+// Toggle Subtitle Background Box On/Off
+function toggleSubtitleBg(enabled) {
+  subtitleState.bgEnabled = (enabled !== undefined) ? !!enabled : !subtitleState.bgEnabled;
+  if (!subtitleState.bgEnabled) {
+    subtitleState.bgStyle = 'transparent';
+  } else if (subtitleState.bgStyle === 'transparent' || !subtitleState.bgStyle) {
+    subtitleState.bgStyle = 'semi';
+  }
+  saveSubtitleSettings();
+  updateBgUI();
+  updateSubtitlePreview();
+  const cueTextEl = document.getElementById('customSubtitleCueText');
+  if (cueTextEl) applySubtitleStylesToElement(cueTextEl);
+  showToast(subtitleState.bgEnabled ? 'Subtitle Background: ON' : 'Subtitle Background: OFF');
+}
+
+// Set Subtitle Background Color
+function setSubtitleBgColor(color) {
+  subtitleState.bgColor = color;
+  subtitleState.bgEnabled = (color !== 'transparent');
+  if (color === 'transparent') {
+    subtitleState.bgStyle = 'transparent';
+  } else if (subtitleState.bgStyle === 'transparent') {
+    subtitleState.bgStyle = 'semi';
+  }
+  saveSubtitleSettings();
+  updateBgUI();
+  updateSubtitlePreview();
+  const cueTextEl = document.getElementById('customSubtitleCueText');
+  if (cueTextEl) applySubtitleStylesToElement(cueTextEl);
+}
+
+function updateBgUI() {
+  const isEnabled = !!subtitleState.bgEnabled && subtitleState.bgStyle !== 'transparent';
+  document.querySelectorAll('#subBgToggle, #lsSubBgToggle').forEach(chk => {
+    chk.checked = isEnabled;
+  });
+  document.querySelectorAll('.sub-bg-chip, .ls-bg-chip').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.bg === subtitleState.bgStyle);
+  });
+  document.querySelectorAll('#subBgColorPalette .sub-color-circle, #lsSubBgColorPalette .ls-color-dot').forEach(btn => {
+    const bColor = (btn.dataset.color || btn.style.backgroundColor || '').toLowerCase();
+    const curColor = (subtitleState.bgColor || '').toLowerCase();
+    btn.classList.toggle('active', isEnabled && (bColor === curColor));
+  });
 }
 
 // Update Live Preview Box inside Modal
@@ -5969,11 +6072,12 @@ function setSubtitleBorderColor(borderColor) {
 // Set Background Box Style
 function setSubtitleBgStyle(bgStyle) {
   subtitleState.bgStyle = bgStyle;
+  subtitleState.bgEnabled = (bgStyle !== 'transparent' && bgStyle !== 'none');
   saveSubtitleSettings();
-  document.querySelectorAll('.sub-bg-chip').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.bg === bgStyle);
-  });
+  updateBgUI();
   updateSubtitlePreview();
+  const cueTextEl = document.getElementById('customSubtitleCueText');
+  if (cueTextEl) applySubtitleStylesToElement(cueTextEl);
 }
 
 // MX-Player Style Subtitle Sync Adjustments
@@ -5981,8 +6085,9 @@ function adjustSubtitleSync(delta) {
   subtitleState.syncOffset = Math.round((subtitleState.syncOffset + delta) * 10) / 10;
   saveSubtitleSettings();
   updateSyncUI();
-  const sign = subtitleState.syncOffset >= 0 ? '+' : '';
-  showToast(`Subtitle Delay: ${sign}${subtitleState.syncOffset.toFixed(1)}s (MX Sync)`);
+  const sign = subtitleState.syncOffset > 0 ? '+' : '';
+  const dirText = subtitleState.syncOffset > 0 ? 'Delay (দেরিতে আসবে)' : (subtitleState.syncOffset < 0 ? 'Advance (আগে আসবে)' : 'Original');
+  showToast(`Subtitle: ${sign}${subtitleState.syncOffset.toFixed(1)}s [${dirText}]`);
   
   // Immediately update cue
   const vp = document.getElementById('mainVideoPlayer');
@@ -6003,7 +6108,7 @@ function resetSubtitleSync() {
 }
 
 function handleSubtitleSyncSlider(val) {
-  subtitleState.syncOffset = parseFloat(val);
+  subtitleState.syncOffset = Math.round(parseFloat(val) * 10) / 10;
   saveSubtitleSettings();
   updateSyncUI();
   const vp = document.getElementById('mainVideoPlayer');
@@ -6042,6 +6147,7 @@ function openSubtitleModal(tab = 'lang') {
   if (modal) modal.classList.add('open');
   switchSubtitleModalTab(tab);
   updateSyncUI();
+  updateBgUI();
   updateSubtitlePreview();
   renderSubtitleLists();
 }
@@ -6071,7 +6177,10 @@ function switchSubtitleModalTab(tab) {
     }
   });
 
-  if (tab === 'style') updateSubtitlePreview();
+  if (tab === 'style') {
+    updateBgUI();
+    updateSubtitlePreview();
+  }
   if (tab === 'sync') updateSyncUI();
 }
 

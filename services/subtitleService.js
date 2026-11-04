@@ -186,10 +186,17 @@ class SubtitleService {
 
     // 0. Check local verified files in public/subtitles
     const normalizedName = cleanTitle.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
-    const localBn = [
-      `${normalizedName}_${year || ''}_bn.vtt`.replace(/__+/g, '_'),
-      `${normalizedName}_bn.vtt`
-    ];
+    const localBn = isMovie
+      ? [
+          `${normalizedName}_${year || ''}_bn.vtt`.replace(/__+/g, '_'),
+          `${normalizedName}_bn.vtt`
+        ]
+      : [
+          `${normalizedName}_s${seNum}_ep${epNum}_bn.vtt`,
+          `${normalizedName}_s${seNum}_e${epNum}_bn.vtt`,
+          `${normalizedName}_ep${epNum}_bn.vtt`,
+          `${normalizedName}_e${epNum}_bn.vtt`
+        ];
     for (const f of localBn) {
       const p = path.join(__dirname, '..', 'public', 'subtitles', f);
       if (fs.existsSync(p)) {
@@ -253,7 +260,24 @@ class SubtitleService {
         });
 
         if (Array.isArray(res.data)) {
-          return res.data.map(s => ({
+          let list = res.data;
+          // For series, strictly filter out any files that belong to a different episode!
+          if (!isMovie && epNum > 0) {
+            const filtered = list.filter(s => {
+              if (s.SeriesEpisode !== undefined && s.SeriesEpisode !== null && s.SeriesEpisode !== '') {
+                return parseInt(s.SeriesEpisode, 10) === epNum;
+              }
+              // Also check filename for episode number (e.g. E02, Ep02, 1x02)
+              const fn = (s.SubFileName || '').toLowerCase();
+              const epRegex = new RegExp(`(?:e|ep|episode)[0._-]?0*${epNum}(?:[^0-9]|$)`, 'i');
+              return epRegex.test(fn);
+            });
+            if (filtered.length > 0) {
+              list = filtered;
+            }
+          }
+
+          return list.map(s => ({
             id: `os_${s.IDSubtitleFile || s.IDSubtitle}`,
             title: s.SubFileName || `${cleanTitle} (${sublang === 'ben' ? 'Bangla' : 'English'})`,
             language: sublang === 'ben' ? 'Bangla (বাংলা)' : 'English',

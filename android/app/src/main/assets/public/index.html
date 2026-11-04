@@ -1285,6 +1285,26 @@
                     <div class="ls-color-dot" style="background:#00f2fe;" onclick="setSubtitleTextColor('#00f2fe')"></div>
                     <div class="ls-color-dot" style="background:#00ff88;" onclick="setSubtitleTextColor('#00ff88')"></div>
                   </div>
+
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+                    <span class="ls-style-label" style="margin: 0;">Background Box</span>
+                    <label class="ls-switch" style="transform: scale(0.75); transform-origin: right center;">
+                      <input type="checkbox" id="lsSubBgToggle" onchange="toggleSubtitleBg(this.checked)">
+                      <span class="ls-slider"></span>
+                    </label>
+                  </div>
+                  <div class="ls-size-row">
+                    <button class="ls-size-chip ls-bg-chip active" data-bg="transparent" onclick="setSubtitleBgStyle('transparent')">Off</button>
+                    <button class="ls-size-chip ls-bg-chip" data-bg="semi" onclick="setSubtitleBgStyle('semi')">Soft</button>
+                    <button class="ls-size-chip ls-bg-chip" data-bg="solid" onclick="setSubtitleBgStyle('solid')">Solid</button>
+                  </div>
+                  <div class="ls-color-row" id="lsSubBgColorPalette" style="margin-top: 2px;">
+                    <div class="ls-color-dot active" style="background:#000000; border: 1px solid #555;" data-color="#000000" onclick="setSubtitleBgColor('#000000')"></div>
+                    <div class="ls-color-dot" style="background:#0f172a; border: 1px solid #334155;" data-color="#0f172a" onclick="setSubtitleBgColor('#0f172a')"></div>
+                    <div class="ls-color-dot" style="background:#450a0a; border: 1px solid #7f1d1d;" data-color="#450a0a" onclick="setSubtitleBgColor('#450a0a')"></div>
+                    <div class="ls-color-dot" style="background:#3b0764; border: 1px solid #6b21a8;" data-color="#3b0764" onclick="setSubtitleBgColor('#3b0764')"></div>
+                    <div class="ls-color-dot" style="background:#064e3b; border: 1px solid #047857;" data-color="#064e3b" onclick="setSubtitleBgColor('#064e3b')"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -3106,13 +3126,28 @@
             </div>
           </div>
 
-          <!-- 4. Background Pill Style -->
+          <!-- 4. Background Box & Color Customizer -->
           <div class="sub-style-group">
-            <span class="sub-style-group-label">Background Box</span>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span class="sub-style-group-label">Background Box</span>
+              <label class="ls-switch" style="transform: scale(0.85); transform-origin: right center;">
+                <input type="checkbox" id="subBgToggle" onchange="toggleSubtitleBg(this.checked)">
+                <span class="ls-slider"></span>
+              </label>
+            </div>
             <div class="sub-bg-chips">
-              <button class="sub-bg-chip active" data-bg="transparent" onclick="setSubtitleBgStyle('transparent')">None</button>
+              <button class="sub-bg-chip active" data-bg="transparent" onclick="setSubtitleBgStyle('transparent')">Off (None)</button>
               <button class="sub-bg-chip" data-bg="semi" onclick="setSubtitleBgStyle('semi')">Soft Box</button>
               <button class="sub-bg-chip" data-bg="solid" onclick="setSubtitleBgStyle('solid')">Solid Box</button>
+            </div>
+            <!-- Background Colors -->
+            <div class="sub-color-palette" id="subBgColorPalette" style="margin-top: 6px;">
+              <button class="sub-color-circle active" data-color="#000000" style="background: #000000; border: 1px solid #444;" title="Black" onclick="setSubtitleBgColor('#000000')"></button>
+              <button class="sub-color-circle" data-color="#0f172a" style="background: #0f172a; border: 1px solid #334155;" title="Dark Navy" onclick="setSubtitleBgColor('#0f172a')"></button>
+              <button class="sub-color-circle" data-color="#450a0a" style="background: #450a0a; border: 1px solid #7f1d1d;" title="Deep Red" onclick="setSubtitleBgColor('#450a0a')"></button>
+              <button class="sub-color-circle" data-color="#3b0764" style="background: #3b0764; border: 1px solid #6b21a8;" title="Dark Purple" onclick="setSubtitleBgColor('#3b0764')"></button>
+              <button class="sub-color-circle" data-color="#064e3b" style="background: #064e3b; border: 1px solid #047857;" title="Forest Green" onclick="setSubtitleBgColor('#064e3b')"></button>
+              <button class="sub-color-circle" data-color="#78350f" style="background: #78350f; border: 1px solid #b45309;" title="Amber Brown" onclick="setSubtitleBgColor('#78350f')"></button>
             </div>
           </div>
         </div>

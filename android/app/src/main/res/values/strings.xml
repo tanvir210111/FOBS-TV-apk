@@ -2,6 +2,6 @@
 <resources>
     <string name="app_name">FOBS TV</string>
     <string name="title_activity_main">FOBS TV</string>
-    <string name="package_name">com.fobstv.stream</string>
-    <string name="custom_url_scheme">com.fobstv.stream</string>
+    <string name="package_name">com.fobsmedia.tv</string>
+    <string name="custom_url_scheme">com.fobsmedia.tv</string>
 </resources>

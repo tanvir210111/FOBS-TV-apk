@@ -1,4 +1,4 @@
-package com.fobstv.stream;
+package com.fobsmedia.tv;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -443,11 +443,11 @@ public class MainActivity extends BridgeActivity {
         }
 
         @JavascriptInterface
-        public void downloadAndInstallApk(String downloadUrl) {
+        public void openBrowser(String targetUrl) {
             runOnUiThread(() -> {
                 try {
-                    String targetUrl = (downloadUrl != null && !downloadUrl.trim().isEmpty()) ? downloadUrl : "https://fobs-apk-download.vercel.app/";
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(targetUrl));
+                    String url = (targetUrl != null && !targetUrl.trim().isEmpty()) ? targetUrl : "https://fobs-apk-download.vercel.app/";
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(browserIntent);
                 } catch (Exception e) {
@@ -457,10 +457,8 @@ public class MainActivity extends BridgeActivity {
         }
 
         @JavascriptInterface
-        public void installDownloadedApkNow() {
-            runOnUiThread(() -> {
-                installDownloadedApk(null);
-            });
+        public void openUpdatePage(String url) {
+            openBrowser(url);
         }
 
         @JavascriptInterface
@@ -530,16 +528,6 @@ public class MainActivity extends BridgeActivity {
                 webView.resumeTimers();
             }
         } catch (Exception ignored) {}
-    }
-
-    public void installDownloadedApk(File apkFile) {
-        try {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://fobs-apk-download.vercel.app/"));
-            browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(browserIntent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void hideSystemUI() {
