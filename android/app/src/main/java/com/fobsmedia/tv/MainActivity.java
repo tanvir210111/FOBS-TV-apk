@@ -108,6 +108,9 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onPause() {
         super.onPause();
+        // Always restore window screen brightness back to system default whenever app is paused or minimized
+        resetBrightnessToSystemDefault();
+
         // If an offline download is active, resume WebView so streaming reader and timers NEVER pause!
         if (isDownloadActive) {
             WebView webView = getBridge() != null ? getBridge().getWebView() : null;
@@ -115,22 +118,13 @@ public class MainActivity extends BridgeActivity {
                 webView.onResume();
                 webView.resumeTimers();
             }
-        } else {
-            // Restore window screen brightness back to system default when app is minimized or paused
-            try {
-                Window window = getWindow();
-                if (window != null) {
-                    WindowManager.LayoutParams lp = window.getAttributes();
-                    lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-                    window.setAttributes(lp);
-                }
-            } catch (Exception ignored) {}
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        resetBrightnessToSystemDefault();
         // Keep WebView and timers running while screen is turned off by power button
         if (isDownloadActive) {
             WebView webView = getBridge() != null ? getBridge().getWebView() : null;
@@ -139,6 +133,39 @@ public class MainActivity extends BridgeActivity {
                 webView.resumeTimers();
             }
         }
+    }
+
+    public void resetBrightnessToSystemDefault() {
+        runOnUiThread(() -> {
+            try {
+                Window window = getWindow();
+                if (window != null) {
+                    WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                    lp.copyFrom(window.getAttributes());
+                    lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+                    window.setAttributes(lp);
+                }
+            } catch (Exception ignored) {}
+        });
+    }
+
+    public void setWindowHardwareBrightness(float brightness) {
+        runOnUiThread(() -> {
+            try {
+                Window window = getWindow();
+                if (window != null) {
+                    WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                    lp.copyFrom(window.getAttributes());
+                    if (brightness < 0) {
+                        lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+                    } else {
+                        float safeBrightness = Math.max(0.01f, Math.min(1.0f, brightness));
+                        lp.screenBrightness = safeBrightness;
+                    }
+                    window.setAttributes(lp);
+                }
+            } catch (Exception ignored) {}
+        });
     }
 
     private class FullscreenWebChromeClient extends BridgeWebChromeClient {
@@ -272,32 +299,12 @@ public class MainActivity extends BridgeActivity {
 
         @JavascriptInterface
         public void setWindowBrightness(float brightness) {
-            runOnUiThread(() -> {
-                try {
-                    Window window = getWindow();
-                    if (window != null) {
-                        WindowManager.LayoutParams lp = window.getAttributes();
-                        // Real hardware screen backlight brightness (0.01f to 1.0f) for current player window
-                        float safeBrightness = Math.max(0.01f, Math.min(1.0f, brightness));
-                        lp.screenBrightness = safeBrightness;
-                        window.setAttributes(lp);
-                    }
-                } catch (Exception ignored) {}
-            });
+            setWindowHardwareBrightness(brightness);
         }
 
         @JavascriptInterface
         public void resetWindowBrightness() {
-            runOnUiThread(() -> {
-                try {
-                    Window window = getWindow();
-                    if (window != null) {
-                        WindowManager.LayoutParams lp = window.getAttributes();
-                        lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-                        window.setAttributes(lp);
-                    }
-                } catch (Exception ignored) {}
-            });
+            resetBrightnessToSystemDefault();
         }
 
         @JavascriptInterface

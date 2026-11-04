@@ -3481,9 +3481,8 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = null;
 
-  // Preserve user's system device brightness and set video picture brightness to baseline 50% (1.0x natural)
-  playerBrightness = 0.5;
-  applyPlayerBrightness(0.5);
+  // Preserve user's system device brightness and set video picture to natural baseline
+  restoreSystemBrightness();
 
   // Reset video scale to default "Fit" mode (contain, perfectly centered without crop)
   const mainVideo = document.getElementById('mainVideoPlayer');
@@ -6331,6 +6330,9 @@ function exitFullscreenMode(options = {}) {
   if (!options.skipRotate) {
     setVideoOrientationPortrait();
   }
+
+  // Restore normal system brightness when exiting fullscreen
+  restoreSystemBrightness();
 }
 
 function togglePlayerFullscreen() {
@@ -6355,6 +6357,7 @@ function handlePlayerBackClick() {
   }
   if (document.body.classList.contains('is-fullscreen')) {
     exitFullscreenMode({ skipRotate: false });
+    restoreSystemBrightness();
     return;
   }
   closePlayer();
@@ -6388,6 +6391,42 @@ let gestureHudTimer = null;
 let singleTapTimer = null;
 let lastTapInfo = { time: 0, x: 0, y: 0, side: null };
 
+function restoreSystemBrightness() {
+  playerBrightness = 0.5;
+  const overlayEl = document.getElementById('playerBrightnessOverlay');
+  if (overlayEl) {
+    overlayEl.style.backgroundColor = 'transparent';
+    overlayEl.style.mixBlendMode = 'normal';
+    overlayEl.style.display = 'none';
+  }
+  const mainVideoEl = document.getElementById('mainVideoPlayer');
+  if (mainVideoEl) {
+    mainVideoEl.style.filter = '';
+  }
+
+  // Restore phone screen hardware brightness back to normal system default
+  try {
+    const bridge = window.AndroidApp || window.AndroidBridge;
+    if (bridge) {
+      if (typeof bridge.resetWindowBrightness === 'function') {
+        bridge.resetWindowBrightness();
+      } else if (typeof bridge.setWindowBrightness === 'function') {
+        bridge.setWindowBrightness(-1);
+      }
+    }
+  } catch (e) {}
+}
+
+// Auto-restore system normal brightness whenever window is blurred, hidden, or unloaded
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    restoreSystemBrightness();
+  }
+});
+window.addEventListener('pagehide', () => {
+  restoreSystemBrightness();
+});
+
 function applyPlayerBrightness(val) {
   playerBrightness = Math.max(0.01, Math.min(1.0, Number(val)));
 
@@ -6416,6 +6455,7 @@ function applyPlayerBrightness(val) {
 
   if (overlay) {
     if (playerBrightness < 0.40) {
+      overlay.style.display = 'block';
       // Soft gentle black tint overlay only when dimming below 40%
       const dimAlpha = ((0.40 - playerBrightness) / 0.40) * 0.50;
       overlay.style.backgroundColor = `rgba(0, 0, 0, ${dimAlpha.toFixed(2)})`;
@@ -6424,6 +6464,7 @@ function applyPlayerBrightness(val) {
       // Completely transparent - never show white overlay
       overlay.style.backgroundColor = 'transparent';
       overlay.style.mixBlendMode = 'normal';
+      overlay.style.display = 'none';
     }
   }
 
@@ -7316,25 +7357,8 @@ function closePlayer() {
   }
   appState.currentSessionTrackedId = null;
 
-  playerBrightness = 0.5;
-  const overlayEl = document.getElementById('playerBrightnessOverlay');
-  if (overlayEl) {
-    overlayEl.style.backgroundColor = 'transparent';
-    overlayEl.style.mixBlendMode = 'normal';
-  }
-  const mainVideoEl = document.getElementById('mainVideoPlayer');
-  if (mainVideoEl) {
-    mainVideoEl.style.filter = '';
-  }
-
   // Restore phone screen brightness back to normal system brightness
-  try {
-    if (window.AndroidApp && typeof window.AndroidApp.resetWindowBrightness === 'function') {
-      window.AndroidApp.resetWindowBrightness();
-    } else if (window.AndroidApp && typeof window.AndroidApp.setWindowBrightness === 'function') {
-      window.AndroidApp.setWindowBrightness(-1);
-    }
-  } catch (e) {}
+  restoreSystemBrightness();
 
   if (singleTapTimer) {
     clearTimeout(singleTapTimer);
@@ -8782,9 +8806,8 @@ async function playDownloadedMedia(id) {
       videoPlayer.src = videoUrl;
       videoPlayer.load();
 
-      // Reset in-player video brightness to natural baseline (50% = 1.0x)
-      playerBrightness = 0.5;
-      applyPlayerBrightness(0.5);
+      // Set in-player video brightness to natural baseline and preserve system brightness
+      restoreSystemBrightness();
 
       const hideLoader = () => {
         if (loader) loader.classList.remove('active');
