@@ -1913,15 +1913,20 @@ app.get('/api/download', async (req, res) => {
   const reqQ = parseInt(req.query.q || req.query.quality || '0', 10);
 
   // If still a relative MovieBox route, resolve it directly to the real CDN URL for the requested quality
+  let mbParams = null;
   if (resolvedUrl.includes('/api/moviebox/stream')) {
     try {
       const urlObj = new URL(resolvedUrl, 'https://fobstv.duckdns.org');
       const id = urlObj.searchParams.get('id');
       const detailPath = urlObj.searchParams.get('path') || getMovieBoxDetailPath(id) || '';
-      const se = parseInt(urlObj.searchParams.get('se') || '1', 10);
-      const ep = parseInt(urlObj.searchParams.get('ep') || '1', 10);
+      const rawSe = urlObj.searchParams.get('se');
+      const rawEp = urlObj.searchParams.get('ep');
+      const se = (rawSe !== null && rawSe !== undefined && rawSe !== '') ? parseInt(rawSe, 10) : 0;
+      const ep = (rawEp !== null && rawEp !== undefined && rawEp !== '') ? parseInt(rawEp, 10) : 0;
       const urlQ = parseInt(urlObj.searchParams.get('q') || urlObj.searchParams.get('quality') || '0', 10);
       const targetRes = reqQ > 0 ? reqQ : urlQ;
+
+      mbParams = { id, detailPath, se, ep, targetRes };
 
       const media = await movieboxService.resolveMedia(id, detailPath, se, ep);
       if (media) {
@@ -1995,8 +2000,26 @@ app.get('/api/download', async (req, res) => {
         targetUrl.includes('moviebox')
       );
       if (isMb) {
-        movieboxService.invalidateCache();
-        const freshUrl = await resolveStreamUrl(targetUrl);
+        let freshUrl = null;
+        if (mbParams && mbParams.id) {
+          try {
+            const freshMedia = await movieboxService.resolveMedia(mbParams.id, mbParams.detailPath, mbParams.se, mbParams.ep, { forceRefresh: true });
+            if (freshMedia) {
+              if (mbParams.targetRes > 0 && Array.isArray(freshMedia.qualities) && freshMedia.qualities.length > 0) {
+                const matchedQ = freshMedia.qualities.find(q => parseInt(q.resolution, 10) === mbParams.targetRes)
+                              || freshMedia.qualities.find(q => parseInt(q.resolution, 10) <= mbParams.targetRes)
+                              || freshMedia.qualities[freshMedia.qualities.length - 1];
+                freshUrl = matchedQ?.url || freshMedia.streamUrl;
+              } else if (freshMedia.streamUrl) {
+                freshUrl = freshMedia.streamUrl;
+              }
+            }
+          } catch(e) {}
+        }
+        if (!freshUrl) {
+          movieboxService.invalidateCache();
+          freshUrl = await resolveStreamUrl(targetUrl);
+        }
         if (freshUrl && freshUrl !== downloadFetchUrl) {
           downloadFetchUrl = freshUrl;
           response = await axios({
@@ -2051,7 +2074,9 @@ app.get('/api/download', async (req, res) => {
     response.data.pipe(res);
   } catch (err) {
     console.error('Download error:', err.message);
-    res.redirect(302, downloadFetchUrl || resolvedUrl);
+    if (!res.headersSent) {
+      res.status(502).json({ error: 'Download stream failed', message: err.message });
+    }
   }
 });
 

@@ -6409,53 +6409,37 @@ let lastTapInfo = { time: 0, x: 0, y: 0, side: null };
 function applyPlayerBrightness(val) {
   playerBrightness = Math.max(0.01, Math.min(1.0, Number(val)));
 
-  // Keep phone/Android physical screen backlight strictly at system default (never alter app/system brightness)
+  // Adjust native phone screen hardware backlight brightness in Android
   try {
-    if (window.AndroidApp && typeof window.AndroidApp.resetWindowBrightness === 'function') {
-      window.AndroidApp.resetWindowBrightness();
+    const bridge = window.AndroidApp || window.AndroidBridge;
+    if (bridge && typeof bridge.setWindowBrightness === 'function') {
+      bridge.setWindowBrightness(playerBrightness);
     }
   } catch (e) {}
 
-  // Pure in-player video picture brightness boost (MX Player / MovieBox style)
-  // 0.50 (50%) = 1.00 standard natural video brightness
-  // 1.00 (100%) = 2.65 ultra vivid HDR boost with rich contrast and saturation
-  // 0.00 (0%) = 0.20 dim night watching
   const video = document.getElementById('mainVideoPlayer');
   const overlay = document.getElementById('playerBrightnessOverlay');
 
   if (video) {
-    let filterBrightness = '1.00';
-    let contrastVal = '1.00';
-    let saturateVal = '1.00';
-
     if (playerBrightness >= 0.5) {
-      // 0.5 -> 1.0 maps to 1.00 -> 2.65 brightness (massive 165% visual boost)
-      const boostRatio = (playerBrightness - 0.5) / 0.5; // 0.0 to 1.0
-      filterBrightness = (1.00 + (boostRatio * 1.65)).toFixed(2);
-      contrastVal = (1.00 + (boostRatio * 0.20)).toFixed(2);
-      saturateVal = (1.00 + (boostRatio * 0.14)).toFixed(2);
+      // Natural, crisp video playback with no artificial white tinting or color washing
+      video.style.filter = 'none';
     } else {
-      // 0.0 -> 0.5 maps to 0.20 -> 1.00 brightness
+      // Smooth natural dimming for nighttime viewing
       const dimRatio = playerBrightness / 0.5; // 0.0 to 1.0
-      filterBrightness = (0.20 + (dimRatio * 0.80)).toFixed(2);
-      contrastVal = (0.90 + (dimRatio * 0.10)).toFixed(2);
-      saturateVal = '1.00';
+      const filterBrightness = (0.35 + (dimRatio * 0.65)).toFixed(2);
+      video.style.filter = `brightness(${filterBrightness})`;
     }
-
-    video.style.filter = `brightness(${filterBrightness}) contrast(${contrastVal}) saturate(${saturateVal})`;
   }
 
   if (overlay) {
-    if (playerBrightness < 0.38) {
-      const dimAlpha = ((0.38 - playerBrightness) / 0.38) * 0.55;
+    if (playerBrightness < 0.40) {
+      // Soft gentle black tint overlay only when dimming below 40%
+      const dimAlpha = ((0.40 - playerBrightness) / 0.40) * 0.50;
       overlay.style.backgroundColor = `rgba(0, 0, 0, ${dimAlpha.toFixed(2)})`;
       overlay.style.mixBlendMode = 'normal';
-    } else if (playerBrightness > 0.65) {
-      // MX Player / MovieBox HDR screen blend luminescence boost
-      const boostAlpha = ((playerBrightness - 0.65) / 0.35) * 0.22;
-      overlay.style.backgroundColor = `rgba(255, 255, 255, ${boostAlpha.toFixed(2)})`;
-      overlay.style.mixBlendMode = 'screen';
     } else {
+      // Completely transparent - never show white overlay
       overlay.style.backgroundColor = 'transparent';
       overlay.style.mixBlendMode = 'normal';
     }
@@ -7980,8 +7964,8 @@ function triggerDownload() {
   });
 
   const dlEp = (isSeries && appState.currentEpisode) ? appState.currentEpisode : null;
-  const dlEpNum = dlEp ? (dlEp.episode ?? dlEp.episodeNumber ?? dlEp.number ?? (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1)) : 1;
-  const dlSeNum = appState.currentSeason || 1;
+  const dlEpNum = isSeries ? (dlEp ? (dlEp.episode ?? dlEp.episodeNumber ?? dlEp.number ?? (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1)) : 1) : 0;
+  const dlSeNum = isSeries ? (appState.currentSeason || 1) : 0;
   const dlSubjectId = media?.subjectId || media?.mbSubjectId || (media?.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || (media?.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '').replace(/-hindi$/, '') : null) || '';
   const dlDetailPath = media?.detailPath || media?.mbDetailPath || '';
 
@@ -8104,8 +8088,8 @@ function confirmStartDownload() {
     finalDownloadUrl = finalDownloadUrl.replace(/([?&])q=\d+/g, '');
     finalDownloadUrl += (finalDownloadUrl.includes('?') ? '&' : '?') + `q=${targetResNum}`;
   } else if (pending.subjectId) {
-    const seNum = pending.season || (isSeries ? (appState.currentSeasonNumber || 1) : 0);
-    const epNum = pending.episode || (isSeries ? (appState.currentEpisodeNumber || 1) : 0);
+    const seNum = isSeries ? (pending.season || appState.currentSeasonNumber || 1) : 0;
+    const epNum = isSeries ? (pending.episode || appState.currentEpisodeNumber || 1) : 0;
     finalDownloadUrl = `/api/moviebox/stream?id=${encodeURIComponent(pending.subjectId)}&path=${encodeURIComponent(pending.detailPath || '')}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
   }
 
@@ -8114,11 +8098,11 @@ function confirmStartDownload() {
     resolution: targetResNum,
     poster: pending.poster,
     mediaId: pending.mediaId,
-    season: pending.season || appState.currentSeason || 1,
-    episode: pending.episode || pending.episodeNumber || appState.currentEpisodeNumber || 1,
+    season: isSeries ? (pending.season || appState.currentSeason || 1) : 0,
+    episode: isSeries ? (pending.episode || pending.episodeNumber || appState.currentEpisodeNumber || 1) : 0,
     subjectId: pending.subjectId || '',
     detailPath: pending.detailPath || '',
-    isSeries: pending.isSeries !== undefined ? pending.isSeries : false
+    isSeries: isSeries
   });
 
   closeDownloadOptionsModal();

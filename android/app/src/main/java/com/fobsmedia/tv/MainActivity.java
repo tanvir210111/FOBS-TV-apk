@@ -272,14 +272,14 @@ public class MainActivity extends BridgeActivity {
 
         @JavascriptInterface
         public void setWindowBrightness(float brightness) {
-            // Keep window brightness strictly at BRIGHTNESS_OVERRIDE_NONE so the phone backlight
-            // and the rest of the app/system UI are NEVER modified.
             runOnUiThread(() -> {
                 try {
                     Window window = getWindow();
                     if (window != null) {
                         WindowManager.LayoutParams lp = window.getAttributes();
-                        lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+                        // Real hardware screen backlight brightness (0.01f to 1.0f) for current player window
+                        float safeBrightness = Math.max(0.01f, Math.min(1.0f, brightness));
+                        lp.screenBrightness = safeBrightness;
                         window.setAttributes(lp);
                     }
                 } catch (Exception ignored) {}
@@ -765,6 +765,7 @@ public class MainActivity extends BridgeActivity {
             }
 
             webView.addJavascriptInterface(new WebAppInterface(), "AndroidApp");
+            webView.addJavascriptInterface(new WebAppInterface(), "AndroidBridge");
 
             webView.setDownloadListener((downloadUrl, userAgent, contentDisposition, mimetype, contentLength) -> {
                 try {
