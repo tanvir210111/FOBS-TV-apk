@@ -29,6 +29,8 @@ android {
             storePassword 'fobstv2026'
             keyAlias 'fobstv'
             keyPassword 'fobstv2026'
+            v1SigningEnabled true
+            v2SigningEnabled true
         }
     }
     buildTypes {
