@@ -487,45 +487,60 @@
         </div>
 
         <div class="metrics-grid" style="margin-bottom: 24px;">
-          <div class="metric-card glass">
-            <div class="metric-icon cyan"><i class="fa-solid fa-mobile-screen"></i></div>
+          <div class="metric-card glass clickable" onclick="setUserAudienceFilter('all')" title="Click to view all audience" style="cursor: pointer;">
+            <div class="metric-icon cyan"><i class="fa-solid fa-users"></i></div>
             <div class="metric-info">
-              <span class="metric-label">v3.1.5 Installed Devices</span>
+              <span class="metric-label">Total Audience</span>
               <h3 id="users-stat-devices" class="metric-number">0</h3>
-              <span class="metric-hint">Official APK installs</span>
+              <span class="metric-hint">Combined members & devices</span>
             </div>
           </div>
-          <div class="metric-card glass">
-            <div class="metric-icon green"><i class="fa-solid fa-user-check"></i></div>
+          <div class="metric-card glass clickable" onclick="setUserAudienceFilter('online')" title="Click to view online users" style="cursor: pointer;">
+            <div class="metric-icon green"><i class="fa-solid fa-signal"></i></div>
             <div class="metric-info">
               <span class="metric-label">Online Active Now</span>
               <h3 id="users-stat-online" class="metric-number">0</h3>
               <span class="metric-hint">Active in past 15 min</span>
             </div>
           </div>
-          <div class="metric-card glass">
+          <div class="metric-card glass clickable" onclick="setUserAudienceFilter('registered')" title="Click to view Registered Members" style="cursor: pointer; border: 1px solid rgba(192, 132, 252, 0.4);">
             <div class="metric-icon purple"><i class="fa-solid fa-user-shield"></i></div>
             <div class="metric-info">
-              <span class="metric-label">Registered Accounts</span>
+              <span class="metric-label">Registered Members</span>
               <h3 id="users-stat-registered" class="metric-number">0</h3>
-              <span class="metric-hint">Google OAuth members</span>
+              <span class="metric-hint">Google OAuth accounts</span>
             </div>
           </div>
         </div>
 
         <div class="card glass">
-          <div class="table-toolbar" style="padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.06);">
-            <div class="toolbar-search">
+          <div class="table-toolbar" style="padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+            <div class="toolbar-search" style="flex: 1; min-width: 250px;">
               <i class="fa-solid fa-magnifying-glass"></i>
               <input type="text" id="users-search-input" placeholder="Search by name, email, device ID, IP..." oninput="filterUsersTable()">
+            </div>
+            <div class="users-filter-tabs" style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="btn-filter-chip active" id="chip-users-all" onclick="setUserAudienceFilter('all')">
+                <i class="fa-solid fa-users"></i> All (<span id="chip-count-all">0</span>)
+              </button>
+              <button type="button" class="btn-filter-chip" id="chip-users-registered" onclick="setUserAudienceFilter('registered')" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.4); font-weight: 700;">
+                <i class="fa-solid fa-user-shield"></i> Registered Members (<span id="chip-count-registered">0</span>)
+              </button>
+              <button type="button" class="btn-filter-chip" id="chip-users-devices" onclick="setUserAudienceFilter('devices')">
+                <i class="fa-brands fa-android"></i> App Devices (<span id="chip-count-devices">0</span>)
+              </button>
+              <button type="button" class="btn-filter-chip" id="chip-users-online" onclick="setUserAudienceFilter('online')">
+                <i class="fa-solid fa-signal" style="color: #10b981;"></i> Online Now (<span id="chip-count-online">0</span>)
+              </button>
             </div>
           </div>
           <div class="table-responsive">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>User / Device</th>
-                  <th>Contact / IP</th>
+                  <th>User / Member</th>
+                  <th>Email / Connection</th>
+                  <th>Type</th>
                   <th>App Version</th>
                   <th>Platform</th>
                   <th>First Seen</th>
@@ -534,7 +549,7 @@
                 </tr>
               </thead>
               <tbody id="users-tbody">
-                <tr><td colspan="7" class="text-center">Loading v3.1.5 audience...</td></tr>
+                <tr><td colspan="8" class="text-center">Loading audience...</td></tr>
               </tbody>
             </table>
           </div>

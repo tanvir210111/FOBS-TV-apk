@@ -1253,43 +1253,109 @@ async function confirmDeleteMediaComment(mediaId, commentId) {
 // v3.1.5 APP USERS & DEVICES
 // ============================================================
 
+let userAudienceFilter = 'all';
+
 async function loadUsers() {
   const tbody = document.getElementById('users-tbody');
-  tbody.innerHTML = '<tr><td colspan="7" class="text-center">Loading v3.1.5 users and devices...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="8" class="text-center">Loading audience...</td></tr>';
 
   try {
     const res = await authFetch(`${API_BASE}/api/admin/users`);
     const data = await res.json();
-    state.users = data.devices || [];
+    state.users = data.users || data.devices || [];
 
-    document.getElementById('users-stat-devices').innerText = data.totalDevices || 0;
-    document.getElementById('users-stat-online').innerText = state.users.filter(u => u.status === 'Online Now').length;
-    document.getElementById('users-stat-registered').innerText = data.totalRegistered || 0;
+    const regCount = state.users.filter(u => u.type === 'Registered Member').length;
+    const devCount = state.users.filter(u => u.type !== 'Registered Member').length;
+    const onlineCount = state.users.filter(u => u.status === 'Online Now').length;
 
-    renderUsersTable(state.users);
+    document.getElementById('users-stat-devices').innerText = state.users.length;
+    document.getElementById('users-stat-online').innerText = onlineCount;
+    document.getElementById('users-stat-registered').innerText = regCount;
+
+    if (document.getElementById('chip-count-all')) document.getElementById('chip-count-all').innerText = state.users.length;
+    if (document.getElementById('chip-count-registered')) document.getElementById('chip-count-registered').innerText = regCount;
+    if (document.getElementById('chip-count-devices')) document.getElementById('chip-count-devices').innerText = devCount;
+    if (document.getElementById('chip-count-online')) document.getElementById('chip-count-online').innerText = onlineCount;
+
+    filterUsersTable();
   } catch (err) {
-    tbody.innerHTML = '<tr><td colspan="7" class="text-center error-text">Failed to load v3.1.5 users.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="text-center error-text">Failed to load audience.</td></tr>';
   }
+}
+
+function setUserAudienceFilter(type) {
+  userAudienceFilter = type;
+  document.querySelectorAll('.btn-filter-chip').forEach(btn => btn.classList.remove('active'));
+  const activeBtn = document.getElementById(`chip-users-${type}`);
+  if (activeBtn) activeBtn.classList.add('active');
+  filterUsersTable();
+}
+
+function filterUsersTable() {
+  const query = (document.getElementById('users-search-input')?.value || '').trim().toLowerCase();
+  const filtered = (state.users || []).filter(u => {
+    // Type filter
+    if (userAudienceFilter === 'registered' && u.type !== 'Registered Member') return false;
+    if (userAudienceFilter === 'devices' && u.type === 'Registered Member') return false;
+    if (userAudienceFilter === 'online' && u.status !== 'Online Now') return false;
+
+    // Search query
+    if (!query) return true;
+    return (u.name && u.name.toLowerCase().includes(query)) ||
+      (u.id && String(u.id).toLowerCase().includes(query)) ||
+      (u.email && u.email.toLowerCase().includes(query)) ||
+      (u.platform && u.platform.toLowerCase().includes(query));
+  });
+
+  renderUsersTable(filtered);
 }
 
 function renderUsersTable(usersList) {
   const tbody = document.getElementById('users-tbody');
   if (!usersList || usersList.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding: 30px; color: #64748b;">No v3.1.5 devices recorded yet. Launch the APK to connect.</td></tr>';
+    const emptyMsg = userAudienceFilter === 'registered'
+      ? 'No registered Google accounts found.'
+      : 'No audience records matching this filter.';
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center" style="padding: 30px; color: #64748b;">${emptyMsg}</td></tr>`;
     return;
   }
 
   tbody.innerHTML = usersList.map(u => {
     const isOnline = u.status === 'Online Now';
+    const isReg = u.type === 'Registered Member';
+
+    const avatarHtml = isReg && u.picture
+      ? `<img src="${escapeHtml(u.picture)}" alt="${escapeHtml(u.name)}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">`
+      : `<div style="width: 32px; height: 32px; border-radius: 50%; background: ${isReg ? 'linear-gradient(135deg, #a855f7, #6366f1)' : 'rgba(255,255,255,0.08)'}; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">${escapeHtml((u.name || 'U').charAt(0).toUpperCase())}</div>`;
+
     return `
       <tr>
         <td>
-          <div class="table-title-bold" style="font-size: 13.5px;">${escapeHtml(u.name || 'Mobile App User')}</div>
-          <div class="table-meta-sub" style="font-family: var(--font-mono);">${escapeHtml(u.id || u.deviceId || '')}</div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            ${avatarHtml}
+            <div>
+              <div class="table-title-bold" style="font-size: 13.5px; color: ${isReg ? '#f1f5f9' : '#e2e8f0'}; font-weight: 700;">
+                ${escapeHtml(u.name || (isReg ? 'Google Member' : 'Mobile App User'))}
+              </div>
+              <div class="table-meta-sub" style="font-family: var(--font-mono); font-size: 11px;">
+                ${escapeHtml(u.id || u.deviceId || '')}
+              </div>
+            </div>
+          </div>
         </td>
-        <td>${escapeHtml(u.email || 'Android')}</td>
+        <td>
+          <div style="color: ${isReg ? '#c084fc' : '#94a3b8'}; font-weight: ${isReg ? '600' : '400'};">
+            ${escapeHtml(u.email || 'Android Device')}
+          </div>
+          ${isReg ? `<div class="table-meta-sub" style="font-size: 11px;">Saved: ${u.watchlistCount || 0} &bull; Watched: ${u.historyCount || 0}</div>` : ''}
+        </td>
+        <td>
+          <span class="badge-tag" style="background: ${isReg ? 'rgba(168, 85, 247, 0.2)' : 'rgba(56, 189, 248, 0.15)'}; color: ${isReg ? '#c084fc' : '#38bdf8'}; font-weight: 600;">
+            ${isReg ? '<i class="fa-solid fa-user-shield"></i> Registered' : '<i class="fa-brands fa-android"></i> App Device'}
+          </span>
+        </td>
         <td><span class="badge-tag quality" style="font-weight: 700;">v${escapeHtml(u.appVersion || '3.1.5')}</span></td>
-        <td><i class="fa-brands fa-android" style="color: #34d399;"></i> ${escapeHtml(u.platform || 'Android')}</td>
+        <td><i class="${isReg ? 'fa-brands fa-google text-amber' : 'fa-brands fa-android text-emerald'}"></i> ${escapeHtml(u.platform || 'Android')}</td>
         <td>${formatDate(u.createdAt)}</td>
         <td>${formatTimeAgo(u.lastActive)}</td>
         <td>
@@ -1300,16 +1366,6 @@ function renderUsersTable(usersList) {
       </tr>
     `;
   }).join('');
-}
-
-function filterUsersTable() {
-  const query = document.getElementById('users-search-input').value.trim().toLowerCase();
-  const filtered = state.users.filter(u => {
-    return !query || (u.name && u.name.toLowerCase().includes(query)) ||
-      (u.id && u.id.toLowerCase().includes(query)) ||
-      (u.email && u.email.toLowerCase().includes(query));
-  });
-  renderUsersTable(filtered);
 }
 
 async function purgeOldVersions() {

@@ -84,17 +84,30 @@ function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android',
 async function getUserStats() {
   const usersMap = getLocalUsersMap();
   const devicesMap = getDevicesMap();
-  const rawRegisteredUsers = Object.values(usersMap);
+  let rawRegisteredUsers = Object.values(usersMap);
+
+  if (isMongoConnected && User) {
+    try {
+      const dbUsers = await User.find({}).lean();
+      if (Array.isArray(dbUsers) && dbUsers.length > 0) {
+        const map = new Map();
+        for (const u of rawRegisteredUsers) map.set(u.googleId || u._id?.toString() || u.email, u);
+        for (const u of dbUsers) map.set(u.googleId || u._id?.toString() || u.email, u);
+        rawRegisteredUsers = Array.from(map.values());
+      }
+    } catch (e) {}
+  }
+
   const rawDevices = Object.values(devicesMap);
 
-  // ONLY include current version (v3.1.5) devices in admin panel
-  const devices = rawDevices.filter(d => (d.appVersion || '').includes('3.1.5') || !d.appVersion);
-  // Registered users (admin or current version users)
-  const registeredUsers = rawRegisteredUsers.filter(u => (u.appVersion || '').includes('3.1.5') || u.email === 'tanvir210111@gmail.com' || (u.name && u.name.toLowerCase().includes('admin')) || !u.appVersion);
+  // Include active app devices
+  const devices = rawDevices.filter(d => (d.appVersion || '').includes('3.1') || !d.appVersion);
+  // All registered members (Google accounts)
+  const registeredUsers = rawRegisteredUsers;
 
   const totalRegistered = registeredUsers.length;
   const totalDevices = devices.length;
-  const totalUsers = Math.max(totalRegistered + totalDevices, totalDevices, totalRegistered, totalRegistered > 0 ? totalRegistered : 0);
+  const totalUsers = totalRegistered + totalDevices;
 
   // Combine registered Google users + active mobile app devices
   const combinedList = [
@@ -102,7 +115,8 @@ async function getUserStats() {
       const isOnline = u.lastLogin && (Date.now() - new Date(u.lastLogin).getTime() < 15 * 60 * 1000);
       return {
         id: u._id || u.googleId,
-        name: u.name || 'User',
+        googleId: u.googleId || '',
+        name: u.name || 'Registered User',
         email: u.email || 'Google User',
         picture: u.picture || '',
         type: 'Registered Member',
@@ -120,7 +134,7 @@ async function getUserStats() {
       return {
         id: d.id,
         deviceId: d.id,
-        name: `Mobile App User (${d.platform || 'Android App'})`,
+        name: `Mobile Device (${d.platform || 'Android App'})`,
         email: d.ip ? `IP: ${d.ip.replace('::ffff:', '')}` : d.id,
         picture: '',
         type: 'App Installation',
@@ -137,8 +151,8 @@ async function getUserStats() {
 
   combinedList.sort((a, b) => new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime());
 
-  const compliantDevices = devices.filter(d => (d.appVersion || '').includes('3.1.5')).length;
-  const outdatedDevices = 0; // Older versions filtered out
+  const compliantDevices = devices.filter(d => (d.appVersion || '').includes('3.1')).length;
+  const outdatedDevices = 0;
 
   return {
     totalUsers,
