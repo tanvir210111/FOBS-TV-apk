@@ -1187,7 +1187,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
     const mediaCacheKey = `${id}_s${seNum}_e${epNum}`;
     let media = null;
     const cachedEntry = movieboxStreamCache.get(mediaCacheKey);
-    if (cachedEntry && (Date.now() - cachedEntry.timestamp < 24 * 60 * 60 * 1000)) {
+    if (cachedEntry && (Date.now() - cachedEntry.timestamp < 45 * 60 * 1000)) {
       media = cachedEntry.media;
     } else if (movieboxResolvingMap.has(mediaCacheKey)) {
       media = await movieboxResolvingMap.get(mediaCacheKey);
@@ -1274,7 +1274,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
     res.setHeader('X-Accel-Buffering', 'no');
     res.setHeader('Cache-Control', 'public, max-age=86400, no-transform');
 
-    if (req.query.json === '1' || req.headers.accept?.includes('application/json')) {
+    if (req.query.json === '1') {
       return res.json({
         ok: true,
         streamUrl: fullProxiedStreamUrl,
@@ -1289,7 +1289,14 @@ app.get('/api/moviebox/stream', async (req, res) => {
       });
     }
     // Direct Zero-Redirect Streaming: Stream chosen CDN URL immediately in the same connection!
-    return streamMediaDirect(req, res, chosenStream);
+    const mbContext = {
+      id,
+      detailPath: resolvedPath || '',
+      se: seNum,
+      ep: epNum,
+      targetRes: chosenRes
+    };
+    return streamMediaDirect(req, res, chosenStream, mbContext);
   } catch (err) {
     console.error('MovieBox stream redirect error:', err.message);
     res.status(500).json({ error: 'Stream resolution failed', details: err.message, stack: err.stack });
@@ -1412,7 +1419,7 @@ app.post('/api/content', (req, res) => {
 });
 
 // Direct Stream Pipeline: Handles Range, MovieBox CDNs, Google Drive, V-Cloud with zero-delay continuous streaming
-async function streamMediaDirect(req, res, inputTargetUrl) {
+async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
   let targetUrl = inputTargetUrl || req.query.url;
   const standardStreamCorsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -1721,6 +1728,7 @@ async function streamMediaDirect(req, res, inputTargetUrl) {
       });
     } catch (initialErr) {
       const isMb = (
+        (mbContext && mbContext.id) ||
         targetUrl.includes('/api/moviebox/stream') ||
         targetUrl.includes('movieboxapp.in') ||
         streamFetchUrl.includes('hakunaymatata') ||
@@ -1732,11 +1740,41 @@ async function streamMediaDirect(req, res, inputTargetUrl) {
       );
       if (isMb) {
         console.warn(`MovieBox stream fetch failed (${initialErr.message}). Invalidating cache and retrying with fresh token...`);
-        movieboxService.invalidateCache();
-        streamUrlCache.delete(targetUrl);
         requestHeaders['Referer'] = 'https://movieboxapp.in/';
         requestHeaders['Origin'] = 'https://movieboxapp.in';
-        const freshUrl = await resolveStreamUrl(targetUrl);
+
+        let freshUrl = null;
+        if (mbContext && mbContext.id) {
+          movieboxService.invalidateCache(mbContext.id);
+          const cacheKey = `${mbContext.id}_s${mbContext.se}_e${mbContext.ep}`;
+          movieboxStreamCache.delete(cacheKey);
+          try {
+            const freshMedia = await movieboxService.resolveMedia(
+              mbContext.id,
+              mbContext.detailPath || '',
+              mbContext.se,
+              mbContext.ep,
+              { forceRefresh: true }
+            );
+            if (freshMedia && freshMedia.streamUrl) {
+              freshUrl = freshMedia.streamUrl;
+              if (mbContext.targetRes && Array.isArray(freshMedia.qualities) && freshMedia.qualities.length > 0) {
+                const qMatch = freshMedia.qualities.find(q => q.resolution === mbContext.targetRes) || freshMedia.qualities[0];
+                if (qMatch?.url) freshUrl = qMatch.url;
+              }
+              movieboxStreamCache.set(cacheKey, { media: freshMedia, timestamp: Date.now() });
+            }
+          } catch (rErr) {
+            console.error('Failed to auto-refresh expired MovieBox token:', rErr.message);
+          }
+        }
+
+        if (!freshUrl) {
+          movieboxService.invalidateCache();
+          streamUrlCache.delete(targetUrl);
+          freshUrl = await resolveStreamUrl(targetUrl);
+        }
+
         if (freshUrl && freshUrl !== streamFetchUrl) {
           streamFetchUrl = freshUrl;
           response = await axios({
@@ -1880,7 +1918,17 @@ async function streamMediaDirect(req, res, inputTargetUrl) {
 
 // Stream Proxy: Handles Google Drive, V-Cloud, and Direct links with Range (Byte-level Seeking)
 app.all('/api/stream', async (req, res) => {
-  return streamMediaDirect(req, res, req.query.url);
+  let mbContext = null;
+  if (req.query.id || req.query.subjectId) {
+    mbContext = {
+      id: req.query.id || req.query.subjectId,
+      detailPath: req.query.detailPath || '',
+      se: parseInt(req.query.se || req.query.season || '0', 10),
+      ep: parseInt(req.query.ep || req.query.episode || '0', 10),
+      targetRes: parseInt(req.query.q || req.query.quality || '0', 10)
+    };
+  }
+  return streamMediaDirect(req, res, req.query.url, mbContext);
 });
 
 // Download endpoint
@@ -2934,7 +2982,8 @@ app.post('/api/admin/users/purge-old', adminService.authenticate, async (req, re
 });
 
 app.get('/api/admin/content', adminService.authenticate, (req, res) => {
-  const result = adminService.getContent();
+  const isFull = req.query.full === '1';
+  const result = adminService.getContent({ summary: !isFull });
   const cData = result.data || {};
   res.json({
     success: true,
@@ -2942,8 +2991,7 @@ app.get('/api/admin/content', adminService.authenticate, (req, res) => {
     series: cData.series || [],
     liveTv: cData.liveTv || [],
     categories: cData.categories || [],
-    industries: cData.industries || [],
-    data: cData
+    industries: cData.industries || []
   });
 });
 

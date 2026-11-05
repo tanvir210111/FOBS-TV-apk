@@ -442,7 +442,7 @@ class AdminService {
   /**
    * Get all content with real-time views attached
    */
-  getContent() {
+  getContent(options = {}) {
     const content = readContent();
     const viewsMap = readViewsMap();
 
@@ -459,7 +459,34 @@ class AdminService {
         (s.subjectId ? viewsMap[s.subjectId] : 0) ||
         (s.subjectId ? viewsMap[`mb-s-${s.subjectId}`] : 0) ||
         s.views || 0;
-      return { ...s, views: count };
+      const seasonsCount = s.seasonsCount || (s.seasons ? s.seasons.length : 1);
+      const episodesCount = s.episodesCount || (s.seasons ? s.seasons.reduce((acc, x) => acc + (x.episodes?.length || 0), 0) : 0);
+
+      // Lightweight representation for fast table rendering (drops multi-megabyte episode arrays)
+      if (options.summary !== false) {
+        return {
+          id: s.id,
+          subjectId: s.subjectId,
+          title: s.title,
+          year: s.year,
+          rating: s.rating || s.imdbRating,
+          poster: s.poster,
+          cover: s.cover || s.backdrop,
+          backdrop: s.backdrop,
+          genre: s.genre,
+          dubLanguage: s.dubLanguage || s.audio,
+          audio: s.audio || s.dubLanguage,
+          overview: s.overview || s.description,
+          views: count,
+          industry: s.industry,
+          category: s.category,
+          isCustom: s.isCustom,
+          isFeatured: s.isFeatured,
+          seasonsCount,
+          episodesCount
+        };
+      }
+      return { ...s, views: count, seasonsCount, episodesCount };
     });
 
     return {
@@ -469,8 +496,7 @@ class AdminService {
         series,
         liveTv: content.liveTv || [],
         categories: content.categories || [],
-        industries: content.industries || [],
-        viewsMap
+        industries: content.industries || []
       }
     };
   }

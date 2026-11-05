@@ -3939,16 +3939,40 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     const jsonUrl = fullUrl.includes('?') ? (fullUrl + '&json=1') : (fullUrl + '?json=1');
 
     console.log('Playing MovieBox stream immediately:', fullUrl);
+    videoPlayer.preload = 'auto';
     if (videoPlayer.src !== fullUrl) {
+      videoPlayer.removeAttribute('src');
       videoPlayer.src = fullUrl;
+      try { videoPlayer.load(); } catch (_) {}
     }
-    const onStreamReady = () => {
+
+    let streamReadyFired = false;
+    const loaderTimer = setTimeout(() => {
       if (loader) loader.classList.remove('active');
-      videoPlayer.play().catch(() => {});
+    }, 2200);
+
+    const onStreamReady = () => {
+      if (streamReadyFired) return;
+      streamReadyFired = true;
+      clearTimeout(loaderTimer);
+      if (loader) loader.classList.remove('active');
+      const p = videoPlayer.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(() => {
+          if (loader) loader.classList.remove('active');
+          if (typeof syncCenterPlayButton === 'function') syncCenterPlayButton();
+        });
+      }
     };
+    videoPlayer.addEventListener('loadeddata', onStreamReady, { once: true });
     videoPlayer.addEventListener('loadedmetadata', onStreamReady, { once: true });
     videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
     videoPlayer.addEventListener('playing', onStreamReady, { once: true });
+    videoPlayer.addEventListener('error', () => {
+      clearTimeout(loaderTimer);
+      if (loader) loader.classList.remove('active');
+    }, { once: true });
+
     if (seekTime && seekTime > 0) {
       appState.pendingSeekTime = seekTime;
       let seekApplied = false;
@@ -3970,7 +3994,12 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
         applySeek();
       }
     }
-    videoPlayer.play().catch(() => {});
+    const initialPlay = videoPlayer.play();
+    if (initialPlay && typeof initialPlay.catch === 'function') {
+      initialPlay.catch(() => {
+        if (loader) loader.classList.remove('active');
+      });
+    }
 
     // Asynchronously discover qualities in background without competing with initial video buffer
     let qualityFetched = false;
@@ -4003,16 +4032,39 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
   if (playableUrl.includes('/api/stream')) {
     const proxyStreamUrl = playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`;
     console.log('Playing stream via server proxy:', proxyStreamUrl);
+    videoPlayer.preload = 'auto';
     if (videoPlayer.src !== proxyStreamUrl) {
+      videoPlayer.removeAttribute('src');
       videoPlayer.src = proxyStreamUrl;
+      try { videoPlayer.load(); } catch (_) {}
     }
-    const onStreamReady = () => {
+
+    let streamReadyFired = false;
+    const loaderTimer = setTimeout(() => {
       if (loader) loader.classList.remove('active');
-      videoPlayer.play().catch(() => {});
+    }, 2200);
+
+    const onStreamReady = () => {
+      if (streamReadyFired) return;
+      streamReadyFired = true;
+      clearTimeout(loaderTimer);
+      if (loader) loader.classList.remove('active');
+      const p = videoPlayer.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(() => {
+          if (loader) loader.classList.remove('active');
+          if (typeof syncCenterPlayButton === 'function') syncCenterPlayButton();
+        });
+      }
     };
+    videoPlayer.addEventListener('loadeddata', onStreamReady, { once: true });
     videoPlayer.addEventListener('loadedmetadata', onStreamReady, { once: true });
     videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
     videoPlayer.addEventListener('playing', onStreamReady, { once: true });
+    videoPlayer.addEventListener('error', () => {
+      clearTimeout(loaderTimer);
+      if (loader) loader.classList.remove('active');
+    }, { once: true });
     if (seekTime && seekTime > 0) {
       appState.pendingSeekTime = seekTime;
       let seekApplied = false;
@@ -4076,16 +4128,39 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
         ? (playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`)
         : `${API_BASE_URL}/api/stream?url=${encodeURIComponent(playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`)}`;
       console.log('Playing MovieBox stream via server proxy:', proxyUrl);
+      videoPlayer.preload = 'auto';
       if (videoPlayer.src !== proxyUrl) {
+        videoPlayer.removeAttribute('src');
         videoPlayer.src = proxyUrl;
+        try { videoPlayer.load(); } catch (_) {}
       }
-      const onStreamReady = () => {
+
+      let streamReadyFired = false;
+      const loaderTimer = setTimeout(() => {
         if (loader) loader.classList.remove('active');
-        videoPlayer.play().catch(() => {});
+      }, 2200);
+
+      const onStreamReady = () => {
+        if (streamReadyFired) return;
+        streamReadyFired = true;
+        clearTimeout(loaderTimer);
+        if (loader) loader.classList.remove('active');
+        const p = videoPlayer.play();
+        if (p && typeof p.catch === 'function') {
+          p.catch(() => {
+            if (loader) loader.classList.remove('active');
+            if (typeof syncCenterPlayButton === 'function') syncCenterPlayButton();
+          });
+        }
       };
+      videoPlayer.addEventListener('loadeddata', onStreamReady, { once: true });
       videoPlayer.addEventListener('loadedmetadata', onStreamReady, { once: true });
       videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
       videoPlayer.addEventListener('playing', onStreamReady, { once: true });
+      videoPlayer.addEventListener('error', () => {
+        clearTimeout(loaderTimer);
+        if (loader) loader.classList.remove('active');
+      }, { once: true });
       if (seekTime && seekTime > 0) {
         let seekApplied = false;
         const applySeek = () => {
@@ -4108,16 +4183,39 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
 
     const finalDirectUrl = playableUrl.startsWith('/') ? `${API_BASE_URL}${playableUrl}` : playableUrl;
     console.log('Playing direct CDN stream:', finalDirectUrl);
+    videoPlayer.preload = 'auto';
     if (videoPlayer.src !== finalDirectUrl) {
+      videoPlayer.removeAttribute('src');
       videoPlayer.src = finalDirectUrl;
+      try { videoPlayer.load(); } catch (_) {}
     }
-    const onStreamReady = () => {
+
+    let streamReadyFired = false;
+    const loaderTimer = setTimeout(() => {
       if (loader) loader.classList.remove('active');
-      videoPlayer.play().catch(() => {});
+    }, 2200);
+
+    const onStreamReady = () => {
+      if (streamReadyFired) return;
+      streamReadyFired = true;
+      clearTimeout(loaderTimer);
+      if (loader) loader.classList.remove('active');
+      const p = videoPlayer.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(() => {
+          if (loader) loader.classList.remove('active');
+          if (typeof syncCenterPlayButton === 'function') syncCenterPlayButton();
+        });
+      }
     };
+    videoPlayer.addEventListener('loadeddata', onStreamReady, { once: true });
     videoPlayer.addEventListener('loadedmetadata', onStreamReady, { once: true });
     videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
     videoPlayer.addEventListener('playing', onStreamReady, { once: true });
+    videoPlayer.addEventListener('error', () => {
+      clearTimeout(loaderTimer);
+      if (loader) loader.classList.remove('active');
+    }, { once: true });
     if (seekTime && seekTime > 0) {
       appState.pendingSeekTime = seekTime;
       let seekApplied = false;

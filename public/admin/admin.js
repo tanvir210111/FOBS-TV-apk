@@ -380,8 +380,7 @@ async function loadMovies() {
   try {
     const res = await authFetch(`${API_BASE}/api/admin/content`);
     const data = await res.json();
-    const content = data.data ? { ...data, ...data.data } : data;
-    state.movies = content.movies || [];
+    state.movies = data.movies || (data.data && data.data.movies) || [];
     renderMoviesTable(state.movies);
   } catch (err) {
     tbody.innerHTML = '<tr><td colspan="7" class="text-center error-text">Failed to load movies.</td></tr>';
@@ -582,8 +581,7 @@ async function loadSeries() {
   try {
     const res = await authFetch(`${API_BASE}/api/admin/content`);
     const data = await res.json();
-    const content = data.data ? { ...data, ...data.data } : data;
-    state.series = content.series || [];
+    state.series = data.series || (data.data && data.data.series) || [];
     renderSeriesTable(state.series);
   } catch (err) {
     tbody.innerHTML = '<tr><td colspan="7" class="text-center error-text">Failed to load series.</td></tr>';

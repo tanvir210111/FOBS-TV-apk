@@ -712,7 +712,11 @@ class MovieBoxService {
 
     const forceRefresh = options && (options.forceRefresh || options.bypassCache);
 
-    if (!forceRefresh) {
+    if (forceRefresh) {
+      this.cache.delete(cacheKey);
+      this.detailCache.delete(`detail_${cleanId}`);
+      this.detailPathMap.delete(cleanId);
+    } else {
       const cached = this.cache.get(cacheKey);
       if (cached && cached.expireAt > Date.now()) {
         return cached.data;
@@ -775,7 +779,7 @@ class MovieBoxService {
         if (result) {
           this.cache.set(cacheKey, {
             data: result,
-            expireAt: Date.now() + 24 * 60 * 60 * 1000 // 24 hours
+            expireAt: Date.now() + 45 * 60 * 1000 // 45 minutes (MovieBox CDN tokens expire in 2h)
           });
           this._saveDiskCache();
           return result;
@@ -805,7 +809,7 @@ class MovieBoxService {
               captions: (data.captions || []).map(c => ({ language: c.language || c.lan, url: c.url })),
               headers: { 'Referer': 'https://movieboxapp.in/' }
             };
-            this.cache.set(cacheKey, { data: legacyRes, expireAt: Date.now() + 6 * 60 * 60 * 1000 });
+            this.cache.set(cacheKey, { data: legacyRes, expireAt: Date.now() + 45 * 60 * 1000 });
             return legacyRes;
           }
         } catch (_) {}
