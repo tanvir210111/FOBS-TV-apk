@@ -142,32 +142,30 @@ public class MainActivity extends BridgeActivity {
             try {
                 Window window = getWindow();
                 if (window != null) {
-                    WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                    lp.copyFrom(window.getAttributes());
+                    WindowManager.LayoutParams lp = window.getAttributes();
                     lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
                     window.setAttributes(lp);
-                    View decor = window.getDecorView();
-                    if (decor != null) {
-                        decor.postInvalidate();
-                        decor.requestLayout();
-                        decor.postDelayed(() -> {
-                            try {
-                                WindowManager.LayoutParams delayedLp = new WindowManager.LayoutParams();
-                                delayedLp.copyFrom(window.getAttributes());
-                                delayedLp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-                                window.setAttributes(delayedLp);
-                            } catch (Exception ignored) {}
-                        }, 120);
-                    }
                 }
             } catch (Exception ignored) {}
         });
     }
 
     public void setWindowHardwareBrightness(float brightness) {
-        // Enforce BRIGHTNESS_OVERRIDE_NONE to guarantee Android OS and OEM auto-brightness
-        // are never locked or trapped, keeping system brightness 100% normal.
-        resetBrightnessToSystemDefault();
+        runOnUiThread(() -> {
+            try {
+                Window window = getWindow();
+                if (window != null) {
+                    WindowManager.LayoutParams lp = window.getAttributes();
+                    if (brightness < 0) {
+                        lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+                    } else {
+                        float safeBrightness = Math.max(0.01f, Math.min(1.0f, brightness));
+                        lp.screenBrightness = safeBrightness;
+                    }
+                    window.setAttributes(lp);
+                }
+            } catch (Exception ignored) {}
+        });
     }
 
     private class FullscreenWebChromeClient extends BridgeWebChromeClient {
@@ -605,11 +603,14 @@ public class MainActivity extends BridgeActivity {
 
         WindowCompat.setDecorFitsSystemWindows(window, true);
 
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(window.getAttributes());
+        WindowManager.LayoutParams lp = window.getAttributes();
         lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
+            } else {
+                lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+            }
         }
         window.setAttributes(lp);
 
@@ -701,6 +702,17 @@ public class MainActivity extends BridgeActivity {
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
         );
 
+        // Allow window to draw across camera cutout / notch in landscape without black bars
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            WindowManager.LayoutParams lp = getWindow().getAttributes();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
+            } else {
+                lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+            }
+            getWindow().setAttributes(lp);
+        }
+
         // Handle Android swipe back gesture & system back button
         backPressedCallback = new OnBackPressedCallback(true) {
             @Override
@@ -742,6 +754,7 @@ public class MainActivity extends BridgeActivity {
         getOnBackPressedDispatcher().addCallback(this, backPressedCallback);
 
         // In portrait mode, keep bottom inset strictly at 0 so the bottom navigation bar never shifts/floats upwards.
+        // In landscape mode, consume cutout insets to let fullscreen player touch both left and right screen borders.
         getWindow().getDecorView().setOnApplyWindowInsetsListener((v, insets) -> {
             v.post(() -> {
                 try {
@@ -754,6 +767,16 @@ public class MainActivity extends BridgeActivity {
                     }
                 } catch (Exception ignored) {}
             });
+            int orientation = getResources().getConfiguration().orientation;
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    return WindowInsets.CONSUMED;
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    return insets.consumeDisplayCutout();
+                } else {
+                    return insets.consumeSystemWindowInsets();
+                }
+            }
             return insets;
         });
 

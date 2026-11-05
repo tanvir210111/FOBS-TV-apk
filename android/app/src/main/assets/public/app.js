@@ -6431,28 +6431,28 @@ window.addEventListener('pagehide', () => {
 });
 
 function applyPlayerBrightness(val) {
-  playerBrightness = Math.max(0.05, Math.min(1.0, Number(val)));
+  playerBrightness = Math.max(0.01, Math.min(1.0, Number(val)));
+
+  // Adjust native phone screen hardware backlight brightness in Android
+  try {
+    const bridge = window.AndroidApp || window.AndroidBridge;
+    if (bridge && typeof bridge.setWindowBrightness === 'function') {
+      bridge.setWindowBrightness(playerBrightness);
+    }
+  } catch (e) {}
 
   const video = document.getElementById('mainVideoPlayer');
   if (video) {
-    // 0.5 is normal natural baseline (1.0x brightness)
-    // 0.05 to 0.5 smoothly dims video picture from 0.25x to 1.0x for nighttime viewing
-    // 0.5 to 1.0 smoothly boosts video picture brightness from 1.0x up to 1.6x vividly
-    let filterVal;
-    if (playerBrightness >= 0.5) {
-      filterVal = 1.0 + ((playerBrightness - 0.5) / 0.5) * 0.6;
-    } else {
-      filterVal = 0.25 + (playerBrightness / 0.5) * 0.75;
-    }
-    video.style.filter = `brightness(${filterVal.toFixed(2)})`;
+    // Keep natural video colors crisp and vivid, no white washing
+    video.style.filter = '';
   }
 
   const overlay = document.getElementById('playerBrightnessOverlay');
   if (overlay) {
-    if (playerBrightness < 0.30) {
+    if (playerBrightness < 0.20) {
       overlay.style.display = 'block';
-      // Soft gentle black tint overlay only when deeply dimming below 30%
-      const dimAlpha = ((0.30 - playerBrightness) / 0.30) * 0.45;
+      // Soft gentle black tint overlay only when deeply dimming below 20%
+      const dimAlpha = ((0.20 - playerBrightness) / 0.20) * 0.40;
       overlay.style.backgroundColor = `rgba(0, 0, 0, ${dimAlpha.toFixed(2)})`;
       overlay.style.mixBlendMode = 'normal';
     } else {

@@ -19,6 +19,8 @@ const NOTIFICATIONS_FILE = path.join(__dirname, '..', 'data', 'notifications.jso
 const NOTIFICATIONS_LOCAL_FILE = path.join(__dirname, '..', 'data', 'notifications.local.json');
 const REQUESTS_LOCAL_FILE = path.join(__dirname, '..', 'data', 'requests.local.json');
 const VIEWS_LOCAL_FILE = path.join(__dirname, '..', 'data', 'views.local.json');
+const CUSTOM_CATALOG_FILE = path.join(__dirname, '..', 'data', 'custom_catalog.local.json');
+const CUSTOM_CATALOG_BACKUP = path.join(__dirname, '..', 'data', 'custom_catalog.backup.json');
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'fobs2026admin';
 const JWT_SECRET = process.env.JWT_SECRET || 'fobs_tv_admin_secret_key_2026';
@@ -28,6 +30,33 @@ function atomicWriteFile(targetFile, dataStr) {
   const tmpFile = path.join(dir, `.${path.basename(targetFile)}.tmp.${Date.now()}.${Math.random().toString(36).substring(2, 8)}`);
   fs.writeFileSync(tmpFile, dataStr, 'utf8');
   fs.renameSync(tmpFile, targetFile);
+}
+
+function readCustomCatalog() {
+  try {
+    if (fs.existsSync(CUSTOM_CATALOG_FILE)) {
+      const data = JSON.parse(fs.readFileSync(CUSTOM_CATALOG_FILE, 'utf8'));
+      if (data && typeof data === 'object') return data;
+    }
+  } catch (e) {}
+  try {
+    if (fs.existsSync(CUSTOM_CATALOG_BACKUP)) {
+      const data = JSON.parse(fs.readFileSync(CUSTOM_CATALOG_BACKUP, 'utf8'));
+      if (data && typeof data === 'object') return data;
+    }
+  } catch (e) {}
+  return { movies: [], series: [], liveTv: [], upcoming: [] };
+}
+
+function writeCustomCatalog(catalog) {
+  if (!catalog || typeof catalog !== 'object') return;
+  try {
+    const jsonStr = JSON.stringify(catalog, null, 2);
+    atomicWriteFile(CUSTOM_CATALOG_FILE, jsonStr);
+    try { atomicWriteFile(CUSTOM_CATALOG_BACKUP, jsonStr); } catch (e) {}
+  } catch (e) {
+    console.error('[writeCustomCatalog] Error saving custom catalog:', e.message);
+  }
 }
 
 let _cachedContentData = null;
@@ -76,6 +105,53 @@ function readContent() {
   mainData.series = Array.isArray(mainData.series) ? mainData.series : [];
   mainData.liveTv = Array.isArray(mainData.liveTv) ? mainData.liveTv : [];
   mainData.upcoming = Array.isArray(mainData.upcoming) ? mainData.upcoming : [];
+
+  // ALWAYS merge permanent custom catalog so admin additions are 100% resilient across git pull/restart!
+  try {
+    const custom = readCustomCatalog();
+    if (Array.isArray(custom.movies) && custom.movies.length > 0) {
+      for (const cm of custom.movies) {
+        const idx = mainData.movies.findIndex(m => m.id === cm.id || (cm.title && m.title && m.title.trim().toLowerCase() === cm.title.trim().toLowerCase()));
+        if (idx >= 0) {
+          mainData.movies[idx] = { ...mainData.movies[idx], ...cm };
+        } else {
+          mainData.movies.unshift(cm);
+        }
+      }
+    }
+    if (Array.isArray(custom.series) && custom.series.length > 0) {
+      for (const cs of custom.series) {
+        const idx = mainData.series.findIndex(s => s.id === cs.id || (cs.title && s.title && s.title.trim().toLowerCase() === cs.title.trim().toLowerCase()));
+        if (idx >= 0) {
+          mainData.series[idx] = { ...mainData.series[idx], ...cs };
+        } else {
+          mainData.series.unshift(cs);
+        }
+      }
+    }
+    if (Array.isArray(custom.liveTv) && custom.liveTv.length > 0) {
+      for (const ct of custom.liveTv) {
+        const idx = mainData.liveTv.findIndex(t => t.id === ct.id || (ct.name && t.name && t.name.trim().toLowerCase() === ct.name.trim().toLowerCase()));
+        if (idx >= 0) {
+          mainData.liveTv[idx] = { ...mainData.liveTv[idx], ...ct };
+        } else {
+          mainData.liveTv.unshift(ct);
+        }
+      }
+    }
+    if (Array.isArray(custom.upcoming) && custom.upcoming.length > 0) {
+      for (const cu of custom.upcoming) {
+        const idx = mainData.upcoming.findIndex(u => u.id === cu.id || (cu.title && u.title && u.title.trim().toLowerCase() === cu.title.trim().toLowerCase()));
+        if (idx >= 0) {
+          mainData.upcoming[idx] = { ...mainData.upcoming[idx], ...cu };
+        } else {
+          mainData.upcoming.unshift(cu);
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('[readContent] Merge custom catalog error:', e.message);
+  }
 
   try {
     if (fs.existsSync(CONTENT_FILE)) {
@@ -1279,6 +1355,17 @@ class AdminService {
     } else {
       content.movies.unshift(movie);
     }
+
+    // Persist to git-immune custom catalog so it NEVER gets wiped by updates
+    try {
+      const custom = readCustomCatalog();
+      if (!Array.isArray(custom.movies)) custom.movies = [];
+      const cIdx = custom.movies.findIndex(m => m.id === movie.id || (m.title && m.title.trim().toLowerCase() === movie.title.trim().toLowerCase()));
+      if (cIdx >= 0) custom.movies[cIdx] = { ...custom.movies[cIdx], ...movie };
+      else custom.movies.unshift(movie);
+      writeCustomCatalog(custom);
+    } catch(e) {}
+
     writeContent(content);
     return { success: true, movie };
   }
@@ -1289,6 +1376,13 @@ class AdminService {
   deleteMovie(id) {
     const content = readContent();
     content.movies = (content.movies || []).filter(m => m.id !== id);
+    try {
+      const custom = readCustomCatalog();
+      if (Array.isArray(custom.movies)) {
+        custom.movies = custom.movies.filter(m => m.id !== id);
+        writeCustomCatalog(custom);
+      }
+    } catch(e) {}
     writeContent(content);
     return { success: true };
   }
@@ -1364,6 +1458,17 @@ class AdminService {
     } else {
       content.series.unshift(series);
     }
+
+    // Persist to git-immune custom catalog
+    try {
+      const custom = readCustomCatalog();
+      if (!Array.isArray(custom.series)) custom.series = [];
+      const cIdx = custom.series.findIndex(s => s.id === series.id || (s.title && s.title.trim().toLowerCase() === series.title.trim().toLowerCase()));
+      if (cIdx >= 0) custom.series[cIdx] = { ...custom.series[cIdx], ...series };
+      else custom.series.unshift(series);
+      writeCustomCatalog(custom);
+    } catch(e) {}
+
     writeContent(content);
     return { success: true, series };
   }
@@ -1374,6 +1479,13 @@ class AdminService {
   deleteSeries(id) {
     const content = readContent();
     content.series = (content.series || []).filter(s => s.id !== id);
+    try {
+      const custom = readCustomCatalog();
+      if (Array.isArray(custom.series)) {
+        custom.series = custom.series.filter(s => s.id !== id);
+        writeCustomCatalog(custom);
+      }
+    } catch(e) {}
     writeContent(content);
     return { success: true };
   }
@@ -1396,6 +1508,17 @@ class AdminService {
     } else {
       content.liveTv.push(channel);
     }
+
+    // Persist to git-immune custom catalog
+    try {
+      const custom = readCustomCatalog();
+      if (!Array.isArray(custom.liveTv)) custom.liveTv = [];
+      const cIdx = custom.liveTv.findIndex(t => t.id === channel.id || (t.name && t.name.trim().toLowerCase() === channel.name.trim().toLowerCase()));
+      if (cIdx >= 0) custom.liveTv[cIdx] = { ...custom.liveTv[cIdx], ...channel };
+      else custom.liveTv.push(channel);
+      writeCustomCatalog(custom);
+    } catch(e) {}
+
     writeContent(content);
     return { success: true, channel };
   }
@@ -1406,6 +1529,13 @@ class AdminService {
   deleteChannel(id) {
     const content = readContent();
     content.liveTv = (content.liveTv || []).filter(c => c.id !== id);
+    try {
+      const custom = readCustomCatalog();
+      if (Array.isArray(custom.liveTv)) {
+        custom.liveTv = custom.liveTv.filter(t => t.id !== id);
+        writeCustomCatalog(custom);
+      }
+    } catch(e) {}
     writeContent(content);
     return { success: true };
   }
@@ -2246,6 +2376,17 @@ class AdminService {
       series.servers = series.episodes[0].servers || series.servers;
     }
     series.duration = seasons.length > 1 ? `${seasons.length} Seasons (${totalEps} Episodes)` : `${totalEps} Episodes`;
+
+    try {
+      const custom = readCustomCatalog();
+      if (Array.isArray(custom.series)) {
+        const cIdx = custom.series.findIndex(s => s.id === seriesId);
+        if (cIdx >= 0) {
+          custom.series[cIdx] = { ...custom.series[cIdx], ...series };
+          writeCustomCatalog(custom);
+        }
+      }
+    } catch (e) {}
 
     writeContent(content);
     return { success: true, series, totalEpisodes: totalEps, seasonsCount: seasons.length };

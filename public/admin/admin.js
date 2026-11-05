@@ -1,3002 +1,1665 @@
 /**
- * FOBS TV — Master Web Admin Hub (v3.2.0)
- * Complete Administrative Control Suite for Catalog, Streaming, Users, Updates & VPS Cloud
+ * FOBS TV — v3.1.5 Master Control Center Client
+ * Handles full administration: permanent catalog, v3.1.5 audience, popups, reactions, and comments.
  */
 
-// ============================================================
-// GLOBAL STATE
-// ============================================================
+const API_BASE = '';
+let authToken = sessionStorage.getItem('fobs_admin_jwt') || localStorage.getItem('fobs_admin_jwt') || '';
+
+// App State
 const state = {
-  token: localStorage.getItem('fobs_admin_token') || null,
-  content: {
-    movies: [],
-    series: [],
-    liveTv: [],
-    upcoming: [],
-    featured: {},
-    appUpdate: {},
-    settings: {}
-  },
-  stats: {},
-  usersData: null,
-  notifications: [],
-  reports: [],
-  requests: [],
   activeTab: 'overview',
-  
-  // Pagination & Filtering
-  movies: {
-    page: 1,
-    perPage: 20,
-    search: '',
-    genre: '',
-    industry: '',
-    filtered: []
-  },
-  series: {
-    page: 1,
-    perPage: 20,
-    search: '',
-    industry: '',
-    filtered: []
-  },
-  channels: {
-    search: '',
-    category: '',
-    filtered: []
-  },
-  upcoming: {
-    search: '',
-    filtered: []
-  },
-
-  // Episode Studio Active State
-  studio: {
-    seriesId: null,
-    series: null,
-    seasons: [],
-    activeSeasonIndex: 0
-  },
-
-  // In-Admin Video Player
-  hlsInstance: null
+  stats: {},
+  movies: [],
+  series: [],
+  channels: [],
+  announcements: [],
+  comments: [],
+  users: [],
+  requests: [],
+  currentEpisodesStudio: null,
+  activeSeasonIndex: 0
 };
 
 // ============================================================
-// API HELPERS & AUTHENTICATION
+// INITIALIZATION & AUTHENTICATION
 // ============================================================
-function getAuthHeaders() {
+
+document.addEventListener('DOMContentLoaded', () => {
+  initAuth();
+  setupNavigation();
+});
+
+function initAuth() {
+  const loginForm = document.getElementById('login-form');
+  const togglePwdBtn = document.getElementById('btn-toggle-pwd');
+  const pwdInput = document.getElementById('admin-password');
+
+  if (togglePwdBtn && pwdInput) {
+    togglePwdBtn.addEventListener('click', () => {
+      const isPwd = pwdInput.type === 'password';
+      pwdInput.type = isPwd ? 'text' : 'password';
+      togglePwdBtn.innerHTML = isPwd ? '<i class="fa-regular fa-eye-slash"></i>' : '<i class="fa-regular fa-eye"></i>';
+    });
+  }
+
+  if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const pwd = pwdInput.value.trim();
+      const errEl = document.getElementById('login-error');
+      errEl.innerText = '';
+
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: pwd })
+        });
+        const data = await res.json();
+        if (data.success && data.token) {
+          authToken = data.token;
+          sessionStorage.setItem('fobs_admin_jwt', authToken);
+          localStorage.setItem('fobs_admin_jwt', authToken);
+          showApp();
+        } else {
+          errEl.innerText = data.error || 'Invalid password. Access denied.';
+        }
+      } catch (err) {
+        errEl.innerText = 'Server error or network failure.';
+      }
+    });
+  }
+
+  const logoutBtn = document.getElementById('btn-logout');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      authToken = '';
+      sessionStorage.removeItem('fobs_admin_jwt');
+      localStorage.removeItem('fobs_admin_jwt');
+      location.reload();
+    });
+  }
+
+  // Auto-login if token exists
+  if (authToken) {
+    verifySession();
+  }
+}
+
+async function verifySession() {
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/stats`);
+    if (res.ok) {
+      showApp();
+    } else {
+      document.getElementById('login-modal').classList.add('active');
+    }
+  } catch (e) {
+    document.getElementById('login-modal').classList.add('active');
+  }
+}
+
+function showApp() {
+  document.getElementById('login-modal').classList.remove('active');
+  document.getElementById('app').style.display = 'flex';
+  loadDashboardData();
+}
+
+function authHeaders(headers = {}) {
   return {
-    'Content-Type': 'application/json',
-    'Authorization': state.token ? `Bearer ${state.token}` : ''
+    ...headers,
+    'Authorization': `Bearer ${authToken}`
   };
 }
 
-async function apiFetch(url, options = {}) {
-  const headers = { ...getAuthHeaders(), ...(options.headers || {}) };
-  const res = await fetch(url, { ...options, headers });
-  
-  if (res.status === 401) {
-    logout();
-    throw new Error('Session expired. Please log in again.');
+async function authFetch(url, options = {}) {
+  options.headers = authHeaders(options.headers || {});
+  const res = await fetch(url, options);
+  if (res.status === 401 || res.status === 403) {
+    authToken = '';
+    sessionStorage.removeItem('fobs_admin_jwt');
+    localStorage.removeItem('fobs_admin_jwt');
+    document.getElementById('login-modal').classList.add('active');
+    document.getElementById('app').style.display = 'none';
+    throw new Error('Unauthorized');
   }
-
-  // Handle file downloads
-  const disposition = res.headers.get('content-disposition');
-  if (disposition && disposition.includes('attachment')) {
-    return res;
-  }
-
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    throw new Error(data.error || data.message || `HTTP ${res.status}`);
-  }
-  return data;
-}
-
-function showLoginModal() {
-  document.getElementById('login-modal').classList.add('active');
-  document.getElementById('app').style.display = 'none';
-}
-
-function hideLoginModal() {
-  document.getElementById('login-modal').classList.remove('active');
-  document.getElementById('app').style.display = 'flex';
-}
-
-async function verifyAuth() {
-  if (!state.token) {
-    showLoginModal();
-    return;
-  }
-
-  try {
-    const data = await apiFetch('/api/admin/stats');
-    state.stats = data;
-    hideLoginModal();
-    await initApp();
-  } catch (err) {
-    console.warn('Auth check failed:', err.message);
-    state.token = null;
-    localStorage.removeItem('fobs_admin_token');
-    showLoginModal();
-  }
-}
-
-function logout() {
-  state.token = null;
-  localStorage.removeItem('fobs_admin_token');
-  showLoginModal();
-  showToast('Logged out successfully', 'info');
+  return res;
 }
 
 // ============================================================
-// TOAST NOTIFICATIONS
+// NAVIGATION & TAB SWITCHING
 // ============================================================
-function showToast(message, type = 'info', duration = 4000) {
-  const container = document.getElementById('toast-container');
-  if (!container) return;
-
-  const toast = document.createElement('div');
-  toast.className = `toast ${type}`;
-  
-  let icon = 'fa-info-circle';
-  if (type === 'success') icon = 'fa-circle-check';
-  if (type === 'error') icon = 'fa-triangle-exclamation';
-  if (type === 'warning') icon = 'fa-bolt';
-
-  toast.innerHTML = `
-    <i class="fa-solid ${icon}"></i>
-    <span>${message}</span>
-  `;
-
-  container.appendChild(toast);
-  setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateX(100%)';
-    toast.style.transition = 'all 0.3s ease';
-    setTimeout(() => toast.remove(), 300);
-  }, duration);
-}
-
-// ============================================================
-// APP INITIALIZATION
-// ============================================================
-async function initApp() {
-  try {
-    // Load Initial Core Catalog & Stats in parallel
-    await Promise.allSettled([
-      loadStats(),
-      loadContent(),
-      loadNotifications(),
-      loadReportsAndRequests(),
-      loadAppSettings()
-    ]);
-  } catch (err) {
-    console.warn('Initial data load warning:', err);
-  }
-
-  // Handle Initial Route from URL Hash
-  const hash = window.location.hash.replace('#', '') || 'overview';
-  switchTab(hash);
-}
 
 function setupNavigation() {
-  const navItems = document.querySelectorAll('.nav-item');
+  const navItems = document.querySelectorAll('.sidebar-nav .nav-item');
   navItems.forEach(item => {
     item.addEventListener('click', (e) => {
       e.preventDefault();
       const tab = item.getAttribute('data-tab');
-      switchTab(tab);
+      if (tab) switchAdminTab(tab);
     });
   });
 
   const sidebarToggle = document.getElementById('sidebar-toggle');
-  if (sidebarToggle) {
-    sidebarToggle.addEventListener('click', () => {
-      document.querySelector('.sidebar').classList.toggle('mobile-open');
-    });
-  }
+  const sidebarClose = document.getElementById('sidebar-close');
+  const sidebar = document.getElementById('sidebar');
 
-  document.getElementById('btn-logout').addEventListener('click', logout);
-  document.getElementById('btn-refresh').addEventListener('click', refreshAll);
+  if (sidebarToggle && sidebar) {
+    sidebarToggle.addEventListener('click', () => sidebar.classList.add('open'));
+  }
+  if (sidebarClose && sidebar) {
+    sidebarClose.addEventListener('click', () => sidebar.classList.remove('open'));
+  }
 }
 
-function switchTab(tabName) {
+function switchAdminTab(tabName) {
   state.activeTab = tabName;
-  window.location.hash = tabName;
 
-  // Update Nav selection
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.classList.toggle('active', item.getAttribute('data-tab') === tabName);
+  // Close mobile sidebar
+  const sidebar = document.getElementById('sidebar');
+  if (sidebar) sidebar.classList.remove('open');
+
+  // Update nav highlight
+  document.querySelectorAll('.sidebar-nav .nav-item').forEach(el => {
+    el.classList.toggle('active', el.getAttribute('data-tab') === tabName);
   });
 
-  // Switch Tab Panes
-  document.querySelectorAll('.tab-pane').forEach(pane => {
-    pane.classList.remove('active');
+  // Update tabs display
+  document.querySelectorAll('.tab-content').forEach(el => {
+    el.classList.toggle('active', el.id === `tab-${tabName}`);
   });
-  const targetPane = document.getElementById(`tab-${tabName}`);
-  if (targetPane) {
-    targetPane.classList.add('active');
-  }
 
-  // Update Topbar Title & Subtitle
+  // Update topbar title
+  const titleEl = document.getElementById('page-title');
+  const subEl = document.getElementById('page-subtitle');
   const titles = {
-    overview: { title: 'Master Dashboard', sub: 'Real-time statistics and streaming engine status' },
-    moviebox: { title: 'MovieBox Importer', sub: 'Universal live search and 1-click catalog import' },
-    movies: { title: 'Movies Management', sub: 'Manage, search, preview and edit movie catalog' },
-    series: { title: 'Series & TV Studio', sub: 'Deep seasons, episodes, server links & subtitles manager' },
-    livetv: { title: 'Live TV Channels', sub: 'Manage Sports, Bangla, News and Entertainment streams' },
-    featured: { title: 'Hero Spotlight Banner', sub: 'Configure primary hero banner at top of mobile & web app' },
-    upcoming: { title: 'Upcoming Releases', sub: 'Schedule future releases and countdown teasers' },
-    notifications: { title: 'In-App Announcements', sub: 'Push notification messages and updates to app bell' },
-    feedback: { title: 'Requests & Video Reports', sub: 'User-submitted movie requests and broken stream diagnostics' },
-    users: { title: 'App Users & Devices', sub: 'Audience analytics, active versions and device compliance' },
-    settings: { title: 'App Settings & Update', sub: 'Remote APK version control, force update and maintenance' },
-    system: { title: 'Cloud Deploy & Backups', sub: '1-Click VPS deployment, token repair and database snapshots' }
+    overview: { title: 'Dashboard Overview', sub: 'Real-time FOBS TV v3.1.5 System Status & Streaming Network' },
+    movies: { title: 'Movies Management', sub: 'Manage permanent catalog, fast CDN streams, and audio dubbing' },
+    series: { title: 'Series & TV Studio', sub: 'Manage seasons, episode streams, and subtitles' },
+    livetv: { title: 'Live TV Channels', sub: 'Manage regional, sports, and international streaming channels' },
+    announcements: { title: 'Popup Notices & Announcements', sub: 'Manage in-app popups, view real-time likes, dislikes, and viewer comments' },
+    comments: { title: 'User Comments & Community', sub: 'Moderate viewer comments across movies and series' },
+    users: { title: 'v3.1.5 App Audience', sub: 'Active devices and registered users running FOBS TV v3.1.5' },
+    requests: { title: 'User Requests & Pre-Bookings', sub: 'Viewer submitted requests for movies and series' },
+    importer: { title: 'MovieBox 1-Click Importer', sub: 'Import trending titles with auto-renewing streams' },
+    appcontrol: { title: 'v3.1.5 App Control & Remote Config', sub: 'Configure target version, mandatory updates, and server maintenance' }
   };
 
-  const meta = titles[tabName] || { title: 'FOBS TV Admin', sub: 'Control Hub' };
-  document.getElementById('page-title').innerText = meta.title;
-  document.getElementById('page-subtitle').innerText = meta.sub;
+  if (titles[tabName]) {
+    titleEl.innerText = titles[tabName].title;
+    subEl.innerText = titles[tabName].sub;
+  }
 
-  // Close mobile sidebar if open
-  document.querySelector('.sidebar').classList.remove('mobile-open');
+  // Load tab-specific data
+  switch (tabName) {
+    case 'overview':
+      loadDashboardData();
+      break;
+    case 'movies':
+      loadMovies();
+      break;
+    case 'series':
+      loadSeries();
+      break;
+    case 'livetv':
+      loadChannels();
+      break;
+    case 'announcements':
+      loadAnnouncements();
+      break;
+    case 'comments':
+      loadAllComments();
+      break;
+    case 'users':
+      loadUsers();
+      break;
+    case 'requests':
+      loadRequests();
+      break;
+    case 'importer':
+      loadMovieBoxRecent('trending');
+      break;
+    case 'appcontrol':
+      loadAppSettings();
+      break;
+  }
+}
 
-  // Load tab-specific dynamic data
-  if (tabName === 'overview') renderOverview();
-  if (tabName === 'moviebox') {
-    const mbResults = document.getElementById('moviebox-results');
-    if (!mbResults || !mbResults.children.length || mbResults.querySelector('.empty-state')) {
-      loadMovieBoxRecent('all');
+// ============================================================
+// DASHBOARD OVERVIEW & STATS
+// ============================================================
+
+async function loadDashboardData() {
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/stats`);
+    const data = await res.json();
+    if (data.success && data.stats) {
+      state.stats = data.stats;
+      document.getElementById('stat-movies').innerText = data.stats.totalMovies || 0;
+      document.getElementById('stat-series').innerText = data.stats.totalSeries || 0;
+      document.getElementById('stat-users').innerText = data.stats.totalUsers || 0;
+      document.getElementById('stat-views').innerText = (data.stats.totalViews || 0).toLocaleString();
+
+      document.getElementById('badge-movies-count').innerText = data.stats.totalMovies || 0;
+      document.getElementById('badge-series-count').innerText = data.stats.totalSeries || 0;
+      document.getElementById('badge-channels-count').innerText = data.stats.totalChannels || 0;
+      document.getElementById('badge-requests-count').innerText = data.stats.pendingRequests || 0;
+      document.getElementById('badge-users-count').innerText = data.stats.totalUsers || 0;
+
+      document.getElementById('ram-usage').innerText = `${data.stats.memoryMb || 0} MB`;
+      const uptimeHours = Math.floor((data.stats.uptimeSeconds || 0) / 3600);
+      const uptimeMins = Math.floor(((data.stats.uptimeSeconds || 0) % 3600) / 60);
+      document.getElementById('status-uptime').innerText = `Uptime: ${uptimeHours}h ${uptimeMins}m`;
     }
-  }
-  if (tabName === 'movies') renderMoviesTable();
-  if (tabName === 'series') renderSeriesTable();
-  if (tabName === 'livetv') renderChannelsGrid();
-  if (tabName === 'featured') renderHeroEditor();
-  if (tabName === 'upcoming') loadUpcoming();
-  if (tabName === 'notifications') renderNotificationsList();
-  if (tabName === 'feedback') renderReportsAndRequests();
-  if (tabName === 'users') {
-    loadUsers();
-    startUsersLivePolling();
-  } else {
-    stopUsersLivePolling();
-  }
-  if (tabName === 'settings') loadAppSettings();
-}
 
-function setupEventListeners() {
-  // Login Form
-  const loginForm = document.getElementById('login-form');
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const btn = document.getElementById('btn-login');
-    const errText = document.getElementById('login-error');
-    const pwd = document.getElementById('admin-password').value;
-
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authorizing...';
-    errText.innerText = '';
-
-    try {
-      const res = await fetch('/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: pwd })
-      });
-      const data = await res.json();
-      if (!res.ok || !data.token) {
-        throw new Error(data.error || 'Invalid credentials');
-      }
-
-      state.token = data.token;
-      localStorage.setItem('fobs_admin_token', data.token);
-      hideLoginModal();
-      await initApp();
-      showToast('Welcome to FOBS TV Master Control', 'success');
-    } catch (err) {
-      errText.innerText = err.message || 'Access denied';
-      showToast(err.message || 'Login failed', 'error');
-    } finally {
-      btn.disabled = false;
-      btn.innerHTML = '<span>Authorize Master Access</span> <i class="fa-solid fa-arrow-right"></i>';
-    }
-  });
-
-  // Maintenance Toggle Display
-  const maintToggle = document.getElementById('st-maintenance-toggle');
-  if (maintToggle) {
-    maintToggle.addEventListener('change', () => {
-      document.getElementById('maintenance-msg-group').style.display = maintToggle.checked ? 'block' : 'none';
-    });
-  }
-
-  // Search input enter key bindings
-  const mbInput = document.getElementById('mb-search-input');
-  if (mbInput) {
-    mbInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') searchMovieBoxFromInput();
-    });
-  }
-
-  // Keyboard shortcut: Escape closes active modals
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      closeImportModal();
-      closeMovieModal();
-      closeSeriesModal();
-      closeEpisodeStudio();
-      closeSingleEpisodeModal();
-      closeChannelModal();
-      closeUpcomingModal();
-      closeVideoPlayer();
-      closeCatalogPicker();
-    }
-  });
-}
-
-async function refreshAll() {
-  showToast('Refreshing system state...', 'info', 1500);
-  await Promise.all([
-    loadStats(),
-    loadContent(),
-    loadNotifications(),
-    loadReportsAndRequests()
-  ]);
-  switchTab(state.activeTab);
-  showToast('All data refreshed', 'success', 2000);
-}
-
-// ============================================================
-// DATA LOADERS
-// ============================================================
-async function loadStats() {
-  try {
-    const data = await apiFetch('/api/admin/stats');
-    state.stats = data;
-    renderStats(data);
+    loadOverviewPopupPreview();
+    loadOverviewRecentComments();
+    loadOverviewRequests();
   } catch (err) {
-    console.error('Failed to load stats:', err);
+    console.error('Error loading dashboard stats:', err);
   }
 }
 
-function renderStats(data) {
-  if (!data) return;
-  const s = data.stats || data;
-  const movies = s.totalMovies ?? s.movies ?? 0;
-  const series = s.totalSeries ?? s.series ?? 0;
-  const liveTv = s.totalChannels ?? s.liveTv ?? 0;
-  const reports = (s.pendingRequests ?? s.reports ?? 0) + (s.totalReports ?? 0);
-
-  document.getElementById('badge-movies-count').innerText = movies;
-  document.getElementById('badge-series-count').innerText = series;
-  document.getElementById('badge-channels-count').innerText = liveTv;
-  document.getElementById('badge-feedback-count').innerText = reports;
-
-  document.getElementById('stat-movies-count').innerText = movies.toLocaleString();
-  document.getElementById('stat-series-count').innerText = series.toLocaleString();
-  document.getElementById('stat-channels-count').innerText = liveTv.toLocaleString();
-  document.getElementById('stat-reports-count').innerText = reports.toLocaleString();
-
-  document.getElementById('node-ver').innerText = s.nodeVersion || s.system?.node || 'v22';
-  document.getElementById('ram-usage').innerText = `${s.memoryMb || s.system?.memory?.usedMb || '--'} MB`;
-  document.getElementById('status-uptime').innerText = `Uptime: ${s.uptimeSeconds ? Math.floor(s.uptimeSeconds / 60) + 'm' : (s.system?.uptime || '--')}`;
-}
-
-async function loadContent() {
+async function loadOverviewPopupPreview() {
+  const container = document.getElementById('overview-popup-card');
+  const badge = document.getElementById('overview-popup-badge');
   try {
-    const res = await apiFetch('/api/admin/content');
-    const data = res.data || res;
-    state.content = data;
+    const res = await authFetch(`${API_BASE}/api/admin/notifications`);
+    const data = await res.json();
+    const list = data.notifications || [];
+    const activePopup = list.find(n => n.isPopup && n.active !== false);
 
-    // Initialize filtered datasets
-    state.movies.filtered = [...(data.movies || [])];
-    state.series.filtered = [...(data.series || [])];
-    state.channels.filtered = [...(data.liveTv || [])];
-    state.upcoming.filtered = [...(data.upcoming || [])];
+    if (activePopup) {
+      badge.style.display = 'inline-block';
+      const likes = activePopup.likes || 0;
+      const dislikes = activePopup.dislikes || 0;
+      const commentsCount = Array.isArray(activePopup.comments) ? activePopup.comments.length : 0;
 
-    // Populate Dynamic Genre Filter for Movies
-    populateMovieGenreFilter();
-  } catch (err) {
-    console.error('Failed to load content:', err);
-  }
-}
-
-function populateMovieGenreFilter() {
-  const genres = new Set();
-  (state.content.movies || []).forEach(m => {
-    if (m.genre) {
-      m.genre.split(',').forEach(g => genres.add(g.trim()));
-    }
-  });
-
-  const select = document.getElementById('movies-genre-filter');
-  if (!select) return;
-  select.innerHTML = '<option value="">All Genres</option>';
-  Array.from(genres).sort().forEach(g => {
-    const opt = document.createElement('option');
-    opt.value = g;
-    opt.innerText = g;
-    select.appendChild(opt);
-  });
-}
-
-async function loadNotifications() {
-  try {
-    const data = await apiFetch('/api/admin/notifications');
-    state.notifications = Array.isArray(data) ? data : (data.notifications || []);
-    document.getElementById('badge-notif-count').innerText = state.notifications.length;
-  } catch (err) {
-    console.error('Failed to load notifications:', err);
-  }
-}
-
-async function loadReportsAndRequests() {
-  try {
-    const [reportsRes, requestsRes] = await Promise.all([
-      apiFetch('/api/admin/reports').catch(() => ({ reports: [] })),
-      apiFetch('/api/admin/requests').catch(() => ({ requests: [] }))
-    ]);
-    state.reports = Array.isArray(reportsRes) ? reportsRes : (reportsRes.reports || []);
-    state.requests = Array.isArray(requestsRes) ? requestsRes : (requestsRes.requests || []);
-    
-    document.getElementById('badge-sub-reports').innerText = state.reports.length;
-    document.getElementById('badge-sub-requests').innerText = state.requests.length;
-    document.getElementById('badge-feedback-count').innerText = state.reports.length + state.requests.length;
-  } catch (err) {
-    console.error('Failed to load feedback:', err);
-  }
-}
-
-async function loadAppSettings() {
-  try {
-    const data = await apiFetch('/api/admin/app-settings');
-    const update = data.appUpdate || {};
-    const settings = data.settings || {};
-
-    // Fill App Update Fields
-    document.getElementById('up-version-name').value = update.latestVersionName || '3.1.3';
-    document.getElementById('up-version-code').value = update.latestVersionCode || 11;
-    document.getElementById('up-min-code').value = update.minVersionCode || 11;
-    document.getElementById('up-file-size').value = update.fileSize || '9.2 MB';
-    document.getElementById('up-force-toggle').checked = !!update.forceUpdate;
-    document.getElementById('up-enabled-toggle').checked = update.enabled !== false;
-    document.getElementById('up-title').value = update.title || '';
-    document.getElementById('up-message').value = update.message || '';
-    document.getElementById('up-release-notes').value = Array.isArray(update.releaseNotes) ? update.releaseNotes.join('\n') : (update.releaseNotes || '');
-    document.getElementById('up-download-url').value = update.downloadUrl || 'https://fobs-apk-download.vercel.app/';
-    document.getElementById('up-fallback-url').value = update.fallbackUrl || 'http://187.127.114.52/download/apk';
-
-    // Fill Settings Fields
-    document.getElementById('st-app-name').value = settings.appName || 'FOBS TV';
-    document.getElementById('st-tagline').value = settings.appTagline || '';
-    document.getElementById('st-marquee').value = settings.marqueeNotice || '';
-    document.getElementById('st-telegram').value = settings.supportTelegram || '';
-    document.getElementById('st-whatsapp').value = settings.supportWhatsApp || '';
-    document.getElementById('st-maintenance-toggle').checked = !!settings.maintenanceMode;
-    document.getElementById('maintenance-msg-group').style.display = settings.maintenanceMode ? 'block' : 'none';
-    document.getElementById('st-maintenance-msg').value = settings.maintenanceMessage || '';
-  } catch (err) {
-    console.error('Failed to load app settings:', err);
-  }
-}
-
-// ============================================================
-// TAB 1: OVERVIEW DASHBOARD
-// ============================================================
-function renderOverview() {
-  renderStats(state.stats);
-
-  // Active Hero Preview in Overview
-  const feat = state.content.featured || {};
-  const bg = feat.backdrop || feat.cover || feat.poster || '';
-  const ovBg = document.getElementById('ov-hero-bg');
-  const ovTitle = document.getElementById('ov-hero-title');
-  const ovMeta = document.getElementById('ov-hero-meta');
-  const ovBadge = document.getElementById('ov-hero-badge');
-
-  if (feat.title) {
-    if (ovBg) ovBg.style.backgroundImage = `url('${bg}')`;
-    if (ovTitle) ovTitle.innerText = feat.title;
-    if (ovMeta) ovMeta.innerText = `${feat.year || '2026'} • ${feat.category || feat.industry || 'Featured'} • IMDB ${feat.rating || '9.0'}`;
-    if (ovBadge) ovBadge.innerText = feat.badgeLeft || 'Spotlight';
-  } else {
-    if (ovBg) ovBg.style.backgroundImage = 'none';
-    if (ovTitle) ovTitle.innerText = 'No Hero Spotlight Set';
-    if (ovMeta) ovMeta.innerText = 'Click Manage Banner to configure';
-  }
-}
-
-// ============================================================
-// TAB 2: MOVIEBOX UNIVERSAL IMPORTER
-// ============================================================
-function searchMovieBoxFromInput() {
-  const query = document.getElementById('mb-search-input').value.trim();
-  if (!query) {
-    showToast('Please enter a search title', 'warning');
-    return;
-  }
-  searchMovieBox(query);
-}
-
-async function searchMovieBox(query) {
-  const container = document.getElementById('moviebox-results');
-  const countDisplay = document.getElementById('mb-results-count');
-  container.innerHTML = `
-    <div class="loading-state">
-      <div class="spinner"></div>
-      <p>Searching MovieBox worldwide catalog for "${query}"...</p>
-    </div>
-  `;
-  countDisplay.innerText = 'Searching...';
-
-  try {
-    const data = await apiFetch(`/api/admin/moviebox/search?q=${encodeURIComponent(query)}`);
-    const items = data.items || [];
-    state.mbSearchItems = items;
-    state.mbCurrentQuery = query;
-
-    // Reset filter pills to All
-    document.querySelectorAll('#mb-filter-pills .pill').forEach(p => p.classList.remove('active'));
-    document.querySelector('#mb-filter-pills .pill[data-filter="all"]')?.classList.add('active');
-
-    countDisplay.innerText = `Found ${items.length} titles`;
-    renderMovieBoxGrid(items);
-  } catch (err) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <i class="fa-solid fa-triangle-exclamation text-rose"></i>
-        <h3>Search failed</h3>
-        <p>${err.message}</p>
-      </div>
-    `;
-    countDisplay.innerText = 'Error';
-  }
-}
-
-async function loadMovieBoxRecent(filter = 'all', pillBtn = null) {
-  if (pillBtn) {
-    document.querySelectorAll('#mb-filter-pills .pill').forEach(p => p.classList.remove('active'));
-    pillBtn.classList.add('active');
-  }
-
-  const container = document.getElementById('moviebox-results');
-  const countDisplay = document.getElementById('mb-results-count');
-  const searchInputVal = document.getElementById('mb-search-input')?.value?.trim();
-
-  // If there are search results active and user clicks a filter pill, filter the search results!
-  if (searchInputVal && state.mbSearchItems && state.mbSearchItems.length > 0) {
-    let filtered = state.mbSearchItems;
-    if (filter === 'movies') {
-      filtered = state.mbSearchItems.filter(i => i.type === 'movie');
-    } else if (filter === 'series') {
-      filtered = state.mbSearchItems.filter(i => i.type === 'series');
-    } else if (filter === 'kdrama-hindi') {
-      filtered = state.mbSearchItems.filter(i => /korean|kdrama|k-drama/i.test(i.title + ' ' + (i.section || '')) && /hindi/i.test(i.title + ' ' + (i.section || '')));
-    } else if (filter === 'cdrama-hindi') {
-      filtered = state.mbSearchItems.filter(i => /chinese|c-drama|cdrama/i.test(i.title + ' ' + (i.section || '')) && /hindi/i.test(i.title + ' ' + (i.section || '')));
-    } else if (filter === 'turkish-hindi') {
-      filtered = state.mbSearchItems.filter(i => /turkish|turkey/i.test(i.title + ' ' + (i.section || '')) && /hindi/i.test(i.title + ' ' + (i.section || '')));
-    } else if (filter === 'hindi') {
-      filtered = state.mbSearchItems.filter(i => /hindi/i.test(i.title + ' ' + (i.section || '')));
-    } else if (filter === 'kdrama') {
-      filtered = state.mbSearchItems.filter(i => /korean|kdrama|k-drama/i.test(i.title + ' ' + (i.section || '')));
-    } else if (filter === 'cdrama') {
-      filtered = state.mbSearchItems.filter(i => /chinese|c-drama|cdrama/i.test(i.title + ' ' + (i.section || '')));
-    } else if (filter === 'turkish') {
-      filtered = state.mbSearchItems.filter(i => /turkish|turkey/i.test(i.title + ' ' + (i.section || '')));
-    } else if (filter === 'anime') {
-      filtered = state.mbSearchItems.filter(i => /anime/i.test(i.title + ' ' + (i.section || '')));
-    } else if (filter === 'bollywood') {
-      filtered = state.mbSearchItems.filter(i => /hindi|bollywood|south/i.test(i.title + ' ' + (i.section || '')));
-    }
-    countDisplay.innerText = `${filtered.length} titles matching "${filter}"`;
-    renderMovieBoxGrid(filtered);
-    return;
-  }
-
-  // Clear search items when loading feed
-  state.mbSearchItems = null;
-  state.mbCurrentQuery = '';
-  if (document.getElementById('mb-search-input')) {
-    document.getElementById('mb-search-input').value = '';
-  }
-
-  container.innerHTML = `
-    <div class="loading-state">
-      <div class="spinner"></div>
-      <p>Fetching ${filter} feed from MovieBox...</p>
-    </div>
-  `;
-  countDisplay.innerText = 'Fetching...';
-
-  try {
-    const data = await apiFetch(`/api/admin/moviebox/recent?filter=${filter}`);
-    const items = data.items || [];
-    countDisplay.innerText = `${items.length} titles in feed`;
-    renderMovieBoxGrid(items);
-  } catch (err) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <i class="fa-solid fa-triangle-exclamation text-rose"></i>
-        <h3>Failed to fetch feed</h3>
-        <p>${err.message}</p>
-      </div>
-    `;
-    countDisplay.innerText = 'Error';
-  }
-}
-
-function renderMovieBoxGrid(items) {
-  const container = document.getElementById('moviebox-results');
-  if (!items || items.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <i class="fa-solid fa-film"></i>
-        <h3>No titles found</h3>
-        <p>Try searching with another keyword or explore the category feeds.</p>
-      </div>
-    `;
-    return;
-  }
-
-  container.innerHTML = items.map(item => {
-    const isSeries = item.type === 'series' || (item.category && item.category.toLowerCase().includes('series'));
-    const badgeType = isSeries ? 'Series' : 'Movie';
-    const isAlreadyImported = (state.content.movies || []).some(m => m.subjectId === item.subjectId || m.id === `mb-m-${item.subjectId}`) ||
-                              (state.content.series || []).some(s => s.subjectId === item.subjectId || s.id === `mb-s-${item.subjectId}`);
-
-    const safeTitle = (item.title || 'Untitled').replace(/"/g, '&quot;');
-    const poster = item.poster || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80';
-
-    return `
-      <div class="importer-card glass ${isAlreadyImported ? 'imported' : ''}">
-        <div class="importer-card-thumb">
-          <img src="${poster}" alt="${safeTitle}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80'">
-          <span class="importer-badge ${isSeries ? 'bg-cyan' : 'bg-amber'}">${badgeType}</span>
-          ${isAlreadyImported ? '<span class="imported-check"><i class="fa-solid fa-check"></i> In App</span>' : ''}
-        </div>
-        <div class="importer-card-info">
-          <h4 title="${safeTitle}">${item.title}</h4>
-          <div class="importer-card-meta">
-            <span><i class="fa-solid fa-calendar"></i> ${item.year || '2026'}</span>
-            <span><i class="fa-solid fa-star text-amber"></i> ${item.rating || '8.5'}</span>
-          </div>
-          <div class="importer-card-actions">
-            <button class="btn-import ${isAlreadyImported ? 'btn-reimport' : 'btn-primary'}" onclick='openImportModal(${JSON.stringify(item).replace(/'/g, "\\'")})' title="Auto-Detect &amp; Import">
-              <i class="fa-solid ${isAlreadyImported ? 'fa-arrows-rotate' : 'fa-wand-magic-sparkles'}"></i>
-              <span>${isAlreadyImported ? 'Re-Sync' : 'Auto-Detect'}</span>
-            </button>
-            <button class="btn-table play-btn" onclick="previewVideoStream('${safeTitle}', '/api/moviebox/stream?id=${item.subjectId || item.id}&path=${item.detailPath || ''}&se=${isSeries ? 1 : 0}&ep=${isSeries ? 1 : 0}')" title="Preview Stream">
-              <i class="fa-solid fa-play"></i>
-            </button>
+      container.innerHTML = `
+        <div style="display: flex; gap: 16px; align-items: flex-start;">
+          ${activePopup.image ? `<img src="${activePopup.image}" style="width: 110px; height: 75px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">` : ''}
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span class="tag-pill">${escapeHtml(activePopup.tag || 'NOTICE')}</span>
+              <strong style="font-size: 15px; color: #fff;">${escapeHtml(activePopup.title)}</strong>
+            </div>
+            <p style="font-size: 13px; color: #94a3b8; line-height: 1.4; margin-bottom: 12px;">${escapeHtml(activePopup.message)}</p>
+            <div style="display: flex; gap: 12px; align-items: center; font-size: 12px;">
+              <span style="color: #38bdf8;"><i class="fa-solid fa-thumbs-up"></i> ${likes} Likes</span>
+              <span style="color: #f43f5e;"><i class="fa-solid fa-thumbs-down"></i> ${dislikes} Dislikes</span>
+              <span style="color: #a855f7; cursor: pointer;" onclick="openNoticeCommentsModal('${activePopup.id}')"><i class="fa-solid fa-comments"></i> ${commentsCount} Comments</span>
+            </div>
           </div>
         </div>
-      </div>
-    `;
-  }).join('');
-}
-
-// ============================================================
-// SMART AUTO-DETECT & IMPORT MODAL ENGINE
-// ============================================================
-async function openImportModal(item) {
-  const modal = document.getElementById('import-modal');
-  const isSeries = item.type === 'series' || (item.category && item.category.toLowerCase().includes('series'));
-  const sId = String(item.subjectId || item.id || '');
-  const dPath = item.detailPath || '';
-
-  document.getElementById('imp-subjectId').value = sId;
-  document.getElementById('imp-detailPath').value = dPath;
-  document.getElementById('imp-poster').value = item.poster || '';
-  document.getElementById('imp-cover').value = item.backdrop || item.cover || item.poster || '';
-  document.getElementById('imp-title').value = item.title || '';
-  document.getElementById('imp-year').value = item.year || '2026';
-  document.getElementById('imp-type').value = isSeries ? 'series' : 'movie';
-  document.getElementById('imp-series-row').style.display = isSeries ? 'flex' : 'none';
-
-  const seasonSel = document.getElementById('imp-season-mode');
-  if (seasonSel) {
-    seasonSel.innerHTML = '<option value="all">🌟 All Seasons (Auto-Detecting...)</option>';
-  }
-
-  const tLower = (item.title || '').toLowerCase();
-  const isHindi = tLower.includes('[hindi]') || tLower.includes('hindi dubbed') || tLower.includes('hindi');
-  document.getElementById('imp-ishindi').checked = isHindi;
-  document.getElementById('imp-featured').checked = false;
-
-  const statusText = document.getElementById('imp-autodetect-status');
-  statusText.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-amber"></i> Querying MovieBox API: Auto-detecting uploaded seasons, episodes, language &amp; category...';
-
-  modal.classList.add('active');
-
-  // Asynchronously query MovieBox for exact uploaded episode count, industry, category, and year
-  try {
-    let d = null;
-    try {
-      const data = await apiFetch(`/api/admin/moviebox/detail?subjectId=${encodeURIComponent(sId)}&detailPath=${encodeURIComponent(dPath)}`);
-      if (data && data.success && data.detail) {
-        d = data.detail;
-      }
-    } catch (_) {}
-
-    // Resilient fallback: if MovieBox direct detail lookup failed or returned <= 1 episode for a series, query auto-detect (TMDb + MovieBox)
-    if (!d || (isSeries && (!d.totalEpisodes || d.totalEpisodes <= 1))) {
-      try {
-        const autoRes = await apiFetch(`/api/admin/auto-detect?q=${encodeURIComponent(item.title || '')}&type=${isSeries ? 'series' : 'movie'}`);
-        if (autoRes && autoRes.success && autoRes.data) {
-          const ad = autoRes.data;
-          if (!d) {
-            d = ad;
-          } else if (ad.totalEpisodes && ad.totalEpisodes > (d.totalEpisodes || 1)) {
-            d.totalEpisodes = ad.totalEpisodes;
-            if (ad.seasons && ad.seasons.length > 0) d.seasons = ad.seasons;
-            if (ad.industry && (!d.industry || d.industry === 'Hollywood')) d.industry = ad.industry;
-            if (ad.category && (!d.category || d.category === 'Web Series')) d.category = ad.category;
-          }
-        }
-      } catch (_) {}
-    }
-
-    if (d) {
-      if (d.type) {
-        document.getElementById('imp-type').value = d.type;
-        document.getElementById('imp-series-row').style.display = (d.type === 'series') ? 'flex' : 'none';
-      }
-
-      if (seasonSel) {
-        seasonSel.innerHTML = '';
-        if (d.seasons && d.seasons.length > 0) {
-          const allOpt = document.createElement('option');
-          allOpt.value = 'all';
-          allOpt.textContent = `🌟 All Seasons (${d.seasons.length} Seasons • ${d.totalEpisodes} Episodes Total)`;
-          seasonSel.appendChild(allOpt);
-
-          d.seasons.forEach(s => {
-            const opt = document.createElement('option');
-            opt.value = String(s.seasonNumber || s.se);
-            opt.textContent = `Season ${s.seasonNumber || s.se} (${s.episodesCount || s.maxEp || 0} Episodes)`;
-            seasonSel.appendChild(opt);
-          });
-        } else {
-          const detectedEp = d.totalEpisodes || (isSeries ? 16 : 1);
-          const opt = document.createElement('option');
-          opt.value = 'all';
-          opt.textContent = `🌟 Season 1 (${detectedEp} Episode${detectedEp > 1 ? 's' : ''})`;
-          seasonSel.appendChild(opt);
-        }
-      }
-
-      if (d.totalEpisodes) document.getElementById('imp-episodes').value = d.totalEpisodes;
-      if (d.year) document.getElementById('imp-year').value = d.year;
-      if (d.industry) document.getElementById('imp-industry').value = d.industry;
-      if (d.category) document.getElementById('imp-category').value = d.category;
-      if (typeof d.isHindi === 'boolean') document.getElementById('imp-ishindi').checked = d.isHindi;
-      if (d.cover && !document.getElementById('imp-cover').value) document.getElementById('imp-cover').value = d.cover;
-
-      if (d.seasons && d.seasons.length > 1) {
-        const breakdown = d.seasons.map(s => `S${s.seasonNumber || s.se}: ${s.episodesCount || s.maxEp} eps`).join(' • ');
-        statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald"></i> <strong>Auto-Detected:</strong> ${d.seasons.length} Seasons (${d.totalEpisodes} Episodes Total)<br><small class="text-muted">${breakdown} • ${d.industry} (${d.category})</small>`;
-      } else {
-        const totalEpText = d.totalEpisodes || (isSeries ? 16 : 1);
-        statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald"></i> <strong>Auto-Detected:</strong> ${totalEpText} Episode(s) • ${d.industry} (${d.category})`;
-      }
-    }
-  } catch (err) {
-    statusText.innerHTML = '<i class="fa-solid fa-circle-check text-emerald"></i> Auto-detect loaded standard metadata. Ready to import.';
-  }
-}
-
-function closeImportModal() {
-  document.getElementById('import-modal').classList.remove('active');
-}
-
-function toggleImportType(type) {
-  document.getElementById('imp-series-row').style.display = (type === 'series') ? 'flex' : 'none';
-}
-
-async function handleImportSubmit(e) {
-  e.preventDefault();
-  const btn = document.getElementById('btn-confirm-import');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Auto-Resolving &amp; Importing...';
-
-  const type = document.getElementById('imp-type').value;
-  const isSeries = type === 'series';
-
-  const payload = {
-    subjectId: document.getElementById('imp-subjectId').value,
-    detailPath: document.getElementById('imp-detailPath').value,
-    title: document.getElementById('imp-title').value.trim(),
-    year: document.getElementById('imp-year').value.trim(),
-    type,
-    category: document.getElementById('imp-category').value.trim(),
-    industry: document.getElementById('imp-industry').value,
-    poster: document.getElementById('imp-poster').value,
-    cover: document.getElementById('imp-cover').value.trim() || document.getElementById('imp-poster').value,
-    isHindi: document.getElementById('imp-ishindi').checked,
-    isFeatured: document.getElementById('imp-featured').checked,
-    seasonMode: document.getElementById('imp-season-mode')?.value || 'all',
-    episodesCount: parseInt(document.getElementById('imp-episodes')?.value, 10) || (isSeries ? 16 : 1)
-  };
-
-  try {
-    const res = await apiFetch('/api/admin/moviebox/import', {
-      method: 'POST',
-      body: JSON.stringify(payload)
-    });
-
-    if (res.success) {
-      showToast(`🎉 Imported "${payload.title}" successfully into FOBS TV!`, 'success', 4500);
-      closeImportModal();
-      await loadContent();
-      await loadStats();
-      const q = document.getElementById('mb-search-input').value.trim();
-      if (q) searchMovieBox(q);
-      else loadMovieBoxRecent('all');
+      `;
     } else {
-      throw new Error(res.error || 'Import failed');
+      badge.style.display = 'none';
+      container.innerHTML = `
+        <div class="empty-state-mini">
+          <p>No popup notice is currently active for v3.1.5 launch.</p>
+          <button class="btn-sm-primary" style="margin-top: 10px;" onclick="switchAdminTab('announcements')">
+            <i class="fa-solid fa-plus"></i> Set Active Popup Notice
+          </button>
+        </div>
+      `;
     }
+  } catch (e) {
+    container.innerHTML = '<div class="empty-state-mini">Unable to load popup preview.</div>';
+  }
+}
+
+async function loadOverviewRecentComments() {
+  const container = document.getElementById('overview-recent-comments');
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/comments?limit=3`);
+    const data = await res.json();
+    const list = data.comments || [];
+
+    if (list.length === 0) {
+      container.innerHTML = '<div class="empty-state-mini">No user comments posted yet.</div>';
+      return;
+    }
+
+    container.innerHTML = list.map(c => `
+      <div class="comment-item" style="padding: 10px 12px; margin-bottom: 8px;">
+        <img class="comment-avatar" src="${c.userAvatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(c.userName || 'User')}" alt="">
+        <div class="comment-content">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span class="comment-user-name">${escapeHtml(c.userName || 'Viewer')}</span>
+            <span class="comment-time">${formatTimeAgo(c.createdAt)}</span>
+          </div>
+          <div style="font-size: 11px; color: var(--primary); margin: 2px 0;">On: ${escapeHtml(c.mediaTitle || 'Media')}</div>
+          <div class="comment-text" style="font-size: 12.5px;">${escapeHtml(c.text)}</div>
+        </div>
+      </div>
+    `).join('');
+  } catch (e) {
+    container.innerHTML = '<div class="empty-state-mini">Unable to load comments feed.</div>';
+  }
+}
+
+async function loadOverviewRequests() {
+  const tbody = document.getElementById('overview-requests-tbody');
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/requests`);
+    const data = await res.json();
+    const list = (data.requests || []).filter(r => (r.status || '').toLowerCase() === 'pending').slice(0, 5);
+
+    if (list.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center" style="padding: 24px; color: #64748b;">No pending user requests. All caught up!</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = list.map(r => `
+      <tr>
+        <td class="table-title-bold">${escapeHtml(r.title || 'Untitled')}</td>
+        <td><span class="badge-tag">${escapeHtml(r.type || 'Media')}</span></td>
+        <td>${escapeHtml(r.userName || r.userEmail || 'Anonymous')}</td>
+        <td>${formatDate(r.createdAt)}</td>
+        <td><span class="badge-tag" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">Pending</span></td>
+        <td class="row-actions">
+          <button class="btn-action-icon" style="color: #34d399;" onclick="updateRequestStatus('${r.id}', 'added')" title="Mark as Added"><i class="fa-solid fa-check"></i></button>
+          <button class="btn-action-icon danger" onclick="updateRequestStatus('${r.id}', 'rejected')" title="Reject"><i class="fa-solid fa-xmark"></i></button>
+        </td>
+      </tr>
+    `).join('');
+  } catch (e) {
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center">Error loading requests.</td></tr>';
+  }
+}
+
+// ============================================================
+// MOVIES MANAGEMENT
+// ============================================================
+
+async function loadMovies() {
+  const tbody = document.getElementById('movies-tbody');
+  tbody.innerHTML = '<tr><td colspan="7" class="text-center">Loading movies catalog...</td></tr>';
+
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/content`);
+    const data = await res.json();
+    state.movies = data.movies || [];
+    renderMoviesTable(state.movies);
   } catch (err) {
-    showToast(`Import error: ${err.message}`, 'error', 5000);
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fa-solid fa-download"></i> <span>Confirm &amp; Import to App</span>';
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center error-text">Failed to load movies.</td></tr>';
   }
 }
 
-// ============================================================
-// ============================================================
-// AUTO-DETECT TOOLBAR FOR ADD MOVIE & ADD SERIES
-// ============================================================
-function updateMoviePosterPreview() {
-  const posterUrl = document.getElementById('m-poster')?.value.trim();
-  const title = document.getElementById('m-title')?.value.trim() || 'Movie Title';
-  const year = document.getElementById('m-year')?.value.trim() || '2026';
-  const rating = document.getElementById('m-rating')?.value.trim() || '8.5';
-  const box = document.getElementById('m-preview-box');
-  const img = document.getElementById('m-poster-preview');
-  const titleEl = document.getElementById('m-preview-title');
-  const metaEl = document.getElementById('m-preview-meta');
-
-  if (posterUrl && box && img) {
-    img.src = posterUrl;
-    img.onerror = () => { box.style.display = 'none'; };
-    img.onload = () => { box.style.display = 'flex'; };
-    if (titleEl) titleEl.innerText = title;
-    if (metaEl) metaEl.innerText = `${year} • ★ ${rating}`;
-  } else if (box) {
-    box.style.display = 'none';
-  }
-}
-
-function updateSeriesPosterPreview() {
-  const posterUrl = document.getElementById('s-poster')?.value.trim();
-  const title = document.getElementById('s-title')?.value.trim() || 'Series Title';
-  const year = document.getElementById('s-year')?.value.trim() || '2026';
-  const rating = document.getElementById('s-rating')?.value.trim() || '8.8';
-  const box = document.getElementById('s-preview-box');
-  const img = document.getElementById('s-poster-preview');
-  const titleEl = document.getElementById('s-preview-title');
-  const metaEl = document.getElementById('s-preview-meta');
-
-  if (posterUrl && box && img) {
-    img.src = posterUrl;
-    img.onerror = () => { box.style.display = 'none'; };
-    img.onload = () => { box.style.display = 'flex'; };
-    if (titleEl) titleEl.innerText = title;
-    if (metaEl) metaEl.innerText = `${year} • ★ ${rating}`;
-  } else if (box) {
-    box.style.display = 'none';
-  }
-}
-
-async function autoDetectMovieFromInput() {
-  const query = document.getElementById('m-autodetect-input').value.trim();
-  if (!query) {
-    showToast('Enter a movie title or MovieBox subjectId to auto-detect', 'warning');
+function renderMoviesTable(moviesList) {
+  const tbody = document.getElementById('movies-tbody');
+  if (!moviesList || moviesList.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding: 30px; color: #64748b;">No movies found. Click "Add New Movie" above.</td></tr>';
     return;
   }
 
-  showToast(`Auto-detecting movie "${query}" from TMDb & MovieBox...`, 'info', 2500);
-
-  try {
-    const res = await apiFetch(`/api/admin/auto-detect?q=${encodeURIComponent(query)}&type=movie`);
-    if (!res.success || !res.data) throw new Error(res.error || 'No matching metadata found');
-    const d = res.data;
-
-    if (d.subjectId) document.getElementById('m-subject-id').value = d.subjectId;
-    document.getElementById('m-title').value = d.title || query;
-    document.getElementById('m-year').value = d.year || '2026';
-    document.getElementById('m-rating').value = d.rating || '8.5';
-    document.getElementById('m-duration').value = d.duration || '120 min';
-    document.getElementById('m-genre').value = d.genre || 'Drama';
-    document.getElementById('m-industry').value = d.industry || 'Korean';
-    document.getElementById('m-category').value = d.category || 'Korean Movies';
-    document.getElementById('m-language').value = d.isHindi ? 'Hindi Dubbed' : 'Original Audio';
-    document.getElementById('m-poster').value = d.poster || '';
-    document.getElementById('m-backdrop').value = d.backdrop || d.poster || '';
-    document.getElementById('m-description').value = d.description || `${d.title} streaming in HD on FOBS TV.`;
-    if (d.streamUrl) {
-      document.getElementById('m-stream-url').value = d.streamUrl;
-    }
-
-    updateMoviePosterPreview();
-    showToast(`✨ Auto-detected: "${d.title}" (${d.year}) with official TMDb poster & metadata!`, 'success', 4500);
-  } catch (err) {
-    showToast(`Auto-detect error: ${err.message}`, 'error', 4500);
-  }
+  tbody.innerHTML = moviesList.map(m => `
+    <tr>
+      <td>
+        <img class="table-poster" src="${m.poster || 'assets/fobs_logo.png'}" onerror="this.src='assets/fobs_logo.png'" alt="">
+      </td>
+      <td>
+        <div class="table-title-bold">${escapeHtml(m.title)}</div>
+        <div class="table-meta-sub">${m.year || '2025'} • ⭐ ${m.rating || m.imdbRating || '8.2'}</div>
+      </td>
+      <td>
+        <span class="badge-tag quality">${escapeHtml(m.quality || '1080p')}</span>
+        <span class="badge-tag" style="margin-left: 4px;">${escapeHtml(m.dubLanguage || m.audio || 'Hindi')}</span>
+      </td>
+      <td>${escapeHtml(m.genre || 'Action')}</td>
+      <td><i class="fa-solid fa-eye" style="color: #64748b;"></i> ${(m.views || 0).toLocaleString()}</td>
+      <td>
+        <span class="badge-tag permanent"><i class="fa-solid fa-shield-check"></i> Permanent</span>
+      </td>
+      <td class="row-actions">
+        <button class="btn-action-icon edit" onclick="openEditMovieModal('${m.id}')" title="Edit Movie"><i class="fa-solid fa-pen-to-square"></i></button>
+        <button class="btn-action-icon danger" onclick="confirmDeleteMovie('${m.id}', '${escapeHtml(m.title)}')"><i class="fa-solid fa-trash-can"></i></button>
+      </td>
+    </tr>
+  `).join('');
 }
 
-async function autoDetectSeriesFromInput() {
-  const query = document.getElementById('s-autodetect-input').value.trim();
-  if (!query) {
-    showToast('Enter a series title or MovieBox subjectId to auto-detect', 'warning');
-    return;
-  }
+function filterMoviesTable() {
+  const query = document.getElementById('movies-search-input').value.trim().toLowerCase();
+  const industry = document.getElementById('movies-industry-filter').value;
 
-  showToast(`Auto-detecting TV Series "${query}" from TMDb & MovieBox...`, 'info', 2500);
-
-  try {
-    const res = await apiFetch(`/api/admin/auto-detect?q=${encodeURIComponent(query)}&type=series`);
-    if (!res.success || !res.data) throw new Error(res.error || 'No matching series metadata found');
-    const d = res.data;
-
-    if (d.subjectId) document.getElementById('s-subject-id').value = d.subjectId;
-    document.getElementById('s-title').value = d.title || query;
-    document.getElementById('s-year').value = d.year || '2026';
-    document.getElementById('s-rating').value = d.rating || '8.8';
-    document.getElementById('s-genre').value = d.genre || 'Drama';
-    document.getElementById('s-industry').value = d.industry || 'Korean';
-    document.getElementById('s-category').value = d.category || 'Korean Series';
-    document.getElementById('s-poster').value = d.poster || '';
-    document.getElementById('s-backdrop').value = d.backdrop || d.poster || '';
-    document.getElementById('s-description').value = d.description || `${d.title} streaming in HD on FOBS TV.`;
-
-    if (d.seasons && d.seasons.length > 0) {
-      state.lastDetectedSeriesSeasons = d.seasons;
-    }
-
-    updateSeriesPosterPreview();
-    const seCount = d.seasonsCount || (d.seasons ? d.seasons.length : 1);
-    const epCount = d.totalEpisodes || (d.seasons ? d.seasons.reduce((sum, s) => sum + (s.episodesCount || (s.episodes ? s.episodes.length : 0)), 0) : 1);
-    showToast(`✨ Auto-detected: "${d.title}" (${d.year}) • ${seCount} Season(s), ${epCount} Episodes!`, 'success', 4500);
-  } catch (err) {
-    showToast(`Auto-detect error: ${err.message}`, 'error', 4500);
-  }
-}
-
-async function handleBatchImportRecent() {
-  const count = parseInt(document.getElementById('mb-batch-count').value, 10) || 5;
-  if (!confirm(`Are you sure you want to batch import the top ${count} trending titles from MovieBox?`)) return;
-
-  showToast(`Running batch import of top ${count} items...`, 'info', 5000);
-
-  try {
-    const res = await apiFetch('/api/admin/moviebox/batch-import', {
-      method: 'POST',
-      body: JSON.stringify({ count, filter: 'trending' })
-    });
-
-    showToast(`Batch completed: Imported ${res.importedCount} of ${res.requestedCount} titles!`, 'success', 5000);
-    await loadContent();
-    await loadStats();
-    loadMovieBoxRecent('trending');
-  } catch (err) {
-    showToast(`Batch import error: ${err.message}`, 'error', 5000);
-  }
-}
-
-// ============================================================
-// TAB 3: MOVIES MANAGEMENT
-// ============================================================
-function filterMoviesTable(query = null) {
-  const searchInput = document.getElementById('movies-search');
-  const searchVal = (query !== null && typeof query === 'string' ? query : (searchInput?.value || '')).toLowerCase().trim();
-  state.movies.search = searchVal;
-
-  state.movies.genre = document.getElementById('movies-genre-filter')?.value || '';
-  state.movies.industry = document.getElementById('movies-industry-filter')?.value || '';
-
-  state.movies.filtered = (state.content.movies || []).filter(m => {
-    const title = (m.title || '').toLowerCase();
-    const year = String(m.year || '');
-    const genre = (m.genre || '').toLowerCase();
-    const category = (m.category || '').toLowerCase();
-    const industry = (m.industry || '').toLowerCase();
-
-    const matchSearch = !state.movies.search ||
-      title.includes(state.movies.search) ||
-      year.includes(state.movies.search) ||
-      genre.includes(state.movies.search) ||
-      category.includes(state.movies.search) ||
-      industry.includes(state.movies.search);
-    
-    const matchGenre = !state.movies.genre || genre.includes(state.movies.genre.toLowerCase());
-
-    let matchIndustry = true;
-    if (state.movies.industry) {
-      const selInd = state.movies.industry.toLowerCase();
-      if (selInd === 'korean-hindi') {
-        const isKorean = industry.includes('korean') || industry.includes('kdrama') || category.includes('korean') || /korean|kdrama|k-drama/i.test(title);
-        const isHindi = title.includes('hindi') || category.includes('dubbed') || category.includes('hindi');
-        matchIndustry = isKorean && isHindi;
-      } else if (selInd === 'chinese-hindi') {
-        const isChinese = industry.includes('chinese') || category.includes('chinese') || /chinese|cdrama|c-drama/i.test(title);
-        const isHindi = title.includes('hindi') || category.includes('dubbed') || category.includes('hindi');
-        matchIndustry = isChinese && isHindi;
-      } else if (selInd === 'turkish-hindi') {
-        const isTurkish = industry.includes('turkish') || category.includes('turkish') || /turkish|turkey/i.test(title);
-        const isHindi = title.includes('hindi') || category.includes('dubbed') || category.includes('hindi');
-        matchIndustry = isTurkish && isHindi;
-      } else if (selInd === 'hindi') {
-        matchIndustry = title.includes('hindi') || category.includes('hindi') || category.includes('dubbed') || industry.includes('bollywood');
-      } else if (selInd === 'korean') {
-        matchIndustry = industry.includes('korean') || industry.includes('kdrama') || category.includes('korean');
-      } else if (selInd === 'turkish') {
-        matchIndustry = industry.includes('turkish') || category.includes('turkish');
-      } else if (selInd === 'tollywood' || selInd === 'south indian') {
-        matchIndustry = industry.includes('tollywood') || industry.includes('south') || category.includes('south');
-      } else if (selInd === 'bollywood') {
-        matchIndustry = industry.includes('bollywood') || category.includes('bollywood') || title.includes('hindi');
-      } else if (selInd === 'hollywood') {
-        matchIndustry = industry.includes('hollywood') || category.includes('hollywood');
-      } else if (selInd === 'chinese') {
-        matchIndustry = industry.includes('chinese') || category.includes('chinese');
-      } else if (selInd === 'anime') {
-        matchIndustry = industry.includes('anime') || industry.includes('japanese') || category.includes('anime');
-      } else {
-        matchIndustry = industry === selInd || category.includes(selInd);
-      }
-    }
-
-    return matchSearch && matchGenre && matchIndustry;
+  const filtered = state.movies.filter(m => {
+    const matchQ = !query || (m.title && m.title.toLowerCase().includes(query)) || (m.genre && m.genre.toLowerCase().includes(query)) || (m.year && String(m.year).includes(query));
+    const matchInd = industry === 'all' || (m.industry && m.industry.toLowerCase() === industry.toLowerCase()) || (m.genre && m.genre.toLowerCase().includes(industry));
+    return matchQ && matchInd;
   });
 
-  state.movies.page = 1;
-  renderMoviesTable();
+  renderMoviesTable(filtered);
 }
 
-function renderMoviesTable() {
-  const tbody = document.getElementById('movies-tbody');
-  const paginationInfo = document.getElementById('movies-pagination-info');
-  const pageDisplay = document.getElementById('movies-page-display');
-
-  const filtered = state.movies.filtered;
-  const total = filtered.length;
-  const totalPages = Math.ceil(total / state.movies.perPage) || 1;
-
-  if (state.movies.page > totalPages) state.movies.page = totalPages;
-  if (state.movies.page < 1) state.movies.page = 1;
-
-  const startIdx = (state.movies.page - 1) * state.movies.perPage;
-  const endIdx = Math.min(startIdx + state.movies.perPage, total);
-  const pageItems = filtered.slice(startIdx, endIdx);
-
-  paginationInfo.innerText = `Showing ${total === 0 ? 0 : startIdx + 1}-${endIdx} of ${total} movies`;
-  pageDisplay.innerText = `Page ${state.movies.page} of ${totalPages}`;
-
-  document.getElementById('movies-prev-page').disabled = state.movies.page <= 1;
-  document.getElementById('movies-next-page').disabled = state.movies.page >= totalPages;
-
-  if (pageItems.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="8" class="empty-table-cell">
-          <i class="fa-solid fa-film"></i>
-          <p>No movies found matching your filter criteria.</p>
-        </td>
-      </tr>
-    `;
-    return;
-  }
-
-  tbody.innerHTML = pageItems.map(m => {
-    const poster = m.poster || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80';
-    const stream = m.streamUrl || (m.servers && m.servers[0] ? m.servers[0].url : '');
-    const addedStr = m.addedAt ? new Date(m.addedAt).toLocaleDateString() : (m.year || '2026');
-
-    return `
-      <tr>
-        <td>
-          <img src="${poster}" alt="${m.title}" class="thumb-img" onerror="this.src='https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80'">
-        </td>
-        <td>
-          <strong>${m.title}</strong>
-          <small class="d-block text-muted">${m.year || '2026'} • ${m.duration || 'Movie'}</small>
-        </td>
-        <td><span class="genre-tag">${m.genre || 'Action, Drama'}</span></td>
-        <td><span class="badge-pill bg-amber">${m.industry || 'Korean'}</span></td>
-        <td><strong class="text-amber">★ ${m.rating || '8.5'}</strong></td>
-        <td>
-          <span class="badge-views" onclick="editMovieViews('${m.id}', ${m.views || 1250})" title="Click to edit views">
-            <i class="fa-solid fa-eye"></i> ${(m.views || 1250).toLocaleString()}
-          </span>
-        </td>
-        <td><small class="text-muted">${addedStr}</small></td>
-        <td class="text-right">
-          <div class="action-btn-group">
-            <button class="btn-table play-btn" onclick="previewVideoStream('${m.title}', '${stream}')" title="Test Playback in Admin">
-              <i class="fa-solid fa-play"></i>
-            </button>
-            <button class="btn-table" onclick="editMovieById('${m.id}')" title="Edit Movie">
-              <i class="fa-solid fa-pen"></i>
-            </button>
-            <button class="btn-table danger-btn" onclick="deleteMovie('${m.id}', '${m.title}')" title="Delete Movie">
-              <i class="fa-solid fa-trash"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-    `;
-  }).join('');
-}
-
-function prevMoviesPage() {
-  if (state.movies.page > 1) {
-    state.movies.page--;
-    renderMoviesTable();
-  }
-}
-
-function nextMoviesPage() {
-  const totalPages = Math.ceil(state.movies.filtered.length / state.movies.perPage) || 1;
-  if (state.movies.page < totalPages) {
-    state.movies.page++;
-    renderMoviesTable();
-  }
-}
-
-function openMovieModal() {
-  document.getElementById('movie-modal-title').innerHTML = '<i class="fa-solid fa-film text-amber"></i> Add New Movie';
+function openAddMovieModal() {
   document.getElementById('movie-form').reset();
-  document.getElementById('m-id').value = '';
-  document.getElementById('m-subject-id').value = '';
-  const prevBox = document.getElementById('m-preview-box');
-  if (prevBox) prevBox.style.display = 'none';
-  document.getElementById('movie-modal').classList.add('active');
+  document.getElementById('movie-id').value = '';
+  document.getElementById('movie-modal-title').innerHTML = '<i class="fa-solid fa-film"></i> Add New Movie';
+  openModal('movie-modal');
 }
 
-function editMovieById(id) {
-  const m = (state.content.movies || []).find(item => item.id === id);
-  if (!m) return;
+function openEditMovieModal(id) {
+  const movie = state.movies.find(m => m.id === id);
+  if (!movie) return;
 
-  document.getElementById('movie-modal-title').innerHTML = '<i class="fa-solid fa-pen text-amber"></i> Edit Movie';
-  document.getElementById('m-id').value = m.id || '';
-  document.getElementById('m-subject-id').value = m.subjectId || '';
-  document.getElementById('m-title').value = m.title || '';
-  document.getElementById('m-year').value = m.year || '';
-  document.getElementById('m-genre').value = m.genre || '';
-  document.getElementById('m-industry').value = m.industry || 'Korean';
-  document.getElementById('m-rating').value = m.rating || '';
-  document.getElementById('m-duration').value = m.duration || '';
-  document.getElementById('m-views').value = m.views || 1250;
-  document.getElementById('m-language').value = m.language || '';
-  document.getElementById('m-category').value = m.category || 'Korean Movies';
-  document.getElementById('m-poster').value = m.poster || '';
-  document.getElementById('m-backdrop').value = m.backdrop || m.cover || '';
-  document.getElementById('m-stream-url').value = m.streamUrl || (m.servers && m.servers[0] ? m.servers[0].url : '');
-  document.getElementById('m-server2-url').value = (m.servers && m.servers[1] ? m.servers[1].url : '');
-  document.getElementById('m-subtitle-url').value = (m.subtitles && m.subtitles[0] ? m.subtitles[0].src : '');
-  document.getElementById('m-description').value = m.description || '';
-  document.getElementById('m-featured').checked = state.content.featured?.id === m.id;
+  document.getElementById('movie-id').value = movie.id || '';
+  document.getElementById('movie-title').value = movie.title || '';
+  document.getElementById('movie-year').value = movie.year || '';
+  document.getElementById('movie-rating').value = movie.rating || movie.imdbRating || '';
+  document.getElementById('movie-poster').value = movie.poster || '';
+  document.getElementById('movie-backdrop').value = movie.cover || movie.backdrop || '';
+  document.getElementById('movie-quality').value = movie.quality || '1080p Full HD';
+  document.getElementById('movie-dub').value = movie.dubLanguage || movie.audio || 'Hindi Dubbed';
+  document.getElementById('movie-genre').value = movie.genre || '';
+  document.getElementById('movie-overview').value = movie.overview || movie.description || '';
+  document.getElementById('movie-stream').value = movie.directStreamUrl || movie.streamUrl || '';
+  document.getElementById('movie-stream-backup').value = (movie.servers && movie.servers[1] ? movie.servers[1].url : '');
+  document.getElementById('movie-featured').checked = !!movie.isFeatured;
 
-  updateMoviePosterPreview();
-  document.getElementById('movie-modal').classList.add('active');
-}
-
-function closeMovieModal() {
-  document.getElementById('movie-modal').classList.remove('active');
+  document.getElementById('movie-modal-title').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Movie';
+  openModal('movie-modal');
 }
 
 async function handleMovieSubmit(e) {
   e.preventDefault();
-  const id = document.getElementById('m-id').value;
-  const stream1 = document.getElementById('m-stream-url').value.trim();
-  const stream2 = document.getElementById('m-server2-url').value.trim();
-  const subUrl = document.getElementById('m-subtitle-url').value.trim();
+  const id = document.getElementById('movie-id').value.trim();
+  const streamUrl = document.getElementById('movie-stream').value.trim();
+  const backupStream = document.getElementById('movie-stream-backup').value.trim();
+  const dub = document.getElementById('movie-dub').value.trim() || 'Hindi Dubbed';
 
   const servers = [
-    { name: 'Server 1 (HD 1080p)', url: stream1, quality: '1080p', isDirect: true }
+    { name: 'Server 1 (Direct Fast CDN)', url: streamUrl, quality: '1080p', audio: dub, isDirect: true }
   ];
-  if (stream2) {
-    servers.push({ name: 'Server 2 (Direct Fast CDN)', url: stream2, quality: '1080p', isDirect: true });
+  if (backupStream) {
+    servers.push({ name: 'Server 2 (Backup Stream)', url: backupStream, quality: '1080p', audio: dub, isDirect: true });
   }
 
-  const subtitles = subUrl ? [{ label: 'Subtitle Track', src: subUrl, lang: 'en', default: true }] : [];
-
-  const movie = {
-    id: id || undefined,
-    subjectId: document.getElementById('m-subject-id').value || undefined,
-    title: document.getElementById('m-title').value.trim(),
-    year: document.getElementById('m-year').value.trim(),
-    genre: document.getElementById('m-genre').value.trim(),
-    industry: document.getElementById('m-industry').value,
-    rating: document.getElementById('m-rating').value.trim(),
-    duration: document.getElementById('m-duration').value.trim(),
-    views: parseInt(document.getElementById('m-views').value, 10) || 1250,
-    language: document.getElementById('m-language').value.trim(),
-    category: document.getElementById('m-category').value.trim(),
-    poster: document.getElementById('m-poster').value.trim(),
-    backdrop: document.getElementById('m-backdrop').value.trim() || document.getElementById('m-poster').value.trim(),
-    cover: document.getElementById('m-backdrop').value.trim() || document.getElementById('m-poster').value.trim(),
-    streamUrl: stream1,
+  const payload = {
+    id: id || `movie_${Date.now()}`,
+    title: document.getElementById('movie-title').value.trim(),
+    year: document.getElementById('movie-year').value.trim() || '2025',
+    rating: document.getElementById('movie-rating').value.trim() || '8.2',
+    poster: document.getElementById('movie-poster').value.trim(),
+    backdrop: document.getElementById('movie-backdrop').value.trim(),
+    cover: document.getElementById('movie-backdrop').value.trim() || document.getElementById('movie-poster').value.trim(),
+    quality: document.getElementById('movie-quality').value.trim() || '1080p Full HD',
+    dubLanguage: dub,
+    audio: dub,
+    genre: document.getElementById('movie-genre').value.trim() || 'Action',
+    overview: document.getElementById('movie-overview').value.trim(),
+    description: document.getElementById('movie-overview').value.trim(),
+    streamUrl,
+    directStreamUrl: streamUrl,
     servers,
-    subtitles,
-    description: document.getElementById('m-description').value.trim(),
-    isFeatured: document.getElementById('m-featured').checked
+    isFeatured: document.getElementById('movie-featured').checked,
+    isCustom: true
   };
 
   try {
-    const res = await apiFetch('/api/admin/movie', {
+    const res = await authFetch(`${API_BASE}/api/admin/movie`, {
       method: 'POST',
-      body: JSON.stringify(movie)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
-
-    if (res.success) {
-      showToast(`Movie "${movie.title}" saved successfully!`, 'success');
-      closeMovieModal();
-      await loadContent();
-      await loadStats();
-      filterMoviesTable();
+    const data = await res.json();
+    if (data.success) {
+      closeModal('movie-modal');
+      showToast('Movie saved and permanently stored in catalog!');
+      loadMovies();
+      loadDashboardData();
+    } else {
+      showToast(data.error || 'Failed to save movie', 'error');
     }
   } catch (err) {
-    showToast(`Failed to save movie: ${err.message}`, 'error');
+    showToast(err.message, 'error');
   }
 }
 
-async function deleteMovie(id, title) {
-  if (!confirm(`Are you sure you want to permanently delete the movie "${title}" from the catalog?`)) return;
-
+async function confirmDeleteMovie(id, title) {
+  if (!confirm(`Are you sure you want to permanently delete "${title}"?`)) return;
   try {
-    await apiFetch(`/api/admin/movie/${id}`, { method: 'DELETE' });
-    showToast(`Deleted movie "${title}"`, 'success');
-    await loadContent();
-    await loadStats();
-    filterMoviesTable();
+    const res = await authFetch(`${API_BASE}/api/admin/movie/${id}`, { method: 'DELETE' });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Movie deleted permanently.');
+      loadMovies();
+      loadDashboardData();
+    } else {
+      showToast(data.error || 'Delete failed', 'error');
+    }
   } catch (err) {
-    showToast(`Failed to delete: ${err.message}`, 'error');
-  }
-}
-
-async function editMovieViews(id, curViews) {
-  const input = prompt(`Enter new view count for movie:`, curViews);
-  if (input === null) return;
-  const views = parseInt(input, 10);
-  if (isNaN(views)) return;
-
-  try {
-    await apiFetch(`/api/admin/media/${id}/views`, {
-      method: 'POST',
-      body: JSON.stringify({ views })
-    });
-    showToast(`Updated view count to ${views}`, 'success');
-    await loadContent();
-    filterMoviesTable();
-  } catch (err) {
-    showToast(`Failed to update views: ${err.message}`, 'error');
+    showToast(err.message, 'error');
   }
 }
 
 // ============================================================
-// TAB 4: SERIES & TV STUDIO
+// SERIES & EPISODES STUDIO
 // ============================================================
-function filterSeriesTable(query = null) {
-  const searchInput = document.getElementById('series-search');
-  const searchVal = (query !== null && typeof query === 'string' ? query : (searchInput?.value || '')).toLowerCase().trim();
-  state.series.search = searchVal;
 
-  state.series.industry = document.getElementById('series-industry-filter')?.value || '';
-
-  state.series.filtered = (state.content.series || []).filter(s => {
-    const title = (s.title || '').toLowerCase();
-    const year = String(s.year || '');
-    const genre = (s.genre || '').toLowerCase();
-    const category = (s.category || '').toLowerCase();
-    const industry = (s.industry || '').toLowerCase();
-
-    const matchSearch = !state.series.search ||
-      title.includes(state.series.search) ||
-      year.includes(state.series.search) ||
-      genre.includes(state.series.search) ||
-      category.includes(state.series.search) ||
-      industry.includes(state.series.search);
-
-    let matchIndustry = true;
-    if (state.series.industry) {
-      const selInd = state.series.industry.toLowerCase();
-      if (selInd === 'korean-hindi') {
-        const isKorean = industry.includes('korean') || industry.includes('kdrama') || category.includes('korean') || /korean|kdrama|k-drama/i.test(title);
-        const isHindi = title.includes('hindi') || category.includes('dubbed') || category.includes('hindi');
-        matchIndustry = isKorean && isHindi;
-      } else if (selInd === 'chinese-hindi') {
-        const isChinese = industry.includes('chinese') || category.includes('chinese') || /chinese|cdrama|c-drama/i.test(title);
-        const isHindi = title.includes('hindi') || category.includes('dubbed') || category.includes('hindi');
-        matchIndustry = isChinese && isHindi;
-      } else if (selInd === 'turkish-hindi') {
-        const isTurkish = industry.includes('turkish') || category.includes('turkish') || /turkish|turkey/i.test(title);
-        const isHindi = title.includes('hindi') || category.includes('dubbed') || category.includes('hindi');
-        matchIndustry = isTurkish && isHindi;
-      } else if (selInd === 'hindi') {
-        matchIndustry = title.includes('hindi') || category.includes('hindi') || category.includes('dubbed') || industry.includes('bollywood');
-      } else if (selInd === 'korean') {
-        matchIndustry = industry.includes('korean') || industry.includes('kdrama') || category.includes('korean');
-      } else if (selInd === 'tollywood' || selInd === 'south indian') {
-        matchIndustry = industry.includes('tollywood') || industry.includes('south') || category.includes('south');
-      } else if (selInd === 'bollywood') {
-        matchIndustry = industry.includes('bollywood') || category.includes('bollywood') || title.includes('hindi');
-      } else if (selInd === 'hollywood') {
-        matchIndustry = industry.includes('hollywood') || category.includes('hollywood');
-      } else if (selInd === 'chinese') {
-        matchIndustry = industry.includes('chinese') || category.includes('chinese');
-      } else if (selInd === 'anime') {
-        matchIndustry = industry.includes('anime') || industry.includes('japanese') || category.includes('anime');
-      } else if (selInd === 'turkish') {
-        matchIndustry = industry.includes('turkish') || category.includes('turkish');
-      } else {
-        matchIndustry = industry === selInd || category.includes(selInd);
-      }
-    }
-
-    return matchSearch && matchIndustry;
-  });
-
-  state.series.page = 1;
-  renderSeriesTable();
-}
-
-function renderSeriesTable() {
+async function loadSeries() {
   const tbody = document.getElementById('series-tbody');
-  const paginationInfo = document.getElementById('series-pagination-info');
-  const pageDisplay = document.getElementById('series-page-display');
+  tbody.innerHTML = '<tr><td colspan="7" class="text-center">Loading series catalog...</td></tr>';
 
-  const filtered = state.series.filtered;
-  const total = filtered.length;
-  const totalPages = Math.ceil(total / state.series.perPage) || 1;
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/content`);
+    const data = await res.json();
+    state.series = data.series || [];
+    renderSeriesTable(state.series);
+  } catch (err) {
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center error-text">Failed to load series.</td></tr>';
+  }
+}
 
-  if (state.series.page > totalPages) state.series.page = totalPages;
-  if (state.series.page < 1) state.series.page = 1;
-
-  const startIdx = (state.series.page - 1) * state.series.perPage;
-  const endIdx = Math.min(startIdx + state.series.perPage, total);
-  const pageItems = filtered.slice(startIdx, endIdx);
-
-  paginationInfo.innerText = `Showing ${total === 0 ? 0 : startIdx + 1}-${endIdx} of ${total} series`;
-  pageDisplay.innerText = `Page ${state.series.page} of ${totalPages}`;
-
-  document.getElementById('series-prev-page').disabled = state.series.page <= 1;
-  document.getElementById('series-next-page').disabled = state.series.page >= totalPages;
-
-  if (pageItems.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="7" class="empty-table-cell">
-          <i class="fa-solid fa-tv"></i>
-          <p>No TV series found matching your criteria.</p>
-        </td>
-      </tr>
-    `;
+function renderSeriesTable(seriesList) {
+  const tbody = document.getElementById('series-tbody');
+  if (!seriesList || seriesList.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding: 30px; color: #64748b;">No series found. Click "Add New Series" above.</td></tr>';
     return;
   }
 
-  tbody.innerHTML = pageItems.map(s => {
-    const poster = s.poster || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80';
-    const totalEps = s.episodesCount || (s.seasons ? s.seasons.reduce((acc, sea) => acc + (sea.episodes ? sea.episodes.length : 0), 0) : 0);
-    const totalSeasons = s.seasonsCount || (s.seasons ? s.seasons.length : 1);
+  tbody.innerHTML = seriesList.map(s => {
+    const seasonsCount = s.seasonsCount || (s.seasons ? s.seasons.length : 1);
+    const epsCount = s.episodesCount || (s.seasons ? s.seasons.reduce((acc, x) => acc + (x.episodes?.length || 0), 0) : 0);
 
     return `
       <tr>
         <td>
-          <img src="${poster}" alt="${s.title}" class="thumb-img" onerror="this.src='https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80'">
+          <img class="table-poster" src="${s.poster || 'assets/fobs_logo.png'}" onerror="this.src='assets/fobs_logo.png'" alt="">
         </td>
         <td>
-          <strong>${s.title}</strong>
-          <small class="d-block text-muted">${s.year || '2026'} • ${s.genre || 'Drama'}</small>
+          <div class="table-title-bold">${escapeHtml(s.title)}</div>
+          <div class="table-meta-sub">${s.year || '2025'} • ${escapeHtml(s.genre || 'Series')}</div>
         </td>
         <td>
-          <span class="badge-pill bg-cyan">
-            <i class="fa-solid fa-layer-group"></i> ${totalSeasons} Season(s) • ${totalEps} Episodes
-          </span>
+          <span class="badge-tag quality">${seasonsCount} Season${seasonsCount > 1 ? 's' : ''}</span>
+          <span class="badge-tag" style="margin-left: 4px;">${epsCount} Episodes</span>
         </td>
-        <td><span class="badge-pill bg-amber">${s.industry || 'Korean'}</span></td>
-        <td><strong class="text-amber">★ ${s.rating || '8.8'}</strong></td>
+        <td>⭐ ${s.rating || s.imdbRating || '8.4'}</td>
+        <td><i class="fa-solid fa-eye" style="color: #64748b;"></i> ${(s.views || 0).toLocaleString()}</td>
         <td>
-          <span class="badge-views" onclick="editSeriesViews('${s.id}', ${s.views || 1250})" title="Click to edit views">
-            <i class="fa-solid fa-eye"></i> ${(s.views || 1250).toLocaleString()}
-          </span>
+          <span class="badge-tag permanent"><i class="fa-solid fa-shield-check"></i> Permanent</span>
         </td>
-        <td class="text-right">
-          <div class="action-btn-group">
-            <button class="btn-table play-btn" onclick="openEpisodeStudio('${s.id}')" title="Manage Seasons & Episodes Studio">
-              <i class="fa-solid fa-sliders"></i>
-            </button>
-            <button class="btn-table" onclick="syncSeriesEpisodes('${s.id}', '${s.title}')" title="1-Click Sync from MovieBox">
-              <i class="fa-solid fa-arrows-rotate"></i>
-            </button>
-            <button class="btn-table" onclick="editSeriesById('${s.id}')" title="Edit Metadata">
-              <i class="fa-solid fa-pen"></i>
-            </button>
-            <button class="btn-table danger-btn" onclick="deleteSeries('${s.id}', '${s.title}')" title="Delete Series">
-              <i class="fa-solid fa-trash"></i>
-            </button>
-          </div>
+        <td class="row-actions">
+          <button class="btn-sm-primary" style="margin-right: 6px;" onclick="openEpisodesStudio('${s.id}')" title="Episodes Studio">
+            <i class="fa-solid fa-clapperboard"></i> Studio
+          </button>
+          <button class="btn-action-icon edit" onclick="openEditSeriesModal('${s.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
+          <button class="btn-action-icon danger" onclick="confirmDeleteSeries('${s.id}', '${escapeHtml(s.title)}')"><i class="fa-solid fa-trash-can"></i></button>
         </td>
       </tr>
     `;
   }).join('');
 }
 
-function prevSeriesPage() {
-  if (state.series.page > 1) {
-    state.series.page--;
-    renderSeriesTable();
-  }
+function filterSeriesTable() {
+  const query = document.getElementById('series-search-input').value.trim().toLowerCase();
+  const filtered = state.series.filter(s => !query || (s.title && s.title.toLowerCase().includes(query)));
+  renderSeriesTable(filtered);
 }
 
-function nextSeriesPage() {
-  const totalPages = Math.ceil(state.series.filtered.length / state.series.perPage) || 1;
-  if (state.series.page < totalPages) {
-    state.series.page++;
-    renderSeriesTable();
-  }
-}
-
-function openSeriesModal() {
-  document.getElementById('series-modal-title').innerHTML = '<i class="fa-solid fa-tv text-cyan"></i> Add New TV Series';
+function openAddSeriesModal() {
   document.getElementById('series-form').reset();
-  document.getElementById('s-id').value = '';
-  document.getElementById('s-subject-id').value = '';
-  state.lastDetectedSeriesSeasons = null;
-  const prevBox = document.getElementById('s-preview-box');
-  if (prevBox) prevBox.style.display = 'none';
-  document.getElementById('series-modal').classList.add('active');
+  document.getElementById('series-id').value = '';
+  document.getElementById('series-modal-title').innerHTML = '<i class="fa-solid fa-tv"></i> Add New Series';
+  openModal('series-modal');
 }
 
-function editSeriesById(id) {
-  const s = (state.content.series || []).find(item => item.id === id);
-  if (!s) return;
+function openEditSeriesModal(id) {
+  const series = state.series.find(s => s.id === id);
+  if (!series) return;
 
-  document.getElementById('series-modal-title').innerHTML = '<i class="fa-solid fa-pen text-cyan"></i> Edit TV Series Metadata';
-  document.getElementById('s-id').value = s.id || '';
-  document.getElementById('s-subject-id').value = s.subjectId || '';
-  document.getElementById('s-title').value = s.title || '';
-  document.getElementById('s-year').value = s.year || '';
-  document.getElementById('s-genre').value = s.genre || '';
-  document.getElementById('s-industry').value = s.industry || 'Korean';
-  document.getElementById('s-rating').value = s.rating || '';
-  document.getElementById('s-views').value = s.views || 1250;
-  document.getElementById('s-category').value = s.category || 'Korean Series';
-  document.getElementById('s-poster').value = s.poster || '';
-  document.getElementById('s-backdrop').value = s.backdrop || s.cover || '';
-  document.getElementById('s-description').value = s.description || '';
-  document.getElementById('s-featured').checked = state.content.featured?.id === s.id;
+  document.getElementById('series-id').value = series.id || '';
+  document.getElementById('series-title').value = series.title || '';
+  document.getElementById('series-year').value = series.year || '';
+  document.getElementById('series-rating').value = series.rating || series.imdbRating || '';
+  document.getElementById('series-poster').value = series.poster || '';
+  document.getElementById('series-backdrop').value = series.cover || series.backdrop || '';
+  document.getElementById('series-dub').value = series.dubLanguage || series.audio || '';
+  document.getElementById('series-genre').value = series.genre || '';
+  document.getElementById('series-overview').value = series.overview || series.description || '';
 
-  updateSeriesPosterPreview();
-  document.getElementById('series-modal').classList.add('active');
-}
-
-function closeSeriesModal() {
-  document.getElementById('series-modal').classList.remove('active');
+  document.getElementById('series-modal-title').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Series';
+  openModal('series-modal');
 }
 
 async function handleSeriesSubmit(e) {
   e.preventDefault();
-  const id = document.getElementById('s-id').value;
-
-  const series = {
-    id: id || undefined,
-    subjectId: document.getElementById('s-subject-id').value || undefined,
-    title: document.getElementById('s-title').value.trim(),
-    year: document.getElementById('s-year').value.trim(),
-    genre: document.getElementById('s-genre').value.trim(),
-    industry: document.getElementById('s-industry').value,
-    rating: document.getElementById('s-rating').value.trim(),
-    views: parseInt(document.getElementById('s-views').value, 10) || 1250,
-    category: document.getElementById('s-category').value.trim(),
-    poster: document.getElementById('s-poster').value.trim(),
-    backdrop: document.getElementById('s-backdrop').value.trim() || document.getElementById('s-poster').value.trim(),
-    cover: document.getElementById('s-backdrop').value.trim() || document.getElementById('s-poster').value.trim(),
-    description: document.getElementById('s-description').value.trim(),
-    isFeatured: document.getElementById('s-featured').checked
+  const id = document.getElementById('series-id').value.trim();
+  const payload = {
+    id: id || `series_${Date.now()}`,
+    title: document.getElementById('series-title').value.trim(),
+    year: document.getElementById('series-year').value.trim() || '2025',
+    rating: document.getElementById('series-rating').value.trim() || '8.5',
+    poster: document.getElementById('series-poster').value.trim(),
+    backdrop: document.getElementById('series-backdrop').value.trim(),
+    cover: document.getElementById('series-backdrop').value.trim() || document.getElementById('series-poster').value.trim(),
+    dubLanguage: document.getElementById('series-dub').value.trim(),
+    genre: document.getElementById('series-genre').value.trim() || 'Drama',
+    overview: document.getElementById('series-overview').value.trim(),
+    description: document.getElementById('series-overview').value.trim(),
+    isCustom: true
   };
 
-  // If newly adding a series and episodes were detected during auto-detect, attach them!
-  if (!series.id && state.lastDetectedSeriesSeasons && state.lastDetectedSeriesSeasons.length > 0) {
-    const sId = series.subjectId || '';
-    const dPath = document.getElementById('s-detail-path')?.value || '';
-    series.seasons = state.lastDetectedSeriesSeasons.map(s => {
-      const seNum = s.seasonNumber || s.se || 1;
-      let episodes = s.episodes;
-      if (!Array.isArray(episodes) || episodes.length === 0) {
-        const maxEp = Math.max(parseInt(s.maxEp || s.episodesCount, 10) || 16, 1);
-        episodes = [];
-        for (let ep = 1; ep <= maxEp; ep++) {
-          const sUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${ep}` : '';
-          episodes.push({
-            number: String(ep).padStart(2, '0'),
-            episode: ep,
-            season: seNum,
-            title: `Episode ${ep}`,
-            duration: '45 min',
-            still: series.poster,
-            streamUrl: sUrl,
-            servers: [
-              { name: 'Server 1 (Auto-Renewing HD)', url: sUrl, quality: '1080p', isDirect: true },
-              { name: 'Server 2 (Auto Failover)', url: sUrl, quality: '1080p', isDirect: true }
-            ]
-          });
-        }
-      }
-      return {
-        seasonNumber: seNum,
-        title: s.title || `Season ${seNum}`,
-        name: s.name || `Season ${seNum}`,
-        episodesCount: episodes.length,
-        episodes
-      };
-    });
-    series.episodes = series.seasons[0]?.episodes || [];
-    series.streamUrl = series.episodes[0]?.streamUrl || '';
-    series.seasonsCount = series.seasons.length;
-    series.episodesCount = series.seasons.reduce((sum, s) => sum + (s.episodes?.length || s.episodesCount || 0), 0);
-  }
-
   try {
-    const res = await apiFetch('/api/admin/series', {
+    const res = await authFetch(`${API_BASE}/api/admin/series`, {
       method: 'POST',
-      body: JSON.stringify(series)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
-
-    if (res.success) {
-      showToast(`Series "${series.title}" updated successfully!`, 'success');
-      closeSeriesModal();
-      await loadContent();
-      await loadStats();
-      filterSeriesTable();
+    const data = await res.json();
+    if (data.success) {
+      closeModal('series-modal');
+      showToast('Series saved permanently in catalog!');
+      loadSeries();
+      loadDashboardData();
+    } else {
+      showToast(data.error || 'Failed to save series', 'error');
     }
   } catch (err) {
-    showToast(`Failed to save series: ${err.message}`, 'error');
+    showToast(err.message, 'error');
   }
 }
 
-async function deleteSeries(id, title) {
-  if (!confirm(`Are you sure you want to permanently delete the TV series "${title}"? All seasons and episodes will be removed.`)) return;
-
+async function confirmDeleteSeries(id, title) {
+  if (!confirm(`Are you sure you want to permanently delete "${title}" and all its episodes?`)) return;
   try {
-    await apiFetch(`/api/admin/series/${id}`, { method: 'DELETE' });
-    showToast(`Deleted series "${title}"`, 'success');
-    await loadContent();
-    await loadStats();
-    filterSeriesTable();
-  } catch (err) {
-    showToast(`Failed to delete series: ${err.message}`, 'error');
-  }
-}
-
-async function syncSeriesEpisodes(id, title) {
-  showToast(`Syncing episodes for "${title}" with MovieBox...`, 'info', 4000);
-  try {
-    const res = await apiFetch('/api/admin/series/sync', {
-      method: 'POST',
-      body: JSON.stringify({ id })
-    });
-    if (res.success) {
-      showToast(res.message || `Updated episodes for "${title}"`, 'success', 5000);
-      await loadContent();
-      filterSeriesTable();
+    const res = await authFetch(`${API_BASE}/api/admin/series/${id}`, { method: 'DELETE' });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Series deleted permanently.');
+      loadSeries();
+      loadDashboardData();
+    } else {
+      showToast(data.error || 'Delete failed', 'error');
     }
   } catch (err) {
-    showToast(`Sync error: ${err.message}`, 'error', 5000);
+    showToast(err.message, 'error');
   }
 }
 
-async function autoSyncAllSeries() {
-  if (!confirm('Scan MovieBox and auto-update all series in FOBS TV catalog?')) return;
-  showToast('Starting catalog-wide episode scan...', 'info', 6000);
-  try {
-    const res = await apiFetch('/api/admin/series/sync-all', { method: 'POST' });
-    showToast(res.message || 'Auto-sync complete!', 'success', 6000);
-    await loadContent();
-    filterSeriesTable();
-  } catch (err) {
-    showToast(`Auto-sync failed: ${err.message}`, 'error', 5000);
-  }
-}
+// EPISODES STUDIO MODAL
+function openEpisodesStudio(seriesId) {
+  const series = state.series.find(s => s.id === seriesId);
+  if (!series) return;
 
-async function editSeriesViews(id, curViews) {
-  const input = prompt(`Enter new view count for series:`, curViews);
-  if (input === null) return;
-  const views = parseInt(input, 10);
-  if (isNaN(views)) return;
-
-  try {
-    await apiFetch(`/api/admin/media/${id}/views`, {
-      method: 'POST',
-      body: JSON.stringify({ views })
-    });
-    showToast(`Updated view count to ${views}`, 'success');
-    await loadContent();
-    filterSeriesTable();
-  } catch (err) {
-    showToast(`Failed to update views: ${err.message}`, 'error');
-  }
-}
-
-// ============================================================
-// DEEP EPISODES STUDIO (SEASONS & EPISODES MANAGER)
-// ============================================================
-async function openEpisodeStudio(seriesId) {
-  let s = (state.content.series || []).find(item => item.id === seriesId);
-  if (!s) {
-    try {
-      const data = await apiFetch(`/api/admin/series/${seriesId}`);
-      s = data.series;
-    } catch (e) {
-      showToast('Could not load series details', 'error');
-      return;
-    }
-  }
-
-  state.studio.seriesId = seriesId;
-  state.studio.series = s;
-  state.studio.seasons = JSON.parse(JSON.stringify(s.seasons || []));
-  
-  if (state.studio.seasons.length === 0) {
-    // Generate Season 1 if none exists
-    state.studio.seasons.push({
+  state.currentEpisodesStudio = JSON.parse(JSON.stringify(series));
+  if (!Array.isArray(state.currentEpisodesStudio.seasons) || state.currentEpisodesStudio.seasons.length === 0) {
+    state.currentEpisodesStudio.seasons = [{
       seasonNumber: 1,
       title: 'Season 1',
-      name: 'Season 1',
-      episodesCount: (s.episodes || []).length,
-      episodes: JSON.parse(JSON.stringify(s.episodes || []))
-    });
+      episodes: []
+    }];
   }
+  state.activeSeasonIndex = 0;
 
-  state.studio.activeSeasonIndex = 0;
-
-  document.getElementById('studio-series-title').innerHTML = `<i class="fa-solid fa-tv text-cyan"></i> Episode Studio: ${s.title}`;
-  document.getElementById('studio-series-meta').innerText = `${s.year || '2026'} • ${s.industry || 'Korean'} • Total: ${s.episodesCount || 0} Episodes`;
-
-  renderStudioSeasons();
-  renderStudioEpisodes();
-  document.getElementById('episodes-studio-modal').classList.add('active');
+  document.getElementById('episodes-modal-series-title').innerHTML = `<i class="fa-solid fa-clapperboard"></i> ${escapeHtml(series.title)}`;
+  renderSeasonsList();
+  renderEpisodesTable();
+  openModal('episodes-modal');
 }
 
-function closeEpisodeStudio() {
-  document.getElementById('episodes-studio-modal').classList.remove('active');
+function renderSeasonsList() {
+  const seasons = state.currentEpisodesStudio.seasons;
+  const listEl = document.getElementById('seasons-list');
+  listEl.innerHTML = seasons.map((s, idx) => `
+    <div class="season-nav-item ${idx === state.activeSeasonIndex ? 'active' : ''}" onclick="selectSeason(${idx})">
+      ${escapeHtml(s.title || `Season ${s.seasonNumber || (idx + 1)}`)}
+      <span style="font-size: 11px; opacity: 0.8; float: right;">(${s.episodes?.length || 0})</span>
+    </div>
+  `).join('');
 }
 
-function renderStudioSeasons() {
-  const list = document.getElementById('studio-seasons-tabs');
-  list.innerHTML = state.studio.seasons.map((sea, idx) => {
-    const isActive = idx === state.studio.activeSeasonIndex;
-    const epsCount = sea.episodes ? sea.episodes.length : 0;
-    return `
-      <button class="season-tab-btn ${isActive ? 'active' : ''}" onclick="selectStudioSeason(${idx})">
-        Season ${sea.seasonNumber || (idx + 1)} (${epsCount} eps)
-      </button>
-    `;
-  }).join('');
+function selectSeason(index) {
+  state.activeSeasonIndex = index;
+  renderSeasonsList();
+  renderEpisodesTable();
 }
 
-function selectStudioSeason(idx) {
-  state.studio.activeSeasonIndex = idx;
-  renderStudioSeasons();
-  renderStudioEpisodes();
-}
-
-function addNewSeasonToStudio() {
-  const nextNum = state.studio.seasons.length + 1;
-  state.studio.seasons.push({
+function addNewSeason() {
+  const seasons = state.currentEpisodesStudio.seasons;
+  const nextNum = seasons.length + 1;
+  seasons.push({
     seasonNumber: nextNum,
     title: `Season ${nextNum}`,
-    name: `Season ${nextNum}`,
-    episodesCount: 0,
     episodes: []
   });
-  state.studio.activeSeasonIndex = state.studio.seasons.length - 1;
-  renderStudioSeasons();
-  renderStudioEpisodes();
-  showToast(`Added Season ${nextNum}`, 'info');
+  state.activeSeasonIndex = seasons.length - 1;
+  renderSeasonsList();
+  renderEpisodesTable();
 }
 
-function renderStudioEpisodes() {
-  const tbody = document.getElementById('studio-episodes-tbody');
-  const activeSeason = state.studio.seasons[state.studio.activeSeasonIndex];
-  if (!activeSeason || !activeSeason.episodes || activeSeason.episodes.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="6" class="empty-table-cell">
-          <p>No episodes in this season yet. Click "+ Add Episode" above.</p>
-        </td>
-      </tr>
-    `;
+function renderEpisodesTable() {
+  const seasons = state.currentEpisodesStudio.seasons;
+  const activeSeason = seasons[state.activeSeasonIndex];
+  if (!activeSeason) return;
+
+  document.getElementById('current-season-title').innerText = `${activeSeason.title || 'Season'} (${activeSeason.episodes?.length || 0} Episodes)`;
+
+  const container = document.getElementById('episodes-list');
+  const eps = activeSeason.episodes || [];
+
+  if (eps.length === 0) {
+    container.innerHTML = '<div class="empty-state-mini"><p>No episodes added to this season yet.</p><button class="btn-sm-primary" onclick="addNewEpisode()"><i class="fa-solid fa-plus"></i> Add Episode 1</button></div>';
     return;
   }
 
-  tbody.innerHTML = activeSeason.episodes.map((ep, idx) => {
-    const epNum = ep.episode || ep.episodeNumber || (idx + 1);
-    const title = ep.title || `Episode ${epNum}`;
-    const stream = ep.streamUrl || (ep.servers && ep.servers[0] ? ep.servers[0].url : '');
-    const sub = (ep.subtitles && ep.subtitles[0] ? ep.subtitles[0].src : '') || (ep.captions && ep.captions[0] ? ep.captions[0].src : '');
-
-    return `
-      <tr>
-        <td><strong>#${epNum}</strong></td>
-        <td><strong>${title}</strong></td>
-        <td><small class="text-muted">${ep.duration || '45 min'}</small></td>
-        <td><code class="stream-url-text">${stream || 'No stream url'}</code></td>
-        <td>${sub ? '<span class="badge-status success"><i class="fa-solid fa-check"></i> Subtitle</span>' : '<span class="text-muted">None</span>'}</td>
-        <td class="text-right">
-          <div class="action-btn-group">
-            <button class="btn-table play-btn" onclick="previewVideoStream('${state.studio.series?.title} - Ep ${epNum}', '${stream}')" title="Test Stream">
-              <i class="fa-solid fa-play"></i>
-            </button>
-            <button class="btn-table" onclick="openEditEpisodeForm(${idx})" title="Edit Episode">
-              <i class="fa-solid fa-pen"></i>
-            </button>
-            <button class="btn-table danger-btn" onclick="deleteStudioEpisode(${idx})" title="Delete Episode">
-              <i class="fa-solid fa-trash"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-    `;
-  }).join('');
+  container.innerHTML = `
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width: 50px;">Ep</th>
+          <th>Episode Title</th>
+          <th>Direct Stream URL (.mp4 / .m3u8)</th>
+          <th style="width: 50px; text-align: right;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${eps.map((ep, idx) => `
+          <tr>
+            <td>
+              <input type="number" class="custom-input-sm" value="${ep.episode || (idx + 1)}" onchange="updateEpisodeField(${idx}, 'episode', this.value)" style="width: 50px; padding: 6px;">
+            </td>
+            <td>
+              <input type="text" class="custom-input-sm" value="${escapeHtml(ep.title || `Episode ${ep.episode || (idx + 1)}`)}" onchange="updateEpisodeField(${idx}, 'title', this.value)">
+            </td>
+            <td>
+              <input type="url" class="custom-input-sm" value="${escapeHtml(ep.streamUrl || '')}" placeholder="https://..." onchange="updateEpisodeField(${idx}, 'streamUrl', this.value)">
+            </td>
+            <td style="text-align: right;">
+              <button class="btn-action-icon danger" onclick="deleteEpisode(${idx})"><i class="fa-solid fa-trash-can"></i></button>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
 }
 
-function openAddEpisodeForm() {
-  const activeSeason = state.studio.seasons[state.studio.activeSeasonIndex];
-  const nextEpNum = (activeSeason.episodes ? activeSeason.episodes.length : 0) + 1;
-
-  document.getElementById('single-ep-modal-title').innerHTML = '<i class="fa-solid fa-plus text-cyan"></i> Add New Episode';
-  document.getElementById('single-ep-form').reset();
-  document.getElementById('ep-index').value = '-1'; // -1 means add new
-  document.getElementById('ep-season-idx').value = state.studio.activeSeasonIndex;
-  document.getElementById('ep-number').value = nextEpNum;
-  document.getElementById('ep-title').value = `Episode ${nextEpNum}`;
-  document.getElementById('ep-duration').value = '45 min';
-  document.getElementById('single-episode-modal').classList.add('active');
+function updateEpisodeField(idx, field, value) {
+  const season = state.currentEpisodesStudio.seasons[state.activeSeasonIndex];
+  if (season && season.episodes[idx]) {
+    season.episodes[idx][field] = value;
+    if (field === 'streamUrl') {
+      season.episodes[idx].servers = [
+        { name: 'Server 1 (Direct Fast CDN)', url: value, quality: '1080p', isDirect: true }
+      ];
+    }
+  }
 }
 
-function openEditEpisodeForm(epIdx) {
-  const activeSeason = state.studio.seasons[state.studio.activeSeasonIndex];
-  const ep = activeSeason.episodes[epIdx];
-  if (!ep) return;
-
-  document.getElementById('single-ep-modal-title').innerHTML = `<i class="fa-solid fa-pen text-cyan"></i> Edit Episode ${ep.episode || epIdx + 1}`;
-  document.getElementById('ep-index').value = epIdx;
-  document.getElementById('ep-season-idx').value = state.studio.activeSeasonIndex;
-  document.getElementById('ep-number').value = ep.episode || (epIdx + 1);
-  document.getElementById('ep-duration').value = ep.duration || '45 min';
-  document.getElementById('ep-title').value = ep.title || `Episode ${ep.episode || (epIdx + 1)}`;
-  document.getElementById('ep-stream-url').value = ep.streamUrl || (ep.servers && ep.servers[0] ? ep.servers[0].url : '');
-  document.getElementById('ep-server2-url').value = (ep.servers && ep.servers[1] ? ep.servers[1].url : '');
-  document.getElementById('ep-sub-url').value = (ep.subtitles && ep.subtitles[0] ? ep.subtitles[0].src : '') || (ep.captions && ep.captions[0] ? ep.captions[0].src : '');
-  document.getElementById('single-episode-modal').classList.add('active');
-}
-
-function closeSingleEpisodeModal() {
-  document.getElementById('single-episode-modal').classList.remove('active');
-}
-
-function handleSingleEpSubmit(e) {
-  e.preventDefault();
-  const epIdx = parseInt(document.getElementById('ep-index').value, 10);
-  const seasonIdx = parseInt(document.getElementById('ep-season-idx').value, 10);
-  const season = state.studio.seasons[seasonIdx];
+function addNewEpisode() {
+  const season = state.currentEpisodesStudio.seasons[state.activeSeasonIndex];
   if (!season) return;
-
-  const num = parseInt(document.getElementById('ep-number').value, 10) || 1;
-  const title = document.getElementById('ep-title').value.trim();
-  const duration = document.getElementById('ep-duration').value.trim();
-  const stream1 = document.getElementById('ep-stream-url').value.trim();
-  const stream2 = document.getElementById('ep-server2-url').value.trim();
-  const subUrl = document.getElementById('ep-sub-url').value.trim();
-
-  const servers = [{ name: 'Server 1 (HD 1080p)', url: stream1, quality: '1080p', isDirect: true }];
-  if (stream2) servers.push({ name: 'Server 2 (Direct Fast CDN)', url: stream2, quality: '1080p', isDirect: true });
-
-  const subtitles = subUrl ? [{ label: 'Subtitle Track', src: subUrl, lang: 'en', default: true }] : [];
-
-  const episodeObj = {
-    episode: num,
-    episodeNumber: num,
-    number: String(num).padStart(2, '0'),
-    title,
-    duration,
-    streamUrl: stream1,
-    servers,
-    subtitles,
-    captions: subtitles
-  };
-
   if (!Array.isArray(season.episodes)) season.episodes = [];
-
-  if (epIdx >= 0) {
-    season.episodes[epIdx] = { ...season.episodes[epIdx], ...episodeObj };
-  } else {
-    season.episodes.push(episodeObj);
-  }
-
-  season.episodesCount = season.episodes.length;
-  closeSingleEpisodeModal();
-  renderStudioSeasons();
-  renderStudioEpisodes();
-  showToast(`Saved Episode ${num} in Season ${season.seasonNumber}`, 'success');
-}
-
-function deleteStudioEpisode(epIdx) {
-  const activeSeason = state.studio.seasons[state.studio.activeSeasonIndex];
-  if (!confirm(`Delete Episode ${activeSeason.episodes[epIdx]?.title || (epIdx + 1)}?`)) return;
-
-  activeSeason.episodes.splice(epIdx, 1);
-  activeSeason.episodesCount = activeSeason.episodes.length;
-  renderStudioSeasons();
-  renderStudioEpisodes();
-  showToast('Episode removed', 'info');
-}
-
-async function saveAllStudioEpisodes() {
-  const seriesId = state.studio.seriesId;
-  showToast('Saving all seasons & episodes...', 'info', 2500);
-
-  try {
-    const res = await apiFetch(`/api/admin/series/${seriesId}/episodes`, {
-      method: 'POST',
-      body: JSON.stringify({ seasons: state.studio.seasons })
-    });
-
-    if (res.success) {
-      showToast(`🎉 Successfully updated seasons and episodes! Total: ${res.totalEpisodes} episodes`, 'success', 4000);
-      closeEpisodeStudio();
-      await loadContent();
-      filterSeriesTable();
-    }
-  } catch (err) {
-    showToast(`Failed to save episodes: ${err.message}`, 'error', 5000);
-  }
-}
-
-async function syncSeriesWithMovieBoxInStudio() {
-  const seriesId = state.studio.seriesId;
-  showToast('Connecting to MovieBox to sync latest episodes...', 'info', 4000);
-
-  try {
-    const res = await apiFetch('/api/admin/series/sync', {
-      method: 'POST',
-      body: JSON.stringify({ id: seriesId })
-    });
-
-    if (res.success) {
-      showToast(res.message || 'Series episodes updated from MovieBox!', 'success', 5000);
-      await loadContent();
-      // Reload studio with newly synced data
-      await openEpisodeStudio(seriesId);
-    }
-  } catch (err) {
-    showToast(`Sync error: ${err.message}`, 'error', 5000);
-  }
-}
-
-// ============================================================
-// TAB 5: LIVE TV CHANNELS
-// ============================================================
-function filterChannelsGrid(query = null) {
-  if (query !== null) state.channels.search = query.toLowerCase();
-  state.channels.category = document.getElementById('channels-category-filter').value;
-
-  state.channels.filtered = (state.content.liveTv || []).filter(c => {
-    const name = (c.name || c.title || '').toLowerCase();
-    const matchSearch = !state.channels.search || name.includes(state.channels.search);
-    const matchCategory = !state.channels.category || (c.category && c.category.toLowerCase() === state.channels.category.toLowerCase());
-    return matchSearch && matchCategory;
+  const nextNum = season.episodes.length + 1;
+  season.episodes.push({
+    episode: nextNum,
+    episodeNumber: nextNum,
+    number: String(nextNum).padStart(2, '0'),
+    title: `Episode ${nextNum}`,
+    season: season.seasonNumber || (state.activeSeasonIndex + 1),
+    streamUrl: '',
+    duration: '45 min'
   });
-
-  renderChannelsGrid();
+  renderEpisodesTable();
+  renderSeasonsList();
 }
 
-function renderChannelsGrid() {
-  const container = document.getElementById('channels-container');
-  const countDisplay = document.getElementById('channels-count-info');
-  const channels = state.channels.filtered;
+function deleteEpisode(idx) {
+  const season = state.currentEpisodesStudio.seasons[state.activeSeasonIndex];
+  if (season && season.episodes) {
+    season.episodes.splice(idx, 1);
+    renderEpisodesTable();
+    renderSeasonsList();
+  }
+}
 
-  countDisplay.innerText = `${channels.length} channels`;
+async function saveEpisodesStudioChanges() {
+  const s = state.currentEpisodesStudio;
+  if (!s || !s.id) return;
 
-  if (channels.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state full-width">
-        <i class="fa-solid fa-satellite-dish"></i>
-        <h3>No live channels found</h3>
-        <p>Try searching for a different channel or click "Add Live Channel".</p>
-      </div>
-    `;
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/series/${s.id}/episodes`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ seasons: s.seasons })
+    });
+    const data = await res.json();
+    if (data.success) {
+      closeModal('episodes-modal');
+      showToast('All seasons and episodes saved permanently!');
+      loadSeries();
+    } else {
+      showToast(data.error || 'Failed to save episodes', 'error');
+    }
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+// ============================================================
+// LIVE TV CHANNELS
+// ============================================================
+
+async function loadChannels() {
+  const tbody = document.getElementById('channels-tbody');
+  tbody.innerHTML = '<tr><td colspan="5" class="text-center">Loading channels...</td></tr>';
+
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/content`);
+    const data = await res.json();
+    state.channels = data.liveTv || [];
+    renderChannelsTable(state.channels);
+  } catch (err) {
+    tbody.innerHTML = '<tr><td colspan="5" class="text-center error-text">Failed to load channels.</td></tr>';
+  }
+}
+
+function renderChannelsTable(channelsList) {
+  const tbody = document.getElementById('channels-tbody');
+  if (!channelsList || channelsList.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="text-center" style="padding: 30px; color: #64748b;">No channels configured. Click "Add Channel".</td></tr>';
     return;
   }
 
-  container.innerHTML = channels.map(c => {
-    const name = c.name || c.title || 'Live Channel';
-    const logo = c.logo || c.poster || 'assets/channels/gtv.svg';
-    const stream = c.streamUrl || '';
-
-    return `
-      <div class="channel-card glass">
-        <div class="channel-card-top">
-          <div class="channel-logo-wrap">
-            <img src="${logo}" alt="${name}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3178/3178283.png'">
-          </div>
-          <div class="channel-card-info">
-            <h4 title="${name}">${name}</h4>
-            <span class="badge-pill bg-emerald">${c.category || 'Sports'}</span>
-          </div>
-        </div>
-        <div class="channel-card-actions">
-          <button class="btn-sm btn-primary glow-sm" onclick="previewVideoStream('${name}', '${stream}')">
-            <i class="fa-solid fa-play"></i> Watch Stream
-          </button>
-          <div class="action-btn-group">
-            <button class="btn-table" onclick="editChannelById('${c.id}')" title="Edit Channel">
-              <i class="fa-solid fa-pen"></i>
-            </button>
-            <button class="btn-table danger-btn" onclick="deleteChannel('${c.id}', '${name}')" title="Delete Channel">
-              <i class="fa-solid fa-trash"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
+  tbody.innerHTML = channelsList.map(c => `
+    <tr>
+      <td>
+        <img class="table-poster" style="height: 44px; object-fit: contain; background: #000;" src="${c.logo || c.image || 'assets/fobs_logo.png'}" onerror="this.src='assets/fobs_logo.png'" alt="">
+      </td>
+      <td class="table-title-bold">${escapeHtml(c.name)}</td>
+      <td><span class="badge-tag quality">${escapeHtml(c.category || 'General')}</span></td>
+      <td style="font-family: var(--font-mono); font-size: 11px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+        ${escapeHtml(c.streamUrl || '')}
+      </td>
+      <td class="row-actions">
+        <button class="btn-action-icon edit" onclick="openEditChannelModal('${c.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
+        <button class="btn-action-icon danger" onclick="confirmDeleteChannel('${c.id}', '${escapeHtml(c.name)}')"><i class="fa-solid fa-trash-can"></i></button>
+      </td>
+    </tr>
+  `).join('');
 }
 
-function openChannelModal() {
-  document.getElementById('channel-modal-title').innerHTML = '<i class="fa-solid fa-satellite-dish text-emerald"></i> Add Live Channel';
+function filterChannelsTable() {
+  const query = document.getElementById('channel-search-input').value.trim().toLowerCase();
+  const filtered = state.channels.filter(c => !query || (c.name && c.name.toLowerCase().includes(query)));
+  renderChannelsTable(filtered);
+}
+
+function openAddChannelModal() {
   document.getElementById('channel-form').reset();
-  document.getElementById('ch-id').value = '';
-  document.getElementById('channel-modal').classList.add('active');
+  document.getElementById('channel-id').value = '';
+  document.getElementById('channel-modal-title').innerHTML = '<i class="fa-solid fa-tower-broadcast"></i> Add Live Channel';
+  openModal('channel-modal');
 }
 
-function editChannelById(id) {
-  const c = (state.content.liveTv || []).find(item => item.id === id);
-  if (!c) return;
+function openEditChannelModal(id) {
+  const ch = state.channels.find(c => c.id === id);
+  if (!ch) return;
 
-  document.getElementById('channel-modal-title').innerHTML = '<i class="fa-solid fa-pen text-emerald"></i> Edit Live Channel';
-  document.getElementById('ch-id').value = c.id || '';
-  document.getElementById('ch-name').value = c.name || c.title || '';
-  document.getElementById('ch-category').value = c.category || 'Sports';
-  document.getElementById('ch-badge').value = c.badge || 'LIVE';
-  document.getElementById('ch-stream-url').value = c.streamUrl || '';
-  document.getElementById('ch-logo').value = c.logo || '';
-  document.getElementById('ch-referer').value = c.referer || '';
-  document.getElementById('ch-user-agent').value = c.userAgent || '';
+  document.getElementById('channel-id').value = ch.id;
+  document.getElementById('channel-name').value = ch.name || '';
+  document.getElementById('channel-category').value = ch.category || 'Bangladesh';
+  document.getElementById('channel-logo').value = ch.logo || ch.image || '';
+  document.getElementById('channel-stream').value = ch.streamUrl || '';
 
-  document.getElementById('channel-modal').classList.add('active');
-}
-
-function closeChannelModal() {
-  document.getElementById('channel-modal').classList.remove('active');
+  document.getElementById('channel-modal-title').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Channel';
+  openModal('channel-modal');
 }
 
 async function handleChannelSubmit(e) {
   e.preventDefault();
-  const id = document.getElementById('ch-id').value;
-  const name = document.getElementById('ch-name').value.trim();
-
-  const channel = {
-    id: id || undefined,
-    name,
-    title: name,
-    category: document.getElementById('ch-category').value,
-    badge: document.getElementById('ch-badge').value.trim() || 'LIVE',
-    streamUrl: document.getElementById('ch-stream-url').value.trim(),
-    logo: document.getElementById('ch-logo').value.trim(),
-    poster: document.getElementById('ch-logo').value.trim(),
-    referer: document.getElementById('ch-referer').value.trim(),
-    userAgent: document.getElementById('ch-user-agent').value.trim(),
-    streamType: 'hls'
+  const id = document.getElementById('channel-id').value.trim();
+  const payload = {
+    id: id || `ch_${Date.now()}`,
+    name: document.getElementById('channel-name').value.trim(),
+    category: document.getElementById('channel-category').value,
+    logo: document.getElementById('channel-logo').value.trim(),
+    image: document.getElementById('channel-logo').value.trim(),
+    streamUrl: document.getElementById('channel-stream').value.trim(),
+    isCustom: true
   };
 
   try {
-    const res = await apiFetch('/api/admin/channel', {
+    const res = await authFetch(`${API_BASE}/api/admin/channel`, {
       method: 'POST',
-      body: JSON.stringify(channel)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
-
-    if (res.success) {
-      showToast(`Saved channel "${name}"!`, 'success');
-      closeChannelModal();
-      await loadContent();
-      await loadStats();
-      filterChannelsGrid();
+    const data = await res.json();
+    if (data.success) {
+      closeModal('channel-modal');
+      showToast('Live Channel saved permanently!');
+      loadChannels();
+      loadDashboardData();
+    } else {
+      showToast(data.error || 'Failed to save channel', 'error');
     }
   } catch (err) {
-    showToast(`Failed to save channel: ${err.message}`, 'error');
+    showToast(err.message, 'error');
   }
 }
 
-async function deleteChannel(id, name) {
-  if (!confirm(`Delete live channel "${name}"?`)) return;
-
+async function confirmDeleteChannel(id, name) {
+  if (!confirm(`Are you sure you want to delete "${name}"?`)) return;
   try {
-    await apiFetch(`/api/admin/channel/${id}`, { method: 'DELETE' });
-    showToast(`Deleted channel "${name}"`, 'success');
-    await loadContent();
-    await loadStats();
-    filterChannelsGrid();
+    const res = await authFetch(`${API_BASE}/api/admin/channel/${id}`, { method: 'DELETE' });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Channel deleted.');
+      loadChannels();
+      loadDashboardData();
+    }
   } catch (err) {
-    showToast(`Failed to delete channel: ${err.message}`, 'error');
+    showToast(err.message, 'error');
   }
 }
 
 // ============================================================
-// TAB 6: HERO SPOTLIGHT BANNER
+// POPUP NOTICES & ANNOUNCEMENTS
 // ============================================================
-function renderHeroEditor() {
-  const feat = state.content.featured || {};
-  document.getElementById('hero-title').value = feat.title || '';
-  document.getElementById('hero-year').value = feat.year || '2026';
-  document.getElementById('hero-badge-left').value = feat.badgeLeft || 'Trending';
-  document.getElementById('hero-badge-right').value = feat.badgeRight || 'Hindi Dubbed';
-  document.getElementById('hero-rating').value = feat.rating || '9.2';
-  document.getElementById('hero-category').value = feat.category || 'Korean Drama';
-  document.getElementById('hero-cover').value = feat.backdrop || feat.cover || '';
-  document.getElementById('hero-poster').value = feat.poster || '';
-  document.getElementById('hero-stream-url').value = feat.streamUrl || '';
-  document.getElementById('hero-description').value = feat.description || '';
 
-  updateHeroMockup(feat);
-}
-
-function updateHeroPreview(coverUrl) {
-  const bg = document.getElementById('mockup-hero-bg');
-  if (bg) bg.style.backgroundImage = `url('${coverUrl}')`;
-}
-
-function updateHeroMockup(data) {
-  const bg = document.getElementById('mockup-hero-bg');
-  const title = document.getElementById('mockup-title');
-  const bLeft = document.getElementById('mockup-badge-left');
-  const bRight = document.getElementById('mockup-badge-right');
-  const year = document.getElementById('mockup-year');
-  const rating = document.getElementById('mockup-rating');
-  const cat = document.getElementById('mockup-category');
-  const desc = document.getElementById('mockup-desc');
-
-  const cover = data.backdrop || data.cover || data.poster || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1280&q=80';
-  if (bg) bg.style.backgroundImage = `url('${cover}')`;
-  if (title) title.innerText = data.title || 'Spotlight Title';
-  if (bLeft) bLeft.innerText = data.badgeLeft || 'Trending';
-  if (bRight) bRight.innerText = data.badgeRight || 'Korean';
-  if (year) year.innerText = data.year || '2026';
-  if (rating) rating.innerText = `★ ${data.rating || '9.2'}`;
-  if (cat) cat.innerText = data.category || 'Drama';
-  if (desc) desc.innerText = data.description || 'Watch now in Ultra HD 1080p.';
-}
-
-async function handleHeroSubmit(e) {
-  e.preventDefault();
-  const title = document.getElementById('hero-title').value.trim();
-  const cover = document.getElementById('hero-cover').value.trim();
-
-  const featured = {
-    title,
-    year: document.getElementById('hero-year').value.trim(),
-    badgeLeft: document.getElementById('hero-badge-left').value.trim(),
-    badgeRight: document.getElementById('hero-badge-right').value.trim(),
-    rating: document.getElementById('hero-rating').value.trim(),
-    imdbRating: document.getElementById('hero-rating').value.trim(),
-    category: document.getElementById('hero-category').value.trim(),
-    cover,
-    backdrop: cover,
-    poster: document.getElementById('hero-poster').value.trim() || cover,
-    streamUrl: document.getElementById('hero-stream-url').value.trim(),
-    description: document.getElementById('hero-description').value.trim()
-  };
+async function loadAnnouncements() {
+  const container = document.getElementById('announcements-cards-grid');
+  container.innerHTML = '<div class="empty-state">Loading notices & popup announcements...</div>';
 
   try {
-    const res = await apiFetch('/api/admin/featured', {
-      method: 'POST',
-      body: JSON.stringify(featured)
-    });
-
-    if (res.success) {
-      showToast('🎉 Spotlight Hero banner updated on Mobile & Web App!', 'success', 4000);
-      await loadContent();
-      renderHeroEditor();
-    }
+    const res = await authFetch(`${API_BASE}/api/admin/notifications`);
+    const data = await res.json();
+    state.announcements = data.notifications || [];
+    renderAnnouncements(state.announcements);
   } catch (err) {
-    showToast(`Failed to update hero: ${err.message}`, 'error');
+    container.innerHTML = '<div class="empty-state error-text">Failed to load notices.</div>';
   }
 }
 
-// Hero Catalog Picker
-function pickHeroFromCatalog() {
-  document.getElementById('picker-search-input').value = '';
-  filterPickerList('');
-  document.getElementById('picker-modal').classList.add('active');
-}
-
-function closeCatalogPicker() {
-  document.getElementById('picker-modal').classList.remove('active');
-}
-
-function filterPickerList(q) {
-  const query = q.toLowerCase();
-  const list = document.getElementById('picker-items-list');
-
-  const all = [
-    ...(state.content.series || []).map(s => ({ ...s, itemType: 'Series' })),
-    ...(state.content.movies || []).map(m => ({ ...m, itemType: 'Movie' }))
-  ];
-
-  const matched = all.filter(item => {
-    return !query || (item.title && item.title.toLowerCase().includes(query));
-  }).slice(0, 30);
-
-  if (matched.length === 0) {
-    list.innerHTML = '<p class="text-muted p-3">No matching titles.</p>';
+function renderAnnouncements(list) {
+  const container = document.getElementById('announcements-cards-grid');
+  if (!list || list.length === 0) {
+    container.innerHTML = '<div class="empty-state"><p>No notices created yet.</p><button class="btn-primary" onclick="openAddNotificationModal()"><i class="fa-solid fa-plus"></i> Create Notice</button></div>';
     return;
   }
 
-  list.innerHTML = matched.map(item => {
-    return `
-      <div class="picker-item" onclick='selectPickerItem(${JSON.stringify(item).replace(/'/g, "\\'")})'>
-        <div class="picker-item-left">
-          <img src="${item.poster || ''}" alt="">
-          <div>
-            <strong>${item.title}</strong>
-            <small class="d-block text-muted">${item.year || '2026'} • ${item.itemType} • ★ ${item.rating || '8.5'}</small>
-          </div>
-        </div>
-        <button class="btn-sm btn-primary">Select as Hero</button>
-      </div>
-    `;
-  }).join('');
-}
-
-function selectPickerItem(item) {
-  document.getElementById('hero-title').value = item.title || '';
-  document.getElementById('hero-year').value = item.year || '2026';
-  document.getElementById('hero-badge-left').value = item.badgeLeft || 'Trending';
-  document.getElementById('hero-badge-right').value = item.badgeRight || item.industry || 'Exclusive';
-  document.getElementById('hero-rating').value = item.rating || '9.0';
-  document.getElementById('hero-category').value = item.category || 'Featured';
-  document.getElementById('hero-cover').value = item.backdrop || item.cover || item.poster || '';
-  document.getElementById('hero-poster').value = item.poster || '';
-  document.getElementById('hero-stream-url').value = item.streamUrl || '';
-  document.getElementById('hero-description').value = item.description || '';
-
-  updateHeroMockup(item);
-  closeCatalogPicker();
-  showToast(`Selected "${item.title}" for Hero Spotlight. Click "Save Spotlight Banner" to publish!`, 'info', 4000);
-}
-
-// ============================================================
-// TAB 7: UPCOMING RELEASES
-// ============================================================
-async function loadUpcoming() {
-  try {
-    const data = await apiFetch('/api/admin/upcoming');
-    state.upcoming.filtered = data.upcoming || [];
-    renderUpcomingTable();
-  } catch (err) {
-    console.error('Failed to load upcoming:', err);
-  }
-}
-
-function filterUpcomingTable(query) {
-  const q = (query || '').toLowerCase();
-  state.upcoming.filtered = (state.content.upcoming || []).filter(u => {
-    return !q || (u.title && u.title.toLowerCase().includes(q)) || (u.genre && u.genre.toLowerCase().includes(q));
-  });
-  renderUpcomingTable();
-}
-
-function renderUpcomingTable() {
-  const tbody = document.getElementById('upcoming-tbody');
-  const count = document.getElementById('upcoming-count-info');
-  const items = state.upcoming.filtered;
-
-  count.innerText = `${items.length} upcoming releases`;
-
-  if (items.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="7" class="empty-table-cell">
-          <p>No upcoming releases registered. Click "+ Add Upcoming Release".</p>
-        </td>
-      </tr>
-    `;
-    return;
-  }
-
-  tbody.innerHTML = items.map(u => {
-    const poster = u.poster || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80';
-    const release = `${u.releaseMonth || 'TBA'} ${u.releaseDay || ''}`;
+  container.innerHTML = list.map(item => {
+    const likes = item.likes || 0;
+    const dislikes = item.dislikes || 0;
+    const commentsCount = Array.isArray(item.comments) ? item.comments.length : 0;
+    const isPopup = !!item.isPopup;
 
     return `
-      <tr>
-        <td><img src="${poster}" class="thumb-img" alt=""></td>
-        <td><strong>${u.title}</strong></td>
-        <td><span class="badge-pill bg-cyan">${release}</span></td>
-        <td>${u.year || '2026'}</td>
-        <td>${u.genre || 'Drama'}</td>
-        <td><strong class="text-amber">★ ${u.rating || '8.0'}</strong></td>
-        <td class="text-right">
-          <div class="action-btn-group">
-            <button class="btn-table" onclick="editUpcomingById('${u.id}')" title="Edit">
-              <i class="fa-solid fa-pen"></i>
-            </button>
-            <button class="btn-table danger-btn" onclick="deleteUpcoming('${u.id}', '${u.title}')" title="Delete">
-              <i class="fa-solid fa-trash"></i>
-            </button>
+      <div class="card glass announcement-card">
+        ${item.image ? `<img class="announcement-banner" src="${item.image}" alt="">` : ''}
+        <div class="announcement-body">
+          <div class="announcement-tags-row">
+            <span class="tag-pill">${escapeHtml(item.tag || 'NOTICE')}</span>
+            <span class="announcement-date">${formatDate(item.createdAt)}</span>
           </div>
-        </td>
-      </tr>
-    `;
-  }).join('');
-}
+          <h4>${escapeHtml(item.title)}</h4>
+          <p>${escapeHtml(item.message)}</p>
 
-function openUpcomingModal() {
-  document.getElementById('upcoming-modal-title').innerHTML = '<i class="fa-solid fa-calendar-days text-cyan"></i> Add Upcoming Release';
-  document.getElementById('upcoming-form').reset();
-  document.getElementById('upc-id').value = '';
-  document.getElementById('upcoming-modal').classList.add('active');
-}
-
-function editUpcomingById(id) {
-  const u = (state.content.upcoming || []).find(item => item.id === id);
-  if (!u) return;
-
-  document.getElementById('upcoming-modal-title').innerHTML = '<i class="fa-solid fa-pen text-cyan"></i> Edit Upcoming Release';
-  document.getElementById('upc-id').value = u.id || '';
-  document.getElementById('upc-title').value = u.title || '';
-  document.getElementById('upc-year').value = u.year || '2026';
-  document.getElementById('upc-genre').value = u.genre || '';
-  document.getElementById('upc-month').value = u.releaseMonth || '';
-  document.getElementById('upc-day').value = u.releaseDay || '';
-  document.getElementById('upc-poster').value = u.poster || '';
-  document.getElementById('upc-description').value = u.description || '';
-
-  document.getElementById('upcoming-modal').classList.add('active');
-}
-
-function closeUpcomingModal() {
-  document.getElementById('upcoming-modal').classList.remove('active');
-}
-
-async function handleUpcomingSubmit(e) {
-  e.preventDefault();
-  const id = document.getElementById('upc-id').value;
-  const title = document.getElementById('upc-title').value.trim();
-
-  const item = {
-    id: id || undefined,
-    title,
-    year: document.getElementById('upc-year').value.trim(),
-    genre: document.getElementById('upc-genre').value.trim(),
-    releaseMonth: document.getElementById('upc-month').value.trim(),
-    releaseDay: document.getElementById('upc-day').value.trim(),
-    poster: document.getElementById('upc-poster').value.trim(),
-    description: document.getElementById('upc-description').value.trim()
-  };
-
-  try {
-    const res = await apiFetch('/api/admin/upcoming', {
-      method: 'POST',
-      body: JSON.stringify(item)
-    });
-
-    if (res.success) {
-      showToast(`Saved upcoming "${title}"!`, 'success');
-      closeUpcomingModal();
-      await loadUpcoming();
-      await loadContent();
-    }
-  } catch (err) {
-    showToast(`Failed to save upcoming: ${err.message}`, 'error');
-  }
-}
-
-async function deleteUpcoming(id, title) {
-  if (!confirm(`Delete upcoming release "${title}"?`)) return;
-
-  try {
-    await apiFetch(`/api/admin/upcoming/${id}`, { method: 'DELETE' });
-    showToast(`Deleted upcoming release`, 'success');
-    await loadUpcoming();
-    await loadContent();
-  } catch (err) {
-    showToast(`Failed to delete: ${err.message}`, 'error');
-  }
-}
-
-// ============================================================
-// TAB 8: ANNOUNCEMENTS & NOTIFICATIONS
-// ============================================================
-function renderNotificationsList() {
-  const container = document.getElementById('notifications-list');
-  const notifs = state.notifications || [];
-
-  if (notifs.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <i class="fa-solid fa-bullhorn"></i>
-        <h3>No announcements active</h3>
-        <p>Create an announcement on the left to push to all FOBS TV users.</p>
-      </div>
-    `;
-    return;
-  }
-
-  container.innerHTML = notifs.map(n => {
-    const commentsCount = Array.isArray(n.comments) ? n.comments.length : 0;
-    const isPopup = n.isPopup !== false;
-    const popupBadge = isPopup
-      ? `<span class="badge-status success" style="font-size: 11px; padding: 2px 8px; margin-left: 6px;"><i class="fa-solid fa-window-maximize"></i> App Popup Active</span>`
-      : `<span class="badge-status muted" style="font-size: 11px; padding: 2px 8px; margin-left: 6px;"><i class="fa-solid fa-bell-slash"></i> In-App List Only</span>`;
-
-    return `
-      <div class="notif-card glass" style="margin-bottom: 12px; padding: 16px; border-radius: 12px;">
-        <div class="notif-main" style="flex: 1;">
-          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
-            <span class="notif-badge" style="background: rgba(0, 242, 254, 0.15); color: #00f2fe; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;">${n.tag || 'Notice'}</span>
-            ${popupBadge}
-            <small class="text-muted" style="margin-left: auto;">${n.time || (n.createdAt ? new Date(n.createdAt).toLocaleDateString() : 'Active')}</small>
-          </div>
-          <h4 style="margin: 0 0 6px 0; font-size: 15px; color: #fff;">${n.title}</h4>
-          ${n.image ? `<div style="margin-bottom: 8px;"><img src="${n.image}" alt="Banner" style="max-height: 100px; border-radius: 8px; max-width: 100%; object-fit: cover;"></div>` : ''}
-          <p style="margin: 0 0 10px 0; color: #94a3b8; font-size: 13px; line-height: 1.5;">${n.message}</p>
-          <div style="display: flex; align-items: center; gap: 14px; font-size: 13px;">
-            <span style="color: #00f2fe; display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-thumbs-up"></i> ${n.likes || 0}</span>
-            <span style="color: #f43f5e; display: flex; align-items: center; gap: 4px;"><i class="fa-solid fa-thumbs-down"></i> ${n.dislikes || 0}</span>
-            <span style="color: #c084fc; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="openAdminNotifCommentsModal('${n.id}')">
-              <i class="fa-solid fa-comments"></i> ${commentsCount} comments
+          <div class="announcement-reactions-row">
+            <span class="reaction-pill-badge like"><i class="fa-solid fa-thumbs-up"></i> ${likes} Likes</span>
+            <span class="reaction-pill-badge dislike"><i class="fa-solid fa-thumbs-down"></i> ${dislikes} Dislikes</span>
+            <span class="reaction-pill-badge comments" onclick="openNoticeCommentsModal('${item.id}')" title="Click to view all comments">
+              <i class="fa-solid fa-comments"></i> ${commentsCount} Comments
             </span>
           </div>
         </div>
-        <div style="display: flex; flex-direction: column; gap: 6px; justify-content: center; margin-left: 12px;">
-          <button class="btn-table" onclick="toggleNotifPopup('${n.id}')" title="${isPopup ? 'Disable Popup' : 'Enable Popup'}" style="background: ${isPopup ? 'rgba(0, 242, 254, 0.2)' : 'rgba(255,255,255,0.06)'}; color: ${isPopup ? '#00f2fe' : '#94a3b8'};">
-            <i class="fa-solid fa-window-maximize"></i>
-          </button>
-          <button class="btn-table" onclick="openAdminNotifCommentsModal('${n.id}')" title="View Comments" style="color: #c084fc;">
-            <i class="fa-solid fa-comments"></i>
-          </button>
-          <button class="btn-table danger-btn" onclick="deleteNotification('${n.id}')" title="Delete Announcement">
-            <i class="fa-solid fa-trash"></i>
-          </button>
+
+        <div class="announcement-actions-bar">
+          <label class="toggle-control" title="Toggle active popup on v3.1.5 app launch">
+            <input type="checkbox" ${isPopup ? 'checked' : ''} onchange="toggleNoticePopup('${item.id}')">
+            <span class="toggle-slider"></span>
+            <span class="toggle-label" style="font-size: 11.5px;">${isPopup ? 'Active Popup' : 'Normal Notice'}</span>
+          </label>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn-action-icon edit" onclick="openEditNotificationModal('${item.id}')" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button class="btn-action-icon danger" onclick="confirmDeleteNotification('${item.id}', '${escapeHtml(item.title)}')"><i class="fa-solid fa-trash-can"></i></button>
+          </div>
         </div>
       </div>
     `;
   }).join('');
 }
 
-async function handleAnnouncementSubmit(e) {
+function openAddNotificationModal() {
+  document.getElementById('notification-form').reset();
+  document.getElementById('notif-id').value = '';
+  document.getElementById('notif-tag').value = 'NOTICE';
+  document.getElementById('notif-ispopup').checked = true;
+  document.getElementById('notification-modal-title').innerHTML = '<i class="fa-solid fa-bullhorn"></i> Create In-App Popup Notice';
+  openModal('notification-modal');
+}
+
+function openEditNotificationModal(id) {
+  const notif = state.announcements.find(n => n.id === id);
+  if (!notif) return;
+
+  document.getElementById('notif-id').value = notif.id;
+  document.getElementById('notif-title').value = notif.title || '';
+  document.getElementById('notif-tag').value = notif.tag || 'NOTICE';
+  document.getElementById('notif-message').value = notif.message || '';
+  document.getElementById('notif-image').value = notif.image || '';
+  document.getElementById('notif-linktext').value = notif.linkText || '';
+  document.getElementById('notif-link').value = notif.link || '';
+  document.getElementById('notif-ispopup').checked = !!notif.isPopup;
+
+  document.getElementById('notification-modal-title').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Popup Notice';
+  openModal('notification-modal');
+}
+
+async function handleNotificationSubmit(e) {
   e.preventDefault();
-  const title = document.getElementById('notif-title').value.trim();
-  const message = document.getElementById('notif-message').value.trim();
-  const tag = document.getElementById('notif-tag').value;
-  const isPopup = document.getElementById('notif-popup') ? document.getElementById('notif-popup').checked : true;
-  const image = document.getElementById('notif-image') ? document.getElementById('notif-image').value.trim() : '';
-  const link = document.getElementById('notif-link') ? document.getElementById('notif-link').value.trim() : '';
-  const linkText = document.getElementById('notif-link-text') ? document.getElementById('notif-link-text').value.trim() : '';
+  const id = document.getElementById('notif-id').value.trim();
+  const payload = {
+    id: id || `notif_${Date.now()}`,
+    title: document.getElementById('notif-title').value.trim(),
+    tag: document.getElementById('notif-tag').value.trim() || 'NOTICE',
+    message: document.getElementById('notif-message').value.trim(),
+    image: document.getElementById('notif-image').value.trim(),
+    linkText: document.getElementById('notif-linktext').value.trim(),
+    link: document.getElementById('notif-link').value.trim(),
+    isPopup: document.getElementById('notif-ispopup').checked,
+    active: true
+  };
 
   try {
-    const res = await apiFetch('/api/admin/notifications', {
+    const res = await authFetch(`${API_BASE}/api/admin/notifications`, {
       method: 'POST',
-      body: JSON.stringify({ title, message, tag, isPopup, image, link, linkText, time: 'Just now' })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
-
-    if (res.success) {
-      showToast('🎉 Broadcasted announcement & notice to all app users!', 'success');
-      document.getElementById('announcement-form').reset();
-      if (document.getElementById('notif-popup')) document.getElementById('notif-popup').checked = true;
-      await loadNotifications();
-      renderNotificationsList();
+    const data = await res.json();
+    if (data.success) {
+      closeModal('notification-modal');
+      showToast('Notice published successfully! Pop-up status updated.');
+      loadAnnouncements();
+      loadDashboardData();
+    } else {
+      showToast(data.error || 'Failed to save notice', 'error');
     }
   } catch (err) {
-    showToast(`Failed to broadcast: ${err.message}`, 'error');
+    showToast(err.message, 'error');
   }
 }
 
-async function toggleNotifPopup(id) {
+async function toggleNoticePopup(id) {
   try {
-    const res = await apiFetch(`/api/admin/notifications/${id}/toggle-popup`, { method: 'PATCH' });
-    if (res.success) {
-      showToast(`Popup mode ${res.isPopup ? 'enabled' : 'disabled'} for announcement`, 'success');
-      await loadNotifications();
-      renderNotificationsList();
+    const res = await authFetch(`${API_BASE}/api/admin/notifications/${id}/toggle-popup`, { method: 'PATCH' });
+    const data = await res.json();
+    if (data.success) {
+      showToast(`Popup notice status: ${data.isPopup ? 'Active on App Launch' : 'Disabled'}`);
+      loadAnnouncements();
+      loadDashboardData();
     }
   } catch (err) {
-    showToast(`Failed to toggle popup: ${err.message}`, 'error');
+    showToast(err.message, 'error');
   }
 }
 
-let activeAdminCommentsNotifId = null;
-
-async function openAdminNotifCommentsModal(id) {
-  activeAdminCommentsNotifId = id;
-  const modal = document.getElementById('admin-comments-modal');
-  const listEl = document.getElementById('admin-comments-list');
-  const titleEl = document.getElementById('admin-comments-title');
-  if (!modal || !listEl) return;
-
-  const notif = (state.notifications || []).find(n => n.id === id);
-  if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-comments text-cyan"></i> Comments for "${notif ? notif.title : 'Announcement'}"`;
-
-  listEl.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> Loading comments...</div>';
-  modal.style.display = 'flex';
-
+async function confirmDeleteNotification(id, title) {
+  if (!confirm(`Are you sure you want to delete notice "${title}"?`)) return;
   try {
-    const res = await apiFetch(`/api/announcements/${id}/comments`);
-    const comments = res.comments || [];
-    if (comments.length === 0) {
-      listEl.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 30px;">No comments posted on this announcement yet.</div>';
-      return;
+    const res = await authFetch(`${API_BASE}/api/admin/notifications/${id}`, { method: 'DELETE' });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Notice deleted.');
+      loadAnnouncements();
+      loadDashboardData();
     }
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+// NOTICE COMMENTS & ENGAGEMENT MODAL
+function openNoticeCommentsModal(notifId) {
+  const notif = state.announcements.find(n => n.id === notifId);
+  if (!notif) return;
+
+  const likes = notif.likes || 0;
+  const dislikes = notif.dislikes || 0;
+  const total = likes + dislikes;
+  const ratio = total > 0 ? Math.round((likes / total) * 100) : 50;
+
+  document.getElementById('notice-comments-modal-title').innerHTML = `<i class="fa-solid fa-comments"></i> ${escapeHtml(notif.title)}`;
+  document.getElementById('modal-likes-count').innerText = likes;
+  document.getElementById('modal-dislikes-count').innerText = dislikes;
+  document.getElementById('modal-ratio-fill').style.width = `${ratio}%`;
+  document.getElementById('modal-ratio-text').innerText = `${ratio}% Positive Reactions`;
+
+  const comments = notif.comments || [];
+  document.getElementById('modal-comments-count').innerText = comments.length;
+  const listEl = document.getElementById('modal-comments-list');
+
+  if (comments.length === 0) {
+    listEl.innerHTML = '<div class="empty-state-mini">No comments posted on this announcement yet.</div>';
+  } else {
     listEl.innerHTML = comments.map(c => `
-      <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 10px;">
-        <img src="${c.avatar || 'assets/fobs_logo.png'}" alt="${c.name}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0;" onerror="this.src='assets/fobs_logo.png'">
-        <div style="flex: 1; min-width: 0;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-            <strong style="color: #fff; font-size: 13px;">${c.name}</strong>
-            <small style="color: #64748b; font-size: 11px;">${new Date(c.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</small>
+      <div class="comment-item">
+        <img class="comment-avatar" src="${c.avatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(c.name || 'User')}" alt="">
+        <div class="comment-content">
+          <div style="display: flex; justify-content: space-between;">
+            <div>
+              <span class="comment-user-name">${escapeHtml(c.name || 'Viewer')}</span>
+              <span class="comment-time">${formatDate(c.createdAt)}</span>
+            </div>
+            <button class="btn-action-icon danger" onclick="deleteNoticeComment('${notif.id}', '${c.id}')" title="Delete comment"><i class="fa-solid fa-trash-can"></i></button>
           </div>
-          <p style="margin: 0; color: #cbd5e1; font-size: 13px; line-height: 1.4;">${c.text}</p>
+          <div class="comment-text">${escapeHtml(c.text)}</div>
         </div>
-        <button class="btn-table danger-btn" onclick="deleteAdminNotifComment('${id}', '${c.id}')" title="Delete comment" style="padding: 4px 8px; font-size: 11px;">
-          <i class="fa-solid fa-trash"></i>
-        </button>
       </div>
     `).join('');
-  } catch (err) {
-    listEl.innerHTML = `<div style="color: #f43f5e; padding: 20px;">Failed to load comments: ${err.message}</div>`;
   }
+
+  openModal('notice-comments-modal');
 }
 
-function closeAdminCommentsModal() {
-  const modal = document.getElementById('admin-comments-modal');
-  if (modal) modal.style.display = 'none';
-  activeAdminCommentsNotifId = null;
-}
-
-async function deleteAdminNotifComment(notifId, commentId) {
+async function deleteNoticeComment(notifId, commentId) {
   if (!confirm('Delete this user comment?')) return;
   try {
-    await apiFetch(`/api/admin/notifications/${notifId}/comments/${commentId}`, { method: 'DELETE' });
-    showToast('Comment deleted', 'success');
-    await loadNotifications();
-    renderNotificationsList();
-    openAdminNotifCommentsModal(notifId);
+    const res = await authFetch(`${API_BASE}/api/admin/notifications/${notifId}/comments/${commentId}`, { method: 'DELETE' });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Comment deleted.');
+      // Refresh local cache and UI
+      await loadAnnouncements();
+      openNoticeCommentsModal(notifId);
+    }
   } catch (err) {
-    showToast(`Failed to delete comment: ${err.message}`, 'error');
+    showToast(err.message, 'error');
   }
 }
 
-async function deleteNotification(id) {
-  if (!confirm('Delete this announcement?')) return;
+// ============================================================
+// MEDIA COMMENTS & COMMUNITY REVIEWS
+// ============================================================
+
+async function loadAllComments() {
+  const tbody = document.getElementById('comments-tbody');
+  tbody.innerHTML = '<tr><td colspan="6" class="text-center">Loading user comments stream...</td></tr>';
 
   try {
-    await apiFetch(`/api/admin/notifications/${id}`, { method: 'DELETE' });
-    showToast('Deleted announcement', 'success');
-    await loadNotifications();
-    renderNotificationsList();
+    const res = await authFetch(`${API_BASE}/api/admin/comments?limit=150`);
+    const data = await res.json();
+    state.comments = data.comments || [];
+    renderCommentsTable(state.comments);
   } catch (err) {
-    showToast(`Failed to delete: ${err.message}`, 'error');
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center error-text">Failed to load comments feed.</td></tr>';
   }
 }
 
-// ============================================================
-// TAB 9: REQUESTS & REPORTS
-// ============================================================
-function switchFeedbackSubtab(tab, btn) {
-  document.querySelectorAll('.feedback-subtabs .subtab-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-
-  document.getElementById('subtab-reports-pane').style.display = tab === 'reports' ? 'block' : 'none';
-  document.getElementById('subtab-requests-pane').style.display = tab === 'requests' ? 'block' : 'none';
-}
-
-function renderReportsAndRequests() {
-  renderReportsTable();
-  renderRequestsTable();
-}
-
-function renderReportsTable() {
-  const tbody = document.getElementById('reports-tbody');
-  const reports = state.reports || [];
-
-  if (reports.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="6" class="empty-table-cell">
-          <i class="fa-solid fa-shield-heart text-emerald"></i>
-          <p>No broken video reports! Streaming streams are playing smoothly.</p>
-        </td>
-      </tr>
-    `;
+function renderCommentsTable(commentsList) {
+  const tbody = document.getElementById('comments-tbody');
+  if (!commentsList || commentsList.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center" style="padding: 30px; color: #64748b;">No comments found.</td></tr>';
     return;
   }
 
-  tbody.innerHTML = reports.map(r => {
-    const title = r.contentTitle || r.title || 'Reported Stream';
-    const stream = r.streamUrl || r.stream_url || '';
-    const dateStr = r.createdAt ? new Date(r.createdAt).toLocaleString() : 'Recently';
+  tbody.innerHTML = commentsList.map(c => `
+    <tr>
+      <td>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <img class="comment-avatar" src="${c.userAvatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(c.userName || 'User')}" alt="">
+          <div>
+            <div class="table-title-bold" style="font-size: 13.5px;">${escapeHtml(c.userName || 'Viewer')}</div>
+            <div class="table-meta-sub">${escapeHtml(c.userId || 'Guest')}</div>
+          </div>
+        </div>
+      </td>
+      <td>
+        <strong style="color: var(--primary); font-size: 13px;">${escapeHtml(c.mediaTitle || 'Media')}</strong>
+      </td>
+      <td style="max-width: 380px;">
+        <div style="font-size: 13px; color: #e2e8f0; line-height: 1.4;">${escapeHtml(c.text)}</div>
+        ${c.imageUrl ? `<a href="${c.imageUrl}" target="_blank"><img class="comment-photo-preview" src="${c.imageUrl}" alt="Attached photo"></a>` : ''}
+      </td>
+      <td><span style="color: #38bdf8; font-weight: 700;"><i class="fa-solid fa-thumbs-up"></i> ${c.likes || 0}</span></td>
+      <td style="font-size: 12px; color: #94a3b8;">${formatDate(c.createdAt)}</td>
+      <td class="row-actions">
+        <button class="btn-action-icon danger" onclick="confirmDeleteMediaComment('${c.mediaId}', '${c.id}')" title="Delete comment"><i class="fa-solid fa-trash-can"></i></button>
+      </td>
+    </tr>
+  `).join('');
+}
 
+function filterCommentsTable() {
+  const query = document.getElementById('comments-search-input').value.trim().toLowerCase();
+  const filtered = state.comments.filter(c => {
+    return !query || (c.userName && c.userName.toLowerCase().includes(query)) ||
+      (c.text && c.text.toLowerCase().includes(query)) ||
+      (c.mediaTitle && c.mediaTitle.toLowerCase().includes(query));
+  });
+  renderCommentsTable(filtered);
+}
+
+async function confirmDeleteMediaComment(mediaId, commentId) {
+  if (!confirm('Are you sure you want to delete this comment?')) return;
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/comments/${mediaId}/${commentId}`, { method: 'DELETE' });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Comment removed.');
+      loadAllComments();
+    }
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+// ============================================================
+// v3.1.5 APP USERS & DEVICES
+// ============================================================
+
+async function loadUsers() {
+  const tbody = document.getElementById('users-tbody');
+  tbody.innerHTML = '<tr><td colspan="7" class="text-center">Loading v3.1.5 users and devices...</td></tr>';
+
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/users`);
+    const data = await res.json();
+    state.users = data.devices || [];
+
+    document.getElementById('users-stat-devices').innerText = data.totalDevices || 0;
+    document.getElementById('users-stat-online').innerText = state.users.filter(u => u.status === 'Online Now').length;
+    document.getElementById('users-stat-registered').innerText = data.totalRegistered || 0;
+
+    renderUsersTable(state.users);
+  } catch (err) {
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center error-text">Failed to load v3.1.5 users.</td></tr>';
+  }
+}
+
+function renderUsersTable(usersList) {
+  const tbody = document.getElementById('users-tbody');
+  if (!usersList || usersList.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding: 30px; color: #64748b;">No v3.1.5 devices recorded yet. Launch the APK to connect.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = usersList.map(u => {
+    const isOnline = u.status === 'Online Now';
     return `
       <tr>
-        <td><strong>${title}</strong></td>
-        <td><code>${r.contentId || r.mediaId || '--'}</code></td>
-        <td><span class="text-rose font-weight-bold">${r.issueType || r.reason || 'Playback issue'}</span><br><small class="text-muted">${r.details || ''}</small></td>
-        <td><small class="text-muted">${r.userIp || 'App Viewer'}<br>${dateStr}</small></td>
-        <td><span class="badge-status ${r.resolved ? 'success' : 'alert'}">${r.resolved ? 'Resolved' : 'Pending'}</span></td>
-        <td class="text-right">
-          <div class="action-btn-group">
-            ${stream ? `
-              <button class="btn-table play-btn" onclick="previewVideoStream('${title}', '${stream}')" title="Test Stream">
-                <i class="fa-solid fa-play"></i>
-              </button>
-            ` : ''}
-            <button class="btn-table" onclick="resolveReport('${r.id}')" title="Mark Resolved">
-              <i class="fa-solid fa-check"></i>
-            </button>
-            <button class="btn-table danger-btn" onclick="deleteReport('${r.id}')" title="Delete Report">
-              <i class="fa-solid fa-trash"></i>
-            </button>
-          </div>
+        <td>
+          <div class="table-title-bold" style="font-size: 13.5px;">${escapeHtml(u.name || 'Mobile App User')}</div>
+          <div class="table-meta-sub" style="font-family: var(--font-mono);">${escapeHtml(u.id || u.deviceId || '')}</div>
+        </td>
+        <td>${escapeHtml(u.email || 'Android')}</td>
+        <td><span class="badge-tag quality" style="font-weight: 700;">v${escapeHtml(u.appVersion || '3.1.5')}</span></td>
+        <td><i class="fa-brands fa-android" style="color: #34d399;"></i> ${escapeHtml(u.platform || 'Android')}</td>
+        <td>${formatDate(u.createdAt)}</td>
+        <td>${formatTimeAgo(u.lastActive)}</td>
+        <td>
+          <span class="badge-tag" style="background: ${isOnline ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255,255,255,0.06)'}; color: ${isOnline ? '#34d399' : '#94a3b8'};">
+            ${isOnline ? '<i class="fa-solid fa-circle" style="font-size: 7px; color: #10b981;"></i> Online Now' : 'Active'}
+          </span>
         </td>
       </tr>
     `;
   }).join('');
 }
 
-async function resolveReport(id) {
+function filterUsersTable() {
+  const query = document.getElementById('users-search-input').value.trim().toLowerCase();
+  const filtered = state.users.filter(u => {
+    return !query || (u.name && u.name.toLowerCase().includes(query)) ||
+      (u.id && u.id.toLowerCase().includes(query)) ||
+      (u.email && u.email.toLowerCase().includes(query));
+  });
+  renderUsersTable(filtered);
+}
+
+async function purgeOldVersions() {
+  if (!confirm('This will purge all legacy user sessions and devices older than v3.1.5. Continue?')) return;
   try {
-    await apiFetch(`/api/admin/reports/${id}/resolve`, { method: 'POST' });
-    showToast('Report marked as resolved', 'success');
-    await loadReportsAndRequests();
-    renderReportsTable();
+    const res = await authFetch(`${API_BASE}/api/admin/users/purge-old`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ version: '3.1.5' })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast(`Purged older records. Kept ${data.keptDevices} v3.1.5 devices.`);
+      loadUsers();
+      loadDashboardData();
+    }
   } catch (err) {
-    showToast(`Error: ${err.message}`, 'error');
+    showToast(err.message, 'error');
   }
 }
 
-async function deleteReport(id) {
-  try {
-    await apiFetch(`/api/admin/reports/${id}`, { method: 'DELETE' });
-    showToast('Deleted report', 'success');
-    await loadReportsAndRequests();
-    renderReportsTable();
-  } catch (err) {
-    showToast(`Error: ${err.message}`, 'error');
-  }
-}
+// ============================================================
+// USER REQUESTS & PRE-BOOKINGS
+// ============================================================
 
-function renderRequestsTable() {
+async function loadRequests() {
   const tbody = document.getElementById('requests-tbody');
-  const requests = state.requests || [];
+  tbody.innerHTML = '<tr><td colspan="7" class="text-center">Loading requests...</td></tr>';
 
-  if (requests.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="6" class="empty-table-cell">
-          <p>No user content requests pending.</p>
-        </td>
-      </tr>
-    `;
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/requests`);
+    const data = await res.json();
+    state.requests = data.requests || [];
+    renderRequestsTable(state.requests);
+  } catch (err) {
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center error-text">Failed to load requests.</td></tr>';
+  }
+}
+
+function renderRequestsTable(list) {
+  const tbody = document.getElementById('requests-tbody');
+  if (!list || list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding: 30px; color: #64748b;">No user requests found.</td></tr>';
     return;
   }
 
-  tbody.innerHTML = requests.map(req => {
-    const title = req.title || req.query || 'Untitled';
-    const dateStr = req.createdAt ? new Date(req.createdAt).toLocaleDateString() : 'Recently';
+  tbody.innerHTML = list.map(r => {
+    const status = (r.status || 'pending').toLowerCase();
+    let badgeColor = 'rgba(245, 158, 11, 0.15); color: #fbbf24;';
+    if (status === 'added') badgeColor = 'rgba(16, 185, 129, 0.15); color: #34d399;';
+    if (status === 'rejected') badgeColor = 'rgba(239, 68, 68, 0.15); color: #f87171;';
 
     return `
       <tr>
-        <td><strong>${title}</strong></td>
-        <td><span class="badge-pill bg-cyan">${req.type || 'Movie/Series'}</span></td>
-        <td><small class="text-muted">${req.userIp || '--'}</small></td>
-        <td><small class="text-muted">${dateStr}</small></td>
-        <td><span class="badge-status ${req.status === 'added' ? 'success' : 'alert'}">${req.status || 'Pending'}</span></td>
-        <td class="text-right">
-          <div class="action-btn-group">
-            <button class="btn-sm btn-primary" onclick="searchRequestInMovieBox('${title.replace(/'/g, "\\'")}')" title="Find & Import from MovieBox">
-              <i class="fa-solid fa-magnifying-glass"></i> Search
-            </button>
-            <button class="btn-table" onclick="updateRequestStatus('${req.id}', 'added')" title="Mark Added">
-              <i class="fa-solid fa-check"></i>
-            </button>
-          </div>
+        <td class="table-title-bold">${escapeHtml(r.title || 'Untitled')}</td>
+        <td><span class="badge-tag">${escapeHtml(r.type || 'Media')}</span></td>
+        <td>
+          <div>${escapeHtml(r.userName || 'Anonymous')}</div>
+          <div class="table-meta-sub">${escapeHtml(r.userEmail || '')}</div>
+        </td>
+        <td style="max-width: 250px; font-size: 12.5px; color: #cbd5e1;">${escapeHtml(r.note || r.comment || '')}</td>
+        <td>${formatDate(r.createdAt)}</td>
+        <td><span class="badge-tag" style="background: ${badgeColor}">${escapeHtml(status.toUpperCase())}</span></td>
+        <td class="row-actions">
+          <button class="btn-action-icon" style="color: #34d399;" onclick="updateRequestStatus('${r.id}', 'added')" title="Mark Added"><i class="fa-solid fa-check"></i></button>
+          <button class="btn-action-icon edit" onclick="updateRequestStatus('${r.id}', 'approved')" title="Approve"><i class="fa-solid fa-thumbs-up"></i></button>
+          <button class="btn-action-icon danger" onclick="updateRequestStatus('${r.id}', 'rejected')" title="Reject"><i class="fa-solid fa-xmark"></i></button>
         </td>
       </tr>
     `;
   }).join('');
-}
-
-function searchRequestInMovieBox(query) {
-  switchTab('moviebox');
-  document.getElementById('mb-search-input').value = query;
-  searchMovieBox(query);
 }
 
 async function updateRequestStatus(id, status) {
   try {
-    await apiFetch(`/api/admin/requests/${id}/status`, {
+    const res = await authFetch(`${API_BASE}/api/admin/requests/${id}/status`, {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status })
     });
-    showToast(`Request marked as ${status}`, 'success');
-    await loadReportsAndRequests();
-    renderRequestsTable();
-  } catch (err) {
-    showToast(`Error: ${err.message}`, 'error');
-  }
-}
-
-// ============================================================
-// TAB 10: APP USERS & AUDIENCE
-// ============================================================
-let usersPollInterval = null;
-
-function startUsersLivePolling() {
-  stopUsersLivePolling();
-  usersPollInterval = setInterval(() => {
-    if (state.activeTab === 'users') {
-      loadUsers(true);
+    const data = await res.json();
+    if (data.success) {
+      showToast(`Request marked as ${status}`);
+      loadRequests();
+      loadDashboardData();
     }
-  }, 15000);
-}
-
-function stopUsersLivePolling() {
-  if (usersPollInterval) {
-    clearInterval(usersPollInterval);
-    usersPollInterval = null;
+  } catch (err) {
+    showToast(err.message, 'error');
   }
 }
 
-async function loadUsers(silent = false) {
+// ============================================================
+// MOVIEBOX 1-CLICK IMPORTER
+// ============================================================
+
+async function loadMovieBoxRecent(filter, btnEl) {
+  if (btnEl) {
+    document.querySelectorAll('.importer-tab-btn').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
+  }
+
+  const grid = document.getElementById('importer-results-grid');
+  grid.innerHTML = '<div class="empty-state">Loading MovieBox feeds...</div>';
+
   try {
-    const data = await apiFetch('/api/admin/users');
-    state.usersData = data;
-    const list = data.users || data.devices || [];
-
-    const onlineCount = list.filter(u => {
-      if (u.status === 'Online Now') return true;
-      if (u.lastActive) {
-        return (Date.now() - new Date(u.lastActive).getTime()) < 15 * 60 * 1000;
-      }
-      return false;
-    }).length;
-
-    const regCount = data.totalRegistered !== undefined ? data.totalRegistered : list.filter(u => u.type === 'Registered Member').length;
-    const totalCount = data.totalUsers !== undefined ? data.totalUsers : list.length;
-
-    const elTotal = document.getElementById('stat-total-devices');
-    const elOnline = document.getElementById('stat-latest-devices');
-    const elReg = document.getElementById('stat-outdated-devices');
-    const elBadge = document.getElementById('badge-users-count');
-
-    if (elTotal) elTotal.innerText = totalCount.toLocaleString();
-    if (elOnline) elOnline.innerText = onlineCount.toLocaleString();
-    if (elReg) elReg.innerText = regCount.toLocaleString();
-    if (elBadge) elBadge.innerText = totalCount.toLocaleString();
-
-    state.usersList = list;
-    filterUsersTable();
+    const res = await authFetch(`${API_BASE}/api/admin/moviebox/recent?filter=${encodeURIComponent(filter)}`);
+    const data = await res.json();
+    const list = data.items || [];
+    renderImporterGrid(list);
   } catch (err) {
-    if (!silent) console.error('Failed to load users:', err);
+    grid.innerHTML = '<div class="empty-state error-text">Failed to fetch MovieBox items.</div>';
   }
 }
 
-function filterUsersTable(query = null) {
-  if (!state.usersList) state.usersList = state.usersData?.users || state.usersData?.devices || [];
-  const q = (query !== null ? query : (document.getElementById('users-search')?.value || '')).toLowerCase().trim();
-  const typeFilter = document.getElementById('users-type-filter')?.value || '';
+async function searchMovieBox() {
+  const query = document.getElementById('importer-search-input').value.trim();
+  if (!query) return;
 
-  const filtered = state.usersList.filter(u => {
-    const nameStr = (u.name || '').toLowerCase();
-    const idStr = String(u.id || u.deviceId || '').toLowerCase();
-    const emailStr = (u.email || '').toLowerCase();
-    const ipStr = (u.ip || '').toLowerCase();
+  const grid = document.getElementById('importer-results-grid');
+  grid.innerHTML = `<div class="empty-state">Searching global library for "${escapeHtml(query)}"...</div>`;
 
-    const matchQ = !q || nameStr.includes(q) || idStr.includes(q) || emailStr.includes(q) || ipStr.includes(q);
-
-    let matchType = true;
-    if (typeFilter === 'Online') {
-      matchType = u.status === 'Online Now' || (u.lastActive && (Date.now() - new Date(u.lastActive).getTime() < 15 * 60 * 1000));
-    } else if (typeFilter) {
-      matchType = u.type === typeFilter;
-    }
-
-    return matchQ && matchType;
-  });
-
-  const countDisplay = document.getElementById('users-count-display');
-  if (countDisplay) countDisplay.innerText = `${filtered.length} viewers`;
-
-  renderUsersTable(filtered);
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/moviebox/search?q=${encodeURIComponent(query)}`);
+    const data = await res.json();
+    const list = data.items || [];
+    renderImporterGrid(list);
+  } catch (err) {
+    grid.innerHTML = '<div class="empty-state error-text">Search failed.</div>';
+  }
 }
 
-function renderUsersTable(users) {
-  const tbody = document.getElementById('users-tbody');
-  if (!tbody) return;
-  if (!users || users.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="6" class="empty-table-cell">
-          <p><i class="fa-solid fa-users-slash text-muted mb-2" style="font-size: 2rem;"></i><br>No active users or devices found matching criteria.</p>
-        </td>
-      </tr>
-    `;
+function renderImporterGrid(items) {
+  const grid = document.getElementById('importer-results-grid');
+  if (!items || items.length === 0) {
+    grid.innerHTML = '<div class="empty-state">No matching titles found in MovieBox feed.</div>';
     return;
   }
 
-  tbody.innerHTML = users.slice(0, 100).map(u => {
-    const isOnline = u.status === 'Online Now' || (u.lastActive && (Date.now() - new Date(u.lastActive).getTime() < 15 * 60 * 1000));
-    const lastActiveStr = u.lastActive ? new Date(u.lastActive).toLocaleString() : 'Recently';
-    const isGoogle = u.type === 'Registered Member' || u.platform === 'Google Account';
-    const displayEmail = (u.email || u.ip || 'Local/Cloud').replace(/^IP:\s*/, '');
-    const cleanId = u.id || u.deviceId || '--';
-    const shortId = cleanId.length > 20 ? cleanId.substring(0, 16) + '...' : cleanId;
-
-    return `
-      <tr>
-        <td>
-          <div class="user-row-meta">
-            ${u.picture ? `<img src="${u.picture}" class="user-avatar-mini" alt="" onerror="this.onerror=null;this.src='';this.className='hidden';">` : `<div class="user-avatar-mini placeholder"><i class="fa-solid ${isGoogle ? 'fa-user' : 'fa-mobile-screen'}"></i></div>`}
-            <div>
-              <strong>${u.name || (isGoogle ? 'Member' : 'App Viewer')}</strong>
-              <small class="d-block text-muted">ID: <code title="${cleanId}">${shortId}</code></small>
-            </div>
-          </div>
-        </td>
-        <td>
-          <span class="badge-pill ${isGoogle ? 'bg-amber' : 'bg-cyan'}">
-            <i class="fa-solid ${isGoogle ? 'fa-id-badge' : 'fa-mobile-screen'}"></i> ${u.type || 'App Viewer'}
-          </span>
-        </td>
-        <td>
-          <span><i class="fa-brands ${isGoogle ? 'fa-google text-amber' : 'fa-android text-emerald'}"></i> ${u.platform || 'Android'}</span>
-        </td>
-        <td>
-          <code class="text-cyan">${displayEmail}</code>
-        </td>
-        <td>
-          <span class="badge-status ${isOnline ? 'success pulse' : 'alert'}">
-            <i class="fa-solid ${isOnline ? 'fa-circle-dot' : 'fa-circle'}"></i> ${isOnline ? 'Online Now' : 'Active'}
-          </span>
-        </td>
-        <td>
-          <small class="text-muted">${lastActiveStr}</small>
-        </td>
-      </tr>
-    `;
-  }).join('');
+  grid.innerHTML = items.map(item => `
+    <div class="importer-card">
+      <img src="${item.poster || 'assets/fobs_logo.png'}" onerror="this.src='assets/fobs_logo.png'" alt="">
+      <div class="importer-card-info">
+        <div class="importer-card-title">${escapeHtml(item.title)}</div>
+        <div class="importer-card-sub">${item.year || '2025'} • ${escapeHtml(item.type || 'Movie')}</div>
+        <button class="btn-primary importer-card-btn" onclick="importFromMovieBox('${item.id}', '${item.type || 'movie'}', this)">
+          <i class="fa-solid fa-cloud-arrow-down"></i> Import to FOBS TV
+        </button>
+      </div>
+    </div>
+  `).join('');
 }
 
-async function purgeOutdatedDevices() {
-  if (!confirm('Purge all inactive device records?')) return;
-
-  try {
-    const res = await apiFetch('/api/admin/users/purge-old', { method: 'POST' });
-    showToast(res.message || 'Inactive devices purged', 'success');
-    loadUsers();
-  } catch (err) {
-    showToast(`Failed: ${err.message}`, 'error');
+async function importFromMovieBox(id, type, btnEl) {
+  if (btnEl) {
+    btnEl.disabled = true;
+    btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Importing...';
   }
-}
-
-// ============================================================
-// TAB 11: APP SETTINGS & REMOTE UPDATE
-// ============================================================
-async function handleAppSettingsSubmit(e) {
-  e.preventDefault();
-  showToast('Saving remote app settings...', 'info', 2000);
-
-  const appUpdate = {
-    latestVersionName: document.getElementById('up-version-name').value.trim(),
-    latestVersionCode: parseInt(document.getElementById('up-version-code').value, 10) || 9,
-    minVersionCode: parseInt(document.getElementById('up-min-code').value, 10) || 9,
-    fileSize: document.getElementById('up-file-size').value.trim(),
-    forceUpdate: document.getElementById('up-force-toggle').checked,
-    enabled: document.getElementById('up-enabled-toggle').checked,
-    title: document.getElementById('up-title').value.trim(),
-    message: document.getElementById('up-message').value.trim(),
-    releaseNotes: document.getElementById('up-release-notes').value.split('\n').map(s => s.trim()).filter(Boolean),
-    downloadUrl: document.getElementById('up-download-url').value.trim(),
-    fallbackUrl: document.getElementById('up-fallback-url').value.trim()
-  };
-
-  const settings = {
-    appName: document.getElementById('st-app-name').value.trim(),
-    appTagline: document.getElementById('st-tagline').value.trim(),
-    marqueeNotice: document.getElementById('st-marquee').value.trim(),
-    supportTelegram: document.getElementById('st-telegram').value.trim(),
-    supportWhatsApp: document.getElementById('st-whatsapp').value.trim(),
-    maintenanceMode: document.getElementById('st-maintenance-toggle').checked,
-    maintenanceMessage: document.getElementById('st-maintenance-msg').value.trim()
-  };
 
   try {
-    const res = await apiFetch('/api/admin/app-settings', {
+    const res = await authFetch(`${API_BASE}/api/admin/moviebox/import`, {
       method: 'POST',
-      body: JSON.stringify({ appUpdate, settings })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, type })
     });
-
-    if (res.success) {
-      showToast('🎉 App settings and update rules saved! Active for all mobile viewers.', 'success', 4000);
-      await loadAppSettings();
+    const data = await res.json();
+    if (data.success) {
+      if (btnEl) {
+        btnEl.innerHTML = '<i class="fa-solid fa-check"></i> Imported!';
+        btnEl.style.background = '#10b981';
+      }
+      showToast(`"${data.item?.title || 'Title'}" imported and permanently added!`);
+      loadDashboardData();
+    } else {
+      showToast(data.error || 'Import error', 'error');
+      if (btnEl) {
+        btnEl.disabled = false;
+        btnEl.innerText = 'Import to FOBS TV';
+      }
     }
   } catch (err) {
-    showToast(`Failed to save settings: ${err.message}`, 'error', 5000);
+    showToast(err.message, 'error');
+    if (btnEl) {
+      btnEl.disabled = false;
+      btnEl.innerText = 'Import to FOBS TV';
+    }
   }
 }
 
 // ============================================================
-// TAB 12: DEPLOYMENT & SYSTEM
+// v3.1.5 APP CONTROL & REMOTE CONFIG
 // ============================================================
-async function triggerVpsDeploy() {
-  const btn = document.getElementById('btn-run-deploy');
-  const term = document.getElementById('deploy-terminal');
-  const log = document.getElementById('deploy-log');
 
-  if (!confirm('Trigger automated Git Pull & PM2 reload on live VPS (187.127.114.52)?')) return;
+async function loadAppSettings() {
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/app-settings`);
+    const data = await res.json();
+    const update = data.appUpdate || {};
 
-  term.style.display = 'block';
-  log.innerText = 'Connecting to VPS deployment webhook (187.127.114.52)...\nExecuting git fetch origin main && git reset --hard origin/main...';
-  if (btn) btn.disabled = true;
+    document.getElementById('cfg-version-name').value = update.latestVersion || 'v3.1.5';
+    document.getElementById('cfg-version-code').value = update.latestVersionCode || 13;
+    document.getElementById('cfg-download-url').value = update.downloadUrl || 'https://fobs-apk-download.vercel.app/FOBS%20TV%20v3.1.5.apk';
+    document.getElementById('cfg-release-notes').value = Array.isArray(update.releaseNotes) ? update.releaseNotes.join('\n') : (update.releaseNotes || '');
+    document.getElementById('cfg-force-update').checked = !!update.forceUpdate;
+    document.getElementById('cfg-update-enabled').checked = update.enabled !== false;
+  } catch (err) {
+    console.error('Error loading app settings:', err);
+  }
+}
+
+async function saveAppSettings(e) {
+  e.preventDefault();
+  const payload = {
+    appUpdate: {
+      latestVersion: document.getElementById('cfg-version-name').value.trim(),
+      latestVersionCode: parseInt(document.getElementById('cfg-version-code').value.trim(), 10) || 13,
+      minVersionCode: parseInt(document.getElementById('cfg-version-code').value.trim(), 10) || 13,
+      downloadUrl: document.getElementById('cfg-download-url').value.trim(),
+      releaseNotes: document.getElementById('cfg-release-notes').value.trim(),
+      forceUpdate: document.getElementById('cfg-force-update').checked,
+      enabled: document.getElementById('cfg-update-enabled').checked
+    }
+  };
 
   try {
-    const res = await apiFetch('/api/admin/deploy-vps', { method: 'POST' });
-    if (res.success) {
-      const out = res.data?.stdout || JSON.stringify(res.data, null, 2);
-      log.innerText = `✅ DEPLOY SUCCESSFUL!\n\n${out}\n\nPM2 reloaded and latest commit is live!`;
-      showToast('🚀 Live VPS deployed and restarted successfully!', 'success', 6000);
-    } else {
-      throw new Error(res.error || 'Deploy failed');
+    const res = await authFetch(`${API_BASE}/api/admin/app-settings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('v3.1.5 App Remote Configuration saved successfully!');
     }
   } catch (err) {
-    log.innerText = `❌ DEPLOY ERROR:\n${err.message}`;
-    showToast(`Deploy error: ${err.message}`, 'error', 6000);
-  } finally {
-    if (btn) btn.disabled = false;
+    showToast(err.message, 'error');
   }
 }
 
 async function triggerRepairStreams() {
-  showToast('Starting 1-Click stream repair & token rebuild across entire catalog...', 'info', 5000);
+  showToast('Initiating playback stream auto-repair...', 'info');
   try {
-    const res = await apiFetch('/api/admin/repair-streams', { method: 'POST' });
-    showToast(res.message || 'Stream renovation complete! All expired tokens healed.', 'success', 6000);
-  } catch (err) {
-    showToast(`Repair error: ${err.message}`, 'error', 5000);
+    const res = await authFetch(`${API_BASE}/api/admin/repair-streams`, { method: 'POST' });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Playback streams repaired and renewed!');
+    }
+  } catch (e) {
+    showToast(e.message, 'error');
   }
 }
 
 async function triggerRefreshCdn() {
-  showToast('Refreshing AWS CloudFront signed CDN cookies...', 'info', 3000);
+  showToast('Renewing CDN tokens...', 'info');
   try {
-    const res = await apiFetch('/api/admin/refresh-cdn');
-    showToast(res.message || '15-Minute CDN tokens refreshed successfully!', 'success', 4000);
-  } catch (err) {
-    showToast(`Refresh error: ${err.message}`, 'error', 4000);
+    const res = await authFetch(`${API_BASE}/api/admin/refresh-cdn`);
+    const data = await res.json();
+    showToast(`CDN renewed: ${data.refreshedMovies || 0} movies, ${data.refreshedEpisodes || 0} episodes`);
+  } catch (e) {
+    showToast(e.message, 'error');
   }
 }
 
-function downloadBackup() {
-  showToast('Preparing catalog backup snapshot for download...', 'info', 2000);
-  const tokenParam = state.token ? `?admin_token=${encodeURIComponent(state.token)}` : '';
-  window.open(`/api/admin/backup/download${tokenParam}`, '_blank');
-}
+async function triggerVpsDeploy() {
+  if (!confirm('Deploy latest updates to VPS server? This will pull Git code, preserve all custom content, and reload services.')) return;
+  showToast('Deploying to VPS...', 'info');
 
-function handleRestoreFile(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = async (evt) => {
-    try {
-      const json = JSON.parse(evt.target.result);
-      if (!confirm(`Restore catalog from backup file containing ${json.movies?.length || 0} movies and ${json.series?.length || 0} series?`)) {
-        e.target.value = '';
-        return;
-      }
-
-      showToast('Restoring database catalog from JSON...', 'info', 4000);
-      const res = await apiFetch('/api/admin/backup/restore', {
-        method: 'POST',
-        body: JSON.stringify(json)
-      });
-
-      if (res.success) {
-        showToast(`🎉 Catalog restored successfully! (${res.stats?.movies} movies, ${res.stats?.series} series)`, 'success', 6000);
-        await refreshAll();
-      }
-    } catch (err) {
-      showToast(`Invalid backup file: ${err.message}`, 'error', 6000);
-    } finally {
-      e.target.value = '';
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/deploy-vps`, { method: 'POST' });
+    const data = await res.json();
+    if (data.success) {
+      showToast('VPS Deploy completed successfully!');
+    } else {
+      showToast(data.error || 'Deploy failed', 'error');
     }
-  };
-  reader.readAsText(file);
-}
-
-// ============================================================
-// IN-ADMIN VIDEO PREVIEW PLAYER (HLS & HTML5)
-// ============================================================
-function previewVideoStream(title, streamUrl) {
-  if (!streamUrl) {
-    showToast('No stream URL available to preview', 'warning');
-    return;
-  }
-
-  const modal = document.getElementById('player-modal');
-  const playerTitle = document.getElementById('player-title');
-  const urlDisplay = document.getElementById('player-stream-url');
-  const video = document.getElementById('preview-video');
-  const badge = document.getElementById('player-status-badge');
-
-  playerTitle.innerHTML = `<i class="fa-solid fa-circle-play text-emerald"></i> Testing: ${title}`;
-  urlDisplay.innerText = streamUrl;
-  modal.classList.add('active');
-
-  // Destroy existing Hls instance if any
-  if (state.hlsInstance) {
-    state.hlsInstance.destroy();
-    state.hlsInstance = null;
-  }
-
-  // Check if HLS stream (.m3u8)
-  const isHls = streamUrl.includes('.m3u8') || streamUrl.includes('/hls');
-
-  if (isHls && Hls.isSupported()) {
-    const hls = new Hls({
-      enableWorker: true,
-      lowLatencyMode: true
-    });
-    hls.loadSource(streamUrl);
-    hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED, () => {
-      badge.className = 'badge-status success';
-      badge.innerHTML = '<i class="fa-solid fa-circle-check"></i> HLS Stream Loaded';
-      video.play().catch(() => {});
-    });
-    hls.on(Hls.Events.ERROR, (event, data) => {
-      if (data.fatal) {
-        badge.className = 'badge-status alert';
-        badge.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> HLS Fatal Error';
-      }
-    });
-    state.hlsInstance = hls;
-  } else {
-    // Native MP4 / Browser HLS playback
-    video.src = streamUrl;
-    video.play().catch(() => {});
-    badge.className = 'badge-status success';
-    badge.innerHTML = '<i class="fa-solid fa-circle-check"></i> Direct Stream Active';
+  } catch (e) {
+    showToast(e.message, 'error');
   }
 }
 
-function closeVideoPlayer() {
-  const modal = document.getElementById('player-modal');
-  const video = document.getElementById('preview-video');
-  if (video) {
-    video.pause();
-    video.src = '';
-  }
-  if (state.hlsInstance) {
-    state.hlsInstance.destroy();
-    state.hlsInstance = null;
-  }
-  modal.classList.remove('active');
+// ============================================================
+// MODAL & TOAST HELPERS
+// ============================================================
+
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
 }
 
-// ============================================================
-// STARTUP BOOTSTRAP
-// ============================================================
-window.addEventListener('DOMContentLoaded', () => {
-  setupNavigation();
-  setupEventListeners();
-  verifyAuth();
-});
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('active');
+}
+
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+
+  const toast = document.createElement('div');
+  toast.className = `toast-message ${type}`;
+
+  let icon = 'fa-check';
+  if (type === 'error') icon = 'fa-triangle-exclamation';
+  if (type === 'info') icon = 'fa-info-circle';
+
+  toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${escapeHtml(message)}</span>`;
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(10px)';
+    setTimeout(() => toast.remove(), 250);
+  }, 3500);
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function formatDate(isoStr) {
+  if (!isoStr) return '--';
+  try {
+    return new Date(isoStr).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+  } catch (e) {
+    return isoStr;
+  }
+}
+
+function formatTimeAgo(isoStr) {
+  if (!isoStr) return '--';
+  try {
+    const diff = Date.now() - new Date(isoStr).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return 'Just now';
+    if (mins < 60) return `${mins}m ago`;
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    return `${days}d ago`;
+  } catch (e) {
+    return '--';
+  }
+}
+
+function previewImage(elId, url) {
+  const img = document.getElementById(elId);
+  if (img && url) img.src = url;
+}

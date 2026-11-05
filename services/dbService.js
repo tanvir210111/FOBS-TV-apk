@@ -61,9 +61,8 @@ function getDevicesMap() {
 
 function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android', appVersion = '' }) {
   if (!deviceId || String(deviceId).length < 3) return;
-  // Strictly filter out older version devices: only users on current version 3.1.3 are tracked
-  const isV313 = appVersion === '3.1.3' || appVersion === 'v3.1.3' || (typeof appVersion === 'string' && appVersion.includes('3.1.3'));
-  if (!isV313 && appVersion) return; // ignore older version devices
+  // Strictly track current v3.1.5 devices
+  const isV315 = !appVersion || appVersion === '3.1.5' || appVersion === 'v3.1.5' || (typeof appVersion === 'string' && appVersion.includes('3.1.5'));
   try {
     const devices = getDevicesMap();
     const cleanId = String(deviceId).trim();
@@ -72,7 +71,7 @@ function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android',
     if (ip && (!existing.ip || existing.ip === '127.0.0.1')) existing.ip = ip;
     if (userAgent && !existing.userAgent) existing.userAgent = userAgent;
     existing.platform = platform || existing.platform || 'Android App';
-    existing.appVersion = '3.1.3';
+    existing.appVersion = isV315 ? '3.1.5' : (appVersion || '3.1.5');
     devices[cleanId] = existing;
     
     fs.writeFileSync(DEVICES_LOCAL_FILE, JSON.stringify(devices, null, 2), 'utf8');
@@ -88,16 +87,16 @@ async function getUserStats() {
   const rawRegisteredUsers = Object.values(usersMap);
   const rawDevices = Object.values(devicesMap);
 
-  // ONLY include current version (v3.1.3) devices in admin panel
-  const devices = rawDevices.filter(d => (d.appVersion || '').includes('3.1.3'));
+  // ONLY include current version (v3.1.5) devices in admin panel
+  const devices = rawDevices.filter(d => (d.appVersion || '').includes('3.1.5') || !d.appVersion);
   // Registered users (admin or current version users)
-  const registeredUsers = rawRegisteredUsers.filter(u => (u.appVersion || '').includes('3.1.3') || u.email === 'tanvir210111@gmail.com' || (u.name && u.name.toLowerCase().includes('admin')));
+  const registeredUsers = rawRegisteredUsers.filter(u => (u.appVersion || '').includes('3.1.5') || u.email === 'tanvir210111@gmail.com' || (u.name && u.name.toLowerCase().includes('admin')) || !u.appVersion);
 
   const totalRegistered = registeredUsers.length;
   const totalDevices = devices.length;
   const totalUsers = Math.max(totalRegistered + totalDevices, totalDevices, totalRegistered, totalRegistered > 0 ? totalRegistered : 0);
 
-  // Combine registered Google users + active mobile app devices exactly as original
+  // Combine registered Google users + active mobile app devices
   const combinedList = [
     ...registeredUsers.map(u => {
       const isOnline = u.lastLogin && (Date.now() - new Date(u.lastLogin).getTime() < 15 * 60 * 1000);
@@ -108,7 +107,7 @@ async function getUserStats() {
         picture: u.picture || '',
         type: 'Registered Member',
         platform: 'Google Account',
-        appVersion: u.appVersion || '3.1.3',
+        appVersion: u.appVersion || '3.1.5',
         watchlistCount: Array.isArray(u.watchlist) ? u.watchlist.length : 0,
         historyCount: Array.isArray(u.history) ? u.history.length : 0,
         createdAt: u.createdAt || u.lastLogin || new Date().toISOString(),
@@ -126,7 +125,7 @@ async function getUserStats() {
         picture: '',
         type: 'App Installation',
         platform: d.platform || 'Android App',
-        appVersion: d.appVersion || '3.1.3',
+        appVersion: d.appVersion || '3.1.5',
         watchlistCount: 0,
         historyCount: 0,
         createdAt: d.firstSeen || d.lastActive || new Date().toISOString(),
@@ -138,7 +137,7 @@ async function getUserStats() {
 
   combinedList.sort((a, b) => new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime());
 
-  const compliantDevices = devices.filter(d => (d.appVersion || '').includes('3.1.3')).length;
+  const compliantDevices = devices.filter(d => (d.appVersion || '').includes('3.1.5')).length;
   const outdatedDevices = 0; // Older versions filtered out
 
   return {
@@ -928,6 +927,80 @@ async function likeComment(mediaId, commentId) {
   return { success: true, likes: updatedLikes };
 }
 
+async function getAllMediaComments(limit = 150) {
+  let allComments = [];
+
+  if (isMongoConnected && Comment) {
+    try {
+      const mongoDocs = await Comment.find().sort({ createdAt: -1 }).limit(limit).lean();
+      if (mongoDocs && mongoDocs.length > 0) {
+        allComments = mongoDocs.map(c => ({
+          id: c._id.toString(),
+          mediaId: c.mediaId,
+          userId: c.userId,
+          userName: c.userName,
+          userAvatar: c.userAvatar,
+          text: c.text,
+          imageUrl: c.imageUrl,
+          likes: c.likes || 0,
+          createdAt: c.createdAt
+        }));
+      }
+    } catch (e) {
+      console.warn('MongoDB get all comments error:', e.message);
+    }
+  }
+
+  // Also include local map comments
+  const localMap = getLocalCommentsMap();
+  for (const [mediaId, comments] of Object.entries(localMap)) {
+    if (Array.isArray(comments)) {
+      for (const c of comments) {
+        if (!allComments.some(x => String(x.id) === String(c.id))) {
+          allComments.push({
+            ...c,
+            mediaId
+          });
+        }
+      }
+    }
+  }
+
+  allComments.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+  return allComments.slice(0, limit);
+}
+
+async function deleteMediaComment(mediaId, commentId) {
+  if (!commentId) return { success: false, error: 'commentId required' };
+
+  if (isMongoConnected && Comment) {
+    try {
+      if (mongoose.Types.ObjectId.isValid(commentId)) {
+        await Comment.findByIdAndDelete(commentId);
+      }
+    } catch (e) {}
+  }
+
+  const localMap = getLocalCommentsMap();
+  let found = false;
+
+  if (mediaId && localMap[mediaId]) {
+    localMap[mediaId] = localMap[mediaId].filter(c => String(c.id) !== String(commentId));
+    found = true;
+  } else {
+    for (const mId of Object.keys(localMap)) {
+      if (Array.isArray(localMap[mId])) {
+        const origLen = localMap[mId].length;
+        localMap[mId] = localMap[mId].filter(c => String(c.id) !== String(commentId));
+        if (localMap[mId].length !== origLen) found = true;
+      }
+    }
+  }
+
+  saveLocalCommentsMap(localMap);
+  return { success: true };
+}
+
 
 // ----------------------------------------------------
 // VIDEO ISSUE REPORTS (MongoDB + Local Disk JSON)
@@ -1051,10 +1124,10 @@ async function deleteReport(reportId) {
 }
 
 /**
- * Purge all users and devices from older app versions, keeping ONLY v3.1.3 users
+ * Purge all users and devices from older app versions, keeping ONLY v3.1.5 users
  */
-async function purgeOldVersionUsers(targetVersion = '3.1.3') {
-  const v313Threshold = new Date('2026-11-03T00:00:00.000Z').getTime();
+async function purgeOldVersionUsers(targetVersion = '3.1.5') {
+  const v315Threshold = new Date('2026-11-04T00:00:00.000Z').getTime();
 
   let mongoDeleted = 0;
   if (isMongoConnected && User) {
@@ -1063,7 +1136,7 @@ async function purgeOldVersionUsers(targetVersion = '3.1.3') {
         $and: [
           { appVersion: { $ne: targetVersion } },
           { email: { $ne: 'tanvir210111@gmail.com' } },
-          { createdAt: { $lt: new Date(v313Threshold) } }
+          { createdAt: { $lt: new Date(v315Threshold) } }
         ]
       });
       mongoDeleted = deleteResult.deletedCount || 0;
@@ -1082,11 +1155,11 @@ async function purgeOldVersionUsers(targetVersion = '3.1.3') {
   let deletedUsers = 0;
 
   for (const [key, u] of Object.entries(usersMap)) {
-    const isV313 = (u.appVersion === targetVersion);
+    const isV315 = (u.appVersion === targetVersion);
     const isAdmin = (u.email === 'tanvir210111@gmail.com') || (u.name && u.name.toLowerCase().includes('admin'));
-    const isTodayPostRelease = u.createdAt && (new Date(u.createdAt).getTime() >= v313Threshold);
+    const isTodayPostRelease = u.createdAt && (new Date(u.createdAt).getTime() >= v315Threshold);
 
-    if (isV313 || isAdmin || isTodayPostRelease) {
+    if (isV315 || isAdmin || isTodayPostRelease) {
       u.appVersion = targetVersion;
       keptUsers[key] = u;
     } else {
@@ -1106,8 +1179,9 @@ async function purgeOldVersionUsers(targetVersion = '3.1.3') {
   let deletedDevices = 0;
 
   for (const [id, d] of Object.entries(devicesMap)) {
-    const isV313Device = (d.appVersion === targetVersion);
-    if (isV313Device) {
+    const isV315Device = (d.appVersion === targetVersion) || (!d.appVersion && new Date(d.lastActive || 0).getTime() >= v315Threshold);
+    if (isV315Device) {
+      d.appVersion = targetVersion;
       keptDevices[id] = d;
     } else {
       deletedDevices++;
@@ -1151,6 +1225,8 @@ module.exports = {
   getMediaBookings,
   recordMediaBooking,
   getMediaComments,
+  getAllMediaComments,
+  deleteMediaComment,
   addMediaComment,
   likeComment,
   saveReport,

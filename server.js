@@ -3171,6 +3171,39 @@ app.delete('/api/admin/notifications/:id/comments/:commentId', adminService.auth
   }
 });
 
+// Get all media user comments & reviews across app
+app.get('/api/admin/comments', adminService.authenticate, async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit, 10) || 150;
+    const comments = await dbService.getAllMediaComments(limit);
+    
+    // Attach media titles for convenient admin display
+    const content = adminService.readContent();
+    const mediaMap = new Map();
+    (content.movies || []).forEach(m => mediaMap.set(String(m.id), m.title));
+    (content.series || []).forEach(s => mediaMap.set(String(s.id), s.title));
+
+    const enriched = comments.map(c => ({
+      ...c,
+      mediaTitle: mediaMap.get(String(c.mediaId)) || c.mediaTitle || `Media #${c.mediaId}`
+    }));
+
+    res.json({ success: true, comments: enriched, total: enriched.length });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Delete media comment
+app.delete('/api/admin/comments/:mediaId/:commentId', adminService.authenticate, async (req, res) => {
+  try {
+    const result = await dbService.deleteMediaComment(req.params.mediaId, req.params.commentId);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 
 // Sync Series Episodes from MovieBox
 app.post('/api/admin/series/sync', adminService.authenticate, async (req, res) => {
@@ -3326,7 +3359,7 @@ app.all('/api/deploy', (req, res) => {
 
   const { exec } = require('child_process');
   console.log('🚀 Triggering automated git pull & PM2 restart...');
-  exec('git fetch origin main && git reset --hard origin/main && cp -f data/content.json data/content.backup.json && cp -f data/content.json data/content.local.json && node scripts/optimize_content_size.js', { cwd: __dirname }, (error, stdout, stderr) => {
+  exec('git fetch origin main && git reset --hard origin/main && node scripts/restore_custom_catalog.js && cp -f data/content.json data/content.backup.json && cp -f data/content.json data/content.local.json && node scripts/optimize_content_size.js && node scripts/restore_custom_catalog.js', { cwd: __dirname }, (error, stdout, stderr) => {
     if (error) {
       console.error('❌ Deploy execution error:', error.message);
       return res.status(500).json({ success: false, error: error.message, stderr, stdout });
