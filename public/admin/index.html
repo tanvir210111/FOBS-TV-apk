@@ -723,6 +723,16 @@
       </div>
       <form id="movie-form" onsubmit="handleMovieSubmit(event)">
         <input type="hidden" id="movie-id">
+        <input type="hidden" id="movie-subject-id">
+        <input type="hidden" id="movie-detail-path">
+
+        <!-- 1-Click Auto-Detect Bar -->
+        <div style="background: rgba(0, 242, 254, 0.08); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <i class="fa-solid fa-wand-magic-sparkles text-cyan" style="font-size: 18px;"></i>
+          <input type="text" id="m-autodetect-input" placeholder="Auto-detect from TMDb & MovieBox (title or subjectId)..." style="flex: 1; min-width: 220px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 9px 14px; border-radius: 8px; font-size: 13px;" onkeypress="if(event.key==='Enter'){event.preventDefault();triggerAutoDetectMovie();}">
+          <button type="button" class="btn-primary" onclick="triggerAutoDetectMovie()" style="padding: 9px 18px; font-size: 13px;"><i class="fa-solid fa-bolt"></i> Auto-Detect</button>
+        </div>
+
         <div class="form-row">
           <div class="form-group flex-2">
             <label>Movie Title *</label>
@@ -806,6 +816,16 @@
       </div>
       <form id="series-form" onsubmit="handleSeriesSubmit(event)">
         <input type="hidden" id="series-id">
+        <input type="hidden" id="series-subject-id">
+        <input type="hidden" id="series-detail-path">
+
+        <!-- 1-Click Auto-Detect Bar -->
+        <div style="background: rgba(0, 242, 254, 0.08); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <i class="fa-solid fa-wand-magic-sparkles text-cyan" style="font-size: 18px;"></i>
+          <input type="text" id="s-autodetect-input" placeholder="Auto-detect series, seasons & episodes from MovieBox (title or subjectId)..." style="flex: 1; min-width: 220px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 9px 14px; border-radius: 8px; font-size: 13px;" onkeypress="if(event.key==='Enter'){event.preventDefault();triggerAutoDetectSeries();}">
+          <button type="button" class="btn-primary" onclick="triggerAutoDetectSeries()" style="padding: 9px 18px; font-size: 13px;"><i class="fa-solid fa-bolt"></i> Auto-Detect</button>
+        </div>
+
         <div class="form-row">
           <div class="form-group flex-2">
             <label>Series Title *</label>
@@ -1050,6 +1070,126 @@
       <div class="modal-footer">
         <button type="button" class="btn-secondary" onclick="closeModal('notice-comments-modal')">Close</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: MOVIEBOX IMPORT & AUTO-DETECT ENGINE -->
+  <!-- ======================================================== -->
+  <div id="import-modal" class="modal-backdrop">
+    <div class="modal-card glass modal-lg">
+      <div class="modal-header">
+        <div>
+          <h3 id="import-modal-title"><i class="fa-solid fa-wand-magic-sparkles text-amber" style="color: #fbbf24;"></i> MovieBox 1-Click Import &amp; Auto-Detect</h3>
+          <p style="color: #94a3b8; font-size: 13px;">Auto-fetch full seasons, episodes, language dubs, category &amp; banner</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('import-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="import-form" onsubmit="handleImportSubmit(event)">
+        <input type="hidden" id="imp-subjectId">
+        <input type="hidden" id="imp-detailPath">
+        <input type="hidden" id="imp-poster">
+
+        <!-- SMART AUTO-DETECT STATUS BADGE -->
+        <div id="imp-status-box" style="background: rgba(0, 242, 254, 0.08); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 14px;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(0, 242, 254, 0.2); display: flex; align-items: center; justify-content: center; color: #00f2fe; font-size: 16px; flex-shrink: 0;">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <div style="flex: 1;">
+            <div style="font-weight: 700; font-size: 14px; color: #fff;">Smart Auto-Detect Engine</div>
+            <p id="imp-autodetect-status" style="margin: 2px 0 0; color: #94a3b8; font-size: 12.5px;">
+              <i class="fa-solid fa-spinner fa-spin"></i> Auto-detecting uploaded seasons, episodes, language &amp; categories...
+            </p>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <label><i class="fa-solid fa-heading"></i> Title in FOBS TV *</label>
+            <input type="text" id="imp-title" required placeholder="Title">
+          </div>
+          <div class="form-group flex-1">
+            <label><i class="fa-solid fa-calendar"></i> Release Year</label>
+            <input type="text" id="imp-year" placeholder="2026">
+          </div>
+          <div class="form-group flex-1">
+            <label><i class="fa-solid fa-star text-amber"></i> Rating</label>
+            <input type="text" id="imp-rating" placeholder="8.5">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label><i class="fa-solid fa-film"></i> Type</label>
+            <select id="imp-type" class="custom-select" onchange="toggleImportType(this.value)">
+              <option value="movie">Movie</option>
+              <option value="series">Series / TV Show</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label><i class="fa-solid fa-globe"></i> Industry</label>
+            <select id="imp-industry" class="custom-select">
+              <option value="Korean">Korean</option>
+              <option value="Hollywood">Hollywood</option>
+              <option value="Bollywood">Bollywood</option>
+              <option value="Tollywood">South Indian</option>
+              <option value="Chinese">Chinese</option>
+              <option value="Anime">Anime</option>
+              <option value="Turkish">Turkish</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label><i class="fa-solid fa-folder"></i> Category</label>
+            <input type="text" id="imp-category" placeholder="e.g. Korean Series, Hollywood Movies">
+          </div>
+        </div>
+
+        <!-- SERIES SEASONS AUTO-DETECT ROW -->
+        <div class="form-row" id="imp-series-row" style="display: none;">
+          <div class="form-group flex-2">
+            <label><i class="fa-solid fa-layer-group text-cyan"></i> Seasons to Import</label>
+            <select id="imp-season-mode" class="custom-select">
+              <option value="all">🌟 All Seasons (Auto-Detecting...)</option>
+            </select>
+          </div>
+          <div class="form-group flex-1">
+            <label><i class="fa-solid fa-list-ol"></i> Episodes Count</label>
+            <input type="number" id="imp-episodes" value="16" min="1">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-image"></i> Backdrop / Landscape Banner Picture URL (16:9)</label>
+          <input type="url" id="imp-cover" placeholder="https://image.tmdb.org/t/p/w1280/...">
+        </div>
+
+        <div class="form-row" style="margin-top: 10px;">
+          <label class="toggle-control" style="background: rgba(255,255,255,0.04); padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); flex: 1;">
+            <input type="checkbox" id="imp-ishindi">
+            <span class="toggle-slider"></span>
+            <div>
+              <strong style="color: #fff; font-size: 13.5px; display: block;">Hindi Dubbed Audio</strong>
+              <small style="color: #94a3b8; font-size: 12px;">Tag as Hindi audio stream</small>
+            </div>
+          </label>
+          <label class="toggle-control" style="background: rgba(255,255,255,0.04); padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); flex: 1;">
+            <input type="checkbox" id="imp-featured">
+            <span class="toggle-slider"></span>
+            <div>
+              <strong style="color: #fff; font-size: 13.5px; display: block;">Set as Hero Spotlight (Featured)</strong>
+              <small style="color: #94a3b8; font-size: 12px;">Show at top of app home screen</small>
+            </div>
+          </label>
+        </div>
+
+        <div class="modal-footer" style="margin-top: 24px;">
+          <button type="button" class="btn-secondary" onclick="closeModal('import-modal')">Cancel</button>
+          <button type="submit" id="btn-import-submit" class="btn-primary glow">
+            <i class="fa-solid fa-cloud-arrow-down"></i> Import &amp; Save Permanently to FOBS TV
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 

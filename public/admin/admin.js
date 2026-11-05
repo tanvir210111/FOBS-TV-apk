@@ -380,7 +380,8 @@ async function loadMovies() {
   try {
     const res = await authFetch(`${API_BASE}/api/admin/content`);
     const data = await res.json();
-    state.movies = data.movies || [];
+    const content = data.data ? { ...data, ...data.data } : data;
+    state.movies = content.movies || [];
     renderMoviesTable(state.movies);
   } catch (err) {
     tbody.innerHTML = '<tr><td colspan="7" class="text-center error-text">Failed to load movies.</td></tr>';
@@ -460,6 +461,42 @@ function openEditMovieModal(id) {
 
   document.getElementById('movie-modal-title').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Movie';
   openModal('movie-modal');
+}
+
+async function triggerAutoDetectMovie() {
+  const query = (document.getElementById('m-autodetect-input')?.value || document.getElementById('movie-title')?.value || '').trim();
+  if (!query) {
+    showToast('Enter a movie title or MovieBox subjectId to auto-detect', 'warning');
+    return;
+  }
+
+  showToast(`Auto-detecting movie "${query}" from TMDb & MovieBox...`, 'info', 2500);
+
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/auto-detect?q=${encodeURIComponent(query)}&type=movie`);
+    const data = await res.json();
+    if (!data.success || !data.data) throw new Error(data.error || 'No matching metadata found');
+    const d = data.data;
+
+    if (d.subjectId) document.getElementById('movie-subject-id').value = d.subjectId;
+    if (d.detailPath) document.getElementById('movie-detail-path').value = d.detailPath;
+    document.getElementById('movie-title').value = d.title || query;
+    document.getElementById('movie-year').value = d.year || '2026';
+    document.getElementById('movie-rating').value = d.rating || '8.5';
+    document.getElementById('movie-poster').value = d.poster || '';
+    document.getElementById('movie-backdrop').value = d.backdrop || d.poster || '';
+    document.getElementById('movie-genre').value = d.genre || 'Action, Thriller';
+    document.getElementById('movie-dub').value = d.isHindi ? 'Hindi Dubbed' : (d.dubLanguage || 'Original Audio');
+    document.getElementById('movie-overview').value = d.overview || '';
+    if (d.streamUrl) document.getElementById('movie-stream-url').value = d.streamUrl;
+
+    previewImage('movie-poster-preview', d.poster || '');
+    previewImage('movie-backdrop-preview', d.backdrop || d.poster || '');
+
+    showToast(`✨ Auto-detected: "${d.title}" (${d.year}) • ${d.industry} • ${d.isHindi ? 'Hindi Dubbed' : 'Original'}!`, 'success', 4000);
+  } catch (err) {
+    showToast(`Auto-detect error: ${err.message}`, 'error', 4000);
+  }
 }
 
 async function handleMovieSubmit(e) {
@@ -545,7 +582,8 @@ async function loadSeries() {
   try {
     const res = await authFetch(`${API_BASE}/api/admin/content`);
     const data = await res.json();
-    state.series = data.series || [];
+    const content = data.data ? { ...data, ...data.data } : data;
+    state.series = content.series || [];
     renderSeriesTable(state.series);
   } catch (err) {
     tbody.innerHTML = '<tr><td colspan="7" class="text-center error-text">Failed to load series.</td></tr>';
@@ -624,11 +662,56 @@ function openEditSeriesModal(id) {
   openModal('series-modal');
 }
 
+async function triggerAutoDetectSeries() {
+  const query = (document.getElementById('s-autodetect-input')?.value || document.getElementById('series-title')?.value || '').trim();
+  if (!query) {
+    showToast('Enter a series title or MovieBox subjectId to auto-detect', 'warning');
+    return;
+  }
+
+  showToast(`Auto-detecting series "${query}" from TMDb & MovieBox...`, 'info', 2500);
+
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/auto-detect?q=${encodeURIComponent(query)}&type=series`);
+    const data = await res.json();
+    if (!data.success || !data.data) throw new Error(data.error || 'No matching metadata found');
+    const d = data.data;
+
+    if (d.subjectId) document.getElementById('series-subject-id').value = d.subjectId;
+    if (d.detailPath) document.getElementById('series-detail-path').value = d.detailPath;
+    document.getElementById('series-title').value = d.title || query;
+    document.getElementById('series-year').value = d.year || '2026';
+    document.getElementById('series-rating').value = d.rating || '8.8';
+    document.getElementById('series-poster').value = d.poster || '';
+    document.getElementById('series-backdrop').value = d.backdrop || d.poster || '';
+    document.getElementById('series-genre').value = d.genre || 'Drama, Mystery';
+    document.getElementById('series-dub').value = d.isHindi ? 'Hindi Dubbed' : (d.dubLanguage || 'Korean / Original');
+    document.getElementById('series-overview').value = d.overview || '';
+
+    // Cache detected seasons & episodes so handleSeriesSubmit attaches them automatically!
+    if (Array.isArray(d.seasons) && d.seasons.length > 0) {
+      state.lastDetectedSeriesSeasons = d.seasons;
+    }
+
+    const seCount = d.seasons ? d.seasons.length : 1;
+    const epCount = d.totalEpisodes || (d.seasons ? d.seasons.reduce((sum, s) => sum + (s.episodes?.length || s.maxEp || 0), 0) : 16);
+
+    showToast(`✨ Auto-detected: "${d.title}" (${d.year}) • ${seCount} Season(s), ${epCount} Episodes • ${d.industry} (${d.isHindi ? 'Hindi Dubbed' : 'Original'})!`, 'success', 5000);
+  } catch (err) {
+    showToast(`Auto-detect error: ${err.message}`, 'error', 4000);
+  }
+}
+
 async function handleSeriesSubmit(e) {
   e.preventDefault();
   const id = document.getElementById('series-id').value.trim();
+  const subjectId = document.getElementById('series-subject-id')?.value.trim() || '';
+  const detailPath = document.getElementById('series-detail-path')?.value.trim() || '';
+
   const payload = {
-    id: id || `series_${Date.now()}`,
+    id: id || (subjectId ? `mb-s-${subjectId}` : `series_${Date.now()}`),
+    subjectId,
+    detailPath,
     title: document.getElementById('series-title').value.trim(),
     year: document.getElementById('series-year').value.trim() || '2025',
     rating: document.getElementById('series-rating').value.trim() || '8.5',
@@ -642,6 +725,14 @@ async function handleSeriesSubmit(e) {
     isCustom: true
   };
 
+  // If new series and seasons were detected via Auto-Detect, attach them automatically!
+  if (!id && state.lastDetectedSeriesSeasons && state.lastDetectedSeriesSeasons.length > 0) {
+    payload.seasons = state.lastDetectedSeriesSeasons;
+    payload.episodes = state.lastDetectedSeriesSeasons[0]?.episodes || [];
+    payload.seasonsCount = payload.seasons.length;
+    payload.episodesCount = payload.seasons.reduce((sum, s) => sum + (s.episodes?.length || s.maxEp || 0), 0);
+  }
+
   try {
     const res = await authFetch(`${API_BASE}/api/admin/series`, {
       method: 'POST',
@@ -650,6 +741,7 @@ async function handleSeriesSubmit(e) {
     });
     const data = await res.json();
     if (data.success) {
+      state.lastDetectedSeriesSeasons = null;
       closeModal('series-modal');
       showToast('Series saved permanently in catalog!');
       loadSeries();
@@ -850,7 +942,8 @@ async function loadChannels() {
   try {
     const res = await authFetch(`${API_BASE}/api/admin/content`);
     const data = await res.json();
-    state.channels = data.liveTv || [];
+    const content = data.data ? { ...data, ...data.data } : data;
+    state.channels = content.liveTv || [];
     renderChannelsTable(state.channels);
   } catch (err) {
     tbody.innerHTML = '<tr><td colspan="5" class="text-center error-text">Failed to load channels.</td></tr>';
@@ -1498,58 +1591,195 @@ async function searchMovieBox() {
 }
 
 function renderImporterGrid(items) {
+  state.lastMovieBoxItems = items || [];
   const grid = document.getElementById('importer-results-grid');
   if (!items || items.length === 0) {
     grid.innerHTML = '<div class="empty-state">No matching titles found in MovieBox feed.</div>';
     return;
   }
 
-  grid.innerHTML = items.map(item => `
-    <div class="importer-card">
+  grid.innerHTML = items.map((item, idx) => `
+    <div class="importer-card" onclick="openImportModalByIndex(${idx})" style="cursor: pointer;">
       <img src="${item.poster || 'assets/fobs_logo.png'}" onerror="this.src='assets/fobs_logo.png'" alt="">
       <div class="importer-card-info">
         <div class="importer-card-title">${escapeHtml(item.title)}</div>
-        <div class="importer-card-sub">${item.year || '2025'} • ${escapeHtml(item.type || 'Movie')}</div>
-        <button class="btn-primary importer-card-btn" onclick="importFromMovieBox('${item.id}', '${item.type || 'movie'}', this)">
-          <i class="fa-solid fa-cloud-arrow-down"></i> Import to FOBS TV
+        <div class="importer-card-sub">${item.year || '2025'} &bull; ${escapeHtml(item.type || 'Movie')}</div>
+        <button type="button" class="btn-primary importer-card-btn" onclick="event.stopPropagation(); openImportModalByIndex(${idx})">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> 1-Click Import
         </button>
       </div>
     </div>
   `).join('');
 }
 
-async function importFromMovieBox(id, type, btnEl) {
-  if (btnEl) {
-    btnEl.disabled = true;
-    btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Importing...';
+function openImportModalByIndex(idx) {
+  const item = state.lastMovieBoxItems?.[idx];
+  if (item) openImportModal(item);
+}
+
+function toggleImportType(type) {
+  const row = document.getElementById('imp-series-row');
+  if (row) row.style.display = (type === 'series') ? 'flex' : 'none';
+}
+
+async function openImportModal(item) {
+  const isSeries = item.type === 'series' || (item.category && item.category.toLowerCase().includes('series'));
+  const sId = String(item.subjectId || item.id || '');
+  const dPath = item.detailPath || '';
+
+  document.getElementById('imp-subjectId').value = sId;
+  document.getElementById('imp-detailPath').value = dPath;
+  document.getElementById('imp-poster').value = item.poster || '';
+  document.getElementById('imp-cover').value = item.backdrop || item.cover || item.poster || '';
+  document.getElementById('imp-title').value = item.title || '';
+  document.getElementById('imp-year').value = item.year || '2026';
+  document.getElementById('imp-rating').value = item.rating || '8.5';
+  document.getElementById('imp-type').value = isSeries ? 'series' : 'movie';
+  toggleImportType(isSeries ? 'series' : 'movie');
+
+  const seasonSel = document.getElementById('imp-season-mode');
+  if (seasonSel) {
+    seasonSel.innerHTML = '<option value="all">🌟 All Seasons (Auto-Detecting...)</option>';
   }
+
+  const tLower = (item.title || '').toLowerCase();
+  const isHindi = tLower.includes('[hindi]') || tLower.includes('hindi dubbed') || tLower.includes('hindi');
+  document.getElementById('imp-ishindi').checked = isHindi;
+  document.getElementById('imp-featured').checked = false;
+
+  const statusText = document.getElementById('imp-autodetect-status');
+  statusText.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #00f2fe;"></i> Querying MovieBox API: Auto-detecting uploaded seasons, episodes, language &amp; category...';
+
+  openModal('import-modal');
+
+  // Query MovieBox & auto-detect for exact episodes, seasons, audio, banner, and category
+  try {
+    let d = null;
+    try {
+      const data = await authFetch(`${API_BASE}/api/admin/moviebox/detail?subjectId=${encodeURIComponent(sId)}&detailPath=${encodeURIComponent(dPath)}`);
+      const res = await data.json();
+      if (res && res.success && res.detail) {
+        d = res.detail;
+      }
+    } catch (_) {}
+
+    // Fallback: TMDb + MovieBox auto-detect
+    if (!d || (isSeries && (!d.totalEpisodes || d.totalEpisodes <= 1))) {
+      try {
+        const autoRes = await authFetch(`${API_BASE}/api/admin/auto-detect?q=${encodeURIComponent(item.title || '')}&type=${isSeries ? 'series' : 'movie'}`);
+        const autoData = await autoRes.json();
+        if (autoData && autoData.success && autoData.data) {
+          const ad = autoData.data;
+          if (!d) {
+            d = ad;
+          } else if (ad.totalEpisodes && ad.totalEpisodes > (d.totalEpisodes || 1)) {
+            d.totalEpisodes = ad.totalEpisodes;
+            if (ad.seasons && ad.seasons.length > 0) d.seasons = ad.seasons;
+            if (ad.industry && (!d.industry || d.industry === 'Hollywood')) d.industry = ad.industry;
+            if (ad.category && (!d.category || d.category === 'Web Series')) d.category = ad.category;
+          }
+        }
+      } catch (_) {}
+    }
+
+    if (d) {
+      if (d.type) {
+        document.getElementById('imp-type').value = d.type;
+        toggleImportType(d.type);
+      }
+
+      if (seasonSel) {
+        seasonSel.innerHTML = '';
+        if (d.seasons && d.seasons.length > 0) {
+          const allOpt = document.createElement('option');
+          allOpt.value = 'all';
+          allOpt.textContent = `🌟 All Seasons (${d.seasons.length} Seasons • ${d.totalEpisodes || 16} Episodes Total)`;
+          seasonSel.appendChild(allOpt);
+
+          d.seasons.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = String(s.seasonNumber || s.se);
+            opt.textContent = `Season ${s.seasonNumber || s.se} (${s.episodesCount || s.maxEp || 0} Episodes)`;
+            seasonSel.appendChild(opt);
+          });
+        } else {
+          const detectedEp = d.totalEpisodes || (isSeries ? 16 : 1);
+          const opt = document.createElement('option');
+          opt.value = 'all';
+          opt.textContent = `🌟 Season 1 (${detectedEp} Episode${detectedEp > 1 ? 's' : ''})`;
+          seasonSel.appendChild(opt);
+        }
+      }
+
+      if (d.totalEpisodes) document.getElementById('imp-episodes').value = d.totalEpisodes;
+      if (d.year) document.getElementById('imp-year').value = d.year;
+      if (d.rating) document.getElementById('imp-rating').value = d.rating;
+      if (d.industry) document.getElementById('imp-industry').value = d.industry;
+      if (d.category) document.getElementById('imp-category').value = d.category;
+      if (typeof d.isHindi === 'boolean') document.getElementById('imp-ishindi').checked = d.isHindi;
+      if (d.cover) document.getElementById('imp-cover').value = d.cover;
+      if (d.backdrop && !document.getElementById('imp-cover').value) document.getElementById('imp-cover').value = d.backdrop;
+
+      if (d.seasons && d.seasons.length > 1) {
+        const breakdown = d.seasons.map(s => `S${s.seasonNumber || s.se}: ${s.episodesCount || s.maxEp} eps`).join(' • ');
+        statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald" style="color: #10b981;"></i> <strong>Auto-Detected:</strong> ${d.seasons.length} Seasons (${d.totalEpisodes || 16} Episodes Total) &bull; ${d.industry} (${d.category})<br><small style="color: #64748b;">${breakdown}</small>`;
+      } else {
+        const totalEpText = d.totalEpisodes || (isSeries ? 16 : 1);
+        statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald" style="color: #10b981;"></i> <strong>Auto-Detected:</strong> ${totalEpText} Episode(s) &bull; ${d.industry} (${d.category})`;
+      }
+    }
+  } catch (err) {
+    statusText.innerHTML = '<i class="fa-solid fa-circle-check text-emerald" style="color: #10b981;"></i> Auto-detect loaded standard metadata. Ready to import.';
+  }
+}
+
+async function handleImportSubmit(e) {
+  e.preventDefault();
+  const submitBtn = document.getElementById('btn-import-submit');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Importing & Saving...';
+  }
+
+  const payload = {
+    subjectId: document.getElementById('imp-subjectId').value.trim(),
+    detailPath: document.getElementById('imp-detailPath').value.trim(),
+    title: document.getElementById('imp-title').value.trim(),
+    year: document.getElementById('imp-year').value.trim() || '2026',
+    rating: document.getElementById('imp-rating').value.trim() || '8.5',
+    type: document.getElementById('imp-type').value,
+    industry: document.getElementById('imp-industry').value,
+    category: document.getElementById('imp-category').value.trim() || 'Hollywood Movies',
+    poster: document.getElementById('imp-poster').value.trim(),
+    cover: document.getElementById('imp-cover').value.trim(),
+    isHindi: document.getElementById('imp-ishindi').checked,
+    isFeatured: document.getElementById('imp-featured').checked,
+    seasonMode: document.getElementById('imp-season-mode')?.value || 'all',
+    episodesCount: parseInt(document.getElementById('imp-episodes')?.value, 10) || 16
+  };
 
   try {
     const res = await authFetch(`${API_BASE}/api/admin/moviebox/import`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, type })
+      body: JSON.stringify(payload)
     });
     const data = await res.json();
     if (data.success) {
-      if (btnEl) {
-        btnEl.innerHTML = '<i class="fa-solid fa-check"></i> Imported!';
-        btnEl.style.background = '#10b981';
-      }
-      showToast(`"${data.item?.title || 'Title'}" imported and permanently added!`);
+      closeModal('import-modal');
+      showToast(`✨ "${payload.title}" successfully imported and permanently added to catalog!`);
+      loadMovies();
+      loadSeries();
       loadDashboardData();
     } else {
-      showToast(data.error || 'Import error', 'error');
-      if (btnEl) {
-        btnEl.disabled = false;
-        btnEl.innerText = 'Import to FOBS TV';
-      }
+      showToast(data.error || 'Failed to import', 'error');
     }
   } catch (err) {
     showToast(err.message, 'error');
-    if (btnEl) {
-      btnEl.disabled = false;
-      btnEl.innerText = 'Import to FOBS TV';
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> Import &amp; Save Permanently to FOBS TV';
     }
   }
 }

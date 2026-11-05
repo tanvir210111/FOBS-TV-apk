@@ -2934,7 +2934,17 @@ app.post('/api/admin/users/purge-old', adminService.authenticate, async (req, re
 });
 
 app.get('/api/admin/content', adminService.authenticate, (req, res) => {
-  res.json(adminService.getContent());
+  const result = adminService.getContent();
+  const cData = result.data || {};
+  res.json({
+    success: true,
+    movies: cData.movies || [],
+    series: cData.series || [],
+    liveTv: cData.liveTv || [],
+    categories: cData.categories || [],
+    industries: cData.industries || [],
+    data: cData
+  });
 });
 
 // MovieBox Recent & Trending Live Feed & Importer
