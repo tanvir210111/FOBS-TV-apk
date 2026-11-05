@@ -180,6 +180,52 @@ function writeContent(content) {
     }
   } catch (e) {}
 
+  // Auto-sync custom/newly added movies and series to custom_catalog.local.json
+  try {
+    const custom = readCustomCatalog();
+    if (!Array.isArray(custom.movies)) custom.movies = [];
+    if (!Array.isArray(custom.series)) custom.series = [];
+    let customChanged = false;
+
+    if (Array.isArray(content.movies)) {
+      for (const m of content.movies) {
+        const isCustom = m.isCustom ||
+          (m.id && (String(m.id).startsWith('movie_') || String(m.id).startsWith('mb-m-') || String(m.id).startsWith('custom_')));
+        if (isCustom) {
+          const idx = custom.movies.findIndex(x => x.id === m.id || (x.title && m.title && x.title.trim().toLowerCase() === m.title.trim().toLowerCase()));
+          if (idx >= 0) {
+            custom.movies[idx] = { ...custom.movies[idx], ...m, isCustom: true };
+          } else {
+            custom.movies.unshift({ ...m, isCustom: true });
+          }
+          customChanged = true;
+        }
+      }
+    }
+
+    if (Array.isArray(content.series)) {
+      for (const s of content.series) {
+        const isCustom = s.isCustom ||
+          (s.id && (String(s.id).startsWith('series_') || String(s.id).startsWith('mb-s-') || String(s.id).startsWith('custom_')));
+        if (isCustom) {
+          const idx = custom.series.findIndex(x => x.id === s.id || (x.title && s.title && x.title.trim().toLowerCase() === s.title.trim().toLowerCase()));
+          if (idx >= 0) {
+            custom.series[idx] = { ...custom.series[idx], ...s, isCustom: true };
+          } else {
+            custom.series.unshift({ ...s, isCustom: true });
+          }
+          customChanged = true;
+        }
+      }
+    }
+
+    if (customChanged) {
+      writeCustomCatalog(custom);
+    }
+  } catch (e) {
+    console.warn('[writeContent] Custom catalog auto-sync warning:', e.message);
+  }
+
   try {
     // Write high-performance compact JSON to keep file size < 60MB and eliminate git/disk bloat
     const jsonStr = JSON.stringify(content);
@@ -1069,7 +1115,8 @@ class AdminService {
         ],
         captions: formattedCaptions,
         subtitles: formattedCaptions,
-        description: `${finalTitle} - Available in high definition on FOBS TV.`
+        description: `${finalTitle} - Available in high definition on FOBS TV.`,
+        isCustom: true
       };
 
       content.movies = (content.movies || []).filter(m => m.id !== newMovie.id && m.subjectId !== subjectId);
@@ -1077,6 +1124,14 @@ class AdminService {
       if (payload.isFeatured) {
         content.featured = { ...newMovie };
       }
+      try {
+        const custom = readCustomCatalog();
+        if (!Array.isArray(custom.movies)) custom.movies = [];
+        const cIdx = custom.movies.findIndex(m => m.id === newMovie.id || (m.title && m.title.trim().toLowerCase() === newMovie.title.trim().toLowerCase()));
+        if (cIdx >= 0) custom.movies[cIdx] = { ...custom.movies[cIdx], ...newMovie, isCustom: true };
+        else custom.movies.unshift(newMovie);
+        writeCustomCatalog(custom);
+      } catch(e) {}
       writeContent(content);
 
       return { success: true, item: newMovie };
@@ -1253,7 +1308,8 @@ class AdminService {
         views: 1250,
         seasons,
         episodes: firstSeason.episodes,
-        description: `${finalTitle} - ${durationStr} streaming in HD on FOBS TV.`
+        description: `${finalTitle} - ${durationStr} streaming in HD on FOBS TV.`,
+        isCustom: true
       };
 
       content.series = (content.series || []).filter(s => s.id !== newSeries.id && s.subjectId !== subjectId);
@@ -1261,6 +1317,14 @@ class AdminService {
       if (payload.isFeatured) {
         content.featured = { ...newSeries };
       }
+      try {
+        const custom = readCustomCatalog();
+        if (!Array.isArray(custom.series)) custom.series = [];
+        const cIdx = custom.series.findIndex(s => s.id === newSeries.id || (s.title && s.title.trim().toLowerCase() === newSeries.title.trim().toLowerCase()));
+        if (cIdx >= 0) custom.series[cIdx] = { ...custom.series[cIdx], ...newSeries, isCustom: true };
+        else custom.series.unshift(newSeries);
+        writeCustomCatalog(custom);
+      } catch(e) {}
       writeContent(content);
 
       return { success: true, item: newSeries };
@@ -1335,6 +1399,7 @@ class AdminService {
     movie.releaseDate = movie.releaseDate || (movie.year ? (movie.year + '-10-25') : now.split('T')[0]);
     movie.badgeLeft = movie.badgeLeft || 'Trending';
     movie.views = movie.views !== undefined ? parseInt(movie.views, 10) : 1250;
+    movie.isCustom = true;
     movie.type = 'movie';
     movie.cover = movie.cover || movie.backdrop || movie.poster;
     movie.backdrop = movie.backdrop || movie.cover;
@@ -1403,6 +1468,7 @@ class AdminService {
     series.releaseDate = series.releaseDate || (series.year ? (series.year + '-10-25') : now.split('T')[0]);
     series.badgeLeft = series.badgeLeft || 'Trending';
     series.views = series.views !== undefined ? parseInt(series.views, 10) : 1250;
+    series.isCustom = true;
     series.type = 'series';
 
     // Auto-repair episodes if subjectId exists and episodes are missing or empty
