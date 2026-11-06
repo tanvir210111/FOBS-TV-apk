@@ -238,7 +238,7 @@ function switchAdminTab(tabName) {
       loadRequests();
       break;
     case 'importer':
-      loadMovieBoxRecent('trending');
+      loadMovieBoxRecent('all');
       break;
     case 'appcontrol':
       loadAppSettings();
@@ -1964,7 +1964,7 @@ async function updateRequestStatus(id, status) {
 
 state.movieboxRawItems = [];
 
-async function loadMovieBoxRecent(filter = 'trending', btnEl) {
+async function loadMovieBoxRecent(filter = 'all', btnEl) {
   if (btnEl) {
     document.querySelectorAll('.importer-tab-btn').forEach(b => b.classList.remove('active'));
     btnEl.classList.add('active');
@@ -1974,7 +1974,7 @@ async function loadMovieBoxRecent(filter = 'trending', btnEl) {
   grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-spinner fa-spin" style="font-size:24px; color:var(--primary); margin-bottom:12px; display:block;"></i>Loading MovieBox feeds & pairing Original + Hindi titles...</div>';
 
   try {
-    const res = await authFetch(`${API_BASE}/api/admin/moviebox/recent?filter=${encodeURIComponent(filter)}`);
+    const res = await authFetch(`${API_BASE}/api/admin/moviebox/recent?filter=${encodeURIComponent(filter)}&hide_imported=false`);
     const data = await res.json();
     state.movieboxRawItems = data.items || [];
     applyImporterFilters();
@@ -1984,11 +1984,31 @@ async function loadMovieBoxRecent(filter = 'trending', btnEl) {
 }
 
 async function searchMovieBox() {
-  const query = document.getElementById('importer-search-input').value.trim();
-  if (!query) return;
+  const inputEl = document.getElementById('importer-search-input');
+  const query = (inputEl ? inputEl.value : '').trim();
+  if (!query) {
+    showToast('Please enter a movie or series title to search', 'warning');
+    return;
+  }
 
   const grid = document.getElementById('importer-results-grid');
   grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-spinner fa-spin" style="font-size:24px; color:var(--primary); margin-bottom:12px; display:block;"></i>Searching MovieBox & pairing Original + Hindi titles for "${escapeHtml(query)}"...</div>`;
+
+  // Auto-reset filters so that newly searched titles are never accidentally hidden by leftover dropdowns!
+  const elKw = document.getElementById('imp-filter-keyword');
+  if (elKw) elKw.value = '';
+  const elCat = document.getElementById('imp-filter-category');
+  if (elCat) elCat.value = 'all';
+  const elType = document.getElementById('imp-filter-type');
+  if (elType) elType.value = 'all';
+  const elYear = document.getElementById('imp-filter-year');
+  if (elYear) elYear.value = 'all';
+  const elMonth = document.getElementById('imp-filter-month');
+  if (elMonth) elMonth.value = 'all';
+  const elStatus = document.getElementById('imp-filter-status');
+  if (elStatus) elStatus.value = 'all';
+
+  document.querySelectorAll('.importer-tab-btn').forEach(b => b.classList.remove('active'));
 
   try {
     const res = await authFetch(`${API_BASE}/api/admin/moviebox/search?q=${encodeURIComponent(query)}`);
@@ -1996,7 +2016,7 @@ async function searchMovieBox() {
     state.movieboxRawItems = data.items || [];
     applyImporterFilters();
   } catch (err) {
-    grid.innerHTML = '<div class="empty-state error-text">Search failed. Please try again.</div>';
+    grid.innerHTML = `<div class="empty-state error-text"><i class="fa-solid fa-triangle-exclamation" style="font-size:24px; color:#ef4444; margin-bottom:10px; display:block;"></i>Search failed: ${escapeHtml(err.message || 'Network error')}. Please try again.</div>`;
   }
 }
 
@@ -2015,6 +2035,7 @@ function applyImporterFilters() {
     const tLower = (item.title || '').toLowerCase();
     const isHindi = !!item.isHindi || tLower.includes('hindi');
     const isBangla = !!item.isBangla || tLower.includes('bangla') || tLower.includes('bengali');
+    const isSeries = item.type === 'series' || (item.category && item.category.toLowerCase().includes('series'));
 
     // 1. Audio Filter
     if (audio === 'original' && (isHindi || isBangla)) return false;
@@ -2024,19 +2045,35 @@ function applyImporterFilters() {
     // 2. Category / Industry Filter
     if (category !== 'all') {
       const catLower = ((item.category || '') + ' ' + (item.industry || '') + ' ' + (item.section || '') + ' ' + tLower).toLowerCase();
-      if (category === 'hollywood' && !catLower.includes('hollywood') && !catLower.includes('western')) return false;
-      if (category === 'bollywood' && !catLower.includes('bollywood') && !catLower.includes('hindi')) return false;
-      if (category === 'tollywood' && !catLower.includes('tollywood') && !catLower.includes('south') && !catLower.includes('bangla')) return false;
-      if (category === 'korean' && !catLower.includes('korean') && !catLower.includes('kdrama') && !catLower.includes('k-drama')) return false;
-      if (category === 'turkish' && !catLower.includes('turkish') && !catLower.includes('turkey')) return false;
-      if (category === 'anime' && !catLower.includes('anime') && !catLower.includes('japan')) return false;
-      if (category === 'chinese' && !catLower.includes('chinese') && !catLower.includes('cdrama') && !catLower.includes('c-drama')) return false;
-      if (category === 'series' && item.type !== 'series' && !catLower.includes('series') && !catLower.includes('drama')) return false;
+      if (category === 'hollywood') {
+        const isHwood = item.industry === 'Hollywood' || /hollywood|western|cinema|marvel|dc|disney|netflix|english/i.test(catLower);
+        if (!isHwood) return false;
+      } else if (category === 'bollywood') {
+        const isBwood = (item.industry === 'Bollywood' || /bollywood/i.test(catLower)) && !/korean|kdrama|turkish|anime|chinese/i.test(catLower);
+        if (!isBwood) return false;
+      } else if (category === 'tollywood') {
+        const isTwood = item.industry === 'Tollywood' || /tollywood|south indian|tamil|telugu|malayalam|kannada|kolkata|bangla/i.test(catLower);
+        if (!isTwood) return false;
+      } else if (category === 'korean') {
+        const isKdrama = item.industry === 'Korean' || /korean|kdrama|k-drama|korea/i.test(catLower);
+        if (!isKdrama) return false;
+      } else if (category === 'turkish') {
+        const isTurkish = item.industry === 'Turkish' || /turkish|turkey|dizi/i.test(catLower);
+        if (!isTurkish) return false;
+      } else if (category === 'anime') {
+        const isAnime = item.industry === 'Anime' || /anime|japan|manga/i.test(catLower);
+        if (!isAnime) return false;
+      } else if (category === 'chinese') {
+        const isCdrama = item.industry === 'Chinese' || /chinese|cdrama|c-drama|wuxia/i.test(catLower);
+        if (!isCdrama) return false;
+      } else if (category === 'series') {
+        if (!isSeries && !catLower.includes('series') && !catLower.includes('drama') && !catLower.includes('show') && !catLower.includes('tv')) return false;
+      }
     }
 
     // 3. Media Type Filter
-    if (type === 'movie' && item.type !== 'movie') return false;
-    if (type === 'series' && item.type !== 'series') return false;
+    if (type === 'movie' && isSeries) return false;
+    if (type === 'series' && !isSeries) return false;
 
     // 4. Year Filter
     if (year !== 'all') {
@@ -2051,19 +2088,22 @@ function applyImporterFilters() {
 
     // 5. Month Filter
     if (month !== 'all') {
-      const itemMonth = String(item.month || '');
+      const itemMonth = String(item.month || '').padStart(2, '0');
       const relMonth = item.releaseDate ? item.releaseDate.split('-')[1] : '';
       if (itemMonth !== month && relMonth !== month) return false;
     }
 
     // 6. Import Status Filter
-    if (status === 'unimported' && item.alreadyImported) return false;
-    if (status === 'imported' && !item.alreadyImported) return false;
+    const isImported = isItemAlreadyImported(item);
+    if (status === 'unimported' && isImported) return false;
+    if (status === 'imported' && !isImported) return false;
 
     // 7. Instant In-Page Search Keyword
     if (keyword) {
       const searchable = [
         item.title,
+        item.type,
+        isSeries ? 'series tv drama show' : 'movie cinema film',
         item.year,
         item.audioTag,
         item.category,

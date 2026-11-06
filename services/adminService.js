@@ -537,6 +537,45 @@ class AdminService {
     return (t || '').toLowerCase().replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, '').trim();
   }
 
+  detectIndustry(title = '', section = '', isBangla = false) {
+    const tLower = (title || '').toLowerCase();
+    const secLower = (section || '').toLowerCase();
+
+    // 1. Korean
+    if (/korean|kdrama|k-drama|remarried|squid game|glory|vincenzo|queen of tears|crash landing|descendants of the sun/i.test(tLower) || /k-drama|korean/i.test(secLower)) {
+      return 'Korean';
+    }
+    // 2. Turkish
+    if (/turkish|turkey|dizi|sen cal kapimi|ertugrul|kurulus|osman|yali capkini|hudutsuz sevda|kardeslerim/i.test(tLower) || /turkish/i.test(secLower)) {
+      return 'Turkish';
+    }
+    // 3. Chinese
+    if (/chinese|cdrama|c-drama|wuxia|hidden love|untamed|till the end of the moon/i.test(tLower) || /c-drama|chinese/i.test(secLower)) {
+      return 'Chinese';
+    }
+    // 4. Anime / Japanese
+    if (/anime|japan|manga|solo leveling|jujutsu|demon slayer|naruto|one piece|dragon ball|bleach|attack on titan/i.test(tLower) || /anime|japan/i.test(secLower)) {
+      return 'Anime';
+    }
+    // 5. Tollywood / South Indian / Bangla
+    if (isBangla || /bangla|bengali|kolkata/i.test(tLower) || /bangla|bengali/i.test(secLower)) {
+      return 'Tollywood';
+    }
+    if (/south indian|tamil|telugu|malayalam|kannada/i.test(secLower) || /pushpa|bahubali|kgf|salaar|devara|kantara/i.test(tLower)) {
+      return 'Tollywood';
+    }
+    // 6. Bollywood
+    if (/bollywood|punjabi|marathi/i.test(tLower) || /bollywood|punjabi|marathi/i.test(secLower) || /indian drama|indian movies/i.test(secLower)) {
+      return 'Bollywood';
+    }
+    // 7. Hollywood / Western
+    if (secLower.includes('western') || secLower.includes('hollywood') || secLower.includes('cinema') || /avengers|marvel|spider-man|spiderman|batman|superman|stranger things|avatar|fast and furious/i.test(tLower)) {
+      return 'Hollywood';
+    }
+
+    return 'Hollywood';
+  }
+
   /**
    * Get Recent & Trending Releases from MovieBox Live Feed (with smart deduplication)
    */
@@ -600,13 +639,7 @@ class AdminService {
           existingExactTitles.has(titleExact) ||
           (itClean && existingCleanTitles.has(itAudioKey));
 
-        let industry = 'Hollywood';
-        if (/korean|kdrama|k-drama/i.test(tLower) || secLower.includes('korean')) industry = 'Korean';
-        else if (/bollywood|hindi/i.test(tLower) || secLower.includes('bollywood') || secLower.includes('hindi')) industry = 'Bollywood';
-        else if (/anime|japan/i.test(tLower) || secLower.includes('anime')) industry = 'Anime';
-        else if (/turkish|turkey/i.test(tLower) || secLower.includes('turkish')) industry = 'Turkish';
-        else if (/chinese|cdrama|c-drama/i.test(tLower) || secLower.includes('chinese')) industry = 'Chinese';
-        else if (isBangla || /bangla/i.test(tLower)) industry = 'Tollywood';
+        const industry = this.detectIndustry(it.title, sec.title, isBangla);
 
         let category = it.type === 'series'
           ? (isHindi ? `${industry} (Dubbed) Series` : `${industry} Series`)
@@ -646,32 +679,32 @@ class AdminService {
     } else if (filter === 'kdrama-hindi') {
       filtered = allItems.filter(i => {
         const text = ((i.section || '') + ' ' + (i.title || '')).toLowerCase();
-        return (text.includes('korean') || text.includes('kdrama') || text.includes('k-drama')) && text.includes('hindi');
+        return (i.industry === 'Korean' || text.includes('korean') || text.includes('kdrama') || text.includes('k-drama')) && (i.isHindi || text.includes('hindi'));
       });
     } else if (filter === 'cdrama-hindi') {
       filtered = allItems.filter(i => {
         const text = ((i.section || '') + ' ' + (i.title || '')).toLowerCase();
-        return (text.includes('chinese') || text.includes('cdrama') || text.includes('c-drama')) && text.includes('hindi');
+        return (i.industry === 'Chinese' || text.includes('chinese') || text.includes('cdrama') || text.includes('c-drama')) && (i.isHindi || text.includes('hindi'));
       });
     } else if (filter === 'turkish-hindi') {
       filtered = allItems.filter(i => {
         const text = ((i.section || '') + ' ' + (i.title || '')).toLowerCase();
-        return (text.includes('turkish') || text.includes('turkey')) && text.includes('hindi');
+        return (i.industry === 'Turkish' || text.includes('turkish') || text.includes('turkey')) && (i.isHindi || text.includes('hindi'));
       });
     } else if (filter === 'kdrama' || filter === 'korean') {
-      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('korean') || (i.section || '').toLowerCase().includes('kdrama') || (i.section || '').toLowerCase().includes('k-drama') || (i.title || '').toLowerCase().includes('korean'));
+      filtered = allItems.filter(i => i.industry === 'Korean' || (i.section || '').toLowerCase().includes('korean') || (i.section || '').toLowerCase().includes('kdrama') || (i.section || '').toLowerCase().includes('k-drama') || (i.title || '').toLowerCase().includes('korean'));
     } else if (filter === 'cdrama' || filter === 'chinese') {
-      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('chinese') || (i.section || '').toLowerCase().includes('c-drama') || (i.section || '').toLowerCase().includes('cdrama') || (i.title || '').toLowerCase().includes('chinese'));
+      filtered = allItems.filter(i => i.industry === 'Chinese' || (i.section || '').toLowerCase().includes('chinese') || (i.section || '').toLowerCase().includes('c-drama') || (i.section || '').toLowerCase().includes('cdrama') || (i.title || '').toLowerCase().includes('chinese'));
     } else if (filter === 'turkish') {
-      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('turkish') || (i.section || '').toLowerCase().includes('turkey') || (i.title || '').toLowerCase().includes('turkish'));
+      filtered = allItems.filter(i => i.industry === 'Turkish' || (i.section || '').toLowerCase().includes('turkish') || (i.section || '').toLowerCase().includes('turkey') || (i.title || '').toLowerCase().includes('turkish'));
     } else if (filter === 'hindi') {
-      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('hindi') || (i.title || '').toLowerCase().includes('hindi'));
+      filtered = allItems.filter(i => i.isHindi || (i.section || '').toLowerCase().includes('hindi') || (i.title || '').toLowerCase().includes('hindi'));
     } else if (filter === 'bollywood') {
-      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('bollywood') || (i.section || '').toLowerCase().includes('south') || (i.section || '').toLowerCase().includes('hindi') || (i.title || '').toLowerCase().includes('hindi'));
+      filtered = allItems.filter(i => i.industry === 'Bollywood' || (i.section || '').toLowerCase().includes('bollywood') || (i.section || '').toLowerCase().includes('south'));
     } else if (filter === 'hollywood') {
-      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('hollywood') || (i.section || '').toLowerCase().includes('western'));
+      filtered = allItems.filter(i => i.industry === 'Hollywood' || (i.section || '').toLowerCase().includes('hollywood') || (i.section || '').toLowerCase().includes('western'));
     } else if (filter === 'anime') {
-      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('anime') || (i.title || '').toLowerCase().includes('anime'));
+      filtered = allItems.filter(i => i.industry === 'Anime' || (i.section || '').toLowerCase().includes('anime') || (i.title || '').toLowerCase().includes('anime'));
     }
 
     const unimportedCount = filtered.filter(i => !i.alreadyImported).length;
@@ -899,13 +932,7 @@ class AdminService {
         }
       } catch (e) {}
 
-      let industry = 'Hollywood';
-      if (/korean|kdrama|k-drama/i.test(tLower)) industry = 'Korean';
-      else if (/bollywood|hindi/i.test(tLower)) industry = 'Bollywood';
-      else if (/anime|japan/i.test(tLower)) industry = 'Anime';
-      else if (/turkish|turkey/i.test(tLower)) industry = 'Turkish';
-      else if (/chinese|cdrama|c-drama/i.test(tLower)) industry = 'Chinese';
-      else if (isBangla || /bangla/i.test(tLower)) industry = 'Tollywood';
+      let industry = this.detectIndustry(it.title, '', isBangla);
 
       let category = it.type === 'series'
         ? (isHindi ? `${industry} (Dubbed) Series` : `${industry} Series`)

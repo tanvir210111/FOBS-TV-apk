@@ -3310,7 +3310,7 @@ app.get('/api/admin/content', adminService.authenticate, (req, res) => {
 app.get('/api/admin/moviebox/recent', adminService.authenticate, async (req, res) => {
   try {
     const { filter, hide_imported } = req.query;
-    const hide = hide_imported !== 'false';
+    const hide = hide_imported === 'true'; // Default to false so all items are sent to frontend filter
     const result = await adminService.getMovieBoxRecent(filter || 'all', hide);
     res.json(result);
   } catch (err) {
