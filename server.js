@@ -1418,8 +1418,171 @@ app.post('/api/content', (req, res) => {
   res.json({ success: true, item: newItem });
 });
 
+/**
+ * Resilient Stream Pipe:
+ * Keeps client response connection alive and automatically resumes upstream
+ * streaming from the exact byte offset if upstream CDN drops connection or encounters socket timeout.
+ * Re-authenticates MovieBox CDN tokens if 403 occurs.
+ */
+function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders, mbContext, start, end, totalLen) {
+  let currentResponse = initialResponse;
+  let bytesTransferred = 0;
+  const initialStart = typeof start === 'number' && !isNaN(start) ? start : 0;
+  const hasEnd = typeof end === 'number' && !isNaN(end);
+  const expectedBytes = hasEnd ? (end - initialStart + 1) : (typeof totalLen === 'number' && !isNaN(totalLen) ? (totalLen - initialStart) : 0);
+  let activeUrl = fetchUrl;
+  let isClientClosed = false;
+  let retryCount = 0;
+  const maxRetries = 15;
+
+  const onClientClose = () => {
+    isClientClosed = true;
+    try {
+      if (currentResponse && currentResponse.data && typeof currentResponse.data.destroy === 'function') {
+        currentResponse.data.destroy();
+      }
+      if (currentResponse && currentResponse.socket && typeof currentResponse.socket.destroy === 'function') {
+        currentResponse.socket.destroy();
+      }
+    } catch (_) {}
+  };
+
+  req.on('close', onClientClose);
+  res.on('close', onClientClose);
+  req.on('error', onClientClose);
+  res.on('error', onClientClose);
+
+  function attachStream(resp) {
+    currentResponse = resp;
+    const stream = resp.data;
+
+    stream.on('data', (chunk) => {
+      bytesTransferred += chunk.length;
+    });
+
+    stream.on('error', (err) => {
+      console.warn(`[ResilientStream] Upstream socket error after ${bytesTransferred} bytes: ${err.message}`);
+      try { stream.destroy(); } catch (_) {}
+      if (!isClientClosed && !res.writableEnded && !res.destroyed) {
+        attemptResume();
+      }
+    });
+
+    stream.on('end', () => {
+      const reachedEnd = expectedBytes > 0 && bytesTransferred >= expectedBytes;
+      if (!reachedEnd && !isClientClosed && !res.writableEnded && !res.destroyed) {
+        console.log(`[ResilientStream] Upstream closed early (${bytesTransferred}/${expectedBytes || 'unknown'}). Auto-resuming seamlessly...`);
+        attemptResume();
+      } else {
+        if (!res.writableEnded) {
+          res.end();
+        }
+      }
+    });
+
+    stream.pipe(res, { end: false });
+  }
+
+  async function attemptResume() {
+    if (isClientClosed || res.writableEnded || res.destroyed) return;
+    if (retryCount >= maxRetries) {
+      console.warn(`[ResilientStream] Max auto-resume retries (${maxRetries}) reached.`);
+      if (!res.writableEnded) res.end();
+      return;
+    }
+    retryCount++;
+
+    const resumeByte = initialStart + bytesTransferred;
+    const resumeRange = hasEnd ? `bytes=${resumeByte}-${end}` : `bytes=${resumeByte}-`;
+    console.log(`[ResilientStream] Resuming stream at ${resumeRange} (retry ${retryCount}/${maxRetries})...`);
+
+    await new Promise(r => setTimeout(r, 250));
+    if (isClientClosed || res.writableEnded || res.destroyed) return;
+
+    try {
+      let resp = await axios({
+        method: 'GET',
+        url: activeUrl,
+        headers: {
+          ...requestHeaders,
+          Range: resumeRange
+        },
+        httpsAgent: streamHttpsAgent,
+        responseType: 'stream',
+        timeout: 15000,
+        validateStatus: (s) => (s >= 200 && s < 400) || s === 403 || s === 416
+      });
+
+      // Handle token expiration on upstream CDN
+      if (resp.status === 403 && mbContext && mbContext.id) {
+        console.log(`[ResilientStream] Upstream 403 token expired. Refreshing token via movieboxService...`);
+        try {
+          const refreshed = await movieboxService.resolveMedia(
+            mbContext.id,
+            mbContext.detailPath,
+            mbContext.se,
+            mbContext.ep,
+            { forceRefresh: true }
+          );
+          if (refreshed && refreshed.streamUrl) {
+            activeUrl = refreshed.streamUrl;
+            resp = await axios({
+              method: 'GET',
+              url: activeUrl,
+              headers: {
+                ...requestHeaders,
+                Range: resumeRange
+              },
+              httpsAgent: streamHttpsAgent,
+              responseType: 'stream',
+              timeout: 15000,
+              validateStatus: (s) => (s >= 200 && s < 400) || s === 416
+            });
+          }
+        } catch (rfErr) {
+          console.warn(`[ResilientStream] Token refresh failed:`, rfErr.message);
+        }
+      }
+
+      if (resp.status === 416) {
+        if (!res.writableEnded) res.end();
+        return;
+      }
+
+      if (resp.status >= 200 && resp.status < 400) {
+        retryCount = 0; // Reset counter on successful stream resumption
+        attachStream(resp);
+      } else {
+        throw new Error(`Upstream status ${resp.status}`);
+      }
+    } catch (e) {
+      console.warn(`[ResilientStream] Resume failed: ${e.message}`);
+      if (retryCount < maxRetries && !isClientClosed && !res.writableEnded && !res.destroyed) {
+        setTimeout(attemptResume, 1000);
+      } else {
+        if (!res.writableEnded) res.end();
+      }
+    }
+  }
+
+  attachStream(initialResponse);
+}
+
 // Direct Stream Pipeline: Handles Range, MovieBox CDNs, Google Drive, V-Cloud with zero-delay continuous streaming
 async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
+  req.setTimeout(3600000);
+  res.setTimeout(3600000);
+  if (req.socket) {
+    try { req.socket.setTimeout(3600000); } catch(e) {}
+    try { req.socket.setNoDelay(true); } catch(e) {}
+    try { req.socket.setKeepAlive(true, 10000); } catch(e) {}
+  }
+  if (res.socket) {
+    try { res.socket.setTimeout(3600000); } catch(e) {}
+    try { res.socket.setNoDelay(true); } catch(e) {}
+    try { res.socket.setKeepAlive(true, 10000); } catch(e) {}
+  }
+
   let targetUrl = inputTargetUrl || req.query.url;
   const standardStreamCorsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -1838,22 +2001,34 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
       res.writeHead(206, headersToSend);
       if (typeof res.flushHeaders === 'function') res.flushHeaders();
 
-      const cleanupStream = () => {
-        try {
-          if (response) {
-            if (response.data && typeof response.data.destroy === 'function') response.data.destroy();
-            if (response.socket && typeof response.socket.destroy === 'function') response.socket.destroy();
-            if (response.request && typeof response.request.destroy === 'function') response.request.destroy();
-          }
-        } catch (_) {}
-      };
+      let rangeStart = 0;
+      let rangeEnd = null;
+      let rangeTotal = null;
+      const cr = response.headers['content-range'];
+      if (cr) {
+        const m = cr.match(/bytes\s+(\d+)-(\d+)\/(\d+|\*)/);
+        if (m) {
+          rangeStart = parseInt(m[1], 10);
+          rangeEnd = parseInt(m[2], 10);
+          if (m[3] !== '*') rangeTotal = parseInt(m[3], 10);
+        }
+      } else if (range) {
+        const parts = range.replace(/bytes=/, '').split('-');
+        rangeStart = parseInt(parts[0], 10) || 0;
+        if (parts[1]) rangeEnd = parseInt(parts[1], 10);
+      }
 
-      response.data.on('error', cleanupStream);
-      res.on('error', cleanupStream);
-      res.on('close', cleanupStream);
-      req.on('close', cleanupStream);
-
-      response.data.pipe(res);
+      pipeResilientStream(
+        req,
+        res,
+        response,
+        streamFetchUrl,
+        requestHeaders,
+        mbContext,
+        rangeStart,
+        rangeEnd,
+        rangeTotal
+      );
       return;
     }
 
@@ -1880,7 +2055,17 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
       if (isHead) return res.end();
 
       if (start === 0 && end === totalLength - 1) {
-        response.data.pipe(res);
+        pipeResilientStream(
+          req,
+          res,
+          response,
+          streamFetchUrl,
+          requestHeaders,
+          mbContext,
+          0,
+          totalLength - 1,
+          totalLength
+        );
       } else {
         const slicer = createRangeSlicer(start, end);
         response.data.pipe(slicer).pipe(res);
@@ -1895,12 +2080,22 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
         headersToSend['Content-Range'] = `bytes 0-${totalLength - 1}/${totalLength}`;
         headersToSend['Content-Length'] = totalLength;
         res.writeHead(206, headersToSend);
-      if (typeof res.flushHeaders === 'function') res.flushHeaders();
+        if (typeof res.flushHeaders === 'function') res.flushHeaders();
       } else {
         res.writeHead(200, headersToSend);
       }
       if (isHead) return res.end();
-      response.data.pipe(res);
+      pipeResilientStream(
+        req,
+        res,
+        response,
+        streamFetchUrl,
+        requestHeaders,
+        mbContext,
+        0,
+        !isNaN(totalLength) ? totalLength - 1 : null,
+        !isNaN(totalLength) ? totalLength : null
+      );
     }
 
     req.on('close', () => {

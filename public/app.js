@@ -7235,8 +7235,15 @@ function setupVideoListeners() {
       if (videoPlayer.readyState >= 2) {
         if (loader) loader.classList.remove('active');
         videoPlayer.play().catch(() => {});
+      } else if (!videoPlayer.paused && videoPlayer.currentTime > 0) {
+        // WebView decoder pipeline freeze auto-nudge (replicates manual "+10s" seek automatically)
+        console.log('[Player] Decoder stalled with readyState < 2, auto-nudging playback position...');
+        try {
+          videoPlayer.currentTime = videoPlayer.currentTime + 0.15;
+          videoPlayer.play().catch(() => {});
+        } catch (_) {}
       }
-    }, 1200);
+    }, 2200);
   };
 
   videoPlayer.addEventListener('waiting', () => {
