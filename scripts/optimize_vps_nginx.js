@@ -20,25 +20,34 @@ const targetStreamBlock = `    # High-Performance Bufferless Video Streaming & D
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Connection "";
 
         # Disable proxy buffering: zero delay, direct chunk forwarding without disk limit
         proxy_buffering off;
         proxy_request_buffering off;
         proxy_max_temp_file_size 0;
+        proxy_cache off;
+        proxy_cache_bypass 1;
 
         # Keep large video streaming and downloads alive for up to 1 hour
         proxy_connect_timeout 60s;
         proxy_send_timeout 3600s;
         proxy_read_timeout 3600s;
+        client_header_timeout 3600s;
+        client_body_timeout 3600s;
+        send_timeout 3600s;
 
         # Disable Nagle's algorithm for instant video packet delivery
         tcp_nodelay on;
         tcp_nopush off;
+
+        # Keep upstream connection alive to prevent CDN idle-disconnect
+        keepalive_timeout 3600s;
     }`;
 
 // If an older stream block exists, replace it
-const oldBlockRegex = /# High-Performance Bufferless Video Streaming Optimization[\s\S]*?location ~\* \^\/api\/\(moviebox\/stream\|stream\) \{[\s\S]*?tcp_nopush off;\s*\}/;
-const oldBlockWithoutCommentRegex = /location ~\* \^\/api\/\(moviebox\/stream\|stream\) \{[\s\S]*?tcp_nopush off;\s*\}/;
+const oldBlockRegex = /# High-Performance Bufferless Video Streaming[^\n]*[\s\S]*?location ~\* \^\/api\/\(moviebox\/stream\|stream(?:\|download)?\) \{[\s\S]*?tcp_nopush off;[\s\S]*?\}/;
+const oldBlockWithoutCommentRegex = /location ~\* \^\/api\/\(moviebox\/stream\|stream(?:\|download)?\) \{[\s\S]*?tcp_nopush off;[\s\S]*?\}/;
 
 if (oldBlockRegex.test(content)) {
   content = content.replace(oldBlockRegex, targetStreamBlock);

@@ -13,9 +13,10 @@ const compression = require('compression');
 
 const streamHttpsAgent = new https.Agent({
   keepAlive: true,
+  keepAliveMsecs: 15000,       // Send TCP keepalive probes every 15s to prevent CDN idle-timeout
   maxSockets: 300,
-  maxFreeSockets: 64,
-  timeout: 15000,
+  maxFreeSockets: 100,
+  timeout: 60000,              // Increased: 60s socket-level idle timeout (was 15s — caused mid-stream drop)
   family: 4, // Force IPv4 to prevent 18-second IPv6 timeout on VPS
   rejectUnauthorized: false
 });
@@ -1422,6 +1423,7 @@ app.post('/api/content', (req, res) => {
  * Resilient Stream Pipe:
  * Keeps client response connection alive and automatically resumes upstream
  * streaming from the exact byte offset if upstream CDN drops connection or encounters socket timeout.
+ * Also handles TCP backpressure correctly so upstream CDN never sees an idle connection.
  * Re-authenticates MovieBox CDN tokens if 403 occurs.
  */
 function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders, mbContext, start, end, totalLen) {
@@ -1433,7 +1435,7 @@ function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders
   let activeUrl = fetchUrl;
   let isClientClosed = false;
   let retryCount = 0;
-  const maxRetries = 15;
+  const maxRetries = 20;
 
   const onClientClose = () => {
     isClientClosed = true;
@@ -1454,21 +1456,30 @@ function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders
 
   function attachStream(resp) {
     currentResponse = resp;
-    const stream = resp.data;
+    const upstream = resp.data;
 
-    stream.on('data', (chunk) => {
+    upstream.on('data', (chunk) => {
       bytesTransferred += chunk.length;
+      // Backpressure: if client write buffer is full, pause upstream to avoid TCP ZeroWindow stall
+      if (!res.write(chunk)) {
+        upstream.pause();
+        res.once('drain', () => {
+          if (!isClientClosed && !upstream.destroyed) {
+            upstream.resume();
+          }
+        });
+      }
     });
 
-    stream.on('error', (err) => {
+    upstream.on('error', (err) => {
       console.warn(`[ResilientStream] Upstream socket error after ${bytesTransferred} bytes: ${err.message}`);
-      try { stream.destroy(); } catch (_) {}
+      try { upstream.destroy(); } catch (_) {}
       if (!isClientClosed && !res.writableEnded && !res.destroyed) {
         attemptResume();
       }
     });
 
-    stream.on('end', () => {
+    upstream.on('end', () => {
       const reachedEnd = expectedBytes > 0 && bytesTransferred >= expectedBytes;
       if (!reachedEnd && !isClientClosed && !res.writableEnded && !res.destroyed) {
         console.log(`[ResilientStream] Upstream closed early (${bytesTransferred}/${expectedBytes || 'unknown'}). Auto-resuming seamlessly...`);
@@ -1479,8 +1490,6 @@ function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders
         }
       }
     });
-
-    stream.pipe(res, { end: false });
   }
 
   async function attemptResume() {
@@ -1496,7 +1505,8 @@ function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders
     const resumeRange = hasEnd ? `bytes=${resumeByte}-${end}` : `bytes=${resumeByte}-`;
     console.log(`[ResilientStream] Resuming stream at ${resumeRange} (retry ${retryCount}/${maxRetries})...`);
 
-    await new Promise(r => setTimeout(r, 250));
+    // Brief pause before retry to let CDN settle
+    await new Promise(r => setTimeout(r, 300));
     if (isClientClosed || res.writableEnded || res.destroyed) return;
 
     try {
@@ -1509,7 +1519,7 @@ function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders
         },
         httpsAgent: streamHttpsAgent,
         responseType: 'stream',
-        timeout: 15000,
+        timeout: 30000,
         validateStatus: (s) => (s >= 200 && s < 400) || s === 403 || s === 416
       });
 
@@ -1535,7 +1545,7 @@ function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders
               },
               httpsAgent: streamHttpsAgent,
               responseType: 'stream',
-              timeout: 15000,
+              timeout: 30000,
               validateStatus: (s) => (s >= 200 && s < 400) || s === 416
             });
           }
@@ -1558,7 +1568,9 @@ function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders
     } catch (e) {
       console.warn(`[ResilientStream] Resume failed: ${e.message}`);
       if (retryCount < maxRetries && !isClientClosed && !res.writableEnded && !res.destroyed) {
-        setTimeout(attemptResume, 1000);
+        // Exponential backoff: 500ms, 1s, 2s... max 5s
+        const backoff = Math.min(500 * Math.pow(1.5, retryCount - 1), 5000);
+        setTimeout(attemptResume, backoff);
       } else {
         if (!res.writableEnded) res.end();
       }
@@ -1887,7 +1899,7 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
         httpsAgent: streamHttpsAgent,
         responseType: 'stream',
         maxRedirects: 5,
-        timeout: 8000, validateStatus: (status) => (status >= 200 && status < 400) || status === 416
+        timeout: 30000, validateStatus: (status) => (status >= 200 && status < 400) || status === 416
       });
     } catch (initialErr) {
       const isMb = (
@@ -1947,7 +1959,7 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
             httpsAgent: streamHttpsAgent,
             responseType: 'stream',
             maxRedirects: 5,
-            timeout: 8000, validateStatus: (status) => (status >= 200 && status < 400) || status === 416
+            timeout: 30000, validateStatus: (status) => (status >= 200 && status < 400) || status === 416
           });
         } else {
           throw initialErr;

@@ -7181,6 +7181,7 @@ function setupVideoListeners() {
     if (waitLoaderTimer) clearTimeout(waitLoaderTimer);
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
     if (loader) loader.classList.remove('active');
+    stallNudgeCount = 0;
     appState.pendingSeekTime = null;
     syncPlayPauseIcons();
     resetLandscapeControlsTimer();
@@ -7221,6 +7222,9 @@ function setupVideoListeners() {
   });
 
   let stallRecoveryTimer = null;
+  let stallNudgeCount = 0;
+  const MAX_NUDGE_ATTEMPTS = 8;
+
   const triggerStallRecovery = () => {
     if (stallRecoveryTimer) clearTimeout(stallRecoveryTimer);
     // Never interrupt if user or player is actively seeking or within a pending seek!
@@ -7233,17 +7237,32 @@ function setupVideoListeners() {
       }
       // If video has sufficient buffered data to resume, unpause it cleanly
       if (videoPlayer.readyState >= 2) {
+        stallNudgeCount = 0;
         if (loader) loader.classList.remove('active');
         videoPlayer.play().catch(() => {});
-      } else if (!videoPlayer.paused && videoPlayer.currentTime > 0) {
+      } else if (videoPlayer.currentTime > 0 && stallNudgeCount < MAX_NUDGE_ATTEMPTS) {
         // WebView decoder pipeline freeze auto-nudge (replicates manual "+10s" seek automatically)
-        console.log('[Player] Decoder stalled with readyState < 2, auto-nudging playback position...');
+        stallNudgeCount++;
+        console.log(`[Player] Decoder stalled readyState=${videoPlayer.readyState}, auto-nudge #${stallNudgeCount}...`);
         try {
+          // Nudge by 0.15s to unlock the decoder pipeline — same effect as user pressing +10
           videoPlayer.currentTime = videoPlayer.currentTime + 0.15;
           videoPlayer.play().catch(() => {});
         } catch (_) {}
+        // Schedule another check rapidly to see if nudge worked
+        triggerStallRecovery();
+      } else if (videoPlayer.currentTime === 0 && videoPlayer.readyState < 2) {
+        // Cold start stall: video hasn't even started — force reload
+        console.log('[Player] Cold start stall detected, force-reloading source...');
+        try {
+          const src = videoPlayer.src;
+          if (src) {
+            videoPlayer.load();
+            videoPlayer.play().catch(() => {});
+          }
+        } catch (_) {}
       }
-    }, 2200);
+    }, 1500);
   };
 
   videoPlayer.addEventListener('waiting', () => {
@@ -7270,6 +7289,7 @@ function setupVideoListeners() {
       return;
     }
     if (videoPlayer.readyState >= 2) {
+      stallNudgeCount = 0;
       if (loader) loader.classList.remove('active');
       videoPlayer.play().catch(() => {});
       return;
