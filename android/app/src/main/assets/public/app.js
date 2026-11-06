@@ -7232,10 +7232,11 @@ function setupVideoListeners() {
         return;
       }
       // If video has sufficient buffered data to resume, unpause it cleanly
-      if (!videoPlayer.paused && videoPlayer.readyState >= 2) {
+      if (videoPlayer.readyState >= 2) {
+        if (loader) loader.classList.remove('active');
         videoPlayer.play().catch(() => {});
       }
-    }, 3500);
+    }, 1200);
   };
 
   videoPlayer.addEventListener('waiting', () => {
@@ -7247,10 +7248,10 @@ function setupVideoListeners() {
     }
     if (waitLoaderTimer) clearTimeout(waitLoaderTimer);
     waitLoaderTimer = setTimeout(() => {
-      if (videoPlayer.paused || videoPlayer.seeking || videoPlayer.readyState < 3) {
+      if ((videoPlayer.paused || videoPlayer.seeking || videoPlayer.readyState < 3) && !videoPlayer._isClosing) {
         if (loader) loader.classList.add('active');
       }
-    }, 200);
+    }, 800);
     triggerStallRecovery();
   });
 
@@ -7261,8 +7262,12 @@ function setupVideoListeners() {
       videoPlayer.play().catch(() => {});
       return;
     }
-    console.warn('Video stream playback stalled');
-    if (!videoPlayer.paused && videoPlayer.readyState < 3) {
+    if (videoPlayer.readyState >= 2) {
+      if (loader) loader.classList.remove('active');
+      videoPlayer.play().catch(() => {});
+      return;
+    }
+    if (!videoPlayer.paused && videoPlayer.readyState < 3 && !videoPlayer._isClosing) {
       if (loader) loader.classList.add('active');
     }
     triggerStallRecovery();

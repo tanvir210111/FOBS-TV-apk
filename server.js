@@ -1258,10 +1258,10 @@ app.get('/api/moviebox/stream', async (req, res) => {
           chosenRes = matchQ.resolution;
         }
       } else {
-        // Prefer 720p or 1080p high-speed direct CDN stream (avoids /bt/ rate limits)
+        // Prefer smooth bufferless 480p or 720p for instant mobile playback without stutter
         const nonBtQ = media.qualities.filter(q => !q.url.includes('/bt/'));
         const poolQ = nonBtQ.length > 0 ? nonBtQ : media.qualities;
-        const bestQ = poolQ.find(q => q.resolution === 720 || q.resolution === 1080) || poolQ[0];
+        const bestQ = poolQ.find(q => q.resolution === 480) || poolQ.find(q => q.resolution === 720) || poolQ[poolQ.length - 1];
         if (bestQ && bestQ.url) {
           chosenStream = bestQ.url;
           chosenRes = bestQ.resolution;
@@ -1490,7 +1490,7 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
           } else {
             const nonBtQ = (media.qualities || []).filter(q => !q.url.includes('/bt/'));
             const poolQ = nonBtQ.length > 0 ? nonBtQ : (media.qualities || []);
-            const bestQ = poolQ.find(q => q.resolution === 720 || q.resolution === 1080) || poolQ[0];
+            const bestQ = poolQ.find(q => q.resolution === 480) || poolQ.find(q => q.resolution === 720) || poolQ[poolQ.length - 1];
             targetUrl = bestQ?.url || media.streamUrl;
           }
         }
@@ -1724,7 +1724,7 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
         httpsAgent: streamHttpsAgent,
         responseType: 'stream',
         maxRedirects: 5,
-        timeout: 8000, validateStatus: (status) => status >= 200 && status < 400
+        timeout: 8000, validateStatus: (status) => (status >= 200 && status < 400) || status === 416
       });
     } catch (initialErr) {
       const isMb = (
@@ -1784,7 +1784,7 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
             httpsAgent: streamHttpsAgent,
             responseType: 'stream',
             maxRedirects: 5,
-            timeout: 8000, validateStatus: (status) => status >= 200 && status < 400
+            timeout: 8000, validateStatus: (status) => (status >= 200 && status < 400) || status === 416
           });
         } else {
           throw initialErr;
@@ -1797,6 +1797,18 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
     let contentType = response.headers['content-type'];
     if (!contentType || contentType === 'application/octet-stream') {
       contentType = (targetUrl && (targetUrl.includes('.mkv') || targetUrl.includes('matroska'))) ? 'video/x-matroska' : 'video/mp4';
+    }
+
+    // Handle 416 Range Not Satisfiable gracefully (e.g. video EOF or suffix probe)
+    if (response.status === 416) {
+      res.writeHead(416, {
+        ...standardStreamCorsHeaders,
+        'Content-Type': contentType,
+        'Content-Range': response.headers['content-range'] || 'bytes */*',
+        'Content-Length': '0'
+      });
+      try { response.data.destroy(); } catch (e) {}
+      return res.end();
     }
 
     if (isHead) {
@@ -3430,7 +3442,7 @@ app.all('/api/deploy', (req, res) => {
 
   const { exec } = require('child_process');
   console.log('🚀 Triggering automated git pull & PM2 restart...');
-  exec('node scripts/backup_custom_catalog.js && git fetch origin main && git reset --hard origin/main && node scripts/restore_custom_catalog.js && cp -f data/content.json data/content.backup.json && cp -f data/content.json data/content.local.json && node scripts/optimize_content_size.js && node scripts/restore_custom_catalog.js && node scripts/diagnose_vps_nginx.js', { cwd: __dirname }, (error, stdout, stderr) => {
+  exec('node scripts/backup_custom_catalog.js && git fetch origin main && git reset --hard origin/main && node scripts/restore_custom_catalog.js && cp -f data/content.json data/content.backup.json && cp -f data/content.json data/content.local.json && node scripts/optimize_content_size.js && node scripts/restore_custom_catalog.js && node scripts/optimize_vps_nginx.js', { cwd: __dirname }, (error, stdout, stderr) => {
     if (error) {
       console.error('❌ Deploy execution error:', error.message);
       return res.status(500).json({ success: false, error: error.message, stderr, stdout });
