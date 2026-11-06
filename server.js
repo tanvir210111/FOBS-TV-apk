@@ -1460,15 +1460,6 @@ function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders
 
     upstream.on('data', (chunk) => {
       bytesTransferred += chunk.length;
-      // Backpressure: if client write buffer is full, pause upstream to avoid TCP ZeroWindow stall
-      if (!res.write(chunk)) {
-        upstream.pause();
-        res.once('drain', () => {
-          if (!isClientClosed && !upstream.destroyed) {
-            upstream.resume();
-          }
-        });
-      }
     });
 
     upstream.on('error', (err) => {
@@ -1490,6 +1481,8 @@ function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders
         }
       }
     });
+
+    upstream.pipe(res, { end: false });
   }
 
   async function attemptResume() {
@@ -1880,10 +1873,34 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
     requestHeaders['Origin'] = 'https://movieboxapp.in';
   }
 
-  // Transparent Range Forwarding: Continuous full-speed streaming without artificial chunk cutoffs
-  let upstreamRange = range;
-  if (!range) {
-    upstreamRange = isHead ? 'bytes=0-0' : 'bytes=0-';
+  // Bounded Chunk Range Streaming (16 MB):
+  // Eliminates TCP ZeroWindow backpressure and prevents cloud CDNs from abruptly dropping idle sockets!
+  const CHUNK_SIZE = 16 * 1024 * 1024; // 16 MB chunk (~40-80s of buffered video)
+  let start = 0;
+  let requestedEnd = null;
+  let isExplicitEnd = false;
+
+  if (range) {
+    const parts = range.replace(/bytes=/, '').split('-');
+    start = parseInt(parts[0], 10) || 0;
+    if (parts[1] && parts[1].trim().length > 0) {
+      requestedEnd = parseInt(parts[1], 10);
+      isExplicitEnd = true;
+    }
+  }
+
+  let upstreamRange = 'bytes=0-';
+  if (isHead) {
+    upstreamRange = 'bytes=0-0';
+  } else if (isExplicitEnd && requestedEnd !== null) {
+    upstreamRange = `bytes=${start}-${requestedEnd}`;
+  } else {
+    // Open-ended request (bytes=start-): chunk to 16 MB
+    let targetEnd = start + CHUNK_SIZE - 1;
+    if (cachedMeta && cachedMeta.totalLength) {
+      targetEnd = Math.min(targetEnd, cachedMeta.totalLength - 1);
+    }
+    upstreamRange = `bytes=${start}-${targetEnd}`;
   }
 
   requestHeaders['Range'] = upstreamRange;
@@ -2022,7 +2039,12 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
         if (m) {
           rangeStart = parseInt(m[1], 10);
           rangeEnd = parseInt(m[2], 10);
-          if (m[3] !== '*') rangeTotal = parseInt(m[3], 10);
+          if (m[3] !== '*') {
+            rangeTotal = parseInt(m[3], 10);
+            if (!cachedMeta && !isNaN(rangeTotal) && rangeTotal > 0) {
+              fs.writeFile(metaFilePath, JSON.stringify({ totalLength: rangeTotal, contentType }), () => {});
+            }
+          }
         }
       } else if (range) {
         const parts = range.replace(/bytes=/, '').split('-');

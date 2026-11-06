@@ -7222,8 +7222,6 @@ function setupVideoListeners() {
   });
 
   let stallRecoveryTimer = null;
-  let stallNudgeCount = 0;
-  const MAX_NUDGE_ATTEMPTS = 8;
 
   const triggerStallRecovery = () => {
     if (stallRecoveryTimer) clearTimeout(stallRecoveryTimer);
@@ -7235,34 +7233,12 @@ function setupVideoListeners() {
       if (!videoPlayer || videoPlayer.seeking || appState.pendingSeekTime !== null) {
         return;
       }
-      // If video has sufficient buffered data to resume, unpause it cleanly
+      // If video has sufficient buffered data to resume, unpause it cleanly without disturbing playback position!
       if (videoPlayer.readyState >= 2) {
-        stallNudgeCount = 0;
         if (loader) loader.classList.remove('active');
         videoPlayer.play().catch(() => {});
-      } else if (videoPlayer.currentTime > 0 && stallNudgeCount < MAX_NUDGE_ATTEMPTS) {
-        // WebView decoder pipeline freeze auto-nudge (replicates manual "+10s" seek automatically)
-        stallNudgeCount++;
-        console.log(`[Player] Decoder stalled readyState=${videoPlayer.readyState}, auto-nudge #${stallNudgeCount}...`);
-        try {
-          // Nudge by 0.15s to unlock the decoder pipeline — same effect as user pressing +10
-          videoPlayer.currentTime = videoPlayer.currentTime + 0.15;
-          videoPlayer.play().catch(() => {});
-        } catch (_) {}
-        // Schedule another check rapidly to see if nudge worked
-        triggerStallRecovery();
-      } else if (videoPlayer.currentTime === 0 && videoPlayer.readyState < 2) {
-        // Cold start stall: video hasn't even started — force reload
-        console.log('[Player] Cold start stall detected, force-reloading source...');
-        try {
-          const src = videoPlayer.src;
-          if (src) {
-            videoPlayer.load();
-            videoPlayer.play().catch(() => {});
-          }
-        } catch (_) {}
       }
-    }, 1500);
+    }, 1000);
   };
 
   videoPlayer.addEventListener('waiting', () => {
