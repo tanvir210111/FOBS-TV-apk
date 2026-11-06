@@ -386,6 +386,7 @@ class MovieBoxService {
         const seasons = d.resource?.seasons || [];
 
         let totalEpisodes = 1;
+        let normalizedSeasons = seasons;
         if (isSeries) {
           if (seasons.length > 0) {
             totalEpisodes = seasons.reduce((sum, s) => {
@@ -404,6 +405,12 @@ class MovieBoxService {
             }, 0) || seasons[0]?.maxEp || sub.episodeCount || sub.maxEp || 1;
           } else {
             totalEpisodes = sub.episodeCount || sub.maxEp || 1;
+            normalizedSeasons = [{
+              se: 1,
+              maxEp: totalEpisodes,
+              allEp: '',
+              resolutions: []
+            }];
           }
         }
 
@@ -474,8 +481,8 @@ class MovieBoxService {
           category,
           isHindi,
           totalEpisodes,
-          seasonsCount: seasons.length || 1,
-          seasons,
+          seasonsCount: normalizedSeasons.length || 1,
+          seasons: normalizedSeasons,
           poster,
           cover,
           rating: sub.imdbRatingValue || '8.2',

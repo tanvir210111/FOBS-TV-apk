@@ -1079,8 +1079,12 @@ class AdminService {
       const seasonMap = new Map();
 
       // 1. Add MovieBox seasons if available with real released episode counts
-      if (mbDetail && Array.isArray(mbDetail.seasons) && mbDetail.seasons.length > 0) {
-        for (const s of mbDetail.seasons) {
+      const mbSeasonsList = (mbDetail && Array.isArray(mbDetail.seasons) && mbDetail.seasons.length > 0)
+        ? mbDetail.seasons
+        : ((mbDetail && (mbDetail.totalEpisodes || mbEps)) ? [{ se: 1, maxEp: mbDetail.totalEpisodes || mbEps || 1 }] : []);
+
+      if (mbSeasonsList.length > 0) {
+        for (const s of mbSeasonsList) {
           const seNum = parseInt(s.se, 10) || 1;
           let mEp = parseInt(s.maxEp, 10) || 0;
           if (s.allEp) {
