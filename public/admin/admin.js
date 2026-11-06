@@ -1956,25 +1956,27 @@ async function updateRequestStatus(id, status) {
 }
 
 // ============================================================
-// MOVIEBOX 1-CLICK IMPORTER
+// MOVIEBOX 1-CLICK IMPORTER & MULTI-CRITERIA FILTER ENGINE
 // ============================================================
 
-async function loadMovieBoxRecent(filter, btnEl) {
+state.movieboxRawItems = [];
+
+async function loadMovieBoxRecent(filter = 'trending', btnEl) {
   if (btnEl) {
     document.querySelectorAll('.importer-tab-btn').forEach(b => b.classList.remove('active'));
     btnEl.classList.add('active');
   }
 
   const grid = document.getElementById('importer-results-grid');
-  grid.innerHTML = '<div class="empty-state">Loading MovieBox feeds...</div>';
+  grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-spinner fa-spin" style="font-size:24px; color:var(--primary); margin-bottom:12px; display:block;"></i>Loading MovieBox feeds & pairing Original + Hindi titles...</div>';
 
   try {
     const res = await authFetch(`${API_BASE}/api/admin/moviebox/recent?filter=${encodeURIComponent(filter)}`);
     const data = await res.json();
-    const list = data.items || [];
-    renderImporterGrid(list);
+    state.movieboxRawItems = data.items || [];
+    applyImporterFilters();
   } catch (err) {
-    grid.innerHTML = '<div class="empty-state error-text">Failed to fetch MovieBox items.</div>';
+    grid.innerHTML = '<div class="empty-state error-text">Failed to fetch MovieBox items. Please try again.</div>';
   }
 }
 
@@ -1983,38 +1985,218 @@ async function searchMovieBox() {
   if (!query) return;
 
   const grid = document.getElementById('importer-results-grid');
-  grid.innerHTML = `<div class="empty-state">Searching global library for "${escapeHtml(query)}"...</div>`;
+  grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-spinner fa-spin" style="font-size:24px; color:var(--primary); margin-bottom:12px; display:block;"></i>Searching MovieBox & pairing Original + Hindi titles for "${escapeHtml(query)}"...</div>`;
 
   try {
     const res = await authFetch(`${API_BASE}/api/admin/moviebox/search?q=${encodeURIComponent(query)}`);
     const data = await res.json();
-    const list = data.items || [];
-    renderImporterGrid(list);
+    state.movieboxRawItems = data.items || [];
+    applyImporterFilters();
   } catch (err) {
-    grid.innerHTML = '<div class="empty-state error-text">Search failed.</div>';
+    grid.innerHTML = '<div class="empty-state error-text">Search failed. Please try again.</div>';
   }
+}
+
+function applyImporterFilters() {
+  const raw = state.movieboxRawItems || [];
+  const audio = document.getElementById('imp-filter-audio')?.value || 'all';
+  const category = document.getElementById('imp-filter-category')?.value || 'all';
+  const type = document.getElementById('imp-filter-type')?.value || 'all';
+  const year = document.getElementById('imp-filter-year')?.value || 'all';
+  const month = document.getElementById('imp-filter-month')?.value || 'all';
+  const status = document.getElementById('imp-filter-status')?.value || 'all';
+  const sort = document.getElementById('imp-filter-sort')?.value || 'default';
+  const keyword = (document.getElementById('imp-filter-keyword')?.value || '').trim().toLowerCase();
+
+  let filtered = raw.filter(item => {
+    const tLower = (item.title || '').toLowerCase();
+    const isHindi = !!item.isHindi || tLower.includes('hindi');
+    const isBangla = !!item.isBangla || tLower.includes('bangla') || tLower.includes('bengali');
+
+    // 1. Audio Filter
+    if (audio === 'original' && (isHindi || isBangla)) return false;
+    if (audio === 'hindi' && !isHindi) return false;
+    if (audio === 'bangla' && !isBangla) return false;
+
+    // 2. Category / Industry Filter
+    if (category !== 'all') {
+      const catLower = ((item.category || '') + ' ' + (item.industry || '') + ' ' + (item.section || '') + ' ' + tLower).toLowerCase();
+      if (category === 'hollywood' && !catLower.includes('hollywood') && !catLower.includes('western')) return false;
+      if (category === 'bollywood' && !catLower.includes('bollywood') && !catLower.includes('hindi')) return false;
+      if (category === 'tollywood' && !catLower.includes('tollywood') && !catLower.includes('south') && !catLower.includes('bangla')) return false;
+      if (category === 'korean' && !catLower.includes('korean') && !catLower.includes('kdrama') && !catLower.includes('k-drama')) return false;
+      if (category === 'turkish' && !catLower.includes('turkish') && !catLower.includes('turkey')) return false;
+      if (category === 'anime' && !catLower.includes('anime') && !catLower.includes('japan')) return false;
+      if (category === 'chinese' && !catLower.includes('chinese') && !catLower.includes('cdrama') && !catLower.includes('c-drama')) return false;
+      if (category === 'series' && item.type !== 'series' && !catLower.includes('series') && !catLower.includes('drama')) return false;
+    }
+
+    // 3. Media Type Filter
+    if (type === 'movie' && item.type !== 'movie') return false;
+    if (type === 'series' && item.type !== 'series') return false;
+
+    // 4. Year Filter
+    if (year !== 'all') {
+      const itemYearStr = String(item.year || '');
+      const itemYearNum = parseInt(item.year, 10) || 0;
+      if (year === 'older') {
+        if (itemYearNum > 2020) return false;
+      } else {
+        if (!itemYearStr.includes(year)) return false;
+      }
+    }
+
+    // 5. Month Filter
+    if (month !== 'all') {
+      const itemMonth = String(item.month || '');
+      const relMonth = item.releaseDate ? item.releaseDate.split('-')[1] : '';
+      if (itemMonth !== month && relMonth !== month) return false;
+    }
+
+    // 6. Import Status Filter
+    if (status === 'unimported' && item.alreadyImported) return false;
+    if (status === 'imported' && !item.alreadyImported) return false;
+
+    // 7. Instant In-Page Search Keyword
+    if (keyword) {
+      const searchable = [
+        item.title,
+        item.year,
+        item.audioTag,
+        item.category,
+        item.industry,
+        item.section
+      ].filter(Boolean).join(' ').toLowerCase();
+      if (!searchable.includes(keyword)) return false;
+    }
+
+    return true;
+  });
+
+  // Sorting
+  if (sort === 'rating-desc') {
+    filtered.sort((a, b) => parseFloat(b.rating || 0) - parseFloat(a.rating || 0));
+  } else if (sort === 'year-desc') {
+    filtered.sort((a, b) => (parseInt(b.year, 10) || 0) - (parseInt(a.year, 10) || 0));
+  } else if (sort === 'year-asc') {
+    filtered.sort((a, b) => (parseInt(a.year, 10) || 0) - (parseInt(b.year, 10) || 0));
+  } else if (sort === 'title-asc') {
+    filtered.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+  } else {
+    // Default: Keep Original + Hindi paired side by side
+    const grouped = new Map();
+    for (const item of filtered) {
+      const bKey = item.baseTitle || (item.title || '').replace(/\[.*?hindi.*?\]|\(.*?\bhindi\b.*?\)|\[.*?bangla.*?\]|\(.*?\bbangla\b.*?\)/gi, '').trim().toLowerCase();
+      if (!grouped.has(bKey)) grouped.set(bKey, []);
+      grouped.get(bKey).push(item);
+    }
+    const paired = [];
+    for (const [_, grp] of grouped) {
+      grp.sort((a, b) => {
+        if (!a.isHindi && b.isHindi) return -1;
+        if (a.isHindi && !b.isHindi) return 1;
+        return 0;
+      });
+      paired.push(...grp);
+    }
+    filtered = paired;
+  }
+
+  // Update summary badge
+  const countShownEl = document.getElementById('imp-count-shown');
+  const countTotalEl = document.getElementById('imp-count-total');
+  if (countShownEl) countShownEl.textContent = filtered.length;
+  if (countTotalEl) countTotalEl.textContent = raw.length;
+
+  renderImporterGrid(filtered);
+}
+
+function resetImporterFilters() {
+  const elAudio = document.getElementById('imp-filter-audio');
+  const elCat = document.getElementById('imp-filter-category');
+  const elType = document.getElementById('imp-filter-type');
+  const elYear = document.getElementById('imp-filter-year');
+  const elMonth = document.getElementById('imp-filter-month');
+  const elStatus = document.getElementById('imp-filter-status');
+  const elSort = document.getElementById('imp-filter-sort');
+  const elKw = document.getElementById('imp-filter-keyword');
+
+  if (elAudio) elAudio.value = 'all';
+  if (elCat) elCat.value = 'all';
+  if (elType) elType.value = 'all';
+  if (elYear) elYear.value = 'all';
+  if (elMonth) elMonth.value = 'all';
+  if (elStatus) elStatus.value = 'all';
+  if (elSort) elSort.value = 'default';
+  if (elKw) elKw.value = '';
+
+  applyImporterFilters();
 }
 
 function renderImporterGrid(items) {
   state.lastMovieBoxItems = items || [];
   const grid = document.getElementById('importer-results-grid');
   if (!items || items.length === 0) {
-    grid.innerHTML = '<div class="empty-state">No matching titles found in MovieBox feed.</div>';
+    grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-filter-circle-xmark" style="font-size:32px; color:var(--text-dim); margin-bottom:12px; display:block;"></i>No matching titles found for the selected filters.<br><button type="button" class="btn-secondary" onclick="resetImporterFilters()" style="margin-top:12px; font-size:12px;"><i class="fa-solid fa-rotate-left"></i> Reset Filters</button></div>';
     return;
   }
 
-  grid.innerHTML = items.map((item, idx) => `
-    <div class="importer-card" onclick="openImportModalByIndex(${idx})" style="cursor: pointer;">
-      <img src="${item.poster || 'assets/fobs_logo.png'}" onerror="this.src='assets/fobs_logo.png'" alt="">
-      <div class="importer-card-info">
-        <div class="importer-card-title">${escapeHtml(item.title)}</div>
-        <div class="importer-card-sub">${item.year || '2025'} &bull; ${escapeHtml(item.type || 'Movie')}</div>
-        <button type="button" class="btn-primary importer-card-btn" onclick="event.stopPropagation(); openImportModalByIndex(${idx})">
+  const monthsMap = {
+    '01': 'Jan', '02': 'Feb', '03': 'Mar', '04': 'Apr',
+    '05': 'May', '06': 'Jun', '07': 'Jul', '08': 'Aug',
+    '09': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec'
+  };
+
+  grid.innerHTML = items.map((item, idx) => {
+    const isSeries = item.type === 'series' || (item.category && item.category.toLowerCase().includes('series'));
+    const tLower = (item.title || '').toLowerCase();
+    const isHindi = item.isHindi || tLower.includes('hindi');
+    const isBangla = item.isBangla || tLower.includes('bangla') || tLower.includes('bengali');
+
+    let audioBadgeHtml = '';
+    if (isHindi) {
+      audioBadgeHtml = '<span class="card-badge-top-left badge-audio-hindi"><i class="fa-solid fa-volume-high"></i> Hindi Dubbed</span>';
+    } else if (isBangla) {
+      audioBadgeHtml = '<span class="card-badge-top-left badge-audio-bangla"><i class="fa-solid fa-volume-high"></i> Bangla Dubbed</span>';
+    } else {
+      audioBadgeHtml = '<span class="card-badge-top-left badge-audio-original"><i class="fa-solid fa-headphones"></i> Original Audio</span>';
+    }
+
+    const typeBadgeHtml = isSeries
+      ? '<span class="card-badge-top-right"><i class="fa-solid fa-tv"></i> Series</span>'
+      : '<span class="card-badge-top-right"><i class="fa-solid fa-film"></i> Movie</span>';
+
+    const ratingBadgeHtml = `<span class="card-badge-rating"><i class="fa-solid fa-star"></i> ${escapeHtml(item.rating || '8.5')}</span>`;
+
+    const monthName = item.month && monthsMap[item.month] ? monthsMap[item.month] + ' ' : '';
+    const dateSub = `${monthName}${item.year || '2026'}`;
+    const indSub = item.industry ? ` &bull; ${escapeHtml(item.industry)}` : '';
+
+    const isImported = !!item.alreadyImported;
+    const btnHtml = isImported
+      ? `<button type="button" class="btn-secondary importer-card-btn" style="border-color:rgba(168,85,247,0.4); color:#c084fc;" onclick="event.stopPropagation(); openImportModalByIndex(${idx})">
+          <i class="fa-solid fa-pen-to-square"></i> Already in FOBS (Update)
+        </button>`
+      : `<button type="button" class="btn-primary glow importer-card-btn" onclick="event.stopPropagation(); openImportModalByIndex(${idx})">
           <i class="fa-solid fa-wand-magic-sparkles"></i> 1-Click Import
-        </button>
+        </button>`;
+
+    return `
+      <div class="importer-card" onclick="openImportModalByIndex(${idx})" style="cursor: pointer; position:relative;">
+        <div class="importer-card-poster-wrap">
+          <img src="${item.poster || 'assets/fobs_logo.png'}" onerror="this.src='assets/fobs_logo.png'" alt="${escapeHtml(item.title)}">
+          ${audioBadgeHtml}
+          ${typeBadgeHtml}
+          ${ratingBadgeHtml}
+        </div>
+        <div class="importer-card-info">
+          <div class="importer-card-title" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</div>
+          <div class="importer-card-sub">${dateSub}${indSub}</div>
+          ${btnHtml}
+        </div>
       </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
 function openImportModalByIndex(idx) {

@@ -540,7 +540,7 @@ class AdminService {
   /**
    * Get Recent & Trending Releases from MovieBox Live Feed (with smart deduplication)
    */
-  async getMovieBoxRecent(filter = 'all', hideImported = true) {
+  async getMovieBoxRecent(filter = 'all', hideImported = false) {
     const sections = await movieboxService.getHomepage();
     const content = readContent();
 
@@ -549,9 +549,9 @@ class AdminService {
       ...(content.series || []).map(s => String(s.subjectId || s.id))
     ]);
 
-    const existingTitles = new Set([
-      ...(content.movies || []).map(m => this.normTitle(m.title)),
-      ...(content.series || []).map(s => this.normTitle(s.title))
+    const existingExactTitles = new Set([
+      ...(content.movies || []).map(m => (m.title || '').trim().toLowerCase()),
+      ...(content.series || []).map(s => (s.title || '').trim().toLowerCase())
     ]);
 
     const seen = new Set();
@@ -563,17 +563,52 @@ class AdminService {
         seen.add(it.id);
 
         const sid = String(it.subjectId || it.id);
-        const titleNorm = this.normTitle(it.title);
+        const titleExact = (it.title || '').trim().toLowerCase();
 
         const alreadyImported = existingIds.has(sid) ||
           existingIds.has('mb-m-' + sid) ||
           existingIds.has('mb-s-' + sid) ||
-          existingTitles.has(titleNorm);
+          existingExactTitles.has(titleExact);
+
+        const tLower = (it.title || '').toLowerCase();
+        const secLower = (sec.title || '').toLowerCase();
+        const isHindi = tLower.includes('hindi') || secLower.includes('hindi');
+        const isBangla = tLower.includes('bangla') || tLower.includes('bengali') || secLower.includes('bangla');
+        const audioTag = isHindi ? 'Hindi Dubbed' : (isBangla ? 'Bangla Dubbed' : 'Original Audio');
+        const baseTitle = (it.title || '').replace(/\[.*?hindi.*?\]|\(.*?\bhindi\b.*?\)|\[.*?bangla.*?\]|\(.*?\bbangla\b.*?\)/gi, '').trim().toLowerCase();
+
+        let industry = 'Hollywood';
+        if (/korean|kdrama|k-drama/i.test(tLower) || secLower.includes('korean')) industry = 'Korean';
+        else if (/bollywood|hindi/i.test(tLower) || secLower.includes('bollywood') || secLower.includes('hindi')) industry = 'Bollywood';
+        else if (/anime|japan/i.test(tLower) || secLower.includes('anime')) industry = 'Anime';
+        else if (/turkish|turkey/i.test(tLower) || secLower.includes('turkish')) industry = 'Turkish';
+        else if (/chinese|cdrama|c-drama/i.test(tLower) || secLower.includes('chinese')) industry = 'Chinese';
+        else if (isBangla || /bangla/i.test(tLower)) industry = 'Tollywood';
+
+        let category = it.type === 'series'
+          ? (isHindi ? `${industry} (Dubbed) Series` : `${industry} Series`)
+          : (isHindi ? `${industry} (Dubbed) Movies` : `${industry} Movies`);
+
+        let itemYear = it.year || '2026';
+        let itemMonth = '01';
+        const mMatch = (it.poster || '').match(/\/(\d{4})\/(\d{2})\//);
+        if (mMatch) {
+          if (!it.year) itemYear = mMatch[1];
+          itemMonth = mMatch[2];
+        }
 
         allItems.push({
           ...it,
           section: sec.title,
-          alreadyImported
+          alreadyImported,
+          isHindi,
+          isBangla,
+          audioTag,
+          baseTitle,
+          industry,
+          category,
+          year: itemYear,
+          month: itemMonth
         });
       }
     }
@@ -617,7 +652,26 @@ class AdminService {
     }
 
     const unimportedCount = filtered.filter(i => !i.alreadyImported).length;
-    const finalItems = hideImported ? filtered.filter(i => !i.alreadyImported) : filtered;
+    let listToPair = hideImported ? filtered.filter(i => !i.alreadyImported) : filtered;
+
+    // Group & pair Original and Hindi versions of the same title so they ALWAYS appear together!
+    const grouped = new Map();
+    for (const item of listToPair) {
+      const bKey = item.baseTitle || item.title.toLowerCase();
+      if (!grouped.has(bKey)) grouped.set(bKey, []);
+      grouped.get(bKey).push(item);
+    }
+
+    const pairedItems = [];
+    for (const [_, grp] of grouped) {
+      // Sort within the group: Original first, then Hindi, then Bangla
+      grp.sort((a, b) => {
+        if (!a.isHindi && b.isHindi) return -1;
+        if (a.isHindi && !b.isHindi) return 1;
+        return 0;
+      });
+      pairedItems.push(...grp);
+    }
 
     return {
       success: true,
@@ -627,7 +681,7 @@ class AdminService {
       filteredCount: filtered.length,
       unimportedCount,
       alreadyImportedCount: filtered.length - unimportedCount,
-      items: finalItems
+      items: pairedItems
     };
   }
 
@@ -710,22 +764,71 @@ class AdminService {
 
   /**
    * Search MovieBox API directly for admin importer
+   * Always searches Original and Hindi/Dubbed versions in parallel,
+   * tags audio/category/dates, and pairs them side-by-side!
    */
   async searchMovieBox(query) {
     if (!query) return { success: true, items: [] };
-    const items = await movieboxService.search(query);
+    const cleanQ = query.trim();
+
+    // Query both Original and Hindi / Dubbed versions in parallel
+    const queriesToRun = [cleanQ];
+    const isHindiQuery = /\bhindi\b/i.test(cleanQ);
+    const isBanglaQuery = /\bbangla\b|\bbengali\b/i.test(cleanQ);
+
+    if (!isHindiQuery) {
+      queriesToRun.push(`${cleanQ} hindi`);
+    } else {
+      const strippedHindi = cleanQ.replace(/\bhindi\b/gi, '').trim();
+      if (strippedHindi) queriesToRun.push(strippedHindi);
+    }
+
+    if (!isBanglaQuery && queriesToRun.length < 3) {
+      queriesToRun.push(`${cleanQ} bangla`);
+    }
+
+    const searchResults = await Promise.allSettled(
+      queriesToRun.map(q => movieboxService.search(q))
+    );
+
+    const seenMap = new Map();
+    for (const res of searchResults) {
+      if (res.status === 'fulfilled' && Array.isArray(res.value)) {
+        for (const it of res.value) {
+          const sid = String(it.subjectId || it.id || '');
+          if (sid && !seenMap.has(sid)) {
+            seenMap.set(sid, it);
+          }
+        }
+      }
+    }
+
+    const items = Array.from(seenMap.values());
     const content = readContent();
     const existingIds = new Set([
       ...(content.movies || []).map(m => String(m.subjectId || m.id)),
       ...(content.series || []).map(s => String(s.subjectId || s.id))
     ]);
+    const existingExactTitles = new Set([
+      ...(content.movies || []).map(m => (m.title || '').trim().toLowerCase()),
+      ...(content.series || []).map(s => (s.title || '').trim().toLowerCase())
+    ]);
 
     // Enrich items with official TMDb HD poster & backdrop
-    const enriched = await Promise.all(items.slice(0, 25).map(async it => {
+    const enriched = await Promise.all(items.slice(0, 30).map(async it => {
       let poster = it.poster;
       let backdrop = it.backdrop || it.cover;
       let tmdbRating = it.rating;
       let tmdbOverview = '';
+      let tmdbYear = it.year || '';
+      let tmdbMonth = '';
+      let tmdbReleaseDate = '';
+
+      const tLower = (it.title || '').toLowerCase();
+      const isHindi = tLower.includes('hindi');
+      const isBangla = tLower.includes('bangla') || tLower.includes('bengali');
+      const audioTag = isHindi ? 'Hindi Dubbed' : (isBangla ? 'Bangla Dubbed' : 'Original Audio');
+      const baseTitle = (it.title || '').replace(/\[.*?hindi.*?\]|\(.*?\bhindi\b.*?\)|\[.*?bangla.*?\]|\(.*?\bbangla\b.*?\)/gi, '').trim().toLowerCase();
 
       try {
         const cleanName = (it.title || '').replace(/\[.*?\]|\(.*?\)/g, '').trim();
@@ -745,8 +848,38 @@ class AdminService {
           if (tmdbItem.overview) {
             tmdbOverview = tmdbItem.overview;
           }
+          const relDate = tmdbItem.release_date || tmdbItem.first_air_date || '';
+          if (relDate) {
+            tmdbReleaseDate = relDate;
+            const parts = relDate.split('-');
+            if (parts[0]) tmdbYear = parts[0];
+            if (parts[1]) tmdbMonth = parts[1];
+          }
         }
       } catch (e) {}
+
+      let industry = 'Hollywood';
+      if (/korean|kdrama|k-drama/i.test(tLower)) industry = 'Korean';
+      else if (/bollywood|hindi/i.test(tLower)) industry = 'Bollywood';
+      else if (/anime|japan/i.test(tLower)) industry = 'Anime';
+      else if (/turkish|turkey/i.test(tLower)) industry = 'Turkish';
+      else if (/chinese|cdrama|c-drama/i.test(tLower)) industry = 'Chinese';
+      else if (isBangla || /bangla/i.test(tLower)) industry = 'Tollywood';
+
+      let category = it.type === 'series'
+        ? (isHindi ? `${industry} (Dubbed) Series` : `${industry} Series`)
+        : (isHindi ? `${industry} (Dubbed) Movies` : `${industry} Movies`);
+
+      let itemYear = tmdbYear || it.year || '2026';
+      let itemMonth = tmdbMonth || '01';
+      const mMatch = (it.poster || '').match(/\/(\d{4})\/(\d{2})\//);
+      if (mMatch && !tmdbMonth) {
+        if (!tmdbYear && !it.year) itemYear = mMatch[1];
+        itemMonth = mMatch[2];
+      }
+
+      const sid = String(it.subjectId || it.id);
+      const titleExact = (it.title || '').trim().toLowerCase();
 
       return {
         ...it,
@@ -755,13 +888,41 @@ class AdminService {
         cover: backdrop || it.backdrop || poster || it.poster,
         rating: tmdbRating || it.rating || '8.5',
         overview: tmdbOverview || it.description || '',
-        alreadyImported: existingIds.has(String(it.subjectId || it.id)) ||
-          existingIds.has(`mb-m-${it.subjectId || it.id}`) ||
-          existingIds.has(`mb-s-${it.subjectId || it.id}`)
+        year: itemYear,
+        month: itemMonth,
+        releaseDate: tmdbReleaseDate || '',
+        isHindi,
+        isBangla,
+        audioTag,
+        baseTitle,
+        industry,
+        category,
+        alreadyImported: existingIds.has(sid) ||
+          existingIds.has(`mb-m-${sid}`) ||
+          existingIds.has(`mb-s-${sid}`) ||
+          existingExactTitles.has(titleExact)
       };
     }));
 
-    return { success: true, items: enriched };
+    // Group & pair Original and Hindi versions of the same title so they ALWAYS appear together!
+    const grouped = new Map();
+    for (const item of enriched) {
+      const bKey = item.baseTitle || item.title.toLowerCase();
+      if (!grouped.has(bKey)) grouped.set(bKey, []);
+      grouped.get(bKey).push(item);
+    }
+
+    const pairedItems = [];
+    for (const [_, grp] of grouped) {
+      grp.sort((a, b) => {
+        if (!a.isHindi && b.isHindi) return -1;
+        if (a.isHindi && !b.isHindi) return 1;
+        return 0;
+      });
+      pairedItems.push(...grp);
+    }
+
+    return { success: true, items: pairedItems };
   }
 
   /**

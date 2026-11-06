@@ -594,24 +594,151 @@
         <div class="section-top-bar glass">
           <div class="section-desc">
             <h3><i class="fa-solid fa-wand-magic-sparkles"></i> MovieBox 1-Click Importer</h3>
-            <p>Search global movies and series or browse live trending feeds to import permanently into FOBS TV catalog.</p>
+            <p>Search global titles, browse feeds, and filter by Audio (Original / Hindi / Bangla), Category, Month, Year & Status.</p>
           </div>
         </div>
 
         <div class="importer-search-wrap glass">
-          <input type="text" id="importer-search-input" placeholder="Search global titles (e.g. Hope, The Remarried Empress, Pushpa 2)..." onkeypress="if(event.key==='Enter') searchMovieBox()">
+          <input type="text" id="importer-search-input" placeholder="Search global titles (e.g. Hope, Remarried Empress, Pushpa 2, Avengers, Solo Leveling)..." onkeypress="if(event.key==='Enter') searchMovieBox()">
           <button class="btn-primary glow" onclick="searchMovieBox()">
-            <i class="fa-solid fa-magnifying-glass"></i> Search
+            <i class="fa-solid fa-magnifying-glass"></i> Search MovieBox
           </button>
         </div>
 
+        <!-- Preset Feed Tabs -->
         <div class="importer-tabs">
-          <button class="importer-tab-btn active" onclick="loadMovieBoxRecent('trending', this)">Trending Now</button>
-          <button class="importer-tab-btn" onclick="loadMovieBoxRecent('cinema', this)">Cinema Releases</button>
-          <button class="importer-tab-btn" onclick="loadMovieBoxRecent('bollywood', this)">Bollywood & Hindi</button>
-          <button class="importer-tab-btn" onclick="loadMovieBoxRecent('hollywood', this)">Hollywood</button>
-          <button class="importer-tab-btn" onclick="loadMovieBoxRecent('series', this)">Top Series</button>
-          <button class="importer-tab-btn" onclick="loadMovieBoxRecent('anime', this)">Anime</button>
+          <button class="importer-tab-btn active" onclick="loadMovieBoxRecent('trending', this)"><i class="fa-solid fa-fire"></i> Trending Now</button>
+          <button class="importer-tab-btn" onclick="loadMovieBoxRecent('cinema', this)"><i class="fa-solid fa-film"></i> Cinema Releases</button>
+          <button class="importer-tab-btn" onclick="loadMovieBoxRecent('bollywood', this)"><i class="fa-solid fa-music"></i> Bollywood & Hindi</button>
+          <button class="importer-tab-btn" onclick="loadMovieBoxRecent('hollywood', this)"><i class="fa-solid fa-clapperboard"></i> Hollywood</button>
+          <button class="importer-tab-btn" onclick="loadMovieBoxRecent('series', this)"><i class="fa-solid fa-tv"></i> Top Series</button>
+          <button class="importer-tab-btn" onclick="loadMovieBoxRecent('anime', this)"><i class="fa-solid fa-dragon"></i> Anime</button>
+          <button class="importer-tab-btn" onclick="loadMovieBoxRecent('kdrama-hindi', this)"><i class="fa-solid fa-heart"></i> K-Drama (Hindi)</button>
+          <button class="importer-tab-btn" onclick="loadMovieBoxRecent('cdrama-hindi', this)"><i class="fa-solid fa-yin-yang"></i> C-Drama (Hindi)</button>
+          <button class="importer-tab-btn" onclick="loadMovieBoxRecent('turkish-hindi', this)"><i class="fa-solid fa-moon"></i> Turkish (Hindi)</button>
+          <button class="importer-tab-btn" onclick="loadMovieBoxRecent('all', this)"><i class="fa-solid fa-globe"></i> All Feeds</button>
+        </div>
+
+        <!-- FULL CUSTOMIZABLE MULTI-CRITERIA FILTER BAR -->
+        <div class="importer-filter-panel glass">
+          <div class="importer-filter-title">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <i class="fa-solid fa-sliders" style="color:var(--primary);"></i>
+              <strong style="font-size:13.5px; text-transform:uppercase; letter-spacing:0.5px;">Customizable Content Filters</strong>
+            </div>
+            <div id="importer-filter-summary" class="importer-count-badge">
+              Showing <span id="imp-count-shown">0</span> of <span id="imp-count-total">0</span> items
+            </div>
+          </div>
+
+          <div class="importer-filter-grid">
+            <!-- Audio / Language Filter -->
+            <div class="importer-filter-col">
+              <label><i class="fa-solid fa-headphones"></i> Audio / Language</label>
+              <select id="imp-filter-audio" class="custom-select" onchange="applyImporterFilters()">
+                <option value="all">All Audio (Original + Hindi Paired)</option>
+                <option value="original">Original Audio Only</option>
+                <option value="hindi">Hindi Dubbed Only</option>
+                <option value="bangla">Bangla Dubbed / Subbed</option>
+              </select>
+            </div>
+
+            <!-- Category / Industry Filter -->
+            <div class="importer-filter-col">
+              <label><i class="fa-solid fa-layer-group"></i> Category & Industry</label>
+              <select id="imp-filter-category" class="custom-select" onchange="applyImporterFilters()">
+                <option value="all">All Categories</option>
+                <option value="hollywood">Hollywood</option>
+                <option value="bollywood">Bollywood</option>
+                <option value="tollywood">South Indian / Tollywood</option>
+                <option value="korean">Korean Drama (K-Drama)</option>
+                <option value="turkish">Turkish Series (Dizi)</option>
+                <option value="anime">Anime & Japanese</option>
+                <option value="chinese">Chinese Drama (C-Drama)</option>
+                <option value="series">Web Series / TV Shows</option>
+              </select>
+            </div>
+
+            <!-- Content Type Filter -->
+            <div class="importer-filter-col">
+              <label><i class="fa-solid fa-shapes"></i> Media Type</label>
+              <select id="imp-filter-type" class="custom-select" onchange="applyImporterFilters()">
+                <option value="all">All Types (Movies & Series)</option>
+                <option value="movie">Movies Only</option>
+                <option value="series">Series Only</option>
+              </select>
+            </div>
+
+            <!-- Year Filter -->
+            <div class="importer-filter-col">
+              <label><i class="fa-solid fa-calendar"></i> Release Year</label>
+              <select id="imp-filter-year" class="custom-select" onchange="applyImporterFilters()">
+                <option value="all">All Years</option>
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="older">2020 & Older</option>
+              </select>
+            </div>
+
+            <!-- Month Filter -->
+            <div class="importer-filter-col">
+              <label><i class="fa-solid fa-calendar-days"></i> Release Month</label>
+              <select id="imp-filter-month" class="custom-select" onchange="applyImporterFilters()">
+                <option value="all">All Months</option>
+                <option value="01">01 - January</option>
+                <option value="02">02 - February</option>
+                <option value="03">03 - March</option>
+                <option value="04">04 - April</option>
+                <option value="05">05 - May</option>
+                <option value="06">06 - June</option>
+                <option value="07">07 - July</option>
+                <option value="08">08 - August</option>
+                <option value="09">09 - September</option>
+                <option value="10">10 - October</option>
+                <option value="11">11 - November</option>
+                <option value="12">12 - December</option>
+              </select>
+            </div>
+
+            <!-- Import Status Filter -->
+            <div class="importer-filter-col">
+              <label><i class="fa-solid fa-circle-check"></i> Import Status</label>
+              <select id="imp-filter-status" class="custom-select" onchange="applyImporterFilters()">
+                <option value="all">All Items</option>
+                <option value="unimported">Unimported Only (New)</option>
+                <option value="imported">Already in FOBS TV</option>
+              </select>
+            </div>
+
+            <!-- Sort By -->
+            <div class="importer-filter-col">
+              <label><i class="fa-solid fa-arrow-down-wide-short"></i> Sort By</label>
+              <select id="imp-filter-sort" class="custom-select" onchange="applyImporterFilters()">
+                <option value="default">Default (Original + Hindi Paired)</option>
+                <option value="rating-desc">Rating (High to Low)</option>
+                <option value="year-desc">Year (Newest First)</option>
+                <option value="year-asc">Year (Oldest First)</option>
+                <option value="title-asc">Title (A to Z)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- In-Page Instant Keyword Filter + Reset Toolbar -->
+          <div class="importer-filter-bottom">
+            <div class="importer-inpage-search">
+              <i class="fa-solid fa-filter"></i>
+              <input type="text" id="imp-filter-keyword" placeholder="Quick filter displayed titles..." oninput="applyImporterFilters()">
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <button type="button" class="btn-secondary" onclick="resetImporterFilters()" style="padding: 8px 14px; font-size: 12.5px;">
+                <i class="fa-solid fa-rotate-left"></i> Reset Filters
+              </button>
+            </div>
+          </div>
         </div>
 
         <div id="importer-results-grid" class="importer-grid">
