@@ -103,7 +103,12 @@ async function verifySession() {
 function showApp() {
   document.getElementById('login-modal').classList.remove('active');
   document.getElementById('app').style.display = 'flex';
-  loadDashboardData();
+  const initialHash = (window.location.hash || '').replace('#', '').trim();
+  if (initialHash && ['movies', 'series', 'livetv', 'announcements', 'comments', 'users', 'requests', 'importer', 'appcontrol'].includes(initialHash)) {
+    switchAdminTab(initialHash);
+  } else {
+    loadDashboardData();
+  }
 }
 
 function authHeaders(headers = {}) {
@@ -137,8 +142,20 @@ function setupNavigation() {
     item.addEventListener('click', (e) => {
       e.preventDefault();
       const tab = item.getAttribute('data-tab');
-      if (tab) switchAdminTab(tab);
+      if (tab) {
+        if (window.location.hash !== `#${tab}`) {
+          window.location.hash = tab;
+        }
+        switchAdminTab(tab);
+      }
     });
+  });
+
+  window.addEventListener('hashchange', () => {
+    const hash = (window.location.hash || '').replace('#', '').trim();
+    if (hash && hash !== state.activeTab) {
+      switchAdminTab(hash);
+    }
   });
 
   const sidebarToggle = document.getElementById('sidebar-toggle');
@@ -155,6 +172,9 @@ function setupNavigation() {
 
 function switchAdminTab(tabName) {
   state.activeTab = tabName;
+  if (window.location.hash !== `#${tabName}`) {
+    history.replaceState(null, '', `#${tabName}`);
+  }
 
   // Close mobile sidebar
   const sidebar = document.getElementById('sidebar');
