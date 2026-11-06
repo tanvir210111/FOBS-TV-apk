@@ -3693,6 +3693,26 @@ app.post('/api/admin/series/:id/episodes', adminService.authenticate, (req, res)
   }
 });
 
+// Admin Check & Sync New Episodes for Series
+app.get('/api/admin/series/:id/check-updates', adminService.authenticate, async (req, res) => {
+  try {
+    const data = await adminService.checkSeriesUpdates(req.params.id);
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/admin/series/:id/sync-new-episodes', adminService.authenticate, async (req, res) => {
+  try {
+    const { episodes } = req.body;
+    const data = await adminService.syncNewSeriesEpisodes(req.params.id, episodes);
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Admin Upcoming Releases CRUD
 app.get('/api/admin/upcoming', adminService.authenticate, (req, res) => {
   try {

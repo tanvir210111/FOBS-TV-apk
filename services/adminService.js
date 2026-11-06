@@ -1069,12 +1069,16 @@ class AdminService {
     let finalSeasons = [];
     const tmdbEps = parseInt(tmdbData?.number_of_episodes, 10) || 0;
     const mbEps = parseInt(mbDetail?.totalEpisodes, 10) || 0;
-    let detectedTotalEps = Math.max(mbEps, tmdbEps);
+    let detectedTotalEps = mbEps || tmdbEps;
+
+    let isOngoing = false;
+    let totalReleasedEps = 0;
+    let totalPlannedEps = 0;
 
     if (tmdbType === 'tv') {
       const seasonMap = new Map();
 
-      // 1. Add MovieBox seasons if available
+      // 1. Add MovieBox seasons if available with real released episode counts
       if (mbDetail && Array.isArray(mbDetail.seasons) && mbDetail.seasons.length > 0) {
         for (const s of mbDetail.seasons) {
           const seNum = parseInt(s.se, 10) || 1;
@@ -1091,12 +1095,14 @@ class AdminService {
           seasonMap.set(seNum, {
             se: seNum,
             title: `Season ${seNum}`,
-            maxEp: mEp || 1
+            releasedMaxEp: mEp || 1,
+            maxEp: mEp || 1,
+            plannedMaxEp: mEp || 1
           });
         }
       }
 
-      // 2. Add or enrich with TMDb seasons
+      // 2. Add or enrich with TMDb seasons without overwriting real released episode counts
       if (Array.isArray(tmdbData?.seasons) && tmdbData.seasons.length > 0) {
         const validTmdbSeasons = tmdbData.seasons.filter(s => s.season_number > 0);
         for (const ts of validTmdbSeasons) {
@@ -1105,12 +1111,14 @@ class AdminService {
           if (seasonMap.has(seNum)) {
             const existing = seasonMap.get(seNum);
             if (ts.name) existing.title = ts.name;
-            if (existing.maxEp <= 1 && epCount > 1) existing.maxEp = epCount;
+            existing.plannedMaxEp = Math.max(epCount, existing.releasedMaxEp);
           } else {
             seasonMap.set(seNum, {
               se: seNum,
               title: ts.name || `Season ${seNum}`,
-              maxEp: epCount
+              releasedMaxEp: epCount,
+              maxEp: epCount,
+              plannedMaxEp: epCount
             });
           }
         }
@@ -1121,9 +1129,19 @@ class AdminService {
         seasonMap.set(1, {
           se: 1,
           title: 'Season 1',
-          maxEp: detectedTotalEps || 16
+          releasedMaxEp: detectedTotalEps || 16,
+          maxEp: detectedTotalEps || 16,
+          plannedMaxEp: detectedTotalEps || 16
         });
       }
+
+      for (const [_, s] of seasonMap) {
+        totalReleasedEps += (s.releasedMaxEp || s.maxEp || 0);
+        totalPlannedEps += (s.plannedMaxEp || s.maxEp || 0);
+      }
+      isOngoing = (totalReleasedEps < totalPlannedEps) ||
+        (tmdbData?.status === 'Returning Series') ||
+        (tmdbData?.in_production === true);
 
       const sortedSeasons = Array.from(seasonMap.values()).sort((a, b) => a.se - b.se);
 
@@ -1151,6 +1169,8 @@ class AdminService {
           seasonNumber: seNum,
           title: s.title || `Season ${seNum}`,
           name: s.title || `Season ${seNum}`,
+          releasedEpisodesCount: s.releasedMaxEp || eps.length,
+          plannedEpisodesCount: s.plannedMaxEp || eps.length,
           episodesCount: eps.length,
           episodes: eps
         };
@@ -1181,6 +1201,10 @@ class AdminService {
         streamUrl: streamUrl,
         isHindi: isHindiDubbed,
         type: tmdbType === 'tv' ? 'series' : 'movie',
+        isOngoing,
+        releasedEpisodesCount: totalReleasedEps || detectedTotalEps,
+        plannedEpisodesCount: totalPlannedEps || detectedTotalEps,
+        status: isOngoing ? 'Ongoing' : 'Completed',
         seasonsCount: finalSeasons.length || 1,
         totalEpisodes: detectedTotalEps,
         seasons: finalSeasons,
@@ -2593,6 +2617,178 @@ class AdminService {
       message: updatedSeries.length > 0
         ? `🎉 Auto-sync completed! Updated ${updatedSeries.length} series with new episodes: ${updatedSeries.map(u => `${u.title} (+${u.added} eps)`).join(', ')}`
         : '✓ All TV series are currently up-to-date with MovieBox releases.'
+    };
+  }
+
+  /**
+   * Real-time Check for newly released episodes on MovieBox for a specific series
+   */
+  async checkSeriesUpdates(identifier) {
+    const content = readContent();
+    const seriesList = content.series || [];
+    const target = seriesList.find(s => s.id === identifier || s.subjectId === identifier || String(s.subjectId) === String(identifier));
+    if (!target) throw new Error('Series not found in database');
+
+    const sId = target.subjectId || (target.id && target.id.startsWith('mb-s-') ? target.id.replace('mb-s-', '') : null);
+    if (!sId) throw new Error('This series does not have a MovieBox Subject ID linked');
+
+    try { movieboxService.invalidateCache(sId); } catch (_) {}
+    const autoDetail = await movieboxService.getDetail(sId, target.detailPath || '', { forceRefresh: true });
+    if (!autoDetail) throw new Error('Could not fetch latest details from MovieBox API');
+
+    // Existing episodes currently stored in FOBS TV
+    const existingSeasons = Array.isArray(target.seasons) && target.seasons.length > 0
+      ? target.seasons
+      : [{ seasonNumber: 1, episodes: target.episodes || [] }];
+
+    let currentEpisodesTotal = 0;
+    const existingKeys = new Set();
+
+    for (const s of existingSeasons) {
+      const seNum = s.seasonNumber || 1;
+      const eps = Array.isArray(s.episodes) ? s.episodes : [];
+      currentEpisodesTotal += eps.length;
+      for (const ep of eps) {
+        const epNum = ep.episode || parseInt(ep.number, 10);
+        existingKeys.add(`s${seNum}_e${epNum}`);
+      }
+    }
+
+    // MovieBox released episodes
+    const mbSeasons = Array.isArray(autoDetail.seasons) && autoDetail.seasons.length > 0
+      ? autoDetail.seasons
+      : [{ se: 1, maxEp: autoDetail.totalEpisodes || 1 }];
+
+    const newEpisodes = [];
+    let mbReleasedTotal = 0;
+
+    for (const mbs of mbSeasons) {
+      const seNum = parseInt(mbs.se, 10) || 1;
+      let mEp = parseInt(mbs.maxEp, 10) || 0;
+      if (mbs.allEp) {
+        const count = mbs.allEp.split(',').filter(Boolean).length;
+        if (count > mEp) mEp = count;
+      }
+      if (Array.isArray(mbs.resolutions)) {
+        for (const r of mbs.resolutions) {
+          if (r.epNum && r.epNum > mEp) mEp = r.epNum;
+        }
+      }
+      mbReleasedTotal += mEp;
+
+      for (let epNum = 1; epNum <= mEp; epNum++) {
+        const key = `s${seNum}_e${epNum}`;
+        if (!existingKeys.has(key)) {
+          newEpisodes.push({
+            seasonNumber: seNum,
+            episode: epNum,
+            episodeNumber: epNum,
+            number: String(epNum).padStart(2, '0'),
+            title: `Episode ${epNum}`,
+            season: seNum,
+            streamUrl: `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(target.detailPath || autoDetail.detailPath || '')}&se=${seNum}&ep=${epNum}`,
+            duration: '45 min'
+          });
+        }
+      }
+    }
+
+    return {
+      success: true,
+      seriesId: target.id,
+      title: target.title,
+      poster: target.poster || autoDetail.poster,
+      cover: target.cover || target.backdrop || autoDetail.cover,
+      currentEpisodesTotal,
+      mbReleasedTotal,
+      newEpisodesCount: newEpisodes.length,
+      newEpisodes,
+      isOngoing: target.isOngoing || (mbReleasedTotal > currentEpisodesTotal)
+    };
+  }
+
+  /**
+   * Sync and append newly released episodes to an existing series
+   */
+  async syncNewSeriesEpisodes(identifier, episodesToAdd) {
+    if (!Array.isArray(episodesToAdd) || episodesToAdd.length === 0) {
+      throw new Error('No episodes provided to add');
+    }
+    const content = readContent();
+    const seriesList = content.series || [];
+    const target = seriesList.find(s => s.id === identifier || s.subjectId === identifier || String(s.subjectId) === String(identifier));
+    if (!target) throw new Error('Series not found in database');
+
+    if (!Array.isArray(target.seasons) || target.seasons.length === 0) {
+      target.seasons = [{
+        seasonNumber: 1,
+        title: 'Season 1',
+        name: 'Season 1',
+        episodes: Array.isArray(target.episodes) ? target.episodes : []
+      }];
+    }
+
+    let addedCount = 0;
+    for (const newEp of episodesToAdd) {
+      const seNum = parseInt(newEp.seasonNumber || newEp.season, 10) || 1;
+      let season = target.seasons.find(s => (s.seasonNumber || 1) === seNum);
+      if (!season) {
+        season = {
+          seasonNumber: seNum,
+          title: `Season ${seNum}`,
+          name: `Season ${seNum}`,
+          episodes: []
+        };
+        target.seasons.push(season);
+      }
+      if (!Array.isArray(season.episodes)) season.episodes = [];
+      const existingEpNums = new Set(season.episodes.map(e => e.episode || parseInt(e.number, 10)));
+      const epNum = parseInt(newEp.episode || newEp.number, 10);
+      if (!existingEpNums.has(epNum)) {
+        season.episodes.push({
+          episode: epNum,
+          episodeNumber: epNum,
+          number: String(epNum).padStart(2, '0'),
+          title: newEp.title || `Episode ${epNum}`,
+          season: seNum,
+          streamUrl: newEp.streamUrl,
+          duration: newEp.duration || '45 min'
+        });
+        season.episodes.sort((a, b) => (a.episode || 0) - (b.episode || 0));
+        season.episodesCount = season.episodes.length;
+        addedCount++;
+      }
+    }
+
+    target.seasons.sort((a, b) => (a.seasonNumber || 1) - (b.seasonNumber || 1));
+    target.seasonsCount = target.seasons.length;
+    target.episodesCount = target.seasons.reduce((sum, s) => sum + (s.episodes ? s.episodes.length : 0), 0);
+    target.updatedAt = new Date().toISOString();
+
+    const idx = content.series.findIndex(s => s.id === target.id);
+    if (idx !== -1) {
+      content.series[idx] = target;
+      writeContent(content);
+    }
+
+    try {
+      const custom = readCustomCatalog();
+      if (Array.isArray(custom.series)) {
+        const cIdx = custom.series.findIndex(s => s.id === target.id);
+        if (cIdx !== -1) {
+          custom.series[cIdx] = { ...custom.series[cIdx], ...target, isCustom: true };
+          writeCustomCatalog(custom);
+        }
+      }
+    } catch (_) {}
+
+    return {
+      success: true,
+      addedCount,
+      totalEpisodes: target.episodesCount,
+      totalSeasons: target.seasonsCount,
+      series: target,
+      message: `🎉 Successfully synced ${addedCount} new episode(s)! Total: ${target.episodesCount} episodes.`
     };
   }
 

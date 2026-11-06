@@ -1008,6 +1008,22 @@ textarea {
   color: #fff;
   background: rgba(255, 255, 255, 0.12);
 }
+
+.custom-input-sm {
+  width: 100%;
+  padding: 6px 10px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 12px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+.custom-input-sm:focus {
+  border-color: var(--primary);
+}
 .btn-action-icon.danger:hover {
   color: #fff;
   background: var(--danger);

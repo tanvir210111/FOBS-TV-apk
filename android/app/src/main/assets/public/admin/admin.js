@@ -638,6 +638,9 @@ function renderSeriesTable(seriesList) {
           <span class="badge-tag permanent"><i class="fa-solid fa-shield-check"></i> Permanent</span>
         </td>
         <td class="row-actions">
+          <button class="btn-sm-secondary" style="margin-right: 6px; color: #00f2fe; border-color: rgba(0, 242, 254, 0.4);" onclick="checkSeriesUpdates('${s.id}')" title="Check &amp; Sync New Released Episodes">
+            <i class="fa-solid fa-cloud-arrow-down"></i> Sync
+          </button>
           <button class="btn-sm-primary" style="margin-right: 6px;" onclick="openEpisodesStudio('${s.id}')" title="Episodes Studio">
             <i class="fa-solid fa-clapperboard"></i> Studio
           </button>
@@ -2201,7 +2204,13 @@ function renderImporterGrid(items) {
 
 function openImportModalByIndex(idx) {
   const item = state.lastMovieBoxItems?.[idx];
-  if (item) openImportModal(item);
+  if (!item) return;
+  if (item.alreadyImported && (item.type === 'series' || (item.category && item.category.toLowerCase().includes('series')))) {
+    // If it's an already imported series, check for new episodes directly!
+    checkSeriesUpdatesByItem(item);
+  } else {
+    openImportModal(item);
+  }
 }
 
 function toggleImportType(type) {
@@ -2224,6 +2233,9 @@ async function openImportModal(item) {
   document.getElementById('imp-type').value = isSeries ? 'series' : 'movie';
   toggleImportType(isSeries ? 'series' : 'movie');
 
+  const trackerBox = document.getElementById('imp-ongoing-tracker-box');
+  if (trackerBox) trackerBox.style.display = 'none';
+
   const seasonSel = document.getElementById('imp-season-mode');
   if (seasonSel) {
     seasonSel.innerHTML = '<option value="all">🌟 All Seasons (Auto-Detecting...)</option>';
@@ -2235,36 +2247,28 @@ async function openImportModal(item) {
   document.getElementById('imp-featured').checked = false;
 
   const statusText = document.getElementById('imp-autodetect-status');
-  statusText.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #00f2fe;"></i> Querying MovieBox API: Auto-detecting uploaded seasons, episodes, language &amp; category...';
+  statusText.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #00f2fe;"></i> Auto-detecting real released episodes, stream URLs &amp; metadata from MovieBox &amp; TMDb...';
 
   openModal('import-modal');
 
-  // Query MovieBox & auto-detect for exact episodes, seasons, audio, banner, and category
+  // Query unified Auto-Detect Engine
   try {
     let d = null;
     try {
-      const data = await authFetch(`${API_BASE}/api/admin/moviebox/detail?subjectId=${encodeURIComponent(sId)}&detailPath=${encodeURIComponent(dPath)}`);
-      const res = await data.json();
-      if (res && res.success && res.detail) {
-        d = res.detail;
+      const autoRes = await authFetch(`${API_BASE}/api/admin/auto-detect?q=${encodeURIComponent(item.title || sId)}&type=${isSeries ? 'series' : 'movie'}`);
+      const autoData = await autoRes.json();
+      if (autoData && autoData.success && autoData.data) {
+        d = autoData.data;
       }
     } catch (_) {}
 
-    // Fallback: TMDb + MovieBox auto-detect
-    if (!d || (isSeries && (!d.totalEpisodes || d.totalEpisodes <= 1))) {
+    // Fallback directly to moviebox detail if auto-detect didn't return
+    if (!d) {
       try {
-        const autoRes = await authFetch(`${API_BASE}/api/admin/auto-detect?q=${encodeURIComponent(item.title || '')}&type=${isSeries ? 'series' : 'movie'}`);
-        const autoData = await autoRes.json();
-        if (autoData && autoData.success && autoData.data) {
-          const ad = autoData.data;
-          if (!d) {
-            d = ad;
-          } else if (ad.totalEpisodes && ad.totalEpisodes > (d.totalEpisodes || 1)) {
-            d.totalEpisodes = ad.totalEpisodes;
-            if (ad.seasons && ad.seasons.length > 0) d.seasons = ad.seasons;
-            if (ad.industry && (!d.industry || d.industry === 'Hollywood')) d.industry = ad.industry;
-            if (ad.category && (!d.category || d.category === 'Web Series')) d.category = ad.category;
-          }
+        const data = await authFetch(`${API_BASE}/api/admin/moviebox/detail?subjectId=${encodeURIComponent(sId)}&detailPath=${encodeURIComponent(dPath)}`);
+        const res = await data.json();
+        if (res && res.success && res.detail) {
+          d = res.detail;
         }
       } catch (_) {}
     }
@@ -2275,22 +2279,47 @@ async function openImportModal(item) {
         toggleImportType(d.type);
       }
 
+      state.isImportOngoing = !!d.isOngoing;
+      state.importReleasedEps = d.releasedEpisodesCount || d.totalEpisodes || 1;
+      state.importPlannedEps = d.plannedEpisodesCount || d.totalEpisodes || 1;
+
+      const trackerBox = document.getElementById('imp-ongoing-tracker-box');
+      const relCountEl = document.getElementById('imp-ongoing-released-count');
+      const planCountEl = document.getElementById('imp-ongoing-planned-count');
+      const ongoingTitleEl = document.getElementById('imp-ongoing-status-title');
+      const ongoingDescEl = document.getElementById('imp-ongoing-status-desc');
+
+      if (trackerBox && (isSeries || d.type === 'series')) {
+        trackerBox.style.display = 'flex';
+        if (relCountEl) relCountEl.textContent = state.importReleasedEps;
+        if (planCountEl) planCountEl.textContent = state.importPlannedEps;
+        if (d.isOngoing) {
+          if (ongoingTitleEl) ongoingTitleEl.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Ongoing Drama Real-Time Tracking';
+          if (ongoingDescEl) ongoingDescEl.textContent = `Released on MovieBox: ${state.importReleasedEps} of ${state.importPlannedEps} Episodes (Only live released episodes loaded)`;
+        } else {
+          if (ongoingTitleEl) ongoingTitleEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Completed Series';
+          if (ongoingDescEl) ongoingDescEl.textContent = `All ${state.importReleasedEps} Episode(s) fully released and ready to import.`;
+        }
+      } else if (trackerBox) {
+        trackerBox.style.display = 'none';
+      }
+
       if (seasonSel) {
         seasonSel.innerHTML = '';
         if (d.seasons && d.seasons.length > 0) {
           const allOpt = document.createElement('option');
           allOpt.value = 'all';
-          allOpt.textContent = `🌟 All Seasons (${d.seasons.length} Seasons • ${d.totalEpisodes || 16} Episodes Total)`;
+          allOpt.textContent = `🌟 All Seasons (${d.seasons.length} Seasons • ${state.importReleasedEps} Episodes Released)`;
           seasonSel.appendChild(allOpt);
 
           d.seasons.forEach(s => {
             const opt = document.createElement('option');
             opt.value = String(s.seasonNumber || s.se);
-            opt.textContent = `Season ${s.seasonNumber || s.se} (${s.episodesCount || s.maxEp || 0} Episodes)`;
+            opt.textContent = `Season ${s.seasonNumber || s.se} (${s.episodesCount || s.releasedEpisodesCount || s.maxEp || 0} Episodes)`;
             seasonSel.appendChild(opt);
           });
         } else {
-          const detectedEp = d.totalEpisodes || (isSeries ? 16 : 1);
+          const detectedEp = state.importReleasedEps;
           const opt = document.createElement('option');
           opt.value = 'all';
           opt.textContent = `🌟 Season 1 (${detectedEp} Episode${detectedEp > 1 ? 's' : ''})`;
@@ -2298,7 +2327,7 @@ async function openImportModal(item) {
         }
       }
 
-      if (d.totalEpisodes) document.getElementById('imp-episodes').value = d.totalEpisodes;
+      if (state.importReleasedEps) document.getElementById('imp-episodes').value = state.importReleasedEps;
       if (d.year) document.getElementById('imp-year').value = d.year;
       if (d.rating) document.getElementById('imp-rating').value = d.rating;
       if (d.industry) document.getElementById('imp-industry').value = d.industry;
@@ -2308,11 +2337,10 @@ async function openImportModal(item) {
       if (d.backdrop && !document.getElementById('imp-cover').value) document.getElementById('imp-cover').value = d.backdrop;
 
       if (d.seasons && d.seasons.length > 1) {
-        const breakdown = d.seasons.map(s => `S${s.seasonNumber || s.se}: ${s.episodesCount || s.maxEp} eps`).join(' • ');
-        statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald" style="color: #10b981;"></i> <strong>Auto-Detected:</strong> ${d.seasons.length} Seasons (${d.totalEpisodes || 16} Episodes Total) &bull; ${d.industry} (${d.category})<br><small style="color: #64748b;">${breakdown}</small>`;
+        const breakdown = d.seasons.map(s => `S${s.seasonNumber || s.se}: ${s.episodesCount || s.releasedEpisodesCount || s.maxEp} eps`).join(' • ');
+        statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald" style="color: #10b981;"></i> <strong>Auto-Detected:</strong> ${d.seasons.length} Seasons (${state.importReleasedEps} Episodes Released) &bull; ${d.industry} (${d.category})<br><small style="color: #64748b;">${breakdown}</small>`;
       } else {
-        const totalEpText = d.totalEpisodes || (isSeries ? 16 : 1);
-        statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald" style="color: #10b981;"></i> <strong>Auto-Detected:</strong> ${totalEpText} Episode(s) &bull; ${d.industry} (${d.category})`;
+        statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald" style="color: #10b981;"></i> <strong>Auto-Detected:</strong> ${state.importReleasedEps} Episode(s) Released &bull; ${d.industry} (${d.category})`;
       }
 
       // Initialize detailed seasons & episodes preview for import
@@ -2321,7 +2349,7 @@ async function openImportModal(item) {
           ? JSON.parse(JSON.stringify(d.seasons))
           : [];
         if (state.importPreviewSeasons.length === 0) {
-          const epCount = d.totalEpisodes || 16;
+          const epCount = state.importReleasedEps || 1;
           const eps = [];
           for (let ep = 1; ep <= epCount; ep++) {
             const epUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=1&ep=${ep}` : '';
@@ -2479,6 +2507,244 @@ function filterImportPreviewSeason(val) {
     if (idx !== -1) state.activeImportPreviewSeasonIdx = idx;
   }
   renderImportEpisodesPreview();
+}
+
+function loadAllPlannedEpisodesToImport() {
+  if (!state.importPreviewSeasons || state.importPreviewSeasons.length === 0) return;
+  const plannedTotal = state.importPlannedEps || 12;
+  const sId = document.getElementById('imp-subjectId')?.value || '';
+  const dPath = document.getElementById('imp-detailPath')?.value || '';
+
+  const season = state.importPreviewSeasons[state.activeImportPreviewSeasonIdx || 0];
+  if (!season) return;
+  if (!Array.isArray(season.episodes)) season.episodes = [];
+
+  const seNum = season.seasonNumber || 1;
+  const currentCount = season.episodes.length;
+
+  for (let ep = currentCount + 1; ep <= plannedTotal; ep++) {
+    const epUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${ep}` : '';
+    season.episodes.push({
+      number: String(ep).padStart(2, '0'),
+      episode: ep,
+      season: seNum,
+      title: `Episode ${ep}`,
+      streamUrl: epUrl,
+      duration: '45 min'
+    });
+  }
+  season.episodesCount = season.episodes.length;
+  renderImportEpisodesPreview();
+  showToast(`Loaded placeholder slots for all ${plannedTotal} planned episodes.`, 'info');
+}
+
+// ============================================================
+// REAL-TIME ONGOING DRAMA & NEW EPISODES SYNC ENGINE
+// ============================================================
+
+state.currentNewEpisodesToSync = [];
+state.updatingSeriesId = null;
+
+async function checkSeriesUpdates(seriesId) {
+  if (!seriesId) return;
+  state.updatingSeriesId = seriesId;
+
+  // Reset modal UI
+  const titleEl = document.getElementById('series-update-title');
+  const statusEl = document.getElementById('series-update-status-line');
+  const posterEl = document.getElementById('series-update-poster');
+  const alertEl = document.getElementById('series-update-alert-box');
+  const listBox = document.getElementById('series-update-list-box');
+  const btnSync = document.getElementById('btn-sync-new-episodes');
+
+  if (titleEl) titleEl.textContent = 'Checking updates...';
+  if (statusEl) statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-cyan"></i> Connecting to MovieBox API & checking newly released episodes...';
+  if (alertEl) alertEl.innerHTML = '';
+  if (listBox) listBox.style.display = 'none';
+  if (btnSync) btnSync.style.display = 'none';
+
+  openModal('series-update-modal');
+
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/series/${encodeURIComponent(seriesId)}/check-updates`);
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error || 'Failed to check updates');
+
+    if (titleEl) titleEl.textContent = data.title || 'Series';
+    if (posterEl) posterEl.src = data.poster || 'assets/fobs_logo.png';
+    if (statusEl) {
+      statusEl.innerHTML = `Current in FOBS TV: <strong>${data.currentEpisodesTotal} Episodes</strong> &bull; Released on MovieBox: <strong>${data.mbReleasedTotal} Episodes</strong> ${data.isOngoing ? '<span class="badge-tag" style="background:rgba(245,158,11,0.2); color:#fbbf24; border:1px solid rgba(245,158,11,0.4); margin-left:6px;"><i class="fa-solid fa-clock"></i> Ongoing Drama</span>' : ''}`;
+    }
+
+    state.currentNewEpisodesToSync = JSON.parse(JSON.stringify(data.newEpisodes || []));
+
+    if (data.newEpisodesCount > 0) {
+      if (alertEl) {
+        alertEl.innerHTML = `
+          <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); padding: 12px 14px; border-radius: 10px; color: #34d399; display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-bell" style="font-size: 18px;"></i>
+            <div>
+              <strong style="font-size: 13.5px; display: block;">🎉 ${data.newEpisodesCount} New Released Episode(s) Found on MovieBox!</strong>
+              <small style="color: #cbd5e1; font-size: 12px;">These episodes are now live. You can review, edit titles, add/remove, and 1-click sync below.</small>
+            </div>
+          </div>
+        `;
+      }
+      renderSeriesUpdateTable();
+      if (listBox) listBox.style.display = 'block';
+      if (btnSync) {
+        btnSync.style.display = 'inline-flex';
+        btnSync.innerHTML = `<i class="fa-solid fa-bolt"></i> 1-Click Sync New Episodes (${data.newEpisodesCount})`;
+      }
+    } else {
+      if (alertEl) {
+        alertEl.innerHTML = `
+          <div style="background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.3); padding: 14px; border-radius: 10px; color: #00f2fe; display: flex; align-items: center; gap: 12px;">
+            <i class="fa-solid fa-circle-check" style="font-size: 20px;"></i>
+            <div>
+              <strong style="font-size: 13.5px; display: block;">✓ Completely Up to Date!</strong>
+              <small style="color: #94a3b8; font-size: 12px;">All ${data.mbReleasedTotal} currently released episode(s) on MovieBox are already synced in your FOBS TV catalog. You can also manually add an episode below or open Full Studio.</small>
+            </div>
+          </div>
+        `;
+      }
+      if (listBox) listBox.style.display = 'none';
+      if (btnSync) btnSync.style.display = 'none';
+    }
+  } catch (err) {
+    if (statusEl) statusEl.innerHTML = `<span style="color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Error: ${escapeHtml(err.message)}</span>`;
+  }
+}
+
+function renderSeriesUpdateTable() {
+  const tbody = document.getElementById('series-update-tbody');
+  const countEl = document.getElementById('series-update-new-count');
+  const eps = state.currentNewEpisodesToSync || [];
+  if (countEl) countEl.textContent = eps.length;
+  if (!tbody) return;
+
+  if (eps.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" class="text-center" style="padding:15px; color:#64748b;">No new episodes in list. <button type="button" class="btn-sm-primary" onclick="addCustomEpisodeToUpdate()"><i class="fa-solid fa-plus"></i> Add One</button></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = eps.map((ep, idx) => `
+    <tr>
+      <td><strong>S${ep.seasonNumber || 1} Ep${ep.episode || (idx + 1)}</strong></td>
+      <td>
+        <input type="text" class="custom-input-sm" value="${escapeHtml(ep.title || `Episode ${ep.episode}`)}" onchange="updateNewEpisodeField(${idx}, 'title', this.value)" style="padding: 4px 8px; font-size: 12px;">
+      </td>
+      <td>
+        <input type="text" class="custom-input-sm" value="${escapeHtml(ep.streamUrl || '')}" onchange="updateNewEpisodeField(${idx}, 'streamUrl', this.value)" style="padding: 4px 8px; font-size: 11px;">
+      </td>
+      <td style="text-align: right;">
+        <button type="button" class="btn-action-icon danger" onclick="removeEpisodeFromUpdate(${idx})" title="Remove this episode"><i class="fa-solid fa-trash-can"></i></button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function updateNewEpisodeField(idx, field, val) {
+  if (state.currentNewEpisodesToSync && state.currentNewEpisodesToSync[idx]) {
+    state.currentNewEpisodesToSync[idx][field] = val;
+  }
+}
+
+function removeEpisodeFromUpdate(idx) {
+  if (state.currentNewEpisodesToSync) {
+    state.currentNewEpisodesToSync.splice(idx, 1);
+    renderSeriesUpdateTable();
+    const btnSync = document.getElementById('btn-sync-new-episodes');
+    if (btnSync) {
+      if (state.currentNewEpisodesToSync.length > 0) {
+        btnSync.innerHTML = `<i class="fa-solid fa-bolt"></i> 1-Click Sync New Episodes (${state.currentNewEpisodesToSync.length})`;
+      } else {
+        btnSync.style.display = 'none';
+      }
+    }
+  }
+}
+
+function addCustomEpisodeToUpdate() {
+  if (!state.currentNewEpisodesToSync) state.currentNewEpisodesToSync = [];
+  const nextNum = state.currentNewEpisodesToSync.length + 1;
+  state.currentNewEpisodesToSync.push({
+    seasonNumber: 1,
+    episode: nextNum,
+    episodeNumber: nextNum,
+    title: `Episode ${nextNum}`,
+    streamUrl: '',
+    duration: '45 min'
+  });
+  renderSeriesUpdateTable();
+  const btnSync = document.getElementById('btn-sync-new-episodes');
+  if (btnSync) {
+    btnSync.style.display = 'inline-flex';
+    btnSync.innerHTML = `<i class="fa-solid fa-bolt"></i> 1-Click Sync New Episodes (${state.currentNewEpisodesToSync.length})`;
+  }
+}
+
+async function submitSyncNewEpisodes() {
+  const eps = state.currentNewEpisodesToSync || [];
+  if (eps.length === 0) {
+    showToast('No new episodes selected to sync.', 'warning');
+    return;
+  }
+  const btnSync = document.getElementById('btn-sync-new-episodes');
+  if (btnSync) {
+    btnSync.disabled = true;
+    btnSync.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Syncing...';
+  }
+
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/series/${encodeURIComponent(state.updatingSeriesId)}/sync-new-episodes`, {
+      method: 'POST',
+      body: JSON.stringify({ episodes: eps })
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error || 'Failed to sync episodes');
+
+    showToast(data.message || `🎉 Successfully synced ${eps.length} new episode(s)!`, 'success', 5000);
+    closeModal('series-update-modal');
+
+    // Refresh series catalog if on series tab
+    if (typeof loadSeries === 'function') loadSeries();
+    // Refresh dashboard stats
+    if (typeof loadDashboardData === 'function') loadDashboardData();
+  } catch (err) {
+    showToast(`Sync error: ${err.message}`, 'error');
+  } finally {
+    if (btnSync) {
+      btnSync.disabled = false;
+    }
+  }
+}
+
+function checkSeriesUpdatesByItem(item) {
+  const sid = String(item.subjectId || item.id || '');
+  // Find in loaded series list
+  const existing = (state.series || []).find(s => String(s.subjectId) === sid || s.id === `mb-s-${sid}` || s.id === sid);
+  const identifier = existing ? existing.id : (`mb-s-${sid}`);
+  checkSeriesUpdates(identifier);
+}
+
+function openEpisodesStudioFromUpdate() {
+  const sid = state.updatingSeriesId;
+  closeModal('series-update-modal');
+  if (sid) openEpisodesStudio(sid);
+}
+
+async function autoSyncAllSeriesFromAdmin() {
+  showToast('Scanning all TV series for newly released episodes on MovieBox...', 'info', 3000);
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/series/sync-all`, { method: 'POST' });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error || 'Auto-sync failed');
+    showToast(data.message || 'Auto-sync completed!', 'success', 6000);
+    loadSeries();
+  } catch (err) {
+    showToast(`Auto-sync error: ${err.message}`, 'error');
+  }
 }
 
 async function handleImportSubmit(e) {
