@@ -1406,6 +1406,59 @@ textarea {
   font-size: 12px;
 }
 
+.importer-card-actions {
+  margin-top: auto;
+  width: 100%;
+}
+.importer-card-imported-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.badge-already-imported {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  padding: 4px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+.badge-already-imported i {
+  font-size: 10px;
+}
+.btn-importer-update {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #00f2fe;
+  background: rgba(0, 242, 254, 0.12);
+  border: 1px solid rgba(0, 242, 254, 0.4);
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.btn-importer-update:hover {
+  background: var(--primary);
+  color: #040814;
+  border-color: var(--primary);
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
+}
+
 /* Custom Multi-Criteria Filter Bar */
 .importer-filter-panel {
   padding: 16px 20px;

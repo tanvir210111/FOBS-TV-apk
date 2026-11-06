@@ -544,15 +544,32 @@ class AdminService {
     const sections = await movieboxService.getHomepage();
     const content = readContent();
 
-    const existingIds = new Set([
-      ...(content.movies || []).map(m => String(m.subjectId || m.id)),
-      ...(content.series || []).map(s => String(s.subjectId || s.id))
-    ]);
+    const existingIds = new Set();
+    const existingDetailPaths = new Set();
+    const existingExactTitles = new Set();
+    const existingCleanTitles = new Set();
 
-    const existingExactTitles = new Set([
-      ...(content.movies || []).map(m => (m.title || '').trim().toLowerCase()),
-      ...(content.series || []).map(s => (s.title || '').trim().toLowerCase())
-    ]);
+    const allCatalog = [...(content.movies || []), ...(content.series || [])];
+    for (const m of allCatalog) {
+      if (m.id) existingIds.add(String(m.id));
+      if (m.subjectId) {
+        existingIds.add(String(m.subjectId));
+        existingIds.add(`mb-m-${m.subjectId}`);
+        existingIds.add(`mb-s-${m.subjectId}`);
+      }
+      if (m.detailPath) {
+        existingDetailPaths.add(m.detailPath.trim().toLowerCase());
+      }
+      if (m.title) {
+        const rawT = m.title.trim().toLowerCase();
+        existingExactTitles.add(rawT);
+        const cleanT = rawT.replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, '');
+        if (cleanT) {
+          const isH = rawT.includes('hindi') || (m.dubLanguage && m.dubLanguage.toLowerCase().includes('hindi'));
+          existingCleanTitles.add(`${cleanT}_${isH ? 'hi' : 'orig'}`);
+        }
+      }
+    }
 
     const seen = new Set();
     const allItems = [];
@@ -562,13 +579,9 @@ class AdminService {
         if (!it.id || seen.has(it.id)) continue;
         seen.add(it.id);
 
-        const sid = String(it.subjectId || it.id);
+        const sid = String(it.subjectId || it.id || '');
+        const itPath = (it.detailPath || '').trim().toLowerCase();
         const titleExact = (it.title || '').trim().toLowerCase();
-
-        const alreadyImported = existingIds.has(sid) ||
-          existingIds.has('mb-m-' + sid) ||
-          existingIds.has('mb-s-' + sid) ||
-          existingExactTitles.has(titleExact);
 
         const tLower = (it.title || '').toLowerCase();
         const secLower = (sec.title || '').toLowerCase();
@@ -576,6 +589,16 @@ class AdminService {
         const isBangla = tLower.includes('bangla') || tLower.includes('bengali') || secLower.includes('bangla');
         const audioTag = isHindi ? 'Hindi Dubbed' : (isBangla ? 'Bangla Dubbed' : 'Original Audio');
         const baseTitle = (it.title || '').replace(/\[.*?hindi.*?\]|\(.*?\bhindi\b.*?\)|\[.*?bangla.*?\]|\(.*?\bbangla\b.*?\)/gi, '').trim().toLowerCase();
+
+        const itClean = titleExact.replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, '');
+        const itAudioKey = `${itClean}_${isHindi ? 'hi' : 'orig'}`;
+
+        const alreadyImported = (sid && existingIds.has(sid)) ||
+          (sid && existingIds.has(`mb-m-${sid}`)) ||
+          (sid && existingIds.has(`mb-s-${sid}`)) ||
+          (itPath && existingDetailPaths.has(itPath)) ||
+          existingExactTitles.has(titleExact) ||
+          (itClean && existingCleanTitles.has(itAudioKey));
 
         let industry = 'Hollywood';
         if (/korean|kdrama|k-drama/i.test(tLower) || secLower.includes('korean')) industry = 'Korean';
@@ -805,14 +828,32 @@ class AdminService {
 
     const items = Array.from(seenMap.values());
     const content = readContent();
-    const existingIds = new Set([
-      ...(content.movies || []).map(m => String(m.subjectId || m.id)),
-      ...(content.series || []).map(s => String(s.subjectId || s.id))
-    ]);
-    const existingExactTitles = new Set([
-      ...(content.movies || []).map(m => (m.title || '').trim().toLowerCase()),
-      ...(content.series || []).map(s => (s.title || '').trim().toLowerCase())
-    ]);
+    const existingIds = new Set();
+    const existingDetailPaths = new Set();
+    const existingExactTitles = new Set();
+    const existingCleanTitles = new Set();
+
+    const allCatalog = [...(content.movies || []), ...(content.series || [])];
+    for (const m of allCatalog) {
+      if (m.id) existingIds.add(String(m.id));
+      if (m.subjectId) {
+        existingIds.add(String(m.subjectId));
+        existingIds.add(`mb-m-${m.subjectId}`);
+        existingIds.add(`mb-s-${m.subjectId}`);
+      }
+      if (m.detailPath) {
+        existingDetailPaths.add(m.detailPath.trim().toLowerCase());
+      }
+      if (m.title) {
+        const rawT = m.title.trim().toLowerCase();
+        existingExactTitles.add(rawT);
+        const cleanT = rawT.replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, '');
+        if (cleanT) {
+          const isH = rawT.includes('hindi') || (m.dubLanguage && m.dubLanguage.toLowerCase().includes('hindi'));
+          existingCleanTitles.add(`${cleanT}_${isH ? 'hi' : 'orig'}`);
+        }
+      }
+    }
 
     // Enrich items with official TMDb HD poster & backdrop
     const enriched = await Promise.all(items.slice(0, 30).map(async it => {
@@ -878,8 +919,18 @@ class AdminService {
         itemMonth = mMatch[2];
       }
 
-      const sid = String(it.subjectId || it.id);
+      const sid = String(it.subjectId || it.id || '');
+      const itPath = (it.detailPath || '').trim().toLowerCase();
       const titleExact = (it.title || '').trim().toLowerCase();
+      const itClean = titleExact.replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, '');
+      const itAudioKey = `${itClean}_${isHindi ? 'hi' : 'orig'}`;
+
+      const alreadyImported = (sid && existingIds.has(sid)) ||
+        (sid && existingIds.has(`mb-m-${sid}`)) ||
+        (sid && existingIds.has(`mb-s-${sid}`)) ||
+        (itPath && existingDetailPaths.has(itPath)) ||
+        existingExactTitles.has(titleExact) ||
+        (itClean && existingCleanTitles.has(itAudioKey));
 
       return {
         ...it,
@@ -897,10 +948,7 @@ class AdminService {
         baseTitle,
         industry,
         category,
-        alreadyImported: existingIds.has(sid) ||
-          existingIds.has(`mb-m-${sid}`) ||
-          existingIds.has(`mb-s-${sid}`) ||
-          existingExactTitles.has(titleExact)
+        alreadyImported
       };
     }));
 

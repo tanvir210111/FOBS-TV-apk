@@ -2136,6 +2136,63 @@ function resetImporterFilters() {
   applyImporterFilters();
 }
 
+function isItemAlreadyImported(item) {
+  if (!item) return false;
+  if (item.alreadyImported) return true;
+
+  const sid = String(item.subjectId || item.id || '').trim();
+  const dPath = String(item.detailPath || '').trim();
+  const rawTitle = String(item.title || '').trim();
+  const cleanTitle = rawTitle
+    .replace(/\s*\[(hindi|bangla|english|orig)[^\]]*\]/gi, '')
+    .replace(/\s*\((hindi|bangla|english|orig)[^)]*\)/gi, '')
+    .replace(/\s*-\s*(hindi|bangla|english|orig)[^)]*$/gi, '')
+    .toLowerCase().trim();
+  const isHindi = !!(item.isHindi || rawTitle.toLowerCase().includes('hindi'));
+
+  // 1. Cross-check against state.series
+  if (Array.isArray(state.series)) {
+    for (const s of state.series) {
+      const sSid = String(s.subjectId || '').trim();
+      const sId = String(s.id || '').trim();
+      const sDPath = String(s.detailPath || s.movieBoxDetailPath || '').trim();
+      const sTitle = String(s.title || '').trim();
+      const sClean = sTitle
+        .replace(/\s*\[(hindi|bangla|english|orig)[^\]]*\]/gi, '')
+        .replace(/\s*\((hindi|bangla|english|orig)[^)]*\)/gi, '')
+        .replace(/\s*-\s*(hindi|bangla|english|orig)[^)]*$/gi, '')
+        .toLowerCase().trim();
+      const sIsHindi = !!(s.isHindi || sTitle.toLowerCase().includes('hindi'));
+
+      if (sid && (sSid === sid || sId === sid || sId === `mb-s-${sid}`)) return true;
+      if (dPath && sDPath && dPath === sDPath) return true;
+      if (cleanTitle && sClean === cleanTitle && isHindi === sIsHindi) return true;
+    }
+  }
+
+  // 2. Cross-check against state.movies
+  if (Array.isArray(state.movies)) {
+    for (const m of state.movies) {
+      const mSid = String(m.subjectId || '').trim();
+      const mId = String(m.id || '').trim();
+      const mDPath = String(m.detailPath || m.movieBoxDetailPath || '').trim();
+      const mTitle = String(m.title || '').trim();
+      const mClean = mTitle
+        .replace(/\s*\[(hindi|bangla|english|orig)[^\]]*\]/gi, '')
+        .replace(/\s*\((hindi|bangla|english|orig)[^)]*\)/gi, '')
+        .replace(/\s*-\s*(hindi|bangla|english|orig)[^)]*$/gi, '')
+        .toLowerCase().trim();
+      const mIsHindi = !!(m.isHindi || mTitle.toLowerCase().includes('hindi'));
+
+      if (sid && (mSid === sid || mId === sid || mId === `mb-m-${sid}`)) return true;
+      if (dPath && mDPath && dPath === mDPath) return true;
+      if (cleanTitle && mClean === cleanTitle && isHindi === mIsHindi) return true;
+    }
+  }
+
+  return false;
+}
+
 function renderImporterGrid(items) {
   state.lastMovieBoxItems = items || [];
   const grid = document.getElementById('importer-results-grid');
@@ -2175,17 +2232,22 @@ function renderImporterGrid(items) {
     const dateSub = `${monthName}${item.year || '2026'}`;
     const indSub = item.industry ? ` &bull; ${escapeHtml(item.industry)}` : '';
 
-    const isImported = !!item.alreadyImported;
-    const btnHtml = isImported
-      ? `<button type="button" class="btn-secondary importer-card-btn" style="border-color:rgba(168,85,247,0.4); color:#c084fc;" onclick="event.stopPropagation(); openImportModalByIndex(${idx})">
-          <i class="fa-solid fa-pen-to-square"></i> Already in FOBS (Update)
-        </button>`
+    const isImported = isItemAlreadyImported(item);
+    if (isImported) item.alreadyImported = true;
+
+    const actionHtml = isImported
+      ? `<div class="importer-card-imported-bar">
+          <span class="badge-already-imported"><i class="fa-solid fa-circle-check"></i> Already Imported</span>
+          <button type="button" class="btn-importer-update" onclick="event.stopPropagation(); openImporterItemUpdate(${idx})" title="Update / Check for new episodes">
+            <i class="fa-solid fa-arrows-rotate"></i> Update
+          </button>
+        </div>`
       : `<button type="button" class="btn-primary glow importer-card-btn" onclick="event.stopPropagation(); openImportModalByIndex(${idx})">
           <i class="fa-solid fa-wand-magic-sparkles"></i> 1-Click Import
         </button>`;
 
     return `
-      <div class="importer-card" onclick="openImportModalByIndex(${idx})" style="cursor: pointer; position:relative;">
+      <div class="importer-card" onclick="openImporterCardClick(${idx})" style="cursor: pointer; position:relative;">
         <div class="importer-card-poster-wrap">
           <img src="${item.poster || 'assets/fobs_logo.png'}" onerror="this.src='assets/fobs_logo.png'" alt="${escapeHtml(item.title)}">
           ${audioBadgeHtml}
@@ -2195,19 +2257,63 @@ function renderImporterGrid(items) {
         <div class="importer-card-info">
           <div class="importer-card-title" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</div>
           <div class="importer-card-sub">${dateSub}${indSub}</div>
-          ${btnHtml}
+          ${actionHtml}
         </div>
       </div>
     `;
   }).join('');
 }
 
+function openImporterCardClick(idx) {
+  const item = state.lastMovieBoxItems?.[idx];
+  if (!item) return;
+  if (isItemAlreadyImported(item)) {
+    openImporterItemUpdate(idx);
+  } else {
+    openImportModal(item);
+  }
+}
+
+function openImporterItemUpdate(idx) {
+  const item = state.lastMovieBoxItems?.[idx];
+  if (!item) return;
+  const isSeries = item.type === 'series' || (item.category && item.category.toLowerCase().includes('series'));
+  if (isSeries) {
+    checkSeriesUpdatesByItem(item);
+  } else {
+    // If it's a movie, check if it's already in state.movies
+    const sid = String(item.subjectId || item.id || '').trim();
+    const dPath = String(item.detailPath || '').trim();
+    const cleanTitle = (item.title || '')
+      .replace(/\s*\[(hindi|bangla|english|orig)[^\]]*\]/gi, '')
+      .replace(/\s*\((hindi|bangla|english|orig)[^)]*\)/gi, '')
+      .toLowerCase().trim();
+    const isHindi = !!(item.isHindi || (item.title || '').toLowerCase().includes('hindi'));
+
+    const existingMovie = (state.movies || []).find(m => {
+      if (sid && (String(m.subjectId) === sid || m.id === `mb-m-${sid}` || m.id === sid)) return true;
+      if (dPath && (m.detailPath === dPath || m.movieBoxDetailPath === dPath)) return true;
+      const mClean = (m.title || '')
+        .replace(/\s*\[(hindi|bangla|english|orig)[^\]]*\]/gi, '')
+        .replace(/\s*\((hindi|bangla|english|orig)[^)]*\)/gi, '')
+        .toLowerCase().trim();
+      const mIsHindi = !!(m.isHindi || (m.title || '').toLowerCase().includes('hindi'));
+      return mClean === cleanTitle && mIsHindi === isHindi;
+    });
+
+    if (existingMovie && typeof openEditMovieModal === 'function') {
+      openEditMovieModal(existingMovie.id);
+    } else {
+      openImportModal(item);
+    }
+  }
+}
+
 function openImportModalByIndex(idx) {
   const item = state.lastMovieBoxItems?.[idx];
   if (!item) return;
-  if (item.alreadyImported && (item.type === 'series' || (item.category && item.category.toLowerCase().includes('series')))) {
-    // If it's an already imported series, check for new episodes directly!
-    checkSeriesUpdatesByItem(item);
+  if (isItemAlreadyImported(item)) {
+    openImporterItemUpdate(idx);
   } else {
     openImportModal(item);
   }
@@ -2721,9 +2827,35 @@ async function submitSyncNewEpisodes() {
 }
 
 function checkSeriesUpdatesByItem(item) {
-  const sid = String(item.subjectId || item.id || '');
-  // Find in loaded series list
-  const existing = (state.series || []).find(s => String(s.subjectId) === sid || s.id === `mb-s-${sid}` || s.id === sid);
+  const sid = String(item.subjectId || item.id || '').trim();
+  const dPath = String(item.detailPath || '').trim();
+  const rawTitle = String(item.title || '').trim();
+  const cleanTitle = rawTitle
+    .replace(/\s*\[(hindi|bangla|english|orig)[^\]]*\]/gi, '')
+    .replace(/\s*\((hindi|bangla|english|orig)[^)]*\)/gi, '')
+    .replace(/\s*-\s*(hindi|bangla|english|orig)[^)]*$/gi, '')
+    .toLowerCase().trim();
+  const isHindi = !!(item.isHindi || rawTitle.toLowerCase().includes('hindi'));
+
+  // Find in loaded series list by subjectId, detailPath, or cleanTitle + audio
+  const existing = (state.series || []).find(s => {
+    const sSid = String(s.subjectId || '').trim();
+    const sId = String(s.id || '').trim();
+    const sDPath = String(s.detailPath || s.movieBoxDetailPath || '').trim();
+    const sTitle = String(s.title || '').trim();
+    const sClean = sTitle
+      .replace(/\s*\[(hindi|bangla|english|orig)[^\]]*\]/gi, '')
+      .replace(/\s*\((hindi|bangla|english|orig)[^)]*\)/gi, '')
+      .replace(/\s*-\s*(hindi|bangla|english|orig)[^)]*$/gi, '')
+      .toLowerCase().trim();
+    const sIsHindi = !!(s.isHindi || sTitle.toLowerCase().includes('hindi'));
+
+    if (sid && (sSid === sid || sId === `mb-s-${sid}` || sId === sid)) return true;
+    if (dPath && sDPath && dPath === sDPath) return true;
+    if (cleanTitle && sClean === cleanTitle && isHindi === sIsHindi) return true;
+    return false;
+  });
+
   const identifier = existing ? existing.id : (`mb-s-${sid}`);
   checkSeriesUpdates(identifier);
 }
@@ -2790,6 +2922,40 @@ async function handleImportSubmit(e) {
       loadMovies();
       loadSeries();
       loadDashboardData();
+
+      // Instantly mark matching item in raw MovieBox feed as imported and refresh importer grid
+      const targetSid = String(payload.subjectId || '').trim();
+      const targetDPath = String(payload.detailPath || '').trim();
+      const targetCleanTitle = (payload.title || '')
+        .replace(/\s*\[(hindi|bangla|english|orig)[^\]]*\]/gi, '')
+        .replace(/\s*\((hindi|bangla|english|orig)[^)]*\)/gi, '')
+        .replace(/\s*-\s*(hindi|bangla|english|orig)[^)]*$/gi, '')
+        .toLowerCase().trim();
+      const targetIsHindi = !!payload.isHindi;
+
+      if (Array.isArray(state.movieboxRawItems)) {
+        state.movieboxRawItems.forEach(item => {
+          const itemSid = String(item.subjectId || item.id || '').trim();
+          const itemDPath = String(item.detailPath || '').trim();
+          const itemClean = (item.title || '')
+            .replace(/\s*\[(hindi|bangla|english|orig)[^\]]*\]/gi, '')
+            .replace(/\s*\((hindi|bangla|english|orig)[^)]*\)/gi, '')
+            .replace(/\s*-\s*(hindi|bangla|english|orig)[^)]*$/gi, '')
+            .toLowerCase().trim();
+          const itemIsHindi = !!(item.isHindi || (item.title || '').toLowerCase().includes('hindi'));
+
+          if (
+            (targetSid && itemSid === targetSid) ||
+            (targetDPath && itemDPath === targetDPath) ||
+            (itemClean && itemClean === targetCleanTitle && itemIsHindi === targetIsHindi)
+          ) {
+            item.alreadyImported = true;
+          }
+        });
+      }
+      if (typeof applyImporterFilters === 'function') {
+        applyImporterFilters();
+      }
     } else {
       showToast(data.error || 'Failed to import', 'error');
     }
