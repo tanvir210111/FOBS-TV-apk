@@ -1945,6 +1945,12 @@ app.all('/api/stream', async (req, res) => {
 
 // Download endpoint
 app.get('/api/download', async (req, res) => {
+  req.setTimeout(3600000); // 1 hour download timeout
+  res.setTimeout(3600000);
+  if (req.socket && typeof req.socket.setTimeout === 'function') {
+    try { req.socket.setTimeout(3600000); } catch(e) {}
+  }
+
   let targetUrl = req.query.url;
   const filename = req.query.title ? `${req.query.title.replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_')}.mp4` : 'video.mp4';
 
@@ -2018,6 +2024,7 @@ app.get('/api/download', async (req, res) => {
     targetUrl.includes('moviebox')
   ) {
     downloadHeaders['Referer'] = 'https://movieboxapp.in/';
+    downloadHeaders['Origin'] = 'https://movieboxapp.in';
   } else if (resolvedUrl.includes('upbolt.to') || targetUrl.includes('upbolt')) {
     downloadHeaders['Referer'] = 'https://upbolt.to/';
   } else if (resolvedUrl.includes('vkuser.net') || targetUrl.includes('ok.ru')) {
@@ -2043,10 +2050,12 @@ app.get('/api/download', async (req, res) => {
       response = await axios({
         method: 'GET',
         url: downloadFetchUrl,
+        httpsAgent: streamHttpsAgent,
         responseType: 'stream',
         maxRedirects: 5,
         timeout: 0,
-        headers: downloadHeaders
+        headers: downloadHeaders,
+        validateStatus: (status) => (status >= 200 && status < 400) || status === 416
       });
     } catch (initialErr) {
       const isMb = (
@@ -2085,10 +2094,12 @@ app.get('/api/download', async (req, res) => {
           response = await axios({
             method: 'GET',
             url: downloadFetchUrl,
+            httpsAgent: streamHttpsAgent,
             responseType: 'stream',
             maxRedirects: 5,
             timeout: 0,
-            headers: downloadHeaders
+            headers: downloadHeaders,
+            validateStatus: (status) => (status >= 200 && status < 400) || status === 416
           });
         } else {
           throw initialErr;
@@ -2098,31 +2109,43 @@ app.get('/api/download', async (req, res) => {
       }
     }
 
+    if (response.status === 416) {
+      res.writeHead(416, {
+        'Content-Type': response.headers['content-type'] || 'video/mp4',
+        'Content-Range': response.headers['content-range'] || 'bytes */*',
+        'Content-Length': '0',
+        'Access-Control-Allow-Origin': '*'
+      });
+      try { response.data.destroy(); } catch (e) {}
+      return res.end();
+    }
+
+    const range = req.headers.range;
+    const totalLength = parseInt(response.headers['content-length'], 10);
+    const contentType = response.headers['content-type'] || 'video/mp4';
+
     res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(filename)}"`);
-    res.setHeader('Content-Type', response.headers['content-type'] || 'video/mp4');
+    res.setHeader('Content-Type', contentType);
     res.setHeader('Accept-Ranges', 'bytes');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type, Accept');
     res.setHeader('Access-Control-Expose-Headers', 'Content-Range, Content-Length, Accept-Ranges');
-    if (response.status === 206 || response.headers['content-range']) {
-      res.status(206);
-      if (response.headers['content-range']) {
-        res.setHeader('Content-Range', response.headers['content-range']);
-      }
-    } else {
-      res.status(response.status || 200);
-    }
-    if (response.headers['content-length']) {
-      res.setHeader('Content-Length', response.headers['content-length']);
-    }
 
-    req.on('close', () => {
+    const cleanup = () => {
       try {
         if (response && response.data && typeof response.data.destroy === 'function') {
           response.data.destroy();
         }
+        if (response && response.socket && typeof response.socket.destroy === 'function') {
+          response.socket.destroy();
+        }
       } catch (e) {}
-    });
+    };
+
+    response.data.on('error', cleanup);
+    res.on('error', cleanup);
+    res.on('close', cleanup);
+    req.on('close', cleanup);
 
     try {
       if (response && response.data) {
@@ -2131,7 +2154,41 @@ app.get('/api/download', async (req, res) => {
       res.writableHighWaterMark = 1048576;
     } catch (e) {}
 
-    response.data.pipe(res);
+    if (response.status === 206 || response.headers['content-range']) {
+      res.status(206);
+      if (response.headers['content-range']) {
+        res.setHeader('Content-Range', response.headers['content-range']);
+      }
+      if (response.headers['content-length']) {
+        res.setHeader('Content-Length', response.headers['content-length']);
+      }
+      if (typeof res.flushHeaders === 'function') res.flushHeaders();
+      response.data.pipe(res);
+    } else if (range && !isNaN(totalLength)) {
+      const parts = range.replace(/bytes=/, '').split('-');
+      const start = parseInt(parts[0], 10) || 0;
+      const end = parts[1] ? parseInt(parts[1], 10) : totalLength - 1;
+      const chunkLength = end - start + 1;
+
+      res.status(206);
+      res.setHeader('Content-Range', `bytes ${start}-${end}/${totalLength}`);
+      res.setHeader('Content-Length', chunkLength);
+      if (typeof res.flushHeaders === 'function') res.flushHeaders();
+
+      if (start === 0 && end === totalLength - 1) {
+        response.data.pipe(res);
+      } else {
+        const slicer = createRangeSlicer(start, end);
+        response.data.pipe(slicer).pipe(res);
+      }
+    } else {
+      res.status(response.status || 200);
+      if (response.headers['content-length']) {
+        res.setHeader('Content-Length', response.headers['content-length']);
+      }
+      if (typeof res.flushHeaders === 'function') res.flushHeaders();
+      response.data.pipe(res);
+    }
   } catch (err) {
     console.error('Download error:', err.message);
     if (!res.headersSent) {

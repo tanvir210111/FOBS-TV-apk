@@ -8465,8 +8465,11 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     if (activeDownloadTasks[downloadId]?.isPaused) {
       throw new Error('paused');
     }
-    if (totalBytes > 0 && receivedBytes < totalBytes * 0.95) {
+    if (totalBytes > 0 && receivedBytes < totalBytes * 0.98) {
       throw new Error(`Incomplete download: received ${receivedBytes} of ${totalBytes} bytes`);
+    }
+    if (receivedBytes < 3 * 1024 * 1024) {
+      throw new Error(`Incomplete download: received only ${receivedBytes} bytes`);
     }
 
     if (chunkBuffer.length > 0) {
