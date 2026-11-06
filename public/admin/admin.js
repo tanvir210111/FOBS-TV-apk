@@ -708,7 +708,10 @@ async function triggerAutoDetectSeries() {
 
     // Cache detected seasons & episodes so handleSeriesSubmit attaches them automatically!
     if (Array.isArray(d.seasons) && d.seasons.length > 0) {
-      state.lastDetectedSeriesSeasons = d.seasons;
+      state.lastDetectedSeriesSeasons = JSON.parse(JSON.stringify(d.seasons));
+      renderSeriesEpisodesPreview(state.lastDetectedSeriesSeasons);
+    } else {
+      renderSeriesEpisodesPreview([]);
     }
 
     const seCount = d.seasons ? d.seasons.length : 1;
@@ -717,6 +720,89 @@ async function triggerAutoDetectSeries() {
     showToast(`✨ Auto-detected: "${d.title}" (${d.year}) • ${seCount} Season(s), ${epCount} Episodes • ${d.industry} (${d.isHindi ? 'Hindi Dubbed' : 'Original'})!`, 'success', 5000);
   } catch (err) {
     showToast(`Auto-detect error: ${err.message}`, 'error', 4000);
+  }
+}
+
+function renderSeriesEpisodesPreview(seasons) {
+  const box = document.getElementById('series-episodes-preview-box');
+  const tabsEl = document.getElementById('series-preview-seasons-tabs');
+  const tableEl = document.getElementById('series-preview-episodes-table');
+  const totalCountEl = document.getElementById('series-preview-total-eps');
+  if (!box || !tabsEl || !tableEl) return;
+
+  if (!Array.isArray(seasons) || seasons.length === 0) {
+    box.style.display = 'none';
+    return;
+  }
+
+  box.style.display = 'block';
+  const totalEps = seasons.reduce((sum, s) => sum + (Array.isArray(s.episodes) ? s.episodes.length : 0), 0);
+  if (totalCountEl) totalCountEl.innerText = `${seasons.length} Seasons • ${totalEps} Episodes`;
+
+  if (state.activeSeriesPreviewSeasonIdx === undefined || state.activeSeriesPreviewSeasonIdx >= seasons.length) {
+    state.activeSeriesPreviewSeasonIdx = 0;
+  }
+
+  tabsEl.innerHTML = seasons.map((s, idx) => `
+    <button type="button" class="btn-sm-secondary ${idx === state.activeSeriesPreviewSeasonIdx ? 'btn-sm-primary' : ''}" onclick="selectSeriesPreviewSeason(${idx})" style="padding: 5px 10px; font-size: 12px;">
+      ${escapeHtml(s.title || `Season ${s.seasonNumber || (idx + 1)}`)} (${s.episodes?.length || 0})
+    </button>
+  `).join('');
+
+  const activeSeason = seasons[state.activeSeriesPreviewSeasonIdx] || seasons[0];
+  const eps = activeSeason.episodes || [];
+
+  if (eps.length === 0) {
+    tableEl.innerHTML = '<div style="color: #64748b; font-size: 12px; padding: 10px 0;">No episodes in this season.</div>';
+    return;
+  }
+
+  tableEl.innerHTML = `
+    <table class="data-table" style="font-size: 12px; margin-top: 6px;">
+      <thead>
+        <tr>
+          <th style="width: 45px;">Ep</th>
+          <th>Title</th>
+          <th>Stream URL</th>
+          <th style="width: 40px; text-align: right;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${eps.map((ep, eIdx) => `
+          <tr>
+            <td><strong>${ep.episode || (eIdx + 1)}</strong></td>
+            <td>
+              <input type="text" class="custom-input-sm" value="${escapeHtml(ep.title || `Episode ${ep.episode || (eIdx + 1)}`)}" onchange="updateSeriesPreviewEp(${state.activeSeriesPreviewSeasonIdx}, ${eIdx}, 'title', this.value)" style="padding: 4px 8px; font-size: 12px;">
+            </td>
+            <td>
+              <input type="text" class="custom-input-sm" value="${escapeHtml(ep.streamUrl || '')}" onchange="updateSeriesPreviewEp(${state.activeSeriesPreviewSeasonIdx}, ${eIdx}, 'streamUrl', this.value)" style="padding: 4px 8px; font-size: 11px;">
+            </td>
+            <td style="text-align: right;">
+              <button type="button" class="btn-action-icon danger" onclick="deleteSeriesPreviewEp(${state.activeSeriesPreviewSeasonIdx}, ${eIdx})" style="padding: 3px 6px; font-size: 11px;"><i class="fa-solid fa-trash-can"></i></button>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function selectSeriesPreviewSeason(idx) {
+  state.activeSeriesPreviewSeasonIdx = idx;
+  renderSeriesEpisodesPreview(state.lastDetectedSeriesSeasons);
+}
+
+function updateSeriesPreviewEp(sIdx, eIdx, field, val) {
+  if (state.lastDetectedSeriesSeasons && state.lastDetectedSeriesSeasons[sIdx] && state.lastDetectedSeriesSeasons[sIdx].episodes[eIdx]) {
+    state.lastDetectedSeriesSeasons[sIdx].episodes[eIdx][field] = val;
+  }
+}
+
+function deleteSeriesPreviewEp(sIdx, eIdx) {
+  if (state.lastDetectedSeriesSeasons && state.lastDetectedSeriesSeasons[sIdx] && state.lastDetectedSeriesSeasons[sIdx].episodes) {
+    state.lastDetectedSeriesSeasons[sIdx].episodes.splice(eIdx, 1);
+    state.lastDetectedSeriesSeasons[sIdx].episodesCount = state.lastDetectedSeriesSeasons[sIdx].episodes.length;
+    renderSeriesEpisodesPreview(state.lastDetectedSeriesSeasons);
   }
 }
 
@@ -743,8 +829,8 @@ async function handleSeriesSubmit(e) {
     isCustom: true
   };
 
-  // If new series and seasons were detected via Auto-Detect, attach them automatically!
-  if (!id && state.lastDetectedSeriesSeasons && state.lastDetectedSeriesSeasons.length > 0) {
+  // If seasons were detected/customized via Auto-Detect, attach them
+  if (state.lastDetectedSeriesSeasons && state.lastDetectedSeriesSeasons.length > 0) {
     payload.seasons = state.lastDetectedSeriesSeasons;
     payload.episodes = state.lastDetectedSeriesSeasons[0]?.episodes || [];
     payload.seasonsCount = payload.seasons.length;
@@ -790,24 +876,109 @@ async function confirmDeleteSeries(id, title) {
 }
 
 // EPISODES STUDIO MODAL
-function openEpisodesStudio(seriesId) {
-  const series = state.series.find(s => s.id === seriesId);
-  if (!series) return;
+async function openEpisodesStudio(seriesId) {
+  showToast('Loading full seasons and episodes...', 'info', 1500);
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/series/${encodeURIComponent(seriesId)}`);
+    const data = await res.json();
+    if (!data.success || !data.series) throw new Error(data.error || 'Failed to load series details');
+    const series = data.series;
 
-  state.currentEpisodesStudio = JSON.parse(JSON.stringify(series));
-  if (!Array.isArray(state.currentEpisodesStudio.seasons) || state.currentEpisodesStudio.seasons.length === 0) {
-    state.currentEpisodesStudio.seasons = [{
-      seasonNumber: 1,
-      title: 'Season 1',
-      episodes: []
-    }];
+    state.currentEpisodesStudio = JSON.parse(JSON.stringify(series));
+    if (!Array.isArray(state.currentEpisodesStudio.seasons) || state.currentEpisodesStudio.seasons.length === 0) {
+      if (Array.isArray(state.currentEpisodesStudio.episodes) && state.currentEpisodesStudio.episodes.length > 0) {
+        state.currentEpisodesStudio.seasons = [{
+          seasonNumber: 1,
+          title: 'Season 1',
+          episodes: state.currentEpisodesStudio.episodes
+        }];
+      } else {
+        state.currentEpisodesStudio.seasons = [{
+          seasonNumber: 1,
+          title: 'Season 1',
+          episodes: []
+        }];
+      }
+    }
+    state.activeSeasonIndex = 0;
+
+    document.getElementById('episodes-modal-series-title').innerHTML = `<i class="fa-solid fa-clapperboard"></i> ${escapeHtml(series.title)}`;
+    renderSeasonsList();
+    renderEpisodesTable();
+    openModal('episodes-modal');
+  } catch (err) {
+    showToast(`Error opening Episodes Studio: ${err.message}`, 'error');
   }
-  state.activeSeasonIndex = 0;
+}
 
-  document.getElementById('episodes-modal-series-title').innerHTML = `<i class="fa-solid fa-clapperboard"></i> ${escapeHtml(series.title)}`;
+function deleteCurrentSeason() {
+  const seasons = state.currentEpisodesStudio?.seasons;
+  if (!seasons || seasons.length <= 1) {
+    showToast('Cannot delete the only season in the series.', 'warning');
+    return;
+  }
+  const cur = seasons[state.activeSeasonIndex];
+  if (!confirm(`Delete ${cur.title || ('Season ' + (state.activeSeasonIndex + 1))} and all its episodes?`)) return;
+  seasons.splice(state.activeSeasonIndex, 1);
+  state.activeSeasonIndex = Math.max(0, state.activeSeasonIndex - 1);
   renderSeasonsList();
   renderEpisodesTable();
-  openModal('episodes-modal');
+  showToast('Season removed. Click Save All Episodes to persist changes.', 'info');
+}
+
+async function reDetectEpisodesFromStudio() {
+  const s = state.currentEpisodesStudio;
+  if (!s) return;
+  const q = s.subjectId || s.title;
+  if (!q) {
+    showToast('No Subject ID or title found to re-detect from MovieBox', 'warning');
+    return;
+  }
+
+  showToast(`Re-detecting latest episodes for "${s.title}" from MovieBox...`, 'info', 3000);
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/auto-detect?q=${encodeURIComponent(q)}&type=series`);
+    const data = await res.json();
+    if (!data.success || !data.data) throw new Error(data.error || 'Failed to fetch latest episodes');
+    const d = data.data;
+
+    if (!Array.isArray(d.seasons) || d.seasons.length === 0) {
+      showToast('No seasons detected from MovieBox.', 'warning');
+      return;
+    }
+
+    if (!Array.isArray(s.seasons)) s.seasons = [];
+    let addedCount = 0;
+
+    for (const detSeason of d.seasons) {
+      const seNum = detSeason.seasonNumber || 1;
+      let existingSeason = s.seasons.find(x => (x.seasonNumber || 1) === seNum);
+      if (!existingSeason) {
+        s.seasons.push(detSeason);
+        addedCount += (detSeason.episodes?.length || 0);
+      } else {
+        if (!Array.isArray(existingSeason.episodes)) existingSeason.episodes = [];
+        const existingEpNums = new Set(existingSeason.episodes.map(e => e.episode || parseInt(e.number, 10)));
+        for (const ep of (detSeason.episodes || [])) {
+          const epNum = ep.episode || parseInt(ep.number, 10);
+          if (!existingEpNums.has(epNum)) {
+            existingSeason.episodes.push(ep);
+            existingEpNums.add(epNum);
+            addedCount++;
+          }
+        }
+        existingSeason.episodes.sort((a, b) => (a.episode || 0) - (b.episode || 0));
+        existingSeason.episodesCount = existingSeason.episodes.length;
+      }
+    }
+
+    s.seasons.sort((a, b) => (a.seasonNumber || 1) - (b.seasonNumber || 1));
+    renderSeasonsList();
+    renderEpisodesTable();
+    showToast(`✨ Re-detect complete! Added / updated ${addedCount} episode(s). Click "Save All Episodes" to confirm.`, 'success', 5000);
+  } catch (err) {
+    showToast(`Re-detect error: ${err.message}`, 'error');
+  }
 }
 
 function renderSeasonsList() {
@@ -1226,9 +1397,12 @@ async function confirmDeleteNotification(id, title) {
 }
 
 // NOTICE COMMENTS & ENGAGEMENT MODAL
-function openNoticeCommentsModal(notifId) {
+let currentNoticeReactionsData = null;
+
+async function openNoticeCommentsModal(notifId) {
   const notif = state.announcements.find(n => n.id === notifId);
   if (!notif) return;
+  state.activeNoticeId = notifId;
 
   const likes = notif.likes || 0;
   const dislikes = notif.dislikes || 0;
@@ -1241,31 +1415,190 @@ function openNoticeCommentsModal(notifId) {
   document.getElementById('modal-ratio-fill').style.width = `${ratio}%`;
   document.getElementById('modal-ratio-text').innerText = `${ratio}% Positive Reactions`;
 
-  const comments = notif.comments || [];
-  document.getElementById('modal-comments-count').innerText = comments.length;
+  switchNoticeModalTab('comments');
+  renderNoticeCommentsList(notif.comments || []);
+  openModal('notice-comments-modal');
+
+  // Load who reacted breakdown from server
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/notifications/${encodeURIComponent(notifId)}/reactions`);
+    const rData = await res.json();
+    if (rData && rData.success) {
+      currentNoticeReactionsData = rData;
+      const lCount = rData.totalLikes || (rData.likes ? rData.likes.length : 0);
+      const dCount = rData.totalDislikes || (rData.dislikes ? rData.dislikes.length : 0);
+      const tot = lCount + dCount;
+      const rat = tot > 0 ? Math.round((lCount / tot) * 100) : 50;
+
+      document.getElementById('modal-likes-count').innerText = lCount;
+      document.getElementById('modal-dislikes-count').innerText = dCount;
+      document.getElementById('modal-ratio-fill').style.width = `${rat}%`;
+      document.getElementById('modal-ratio-text').innerText = `${rat}% Positive Reactions`;
+
+      renderNoticeReactionsList(rData);
+    }
+  } catch (_) {}
+}
+
+function switchNoticeModalTab(tab) {
+  const btnComments = document.getElementById('btn-tab-notice-comments');
+  const btnReactions = document.getElementById('btn-tab-notice-reactions');
+  const viewComments = document.getElementById('notice-tab-content-comments');
+  const viewReactions = document.getElementById('notice-tab-content-reactions');
+
+  if (tab === 'comments') {
+    if (btnComments) btnComments.className = 'btn-sm-primary';
+    if (btnReactions) btnReactions.className = 'btn-sm-secondary';
+    if (viewComments) viewComments.style.display = 'block';
+    if (viewReactions) viewReactions.style.display = 'none';
+  } else {
+    if (btnComments) btnComments.className = 'btn-sm-secondary';
+    if (btnReactions) btnReactions.className = 'btn-sm-primary';
+    if (viewComments) viewComments.style.display = 'none';
+    if (viewReactions) viewReactions.style.display = 'block';
+  }
+}
+
+function renderNoticeReactionsList(data) {
+  const likesList = document.getElementById('notice-likes-list');
+  const dislikesList = document.getElementById('notice-dislikes-list');
+  const likeBadge = document.getElementById('notice-reactions-like-count');
+  const dislikeBadge = document.getElementById('notice-reactions-dislike-count');
+
+  const likes = data.likes || [];
+  const dislikes = data.dislikes || [];
+  if (likeBadge) likeBadge.innerText = likes.length;
+  if (dislikeBadge) dislikeBadge.innerText = dislikes.length;
+
+  if (likesList) {
+    if (likes.length === 0) {
+      likesList.innerHTML = '<div style="color: #64748b; font-size: 12px; padding: 10px 0;">No likes yet.</div>';
+    } else {
+      likesList.innerHTML = likes.map(u => `
+        <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 8px;">
+          <img src="${u.avatar}" style="width: 28px; height: 28px; border-radius: 50%;" alt="">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 12.5px; font-weight: 600; color: #10b981;">${escapeHtml(u.userName || 'User')}</div>
+            <div style="font-size: 11px; color: #64748b;">${formatDate(u.time)}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  if (dislikesList) {
+    if (dislikes.length === 0) {
+      dislikesList.innerHTML = '<div style="color: #64748b; font-size: 12px; padding: 10px 0;">No dislikes yet.</div>';
+    } else {
+      dislikesList.innerHTML = dislikes.map(u => `
+        <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 8px;">
+          <img src="${u.avatar}" style="width: 28px; height: 28px; border-radius: 50%;" alt="">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 12.5px; font-weight: 600; color: #ef4444;">${escapeHtml(u.userName || 'User')}</div>
+            <div style="font-size: 11px; color: #64748b;">${formatDate(u.time)}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+}
+
+function renderNoticeCommentsList(comments) {
   const listEl = document.getElementById('modal-comments-list');
+  const countBadge = document.getElementById('modal-comments-count-badge') || document.getElementById('modal-comments-count');
+  if (countBadge) countBadge.innerText = comments.length;
+  if (!listEl) return;
 
   if (comments.length === 0) {
     listEl.innerHTML = '<div class="empty-state-mini">No comments posted on this announcement yet.</div>';
-  } else {
-    listEl.innerHTML = comments.map(c => `
-      <div class="comment-item">
-        <img class="comment-avatar" src="${c.avatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(c.name || 'User')}" alt="">
-        <div class="comment-content">
-          <div style="display: flex; justify-content: space-between;">
-            <div>
-              <span class="comment-user-name">${escapeHtml(c.name || 'Viewer')}</span>
-              <span class="comment-time">${formatDate(c.createdAt)}</span>
-            </div>
-            <button class="btn-action-icon danger" onclick="deleteNoticeComment('${notif.id}', '${c.id}')" title="Delete comment"><i class="fa-solid fa-trash-can"></i></button>
-          </div>
-          <div class="comment-text">${escapeHtml(c.text)}</div>
-        </div>
-      </div>
-    `).join('');
+    return;
   }
 
-  openModal('notice-comments-modal');
+  listEl.innerHTML = comments.map(c => {
+    const repliesHtml = (Array.isArray(c.replies) && c.replies.length > 0) ? `
+      <div style="margin-top: 8px; margin-left: 12px; border-left: 2px solid #00f2fe; padding-left: 8px;">
+        ${c.replies.map(r => `
+          <div style="background: rgba(0,242,254,0.08); border-radius: 6px; padding: 6px 10px; margin-top: 4px;">
+            <div style="font-size: 11px; font-weight: 700; color: #00f2fe;"><i class="fa-solid fa-shield-halved"></i> FOBS TV Admin <span style="font-size: 10px; color: #94a3b8; font-weight: 400;">• ${formatDate(r.createdAt)}</span></div>
+            <div style="font-size: 12px; color: #fff; margin-top: 2px;">${escapeHtml(r.text)}</div>
+          </div>
+        `).join('')}
+      </div>
+    ` : '';
+
+    return `
+      <div class="comment-item" style="flex-direction: column; align-items: stretch;">
+        <div style="display: flex; gap: 10px;">
+          <img class="comment-avatar" src="${c.avatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(c.name || 'User')}" alt="">
+          <div class="comment-content" style="flex: 1;">
+            <div style="display: flex; justify-content: space-between;">
+              <div>
+                <span class="comment-user-name">${escapeHtml(c.name || 'Viewer')}</span>
+                <span class="comment-time">${formatDate(c.createdAt)}</span>
+              </div>
+              <div style="display: flex; gap: 6px;">
+                <button class="btn-sm-primary" style="padding: 2px 7px; font-size: 11px;" onclick="toggleNoticeReplyBox('${c.id}')"><i class="fa-solid fa-reply"></i> Reply</button>
+                <button class="btn-action-icon danger" onclick="deleteNoticeComment('${state.activeNoticeId}', '${c.id}')" title="Delete comment"><i class="fa-solid fa-trash-can"></i></button>
+              </div>
+            </div>
+            <div class="comment-text">${escapeHtml(c.text)}</div>
+            ${repliesHtml}
+            <div id="notice-reply-box-${c.id}" style="display: none; margin-top: 8px; margin-left: 12px; gap: 6px;">
+              <input type="text" id="notice-reply-input-${c.id}" class="custom-input-sm" placeholder="Write reply to ${escapeHtml(c.name || 'viewer')} as Admin..." style="flex: 1;" onkeypress="if(event.key==='Enter') sendNoticeCommentReply('${state.activeNoticeId}', '${c.id}')">
+              <button class="btn-sm-primary" onclick="sendNoticeCommentReply('${state.activeNoticeId}', '${c.id}')"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleNoticeReplyBox(commentId) {
+  const box = document.getElementById(`notice-reply-box-${commentId}`);
+  if (!box) return;
+  const isHidden = box.style.display === 'none' || !box.style.display;
+  box.style.display = isHidden ? 'flex' : 'none';
+  if (isHidden) {
+    const input = document.getElementById(`notice-reply-input-${commentId}`);
+    if (input) setTimeout(() => input.focus(), 100);
+  }
+}
+
+async function sendNoticeCommentReply(noticeId, commentId) {
+  const input = document.getElementById(`notice-reply-input-${commentId}`);
+  if (!input) return;
+  const replyText = input.value.trim();
+  if (!replyText) {
+    showToast('Please type a reply message', 'warning');
+    return;
+  }
+
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/notifications/${encodeURIComponent(noticeId)}/comments/${encodeURIComponent(commentId)}/reply`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reply: replyText, author: 'FOBS TV Admin' })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Reply published successfully!');
+      input.value = '';
+      const notif = state.announcements.find(n => n.id === noticeId);
+      if (notif && notif.comments) {
+        const c = notif.comments.find(x => x.id === commentId);
+        if (c) {
+          if (!Array.isArray(c.replies)) c.replies = [];
+          c.replies.push(data.reply);
+          renderNoticeCommentsList(notif.comments);
+        }
+      }
+    } else {
+      showToast(data.error || 'Failed to send reply', 'error');
+    }
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
 }
 
 async function deleteNoticeComment(notifId, commentId) {
@@ -1309,31 +1642,85 @@ function renderCommentsTable(commentsList) {
     return;
   }
 
-  tbody.innerHTML = commentsList.map(c => `
-    <tr>
-      <td>
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <img class="comment-avatar" src="${c.userAvatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(c.userName || 'User')}" alt="">
-          <div>
-            <div class="table-title-bold" style="font-size: 13.5px;">${escapeHtml(c.userName || 'Viewer')}</div>
-            <div class="table-meta-sub">${escapeHtml(c.userId || 'Guest')}</div>
+  tbody.innerHTML = commentsList.map(c => {
+    const repliesHtml = (Array.isArray(c.replies) && c.replies.length > 0) ? `
+      <div style="margin-top: 6px;">
+        ${c.replies.map(r => `
+          <div style="background: rgba(0,242,254,0.08); border-left: 2px solid #00f2fe; padding: 4px 8px; border-radius: 4px; margin-top: 4px; font-size: 12px;">
+            <span style="color: #00f2fe; font-weight: 700;"><i class="fa-solid fa-shield-halved"></i> ${escapeHtml(r.author || 'Admin')}:</span>
+            <span style="color: #cbd5e1;">${escapeHtml(r.text)}</span>
+            <span style="color: #64748b; font-size: 10px; margin-left: 6px;">${formatDate(r.createdAt)}</span>
           </div>
-        </div>
-      </td>
-      <td>
-        <strong style="color: var(--primary); font-size: 13px;">${escapeHtml(c.mediaTitle || 'Media')}</strong>
-      </td>
-      <td style="max-width: 380px;">
-        <div style="font-size: 13px; color: #e2e8f0; line-height: 1.4;">${escapeHtml(c.text)}</div>
-        ${c.imageUrl ? `<a href="${c.imageUrl}" target="_blank"><img class="comment-photo-preview" src="${c.imageUrl}" alt="Attached photo"></a>` : ''}
-      </td>
-      <td><span style="color: #38bdf8; font-weight: 700;"><i class="fa-solid fa-thumbs-up"></i> ${c.likes || 0}</span></td>
-      <td style="font-size: 12px; color: #94a3b8;">${formatDate(c.createdAt)}</td>
-      <td class="row-actions">
-        <button class="btn-action-icon danger" onclick="confirmDeleteMediaComment('${c.mediaId}', '${c.id}')" title="Delete comment"><i class="fa-solid fa-trash-can"></i></button>
-      </td>
-    </tr>
-  `).join('');
+        `).join('')}
+      </div>
+    ` : '';
+
+    return `
+      <tr>
+        <td>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <img class="comment-avatar" src="${c.userAvatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(c.userName || 'User')}" alt="">
+            <div>
+              <div class="table-title-bold" style="font-size: 13.5px;">${escapeHtml(c.userName || 'Viewer')}</div>
+              <div class="table-meta-sub">${escapeHtml(c.userId || 'Guest')}</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <strong style="color: var(--primary); font-size: 13px;">${escapeHtml(c.mediaTitle || 'Media')}</strong>
+        </td>
+        <td style="max-width: 380px;">
+          <div style="font-size: 13px; color: #e2e8f0; line-height: 1.4;">${escapeHtml(c.text)}</div>
+          ${c.imageUrl ? `<a href="${c.imageUrl}" target="_blank"><img class="comment-photo-preview" src="${c.imageUrl}" alt="Attached photo"></a>` : ''}
+          ${repliesHtml}
+        </td>
+        <td><span style="color: #38bdf8; font-weight: 700;"><i class="fa-solid fa-thumbs-up"></i> ${c.likes || 0}</span></td>
+        <td style="font-size: 12px; color: #94a3b8;">${formatDate(c.createdAt)}</td>
+        <td class="row-actions">
+          <button class="btn-action-icon edit" onclick="openCommentReplyModal('${c.mediaId}', '${c.id}', '${escapeHtml(c.userName || 'Viewer')}', '${escapeHtml(c.text || '')}')" title="Reply to viewer comment" style="margin-right: 4px;">
+            <i class="fa-solid fa-reply"></i>
+          </button>
+          <button class="btn-action-icon danger" onclick="confirmDeleteMediaComment('${c.mediaId}', '${c.id}')" title="Delete comment"><i class="fa-solid fa-trash-can"></i></button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function openCommentReplyModal(mediaId, commentId, userName, commentText) {
+  document.getElementById('reply-media-id').value = mediaId || '';
+  document.getElementById('reply-comment-id').value = commentId || '';
+  document.getElementById('reply-modal-meta').innerText = `Replying to ${userName || 'Viewer'}`;
+  document.getElementById('reply-modal-quote').innerText = `"${commentText || ''}"`;
+  document.getElementById('reply-text').value = '';
+  openModal('comment-reply-modal');
+  setTimeout(() => document.getElementById('reply-text').focus(), 150);
+}
+
+async function handleCommentReplySubmit(e) {
+  e.preventDefault();
+  const mediaId = document.getElementById('reply-media-id').value;
+  const commentId = document.getElementById('reply-comment-id').value;
+  const replyText = document.getElementById('reply-text').value.trim();
+  if (!replyText) return;
+
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/comments/${encodeURIComponent(mediaId)}/${encodeURIComponent(commentId)}/reply`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reply: replyText, author: 'FOBS TV Admin' })
+    });
+    const data = await res.json();
+    if (data.success) {
+      closeModal('comment-reply-modal');
+      showToast('Admin reply saved & visible to viewer!');
+      loadAllComments();
+    } else {
+      showToast(data.error || 'Failed to post reply', 'error');
+    }
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
 }
 
 function filterCommentsTable() {
@@ -1745,10 +2132,171 @@ async function openImportModal(item) {
         const totalEpText = d.totalEpisodes || (isSeries ? 16 : 1);
         statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald" style="color: #10b981;"></i> <strong>Auto-Detected:</strong> ${totalEpText} Episode(s) &bull; ${d.industry} (${d.category})`;
       }
+
+      // Initialize detailed seasons & episodes preview for import
+      if (isSeries || d.type === 'series') {
+        state.importPreviewSeasons = (Array.isArray(d.seasons) && d.seasons.length > 0)
+          ? JSON.parse(JSON.stringify(d.seasons))
+          : [];
+        if (state.importPreviewSeasons.length === 0) {
+          const epCount = d.totalEpisodes || 16;
+          const eps = [];
+          for (let ep = 1; ep <= epCount; ep++) {
+            const epUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=1&ep=${ep}` : '';
+            eps.push({
+              number: String(ep).padStart(2, '0'),
+              episode: ep,
+              season: 1,
+              title: `Episode ${ep}`,
+              streamUrl: epUrl,
+              duration: '45 min'
+            });
+          }
+          state.importPreviewSeasons = [{ seasonNumber: 1, title: 'Season 1', episodesCount: eps.length, episodes: eps }];
+        }
+        renderImportEpisodesPreview();
+      } else {
+        state.importPreviewSeasons = [];
+        renderImportEpisodesPreview();
+      }
     }
   } catch (err) {
     statusText.innerHTML = '<i class="fa-solid fa-circle-check text-emerald" style="color: #10b981;"></i> Auto-detect loaded standard metadata. Ready to import.';
   }
+}
+
+function renderImportEpisodesPreview() {
+  const box = document.getElementById('imp-episodes-preview-box');
+  const tabsEl = document.getElementById('imp-preview-seasons-tabs');
+  const tableEl = document.getElementById('imp-preview-episodes-table');
+  const totalCountEl = document.getElementById('imp-preview-total-eps');
+  if (!box || !tabsEl || !tableEl) return;
+
+  const seasons = state.importPreviewSeasons || [];
+  if (seasons.length === 0) {
+    box.style.display = 'none';
+    return;
+  }
+
+  box.style.display = 'block';
+  const totalEps = seasons.reduce((sum, s) => sum + (Array.isArray(s.episodes) ? s.episodes.length : 0), 0);
+  if (totalCountEl) totalCountEl.innerText = `${seasons.length} Seasons • ${totalEps} Episodes`;
+
+  if (state.activeImportPreviewSeasonIdx === undefined || state.activeImportPreviewSeasonIdx >= seasons.length) {
+    state.activeImportPreviewSeasonIdx = 0;
+  }
+
+  tabsEl.innerHTML = seasons.map((s, idx) => `
+    <button type="button" class="btn-sm-secondary ${idx === state.activeImportPreviewSeasonIdx ? 'btn-sm-primary' : ''}" onclick="selectImportPreviewSeason(${idx})" style="padding: 5px 10px; font-size: 12px;">
+      ${escapeHtml(s.title || `Season ${s.seasonNumber || (idx + 1)}`)} (${s.episodes?.length || 0})
+    </button>
+  `).join('');
+
+  const activeSeason = seasons[state.activeImportPreviewSeasonIdx] || seasons[0];
+  const eps = activeSeason.episodes || [];
+
+  if (eps.length === 0) {
+    tableEl.innerHTML = '<div style="color: #64748b; font-size: 12px; padding: 10px 0;">No episodes in this season. <button type="button" class="btn-sm-primary" onclick="addCustomEpisodeToImport()"><i class="fa-solid fa-plus"></i> Add Episode 1</button></div>';
+    return;
+  }
+
+  tableEl.innerHTML = `
+    <table class="data-table" style="font-size: 12px; margin-top: 6px;">
+      <thead>
+        <tr>
+          <th style="width: 45px;">Ep</th>
+          <th>Title</th>
+          <th>Stream URL</th>
+          <th style="width: 40px; text-align: right;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${eps.map((ep, eIdx) => `
+          <tr>
+            <td><strong>${ep.episode || (eIdx + 1)}</strong></td>
+            <td>
+              <input type="text" class="custom-input-sm" value="${escapeHtml(ep.title || `Episode ${ep.episode || (eIdx + 1)}`)}" onchange="updateImportPreviewEp(${state.activeImportPreviewSeasonIdx}, ${eIdx}, 'title', this.value)" style="padding: 4px 8px; font-size: 12px;">
+            </td>
+            <td>
+              <input type="text" class="custom-input-sm" value="${escapeHtml(ep.streamUrl || '')}" onchange="updateImportPreviewEp(${state.activeImportPreviewSeasonIdx}, ${eIdx}, 'streamUrl', this.value)" style="padding: 4px 8px; font-size: 11px;">
+            </td>
+            <td style="text-align: right;">
+              <button type="button" class="btn-action-icon danger" onclick="deleteImportPreviewEp(${state.activeImportPreviewSeasonIdx}, ${eIdx})" style="padding: 3px 6px; font-size: 11px;"><i class="fa-solid fa-trash-can"></i></button>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function selectImportPreviewSeason(idx) {
+  state.activeImportPreviewSeasonIdx = idx;
+  renderImportEpisodesPreview();
+}
+
+function updateImportPreviewEp(sIdx, eIdx, field, val) {
+  if (state.importPreviewSeasons && state.importPreviewSeasons[sIdx] && state.importPreviewSeasons[sIdx].episodes[eIdx]) {
+    state.importPreviewSeasons[sIdx].episodes[eIdx][field] = val;
+  }
+}
+
+function deleteImportPreviewEp(sIdx, eIdx) {
+  if (state.importPreviewSeasons && state.importPreviewSeasons[sIdx] && state.importPreviewSeasons[sIdx].episodes) {
+    state.importPreviewSeasons[sIdx].episodes.splice(eIdx, 1);
+    state.importPreviewSeasons[sIdx].episodesCount = state.importPreviewSeasons[sIdx].episodes.length;
+    renderImportEpisodesPreview();
+  }
+}
+
+function addCustomEpisodeToImport() {
+  if (!state.importPreviewSeasons || state.importPreviewSeasons.length === 0) {
+    state.importPreviewSeasons = [{ seasonNumber: 1, title: 'Season 1', episodes: [] }];
+    state.activeImportPreviewSeasonIdx = 0;
+  }
+  const season = state.importPreviewSeasons[state.activeImportPreviewSeasonIdx];
+  if (!season) return;
+  if (!Array.isArray(season.episodes)) season.episodes = [];
+  const nextNum = season.episodes.length + 1;
+  const sId = document.getElementById('imp-subjectId')?.value || '';
+  const dPath = document.getElementById('imp-detailPath')?.value || '';
+  const seNum = season.seasonNumber || 1;
+  const epUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${nextNum}` : '';
+
+  season.episodes.push({
+    episode: nextNum,
+    episodeNumber: nextNum,
+    number: String(nextNum).padStart(2, '0'),
+    title: `Episode ${nextNum}`,
+    season: seNum,
+    streamUrl: epUrl,
+    duration: '45 min'
+  });
+  season.episodesCount = season.episodes.length;
+  renderImportEpisodesPreview();
+}
+
+function addCustomSeasonToImport() {
+  if (!state.importPreviewSeasons) state.importPreviewSeasons = [];
+  const nextSe = state.importPreviewSeasons.length + 1;
+  state.importPreviewSeasons.push({
+    seasonNumber: nextSe,
+    title: `Season ${nextSe}`,
+    episodes: []
+  });
+  state.activeImportPreviewSeasonIdx = state.importPreviewSeasons.length - 1;
+  renderImportEpisodesPreview();
+}
+
+function filterImportPreviewSeason(val) {
+  if (val === 'all') {
+    state.activeImportPreviewSeasonIdx = 0;
+  } else {
+    const seNum = parseInt(val, 10);
+    const idx = (state.importPreviewSeasons || []).findIndex(s => (s.seasonNumber || s.se) === seNum);
+    if (idx !== -1) state.activeImportPreviewSeasonIdx = idx;
+  }
+  renderImportEpisodesPreview();
 }
 
 async function handleImportSubmit(e) {
@@ -1775,6 +2323,11 @@ async function handleImportSubmit(e) {
     seasonMode: document.getElementById('imp-season-mode')?.value || 'all',
     episodesCount: parseInt(document.getElementById('imp-episodes')?.value, 10) || 16
   };
+
+  // Attach full customized seasons if series
+  if (payload.type === 'series' && Array.isArray(state.importPreviewSeasons) && state.importPreviewSeasons.length > 0) {
+    payload.seasons = state.importPreviewSeasons;
+  }
 
   try {
     const res = await authFetch(`${API_BASE}/api/admin/moviebox/import`, {

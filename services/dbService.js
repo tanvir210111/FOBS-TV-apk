@@ -243,6 +243,7 @@ const CommentSchema = new mongoose.Schema({
   text: { type: String, required: true },
   imageUrl: { type: String, default: '' },
   likes: { type: Number, default: 0 },
+  replies: { type: Array, default: [] },
   createdAt: { type: Date, default: Date.now }
 });
 
@@ -855,6 +856,7 @@ async function getMediaComments(mediaId) {
           text: d.text,
           imageUrl: d.imageUrl || '',
           likes: d.likes || 0,
+          replies: d.replies || [],
           createdAt: d.createdAt
         }));
       }
@@ -957,6 +959,7 @@ async function getAllMediaComments(limit = 150) {
           text: c.text,
           imageUrl: c.imageUrl,
           likes: c.likes || 0,
+          replies: c.replies || [],
           createdAt: c.createdAt
         }));
       }
@@ -1013,6 +1016,58 @@ async function deleteMediaComment(mediaId, commentId) {
 
   saveLocalCommentsMap(localMap);
   return { success: true };
+}
+
+async function addMediaCommentReply(mediaId, commentId, replyText, author = 'FOBS TV Admin') {
+  if (!commentId || !replyText) return { success: false, error: 'commentId and replyText required' };
+  const replyObj = {
+    id: 'rep_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+    author: author || 'FOBS TV Admin',
+    role: 'admin',
+    text: String(replyText).trim(),
+    createdAt: new Date().toISOString()
+  };
+
+  // 1. Update in MongoDB
+  if (isMongoConnected && Comment) {
+    try {
+      if (mongoose.Types.ObjectId.isValid(commentId)) {
+        await Comment.findByIdAndUpdate(commentId, {
+          $push: { replies: replyObj }
+        });
+      }
+    } catch (e) {
+      console.warn('MongoDB reply error:', e.message);
+    }
+  }
+
+  // 2. Update in local comments map
+  const localMap = getLocalCommentsMap();
+  let found = false;
+  if (mediaId && localMap[mediaId]) {
+    const c = localMap[mediaId].find(x => String(x.id) === String(commentId));
+    if (c) {
+      if (!Array.isArray(c.replies)) c.replies = [];
+      c.replies.push(replyObj);
+      found = true;
+    }
+  }
+  if (!found) {
+    for (const mId of Object.keys(localMap)) {
+      if (Array.isArray(localMap[mId])) {
+        const c = localMap[mId].find(x => String(x.id) === String(commentId));
+        if (c) {
+          if (!Array.isArray(c.replies)) c.replies = [];
+          c.replies.push(replyObj);
+          found = true;
+          break;
+        }
+      }
+    }
+  }
+
+  saveLocalCommentsMap(localMap);
+  return { success: true, reply: replyObj };
 }
 
 
@@ -1241,6 +1296,7 @@ module.exports = {
   getMediaComments,
   getAllMediaComments,
   deleteMediaComment,
+  addMediaCommentReply,
   addMediaComment,
   likeComment,
   saveReport,

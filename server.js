@@ -2854,9 +2854,9 @@ app.get('/api/announcements/popup', (req, res) => {
 app.post('/api/announcements/:id/react', (req, res) => {
   try {
     const { id } = req.params;
-    const { type, userId } = req.body;
+    const { type, userId, userName } = req.body;
     const effectiveUserId = userId || req.headers['x-user-id'] || req.ip;
-    const result = adminService.reactToNotification(id, effectiveUserId, type);
+    const result = adminService.reactToNotification(id, effectiveUserId, type, userName);
     res.json(result);
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -3540,6 +3540,28 @@ app.delete('/api/admin/notifications/:id/comments/:commentId', adminService.auth
   }
 });
 
+// Admin view who reacted (likes & dislikes) on an announcement
+app.get('/api/admin/notifications/:id/reactions', adminService.authenticate, (req, res) => {
+  try {
+    const result = adminService.getNotificationReactions(req.params.id);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin reply to an announcement comment
+app.post('/api/admin/notifications/:id/comments/:commentId/reply', adminService.authenticate, (req, res) => {
+  try {
+    const { reply, author } = req.body;
+    if (!reply) return res.status(400).json({ success: false, error: 'Reply text is required' });
+    const result = adminService.addNotificationCommentReply(req.params.id, req.params.commentId, reply, author);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Get all media user comments & reviews across app
 app.get('/api/admin/comments', adminService.authenticate, async (req, res) => {
   try {
@@ -3567,6 +3589,18 @@ app.get('/api/admin/comments', adminService.authenticate, async (req, res) => {
 app.delete('/api/admin/comments/:mediaId/:commentId', adminService.authenticate, async (req, res) => {
   try {
     const result = await dbService.deleteMediaComment(req.params.mediaId, req.params.commentId);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin reply to a media comment
+app.post('/api/admin/comments/:mediaId/:commentId/reply', adminService.authenticate, async (req, res) => {
+  try {
+    const { reply, author } = req.body;
+    if (!reply) return res.status(400).json({ success: false, error: 'Reply text is required' });
+    const result = await dbService.addMediaCommentReply(req.params.mediaId, req.params.commentId, reply, author);
     res.json(result);
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });

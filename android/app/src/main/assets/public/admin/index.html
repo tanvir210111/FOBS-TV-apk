@@ -826,6 +826,16 @@
           <button type="button" class="btn-primary" onclick="triggerAutoDetectSeries()" style="padding: 9px 18px; font-size: 13px;"><i class="fa-solid fa-bolt"></i> Auto-Detect</button>
         </div>
 
+        <!-- DETECTED SEASONS & EPISODES PREVIEW -->
+        <div id="series-episodes-preview-box" style="display: none; margin-bottom: 18px; background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 12px; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+            <strong style="color: #00f2fe; font-size: 13.5px;"><i class="fa-solid fa-list-check"></i> Detected Seasons &amp; Episodes Preview (<span id="series-preview-total-eps">0</span>)</strong>
+            <span style="font-size: 12px; color: #94a3b8;">Review &amp; remove episodes if desired before saving</span>
+          </div>
+          <div id="series-preview-seasons-tabs" style="display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;"></div>
+          <div id="series-preview-episodes-table" style="max-height: 220px; overflow-y: auto;"></div>
+        </div>
+
         <div class="form-row">
           <div class="form-group flex-2">
             <label>Series Title *</label>
@@ -886,14 +896,22 @@
           <h3 id="episodes-modal-series-title"><i class="fa-solid fa-clapperboard"></i> Series Episode Studio</h3>
           <p id="episodes-modal-subtitle" style="color: #94a3b8; font-size: 13px;">Manage seasons, episodes, and stream links</p>
         </div>
-        <button class="modal-close-btn" onclick="closeModal('episodes-modal')"><i class="fa-solid fa-xmark"></i></button>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" class="btn-sm-secondary" onclick="reDetectEpisodesFromStudio()" style="padding: 7px 12px; font-size: 12px; border: 1px solid rgba(251, 191, 36, 0.4); color: #fbbf24;">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Re-Detect from MovieBox
+          </button>
+          <button class="modal-close-btn" onclick="closeModal('episodes-modal')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
       </div>
       <div class="episodes-studio-layout">
         <!-- Seasons sidebar -->
         <div class="seasons-panel">
           <div class="seasons-panel-header">
             <h4>Seasons</h4>
-            <button class="btn-sm-primary" onclick="addNewSeason()"><i class="fa-solid fa-plus"></i></button>
+            <div style="display: flex; gap: 4px;">
+              <button class="btn-sm-primary" onclick="addNewSeason()" title="Add Season"><i class="fa-solid fa-plus"></i></button>
+              <button class="btn-sm-secondary" onclick="deleteCurrentSeason()" title="Delete Selected Season" style="color: #ef4444;"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
           </div>
           <div id="seasons-list" class="seasons-nav-list">
             <!-- Populated via JS -->
@@ -1060,10 +1078,44 @@
         </div>
       </div>
 
-      <div class="comments-stream-wrap">
+      <!-- Navigation Tabs: Comments vs Reactions Breakdown -->
+      <div style="display: flex; gap: 10px; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+        <button type="button" id="btn-tab-notice-comments" class="btn-sm-primary" onclick="switchNoticeModalTab('comments')">
+          <i class="fa-solid fa-comments"></i> User Comments (<span id="modal-comments-count-badge">0</span>)
+        </button>
+        <button type="button" id="btn-tab-notice-reactions" class="btn-sm-secondary" onclick="switchNoticeModalTab('reactions')">
+          <i class="fa-solid fa-thumbs-up"></i> Who Reacted (Likes &amp; Dislikes)
+        </button>
+      </div>
+
+      <div id="notice-tab-content-comments" class="comments-stream-wrap">
         <h4>User Comments (<span id="modal-comments-count">0</span>)</h4>
         <div id="modal-comments-list" class="comments-list">
           <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <div id="notice-tab-content-reactions" style="display: none; padding: 10px 0;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <!-- Likes column -->
+          <div style="background: rgba(16, 185, 129, 0.06); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 10px; padding: 14px;">
+            <h4 style="color: #10b981; margin: 0 0 10px; font-size: 14px; display: flex; align-items: center; gap: 6px;">
+              <i class="fa-solid fa-thumbs-up"></i> Liked by (<span id="notice-reactions-like-count">0</span>)
+            </h4>
+            <div id="notice-likes-list" style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+
+          <!-- Dislikes column -->
+          <div style="background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 10px; padding: 14px;">
+            <h4 style="color: #ef4444; margin: 0 0 10px; font-size: 14px; display: flex; align-items: center; gap: 6px;">
+              <i class="fa-solid fa-thumbs-down"></i> Disliked by (<span id="notice-reactions-dislike-count">0</span>)
+            </h4>
+            <div id="notice-dislikes-list" style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+              <!-- Populated via JS -->
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1149,7 +1201,7 @@
         <div class="form-row" id="imp-series-row" style="display: none;">
           <div class="form-group flex-2">
             <label><i class="fa-solid fa-layer-group text-cyan"></i> Seasons to Import</label>
-            <select id="imp-season-mode" class="custom-select">
+            <select id="imp-season-mode" class="custom-select" onchange="filterImportPreviewSeason(this.value)">
               <option value="all">🌟 All Seasons (Auto-Detecting...)</option>
             </select>
           </div>
@@ -1157,6 +1209,19 @@
             <label><i class="fa-solid fa-list-ol"></i> Episodes Count</label>
             <input type="number" id="imp-episodes" value="16" min="1">
           </div>
+        </div>
+
+        <!-- DETAILED DETECTED EPISODES & SEASONS ACCORDION / PREVIEW -->
+        <div id="imp-episodes-preview-box" style="display: none; margin-bottom: 18px; background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 12px; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+            <strong style="color: #00f2fe; font-size: 13.5px;"><i class="fa-solid fa-list-check"></i> Detected Seasons &amp; Episodes Preview (<span id="imp-preview-total-eps">0</span>)</strong>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="btn-sm-secondary" onclick="addCustomEpisodeToImport()"><i class="fa-solid fa-plus"></i> Add Episode</button>
+              <button type="button" class="btn-sm-secondary" onclick="addCustomSeasonToImport()"><i class="fa-solid fa-folder-plus"></i> Add Season</button>
+            </div>
+          </div>
+          <div id="imp-preview-seasons-tabs" style="display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;"></div>
+          <div id="imp-preview-episodes-table" style="max-height: 250px; overflow-y: auto;"></div>
         </div>
 
         <div class="form-group">
@@ -1188,6 +1253,34 @@
           <button type="submit" id="btn-import-submit" class="btn-primary glow">
             <i class="fa-solid fa-cloud-arrow-down"></i> Import &amp; Save Permanently to FOBS TV
           </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: REPLY TO MEDIA COMMENT -->
+  <!-- ======================================================== -->
+  <div id="comment-reply-modal" class="modal-backdrop">
+    <div class="modal-card glass" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-reply text-cyan" style="color: #00f2fe;"></i> Reply to User Comment</h3>
+        <button class="modal-close-btn" onclick="closeModal('comment-reply-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="comment-reply-form" onsubmit="handleCommentReplySubmit(event)">
+        <input type="hidden" id="reply-media-id">
+        <input type="hidden" id="reply-comment-id">
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+          <div style="font-size: 11.5px; color: #94a3b8; margin-bottom: 4px;" id="reply-modal-meta">Replying to viewer</div>
+          <div style="font-size: 13px; color: #e2e8f0; font-style: italic; line-height: 1.4;" id="reply-modal-quote">"User comment text..."</div>
+        </div>
+        <div class="form-group">
+          <label>Admin Reply Message *</label>
+          <textarea id="reply-text" rows="3" placeholder="Write official reply as FOBS TV Admin..." required style="width: 100%; box-sizing: border-box;"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeModal('comment-reply-modal')">Cancel</button>
+          <button type="submit" class="btn-primary glow"><i class="fa-solid fa-paper-plane"></i> Send Reply</button>
         </div>
       </form>
     </div>

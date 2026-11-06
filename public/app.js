@@ -7769,6 +7769,20 @@ async function loadMediaComments(mediaId) {
         </div>
       ` : '';
 
+      const repliesHtml = (Array.isArray(c.replies) && c.replies.length > 0) ? `
+        <div class="comment-admin-replies" style="margin-top: 8px; border-left: 2px solid #00f2fe; padding-left: 8px;">
+          ${c.replies.map(r => `
+            <div class="comment-reply-item" style="background: rgba(0,242,254,0.06); border-radius: 6px; padding: 6px 10px; margin-top: 4px;">
+              <div style="font-size: 11px; font-weight: 700; color: #00f2fe; display: flex; align-items: center; gap: 4px;">
+                <i class="fa-solid fa-shield-halved"></i> ${escapeCommentHtml(r.author || 'FOBS Admin')}
+                <span style="font-size: 10px; color: #94a3b8; font-weight: 400;">${r.createdAt ? new Date(r.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}</span>
+              </div>
+              <div style="font-size: 12px; color: #e2e8f0; margin-top: 2px;">${escapeCommentHtml(r.text)}</div>
+            </div>
+          `).join('')}
+        </div>
+      ` : '';
+
       return `
         <div class="comment-card-item" id="comment-card-${c.id}">
           <img src="${avatarUrl}" alt="${escapeCommentHtml(c.userName)}" class="comment-avatar" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'">
@@ -7778,6 +7792,7 @@ async function loadMediaComments(mediaId) {
               <span class="comment-time-stamp">${timeStr}</span>
             </div>
             ${textHtml ? `<div class="comment-text-body">${textHtml}</div>` : ''}
+            ${repliesHtml}
             ${imgHtml}
             <div class="comment-actions-row">
               <button class="comment-like-btn" type="button" onclick="likeMediaComment('${c.id}', this)">
@@ -12936,12 +12951,18 @@ async function reactToCurrentAnnouncement(type) {
   if (!currentActiveAnnouncement || !currentActiveAnnouncement.id) return;
   const annId = currentActiveAnnouncement.id;
   const uid = getClientUserIdentifier();
+  let userName = 'Viewer';
+  try {
+    const prof = JSON.parse(localStorage.getItem('fobs_user_profile') || '{}');
+    if (prof.name) userName = prof.name;
+    else if (localStorage.getItem('fobs_username')) userName = localStorage.getItem('fobs_username');
+  } catch (_) {}
 
   try {
     const res = await fetch(`${API_BASE_URL}/api/announcements/${encodeURIComponent(annId)}/react`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type, userId: uid })
+      body: JSON.stringify({ type, userId: uid, userName })
     });
     const data = await res.json();
     if (data && data.success) {
@@ -12992,6 +13013,16 @@ function updateAnnouncementCommentsUI(comments = []) {
               <span class="announcement-comment-time">${c.createdAt ? new Date(c.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}</span>
             </div>
             <p class="announcement-comment-text">${c.text}</p>
+            ${Array.isArray(c.replies) && c.replies.length > 0 ? `
+              <div style="margin-top: 6px; border-left: 2px solid #00f2fe; padding-left: 8px;">
+                ${c.replies.map(r => `
+                  <div style="background: rgba(0,242,254,0.08); border-radius: 6px; padding: 5px 8px; margin-top: 4px;">
+                    <div style="font-size: 11px; font-weight: 700; color: #00f2fe;"><i class="fa-solid fa-shield-halved"></i> ${escapeCommentHtml(r.author || 'FOBS TV Admin')}</div>
+                    <div style="font-size: 12px; color: #fff; margin-top: 2px;">${escapeCommentHtml(r.text)}</div>
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
           </div>
         </div>
       `).join('');

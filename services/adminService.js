@@ -911,64 +911,90 @@ class AdminService {
     let detectedTotalEps = Math.max(mbEps, tmdbEps);
 
     if (tmdbType === 'tv') {
-      if (mbDetail && Array.isArray(mbDetail.seasons) && mbDetail.seasons.length > 0) {
-        if (detectedTotalEps > 1 && mbDetail.seasons.length === 1 && (mbDetail.seasons[0].maxEp || 0) <= 1) {
-          mbDetail.seasons[0].maxEp = detectedTotalEps;
-        }
+      const seasonMap = new Map();
 
-        finalSeasons = mbDetail.seasons.map(s => {
-          const maxEp = Math.max(parseInt(s.maxEp, 10) || 1, 1);
-          const eps = [];
-          for (let ep = 1; ep <= maxEp; ep++) {
-            const epUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${s.se}&ep=${ep}` : '';
-            eps.push({
-              number: String(ep).padStart(2, '0'),
-              episode: ep,
-              season: s.se,
-              title: `Episode ${ep}`,
-              duration: '45 min',
-              still: finalPoster,
-              streamUrl: epUrl,
-              servers: [
-                { name: `Server 1 (${isHindiDubbed ? 'Hindi Dub' : 'HD'})`, url: epUrl, quality: '1080p', isDirect: true },
-                { name: 'Server 2 (Auto Failover)', url: epUrl, quality: '1080p', isDirect: true }
-              ]
+      // 1. Add MovieBox seasons if available
+      if (mbDetail && Array.isArray(mbDetail.seasons) && mbDetail.seasons.length > 0) {
+        for (const s of mbDetail.seasons) {
+          const seNum = parseInt(s.se, 10) || 1;
+          let mEp = parseInt(s.maxEp, 10) || 0;
+          if (s.allEp) {
+            const sc = s.allEp.split(',').filter(Boolean).length;
+            if (sc > mEp) mEp = sc;
+          }
+          if (Array.isArray(s.resolutions)) {
+            for (const r of s.resolutions) {
+              if (r.epNum && r.epNum > mEp) mEp = r.epNum;
+            }
+          }
+          seasonMap.set(seNum, {
+            se: seNum,
+            title: `Season ${seNum}`,
+            maxEp: mEp || 1
+          });
+        }
+      }
+
+      // 2. Add or enrich with TMDb seasons
+      if (Array.isArray(tmdbData?.seasons) && tmdbData.seasons.length > 0) {
+        const validTmdbSeasons = tmdbData.seasons.filter(s => s.season_number > 0);
+        for (const ts of validTmdbSeasons) {
+          const seNum = ts.season_number;
+          const epCount = ts.episode_count || 10;
+          if (seasonMap.has(seNum)) {
+            const existing = seasonMap.get(seNum);
+            if (ts.name) existing.title = ts.name;
+            if (existing.maxEp <= 1 && epCount > 1) existing.maxEp = epCount;
+          } else {
+            seasonMap.set(seNum, {
+              se: seNum,
+              title: ts.name || `Season ${seNum}`,
+              maxEp: epCount
             });
           }
-          return {
-            seasonNumber: s.se,
-            title: `Season ${s.se}`,
-            name: `Season ${s.se}`,
-            episodesCount: eps.length,
-            episodes: eps
-          };
+        }
+      }
+
+      // 3. Fallback if no seasons found but detectedTotalEps > 0
+      if (seasonMap.size === 0) {
+        seasonMap.set(1, {
+          se: 1,
+          title: 'Season 1',
+          maxEp: detectedTotalEps || 16
         });
-        detectedTotalEps = finalSeasons.reduce((sum, s) => sum + s.episodesCount, 0);
-      } else if (detectedTotalEps > 0) {
+      }
+
+      const sortedSeasons = Array.from(seasonMap.values()).sort((a, b) => a.se - b.se);
+
+      finalSeasons = sortedSeasons.map(s => {
+        const seNum = s.se;
+        const maxEp = Math.max(parseInt(s.maxEp, 10) || 1, 1);
         const eps = [];
-        for (let ep = 1; ep <= detectedTotalEps; ep++) {
-          const epUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=1&ep=${ep}` : '';
+        for (let ep = 1; ep <= maxEp; ep++) {
+          const epUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${ep}` : '';
           eps.push({
             number: String(ep).padStart(2, '0'),
             episode: ep,
-            season: 1,
+            season: seNum,
             title: `Episode ${ep}`,
             duration: '45 min',
             still: finalPoster,
             streamUrl: epUrl,
             servers: [
-              { name: `Server 1 (${isHindiDubbed ? 'Hindi Dub' : 'HD'})`, url: epUrl, quality: '1080p', isDirect: true }
+              { name: `Server 1 (${isHindiDubbed ? 'Hindi Dub' : 'HD'})`, url: epUrl, quality: '1080p', isDirect: true },
+              { name: 'Server 2 (Auto Failover)', url: epUrl, quality: '1080p', isDirect: true }
             ]
           });
         }
-        finalSeasons = [{
-          seasonNumber: 1,
-          title: 'Season 1',
-          name: 'Season 1',
+        return {
+          seasonNumber: seNum,
+          title: s.title || `Season ${seNum}`,
+          name: s.title || `Season ${seNum}`,
           episodesCount: eps.length,
           episodes: eps
-        }];
-      }
+        };
+      });
+      detectedTotalEps = finalSeasons.reduce((sum, s) => sum + s.episodesCount, 0);
     }
 
     if (!detectedTotalEps) {
@@ -1167,50 +1193,66 @@ class AdminService {
       const seasonMode = payload.seasonMode || 'all';
 
       // Determine seasons to import
-      let targetSeasons = [];
-      if (autoDetail && Array.isArray(autoDetail.seasons) && autoDetail.seasons.length > 0) {
-        if (seasonMode !== 'all') {
-          const seNum = parseInt(seasonMode, 10);
-          const found = autoDetail.seasons.find(s => s.se === seNum);
-          if (found) {
-            let mEp = parseInt(found.maxEp, 10) || 0;
-            if (found.allEp) {
-              const sc = found.allEp.split(',').filter(Boolean).length;
-              if (sc > mEp) mEp = sc;
-            }
-            if (Array.isArray(found.resolutions)) {
-              for (const r of found.resolutions) {
-                if (r.epNum && r.epNum > mEp) mEp = r.epNum;
-              }
-            }
-            targetSeasons = [{ se: found.se, maxEp: Math.max(mEp, episodesCount || 0) || 16 }];
-          } else {
-            targetSeasons = [{ se: seNum, maxEp: episodesCount || autoDetail.totalEpisodes || 16 }];
-          }
-        } else {
-          targetSeasons = autoDetail.seasons.map(s => {
-            let mEp = parseInt(s.maxEp, 10) || 0;
-            if (s.allEp) {
-              const sc = s.allEp.split(',').filter(Boolean).length;
-              if (sc > mEp) mEp = sc;
-            }
-            if (Array.isArray(s.resolutions)) {
-              for (const r of s.resolutions) {
-                if (r.epNum && r.epNum > mEp) mEp = r.epNum;
-              }
-            }
-            return { se: s.se, maxEp: Math.max(mEp, episodesCount || 0) || 16 };
-          });
-        }
-      } else {
-        const seNum = seasonMode !== 'all' ? (parseInt(seasonMode, 10) || 1) : 1;
-        targetSeasons = [{ se: seNum, maxEp: episodesCount || (autoDetail ? autoDetail.totalEpisodes : 16) || 16 }];
-      }
-
       const seasons = [];
       let totalEpisodesImported = 0;
 
-      for (const sInfo of targetSeasons) {
+      if (Array.isArray(payload.seasons) && payload.seasons.length > 0) {
+        // Admin reviewed, added, or removed episodes/seasons in the detailed preview
+        for (const ps of payload.seasons) {
+          const seNum = ps.seasonNumber !== undefined ? parseInt(ps.seasonNumber, 10) : 1;
+          const eps = Array.isArray(ps.episodes) ? ps.episodes : [];
+          seasons.push({
+            seasonNumber: seNum,
+            title: ps.title || `Season ${seNum}`,
+            name: ps.title || `Season ${seNum}`,
+            year: String(year),
+            episodesCount: eps.length,
+            episodes: eps
+          });
+          totalEpisodesImported += eps.length;
+        }
+      } else {
+        let targetSeasons = [];
+        if (autoDetail && Array.isArray(autoDetail.seasons) && autoDetail.seasons.length > 0) {
+          if (seasonMode !== 'all') {
+            const seNum = parseInt(seasonMode, 10);
+            const found = autoDetail.seasons.find(s => s.se === seNum);
+            if (found) {
+              let mEp = parseInt(found.maxEp, 10) || 0;
+              if (found.allEp) {
+                const sc = found.allEp.split(',').filter(Boolean).length;
+                if (sc > mEp) mEp = sc;
+              }
+              if (Array.isArray(found.resolutions)) {
+                for (const r of found.resolutions) {
+                  if (r.epNum && r.epNum > mEp) mEp = r.epNum;
+                }
+              }
+              targetSeasons = [{ se: found.se, maxEp: Math.max(mEp, 1) || 16 }];
+            } else {
+              targetSeasons = [{ se: seNum, maxEp: episodesCount || autoDetail.totalEpisodes || 16 }];
+            }
+          } else {
+            targetSeasons = autoDetail.seasons.map(s => {
+              let mEp = parseInt(s.maxEp, 10) || 0;
+              if (s.allEp) {
+                const sc = s.allEp.split(',').filter(Boolean).length;
+                if (sc > mEp) mEp = sc;
+              }
+              if (Array.isArray(s.resolutions)) {
+                for (const r of s.resolutions) {
+                  if (r.epNum && r.epNum > mEp) mEp = r.epNum;
+                }
+              }
+              return { se: s.se, maxEp: Math.max(mEp, 1) || 16 };
+            });
+          }
+        } else {
+          const seNum = seasonMode !== 'all' ? (parseInt(seasonMode, 10) || 1) : 1;
+          targetSeasons = [{ se: seNum, maxEp: episodesCount || (autoDetail ? autoDetail.totalEpisodes : 16) || 16 }];
+        }
+
+        for (const sInfo of targetSeasons) {
         const seNum = sInfo.se;
         const maxEp = Math.max(parseInt(sInfo.maxEp, 10) || 1, 1);
         const seasonEpisodes = [];
@@ -1292,8 +1334,9 @@ class AdminService {
           episodes: seasonEpisodes
         });
       }
+    }
 
-      if (seasons.length === 0 || totalEpisodesImported === 0) {
+    if (seasons.length === 0 || totalEpisodesImported === 0) {
         throw new Error('No episodes could be imported for this series');
       }
 
@@ -1496,6 +1539,22 @@ class AdminService {
     series.views = series.views !== undefined ? parseInt(series.views, 10) : 1250;
     series.isCustom = true;
     series.type = 'series';
+
+    // Check if series already exists to preserve existing multi-season episodes if not passed in payload
+    const existingSeries = (content.series || []).find(s => s.id === series.id || (series.subjectId && (s.subjectId === series.subjectId || s.id === `mb-s-${series.subjectId}`)));
+    if (existingSeries && Array.isArray(existingSeries.seasons) && existingSeries.seasons.length > 0) {
+      if (!Array.isArray(series.seasons) || series.seasons.length === 0) {
+        series.seasons = existingSeries.seasons;
+        series.seasonsCount = existingSeries.seasonsCount || existingSeries.seasons.length;
+      }
+      if (!Array.isArray(series.episodes) || series.episodes.length === 0) {
+        series.episodes = existingSeries.episodes || series.seasons[0]?.episodes || [];
+        series.episodesCount = existingSeries.episodesCount || series.seasons.reduce((sum, s) => sum + (s.episodes?.length || 0), 0);
+      }
+      if (!series.streamUrl && existingSeries.streamUrl) {
+        series.streamUrl = existingSeries.streamUrl;
+      }
+    }
 
     // Auto-repair episodes if subjectId exists and episodes are missing or empty
     if (series.subjectId && (!series.episodes || series.episodes.length === 0)) {
@@ -1733,7 +1792,7 @@ class AdminService {
     return { success: true, isPopup: item.isPopup };
   }
 
-  reactToNotification(id, userId, reactionType) {
+  reactToNotification(id, userId, reactionType, userName = '') {
     if (!id || !userId || !['like', 'dislike'].includes(reactionType)) {
       return { success: false, error: 'Invalid reaction parameters' };
     }
@@ -1746,18 +1805,24 @@ class AdminService {
     if (typeof item.dislikes !== 'number') item.dislikes = 0;
 
     const prev = item.userReactions[userId];
+    const prevType = typeof prev === 'string' ? prev : prev?.type;
     let myReaction = null;
 
-    if (prev === reactionType) {
+    if (prevType === reactionType) {
       delete item.userReactions[userId];
       if (reactionType === 'like') item.likes = Math.max(0, item.likes - 1);
       if (reactionType === 'dislike') item.dislikes = Math.max(0, item.dislikes - 1);
       myReaction = null;
     } else {
-      if (prev === 'like') item.likes = Math.max(0, item.likes - 1);
-      if (prev === 'dislike') item.dislikes = Math.max(0, item.dislikes - 1);
+      if (prevType === 'like') item.likes = Math.max(0, item.likes - 1);
+      if (prevType === 'dislike') item.dislikes = Math.max(0, item.dislikes - 1);
 
-      item.userReactions[userId] = reactionType;
+      item.userReactions[userId] = {
+        type: reactionType,
+        userName: userName || ('User_' + String(userId).slice(-4)),
+        userId,
+        time: new Date().toISOString()
+      };
       if (reactionType === 'like') item.likes += 1;
       if (reactionType === 'dislike') item.dislikes += 1;
       myReaction = reactionType;
@@ -1769,6 +1834,69 @@ class AdminService {
       likes: item.likes,
       dislikes: item.dislikes,
       myReaction
+    };
+  }
+
+  getNotificationReactions(id) {
+    const list = readNotifications();
+    const item = list.find(n => n.id === id);
+    if (!item) return { success: false, error: 'Announcement not found', likes: [], dislikes: [] };
+
+    const likes = [];
+    const dislikes = [];
+    if (item.userReactions && typeof item.userReactions === 'object') {
+      for (const [uid, r] of Object.entries(item.userReactions)) {
+        const type = typeof r === 'string' ? r : r.type;
+        const name = (typeof r === 'object' && r.userName) ? r.userName : ('User ' + String(uid).slice(-4));
+        const time = (typeof r === 'object' && r.time) ? r.time : (item.createdAt || new Date().toISOString());
+        const entry = {
+          userId: uid,
+          userName: name,
+          time,
+          avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(name)}`
+        };
+        if (type === 'like') likes.push(entry);
+        else if (type === 'dislike') dislikes.push(entry);
+      }
+    }
+
+    return {
+      success: true,
+      id: item.id,
+      title: item.title,
+      totalLikes: item.likes || likes.length,
+      totalDislikes: item.dislikes || dislikes.length,
+      likes,
+      dislikes
+    };
+  }
+
+  addNotificationCommentReply(id, commentId, replyText, author = 'FOBS TV Admin') {
+    if (!id || !commentId || !replyText) {
+      return { success: false, error: 'Notice ID, comment ID, and reply text are required' };
+    }
+    const list = readNotifications();
+    const item = list.find(n => n.id === id);
+    if (!item) return { success: false, error: 'Announcement not found' };
+
+    const comment = (item.comments || []).find(c => c.id === commentId);
+    if (!comment) return { success: false, error: 'Comment not found' };
+
+    if (!Array.isArray(comment.replies)) comment.replies = [];
+    const replyObj = {
+      id: `rep_${Date.now()}_${Math.random().toString(36).substring(2, 5)}`,
+      author: author || 'FOBS TV Admin',
+      role: 'admin',
+      text: replyText.trim(),
+      createdAt: new Date().toISOString()
+    };
+    comment.replies.push(replyObj);
+
+    writeNotifications(list);
+    return {
+      success: true,
+      reply: replyObj,
+      comment
     };
   }
 
@@ -1822,7 +1950,8 @@ class AdminService {
     const item = list.find(n => n.isPopup && n.active !== false);
     if (!item) return { success: true, announcement: null };
 
-    const myReaction = (userId && item.userReactions && item.userReactions[userId]) ? item.userReactions[userId] : null;
+    const rawReaction = (userId && item.userReactions && item.userReactions[userId]) ? item.userReactions[userId] : null;
+    const myReaction = typeof rawReaction === 'string' ? rawReaction : (rawReaction?.type || null);
 
     return {
       success: true,
