@@ -2970,6 +2970,19 @@ app.post('/api/app-ping', (req, res) => {
   }
 });
 
+app.get('/api/admin/diagnostic', adminService.authenticate, (req, res) => {
+  const { execSync } = require('child_process');
+  let nginxConf = '';
+  let pm2Logs = '';
+  try {
+    nginxConf = execSync('cat /etc/nginx/sites-enabled/* 2>/dev/null || cat /etc/nginx/conf.d/* 2>/dev/null', { timeout: 4000 }).toString();
+  } catch (e) { nginxConf = e.message; }
+  try {
+    pm2Logs = execSync('pm2 logs --lines 30 --nostream 2>/dev/null', { timeout: 4000 }).toString();
+  } catch (e) { pm2Logs = e.message; }
+  res.json({ success: true, nginxConf, pm2Logs });
+});
+
 // Purge Older Version Users & Devices (Keep v3.1.3)
 app.post('/api/admin/users/purge-old', adminService.authenticate, async (req, res) => {
   try {
