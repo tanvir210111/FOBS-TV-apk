@@ -1203,9 +1203,19 @@ app.get('/api/moviebox/stream', async (req, res) => {
       media = await movieboxResolvingMap.get(mediaCacheKey);
     } else {
       const resolveTask = (async () => {
-        let m = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum);
+        const cleanId = String(id).replace(/^mb-[s|m]-/, '');
+        let m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', seNum, epNum);
         if (!m || !m.streamUrl) {
-          m = await movieboxService.resolveMedia(id, resolvedPath || '', seNum, epNum, { forceRefresh: true });
+          m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, epNum);
+        }
+        if (!m || !m.streamUrl) {
+          m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', seNum, 0);
+        }
+        if (!m || !m.streamUrl) {
+          m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, 0);
+        }
+        if (!m || !m.streamUrl) {
+          m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', seNum, epNum, { forceRefresh: true });
         }
         return m;
       })();
@@ -1904,12 +1914,9 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
   } else if (isExplicitEnd && requestedEnd !== null) {
     upstreamRange = `bytes=${start}-${requestedEnd}`;
   } else {
-    // Open-ended request (bytes=start-): chunk to 16 MB
-    let targetEnd = start + CHUNK_SIZE - 1;
-    if (cachedMeta && cachedMeta.totalLength) {
-      targetEnd = Math.min(targetEnd, cachedMeta.totalLength - 1);
-    }
-    upstreamRange = `bytes=${start}-${targetEnd}`;
+    // Open-ended request (bytes=start-): pass full open-ended range to upstream CDN
+    // Eliminates video freezing, buffer stalls, and truncated 16MB file cuts!
+    upstreamRange = `bytes=${start}-`;
   }
 
   requestHeaders['Range'] = upstreamRange;
@@ -3829,6 +3836,22 @@ if (isPrimaryWorker) setInterval(async () => {
     console.error('[Auto-Refresh Worker] Error during automatic CDN token refresh:', err.message);
   }
 }, AUTO_REFRESH_INTERVAL_MS);
+
+// Pre-seed MovieBox importer regional & trending feeds for instantaneous admin tab browsing
+if (isPrimaryWorker) setTimeout(async () => {
+  try {
+    console.log('[MovieBox Feeds] ⚡ Pre-seeding regional & dubbed feeds into memory...');
+    const feeds = ['kdrama-hindi', 'cdrama-hindi', 'turkish-hindi', 'bollywood', 'anime', 'trending', 'all'];
+    for (const f of feeds) {
+      try {
+        await adminService.getMovieBoxRecent(f, false);
+      } catch (_) {}
+    }
+    console.log('[MovieBox Feeds] ✓ All regional & dubbed feeds cached and ready.');
+  } catch (e) {
+    console.error('[MovieBox Feeds] Pre-seed warning:', e.message);
+  }
+}, 1000);
 
 // Also run initial CDN refresh on server startup after 3 seconds
 if (isPrimaryWorker) setTimeout(async () => {

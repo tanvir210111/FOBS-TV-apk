@@ -33,8 +33,6 @@ const targetStreamBlock = `    # High-Performance Bufferless Video Streaming & D
         proxy_connect_timeout 60s;
         proxy_send_timeout 3600s;
         proxy_read_timeout 3600s;
-        client_header_timeout 3600s;
-        client_body_timeout 3600s;
         send_timeout 3600s;
 
         # Disable Nagle's algorithm for instant video packet delivery

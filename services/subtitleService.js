@@ -375,12 +375,23 @@ class SubtitleService {
       }
     }
 
+    const downloadHeaders = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    };
+
+    if (url.includes('opensubtitles.org')) {
+      // OpenSubtitles requires TemporaryUserAgent and rejects requests with foreign Referer
+      downloadHeaders['User-Agent'] = 'TemporaryUserAgent';
+    } else if (url.includes('subsource.net')) {
+      downloadHeaders['Referer'] = 'https://subsource.net/';
+    } else if (url.includes('hakunaymatata.com') || url.includes('moviebox')) {
+      downloadHeaders['Referer'] = 'https://movieboxapp.in/';
+      downloadHeaders['Origin'] = 'https://movieboxapp.in';
+    }
+
     const response = await axios.get(url, {
       responseType: 'arraybuffer',
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Referer': 'https://subsource.net/'
-      },
+      headers: downloadHeaders,
       timeout: 15000
     });
 

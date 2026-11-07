@@ -1476,8 +1476,8 @@ class AdminService {
 
       finalSeasons = sortedSeasons.map(s => {
         const seNum = s.se;
-        // Generate ONLY the real released episodes from MovieBox!
-        const maxEp = Math.max(parseInt(s.releasedMaxEp, 10) || 1, 1);
+        // Generate all planned episodes so full seasons (e.g. 9 or 16 eps) are ready to stream
+        const maxEp = Math.max(parseInt(s.plannedMaxEp, 10) || 0, parseInt(s.releasedMaxEp, 10) || 0, 1);
         const eps = [];
         for (let ep = 1; ep <= maxEp; ep++) {
           const epUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${ep}` : '';

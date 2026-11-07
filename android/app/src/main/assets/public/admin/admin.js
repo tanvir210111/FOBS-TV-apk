@@ -2580,6 +2580,7 @@ async function openImportModal(item) {
         state.importPreviewSeasons.forEach(season => {
           const seNum = parseInt(season.seasonNumber || season.se, 10) || 1;
           const targetEpCount = Math.max(
+            parseInt(season.plannedEpisodesCount, 10) || 0,
             parseInt(season.releasedEpisodesCount, 10) || 0,
             parseInt(season.episodesCount, 10) || 0,
             parseInt(season.maxEp, 10) || 0,
