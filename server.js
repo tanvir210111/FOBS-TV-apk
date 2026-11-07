@@ -159,7 +159,7 @@ app.use((req, res, next) => {
 });
 
 // Disable HTTP caching for admin panel assets so updates are immediately loaded
-app.use(['/admin', '/admin/*'], (req, res, next) => {
+app.use('/admin', (req, res, next) => {
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
