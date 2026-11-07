@@ -646,6 +646,8 @@ class AdminService {
         .toLowerCase()
         .replace(/\[.*?\]|\(.*?\)/g, '')
         .replace(/\b(s\d+|season\s*\d+|part\s*\d+|s\d+-s\d+)\b/gi, '')
+        .replace(/['’]s\b/gi, '')
+        .replace(/\bofficials\b/gi, 'official')
         .replace(/[^a-z0-9]/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();

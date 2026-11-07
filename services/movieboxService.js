@@ -122,7 +122,10 @@ class MovieBoxService {
           headers: {
             'Accept': 'application/json',
             'X-Client-Token': clientToken,
-            'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
+            'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka', country: 'BD' }),
+            'X-Forwarded-For': '103.205.180.1',
+            'Client-IP': '103.205.180.1',
+            'X-Real-IP': '103.205.180.1',
             'X-Request-Lang': 'en',
             'User-Agent': HEADERS['User-Agent'],
             'Origin': 'https://h5.aoneroom.com',
@@ -261,7 +264,10 @@ class MovieBoxService {
           'Origin': 'https://h5.aoneroom.com',
           'Referer': 'https://h5.aoneroom.com/',
           'X-Client-Token': clientToken,
-          'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
+          'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka', country: 'BD' }),
+          'X-Forwarded-For': '103.205.180.1',
+          'Client-IP': '103.205.180.1',
+          'X-Real-IP': '103.205.180.1',
           'X-Request-Lang': 'en'
         };
 
