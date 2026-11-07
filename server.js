@@ -1327,7 +1327,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
     const proto = req.get('x-forwarded-proto') || req.protocol || 'https';
     const baseUrl = `${proto}://${host}`;
     let chosenStream = media.streamUrl;
-    let chosenRes = media.resolution || 1080;
+    let chosenRes = media.resolution || 480;
     if (Array.isArray(media.qualities) && media.qualities.length > 0) {
       if (requestedQ > 0) {
         // Find exact or closest requested resolution (preferring lower bandwidth if equidistant)

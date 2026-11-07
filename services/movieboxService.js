@@ -607,11 +607,14 @@ class MovieBoxService {
         return 0;
       });
 
-      // Prefer high-speed 720p or 1080p direct CDN streams (instant buffer without 429)
+      // Prefer buffer-free 480p SD (or 360p) direct CDN streams for instant low-bandwidth start
       const fastStart = sortedDesc.find(st => {
         const r = parseInt(st.resolutions || st.resolution, 10) || 0;
-        return (r === 720 || r === 1080) && !st.url.includes('/bt/');
-      }) || sortedDesc[0];
+        return (r === 480 || r === 360) && !st.url.includes('/bt/');
+      }) || sortedDesc.find(st => {
+        const r = parseInt(st.resolutions || st.resolution, 10) || 0;
+        return r === 720 && !st.url.includes('/bt/');
+      }) || sortedDesc[sortedDesc.length - 1];
       const duration = fastStart.duration || sortedDesc[0]?.duration || 0;
 
       const playQualities = sortedDesc.map(function(st) {
@@ -694,7 +697,9 @@ class MovieBoxService {
       const nonBtDownloads = data.downloads.filter(d => !d.url.includes('/bt/'));
       const downloadPool = nonBtDownloads.length > 0 ? nonBtDownloads : data.downloads;
       const sortedDownloads = [...downloadPool].sort((a, b) => (b.resolution || 0) - (a.resolution || 0));
-      const fastStart = sortedDownloads.find(d => (d.resolution === 720 || d.resolution === 1080) && !d.url.includes('/bt/')) || sortedDownloads[0];
+      const fastStart = sortedDownloads.find(d => (d.resolution === 480 || d.resolution === 360) && !d.url.includes('/bt/'))
+                     || sortedDownloads.find(d => d.resolution === 720 && !d.url.includes('/bt/'))
+                     || sortedDownloads[sortedDownloads.length - 1];
 
       const dlQualities = sortedDownloads.map(function(d) {
         return {
@@ -842,7 +847,9 @@ class MovieBoxService {
           const data = res.data?.data;
           if (data && data.downloads && data.downloads.length > 0) {
             const sortedDownloads = [...data.downloads].sort((a, b) => (b.resolution || 0) - (a.resolution || 0));
-            const best = sortedDownloads[0];
+            const best = sortedDownloads.find(d => (d.resolution === 480 || d.resolution === 360))
+                      || sortedDownloads.find(d => d.resolution === 720)
+                      || sortedDownloads[sortedDownloads.length - 1];
             const legacyRes = {
               subjectId: cleanId,
               detailPath: activeDetailPath || '',
