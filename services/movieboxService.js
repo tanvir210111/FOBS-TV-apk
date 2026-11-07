@@ -44,6 +44,13 @@ const SEARCH_DOMAINS = [
   'https://movie-box.co'
 ];
 
+function getRandomIp() {
+  const randSub = Math.floor(Math.random() * 200) + 20;
+  const randHost1 = Math.floor(Math.random() * 250) + 1;
+  const randHost2 = Math.floor(Math.random() * 250) + 1;
+  return `103.${randSub}.${randHost1}.${randHost2}`;
+}
+
 function generateAuthHeaders(domain = BASE_URL, refererPath = '') {
   const e = Math.floor(Date.now() / 1000);
   const r = String(e).split('').reverse().join('');
@@ -52,6 +59,7 @@ function generateAuthHeaders(domain = BASE_URL, refererPath = '') {
   const randomUuid = crypto.randomUUID();
   const randomAccount = Math.floor(Math.random() * 1e18);
   const ref = refererPath ? (refererPath.startsWith('http') ? refererPath : `${domain}/movies/${refererPath}`) : `${domain}/`;
+  const randIp = getRandomIp();
 
   return {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
@@ -61,9 +69,9 @@ function generateAuthHeaders(domain = BASE_URL, refererPath = '') {
     'X-Client-Token': clientToken,
     'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka', country: 'BD' }),
     'Cookie': `uuid=${randomUuid}; account=${randomAccount}|0|H5|${e}|; client_country=BD`,
-    'X-Forwarded-For': '103.205.180.1',
-    'Client-IP': '103.205.180.1',
-    'X-Real-IP': '103.205.180.1',
+    'X-Forwarded-For': randIp,
+    'Client-IP': randIp,
+    'X-Real-IP': randIp,
     'X-Request-Lang': 'en'
   };
 }
@@ -146,9 +154,9 @@ class MovieBoxService {
             'Accept': 'application/json',
             'X-Client-Token': clientToken,
             'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka', country: 'BD' }),
-            'X-Forwarded-For': '103.205.180.1',
-            'Client-IP': '103.205.180.1',
-            'X-Real-IP': '103.205.180.1',
+            'X-Forwarded-For': getRandomIp(),
+            'Client-IP': getRandomIp(),
+            'X-Real-IP': getRandomIp(),
             'X-Request-Lang': 'en',
             'User-Agent': HEADERS['User-Agent'],
             'Origin': 'https://h5.aoneroom.com',
@@ -295,9 +303,9 @@ class MovieBoxService {
           'Referer': 'https://h5.aoneroom.com/',
           'X-Client-Token': clientToken,
           'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka', country: 'BD' }),
-          'X-Forwarded-For': '103.205.180.1',
-          'Client-IP': '103.205.180.1',
-          'X-Real-IP': '103.205.180.1',
+          'X-Forwarded-For': getRandomIp(),
+          'Client-IP': getRandomIp(),
+          'X-Real-IP': getRandomIp(),
           'X-Request-Lang': 'en'
         };
 
@@ -827,7 +835,7 @@ class MovieBoxService {
           const refPath = activeDetailPath ? `${BASE_URL}/movies/${activeDetailPath}` : `${BASE_URL}/`;
           const res = await axios.get(`${BASE_URL}/wefeed-h5-bff/web/subject/download`, {
             params: { subjectId: cleanId, se: seNum, ep: epNum },
-            headers: { ...HEADERS, 'Referer': refPath },
+            headers: generateAuthHeaders(BASE_URL, activeDetailPath),
             httpsAgent: cleanAgent,
             timeout: 5000
           });

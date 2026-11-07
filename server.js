@@ -1284,6 +1284,42 @@ app.get('/api/moviebox/stream', async (req, res) => {
         console.error('Fallback lookup error in /api/moviebox/stream:', fbErr.message);
       }
     }
+
+    // Auto-Healing: If stream failed to resolve by ID, search MovieBox by title from catalog
+    if (!media || !media.streamUrl) {
+      try {
+        const content = getContentData();
+        const catalogItem = (content.movies || []).find(m => String(m.subjectId) === String(cleanId) || String(m.id).includes(cleanId))
+                         || (content.series || []).find(s => String(s.subjectId) === String(cleanId) || String(s.id).includes(cleanId));
+        if (catalogItem && catalogItem.title) {
+          const rawT = catalogItem.title;
+          const searchQ = rawT.replace(/\[.*?\]|\(.*?\)/g, '').replace(/\b(s\d+|season\s*\d+|part\s*\d+)\b/gi, '').trim();
+          if (searchQ.length >= 3) {
+            const searchItems = await movieboxService.search(searchQ);
+            if (Array.isArray(searchItems) && searchItems.length > 0) {
+              const isHindiItem = rawT.toLowerCase().includes('hindi');
+              const bestMatch = searchItems.find(it => {
+                const itHindi = (it.title || '').toLowerCase().includes('hindi') || !!it.isHindi;
+                return isHindiItem ? itHindi : !itHindi;
+              }) || searchItems[0];
+
+              if (bestMatch && (bestMatch.id || bestMatch.subjectId)) {
+                const newSid = String(bestMatch.id || bestMatch.subjectId);
+                const newDPath = bestMatch.detailPath || '';
+                media = await movieboxService.resolveMedia(newSid, newDPath, seNum, epNum);
+                if (!media || !media.streamUrl) media = await movieboxService.resolveMedia(newSid, newDPath, 0, epNum);
+                if (!media || !media.streamUrl) media = await movieboxService.resolveMedia(newSid, newDPath, 0, 0);
+                if (media && media.streamUrl) {
+                  movieboxStreamCache.set(mediaCacheKey, { media, timestamp: Date.now() });
+                }
+              }
+            }
+          }
+        }
+      } catch (healErr) {
+        console.warn('Auto-heal lookup failed:', healErr.message);
+      }
+    }
     if (!media || !media.streamUrl) {
       return res.status(404).send('Stream not available for this episode yet');
     }
@@ -2009,11 +2045,27 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
           // Reverse-lookup expired CDN URL from catalog content.json to find its parent subjectId and season/episode
           try {
             const content = getContentData();
+            const targetHash = (targetUrl.match(/([a-f0-9]{24,40}\.mp4)/i) || [])[1] || '';
+            const matchesUrl = (u) => {
+              if (!u) return false;
+              if (u === targetUrl) return true;
+              if (targetHash && u.includes(targetHash)) return true;
+              const uClean = u.split('?')[0];
+              const tClean = targetUrl.split('?')[0];
+              return uClean && tClean && (uClean === tClean || uClean.endsWith(tClean) || tClean.endsWith(uClean));
+            };
+
             // 1. Check movies
             for (const m of (content.movies || [])) {
-              if (m.streamUrl === targetUrl || m.directStreamUrl === targetUrl || (m.servers && m.servers.some(s => s.url === targetUrl))) {
+              if (matchesUrl(m.streamUrl) || matchesUrl(m.directStreamUrl) || (m.servers && m.servers.some(s => matchesUrl(s.url)))) {
                 const cleanId = String(m.subjectId || m.id).replace(/^mb-[s|m]-/, '');
-                const mRes = await movieboxService.resolveMedia(cleanId, m.detailPath || '', 0, 0, { forceRefresh: true });
+                let mRes = await movieboxService.resolveMedia(cleanId, m.detailPath || '', 0, 0, { forceRefresh: true });
+                if (!mRes && m.title) {
+                  const sResults = await movieboxService.search(m.title.replace(/\[.*?\]|\(.*?\)/g, '').trim());
+                  if (sResults && sResults[0]) {
+                    mRes = await movieboxService.resolveMedia(sResults[0].id || sResults[0].subjectId, sResults[0].detailPath, 0, 0, { forceRefresh: true });
+                  }
+                }
                 if (mRes && mRes.streamUrl) {
                   freshUrl = mRes.streamUrl;
                   m.directStreamUrl = freshUrl;
@@ -2026,9 +2078,17 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
               for (const s of (content.series || [])) {
                 for (const se of (s.seasons || [])) {
                   for (const ep of (se.episodes || [])) {
-                    if (ep.streamUrl === targetUrl || ep.directStreamUrl === targetUrl || (ep.servers && ep.servers.some(srv => srv.url === targetUrl))) {
+                    if (matchesUrl(ep.streamUrl) || matchesUrl(ep.directStreamUrl) || (ep.servers && ep.servers.some(srv => matchesUrl(srv.url)))) {
                       const cleanId = String(s.subjectId || s.id).replace(/^mb-[s|m]-/, '');
-                      const sRes = await movieboxService.resolveMedia(cleanId, s.detailPath || s.movieBoxDetailPath || '', se.seasonNumber || se.season || 1, ep.episodeNumber || ep.episode || 1, { forceRefresh: true });
+                      const seNum = se.seasonNumber || se.season || 1;
+                      const epNum = ep.episodeNumber || ep.episode || 1;
+                      let sRes = await movieboxService.resolveMedia(cleanId, s.detailPath || s.movieBoxDetailPath || '', seNum, epNum, { forceRefresh: true });
+                      if (!sRes && s.title) {
+                        const sResults = await movieboxService.search(s.title.replace(/\[.*?\]|\(.*?\)/g, '').trim());
+                        if (sResults && sResults[0]) {
+                          sRes = await movieboxService.resolveMedia(sResults[0].id || sResults[0].subjectId, sResults[0].detailPath, seNum, epNum, { forceRefresh: true });
+                        }
+                      }
                       if (sRes && sRes.streamUrl) {
                         freshUrl = sRes.streamUrl;
                         ep.directStreamUrl = freshUrl;
