@@ -21,7 +21,7 @@ const streamHttpsAgent = new https.Agent({
   rejectUnauthorized: false
 });
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 7000;
 
 const movieboxService = require('./services/movieboxService');
 const movieboxStreamCache = new Map(); // key -> { media, timestamp }
