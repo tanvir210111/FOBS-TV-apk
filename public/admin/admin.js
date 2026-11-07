@@ -1997,6 +1997,8 @@ async function searchMovieBox() {
   // Auto-reset filters so that newly searched titles are never accidentally hidden by leftover dropdowns!
   const elKw = document.getElementById('imp-filter-keyword');
   if (elKw) elKw.value = '';
+  const elAudio = document.getElementById('imp-filter-audio');
+  if (elAudio) elAudio.value = 'all';
   const elCat = document.getElementById('imp-filter-category');
   if (elCat) elCat.value = 'all';
   const elType = document.getElementById('imp-filter-type');
@@ -2007,6 +2009,8 @@ async function searchMovieBox() {
   if (elMonth) elMonth.value = 'all';
   const elStatus = document.getElementById('imp-filter-status');
   if (elStatus) elStatus.value = 'all';
+  const elSort = document.getElementById('imp-filter-sort');
+  if (elSort) elSort.value = 'default';
 
   document.querySelectorAll('.importer-tab-btn').forEach(b => b.classList.remove('active'));
 
@@ -2033,8 +2037,20 @@ function applyImporterFilters() {
 
   let filtered = raw.filter(item => {
     const tLower = (item.title || '').toLowerCase();
-    const isHindi = !!item.isHindi || tLower.includes('hindi');
-    const isBangla = !!item.isBangla || tLower.includes('bangla') || tLower.includes('bengali');
+    const isHindi = !!item.isHindi ||
+      tLower.includes('hindi') ||
+      (item.audioTag && /hindi/i.test(item.audioTag)) ||
+      (item.category && /hindi/i.test(item.category)) ||
+      (item.section && /hindi/i.test(item.section)) ||
+      item.industry === 'Bollywood';
+
+    const isBangla = !!item.isBangla ||
+      tLower.includes('bangla') || tLower.includes('bengali') ||
+      (item.audioTag && /bangla|bengali/i.test(item.audioTag)) ||
+      (item.category && /bangla|bengali/i.test(item.category)) ||
+      (item.section && /bangla|bengali/i.test(item.section)) ||
+      item.industry === 'Tollywood';
+
     const isSeries = item.type === 'series' || (item.category && item.category.toLowerCase().includes('series'));
 
     // 1. Audio Filter
@@ -2105,6 +2121,8 @@ function applyImporterFilters() {
         item.type,
         isSeries ? 'series tv drama show' : 'movie cinema film',
         item.year,
+        isHindi ? 'hindi dubbed' : 'original audio',
+        isBangla ? 'bangla dubbed' : '',
         item.audioTag,
         item.category,
         item.industry,
@@ -2426,8 +2444,8 @@ async function openImportModal(item) {
       }
 
       state.isImportOngoing = !!d.isOngoing;
-      state.importReleasedEps = d.releasedEpisodesCount || d.totalEpisodes || 1;
-      state.importPlannedEps = d.plannedEpisodesCount || d.totalEpisodes || 1;
+      state.importPlannedEps = Math.max(d.plannedEpisodesCount || 0, d.totalEpisodes || 0, d.releasedEpisodesCount || 0, 1);
+      state.importReleasedEps = Math.max(d.totalEpisodes || 0, d.plannedEpisodesCount || 0, d.releasedEpisodesCount || 0, 1);
 
       const trackerBox = document.getElementById('imp-ongoing-tracker-box');
       const relCountEl = document.getElementById('imp-ongoing-released-count');
@@ -2441,10 +2459,10 @@ async function openImportModal(item) {
         if (planCountEl) planCountEl.textContent = state.importPlannedEps;
         if (d.isOngoing) {
           if (ongoingTitleEl) ongoingTitleEl.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Ongoing Drama Real-Time Tracking';
-          if (ongoingDescEl) ongoingDescEl.textContent = `Released on MovieBox: ${state.importReleasedEps} of ${state.importPlannedEps} Episodes (Only live released episodes loaded)`;
+          if (ongoingDescEl) ongoingDescEl.textContent = `All ${state.importReleasedEps} Episode slots loaded (with auto-detect and sync).`;
         } else {
           if (ongoingTitleEl) ongoingTitleEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Completed Series';
-          if (ongoingDescEl) ongoingDescEl.textContent = `All ${state.importReleasedEps} Episode(s) fully released and ready to import.`;
+          if (ongoingDescEl) ongoingDescEl.textContent = `All ${state.importReleasedEps} Episode(s) fully loaded and ready to import.`;
         }
       } else if (trackerBox) {
         trackerBox.style.display = 'none';
@@ -2455,13 +2473,14 @@ async function openImportModal(item) {
         if (d.seasons && d.seasons.length > 0) {
           const allOpt = document.createElement('option');
           allOpt.value = 'all';
-          allOpt.textContent = `🌟 All Seasons (${d.seasons.length} Seasons • ${state.importReleasedEps} Episodes Released)`;
+          allOpt.textContent = `🌟 All Seasons (${d.seasons.length} Seasons • ${state.importReleasedEps} Episodes)`;
           seasonSel.appendChild(allOpt);
 
           d.seasons.forEach(s => {
             const opt = document.createElement('option');
             opt.value = String(s.seasonNumber || s.se);
-            opt.textContent = `Season ${s.seasonNumber || s.se} (${s.episodesCount || s.releasedEpisodesCount || s.maxEp || 0} Episodes)`;
+            const epC = Math.max(s.episodesCount || 0, s.episodes?.length || 0, s.plannedEpisodesCount || 0, s.releasedEpisodesCount || 0, s.maxEp || 0, 1);
+            opt.textContent = `Season ${s.seasonNumber || s.se} (${epC} Episodes)`;
             seasonSel.appendChild(opt);
           });
         } else {
@@ -2483,10 +2502,10 @@ async function openImportModal(item) {
       if (d.backdrop && !document.getElementById('imp-cover').value) document.getElementById('imp-cover').value = d.backdrop;
 
       if (d.seasons && d.seasons.length > 1) {
-        const breakdown = d.seasons.map(s => `S${s.seasonNumber || s.se}: ${s.episodesCount || s.releasedEpisodesCount || s.maxEp} eps`).join(' • ');
-        statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald" style="color: #10b981;"></i> <strong>Auto-Detected:</strong> ${d.seasons.length} Seasons (${state.importReleasedEps} Episodes Released) &bull; ${d.industry} (${d.category})<br><small style="color: #64748b;">${breakdown}</small>`;
+        const breakdown = d.seasons.map(s => `S${s.seasonNumber || s.se}: ${Math.max(s.episodesCount || 0, s.episodes?.length || 0, s.maxEp || 0)} eps`).join(' • ');
+        statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald" style="color: #10b981;"></i> <strong>Auto-Detected:</strong> ${d.seasons.length} Seasons (${state.importReleasedEps} Episodes) &bull; ${d.industry} (${d.category})<br><small style="color: #64748b;">${breakdown}</small>`;
       } else {
-        statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald" style="color: #10b981;"></i> <strong>Auto-Detected:</strong> ${state.importReleasedEps} Episode(s) Released &bull; ${d.industry} (${d.category})`;
+        statusText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald" style="color: #10b981;"></i> <strong>Auto-Detected:</strong> ${state.importReleasedEps} Episode(s) Loaded &bull; ${d.industry} (${d.category})`;
       }
 
       // Initialize detailed seasons & episodes preview for import
@@ -2494,8 +2513,39 @@ async function openImportModal(item) {
         state.importPreviewSeasons = (Array.isArray(d.seasons) && d.seasons.length > 0)
           ? JSON.parse(JSON.stringify(d.seasons))
           : [];
+
+        // Ensure every season has its full episodes generated
+        state.importPreviewSeasons.forEach(season => {
+          const seNum = parseInt(season.seasonNumber || season.se, 10) || 1;
+          const targetEpCount = Math.max(
+            parseInt(season.episodesCount, 10) || 0,
+            parseInt(season.plannedEpisodesCount, 10) || 0,
+            parseInt(season.releasedEpisodesCount, 10) || 0,
+            parseInt(season.maxEp, 10) || 0,
+            Array.isArray(season.episodes) ? season.episodes.length : 0,
+            1
+          );
+
+          if (!Array.isArray(season.episodes) || season.episodes.length < targetEpCount) {
+            const eps = Array.isArray(season.episodes) ? season.episodes : [];
+            for (let ep = eps.length + 1; ep <= targetEpCount; ep++) {
+              const epUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${ep}` : '';
+              eps.push({
+                number: String(ep).padStart(2, '0'),
+                episode: ep,
+                season: seNum,
+                title: `Episode ${ep}`,
+                streamUrl: epUrl,
+                duration: '45 min'
+              });
+            }
+            season.episodes = eps;
+            season.episodesCount = eps.length;
+          }
+        });
+
         if (state.importPreviewSeasons.length === 0) {
-          const epCount = state.importReleasedEps || 1;
+          const epCount = state.importReleasedEps || 16;
           const eps = [];
           for (let ep = 1; ep <= epCount; ep++) {
             const epUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=1&ep=${ep}` : '';
@@ -2510,6 +2560,10 @@ async function openImportModal(item) {
           }
           state.importPreviewSeasons = [{ seasonNumber: 1, title: 'Season 1', episodesCount: eps.length, episodes: eps }];
         }
+
+        const totalEpsAllSeasons = state.importPreviewSeasons.reduce((acc, s) => acc + (s.episodesCount || s.episodes?.length || 0), 0);
+        if (totalEpsAllSeasons) document.getElementById('imp-episodes').value = totalEpsAllSeasons;
+
         renderImportEpisodesPreview();
       } else {
         state.importPreviewSeasons = [];

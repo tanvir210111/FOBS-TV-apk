@@ -832,14 +832,17 @@ class AdminService {
     const isHindiQuery = /\bhindi\b/i.test(cleanQ);
     const isBanglaQuery = /\bbangla\b|\bbengali\b/i.test(cleanQ);
 
-    if (!isHindiQuery) {
+    const isGenericHindi = cleanQ.toLowerCase() === 'hindi' || cleanQ.toLowerCase() === 'hindi movies' || cleanQ.toLowerCase() === 'hindi series' || cleanQ.toLowerCase() === 'hindi dubbed';
+    if (isGenericHindi) {
+      queriesToRun.push('hindi dubbed', 'bollywood', 'hindi cinema', 'indian');
+    } else if (!isHindiQuery) {
       queriesToRun.push(`${cleanQ} hindi`);
     } else {
       const strippedHindi = cleanQ.replace(/\bhindi\b/gi, '').trim();
       if (strippedHindi) queriesToRun.push(strippedHindi);
     }
 
-    if (!isBanglaQuery && queriesToRun.length < 3) {
+    if (!isBanglaQuery && queriesToRun.length < 3 && cleanQ.length > 3 && !isGenericHindi) {
       queriesToRun.push(`${cleanQ} bangla`);
     }
 
@@ -996,6 +999,23 @@ class AdminService {
       });
       pairedItems.push(...grp);
     }
+
+    // Rank most relevant to cleanQ first!
+    const qLower = cleanQ.toLowerCase().replace(/\[.*?\]|\(.*?\)/g, '').trim();
+    const qWords = qLower.split(/\s+/).filter(w => w.length > 2 && w !== 'hindi' && w !== 'dubbed');
+    
+    pairedItems.sort((a, b) => {
+      const aTitle = (a.title || '').toLowerCase();
+      const bTitle = (b.title || '').toLowerCase();
+      const aExact = aTitle.includes(qLower) ? 100 : 0;
+      const bExact = bTitle.includes(qLower) ? 100 : 0;
+      let aWordMatch = 0, bWordMatch = 0;
+      for (const w of qWords) {
+        if (aTitle.includes(w)) aWordMatch += 20;
+        if (bTitle.includes(w)) bWordMatch += 20;
+      }
+      return (bExact + bWordMatch) - (aExact + aWordMatch);
+    });
 
     return { success: true, items: pairedItems };
   }
@@ -1190,7 +1210,10 @@ class AdminService {
           if (seasonMap.has(seNum)) {
             const existing = seasonMap.get(seNum);
             if (ts.name) existing.title = ts.name;
-            existing.plannedMaxEp = Math.max(epCount, existing.releasedMaxEp);
+            existing.plannedMaxEp = Math.max(epCount, existing.releasedMaxEp || 0, existing.plannedMaxEp || 0);
+            // Ensure maxEp has full episode count so all episodes can be generated
+            existing.maxEp = Math.max(existing.maxEp || 0, epCount, existing.plannedMaxEp, 1);
+            existing.releasedMaxEp = Math.max(existing.releasedMaxEp || 0, existing.maxEp);
           } else {
             seasonMap.set(seNum, {
               se: seNum,
@@ -1205,13 +1228,22 @@ class AdminService {
 
       // 3. Fallback if no seasons found but detectedTotalEps > 0
       if (seasonMap.size === 0) {
+        const fallbackEps = detectedTotalEps || tmdbEps || 16;
         seasonMap.set(1, {
           se: 1,
           title: 'Season 1',
-          releasedMaxEp: detectedTotalEps || 16,
-          maxEp: detectedTotalEps || 16,
-          plannedMaxEp: detectedTotalEps || 16
+          releasedMaxEp: fallbackEps,
+          maxEp: fallbackEps,
+          plannedMaxEp: fallbackEps
         });
+      } else if (seasonMap.has(1)) {
+        const s1 = seasonMap.get(1);
+        if (s1.maxEp <= 1 && (tmdbEps > 1 || detectedTotalEps > 1)) {
+          const fullEps = Math.max(tmdbEps, detectedTotalEps, 16);
+          s1.maxEp = fullEps;
+          s1.plannedMaxEp = Math.max(s1.plannedMaxEp, fullEps);
+          s1.releasedMaxEp = Math.max(s1.releasedMaxEp, fullEps);
+        }
       }
 
       for (const [_, s] of seasonMap) {
