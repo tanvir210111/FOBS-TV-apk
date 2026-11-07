@@ -627,7 +627,13 @@ class AdminService {
         const isHindi = tLower.includes('hindi') || secLower.includes('hindi');
         const isBangla = tLower.includes('bangla') || tLower.includes('bengali') || secLower.includes('bangla');
         const audioTag = isHindi ? 'Hindi Dubbed' : (isBangla ? 'Bangla Dubbed' : 'Original Audio');
-        const baseTitle = (it.title || '').replace(/\[.*?hindi.*?\]|\(.*?\bhindi\b.*?\)|\[.*?bangla.*?\]|\(.*?\bbangla\b.*?\)/gi, '').trim().toLowerCase();
+        const baseTitle = (it.title || '')
+        .toLowerCase()
+        .replace(/\[.*?\]|\(.*?\)/g, '')
+        .replace(/\b(s\d+|season\s*\d+|part\s*\d+|s\d+-s\d+)\b/gi, '')
+        .replace(/[^a-z0-9]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
 
         const itClean = titleExact.replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, '');
         const itAudioKey = `${itClean}_${isHindi ? 'hi' : 'orig'}`;
@@ -905,7 +911,13 @@ class AdminService {
       const isHindi = tLower.includes('hindi');
       const isBangla = tLower.includes('bangla') || tLower.includes('bengali');
       const audioTag = isHindi ? 'Hindi Dubbed' : (isBangla ? 'Bangla Dubbed' : 'Original Audio');
-      const baseTitle = (it.title || '').replace(/\[.*?hindi.*?\]|\(.*?\bhindi\b.*?\)|\[.*?bangla.*?\]|\(.*?\bbangla\b.*?\)/gi, '').trim().toLowerCase();
+      const baseTitle = (it.title || '')
+        .toLowerCase()
+        .replace(/\[.*?\]|\(.*?\)/g, '')
+        .replace(/\b(s\d+|season\s*\d+|part\s*\d+|s\d+-s\d+)\b/gi, '')
+        .replace(/[^a-z0-9]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
 
       try {
         const cleanName = (it.title || '').replace(/\[.*?\]|\(.*?\)/g, '').trim();
@@ -982,16 +994,57 @@ class AdminService {
       };
     }));
 
-    // Group & pair Original and Hindi versions of the same title so they ALWAYS appear together!
+    // Score relevance so the exact show and its Hindi Dubbed version appear at the very top!
+    const qLower = cleanQ.toLowerCase().replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
+    const qWords = qLower.split(/\s+/).filter(w => w.length > 1 && w !== 'hindi' && w !== 'dubbed');
+
+    const scored = enriched.map(it => {
+      const tLower = (it.title || '').toLowerCase();
+      const bTitle = it.baseTitle || '';
+      let score = 0;
+
+      if (bTitle === qLower) score += 2000;
+      else if (bTitle.startsWith(qLower)) score += 1000;
+      else if (tLower.includes(qLower)) score += 500;
+
+      for (const w of qWords) {
+        if (tLower.includes(w)) score += 100;
+      }
+
+      // Penalize AMVs, music videos, fan covers, and songs so actual series/movies are first
+      if (/amv|music video|official video|cover|ost|remix|lyrics|song/i.test(tLower)) {
+        score -= 1500;
+      }
+
+      let hasAnyWord = false;
+      for (const w of qWords) {
+        if (tLower.includes(w)) { hasAnyWord = true; break; }
+      }
+      if (!hasAnyWord && qWords.length > 0) {
+        score -= 3000;
+      }
+
+      return { ...it, score };
+    });
+
+    // Group by baseTitle so Original & Hindi versions ALWAYS pair together side by side!
     const grouped = new Map();
-    for (const item of enriched) {
+    for (const item of scored) {
       const bKey = item.baseTitle || item.title.toLowerCase();
       if (!grouped.has(bKey)) grouped.set(bKey, []);
       grouped.get(bKey).push(item);
     }
 
+    // Sort groups by highest scoring item
+    const sortedGroups = Array.from(grouped.entries()).sort((a, b) => {
+      const maxA = Math.max(...a[1].map(x => x.score));
+      const maxB = Math.max(...b[1].map(x => x.score));
+      return maxB - maxA;
+    });
+
     const pairedItems = [];
-    for (const [_, grp] of grouped) {
+    for (const [_, grp] of sortedGroups) {
+      // Within group: Original first, then Hindi Dubbed
       grp.sort((a, b) => {
         if (!a.isHindi && b.isHindi) return -1;
         if (a.isHindi && !b.isHindi) return 1;
@@ -999,23 +1052,6 @@ class AdminService {
       });
       pairedItems.push(...grp);
     }
-
-    // Rank most relevant to cleanQ first!
-    const qLower = cleanQ.toLowerCase().replace(/\[.*?\]|\(.*?\)/g, '').trim();
-    const qWords = qLower.split(/\s+/).filter(w => w.length > 2 && w !== 'hindi' && w !== 'dubbed');
-    
-    pairedItems.sort((a, b) => {
-      const aTitle = (a.title || '').toLowerCase();
-      const bTitle = (b.title || '').toLowerCase();
-      const aExact = aTitle.includes(qLower) ? 100 : 0;
-      const bExact = bTitle.includes(qLower) ? 100 : 0;
-      let aWordMatch = 0, bWordMatch = 0;
-      for (const w of qWords) {
-        if (aTitle.includes(w)) aWordMatch += 20;
-        if (bTitle.includes(w)) bWordMatch += 20;
-      }
-      return (bExact + bWordMatch) - (aExact + aWordMatch);
-    });
 
     return { success: true, items: pairedItems };
   }
