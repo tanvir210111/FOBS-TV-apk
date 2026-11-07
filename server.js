@@ -3256,7 +3256,7 @@ app.get('/api/admin/diagnostic', adminService.authenticate, (req, res) => {
     nginxConf = execSync('cat /etc/nginx/sites-enabled/* 2>/dev/null || cat /etc/nginx/conf.d/* 2>/dev/null', { timeout: 4000 }).toString();
   } catch (e) { nginxConf = e.message; }
   try {
-    pm2Logs = execSync('pm2 logs --lines 30 --nostream 2>/dev/null', { timeout: 4000 }).toString();
+    pm2Logs = execSync('pm2 list', { timeout: 4000 }).toString();
   } catch (e) { pm2Logs = e.message; }
   res.json({ success: true, nginxConf, pm2Logs });
 });
@@ -3806,7 +3806,7 @@ app.all('/api/deploy', (req, res) => {
     try { movieboxService.invalidateCache(); } catch (_) {}
     res.json({ success: true, message: 'Deploy completed successfully', stdout, stderr });
     setTimeout(() => {
-      exec('pm2 reload all --update-env || pm2 restart all --update-env || pm2 restart fobs-tv || /root/.nvm/versions/node/v22.23.2/bin/pm2 reload all');
+      exec('pm2 restart fobs-tv --update-env || pm2 reload fobs-tv --update-env || /root/.nvm/versions/node/v22.23.2/bin/pm2 restart fobs-tv');
       setTimeout(() => {
         process.exit(0);
       }, 800);
