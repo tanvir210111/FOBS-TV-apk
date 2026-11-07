@@ -3248,21 +3248,31 @@ app.post('/api/app-ping', (req, res) => {
   }
 });
 
-app.get('/api/admin/diagnostic', adminService.authenticate, (req, res) => {
+app.get('/api/admin/diagnostic', adminService.authenticate, async (req, res) => {
   const { execSync } = require('child_process');
   let nginxConf = '';
   let pm2Logs = '';
   let curlTest = '';
+  let mbTest = null;
+  let mbError = null;
+
   try {
     nginxConf = execSync('cat /etc/nginx/sites-enabled/* 2>/dev/null || cat /etc/nginx/conf.d/* 2>/dev/null', { timeout: 4000 }).toString();
   } catch (e) { nginxConf = e.message; }
   try {
-    pm2Logs = execSync('pm2 list', { timeout: 4000 }).toString();
+    pm2Logs = execSync('pm2 logs fobs-tv --lines 30 --nostream 2>&1', { timeout: 6000 }).toString();
   } catch (e) { pm2Logs = e.message; }
   try {
-    curlTest = execSync('curl -s -D - -o /dev/null -H "User-Agent: TemporaryUserAgent" "https://dl.opensubtitles.org/en/download/src-api/vrf-19c10c52/filead/1957433621.gz"', { timeout: 4000 }).toString();
+    curlTest = execSync('curl -s -i "https://h5.aoneroom.com/wefeed-h5-bff/web/subject/download?subjectId=4739676182898271776&se=0&ep=0" -H "Referer: https://h5.aoneroom.com/movies/boss-hindi-YwdCI7zL7E5" -H "Origin: https://h5.aoneroom.com" -H "User-Agent: Mozilla/5.0" | head -n 25', { timeout: 6000 }).toString();
   } catch (e) { curlTest = e.message; }
-  res.json({ success: true, nginxConf, pm2Logs, curlTest });
+
+  try {
+    mbTest = await movieboxService.resolveMedia('4739676182898271776', 'boss-hindi-YwdCI7zL7E5', 0, 0);
+  } catch (e) {
+    mbError = { message: e.message, stack: e.stack };
+  }
+
+  res.json({ success: true, nginxConf, pm2Logs, curlTest, mbTest, mbError });
 });
 
 // Purge Older Version Users & Devices (Keep v3.1.3)
