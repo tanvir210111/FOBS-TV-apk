@@ -27,7 +27,27 @@ const JWT_SECRET = process.env.JWT_SECRET || 'fobs_tv_admin_secret_key_2026';
 
 // High-Speed In-Memory Caches for Instant UI Response
 const tmdbLookupCache = new Map();
+const MB_FEED_CACHE_FILE = path.join(__dirname, '..', 'data', 'mb_feed_cache.json');
 let mbFeedCache = { timestamp: 0, sections: null, specialized: {} };
+
+function loadFeedCacheFromDisk() {
+  try {
+    if (fs.existsSync(MB_FEED_CACHE_FILE)) {
+      const parsed = JSON.parse(fs.readFileSync(MB_FEED_CACHE_FILE, 'utf8'));
+      if (parsed && typeof parsed === 'object') {
+        mbFeedCache = parsed;
+        if (!mbFeedCache.specialized) mbFeedCache.specialized = {};
+      }
+    }
+  } catch (_) {}
+}
+loadFeedCacheFromDisk();
+
+function saveFeedCacheToDisk() {
+  try {
+    atomicWriteFile(MB_FEED_CACHE_FILE, JSON.stringify(mbFeedCache, null, 2));
+  } catch (_) {}
+}
 
 function atomicWriteFile(targetFile, dataStr) {
   const dir = path.dirname(targetFile);
@@ -554,11 +574,11 @@ class AdminService {
       return 'Turkish';
     }
     // 3. Chinese
-    if (/chinese|cdrama|c-drama|wuxia|hidden love|untamed|till the end of the moon/i.test(tLower) || /c-drama|chinese/i.test(secLower)) {
+    if (/chinese|cdrama|c-drama|wuxia|hidden love|untamed|till the end of the moon|heaven official|tian guan|blessing|donghua|link click|scumbag system/i.test(tLower) || /c-drama|chinese/i.test(secLower)) {
       return 'Chinese';
     }
     // 4. Anime / Japanese
-    if (/anime|japan|manga|solo leveling|jujutsu|demon slayer|naruto|one piece|dragon ball|bleach|attack on titan/i.test(tLower) || /anime|japan/i.test(secLower)) {
+    if (/anime|japan|manga|solo leveling|jujutsu|demon slayer|naruto|one piece|dragon ball|bleach|attack on titan|arcane|heaven official|donghua/i.test(tLower) || /anime|japan/i.test(secLower)) {
       return 'Anime';
     }
     // 5. Tollywood / South Indian / Bangla
@@ -611,6 +631,7 @@ class AdminService {
 
     if (merged.length > 0) {
       mbFeedCache.specialized[key] = { timestamp: Date.now(), items: merged };
+      saveFeedCacheToDisk();
       return merged;
     }
     return cached?.items || [];
@@ -627,6 +648,7 @@ class AdminService {
       sections = await movieboxService.getHomepage();
       mbFeedCache.sections = JSON.parse(JSON.stringify(sections || []));
       mbFeedCache.timestamp = Date.now();
+      saveFeedCacheToDisk();
     }
 
     // Dynamic category content enrichment: fetch specialized content when a specific feed is selected
@@ -807,23 +829,23 @@ class AdminService {
     } else if (filter === 'series' || filter === 'tv') {
       filtered = allItems.filter(i => i.type === 'series' || (i.section || '').toLowerCase().includes('series') || (i.section || '').toLowerCase().includes('drama') || (i.section || '').toLowerCase().includes('show'));
     } else if (filter === 'kdrama-hindi') {
-      filtered = allItems.filter(i => i.industry === 'Korean' || (i.section || '').includes('Korean'));
+      filtered = allItems.filter(i => i.industry === 'Korean' || /korean|kdrama|k-drama/i.test((i.section || '') + ' ' + (i.category || '') + ' ' + (i.title || '')));
     } else if (filter === 'cdrama-hindi') {
-      filtered = allItems.filter(i => i.industry === 'Chinese' || (i.section || '').includes('Chinese'));
+      filtered = allItems.filter(i => i.industry === 'Chinese' || /chinese|cdrama|c-drama|wuxia/i.test((i.section || '') + ' ' + (i.category || '') + ' ' + (i.title || '')));
     } else if (filter === 'turkish-hindi') {
-      filtered = allItems.filter(i => i.industry === 'Turkish' || (i.section || '').includes('Turkish'));
+      filtered = allItems.filter(i => i.industry === 'Turkish' || /turkish|turkey|dizi/i.test((i.section || '') + ' ' + (i.category || '') + ' ' + (i.title || '')));
     } else if (filter === 'kdrama' || filter === 'korean') {
-      filtered = allItems.filter(i => i.industry === 'Korean' || (i.section || '').toLowerCase().includes('korean') || (i.section || '').toLowerCase().includes('kdrama'));
+      filtered = allItems.filter(i => i.industry === 'Korean' || /korean|kdrama|k-drama/i.test((i.section || '') + ' ' + (i.category || '') + ' ' + (i.title || '')));
     } else if (filter === 'cdrama' || filter === 'chinese') {
-      filtered = allItems.filter(i => i.industry === 'Chinese' || (i.section || '').toLowerCase().includes('chinese') || (i.section || '').toLowerCase().includes('cdrama'));
+      filtered = allItems.filter(i => i.industry === 'Chinese' || /chinese|cdrama|c-drama/i.test((i.section || '') + ' ' + (i.category || '') + ' ' + (i.title || '')));
     } else if (filter === 'turkish') {
-      filtered = allItems.filter(i => i.industry === 'Turkish' || (i.section || '').toLowerCase().includes('turkish'));
+      filtered = allItems.filter(i => i.industry === 'Turkish' || /turkish|turkey|dizi/i.test((i.section || '') + ' ' + (i.category || '') + ' ' + (i.title || '')));
     } else if (filter === 'hindi' || filter === 'bollywood') {
-      filtered = allItems.filter(i => i.industry === 'Bollywood' || i.isHindi || (i.section || '').toLowerCase().includes('hindi') || (i.section || '').toLowerCase().includes('bollywood'));
+      filtered = allItems.filter(i => i.industry === 'Bollywood' || i.isHindi || /hindi|bollywood/i.test((i.section || '') + ' ' + (i.category || '') + ' ' + (i.title || '')));
     } else if (filter === 'hollywood') {
-      filtered = allItems.filter(i => i.industry === 'Hollywood' || (i.section || '').toLowerCase().includes('hollywood') || (i.section || '').toLowerCase().includes('western'));
+      filtered = allItems.filter(i => i.industry === 'Hollywood' || /hollywood|western/i.test((i.section || '') + ' ' + (i.category || '') + ' ' + (i.title || '')));
     } else if (filter === 'anime') {
-      filtered = allItems.filter(i => i.industry === 'Anime' || (i.section || '').toLowerCase().includes('anime'));
+      filtered = allItems.filter(i => i.industry === 'Anime' || /anime|japan|manga|donghua/i.test((i.section || '') + ' ' + (i.category || '') + ' ' + (i.title || '')));
     }
 
     const unimportedCount = filtered.filter(i => !i.alreadyImported).length;
@@ -1380,7 +1402,7 @@ class AdminService {
       ? (isHindiDubbed ? `${detectedIndustry} (Dubbed) Series` : `${detectedIndustry} Series`)
       : (isHindiDubbed ? `${detectedIndustry} (Dubbed) Movies` : `${detectedIndustry} Movies`);
 
-    const sId = mbItem?.subjectId || mbDetail?.subjectId || (isSubjectId ? cleanQ : '');
+    const isSubjectId = !!explicitSubjectId; const sId = mbItem?.subjectId || mbDetail?.subjectId || (isSubjectId ? cleanQ : '');
     const dPath = mbItem?.detailPath || mbDetail?.detailPath || '';
     const streamUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}` : '';
 
@@ -1441,8 +1463,8 @@ class AdminService {
             // Planned count can come from TMDb (e.g. 9 or 12 planned)
             existing.plannedMaxEp = Math.max(epCount, existing.releasedMaxEp || 0);
             // CRUCIAL: Do NOT overwrite releasedMaxEp with epCount! Keep what MovieBox actually has released!
-          } else if (!requestedSeasonNum && mbSeasonsList.length === 0) {
-            // Only if MovieBox had zero season data do we fallback to TMDb seasons
+          } else if ((requestedSeasonNum && seNum === requestedSeasonNum) || mbSeasonsList.length === 0) {
+            // Only if MovieBox had zero season data or requested season does not exist in MovieBox yet
             seasonMap.set(seNum, {
               se: seNum,
               title: ts.name || `Season ${seNum}`,

@@ -5362,7 +5362,21 @@ async function setupSubtitlesForMedia(media) {
   // 3. Ensure English & Bangla exist
   const hasEn = tracks.some(t => t.langCode === 'en');
   const hasBn = tracks.some(t => t.langCode === 'bn');
-  const enTrack = tracks.find(t => t.langCode === 'en');
+
+  const validEnTrack = tracks.find(t => t.langCode === 'en' && (t.url || t.downloadUrl) && !t.url?.includes('/generate'));
+
+  if (!hasBn && validEnTrack) {
+    const enUrl = validEnTrack.url || validEnTrack.downloadUrl;
+    tracks.push({
+      id: 'sub_bn_ai',
+      language: 'Bangla (বাংলা - AI)',
+      langCode: 'bn',
+      source: 'FOBS AI Translate',
+      url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanTitle)}&season=${season}&episode=${ep}`,
+      format: 'vtt',
+      isAi: true
+    });
+  }
 
   if (!hasEn) {
     tracks.unshift({
@@ -5372,21 +5386,6 @@ async function setupSubtitlesForMedia(media) {
       source: 'SubSource (Auto)',
       url: `/api/subtitles/generate?title=${encodeURIComponent(cleanTitle)}&lang=en`
     });
-  }
-
-  if (!hasBn) {
-    if (enTrack && (enTrack.url || enTrack.downloadUrl)) {
-      const enUrl = enTrack.url || enTrack.downloadUrl;
-      tracks.push({
-        id: 'sub_bn_ai',
-        language: 'Bangla (বাংলা - AI)',
-        langCode: 'bn',
-        source: 'FOBS AI Translate',
-        url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanTitle)}&season=${season}&episode=${ep}`,
-        format: 'vtt',
-        isAi: true
-      });
-    }
   }
 
   subtitleState.availableTracks = tracks;
@@ -7154,7 +7153,7 @@ function setupVideoListeners() {
 
     // Real-time subtitle cue rendering with MX Player style sync
     if (typeof renderActiveSubtitleCue === 'function') {
-      renderActiveSubtitleCue(videoPlayer.currentTime);
+      renderActiveSubtitleCue((videoPlayer.currentTime || 0) + (appState.streamSeekOffset || 0));
     }
 
     // Throttled Watch History Progress (every 10s)

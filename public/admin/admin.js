@@ -2030,23 +2030,9 @@ async function searchMovieBox() {
   const grid = document.getElementById('importer-results-grid');
   grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-spinner fa-spin" style="font-size:24px; color:var(--primary); margin-bottom:12px; display:block;"></i>Searching MovieBox & pairing Original + Hindi titles for "${escapeHtml(query)}"...</div>`;
 
-  // Auto-reset filters so that newly searched titles are never accidentally hidden by leftover dropdowns!
+  // Clear in-page keyword filter so search results are fully visible
   const elKw = document.getElementById('imp-filter-keyword');
   if (elKw) elKw.value = '';
-  const elAudio = document.getElementById('imp-filter-audio');
-  if (elAudio) elAudio.value = 'all';
-  const elCat = document.getElementById('imp-filter-category');
-  if (elCat) elCat.value = 'all';
-  const elType = document.getElementById('imp-filter-type');
-  if (elType) elType.value = 'all';
-  const elYear = document.getElementById('imp-filter-year');
-  if (elYear) elYear.value = 'all';
-  const elMonth = document.getElementById('imp-filter-month');
-  if (elMonth) elMonth.value = 'all';
-  const elStatus = document.getElementById('imp-filter-status');
-  if (elStatus) elStatus.value = 'all';
-  const elSort = document.getElementById('imp-filter-sort');
-  if (elSort) elSort.value = 'default';
 
   document.querySelectorAll('.importer-tab-btn').forEach(b => b.classList.remove('active'));
 
@@ -2118,10 +2104,10 @@ function applyImporterFilters() {
         const isTurkish = item.industry === 'Turkish' || /turkish|turkey|dizi/i.test(catLower);
         if (!isTurkish) return false;
       } else if (category === 'anime') {
-        const isAnime = item.industry === 'Anime' || /anime|japan|manga/i.test(catLower);
+        const isAnime = item.industry === 'Anime' || /anime|japan|manga|donghua|heaven official|blessing|arcane/i.test(catLower);
         if (!isAnime) return false;
       } else if (category === 'chinese') {
-        const isCdrama = item.industry === 'Chinese' || /chinese|cdrama|c-drama|wuxia/i.test(catLower);
+        const isCdrama = item.industry === 'Chinese' || /chinese|cdrama|c-drama|wuxia|heaven official|blessing|donghua/i.test(catLower);
         if (!isCdrama) return false;
       } else if (category === 'series') {
         if (!isSeries && !catLower.includes('series') && !catLower.includes('drama') && !catLower.includes('show') && !catLower.includes('tv')) return false;
@@ -2307,8 +2293,18 @@ function renderImporterGrid(items) {
   const grid = document.getElementById('importer-results-grid');
   if (!items || items.length === 0) {
     const rawTotal = (state.movieboxRawItems || []).length;
+    const currentAudio = document.getElementById('imp-filter-audio')?.value || 'all';
     if (rawTotal > 0) {
-      grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-filter-circle-xmark" style="font-size:32px; color:var(--text-dim); margin-bottom:12px; display:block;"></i>No matching titles found for the selected filters out of ${rawTotal} available titles.<br><button type="button" class="btn-secondary" onclick="resetImporterFilters()" style="margin-top:12px; font-size:12px;"><i class="fa-solid fa-rotate-left"></i> Reset All Filters</button></div>`;
+      grid.innerHTML = `
+        <div class="empty-state">
+          <i class="fa-solid fa-filter-circle-xmark" style="font-size:32px; color:var(--text-dim); margin-bottom:12px; display:block;"></i>
+          No matching titles found for the selected filters out of ${rawTotal} available titles.<br>
+          <div style="display:inline-flex; gap:8px; margin-top:14px; flex-wrap:wrap; justify-content:center;">
+            ${currentAudio !== 'all' ? `<button type="button" class="btn-primary" onclick="document.getElementById('imp-filter-audio').value='all'; applyImporterFilters();" style="font-size:12px;"><i class="fa-solid fa-volume-high"></i> Show All Audio Versions (${rawTotal})</button>` : ''}
+            <button type="button" class="btn-secondary" onclick="resetImporterFilters()" style="font-size:12px;"><i class="fa-solid fa-rotate-left"></i> Reset All Filters</button>
+          </div>
+        </div>
+      `;
     } else {
       grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-magnifying-glass" style="font-size:32px; color:var(--text-dim); margin-bottom:12px; display:block;"></i>No titles available in this feed. Try searching or switching to another feed tab.<br><button type="button" class="btn-secondary" onclick="loadMovieBoxRecent(\'all\')" style="margin-top:12px; font-size:12px;"><i class="fa-solid fa-globe"></i> Load All Feeds</button></div>';
     }
