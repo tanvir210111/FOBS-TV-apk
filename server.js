@@ -1193,7 +1193,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
       else if (id === '8152231361013763208') resolvedPath = 'crash-landing-on-you-M2pZwJYidI9';
       // Heaven Official's Blessing (Chinese Animation / Series)
       else if (id === '6484471729350922232') resolvedPath = 'heaven-officials-blessing-67QMvaRW0J7';
-      else if (id === '2404784540335106472') resolvedPath = 'heaven-officials-blessing-67QMvaRW0J7';
+      else if (id === '2404784540335106472') resolvedPath = 'heaven-officials-blessing-hindi-O7ZIjocWDR2';
     }
 
     // Auto-discover detailPath from content.json catalog if not explicitly supplied
