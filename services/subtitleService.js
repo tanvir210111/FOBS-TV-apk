@@ -389,13 +389,18 @@ class SubtitleService {
       downloadHeaders['Origin'] = 'https://movieboxapp.in';
     }
 
-    const response = await axios.get(url, {
-      responseType: 'arraybuffer',
-      headers: downloadHeaders,
-      timeout: 15000
-    });
-
-    rawBuffer = Buffer.from(response.data);
+    let response;
+    try {
+      response = await axios.get(url, {
+        responseType: 'arraybuffer',
+        headers: downloadHeaders,
+        timeout: 12000
+      });
+      rawBuffer = Buffer.from(response.data);
+    } catch (dlErr) {
+      console.warn(`Subtitle download failed for ${url} (${dlErr.message})`);
+      return { ok: false, cuesCount: 0, cues: [], vtt: 'WEBVTT\n\n' };
+    }
 
     let rawText = '';
     // Check if buffer is GZIP compressed (Magic bytes 0x1F 0x8B)

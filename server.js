@@ -3219,7 +3219,7 @@ app.get('/api/subtitles/track', async (req, res) => {
     res.json({ success: true, vtt: result.vtt, cues: result.cues });
   } catch (err) {
     console.warn('Subtitle track fetch error:', err.message);
-    res.status(500).json({ success: false, error: err.message });
+    res.json({ success: false, vtt: 'WEBVTT\n\n', cues: [], error: err.message });
   }
 });
 
