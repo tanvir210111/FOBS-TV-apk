@@ -2419,7 +2419,7 @@ async function openImportModal(item) {
   try {
     let d = null;
     try {
-      const autoRes = await authFetch(`${API_BASE}/api/admin/auto-detect?q=${encodeURIComponent(item.title || sId)}&type=${isSeries ? 'series' : 'movie'}`);
+      const autoRes = await authFetch(`${API_BASE}/api/admin/auto-detect?q=${encodeURIComponent(item.title || '')}&subjectId=${encodeURIComponent(sId)}&detailPath=${encodeURIComponent(dPath)}&type=${isSeries ? 'series' : 'movie'}`);
       const autoData = await autoRes.json();
       if (autoData && autoData.success && autoData.data) {
         d = autoData.data;
@@ -2438,6 +2438,9 @@ async function openImportModal(item) {
     }
 
     if (d) {
+      if (d.title && !document.getElementById('imp-title').value.includes(d.title)) {
+        document.getElementById('imp-title').value = d.title;
+      }
       if (d.type) {
         document.getElementById('imp-type').value = d.type;
         toggleImportType(d.type);
@@ -2563,6 +2566,22 @@ async function openImportModal(item) {
 
         const totalEpsAllSeasons = state.importPreviewSeasons.reduce((acc, s) => acc + (s.episodesCount || s.episodes?.length || 0), 0);
         if (totalEpsAllSeasons) document.getElementById('imp-episodes').value = totalEpsAllSeasons;
+
+        const titleSeasonMatch = (item.title || d.title || '').match(/\b(?:s|season\s*)(\d+)\b/i);
+        const targetSeasonNum = titleSeasonMatch ? parseInt(titleSeasonMatch[1], 10) : null;
+        if (targetSeasonNum && d.seasons && d.seasons.some(s => (s.seasonNumber || s.se) === targetSeasonNum)) {
+          if (seasonSel) seasonSel.value = String(targetSeasonNum);
+          const matchIdx = state.importPreviewSeasons.findIndex(s => (s.seasonNumber || s.se) === targetSeasonNum);
+          if (matchIdx !== -1) {
+            state.activeImportPreviewSeasonIdx = matchIdx;
+            const targetSeason = state.importPreviewSeasons[matchIdx];
+            const epCount = targetSeason?.episodesCount || targetSeason?.episodes?.length;
+            if (epCount) document.getElementById('imp-episodes').value = epCount;
+          }
+        } else {
+          if (seasonSel) seasonSel.value = 'all';
+          state.activeImportPreviewSeasonIdx = 0;
+        }
 
         renderImportEpisodesPreview();
       } else {
@@ -2701,10 +2720,17 @@ function addCustomSeasonToImport() {
 function filterImportPreviewSeason(val) {
   if (val === 'all') {
     state.activeImportPreviewSeasonIdx = 0;
+    const totalEpsAllSeasons = (state.importPreviewSeasons || []).reduce((acc, s) => acc + (s.episodesCount || s.episodes?.length || 0), 0);
+    if (totalEpsAllSeasons) document.getElementById('imp-episodes').value = totalEpsAllSeasons;
   } else {
     const seNum = parseInt(val, 10);
     const idx = (state.importPreviewSeasons || []).findIndex(s => (s.seasonNumber || s.se) === seNum);
-    if (idx !== -1) state.activeImportPreviewSeasonIdx = idx;
+    if (idx !== -1) {
+      state.activeImportPreviewSeasonIdx = idx;
+      const targetSeason = state.importPreviewSeasons[idx];
+      const epCount = targetSeason.episodesCount || targetSeason.episodes?.length || 0;
+      if (epCount) document.getElementById('imp-episodes').value = epCount;
+    }
   }
   renderImportEpisodesPreview();
 }

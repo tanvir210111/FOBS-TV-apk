@@ -3376,9 +3376,9 @@ app.post('/api/admin/moviebox/import', adminService.authenticate, async (req, re
 // Unified Auto-Detect for Add Movie & Add Series Modals
 app.get('/api/admin/auto-detect', adminService.authenticate, async (req, res) => {
   try {
-    const { q, type } = req.query;
-    if (!q) return res.status(400).json({ success: false, error: 'Query is required' });
-    const result = await adminService.autoDetectMedia(q, type || 'movie');
+    const { q, type, subjectId, detailPath } = req.query;
+    if (!q && !subjectId) return res.status(400).json({ success: false, error: 'Query or Subject ID is required' });
+    const result = await adminService.autoDetectMedia(q || '', type || 'movie', subjectId || '', detailPath || '');
     res.json(result);
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });

@@ -1061,24 +1061,25 @@ class AdminService {
    * Combines TMDb (Official Title, HD Poster, Backdrop, Year, Rating, Genres, Overview)
    * with MovieBox (Subject ID, DetailPath, Stream URL, Seasons/Episodes)
    */
-  async autoDetectMedia(query, type = 'movie') {
-    if (!query) throw new Error('Query or Subject ID is required');
-    const cleanQ = query.trim();
-    const isSubjectId = /^\d+$/.test(cleanQ);
+  async autoDetectMedia(query, type = 'movie', subjectId = '', detailPath = '') {
+    if (!query && !subjectId) throw new Error('Query or Subject ID is required');
+    const cleanQ = (query || '').trim();
+    const explicitSubjectId = subjectId ? String(subjectId).trim() : (/^\d+$/.test(cleanQ) ? cleanQ : '');
+    const explicitDetailPath = detailPath ? String(detailPath).trim() : '';
 
     let mbItem = null;
     let mbDetail = null;
     let searchTitle = cleanQ;
 
-    if (isSubjectId) {
-      try { movieboxService.invalidateCache(cleanQ); } catch (_) {}
-      mbDetail = await movieboxService.getDetail(cleanQ, '', { forceRefresh: true });
-      if (mbDetail && mbDetail.title) {
-        searchTitle = mbDetail.title;
+    if (explicitSubjectId) {
+      try { movieboxService.invalidateCache(explicitSubjectId); } catch (_) {}
+      mbDetail = await movieboxService.getDetail(explicitSubjectId, explicitDetailPath, { forceRefresh: true });
+      if (mbDetail) {
+        searchTitle = cleanQ || mbDetail.title || '';
         mbItem = {
-          subjectId: cleanQ,
-          title: mbDetail.title,
-          detailPath: mbDetail.detailPath || '',
+          subjectId: explicitSubjectId,
+          title: cleanQ || mbDetail.title || '',
+          detailPath: explicitDetailPath || mbDetail.detailPath || '',
           type: mbDetail.type || type
         };
       }
@@ -1088,18 +1089,38 @@ class AdminService {
         const mbResults = await movieboxService.search(cleanQ);
         const list = Array.isArray(mbResults) ? mbResults : (mbResults?.items || []);
         if (list && list.length > 0) {
-          const filtered = list.filter(it => type === 'series' ? (it.type === 'series') : (it.type === 'movie'));
-          mbItem = filtered[0] || list[0];
+          const isHindiReq = /hindi/i.test(cleanQ);
+          const isBanglaReq = /bangla|bengali/i.test(cleanQ);
+          let matched = list.find(it => {
+            const t = (it.title || '').toLowerCase();
+            const matchesType = type === 'series' ? (it.type === 'series') : (it.type === 'movie');
+            if (!matchesType) return false;
+            if (isHindiReq) return t.includes('hindi');
+            if (isBanglaReq) return t.includes('bangla') || t.includes('bengali');
+            return !t.includes('hindi') && !t.includes('bangla');
+          });
+          if (!matched) {
+            matched = list.find(it => type === 'series' ? (it.type === 'series') : (it.type === 'movie'));
+          }
+          mbItem = matched || list[0];
           if (mbItem && mbItem.subjectId) {
             try { movieboxService.invalidateCache(mbItem.subjectId); } catch (_) {}
             mbDetail = await movieboxService.getDetail(mbItem.subjectId, mbItem.detailPath, { forceRefresh: true });
+            if (mbDetail?.title) {
+              searchTitle = cleanQ || mbDetail.title;
+            }
           }
         }
       } catch (e) {}
     }
 
-    // Clean searchTitle for TMDb
-    const cleanName = (searchTitle || cleanQ).replace(/\[.*?\]|\(.*?\)/g, '').trim();
+    // Clean searchTitle for TMDb (strip [Hindi], [Bangla], season tags, special chars)
+    const cleanName = (cleanQ || searchTitle || '')
+      .replace(/\[.*?\]|\(.*?\)/g, '')
+      .replace(/\b(s\d+|season\s*\d+|part\s*\d+|s\d+-s\d+)\b/gi, '')
+      .replace(/[^a-zA-Z0-9\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
     const tmdbType = (type === 'series' || (mbItem && mbItem.type === 'series')) ? 'tv' : 'movie';
 
     let tmdbData = null;
@@ -1107,7 +1128,7 @@ class AdminService {
       const tmdbSearch = await axios.get(`https://api.themoviedb.org/3/search/${tmdbType}`, {
         params: {
           api_key: '6e766190399843a3e1d85b68eaa3de69',
-          query: cleanName
+          query: cleanName || cleanQ
         },
         timeout: 4500
       });
@@ -1146,7 +1167,18 @@ class AdminService {
     } catch (e) {}
 
     // Combine metadata
-    const finalTitle = tmdbData?.name || tmdbData?.title || mbDetail?.title || mbItem?.title || cleanName;
+    const isHindiReq = /hindi/i.test(cleanQ) || (mbDetail && mbDetail.isHindi) || (mbItem && mbItem.isHindi);
+    const isBanglaReq = /bangla|bengali/i.test(cleanQ) || (mbDetail && mbDetail.isBangla) || (mbItem && mbItem.isBangla);
+    let finalTitle = tmdbData?.name || tmdbData?.title || mbDetail?.title || mbItem?.title || cleanName;
+    if (isHindiReq && !finalTitle.toLowerCase().includes('hindi')) {
+      finalTitle = `${finalTitle} [Hindi]`;
+    } else if (isBanglaReq && !finalTitle.toLowerCase().includes('bangla')) {
+      finalTitle = `${finalTitle} [Bangla]`;
+    }
+    const sTagMatch = cleanQ.match(/\b(s\d+|season\s*\d+)\b/i);
+    if (sTagMatch && !finalTitle.toLowerCase().includes(sTagMatch[1].toLowerCase())) {
+      finalTitle = `${finalTitle} ${sTagMatch[1].toUpperCase()}`;
+    }
     const finalYear = (tmdbData?.first_air_date || tmdbData?.release_date || '').split('-')[0] || mbDetail?.year || mbItem?.year || '2026';
     const finalRating = tmdbData?.vote_average ? tmdbData.vote_average.toFixed(1) : (mbDetail?.rating || mbItem?.rating || '8.5');
     const finalGenres = (tmdbData?.genres || []).map(g => g.name).join(', ') || mbDetail?.genre || 'Drama';
