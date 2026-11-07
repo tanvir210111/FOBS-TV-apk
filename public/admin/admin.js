@@ -2306,7 +2306,12 @@ function renderImporterGrid(items) {
   state.lastMovieBoxItems = items || [];
   const grid = document.getElementById('importer-results-grid');
   if (!items || items.length === 0) {
-    grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-filter-circle-xmark" style="font-size:32px; color:var(--text-dim); margin-bottom:12px; display:block;"></i>No matching titles found for the selected filters.<br><button type="button" class="btn-secondary" onclick="resetImporterFilters()" style="margin-top:12px; font-size:12px;"><i class="fa-solid fa-rotate-left"></i> Reset Filters</button></div>';
+    const rawTotal = (state.movieboxRawItems || []).length;
+    if (rawTotal > 0) {
+      grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-filter-circle-xmark" style="font-size:32px; color:var(--text-dim); margin-bottom:12px; display:block;"></i>No matching titles found for the selected filters out of ${rawTotal} available titles.<br><button type="button" class="btn-secondary" onclick="resetImporterFilters()" style="margin-top:12px; font-size:12px;"><i class="fa-solid fa-rotate-left"></i> Reset All Filters</button></div>`;
+    } else {
+      grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-magnifying-glass" style="font-size:32px; color:var(--text-dim); margin-bottom:12px; display:block;"></i>No titles available in this feed. Try searching or switching to another feed tab.<br><button type="button" class="btn-secondary" onclick="loadMovieBoxRecent(\'all\')" style="margin-top:12px; font-size:12px;"><i class="fa-solid fa-globe"></i> Load All Feeds</button></div>';
+    }
     return;
   }
 

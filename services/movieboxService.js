@@ -247,6 +247,13 @@ class MovieBoxService {
   async search(query) {
     if (!query) return [];
     const cleanQuery = query.trim();
+    const cacheKey = `search_${cleanQuery.toLowerCase()}`;
+    if (this.cache.has(cacheKey)) {
+      const entry = this.cache.get(cacheKey);
+      if (entry && entry.expireAt > Date.now() && Array.isArray(entry.items) && entry.items.length > 0) {
+        return entry.items;
+      }
+    }
 
     // 1. Acquire authenticated MovieBox Bearer token
     const sessionToken = await this.getMovieBoxToken();
@@ -304,7 +311,10 @@ class MovieBoxService {
             };
           }).filter(Boolean);
 
-          if (parsed.length > 0) return parsed;
+          if (parsed.length > 0) {
+            this.cache.set(cacheKey, { expireAt: Date.now() + 3600000, items: parsed });
+            return parsed;
+          }
         }
       } catch (err) {
         // Continue to fallback
@@ -347,7 +357,10 @@ class MovieBoxService {
               });
             }
           }
-          if (suggestions.length > 0) return suggestions;
+          if (suggestions.length > 0) {
+            this.cache.set(cacheKey, { expireAt: Date.now() + 3600000, items: suggestions });
+            return suggestions;
+          }
         }
       } catch (e) {
         this.lastError = { message: e.message, status: e.response?.status, data: e.response?.data };

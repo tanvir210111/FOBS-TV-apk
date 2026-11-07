@@ -586,24 +586,27 @@ class AdminService {
   async fetchSpecializedFeedItems(key, queries, defaults = {}) {
     if (!mbFeedCache.specialized) mbFeedCache.specialized = {};
     const cached = mbFeedCache.specialized[key];
-    if (cached && (Date.now() - cached.timestamp < 600000) && Array.isArray(cached.items) && cached.items.length > 0) {
+    if (cached && (Date.now() - cached.timestamp < 3600000) && Array.isArray(cached.items) && cached.items.length > 0) {
       return cached.items;
     }
 
-    const results = await Promise.allSettled(queries.map(q => movieboxService.search(q)));
     const merged = [];
     const seen = new Set();
-    for (const r of results) {
-      if (r.status === 'fulfilled' && Array.isArray(r.value)) {
-        for (const it of r.value) {
-          if (!it.id || seen.has(it.id)) continue;
-          seen.add(it.id);
-          merged.push({
-            ...it,
-            ...defaults
-          });
+    for (const q of queries) {
+      try {
+        const items = await movieboxService.search(q);
+        if (Array.isArray(items)) {
+          for (const it of items) {
+            if (!it.id || seen.has(it.id)) continue;
+            seen.add(it.id);
+            merged.push({
+              ...it,
+              ...defaults
+            });
+          }
         }
-      }
+      } catch (_) {}
+      if (merged.length >= 45) break;
     }
 
     if (merged.length > 0) {
@@ -675,21 +678,15 @@ class AdminService {
         });
         if (items.length > 0) extraSections.push({ title: 'Trending Hindi', items });
       } else if (filter === 'all') {
-        // Enrich All Feeds with popular titles from regional and dubbed categories
-        const [rTrend, rK, rC, rT, rB, rA] = await Promise.allSettled([
-          this.fetchSpecializedFeedItems('trending-hindi', ['hindi dubbed', 'trending hindi'], { section: 'Trending Hindi', isHindi: true, audioTag: 'Hindi Dubbed' }),
-          this.fetchSpecializedFeedItems('kdrama-hindi', ['korean drama hindi', 'kdrama hindi'], { industry: 'Korean', isHindi: true, audioTag: 'Hindi Dubbed', section: 'Korean Drama (Hindi)' }),
-          this.fetchSpecializedFeedItems('cdrama-hindi', ['chinese drama hindi', 'cdrama hindi'], { industry: 'Chinese', isHindi: true, audioTag: 'Hindi Dubbed', section: 'Chinese Drama (Hindi)' }),
-          this.fetchSpecializedFeedItems('turkish-hindi', ['turkish hindi', 'turkish drama hindi'], { industry: 'Turkish', isHindi: true, audioTag: 'Hindi Dubbed', section: 'Turkish Series (Hindi)' }),
-          this.fetchSpecializedFeedItems('bollywood', ['bollywood', 'hindi dubbed'], { industry: 'Bollywood', isHindi: true, audioTag: 'Hindi Dubbed', section: 'Bollywood & Hindi' }),
-          this.fetchSpecializedFeedItems('anime', ['anime', 'anime hindi'], { industry: 'Anime', section: 'Anime & Japanese' })
-        ]);
-        if (rTrend.status === 'fulfilled' && rTrend.value?.length > 0) extraSections.push({ title: 'Trending Hindi', items: rTrend.value });
-        if (rK.status === 'fulfilled' && rK.value?.length > 0) extraSections.push({ title: 'Korean Drama (Hindi)', items: rK.value });
-        if (rC.status === 'fulfilled' && rC.value?.length > 0) extraSections.push({ title: 'Chinese Drama (Hindi)', items: rC.value });
-        if (rT.status === 'fulfilled' && rT.value?.length > 0) extraSections.push({ title: 'Turkish Series (Hindi)', items: rT.value });
-        if (rB.status === 'fulfilled' && rB.value?.length > 0) extraSections.push({ title: 'Bollywood & Hindi', items: rB.value });
-        if (rA.status === 'fulfilled' && rA.value?.length > 0) extraSections.push({ title: 'Anime & Japanese', items: rA.value });
+        // Seamlessly merge any cached specialized regional and dubbed categories into All Feeds
+        if (mbFeedCache.specialized) {
+          for (const [sKey, sVal] of Object.entries(mbFeedCache.specialized)) {
+            if (sVal?.items?.length > 0) {
+              const secName = sVal.items[0]?.section || sKey;
+              extraSections.push({ title: secName, items: sVal.items });
+            }
+          }
+        }
       }
     } catch (_) {}
 
