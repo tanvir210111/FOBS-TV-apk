@@ -693,10 +693,11 @@ class AdminService {
         });
         if (items.length > 0) extraSections.push({ title: 'Anime & Japanese', items });
       } else if (filter === 'trending') {
-        const items = await this.fetchSpecializedFeedItems('trending-hindi', ['hindi dubbed', 'trending hindi'], {
+        const items = await this.fetchSpecializedFeedItems('trending-hindi', ['trending hindi', 'hindi dubbed', 'bollywood'], {
           section: 'Trending Hindi',
           isHindi: true,
-          audioTag: 'Hindi Dubbed'
+          audioTag: 'Hindi Dubbed',
+          industry: 'Bollywood'
         });
         if (items.length > 0) extraSections.push({ title: 'Trending Hindi', items });
       } else if (filter === 'all') {
@@ -823,7 +824,7 @@ class AdminService {
 
     let filtered = allItems;
     if (filter === 'trending') {
-      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('trending') || (i.section || '').toLowerCase().includes('top') || (i.section || '').toLowerCase().includes('hot') || (i.section || '').toLowerCase().includes('hindi'));
+      filtered = allItems.filter(i => (i.section || '').toLowerCase().includes('trending') || (i.section || '').toLowerCase().includes('top') || (i.section || '').toLowerCase().includes('hot') || (i.section || '').toLowerCase().includes('hindi') || i.isHindi);
     } else if (filter === 'movies' || filter === 'cinema') {
       filtered = allItems.filter(i => i.type === 'movie' || (i.section || '').toLowerCase().includes('cinema') || (i.section || '').toLowerCase().includes('movie'));
     } else if (filter === 'series' || filter === 'tv') {
@@ -1002,7 +1003,18 @@ class AdminService {
     }
 
     const searchResults = await Promise.allSettled(
-      queriesToRun.map(q => movieboxService.search(q))
+      queriesToRun.map(async q => {
+        const isHQ = /\bhindi\b/i.test(q);
+        const res = await movieboxService.search(q);
+        if (Array.isArray(res) && isHQ) {
+          return res.map(item => ({
+            ...item,
+            isHindi: item.isHindi !== undefined ? item.isHindi : true,
+            audioTag: item.audioTag || 'Hindi Dubbed'
+          }));
+        }
+        return res;
+      })
     );
 
     const seenMap = new Map();
@@ -1017,7 +1029,6 @@ class AdminService {
       }
     }
 
-    const items = Array.from(seenMap.values());
     const content = readContent();
     const existingIds = new Set();
     const existingDetailPaths = new Set();
@@ -1046,6 +1057,38 @@ class AdminService {
       }
     }
 
+    // Also include matching existing titles from catalog if user searched for them
+    const qCleanTokens = cleanQ.toLowerCase().replace(/\[.*?\]|\(.*?\)/g, '').split(/\s+/).filter(w => w.length > 2 && w !== 'hindi' && w !== 'dubbed');
+    if (qCleanTokens.length > 0) {
+      for (const m of allCatalog) {
+        const mt = (m.title || '').toLowerCase();
+        if (qCleanTokens.every(tk => mt.includes(tk))) {
+          const sid = String(m.subjectId || m.id || '');
+          if (sid && !seenMap.has(sid)) {
+            const isH = mt.includes('hindi') || (m.dubLanguage && /hindi/i.test(m.dubLanguage));
+            seenMap.set(sid, {
+              id: sid,
+              subjectId: sid,
+              title: m.title,
+              type: m.episodes ? 'series' : (m.type || 'movie'),
+              year: m.year || '2026',
+              rating: String(m.rating || '8.5'),
+              poster: m.poster,
+              backdrop: m.cover || m.poster,
+              detailPath: m.detailPath || '',
+              isHindi: !!isH,
+              audioTag: isH ? 'Hindi Dubbed' : 'Original Audio',
+              industry: m.industry || 'Hollywood',
+              category: m.category || (isH ? 'Hindi Dubbed' : 'Original Audio'),
+              alreadyImported: true
+            });
+          }
+        }
+      }
+    }
+
+    const items = Array.from(seenMap.values());
+
     // Enrich top items with official TMDb HD poster & backdrop using in-memory cache
     const enriched = await Promise.all(items.slice(0, 50).map(async it => {
       let poster = it.poster;
@@ -1057,10 +1100,10 @@ class AdminService {
       let tmdbReleaseDate = '';
 
       const tLower = (it.title || '').toLowerCase();
-      const isHindi = tLower.includes('hindi');
-      const isBangla = tLower.includes('bangla') || tLower.includes('bengali');
-      const isEnglish = /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(it.title || '') || (/english/i.test(tLower) && !/hollywood/i.test(tLower));
-      let audioTag = 'Original Audio';
+      const isHindi = (it.isHindi !== undefined) ? !!it.isHindi : (tLower.includes('hindi') || (it.audioTag && /hindi/i.test(it.audioTag)));
+      const isBangla = (it.isBangla !== undefined) ? !!it.isBangla : (tLower.includes('bangla') || tLower.includes('bengali') || (it.audioTag && /bangla|bengali/i.test(it.audioTag)));
+      const isEnglish = (it.isEnglish !== undefined) ? !!it.isEnglish : (/\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(it.title || '') || (/english/i.test(tLower) && !/hollywood/i.test(tLower)));
+      let audioTag = it.audioTag || 'Original Audio';
       if (isHindi) audioTag = 'Hindi Dubbed';
       else if (isEnglish) audioTag = 'English Dubbed';
       else if (isBangla) audioTag = 'Bangla Dubbed';

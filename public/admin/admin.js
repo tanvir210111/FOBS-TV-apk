@@ -1979,10 +1979,14 @@ function handleImporterSearchInput(val) {
 }
 
 async function loadMovieBoxRecent(filter = 'all', btnEl) {
-  if (btnEl) {
-    document.querySelectorAll('.importer-tab-btn').forEach(b => b.classList.remove('active'));
-    btnEl.classList.add('active');
-  }
+  document.querySelectorAll('.importer-tab-btn').forEach(b => {
+    b.classList.remove('active');
+    if (btnEl && b === btnEl) {
+      b.classList.add('active');
+    } else if (!btnEl && b.getAttribute('onclick')?.includes(`'${filter}'`)) {
+      b.classList.add('active');
+    }
+  });
 
   // Clear search input so user doesn't see old search text when browsing a feed!
   const inputEl = document.getElementById('importer-search-input');
@@ -2076,6 +2080,8 @@ function applyImporterFilters() {
       (item.audioTag && /hindi/i.test(item.audioTag)) ||
       (item.category && /hindi/i.test(item.category)) ||
       (item.section && /hindi/i.test(item.section)) ||
+      (item.dubLanguage && /hindi/i.test(item.dubLanguage)) ||
+      (item.audio && /hindi/i.test(item.audio)) ||
       item.industry === 'Bollywood';
 
     const isBangla = !!item.isBangla ||
@@ -2232,6 +2238,10 @@ function resetImporterFilters() {
   if (elSort) elSort.value = 'default';
   if (elKw) elKw.value = '';
 
+  if (!state.movieboxRawItems || state.movieboxRawItems.length === 0) {
+    loadMovieBoxRecent('all');
+    return;
+  }
   applyImporterFilters();
 }
 

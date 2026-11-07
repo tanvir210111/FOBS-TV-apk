@@ -1330,19 +1330,25 @@ app.get('/api/moviebox/stream', async (req, res) => {
     let chosenRes = media.resolution || 1080;
     if (Array.isArray(media.qualities) && media.qualities.length > 0) {
       if (requestedQ > 0) {
-        // Find exact or closest requested resolution
-        const matchQ = media.qualities.find(q => q.resolution === requestedQ)
-                    || media.qualities.find(q => q.resolution <= requestedQ)
-                    || media.qualities[media.qualities.length - 1];
+        // Find exact or closest requested resolution (preferring lower bandwidth if equidistant)
+        const sortedByMatch = [...media.qualities].sort((a, b) => {
+          const diffA = Math.abs((a.resolution || 0) - requestedQ);
+          const diffB = Math.abs((b.resolution || 0) - requestedQ);
+          if (diffA === diffB) return (a.resolution || 0) - (b.resolution || 0);
+          return diffA - diffB;
+        });
+        const matchQ = sortedByMatch[0];
         if (matchQ && matchQ.url) {
           chosenStream = matchQ.url;
           chosenRes = matchQ.resolution;
         }
       } else {
-        // Prefer smooth bufferless 480p or 720p for instant mobile playback without stutter
-        const nonBtQ = media.qualities.filter(q => !q.url.includes('/bt/'));
-        const poolQ = nonBtQ.length > 0 ? nonBtQ : media.qualities;
-        const bestQ = poolQ.find(q => q.resolution === 480) || poolQ.find(q => q.resolution === 720) || poolQ[poolQ.length - 1];
+        // Default ALWAYS to 480p SD / lowest bandwidth for instant bufferless playback
+        const sortedByLowest = [...media.qualities].sort((a, b) => (a.resolution || 0) - (b.resolution || 0));
+        const bestQ = media.qualities.find(q => q.resolution === 480)
+                   || media.qualities.find(q => q.resolution === 360)
+                   || media.qualities.find(q => q.resolution === 720)
+                   || sortedByLowest[0];
         if (bestQ && bestQ.url) {
           chosenStream = bestQ.url;
           chosenRes = bestQ.resolution;
@@ -3325,8 +3331,14 @@ app.post('/api/moviebox/sync', async (req, res) => {
 // WEB ADMIN PANEL & MANAGEMENT APIS
 // ============================================================
 
-// Static Admin Entry
-app.use('/admin', express.static(path.join(__dirname, 'public', 'admin')));
+// Static Admin Entry with Anti-Cache Headers so admin UI updates immediately
+app.use('/admin', express.static(path.join(__dirname, 'public', 'admin'), {
+  setHeaders: (res) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+  }
+}));
 app.get(['/admin', '/admin/', '/admin/index.html'], (req, res) => {
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
   res.sendFile(path.join(__dirname, 'public', 'admin', 'index.html'));
