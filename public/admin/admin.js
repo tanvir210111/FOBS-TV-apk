@@ -2051,11 +2051,16 @@ function applyImporterFilters() {
       (item.section && /bangla|bengali/i.test(item.section)) ||
       item.industry === 'Tollywood';
 
+    const isEnglish = !!item.isEnglish ||
+      /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(item.title || '') ||
+      (item.audioTag && /english/i.test(item.audioTag));
+
     const isSeries = item.type === 'series' || (item.category && item.category.toLowerCase().includes('series'));
 
     // 1. Audio Filter
-    if (audio === 'original' && (isHindi || isBangla)) return false;
+    if (audio === 'original' && (isHindi || isBangla || isEnglish)) return false;
     if (audio === 'hindi' && !isHindi) return false;
+    if (audio === 'english' && !isEnglish) return false;
     if (audio === 'bangla' && !isBangla) return false;
 
     // 2. Category / Industry Filter
@@ -2121,8 +2126,10 @@ function applyImporterFilters() {
         item.type,
         isSeries ? 'series tv drama show' : 'movie cinema film',
         item.year,
-        isHindi ? 'hindi dubbed' : 'original audio',
+        isHindi ? 'hindi dubbed' : '',
+        isEnglish ? 'english dubbed' : '',
         isBangla ? 'bangla dubbed' : '',
+        (!isHindi && !isEnglish && !isBangla) ? 'original audio' : '',
         item.audioTag,
         item.category,
         item.industry,
@@ -2268,12 +2275,15 @@ function renderImporterGrid(items) {
   grid.innerHTML = items.map((item, idx) => {
     const isSeries = item.type === 'series' || (item.category && item.category.toLowerCase().includes('series'));
     const tLower = (item.title || '').toLowerCase();
-    const isHindi = item.isHindi || tLower.includes('hindi');
-    const isBangla = item.isBangla || tLower.includes('bangla') || tLower.includes('bengali');
+    const isHindi = item.isHindi || tLower.includes('hindi') || (item.audioTag && /hindi/i.test(item.audioTag));
+    const isEnglish = item.isEnglish || /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(item.title || '') || (item.audioTag && /english/i.test(item.audioTag));
+    const isBangla = item.isBangla || tLower.includes('bangla') || tLower.includes('bengali') || (item.audioTag && /bangla|bengali/i.test(item.audioTag));
 
     let audioBadgeHtml = '';
     if (isHindi) {
       audioBadgeHtml = '<span class="card-badge-top-left badge-audio-hindi"><i class="fa-solid fa-volume-high"></i> Hindi Dubbed</span>';
+    } else if (isEnglish) {
+      audioBadgeHtml = '<span class="card-badge-top-left badge-audio-english"><i class="fa-solid fa-volume-high"></i> English Dubbed</span>';
     } else if (isBangla) {
       audioBadgeHtml = '<span class="card-badge-top-left badge-audio-bangla"><i class="fa-solid fa-volume-high"></i> Bangla Dubbed</span>';
     } else {

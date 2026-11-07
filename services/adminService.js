@@ -626,7 +626,11 @@ class AdminService {
         const secLower = (sec.title || '').toLowerCase();
         const isHindi = tLower.includes('hindi') || secLower.includes('hindi');
         const isBangla = tLower.includes('bangla') || tLower.includes('bengali') || secLower.includes('bangla');
-        const audioTag = isHindi ? 'Hindi Dubbed' : (isBangla ? 'Bangla Dubbed' : 'Original Audio');
+        const isEnglish = /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(it.title || '') || (/english/i.test(tLower) && !/hollywood/i.test(tLower));
+        let audioTag = 'Original Audio';
+        if (isHindi) audioTag = 'Hindi Dubbed';
+        else if (isEnglish) audioTag = 'English Dubbed';
+        else if (isBangla) audioTag = 'Bangla Dubbed';
         const baseTitle = (it.title || '')
         .toLowerCase()
         .replace(/\[.*?\]|\(.*?\)/g, '')
@@ -665,6 +669,7 @@ class AdminService {
           alreadyImported,
           isHindi,
           isBangla,
+          isEnglish,
           audioTag,
           baseTitle,
           industry,
@@ -910,7 +915,11 @@ class AdminService {
       const tLower = (it.title || '').toLowerCase();
       const isHindi = tLower.includes('hindi');
       const isBangla = tLower.includes('bangla') || tLower.includes('bengali');
-      const audioTag = isHindi ? 'Hindi Dubbed' : (isBangla ? 'Bangla Dubbed' : 'Original Audio');
+      const isEnglish = /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(it.title || '') || (/english/i.test(tLower) && !/hollywood/i.test(tLower));
+      let audioTag = 'Original Audio';
+      if (isHindi) audioTag = 'Hindi Dubbed';
+      else if (isEnglish) audioTag = 'English Dubbed';
+      else if (isBangla) audioTag = 'Bangla Dubbed';
       const baseTitle = (it.title || '')
         .toLowerCase()
         .replace(/\[.*?\]|\(.*?\)/g, '')
@@ -986,6 +995,7 @@ class AdminService {
         releaseDate: tmdbReleaseDate || '',
         isHindi,
         isBangla,
+        isEnglish,
         audioTag,
         baseTitle,
         industry,

@@ -1578,6 +1578,12 @@ textarea {
   font-weight: 800;
   box-shadow: 0 2px 8px rgba(245, 158, 11, 0.5);
 }
+.badge-audio-english {
+  background: rgba(139, 92, 246, 0.95);
+  color: #fff;
+  font-weight: 800;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.5);
+}
 .badge-audio-bangla {
   background: rgba(16, 185, 129, 0.95);
   color: #fff;
