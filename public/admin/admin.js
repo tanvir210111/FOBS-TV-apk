@@ -1964,11 +1964,47 @@ async function updateRequestStatus(id, status) {
 
 state.movieboxRawItems = [];
 
+// Live typing search debounce for importer
+let importerSearchDebounceTimer = null;
+function handleImporterSearchInput(val) {
+  clearTimeout(importerSearchDebounceTimer);
+  const q = (val || '').trim();
+  if (q.length >= 3) {
+    importerSearchDebounceTimer = setTimeout(() => {
+      searchMovieBox();
+    }, 400);
+  } else if (q.length === 0) {
+    loadMovieBoxRecent('all');
+  }
+}
+
 async function loadMovieBoxRecent(filter = 'all', btnEl) {
   if (btnEl) {
     document.querySelectorAll('.importer-tab-btn').forEach(b => b.classList.remove('active'));
     btnEl.classList.add('active');
   }
+
+  // Clear search input so user doesn't see old search text when browsing a feed!
+  const inputEl = document.getElementById('importer-search-input');
+  if (inputEl) inputEl.value = '';
+
+  // Auto-reset dropdown filters so newly loaded feed items are immediately visible!
+  const elKw = document.getElementById('imp-filter-keyword');
+  if (elKw) elKw.value = '';
+  const elAudio = document.getElementById('imp-filter-audio');
+  if (elAudio) elAudio.value = 'all';
+  const elCat = document.getElementById('imp-filter-category');
+  if (elCat) elCat.value = 'all';
+  const elType = document.getElementById('imp-filter-type');
+  if (elType) elType.value = 'all';
+  const elYear = document.getElementById('imp-filter-year');
+  if (elYear) elYear.value = 'all';
+  const elMonth = document.getElementById('imp-filter-month');
+  if (elMonth) elMonth.value = 'all';
+  const elStatus = document.getElementById('imp-filter-status');
+  if (elStatus) elStatus.value = 'all';
+  const elSort = document.getElementById('imp-filter-sort');
+  if (elSort) elSort.value = 'default';
 
   const grid = document.getElementById('importer-results-grid');
   grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-spinner fa-spin" style="font-size:24px; color:var(--primary); margin-bottom:12px; display:block;"></i>Loading MovieBox feeds & pairing Original + Hindi titles...</div>';

@@ -599,7 +599,7 @@
         </div>
 
         <div class="importer-search-wrap glass">
-          <input type="text" id="importer-search-input" placeholder="Search global titles (e.g. Hope, Remarried Empress, Pushpa 2, Avengers, Solo Leveling)..." onkeypress="if(event.key==='Enter') searchMovieBox()">
+          <input type="text" id="importer-search-input" placeholder="Search global titles (e.g. Hope, Remarried Empress, Pushpa 2, Avengers, Solo Leveling)..." oninput="handleImporterSearchInput(this.value)" onkeypress="if(event.key==='Enter') searchMovieBox()">
           <button class="btn-primary glow" onclick="searchMovieBox()">
             <i class="fa-solid fa-magnifying-glass"></i> Search MovieBox
           </button>
