@@ -5286,7 +5286,12 @@ async function setupSubtitlesForMedia(media) {
   if (subBtnLabel) subBtnLabel.innerText = 'Subtitles';
   if (subIcon) subIcon.style.color = '';
 
-  const cleanTitle = (media.title || '').replace(/\[.*?\]|\(.*?\)/g, '').trim();
+  const cleanTitle = (media.title || '')
+    .replace(/\[.*?\]|\(.*?\)/g, '')
+    .replace(/\b(s\d+\s*-\s*s\d+|s\d+-s\d+|season\s*\d+|part\s*\d+|s\d+)\b/gi, '')
+    .replace(/[\-\–\—\:]+$/, '')
+    .replace(/\s+/g, ' ')
+    .trim();
   const isSeries = media.type === 'series' || media.isSeries || (media.seasons && media.seasons.length > 0) || (media.totalEpisodes > 1);
   const season = isSeries ? (appState.currentSeason || 1) : 0;
 
@@ -5374,21 +5379,12 @@ async function setupSubtitlesForMedia(media) {
       const enUrl = enTrack.url || enTrack.downloadUrl;
       tracks.push({
         id: 'sub_bn_ai',
-        language: 'Bangla (বাংলা)',
+        language: 'Bangla (বাংলা - AI)',
         langCode: 'bn',
-        source: 'SubSource (বাংলা)',
+        source: 'FOBS AI Translate',
         url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanTitle)}&season=${season}&episode=${ep}`,
         format: 'vtt',
         isAi: true
-      });
-    } else {
-      tracks.push({
-        id: 'sub_bn_default',
-        language: 'Bangla (বাংলা)',
-        langCode: 'bn',
-        source: 'SubSource (বাংলা)',
-        url: `/api/subtitles/generate?title=${encodeURIComponent(cleanTitle)}&lang=bn`,
-        format: 'vtt'
       });
     }
   }
@@ -5531,13 +5527,13 @@ async function selectSubtitleTrack(trackId) {
   showToast(`Loading ${track.language} (SubSource)...`);
 
   let loadedCues = [];
-  let targetUrl = track.url || '';
+  let targetUrl = track.url || track.downloadUrl || '';
   if (targetUrl.startsWith('/')) {
     targetUrl = `${API_BASE_URL}${targetUrl}`;
   }
 
   // If local / relative or AI translation VTT endpoint, fetch directly
-  if (targetUrl.includes('/api/subtitles/ai-translate') || targetUrl.includes('/api/subtitles/generate') || targetUrl.includes('/subtitles/')) {
+  if (targetUrl.includes('/api/subtitles/ai-translate') || targetUrl.includes('/subtitles/')) {
     try {
       const directRes = await fetch(targetUrl);
       const directText = await directRes.text();
@@ -5547,12 +5543,12 @@ async function selectSubtitleTrack(trackId) {
     }
   }
 
-  // Step 1: Try backend subtitle proxy
-  if (loadedCues.length === 0) {
+  // Step 1: Try backend subtitle proxy (decompresses .gz, parses SRT/VTT with UTF-8 encoding)
+  if (loadedCues.length === 0 && targetUrl) {
     try {
       const res = await fetch(`${API_BASE_URL}/api/subtitles/track?url=${encodeURIComponent(targetUrl)}`);
       const data = await res.json();
-      if (data && data.success && Array.isArray(data.cues) && data.cues.length > 0) {
+      if (data && (data.success || data.ok) && Array.isArray(data.cues) && data.cues.length > 0) {
         loadedCues = data.cues;
       }
     } catch (proxyErr) {

@@ -864,7 +864,17 @@ class AdminService {
       if (strippedHindi) queriesToRun.push(strippedHindi);
     }
 
-    if (!isBanglaQuery && queriesToRun.length < 3 && cleanQ.length > 3 && !isGenericHindi) {
+    // Expand common spelling variants (e.g. officials -> official, apostrophes)
+    const normalizedQ = cleanQ.replace(/['’]s\b/gi, '').replace(/\bofficials\b/gi, 'official').trim();
+    if (normalizedQ.toLowerCase() !== cleanQ.toLowerCase()) {
+      queriesToRun.push(normalizedQ);
+      if (!isHindiQuery) queriesToRun.push(`${normalizedQ} hindi`);
+    }
+    if (/^heaven\s*official(s)?(\s*hindi)?$/i.test(cleanQ.trim())) {
+      queriesToRun.push('heaven official blessing', 'heaven official blessing hindi');
+    }
+
+    if (!isBanglaQuery && queriesToRun.length < 5 && cleanQ.length > 3 && !isGenericHindi) {
       queriesToRun.push(`${cleanQ} bangla`);
     }
 
@@ -914,7 +924,7 @@ class AdminService {
     }
 
     // Enrich top items with official TMDb HD poster & backdrop using in-memory cache
-    const enriched = await Promise.all(items.slice(0, 16).map(async it => {
+    const enriched = await Promise.all(items.slice(0, 50).map(async it => {
       let poster = it.poster;
       let backdrop = it.backdrop || it.cover;
       let tmdbRating = it.rating;
@@ -935,6 +945,8 @@ class AdminService {
         .toLowerCase()
         .replace(/\[.*?\]|\(.*?\)/g, '')
         .replace(/\b(s\d+|season\s*\d+|part\s*\d+|s\d+-s\d+)\b/gi, '')
+        .replace(/['’]s\b/gi, '')
+        .replace(/\bofficials\b/gi, 'official')
         .replace(/[^a-z0-9]/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
@@ -1029,7 +1041,15 @@ class AdminService {
     }));
 
     // Score relevance so the exact show and its Hindi Dubbed version appear at the very top!
-    const qLower = cleanQ.toLowerCase().replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
+    const qLower = cleanQ
+      .toLowerCase()
+      .replace(/\[.*?\]|\(.*?\)/g, '')
+      .replace(/\b(s\d+|season\s*\d+|part\s*\d+|s\d+-s\d+)\b/gi, '')
+      .replace(/['’]s\b/gi, '')
+      .replace(/\bofficials\b/gi, 'official')
+      .replace(/[^a-z0-9]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
     const qWords = qLower.split(/\s+/).filter(w => w.length > 1 && w !== 'hindi' && w !== 'dubbed');
 
     const scored = enriched.map(it => {

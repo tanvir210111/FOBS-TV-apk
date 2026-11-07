@@ -25,7 +25,12 @@ class SubtitleService {
    */
   async getSubtitles(query = {}) {
     const { title, year, season = 0, episode = 0, subjectId, detailPath, type } = query;
-    const cleanTitle = (title || '').replace(/\[.*?\]|\(.*?\)/g, '').trim();
+    const cleanTitle = (title || '')
+      .replace(/\[.*?\]|\(.*?\)/g, '')
+      .replace(/\b(s\d+\s*-\s*s\d+|s\d+-s\d+|season\s*\d+|part\s*\d+|s\d+)\b/gi, '')
+      .replace(/[\-\–\—\:]+$/, '')
+      .replace(/\s+/g, ' ')
+      .trim();
     const isMovie = type === 'movie' || (!query.isSeries && (parseInt(season, 10) === 0 || !query.season));
     const seNum = isMovie ? 0 : (parseInt(season, 10) || 0);
     const epNum = isMovie ? 0 : (parseInt(episode, 10) || 0);
@@ -111,9 +116,12 @@ class SubtitleService {
       const onlineResults = await this.searchOnlineSubtitles({ title: cleanTitle, season: seNum, episode: epNum, year, type: isMovie ? 'movie' : 'series' });
       if (onlineResults.english && onlineResults.english.length > 0) {
         onlineResults.english.slice(0, 2).forEach(en => {
-          if (!availableSubtitles.some(s => s.url === en.url || s.downloadUrl === en.downloadUrl)) {
+          const subUrl = en.url || en.downloadUrl;
+          if (subUrl && !availableSubtitles.some(s => s.url === subUrl || s.downloadUrl === subUrl)) {
             availableSubtitles.push({
               ...en,
+              url: subUrl,
+              downloadUrl: subUrl,
               language: en.language.includes('Human') ? en.language : `${en.language} - OpenSubtitles (Human)`
             });
           }
@@ -121,9 +129,12 @@ class SubtitleService {
       }
       if (onlineResults.bangla && onlineResults.bangla.length > 0) {
         onlineResults.bangla.slice(0, 2).forEach(bn => {
-          if (!availableSubtitles.some(s => s.url === bn.url || s.downloadUrl === bn.downloadUrl)) {
+          const subUrl = bn.url || bn.downloadUrl;
+          if (subUrl && !availableSubtitles.some(s => s.url === subUrl || s.downloadUrl === subUrl)) {
             availableSubtitles.push({
               ...bn,
+              url: subUrl,
+              downloadUrl: subUrl,
               language: bn.language.includes('Human') ? bn.language : `${bn.language} - SubSource (Human)`
             });
           }
@@ -169,6 +180,8 @@ class SubtitleService {
     const { title = '', season = 0, episode = 0, year = '', subjectId, detailPath, type } = query;
     const cleanTitle = (title || '')
       .replace(/\[.*?\]|\(.*?\)/g, '')
+      .replace(/\b(s\d+\s*-\s*s\d+|s\d+-s\d+|season\s*\d+|part\s*\d+|s\d+)\b/gi, '')
+      .replace(/[\-\–\—\:]+$/, '')
       .replace(/[^\w\s\-\:]/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
@@ -206,6 +219,7 @@ class SubtitleService {
           language: 'Bangla (বাংলা)',
           langCode: 'bn',
           source: 'SubSource / FOBS Verified',
+          url: `/subtitles/${f}`,
           downloadUrl: `/subtitles/${f}`,
           downloadsCount: 5000,
           rating: '10.0',
@@ -232,6 +246,7 @@ class SubtitleService {
                 language: isBn ? 'Bangla (বাংলা)' : 'English',
                 langCode: isBn ? 'bn' : 'en',
                 source: 'MovieBox / CDN',
+                url: cap.url,
                 downloadUrl: cap.url,
                 format: cap.url && cap.url.endsWith('.srt') ? 'srt' : 'vtt'
               };
@@ -283,6 +298,7 @@ class SubtitleService {
             language: sublang === 'ben' ? 'Bangla (বাংলা)' : 'English',
             langCode: sublang === 'ben' ? 'bn' : 'en',
             source: 'SubSource / OpenSubtitles',
+            url: s.SubDownloadLink,
             downloadUrl: s.SubDownloadLink,
             downloadsCount: s.SubDownloadsCnt || 0,
             rating: s.SubRating || '',

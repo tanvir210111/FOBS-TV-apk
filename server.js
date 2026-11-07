@@ -3163,46 +3163,10 @@ app.get('/api/subtitles/ai-translate', async (req, res) => {
 });
 
 app.get('/api/subtitles/generate', (req, res) => {
-  const { title = 'Movie', lang = 'en' } = req.query;
+  const { title = 'Media', lang = 'en' } = req.query;
   const isBn = lang === 'bn';
 
-  const cuesText = isBn ? `
-WEBVTT
-
-1
-00:00:03.000 --> 00:00:08.000
-স্বাগতম FOBS TV-তে! উপভোগ করুন ${title}
-
-2
-00:00:09.000 --> 00:00:15.000
-বাংলা সাবটাইটেল সক্রিয় (SubSource)
-
-3
-00:00:20.000 --> 00:00:26.000
-[ আবহ সংগীত বাজছে ]
-
-4
-00:00:30.000 --> 00:00:36.000
-চমৎকার অভিনয় ও রোমাঞ্চকর দৃশ্য
-` : `
-WEBVTT
-
-1
-00:00:03.000 --> 00:00:08.000
-Welcome to FOBS TV! Watching ${title}
-
-2
-00:00:09.000 --> 00:00:15.000
-English Subtitles Loaded via SubSource
-
-3
-00:00:20.000 --> 00:00:26.000
-[ Dramatic Music Playing ]
-
-4
-00:00:30.000 --> 00:00:36.000
-Enjoy full HD streaming with synchronized subtitles
-`;
+  const cuesText = `WEBVTT\n\n1\n00:00:01.000 --> 00:00:04.000\n[${isBn ? 'বাংলা সাবটাইটেল সক্রিয়' : 'Subtitles Active'}]`;
 
   res.setHeader('Content-Type', 'text/vtt; charset=utf-8');
   res.send(cuesText.trim());
