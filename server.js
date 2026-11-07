@@ -3806,7 +3806,7 @@ app.all('/api/deploy', (req, res) => {
     try { movieboxService.invalidateCache(); } catch (_) {}
     res.json({ success: true, message: 'Deploy completed successfully', stdout, stderr });
     setTimeout(() => {
-      exec('pm2 restart fobs-tv --update-env || pm2 reload fobs-tv --update-env || /root/.nvm/versions/node/v22.23.2/bin/pm2 restart fobs-tv');
+      exec('pm2 restart fobs-tv --force --update-env || pm2 reload fobs-tv --force || /root/.nvm/versions/node/v22.23.2/bin/pm2 restart fobs-tv --force');
       setTimeout(() => {
         process.exit(0);
       }, 800);
