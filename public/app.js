@@ -3193,8 +3193,8 @@ function getLowestResolutionServer(activeObj, isOrig) {
   let candidateServers = servers;
   if (isOrig !== undefined) {
     const audioMatched = servers.filter(s => isOrig 
-      ? (s.audio === 'Original audio' || /original|korean/i.test(s.name || ''))
-      : (s.audio === 'Hindi dub' || /hindi/i.test(s.name || ''))
+      ? (/orig|korean/i.test(s.audio || '') || /original|korean/i.test(s.name || ''))
+      : (/hindi/i.test(s.audio || '') || /hindi/i.test(s.name || ''))
     );
     if (audioMatched.length > 0) {
       candidateServers = audioMatched;
@@ -3229,8 +3229,8 @@ function getActiveEpisodeStream(ep, audioTrack) {
     const autoRenewingServer = ep.servers.find(s => 
       s.url && s.url.includes('/api/moviebox/stream') && (
         isOrig 
-          ? (s.audio === 'Original audio' || /original|korean/i.test(s.name))
-          : (s.audio === 'Hindi dub' || /hindi/i.test(s.name))
+          ? (/orig|korean/i.test(s.audio || '') || /original|korean/i.test(s.name || ''))
+          : (/hindi/i.test(s.audio || '') || /hindi/i.test(s.name || ''))
       )
     ) || ep.servers.find(s => s.url && s.url.includes('/api/moviebox/stream'));
     if (autoRenewingServer && autoRenewingServer.url) {
@@ -9428,34 +9428,55 @@ function switchAudioTrack(lang) {
   const targetAudioIndex = isOriginal ? 1 : 0;
   appState.selectedAudioIndex = targetAudioIndex;
 
-  // Seamless Dual-Series switching for Dive Into You (or any dual-series pair)
-  if (appState.currentMedia && appState.currentMedia.title && appState.currentMedia.title.toLowerCase().includes('dive into you')) {
-    const targetSeriesId = isOriginal ? 'mb-s-3870036899930730728' : 'mb-s-1932866268428649968';
-    if (appState.currentMedia.id !== targetSeriesId) {
-      const targetSeries = (appState.content.series || []).find(s => s.id === targetSeriesId);
-      if (targetSeries) {
-        const curEpNum = appState.currentEpisode?.number || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1);
-        const curTime = (videoPlayer ? videoPlayer.currentTime : 0) || 0;
+  // Universal Seamless Dual-Series switching for ALL paired items (e.g. She Was Pretty, Dive Into You, Arcane, etc.)
+  if (appState.currentMedia && appState.currentMedia.title) {
+    const curTitle = appState.currentMedia.title;
+    const cleanCurTitle = curTitle
+      .replace(/\[.*?hindi.*?\]|\(.*?\bhindi\b.*?\)/gi, '')
+      .replace(/\[.*?orig.*?\]|\(.*?\borig\b.*?\)/gi, '')
+      .replace(/\[.*?korean.*?\]|\(.*?\bkorean\b.*?\)/gi, '')
+      .replace(/\s+/g, ' ')
+      .trim().toLowerCase();
 
-        appState.currentMedia = targetSeries;
-        const newSeasonEps = getActiveSeasonEpisodes(targetSeries);
-        const newEpIdx = Math.max(0, curEpNum - 1);
-        appState.currentEpisode = (newSeasonEps && newSeasonEps[newEpIdx]) || (newSeasonEps && newSeasonEps[0]);
-        appState.currentEpisodeIndex = newEpIdx;
+    const allSeries = appState.content?.series || [];
+    const pairedSeries = allSeries.find(s => {
+      if (s.id === appState.currentMedia.id) return false;
+      const sTitle = (s.title || '').toLowerCase();
+      const sClean = sTitle
+        .replace(/\[.*?hindi.*?\]|\(.*?\bhindi\b.*?\)/gi, '')
+        .replace(/\[.*?orig.*?\]|\(.*?\borig\b.*?\)/gi, '')
+        .replace(/\[.*?korean.*?\]|\(.*?\bkorean\b.*?\)/gi, '')
+        .replace(/\s+/g, ' ')
+        .trim().toLowerCase();
 
-        const titleText = formatCleanMediaTitle(targetSeries.title, targetSeries.dubLanguage);
-        const titleEl = document.getElementById('playerMediaTitle');
-        if (titleEl) titleEl.innerText = titleText;
+      if (sClean !== cleanCurTitle) return false;
 
-        renderEpisodePills(newSeasonEps, newEpIdx);
-        renderServerPills(targetSeries);
-        renderAudioTrackOptions(targetSeries);
+      const sIsHindi = sTitle.includes('hindi') || s.dubLanguage === 'Hindi';
+      return isOriginal ? !sIsHindi : sIsHindi;
+    });
 
-        const nextStream = getActiveEpisodeStream(appState.currentEpisode, lang);
-        playStreamUrl(nextStream, null, curTime);
-        showToast(`Audio Track: ${lang}`);
-        return;
-      }
+    if (pairedSeries) {
+      const curEpNum = appState.currentEpisode?.number || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1);
+      const curTime = (videoPlayer ? videoPlayer.currentTime : 0) || 0;
+
+      appState.currentMedia = pairedSeries;
+      const newSeasonEps = getActiveSeasonEpisodes(pairedSeries);
+      const newEpIdx = Math.max(0, curEpNum - 1);
+      appState.currentEpisode = (newSeasonEps && newSeasonEps[newEpIdx]) || (newSeasonEps && newSeasonEps[0]);
+      appState.currentEpisodeIndex = newEpIdx;
+
+      const titleText = formatCleanMediaTitle(pairedSeries.title, pairedSeries.dubLanguage);
+      const titleEl = document.getElementById('playerMediaTitle');
+      if (titleEl) titleEl.innerText = titleText;
+
+      renderEpisodePills(newSeasonEps, newEpIdx);
+      renderServerPills(pairedSeries);
+      renderAudioTrackOptions(pairedSeries);
+
+      const nextStream = getActiveEpisodeStream(appState.currentEpisode, lang);
+      playStreamUrl(nextStream, null, curTime);
+      showToast(`Audio Track: ${lang}`);
+      return;
     }
   }
 

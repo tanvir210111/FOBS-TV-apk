@@ -71,6 +71,32 @@ class SubtitleService {
       }
     }
 
+    const localEnFiles = isMovie
+      ? [
+          `${normalizedName}_${year || ''}_en.vtt`.replace(/__+/g, '_'),
+          `${normalizedName}_en.vtt`
+        ]
+      : [
+          `${normalizedName}_s${seNum}_ep${epNum}_en.vtt`,
+          `${normalizedName}_s${seNum}_e${epNum}_en.vtt`,
+          `${normalizedName}_ep${epNum}_en.vtt`,
+          `${normalizedName}_e${epNum}_en.vtt`
+        ];
+    for (const f of localEnFiles) {
+      const p = path.join(__dirname, '..', 'public', 'subtitles', f);
+      if (fs.existsSync(p)) {
+        availableSubtitles.push({
+          id: `local_en_${f}`,
+          language: 'English',
+          langCode: 'en',
+          source: 'SubSource / Verified',
+          url: `/subtitles/${f}`,
+          format: 'vtt'
+        });
+        break;
+      }
+    }
+
     // 1. MovieBox Embedded / Associated Captions
     const cleanSubjectId = subjectId ? String(subjectId).replace(/^mb-[s|m]-/, '') : '';
     if (cleanSubjectId) {
