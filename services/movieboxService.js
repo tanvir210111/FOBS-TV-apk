@@ -883,4 +883,6 @@ class MovieBoxService {
   }
 }
 
-module.exports = new MovieBoxService();
+const movieBoxInstance = new MovieBoxService();
+movieBoxInstance.generateAuthHeaders = generateAuthHeaders;
+module.exports = movieBoxInstance;

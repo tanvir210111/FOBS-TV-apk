@@ -2005,7 +2005,49 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
         if (!freshUrl) {
           movieboxService.invalidateCache();
           streamUrlCache.delete(targetUrl);
-          freshUrl = await resolveStreamUrl(targetUrl);
+
+          // Reverse-lookup expired CDN URL from catalog content.json to find its parent subjectId and season/episode
+          try {
+            const content = getContentData();
+            // 1. Check movies
+            for (const m of (content.movies || [])) {
+              if (m.streamUrl === targetUrl || m.directStreamUrl === targetUrl || (m.servers && m.servers.some(s => s.url === targetUrl))) {
+                const cleanId = String(m.subjectId || m.id).replace(/^mb-[s|m]-/, '');
+                const mRes = await movieboxService.resolveMedia(cleanId, m.detailPath || '', 0, 0, { forceRefresh: true });
+                if (mRes && mRes.streamUrl) {
+                  freshUrl = mRes.streamUrl;
+                  m.directStreamUrl = freshUrl;
+                  break;
+                }
+              }
+            }
+            // 2. Check series
+            if (!freshUrl) {
+              for (const s of (content.series || [])) {
+                for (const se of (s.seasons || [])) {
+                  for (const ep of (se.episodes || [])) {
+                    if (ep.streamUrl === targetUrl || ep.directStreamUrl === targetUrl || (ep.servers && ep.servers.some(srv => srv.url === targetUrl))) {
+                      const cleanId = String(s.subjectId || s.id).replace(/^mb-[s|m]-/, '');
+                      const sRes = await movieboxService.resolveMedia(cleanId, s.detailPath || s.movieBoxDetailPath || '', se.seasonNumber || se.season || 1, ep.episodeNumber || ep.episode || 1, { forceRefresh: true });
+                      if (sRes && sRes.streamUrl) {
+                        freshUrl = sRes.streamUrl;
+                        ep.directStreamUrl = freshUrl;
+                        break;
+                      }
+                    }
+                  }
+                  if (freshUrl) break;
+                }
+                if (freshUrl) break;
+              }
+            }
+          } catch (rlErr) {
+            console.error('Catalog reverse-lookup auto-refresh error:', rlErr.message);
+          }
+
+          if (!freshUrl) {
+            freshUrl = await resolveStreamUrl(targetUrl);
+          }
         }
 
         if (freshUrl && freshUrl !== streamFetchUrl) {
