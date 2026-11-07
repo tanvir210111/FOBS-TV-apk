@@ -3335,14 +3335,12 @@ app.get('/api/admin/diagnostic', adminService.authenticate, async (req, res) => 
 
   let mbDebug = [];
   try {
-    const dUrl = 'https://h5.aoneroom.com/wefeed-h5-bff/web/subject/download?subjectId=4739676182898271776&se=0&ep=0';
-    const hdrs = movieboxService.generateAuthHeaders ? movieboxService.generateAuthHeaders('https://h5.aoneroom.com', 'boss-hindi-YwdCI7zL7E5') : {};
-    try {
-      const aRes = await axios.get(dUrl, { headers: hdrs, timeout: 6000 });
-      mbDebug.push({ step: 'axios_direct_no_agent', status: aRes.status, dls: aRes.data?.data?.downloads?.length });
-    } catch(ae) {
-      mbDebug.push({ step: 'axios_direct_no_agent', error: ae.message, code: ae.code });
-    }
+    const res = await movieboxService.resolveMedia('2404784540335106472', 'heaven-officials-blessing-hindi-O7ZIjocWDR2', 1, 1);
+    mbDebug.push({ title: 'Heaven Officials Blessing Hindi', url: res ? res.streamUrl : null });
+  } catch (e) {
+    mbDebug.push({ title: 'Heaven Officials Blessing Hindi', err: e.message });
+  }
+  try {
     mbTest = await movieboxService.resolveMedia('4739676182898271776', 'boss-hindi-YwdCI7zL7E5', 0, 0);
   } catch (e) {
     mbError = { message: e.message, stack: e.stack };
