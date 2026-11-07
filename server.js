@@ -3291,13 +3291,22 @@ app.get('/api/admin/diagnostic', adminService.authenticate, async (req, res) => 
     curlTest = execSync('curl -s -i "https://h5.aoneroom.com/wefeed-h5-bff/web/subject/download?subjectId=4739676182898271776&se=0&ep=0" -H "Referer: https://h5.aoneroom.com/movies/boss-hindi-YwdCI7zL7E5" -H "Origin: https://h5.aoneroom.com" -H "User-Agent: Mozilla/5.0" | head -n 25', { timeout: 6000 }).toString();
   } catch (e) { curlTest = e.message; }
 
+  let mbDebug = [];
   try {
+    const dUrl = 'https://h5.aoneroom.com/wefeed-h5-bff/web/subject/download?subjectId=4739676182898271776&se=0&ep=0';
+    const hdrs = movieboxService.generateAuthHeaders ? movieboxService.generateAuthHeaders('https://h5.aoneroom.com', 'boss-hindi-YwdCI7zL7E5') : {};
+    try {
+      const aRes = await axios.get(dUrl, { headers: hdrs, timeout: 6000 });
+      mbDebug.push({ step: 'axios_direct_no_agent', status: aRes.status, dls: aRes.data?.data?.downloads?.length });
+    } catch(ae) {
+      mbDebug.push({ step: 'axios_direct_no_agent', error: ae.message, code: ae.code });
+    }
     mbTest = await movieboxService.resolveMedia('4739676182898271776', 'boss-hindi-YwdCI7zL7E5', 0, 0);
   } catch (e) {
     mbError = { message: e.message, stack: e.stack };
   }
 
-  res.json({ success: true, nginxConf, pm2Logs, curlTest, mbTest, mbError });
+  res.json({ success: true, nginxConf, pm2Logs, curlTest, mbTest, mbError, mbDebug });
 });
 
 // Purge Older Version Users & Devices (Keep v3.1.3)
