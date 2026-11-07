@@ -3810,7 +3810,7 @@ app.all('/api/deploy', (req, res) => {
     try { movieboxService.invalidateCache(); } catch (_) {}
     res.json({ success: true, message: 'Deploy completed successfully', stdout, stderr });
     setTimeout(() => {
-      exec('pm2 delete fobs-tv; pm2 start server.js -i max --name fobs-tv --update-env');
+      exec('pm2 restart fobs-tv || pm2 reload fobs-tv');
       setTimeout(() => {
         process.exit(0);
       }, 800);
