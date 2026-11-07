@@ -2258,6 +2258,14 @@ function isItemAlreadyImported(item) {
   return false;
 }
 
+function getOptimizedImageUrl(url) {
+  if (!url) return 'assets/fobs_logo.png';
+  if (url.includes('pbcdnw.aoneroom.com')) {
+    return `/api/proxy/image?url=${encodeURIComponent(url)}`;
+  }
+  return url;
+}
+
 function renderImporterGrid(items) {
   state.lastMovieBoxItems = items || [];
   const grid = document.getElementById('importer-results-grid');
@@ -2317,7 +2325,7 @@ function renderImporterGrid(items) {
     return `
       <div class="importer-card" onclick="openImporterCardClick(${idx})" style="cursor: pointer; position:relative;">
         <div class="importer-card-poster-wrap">
-          <img src="${item.poster || 'assets/fobs_logo.png'}" onerror="this.src='assets/fobs_logo.png'" alt="${escapeHtml(item.title)}">
+          <img src="${getOptimizedImageUrl(item.poster)}" loading="lazy" decoding="async" onerror="this.src='assets/fobs_logo.png'" alt="${escapeHtml(item.title)}">
           ${audioBadgeHtml}
           ${typeBadgeHtml}
           ${ratingBadgeHtml}
@@ -2457,8 +2465,8 @@ async function openImportModal(item) {
       }
 
       state.isImportOngoing = !!d.isOngoing;
-      state.importPlannedEps = Math.max(d.plannedEpisodesCount || 0, d.totalEpisodes || 0, d.releasedEpisodesCount || 0, 1);
-      state.importReleasedEps = Math.max(d.totalEpisodes || 0, d.plannedEpisodesCount || 0, d.releasedEpisodesCount || 0, 1);
+      state.importReleasedEps = Math.max(d.releasedEpisodesCount || d.totalEpisodes || 0, 1);
+      state.importPlannedEps = Math.max(d.plannedEpisodesCount || 0, state.importReleasedEps, 1);
 
       const trackerBox = document.getElementById('imp-ongoing-tracker-box');
       const relCountEl = document.getElementById('imp-ongoing-released-count');
@@ -2470,12 +2478,12 @@ async function openImportModal(item) {
         trackerBox.style.display = 'flex';
         if (relCountEl) relCountEl.textContent = state.importReleasedEps;
         if (planCountEl) planCountEl.textContent = state.importPlannedEps;
-        if (d.isOngoing) {
-          if (ongoingTitleEl) ongoingTitleEl.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Ongoing Drama Real-Time Tracking';
-          if (ongoingDescEl) ongoingDescEl.textContent = `All ${state.importReleasedEps} Episode slots loaded (with auto-detect and sync).`;
+        if (d.isOngoing || state.importReleasedEps < state.importPlannedEps) {
+          if (ongoingTitleEl) ongoingTitleEl.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Ongoing Series Real-Time Tracking';
+          if (ongoingDescEl) ongoingDescEl.textContent = `${state.importReleasedEps} of ${state.importPlannedEps} Episode(s) currently released in MovieBox. Working streams ready.`;
         } else {
           if (ongoingTitleEl) ongoingTitleEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Completed Series';
-          if (ongoingDescEl) ongoingDescEl.textContent = `All ${state.importReleasedEps} Episode(s) fully loaded and ready to import.`;
+          if (ongoingDescEl) ongoingDescEl.textContent = `All ${state.importReleasedEps} Episode(s) fully released and ready to import.`;
         }
       } else if (trackerBox) {
         trackerBox.style.display = 'none';
@@ -2531,9 +2539,8 @@ async function openImportModal(item) {
         state.importPreviewSeasons.forEach(season => {
           const seNum = parseInt(season.seasonNumber || season.se, 10) || 1;
           const targetEpCount = Math.max(
-            parseInt(season.episodesCount, 10) || 0,
-            parseInt(season.plannedEpisodesCount, 10) || 0,
             parseInt(season.releasedEpisodesCount, 10) || 0,
+            parseInt(season.episodesCount, 10) || 0,
             parseInt(season.maxEp, 10) || 0,
             Array.isArray(season.episodes) ? season.episodes.length : 0,
             1

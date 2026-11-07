@@ -25,6 +25,10 @@ const CUSTOM_CATALOG_BACKUP = path.join(__dirname, '..', 'data', 'custom_catalog
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'fobs2026admin';
 const JWT_SECRET = process.env.JWT_SECRET || 'fobs_tv_admin_secret_key_2026';
 
+// High-Speed In-Memory Caches for Instant UI Response
+const tmdbLookupCache = new Map();
+let mbFeedCache = { timestamp: 0, sections: null };
+
 function atomicWriteFile(targetFile, dataStr) {
   const dir = path.dirname(targetFile);
   const tmpFile = path.join(dir, `.${path.basename(targetFile)}.tmp.${Date.now()}.${Math.random().toString(36).substring(2, 8)}`);
@@ -580,7 +584,14 @@ class AdminService {
    * Get Recent & Trending Releases from MovieBox Live Feed (with smart deduplication)
    */
   async getMovieBoxRecent(filter = 'all', hideImported = false) {
-    const sections = await movieboxService.getHomepage();
+    let sections;
+    if (mbFeedCache.sections && (Date.now() - mbFeedCache.timestamp < 300000)) {
+      sections = mbFeedCache.sections;
+    } else {
+      sections = await movieboxService.getHomepage();
+      mbFeedCache.sections = sections;
+      mbFeedCache.timestamp = Date.now();
+    }
     const content = readContent();
 
     const existingIds = new Set();
@@ -902,8 +913,8 @@ class AdminService {
       }
     }
 
-    // Enrich items with official TMDb HD poster & backdrop
-    const enriched = await Promise.all(items.slice(0, 30).map(async it => {
+    // Enrich top items with official TMDb HD poster & backdrop using in-memory cache
+    const enriched = await Promise.all(items.slice(0, 16).map(async it => {
       let poster = it.poster;
       let backdrop = it.backdrop || it.cover;
       let tmdbRating = it.rating;
@@ -931,8 +942,21 @@ class AdminService {
       try {
         const cleanName = (it.title || '').replace(/\[.*?\]|\(.*?\)/g, '').trim();
         const tmdbType = it.type === 'series' ? 'tv' : 'movie';
-        const tmdbRes = await axios.get(`https://api.themoviedb.org/3/search/${tmdbType}?api_key=6e766190399843a3e1d85b68eaa3de69&query=${encodeURIComponent(cleanName)}`, { timeout: 2500 });
-        const tmdbItem = tmdbRes.data?.results?.[0];
+        const cacheKey = `${tmdbType}_${cleanName.toLowerCase()}`;
+        let tmdbItem = null;
+        if (tmdbLookupCache.has(cacheKey)) {
+          tmdbItem = tmdbLookupCache.get(cacheKey);
+        } else {
+          try {
+            const tmdbRes = await axios.get(`https://api.themoviedb.org/3/search/${tmdbType}?api_key=6e766190399843a3e1d85b68eaa3de69&query=${encodeURIComponent(cleanName)}`, { timeout: 2000 });
+            tmdbItem = tmdbRes.data?.results?.[0] || null;
+            if (tmdbLookupCache.size > 500) {
+              const firstK = tmdbLookupCache.keys().next().value;
+              tmdbLookupCache.delete(firstK);
+            }
+            tmdbLookupCache.set(cacheKey, tmdbItem);
+          } catch (_) {}
+        }
         if (tmdbItem) {
           if (tmdbItem.poster_path) {
             poster = `https://image.tmdb.org/t/p/w500${tmdbItem.poster_path}`;
@@ -1251,6 +1275,10 @@ class AdminService {
     if (tmdbType === 'tv') {
       const seasonMap = new Map();
 
+      // Check if user specifically queried a single season (e.g. "Arcane [Hindi] S1" -> Season 1 only)
+      const requestedSeasonMatch = cleanQ.match(/\b(?:s|season\s*)(\d+)\b/i);
+      const requestedSeasonNum = requestedSeasonMatch ? parseInt(requestedSeasonMatch[1], 10) : null;
+
       // 1. Add MovieBox seasons if available with real released episode counts
       const mbSeasonsList = (mbDetail && Array.isArray(mbDetail.seasons) && mbDetail.seasons.length > 0)
         ? mbDetail.seasons
@@ -1259,6 +1287,8 @@ class AdminService {
       if (mbSeasonsList.length > 0) {
         for (const s of mbSeasonsList) {
           const seNum = parseInt(s.se, 10) || 1;
+          if (requestedSeasonNum && seNum !== requestedSeasonNum) continue;
+
           let mEp = parseInt(s.maxEp, 10) || 0;
           if (s.allEp) {
             const sc = s.allEp.split(',').filter(Boolean).length;
@@ -1273,13 +1303,12 @@ class AdminService {
             se: seNum,
             title: `Season ${seNum}`,
             releasedMaxEp: mEp || 1,
-            maxEp: mEp || 1,
             plannedMaxEp: mEp || 1
           });
         }
       }
 
-      // 2. Add or enrich with TMDb seasons without overwriting real released episode counts
+      // 2. Enrich with TMDb for plannedMaxEp without inventing nonexistent seasons or fake released episodes
       if (Array.isArray(tmdbData?.seasons) && tmdbData.seasons.length > 0) {
         const validTmdbSeasons = tmdbData.seasons.filter(s => s.season_number > 0);
         for (const ts of validTmdbSeasons) {
@@ -1288,45 +1317,35 @@ class AdminService {
           if (seasonMap.has(seNum)) {
             const existing = seasonMap.get(seNum);
             if (ts.name) existing.title = ts.name;
-            existing.plannedMaxEp = Math.max(epCount, existing.releasedMaxEp || 0, existing.plannedMaxEp || 0);
-            // Ensure maxEp has full episode count so all episodes can be generated
-            existing.maxEp = Math.max(existing.maxEp || 0, epCount, existing.plannedMaxEp, 1);
-            existing.releasedMaxEp = Math.max(existing.releasedMaxEp || 0, existing.maxEp);
-          } else {
+            // Planned count can come from TMDb (e.g. 9 or 12 planned)
+            existing.plannedMaxEp = Math.max(epCount, existing.releasedMaxEp || 0);
+            // CRUCIAL: Do NOT overwrite releasedMaxEp with epCount! Keep what MovieBox actually has released!
+          } else if (!requestedSeasonNum && mbSeasonsList.length === 0) {
+            // Only if MovieBox had zero season data do we fallback to TMDb seasons
             seasonMap.set(seNum, {
               se: seNum,
               title: ts.name || `Season ${seNum}`,
               releasedMaxEp: epCount,
-              maxEp: epCount,
               plannedMaxEp: epCount
             });
           }
         }
       }
 
-      // 3. Fallback if no seasons found but detectedTotalEps > 0
+      // 3. Fallback if no seasons found
       if (seasonMap.size === 0) {
-        const fallbackEps = detectedTotalEps || tmdbEps || 16;
+        const fallbackEps = detectedTotalEps || tmdbEps || 1;
         seasonMap.set(1, {
           se: 1,
           title: 'Season 1',
           releasedMaxEp: fallbackEps,
-          maxEp: fallbackEps,
           plannedMaxEp: fallbackEps
         });
-      } else if (seasonMap.has(1)) {
-        const s1 = seasonMap.get(1);
-        if (s1.maxEp <= 1 && (tmdbEps > 1 || detectedTotalEps > 1)) {
-          const fullEps = Math.max(tmdbEps, detectedTotalEps, 16);
-          s1.maxEp = fullEps;
-          s1.plannedMaxEp = Math.max(s1.plannedMaxEp, fullEps);
-          s1.releasedMaxEp = Math.max(s1.releasedMaxEp, fullEps);
-        }
       }
 
       for (const [_, s] of seasonMap) {
-        totalReleasedEps += (s.releasedMaxEp || s.maxEp || 0);
-        totalPlannedEps += (s.plannedMaxEp || s.maxEp || 0);
+        totalReleasedEps += (s.releasedMaxEp || 0);
+        totalPlannedEps += (s.plannedMaxEp || 0);
       }
       isOngoing = (totalReleasedEps < totalPlannedEps) ||
         (tmdbData?.status === 'Returning Series') ||
@@ -1336,7 +1355,8 @@ class AdminService {
 
       finalSeasons = sortedSeasons.map(s => {
         const seNum = s.se;
-        const maxEp = Math.max(parseInt(s.maxEp, 10) || 1, 1);
+        // Generate ONLY the real released episodes from MovieBox!
+        const maxEp = Math.max(parseInt(s.releasedMaxEp, 10) || 1, 1);
         const eps = [];
         for (let ep = 1; ep <= maxEp; ep++) {
           const epUrl = sId ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${ep}` : '';
@@ -1358,7 +1378,7 @@ class AdminService {
           seasonNumber: seNum,
           title: s.title || `Season ${seNum}`,
           name: s.title || `Season ${seNum}`,
-          releasedEpisodesCount: s.releasedMaxEp || eps.length,
+          releasedEpisodesCount: eps.length,
           plannedEpisodesCount: s.plannedMaxEp || eps.length,
           episodesCount: eps.length,
           episodes: eps

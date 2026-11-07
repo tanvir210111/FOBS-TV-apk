@@ -3385,6 +3385,41 @@ app.get('/api/admin/auto-detect', adminService.authenticate, async (req, res) =>
   }
 });
 
+// High-Speed Cached Image Proxy for slow CDNs (e.g. pbcdnw.aoneroom.com)
+const imageProxyCache = new Map();
+app.get('/api/proxy/image', async (req, res) => {
+  const rawUrl = req.query.url;
+  if (!rawUrl) return res.status(400).send('URL required');
+  if (imageProxyCache.has(rawUrl)) {
+    const cached = imageProxyCache.get(rawUrl);
+    res.set('Content-Type', cached.contentType);
+    res.set('Cache-Control', 'public, max-age=604800, immutable');
+    return res.send(cached.buffer);
+  }
+  try {
+    const response = await axios.get(rawUrl, {
+      responseType: 'arraybuffer',
+      timeout: 7000,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+        'Referer': 'https://moviebox.ph/'
+      }
+    });
+    const contentType = response.headers['content-type'] || 'image/jpeg';
+    const buffer = Buffer.from(response.data);
+    if (imageProxyCache.size > 300) {
+      const firstKey = imageProxyCache.keys().next().value;
+      imageProxyCache.delete(firstKey);
+    }
+    imageProxyCache.set(rawUrl, { buffer, contentType });
+    res.set('Content-Type', contentType);
+    res.set('Cache-Control', 'public, max-age=604800, immutable');
+    res.send(buffer);
+  } catch (_) {
+    res.redirect(rawUrl);
+  }
+});
+
 // Update Media Views Count
 app.post('/api/admin/media/:id/views', adminService.authenticate, (req, res) => {
   try {
