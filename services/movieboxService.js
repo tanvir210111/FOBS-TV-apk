@@ -23,7 +23,6 @@ const cleanAgent = new https.Agent({
   keepAlive: true,
   maxSockets: 64,
   maxFreeSockets: 16,
-  timeout: 5000,
   family: 4, // Force IPv4 to prevent 18-second IPv6 timeout on VPS
   rejectUnauthorized: false
 });
@@ -34,9 +33,9 @@ const BACKUP_URL_2 = 'https://h5-api.aoneroom.com';
 
 // Domains ranked by lowest TTFB response time & rate-limit resilience
 const PLAY_DOMAINS = [
-  'https://h5-api.aoneroom.com',
   'https://h5.aoneroom.com',
-  'https://movie-box.co'
+  'https://movie-box.co',
+  'https://h5-api.aoneroom.com'
 ];
 
 const SEARCH_DOMAINS = [
@@ -45,8 +44,32 @@ const SEARCH_DOMAINS = [
   'https://movie-box.co'
 ];
 
+function generateAuthHeaders(domain = BASE_URL, refererPath = '') {
+  const e = Math.floor(Date.now() / 1000);
+  const r = String(e).split('').reverse().join('');
+  const md5 = crypto.createHash('md5').update(r).digest('hex');
+  const clientToken = `${e},${md5}`;
+  const randomUuid = crypto.randomUUID();
+  const randomAccount = Math.floor(Math.random() * 1e18);
+  const ref = refererPath ? (refererPath.startsWith('http') ? refererPath : `${domain}/movies/${refererPath}`) : `${domain}/`;
+
+  return {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+    'Origin': domain,
+    'Referer': ref,
+    'Accept': 'application/json, text/plain, */*',
+    'X-Client-Token': clientToken,
+    'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka', country: 'BD' }),
+    'Cookie': `uuid=${randomUuid}; account=${randomAccount}|0|H5|${e}|; client_country=BD`,
+    'X-Forwarded-For': '103.205.180.1',
+    'Client-IP': '103.205.180.1',
+    'X-Real-IP': '103.205.180.1',
+    'X-Request-Lang': 'en'
+  };
+}
+
 const HEADERS = {
-  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
   'Origin': BASE_URL,
   'Referer': `${BASE_URL}/`,
   'Accept': 'application/json'
@@ -393,9 +416,9 @@ class MovieBoxService {
         if (detailPath) url += `&detailPath=${encodeURIComponent(detailPath)}`;
 
         const res = await axios.get(url, {
-          headers: { ...HEADERS, 'Origin': domain, 'Referer': `${domain}/` },
+          headers: generateAuthHeaders(domain, detailPath),
           httpsAgent: cleanAgent,
-          timeout: 6000
+          timeout: 6500
         });
         const d = res.data?.data;
         if (!d || !d.subject) continue;
@@ -534,29 +557,21 @@ class MovieBoxService {
     const cleanId = String(subjectId).replace(/^mb-[s|m]-/, '');
     const activeDomain = await this.discoverDomain();
     const candidateDomains = [
-      'https://h5-api.aoneroom.com',
       'https://h5.aoneroom.com',
       'https://movie-box.co',
+      'https://h5-api.aoneroom.com',
       activeDomain,
       'https://mzfi.me',
       'https://123movienow.cc'
     ].filter((v, i, a) => v && a.indexOf(v) === i);
 
-    const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
-
     const fetchDomain = async (domain) => {
       const playUrl = `${domain}/wefeed-h5api-bff/subject/play?subjectId=${cleanId}&se=${season}&ep=${episode}&detailPath=${encodeURIComponent(detailPath || '')}`;
       const referer = detailPath ? `${domain}/spa/videoPlayPage/movies/${detailPath}` : `${domain}/`;
       const res = await axios.get(playUrl, {
-        headers: {
-          'User-Agent': UA,
-          'referer': referer,
-          'accept': 'application/json',
-          'x-client-info': JSON.stringify({ timezone: 'Asia/Dhaka' }),
-          'cookie': 'uuid=d8c3539e-2e46-4000-af20-7046a856e30a'
-        },
+        headers: generateAuthHeaders(domain, referer),
         httpsAgent: cleanAgent,
-        timeout: 2500
+        timeout: 6500
       });
 
       const data = res.data?.data;
@@ -646,8 +661,8 @@ class MovieBoxService {
   async _fetchDownload(subjectId, detailPath, season, episode) {
     const cleanId = String(subjectId).replace(/^mb-[s|m]-/, '');
     const domains = [
-      'https://movie-box.co',
-      'https://h5.aoneroom.com'
+      'https://h5.aoneroom.com',
+      'https://movie-box.co'
     ];
 
     const fetchSingle = async (domain) => {
@@ -658,13 +673,9 @@ class MovieBoxService {
           se: season,
           ep: episode
         },
-        headers: {
-          ...HEADERS,
-          'Origin': domain,
-          'Referer': refPath
-        },
+        headers: generateAuthHeaders(domain, detailPath),
         httpsAgent: cleanAgent,
-        timeout: 2800
+        timeout: 6500
       });
 
       const data = res.data?.data;

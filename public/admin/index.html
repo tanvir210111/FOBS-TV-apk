@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FOBS TV — v3.1.5 Master Control Center</title>
-  <meta name="description" content="Central Master Administration for FOBS TV v3.1.5 Streaming Network">
+  <title>FOBS TV — v3.2.5 Master Control Center</title>
+  <meta name="description" content="Central Master Administration for FOBS TV v3.2.5 Streaming Network">
   <link rel="icon" type="image/png" href="/favicon.png">
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,7 +25,7 @@
           <i class="fa-solid fa-satellite-dish"></i>
         </div>
         <h2>FOBS <span>TV</span></h2>
-        <span class="badge-v315">v3.1.5 Master Hub</span>
+        <span class="badge-v315">v3.2.5 Master Hub</span>
         <p>Enter Master Administrative Password to authorize system control</p>
       </div>
       <form id="login-form">
@@ -63,7 +63,7 @@
           <h2>FOBS <span>TV</span></h2>
           <div class="brand-sub">
             <span class="pulse-dot"></span>
-            <span>v3.1.5 Control</span>
+            <span>v3.2.5 Control</span>
           </div>
         </div>
         <button id="sidebar-close" class="btn-icon mobile-only" title="Close menu">
@@ -113,7 +113,7 @@
         <div class="nav-section-label">SYSTEM & AUDIENCE</div>
         <a href="#users" class="nav-item" data-tab="users">
           <i class="fa-solid fa-users"></i>
-          <span>v3.1.5 App Users</span>
+          <span>v3.2.5 App Users</span>
           <span id="badge-users-count" class="badge-count highlight">0</span>
         </a>
         <a href="#importer" class="nav-item" data-tab="importer">
@@ -122,7 +122,7 @@
         </a>
         <a href="#appcontrol" class="nav-item" data-tab="appcontrol">
           <i class="fa-solid fa-sliders"></i>
-          <span>v3.1.5 Config</span>
+          <span>v3.2.5 Config</span>
         </a>
       </nav>
 
@@ -131,7 +131,7 @@
           <div class="status-indicator">
             <span class="status-dot online"></span>
             <div>
-              <div class="status-name">v3.1.5 Engine Online</div>
+              <div class="status-name">v3.2.5 Engine Online</div>
               <div class="status-uptime" id="status-uptime">Uptime: --</div>
             </div>
           </div>
@@ -153,12 +153,12 @@
           </button>
           <div class="page-title-box">
             <h1 id="page-title">Dashboard Overview</h1>
-            <p id="page-subtitle">Real-time FOBS TV v3.1.5 System Status & Streaming Network</p>
+            <p id="page-subtitle">Real-time FOBS TV v3.2.5 System Status & Streaming Network</p>
           </div>
         </div>
         <div class="topbar-right">
           <div class="server-metrics-group">
-            <span class="metric-chip"><i class="fa-solid fa-code-commit"></i> v3.1.5 Master</span>
+            <span class="metric-chip"><i class="fa-solid fa-code-commit"></i> v3.2.5 Master</span>
             <span class="metric-chip"><i class="fa-solid fa-memory"></i> <strong id="ram-usage">-- MB</strong></span>
           </div>
           <button id="btn-quick-fix" class="btn-secondary" onclick="triggerRepairStreams()" title="1-Click Auto-Repair Playback Streams">
@@ -195,7 +195,7 @@
           <div class="metric-card glass">
             <div class="metric-icon green"><i class="fa-solid fa-users"></i></div>
             <div class="metric-info">
-              <span class="metric-label">v3.1.5 App Users</span>
+              <span class="metric-label">v3.2.5 App Users</span>
               <h3 id="stat-users" class="metric-number">0</h3>
               <span class="metric-hint"><i class="fa-solid fa-mobile-screen-button"></i> Active devices only</span>
             </div>
@@ -213,7 +213,7 @@
         <!-- QUICK ACTION TILES -->
         <div class="action-banner glass">
           <div class="banner-text">
-            <h3><i class="fa-solid fa-bolt"></i> FOBS TV v3.1.5 Quick Operations</h3>
+            <h3><i class="fa-solid fa-bolt"></i> FOBS TV v3.2.5 Quick Operations</h3>
             <p>Admin additions are permanently protected in git-immune persistent catalog and can never disappear.</p>
           </div>
           <div class="banner-buttons">
@@ -418,7 +418,7 @@
         <div class="section-top-bar glass">
           <div class="section-desc">
             <h3><i class="fa-solid fa-bullhorn"></i> In-App Popups & Announcements Manager</h3>
-            <p>Create instant notices that appear as a rich popup on FOBS TV v3.1.5 app launch. Monitor real-time likes, dislikes, and viewer comments.</p>
+            <p>Create instant notices that appear as a rich popup on FOBS TV v3.2.5 app launch. Monitor real-time likes, dislikes, and viewer comments.</p>
           </div>
           <button class="btn-primary glow" onclick="openAddNotificationModal()">
             <i class="fa-solid fa-plus"></i>
@@ -467,15 +467,15 @@
         </div>
       </section>
 
-      <!-- TAB 7: v3.1.5 APP USERS & DEVICES -->
+      <!-- TAB 7: v3.2.5 APP USERS & DEVICES -->
       <section id="tab-users" class="tab-content">
         <div class="section-top-bar glass">
           <div class="section-desc">
-            <h3><i class="fa-solid fa-users"></i> v3.1.5 App Audience & Active Devices</h3>
-            <p>Strictly monitors devices running <strong>FOBS TV v3.1.5</strong>. Pre-3.1.5 sessions are filtered out.</p>
+            <h3><i class="fa-solid fa-users"></i> v3.2.5 App Audience & Active Devices</h3>
+            <p>Strictly monitors devices running <strong>FOBS TV v3.2.5</strong>. Pre-3.1.5 sessions are filtered out.</p>
           </div>
           <div class="section-top-actions">
-            <button class="btn-danger" onclick="purgeOldVersions()" title="Remove all older pre-v3.1.5 user and device records">
+            <button class="btn-danger" onclick="purgeOldVersions()" title="Remove all older pre-v3.2.5 user and device records">
               <i class="fa-solid fa-trash-can"></i>
               <span>Purge Older Versions</span>
             </button>
@@ -747,7 +747,7 @@
         </div>
       </section>
 
-      <!-- TAB 10: v3.1.5 APP CONTROL -->
+      <!-- TAB 10: v3.2.5 APP CONTROL -->
       <section id="tab-appcontrol" class="tab-content">
         <div class="app-control-grid">
           <!-- Update Control Card -->
@@ -755,7 +755,7 @@
             <div class="card-header">
               <div class="card-title">
                 <i class="fa-solid fa-cloud-arrow-up"></i>
-                <span>v3.1.5 App Version & Remote Update</span>
+                <span>v3.2.5 App Version & Remote Update</span>
               </div>
             </div>
             <div class="card-body">
@@ -763,7 +763,7 @@
                 <div class="form-row">
                   <div class="form-group">
                     <label>Latest Version Name</label>
-                    <input type="text" id="cfg-version-name" value="v3.1.5" required>
+                    <input type="text" id="cfg-version-name" value="v3.2.5" required>
                   </div>
                   <div class="form-group">
                     <label>Latest Version Code</label>
@@ -772,11 +772,11 @@
                 </div>
                 <div class="form-group">
                   <label>Official APK Download URL</label>
-                  <input type="url" id="cfg-download-url" value="https://fobs-apk-download.vercel.app/FOBS%20TV%20v3.1.5.apk" required>
+                  <input type="url" id="cfg-download-url" value="https://fobs-apk-download.vercel.app/FOBS%20TV%20v3.2.5.apk" required>
                 </div>
                 <div class="form-group">
                   <label>Release Notes (One per line)</label>
-                  <textarea id="cfg-release-notes" rows="4" placeholder="• v3.1.5 in-player video brightness engine&#10;• Full screen landscape notch fix&#10;• Bengali subtitle sync fix"></textarea>
+                  <textarea id="cfg-release-notes" rows="4" placeholder="• v3.2.5 in-player video brightness engine&#10;• Full screen landscape notch fix&#10;• Bengali subtitle sync fix"></textarea>
                 </div>
                 <div class="form-row">
                   <label class="toggle-control">
@@ -1121,7 +1121,7 @@
         <div class="form-row">
           <div class="form-group flex-2">
             <label>Notice Title *</label>
-            <input type="text" id="notif-title" placeholder="e.g. New Update v3.1.5 Released!" required>
+            <input type="text" id="notif-title" placeholder="e.g. New Update v3.2.5 Released!" required>
           </div>
           <div class="form-group flex-1">
             <label>Badge Tag</label>
@@ -1155,8 +1155,8 @@
             <input type="checkbox" id="notif-ispopup" checked>
             <span class="toggle-slider"></span>
             <div>
-              <strong class="toggle-label">Show as Active Launch Popup Modal in v3.1.5 App</strong>
-              <div style="font-size: 12px; color: #94a3b8;">When enabled, every v3.1.5 user will automatically see this popup upon opening FOBS TV.</div>
+              <strong class="toggle-label">Show as Active Launch Popup Modal in v3.2.5 App</strong>
+              <div style="font-size: 12px; color: #94a3b8;">When enabled, every v3.2.5 user will automatically see this popup upon opening FOBS TV.</div>
             </div>
           </label>
         </div>
@@ -1483,6 +1483,6 @@
   <div id="toast-container" class="toast-container"></div>
 
   <!-- SCRIPTS -->
-  <script src="/admin/admin.js?v=3.2.1"></script>
+  <script src="/admin/admin.js?v=3.2.5"></script>
 </body>
 </html>

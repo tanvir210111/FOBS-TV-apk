@@ -1191,10 +1191,30 @@ app.get('/api/moviebox/stream', async (req, res) => {
       // Crash Landing on You [Hindi] (Korean Series - Season 1)
       else if (id === '13309505576601376') resolvedPath = 'crash-landing-on-you-hindi-ad4mbjnXY';
       else if (id === '8152231361013763208') resolvedPath = 'crash-landing-on-you-M2pZwJYidI9';
+      // Heaven Official's Blessing (Chinese Animation / Series)
+      else if (id === '6484471729350922232') resolvedPath = 'heaven-officials-blessing-67QMvaRW0J7';
+      else if (id === '2404784540335106472') resolvedPath = 'heaven-officials-blessing-67QMvaRW0J7';
     }
+
+    // Auto-discover detailPath from content.json catalog if not explicitly supplied
+    const cleanId = String(id).replace(/^mb-[s|m]-/, '');
+    if (!resolvedPath) {
+      try {
+        const cData = getContentData();
+        const foundM = (cData.movies || []).find(x => String(x.subjectId) === cleanId || String(x.id).includes(cleanId));
+        if (foundM && foundM.detailPath) resolvedPath = foundM.detailPath;
+        if (!resolvedPath) {
+          const foundS = (cData.series || []).find(x => String(x.subjectId) === cleanId || String(x.id).includes(cleanId));
+          if (foundS && (foundS.detailPath || foundS.movieBoxDetailPath)) {
+            resolvedPath = foundS.detailPath || foundS.movieBoxDetailPath;
+          }
+        }
+      } catch (_) {}
+    }
+
     const requestedQ = parseInt(req.query.q || req.query.quality || '0', 10);
     // Unified cache key across all bitrates so all qualities/probes share one instant resolution
-    const mediaCacheKey = `${id}_s${seNum}_e${epNum}`;
+    const mediaCacheKey = `${cleanId}_s${seNum}_e${epNum}`;
     let media = null;
     const cachedEntry = movieboxStreamCache.get(mediaCacheKey);
     if (cachedEntry && (Date.now() - cachedEntry.timestamp < 45 * 60 * 1000)) {
@@ -1203,7 +1223,6 @@ app.get('/api/moviebox/stream', async (req, res) => {
       media = await movieboxResolvingMap.get(mediaCacheKey);
     } else {
       const resolveTask = (async () => {
-        const cleanId = String(id).replace(/^mb-[s|m]-/, '');
         let m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', seNum, epNum);
         if (!m || !m.streamUrl) {
           m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, epNum);
@@ -1213,6 +1232,12 @@ app.get('/api/moviebox/stream', async (req, res) => {
         }
         if (!m || !m.streamUrl) {
           m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, 0);
+        }
+        if (!m || !m.streamUrl && seNum === 0 && epNum === 0) {
+          m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 1, 1);
+        }
+        if (!m || !m.streamUrl) {
+          m = await movieboxService.resolveMedia(cleanId, '', seNum, epNum, { forceRefresh: true });
         }
         if (!m || !m.streamUrl) {
           m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', seNum, epNum, { forceRefresh: true });
