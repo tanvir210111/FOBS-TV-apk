@@ -1068,8 +1068,8 @@ class AdminService {
       }
 
       // Penalize AMVs, music videos, fan covers, and songs so actual series/movies are first
-      if (/amv|music video|official video|cover|ost|remix|lyrics|song/i.test(tLower)) {
-        score -= 1500;
+      if (/amv|music video|official video|official audio|cover|ost|remix|lyrics|song/i.test(tLower)) {
+        score -= 2500;
       }
 
       let hasAnyWord = false;
