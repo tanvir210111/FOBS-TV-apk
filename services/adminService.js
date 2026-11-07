@@ -27,7 +27,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'fobs_tv_admin_secret_key_2026';
 
 // High-Speed In-Memory Caches for Instant UI Response
 const tmdbLookupCache = new Map();
-let mbFeedCache = { timestamp: 0, sections: null };
+let mbFeedCache = { timestamp: 0, sections: null, specialized: {} };
 
 function atomicWriteFile(targetFile, dataStr) {
   const dir = path.dirname(targetFile);
@@ -581,6 +581,39 @@ class AdminService {
   }
 
   /**
+   * Helper to fetch and cache specialized regional/language feeds from MovieBox
+   */
+  async fetchSpecializedFeedItems(key, queries, defaults = {}) {
+    if (!mbFeedCache.specialized) mbFeedCache.specialized = {};
+    const cached = mbFeedCache.specialized[key];
+    if (cached && (Date.now() - cached.timestamp < 600000) && Array.isArray(cached.items) && cached.items.length > 0) {
+      return cached.items;
+    }
+
+    const results = await Promise.allSettled(queries.map(q => movieboxService.search(q)));
+    const merged = [];
+    const seen = new Set();
+    for (const r of results) {
+      if (r.status === 'fulfilled' && Array.isArray(r.value)) {
+        for (const it of r.value) {
+          if (!it.id || seen.has(it.id)) continue;
+          seen.add(it.id);
+          merged.push({
+            ...it,
+            ...defaults
+          });
+        }
+      }
+    }
+
+    if (merged.length > 0) {
+      mbFeedCache.specialized[key] = { timestamp: Date.now(), items: merged };
+      return merged;
+    }
+    return cached?.items || [];
+  }
+
+  /**
    * Get Recent & Trending Releases from MovieBox Live Feed (with smart deduplication)
    */
   async getMovieBoxRecent(filter = 'all', hideImported = false) {
@@ -597,59 +630,66 @@ class AdminService {
     const extraSections = [];
     try {
       if (filter === 'kdrama-hindi' || filter === 'korean' || filter === 'kdrama') {
-        const [r1, r2] = await Promise.allSettled([
-          movieboxService.search('korean drama hindi'),
-          movieboxService.search('kdrama hindi')
-        ]);
-        const items = [];
-        if (r1.status === 'fulfilled' && Array.isArray(r1.value)) items.push(...r1.value);
-        if (r2.status === 'fulfilled' && Array.isArray(r2.value)) items.push(...r2.value);
+        const items = await this.fetchSpecializedFeedItems('kdrama-hindi', ['korean drama hindi', 'kdrama hindi', 'korean hindi'], {
+          industry: 'Korean',
+          isHindi: true,
+          audioTag: 'Hindi Dubbed',
+          section: 'Korean Drama (Hindi)'
+        });
         if (items.length > 0) extraSections.push({ title: 'Korean Drama (Hindi)', items });
       } else if (filter === 'cdrama-hindi' || filter === 'chinese' || filter === 'cdrama') {
-        const [r1, r2] = await Promise.allSettled([
-          movieboxService.search('chinese drama hindi'),
-          movieboxService.search('cdrama hindi')
-        ]);
-        const items = [];
-        if (r1.status === 'fulfilled' && Array.isArray(r1.value)) items.push(...r1.value);
-        if (r2.status === 'fulfilled' && Array.isArray(r2.value)) items.push(...r2.value);
+        const items = await this.fetchSpecializedFeedItems('cdrama-hindi', ['chinese drama hindi', 'cdrama hindi', 'chinese hindi'], {
+          industry: 'Chinese',
+          isHindi: true,
+          audioTag: 'Hindi Dubbed',
+          section: 'Chinese Drama (Hindi)'
+        });
         if (items.length > 0) extraSections.push({ title: 'Chinese Drama (Hindi)', items });
       } else if (filter === 'turkish-hindi' || filter === 'turkish') {
-        const [r1, r2] = await Promise.allSettled([
-          movieboxService.search('turkish hindi'),
-          movieboxService.search('turkish drama hindi')
-        ]);
-        const items = [];
-        if (r1.status === 'fulfilled' && Array.isArray(r1.value)) items.push(...r1.value);
-        if (r2.status === 'fulfilled' && Array.isArray(r2.value)) items.push(...r2.value);
+        const items = await this.fetchSpecializedFeedItems('turkish-hindi', ['turkish hindi', 'turkish drama hindi', 'turkish series hindi'], {
+          industry: 'Turkish',
+          isHindi: true,
+          audioTag: 'Hindi Dubbed',
+          section: 'Turkish Series (Hindi)'
+        });
         if (items.length > 0) extraSections.push({ title: 'Turkish Series (Hindi)', items });
       } else if (filter === 'bollywood' || filter === 'hindi') {
-        const [r1, r2] = await Promise.allSettled([
-          movieboxService.search('bollywood'),
-          movieboxService.search('hindi dubbed')
-        ]);
-        const items = [];
-        if (r1.status === 'fulfilled' && Array.isArray(r1.value)) items.push(...r1.value);
-        if (r2.status === 'fulfilled' && Array.isArray(r2.value)) items.push(...r2.value);
+        const items = await this.fetchSpecializedFeedItems('bollywood', ['bollywood', 'hindi dubbed', 'hindi movies'], {
+          industry: 'Bollywood',
+          isHindi: true,
+          audioTag: 'Hindi Dubbed',
+          section: 'Bollywood & Hindi'
+        });
         if (items.length > 0) extraSections.push({ title: 'Bollywood & Hindi', items });
       } else if (filter === 'anime') {
-        const [r1, r2] = await Promise.allSettled([
-          movieboxService.search('anime'),
-          movieboxService.search('anime hindi')
-        ]);
-        const items = [];
-        if (r1.status === 'fulfilled' && Array.isArray(r1.value)) items.push(...r1.value);
-        if (r2.status === 'fulfilled' && Array.isArray(r2.value)) items.push(...r2.value);
+        const items = await this.fetchSpecializedFeedItems('anime', ['anime', 'anime hindi', 'solo leveling'], {
+          industry: 'Anime',
+          section: 'Anime & Japanese'
+        });
         if (items.length > 0) extraSections.push({ title: 'Anime & Japanese', items });
-      } else if (filter === 'trending' || filter === 'all') {
-        const [r1, r2] = await Promise.allSettled([
-          movieboxService.search('hindi dubbed'),
-          movieboxService.search('trending hindi')
-        ]);
-        const items = [];
-        if (r1.status === 'fulfilled' && Array.isArray(r1.value)) items.push(...r1.value);
-        if (r2.status === 'fulfilled' && Array.isArray(r2.value)) items.push(...r2.value);
+      } else if (filter === 'trending') {
+        const items = await this.fetchSpecializedFeedItems('trending-hindi', ['hindi dubbed', 'trending hindi'], {
+          section: 'Trending Hindi',
+          isHindi: true,
+          audioTag: 'Hindi Dubbed'
+        });
         if (items.length > 0) extraSections.push({ title: 'Trending Hindi', items });
+      } else if (filter === 'all') {
+        // Enrich All Feeds with popular titles from regional and dubbed categories
+        const [rTrend, rK, rC, rT, rB, rA] = await Promise.allSettled([
+          this.fetchSpecializedFeedItems('trending-hindi', ['hindi dubbed', 'trending hindi'], { section: 'Trending Hindi', isHindi: true, audioTag: 'Hindi Dubbed' }),
+          this.fetchSpecializedFeedItems('kdrama-hindi', ['korean drama hindi', 'kdrama hindi'], { industry: 'Korean', isHindi: true, audioTag: 'Hindi Dubbed', section: 'Korean Drama (Hindi)' }),
+          this.fetchSpecializedFeedItems('cdrama-hindi', ['chinese drama hindi', 'cdrama hindi'], { industry: 'Chinese', isHindi: true, audioTag: 'Hindi Dubbed', section: 'Chinese Drama (Hindi)' }),
+          this.fetchSpecializedFeedItems('turkish-hindi', ['turkish hindi', 'turkish drama hindi'], { industry: 'Turkish', isHindi: true, audioTag: 'Hindi Dubbed', section: 'Turkish Series (Hindi)' }),
+          this.fetchSpecializedFeedItems('bollywood', ['bollywood', 'hindi dubbed'], { industry: 'Bollywood', isHindi: true, audioTag: 'Hindi Dubbed', section: 'Bollywood & Hindi' }),
+          this.fetchSpecializedFeedItems('anime', ['anime', 'anime hindi'], { industry: 'Anime', section: 'Anime & Japanese' })
+        ]);
+        if (rTrend.status === 'fulfilled' && rTrend.value?.length > 0) extraSections.push({ title: 'Trending Hindi', items: rTrend.value });
+        if (rK.status === 'fulfilled' && rK.value?.length > 0) extraSections.push({ title: 'Korean Drama (Hindi)', items: rK.value });
+        if (rC.status === 'fulfilled' && rC.value?.length > 0) extraSections.push({ title: 'Chinese Drama (Hindi)', items: rC.value });
+        if (rT.status === 'fulfilled' && rT.value?.length > 0) extraSections.push({ title: 'Turkish Series (Hindi)', items: rT.value });
+        if (rB.status === 'fulfilled' && rB.value?.length > 0) extraSections.push({ title: 'Bollywood & Hindi', items: rB.value });
+        if (rA.status === 'fulfilled' && rA.value?.length > 0) extraSections.push({ title: 'Anime & Japanese', items: rA.value });
       }
     } catch (_) {}
 
@@ -697,22 +737,24 @@ class AdminService {
 
         const tLower = (it.title || '').toLowerCase();
         const secLower = (sec.title || '').toLowerCase();
-        const isHindi = tLower.includes('hindi') || secLower.includes('hindi');
-        const isBangla = tLower.includes('bangla') || tLower.includes('bengali') || secLower.includes('bangla');
-        const isEnglish = /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(it.title || '') || (/english/i.test(tLower) && !/hollywood/i.test(tLower));
-        let audioTag = 'Original Audio';
+        let isHindi = (it.isHindi !== undefined) ? it.isHindi : (tLower.includes('hindi') || secLower.includes('hindi'));
+        const isBangla = (it.isBangla !== undefined) ? it.isBangla : (tLower.includes('bangla') || tLower.includes('bengali') || secLower.includes('bangla'));
+        const isEnglish = (it.isEnglish !== undefined) ? it.isEnglish : (/\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(it.title || '') || (/english/i.test(tLower) && !/hollywood/i.test(tLower)));
+
+        let audioTag = it.audioTag || 'Original Audio';
         if (isHindi) audioTag = 'Hindi Dubbed';
         else if (isEnglish) audioTag = 'English Dubbed';
         else if (isBangla) audioTag = 'Bangla Dubbed';
+
         const baseTitle = (it.title || '')
-        .toLowerCase()
-        .replace(/\[.*?\]|\(.*?\)/g, '')
-        .replace(/\b(s\d+|season\s*\d+|part\s*\d+|s\d+-s\d+)\b/gi, '')
-        .replace(/['’]s\b/gi, '')
-        .replace(/\bofficials\b/gi, 'official')
-        .replace(/[^a-z0-9]/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim();
+          .toLowerCase()
+          .replace(/\[.*?\]|\(.*?\)/g, '')
+          .replace(/\b(s\d+|season\s*\d+|part\s*\d+|s\d+-s\d+)\b/gi, '')
+          .replace(/['’]s\b/gi, '')
+          .replace(/\bofficials\b/gi, 'official')
+          .replace(/[^a-z0-9]/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
 
         const itClean = titleExact.replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, '');
         const itAudioKey = `${itClean}_${isHindi ? 'hi' : 'orig'}`;
@@ -724,7 +766,12 @@ class AdminService {
           existingExactTitles.has(titleExact) ||
           (itClean && existingCleanTitles.has(itAudioKey));
 
-        const industry = this.detectIndustry(it.title, sec.title, isBangla);
+        let industry = it.industry || this.detectIndustry(it.title, sec.title, isBangla);
+        if (secLower.includes('korean')) industry = 'Korean';
+        else if (secLower.includes('chinese')) industry = 'Chinese';
+        else if (secLower.includes('turkish')) industry = 'Turkish';
+        else if (secLower.includes('bollywood')) industry = 'Bollywood';
+        else if (secLower.includes('anime')) industry = 'Anime';
 
         let category = it.type === 'series'
           ? (isHindi ? `${industry} (Dubbed) Series` : `${industry} Series`)
@@ -740,7 +787,7 @@ class AdminService {
 
         allItems.push({
           ...it,
-          section: sec.title,
+          section: it.section || sec.title,
           alreadyImported,
           isHindi,
           isBangla,
@@ -763,37 +810,23 @@ class AdminService {
     } else if (filter === 'series' || filter === 'tv') {
       filtered = allItems.filter(i => i.type === 'series' || (i.section || '').toLowerCase().includes('series') || (i.section || '').toLowerCase().includes('drama') || (i.section || '').toLowerCase().includes('show'));
     } else if (filter === 'kdrama-hindi') {
-      filtered = allItems.filter(i => {
-        const text = ((i.section || '') + ' ' + (i.title || '')).toLowerCase();
-        return (i.industry === 'Korean' || text.includes('korean') || text.includes('kdrama') || text.includes('k-drama')) && (i.isHindi || text.includes('hindi') || (i.section || '').includes('Korean'));
-      });
-      if (filtered.length === 0) filtered = allItems.filter(i => (i.section || '').includes('Korean'));
+      filtered = allItems.filter(i => i.industry === 'Korean' || (i.section || '').includes('Korean'));
     } else if (filter === 'cdrama-hindi') {
-      filtered = allItems.filter(i => {
-        const text = ((i.section || '') + ' ' + (i.title || '')).toLowerCase();
-        return (i.industry === 'Chinese' || text.includes('chinese') || text.includes('cdrama') || text.includes('c-drama')) && (i.isHindi || text.includes('hindi') || (i.section || '').includes('Chinese'));
-      });
-      if (filtered.length === 0) filtered = allItems.filter(i => (i.section || '').includes('Chinese'));
+      filtered = allItems.filter(i => i.industry === 'Chinese' || (i.section || '').includes('Chinese'));
     } else if (filter === 'turkish-hindi') {
-      filtered = allItems.filter(i => {
-        const text = ((i.section || '') + ' ' + (i.title || '')).toLowerCase();
-        return (i.industry === 'Turkish' || text.includes('turkish') || text.includes('turkey')) && (i.isHindi || text.includes('hindi') || (i.section || '').includes('Turkish'));
-      });
-      if (filtered.length === 0) filtered = allItems.filter(i => (i.section || '').includes('Turkish'));
+      filtered = allItems.filter(i => i.industry === 'Turkish' || (i.section || '').includes('Turkish'));
     } else if (filter === 'kdrama' || filter === 'korean') {
-      filtered = allItems.filter(i => i.industry === 'Korean' || (i.section || '').toLowerCase().includes('korean') || (i.section || '').toLowerCase().includes('kdrama') || (i.section || '').toLowerCase().includes('k-drama') || (i.title || '').toLowerCase().includes('korean'));
+      filtered = allItems.filter(i => i.industry === 'Korean' || (i.section || '').toLowerCase().includes('korean') || (i.section || '').toLowerCase().includes('kdrama'));
     } else if (filter === 'cdrama' || filter === 'chinese') {
-      filtered = allItems.filter(i => i.industry === 'Chinese' || (i.section || '').toLowerCase().includes('chinese') || (i.section || '').toLowerCase().includes('c-drama') || (i.section || '').toLowerCase().includes('cdrama') || (i.title || '').toLowerCase().includes('chinese'));
+      filtered = allItems.filter(i => i.industry === 'Chinese' || (i.section || '').toLowerCase().includes('chinese') || (i.section || '').toLowerCase().includes('cdrama'));
     } else if (filter === 'turkish') {
-      filtered = allItems.filter(i => i.industry === 'Turkish' || (i.section || '').toLowerCase().includes('turkish') || (i.section || '').toLowerCase().includes('turkey') || (i.title || '').toLowerCase().includes('turkish'));
-    } else if (filter === 'hindi') {
-      filtered = allItems.filter(i => i.isHindi || (i.section || '').toLowerCase().includes('hindi') || (i.title || '').toLowerCase().includes('hindi'));
-    } else if (filter === 'bollywood') {
-      filtered = allItems.filter(i => i.industry === 'Bollywood' || (i.section || '').toLowerCase().includes('bollywood') || (i.section || '').toLowerCase().includes('south'));
+      filtered = allItems.filter(i => i.industry === 'Turkish' || (i.section || '').toLowerCase().includes('turkish'));
+    } else if (filter === 'hindi' || filter === 'bollywood') {
+      filtered = allItems.filter(i => i.industry === 'Bollywood' || i.isHindi || (i.section || '').toLowerCase().includes('hindi') || (i.section || '').toLowerCase().includes('bollywood'));
     } else if (filter === 'hollywood') {
       filtered = allItems.filter(i => i.industry === 'Hollywood' || (i.section || '').toLowerCase().includes('hollywood') || (i.section || '').toLowerCase().includes('western'));
     } else if (filter === 'anime') {
-      filtered = allItems.filter(i => i.industry === 'Anime' || (i.section || '').toLowerCase().includes('anime') || (i.title || '').toLowerCase().includes('anime'));
+      filtered = allItems.filter(i => i.industry === 'Anime' || (i.section || '').toLowerCase().includes('anime'));
     }
 
     const unimportedCount = filtered.filter(i => !i.alreadyImported).length;
