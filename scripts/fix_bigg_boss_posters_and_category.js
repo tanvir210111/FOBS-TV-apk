@@ -101,3 +101,4 @@ if (fs.existsSync(CUSTOM_FILE)) {
     console.log('Saved data/custom_catalog.local.json');
   }
 }
+

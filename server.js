@@ -1095,6 +1095,21 @@ app.get('/api/moviebox/stream', async (req, res) => {
     }
     const seNum = (se !== undefined && se !== null && se !== '') ? parseInt(se, 10) : 0;
     const epNum = (ep !== undefined && ep !== null && ep !== '') ? parseInt(ep, 10) : 0;
+
+    // Arcane: 2587437118653956672 only has 2 Hindi dub episodes on MovieBox.
+    // Episodes 3-9 of Season 1 and all of Season 2 are in subject 8350263472579564576.
+    if (String(id).includes('2587437118653956672')) {
+      if (epNum > 2 || seNum > 1) {
+        id = '8350263472579564576';
+        resolvedPath = 'arcane-cSoWT6jiQW9';
+      } else {
+        resolvedPath = 'arcane-hindi-8EA7Dslu853';
+      }
+    }
+    if (String(id).includes('8350263472579564576')) {
+      id = '8350263472579564576';
+      resolvedPath = 'arcane-cSoWT6jiQW9';
+    }
     if (!resolvedPath) {
       try {
         const autoD = await movieboxService.getDetail(id);
@@ -1228,9 +1243,14 @@ app.get('/api/moviebox/stream', async (req, res) => {
           m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, epNum);
         }
         if (!m || !m.streamUrl) {
+          if (cleanId === '2587437118653956672' || String(cleanId).includes('arcane')) {
+            m = await movieboxService.resolveMedia('8350263472579564576', 'arcane-cSoWT6jiQW9', seNum, epNum);
+          }
+        }
+        if ((!m || !m.streamUrl) && epNum === 0) {
           m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', seNum, 0);
         }
-        if (!m || !m.streamUrl) {
+        if ((!m || !m.streamUrl) && epNum === 0) {
           m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, 0);
         }
         if (!m || !m.streamUrl && seNum === 0 && epNum === 0) {
