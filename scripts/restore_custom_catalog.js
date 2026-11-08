@@ -45,7 +45,7 @@ function restore() {
     for (const cm of custom.movies) {
       const idx = content.movies.findIndex(m => m.id === cm.id || (cm.title && m.title && m.title.trim().toLowerCase() === cm.title.trim().toLowerCase()));
       if (idx >= 0) {
-        content.movies[idx] = { ...content.movies[idx], ...cm };
+        content.movies[idx] = { ...cm, ...content.movies[idx] };
       } else {
         content.movies.unshift(cm);
       }
@@ -76,8 +76,8 @@ function restore() {
           // Content in content.json has more or equal episodes; preserve newer episodes & seasons
           const { episodes, seasons, totalEpisodes, streamUrl, servers, ...restCs } = cs;
           content.series[idx] = {
-            ...contentSeries,
             ...restCs,
+            ...contentSeries,
             seasons: contentSeries.seasons,
             episodes: contentSeries.episodes || contentSeries.seasons?.[0]?.episodes || [],
             streamUrl: contentSeries.streamUrl || contentSeries.seasons?.[0]?.episodes?.[0]?.streamUrl,
@@ -88,10 +88,21 @@ function restore() {
           cs.seasons = contentSeries.seasons;
           cs.episodes = contentSeries.episodes || contentSeries.seasons?.[0]?.episodes || [];
           cs.totalEpisodes = contentSeries.totalEpisodes || contentEpCount;
+          if (contentSeries.poster && !contentSeries.poster.includes('aoneroom')) cs.poster = contentSeries.poster;
+          if (contentSeries.backdrop && !contentSeries.backdrop.includes('aoneroom')) cs.backdrop = contentSeries.backdrop;
+          if (contentSeries.banner && !contentSeries.banner.includes('aoneroom')) cs.banner = contentSeries.banner;
+          if (contentSeries.category) cs.category = contentSeries.category;
+          if (contentSeries.industry) cs.industry = contentSeries.industry;
+          if (contentSeries.country) cs.country = contentSeries.country;
+          if (contentSeries.language) cs.language = contentSeries.language;
           if (contentSeries.streamUrl) cs.streamUrl = contentSeries.streamUrl;
           if (contentSeries.servers) cs.servers = contentSeries.servers;
         } else {
-          content.series[idx] = { ...contentSeries, ...cs };
+          content.series[idx] = { ...cs, ...contentSeries };
+          if (contentSeries.poster && !contentSeries.poster.includes('aoneroom')) cs.poster = contentSeries.poster;
+          if (contentSeries.backdrop && !contentSeries.backdrop.includes('aoneroom')) cs.backdrop = contentSeries.backdrop;
+          if (contentSeries.banner && !contentSeries.banner.includes('aoneroom')) cs.banner = contentSeries.banner;
+          if (contentSeries.category) cs.category = contentSeries.category;
         }
       } else {
         content.series.unshift(cs);
