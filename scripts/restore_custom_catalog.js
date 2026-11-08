@@ -57,12 +57,47 @@ function restore() {
     for (const cs of custom.series) {
       const idx = content.series.findIndex(s => s.id === cs.id || (cs.title && s.title && s.title.trim().toLowerCase() === cs.title.trim().toLowerCase()));
       if (idx >= 0) {
-        content.series[idx] = { ...content.series[idx], ...cs };
+        const contentSeries = content.series[idx];
+        const contentEpCount = Math.max(
+          (contentSeries.episodes && contentSeries.episodes.length) || 0,
+          (contentSeries.seasons && contentSeries.seasons[0]?.episodes && contentSeries.seasons[0].episodes.length) || 0
+        );
+        const customEpCount = Math.max(
+          (cs.episodes && cs.episodes.length) || 0,
+          (cs.seasons && cs.seasons[0]?.episodes && cs.seasons[0].episodes.length) || 0
+        );
+
+        if (contentEpCount >= customEpCount && contentEpCount > 0) {
+          // Content in content.json has more or equal episodes; preserve newer episodes & seasons
+          const { episodes, seasons, totalEpisodes, streamUrl, servers, ...restCs } = cs;
+          content.series[idx] = {
+            ...contentSeries,
+            ...restCs,
+            seasons: contentSeries.seasons,
+            episodes: contentSeries.episodes || contentSeries.seasons?.[0]?.episodes || [],
+            streamUrl: contentSeries.streamUrl || contentSeries.seasons?.[0]?.episodes?.[0]?.streamUrl,
+            servers: contentSeries.servers || contentSeries.seasons?.[0]?.episodes?.[0]?.servers,
+            totalEpisodes: contentSeries.totalEpisodes || contentEpCount
+          };
+          // Synchronize custom object so stale episodes do not persist
+          cs.seasons = contentSeries.seasons;
+          cs.episodes = contentSeries.episodes || contentSeries.seasons?.[0]?.episodes || [];
+          cs.totalEpisodes = contentSeries.totalEpisodes || contentEpCount;
+          if (contentSeries.streamUrl) cs.streamUrl = contentSeries.streamUrl;
+          if (contentSeries.servers) cs.servers = contentSeries.servers;
+        } else {
+          content.series[idx] = { ...contentSeries, ...cs };
+        }
       } else {
         content.series.unshift(cs);
       }
       mergedCount++;
     }
+
+    try {
+      if (fs.existsSync(CUSTOM_FILE)) fs.writeFileSync(CUSTOM_FILE, JSON.stringify(custom, null, 2), 'utf8');
+      if (fs.existsSync(CUSTOM_BACKUP)) fs.writeFileSync(CUSTOM_BACKUP, JSON.stringify(custom, null, 2), 'utf8');
+    } catch (_) {}
   }
 
   // Restore liveTv

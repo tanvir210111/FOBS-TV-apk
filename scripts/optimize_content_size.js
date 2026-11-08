@@ -14,9 +14,6 @@ console.log(`Original content.json size: ${(originalBytes / (1024 * 1024)).toFix
 let totalEpsCleaned = 0;
 if (Array.isArray(content.series)) {
   for (const s of content.series) {
-    // Remove the redundant top-level s.episodes array if seasons has episodes
-    delete s.episodes;
-
     if (Array.isArray(s.seasons)) {
       for (const season of s.seasons) {
         if (Array.isArray(season.episodes)) {
@@ -36,6 +33,9 @@ if (Array.isArray(content.series)) {
             };
           });
         }
+      }
+      if (s.seasons[0] && Array.isArray(s.seasons[0].episodes)) {
+        s.episodes = s.seasons[0].episodes;
       }
     }
   }

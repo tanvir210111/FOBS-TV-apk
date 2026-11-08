@@ -71,7 +71,17 @@ function backup() {
       if (isCustom) {
         const idx = custom.series.findIndex(x => x.id === s.id || (x.title && s.title && x.title.trim().toLowerCase() === s.title.trim().toLowerCase()));
         if (idx >= 0) {
-          custom.series[idx] = { ...custom.series[idx], ...s, isCustom: true };
+          const contentEpCount = Math.max(
+            (s.episodes && s.episodes.length) || 0,
+            (s.seasons && s.seasons[0]?.episodes && s.seasons[0].episodes.length) || 0
+          );
+          const customEpCount = Math.max(
+            (custom.series[idx].episodes && custom.series[idx].episodes.length) || 0,
+            (custom.series[idx].seasons && custom.series[idx].seasons[0]?.episodes && custom.series[idx].seasons[0].episodes.length) || 0
+          );
+          if (contentEpCount >= customEpCount) {
+            custom.series[idx] = { ...custom.series[idx], ...s, isCustom: true };
+          }
         } else {
           custom.series.unshift({ ...s, isCustom: true });
           seriesAdded++;
