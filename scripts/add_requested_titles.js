@@ -456,3 +456,4 @@ for (const ci of customItems) {
 }
 fs.writeFileSync(CUSTOM_FILE, JSON.stringify(custom, null, 2), 'utf8');
 console.log('✅ custom_catalog.local.json updated with all updated series!');
+

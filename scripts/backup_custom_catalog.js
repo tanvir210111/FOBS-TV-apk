@@ -7,6 +7,8 @@ const CONTENT_LOCAL = path.join(__dirname, '..', 'data', 'content.local.json');
 const CUSTOM_FILE = path.join(__dirname, '..', 'data', 'custom_catalog.local.json');
 const CUSTOM_BACKUP = path.join(__dirname, '..', 'data', 'custom_catalog.backup.json');
 
+const EXCLUDED_SERIES_IDS = new Set(['mb-s-7472857198671315792']);
+
 function backup() {
   let custom = { movies: [], series: [], liveTv: [], upcoming: [] };
   try {
@@ -19,6 +21,7 @@ function backup() {
 
   if (!Array.isArray(custom.movies)) custom.movies = [];
   if (!Array.isArray(custom.series)) custom.series = [];
+  custom.series = custom.series.filter(s => !EXCLUDED_SERIES_IDS.has(s.id));
   if (!Array.isArray(custom.liveTv)) custom.liveTv = [];
   if (!Array.isArray(custom.upcoming)) custom.upcoming = [];
 
@@ -65,6 +68,7 @@ function backup() {
   // Protect series
   if (Array.isArray(content.series)) {
     for (const s of content.series) {
+      if (EXCLUDED_SERIES_IDS.has(s.id)) continue;
       const isCustom = s.isCustom ||
         (s.id && (String(s.id).startsWith('series_') || String(s.id).startsWith('mb-s-') || String(s.id).startsWith('custom_'))) ||
         s.addedAt || s.isManual;

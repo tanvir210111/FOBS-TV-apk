@@ -7,6 +7,8 @@ const CONTENT_LOCAL = path.join(__dirname, '..', 'data', 'content.local.json');
 const CUSTOM_FILE = path.join(__dirname, '..', 'data', 'custom_catalog.local.json');
 const CUSTOM_BACKUP = path.join(__dirname, '..', 'data', 'custom_catalog.backup.json');
 
+const EXCLUDED_SERIES_IDS = new Set(['mb-s-7472857198671315792']);
+
 function restore() {
   let custom = null;
   try {
@@ -53,8 +55,11 @@ function restore() {
 
   // Restore series
   if (Array.isArray(custom.series) && custom.series.length > 0) {
+    custom.series = custom.series.filter(s => !EXCLUDED_SERIES_IDS.has(s.id));
     if (!Array.isArray(content.series)) content.series = [];
+    content.series = content.series.filter(s => !EXCLUDED_SERIES_IDS.has(s.id));
     for (const cs of custom.series) {
+      if (EXCLUDED_SERIES_IDS.has(cs.id)) continue;
       const idx = content.series.findIndex(s => s.id === cs.id || (cs.title && s.title && s.title.trim().toLowerCase() === cs.title.trim().toLowerCase()));
       if (idx >= 0) {
         const contentSeries = content.series[idx];
