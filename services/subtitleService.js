@@ -38,7 +38,11 @@ class SubtitleService {
 
     if (this.cache.has(cacheKey)) {
       const cached = this.cache.get(cacheKey);
-      if (cached && cached.expireAt > Date.now()) return cached.data;
+      if (cached && cached.expireAt > Date.now()) {
+        if (Array.isArray(cached.data) && cached.data.length > 0) {
+          return cached.data;
+        }
+      }
     }
 
     const availableSubtitles = [];
@@ -101,7 +105,7 @@ class SubtitleService {
     const cleanSubjectId = subjectId ? String(subjectId).replace(/^mb-[s|m]-/, '') : '';
     if (cleanSubjectId) {
       try {
-        const mbMedia = await movieboxService.resolveMedia(cleanSubjectId, detailPath, isMovie ? 0 : (seNum || 1), isMovie ? 0 : (epNum || 1));
+        const mbMedia = await movieboxService.resolveMedia(cleanSubjectId, detailPath, isMovie ? 0 : (seNum || 1), isMovie ? 0 : (epNum || 1), { requireCaptions: true });
         if (mbMedia && Array.isArray(mbMedia.captions)) {
           for (const cap of mbMedia.captions) {
             const lan = (cap.lan || '').toLowerCase();
@@ -119,13 +123,14 @@ class SubtitleService {
                 : (isAiSub ? 'English - MovieBox AI Sub' : 'English - Official Sub');
 
               if (!availableSubtitles.some(s => s.url === cap.url)) {
-                availableSubtitles.push({
+                availableSubtitles.unshift({
                   id: `mb_${code}_${availableSubtitles.length + 1}`,
                   language: label,
                   langCode: code,
                   source: isAiSub ? 'MovieBox (AI)' : 'MovieBox (Official)',
                   url: cap.url,
-                  format: cap.url && cap.url.endsWith('.srt') ? 'srt' : 'vtt',
+                  downloadUrl: cap.url,
+                  format: (cap.url && (cap.url.includes('.srt') || cap.url.endsWith('.srt'))) ? 'srt' : 'vtt',
                   isAi: isAiSub
                 });
               }
@@ -171,7 +176,9 @@ class SubtitleService {
     }
 
     // 3. FOBS AI Auto-Translate fallback if user wants AI subtitle
-    const enSub = availableSubtitles.find(s => s.langCode === 'en' && !s.isAi) || availableSubtitles.find(s => s.langCode === 'en');
+    const enSub = availableSubtitles.find(s => s.langCode === 'en' && !s.isAi && s.url && s.url.includes('hakunaymatata'))
+               || availableSubtitles.find(s => s.langCode === 'en' && !s.isAi)
+               || availableSubtitles.find(s => s.langCode === 'en');
     if (enSub) {
       const enUrl = enSub.url || enSub.downloadUrl;
       if (enUrl && !availableSubtitles.some(s => s.id && s.id.startsWith('ai_bn_'))) {

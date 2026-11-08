@@ -3963,7 +3963,7 @@ app.all('/api/deploy', (req, res) => {
       return res.status(500).json({ success: false, error: error.message, stderr, stdout });
     }
     console.log('✅ Deploy output:\n', stdout);
-    try { movieboxService.invalidateCache(); } catch (_) {}
+    try { movieboxService.invalidateCache(); subtitleService.cache.clear(); } catch (_) {}
     res.json({ success: true, message: 'Deploy completed successfully', stdout, stderr });
     setTimeout(() => {
       exec('pm2 restart fobs-tv || pm2 reload fobs-tv');

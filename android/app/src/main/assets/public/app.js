@@ -3193,8 +3193,8 @@ function getLowestResolutionServer(activeObj, isOrig) {
   let candidateServers = servers;
   if (isOrig !== undefined) {
     const audioMatched = servers.filter(s => isOrig 
-      ? (s.audio === 'Original audio' || /original|korean/i.test(s.name || ''))
-      : (s.audio === 'Hindi dub' || /hindi/i.test(s.name || ''))
+      ? (/orig|korean/i.test(s.audio || '') || /original|korean/i.test(s.name || ''))
+      : (/hindi/i.test(s.audio || '') || /hindi/i.test(s.name || ''))
     );
     if (audioMatched.length > 0) {
       candidateServers = audioMatched;
@@ -3229,8 +3229,8 @@ function getActiveEpisodeStream(ep, audioTrack) {
     const autoRenewingServer = ep.servers.find(s => 
       s.url && s.url.includes('/api/moviebox/stream') && (
         isOrig 
-          ? (s.audio === 'Original audio' || /original|korean/i.test(s.name))
-          : (s.audio === 'Hindi dub' || /hindi/i.test(s.name))
+          ? (/orig|korean/i.test(s.audio || '') || /original|korean/i.test(s.name || ''))
+          : (/hindi/i.test(s.audio || '') || /hindi/i.test(s.name || ''))
       )
     ) || ep.servers.find(s => s.url && s.url.includes('/api/moviebox/stream'));
     if (autoRenewingServer && autoRenewingServer.url) {
@@ -5340,8 +5340,8 @@ async function setupSubtitlesForMedia(media) {
 
   // 2. Fetch from SubSource API via Backend
   try {
-    const subjectId = (media.id || '').replace(/^mb-[s|m]-/, '');
-    const detailPath = media.detailPath || '';
+    const subjectId = media.subjectId || media.mbSubjectId || (media.id || '').replace(/^mb-[s|m]-/, '');
+    const detailPath = media.detailPath || media.mbDetailPath || appState.currentMedia?.detailPath || '';
     const res = await fetch(`${API_BASE_URL}/api/subtitles?title=${encodeURIComponent(cleanTitle)}&year=${media.year || ''}&subjectId=${encodeURIComponent(subjectId)}&detailPath=${encodeURIComponent(detailPath)}&season=${season}&episode=${ep}&type=${isSeries ? 'series' : 'movie'}`);
     if (subtitleState._loadToken !== loadToken) return;
     const data = await res.json();
@@ -5362,7 +5362,21 @@ async function setupSubtitlesForMedia(media) {
   // 3. Ensure English & Bangla exist
   const hasEn = tracks.some(t => t.langCode === 'en');
   const hasBn = tracks.some(t => t.langCode === 'bn');
-  const enTrack = tracks.find(t => t.langCode === 'en');
+
+  const validEnTrack = tracks.find(t => t.langCode === 'en' && (t.url || t.downloadUrl) && !t.url?.includes('/generate'));
+
+  if (!hasBn && validEnTrack) {
+    const enUrl = validEnTrack.url || validEnTrack.downloadUrl;
+    tracks.push({
+      id: 'sub_bn_ai',
+      language: 'Bangla (বাংলা - AI)',
+      langCode: 'bn',
+      source: 'FOBS AI Translate',
+      url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanTitle)}&season=${season}&episode=${ep}`,
+      format: 'vtt',
+      isAi: true
+    });
+  }
 
   if (!hasEn) {
     tracks.unshift({
@@ -5372,21 +5386,6 @@ async function setupSubtitlesForMedia(media) {
       source: 'SubSource (Auto)',
       url: `/api/subtitles/generate?title=${encodeURIComponent(cleanTitle)}&lang=en`
     });
-  }
-
-  if (!hasBn) {
-    if (enTrack && (enTrack.url || enTrack.downloadUrl)) {
-      const enUrl = enTrack.url || enTrack.downloadUrl;
-      tracks.push({
-        id: 'sub_bn_ai',
-        language: 'Bangla (বাংলা - AI)',
-        langCode: 'bn',
-        source: 'FOBS AI Translate',
-        url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanTitle)}&season=${season}&episode=${ep}`,
-        format: 'vtt',
-        isAi: true
-      });
-    }
   }
 
   subtitleState.availableTracks = tracks;
@@ -5592,7 +5591,15 @@ async function selectSubtitleTrack(trackId) {
     const curTime = (vp?.currentTime || 0) + (appState.streamSeekOffset || 0);
     renderActiveSubtitleCue(curTime);
   } else {
-    showToast('Could not load subtitles. Retrying fallback...');
+    // If preferred track (e.g. AI Bangla) had no cues or was generating, fall back to English!
+    const fallbackTrack = subtitleState.availableTracks.find(t => t.id !== track.id && (t.langCode === 'en' || !t.isAi));
+    if (fallbackTrack && track.langCode === 'bn') {
+      console.log('Bangla cues not ready yet, falling back to English track:', fallbackTrack.id);
+      showToast('⚠️ বাংলা সাবটাইটেল তৈরি হচ্ছে... ইংরেজি সাবটাইটেল সক্রিয় করা হয়েছে');
+      selectSubtitleTrack(fallbackTrack.id);
+      return;
+    }
+    showToast('Could not load subtitles.');
   }
 }
 
@@ -7154,7 +7161,7 @@ function setupVideoListeners() {
 
     // Real-time subtitle cue rendering with MX Player style sync
     if (typeof renderActiveSubtitleCue === 'function') {
-      renderActiveSubtitleCue(videoPlayer.currentTime);
+      renderActiveSubtitleCue((videoPlayer.currentTime || 0) + (appState.streamSeekOffset || 0));
     }
 
     // Throttled Watch History Progress (every 10s)
@@ -9429,34 +9436,55 @@ function switchAudioTrack(lang) {
   const targetAudioIndex = isOriginal ? 1 : 0;
   appState.selectedAudioIndex = targetAudioIndex;
 
-  // Seamless Dual-Series switching for Dive Into You (or any dual-series pair)
-  if (appState.currentMedia && appState.currentMedia.title && appState.currentMedia.title.toLowerCase().includes('dive into you')) {
-    const targetSeriesId = isOriginal ? 'mb-s-3870036899930730728' : 'mb-s-1932866268428649968';
-    if (appState.currentMedia.id !== targetSeriesId) {
-      const targetSeries = (appState.content.series || []).find(s => s.id === targetSeriesId);
-      if (targetSeries) {
-        const curEpNum = appState.currentEpisode?.number || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1);
-        const curTime = (videoPlayer ? videoPlayer.currentTime : 0) || 0;
+  // Universal Seamless Dual-Series switching for ALL paired items (e.g. She Was Pretty, Dive Into You, Arcane, etc.)
+  if (appState.currentMedia && appState.currentMedia.title) {
+    const curTitle = appState.currentMedia.title;
+    const cleanCurTitle = curTitle
+      .replace(/\[.*?hindi.*?\]|\(.*?\bhindi\b.*?\)/gi, '')
+      .replace(/\[.*?orig.*?\]|\(.*?\borig\b.*?\)/gi, '')
+      .replace(/\[.*?korean.*?\]|\(.*?\bkorean\b.*?\)/gi, '')
+      .replace(/\s+/g, ' ')
+      .trim().toLowerCase();
 
-        appState.currentMedia = targetSeries;
-        const newSeasonEps = getActiveSeasonEpisodes(targetSeries);
-        const newEpIdx = Math.max(0, curEpNum - 1);
-        appState.currentEpisode = (newSeasonEps && newSeasonEps[newEpIdx]) || (newSeasonEps && newSeasonEps[0]);
-        appState.currentEpisodeIndex = newEpIdx;
+    const allSeries = appState.content?.series || [];
+    const pairedSeries = allSeries.find(s => {
+      if (s.id === appState.currentMedia.id) return false;
+      const sTitle = (s.title || '').toLowerCase();
+      const sClean = sTitle
+        .replace(/\[.*?hindi.*?\]|\(.*?\bhindi\b.*?\)/gi, '')
+        .replace(/\[.*?orig.*?\]|\(.*?\borig\b.*?\)/gi, '')
+        .replace(/\[.*?korean.*?\]|\(.*?\bkorean\b.*?\)/gi, '')
+        .replace(/\s+/g, ' ')
+        .trim().toLowerCase();
 
-        const titleText = formatCleanMediaTitle(targetSeries.title, targetSeries.dubLanguage);
-        const titleEl = document.getElementById('playerMediaTitle');
-        if (titleEl) titleEl.innerText = titleText;
+      if (sClean !== cleanCurTitle) return false;
 
-        renderEpisodePills(newSeasonEps, newEpIdx);
-        renderServerPills(targetSeries);
-        renderAudioTrackOptions(targetSeries);
+      const sIsHindi = sTitle.includes('hindi') || s.dubLanguage === 'Hindi';
+      return isOriginal ? !sIsHindi : sIsHindi;
+    });
 
-        const nextStream = getActiveEpisodeStream(appState.currentEpisode, lang);
-        playStreamUrl(nextStream, null, curTime);
-        showToast(`Audio Track: ${lang}`);
-        return;
-      }
+    if (pairedSeries) {
+      const curEpNum = appState.currentEpisode?.number || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1);
+      const curTime = (videoPlayer ? videoPlayer.currentTime : 0) || 0;
+
+      appState.currentMedia = pairedSeries;
+      const newSeasonEps = getActiveSeasonEpisodes(pairedSeries);
+      const newEpIdx = Math.max(0, curEpNum - 1);
+      appState.currentEpisode = (newSeasonEps && newSeasonEps[newEpIdx]) || (newSeasonEps && newSeasonEps[0]);
+      appState.currentEpisodeIndex = newEpIdx;
+
+      const titleText = formatCleanMediaTitle(pairedSeries.title, pairedSeries.dubLanguage);
+      const titleEl = document.getElementById('playerMediaTitle');
+      if (titleEl) titleEl.innerText = titleText;
+
+      renderEpisodePills(newSeasonEps, newEpIdx);
+      renderServerPills(pairedSeries);
+      renderAudioTrackOptions(pairedSeries);
+
+      const nextStream = getActiveEpisodeStream(appState.currentEpisode, lang);
+      playStreamUrl(nextStream, null, curTime);
+      showToast(`Audio Track: ${lang}`);
+      return;
     }
   }
 

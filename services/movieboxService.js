@@ -769,7 +769,11 @@ class MovieBoxService {
     } else {
       const cached = this.cache.get(cacheKey);
       if (cached && cached.expireAt > Date.now()) {
-        return cached.data;
+        const needsCaptions = options && (options.requireCaptions || options.needCaptions);
+        const hasCaptions = Array.isArray(cached.data?.captions) && cached.data.captions.length > 0;
+        if (!needsCaptions || hasCaptions) {
+          return cached.data;
+        }
       }
     }
 
@@ -885,6 +889,11 @@ class MovieBoxService {
       this.detailCache.clear();
       this.detailPathMap.clear();
       this.inFlightRequests.clear();
+      try {
+        if (fs.existsSync(STREAM_CACHE_FILE)) {
+          fs.writeFileSync(STREAM_CACHE_FILE, '{}', 'utf8');
+        }
+      } catch (_) {}
       return;
     }
     const cleanId = String(subjectId).replace(/^mb-[s|m]-/, '');

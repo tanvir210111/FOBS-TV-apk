@@ -5340,8 +5340,8 @@ async function setupSubtitlesForMedia(media) {
 
   // 2. Fetch from SubSource API via Backend
   try {
-    const subjectId = (media.id || '').replace(/^mb-[s|m]-/, '');
-    const detailPath = media.detailPath || '';
+    const subjectId = media.subjectId || media.mbSubjectId || (media.id || '').replace(/^mb-[s|m]-/, '');
+    const detailPath = media.detailPath || media.mbDetailPath || appState.currentMedia?.detailPath || '';
     const res = await fetch(`${API_BASE_URL}/api/subtitles?title=${encodeURIComponent(cleanTitle)}&year=${media.year || ''}&subjectId=${encodeURIComponent(subjectId)}&detailPath=${encodeURIComponent(detailPath)}&season=${season}&episode=${ep}&type=${isSeries ? 'series' : 'movie'}`);
     if (subtitleState._loadToken !== loadToken) return;
     const data = await res.json();
@@ -5591,7 +5591,15 @@ async function selectSubtitleTrack(trackId) {
     const curTime = (vp?.currentTime || 0) + (appState.streamSeekOffset || 0);
     renderActiveSubtitleCue(curTime);
   } else {
-    showToast('Could not load subtitles. Retrying fallback...');
+    // If preferred track (e.g. AI Bangla) had no cues or was generating, fall back to English!
+    const fallbackTrack = subtitleState.availableTracks.find(t => t.id !== track.id && (t.langCode === 'en' || !t.isAi));
+    if (fallbackTrack && track.langCode === 'bn') {
+      console.log('Bangla cues not ready yet, falling back to English track:', fallbackTrack.id);
+      showToast('⚠️ বাংলা সাবটাইটেল তৈরি হচ্ছে... ইংরেজি সাবটাইটেল সক্রিয় করা হয়েছে');
+      selectSubtitleTrack(fallbackTrack.id);
+      return;
+    }
+    showToast('Could not load subtitles.');
   }
 }
 
