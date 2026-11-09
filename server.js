@@ -1428,6 +1428,67 @@ app.get('/api/moviebox/stream', async (req, res) => {
   }
 });
 
+// API: Get Real Episode Sizes & Available Qualities for Batch Download Modal
+app.get('/api/moviebox/episodes-info', async (req, res) => {
+  const { id, path: detailPath, se } = req.query;
+  if (!id) return res.status(400).json({ ok: false, error: 'Missing id parameter' });
+  const cleanId = String(id).replace(/^mb-[s|m]-/, '');
+  const seNum = parseInt(se || '1', 10);
+  const resolvedPath = detailPath || getMovieBoxDetailPath(cleanId) || '';
+
+  try {
+    const content = getContentData();
+    const series = (content.series || []).find(s => String(s.subjectId) === cleanId || String(s.id).includes(cleanId));
+    const season = series?.seasons?.find(s => (s.seasonNumber || s.season) === seNum) || series?.seasons?.[0];
+    const epCount = season?.episodes?.length || 12;
+
+    const formatBytes = (bytes) => {
+      const b = parseInt(bytes, 10);
+      if (!b || isNaN(b) || b <= 0) return null;
+      if (b >= 1024 * 1024 * 1024) return (b / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+      return (b / (1024 * 1024)).toFixed(1) + ' MB';
+    };
+
+    const epsToFetch = Math.min(epCount, 25);
+    const epPromises = [];
+
+    for (let i = 1; i <= epsToFetch; i++) {
+      const epNum = i;
+      epPromises.push((async () => {
+        try {
+          const media = await movieboxService.resolveMedia(cleanId, resolvedPath, seNum, epNum);
+          if (media && Array.isArray(media.qualities) && media.qualities.length > 0) {
+            return {
+              episode: epNum,
+              qualities: media.qualities.map(q => ({
+                resolution: q.resolution,
+                sizeBytes: parseInt(q.size, 10) || 0,
+                sizeText: formatBytes(q.size)
+              }))
+            };
+          } else if (media && media.streamUrl) {
+            return {
+              episode: epNum,
+              qualities: [{ resolution: media.resolution || 720, sizeBytes: 0, sizeText: null }]
+            };
+          }
+        } catch (_) {}
+        return { episode: epNum, qualities: [] };
+      })());
+    }
+
+    const resolvedEps = await Promise.all(epPromises);
+    res.json({
+      ok: true,
+      subjectId: cleanId,
+      season: seNum,
+      episodes: resolvedEps
+    });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
 // API: Live TV Channels by Country (bd, in, etc.)
 app.get('/api/tv/channels', async (req, res) => {
   const country = req.query.country || 'bd';
@@ -2370,7 +2431,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.0.3",
+  version: "1.0.4",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 

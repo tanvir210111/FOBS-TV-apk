@@ -8200,6 +8200,9 @@ window.fobsDownloadQueue = fobsDownloadQueue;
 
 // Helper: Estimate episode size
 function getEpisodeEstimatedSize(quality, ep = null, idx = 0) {
+  if (ep && ep.realSizeText) {
+    return ep.realSizeText;
+  }
   if (ep && (ep.size || ep.fileSize)) {
     return ep.size || ep.fileSize;
   }
@@ -8256,17 +8259,71 @@ function switchBatchQuality(quality) {
   const batchState = appState._batchDownload;
   if (batchState && batchState.isSeries && Array.isArray(batchState.episodes)) {
     batchState.episodes.forEach((ep, idx) => {
-      const sizeStr = getEpisodeEstimatedSize(currentDownloadQuality, ep, idx);
+      const sizeStr = ep.realSizeText || getEpisodeEstimatedSize(currentDownloadQuality, ep, idx);
       const sizeEl = document.getElementById(`dl_ep_size_${idx}`);
       if (sizeEl) sizeEl.innerText = sizeStr;
     });
     updateBatchSelectedSummary();
+    if (media) fetchExactEpisodesSizes(media, batchState.season || 1);
   } else {
     const btnText = document.getElementById('btnStartDownloadText');
     if (btnText) btnText.innerText = `ডাউনলোড শুরু করুন (${currentDownloadQuality})`;
   }
 }
 window.switchBatchQuality = switchBatchQuality;
+
+async function fetchExactEpisodesSizes(media, seasonNum) {
+  if (!media) return;
+  const sId = media.subjectId || media.mbSubjectId || (media.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '') : null) || (media.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || '';
+  const dPath = media.detailPath || media.mbDetailPath || '';
+  if (!sId) return;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/moviebox/episodes-info?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seasonNum}&_t=${Date.now()}`);
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data && data.ok && Array.isArray(data.episodes)) {
+      const batchState = appState._batchDownload;
+      if (!batchState || !batchState.episodes) return;
+
+      const qNum = parseInt(currentDownloadQuality || '480P', 10) || 480;
+
+      data.episodes.forEach(info => {
+        const epIdx = batchState.episodes.findIndex(e => (e.episode ?? e.episodeNumber ?? e.number) === info.episode);
+        if (epIdx !== -1 && info.qualities && info.qualities.length > 0) {
+          let match = null;
+          if (qNum <= 480) {
+            match = info.qualities.find(q => q.resolution === 480)
+                 || info.qualities.find(q => q.resolution === 360)
+                 || info.qualities.find(q => q.resolution === 720)
+                 || info.qualities[info.qualities.length - 1];
+          } else {
+            match = info.qualities.find(q => q.resolution === qNum)
+                 || info.qualities.find(q => Math.abs(q.resolution - qNum) <= 120)
+                 || info.qualities[0];
+          }
+
+          if (match && match.sizeText) {
+            const epObj = batchState.episodes[epIdx];
+            epObj.realSizeText = match.sizeText;
+            epObj.realSizeBytes = match.sizeBytes;
+            epObj.realQuality = `${match.resolution}P`;
+
+            const sizeEl = document.getElementById(`dl_ep_size_${epIdx}`);
+            if (sizeEl) {
+              const resTag = match.resolution !== qNum ? ` (${match.resolution}P)` : '';
+              sizeEl.innerText = `${match.sizeText}${resTag}`;
+            }
+          }
+        }
+      });
+      updateBatchSelectedSummary();
+    }
+  } catch (err) {
+    console.warn('Fetch exact episode sizes error:', err.message);
+  }
+}
+window.fetchExactEpisodesSizes = fetchExactEpisodesSizes;
 
 // Render Episodes List inside Batch Modal
 function renderBatchEpisodesList(seasonNum) {
@@ -8303,7 +8360,7 @@ function renderBatchEpisodesList(seasonNum) {
   scrollList.innerHTML = episodes.map((ep, idx) => {
     const epNum = ep.episode ?? ep.episodeNumber ?? ep.number ?? (idx + 1);
     const epTitle = ep.title ? ep.title : `Episode ${epNum}`;
-    const estSizeStr = getEpisodeEstimatedSize(currentDownloadQuality, ep, idx);
+    const estSizeStr = ep.realSizeText || getEpisodeEstimatedSize(currentDownloadQuality, ep, idx);
     return `
       <div class="dl-ep-item selected" id="dl_ep_item_${idx}" onclick="toggleBatchEpisode(${idx})">
         <div class="dl-ep-left">
@@ -8328,6 +8385,7 @@ function renderBatchEpisodesList(seasonNum) {
   if (selectAllChk) selectAllChk.checked = true;
 
   updateBatchSelectedSummary();
+  fetchExactEpisodesSizes(media, seasonNum);
 }
 window.renderBatchEpisodesList = renderBatchEpisodesList;
 
@@ -8400,9 +8458,22 @@ function updateBatchSelectedSummary() {
   }
 
   const count = batchState.selected ? batchState.selected.size : 0;
-  const approxPerEpMb = currentDownloadQuality === '1080P' ? 520 : (currentDownloadQuality === '720P' ? 280 : 140);
-  const totalMb = count * approxPerEpMb;
-  const sizeFormatted = totalMb >= 1024 ? `${(totalMb / 1024).toFixed(1)} GB` : `${totalMb} MB`;
+  let totalBytes = 0;
+  if (batchState.selected && batchState.episodes) {
+    batchState.selected.forEach(idx => {
+      const ep = batchState.episodes[idx];
+      if (ep && ep.realSizeBytes > 0) {
+        totalBytes += ep.realSizeBytes;
+      } else {
+        const qNum = parseInt(currentDownloadQuality, 10) || 480;
+        const estMb = qNum >= 1080 ? 750 : (qNum >= 720 ? 420 : 250);
+        totalBytes += estMb * 1024 * 1024;
+      }
+    });
+  }
+
+  const totalMb = Math.round(totalBytes / (1024 * 1024));
+  const sizeFormatted = totalMb >= 1024 ? `${(totalMb / 1024).toFixed(2)} GB` : `${totalMb} MB`;
 
   if (summaryEl) {
     summaryEl.innerText = `Selected: ${count} (~${sizeFormatted})`;
@@ -8578,7 +8649,9 @@ function confirmBatchDownload() {
       const epTitle = ep?.title ? `${media.title} - ${ep.title}` : `${media.title} - S${seNum} Ep ${epNum}`;
       const epPoster = ep?.stillPath || media.poster || 'assets/fobs_logo.png';
       const taskId = `dl_${subjectId || media.id}_s${seNum}_e${epNum}_${currentDownloadQuality}`;
-      const estSizeStr = getEpisodeEstimatedSize(currentDownloadQuality, ep, idx);
+      const epRealSize = ep?.realSizeText || getEpisodeEstimatedSize(currentDownloadQuality, ep, idx);
+      const epRealBytes = ep?.realSizeBytes || 0;
+      const epRealQuality = ep?.realQuality || currentDownloadQuality;
 
       // Construct server stream URL with STRICT resolution matching
       const downloadEndpointUrl = `/api/moviebox/stream?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
@@ -8588,16 +8661,16 @@ function confirmBatchDownload() {
         mediaId: media.id,
         title: epTitle,
         poster: epPoster,
-        quality: currentDownloadQuality,
-        resolution: targetResNum,
+        quality: epRealQuality,
+        resolution: parseInt(epRealQuality, 10) || targetResNum,
         season: seNum,
         episode: epNum,
         isSeries: true,
         url: downloadEndpointUrl,
         progress: 0,
         receivedBytes: 0,
-        totalBytes: 0,
-        sizeText: estSizeStr,
+        totalBytes: epRealBytes,
+        sizeText: epRealSize,
         date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
         status: 'queued',
         statusText: 'Waiting in Queue (লাইনে অপেক্ষমাণ)',
