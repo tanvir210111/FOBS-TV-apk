@@ -1,13 +1,86 @@
-// FOBS TV Live OTA Patch Bundle v1.0.8
+// FOBS TV Live OTA Patch Bundle v1.0.9
 // 1. Online watch: ALL episodes shown serially with auto-detect playback (always lowest resolution default)
-// 2. Download modal ONLY: strictly filter episodes by available resolution with exact real file sizes
+// 2. Video Player: Never stuck on poster; eliminate native WebKit play button & frozen poster overlays
+// 3. Download modal ONLY: strictly filter episodes by available resolution with exact real file sizes
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.0.8 executing...');
+  console.log('⚡ FOBS TV Live Patch v1.0.9 executing...');
+
+  // -------------------------------------------------------------
+  // 0. Eliminate Native Android Poster Freeze & Big Play Button
+  // -------------------------------------------------------------
+  function injectNoNativePosterStyles() {
+    if (document.getElementById('fobs-no-native-poster-style')) return;
+    const style = document.createElement('style');
+    style.id = 'fobs-no-native-poster-style';
+    style.textContent = `
+      #mainVideoPlayer {
+        background: #000 !important;
+      }
+      #mainVideoPlayer::-webkit-media-controls-start-playback-button,
+      #mainVideoPlayer::-webkit-media-controls-overlay-play-button {
+        display: none !important;
+        -webkit-appearance: none !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        visibility: hidden !important;
+      }
+      .video-loader {
+        background: rgba(0, 0, 0, 0.75) !important;
+        backdrop-filter: blur(3px) !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  injectNoNativePosterStyles();
+
+  function stripVideoPoster() {
+    const video = document.getElementById('mainVideoPlayer');
+    if (video && video.hasAttribute('poster')) {
+      video.removeAttribute('poster');
+    }
+  }
+  stripVideoPoster();
+
+  const videoEl = document.getElementById('mainVideoPlayer');
+  if (videoEl && !videoEl._hasPosterWatcher) {
+    const posterObs = new MutationObserver(() => stripVideoPoster());
+    posterObs.observe(videoEl, { attributes: true, attributeFilter: ['poster'] });
+    videoEl._hasPosterWatcher = true;
+  }
+
+  // Hook playStreamUrl to clear poster and display smooth cyan spinner
+  const origPlayStreamUrl = window.playStreamUrl;
+  window.playStreamUrl = function(url, audioIndex = null, seekTime = null) {
+    stripVideoPoster();
+    const loader = document.getElementById('videoLoader');
+    if (loader) {
+      loader.classList.add('active');
+      const txt = loader.querySelector('.loader-text');
+      if (txt) txt.innerText = 'ভিডিও প্রস্তুত হচ্ছে...';
+    }
+
+    const video = document.getElementById('mainVideoPlayer');
+    if (video) {
+      video.removeAttribute('poster');
+      const hideLoader = () => {
+        if (loader) loader.classList.remove('active');
+      };
+      video.addEventListener('playing', hideLoader, { once: true });
+      video.addEventListener('timeupdate', hideLoader, { once: true });
+      video.addEventListener('loadeddata', hideLoader, { once: true });
+      video.addEventListener('error', hideLoader, { once: true });
+    }
+
+    if (typeof origPlayStreamUrl === 'function') {
+      return origPlayStreamUrl(url, audioIndex, seekTime);
+    }
+  };
 
   // -------------------------------------------------------------
   // 1. Video Player: Restore ALL episode pills for Online Watch (Serially available)
   // -------------------------------------------------------------
   function restoreOnlineWatchPills() {
+    stripVideoPoster();
     const row = document.getElementById('episodesListRow');
     if (!row) return;
 
@@ -22,6 +95,7 @@
 
   // Override window.renderEpisodePills to always render all episodes serially for online watch
   window.renderEpisodePills = function(episodes, activeIndex) {
+    stripVideoPoster();
     const row = document.getElementById('episodesListRow');
     if (!row) return;
 
@@ -481,12 +555,14 @@
   // 8. Ongoing Watchdog
   // -------------------------------------------------------------
   setInterval(() => {
+    stripVideoPoster();
     restoreOnlineWatchPills();
     purgeFake140MB();
   }, 1000);
 
+  stripVideoPoster();
   restoreOnlineWatchPills();
   purgeFake140MB();
 
-  console.log('✅ FOBS TV Live Patch v1.0.8 active: Online watch all serial, Download strictly filtered.');
+  console.log('✅ FOBS TV Live Patch v1.0.9 active: No stuck poster, online watch serial, download strictly filtered.');
 })();

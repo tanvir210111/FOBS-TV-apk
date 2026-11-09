@@ -3577,11 +3577,9 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
     mainVideo._retryCount = 0;
     mainVideo.classList.remove('scale-fill', 'fit-cover');
     mainVideo.classList.add('fit-contain');
-    if (media.backdrop || media.poster) {
-      mainVideo.poster = media.backdrop || media.poster;
-    } else {
-      mainVideo.removeAttribute('poster');
-    }
+    // Never set poster attribute on <video> element to prevent Android WebView
+    // from rendering its native stuck poster & big black play button over the player!
+    mainVideo.removeAttribute('poster');
   }
   const fitLabel = document.getElementById('lsFitLabel');
   if (fitLabel) fitLabel.innerText = 'Fit';
