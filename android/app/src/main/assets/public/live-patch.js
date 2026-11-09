@@ -1,12 +1,13 @@
-// FOBS TV Live OTA Patch Bundle v1.1.9
+// FOBS TV Live OTA Patch Bundle v1.2.0
 // 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (360p/480p default)
 // 2. Video Player: Never stuck on poster; Guaranteed "Connecting to stream server..." overlay with animated cyan spinner
 // 3. Quality sheet: Only show resolutions that ACTUALLY exist (jei resolution nai sei resolution video te show koraiyo na)
 // 4. Download modal: 480P SD, 720P HD, 1080P FHD tabs with real MovieBox streams & sizes; duplicate fallbacks removed
 // 5. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
 // 6. Fast Bufferless Streaming: Instant low-latency playback & resilient offline download engine without proxy loops
+// 7. Auto Audio Silence: Instantly terminate background video & audio when opening Me / Downloads screen
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.1.9 executing...');
+  console.log('⚡ FOBS TV Live Patch v1.2.0 executing...');
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -268,6 +269,8 @@
   if (typeof window.openPlayer === 'function' && !window.openPlayer._hasLoaderHook) {
     const prevOpenPlayer = window.openPlayer;
     window.openPlayer = function(media, episodeIndex = null, resumeSeekTime = null) {
+      const vp = document.getElementById('mainVideoPlayer');
+      if (vp) vp.muted = false;
       showConnectingLoader();
       return prevOpenPlayer(media, episodeIndex, resumeSeekTime);
     };
@@ -810,6 +813,7 @@
 
       if (typeof window.closeDownloadOptionsModal === 'function') window.closeDownloadOptionsModal();
       if (typeof showToast === 'function') showToast(`📥 ${selectedIndices.length} টি পর্ব (${curQ}) ডাউনলোডের সারিতে যুক্ত হয়েছে`);
+      stopBackgroundMedia();
       if (typeof openDownloadsView === 'function') openDownloadsView();
       return;
     }
@@ -866,6 +870,7 @@
 
     if (typeof window.closeDownloadOptionsModal === 'function') window.closeDownloadOptionsModal();
     if (typeof showToast === 'function') showToast(`📥 "${movieTitle}" (${curQ}) ডাউনলোডের সারিতে যুক্ত হয়েছে`);
+    stopBackgroundMedia();
     if (typeof openDownloadsView === 'function') openDownloadsView();
   };
   window.confirmStartDownload = window.confirmBatchDownload;
@@ -1119,7 +1124,47 @@
   }
 
   // -------------------------------------------------------------
-  // 12. Ongoing Watchdog
+  // 12. Stop Background Video & Audio on Downloads View
+  // -------------------------------------------------------------
+  function stopBackgroundMedia() {
+    try {
+      const videoPlayer = document.getElementById('mainVideoPlayer');
+      if (videoPlayer) {
+        videoPlayer.pause();
+        videoPlayer.muted = true;
+      }
+      const embedFrame = document.getElementById('mainEmbedPlayer');
+      if (embedFrame && embedFrame.src && embedFrame.src !== 'about:blank') {
+        embedFrame.src = 'about:blank';
+        embedFrame.style.display = 'none';
+      }
+      if (typeof closePlayer === 'function') {
+        const playerOverlay = document.getElementById('playerOverlay');
+        if (playerOverlay && (playerOverlay.classList.contains('open') || document.body.classList.contains('player-open'))) {
+          closePlayer();
+        }
+      }
+    } catch (_) {}
+  }
+  window.stopBackgroundMedia = stopBackgroundMedia;
+
+  const origOpenDownloadsView = window.openDownloadsView;
+  window.openDownloadsView = function() {
+    stopBackgroundMedia();
+    if (typeof origOpenDownloadsView === 'function') {
+      origOpenDownloadsView();
+    } else {
+      const overlay = document.getElementById('downloadsOverlay');
+      if (overlay) {
+        overlay.classList.add('open');
+        overlay.style.display = 'flex';
+      }
+      if (typeof renderDownloadsList === 'function') renderDownloadsList();
+    }
+  };
+
+  // -------------------------------------------------------------
+  // 13. Ongoing Watchdog
   // -------------------------------------------------------------
   setInterval(() => {
     stripVideoPoster();
@@ -1133,5 +1178,5 @@
   repairStuckDownloads();
   setupDownloadModalObserver();
 
-  console.log('✅ FOBS TV Live Patch v1.1.9 active: Fast instant streaming, anti-stall connecting overlay, repaired 480p movie downloads & queue unblock.');
+  console.log('✅ FOBS TV Live Patch v1.2.0 active: Background video/audio silenced on download page, fast streaming, repaired offline downloads.');
 })();

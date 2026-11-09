@@ -9912,6 +9912,28 @@ window.clearDownloadsHistory = clearDownloadsHistory;
 // Duplicate download helpers removed
 
 function openDownloadsView() {
+  // Immediately stop background video playback & audio
+  const videoPlayer = document.getElementById('mainVideoPlayer');
+  if (videoPlayer) {
+    try {
+      videoPlayer.pause();
+      videoPlayer.muted = true;
+    } catch (_) {}
+  }
+  const embedFrame = document.getElementById('mainEmbedPlayer');
+  if (embedFrame && embedFrame.src && embedFrame.src !== 'about:blank') {
+    try {
+      embedFrame.src = 'about:blank';
+      embedFrame.style.display = 'none';
+    } catch (_) {}
+  }
+  if (typeof closePlayer === 'function') {
+    const playerOverlay = document.getElementById('playerOverlay');
+    if (playerOverlay && (playerOverlay.classList.contains('open') || document.body.classList.contains('player-open'))) {
+      try { closePlayer(); } catch (_) {}
+    }
+  }
+
   const overlay = document.getElementById('downloadsOverlay');
   if (overlay) {
     overlay.classList.add('open');
