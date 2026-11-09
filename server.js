@@ -4193,10 +4193,15 @@ app.all('/api/deploy', (req, res) => {
 
   const { exec } = require('child_process');
   console.log('🚀 Triggering automated git pull & PM2 restart...');
-  exec('node scripts/backup_custom_catalog.js && git fetch origin main && git reset --hard origin/main && node scripts/restore_custom_catalog.js && cp -f data/content.json data/content.backup.json && cp -f data/content.json data/content.local.json && node scripts/optimize_content_size.js && node scripts/optimize_vps_nginx.js', { cwd: __dirname }, (error, stdout, stderr) => {
+  exec('node scripts/backup_custom_catalog.js && git fetch origin main && git reset --hard origin/main && node scripts/restore_custom_catalog.js && cp -f data/content.json data/content.backup.json && cp -f data/content.json data/content.local.json && node scripts/optimize_content_size.js && (node scripts/optimize_vps_nginx.js || true)', { cwd: __dirname }, (error, stdout, stderr) => {
     if (error) {
       console.error('❌ Deploy execution error:', error.message);
-      return res.status(500).json({ success: false, error: error.message, stderr, stdout });
+      res.status(500).json({ success: false, error: error.message, stderr, stdout });
+      setTimeout(() => {
+        exec('pm2 restart fobs-tv || pm2 reload fobs-tv');
+        setTimeout(() => process.exit(0), 1000);
+      }, 500);
+      return;
     }
     console.log('✅ Deploy output:\n', stdout);
     try { movieboxService.invalidateCache(); subtitleService.cache.clear(); } catch (_) {}

@@ -105,8 +105,10 @@ try {
   console.log('Nginx reloaded successfully ✅');
 } catch (err) {
   console.error('Nginx syntax test failed! Restoring backup...', err.message);
-  fs.copyFileSync(confPath + '.bak', confPath);
-  cp.execSync('systemctl reload nginx || nginx -s reload');
+  try {
+    fs.copyFileSync(confPath + '.bak', confPath);
+    cp.execSync('systemctl reload nginx || nginx -s reload');
+  } catch (_) {}
 }
 
 try {
