@@ -1,49 +1,47 @@
-// FOBS TV Live OTA Patch Bundle v1.0.6
-// Bulletproof DOM-level interceptors that work seamlessly even with legacy APK binaries!
+// FOBS TV Live OTA Patch Bundle v1.0.7
+// 1. Online watch: ALL episodes shown serially with auto-detect playback (no pills hidden)
+// 2. Download modal ONLY: strictly filter episodes by available resolution with exact file sizes
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.0.6 executing...');
+  console.log('⚡ FOBS TV Live Patch v1.0.7 executing...');
 
-  // 1. Inject CSS for Chromium shadow-DOM play overlay suppression and clean styling
-  try {
-    const styleId = 'fobs-patch-style-v106';
-    if (!document.getElementById(styleId)) {
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.textContent = `
-        .video-container video::-webkit-media-controls,
-        .video-container video::-webkit-media-controls-enclosure,
-        .video-container video::-webkit-media-controls-panel,
-        .video-container video::-webkit-media-controls-overlay-play-button,
-        .video-container video::-webkit-media-controls-start-playback-button {
-          display: none !important;
-          -webkit-appearance: none !important;
-          opacity: 0 !important;
-          visibility: hidden !important;
-          pointer-events: none !important;
-        }
-        .video-container video {
-          background-color: #000 !important;
-        }
-        .ep-empty-notice {
-          font-size: 12px;
-          color: #f59e0b;
-          padding: 8px 12px;
-          background: rgba(245, 158, 11, 0.1);
-          border-radius: 8px;
-          border: 1px solid rgba(245, 158, 11, 0.25);
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          white-space: nowrap;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  } catch (e) {
-    console.warn('Live patch CSS injection warning:', e);
+  // 1. Video Player: Restore ALL episode pills for Online Watch (Serially available)
+  function restoreOnlineWatchPills() {
+    const row = document.getElementById('episodesListRow');
+    if (!row) return;
+
+    // Unhide all episode pills in player
+    row.querySelectorAll('.ep-pill').forEach(btn => {
+      btn.style.display = '';
+    });
+
+    // Remove any empty-quality notice from the player pills
+    row.querySelectorAll('.ep-empty-notice').forEach(el => el.remove());
   }
 
-  // Helper to get active series ID & path
+  // Override window.renderEpisodePills to always render all episodes serially for online watch
+  window.renderEpisodePills = function(episodes, activeIndex) {
+    const row = document.getElementById('episodesListRow');
+    if (!row) return;
+
+    row.innerHTML = `
+      <button class="ep-pill ep-all">All</button>
+      ${episodes.map((ep, idx) => {
+        const rawNum = ep ? (ep.number ?? ep.episodeNumber ?? ep.episode ?? (idx + 1)) : (idx + 1);
+        const isBad = rawNum === undefined || rawNum === null || String(rawNum).trim() === '' || String(rawNum).toLowerCase() === 'undefined';
+        const cleanNum = isBad ? (idx + 1) : rawNum;
+        const formatted = typeof cleanNum === 'number'
+          ? (cleanNum < 10 ? '0' + cleanNum : String(cleanNum))
+          : String(cleanNum).replace(/^ep\s*/i, '').padStart(2, '0');
+        return `
+          <button class="ep-pill ${idx === activeIndex ? 'active' : ''}" onclick="selectEpisode(${idx})">
+            ${formatted}
+          </button>
+        `;
+      }).join('')}
+    `;
+  };
+
+  // 2. Fetch Quality Info for Download Modal
   function getMediaIdentifiers(media) {
     if (!media) return { sId: '', dPath: '' };
     const sId = media.subjectId || media.mbSubjectId || (media.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '') : null) || (media.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || '';
@@ -51,8 +49,7 @@
     return { sId, dPath };
   }
 
-  // 2. Fetch and Cache Series Episodes Quality Info
-  async function fetchQualityInfoForMedia(media, seasonNum = 1) {
+  async function fetchDownloadQualityInfo(media, seasonNum = 1) {
     if (!media || media._isFetchingInfo) return;
     const { sId, dPath } = getMediaIdentifiers(media);
     if (!sId) return;
@@ -64,86 +61,17 @@
       const data = await res.json();
       if (data && data.ok && Array.isArray(data.episodes) && data.episodes.length > 0) {
         media._episodesInfo = data.episodes;
-
-        // Auto fallback if curQ has 0 episodes in this season
-        const curQ = parseInt(window.appState?.currentQuality || '480p', 10) || 480;
-        const hasCur = data.episodes.some(info => (info.qualities || []).some(q => q.resolution === curQ));
-        if (!hasCur) {
-          const avail = new Set();
-          data.episodes.forEach(info => (info.qualities || []).forEach(q => avail.add(q.resolution)));
-          const sorted = Array.from(avail).sort((a, b) => a - b);
-          if (sorted.length > 0) {
-            const fallbackQ = sorted[0];
-            if (window.appState) window.appState.currentQuality = `${fallbackQ}p`;
-            if (typeof window.updateQualityDisplay === 'function') window.updateQualityDisplay(`${fallbackQ}p`);
-          }
-        }
-
-        // Trigger DOM filters
-        filterEpisodePillsDom();
-        filterBatchModalDom();
+        filterDownloadEpisodesModal();
       }
     } catch (err) {
-      console.warn('fetchQualityInfoForMedia error:', err);
+      console.warn('fetchDownloadQualityInfo error:', err);
     } finally {
       media._isFetchingInfo = false;
     }
   }
 
-  // 3. Bulletproof DOM-level Filter for Player Episode Pills (#episodesListRow)
-  function filterEpisodePillsDom() {
-    const row = document.getElementById('episodesListRow');
-    if (!row) return;
-
-    const media = window.appState?.currentMedia;
-    if (!media) return;
-
-    const episodesInfo = media._episodesInfo;
-    const curQ = parseInt(window.appState?.currentQuality || '480p', 10) || 480;
-
-    if (!episodesInfo) {
-      fetchQualityInfoForMedia(media, window.appState?.currentSeason || 1);
-      return;
-    }
-
-    const buttons = Array.from(row.querySelectorAll('.ep-pill:not(.ep-all)'));
-    let visibleCount = 0;
-
-    buttons.forEach((btn, idx) => {
-      const rawText = btn.textContent.trim();
-      const epNum = parseInt(rawText, 10) || (idx + 1);
-
-      const info = episodesInfo.find(it => it.episode === epNum);
-      let hasQ = false;
-      if (info && Array.isArray(info.qualities) && info.qualities.length > 0) {
-        hasQ = info.qualities.some(q => q.resolution === curQ);
-      }
-
-      if (hasQ) {
-        btn.style.display = '';
-        visibleCount++;
-      } else {
-        btn.style.display = 'none';
-      }
-    });
-
-    let emptyNotice = row.querySelector('.ep-empty-notice');
-    if (visibleCount === 0 && buttons.length > 0) {
-      if (!emptyNotice) {
-        emptyNotice = document.createElement('div');
-        emptyNotice.className = 'ep-empty-notice';
-        row.appendChild(emptyNotice);
-      }
-      emptyNotice.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i><span>${curQ}P তে কোনো পর্ব নেই (${curQ === 480 ? '720P বা 1080P সিলেক্ট করুন' : 'অন্য কোয়ালিটি সিলেক্ট করুন'})</span>`;
-      emptyNotice.style.display = 'flex';
-    } else if (emptyNotice) {
-      emptyNotice.style.display = 'none';
-    }
-  }
-  window.filterEpisodePillsDom = filterEpisodePillsDom;
-
-  // 4. Bulletproof DOM-level Filter for Batch Downloader Modal (#dlEpisodesScrollList)
-  function filterBatchModalDom() {
+  // 3. Strict Quality-Based Episode Filter for DOWNLOAD MODAL ONLY
+  function filterDownloadEpisodesModal() {
     const scrollList = document.getElementById('dlEpisodesScrollList');
     if (!scrollList) return;
 
@@ -155,7 +83,7 @@
     const qNum = parseInt(curQ, 10) || 480;
 
     if (!episodesInfo) {
-      fetchQualityInfoForMedia(media, window.appState?._batchDownload?.season || window.appState?.currentSeason || 1);
+      fetchDownloadQualityInfo(media, window.appState?._batchDownload?.season || window.appState?.currentSeason || 1);
       return;
     }
 
@@ -176,6 +104,7 @@
       const chk = item.querySelector('input[type="checkbox"]');
       const sizeEl = item.querySelector('.dl-ep-size');
 
+      // STRICT DOWNLOAD FILTER: Only show episodes that have this resolution
       if (match) {
         item.style.display = 'flex';
         visibleCount++;
@@ -198,6 +127,24 @@
       }
     });
 
+    // Handle empty state in download modal if 0 episodes exist in this quality
+    let emptyNotice = scrollList.querySelector('.dl-empty-quality-notice');
+    if (visibleCount === 0 && items.length > 0) {
+      if (!emptyNotice) {
+        emptyNotice = document.createElement('div');
+        emptyNotice.className = 'dl-empty-quality-notice';
+        scrollList.appendChild(emptyNotice);
+      }
+      emptyNotice.style.cssText = 'text-align: center; color: #f59e0b; padding: 25px 15px; font-size: 13px; width: 100%;';
+      emptyNotice.innerHTML = `
+        <i class="fa-solid fa-circle-exclamation" style="font-size: 24px; display: block; margin-bottom: 8px;"></i>
+        <span>${curQ} তে কোনো পর্ব উপলব্ধ নেই। উপরে 720P বা 1080P সিলেক্ট করুন।</span>
+      `;
+      emptyNotice.style.display = 'block';
+    } else if (emptyNotice) {
+      emptyNotice.style.display = 'none';
+    }
+
     const totalCountEl = document.getElementById('dlTotalEpsCount');
     if (totalCountEl) totalCountEl.innerText = visibleCount;
 
@@ -205,68 +152,58 @@
       window.updateBatchSelectedSummary();
     }
   }
-  window.filterBatchModalDom = filterBatchModalDom;
+  window.filterDownloadEpisodesModal = filterDownloadEpisodesModal;
 
-  // 5. Watch DOM mutations on #episodesListRow and #dlEpisodesScrollList
-  function setupDomObservers() {
-    const epRow = document.getElementById('episodesListRow');
-    if (epRow && !epRow._hasObserver) {
-      const obs = new MutationObserver((mutations) => {
-        let hasNewButtons = false;
+  // 4. Hook Quality Selection in Download Modal
+  const origSwitchBatchQuality = window.switchBatchQuality;
+  window.switchBatchQuality = function(quality) {
+    if (typeof origSwitchBatchQuality === 'function') {
+      origSwitchBatchQuality(quality);
+    } else {
+      window.currentDownloadQuality = quality || '480P';
+      document.querySelectorAll('#dlQualityTabs .dl-q-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.getAttribute('data-quality') === window.currentDownloadQuality);
+      });
+    }
+    setTimeout(filterDownloadEpisodesModal, 50);
+  };
+
+  // 5. Watch DOM mutations for Download Modal
+  function setupDownloadModalObserver() {
+    const dlList = document.getElementById('dlEpisodesScrollList');
+    if (dlList && !dlList._hasDlObserver) {
+      const dlObs = new MutationObserver((mutations) => {
+        let hasItems = false;
         for (const m of mutations) {
           if (m.type === 'childList' && m.addedNodes.length > 0) {
             for (const n of m.addedNodes) {
-              if (n.nodeType === 1 && (n.classList.contains('ep-pill') || n.id === 'episodesListRow')) {
-                hasNewButtons = true;
+              if (n.nodeType === 1 && n.classList?.contains('dl-ep-item')) {
+                hasItems = true;
                 break;
               }
             }
           }
         }
-        if (hasNewButtons) filterEpisodePillsDom();
-      });
-      obs.observe(epRow, { childList: true });
-      epRow._hasObserver = true;
-    }
-
-    const dlList = document.getElementById('dlEpisodesScrollList');
-    if (dlList && !dlList._hasObserver) {
-      const dlObs = new MutationObserver((mutations) => {
-        let hasItems = false;
-        for (const m of mutations) {
-          if (m.type === 'childList' && m.addedNodes.length > 0) {
-            hasItems = true;
-            break;
-          }
-        }
-        if (hasItems) filterBatchModalDom();
+        if (hasItems) filterDownloadEpisodesModal();
       });
       dlObs.observe(dlList, { childList: true });
-      dlList._hasObserver = true;
+      dlList._hasDlObserver = true;
     }
   }
 
-  // 6. Hook Global Quality Clicks
+  // 6. Global Click Listeners for Download Quality Tabs & Open Button
   document.addEventListener('click', (e) => {
-    // Quality sheet selection
-    const qBtn = e.target.closest('.quality-sheet-btn, [data-quality]');
-    if (qBtn) {
-      setTimeout(() => {
-        filterEpisodePillsDom();
-        filterBatchModalDom();
-      }, 80);
+    const dlTab = e.target.closest('#dlQualityTabs .dl-q-tab, [onclick*="switchBatchQuality"]');
+    if (dlTab) {
+      setTimeout(filterDownloadEpisodesModal, 60);
     }
-
-    // Download modal open button
     const dlOpenBtn = e.target.closest('#downloadBtn, .download-btn, [onclick*="triggerDownload"]');
     if (dlOpenBtn) {
-      setTimeout(() => {
-        filterBatchModalDom();
-      }, 150);
+      setTimeout(filterDownloadEpisodesModal, 150);
     }
   }, true);
 
-  // 7. Auto-Purge and Repair 140MB Fake Sizes in LocalStorage & Active Downloads
+  // 7. Auto-Purge 140MB Fake Sizes in LocalStorage & Downloads View
   function purgeFake140MB() {
     try {
       const raw = localStorage.getItem('fobs_downloads');
@@ -313,21 +250,19 @@
     } catch (e) {}
   }
 
-  // Periodic Watchdog (Runs every 1 second to keep observers and filters alive)
+  // 8. Ongoing Watchdog
   setInterval(() => {
-    setupDomObservers();
-    const playerOpen = document.getElementById('playerOverlay')?.classList.contains('open') || (document.getElementById('playerOverlay')?.style.display === 'block');
-    if (playerOpen) {
-      filterEpisodePillsDom();
-    }
+    restoreOnlineWatchPills();
+    setupDownloadModalObserver();
     const dlModalOpen = document.getElementById('downloadOptionsModal')?.classList.contains('open');
     if (dlModalOpen) {
-      filterBatchModalDom();
+      filterDownloadEpisodesModal();
     }
-  }, 1000);
+  }, 800);
 
+  restoreOnlineWatchPills();
   purgeFake140MB();
-  setupDomObservers();
+  setupDownloadModalObserver();
 
-  console.log('✅ FOBS TV Live Patch v1.0.6 fully armed and active.');
+  console.log('✅ FOBS TV Live Patch v1.0.7 active: Online watch all serial, Download strictly filtered.');
 })();

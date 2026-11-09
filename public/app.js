@@ -3850,52 +3850,20 @@ async function loadSeriesEpisodesQualityInfo(media, seasonNum = 1) {
 }
 window.loadSeriesEpisodesQualityInfo = loadSeriesEpisodesQualityInfo;
 
-// Render Episode Pills (MovieBox exact match: only shows episodes available in current quality)
+// Render Episode Pills (All episodes serially available for online watch)
 function renderEpisodePills(episodes, activeIndex) {
   const row = document.getElementById('episodesListRow');
   if (!row) return;
 
-  const currentMedia = appState.currentMedia;
-  const curQ = parseInt(appState.currentQuality || '480p', 10) || 480;
-  const episodesInfo = (currentMedia && currentMedia._episodesInfo) || [];
-
-  // Filter episodes strictly by current quality when quality metadata is present
-  let visibleEpisodes = [];
-  episodes.forEach((ep, idx) => {
-    const epNum = ep ? (ep.number ?? ep.episodeNumber ?? ep.episode ?? (idx + 1)) : (idx + 1);
-    const info = episodesInfo.find(it => it.episode === epNum);
-    
-    if (episodesInfo.length > 0) {
-      if (info && Array.isArray(info.qualities) && info.qualities.length > 0) {
-        const hasQ = info.qualities.some(q => q.resolution === curQ);
-        if (hasQ) {
-          visibleEpisodes.push({ ep, idx, epNum });
-        }
-      }
-      // If quality info is loaded for this series but this episode does not have curQ, DO NOT SHOW IT!
-    } else {
-      // Quality metadata not loaded yet, show all until metadata arrives
-      visibleEpisodes.push({ ep, idx, epNum });
-    }
-  });
-
-  if (visibleEpisodes.length === 0 && episodes.length > 0) {
-    row.innerHTML = `
-      <div style="font-size: 12px; color: #f59e0b; padding: 8px 12px; background: rgba(245, 158, 11, 0.1); border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.25); display: flex; align-items: center; gap: 6px;">
-        <i class="fa-solid fa-circle-exclamation"></i>
-        <span>${curQ}P তে কোনো পর্ব নেই (${curQ === 480 ? '720P বা 1080P সিলেক্ট করুন' : 'অন্য কোয়ালিটি সিলেক্ট করুন'})</span>
-      </div>
-    `;
-    return;
-  }
-
   row.innerHTML = `
     <button class="ep-pill ep-all">All</button>
-    ${visibleEpisodes.map(item => {
-      const { ep, idx, epNum } = item;
-      const formatted = typeof epNum === 'number'
-        ? (epNum < 10 ? '0' + epNum : String(epNum))
-        : String(epNum).replace(/^ep\s*/i, '').padStart(2, '0');
+    ${episodes.map((ep, idx) => {
+      const rawNum = ep ? (ep.number ?? ep.episodeNumber ?? ep.episode ?? (idx + 1)) : (idx + 1);
+      const isBad = rawNum === undefined || rawNum === null || String(rawNum).trim() === '' || String(rawNum).toLowerCase() === 'undefined';
+      const cleanNum = isBad ? (idx + 1) : rawNum;
+      const formatted = typeof cleanNum === 'number'
+        ? (cleanNum < 10 ? '0' + cleanNum : String(cleanNum))
+        : String(cleanNum).replace(/^ep\s*/i, '').padStart(2, '0');
       return `
         <button class="ep-pill ${idx === activeIndex ? 'active' : ''}" onclick="selectEpisode(${idx})">
           ${formatted}
