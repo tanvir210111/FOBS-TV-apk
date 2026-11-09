@@ -8321,23 +8321,6 @@ async function fetchExactEpisodesSizes(media, seasonNum) {
     const data = await res.json();
     if (data && data.ok && Array.isArray(data.episodes) && data.episodes.length > 0) {
       media._episodesInfo = data.episodes;
-
-      // Auto-fallback if current download quality has 0 episodes in this season
-      const curQNum = parseInt(currentDownloadQuality || '480P', 10) || 480;
-      const hasCurQ = data.episodes.some(info => (info.qualities || []).some(q => q.resolution === curQNum));
-      if (!hasCurQ) {
-        const avail = new Set();
-        data.episodes.forEach(info => (info.qualities || []).forEach(q => avail.add(q.resolution)));
-        const sorted = Array.from(avail).sort((a, b) => a - b);
-        if (sorted.length > 0) {
-          currentDownloadQuality = `${sorted[0]}P`;
-          document.querySelectorAll('#dlQualityTabs .dl-q-tab').forEach(tab => {
-            tab.classList.toggle('active', tab.getAttribute('data-quality') === currentDownloadQuality);
-          });
-        }
-      }
-
-      // Re-render items with exact real sizes and strict quality matching
       renderBatchEpisodesList(seasonNum);
     }
   } catch (err) {
@@ -8346,7 +8329,7 @@ async function fetchExactEpisodesSizes(media, seasonNum) {
 }
 window.fetchExactEpisodesSizes = fetchExactEpisodesSizes;
 
-// Render Episodes List inside Batch Modal (MovieBox exact match: only shows episodes available in current quality)
+// Render Episodes List inside Batch Modal (All qualities 480P / 720P / 1080P always available)
 function renderBatchEpisodesList(seasonNum) {
   const media = appState.currentMedia;
   if (!media) return;
@@ -8366,7 +8349,6 @@ function renderBatchEpisodesList(seasonNum) {
       allEpisodes = media.episodes;
     }
   } else {
-    // Single Movie is displayed exactly like an episode list item!
     allEpisodes = [{
       episode: 1,
       isMovie: true,
@@ -8380,77 +8362,54 @@ function renderBatchEpisodesList(seasonNum) {
     return;
   }
 
-  const qNum = parseInt(currentDownloadQuality || '480P', 10) || 480;
+  const curQ = currentDownloadQuality || '480P';
+  const qNum = parseInt(curQ, 10) || 480;
   const episodesInfo = (media && media._episodesInfo) || [];
 
-  // Filter items strictly matching current download quality
-  let filteredEpisodes = [];
-  allEpisodes.forEach((ep, origIdx) => {
+  // All episodes and movies are ALWAYS available to download in 480P, 720P, 1080P!
+  const preparedEpisodes = allEpisodes.map((ep, origIdx) => {
     const epNum = ep ? (ep.episode ?? ep.episodeNumber ?? ep.number ?? (origIdx + 1)) : (origIdx + 1);
-    const info = episodesInfo.find(it => it.isMovie || it.episode === epNum);
-    if (episodesInfo.length > 0) {
-      if (info && Array.isArray(info.qualities) && info.qualities.length > 0) {
-        const match = info.qualities.find(q => q.resolution === qNum);
-        if (match) {
-          filteredEpisodes.push({ ep, origIdx, epNum, match });
-        }
-      }
-      // If quality metadata exists and this episode/movie does not have qNum, DO NOT SHOW IT!
-    } else {
-      // If quality metadata not yet loaded, show item until info arrives
-      filteredEpisodes.push({ ep, origIdx, epNum, match: null });
+    const isMovieItem = ep.isMovie || !isSeries;
+    const info = episodesInfo.find(it => isMovieItem ? (it.isMovie || it.episode === 1) : it.episode === epNum);
+
+    let match = null;
+    if (info && Array.isArray(info.qualities) && info.qualities.length > 0) {
+      match = info.qualities.find(q => q.resolution === qNum)
+           || (qNum === 480 ? info.qualities.find(q => q.resolution === 360) : null);
     }
+
+    const epCopy = { ...ep, _origIdx: origIdx };
+    if (match && match.sizeText) {
+      epCopy.realSizeText = match.sizeText;
+      epCopy.realSizeBytes = match.sizeBytes;
+      epCopy.realQuality = `${match.resolution}P`;
+    } else {
+      const estMb = isMovieItem
+        ? (qNum >= 1080 ? 1200 : (qNum >= 720 ? 650 : 380))
+        : (qNum >= 1080 ? 480 : (qNum >= 720 ? 260 : 135));
+      const formatted = estMb >= 1024 ? `~${(estMb / 1024).toFixed(2)} GB` : `~${estMb} MB`;
+      epCopy.realSizeText = formatted;
+      epCopy.realSizeBytes = estMb * 1024 * 1024;
+      epCopy.realQuality = curQ;
+    }
+    return epCopy;
   });
 
-  if (filteredEpisodes.length === 0 && allEpisodes.length > 0) {
-    const emptyMsg = isSeries
-      ? `${currentDownloadQuality} তে কোনো পর্ব নেই। উপরে 720P বা 1080P সিলেক্ট করুন।`
-      : `${currentDownloadQuality} তে কোনো ফাইল নেই। উপরে 720P বা 1080P সিলেক্ট করুন।`;
-    scrollList.innerHTML = `
-      <div style="text-align: center; color: #f59e0b; padding: 30px 15px; font-size: 13px;">
-        <i class="fa-solid fa-circle-exclamation" style="font-size: 24px; display: block; margin-bottom: 8px;"></i>
-        <span>${emptyMsg}</span>
-      </div>
-    `;
-    const totalCountEl = document.getElementById('dlTotalEpsCount');
-    if (totalCountEl) totalCountEl.innerText = 0;
-    appState._batchDownload = {
-      media,
-      isSeries,
-      season: seasonNum,
-      episodes: [],
-      selected: new Set()
-    };
-    updateBatchSelectedSummary();
-    return;
-  }
-
-  // Initialize batch state with filtered episodes/movie
-  const selectedSet = new Set(filteredEpisodes.map((_, i) => i));
+  const selectedSet = new Set(preparedEpisodes.map((_, i) => i));
   appState._batchDownload = {
     media,
     isSeries,
     season: seasonNum,
-    episodes: filteredEpisodes.map(f => {
-      const epCopy = { ...f.ep, _origIdx: f.origIdx };
-      if (f.match) {
-        epCopy.realSizeText = f.match.sizeText;
-        epCopy.realSizeBytes = f.match.sizeBytes;
-        epCopy.realQuality = `${f.match.resolution}P`;
-      }
-      return epCopy;
-    }),
+    episodes: preparedEpisodes,
     selected: selectedSet
   };
 
-  scrollList.innerHTML = appState._batchDownload.episodes.map((ep, idx) => {
+  scrollList.innerHTML = preparedEpisodes.map((ep, idx) => {
     const isMovieItem = ep.isMovie || !isSeries;
     const epNum = ep.episode ?? ep.episodeNumber ?? ep.number ?? (idx + 1);
     const badgeText = isMovieItem ? 'MOVIE' : `EP ${epNum}`;
     const epTitle = isMovieItem ? media.title : (ep.title ? ep.title : `Episode ${epNum}`);
-    const estSizeStr = ep.realSizeText || (isMovieItem
-      ? (qNum >= 1080 ? '~1.2 GB' : (qNum >= 720 ? '~650 MB' : '~380 MB'))
-      : getEpisodeEstimatedSize(currentDownloadQuality, ep, idx));
+    const estSizeStr = ep.realSizeText || 'Calculating size...';
 
     return `
       <div class="dl-ep-item selected" id="dl_ep_item_${idx}" onclick="toggleBatchEpisode(${idx})">
@@ -8470,7 +8429,7 @@ function renderBatchEpisodesList(seasonNum) {
   }).join('');
 
   const totalCountEl = document.getElementById('dlTotalEpsCount');
-  if (totalCountEl) totalCountEl.innerText = appState._batchDownload.episodes.length;
+  if (totalCountEl) totalCountEl.innerText = preparedEpisodes.length;
 
   const selectAllChk = document.getElementById('dlSelectAllCheckbox');
   if (selectAllChk) selectAllChk.checked = true;
@@ -8599,19 +8558,8 @@ function triggerDownload() {
   let activeTitle = media.title;
   let activePoster = media.poster || 'assets/fobs_logo.png';
 
-  // Default to 480P Data Saver, but if episodesInfo is loaded and 480P has 0 episodes, pick lowest available
-  currentDownloadQuality = '480P';
-  if (media._episodesInfo && media._episodesInfo.length > 0) {
-    const has480 = media._episodesInfo.some(info => (info.qualities || []).some(q => q.resolution === 480));
-    if (!has480) {
-      const avail = new Set();
-      media._episodesInfo.forEach(info => (info.qualities || []).forEach(q => avail.add(q.resolution)));
-      const sorted = Array.from(avail).sort((a, b) => a - b);
-      if (sorted.length > 0) {
-        currentDownloadQuality = `${sorted[0]}P`;
-      }
-    }
-  }
+  // Default to 480P Data Saver
+  currentDownloadQuality = currentDownloadQuality || '480P';
 
   const modal = document.getElementById('downloadOptionsModal');
   const headerTitle = document.getElementById('dlModalHeaderTitle');

@@ -1,11 +1,11 @@
-// FOBS TV Live OTA Patch Bundle v1.1.2
-// 1. Online watch: ALL episodes shown serially with auto-detect playback (always lowest resolution default)
+// FOBS TV Live OTA Patch Bundle v1.1.3
+// 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (480p/360p default)
 // 2. Video Player: Never stuck on poster; Connecting to stream server message with animated loader; hide resolution in portrait
-// 3. Quality sheet: Only show available resolutions for the current episode; hide non-existent ones
-// 4. Download modal ONLY: strictly filter episodes and movies by available resolution with exact real file sizes
+// 3. Quality sheet: ALWAYS show 1080p, 720p, 480p, 360p so user can freely switch anytime!
+// 4. Download modal: 480P SD, 720P HD, 1080P FHD tabs ALWAYS work for ALL movies and series (exact sizes when present, optimized sizes when not)
 // 5. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.1.2 executing...');
+  console.log('⚡ FOBS TV Live Patch v1.1.3 executing...');
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -108,26 +108,32 @@
   };
 
   // -------------------------------------------------------------
-  // Dynamic Quality Sheet Filter (Only show available resolutions)
+  // Dynamic Quality Sheet: ALWAYS show 1080p, 720p, 480p, 360p! Never hide 480 or 720!
   // -------------------------------------------------------------
   const origOpenQualitySheet = window.openQualitySheet;
   window.openQualitySheet = function() {
     const container = document.getElementById('qualityOptionsList');
     if (container) {
       const state = getAppState();
-      const avail = state?.availableQualities || window.appState?.availableQualities || [];
-      const availResSet = new Set(avail.map(q => parseInt(q.resolution, 10)).filter(n => !isNaN(n) && n > 0));
-
+      const curQ = parseInt(state?.currentQuality || '480', 10);
       const buttons = container.querySelectorAll('.sheet-option-btn');
       buttons.forEach(btn => {
+        btn.style.display = 'flex'; // ALWAYS show all quality choices!
         const qVal = parseInt(btn.getAttribute('data-q') || '', 10);
-        if (availResSet.size > 0) {
-          btn.style.display = availResSet.has(qVal) ? 'flex' : 'none';
-        } else {
-          btn.style.display = 'flex';
-        }
-        const curQ = parseInt(state?.currentQuality || '480', 10);
         btn.classList.toggle('selected', qVal === curQ);
+      });
+    }
+
+    const lsContainer = document.getElementById('lsQualityOptionsList');
+    if (lsContainer) {
+      const state = getAppState();
+      const curQ = parseInt(state?.currentQuality || '480', 10);
+      const lsButtons = lsContainer.querySelectorAll('.ls-speed-option');
+      lsButtons.forEach(btn => {
+        btn.style.display = 'flex';
+        const qAttr = btn.getAttribute('data-quality') || '';
+        const qVal = parseInt(qAttr, 10);
+        btn.classList.toggle('active', qVal === curQ || (qAttr === 'auto' && curQ === 480));
       });
     }
 
@@ -147,12 +153,9 @@
     const row = document.getElementById('episodesListRow');
     if (!row) return;
 
-    // Unhide all episode pills in player
     row.querySelectorAll('.ep-pill').forEach(btn => {
       btn.style.display = '';
     });
-
-    // Remove any empty-quality notice from the player pills
     row.querySelectorAll('.ep-empty-notice').forEach(el => el.remove());
   }
 
@@ -206,27 +209,7 @@
       const data = await res.json();
       if (data && data.ok && Array.isArray(data.episodes) && data.episodes.length > 0) {
         media._episodesInfo = data.episodes;
-
-        // Auto-switch to lowest available quality if current quality has 0 episodes in this season
-        const curQNum = parseInt(window.currentDownloadQuality || '480P', 10) || 480;
-        const hasCurQ = data.episodes.some(info => (info.qualities || []).some(q => q.resolution === curQNum));
-        if (!hasCurQ) {
-          const avail = new Set();
-          data.episodes.forEach(info => (info.qualities || []).forEach(q => avail.add(q.resolution)));
-          const sorted = Array.from(avail).sort((a, b) => a - b);
-          if (sorted.length > 0) {
-            window.currentDownloadQuality = `${sorted[0]}P`;
-            document.querySelectorAll('#dlQualityTabs .dl-q-tab').forEach(tab => {
-              tab.classList.toggle('active', tab.getAttribute('data-quality') === window.currentDownloadQuality);
-            });
-          }
-        }
-
-        if (typeof window.renderBatchEpisodesList === 'function') {
-          window.renderBatchEpisodesList(seasonNum);
-        } else {
-          filterDownloadEpisodesModal();
-        }
+        filterDownloadEpisodesModal();
       }
     } catch (err) {
       console.warn('fetchDownloadQualityInfo error:', err);
@@ -274,77 +257,53 @@
     const qNum = parseInt(curQ, 10) || 480;
     const episodesInfo = (media && media._episodesInfo) || [];
 
-    let filteredEpisodes = [];
-    allEpisodes.forEach((ep, origIdx) => {
+    // All episodes / movie are ALWAYS available in 480P, 720P, 1080P!
+    const preparedEpisodes = allEpisodes.map((ep, origIdx) => {
       const epNum = ep ? (ep.episode ?? ep.episodeNumber ?? ep.number ?? (origIdx + 1)) : (origIdx + 1);
-      const info = episodesInfo.find(it => it.isMovie || it.episode === epNum);
-      if (episodesInfo.length > 0) {
-        if (info && Array.isArray(info.qualities) && info.qualities.length > 0) {
-          const match = info.qualities.find(q => q.resolution === qNum);
-          if (match) {
-            filteredEpisodes.push({ ep, origIdx, epNum, match });
-          }
-        }
-      } else {
-        filteredEpisodes.push({ ep, origIdx, epNum, match: null });
+      const isMovieItem = ep.isMovie || !isSeries;
+      const info = episodesInfo.find(it => isMovieItem ? (it.isMovie || it.episode === 1) : it.episode === epNum);
+
+      let match = null;
+      if (info && Array.isArray(info.qualities) && info.qualities.length > 0) {
+        match = info.qualities.find(q => q.resolution === qNum)
+             || (qNum === 480 ? info.qualities.find(q => q.resolution === 360) : null);
       }
+
+      const epCopy = { ...ep, _origIdx: origIdx };
+      if (match && match.sizeText) {
+        epCopy.realSizeText = match.sizeText;
+        epCopy.realSizeBytes = match.sizeBytes;
+        epCopy.realQuality = `${match.resolution}P`;
+      } else {
+        const estMb = isMovieItem
+          ? (qNum >= 1080 ? 1200 : (qNum >= 720 ? 650 : 380))
+          : (qNum >= 1080 ? 480 : (qNum >= 720 ? 260 : 135));
+        const formatted = estMb >= 1024 ? `~${(estMb / 1024).toFixed(2)} GB` : `~${estMb} MB`;
+        epCopy.realSizeText = formatted;
+        epCopy.realSizeBytes = estMb * 1024 * 1024;
+        epCopy.realQuality = curQ;
+      }
+      return epCopy;
     });
 
     const state = getAppState();
-
-    if (filteredEpisodes.length === 0 && allEpisodes.length > 0) {
-      const emptyMsg = isSeries
-        ? `${curQ} তে কোনো পর্ব নেই। উপরে 720P বা 1080P সিলেক্ট করুন।`
-        : `${curQ} তে কোনো ফাইল নেই। উপরে 720P বা 1080P সিলেক্ট করুন।`;
-      scrollList.innerHTML = `
-        <div style="text-align: center; color: #f59e0b; padding: 30px 15px; font-size: 13px;">
-          <i class="fa-solid fa-circle-exclamation" style="font-size: 24px; display: block; margin-bottom: 8px;"></i>
-          <span>${emptyMsg}</span>
-        </div>
-      `;
-      const totalCountEl = document.getElementById('dlTotalEpsCount');
-      if (totalCountEl) totalCountEl.innerText = 0;
-      if (state) {
-        state._batchDownload = {
-          media,
-          isSeries,
-          season: seasonNum,
-          episodes: [],
-          selected: new Set()
-        };
-      }
-      if (typeof window.updateBatchSelectedSummary === 'function') window.updateBatchSelectedSummary();
-      return;
-    }
-
-    const selectedSet = new Set(filteredEpisodes.map((_, i) => i));
+    const selectedSet = new Set(preparedEpisodes.map((_, i) => i));
     if (state) {
       state._batchDownload = {
         media,
         isSeries,
         season: seasonNum,
-        episodes: filteredEpisodes.map(f => {
-          const epCopy = { ...f.ep, _origIdx: f.origIdx };
-          if (f.match) {
-            epCopy.realSizeText = f.match.sizeText;
-            epCopy.realSizeBytes = f.match.sizeBytes;
-            epCopy.realQuality = `${f.match.resolution}P`;
-          }
-          return epCopy;
-        }),
+        episodes: preparedEpisodes,
         selected: selectedSet
       };
     }
 
-    const batchEpisodes = state?._batchDownload?.episodes || filteredEpisodes.map(f => f.ep);
-    scrollList.innerHTML = batchEpisodes.map((ep, idx) => {
+    scrollList.innerHTML = preparedEpisodes.map((ep, idx) => {
       const isMovieItem = ep.isMovie || !isSeries;
       const epNum = ep.episode ?? ep.episodeNumber ?? ep.number ?? (idx + 1);
       const badgeText = isMovieItem ? 'MOVIE' : `EP ${epNum}`;
       const epTitle = isMovieItem ? media.title : (ep.title ? ep.title : `Episode ${epNum}`);
-      const estSizeStr = ep.realSizeText || (isMovieItem
-        ? (qNum >= 1080 ? '~1.2 GB' : (qNum >= 720 ? '~650 MB' : '~380 MB'))
-        : (typeof getEpisodeEstimatedSize === 'function' ? getEpisodeEstimatedSize(curQ, ep, idx) : '~250 MB'));
+      const estSizeStr = ep.realSizeText || 'Calculating size...';
 
       return `
         <div class="dl-ep-item selected" id="dl_ep_item_${idx}" onclick="toggleBatchEpisode(${idx})">
@@ -364,7 +323,7 @@
     }).join('');
 
     const totalCountEl = document.getElementById('dlTotalEpsCount');
-    if (totalCountEl) totalCountEl.innerText = batchEpisodes.length;
+    if (totalCountEl) totalCountEl.innerText = preparedEpisodes.length;
 
     const selectAllChk = document.getElementById('dlSelectAllCheckbox');
     if (selectAllChk) selectAllChk.checked = true;
@@ -374,7 +333,7 @@
   };
 
   // -------------------------------------------------------------
-  // 4. Strict Download Modal Filter Watcher
+  // 4. Download Modal Filter Watcher: Updates sizes, NEVER hides items!
   // -------------------------------------------------------------
   function filterDownloadEpisodesModal() {
     const scrollList = document.getElementById('dlEpisodesScrollList');
@@ -384,22 +343,16 @@
     if (!media) return;
 
     const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.seasons && media.seasons.length > 0) || (media.id && media.id.startsWith('mb-s-')) || (media.id && media.id.startsWith('kmdl-s-'));
-    const episodesInfo = media._episodesInfo;
+    const episodesInfo = media._episodesInfo || [];
     const curQ = window.currentDownloadQuality || '480P';
     const qNum = parseInt(curQ, 10) || 480;
 
     const state = getAppState();
     const batchState = state?._batchDownload;
 
-    if (!episodesInfo) {
-      fetchDownloadQualityInfo(media, isSeries ? (batchState?.season || state?.currentSeason || 1) : 0);
-      return;
-    }
-
     const items = Array.from(scrollList.querySelectorAll('.dl-ep-item'));
-    let visibleCount = 0;
-
     items.forEach((item, idx) => {
+      item.style.display = 'flex'; // ALWAYS visible!
       const badge = item.querySelector('.dl-ep-badge');
       const isMovieBadge = badge && badge.textContent.includes('MOVIE');
       const badgeText = badge ? badge.textContent.replace(/[^0-9]/g, '') : '';
@@ -408,58 +361,40 @@
       const info = episodesInfo.find(it => (isMovieBadge || !isSeries) ? (it.isMovie || it.episode === 1) : it.episode === epNum);
       let match = null;
       if (info && Array.isArray(info.qualities) && info.qualities.length > 0) {
-        match = info.qualities.find(q => q.resolution === qNum);
+        match = info.qualities.find(q => q.resolution === qNum)
+             || (qNum === 480 ? info.qualities.find(q => q.resolution === 360) : null);
       }
 
-      const chk = item.querySelector('input[type="checkbox"]');
       const sizeEl = item.querySelector('.dl-ep-size');
+      let sizeText = '';
+      let sizeBytes = 0;
 
-      // STRICT DOWNLOAD FILTER: Only show item if it has this resolution
-      if (match) {
-        item.style.display = 'flex';
-        visibleCount++;
-        if (sizeEl && match.sizeText) {
-          sizeEl.textContent = match.sizeText;
-        }
-        if (batchState?.episodes?.[idx]) {
-          batchState.episodes[idx].realSizeText = match.sizeText;
-          batchState.episodes[idx].realSizeBytes = match.sizeBytes;
-          batchState.episodes[idx].realQuality = `${match.resolution}P`;
-        }
+      if (match && match.sizeText) {
+        sizeText = match.sizeText;
+        sizeBytes = match.sizeBytes;
       } else {
-        item.style.display = 'none';
-        if (chk && chk.checked) {
-          chk.checked = false;
-        }
-        if (batchState?.selected) {
-          batchState.selected.delete(idx);
-        }
+        const isMovieItem = isMovieBadge || !isSeries;
+        const estMb = isMovieItem
+          ? (qNum >= 1080 ? 1200 : (qNum >= 720 ? 650 : 380))
+          : (qNum >= 1080 ? 480 : (qNum >= 720 ? 260 : 135));
+        sizeText = estMb >= 1024 ? `~${(estMb / 1024).toFixed(2)} GB` : `~${estMb} MB`;
+        sizeBytes = estMb * 1024 * 1024;
+      }
+
+      if (sizeEl) sizeEl.textContent = sizeText;
+      if (batchState?.episodes?.[idx]) {
+        batchState.episodes[idx].realSizeText = sizeText;
+        batchState.episodes[idx].realSizeBytes = sizeBytes;
+        batchState.episodes[idx].realQuality = curQ;
       }
     });
 
-    // Handle empty state in download modal if 0 items exist in this quality
-    let emptyNotice = scrollList.querySelector('.dl-empty-quality-notice');
-    if (visibleCount === 0 && items.length > 0) {
-      if (!emptyNotice) {
-        emptyNotice = document.createElement('div');
-        emptyNotice.className = 'dl-empty-quality-notice';
-        scrollList.appendChild(emptyNotice);
-      }
-      emptyNotice.style.cssText = 'text-align: center; color: #f59e0b; padding: 25px 15px; font-size: 13px; width: 100%;';
-      const emptyText = isSeries
-        ? `${curQ} তে কোনো পর্ব উপলব্ধ নেই। উপরে 720P বা 1080P সিলেক্ট করুন।`
-        : `${curQ} তে কোনো ফাইল উপলব্ধ নেই। উপরে 720P বা 1080P সিলেক্ট করুন।`;
-      emptyNotice.innerHTML = `
-        <i class="fa-solid fa-circle-exclamation" style="font-size: 24px; display: block; margin-bottom: 8px;"></i>
-        <span>${emptyText}</span>
-      `;
-      emptyNotice.style.display = 'block';
-    } else if (emptyNotice) {
-      emptyNotice.style.display = 'none';
-    }
+    // Remove any empty-quality notice
+    const emptyNotice = scrollList.querySelector('.dl-empty-quality-notice');
+    if (emptyNotice) emptyNotice.remove();
 
     const totalCountEl = document.getElementById('dlTotalEpsCount');
-    if (totalCountEl) totalCountEl.innerText = visibleCount;
+    if (totalCountEl) totalCountEl.innerText = items.length;
 
     if (typeof window.updateBatchSelectedSummary === 'function') {
       window.updateBatchSelectedSummary();
@@ -479,6 +414,9 @@
     }
 
     const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.seasons && media.seasons.length > 0) || (media.id && media.id.startsWith('mb-s-')) || (media.id && media.id.startsWith('kmdl-s-'));
+
+    // Default to 480P Data Saver
+    window.currentDownloadQuality = window.currentDownloadQuality || '480P';
 
     if (typeof origTriggerDownload === 'function') {
       origTriggerDownload();
@@ -502,21 +440,24 @@
   };
 
   // -------------------------------------------------------------
-  // 6. Hook Quality Selection in Download Modal
+  // 6. Hook Quality Selection in Download Modal (480P, 720P, 1080P)
   // -------------------------------------------------------------
-  const origSwitchBatchQuality = window.switchBatchQuality;
   window.switchBatchQuality = function(quality) {
-    if (typeof origSwitchBatchQuality === 'function') {
-      origSwitchBatchQuality(quality);
-    } else {
-      window.currentDownloadQuality = quality || '480P';
-      document.querySelectorAll('#dlQualityTabs .dl-q-tab').forEach(tab => {
-        tab.classList.toggle('active', tab.getAttribute('data-quality') === window.currentDownloadQuality);
-      });
-      const batchState = getAppState()?._batchDownload;
-      window.renderBatchEpisodesList(batchState?.season || 0);
+    window.currentDownloadQuality = quality || '480P';
+    document.querySelectorAll('#dlQualityTabs .dl-q-tab').forEach(tab => {
+      tab.classList.toggle('active', tab.getAttribute('data-quality') === window.currentDownloadQuality);
+    });
+
+    const previewMeta = document.getElementById('dlPreviewMeta');
+    const media = getActiveMedia();
+    const isHindi = (media?.title?.toLowerCase().includes('hindi') || (window.appState?.currentAudioTrack && window.appState.currentAudioTrack.toLowerCase().includes('hindi')));
+    const dubLabel = isHindi ? 'Hindi Dubbed' : (media?.dubLanguage || 'Original Audio');
+    const qNum = parseInt(window.currentDownloadQuality, 10) || 480;
+    if (previewMeta) {
+      previewMeta.innerText = `${dubLabel} • ${window.currentDownloadQuality} ${qNum >= 1080 ? 'Full HD' : (qNum >= 720 ? 'HD' : 'SD')}`;
     }
-    setTimeout(filterDownloadEpisodesModal, 50);
+
+    filterDownloadEpisodesModal();
   };
 
   // -------------------------------------------------------------
@@ -544,7 +485,7 @@
           const qNum = parseInt(curQ, 10) || 480;
           const estMb = ep?.isMovie
             ? (qNum >= 1080 ? 1200 : (qNum >= 720 ? 650 : 380))
-            : (qNum >= 1080 ? 750 : (qNum >= 720 ? 420 : 250));
+            : (qNum >= 1080 ? 480 : (qNum >= 720 ? 260 : 135));
           totalBytes += estMb * 1024 * 1024;
         }
       });
@@ -571,9 +512,8 @@
   };
 
   // -------------------------------------------------------------
-  // 8. Confirm Download (Handles Movies and Series with Real Sizes)
+  // 8. Confirm Download (Handles Movies and Series with Real / Desired Quality)
   // -------------------------------------------------------------
-  const origConfirmBatchDownload = window.confirmBatchDownload;
   window.confirmBatchDownload = function() {
     const media = getActiveMedia();
     if (!media) {
@@ -592,22 +532,68 @@
       return;
     }
 
+    const subjectId = media.subjectId || media.mbSubjectId || (media.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || (media.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '').replace(/-hindi$/, '') : null) || '';
+    const detailPath = media.detailPath || media.mbDetailPath || '';
+
     if (isSeries) {
-      if (typeof origConfirmBatchDownload === 'function') {
-        return origConfirmBatchDownload();
-      }
+      const seNum = batchState?.season || window.appState?.currentSeason || 1;
+      selectedIndices.forEach(idx => {
+        const ep = batchState.episodes[idx];
+        const epNum = ep ? (ep.episode ?? ep.episodeNumber ?? ep.number ?? (idx + 1)) : (idx + 1);
+        const epTitle = ep?.title ? `${media.title} - ${ep.title}` : `${media.title} - S${seNum} Ep ${epNum}`;
+        const epPoster = ep?.stillPath || media.poster || 'assets/fobs_logo.png';
+        const taskId = `dl_${subjectId || media.id}_s${seNum}_e${epNum}_${curQ}`;
+        const epRealSize = ep?.realSizeText || `~${targetResNum >= 1080 ? 480 : (targetResNum >= 720 ? 260 : 135)} MB`;
+        const epRealBytes = ep?.realSizeBytes || 0;
+        const downloadEndpointUrl = `/api/moviebox/stream?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
+
+        if (window.fobsDownloadQueue) {
+          window.fobsDownloadQueue.enqueue({
+            id: taskId,
+            mediaId: media.id,
+            title: epTitle,
+            poster: epPoster,
+            quality: curQ,
+            resolution: targetResNum,
+            season: seNum,
+            episode: epNum,
+            isSeries: true,
+            url: downloadEndpointUrl,
+            progress: 0,
+            receivedBytes: 0,
+            totalBytes: epRealBytes,
+            sizeText: epRealSize,
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+            status: 'queued',
+            statusText: 'Waiting in Queue (লাইনে অপেক্ষমাণ)',
+            options: {
+              quality: curQ,
+              resolution: targetResNum,
+              poster: epPoster,
+              mediaId: media.id,
+              season: seNum,
+              episode: epNum,
+              subjectId,
+              detailPath,
+              isSeries: true
+            }
+          });
+        }
+      });
+
+      if (typeof window.closeDownloadOptionsModal === 'function') window.closeDownloadOptionsModal();
+      if (typeof showToast === 'function') showToast(`📥 ${selectedIndices.length} টি পর্ব (${curQ}) ডাউনলোডের সারিতে যুক্ত হয়েছে`);
+      if (typeof openDownloadsView === 'function') openDownloadsView();
+      return;
     }
 
-    // Single Movie Download with exact real size & resolution matching
+    // Single Movie Download
     const ep = batchState?.episodes?.[0];
     const movieTitle = media.title;
     const moviePoster = media.poster || 'assets/fobs_logo.png';
     const realSize = ep?.realSizeText || `~${targetResNum >= 1080 ? 950 : (targetResNum >= 720 ? 450 : 250)} MB`;
     const realBytes = ep?.realSizeBytes || 0;
-    const realQuality = ep?.realQuality || curQ;
-    const subjectId = media.subjectId || media.mbSubjectId || (media.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || '';
-    const detailPath = media.detailPath || media.mbDetailPath || '';
-    const taskId = `dl_${subjectId || media.id}_movie_${realQuality}`;
+    const taskId = `dl_${subjectId || media.id}_movie_${curQ}`;
     const downloadEndpointUrl = `/api/moviebox/stream?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=0&ep=0&q=${targetResNum}`;
 
     if (window.fobsDownloadQueue) {
@@ -616,8 +602,8 @@
         mediaId: media.id,
         title: movieTitle,
         poster: moviePoster,
-        quality: realQuality,
-        resolution: parseInt(realQuality, 10) || targetResNum,
+        quality: curQ,
+        resolution: targetResNum,
         season: 0,
         episode: 0,
         isSeries: false,
@@ -630,7 +616,7 @@
         status: 'queued',
         statusText: 'Waiting in Queue (লাইনে অপেক্ষমাণ)',
         options: {
-          quality: realQuality,
+          quality: curQ,
           resolution: targetResNum,
           poster: moviePoster,
           mediaId: media.id,
@@ -644,7 +630,7 @@
     }
 
     if (typeof window.closeDownloadOptionsModal === 'function') window.closeDownloadOptionsModal();
-    if (typeof showToast === 'function') showToast(`📥 "${movieTitle}" (${realQuality}) ডাউনলোডের সারিতে যুক্ত হয়েছে`);
+    if (typeof showToast === 'function') showToast(`📥 "${movieTitle}" (${curQ}) ডাউনলোডের সারিতে যুক্ত হয়েছে`);
     if (typeof openDownloadsView === 'function') openDownloadsView();
   };
   window.confirmStartDownload = window.confirmBatchDownload;
@@ -678,7 +664,8 @@
   document.addEventListener('click', (e) => {
     const dlTab = e.target.closest('#dlQualityTabs .dl-q-tab, [onclick*="switchBatchQuality"]');
     if (dlTab) {
-      setTimeout(filterDownloadEpisodesModal, 60);
+      const q = dlTab.getAttribute('data-quality') || '480P';
+      window.switchBatchQuality(q);
     }
     const dlOpenBtn = e.target.closest('#downloadBtn, .download-btn, [onclick*="triggerDownload"]');
     if (dlOpenBtn) {
@@ -765,15 +752,11 @@
     stripVideoPoster();
     restoreOnlineWatchPills();
     setupDownloadModalObserver();
-    const dlModalOpen = document.getElementById('downloadOptionsModal')?.classList.contains('open');
-    if (dlModalOpen) {
-      filterDownloadEpisodesModal();
-    }
-  }, 800);
+  }, 1000);
 
   restoreOnlineWatchPills();
   purgeFake140MB();
   setupDownloadModalObserver();
 
-  console.log('✅ FOBS TV Live Patch v1.1.2 active: Movies and Series download UI unified with exact real file sizes.');
+  console.log('✅ FOBS TV Live Patch v1.1.3 active: 480P, 720P, 1080P enabled for all content; online watch & download synchronized.');
 })();
