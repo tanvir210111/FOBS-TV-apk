@@ -1,10 +1,10 @@
-// FOBS TV Live OTA Patch Bundle v1.1.7
+// FOBS TV Live OTA Patch Bundle v1.1.8
 // 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (360p/480p default)
 // 2. Video Player: Never stuck on poster; Guaranteed "Connecting to stream server..." overlay with animated cyan spinner
 // 3. Quality sheet: Only show resolutions that ACTUALLY exist (jei resolution nai sei resolution video te show koraiyo na)
 // 4. Download modal: 480P SD, 720P HD, 1080P FHD tabs with real MovieBox streams & sizes; duplicate fallbacks removed
 // 5. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
-// 6. Fast Bufferless Streaming: Instant low-latency playback & 90s download watchdog with resilient auto-resume
+// 6. Fast Bufferless Streaming: Instant low-latency playback & resilient offline download engine without proxy loops
 (function () {
   console.log('⚡ FOBS TV Live Patch v1.1.7 executing...');
 
@@ -742,7 +742,11 @@
         const epRealSize = ep?.realSizeText || `~${targetResNum >= 1080 ? 480 : (targetResNum >= 720 ? 260 : 135)} MB`;
         const epRealBytes = ep?.realSizeBytes || 0;
         const cleanSafeEpTitle = epTitle.replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_');
-        const downloadEndpointUrl = `/api/download?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}&title=${encodeURIComponent(cleanSafeEpTitle)}`;
+        const directUrl = ep?.streamUrl || ep?.directStreamUrl || (ep?.servers && ep.servers[0]?.url) || '';
+        let downloadEndpointUrl = `/api/download?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}&title=${encodeURIComponent(cleanSafeEpTitle)}`;
+        if (directUrl && directUrl.startsWith('http')) {
+          downloadEndpointUrl += `&streamUrl=${encodeURIComponent(directUrl)}`;
+        }
 
         if (window.fobsDownloadQueue) {
           window.fobsDownloadQueue.enqueue({
@@ -792,7 +796,11 @@
     const realBytes = ep?.realSizeBytes || 0;
     const taskId = `dl_${subjectId || media.id}_movie_${curQ}`;
     const cleanSafeMovieTitle = movieTitle.replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_');
-    const downloadEndpointUrl = `/api/download?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=0&ep=0&q=${targetResNum}&title=${encodeURIComponent(cleanSafeMovieTitle)}`;
+    const directMovieUrl = media?.streamUrl || media?.directStreamUrl || (media?.servers && media.servers[0]?.url) || ep?.streamUrl || '';
+    let downloadEndpointUrl = `/api/download?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=0&ep=0&q=${targetResNum}&title=${encodeURIComponent(cleanSafeMovieTitle)}`;
+    if (directMovieUrl && directMovieUrl.startsWith('http')) {
+      downloadEndpointUrl += `&streamUrl=${encodeURIComponent(directMovieUrl)}`;
+    }
 
     if (window.fobsDownloadQueue) {
       window.fobsDownloadQueue.enqueue({
@@ -944,7 +952,34 @@
   }
 
   // -------------------------------------------------------------
-  // 11. Ongoing Watchdog
+  // 11. Hook Serial Download Queue to unwrap any circular proxy URLs
+  // -------------------------------------------------------------
+  if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
+    const origQueueProcessNext = window.fobsDownloadQueue.processNext.bind(window.fobsDownloadQueue);
+    window.fobsDownloadQueue.processNext = async function() {
+      const list = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : [];
+      let listModified = false;
+      list.forEach(item => {
+        if (item && item.url && item.url.includes('/api/download?url=')) {
+          try {
+            const uObj = new URL(item.url, typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : window.location.origin);
+            const unwrapped = uObj.searchParams.get('url');
+            if (unwrapped) {
+              item.url = decodeURIComponent(unwrapped);
+              listModified = true;
+            }
+          } catch (_) {}
+        }
+      });
+      if (listModified) {
+        try { localStorage.setItem('fobs_downloads', JSON.stringify(list)); } catch (_) {}
+      }
+      return origQueueProcessNext();
+    };
+  }
+
+  // -------------------------------------------------------------
+  // 12. Ongoing Watchdog
   // -------------------------------------------------------------
   setInterval(() => {
     stripVideoPoster();
@@ -956,5 +991,5 @@
   purgeFake140MB();
   setupDownloadModalObserver();
 
-  console.log('✅ FOBS TV Live Patch v1.1.7 active: Instant 480p low-latency start & Connecting to stream server overlay active.');
+  console.log('✅ FOBS TV Live Patch v1.1.8 active: Fixed download proxy loop, direct stream downloads & connecting overlay.');
 })();

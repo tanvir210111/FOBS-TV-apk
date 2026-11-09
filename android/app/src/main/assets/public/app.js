@@ -8876,11 +8876,34 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
   try {
     // Construct robust server-proxied download URL to completely bypass CORS, Referer and SSL handshake hangs
     const cleanSafeTitle = (title || 'video').replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_');
-    let streamFetchUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
-
     const qNum = options.resolution || parseInt(quality, 10) || 480;
-    // Always route through /api/download proxy which handles upstream Referers, auto token refreshes, and Range slicing
-    const proxiedDownloadUrl = `${API_BASE_URL}/api/download?url=${encodeURIComponent(streamFetchUrl)}&q=${qNum}&title=${encodeURIComponent(cleanSafeTitle)}`;
+
+    let proxiedDownloadUrl;
+    if (url.includes('/api/download')) {
+      // Already an /api/download endpoint: DO NOT re-wrap inside ?url= to prevent recursive proxy loops!
+      proxiedDownloadUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+      if (!proxiedDownloadUrl.includes('title=')) {
+        proxiedDownloadUrl += `${proxiedDownloadUrl.includes('?') ? '&' : '?'}title=${encodeURIComponent(cleanSafeTitle)}`;
+      }
+      if (!proxiedDownloadUrl.includes('q=')) {
+        proxiedDownloadUrl += `&q=${qNum}`;
+      }
+    } else if (url.includes('/api/moviebox/stream')) {
+      // Directly translate /api/moviebox/stream?params to /api/download?params
+      try {
+        const parsed = new URL(url.startsWith('http') ? url : `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`);
+        parsed.pathname = '/api/download';
+        if (!parsed.searchParams.has('title')) parsed.searchParams.set('title', cleanSafeTitle);
+        if (!parsed.searchParams.has('q')) parsed.searchParams.set('q', String(qNum));
+        proxiedDownloadUrl = parsed.toString();
+      } catch (e) {
+        let streamFetchUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+        proxiedDownloadUrl = `${API_BASE_URL}/api/download?url=${encodeURIComponent(streamFetchUrl)}&q=${qNum}&title=${encodeURIComponent(cleanSafeTitle)}`;
+      }
+    } else {
+      let streamFetchUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+      proxiedDownloadUrl = `${API_BASE_URL}/api/download?url=${encodeURIComponent(streamFetchUrl)}&q=${qNum}&title=${encodeURIComponent(cleanSafeTitle)}`;
+    }
 
     const fetchHeaders = {
       'Accept': 'video/mp4, video/*;q=0.9, */*;q=0.8'

@@ -2510,111 +2510,142 @@ app.get('/api/download', async (req, res) => {
     try { req.socket.setTimeout(3600000); } catch(e) {}
   }
 
-  let targetUrl = req.query.url;
-  const explicitId = req.query.id || req.query.subjectId;
-  const reqQ = parseInt(req.query.q || req.query.resolution || req.query.quality || '0', 10);
+  let targetUrl = req.query.url || req.query.streamUrl;
+  let explicitId = req.query.id || req.query.subjectId;
+  let reqQ = parseInt(req.query.q || req.query.resolution || req.query.quality || '0', 10);
+  let explicitDetail = req.query.path || req.query.detailPath || '';
+  let explicitSe = (req.query.se !== undefined && req.query.se !== null && req.query.se !== '') ? parseInt(req.query.se, 10) : (parseInt(req.query.season, 10) || 0);
+  let explicitEp = (req.query.ep !== undefined && req.query.ep !== null && req.query.ep !== '') ? parseInt(req.query.ep, 10) : (parseInt(req.query.episode, 10) || 0);
 
-  if (!targetUrl && explicitId) {
-    const explicitDetail = req.query.path || req.query.detailPath || getMovieBoxDetailPath(explicitId) || '';
-    const explicitSe = parseInt(req.query.se || req.query.season || '0', 10) || 0;
-    const explicitEp = parseInt(req.query.ep || req.query.episode || '0', 10) || 0;
-    const targetRes = reqQ > 0 ? reqQ : 480;
-    targetUrl = `/api/moviebox/stream?id=${encodeURIComponent(explicitId)}&path=${encodeURIComponent(explicitDetail)}&se=${explicitSe}&ep=${explicitEp}&q=${targetRes}`;
+  // 1. Recursive Unwrapping: unpack any nested /api/download?url= or /api/stream?url= to prevent proxy loops
+  let unwrapCount = 0;
+  while (typeof targetUrl === 'string' && unwrapCount < 5 && (targetUrl.includes('/api/download') || targetUrl.includes('/api/stream?url='))) {
+    unwrapCount++;
+    try {
+      const urlObj = new URL(targetUrl, 'https://fobstv.duckdns.org');
+      if (urlObj.searchParams.has('url')) {
+        targetUrl = decodeURIComponent(urlObj.searchParams.get('url'));
+      } else {
+        if (!explicitId && urlObj.searchParams.get('id')) explicitId = urlObj.searchParams.get('id');
+        if (!explicitDetail && urlObj.searchParams.get('path')) explicitDetail = urlObj.searchParams.get('path');
+        if (urlObj.searchParams.get('se')) explicitSe = parseInt(urlObj.searchParams.get('se'), 10);
+        if (urlObj.searchParams.get('ep')) explicitEp = parseInt(urlObj.searchParams.get('ep'), 10);
+        if (reqQ === 0 && urlObj.searchParams.get('q')) reqQ = parseInt(urlObj.searchParams.get('q'), 10);
+        if (!req.query.title && urlObj.searchParams.get('title')) req.query.title = urlObj.searchParams.get('title');
+        targetUrl = null;
+        break;
+      }
+    } catch (e) {
+      break;
+    }
   }
 
-  const filename = req.query.title ? `${req.query.title.replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_')}.mp4` : 'video.mp4';
-
-  if (!targetUrl) {
-    return res.status(400).send('Missing video URL parameter');
-  }
-
-  // Extract MovieBox params early before URL resolution
-  let mbParams = null;
-  let actualDeliveredResolution = reqQ || 480;
-
+  // 2. If targetUrl points to /api/moviebox/stream, extract parameters directly instead of nested fetching
   if (targetUrl && targetUrl.includes('/api/moviebox/stream')) {
     try {
       const urlObj = new URL(targetUrl, 'https://fobstv.duckdns.org');
-      const id = urlObj.searchParams.get('id');
-      const detailPath = urlObj.searchParams.get('path') || getMovieBoxDetailPath(id) || '';
+      if (!explicitId) explicitId = urlObj.searchParams.get('id');
+      if (!explicitDetail) explicitDetail = urlObj.searchParams.get('path') || '';
       const rawSe = urlObj.searchParams.get('se');
       const rawEp = urlObj.searchParams.get('ep');
-      const se = (rawSe !== null && rawSe !== undefined && rawSe !== '') ? parseInt(rawSe, 10) : 0;
-      const ep = (rawEp !== null && rawEp !== undefined && rawEp !== '') ? parseInt(rawEp, 10) : 0;
+      if (rawSe !== null && rawSe !== undefined && rawSe !== '') explicitSe = parseInt(rawSe, 10);
+      if (rawEp !== null && rawEp !== undefined && rawEp !== '') explicitEp = parseInt(rawEp, 10);
       const urlQ = parseInt(urlObj.searchParams.get('q') || urlObj.searchParams.get('quality') || '0', 10);
-      const targetRes = reqQ > 0 ? reqQ : (urlQ > 0 ? urlQ : 480);
-      mbParams = { id, detailPath, se, ep, targetRes };
-      actualDeliveredResolution = targetRes;
+      if (urlQ > 0 && reqQ === 0) reqQ = urlQ;
+      targetUrl = null;
     } catch(e) {}
   }
 
-  // If proxy url /api/stream?url=...
-  if (targetUrl.includes('/api/stream?url=')) {
-    try {
-      const urlObj = new URL(targetUrl, 'https://fobstv.duckdns.org');
-      targetUrl = decodeURIComponent(urlObj.searchParams.get('url') || targetUrl);
-    } catch(e) {}
-  }
+  const filename = req.query.title ? `${req.query.title.replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_')}.mp4` : 'video.mp4';
+  const targetRes = reqQ > 0 ? reqQ : 480;
+  let actualDeliveredResolution = targetRes;
+  let resolvedUrl = null;
+  let mbParams = null;
 
-  let resolvedUrl = await resolveStreamUrl(targetUrl);
-
-  // If still wrapped in /api/stream?url=...
-  if (resolvedUrl.includes('/api/stream?url=')) {
-    try {
-      const urlObj = new URL(resolvedUrl, 'https://fobstv.duckdns.org');
-      resolvedUrl = decodeURIComponent(urlObj.searchParams.get('url') || resolvedUrl);
-    } catch(e) {}
-  }
-
-  // If resolvedUrl is still a relative MovieBox route, resolve it directly to the real CDN URL for the requested quality
-  if (resolvedUrl.includes('/api/moviebox/stream')) {
-    try {
-      const urlObj = new URL(resolvedUrl, 'https://fobstv.duckdns.org');
-      const id = urlObj.searchParams.get('id');
-      const detailPath = urlObj.searchParams.get('path') || getMovieBoxDetailPath(id) || '';
-      const rawSe = urlObj.searchParams.get('se');
-      const rawEp = urlObj.searchParams.get('ep');
-      const se = (rawSe !== null && rawSe !== undefined && rawSe !== '') ? parseInt(rawSe, 10) : 0;
-      const ep = (rawEp !== null && rawEp !== undefined && rawEp !== '') ? parseInt(rawEp, 10) : 0;
-      const urlQ = parseInt(urlObj.searchParams.get('q') || urlObj.searchParams.get('quality') || '0', 10);
-      const targetRes = reqQ > 0 ? reqQ : (urlQ > 0 ? urlQ : 480);
-
-      mbParams = { id, detailPath, se, ep, targetRes };
-
-      const media = await movieboxService.resolveMedia(id, detailPath, se, ep);
-      if (media) {
-        if (Array.isArray(media.qualities) && media.qualities.length > 0) {
-          const sortedAsc = [...media.qualities].sort((a, b) => (parseInt(a.resolution, 10) || 0) - (parseInt(b.resolution, 10) || 0));
-          let matchedQ = null;
-          if (targetRes <= 480) {
-            matchedQ = sortedAsc.find(q => parseInt(q.resolution, 10) === 480)
-                    || sortedAsc.find(q => parseInt(q.resolution, 10) === 360)
-                    || sortedAsc[0];
-          } else {
-            matchedQ = media.qualities.find(q => parseInt(q.resolution, 10) === targetRes)
-                    || media.qualities.find(q => Math.abs(parseInt(q.resolution, 10) - targetRes) <= 120)
-                    || media.qualities[0];
-          }
-          if (matchedQ && matchedQ.resolution) actualDeliveredResolution = matchedQ.resolution;
-          resolvedUrl = matchedQ?.url || media.streamUrl;
-        } else if (media.streamUrl) {
-          if (media.resolution) actualDeliveredResolution = media.resolution;
-          resolvedUrl = media.streamUrl;
-        }
+  // 3. Direct MovieBox resolution
+  if (explicitId) {
+    let cleanId = String(explicitId).replace(/^mb-[s|m]-/, '');
+    if (cleanId === 'anime-suzume') cleanId = '886218306628322136';
+    if (cleanId === 'anime-mugentrain') cleanId = '6189703385403770824';
+    if (String(cleanId).includes('2587437118653956672')) {
+      if (explicitEp > 2 || explicitSe > 1) {
+        cleanId = '8350263472579564576';
+        explicitDetail = 'arcane-cSoWT6jiQW9';
+      } else {
+        explicitDetail = 'arcane-hindi-8EA7Dslu853';
       }
-    } catch(e) {}
-  }
+    }
+    let resolvedPath = explicitDetail || getMovieBoxDetailPath(cleanId) || '';
+    if (!resolvedPath) {
+      try {
+        const cData = getContentData();
+        const foundM = (cData.movies || []).find(x => String(x.subjectId) === cleanId || String(x.id).includes(cleanId));
+        if (foundM && foundM.detailPath) resolvedPath = foundM.detailPath;
+        if (!resolvedPath) {
+          const foundS = (cData.series || []).find(x => String(x.subjectId) === cleanId || String(x.id).includes(cleanId));
+          if (foundS && (foundS.detailPath || foundS.movieBoxDetailPath)) {
+            resolvedPath = foundS.detailPath || foundS.movieBoxDetailPath;
+          }
+        }
+      } catch (_) {}
+    }
 
-  // If explicit subjectId/id was passed, resolve accurate quality stream
-  if (!mbParams && explicitId) {
-    try {
-      const explicitDetail = req.query.path || req.query.detailPath || getMovieBoxDetailPath(explicitId) || '';
-      const explicitSe = parseInt(req.query.se || req.query.season || '0', 10) || 0;
-      const explicitEp = parseInt(req.query.ep || req.query.episode || '0', 10) || 0;
-      const targetRes = reqQ > 0 ? reqQ : 480;
-      mbParams = { id: explicitId, detailPath: explicitDetail, se: explicitSe, ep: explicitEp, targetRes };
-      const media = await movieboxService.resolveMedia(explicitId, explicitDetail, explicitSe, explicitEp);
-      if (media && Array.isArray(media.qualities) && media.qualities.length > 0) {
+    mbParams = { id: cleanId, detailPath: resolvedPath, se: explicitSe, ep: explicitEp, targetRes };
+
+    const mediaCacheKey = `${cleanId}_s${explicitSe}_e${explicitEp}`;
+    let media = null;
+    const cachedEntry = movieboxStreamCache.get(mediaCacheKey);
+    if (cachedEntry && (Date.now() - cachedEntry.timestamp < 12 * 60 * 60 * 1000)) {
+      media = cachedEntry.media;
+    } else {
+      try {
+        media = await movieboxService.resolveMedia(cleanId, resolvedPath || '', explicitSe, explicitEp);
+        if (!media || !media.streamUrl) {
+          if (explicitEp > 0) {
+            media = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, explicitEp);
+          } else {
+            media = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, 0);
+          }
+        }
+        if (!media || !media.streamUrl) {
+          media = await movieboxService.resolveMedia(cleanId, resolvedPath || '', explicitSe, explicitEp, { forceRefresh: true });
+        }
+        if (media && media.streamUrl) {
+          movieboxStreamCache.set(mediaCacheKey, { media, timestamp: Date.now() });
+        }
+      } catch (mErr) {
+        console.warn('MovieBox resolution failed in /api/download:', mErr.message);
+      }
+    }
+
+    // Direct fallback from content.json if media not resolved
+    if (!media || !media.streamUrl) {
+      try {
+        const content = getContentData();
+        let foundMovie = (content.movies || []).find(m => String(m.subjectId) === cleanId || String(m.id).includes(cleanId));
+        if (foundMovie && (foundMovie.directStreamUrl || foundMovie.servers?.[0]?.url)) {
+          const direct = foundMovie.directStreamUrl || foundMovie.servers[0].url;
+          if (direct && direct.startsWith('http')) {
+            media = { streamUrl: direct, resolution: 1080 };
+          }
+        } else {
+          let foundSeries = (content.series || []).find(s => String(s.subjectId) === cleanId || String(s.id).includes(cleanId));
+          if (foundSeries) {
+            const season = (foundSeries.seasons || []).find(seasonObj => (seasonObj.seasonNumber || seasonObj.season) === explicitSe) || foundSeries.seasons?.[0];
+            const epObj = (season?.episodes || []).find(e => (e.episodeNumber || e.episode) === explicitEp);
+            if (epObj && (epObj.directStreamUrl || epObj.servers?.[0]?.url)) {
+              const direct = epObj.directStreamUrl || epObj.servers[0].url;
+              if (direct && direct.startsWith('http')) {
+                media = { streamUrl: direct, resolution: 1080 };
+              }
+            }
+          }
+        }
+      } catch (_) {}
+    }
+
+    if (media) {
+      if (Array.isArray(media.qualities) && media.qualities.length > 0) {
         const sortedAsc = [...media.qualities].sort((a, b) => (parseInt(a.resolution, 10) || 0) - (parseInt(b.resolution, 10) || 0));
         let matchedQ = null;
         if (targetRes <= 480) {
@@ -2623,12 +2654,31 @@ app.get('/api/download', async (req, res) => {
                   || sortedAsc[0];
         } else {
           matchedQ = media.qualities.find(q => parseInt(q.resolution, 10) === targetRes)
+                  || media.qualities.find(q => Math.abs(parseInt(q.resolution, 10) - targetRes) <= 120)
                   || media.qualities[0];
         }
         if (matchedQ && matchedQ.resolution) actualDeliveredResolution = matchedQ.resolution;
-        if (matchedQ && matchedQ.url) resolvedUrl = matchedQ.url;
+        resolvedUrl = matchedQ?.url || media.streamUrl;
+      } else if (media.streamUrl) {
+        if (media.resolution) actualDeliveredResolution = media.resolution;
+        resolvedUrl = media.streamUrl;
       }
-    } catch(e) {}
+    }
+  }
+
+  // 4. If targetUrl was passed (e.g. direct stream url or external stream)
+  if (!resolvedUrl && targetUrl) {
+    resolvedUrl = await resolveStreamUrl(targetUrl);
+    if (resolvedUrl && resolvedUrl.includes('/api/stream?url=')) {
+      try {
+        const urlObj = new URL(resolvedUrl, 'https://fobstv.duckdns.org');
+        resolvedUrl = decodeURIComponent(urlObj.searchParams.get('url') || resolvedUrl);
+      } catch(e) {}
+    }
+  }
+
+  if (!resolvedUrl || !resolvedUrl.startsWith('http')) {
+    return res.status(404).json({ error: 'Download stream not available', message: 'Could not resolve stream URL for this item' });
   }
 
   const downloadHeaders = {
@@ -2648,11 +2698,11 @@ app.get('/api/download', async (req, res) => {
   ) {
     downloadHeaders['Referer'] = 'https://movieboxapp.in/';
     downloadHeaders['Origin'] = 'https://movieboxapp.in';
-  } else if (resolvedUrl.includes('upbolt.to') || targetUrl.includes('upbolt')) {
+  } else if (resolvedUrl.includes('upbolt.to') || (targetUrl && targetUrl.includes('upbolt'))) {
     downloadHeaders['Referer'] = 'https://upbolt.to/';
-  } else if (resolvedUrl.includes('vkuser.net') || targetUrl.includes('ok.ru')) {
+  } else if (resolvedUrl.includes('vkuser.net') || (targetUrl && targetUrl.includes('ok.ru'))) {
     downloadHeaders['Referer'] = 'https://ok.ru/';
-  } else if (resolvedUrl.includes('vkpluscdn') || resolvedUrl.includes('vkcdn') || targetUrl.includes('pkembed')) {
+  } else if (resolvedUrl.includes('vkpluscdn') || resolvedUrl.includes('vkcdn') || (targetUrl && targetUrl.includes('pkembed'))) {
     downloadHeaders['Referer'] = 'https://pkembed.site/';
   }
 
@@ -2682,14 +2732,14 @@ app.get('/api/download', async (req, res) => {
       });
     } catch (initialErr) {
       const isMb = (
-        targetUrl.includes('/api/moviebox/stream') ||
+        (targetUrl && targetUrl.includes('/api/moviebox/stream')) ||
         downloadFetchUrl.includes('hakunaymatata') || 
         downloadFetchUrl.includes('bcdnxw') || 
         downloadFetchUrl.includes('haildrop') || 
         downloadFetchUrl.includes('fogtwist') || 
         downloadFetchUrl.includes('sunburst') || 
         downloadFetchUrl.includes('stormshade') || 
-        targetUrl.includes('moviebox')
+        (targetUrl && targetUrl.includes('moviebox'))
       );
       if (isMb) {
         let freshUrl = null;
