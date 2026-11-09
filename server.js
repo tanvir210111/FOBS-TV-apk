@@ -2370,7 +2370,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.0.2",
+  version: "1.0.3",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 
@@ -2440,6 +2440,7 @@ app.get('/api/download', async (req, res) => {
 
   // If still a relative MovieBox route, resolve it directly to the real CDN URL for the requested quality
   let mbParams = null;
+  let actualDeliveredResolution = reqQ || 480;
   if (resolvedUrl.includes('/api/moviebox/stream')) {
     try {
       const urlObj = new URL(resolvedUrl, 'https://fobstv.duckdns.org');
@@ -2468,8 +2469,10 @@ app.get('/api/download', async (req, res) => {
                     || media.qualities.find(q => Math.abs(parseInt(q.resolution, 10) - targetRes) <= 120)
                     || media.qualities[0];
           }
+          if (matchedQ && matchedQ.resolution) actualDeliveredResolution = matchedQ.resolution;
           resolvedUrl = matchedQ?.url || media.streamUrl;
         } else if (media.streamUrl) {
+          if (media.resolution) actualDeliveredResolution = media.resolution;
           resolvedUrl = media.streamUrl;
         }
       }
@@ -2496,6 +2499,7 @@ app.get('/api/download', async (req, res) => {
           matchedQ = media.qualities.find(q => parseInt(q.resolution, 10) === targetRes)
                   || media.qualities[0];
         }
+        if (matchedQ && matchedQ.resolution) actualDeliveredResolution = matchedQ.resolution;
         if (matchedQ && matchedQ.url) resolvedUrl = matchedQ.url;
       }
     } catch(e) {}
@@ -2621,8 +2625,9 @@ app.get('/api/download', async (req, res) => {
     res.setHeader('Content-Type', contentType);
     res.setHeader('Accept-Ranges', 'bytes');
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type, Accept');
-    res.setHeader('Access-Control-Expose-Headers', 'Content-Range, Content-Length, Accept-Ranges');
+    res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type, Accept, X-Stream-Resolution');
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Range, Content-Length, Accept-Ranges, X-Stream-Resolution');
+    res.setHeader('X-Stream-Resolution', String(actualDeliveredResolution));
 
     const cleanup = () => {
       try {

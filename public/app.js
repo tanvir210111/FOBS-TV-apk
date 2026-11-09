@@ -8578,6 +8578,7 @@ function confirmBatchDownload() {
       const epTitle = ep?.title ? `${media.title} - ${ep.title}` : `${media.title} - S${seNum} Ep ${epNum}`;
       const epPoster = ep?.stillPath || media.poster || 'assets/fobs_logo.png';
       const taskId = `dl_${subjectId || media.id}_s${seNum}_e${epNum}_${currentDownloadQuality}`;
+      const estSizeStr = getEpisodeEstimatedSize(currentDownloadQuality, ep, idx);
 
       // Construct server stream URL with STRICT resolution matching
       const downloadEndpointUrl = `/api/moviebox/stream?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
@@ -8595,8 +8596,8 @@ function confirmBatchDownload() {
         url: downloadEndpointUrl,
         progress: 0,
         receivedBytes: 0,
-        totalBytes: approxMb * 1024 * 1024,
-        sizeText: `~${approxMb} MB`,
+        totalBytes: 0,
+        sizeText: estSizeStr,
         date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
         status: 'queued',
         statusText: 'Waiting in Queue (লাইনে অপেক্ষমাণ)',
@@ -8640,7 +8641,7 @@ function confirmBatchDownload() {
     url: downloadEndpointUrl,
     progress: 0,
     receivedBytes: 0,
-    totalBytes: approxMb * 1024 * 1024,
+    totalBytes: 0,
     sizeText: `~${approxMb} MB`,
     date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
     status: 'queued',
@@ -8822,22 +8823,34 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       await removeOfflineMedia('temp_' + downloadId);
     }
 
-    let totalBytes = (currentItem && currentItem.totalBytes > 0) ? currentItem.totalBytes : 0;
+    let serverTotalBytes = 0;
     const contentRange = response.headers.get('content-range');
     if (contentRange) {
       const match = contentRange.match(/\/(\d+)/);
-      if (match) totalBytes = parseInt(match[1], 10);
+      if (match) serverTotalBytes = parseInt(match[1], 10);
     }
-    if (!totalBytes) {
+    if (!serverTotalBytes) {
       const contentLength = response.headers.get('content-length');
       const addBytes = contentLength ? parseInt(contentLength, 10) : 0;
-      totalBytes = existingBytes + addBytes;
+      serverTotalBytes = existingBytes + addBytes;
     }
-    // Safety clamp: Never let totalBytes inflate beyond previously recorded total size on retry!
-    if (currentItem && currentItem.totalBytes > 0 && totalBytes > currentItem.totalBytes) {
-      totalBytes = currentItem.totalBytes;
-    }
+
+    // Real server header defines authoritative totalBytes (never clamp down to an estimated placeholder!)
+    let totalBytes = serverTotalBytes > 0 ? serverTotalBytes : ((currentItem && currentItem.totalBytes > 0) ? currentItem.totalBytes : 0);
+    if (currentItem) currentItem.totalBytes = totalBytes;
     activeDownloadTasks[downloadId].totalBytes = totalBytes;
+
+    // Detect actual delivered resolution (e.g. if 480p was requested but MovieBox only provided 720p)
+    const deliveredRes = response.headers.get('x-stream-resolution');
+    if (deliveredRes) {
+      const resNum = parseInt(deliveredRes, 10);
+      if (!isNaN(resNum) && resNum > 0) {
+        if (currentItem) {
+          currentItem.resolution = resNum;
+          currentItem.quality = `${resNum}P`;
+        }
+      }
+    }
 
     const reader = response.body.getReader();
     activeDownloadTasks[downloadId].reader = reader;
@@ -8889,9 +8902,10 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       const now = Date.now();
       if (now - lastUiUpdate > 300) {
         lastUiUpdate = now;
-        const percent = totalBytes > 0 ? Math.min(99, Math.round((receivedBytes / totalBytes) * 100)) : 0;
+        const effectiveTotal = Math.max(totalBytes, receivedBytes);
+        const percent = effectiveTotal > 0 ? Math.min(99, Math.round((receivedBytes / effectiveTotal) * 100)) : 0;
         const downMb = (receivedBytes / (1024 * 1024)).toFixed(1);
-        const totMb = totalBytes > 0 ? (totalBytes / (1024 * 1024)).toFixed(1) : '?';
+        const totMb = effectiveTotal > 0 ? (effectiveTotal / (1024 * 1024)).toFixed(1) : '?';
         updateDownloadProgress(downloadId, percent, `${downMb} MB / ${totMb} MB`);
       }
 
@@ -8899,6 +8913,8 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       if (now - lastStorageUpdate > 1500) {
         const shouldSaveBlob = (now - (activeDownloadTasks[downloadId]._lastBlobSave || 0) > 25000);
         lastStorageUpdate = now;
+
+        const effectiveTotal = Math.max(totalBytes, receivedBytes);
 
         if (shouldSaveBlob) {
           activeDownloadTasks[downloadId]._lastBlobSave = now;
@@ -8912,7 +8928,7 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
             id: 'temp_' + downloadId,
             chunks: tempBlob,
             receivedBytes: receivedBytes,
-            totalBytes: totalBytes,
+            totalBytes: effectiveTotal,
             quality: quality,
             updatedAt: Date.now()
           }).catch(() => {});
@@ -8921,11 +8937,11 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
         const curDownloads = getStoredDownloadsList();
         const curItem = curDownloads.find(d => d.id === downloadId);
         if (curItem) {
-          curItem.progress = totalBytes > 0 ? Math.min(99, Math.round((receivedBytes / totalBytes) * 100)) : 1;
+          curItem.progress = effectiveTotal > 0 ? Math.min(99, Math.round((receivedBytes / effectiveTotal) * 100)) : 1;
           curItem.receivedBytes = receivedBytes;
-          curItem.totalBytes = totalBytes;
+          curItem.totalBytes = effectiveTotal;
           const downMb = (receivedBytes / (1024 * 1024)).toFixed(1);
-          const totMb = totalBytes > 0 ? (totalBytes / (1024 * 1024)).toFixed(1) : '?';
+          const totMb = effectiveTotal > 0 ? (effectiveTotal / (1024 * 1024)).toFixed(1) : '?';
           curItem.sizeText = `${downMb} MB / ${totMb} MB`;
           curItem.statusText = `Downloading... ${curItem.progress}%`;
           localStorage.setItem('fobs_downloads', JSON.stringify(curDownloads));
