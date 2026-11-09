@@ -3254,43 +3254,21 @@ function getActiveEpisodeStream(ep, audioTrack) {
   // Always enforce default 480p SD for instant bufferless playback
   appState.currentQuality = '480p';
 
-  // 0. Direct /api/moviebox/stream inside episode streamUrl: ensure strict q=480
-  if (ep.streamUrl && ep.streamUrl.includes('/api/moviebox/stream')) {
-    let u = ep.streamUrl;
-    if (!u.includes('q=')) u += (u.includes('?') ? '&' : '?') + 'q=480';
-    return u;
-  }
+  // 1. Language-matched server from episode servers if multiple audio servers exist
+  if (ep.servers && Array.isArray(ep.servers) && ep.servers.length > 0) {
+    const langServer = ep.servers.find(s => {
+      const a = (s.audio || s.name || '').toLowerCase();
+      return isOrig ? /orig|korean|english|japanese/i.test(a) : /hindi/i.test(a);
+    }) || ep.servers.find(s => s.url && s.url.includes('/api/moviebox/stream'));
 
-  // 1. High Priority: Auto-renewing MovieBox endpoint (always fresh token & lowest 480p/360p first)
-  if (ep.servers && Array.isArray(ep.servers)) {
-    const autoRenewingServer = ep.servers.find(s => 
-      s.url && s.url.includes('/api/moviebox/stream') && (
-        isOrig 
-          ? (/orig|korean/i.test(s.audio || '') || /original|korean/i.test(s.name || ''))
-          : (/hindi/i.test(s.audio || '') || /hindi/i.test(s.name || ''))
-      )
-    ) || ep.servers.find(s => s.url && s.url.includes('/api/moviebox/stream'));
-    if (autoRenewingServer && autoRenewingServer.url) {
-      appState.currentQuality = '480p';
-      const u = autoRenewingServer.url;
-      return u.includes('q=') ? u : `${u}${u.includes('?') ? '&' : '?'}q=480`;
+    if (langServer && langServer.url) {
+      let u = langServer.url;
+      if (u.includes('/api/moviebox/stream') && !u.includes('q=')) u += (u.includes('?') ? '&' : '?') + 'q=480';
+      return u;
     }
   }
 
-  // 2. Lowest valid unexpired direct server
-  const lowestServer = getLowestResolutionServer(ep, isOrig);
-  if (lowestServer && lowestServer.url && lowestServer.url.startsWith('http') && !isUrlExpired(lowestServer.url)) {
-    const res = parseInt(lowestServer.quality || lowestServer.name || '480', 10) || 480;
-    appState.currentQuality = `${res}p`;
-    return lowestServer.url;
-  }
-
-  // 3. Fallback direct stream if not expired
-  if (ep.directStreamUrl && ep.directStreamUrl.startsWith('http') && !isUrlExpired(ep.directStreamUrl)) {
-    return ep.directStreamUrl;
-  }
-
-  // 4. Resilient fallback: auto-generate MovieBox stream URL with lowest resolution (480p)
+  // 2. High Priority: MovieBox subject stream URL respecting active media's subject ID
   const m = appState.currentMedia;
   const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null));
   const dPath = m?.detailPath || m?.mbDetailPath || m?.movieboxDetailPath || '';
@@ -3298,8 +3276,27 @@ function getActiveEpisodeStream(ep, audioTrack) {
     const isMovie = m?.type === 'movie' || (!m?.seasons && !m?.episodes);
     const epNum = isMovie ? 0 : (ep?.episode || parseInt(ep?.number, 10) || 1);
     const seNum = isMovie ? 0 : (ep?.season || 1);
-    appState.currentQuality = '480p';
     return `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480`;
+  }
+
+  // 3. Lowest valid unexpired direct server
+  const lowestServer = getLowestResolutionServer(ep, isOrig);
+  if (lowestServer && lowestServer.url && lowestServer.url.startsWith('http') && !isUrlExpired(lowestServer.url)) {
+    const res = parseInt(lowestServer.quality || lowestServer.name || '480', 10) || 480;
+    appState.currentQuality = `${res}p`;
+    return lowestServer.url;
+  }
+
+  // 4. Fallback direct stream if not expired
+  if (ep.directStreamUrl && ep.directStreamUrl.startsWith('http') && !isUrlExpired(ep.directStreamUrl)) {
+    return ep.directStreamUrl;
+  }
+
+  // 5. Direct episode streamUrl fallback
+  if (ep.streamUrl) {
+    let u = ep.streamUrl;
+    if (u.includes('/api/moviebox/stream') && !u.includes('q=')) u += (u.includes('?') ? '&' : '?') + 'q=480';
+    return u;
   }
 
   const rawFallback = (lowestServer && lowestServer.url) || ep.streamUrl || '';
@@ -9659,75 +9656,95 @@ function closeDownloadsView(e) {
 window.closeDownloadsView = closeDownloadsView;
 
 
+// Helper: Find paired language media item in catalog (Supports BOTH Movies and Series!)
+function findPairedMedia(media, targetLang) {
+  if (!media || !media.title) return null;
+  const isTargetOrig = /original|english|eng|korean|japanese|orig/i.test(targetLang || '');
+
+  const curTitle = media.title;
+  const cleanCurTitle = curTitle
+    .replace(/\[.*?(?:hindi|orig|korean|english|dub|dual|cam).*?\]/gi, '')
+    .replace(/\(.*?(?:hindi|orig|korean|english|dub|dual|cam).*?\)/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim().toLowerCase();
+
+  const isSeries = media.type === 'series' || !!(media.seasons && media.seasons.length > 0) || (media.id && media.id.startsWith('mb-s-'));
+  const catalogList = isSeries ? (appState.content?.series || []) : (appState.content?.movies || []);
+
+  const paired = catalogList.find(item => {
+    if (item.id === media.id) return false;
+    const itemTitle = item.title || '';
+    const cleanItemTitle = itemTitle
+      .replace(/\[.*?(?:hindi|orig|korean|english|dub|dual|cam).*?\]/gi, '')
+      .replace(/\(.*?(?:hindi|orig|korean|english|dub|dual|cam).*?\)/gi, '')
+      .replace(/\s+/g, ' ')
+      .trim().toLowerCase();
+
+    if (cleanItemTitle !== cleanCurTitle) return false;
+
+    const itemIsHindi = itemTitle.toLowerCase().includes('hindi') || item.dubLanguage === 'Hindi' || item.isHindi === true;
+    return isTargetOrig ? !itemIsHindi : itemIsHindi;
+  });
+
+  return paired || null;
+}
+window.findPairedMedia = findPairedMedia;
+
 // Render Dynamic Audio Tracks for Active Media
 function renderAudioTrackOptions(media) {
   if (!media) return;
 
   const titleLower = (media.title || '').toLowerCase();
-  const isExplicitOriginal = (
-    (media.selectedAudio && /original|korean|japanese|english/i.test(media.selectedAudio)) ||
-    (media.dubLanguage && /original/i.test(media.dubLanguage)) ||
-    (media.isHindi === false) ||
-    titleLower.includes('[original') ||
-    titleLower.includes('(original')
-  );
+  const isHindiCurrent = titleLower.includes('hindi') || media.dubLanguage === 'Hindi' || media.isHindi === true;
 
-  let rawTracks = (media && media.audioTracks) ? media.audioTracks : (isExplicitOriginal ? ['Original audio'] : ['Hindi dub', 'Original audio']);
+  // 1. Check if a paired media exists in catalog (e.g. Hindi version <-> Original version)
+  const pairedItem = findPairedMedia(media, isHindiCurrent ? 'Original audio' : 'Hindi dub');
 
-  let tracks = [];
-  if (Array.isArray(rawTracks)) {
-    tracks = [...rawTracks];
-  } else if (typeof rawTracks === 'object') {
-    tracks = Object.keys(rawTracks);
-  }
-
-  // Format clean display names
-  tracks = tracks.map(t => {
-    if (/hindi/i.test(t)) return 'Hindi dub';
-    if (/original/i.test(t)) return 'Original audio';
-    return t;
+  // 2. Check if this media has separate servers with different audios
+  const hasMultiAudioServers = Array.isArray(media.servers) && media.servers.some(s => {
+    const a = (s.audio || s.name || '').toLowerCase();
+    return isHindiCurrent ? /orig|korean|english|japanese/i.test(a) : /hindi/i.test(a);
   });
 
-  // Always ensure Original audio is available
-  if (!tracks.some(t => /original/i.test(t))) {
-    tracks.push('Original audio');
-  }
+  // 3. Check episode servers if series
+  const curEp = appState.currentEpisode;
+  const hasEpMultiServers = curEp && Array.isArray(curEp.servers) && curEp.servers.some(s => {
+    const a = (s.audio || s.name || '').toLowerCase();
+    return isHindiCurrent ? /orig|korean|english|japanese/i.test(a) : /hindi/i.test(a);
+  });
 
-  // Only add Hindi dub if the media is actually tagged as Hindi or has Hindi dub
-  const hasHindiAudio = (media.isHindi === true) ||
-                        (media.dubLanguage && /hindi/i.test(media.dubLanguage)) ||
-                        titleLower.includes('[hindi') ||
-                        (Array.isArray(media.audioTracks) && media.audioTracks.some(t => /hindi/i.test(t)));
-
-  if (hasHindiAudio && !tracks.some(t => /hindi/i.test(t))) {
-    tracks.unshift('Hindi dub');
+  let tracks = [];
+  if (pairedItem || hasMultiAudioServers || hasEpMultiServers) {
+    // Both versions exist! Show both options so user can switch seamlessly!
+    tracks = ['Hindi dub', 'Original audio'];
+  } else if (Array.isArray(media.audioTracks) && media.audioTracks.length > 1) {
+    tracks = media.audioTracks.map(t => /hindi/i.test(t) ? 'Hindi dub' : (/orig/i.test(t) ? 'Original audio' : t));
+  } else {
+    // ONLY ONE VERSION EXISTS! Show ONLY the real available language so users aren't misled!
+    tracks = isHindiCurrent ? ['Hindi dub'] : ['Original audio'];
   }
 
   // Remove duplicates
   tracks = [...new Set(tracks)];
 
   // Default track selection:
-  if (isExplicitOriginal) {
-    appState.currentAudioTrack = 'Original audio';
-  } else if (media && media.selectedAudio) {
-    const preferred = /original|korean/i.test(media.selectedAudio) ? 'Original audio' : 'Hindi dub';
-    appState.currentAudioTrack = tracks.includes(preferred) ? preferred : (tracks[0] || 'Original audio');
-  } else if (hasHindiAudio) {
-    appState.currentAudioTrack = 'Hindi dub';
-  } else {
-    appState.currentAudioTrack = tracks[0] || 'Original audio';
+  if (!appState.currentAudioTrack || !tracks.includes(appState.currentAudioTrack)) {
+    appState.currentAudioTrack = isHindiCurrent ? 'Hindi dub' : (tracks[0] || 'Original audio');
   }
 
   // 1. Update Dub Selector Text (Portrait)
   const dubText = document.getElementById('currentDubText');
   if (dubText) dubText.innerText = appState.currentAudioTrack;
 
+  const hasMultiple = tracks.length > 1;
+
   // 2. Render Portrait Language Sheet Options
   const sheetList = document.getElementById('languageOptionsList');
   if (sheetList) {
     sheetList.innerHTML = tracks.map(track => `
       <button class="sheet-option-btn ${track === appState.currentAudioTrack ? 'selected' : ''}" onclick="selectLanguage('${track}')">
-        ${track}
+        <span>${track}</span>
+        ${!hasMultiple ? '<span style="font-size: 11px; opacity: 0.7; margin-left: 6px; font-weight: 500;">(Single Audio)</span>' : ''}
       </button>
     `).join('');
   }
@@ -9737,15 +9754,19 @@ function renderAudioTrackOptions(media) {
   if (lsList) {
     lsList.innerHTML = tracks.map(track => `
       <div class="ls-lang-item ${track === appState.currentAudioTrack ? 'active' : ''}" onclick="selectLandscapeAudio('${track}')">
-        <span>${track}</span>
+        <span>${track} ${!hasMultiple ? '<small style="opacity: 0.7;">(Only)</small>' : ''}</span>
         <i class="fa-solid fa-check ls-check-icon ${track === appState.currentAudioTrack ? '' : 'hidden'}"></i>
       </div>
     `).join('');
   }
 }
 
-// Unified Audio Track Switcher
+// Unified Audio Track Switcher (MovieBox style: switches to the exact file of that audio track)
 function switchAudioTrack(lang) {
+  if (appState.currentAudioTrack === lang) {
+    showToast(`Audio Track already set to: ${lang}`);
+    return;
+  }
   appState.currentAudioTrack = lang;
 
   // Sync Dub text
@@ -9754,12 +9775,12 @@ function switchAudioTrack(lang) {
 
   // Sync Portrait Sheet Buttons
   document.querySelectorAll('#languageOptionsList .sheet-option-btn').forEach(btn => {
-    btn.classList.toggle('selected', btn.innerText.trim() === lang);
+    btn.classList.toggle('selected', btn.innerText.includes(lang));
   });
 
   // Sync Landscape Drawer Items
   document.querySelectorAll('#lsAudioOptionsList .ls-lang-item').forEach(item => {
-    const isTarget = item.querySelector('span')?.innerText.trim() === lang;
+    const isTarget = item.querySelector('span')?.innerText.includes(lang);
     item.classList.toggle('active', isTarget);
     const check = item.querySelector('.ls-check-icon');
     if (check) check.classList.toggle('hidden', !isTarget);
@@ -9787,78 +9808,75 @@ function switchAudioTrack(lang) {
     }, 10000);
   }
 
-  const isOriginal = lang.toLowerCase().includes('original') || lang.toLowerCase().includes('english') || lang.toLowerCase().includes('eng') || lang.toLowerCase().includes('korean') || lang.toLowerCase().includes('orig');
-  const targetAudioIndex = isOriginal ? 1 : 0;
-  appState.selectedAudioIndex = targetAudioIndex;
+  const curTime = (videoPlayer ? videoPlayer.currentTime : 0) || 0;
+  const isTargetOrig = /original|english|eng|korean|japanese|orig/i.test(lang);
 
-  // Universal Seamless Dual-Series switching for ALL paired items (e.g. She Was Pretty, Dive Into You, Arcane, etc.)
-  if (appState.currentMedia && appState.currentMedia.title) {
-    const curTitle = appState.currentMedia.title;
-    const cleanCurTitle = curTitle
-      .replace(/\[.*?hindi.*?\]|\(.*?\bhindi\b.*?\)/gi, '')
-      .replace(/\[.*?orig.*?\]|\(.*?\borig\b.*?\)/gi, '')
-      .replace(/\[.*?korean.*?\]|\(.*?\bkorean\b.*?\)/gi, '')
-      .replace(/\s+/g, ' ')
-      .trim().toLowerCase();
+  const media = appState.currentMedia;
+  if (!media) return;
 
-    const allSeries = appState.content?.series || [];
-    const pairedSeries = allSeries.find(s => {
-      if (s.id === appState.currentMedia.id) return false;
-      const sTitle = (s.title || '').toLowerCase();
-      const sClean = sTitle
-        .replace(/\[.*?hindi.*?\]|\(.*?\bhindi\b.*?\)/gi, '')
-        .replace(/\[.*?orig.*?\]|\(.*?\borig\b.*?\)/gi, '')
-        .replace(/\[.*?korean.*?\]|\(.*?\bkorean\b.*?\)/gi, '')
-        .replace(/\s+/g, ' ')
-        .trim().toLowerCase();
+  const isSeries = media.type === 'series' || !!(media.seasons && media.seasons.length > 0) || (media.id && media.id.startsWith('mb-s-'));
 
-      if (sClean !== cleanCurTitle) return false;
+  // 1. Check for paired media item in catalog (Works seamlessly for BOTH Movies and Series!)
+  const pairedItem = findPairedMedia(media, lang);
+  if (pairedItem) {
+    console.log(`[Audio Track Switch] Found paired item for "${lang}":`, pairedItem.title, pairedItem.id);
+    appState.currentMedia = pairedItem;
 
-      const sIsHindi = sTitle.includes('hindi') || s.dubLanguage === 'Hindi';
-      return isOriginal ? !sIsHindi : sIsHindi;
-    });
+    if (isSeries) {
+      const curEpNum = appState.currentEpisode?.episodeNumber || appState.currentEpisode?.number || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1);
+      const curSeNum = appState.currentSeason || 1;
 
-    if (pairedSeries) {
-      const curEpNum = appState.currentEpisode?.number || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1);
-      const curTime = (videoPlayer ? videoPlayer.currentTime : 0) || 0;
+      const newSeasonEps = getActiveSeasonEpisodes(pairedItem);
+      const matchedEp = newSeasonEps.find(e => (e.episode ?? e.episodeNumber ?? e.number) === curEpNum) || newSeasonEps[Math.max(0, curEpNum - 1)] || newSeasonEps[0];
+      const matchedIdx = newSeasonEps.indexOf(matchedEp) >= 0 ? newSeasonEps.indexOf(matchedEp) : Math.max(0, curEpNum - 1);
 
-      appState.currentMedia = pairedSeries;
-      const newSeasonEps = getActiveSeasonEpisodes(pairedSeries);
-      const newEpIdx = Math.max(0, curEpNum - 1);
-      appState.currentEpisode = (newSeasonEps && newSeasonEps[newEpIdx]) || (newSeasonEps && newSeasonEps[0]);
-      appState.currentEpisodeIndex = newEpIdx;
+      appState.currentEpisode = matchedEp;
+      appState.currentEpisodeIndex = matchedIdx;
+      appState.currentEpisodeNumber = curEpNum;
 
-      const titleText = formatCleanMediaTitle(pairedSeries.title, pairedSeries.dubLanguage);
-      const titleEl = document.getElementById('playerMediaTitle');
-      if (titleEl) titleEl.innerText = titleText;
+      renderEpisodePills(newSeasonEps, matchedIdx);
+      renderServerPills(pairedItem);
+      renderAudioTrackOptions(pairedItem);
+      if (typeof syncPlayerTitles === 'function') syncPlayerTitles();
 
-      renderEpisodePills(newSeasonEps, newEpIdx);
-      renderServerPills(pairedSeries);
-      renderAudioTrackOptions(pairedSeries);
-
-      const nextStream = getActiveEpisodeStream(appState.currentEpisode, lang);
+      const nextStream = getActiveEpisodeStream(matchedEp, lang);
       playStreamUrl(nextStream, null, curTime);
-      showToast(`Audio Track: ${lang}`);
+    } else {
+      // Movie
+      renderServerPills(pairedItem);
+      renderAudioTrackOptions(pairedItem);
+      if (typeof syncPlayerTitles === 'function') syncPlayerTitles();
+
+      const sId = pairedItem.subjectId || pairedItem.mbSubjectId || (pairedItem.id && pairedItem.id.startsWith('mb-m-') ? pairedItem.id.replace('mb-m-', '').replace(/-hindi$/, '') : null);
+      const dPath = pairedItem.detailPath || pairedItem.mbDetailPath || '';
+      const nextStream = sId 
+        ? `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=0&ep=0&q=480`
+        : (pairedItem.streamUrl || pairedItem.directStreamUrl || pairedItem.servers?.[0]?.url);
+
+      playStreamUrl(nextStream, null, curTime);
+    }
+
+    showToast(`🔄 Audio switched to: ${lang} 🎧`);
+    return;
+  }
+
+  // 2. If no paired item, check if this media has servers with different audios
+  const activeObj = isSeries ? appState.currentEpisode : media;
+  if (activeObj && Array.isArray(activeObj.servers)) {
+    const matchedServer = activeObj.servers.find(s => {
+      const a = (s.audio || s.name || '').toLowerCase();
+      return isTargetOrig ? /orig|korean|english|japanese/i.test(a) : /hindi/i.test(a);
+    });
+    if (matchedServer && matchedServer.url) {
+      console.log(`[Audio Track Switch] Found server for "${lang}":`, matchedServer.name, matchedServer.url);
+      playStreamUrl(matchedServer.url, null, curTime);
+      showToast(`🔄 Audio switched to: ${lang} 🎧`);
       return;
     }
   }
 
-  const currentEp = appState.currentEpisode;
-  const rawUrl = getActiveEpisodeStream(currentEp, lang)
-    || (currentEp?.servers && currentEp.servers[targetAudioIndex] && currentEp.servers[targetAudioIndex].url)
-    || currentEp?.streamUrl 
-    || (appState.currentMedia?.servers && appState.currentMedia.servers[targetAudioIndex] && appState.currentMedia.servers[targetAudioIndex].url)
-    || appState.currentMedia?.streamUrl 
-    || appState.currentMedia?.driveUrl;
-
-  if (rawUrl && videoPlayer) {
-    const curTime = (videoPlayer.currentTime || 0) + (appState.streamSeekOffset || 0);
-    const isSeparateTrackUrl = !!(currentEp?.audioTracks && Object.keys(currentEp.audioTracks).length > 1);
-    const audioParam = isSeparateTrackUrl ? null : targetAudioIndex;
-    playStreamUrl(rawUrl, audioParam, curTime);
-  }
-
-  showToast(`Audio Track: ${lang}`);
+  // 3. Fallback: single audio available only
+  showToast(`ℹ️ এই ভিডিওটিতে শুধুমাত্র ${appState.currentAudioTrack} উপলব্ধ রয়েছে`);
 }
 
 // Language / Dubbing Bottom Sheet Modal (Screenshot 2 & 5)
