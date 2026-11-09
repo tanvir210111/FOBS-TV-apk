@@ -7310,19 +7310,17 @@ function setupVideoListeners() {
 
   videoPlayer.addEventListener('loadedmetadata', () => {
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
-    if (loader) loader.classList.remove('active');
     updateLandscapeProgress();
     syncPlayPauseIcons();
   });
 
   videoPlayer.addEventListener('loadeddata', () => {
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
-    if (loader) loader.classList.remove('active');
     syncPlayPauseIcons();
   });
 
   videoPlayer.addEventListener('timeupdate', () => {
-    if (loader && loader.classList.contains('active') && videoPlayer.currentTime > 0 && !videoPlayer.seeking) {
+    if (loader && loader.classList.contains('active') && videoPlayer.currentTime > 0.1 && !videoPlayer.seeking && !videoPlayer.paused) {
       loader.classList.remove('active');
     }
     if (appState.pendingSeekTime !== null && appState.pendingSeekTime !== undefined) {
@@ -8993,12 +8991,12 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
         throw new Error('paused');
       }
 
-      // 20-second chunk watchdog: Prevents app/UI freezing if cellular network drops or socket dies during screen off
+      // 90-second chunk watchdog: Prevents premature timeout on mobile data or network blips
       let readTimeoutTimer = null;
       const timeoutPromise = new Promise((_, reject) => {
         readTimeoutTimer = setTimeout(() => {
           reject(new Error('Download stream stalled or timed out'));
-        }, 20000);
+        }, 90000);
       });
 
       let readResult;
@@ -9281,13 +9279,14 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     // Auto-recovery: If screen was turned off by power button or network had a momentary blip, auto-recover smoothly!
     const curTask = activeDownloadTasks[downloadId];
     const autoRetries = curTask ? (curTask._autoRetries || 0) : 0;
-    if (autoRetries < 3 && !curTask?.isPaused) {
+    if (autoRetries < 5 && !curTask?.isPaused) {
       if (curTask) curTask._autoRetries = autoRetries + 1;
-      console.log(`Auto-resuming background download ${downloadId} (attempt ${autoRetries + 1}/3)...`);
+      console.log(`Auto-resuming background download ${downloadId} (attempt ${autoRetries + 1}/5)...`);
       const curDownloads = getStoredDownloadsList();
       const item = curDownloads.find(d => d.id === downloadId);
       if (item) {
-        item.statusText = 'Reconnecting...';
+        const percent = item.totalBytes > 0 ? Math.round((receivedBytes / item.totalBytes) * 100) : (item.progress || 0);
+        item.statusText = `Reconnecting (${autoRetries + 1}/5) • ${percent}%`;
         localStorage.setItem('fobs_downloads', JSON.stringify(curDownloads));
         renderDownloadsList();
       }
@@ -9295,7 +9294,7 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
         if (!activeDownloadTasks[downloadId]?.isPaused) {
           downloadMedia(url, title, options, downloadId);
         }
-      }, 1500);
+      }, 2000);
       return;
     }
 

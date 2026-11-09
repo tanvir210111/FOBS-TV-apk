@@ -1,11 +1,12 @@
-// FOBS TV Live OTA Patch Bundle v1.1.5
+// FOBS TV Live OTA Patch Bundle v1.1.6
 // 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (360p/480p default)
 // 2. Video Player: Never stuck on poster; Guaranteed "Connecting to stream server..." overlay with animated cyan spinner
 // 3. Quality sheet: Only show resolutions that ACTUALLY exist (jei resolution nai sei resolution video te show koraiyo na)
 // 4. Download modal: 480P SD, 720P HD, 1080P FHD tabs with real MovieBox streams & sizes; duplicate fallbacks removed
 // 5. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
+// 6. Fast Bufferless Streaming: Instant low-latency playback & 90s download watchdog with resilient auto-resume
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.1.5 executing...');
+  console.log('⚡ FOBS TV Live Patch v1.1.6 executing...');
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -121,8 +122,34 @@
     return overlay;
   }
 
+  function attachVideoWatcher() {
+    const videoEl = document.getElementById('mainVideoPlayer');
+    if (videoEl && !videoEl._hasFobsWatcher) {
+      const posterObs = new MutationObserver(() => stripVideoPoster());
+      posterObs.observe(videoEl, { attributes: true, attributeFilter: ['poster'] });
+
+      videoEl.addEventListener('playing', () => {
+        hideConnectingLoader();
+      });
+      videoEl.addEventListener('timeupdate', () => {
+        if (videoEl.currentTime > 0.1 && !videoEl.paused) {
+          hideConnectingLoader();
+        }
+      });
+      videoEl.addEventListener('waiting', () => {
+        if (!videoEl.paused) showConnectingLoader();
+      });
+      videoEl.addEventListener('loadstart', () => {
+        showConnectingLoader();
+      });
+      videoEl._hasFobsWatcher = true;
+    }
+  }
+  attachVideoWatcher();
+
   function showConnectingLoader() {
     stripVideoPoster();
+    attachVideoWatcher();
     const overlay = ensureConnectingOverlay();
     if (overlay) overlay.classList.add('active');
     const loader = document.getElementById('videoLoader');
@@ -153,31 +180,6 @@
     if (qBtn) qBtn.style.setProperty('display', 'none', 'important');
   }
   stripVideoPoster();
-
-  const videoEl = document.getElementById('mainVideoPlayer');
-  if (videoEl && !videoEl._hasFobsWatcher) {
-    const posterObs = new MutationObserver(() => stripVideoPoster());
-    posterObs.observe(videoEl, { attributes: true, attributeFilter: ['poster'] });
-
-    videoEl.addEventListener('playing', () => {
-      hideConnectingLoader();
-    });
-    videoEl.addEventListener('timeupdate', () => {
-      if (videoEl.currentTime > 0.1 && !videoEl.paused) {
-        hideConnectingLoader();
-      }
-    });
-    videoEl.addEventListener('waiting', () => {
-      if (!videoEl.paused) showConnectingLoader();
-    });
-    videoEl.addEventListener('loadstart', () => {
-      showConnectingLoader();
-    });
-    videoEl.addEventListener('error', () => {
-      hideConnectingLoader();
-    });
-    videoEl._hasFobsWatcher = true;
-  }
 
   // Hook playStreamUrl: Guaranteed "Connecting to stream server..." overlay until video actually plays
   const origPlayStreamUrl = window.playStreamUrl;
@@ -676,7 +678,8 @@
         const taskId = `dl_${subjectId || media.id}_s${seNum}_e${epNum}_${curQ}`;
         const epRealSize = ep?.realSizeText || `~${targetResNum >= 1080 ? 480 : (targetResNum >= 720 ? 260 : 135)} MB`;
         const epRealBytes = ep?.realSizeBytes || 0;
-        const downloadEndpointUrl = `/api/moviebox/stream?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
+        const cleanSafeEpTitle = epTitle.replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_');
+        const downloadEndpointUrl = `/api/download?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}&title=${encodeURIComponent(cleanSafeEpTitle)}`;
 
         if (window.fobsDownloadQueue) {
           window.fobsDownloadQueue.enqueue({
@@ -725,7 +728,8 @@
     const realSize = ep?.realSizeText || `~${targetResNum >= 1080 ? 950 : (targetResNum >= 720 ? 450 : 250)} MB`;
     const realBytes = ep?.realSizeBytes || 0;
     const taskId = `dl_${subjectId || media.id}_movie_${curQ}`;
-    const downloadEndpointUrl = `/api/moviebox/stream?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=0&ep=0&q=${targetResNum}`;
+    const cleanSafeMovieTitle = movieTitle.replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_');
+    const downloadEndpointUrl = `/api/download?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=0&ep=0&q=${targetResNum}&title=${encodeURIComponent(cleanSafeMovieTitle)}`;
 
     if (window.fobsDownloadQueue) {
       window.fobsDownloadQueue.enqueue({
@@ -889,5 +893,5 @@
   purgeFake140MB();
   setupDownloadModalObserver();
 
-  console.log('✅ FOBS TV Live Patch v1.1.5 active: Dedicated Connecting to stream server overlay & anti-freeze active.');
+  console.log('✅ FOBS TV Live Patch v1.1.6 active: Dedicated Connecting to stream server overlay & anti-freeze active.');
 })();

@@ -1232,7 +1232,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
     const mediaCacheKey = `${cleanId}_s${seNum}_e${epNum}`;
     let media = null;
     const cachedEntry = movieboxStreamCache.get(mediaCacheKey);
-    if (cachedEntry && (Date.now() - cachedEntry.timestamp < 45 * 60 * 1000)) {
+    if (cachedEntry && (Date.now() - cachedEntry.timestamp < 12 * 60 * 60 * 1000)) {
       media = cachedEntry.media;
     } else if (movieboxResolvingMap.has(mediaCacheKey)) {
       media = await movieboxResolvingMap.get(mediaCacheKey);
@@ -1240,24 +1240,16 @@ app.get('/api/moviebox/stream', async (req, res) => {
       const resolveTask = (async () => {
         let m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', seNum, epNum);
         if (!m || !m.streamUrl) {
-          m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, epNum);
+          if (epNum > 0) {
+            m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, epNum);
+          } else {
+            m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, 0);
+          }
         }
         if (!m || !m.streamUrl) {
           if (cleanId === '2587437118653956672' || String(cleanId).includes('arcane')) {
             m = await movieboxService.resolveMedia('8350263472579564576', 'arcane-cSoWT6jiQW9', seNum, epNum);
           }
-        }
-        if ((!m || !m.streamUrl) && epNum === 0) {
-          m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', seNum, 0);
-        }
-        if ((!m || !m.streamUrl) && epNum === 0) {
-          m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, 0);
-        }
-        if (!m || !m.streamUrl && seNum === 0 && epNum === 0) {
-          m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 1, 1);
-        }
-        if (!m || !m.streamUrl) {
-          m = await movieboxService.resolveMedia(cleanId, '', seNum, epNum, { forceRefresh: true });
         }
         if (!m || !m.streamUrl) {
           m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', seNum, epNum, { forceRefresh: true });
@@ -1387,7 +1379,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
     const proxiedStreamUrl = `/api/stream?url=${encodeURIComponent(chosenStream)}`;
     const fullProxiedStreamUrl = `${baseUrl}${proxiedStreamUrl}`;
 
-    res.setHeader('X-Accel-Buffering', 'yes');
+    res.setHeader('X-Accel-Buffering', 'no');
     res.setHeader('X-Stream-Resolution', String(chosenRes));
     res.setHeader('Cache-Control', 'public, max-age=86400, no-transform');
 
@@ -1826,14 +1818,14 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
     'Access-Control-Expose-Headers': 'Content-Range, Content-Length, Accept-Ranges, Content-Type, X-Stream-Resolution',
     'Content-Disposition': 'inline',
     'Cache-Control': 'public, max-age=86400, no-transform',
-    'X-Accel-Buffering': 'yes'
+    'X-Accel-Buffering': 'no'
   };
 
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type, Accept, X-Requested-With, Origin, Authorization');
   res.setHeader('Access-Control-Expose-Headers', 'Content-Range, Content-Length, Accept-Ranges, Content-Type, X-Stream-Resolution');
-  res.setHeader('X-Accel-Buffering', 'yes');
+  res.setHeader('X-Accel-Buffering', 'no');
   if (mbContext && mbContext.targetRes) {
     res.setHeader('X-Stream-Resolution', String(mbContext.targetRes));
   }
@@ -2477,7 +2469,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.1.5",
+  version: "1.1.6",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 
@@ -2536,6 +2528,26 @@ app.get('/api/download', async (req, res) => {
     return res.status(400).send('Missing video URL parameter');
   }
 
+  // Extract MovieBox params early before URL resolution
+  let mbParams = null;
+  let actualDeliveredResolution = reqQ || 480;
+
+  if (targetUrl && targetUrl.includes('/api/moviebox/stream')) {
+    try {
+      const urlObj = new URL(targetUrl, 'https://fobstv.duckdns.org');
+      const id = urlObj.searchParams.get('id');
+      const detailPath = urlObj.searchParams.get('path') || getMovieBoxDetailPath(id) || '';
+      const rawSe = urlObj.searchParams.get('se');
+      const rawEp = urlObj.searchParams.get('ep');
+      const se = (rawSe !== null && rawSe !== undefined && rawSe !== '') ? parseInt(rawSe, 10) : 0;
+      const ep = (rawEp !== null && rawEp !== undefined && rawEp !== '') ? parseInt(rawEp, 10) : 0;
+      const urlQ = parseInt(urlObj.searchParams.get('q') || urlObj.searchParams.get('quality') || '0', 10);
+      const targetRes = reqQ > 0 ? reqQ : (urlQ > 0 ? urlQ : 480);
+      mbParams = { id, detailPath, se, ep, targetRes };
+      actualDeliveredResolution = targetRes;
+    } catch(e) {}
+  }
+
   // If proxy url /api/stream?url=...
   if (targetUrl.includes('/api/stream?url=')) {
     try {
@@ -2554,9 +2566,7 @@ app.get('/api/download', async (req, res) => {
     } catch(e) {}
   }
 
-  // If still a relative MovieBox route, resolve it directly to the real CDN URL for the requested quality
-  let mbParams = null;
-  let actualDeliveredResolution = reqQ || 480;
+  // If resolvedUrl is still a relative MovieBox route, resolve it directly to the real CDN URL for the requested quality
   if (resolvedUrl.includes('/api/moviebox/stream')) {
     try {
       const urlObj = new URL(resolvedUrl, 'https://fobstv.duckdns.org');
@@ -2646,8 +2656,8 @@ app.get('/api/download', async (req, res) => {
     downloadHeaders['Referer'] = 'https://pkembed.site/';
   }
 
-  res.setHeader('X-Accel-Buffering', 'yes');
-  res.setHeader('Cache-Control', 'public, max-age=86400, no-transform');
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.setHeader('Cache-Control', 'no-cache, no-transform');
 
   if (req.socket && typeof req.socket.setNoDelay === 'function') {
     try { req.socket.setNoDelay(true); } catch(e) {}
