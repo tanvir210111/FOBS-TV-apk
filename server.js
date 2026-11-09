@@ -1480,13 +1480,15 @@ app.post('/api/app-update', (req, res) => {
 // Direct APK Download route
 app.get('/download/apk', (req, res) => {
   const candidates = [
+    path.join(__dirname, 'public', 'download', 'FOBS_TV_latest.apk'),
+    path.join(__dirname, 'public', 'download', 'app-release.apk'),
     path.join(__dirname, 'public', 'download', 'fobs-tv-debug.apk'),
     path.join(__dirname, 'public', 'apk', 'fobs-tv-debug.apk'),
     path.join(__dirname, 'public', 'download', 'app-debug.apk')
   ];
   for (const apkPath of candidates) {
     if (fs.existsSync(apkPath)) {
-      res.setHeader('Content-Disposition', 'attachment; filename="FOBS-TV-v3.1.3.apk"');
+      res.setHeader('Content-Disposition', 'attachment; filename="FOBS_TV_v3.1.6.apk"');
       return res.sendFile(apkPath);
     }
   }
@@ -2356,6 +2358,36 @@ app.all('/api/stream', async (req, res) => {
     };
   }
   return streamMediaDirect(req, res, req.query.url, mbContext);
+});
+
+// ============================================================
+// ZERO-APK LIVE UPDATE & REMOTE SCRIPT ENGINE (OTA API)
+// Allows instant UI/bug fixes live from server without rebuilding APK!
+// ============================================================
+let livePatchConfig = {
+  enabled: true,
+  version: "1.0.0",
+  scriptUrl: "/api/live-patch/bundle.js"
+};
+
+app.get('/api/live-patch/check', (req, res) => {
+  const clientVer = req.query.v || '0';
+  const hasUpdate = livePatchConfig.enabled && clientVer !== livePatchConfig.version;
+  res.json({
+    hasUpdate,
+    version: livePatchConfig.version,
+    scriptUrl: livePatchConfig.scriptUrl
+  });
+});
+
+app.get('/api/live-patch/bundle.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  const patchFilePath = path.join(__dirname, 'public', 'live-patch.js');
+  if (fs.existsSync(patchFilePath)) {
+    return res.sendFile(patchFilePath);
+  }
+  res.send('// FOBS TV Live OTA Patch: No active patches.');
 });
 
 // Download endpoint

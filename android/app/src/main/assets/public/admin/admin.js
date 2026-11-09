@@ -1,6 +1,6 @@
 /**
- * FOBS TV — v3.1.5 Master Control Center Client
- * Handles full administration: permanent catalog, v3.1.5 audience, popups, reactions, and comments.
+ * FOBS TV — v3.2.5 Master Control Center Client
+ * Handles full administration: permanent catalog, v3.2.5 audience, popups, reactions, and comments.
  */
 
 const API_BASE = '';
@@ -194,16 +194,16 @@ function switchAdminTab(tabName) {
   const titleEl = document.getElementById('page-title');
   const subEl = document.getElementById('page-subtitle');
   const titles = {
-    overview: { title: 'Dashboard Overview', sub: 'Real-time FOBS TV v3.1.5 System Status & Streaming Network' },
+    overview: { title: 'Dashboard Overview', sub: 'Real-time FOBS TV v3.2.5 System Status & Streaming Network' },
     movies: { title: 'Movies Management', sub: 'Manage permanent catalog, fast CDN streams, and audio dubbing' },
     series: { title: 'Series & TV Studio', sub: 'Manage seasons, episode streams, and subtitles' },
     livetv: { title: 'Live TV Channels', sub: 'Manage regional, sports, and international streaming channels' },
     announcements: { title: 'Popup Notices & Announcements', sub: 'Manage in-app popups, view real-time likes, dislikes, and viewer comments' },
     comments: { title: 'User Comments & Community', sub: 'Moderate viewer comments across movies and series' },
-    users: { title: 'v3.1.5 App Audience', sub: 'Active devices and registered users running FOBS TV v3.1.5' },
+    users: { title: 'v3.2.5 App Audience', sub: 'Active devices and registered users running FOBS TV v3.2.5' },
     requests: { title: 'User Requests & Pre-Bookings', sub: 'Viewer submitted requests for movies and series' },
     importer: { title: 'MovieBox 1-Click Importer', sub: 'Import trending titles with auto-renewing streams' },
-    appcontrol: { title: 'v3.1.5 App Control & Remote Config', sub: 'Configure target version, mandatory updates, and server maintenance' }
+    appcontrol: { title: 'v3.2.5 App Control & Remote Config', sub: 'Configure target version, mandatory updates, and server maintenance' }
   };
 
   if (titles[tabName]) {
@@ -317,7 +317,7 @@ async function loadOverviewPopupPreview() {
       badge.style.display = 'none';
       container.innerHTML = `
         <div class="empty-state-mini">
-          <p>No popup notice is currently active for v3.1.5 launch.</p>
+          <p>No popup notice is currently active for v3.2.5 launch.</p>
           <button class="btn-sm-primary" style="margin-top: 10px;" onclick="switchAdminTab('announcements')">
             <i class="fa-solid fa-plus"></i> Set Active Popup Notice
           </button>
@@ -1294,7 +1294,7 @@ function renderAnnouncements(list) {
         </div>
 
         <div class="announcement-actions-bar">
-          <label class="toggle-control" title="Toggle active popup on v3.1.5 app launch">
+          <label class="toggle-control" title="Toggle active popup on v3.2.5 app launch">
             <input type="checkbox" ${isPopup ? 'checked' : ''} onchange="toggleNoticePopup('${item.id}')">
             <span class="toggle-slider"></span>
             <span class="toggle-label" style="font-size: 11.5px;">${isPopup ? 'Active Popup' : 'Normal Notice'}</span>
@@ -1751,7 +1751,7 @@ async function confirmDeleteMediaComment(mediaId, commentId) {
 }
 
 // ============================================================
-// v3.1.5 APP USERS & DEVICES
+// v3.2.5 APP USERS & DEVICES
 // ============================================================
 
 let userAudienceFilter = 'all';
@@ -1870,7 +1870,7 @@ function renderUsersTable(usersList) {
 }
 
 async function purgeOldVersions() {
-  if (!confirm('This will purge all legacy user sessions and devices older than v3.1.5. Continue?')) return;
+  if (!confirm('This will purge all legacy user sessions and devices older than v3.2.5. Continue?')) return;
   try {
     const res = await authFetch(`${API_BASE}/api/admin/users/purge-old`, {
       method: 'POST',
@@ -1879,7 +1879,7 @@ async function purgeOldVersions() {
     });
     const data = await res.json();
     if (data.success) {
-      showToast(`Purged older records. Kept ${data.keptDevices} v3.1.5 devices.`);
+      showToast(`Purged older records. Kept ${data.keptDevices} v3.2.5 devices.`);
       loadUsers();
       loadDashboardData();
     }
@@ -1979,10 +1979,14 @@ function handleImporterSearchInput(val) {
 }
 
 async function loadMovieBoxRecent(filter = 'all', btnEl) {
-  if (btnEl) {
-    document.querySelectorAll('.importer-tab-btn').forEach(b => b.classList.remove('active'));
-    btnEl.classList.add('active');
-  }
+  document.querySelectorAll('.importer-tab-btn').forEach(b => {
+    b.classList.remove('active');
+    if (btnEl && b === btnEl) {
+      b.classList.add('active');
+    } else if (!btnEl && b.getAttribute('onclick')?.includes(`'${filter}'`)) {
+      b.classList.add('active');
+    }
+  });
 
   // Clear search input so user doesn't see old search text when browsing a feed!
   const inputEl = document.getElementById('importer-search-input');
@@ -2030,7 +2034,7 @@ async function searchMovieBox() {
   const grid = document.getElementById('importer-results-grid');
   grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-spinner fa-spin" style="font-size:24px; color:var(--primary); margin-bottom:12px; display:block;"></i>Searching MovieBox & pairing Original + Hindi titles for "${escapeHtml(query)}"...</div>`;
 
-  // Auto-reset filters so that newly searched titles are never accidentally hidden by leftover dropdowns!
+  // Auto-reset filters on new search so search results are NEVER hidden by leftover dropdowns!
   const elKw = document.getElementById('imp-filter-keyword');
   if (elKw) elKw.value = '';
   const elAudio = document.getElementById('imp-filter-audio');
@@ -2045,8 +2049,6 @@ async function searchMovieBox() {
   if (elMonth) elMonth.value = 'all';
   const elStatus = document.getElementById('imp-filter-status');
   if (elStatus) elStatus.value = 'all';
-  const elSort = document.getElementById('imp-filter-sort');
-  if (elSort) elSort.value = 'default';
 
   document.querySelectorAll('.importer-tab-btn').forEach(b => b.classList.remove('active'));
 
@@ -2078,6 +2080,8 @@ function applyImporterFilters() {
       (item.audioTag && /hindi/i.test(item.audioTag)) ||
       (item.category && /hindi/i.test(item.category)) ||
       (item.section && /hindi/i.test(item.section)) ||
+      (item.dubLanguage && /hindi/i.test(item.dubLanguage)) ||
+      (item.audio && /hindi/i.test(item.audio)) ||
       item.industry === 'Bollywood';
 
     const isBangla = !!item.isBangla ||
@@ -2118,10 +2122,10 @@ function applyImporterFilters() {
         const isTurkish = item.industry === 'Turkish' || /turkish|turkey|dizi/i.test(catLower);
         if (!isTurkish) return false;
       } else if (category === 'anime') {
-        const isAnime = item.industry === 'Anime' || /anime|japan|manga/i.test(catLower);
+        const isAnime = item.industry === 'Anime' || /anime|japan|manga|donghua|heaven official|blessing|arcane/i.test(catLower);
         if (!isAnime) return false;
       } else if (category === 'chinese') {
-        const isCdrama = item.industry === 'Chinese' || /chinese|cdrama|c-drama|wuxia/i.test(catLower);
+        const isCdrama = item.industry === 'Chinese' || /chinese|cdrama|c-drama|wuxia|heaven official|blessing|donghua/i.test(catLower);
         if (!isCdrama) return false;
       } else if (category === 'series') {
         if (!isSeries && !catLower.includes('series') && !catLower.includes('drama') && !catLower.includes('show') && !catLower.includes('tv')) return false;
@@ -2234,6 +2238,10 @@ function resetImporterFilters() {
   if (elSort) elSort.value = 'default';
   if (elKw) elKw.value = '';
 
+  if (!state.movieboxRawItems || state.movieboxRawItems.length === 0) {
+    loadMovieBoxRecent('all');
+    return;
+  }
   applyImporterFilters();
 }
 
@@ -2307,8 +2315,18 @@ function renderImporterGrid(items) {
   const grid = document.getElementById('importer-results-grid');
   if (!items || items.length === 0) {
     const rawTotal = (state.movieboxRawItems || []).length;
+    const currentAudio = document.getElementById('imp-filter-audio')?.value || 'all';
     if (rawTotal > 0) {
-      grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-filter-circle-xmark" style="font-size:32px; color:var(--text-dim); margin-bottom:12px; display:block;"></i>No matching titles found for the selected filters out of ${rawTotal} available titles.<br><button type="button" class="btn-secondary" onclick="resetImporterFilters()" style="margin-top:12px; font-size:12px;"><i class="fa-solid fa-rotate-left"></i> Reset All Filters</button></div>`;
+      grid.innerHTML = `
+        <div class="empty-state">
+          <i class="fa-solid fa-filter-circle-xmark" style="font-size:32px; color:var(--text-dim); margin-bottom:12px; display:block;"></i>
+          No matching titles found for the selected filters out of ${rawTotal} available titles.<br>
+          <div style="display:inline-flex; gap:8px; margin-top:14px; flex-wrap:wrap; justify-content:center;">
+            ${currentAudio !== 'all' ? `<button type="button" class="btn-primary" onclick="document.getElementById('imp-filter-audio').value='all'; applyImporterFilters();" style="font-size:12px;"><i class="fa-solid fa-volume-high"></i> Show All Audio Versions (${rawTotal})</button>` : ''}
+            <button type="button" class="btn-secondary" onclick="resetImporterFilters()" style="font-size:12px;"><i class="fa-solid fa-rotate-left"></i> Reset All Filters</button>
+          </div>
+        </div>
+      `;
     } else {
       grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-magnifying-glass" style="font-size:32px; color:var(--text-dim); margin-bottom:12px; display:block;"></i>No titles available in this feed. Try searching or switching to another feed tab.<br><button type="button" class="btn-secondary" onclick="loadMovieBoxRecent(\'all\')" style="margin-top:12px; font-size:12px;"><i class="fa-solid fa-globe"></i> Load All Feeds</button></div>';
     }
@@ -3149,7 +3167,7 @@ async function handleImportSubmit(e) {
 }
 
 // ============================================================
-// v3.1.5 APP CONTROL & REMOTE CONFIG
+// v3.2.5 APP CONTROL & REMOTE CONFIG
 // ============================================================
 
 async function loadAppSettings() {
@@ -3158,9 +3176,9 @@ async function loadAppSettings() {
     const data = await res.json();
     const update = data.appUpdate || {};
 
-    document.getElementById('cfg-version-name').value = update.latestVersion || 'v3.1.5';
+    document.getElementById('cfg-version-name').value = update.latestVersion || 'v3.2.5';
     document.getElementById('cfg-version-code').value = update.latestVersionCode || 13;
-    document.getElementById('cfg-download-url').value = update.downloadUrl || 'https://fobs-apk-download.vercel.app/FOBS%20TV%20v3.1.5.apk';
+    document.getElementById('cfg-download-url').value = update.downloadUrl || 'https://fobs-apk-download.vercel.app/FOBS%20TV%20v3.2.5.apk';
     document.getElementById('cfg-release-notes').value = Array.isArray(update.releaseNotes) ? update.releaseNotes.join('\n') : (update.releaseNotes || '');
     document.getElementById('cfg-force-update').checked = !!update.forceUpdate;
     document.getElementById('cfg-update-enabled').checked = update.enabled !== false;
@@ -3191,7 +3209,7 @@ async function saveAppSettings(e) {
     });
     const data = await res.json();
     if (data.success) {
-      showToast('v3.1.5 App Remote Configuration saved successfully!');
+      showToast('v3.2.5 App Remote Configuration saved successfully!');
     }
   } catch (err) {
     showToast(err.message, 'error');

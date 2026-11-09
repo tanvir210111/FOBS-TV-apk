@@ -350,12 +350,64 @@ const CACHE_TTL_MS = 60 * 1000; // 1 minute TTL
 let isSyncing = false;
 
 // App Versioning & In-App Force Update Configuration
-const CURRENT_APP_VERSION_CODE = 13;
-const CURRENT_APP_VERSION_NAME = '3.1.5';
+const CURRENT_APP_VERSION_CODE = 14;
+const CURRENT_APP_VERSION_NAME = '3.1.6';
 window.CURRENT_APP_VERSION_CODE = CURRENT_APP_VERSION_CODE;
 window.CURRENT_APP_VERSION_NAME = CURRENT_APP_VERSION_NAME;
 let currentAppUpdateConfig = null;
 let isUpdatingApp = false;
+
+// ============================================================
+// ZERO-APK LIVE UPDATE & REMOTE SCRIPT ENGINE (OTA ENGINE)
+// Allows instant UI/bug fixes live from server without rebuilding APK!
+// ============================================================
+function applyCachedLivePatch() {
+  try {
+    const cachedCode = localStorage.getItem('fobs_live_patch_code');
+    if (cachedCode && cachedCode.trim() && !cachedCode.includes('No active patches')) {
+      const script = document.createElement('script');
+      script.id = 'fobsLivePatchScript';
+      script.textContent = cachedCode;
+      document.head.appendChild(script);
+      console.log('⚡ FOBS TV Live OTA Patch successfully applied from local cache.');
+    }
+  } catch (err) {
+    console.warn('Live OTA Patch apply warning:', err);
+  }
+}
+
+async function checkAndDownloadLivePatch() {
+  try {
+    const activePatchVer = localStorage.getItem('fobs_live_patch_ver') || '0';
+    const res = await fetch(`${API_BASE_URL}/api/live-patch/check?v=${encodeURIComponent(activePatchVer)}&_t=${Date.now()}`);
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data && data.hasUpdate && data.scriptUrl) {
+      const scriptUrl = data.scriptUrl.startsWith('http') ? data.scriptUrl : `${API_BASE_URL}${data.scriptUrl}`;
+      const sRes = await fetch(scriptUrl, { cache: 'no-store' });
+      if (sRes.ok) {
+        const newCode = await sRes.text();
+        if (newCode && newCode.trim().length > 10 && !newCode.includes('No active patches')) {
+          localStorage.setItem('fobs_live_patch_code', newCode);
+          localStorage.setItem('fobs_live_patch_ver', String(data.version || Date.now()));
+          console.log(`⚡ FOBS TV Live OTA Patch updated to version ${data.version}!`);
+          const existing = document.getElementById('fobsLivePatchScript');
+          if (existing) existing.remove();
+          const script = document.createElement('script');
+          script.id = 'fobsLivePatchScript';
+          script.textContent = newCode;
+          document.head.appendChild(script);
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Check live patch notice:', err.message);
+  }
+}
+try {
+  applyCachedLivePatch();
+  setTimeout(checkAndDownloadLivePatch, 1500);
+} catch (e) {}
 
 let appState = {
   activeTab: 'home',
@@ -3644,6 +3696,7 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
     renderServerPills(media);
     updateQualityDisplay('480p');
     if (typeof syncPlayerTitles === 'function') syncPlayerTitles();
+    if (typeof updateNextEpisodeBtnVisibility === 'function') updateNextEpisodeBtnVisibility();
     const activeEpStream = getActiveEpisodeStream(appState.currentEpisode);
     playStreamUrl(activeEpStream, null, targetSeekTime);
 
@@ -3658,6 +3711,8 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
     }
   } else {
     if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'none';
+    const nextBtn = document.getElementById('lsCenterNextEpBtn');
+    if (nextBtn) nextBtn.style.display = 'none';
     appState.currentEpisode = null;
     appState.activeServerIndex = 0;
     renderServerPills(media);
@@ -3790,9 +3845,51 @@ function selectEpisode(idx) {
   renderEpisodePills(currentEpisodes, idx);
   renderServerPills(appState.currentMedia);
   if (typeof syncPlayerTitles === 'function') syncPlayerTitles();
+  if (typeof updateNextEpisodeBtnVisibility === 'function') updateNextEpisodeBtnVisibility();
   const activeEpStream = getActiveEpisodeStream(appState.currentEpisode);
   playStreamUrl(activeEpStream);
 }
+
+function updateNextEpisodeBtnVisibility() {
+  const nextBtn = document.getElementById('lsCenterNextEpBtn');
+  if (!nextBtn) return;
+  const media = appState.currentMedia;
+  const isSeries = media && (media.type === 'series' || (media.seasons && media.seasons.length > 0) || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('mb-s-')));
+  if (!isSeries) {
+    nextBtn.style.display = 'none';
+    return;
+  }
+  const episodes = getActiveSeasonEpisodes(media);
+  const curIdx = appState.currentEpisodeIndex || 0;
+  nextBtn.style.display = 'flex';
+  if (episodes && curIdx < episodes.length - 1) {
+    nextBtn.style.opacity = '1';
+    nextBtn.style.cursor = 'pointer';
+  } else {
+    nextBtn.style.opacity = '0.5';
+    nextBtn.style.cursor = 'default';
+  }
+}
+window.updateNextEpisodeBtnVisibility = updateNextEpisodeBtnVisibility;
+
+function playNextEpisode() {
+  if (!appState.currentMedia) return;
+  const episodes = getActiveSeasonEpisodes(appState.currentMedia);
+  if (!episodes || !episodes.length) return;
+  const curIdx = appState.currentEpisodeIndex || 0;
+  const nextIdx = curIdx + 1;
+  if (nextIdx < episodes.length) {
+    selectEpisode(nextIdx);
+    if (typeof showToast === 'function') {
+      showToast(`Playing Episode ${nextIdx + 1}`);
+    }
+  } else {
+    if (typeof showToast === 'function') {
+      showToast('This is the last episode of this season');
+    }
+  }
+}
+window.playNextEpisode = playNextEpisode;
 
 // Start Stream Playback via Direct Stream Resolution or Backend Proxy
 async function playStreamUrl(url, audioIndex = null, seekTime = null) {
