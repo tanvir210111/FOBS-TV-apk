@@ -1,11 +1,11 @@
-// FOBS TV Live OTA Patch Bundle v1.0.5
-// Updates applied here execute live across all user devices without requiring a new APK!
+// FOBS TV Live OTA Patch Bundle v1.0.6
+// Bulletproof DOM-level interceptors that work seamlessly even with legacy APK binaries!
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.0.5 executing...');
+  console.log('⚡ FOBS TV Live Patch v1.0.6 executing...');
 
-  // 1. Inject CSS to suppress Chromium / Android WebView internal black play circle overlay
+  // 1. Inject CSS for Chromium shadow-DOM play overlay suppression and clean styling
   try {
-    const styleId = 'fobs-patch-style-v105';
+    const styleId = 'fobs-patch-style-v106';
     if (!document.getElementById(styleId)) {
       const style = document.createElement('style');
       style.id = styleId;
@@ -24,6 +24,18 @@
         .video-container video {
           background-color: #000 !important;
         }
+        .ep-empty-notice {
+          font-size: 12px;
+          color: #f59e0b;
+          padding: 8px 12px;
+          background: rgba(245, 158, 11, 0.1);
+          border-radius: 8px;
+          border: 1px solid rgba(245, 158, 11, 0.25);
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          white-space: nowrap;
+        }
       `;
       document.head.appendChild(style);
     }
@@ -31,13 +43,21 @@
     console.warn('Live patch CSS injection warning:', e);
   }
 
-  // 2. Load Series Episodes Quality Info (Auto-detects available resolutions like MovieBox)
-  window.loadSeriesEpisodesQualityInfo = async function(media, seasonNum = 1) {
-    if (!media) return;
+  // Helper to get active series ID & path
+  function getMediaIdentifiers(media) {
+    if (!media) return { sId: '', dPath: '' };
     const sId = media.subjectId || media.mbSubjectId || (media.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '') : null) || (media.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || '';
     const dPath = media.detailPath || media.mbDetailPath || '';
+    return { sId, dPath };
+  }
+
+  // 2. Fetch and Cache Series Episodes Quality Info
+  async function fetchQualityInfoForMedia(media, seasonNum = 1) {
+    if (!media || media._isFetchingInfo) return;
+    const { sId, dPath } = getMediaIdentifiers(media);
     if (!sId) return;
 
+    media._isFetchingInfo = true;
     try {
       const res = await fetch(`${API_BASE_URL}/api/moviebox/episodes-info?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seasonNum}&_t=${Date.now()}`);
       if (!res.ok) return;
@@ -45,381 +65,269 @@
       if (data && data.ok && Array.isArray(data.episodes) && data.episodes.length > 0) {
         media._episodesInfo = data.episodes;
 
+        // Auto fallback if curQ has 0 episodes in this season
         const curQ = parseInt(window.appState?.currentQuality || '480p', 10) || 480;
-        const hasCurQ = data.episodes.some(info => Array.isArray(info.qualities) && info.qualities.some(q => q.resolution === curQ));
-
-        if (!hasCurQ) {
-          const availResolutions = new Set();
-          data.episodes.forEach(info => {
-            (info.qualities || []).forEach(q => {
-              if (q.resolution) availResolutions.add(q.resolution);
-            });
-          });
-          const sorted = Array.from(availResolutions).sort((a, b) => a - b);
+        const hasCur = data.episodes.some(info => (info.qualities || []).some(q => q.resolution === curQ));
+        if (!hasCur) {
+          const avail = new Set();
+          data.episodes.forEach(info => (info.qualities || []).forEach(q => avail.add(q.resolution)));
+          const sorted = Array.from(avail).sort((a, b) => a - b);
           if (sorted.length > 0) {
             const fallbackQ = sorted[0];
-            console.log(`[FOBS TV Patch] Quality ${curQ}p has 0 episodes. Switching to ${fallbackQ}p`);
             if (window.appState) window.appState.currentQuality = `${fallbackQ}p`;
             if (typeof window.updateQualityDisplay === 'function') window.updateQualityDisplay(`${fallbackQ}p`);
           }
         }
 
-        if (typeof window.getActiveSeasonEpisodes === 'function' && typeof window.renderEpisodePills === 'function') {
-          const activeEpisodes = window.getActiveSeasonEpisodes(media);
-          if (activeEpisodes) {
-            window.renderEpisodePills(activeEpisodes, window.appState?.currentEpisodeIndex || 0);
-          }
-        }
+        // Trigger DOM filters
+        filterEpisodePillsDom();
+        filterBatchModalDom();
       }
     } catch (err) {
-      console.warn('loadSeriesEpisodesQualityInfo patch error:', err);
+      console.warn('fetchQualityInfoForMedia error:', err);
+    } finally {
+      media._isFetchingInfo = false;
     }
-  };
+  }
 
-  // 3. Render Episode Pills strictly filtered by quality (MovieBox exact match!)
-  window.renderEpisodePills = function(episodes, activeIndex) {
+  // 3. Bulletproof DOM-level Filter for Player Episode Pills (#episodesListRow)
+  function filterEpisodePillsDom() {
     const row = document.getElementById('episodesListRow');
     if (!row) return;
 
-    const currentMedia = window.appState?.currentMedia;
-    const curQ = parseInt(window.appState?.currentQuality || '480p', 10) || 480;
-    const episodesInfo = (currentMedia && currentMedia._episodesInfo) || [];
-
-    let visibleEpisodes = [];
-    episodes.forEach((ep, idx) => {
-      const epNum = ep ? (ep.number ?? ep.episodeNumber ?? ep.episode ?? (idx + 1)) : (idx + 1);
-      const info = episodesInfo.find(it => it.episode === epNum);
-      
-      if (episodesInfo.length > 0) {
-        if (info && Array.isArray(info.qualities) && info.qualities.length > 0) {
-          const hasQ = info.qualities.some(q => q.resolution === curQ);
-          if (hasQ) {
-            visibleEpisodes.push({ ep, idx, epNum });
-          }
-        }
-      } else {
-        visibleEpisodes.push({ ep, idx, epNum });
-      }
-    });
-
-    if (visibleEpisodes.length === 0 && episodes.length > 0) {
-      row.innerHTML = `
-        <div style="font-size: 12px; color: #f59e0b; padding: 8px 12px; background: rgba(245, 158, 11, 0.1); border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.25); display: flex; align-items: center; gap: 6px;">
-          <i class="fa-solid fa-circle-exclamation"></i>
-          <span>${curQ}P তে কোনো পর্ব নেই (${curQ === 480 ? '720P বা 1080P সিলেক্ট করুন' : 'অন্য কোয়ালিটি সিলেক্ট করুন'})</span>
-        </div>
-      `;
-      return;
-    }
-
-    row.innerHTML = `
-      <button class="ep-pill ep-all">All</button>
-      ${visibleEpisodes.map(item => {
-        const { ep, idx, epNum } = item;
-        const formatted = typeof epNum === 'number'
-          ? (epNum < 10 ? '0' + epNum : String(epNum))
-          : String(epNum).replace(/^ep\s*/i, '').padStart(2, '0');
-        return `
-          <button class="ep-pill ${idx === activeIndex ? 'active' : ''}" onclick="selectEpisode(${idx})">
-            ${formatted}
-          </button>
-        `;
-      }).join('')}
-    `;
-  };
-
-  // 4. Hook Quality Switcher to re-render episode pills dynamically
-  const origSelectVideoQuality = window.selectVideoQuality;
-  if (typeof origSelectVideoQuality === 'function' && !origSelectVideoQuality._hasFilterPatch) {
-    window.selectVideoQuality = function(quality, isAuto = false) {
-      origSelectVideoQuality(quality, isAuto);
-      if (window.appState && window.appState.currentMedia) {
-        const media = window.appState.currentMedia;
-        if (media.type === 'series' || media.seasons || media.episodes) {
-          if (typeof window.getActiveSeasonEpisodes === 'function' && typeof window.renderEpisodePills === 'function') {
-            const activeEps = window.getActiveSeasonEpisodes(media);
-            if (activeEps) {
-              window.renderEpisodePills(activeEps, window.appState.currentEpisodeIndex || 0);
-            }
-          }
-        }
-      }
-    };
-    window.selectVideoQuality._hasFilterPatch = true;
-  }
-
-  // 5. Dynamic Episode Real Size & Resolution Fetcher for Downloader
-  window.fetchExactEpisodesSizes = async function(media, seasonNum) {
-    if (!media) return;
-    const sId = media.subjectId || media.mbSubjectId || (media.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '') : null) || (media.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || '';
-    const dPath = media.detailPath || media.mbDetailPath || '';
-    if (!sId) return;
-
-    try {
-      const res = await fetch(`${API_BASE_URL}/api/moviebox/episodes-info?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seasonNum}&_t=${Date.now()}`);
-      if (!res.ok) return;
-      const data = await res.json();
-      if (data && data.ok && Array.isArray(data.episodes) && data.episodes.length > 0) {
-        media._episodesInfo = data.episodes;
-
-        const curQNum = parseInt(window.currentDownloadQuality || '480P', 10) || 480;
-        const hasCurQ = data.episodes.some(info => (info.qualities || []).some(q => q.resolution === curQNum));
-        if (!hasCurQ) {
-          const avail = new Set();
-          data.episodes.forEach(info => (info.qualities || []).forEach(q => avail.add(q.resolution)));
-          const sorted = Array.from(avail).sort((a, b) => a - b);
-          if (sorted.length > 0) {
-            window.currentDownloadQuality = `${sorted[0]}P`;
-            document.querySelectorAll('#dlQualityTabs .dl-q-tab').forEach(tab => {
-              tab.classList.toggle('active', tab.getAttribute('data-quality') === window.currentDownloadQuality);
-            });
-          }
-        }
-
-        if (typeof window.renderBatchEpisodesList === 'function') {
-          window.renderBatchEpisodesList(seasonNum);
-        }
-      }
-    } catch (err) {
-      console.warn('Live patch fetchExactEpisodesSizes error:', err.message);
-    }
-  };
-
-  // 6. Batch Downloader Episode List (Strict MovieBox Quality Match)
-  window.renderBatchEpisodesList = function(seasonNum) {
     const media = window.appState?.currentMedia;
     if (!media) return;
 
+    const episodesInfo = media._episodesInfo;
+    const curQ = parseInt(window.appState?.currentQuality || '480p', 10) || 480;
+
+    if (!episodesInfo) {
+      fetchQualityInfoForMedia(media, window.appState?.currentSeason || 1);
+      return;
+    }
+
+    const buttons = Array.from(row.querySelectorAll('.ep-pill:not(.ep-all)'));
+    let visibleCount = 0;
+
+    buttons.forEach((btn, idx) => {
+      const rawText = btn.textContent.trim();
+      const epNum = parseInt(rawText, 10) || (idx + 1);
+
+      const info = episodesInfo.find(it => it.episode === epNum);
+      let hasQ = false;
+      if (info && Array.isArray(info.qualities) && info.qualities.length > 0) {
+        hasQ = info.qualities.some(q => q.resolution === curQ);
+      }
+
+      if (hasQ) {
+        btn.style.display = '';
+        visibleCount++;
+      } else {
+        btn.style.display = 'none';
+      }
+    });
+
+    let emptyNotice = row.querySelector('.ep-empty-notice');
+    if (visibleCount === 0 && buttons.length > 0) {
+      if (!emptyNotice) {
+        emptyNotice = document.createElement('div');
+        emptyNotice.className = 'ep-empty-notice';
+        row.appendChild(emptyNotice);
+      }
+      emptyNotice.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i><span>${curQ}P তে কোনো পর্ব নেই (${curQ === 480 ? '720P বা 1080P সিলেক্ট করুন' : 'অন্য কোয়ালিটি সিলেক্ট করুন'})</span>`;
+      emptyNotice.style.display = 'flex';
+    } else if (emptyNotice) {
+      emptyNotice.style.display = 'none';
+    }
+  }
+  window.filterEpisodePillsDom = filterEpisodePillsDom;
+
+  // 4. Bulletproof DOM-level Filter for Batch Downloader Modal (#dlEpisodesScrollList)
+  function filterBatchModalDom() {
     const scrollList = document.getElementById('dlEpisodesScrollList');
     if (!scrollList) return;
 
-    let allEpisodes = [];
-    if (media.seasons && media.seasons.length > 0) {
-      const targetSeason = media.seasons.find(s => (s.seasonNumber || s.season) === seasonNum) || media.seasons[0];
-      allEpisodes = targetSeason?.episodes || [];
-    } else if (media.episodes && media.episodes.length > 0) {
-      allEpisodes = media.episodes;
-    }
+    const media = window.appState?.currentMedia;
+    if (!media) return;
 
-    if (!allEpisodes || allEpisodes.length === 0) {
-      scrollList.innerHTML = `<div style="text-align: center; color: #94a3b8; padding: 20px;">এই সিজনে কোনো পর্ব পাওয়া যায়নি</div>`;
-      return;
-    }
-
+    const episodesInfo = media._episodesInfo;
     const curQ = window.currentDownloadQuality || '480P';
     const qNum = parseInt(curQ, 10) || 480;
-    const episodesInfo = (media && media._episodesInfo) || [];
 
-    let filteredEpisodes = [];
-    allEpisodes.forEach((ep, origIdx) => {
-      const epNum = ep ? (ep.episode ?? ep.episodeNumber ?? ep.number ?? (origIdx + 1)) : (origIdx + 1);
-      const info = episodesInfo.find(it => it.episode === epNum);
-      if (episodesInfo.length > 0) {
-        if (info && Array.isArray(info.qualities) && info.qualities.length > 0) {
-          const match = info.qualities.find(q => q.resolution === qNum);
-          if (match) {
-            filteredEpisodes.push({ ep, origIdx, epNum, match });
-          }
-        }
-      } else {
-        filteredEpisodes.push({ ep, origIdx, epNum, match: null });
-      }
-    });
-
-    if (filteredEpisodes.length === 0 && allEpisodes.length > 0) {
-      scrollList.innerHTML = `
-        <div style="text-align: center; color: #f59e0b; padding: 30px 15px; font-size: 13px;">
-          <i class="fa-solid fa-circle-exclamation" style="font-size: 24px; display: block; margin-bottom: 8px;"></i>
-          <span>${curQ} তে কোনো পর্ব নেই। উপরে 720P বা 1080P সিলেক্ট করুন।</span>
-        </div>
-      `;
-      const totalCountEl = document.getElementById('dlTotalEpsCount');
-      if (totalCountEl) totalCountEl.innerText = 0;
-      if (window.appState) {
-        window.appState._batchDownload = {
-          media,
-          isSeries: true,
-          season: seasonNum,
-          episodes: [],
-          selected: new Set()
-        };
-      }
-      if (typeof window.updateBatchSelectedSummary === 'function') window.updateBatchSelectedSummary();
+    if (!episodesInfo) {
+      fetchQualityInfoForMedia(media, window.appState?._batchDownload?.season || window.appState?.currentSeason || 1);
       return;
     }
 
-    const selectedSet = new Set(filteredEpisodes.map((_, i) => i));
-    if (window.appState) {
-      window.appState._batchDownload = {
-        media,
-        isSeries: true,
-        season: seasonNum,
-        episodes: filteredEpisodes.map(f => {
-          const epCopy = { ...f.ep, _origIdx: f.origIdx };
-          if (f.match) {
-            epCopy.realSizeText = f.match.sizeText;
-            epCopy.realSizeBytes = f.match.sizeBytes;
-            epCopy.realQuality = `${f.match.resolution}P`;
-          }
-          return epCopy;
-        }),
-        selected: selectedSet
-      };
-    }
+    const items = Array.from(scrollList.querySelectorAll('.dl-ep-item'));
+    let visibleCount = 0;
 
-    scrollList.innerHTML = window.appState._batchDownload.episodes.map((ep, idx) => {
-      const epNum = ep.episode ?? ep.episodeNumber ?? ep.number ?? (idx + 1);
-      const epTitle = ep.title ? ep.title : `Episode ${epNum}`;
-      const estSizeStr = ep.realSizeText || (typeof window.getEpisodeEstimatedSize === 'function' ? window.getEpisodeEstimatedSize(curQ, ep, idx) : '~250 MB');
-      return `
-        <div class="dl-ep-item selected" id="dl_ep_item_${idx}" onclick="toggleBatchEpisode(${idx})">
-          <div class="dl-ep-left">
-            <span class="dl-ep-badge">EP ${epNum}</span>
-            <div class="dl-ep-title-wrap">
-              <div class="dl-ep-title">${epTitle}</div>
-              <div class="dl-ep-size" id="dl_ep_size_${idx}">${estSizeStr}</div>
-            </div>
-          </div>
-          <label class="dl-ep-checkbox" onclick="event.stopPropagation()">
-            <input type="checkbox" id="dl_ep_chk_${idx}" checked onchange="toggleBatchEpisode(${idx})">
-            <span class="dl-checkbox-custom"><i class="fa-solid fa-check"></i></span>
-          </label>
-        </div>
-      `;
-    }).join('');
+    items.forEach((item, idx) => {
+      const badge = item.querySelector('.dl-ep-badge');
+      const badgeText = badge ? badge.textContent.replace(/[^0-9]/g, '') : '';
+      const epNum = parseInt(badgeText, 10) || (idx + 1);
 
-    const totalCountEl = document.getElementById('dlTotalEpsCount');
-    if (totalCountEl) totalCountEl.innerText = window.appState._batchDownload.episodes.length;
+      const info = episodesInfo.find(it => it.episode === epNum);
+      let match = null;
+      if (info && Array.isArray(info.qualities) && info.qualities.length > 0) {
+        match = info.qualities.find(q => q.resolution === qNum);
+      }
 
-    const selectAllChk = document.getElementById('dlSelectAllCheckbox');
-    if (selectAllChk) selectAllChk.checked = true;
+      const chk = item.querySelector('input[type="checkbox"]');
+      const sizeEl = item.querySelector('.dl-ep-size');
 
-    if (typeof window.updateBatchSelectedSummary === 'function') window.updateBatchSelectedSummary();
-    if (episodesInfo.length === 0) {
-      window.fetchExactEpisodesSizes(media, seasonNum);
-    }
-  };
-
-  // 7. Batch Quality Switcher
-  window.switchBatchQuality = function(quality) {
-    window.currentDownloadQuality = quality || '480P';
-    const qNum = parseInt(window.currentDownloadQuality, 10) || 480;
-
-    document.querySelectorAll('#dlQualityTabs .dl-q-tab').forEach(tab => {
-      tab.classList.toggle('active', tab.getAttribute('data-quality') === window.currentDownloadQuality);
-    });
-
-    document.querySelectorAll('#dlSingleMovieQualityList .dl-quality-item').forEach(item => {
-      const isSel = item.getAttribute('data-quality') === window.currentDownloadQuality;
-      item.classList.toggle('active', isSel);
-      const radio = item.querySelector('.dl-q-radio i');
-      if (radio) radio.className = isSel ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle';
-    });
-
-    const previewMeta = document.getElementById('dlPreviewMeta');
-    const media = window.appState?.currentMedia;
-    const isHindi = (media?.title?.toLowerCase().includes('hindi') || (window.appState?.currentAudioTrack && window.appState.currentAudioTrack.toLowerCase().includes('hindi')));
-    const dubLabel = isHindi ? 'Hindi Dubbed' : (media?.dubLanguage || 'Original Audio');
-    if (previewMeta) {
-      previewMeta.innerText = `${dubLabel} • ${window.currentDownloadQuality} ${qNum >= 1080 ? 'Full HD' : (qNum >= 720 ? 'HD' : 'SD')}`;
-    }
-
-    const batchState = window.appState?._batchDownload;
-    if (batchState && batchState.isSeries) {
-      window.renderBatchEpisodesList(batchState.season || 1);
-    } else {
-      const btnText = document.getElementById('btnStartDownloadText');
-      if (btnText) btnText.innerText = `ডাউনলোড শুরু করুন (${window.currentDownloadQuality})`;
-    }
-  };
-
-  // 8. Auto-Purge Fake 140MB Artifacts from LocalStorage
-  try {
-    const raw = localStorage.getItem('fobs_downloads');
-    if (raw) {
-      const list = JSON.parse(raw);
-      let changed = false;
-      if (Array.isArray(list)) {
-        list.forEach(item => {
-          if (!item) return;
-          const rec = item.receivedBytes || 0;
-          const tot = item.totalBytes || 0;
-
-          // Repair clamped fake 140MB or rec > tot
-          if (rec > 0 && (tot === 146800640 || tot < rec || !tot)) {
-            const realTot = Math.max(tot, rec);
-            item.totalBytes = realTot;
-            const dMb = (rec / 1048576).toFixed(1);
-            const tMb = (realTot / 1048576).toFixed(1);
-            item.sizeText = item.status === 'Ready (Offline)' ? `${dMb} MB` : `${dMb} MB / ${tMb} MB`;
-            const pct = Math.min(99, Math.round((rec / realTot) * 100));
-            item.progress = pct;
-            if (item.status === 'downloading') item.statusText = `Downloading... ${pct}%`;
-            changed = true;
-          }
-
-          // If queued or downloaded item displays fake 140MB text
-          if (item.sizeText && (item.sizeText.includes('/ 140.0 MB') || item.sizeText.includes('/ 140 MB') || item.sizeText.includes('~140 MB') || item.sizeText === '140.0 MB' || item.sizeText === '140 MB')) {
-            if (rec > 0) {
-              const dMb = (rec / 1048576).toFixed(1);
-              const tMb = (Math.max(tot, rec) / 1048576).toFixed(1);
-              item.sizeText = `${dMb} MB / ${tMb} MB`;
-            } else {
-              item.sizeText = item.realSizeText || 'Checking size...';
-            }
-            changed = true;
-          }
-        });
-
-        if (changed) {
-          localStorage.setItem('fobs_downloads', JSON.stringify(list));
-          if (typeof window.renderDownloadsList === 'function') {
-            window.renderDownloadsList();
-          }
+      if (match) {
+        item.style.display = 'flex';
+        visibleCount++;
+        if (sizeEl && match.sizeText) {
+          sizeEl.textContent = match.sizeText;
+        }
+        if (window.appState?._batchDownload?.episodes?.[idx]) {
+          window.appState._batchDownload.episodes[idx].realSizeText = match.sizeText;
+          window.appState._batchDownload.episodes[idx].realSizeBytes = match.sizeBytes;
+          window.appState._batchDownload.episodes[idx].realQuality = `${match.resolution}P`;
+        }
+      } else {
+        item.style.display = 'none';
+        if (chk && chk.checked) {
+          chk.checked = false;
+        }
+        if (window.appState?._batchDownload?.selected) {
+          window.appState._batchDownload.selected.delete(idx);
         }
       }
+    });
+
+    const totalCountEl = document.getElementById('dlTotalEpsCount');
+    if (totalCountEl) totalCountEl.innerText = visibleCount;
+
+    if (typeof window.updateBatchSelectedSummary === 'function') {
+      window.updateBatchSelectedSummary();
     }
-  } catch (e) {
-    console.warn('Live patch downloads cleanup error:', e);
+  }
+  window.filterBatchModalDom = filterBatchModalDom;
+
+  // 5. Watch DOM mutations on #episodesListRow and #dlEpisodesScrollList
+  function setupDomObservers() {
+    const epRow = document.getElementById('episodesListRow');
+    if (epRow && !epRow._hasObserver) {
+      const obs = new MutationObserver((mutations) => {
+        let hasNewButtons = false;
+        for (const m of mutations) {
+          if (m.type === 'childList' && m.addedNodes.length > 0) {
+            for (const n of m.addedNodes) {
+              if (n.nodeType === 1 && (n.classList.contains('ep-pill') || n.id === 'episodesListRow')) {
+                hasNewButtons = true;
+                break;
+              }
+            }
+          }
+        }
+        if (hasNewButtons) filterEpisodePillsDom();
+      });
+      obs.observe(epRow, { childList: true });
+      epRow._hasObserver = true;
+    }
+
+    const dlList = document.getElementById('dlEpisodesScrollList');
+    if (dlList && !dlList._hasObserver) {
+      const dlObs = new MutationObserver((mutations) => {
+        let hasItems = false;
+        for (const m of mutations) {
+          if (m.type === 'childList' && m.addedNodes.length > 0) {
+            hasItems = true;
+            break;
+          }
+        }
+        if (hasItems) filterBatchModalDom();
+      });
+      dlObs.observe(dlList, { childList: true });
+      dlList._hasObserver = true;
+    }
   }
 
-  // 9. Patch getStoredDownloadsList
-  window.getStoredDownloadsList = function() {
+  // 6. Hook Global Quality Clicks
+  document.addEventListener('click', (e) => {
+    // Quality sheet selection
+    const qBtn = e.target.closest('.quality-sheet-btn, [data-quality]');
+    if (qBtn) {
+      setTimeout(() => {
+        filterEpisodePillsDom();
+        filterBatchModalDom();
+      }, 80);
+    }
+
+    // Download modal open button
+    const dlOpenBtn = e.target.closest('#downloadBtn, .download-btn, [onclick*="triggerDownload"]');
+    if (dlOpenBtn) {
+      setTimeout(() => {
+        filterBatchModalDom();
+      }, 150);
+    }
+  }, true);
+
+  // 7. Auto-Purge and Repair 140MB Fake Sizes in LocalStorage & Active Downloads
+  function purgeFake140MB() {
     try {
-      const raw = localStorage.getItem('fobs_downloads') || '[]';
+      const raw = localStorage.getItem('fobs_downloads');
+      if (!raw) return;
       const list = JSON.parse(raw);
-      if (!Array.isArray(list)) return [];
-      let modified = false;
+      if (!Array.isArray(list)) return;
+
+      let changed = false;
       list.forEach(item => {
         if (!item) return;
         const rec = item.receivedBytes || 0;
         const tot = item.totalBytes || 0;
-        if (rec > 0 && (tot < rec || tot === 146800640 || !tot)) {
-          item.totalBytes = Math.max(tot, rec);
+
+        if (rec > 0 && (tot === 146800640 || tot < rec || !tot)) {
+          const realTot = Math.max(tot, rec);
+          item.totalBytes = realTot;
           const dMb = (rec / 1048576).toFixed(1);
-          const tMb = (item.totalBytes / 1048576).toFixed(1);
-          item.sizeText = item.status === 'Ready (Offline)' ? `${tMb} MB` : `${dMb} MB / ${tMb} MB`;
-          modified = true;
-        } else if (item.sizeText && (item.sizeText.includes('/ 140.0 MB') || item.sizeText.includes('/ 140 MB') || item.sizeText === '140.0 MB')) {
+          const tMb = (realTot / 1048576).toFixed(1);
+          item.sizeText = item.status === 'Ready (Offline)' ? `${dMb} MB` : `${dMb} MB / ${tMb} MB`;
+          const pct = Math.min(99, Math.round((rec / realTot) * 100));
+          item.progress = pct;
+          if (item.status === 'downloading') item.statusText = `Downloading... ${pct}%`;
+          changed = true;
+        }
+
+        if (item.sizeText && (item.sizeText.includes('/ 140.0 MB') || item.sizeText.includes('/ 140 MB') || item.sizeText.includes('~140 MB') || item.sizeText === '140.0 MB' || item.sizeText === '140 MB')) {
           if (rec > 0) {
-            item.totalBytes = Math.max(tot, rec);
             const dMb = (rec / 1048576).toFixed(1);
-            const tMb = (item.totalBytes / 1048576).toFixed(1);
+            const tMb = (Math.max(tot, rec) / 1048576).toFixed(1);
             item.sizeText = `${dMb} MB / ${tMb} MB`;
           } else {
-            item.sizeText = item.realSizeText || 'Checking size...';
+            item.sizeText = item.realSizeText || 'Calculating size...';
           }
-          modified = true;
+          changed = true;
         }
       });
-      if (modified) {
-        try { localStorage.setItem('fobs_downloads', JSON.stringify(list)); } catch (e) {}
-      }
-      return list;
-    } catch (e) {
-      return [];
-    }
-  };
 
-  console.log('✅ FOBS TV Live Patch v1.0.5 applied successfully.');
+      if (changed) {
+        localStorage.setItem('fobs_downloads', JSON.stringify(list));
+        if (typeof window.renderDownloadsList === 'function') {
+          window.renderDownloadsList();
+        }
+      }
+    } catch (e) {}
+  }
+
+  // Periodic Watchdog (Runs every 1 second to keep observers and filters alive)
+  setInterval(() => {
+    setupDomObservers();
+    const playerOpen = document.getElementById('playerOverlay')?.classList.contains('open') || (document.getElementById('playerOverlay')?.style.display === 'block');
+    if (playerOpen) {
+      filterEpisodePillsDom();
+    }
+    const dlModalOpen = document.getElementById('downloadOptionsModal')?.classList.contains('open');
+    if (dlModalOpen) {
+      filterBatchModalDom();
+    }
+  }, 1000);
+
+  purgeFake140MB();
+  setupDomObservers();
+
+  console.log('✅ FOBS TV Live Patch v1.0.6 fully armed and active.');
 })();
