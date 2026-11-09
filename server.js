@@ -2436,11 +2436,20 @@ let livePatchConfig = {
 };
 
 app.get('/api/live-patch/check', (req, res) => {
+  let ver = livePatchConfig.version;
+  try {
+    const patchPath = path.join(__dirname, 'public', 'live-patch.js');
+    if (fs.existsSync(patchPath)) {
+      const firstLine = fs.readFileSync(patchPath, 'utf8').slice(0, 100);
+      const match = firstLine.match(/v(\d+\.\d+\.\d+)/);
+      if (match) ver = match[1];
+    }
+  } catch (e) {}
   const clientVer = req.query.v || '0';
-  const hasUpdate = livePatchConfig.enabled && clientVer !== livePatchConfig.version;
+  const hasUpdate = livePatchConfig.enabled && clientVer !== ver;
   res.json({
     hasUpdate,
-    version: livePatchConfig.version,
+    version: ver,
     scriptUrl: livePatchConfig.scriptUrl
   });
 });

@@ -108,3 +108,11 @@ try {
   fs.copyFileSync(confPath + '.bak', confPath);
   cp.execSync('systemctl reload nginx || nginx -s reload');
 }
+
+try {
+  console.log('Triggering PM2 reload...');
+  cp.execSync('pm2 reload all || pm2 restart all || npx pm2 restart all');
+  console.log('PM2 reloaded successfully ✅');
+} catch (pm2Err) {
+  console.warn('PM2 reload notice:', pm2Err.message);
+}
