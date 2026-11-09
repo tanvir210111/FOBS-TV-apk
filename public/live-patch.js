@@ -1,11 +1,11 @@
-// FOBS TV Live OTA Patch Bundle v1.1.4
+// FOBS TV Live OTA Patch Bundle v1.1.5
 // 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (360p/480p default)
-// 2. Video Player: Never stuck on poster; Connecting to stream server message with animated loader; hide resolution in portrait
+// 2. Video Player: Never stuck on poster; Guaranteed "Connecting to stream server..." overlay with animated cyan spinner
 // 3. Quality sheet: Only show resolutions that ACTUALLY exist (jei resolution nai sei resolution video te show koraiyo na)
 // 4. Download modal: 480P SD, 720P HD, 1080P FHD tabs with real MovieBox streams & sizes; duplicate fallbacks removed
 // 5. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.1.4 executing...');
+  console.log('⚡ FOBS TV Live Patch v1.1.5 executing...');
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -33,10 +33,10 @@
   // -------------------------------------------------------------
   // 0. Eliminate Native Android Poster Freeze, Big Play Button & Hide Portrait Resolution Button
   // -------------------------------------------------------------
-  function injectNoNativePosterStyles() {
-    if (document.getElementById('fobs-no-native-poster-style')) return;
+  function injectConnectingOverlayStyles() {
+    if (document.getElementById('fobs-connecting-overlay-style')) return;
     const style = document.createElement('style');
-    style.id = 'fobs-no-native-poster-style';
+    style.id = 'fobs-connecting-overlay-style';
     style.textContent = `
       #mainVideoPlayer {
         background: #000 !important;
@@ -50,8 +50,48 @@
         visibility: hidden !important;
       }
       .video-loader {
-        background: rgba(0, 0, 0, 0.75) !important;
-        backdrop-filter: blur(3px) !important;
+        background: #000000 !important;
+        z-index: 999999 !important;
+      }
+      /* Dedicated Bulletproof Stream Connecting Screen */
+      #fobsConnectingOverlay {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: #000000 !important;
+        display: none;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        z-index: 999999 !important;
+        pointer-events: none !important;
+      }
+      #fobsConnectingOverlay.active {
+        display: flex !important;
+      }
+      .fobs-stream-spinner {
+        width: 44px !important;
+        height: 44px !important;
+        border: 3.5px solid rgba(0, 242, 254, 0.2) !important;
+        border-top-color: #00f2fe !important;
+        border-radius: 50% !important;
+        animation: fobsStreamSpin 0.75s linear infinite !important;
+        margin-bottom: 14px !important;
+      }
+      .fobs-stream-text {
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        color: #ffffff !important;
+        letter-spacing: 0.3px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.9) !important;
+      }
+      @keyframes fobsStreamSpin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
       }
       /* Hide resolution dropdown in portrait mode resources row */
       #currentQualityBtn {
@@ -60,7 +100,49 @@
     `;
     document.head.appendChild(style);
   }
-  injectNoNativePosterStyles();
+  injectConnectingOverlayStyles();
+
+  function ensureConnectingOverlay() {
+    let overlay = document.getElementById('fobsConnectingOverlay');
+    const container = document.getElementById('videoContainer');
+    if (!container) return null;
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'fobsConnectingOverlay';
+      overlay.innerHTML = `
+        <div class="fobs-stream-spinner"></div>
+        <div class="fobs-stream-text">
+          <i class="fa-solid fa-spinner fa-spin" style="color: #00f2fe; margin-right: 8px;"></i>
+          <span>Connecting to stream server...</span>
+        </div>
+      `;
+      container.appendChild(overlay);
+    }
+    return overlay;
+  }
+
+  function showConnectingLoader() {
+    stripVideoPoster();
+    const overlay = ensureConnectingOverlay();
+    if (overlay) overlay.classList.add('active');
+    const loader = document.getElementById('videoLoader');
+    if (loader) {
+      loader.classList.add('active');
+      const txt = loader.querySelector('.loader-text');
+      if (txt) {
+        txt.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #00f2fe; margin-right: 8px;"></i> Connecting to stream server...';
+      }
+    }
+  }
+  window.showConnectingLoader = showConnectingLoader;
+
+  function hideConnectingLoader() {
+    const overlay = document.getElementById('fobsConnectingOverlay');
+    if (overlay) overlay.classList.remove('active');
+    const loader = document.getElementById('videoLoader');
+    if (loader) loader.classList.remove('active');
+  }
+  window.hideConnectingLoader = hideConnectingLoader;
 
   function stripVideoPoster() {
     const video = document.getElementById('mainVideoPlayer');
@@ -73,41 +155,77 @@
   stripVideoPoster();
 
   const videoEl = document.getElementById('mainVideoPlayer');
-  if (videoEl && !videoEl._hasPosterWatcher) {
+  if (videoEl && !videoEl._hasFobsWatcher) {
     const posterObs = new MutationObserver(() => stripVideoPoster());
     posterObs.observe(videoEl, { attributes: true, attributeFilter: ['poster'] });
-    videoEl._hasPosterWatcher = true;
+
+    videoEl.addEventListener('playing', () => {
+      hideConnectingLoader();
+    });
+    videoEl.addEventListener('timeupdate', () => {
+      if (videoEl.currentTime > 0.1 && !videoEl.paused) {
+        hideConnectingLoader();
+      }
+    });
+    videoEl.addEventListener('waiting', () => {
+      if (!videoEl.paused) showConnectingLoader();
+    });
+    videoEl.addEventListener('loadstart', () => {
+      showConnectingLoader();
+    });
+    videoEl.addEventListener('error', () => {
+      hideConnectingLoader();
+    });
+    videoEl._hasFobsWatcher = true;
   }
 
-  // Hook playStreamUrl: Connecting to stream server message with cyan spinner until video actually plays
+  // Hook playStreamUrl: Guaranteed "Connecting to stream server..." overlay until video actually plays
   const origPlayStreamUrl = window.playStreamUrl;
   window.playStreamUrl = function(url, audioIndex = null, seekTime = null) {
-    stripVideoPoster();
-    const loader = document.getElementById('videoLoader');
-    if (loader) {
-      loader.classList.add('active');
-      const txt = loader.querySelector('.loader-text');
-      if (txt) {
-        txt.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #00f2fe; margin-right: 8px;"></i> Connecting to stream server...';
-      }
-    }
-
-    const video = document.getElementById('mainVideoPlayer');
-    if (video) {
-      video.removeAttribute('poster');
-      const hideLoader = () => {
-        if (loader) loader.classList.remove('active');
-      };
-      video.addEventListener('playing', hideLoader, { once: true });
-      video.addEventListener('timeupdate', hideLoader, { once: true });
-      video.addEventListener('loadeddata', hideLoader, { once: true });
-      video.addEventListener('error', hideLoader, { once: true });
-    }
-
+    showConnectingLoader();
     if (typeof origPlayStreamUrl === 'function') {
       return origPlayStreamUrl(url, audioIndex, seekTime);
     }
   };
+
+  // Hook openPlayer & openPlayerById
+  if (typeof window.openPlayer === 'function' && !window.openPlayer._hasLoaderHook) {
+    const prevOpenPlayer = window.openPlayer;
+    window.openPlayer = function(media, episodeIndex = null, resumeSeekTime = null) {
+      showConnectingLoader();
+      return prevOpenPlayer(media, episodeIndex, resumeSeekTime);
+    };
+    window.openPlayer._hasLoaderHook = true;
+  }
+
+  if (typeof window.openPlayerById === 'function' && !window.openPlayerById._hasLoaderHook) {
+    const prevOpenPlayerById = window.openPlayerById;
+    window.openPlayerById = function(type, id) {
+      showConnectingLoader();
+      return prevOpenPlayerById(type, id);
+    };
+    window.openPlayerById._hasLoaderHook = true;
+  }
+
+  // Hook selectEpisode
+  if (typeof window.selectEpisode === 'function' && !window.selectEpisode._hasLoaderHook) {
+    const prevSelectEp = window.selectEpisode;
+    window.selectEpisode = function(idx) {
+      showConnectingLoader();
+      return prevSelectEp(idx);
+    };
+    window.selectEpisode._hasLoaderHook = true;
+  }
+
+  // Hook selectVideoQuality
+  if (typeof window.selectVideoQuality === 'function' && !window.selectVideoQuality._hasLoaderHook) {
+    const prevSelectQ = window.selectVideoQuality;
+    window.selectVideoQuality = function(quality, isSilent = false) {
+      showConnectingLoader();
+      return prevSelectQ(quality, isSilent);
+    };
+    window.selectVideoQuality._hasLoaderHook = true;
+  }
 
   // -------------------------------------------------------------
   // Dynamic Quality Sheet: ONLY show available resolutions! (jei resolution nai sei resolution video te show koraiyo na)
@@ -771,5 +889,5 @@
   purgeFake140MB();
   setupDownloadModalObserver();
 
-  console.log('✅ FOBS TV Live Patch v1.1.4 active: 480P, 720P, 1080P enabled; lowest quality auto-detect & duplicate fallbacks fixed.');
+  console.log('✅ FOBS TV Live Patch v1.1.5 active: Dedicated Connecting to stream server overlay & anti-freeze active.');
 })();

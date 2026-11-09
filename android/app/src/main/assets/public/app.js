@@ -3792,6 +3792,8 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
   setupSubtitlesForMedia(media);
   updateQualityPillsForMedia(media);
 }
+window.openPlayer = openPlayer;
+window.openPlayerById = openPlayerById;
 
 // Render Server Pills — always hidden (single MovieBox server only)
 function renderServerPills(media) {
@@ -4131,13 +4133,9 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     let streamReadyFired = false;
     const loaderTimer = setTimeout(() => {
       if (loader) loader.classList.remove('active');
-    }, 2200);
+    }, 20000);
 
     const onStreamReady = () => {
-      if (streamReadyFired) return;
-      streamReadyFired = true;
-      clearTimeout(loaderTimer);
-      if (loader) loader.classList.remove('active');
       const p = videoPlayer.play();
       if (p && typeof p.catch === 'function') {
         p.catch(() => {
@@ -4146,10 +4144,11 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
         });
       }
     };
-    videoPlayer.addEventListener('loadeddata', onStreamReady, { once: true });
-    videoPlayer.addEventListener('loadedmetadata', onStreamReady, { once: true });
     videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
-    videoPlayer.addEventListener('playing', onStreamReady, { once: true });
+    videoPlayer.addEventListener('playing', () => {
+      clearTimeout(loaderTimer);
+      if (loader) loader.classList.remove('active');
+    }, { once: true });
     videoPlayer.addEventListener('error', () => {
       clearTimeout(loaderTimer);
       if (loader) loader.classList.remove('active');
@@ -4224,13 +4223,9 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     let streamReadyFired = false;
     const loaderTimer = setTimeout(() => {
       if (loader) loader.classList.remove('active');
-    }, 2200);
+    }, 20000);
 
     const onStreamReady = () => {
-      if (streamReadyFired) return;
-      streamReadyFired = true;
-      clearTimeout(loaderTimer);
-      if (loader) loader.classList.remove('active');
       const p = videoPlayer.play();
       if (p && typeof p.catch === 'function') {
         p.catch(() => {
@@ -4239,10 +4234,11 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
         });
       }
     };
-    videoPlayer.addEventListener('loadeddata', onStreamReady, { once: true });
-    videoPlayer.addEventListener('loadedmetadata', onStreamReady, { once: true });
     videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
-    videoPlayer.addEventListener('playing', onStreamReady, { once: true });
+    videoPlayer.addEventListener('playing', () => {
+      clearTimeout(loaderTimer);
+      if (loader) loader.classList.remove('active');
+    }, { once: true });
     videoPlayer.addEventListener('error', () => {
       clearTimeout(loaderTimer);
       if (loader) loader.classList.remove('active');
@@ -4375,13 +4371,9 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     let streamReadyFired = false;
     const loaderTimer = setTimeout(() => {
       if (loader) loader.classList.remove('active');
-    }, 2200);
+    }, 20000);
 
     const onStreamReady = () => {
-      if (streamReadyFired) return;
-      streamReadyFired = true;
-      clearTimeout(loaderTimer);
-      if (loader) loader.classList.remove('active');
       const p = videoPlayer.play();
       if (p && typeof p.catch === 'function') {
         p.catch(() => {
@@ -4390,10 +4382,11 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
         });
       }
     };
-    videoPlayer.addEventListener('loadeddata', onStreamReady, { once: true });
-    videoPlayer.addEventListener('loadedmetadata', onStreamReady, { once: true });
     videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
-    videoPlayer.addEventListener('playing', onStreamReady, { once: true });
+    videoPlayer.addEventListener('playing', () => {
+      clearTimeout(loaderTimer);
+      if (loader) loader.classList.remove('active');
+    }, { once: true });
     videoPlayer.addEventListener('error', () => {
       clearTimeout(loaderTimer);
       if (loader) loader.classList.remove('active');
