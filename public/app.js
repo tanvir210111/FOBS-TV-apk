@@ -8858,15 +8858,15 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       receivedBytes += value.length;
       activeDownloadTasks[downloadId].receivedBytes = receivedBytes;
 
-      // Batch every 2MB into disk-backed Blob pieces for maximum download speed and zero RAM lag
-      if (chunkBufferSize >= 2 * 1024 * 1024) {
+      // Batch every 4MB into disk-backed Blob pieces for maximum throughput
+      if (chunkBufferSize >= 4 * 1024 * 1024) {
         activeDownloadTasks[downloadId].chunks.push(new Blob(chunkBuffer, { type: 'video/mp4' }));
         chunkBuffer = [];
         chunkBufferSize = 0;
       }
 
       const now = Date.now();
-      if (now - lastUiUpdate > 350) {
+      if (now - lastUiUpdate > 300) {
         lastUiUpdate = now;
         const percent = totalBytes > 0 ? Math.min(99, Math.round((receivedBytes / totalBytes) * 100)) : 0;
         const downMb = (receivedBytes / (1024 * 1024)).toFixed(1);
@@ -8874,23 +8874,28 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
         updateDownloadProgress(downloadId, percent, `${downMb} MB / ${totMb} MB`);
       }
 
-      // Periodically checkpoint progress to localStorage and commit chunks to IndexedDB every 3.5 seconds
-      if (now - lastStorageUpdate > 3500) {
+      // Checkpoint progress to localStorage every 1.5s, and commit chunks to IndexedDB every 25s (prevents mobile I/O thrashing)
+      if (now - lastStorageUpdate > 1500) {
+        const shouldSaveBlob = (now - (activeDownloadTasks[downloadId]._lastBlobSave || 0) > 25000);
         lastStorageUpdate = now;
-        if (chunkBuffer.length > 0) {
-          activeDownloadTasks[downloadId].chunks.push(new Blob(chunkBuffer, { type: 'video/mp4' }));
-          chunkBuffer = [];
-          chunkBufferSize = 0;
+
+        if (shouldSaveBlob) {
+          activeDownloadTasks[downloadId]._lastBlobSave = now;
+          if (chunkBuffer.length > 0) {
+            activeDownloadTasks[downloadId].chunks.push(new Blob(chunkBuffer, { type: 'video/mp4' }));
+            chunkBuffer = [];
+            chunkBufferSize = 0;
+          }
+          const tempBlob = new Blob(activeDownloadTasks[downloadId].chunks, { type: 'video/mp4' });
+          saveOfflineMedia({
+            id: 'temp_' + downloadId,
+            chunks: tempBlob,
+            receivedBytes: receivedBytes,
+            totalBytes: totalBytes,
+            quality: quality,
+            updatedAt: Date.now()
+          }).catch(() => {});
         }
-        const tempBlob = new Blob(activeDownloadTasks[downloadId].chunks, { type: 'video/mp4' });
-        saveOfflineMedia({
-          id: 'temp_' + downloadId,
-          chunks: tempBlob,
-          receivedBytes: receivedBytes,
-          totalBytes: totalBytes,
-          quality: quality,
-          updatedAt: Date.now()
-        }).catch(() => {});
 
         const curDownloads = getStoredDownloadsList();
         const curItem = curDownloads.find(d => d.id === downloadId);

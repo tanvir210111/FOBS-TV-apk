@@ -2366,7 +2366,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.0.0",
+  version: "1.0.1",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 
@@ -2522,7 +2522,7 @@ app.get('/api/download', async (req, res) => {
     downloadHeaders['Referer'] = 'https://pkembed.site/';
   }
 
-  res.setHeader('X-Accel-Buffering', 'no');
+  res.setHeader('X-Accel-Buffering', 'yes');
   res.setHeader('Cache-Control', 'public, max-age=86400, no-transform');
 
   if (req.socket && typeof req.socket.setNoDelay === 'function') {
