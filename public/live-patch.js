@@ -1,6 +1,6 @@
-// FOBS TV Live OTA Patch Bundle v1.2.1
+// FOBS TV Live OTA Patch Bundle v1.2.2
 // 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (360p/480p default)
-// 2. Video Player: Never stuck on poster; Guaranteed "Connecting to stream server..." overlay with animated cyan spinner
+// 2. Video Player: Never stuck on poster; Guaranteed "Connecting to stream server..." overlay with animated cyan spinner from click until playing
 // 3. Quality sheet: Only show resolutions that ACTUALLY exist (jei resolution nai sei resolution video te show koraiyo na)
 // 4. Download modal: 480P SD, 720P HD, 1080P FHD tabs with real MovieBox streams & sizes; detect missing resolutions
 // 5. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
@@ -8,7 +8,7 @@
 // 7. Auto Audio Silence: Instantly terminate background video & audio when opening Me / Downloads screen
 // 8. Flawless Pause & Resume: Instant response, persistent chunk recovery & no background worker conflicts
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.2.1 executing...');
+  console.log('⚡ FOBS TV Live Patch v1.2.2 executing...');
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -132,20 +132,12 @@
       const posterObs = new MutationObserver(() => stripVideoPoster());
       posterObs.observe(videoEl, { attributes: true, attributeFilter: ['poster'] });
 
+      // Dismiss ONLY when playback has actually started rendering frames or errors
       videoEl.addEventListener('playing', () => {
         hideConnectingLoader();
       });
-      videoEl.addEventListener('canplay', () => {
-        hideConnectingLoader();
-      });
-      videoEl.addEventListener('loadeddata', () => {
-        hideConnectingLoader();
-      });
-      videoEl.addEventListener('loadedmetadata', () => {
-        hideConnectingLoader();
-      });
       videoEl.addEventListener('timeupdate', () => {
-        if (videoEl.currentTime > 0 && !videoEl.paused) {
+        if (videoEl.currentTime > 0.15 && !videoEl.paused) {
           hideConnectingLoader();
         }
       });
@@ -176,11 +168,11 @@
         txt.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #00f2fe; margin-right: 8px;"></i> Connecting to stream server...';
       }
     }
-    // Safety auto-dismiss: Never freeze or block player behind connecting screen longer than 2.5s
+    // Safety auto-dismiss fallback: Only dismiss if stream hangs completely (15 seconds)
     if (window._connectingSafetyTimer) clearTimeout(window._connectingSafetyTimer);
     window._connectingSafetyTimer = setTimeout(() => {
       hideConnectingLoader();
-    }, 2500);
+    }, 15000);
   }
   window.showConnectingLoader = showConnectingLoader;
 
@@ -1068,6 +1060,12 @@
     if (dlOpenBtn) {
       setTimeout(filterDownloadEpisodesModal, 150);
     }
+
+    // Instant Click Listener for Video Play: shows connecting loader the exact moment user taps play
+    const playTarget = e.target.closest('.media-card, #heroPlayBtn, .details-sheet-play-btn, .details-play-btn, .ls-center-play-btn, #portraitPlayBtn, #lsCenterPlayIcon, #portraitPlayIcon, .sheet-option-btn, .episode-pill, .ep-btn, [onclick*="openPlayer"], [onclick*="selectEpisode"]');
+    if (playTarget) {
+      showConnectingLoader();
+    }
   }, true);
 
   // -------------------------------------------------------------
@@ -1407,5 +1405,5 @@
   repairStuckDownloads();
   setupDownloadModalObserver();
 
-  console.log('✅ FOBS TV Live Patch v1.2.1 active: Real resolution detection & missing file warnings, responsive pause/resume buttons.');
+  console.log('✅ FOBS TV Live Patch v1.2.2 active: Instant & continuous "Connecting to stream server..." overlay until playback starts, resolution detection & responsive pause/resume.');
 })();

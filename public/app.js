@@ -4280,17 +4280,14 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       let streamReadyFired = false;
       const loaderTimer = setTimeout(() => {
         if (loader) loader.classList.remove('active');
-      }, 2200);
+      }, 15000);
 
       const onStreamReady = () => {
         if (streamReadyFired) return;
         streamReadyFired = true;
-        clearTimeout(loaderTimer);
-        if (loader) loader.classList.remove('active');
         const p = videoPlayer.play();
         if (p && typeof p.catch === 'function') {
           p.catch(() => {
-            if (loader) loader.classList.remove('active');
             if (typeof syncCenterPlayButton === 'function') syncCenterPlayButton();
           });
         }
@@ -4298,7 +4295,10 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       videoPlayer.addEventListener('loadeddata', onStreamReady, { once: true });
       videoPlayer.addEventListener('loadedmetadata', onStreamReady, { once: true });
       videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
-      videoPlayer.addEventListener('playing', onStreamReady, { once: true });
+      videoPlayer.addEventListener('playing', () => {
+        clearTimeout(loaderTimer);
+        if (loader) loader.classList.remove('active');
+      }, { once: true });
       videoPlayer.addEventListener('error', () => {
         clearTimeout(loaderTimer);
         if (loader) loader.classList.remove('active');
@@ -4530,9 +4530,7 @@ function togglePlayerLock() {
 function togglePlayPauseVideo() {
   const video = document.getElementById('mainVideoPlayer');
   if (!video) return;
-  const loader = document.getElementById('videoLoader');
   if (video.paused) {
-    if (loader) loader.classList.remove('active');
     video.play().catch(() => {});
   } else {
     video.pause();
