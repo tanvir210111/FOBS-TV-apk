@@ -737,10 +737,17 @@ async function syncContentWithBackend({ force = false, isBackground = false, isI
   if (isSyncing) return;
 
   if (!navigator.onLine) {
-    if (isInitial && !appState.content.movies?.length) {
-      showFobsLoadingRetry('No internet connection. Please check your network and try again.');
-    } else {
-      updateServerStatus('Offline mode — showing saved content', 'offline');
+    updateServerStatus('Offline mode — showing saved content', 'offline');
+    const loadingScreen = document.getElementById('fobsLoadingScreen');
+    if (loadingScreen) loadingScreen.classList.add('hidden');
+    const retryBox = document.getElementById('fobsLoadingRetry');
+    if (retryBox) retryBox.classList.add('hidden');
+
+    const downloads = getStoredDownloadsList();
+    if (downloads && downloads.length > 0) {
+      setTimeout(() => {
+        showToast('📶 আপনি অফলাইনে আছেন। আপনার ডাউনলোড করা ভিডিও দেখতে Me > Downloads এ যান।', 5000);
+      }, 800);
     }
     return;
   }
@@ -1086,6 +1093,12 @@ function hideFobsLoadingScreen() {
 }
 
 function showFobsLoadingRetry(detail = 'Unable to connect to server.') {
+  const downloads = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : [];
+  if (!navigator.onLine && downloads && downloads.length > 0) {
+    hideFobsLoadingScreen();
+    showToast('📶 অফলাইন মোড: ডাউনলোড করা ভিডিও দেখতে Me > Downloads এ যান।', 5000);
+    return;
+  }
   const screen = document.getElementById('fobsLoadingScreen');
   const retryBox = document.getElementById('fobsLoadingRetry');
   const msgEl = document.getElementById('fobsLoadingMsg');
@@ -1093,6 +1106,20 @@ function showFobsLoadingRetry(detail = 'Unable to connect to server.') {
   if (retryBox) {
     const detailEl = retryBox.querySelector('.fobs-error-detail');
     if (detailEl) detailEl.innerText = detail;
+
+    // Direct button to access downloaded videos in offline mode
+    let offlineBtn = retryBox.querySelector('.fobs-offline-nav-btn');
+    if (!offlineBtn && downloads.length > 0) {
+      offlineBtn = document.createElement('button');
+      offlineBtn.className = 'fobs-offline-nav-btn';
+      offlineBtn.style.cssText = 'background: rgba(0,242,254,0.15); border: 1px solid #00f2fe; color: #00f2fe; padding: 10px 16px; border-radius: 10px; margin-top: 10px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;';
+      offlineBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> অফলাইন ডাউনলোড দেখুন (Go to Downloads)';
+      offlineBtn.onclick = () => {
+        hideFobsLoadingScreen();
+        openDownloadsView();
+      };
+      retryBox.appendChild(offlineBtn);
+    }
     retryBox.classList.remove('hidden');
   }
   if (screen) screen.classList.remove('hidden');
@@ -3224,6 +3251,16 @@ function getActiveEpisodeStream(ep, audioTrack) {
   const track = audioTrack || appState.currentAudioTrack || (isHindiMedia ? 'Hindi dub' : 'Original audio');
   const isOrig = track.toLowerCase().includes('original') || track.toLowerCase().includes('korean');
 
+  // Always enforce default 480p SD for instant bufferless playback
+  appState.currentQuality = '480p';
+
+  // 0. Direct /api/moviebox/stream inside episode streamUrl: ensure strict q=480
+  if (ep.streamUrl && ep.streamUrl.includes('/api/moviebox/stream')) {
+    let u = ep.streamUrl;
+    if (!u.includes('q=')) u += (u.includes('?') ? '&' : '?') + 'q=480';
+    return u;
+  }
+
   // 1. High Priority: Auto-renewing MovieBox endpoint (always fresh token & lowest 480p/360p first)
   if (ep.servers && Array.isArray(ep.servers)) {
     const autoRenewingServer = ep.servers.find(s => 
@@ -3608,6 +3645,7 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
     appState.activeServerIndex = 0;
     renderEpisodePills(activeEpisodes, targetEpIndex);
     renderServerPills(media);
+    updateQualityDisplay('480p');
     if (typeof syncPlayerTitles === 'function') syncPlayerTitles();
     const activeEpStream = getActiveEpisodeStream(appState.currentEpisode);
     playStreamUrl(activeEpStream, null, targetSeekTime);
@@ -3626,6 +3664,7 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
     appState.currentEpisode = null;
     appState.activeServerIndex = 0;
     renderServerPills(media);
+    updateQualityDisplay('480p');
     if (typeof syncPlayerTitles === 'function') syncPlayerTitles();
 
     if (targetSeekTime === null && savedProgress && savedProgress.progressSeconds > 5) {
@@ -8017,8 +8056,248 @@ function closeCommentLightbox(event) {
 // Quality selection (1080P/720P/480P), LocalStorage Persistence & Downloads Tab
 // ============================================================
 
-let currentDownloadQuality = '1080P';
-let currentDownloadSize = '1.1 GB';
+let currentDownloadQuality = '480P';
+let currentDownloadSize = '140 MB';
+
+// Serial Download Queue Engine (processes episodes 1-by-1 at full speed)
+const fobsDownloadQueue = {
+  isProcessing: false,
+  async processNext() {
+    if (this.isProcessing) return;
+    const isAnyActive = Object.values(activeDownloadTasks).some(t => t && t.isDownloading && !t.isPaused);
+    if (isAnyActive) return;
+
+    const list = getStoredDownloadsList();
+    const nextQueued = list.find(d => d.status === 'queued');
+    if (!nextQueued) {
+      this.isProcessing = false;
+      return;
+    }
+
+    this.isProcessing = true;
+    try {
+      await downloadMedia(nextQueued.url, nextQueued.title, nextQueued.options || {}, nextQueued.id);
+    } catch (e) {
+      console.warn('Queue item failed or paused:', e);
+    } finally {
+      this.isProcessing = false;
+      setTimeout(() => this.processNext(), 700);
+    }
+  },
+  enqueue(item) {
+    const list = getStoredDownloadsList();
+    const existingIdx = list.findIndex(d => d.id === item.id);
+    if (existingIdx !== -1) {
+      list[existingIdx] = { ...list[existingIdx], ...item, status: 'queued' };
+    } else {
+      list.push({ ...item, status: 'queued' });
+    }
+    localStorage.setItem('fobs_downloads', JSON.stringify(list));
+    renderDownloadsList();
+    this.processNext();
+  }
+};
+window.fobsDownloadQueue = fobsDownloadQueue;
+
+// Helper: Estimate episode size
+function getEpisodeEstimatedSize(quality) {
+  if (quality === '1080P') return '~520 MB';
+  if (quality === '720P') return '~280 MB';
+  return '~140 MB';
+}
+function getEpisodeEstimatedBytes(quality) {
+  if (quality === '1080P') return 520 * 1024 * 1024;
+  if (quality === '720P') return 280 * 1024 * 1024;
+  return 140 * 1024 * 1024;
+}
+
+// Switch Quality in Batch Modal (480P / 720P / 1080P)
+function switchBatchQuality(quality) {
+  currentDownloadQuality = quality || '480P';
+  const qNum = parseInt(currentDownloadQuality, 10) || 480;
+
+  // 1. Update quality tabs styling
+  document.querySelectorAll('#dlQualityTabs .dl-q-tab').forEach(tab => {
+    tab.classList.toggle('active', tab.getAttribute('data-quality') === currentDownloadQuality);
+  });
+
+  // 2. Update movie quality items if present
+  document.querySelectorAll('#dlSingleMovieQualityList .dl-quality-item').forEach(item => {
+    const isSel = item.getAttribute('data-quality') === currentDownloadQuality;
+    item.classList.toggle('active', isSel);
+    const radio = item.querySelector('.dl-q-radio i');
+    if (radio) radio.className = isSel ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle';
+  });
+
+  const previewMeta = document.getElementById('dlPreviewMeta');
+  const media = appState.currentMedia;
+  const isHindi = (media?.title?.toLowerCase().includes('hindi') || (appState.currentAudioTrack && appState.currentAudioTrack.toLowerCase().includes('hindi')));
+  const dubLabel = isHindi ? 'Hindi Dubbed' : (media?.dubLanguage || 'Original Audio');
+  if (previewMeta) {
+    previewMeta.innerText = `${dubLabel} • ${currentDownloadQuality} ${qNum >= 1080 ? 'Full HD' : (qNum >= 720 ? 'HD' : 'SD')}`;
+  }
+
+  // 3. If series, update episode size tags & summary
+  const batchState = appState._batchDownload;
+  if (batchState && batchState.isSeries && Array.isArray(batchState.episodes)) {
+    const sizeStr = getEpisodeEstimatedSize(currentDownloadQuality);
+    batchState.episodes.forEach((_, idx) => {
+      const sizeEl = document.getElementById(`dl_ep_size_${idx}`);
+      if (sizeEl) sizeEl.innerText = sizeStr;
+    });
+    updateBatchSelectedSummary();
+  } else {
+    const btnText = document.getElementById('btnStartDownloadText');
+    if (btnText) btnText.innerText = `ডাউনলোড শুরু করুন (${currentDownloadQuality})`;
+  }
+}
+window.switchBatchQuality = switchBatchQuality;
+
+// Render Episodes List inside Batch Modal
+function renderBatchEpisodesList(seasonNum) {
+  const media = appState.currentMedia;
+  if (!media) return;
+
+  const scrollList = document.getElementById('dlEpisodesScrollList');
+  if (!scrollList) return;
+
+  // Resolve episodes for requested season
+  let episodes = [];
+  if (media.seasons && media.seasons.length > 0) {
+    const targetSeason = media.seasons.find(s => (s.seasonNumber || s.season) === seasonNum) || media.seasons[0];
+    episodes = targetSeason?.episodes || [];
+  } else if (media.episodes && media.episodes.length > 0) {
+    episodes = media.episodes;
+  }
+
+  if (!episodes || episodes.length === 0) {
+    scrollList.innerHTML = `<div style="text-align: center; color: #94a3b8; padding: 20px;">এই সিজনে কোনো পর্ব পাওয়া যায়নি</div>`;
+    return;
+  }
+
+  // Initialize batch state: select all by default
+  const selectedSet = new Set(episodes.map((_, i) => i));
+  appState._batchDownload = {
+    media,
+    isSeries: true,
+    season: seasonNum,
+    episodes,
+    selected: selectedSet
+  };
+
+  const estSizeStr = getEpisodeEstimatedSize(currentDownloadQuality);
+  scrollList.innerHTML = episodes.map((ep, idx) => {
+    const epNum = ep.episode ?? ep.episodeNumber ?? ep.number ?? (idx + 1);
+    const epTitle = ep.title ? ep.title : `Episode ${epNum}`;
+    return `
+      <div class="dl-ep-item selected" id="dl_ep_item_${idx}" onclick="toggleBatchEpisode(${idx})">
+        <div class="dl-ep-left">
+          <span class="dl-ep-badge">EP ${epNum}</span>
+          <div class="dl-ep-title-wrap">
+            <div class="dl-ep-title">${epTitle}</div>
+            <div class="dl-ep-size" id="dl_ep_size_${idx}">${estSizeStr}</div>
+          </div>
+        </div>
+        <label class="dl-ep-checkbox" onclick="event.stopPropagation()">
+          <input type="checkbox" id="dl_ep_chk_${idx}" checked onchange="toggleBatchEpisode(${idx})">
+          <span class="dl-checkbox-custom"><i class="fa-solid fa-check"></i></span>
+        </label>
+      </div>
+    `;
+  }).join('');
+
+  const totalCountEl = document.getElementById('dlTotalEpsCount');
+  if (totalCountEl) totalCountEl.innerText = episodes.length;
+
+  const selectAllChk = document.getElementById('dlSelectAllCheckbox');
+  if (selectAllChk) selectAllChk.checked = true;
+
+  updateBatchSelectedSummary();
+}
+window.renderBatchEpisodesList = renderBatchEpisodesList;
+
+// Toggle Individual Episode Selection
+function toggleBatchEpisode(index) {
+  const batchState = appState._batchDownload;
+  if (!batchState || !batchState.selected) return;
+
+  if (batchState.selected.has(index)) {
+    batchState.selected.delete(index);
+  } else {
+    batchState.selected.add(index);
+  }
+
+  const isChecked = batchState.selected.has(index);
+  const itemEl = document.getElementById(`dl_ep_item_${index}`);
+  const chkEl = document.getElementById(`dl_ep_chk_${index}`);
+  if (itemEl) itemEl.classList.toggle('selected', isChecked);
+  if (chkEl) chkEl.checked = isChecked;
+
+  const selectAllChk = document.getElementById('dlSelectAllCheckbox');
+  if (selectAllChk) {
+    selectAllChk.checked = (batchState.selected.size === batchState.episodes.length);
+  }
+
+  updateBatchSelectedSummary();
+}
+window.toggleBatchEpisode = toggleBatchEpisode;
+
+// Toggle Select All Episodes
+function toggleSelectAllEpisodes(checked) {
+  const batchState = appState._batchDownload;
+  if (!batchState || !batchState.episodes) return;
+
+  if (checked) {
+    batchState.selected = new Set(batchState.episodes.map((_, i) => i));
+  } else {
+    batchState.selected.clear();
+  }
+
+  batchState.episodes.forEach((_, idx) => {
+    const itemEl = document.getElementById(`dl_ep_item_${idx}`);
+    const chkEl = document.getElementById(`dl_ep_chk_${idx}`);
+    if (itemEl) itemEl.classList.toggle('selected', checked);
+    if (chkEl) chkEl.checked = checked;
+  });
+
+  updateBatchSelectedSummary();
+}
+window.toggleSelectAllEpisodes = toggleSelectAllEpisodes;
+
+// Switch Season inside Batch Downloader
+function switchBatchSeason(seasonNum) {
+  document.querySelectorAll('#dlSeasonSelector .dl-season-btn').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.getAttribute('data-season'), 10) === seasonNum);
+  });
+  renderBatchEpisodesList(seasonNum);
+}
+window.switchBatchSeason = switchBatchSeason;
+
+// Update Selected Summary & Download Button Text
+function updateBatchSelectedSummary() {
+  const batchState = appState._batchDownload;
+  const summaryEl = document.getElementById('dlSelectedSummary');
+  const btnText = document.getElementById('btnStartDownloadText');
+
+  if (!batchState || !batchState.isSeries) {
+    if (btnText) btnText.innerText = `ডাউনলোড শুরু করুন (${currentDownloadQuality})`;
+    return;
+  }
+
+  const count = batchState.selected ? batchState.selected.size : 0;
+  const approxPerEpMb = currentDownloadQuality === '1080P' ? 520 : (currentDownloadQuality === '720P' ? 280 : 140);
+  const totalMb = count * approxPerEpMb;
+  const sizeFormatted = totalMb >= 1024 ? `${(totalMb / 1024).toFixed(1)} GB` : `${totalMb} MB`;
+
+  if (summaryEl) {
+    summaryEl.innerText = `Selected: ${count} (~${sizeFormatted})`;
+  }
+  if (btnText) {
+    btnText.innerText = count > 0 
+      ? `Download Selected (${count} Episodes) [${currentDownloadQuality}]` 
+      : 'Select Episodes to Download';
+  }
+}
 
 // Trigger Video Download Popup
 function triggerDownload() {
@@ -8029,40 +8308,23 @@ function triggerDownload() {
   }
 
   const media = appState.currentMedia;
-  const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('kmdl-s-'));
+  const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.seasons && media.seasons.length > 0) || (media.id && media.id.startsWith('mb-s-')) || (media.id && media.id.startsWith('kmdl-s-'));
+  
   let activeTitle = media.title;
   let activePoster = media.poster || 'assets/fobs_logo.png';
-  let targetUrl = '';
 
-  if (isSeries && appState.currentEpisode) {
-    const ep = appState.currentEpisode;
-    const epNum = ep.episodeNumber || (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1);
-    const epTitle = ep.title ? ` - ${ep.title}` : ` - Ep ${epNum}`;
-    activeTitle = `${media.title}${epTitle}`;
-    targetUrl = getActiveEpisodeStream(ep, appState.currentAudioTrack)
-      || (ep.servers && ep.servers.length > 0 && ep.servers[0].url)
-      || ep.streamUrl
-      || (media.servers && media.servers[0]?.url)
-      || media.streamUrl;
-    if (ep.stillPath) activePoster = ep.stillPath;
-  } else {
-    targetUrl = getActiveEpisodeStream(media, appState.currentAudioTrack)
-      || (media.servers && media.servers.length > 0 && media.servers[0].url)
-      || media.streamUrl
-      || media.driveUrl;
-  }
+  // Always default strictly to 480P Data Saver
+  currentDownloadQuality = '480P';
 
-  if (!targetUrl) {
-    showToast('Stream source is unavailable for download right now');
-    return;
-  }
-
-  // Populate preview inside modal
   const modal = document.getElementById('downloadOptionsModal');
+  const headerTitle = document.getElementById('dlModalHeaderTitle');
   const previewTitle = document.getElementById('dlPreviewTitle');
   const previewPoster = document.getElementById('dlPreviewPoster');
   const previewMeta = document.getElementById('dlPreviewMeta');
-  const btnText = document.getElementById('btnStartDownloadText');
+  const seasonSelector = document.getElementById('dlSeasonSelector');
+  const controlBar = document.getElementById('dlEpisodesControlBar');
+  const scrollList = document.getElementById('dlEpisodesScrollList');
+  const singleMovieQualityList = document.getElementById('dlSingleMovieQualityList');
 
   if (previewTitle) previewTitle.innerText = activeTitle;
   if (previewPoster) previewPoster.src = activePoster;
@@ -8071,39 +8333,59 @@ function triggerDownload() {
     activeTitle.toLowerCase().includes('hindi') || 
     (appState.currentAudioTrack && appState.currentAudioTrack.toLowerCase().includes('hindi'))
   );
-
   const dubLabel = isHindi ? 'Hindi Dubbed' : (media.dubLanguage || 'Original Audio');
-  currentDownloadQuality = isHindi ? '480P' : '1080P';
-  const qualityLabel = currentDownloadQuality === '1080P' ? '1080P Full HD' : (currentDownloadQuality === '720P' ? '720P HD' : '480P SD');
+  if (previewMeta) previewMeta.innerText = `${dubLabel} • 480P SD`;
 
-  if (previewMeta) previewMeta.innerText = `${dubLabel} • ${qualityLabel}`;
-  if (btnText) btnText.innerText = `Download ${qualityLabel}`;
-
-  document.querySelectorAll('.dl-quality-item').forEach(item => {
-    const isSelected = item.getAttribute('data-quality') === currentDownloadQuality;
-    item.classList.toggle('active', isSelected);
-    const radio = item.querySelector('.dl-q-radio i');
-    if (radio) {
-      radio.className = isSelected ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle';
-    }
+  // Reset quality tabs to 480P active
+  document.querySelectorAll('#dlQualityTabs .dl-q-tab').forEach(tab => {
+    tab.classList.toggle('active', tab.getAttribute('data-quality') === '480P');
   });
 
-  const dlEp = (isSeries && appState.currentEpisode) ? appState.currentEpisode : null;
-  const dlEpNum = isSeries ? (dlEp ? (dlEp.episode ?? dlEp.episodeNumber ?? dlEp.number ?? (appState.currentEpisodeIndex !== undefined ? appState.currentEpisodeIndex + 1 : 1)) : 1) : 0;
-  const dlSeNum = isSeries ? (appState.currentSeason || 1) : 0;
-  const dlSubjectId = media?.subjectId || media?.mbSubjectId || (media?.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || (media?.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '').replace(/-hindi$/, '') : null) || '';
-  const dlDetailPath = media?.detailPath || media?.mbDetailPath || '';
+  const subjectId = media.subjectId || media.mbSubjectId || (media.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || (media.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '').replace(/-hindi$/, '') : null) || '';
+  const detailPath = media.detailPath || media.mbDetailPath || '';
+
+  if (isSeries) {
+    if (headerTitle) headerTitle.innerText = 'Download Episodes';
+    if (singleMovieQualityList) singleMovieQualityList.style.display = 'none';
+
+    // Season Selector
+    if (seasonSelector) {
+      if (media.seasons && media.seasons.length > 1) {
+        seasonSelector.style.display = 'flex';
+        const curSe = appState.currentSeason || 1;
+        seasonSelector.innerHTML = media.seasons.map(s => {
+          const sNum = s.seasonNumber || s.season || 1;
+          return `<button type="button" class="dl-season-btn ${sNum === curSe ? 'active' : ''}" data-season="${sNum}" onclick="switchBatchSeason(${sNum})">Season ${sNum}</button>`;
+        }).join('');
+      } else {
+        seasonSelector.style.display = 'none';
+      }
+    }
+
+    if (controlBar) controlBar.style.display = 'flex';
+    if (scrollList) scrollList.style.display = 'flex';
+
+    renderBatchEpisodesList(appState.currentSeason || 1);
+  } else {
+    // Single Movie
+    if (headerTitle) headerTitle.innerText = 'Download Movie';
+    if (seasonSelector) seasonSelector.style.display = 'none';
+    if (controlBar) controlBar.style.display = 'none';
+    if (scrollList) scrollList.style.display = 'none';
+    if (singleMovieQualityList) singleMovieQualityList.style.display = 'flex';
+
+    appState._batchDownload = { media, isSeries: false, episodes: [], selected: new Set() };
+    const btnText = document.getElementById('btnStartDownloadText');
+    if (btnText) btnText.innerText = 'ডাউনলোড শুরু করুন (480P SD)';
+  }
 
   appState._pendingDownload = {
-    url: targetUrl,
+    mediaId: media.id,
     title: activeTitle,
     poster: activePoster,
-    mediaId: media.id,
-    season: dlSeNum,
-    episode: dlEpNum,
-    subjectId: dlSubjectId,
-    detailPath: dlDetailPath,
-    isSeries: isSeries
+    subjectId,
+    detailPath,
+    isSeries
   };
 
   if (modal) {
@@ -8116,31 +8398,8 @@ window.triggerDownload = triggerDownload;
 
 function selectDownloadQuality(element) {
   if (!element) return;
-  document.querySelectorAll('.dl-quality-item').forEach(item => {
-    item.classList.remove('active');
-    const radio = item.querySelector('.dl-q-radio i');
-    if (radio) radio.className = 'fa-regular fa-circle';
-  });
-
-  element.classList.add('active');
-  const radio = element.querySelector('.dl-q-radio i');
-  if (radio) radio.className = 'fa-solid fa-circle-check';
-
-  currentDownloadQuality = element.getAttribute('data-quality') || '1080P';
-  const qualityLabel = currentDownloadQuality === '1080P' ? '1080P Full HD' : (currentDownloadQuality === '720P' ? '720P HD' : '480P SD');
-
-  const previewMeta = document.getElementById('dlPreviewMeta');
-  const pending = appState._pendingDownload;
-  const isHindi = pending && pending.title && pending.title.toLowerCase().includes('hindi');
-  const dubLabel = isHindi ? 'Hindi Dubbed' : 'Original Audio';
-  if (previewMeta) {
-    previewMeta.innerText = `${dubLabel} • ${qualityLabel}`;
-  }
-
-  const btnText = document.getElementById('btnStartDownloadText');
-  if (btnText) {
-    btnText.innerText = `Download ${qualityLabel}`;
-  }
+  const q = element.getAttribute('data-quality') || '480P';
+  switchBatchQuality(q);
 }
 window.selectDownloadQuality = selectDownloadQuality;
 
@@ -8174,65 +8433,122 @@ function releaseWakeLockIfNoActiveDownloads() {
   }
 }
 
-function confirmStartDownload() {
-  const pending = appState._pendingDownload;
-  if (!pending || !pending.url) {
-    showToast('Download could not be initiated.');
+// Confirm Download (Handles both Series Batch Queue and Single Movie)
+function confirmBatchDownload() {
+  const media = appState.currentMedia;
+  if (!media) {
     closeDownloadOptionsModal();
     return;
   }
 
   const targetResNum = parseInt(currentDownloadQuality, 10) || 480;
-  let finalDownloadUrl = pending.url;
+  const batchState = appState._batchDownload;
+  const subjectId = media.subjectId || media.mbSubjectId || (media.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || (media.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '').replace(/-hindi$/, '') : null) || '';
+  const detailPath = media.detailPath || media.mbDetailPath || '';
 
-  // 1. Check if appState.availableQualities has an exact match for selected resolution
-  if (Array.isArray(appState.availableQualities) && appState.availableQualities.length > 0) {
-    const matched = appState.availableQualities.find(q => parseInt(q.resolution, 10) === targetResNum);
-    if (matched && (matched.proxyUrl || matched.url)) {
-      finalDownloadUrl = matched.proxyUrl || matched.url;
+  if (batchState && batchState.isSeries) {
+    // Series Episodes Batch Download
+    const selectedIndices = Array.from(batchState.selected || []).sort((a, b) => a - b);
+    if (selectedIndices.length === 0) {
+      showToast('অনুগ্রহ করে অন্তত ১টি পর্ব নির্বাচন করুন');
+      return;
     }
-  }
 
-  // 2. Check if active media/episode servers list has the matching quality
-  const media = appState.currentMedia;
-  const isSeries = media && (media.type === 'series' || (media.seasons && media.seasons.length > 0) || pending.isSeries);
-  const activeObj = isSeries ? (appState.currentEpisode || (media?.seasons?.[0]?.episodes?.[0])) : media;
-  if (activeObj && Array.isArray(activeObj.servers)) {
-    const matchedServer = activeObj.servers.find(s => {
-      const qNum = parseInt(s.quality || '', 10);
-      const nameMatch = (s.name || '').includes(String(targetResNum));
-      return (qNum === targetResNum || nameMatch) && s.url;
+    const seNum = batchState.season || appState.currentSeason || 1;
+    const approxMb = targetResNum >= 1080 ? 520 : (targetResNum >= 720 ? 280 : 140);
+
+    selectedIndices.forEach(idx => {
+      const ep = batchState.episodes[idx];
+      const epNum = ep ? (ep.episode ?? ep.episodeNumber ?? ep.number ?? (idx + 1)) : (idx + 1);
+      const epTitle = ep?.title ? `${media.title} - ${ep.title}` : `${media.title} - S${seNum} Ep ${epNum}`;
+      const epPoster = ep?.stillPath || media.poster || 'assets/fobs_logo.png';
+      const taskId = `dl_${subjectId || media.id}_s${seNum}_e${epNum}_${currentDownloadQuality}`;
+
+      // Construct server download proxy URL with STRICT resolution matching
+      const downloadEndpointUrl = `/api/download?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
+
+      fobsDownloadQueue.enqueue({
+        id: taskId,
+        mediaId: media.id,
+        title: epTitle,
+        poster: epPoster,
+        quality: currentDownloadQuality,
+        resolution: targetResNum,
+        season: seNum,
+        episode: epNum,
+        isSeries: true,
+        url: downloadEndpointUrl,
+        progress: 0,
+        receivedBytes: 0,
+        totalBytes: approxMb * 1024 * 1024,
+        sizeText: `~${approxMb} MB`,
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        status: 'queued',
+        statusText: 'Waiting in Queue (লাইনে অপেক্ষমাণ)',
+        options: {
+          quality: currentDownloadQuality,
+          resolution: targetResNum,
+          poster: epPoster,
+          mediaId: media.id,
+          season: seNum,
+          episode: epNum,
+          subjectId,
+          detailPath,
+          isSeries: true
+        }
+      });
     });
-    if (matchedServer && matchedServer.url) {
-      finalDownloadUrl = matchedServer.url;
-    }
+
+    closeDownloadOptionsModal();
+    showToast(`📥 ${selectedIndices.length} টি পর্ব ডাউনলোডের সারিতে যুক্ত হয়েছে। একে একে ডাউনলোড শুরু হচ্ছে...`);
+    openDownloadsView();
+    return;
   }
 
-  // 3. For MovieBox routes or subject IDs, attach &q=targetResNum so backend fetches that exact quality
-  if (finalDownloadUrl.includes('/api/moviebox/stream')) {
-    finalDownloadUrl = finalDownloadUrl.replace(/([?&])q=\d+/g, '');
-    finalDownloadUrl += (finalDownloadUrl.includes('?') ? '&' : '?') + `q=${targetResNum}`;
-  } else if (pending.subjectId) {
-    const seNum = isSeries ? (pending.season || appState.currentSeasonNumber || 1) : 0;
-    const epNum = isSeries ? (pending.episode || appState.currentEpisodeNumber || 1) : 0;
-    finalDownloadUrl = `/api/moviebox/stream?id=${encodeURIComponent(pending.subjectId)}&path=${encodeURIComponent(pending.detailPath || '')}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
-  }
+  // Single Movie Download
+  const movieTitle = media.title;
+  const moviePoster = media.poster || 'assets/fobs_logo.png';
+  const approxMb = targetResNum >= 1080 ? 950 : (targetResNum >= 720 ? 450 : 180);
+  const taskId = `dl_${subjectId || media.id}_movie_${currentDownloadQuality}`;
+  const downloadEndpointUrl = `/api/download?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=0&ep=0&q=${targetResNum}`;
 
-  downloadMedia(finalDownloadUrl, pending.title, {
+  fobsDownloadQueue.enqueue({
+    id: taskId,
+    mediaId: media.id,
+    title: movieTitle,
+    poster: moviePoster,
     quality: currentDownloadQuality,
     resolution: targetResNum,
-    poster: pending.poster,
-    mediaId: pending.mediaId,
-    season: isSeries ? (pending.season || appState.currentSeason || 1) : 0,
-    episode: isSeries ? (pending.episode || pending.episodeNumber || appState.currentEpisodeNumber || 1) : 0,
-    subjectId: pending.subjectId || '',
-    detailPath: pending.detailPath || '',
-    isSeries: isSeries
+    season: 0,
+    episode: 0,
+    isSeries: false,
+    url: downloadEndpointUrl,
+    progress: 0,
+    receivedBytes: 0,
+    totalBytes: approxMb * 1024 * 1024,
+    sizeText: `~${approxMb} MB`,
+    date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    status: 'queued',
+    statusText: 'Waiting in Queue (লাইনে অপেক্ষমাণ)',
+    options: {
+      quality: currentDownloadQuality,
+      resolution: targetResNum,
+      poster: moviePoster,
+      mediaId: media.id,
+      season: 0,
+      episode: 0,
+      subjectId,
+      detailPath,
+      isSeries: false
+    }
   });
 
   closeDownloadOptionsModal();
+  showToast(`📥 "${movieTitle}" (${currentDownloadQuality}) ডাউনলোডের সারিতে যুক্ত হয়েছে`);
+  openDownloadsView();
 }
-window.confirmStartDownload = confirmStartDownload;
+window.confirmBatchDownload = confirmBatchDownload;
+window.confirmStartDownload = confirmBatchDownload; // backward compatibility
 
 function updateDownloadProgress(id, percent, sizeText = '') {
   const bar = document.getElementById(`dl_progress_${id}`);
@@ -8464,9 +8780,24 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
         updateDownloadProgress(downloadId, percent, `${downMb} MB / ${totMb} MB`);
       }
 
-      // Periodically checkpoint progress to localStorage every 4 seconds
-      if (now - lastStorageUpdate > 4000) {
+      // Periodically checkpoint progress to localStorage and commit chunks to IndexedDB every 3.5 seconds
+      if (now - lastStorageUpdate > 3500) {
         lastStorageUpdate = now;
+        if (chunkBuffer.length > 0) {
+          activeDownloadTasks[downloadId].chunks.push(new Blob(chunkBuffer, { type: 'video/mp4' }));
+          chunkBuffer = [];
+          chunkBufferSize = 0;
+        }
+        const tempBlob = new Blob(activeDownloadTasks[downloadId].chunks, { type: 'video/mp4' });
+        saveOfflineMedia({
+          id: 'temp_' + downloadId,
+          chunks: tempBlob,
+          receivedBytes: receivedBytes,
+          totalBytes: totalBytes,
+          quality: quality,
+          updatedAt: Date.now()
+        }).catch(() => {});
+
         const curDownloads = getStoredDownloadsList();
         const curItem = curDownloads.find(d => d.id === downloadId);
         if (curItem) {
@@ -8612,6 +8943,9 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     }
     renderDownloadsList();
     showToast(`✅ "${title}" ডাউনলোড সম্পন্ন (${finalMb} MB)! Me > Downloads এ দেখুন।`);
+    setTimeout(() => {
+      if (window.fobsDownloadQueue) window.fobsDownloadQueue.processNext();
+    }, 400);
 
   } catch (err) {
     const isPaused = activeDownloadTasks[downloadId]?.isPaused || err.name === 'AbortError' || err.message === 'paused';
@@ -8654,6 +8988,9 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       if (activeDownloadTasks[downloadId]) activeDownloadTasks[downloadId].isDownloading = false;
       releaseWakeLockIfNoActiveDownloads();
       renderDownloadsList();
+      setTimeout(() => {
+        if (window.fobsDownloadQueue) window.fobsDownloadQueue.processNext();
+      }, 500);
       return;
     }
 
@@ -8719,6 +9056,9 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       renderDownloadsList();
     } catch (e) {}
     showToast(`❌ ডাউনলোড বিঘ্নিত হয়েছে। Retry বাটনে চাপুন।`);
+    setTimeout(() => {
+      if (window.fobsDownloadQueue) window.fobsDownloadQueue.processNext();
+    }, 800);
   }
 }
 window.downloadMedia = downloadMedia;
@@ -9145,8 +9485,9 @@ function renderDownloadsList() {
   container.innerHTML = downloads.map(item => {
     const isPaused = item.status === 'paused' || !!item.paused;
     const isFailed = item.status === 'failed' || !!item.failed;
-    const isReady = !isPaused && !isFailed && (item.status === 'Ready (Offline)' || (item.progress === 100 && item.downloaded === true));
-    const isDownloading = !isReady && !isPaused && !isFailed;
+    const isQueued = item.status === 'queued';
+    const isReady = !isPaused && !isFailed && !isQueued && (item.status === 'Ready (Offline)' || (item.progress === 100 && item.downloaded === true));
+    const isDownloading = !isReady && !isPaused && !isFailed && !isQueued;
 
     let statusColor = '#00f2fe';
     let statusIcon = 'fa-solid fa-spinner fa-spin';
@@ -9156,6 +9497,10 @@ function renderDownloadsList() {
       statusColor = '#22c55e';
       statusIcon = 'fa-solid fa-circle-check';
       statusText = 'Ready (Offline)';
+    } else if (isQueued) {
+      statusColor = '#f59e0b';
+      statusIcon = 'fa-solid fa-clock';
+      statusText = item.statusText || 'Waiting in Queue (লাইনে অপেক্ষমাণ)';
     } else if (isPaused) {
       statusColor = '#f59e0b';
       statusIcon = 'fa-solid fa-circle-pause';
@@ -9175,7 +9520,7 @@ function renderDownloadsList() {
     }
     const epBadge = (item.isSeries || epNum) ? `<span style="font-size: 10.5px; font-weight: 700; background: rgba(168, 85, 247, 0.18); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.5); padding: 2px 7px; border-radius: 5px;">Ep ${epNum || 1}</span>` : '';
 
-    // Action button logic: Pause, Resume, Retry, Play
+    // Action button logic: Pause, Resume, Retry, Play, Start Queued
     let actionButtonsHtml = '';
     if (isReady) {
       actionButtonsHtml = `
@@ -9185,6 +9530,16 @@ function renderDownloadsList() {
         </button>
         <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: 11px; padding: 6px 8px; border-radius: 8px; cursor: pointer;" title="Remove">
           <i class="fa-solid fa-trash-can"></i>
+        </button>
+      `;
+    } else if (isQueued) {
+      actionButtonsHtml = `
+        <button onclick="resumeDownload('${item.id}', event)" style="background: rgba(0, 242, 254, 0.2); border: 1px solid rgba(0, 242, 254, 0.4); color: #00f2fe; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 4px;" title="Start Now">
+          <i class="fa-solid fa-bolt"></i>
+          <span>Start</span>
+        </button>
+        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: 11px; padding: 6px 8px; border-radius: 8px; cursor: pointer;" title="Cancel">
+          <i class="fa-solid fa-xmark"></i>
         </button>
       `;
     } else if (isDownloading) {
@@ -9219,14 +9574,14 @@ function renderDownloadsList() {
       `;
     }
 
-    const clickAction = isReady ? `onclick="playDownloadedMedia('${item.id}')"` : (isPaused ? `onclick="resumeDownload('${item.id}', event)"` : (isFailed ? `onclick="retryDownload('${item.id}', event)"` : ''));
+    const clickAction = isReady ? `onclick="playDownloadedMedia('${item.id}')"` : (isQueued ? `onclick="resumeDownload('${item.id}', event)"` : (isPaused ? `onclick="resumeDownload('${item.id}', event)"` : (isFailed ? `onclick="retryDownload('${item.id}', event)"` : '')));
 
     return `
     <div class="mb-dl-card" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
       <div class="mb-dl-card-thumb" ${clickAction} style="position: relative; width: 68px; height: 86px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #171821; cursor: pointer;">
         <img src="${item.poster || 'assets/fobs_logo.png'}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.src='assets/fobs_logo.png';">
         <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px;">
-          <i class="${isReady ? 'fa-solid fa-play' : (isPaused ? 'fa-solid fa-pause' : (isFailed ? 'fa-solid fa-rotate-right' : 'fa-solid fa-cloud-arrow-down'))}"></i>
+          <i class="${isReady ? 'fa-solid fa-play' : (isQueued ? 'fa-solid fa-clock' : (isPaused ? 'fa-solid fa-pause' : (isFailed ? 'fa-solid fa-rotate-right' : 'fa-solid fa-cloud-arrow-down')))}"></i>
         </div>
       </div>
       <div class="mb-dl-card-info" style="flex: 1; min-width: 0;">
@@ -9241,7 +9596,7 @@ function renderDownloadsList() {
           <span>${statusText}</span>
         </div>
         <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 6px; overflow: hidden;">
-          <div id="dl_progress_${item.id}" style="width: ${item.progress || (isReady ? 100 : 5)}%; height: 100%; background: ${isFailed ? '#ef4444' : (isPaused ? '#f59e0b' : '#00f2fe')}; transition: width 0.3s ease;"></div>
+          <div id="dl_progress_${item.id}" style="width: ${item.progress || (isReady ? 100 : (isQueued ? 0 : 5))}%; height: 100%; background: ${isFailed ? '#ef4444' : (isPaused || isQueued ? '#f59e0b' : '#00f2fe')}; transition: width 0.3s ease;"></div>
         </div>
       </div>
       <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">

@@ -1710,7 +1710,7 @@
         <div class="download-modal-header">
           <div class="dl-modal-title-wrap">
             <i class="fa-solid fa-circle-down" style="color: #00f2fe; font-size: 22px;"></i>
-            <h3>Download Video</h3>
+            <h3 id="dlModalHeaderTitle">Download Video</h3>
           </div>
           <button class="sheet-close-btn" onclick="closeDownloadOptionsModal()"><i class="fa-solid fa-xmark"></i></button>
         </div>
@@ -1719,17 +1719,47 @@
           <img src="" alt="Poster" class="dl-preview-poster" id="dlPreviewPoster">
           <div class="dl-preview-info">
             <h4 class="dl-preview-title" id="dlPreviewTitle">Title</h4>
-            <div class="dl-preview-meta" id="dlPreviewMeta">Hindi Dubbed • 1080P Full HD</div>
+            <div class="dl-preview-meta" id="dlPreviewMeta">Original Audio • 480P SD</div>
           </div>
         </div>
 
-        <div class="download-quality-list">
-          <div class="dl-quality-item active" data-quality="1080P" onclick="selectDownloadQuality(this)">
+        <!-- Dynamic Quality Tabs: 480P (Default) | 720P | 1080P -->
+        <div class="dl-quality-tabs" id="dlQualityTabs">
+          <button type="button" class="dl-q-tab active" data-quality="480P" onclick="switchBatchQuality('480P')">
+            <i class="fa-solid fa-bolt" style="color: #f59e0b;"></i> 480P SD <span class="dl-tab-sub">Data Saver</span>
+          </button>
+          <button type="button" class="dl-q-tab" data-quality="720P" onclick="switchBatchQuality('720P')">
+            <i class="fa-solid fa-film" style="color: #00f2fe;"></i> 720P HD <span class="dl-tab-sub">Standard</span>
+          </button>
+          <button type="button" class="dl-q-tab" data-quality="1080P" onclick="switchBatchQuality('1080P')">
+            <i class="fa-solid fa-crown" style="color: #a855f7;"></i> 1080P FHD <span class="dl-tab-sub">Crisp</span>
+          </button>
+        </div>
+
+        <!-- Series Season Selector Bar -->
+        <div class="dl-season-selector" id="dlSeasonSelector" style="display: none;"></div>
+
+        <!-- Series Select All & Summary Header -->
+        <div class="dl-episodes-control-bar" id="dlEpisodesControlBar" style="display: none;">
+          <label class="dl-select-all-label">
+            <input type="checkbox" id="dlSelectAllCheckbox" checked onchange="toggleSelectAllEpisodes(this.checked)">
+            <span class="dl-checkbox-custom"><i class="fa-solid fa-check"></i></span>
+            <span>Select All (<span id="dlTotalEpsCount">0</span> Episodes)</span>
+          </label>
+          <div class="dl-selected-summary" id="dlSelectedSummary">Selected: 0 (~0 MB)</div>
+        </div>
+
+        <!-- Scrollable Series Episodes List with Right-Side Checkboxes -->
+        <div class="dl-episodes-scroll-list" id="dlEpisodesScrollList" style="display: none;"></div>
+
+        <!-- Movie Single Quality List (shown only for standalone movies) -->
+        <div class="download-quality-list" id="dlSingleMovieQualityList" style="display: none;">
+          <div class="dl-quality-item active" data-quality="480P" onclick="selectDownloadQuality(this)">
             <div class="dl-q-left">
               <div class="dl-q-radio"><i class="fa-solid fa-circle-check"></i></div>
               <div>
-                <div class="dl-q-name">1080P Full HD <span class="dl-q-rec">Recommended</span></div>
-                <div class="dl-q-desc">Crisp picture quality, rich Dolby audio</div>
+                <div class="dl-q-name">480P SD <span class="dl-q-saver">Data Saver</span></div>
+                <div class="dl-q-desc">Fast instant download, lowest bandwidth</div>
               </div>
             </div>
             <div class="dl-q-tag"><i class="fa-solid fa-circle-down"></i></div>
@@ -1740,18 +1770,18 @@
               <div class="dl-q-radio"><i class="fa-regular fa-circle"></i></div>
               <div>
                 <div class="dl-q-name">720P HD</div>
-                <div class="dl-q-desc">Standard high definition, fast download</div>
+                <div class="dl-q-desc">Standard high definition, great balance</div>
               </div>
             </div>
             <div class="dl-q-tag"><i class="fa-solid fa-circle-down"></i></div>
           </div>
 
-          <div class="dl-quality-item" data-quality="480P" onclick="selectDownloadQuality(this)">
+          <div class="dl-quality-item" data-quality="1080P" onclick="selectDownloadQuality(this)">
             <div class="dl-q-left">
               <div class="dl-q-radio"><i class="fa-regular fa-circle"></i></div>
               <div>
-                <div class="dl-q-name">480P SD <span class="dl-q-saver">Data Saver</span></div>
-                <div class="dl-q-desc">Standard resolution, ideal for mobile data</div>
+                <div class="dl-q-name">1080P Full HD <span class="dl-q-rec">Crisp</span></div>
+                <div class="dl-q-desc">Crisp picture quality, rich audio</div>
               </div>
             </div>
             <div class="dl-q-tag"><i class="fa-solid fa-circle-down"></i></div>
@@ -1759,9 +1789,9 @@
         </div>
 
         <div class="download-action-wrap">
-          <button class="btn-start-download" id="btnStartDownload" onclick="confirmStartDownload()">
+          <button class="btn-start-download" id="btnStartDownload" onclick="confirmBatchDownload()">
             <i class="fa-solid fa-arrow-down-to-line"></i>
-            <span id="btnStartDownloadText">ডাউনলোড শুরু করুন</span>
+            <span id="btnStartDownloadText">ডাউনলোড শুরু করুন (480P)</span>
           </button>
         </div>
       </div>

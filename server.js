@@ -1350,20 +1350,37 @@ app.get('/api/moviebox/stream', async (req, res) => {
     let chosenRes = media.resolution || 480;
     if (Array.isArray(media.qualities) && media.qualities.length > 0) {
       if (requestedQ > 0) {
-        // Find exact or closest requested resolution (preferring lower bandwidth if equidistant)
-        const sortedByMatch = [...media.qualities].sort((a, b) => {
-          const diffA = Math.abs((a.resolution || 0) - requestedQ);
-          const diffB = Math.abs((b.resolution || 0) - requestedQ);
-          if (diffA === diffB) return (a.resolution || 0) - (b.resolution || 0);
-          return diffA - diffB;
-        });
-        const matchQ = sortedByMatch[0];
-        if (matchQ && matchQ.url) {
-          chosenStream = matchQ.url;
-          chosenRes = matchQ.resolution;
+        // Strict matching: If 480p requested, strictly pick 480p/360p, then 720p - NEVER jump to 1080p!
+        if (requestedQ <= 480) {
+          const lowQ = media.qualities.find(q => parseInt(q.resolution, 10) === 480)
+                    || media.qualities.find(q => parseInt(q.resolution, 10) === 360)
+                    || media.qualities.find(q => parseInt(q.resolution, 10) === 720)
+                    || media.qualities[media.qualities.length - 1];
+          if (lowQ && lowQ.url) {
+            chosenStream = lowQ.url;
+            chosenRes = lowQ.resolution;
+          }
+        } else {
+          // Exact or closest requested resolution (720p / 1080p)
+          const exactMatch = media.qualities.find(q => parseInt(q.resolution, 10) === requestedQ);
+          if (exactMatch && exactMatch.url) {
+            chosenStream = exactMatch.url;
+            chosenRes = exactMatch.resolution;
+          } else {
+            const sortedByMatch = [...media.qualities].sort((a, b) => {
+              const diffA = Math.abs((a.resolution || 0) - requestedQ);
+              const diffB = Math.abs((b.resolution || 0) - requestedQ);
+              return diffA - diffB;
+            });
+            const matchQ = sortedByMatch[0];
+            if (matchQ && matchQ.url) {
+              chosenStream = matchQ.url;
+              chosenRes = matchQ.resolution;
+            }
+          }
         }
       } else {
-        // Default ALWAYS to 480p SD / lowest bandwidth for instant bufferless playback
+        // Default ALWAYS strictly to 480p SD / lowest bandwidth for instant bufferless playback
         const sortedByLowest = [...media.qualities].sort((a, b) => (a.resolution || 0) - (b.resolution || 0));
         const bestQ = media.qualities.find(q => q.resolution === 480)
                    || media.qualities.find(q => q.resolution === 360)
@@ -2388,20 +2405,54 @@ app.get('/api/download', async (req, res) => {
       const se = (rawSe !== null && rawSe !== undefined && rawSe !== '') ? parseInt(rawSe, 10) : 0;
       const ep = (rawEp !== null && rawEp !== undefined && rawEp !== '') ? parseInt(rawEp, 10) : 0;
       const urlQ = parseInt(urlObj.searchParams.get('q') || urlObj.searchParams.get('quality') || '0', 10);
-      const targetRes = reqQ > 0 ? reqQ : urlQ;
+      const targetRes = reqQ > 0 ? reqQ : (urlQ > 0 ? urlQ : 480);
 
       mbParams = { id, detailPath, se, ep, targetRes };
 
       const media = await movieboxService.resolveMedia(id, detailPath, se, ep);
       if (media) {
-        if (targetRes > 0 && Array.isArray(media.qualities) && media.qualities.length > 0) {
-          const matchedQ = media.qualities.find(q => parseInt(q.resolution, 10) === targetRes)
-                        || media.qualities.find(q => parseInt(q.resolution, 10) <= targetRes)
-                        || media.qualities[media.qualities.length - 1];
+        if (Array.isArray(media.qualities) && media.qualities.length > 0) {
+          let matchedQ = null;
+          if (targetRes <= 480) {
+            matchedQ = media.qualities.find(q => parseInt(q.resolution, 10) === 480)
+                    || media.qualities.find(q => parseInt(q.resolution, 10) === 360)
+                    || media.qualities.find(q => parseInt(q.resolution, 10) === 720)
+                    || media.qualities[media.qualities.length - 1];
+          } else {
+            matchedQ = media.qualities.find(q => parseInt(q.resolution, 10) === targetRes)
+                    || media.qualities.find(q => Math.abs(parseInt(q.resolution, 10) - targetRes) <= 120)
+                    || media.qualities[0];
+          }
           resolvedUrl = matchedQ?.url || media.streamUrl;
         } else if (media.streamUrl) {
           resolvedUrl = media.streamUrl;
         }
+      }
+    } catch(e) {}
+  }
+
+  // If explicit subjectId/id was passed, resolve accurate quality stream
+  const explicitId = req.query.id || req.query.subjectId;
+  if (!mbParams && explicitId) {
+    try {
+      const explicitDetail = req.query.path || req.query.detailPath || getMovieBoxDetailPath(explicitId) || '';
+      const explicitSe = parseInt(req.query.se || req.query.season || '0', 10) || 0;
+      const explicitEp = parseInt(req.query.ep || req.query.episode || '0', 10) || 0;
+      const targetRes = reqQ > 0 ? reqQ : 480;
+      mbParams = { id: explicitId, detailPath: explicitDetail, se: explicitSe, ep: explicitEp, targetRes };
+      const media = await movieboxService.resolveMedia(explicitId, explicitDetail, explicitSe, explicitEp);
+      if (media && Array.isArray(media.qualities) && media.qualities.length > 0) {
+        let matchedQ = null;
+        if (targetRes <= 480) {
+          matchedQ = media.qualities.find(q => parseInt(q.resolution, 10) === 480)
+                  || media.qualities.find(q => parseInt(q.resolution, 10) === 360)
+                  || media.qualities.find(q => parseInt(q.resolution, 10) === 720)
+                  || media.qualities[media.qualities.length - 1];
+        } else {
+          matchedQ = media.qualities.find(q => parseInt(q.resolution, 10) === targetRes)
+                  || media.qualities[0];
+        }
+        if (matchedQ && matchedQ.url) resolvedUrl = matchedQ.url;
       }
     } catch(e) {}
   }
