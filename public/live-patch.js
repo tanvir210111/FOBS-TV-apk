@@ -1,11 +1,11 @@
-// FOBS TV Live OTA Patch Bundle v1.1.3
-// 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (480p/360p default)
+// FOBS TV Live OTA Patch Bundle v1.1.4
+// 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (360p/480p default)
 // 2. Video Player: Never stuck on poster; Connecting to stream server message with animated loader; hide resolution in portrait
-// 3. Quality sheet: ALWAYS show 1080p, 720p, 480p, 360p so user can freely switch anytime!
-// 4. Download modal: 480P SD, 720P HD, 1080P FHD tabs ALWAYS work for ALL movies and series (exact sizes when present, optimized sizes when not)
+// 3. Quality sheet: Only show resolutions that ACTUALLY exist (jei resolution nai sei resolution video te show koraiyo na)
+// 4. Download modal: 480P SD, 720P HD, 1080P FHD tabs with real MovieBox streams & sizes; duplicate fallbacks removed
 // 5. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.1.3 executing...');
+  console.log('⚡ FOBS TV Live Patch v1.1.4 executing...');
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -87,7 +87,9 @@
     if (loader) {
       loader.classList.add('active');
       const txt = loader.querySelector('.loader-text');
-      if (txt) txt.innerText = 'Connecting to stream server...';
+      if (txt) {
+        txt.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #00f2fe; margin-right: 8px;"></i> Connecting to stream server...';
+      }
     }
 
     const video = document.getElementById('mainVideoPlayer');
@@ -108,31 +110,42 @@
   };
 
   // -------------------------------------------------------------
-  // Dynamic Quality Sheet: ALWAYS show 1080p, 720p, 480p, 360p! Never hide 480 or 720!
+  // Dynamic Quality Sheet: ONLY show available resolutions! (jei resolution nai sei resolution video te show koraiyo na)
   // -------------------------------------------------------------
   const origOpenQualitySheet = window.openQualitySheet;
   window.openQualitySheet = function() {
+    const state = getAppState();
+    const curQ = parseInt(state?.currentQuality || '480', 10);
+    const avail = state?.availableQualities || window.appState?.availableQualities || [];
+    const availResSet = new Set(avail.map(q => parseInt(q.resolution, 10)).filter(n => !isNaN(n) && n > 0));
+
     const container = document.getElementById('qualityOptionsList');
     if (container) {
-      const state = getAppState();
-      const curQ = parseInt(state?.currentQuality || '480', 10);
       const buttons = container.querySelectorAll('.sheet-option-btn');
       buttons.forEach(btn => {
-        btn.style.display = 'flex'; // ALWAYS show all quality choices!
         const qVal = parseInt(btn.getAttribute('data-q') || '', 10);
+        if (availResSet.size > 0 && qVal > 0) {
+          const isAvail = availResSet.has(qVal) || (qVal === 480 && availResSet.has(360));
+          btn.style.display = isAvail ? 'flex' : 'none';
+        } else {
+          btn.style.display = 'flex';
+        }
         btn.classList.toggle('selected', qVal === curQ);
       });
     }
 
     const lsContainer = document.getElementById('lsQualityOptionsList');
     if (lsContainer) {
-      const state = getAppState();
-      const curQ = parseInt(state?.currentQuality || '480', 10);
       const lsButtons = lsContainer.querySelectorAll('.ls-speed-option');
       lsButtons.forEach(btn => {
-        btn.style.display = 'flex';
         const qAttr = btn.getAttribute('data-quality') || '';
         const qVal = parseInt(qAttr, 10);
+        if (availResSet.size > 0 && qVal > 0) {
+          const isAvail = availResSet.has(qVal) || (qVal === 480 && availResSet.has(360));
+          btn.style.display = isAvail ? 'flex' : 'none';
+        } else {
+          btn.style.display = 'flex';
+        }
         btn.classList.toggle('active', qVal === curQ || (qAttr === 'auto' && curQ === 480));
       });
     }
@@ -758,5 +771,5 @@
   purgeFake140MB();
   setupDownloadModalObserver();
 
-  console.log('✅ FOBS TV Live Patch v1.1.3 active: 480P, 720P, 1080P enabled for all content; online watch & download synchronized.');
+  console.log('✅ FOBS TV Live Patch v1.1.4 active: 480P, 720P, 1080P enabled; lowest quality auto-detect & duplicate fallbacks fixed.');
 })();

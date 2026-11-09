@@ -783,7 +783,7 @@ async function resolveStreamUrl(rawUrl) {
           if (!media || !media.streamUrl) {
             media = await movieboxService.resolveMedia(id, detailPath, 0, ep);
           }
-          if (!media || !media.streamUrl) {
+          if ((!media || !media.streamUrl) && ep === 0) {
             media = await movieboxService.resolveMedia(id, detailPath, 0, 0);
           }
           if (media && media.streamUrl) {
@@ -1290,7 +1290,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
           let foundSeries = (content.series || []).find(s => String(s.subjectId) === String(id));
           if (foundSeries) {
             const season = (foundSeries.seasons || []).find(seasonObj => (seasonObj.seasonNumber || seasonObj.season) === seNum) || foundSeries.seasons?.[0];
-            const epObj = (season?.episodes || []).find(e => (e.episodeNumber || e.episode) === epNum) || season?.episodes?.[epNum - 1] || season?.episodes?.[0];
+            const epObj = (season?.episodes || []).find(e => (e.episodeNumber || e.episode) === epNum);
             if (epObj && (epObj.directStreamUrl || epObj.servers?.[0]?.url)) {
               const direct = epObj.directStreamUrl || epObj.servers[0].url;
               if (direct && direct.startsWith('http') && !direct.includes('hakunaymatata') && !direct.includes('bcdnxw')) {
@@ -2477,7 +2477,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.1.3",
+  version: "1.1.4",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 

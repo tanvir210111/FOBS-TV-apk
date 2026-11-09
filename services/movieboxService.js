@@ -67,8 +67,8 @@ function generateAuthHeaders(domain = BASE_URL, refererPath = '') {
     'Referer': ref,
     'Accept': 'application/json, text/plain, */*',
     'X-Client-Token': clientToken,
-    'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka', country: 'BD' }),
-    'Cookie': `uuid=${randomUuid}; account=${randomAccount}|0|H5|${e}|; client_country=BD`,
+    'X-Client-Info': JSON.stringify({ timezone: 'Asia/Kolkata', country: 'IN' }),
+    'Cookie': `uuid=${randomUuid}; account=${randomAccount}|0|H5|${e}|; client_country=IN`,
     'X-Forwarded-For': randIp,
     'Client-IP': randIp,
     'X-Real-IP': randIp,
@@ -153,7 +153,7 @@ class MovieBoxService {
           headers: {
             'Accept': 'application/json',
             'X-Client-Token': clientToken,
-            'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka', country: 'BD' }),
+            'X-Client-Info': JSON.stringify({ timezone: 'Asia/Kolkata', country: 'IN' }),
             'X-Forwarded-For': getRandomIp(),
             'Client-IP': getRandomIp(),
             'X-Real-IP': getRandomIp(),
@@ -302,7 +302,7 @@ class MovieBoxService {
           'Origin': 'https://h5.aoneroom.com',
           'Referer': 'https://h5.aoneroom.com/',
           'X-Client-Token': clientToken,
-          'X-Client-Info': JSON.stringify({ timezone: 'Asia/Dhaka', country: 'BD' }),
+          'X-Client-Info': JSON.stringify({ timezone: 'Asia/Kolkata', country: 'IN' }),
           'X-Forwarded-For': getRandomIp(),
           'Client-IP': getRandomIp(),
           'X-Real-IP': getRandomIp(),
@@ -591,12 +591,8 @@ class MovieBoxService {
       const unlocked = data.streams.filter(st => !st.vipLocked);
       const candidateStreams = unlocked.length > 0 ? unlocked : data.streams;
 
-      // Filter out /bt/ (BitTorrent cache) streams which reject mobile players with 429 Too Many Requests
-      const nonBtStreams = candidateStreams.filter(st => !st.url.includes('/bt/'));
-      const activePool = nonBtStreams.length > 0 ? nonBtStreams : candidateStreams;
-
       // Sort by resolution descending, preferring H.264 if same resolution
-      const sortedDesc = [...activePool].sort((a, b) => {
+      const sortedDesc = [...candidateStreams].sort((a, b) => {
         const resA = parseInt(a.resolutions || a.resolution, 10) || 0;
         const resB = parseInt(b.resolutions || b.resolution, 10) || 0;
         if (resB !== resA) return resB - resA;
@@ -607,15 +603,18 @@ class MovieBoxService {
         return 0;
       });
 
-      // Prefer buffer-free 480p SD (or 360p) direct CDN streams for instant low-bandwidth start
+      // Auto-detect lowest available resolution (360p/480p) for buffer-free instant playback
       const fastStart = sortedDesc.find(st => {
         const r = parseInt(st.resolutions || st.resolution, 10) || 0;
-        return (r === 480 || r === 360) && !st.url.includes('/bt/');
+        return r === 360;
       }) || sortedDesc.find(st => {
         const r = parseInt(st.resolutions || st.resolution, 10) || 0;
-        return r === 720 && !st.url.includes('/bt/');
+        return r === 480;
+      }) || sortedDesc.find(st => {
+        const r = parseInt(st.resolutions || st.resolution, 10) || 0;
+        return r === 720;
       }) || sortedDesc[sortedDesc.length - 1];
-      const duration = fastStart.duration || sortedDesc[0]?.duration || 0;
+      const duration = fastStart?.duration || sortedDesc[0]?.duration || 0;
 
       const playQualities = sortedDesc.map(function(st) {
         return {
@@ -694,11 +693,12 @@ class MovieBoxService {
         throw new Error('No downloads');
       }
 
-      const nonBtDownloads = data.downloads.filter(d => !d.url.includes('/bt/'));
-      const downloadPool = nonBtDownloads.length > 0 ? nonBtDownloads : data.downloads;
-      const sortedDownloads = [...downloadPool].sort((a, b) => (b.resolution || 0) - (a.resolution || 0));
-      const fastStart = sortedDownloads.find(d => (d.resolution === 480 || d.resolution === 360) && !d.url.includes('/bt/'))
-                     || sortedDownloads.find(d => d.resolution === 720 && !d.url.includes('/bt/'))
+      // Keep all downloads across all resolutions (360p, 480p, 720p, 1080p)
+      const sortedDownloads = [...data.downloads].sort((a, b) => (b.resolution || 0) - (a.resolution || 0));
+      // Auto-detect lowest available resolution (360p/480p) for buffer-free instant start
+      const fastStart = sortedDownloads.find(d => d.resolution === 360)
+                     || sortedDownloads.find(d => d.resolution === 480)
+                     || sortedDownloads.find(d => d.resolution === 720)
                      || sortedDownloads[sortedDownloads.length - 1];
 
       const dlQualities = sortedDownloads.map(function(d) {
