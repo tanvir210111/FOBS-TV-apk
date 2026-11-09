@@ -1,4 +1,4 @@
-// FOBS TV Live OTA Patch Bundle v1.1.8
+// FOBS TV Live OTA Patch Bundle v1.1.9
 // 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (360p/480p default)
 // 2. Video Player: Never stuck on poster; Guaranteed "Connecting to stream server..." overlay with animated cyan spinner
 // 3. Quality sheet: Only show resolutions that ACTUALLY exist (jei resolution nai sei resolution video te show koraiyo na)
@@ -6,7 +6,7 @@
 // 5. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
 // 6. Fast Bufferless Streaming: Instant low-latency playback & resilient offline download engine without proxy loops
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.1.7 executing...');
+  console.log('⚡ FOBS TV Live Patch v1.1.9 executing...');
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -51,8 +51,9 @@
         visibility: hidden !important;
       }
       .video-loader {
-        background: #000000 !important;
-        z-index: 999999 !important;
+        background: rgba(0, 0, 0, 0.65) !important;
+        backdrop-filter: blur(4px) !important;
+        z-index: 9999 !important;
       }
       /* Dedicated Bulletproof Stream Connecting Screen */
       #fobsConnectingOverlay {
@@ -60,12 +61,13 @@
         inset: 0 !important;
         width: 100% !important;
         height: 100% !important;
-        background: #000000 !important;
+        background: rgba(0, 0, 0, 0.65) !important;
+        backdrop-filter: blur(4px) !important;
         display: none;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
-        z-index: 999999 !important;
+        z-index: 9999 !important;
         pointer-events: none !important;
       }
       #fobsConnectingOverlay.active {
@@ -131,10 +133,22 @@
       videoEl.addEventListener('playing', () => {
         hideConnectingLoader();
       });
+      videoEl.addEventListener('canplay', () => {
+        hideConnectingLoader();
+      });
+      videoEl.addEventListener('loadeddata', () => {
+        hideConnectingLoader();
+      });
+      videoEl.addEventListener('loadedmetadata', () => {
+        hideConnectingLoader();
+      });
       videoEl.addEventListener('timeupdate', () => {
-        if (videoEl.currentTime > 0.1 && !videoEl.paused) {
+        if (videoEl.currentTime > 0 && !videoEl.paused) {
           hideConnectingLoader();
         }
+      });
+      videoEl.addEventListener('error', () => {
+        hideConnectingLoader();
       });
       videoEl.addEventListener('waiting', () => {
         if (!videoEl.paused) showConnectingLoader();
@@ -160,10 +174,19 @@
         txt.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #00f2fe; margin-right: 8px;"></i> Connecting to stream server...';
       }
     }
+    // Safety auto-dismiss: Never freeze or block player behind connecting screen longer than 2.5s
+    if (window._connectingSafetyTimer) clearTimeout(window._connectingSafetyTimer);
+    window._connectingSafetyTimer = setTimeout(() => {
+      hideConnectingLoader();
+    }, 2500);
   }
   window.showConnectingLoader = showConnectingLoader;
 
   function hideConnectingLoader() {
+    if (window._connectingSafetyTimer) {
+      clearTimeout(window._connectingSafetyTimer);
+      window._connectingSafetyTimer = null;
+    }
     const overlay = document.getElementById('fobsConnectingOverlay');
     if (overlay) overlay.classList.remove('active');
     const loader = document.getElementById('videoLoader');
@@ -235,19 +258,7 @@
       }
     }
 
-    const videoPlayer = document.getElementById('mainVideoPlayer');
-    if (videoPlayer && fastUrl) {
-      const fullUrl = (typeof API_BASE_URL !== 'undefined' && API_BASE_URL && fastUrl.startsWith('/')) ? `${API_BASE_URL}${fastUrl}` : fastUrl;
-      videoPlayer.preload = 'auto';
-      if (videoPlayer.src !== fullUrl) {
-        videoPlayer.src = fullUrl;
-      }
-      videoPlayer.play().catch(() => {});
-      const kickPlay = () => videoPlayer.play().catch(() => {});
-      videoPlayer.addEventListener('canplay', kickPlay, { once: true });
-      videoPlayer.addEventListener('loadeddata', kickPlay, { once: true });
-    }
-
+    // Let original playStreamUrl perform single, atomic setup and avoid decoder thrashing
     if (typeof origPlayStreamUrl === 'function') {
       return origPlayStreamUrl(fastUrl, audioIndex, seekTime);
     }
@@ -728,8 +739,20 @@
       return;
     }
 
-    const subjectId = media.subjectId || media.mbSubjectId || (media.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || (media.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '').replace(/-hindi$/, '') : null) || '';
-    const detailPath = media.detailPath || media.mbDetailPath || '';
+    let subjectId = media.subjectId || media.mbSubjectId || (media.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || (media.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '').replace(/-hindi$/, '') : null) || '';
+    let detailPath = media.detailPath || media.mbDetailPath || '';
+    if (!subjectId && media.id) {
+      if (/^\d{16,20}$/.test(media.id)) subjectId = media.id;
+    }
+    if (!subjectId && window.appState?.content) {
+      const all = [...(window.appState.content.movies || []), ...(window.appState.content.series || [])];
+      const found = all.find(x => x.id === media.id || (media.id && String(x.id).includes(media.id)) || (x.title && media.title && x.title === media.title));
+      if (found) {
+        if (found.subjectId) subjectId = String(found.subjectId);
+        if (found.detailPath && !detailPath) detailPath = found.detailPath;
+      }
+    }
+    if (!subjectId) subjectId = media.id || '';
 
     if (isSeries) {
       const seNum = batchState?.season || window.appState?.currentSeason || 1;
@@ -742,7 +765,10 @@
         const epRealSize = ep?.realSizeText || `~${targetResNum >= 1080 ? 480 : (targetResNum >= 720 ? 260 : 135)} MB`;
         const epRealBytes = ep?.realSizeBytes || 0;
         const cleanSafeEpTitle = epTitle.replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_');
-        const directUrl = ep?.streamUrl || ep?.directStreamUrl || (ep?.servers && ep.servers[0]?.url) || '';
+        let directUrl = ep?.streamUrl || ep?.directStreamUrl || (ep?.servers && ep.servers[0]?.url) || '';
+        if (directUrl && (directUrl.includes('/api/download') || directUrl.includes('/api/stream'))) {
+          directUrl = '';
+        }
         let downloadEndpointUrl = `/api/download?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}&title=${encodeURIComponent(cleanSafeEpTitle)}`;
         if (directUrl && directUrl.startsWith('http')) {
           downloadEndpointUrl += `&streamUrl=${encodeURIComponent(directUrl)}`;
@@ -796,7 +822,10 @@
     const realBytes = ep?.realSizeBytes || 0;
     const taskId = `dl_${subjectId || media.id}_movie_${curQ}`;
     const cleanSafeMovieTitle = movieTitle.replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_');
-    const directMovieUrl = media?.streamUrl || media?.directStreamUrl || (media?.servers && media.servers[0]?.url) || ep?.streamUrl || '';
+    let directMovieUrl = media?.streamUrl || media?.directStreamUrl || (media?.servers && media.servers[0]?.url) || ep?.streamUrl || '';
+    if (directMovieUrl && (directMovieUrl.includes('/api/download') || directMovieUrl.includes('/api/stream'))) {
+      directMovieUrl = '';
+    }
     let downloadEndpointUrl = `/api/download?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=0&ep=0&q=${targetResNum}&title=${encodeURIComponent(cleanSafeMovieTitle)}`;
     if (directMovieUrl && directMovieUrl.startsWith('http')) {
       downloadEndpointUrl += `&streamUrl=${encodeURIComponent(directMovieUrl)}`;
@@ -952,28 +981,139 @@
   }
 
   // -------------------------------------------------------------
-  // 11. Hook Serial Download Queue to unwrap any circular proxy URLs
+  // 11. Hook Serial Download Queue & Auto-Repair Stuck / Reconnecting Tasks
   // -------------------------------------------------------------
+  function repairStuckDownloads() {
+    try {
+      const raw = localStorage.getItem('fobs_downloads');
+      if (!raw) return;
+      const list = JSON.parse(raw);
+      if (!Array.isArray(list) || list.length === 0) return;
+
+      let changed = false;
+      const activeTasks = window.activeDownloadTasks || {};
+
+      list.forEach(item => {
+        if (!item || !item.id) return;
+
+        // 1. Unwrap circular proxy / nested URLs
+        if (item.url && typeof item.url === 'string') {
+          let cleanUrl = item.url;
+          while (cleanUrl.includes('/api/download?url=') || cleanUrl.includes('/api/stream?url=')) {
+            try {
+              const u = new URL(cleanUrl, typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : window.location.origin);
+              const target = u.searchParams.get('url');
+              if (target) {
+                cleanUrl = decodeURIComponent(target);
+              } else {
+                break;
+              }
+            } catch (_) { break; }
+          }
+          if (cleanUrl !== item.url) {
+            item.url = cleanUrl;
+            changed = true;
+          }
+        }
+
+        // 2. Fix empty or missing subjectId in download endpoint URL: /api/download?id=& or /api/download?id=undefined
+        if (item.url && typeof item.url === 'string' && (item.url.includes('/api/download?id=&') || item.url.includes('/api/download?id=undefined') || item.url.includes('/api/download?id=null'))) {
+          const catalog = window.appState?.content;
+          const allMedia = [...(catalog?.movies || []), ...(catalog?.series || [])];
+          const matched = allMedia.find(m => (item.mediaId && m.id === item.mediaId) || (m.title && item.title && (m.title === item.title || item.title.startsWith(m.title))));
+          if (matched) {
+            const sid = matched.subjectId || matched.id;
+            const path = matched.detailPath || matched.movieBoxDetailPath || '';
+            const q = item.resolution || parseInt(item.quality, 10) || 480;
+            const se = item.season || 0;
+            const ep = item.episode || 0;
+            const titleSafe = encodeURIComponent((item.title || 'video').replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_'));
+            item.url = `/api/download?id=${encodeURIComponent(sid)}&path=${encodeURIComponent(path)}&se=${se}&ep=${ep}&q=${q}&title=${titleSafe}`;
+            if (item.options) {
+              item.options.subjectId = sid;
+              item.options.detailPath = path;
+            }
+            changed = true;
+          }
+        }
+
+        // 3. Reset orphaned 'Reconnecting' or 'downloading' items that have no active worker
+        const hasWorker = activeTasks[item.id] && activeTasks[item.id].isDownloading && !activeTasks[item.id].isPaused;
+        const isReconnecting = typeof item.statusText === 'string' && item.statusText.toLowerCase().includes('reconnecting');
+        const isStuckDownloading = item.status === 'downloading' && !hasWorker;
+
+        if (isReconnecting || isStuckDownloading) {
+          if (item.progress && item.progress > 0) {
+            item.status = 'paused';
+            item.paused = true;
+            item.failed = false;
+            item.statusText = `Paused (${item.progress}%) • Tap to Resume`;
+          } else {
+            item.status = 'queued';
+            item.paused = false;
+            item.failed = false;
+            item.statusText = 'Queued (লাইনে অপেক্ষমাণ)';
+          }
+          changed = true;
+        }
+      });
+
+      if (changed) {
+        localStorage.setItem('fobs_downloads', JSON.stringify(list));
+        if (typeof window.renderDownloadsList === 'function') {
+          window.renderDownloadsList();
+        }
+      }
+    } catch (e) {
+      console.warn('repairStuckDownloads error:', e);
+    }
+  }
+
+  // Hook retryDownload to auto-repair stale / broken item urls before retrying
+  if (typeof window.retryDownload === 'function' && !window.retryDownload._hasRepairHook) {
+    const origRetryDownload = window.retryDownload;
+    window.retryDownload = function(id, e) {
+      repairStuckDownloads();
+      if (window.activeDownloadTasks && window.activeDownloadTasks[id]) {
+        window.activeDownloadTasks[id]._autoRetries = 0;
+        window.activeDownloadTasks[id].isPaused = false;
+      }
+      return origRetryDownload(id, e);
+    };
+    window.retryDownload._hasRepairHook = true;
+  }
+
+  // Hook window.downloadMedia to ensure clean URLs & quality defaults
+  if (typeof window.downloadMedia === 'function' && !window.downloadMedia._hasCleanHook) {
+    const origDownloadMedia = window.downloadMedia;
+    window.downloadMedia = function(url, title, options = {}, resumeExistingId = null) {
+      let cleanUrl = url;
+      while (cleanUrl && (cleanUrl.includes('/api/download?url=') || cleanUrl.includes('/api/stream?url='))) {
+        try {
+          const u = new URL(cleanUrl, typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : window.location.origin);
+          const target = u.searchParams.get('url');
+          if (target) cleanUrl = decodeURIComponent(target);
+          else break;
+        } catch (_) { break; }
+      }
+
+      const opts = { ...options };
+      if (!opts.resolution || isNaN(opts.resolution)) {
+        opts.resolution = parseInt(opts.quality || '480', 10) || 480;
+      }
+      if (!opts.quality) {
+        opts.quality = `${opts.resolution}P`;
+      }
+
+      return origDownloadMedia(cleanUrl, title, opts, resumeExistingId);
+    };
+    window.downloadMedia._hasCleanHook = true;
+  }
+
   if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
     const origQueueProcessNext = window.fobsDownloadQueue.processNext.bind(window.fobsDownloadQueue);
     window.fobsDownloadQueue.processNext = async function() {
-      const list = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : [];
-      let listModified = false;
-      list.forEach(item => {
-        if (item && item.url && item.url.includes('/api/download?url=')) {
-          try {
-            const uObj = new URL(item.url, typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : window.location.origin);
-            const unwrapped = uObj.searchParams.get('url');
-            if (unwrapped) {
-              item.url = decodeURIComponent(unwrapped);
-              listModified = true;
-            }
-          } catch (_) {}
-        }
-      });
-      if (listModified) {
-        try { localStorage.setItem('fobs_downloads', JSON.stringify(list)); } catch (_) {}
-      }
+      repairStuckDownloads();
       return origQueueProcessNext();
     };
   }
@@ -985,11 +1125,13 @@
     stripVideoPoster();
     restoreOnlineWatchPills();
     setupDownloadModalObserver();
-  }, 1000);
+    repairStuckDownloads();
+  }, 1500);
 
   restoreOnlineWatchPills();
   purgeFake140MB();
+  repairStuckDownloads();
   setupDownloadModalObserver();
 
-  console.log('✅ FOBS TV Live Patch v1.1.8 active: Fixed download proxy loop, direct stream downloads & connecting overlay.');
+  console.log('✅ FOBS TV Live Patch v1.1.9 active: Fast instant streaming, anti-stall connecting overlay, repaired 480p movie downloads & queue unblock.');
 })();

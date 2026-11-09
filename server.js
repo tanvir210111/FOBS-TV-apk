@@ -1211,17 +1211,20 @@ app.get('/api/moviebox/stream', async (req, res) => {
       else if (id === '2404784540335106472') resolvedPath = 'heaven-officials-blessing-hindi-O7ZIjocWDR2';
     }
 
-    // Auto-discover detailPath from content.json catalog if not explicitly supplied
-    const cleanId = String(id).replace(/^mb-[s|m]-/, '');
-    if (!resolvedPath) {
+    // Auto-discover subjectId & detailPath from content.json catalog if not explicitly supplied
+    let cleanId = String(id).replace(/^mb-[s|m]-/, '');
+    if (!resolvedPath || !/^\d{16,20}$/.test(cleanId)) {
       try {
         const cData = getContentData();
-        const foundM = (cData.movies || []).find(x => String(x.subjectId) === cleanId || String(x.id).includes(cleanId));
-        if (foundM && foundM.detailPath) resolvedPath = foundM.detailPath;
-        if (!resolvedPath) {
-          const foundS = (cData.series || []).find(x => String(x.subjectId) === cleanId || String(x.id).includes(cleanId));
-          if (foundS && (foundS.detailPath || foundS.movieBoxDetailPath)) {
-            resolvedPath = foundS.detailPath || foundS.movieBoxDetailPath;
+        const foundM = (cData.movies || []).find(x => String(x.subjectId) === cleanId || String(x.id).includes(cleanId) || (x.tmdbId && String(x.tmdbId) === cleanId));
+        if (foundM) {
+          if (foundM.subjectId) cleanId = String(foundM.subjectId);
+          if (foundM.detailPath && !resolvedPath) resolvedPath = foundM.detailPath;
+        } else {
+          const foundS = (cData.series || []).find(x => String(x.subjectId) === cleanId || String(x.id).includes(cleanId) || (x.tmdbId && String(x.tmdbId) === cleanId));
+          if (foundS) {
+            if (foundS.subjectId) cleanId = String(foundS.subjectId);
+            if (!resolvedPath) resolvedPath = foundS.detailPath || foundS.movieBoxDetailPath || '';
           }
         }
       } catch (_) {}
@@ -2469,7 +2472,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.1.7",
+  version: "1.1.9",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 
@@ -2576,15 +2579,18 @@ app.get('/api/download', async (req, res) => {
       }
     }
     let resolvedPath = explicitDetail || getMovieBoxDetailPath(cleanId) || '';
-    if (!resolvedPath) {
+    if (!resolvedPath || !/^\d{16,20}$/.test(cleanId)) {
       try {
         const cData = getContentData();
-        const foundM = (cData.movies || []).find(x => String(x.subjectId) === cleanId || String(x.id).includes(cleanId));
-        if (foundM && foundM.detailPath) resolvedPath = foundM.detailPath;
-        if (!resolvedPath) {
-          const foundS = (cData.series || []).find(x => String(x.subjectId) === cleanId || String(x.id).includes(cleanId));
-          if (foundS && (foundS.detailPath || foundS.movieBoxDetailPath)) {
-            resolvedPath = foundS.detailPath || foundS.movieBoxDetailPath;
+        const foundM = (cData.movies || []).find(x => String(x.subjectId) === cleanId || String(x.id).includes(cleanId) || (x.tmdbId && String(x.tmdbId) === cleanId));
+        if (foundM) {
+          if (foundM.subjectId) cleanId = String(foundM.subjectId);
+          if (foundM.detailPath && !resolvedPath) resolvedPath = foundM.detailPath;
+        } else {
+          const foundS = (cData.series || []).find(x => String(x.subjectId) === cleanId || String(x.id).includes(cleanId) || (x.tmdbId && String(x.tmdbId) === cleanId));
+          if (foundS) {
+            if (foundS.subjectId) cleanId = String(foundS.subjectId);
+            if (!resolvedPath) resolvedPath = foundS.detailPath || foundS.movieBoxDetailPath || '';
           }
         }
       } catch (_) {}

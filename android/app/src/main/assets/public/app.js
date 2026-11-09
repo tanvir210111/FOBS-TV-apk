@@ -4274,9 +4274,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       console.log('Playing MovieBox stream via server proxy:', proxyUrl);
       videoPlayer.preload = 'auto';
       if (videoPlayer.src !== proxyUrl) {
-        videoPlayer.removeAttribute('src');
         videoPlayer.src = proxyUrl;
-        try { videoPlayer.load(); } catch (_) {}
       }
 
       let streamReadyFired = false;
@@ -7513,7 +7511,6 @@ function setupVideoListeners() {
         : `${API_BASE_URL}/api/stream?url=${encodeURIComponent(targetUrl)}`;
 
       videoPlayer.src = proxyUrl;
-      videoPlayer.load();
       if (resumeTime > 0) {
         const onLoaded = () => {
           videoPlayer.removeEventListener('loadedmetadata', onLoaded);
