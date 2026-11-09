@@ -1198,9 +1198,22 @@ body.is-fullscreen .player-view-overlay.open {
   height: 100%;
   object-fit: contain !important;
   object-position: center center !important;
-  background-color: #000;
+  background-color: #000 !important;
   display: block;
   margin: auto !important;
+}
+
+/* Eliminate Chromium / Android WebView native black play circle overlay */
+.video-container video::-webkit-media-controls,
+.video-container video::-webkit-media-controls-enclosure,
+.video-container video::-webkit-media-controls-panel,
+.video-container video::-webkit-media-controls-overlay-play-button,
+.video-container video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .video-container video.scale-fill,

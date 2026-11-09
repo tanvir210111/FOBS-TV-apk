@@ -3577,6 +3577,11 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
     mainVideo._retryCount = 0;
     mainVideo.classList.remove('scale-fill', 'fit-cover');
     mainVideo.classList.add('fit-contain');
+    if (media.backdrop || media.poster) {
+      mainVideo.poster = media.backdrop || media.poster;
+    } else {
+      mainVideo.removeAttribute('poster');
+    }
   }
   const fitLabel = document.getElementById('lsFitLabel');
   if (fitLabel) fitLabel.innerText = 'Fit';
@@ -8194,15 +8199,31 @@ const fobsDownloadQueue = {
 window.fobsDownloadQueue = fobsDownloadQueue;
 
 // Helper: Estimate episode size
-function getEpisodeEstimatedSize(quality) {
-  if (quality === '1080P') return '~520 MB';
-  if (quality === '720P') return '~280 MB';
-  return '~140 MB';
+function getEpisodeEstimatedSize(quality, ep = null, idx = 0) {
+  if (ep && (ep.size || ep.fileSize)) {
+    return ep.size || ep.fileSize;
+  }
+  const q = String(quality || '480P').toUpperCase();
+  let baseMb = 140;
+  if (q.includes('1080')) baseMb = 480;
+  else if (q.includes('720')) baseMb = 260;
+  else baseMb = 135;
+
+  if (ep && ep.duration) {
+    const mins = parseInt(ep.duration, 10);
+    if (!isNaN(mins) && mins > 0) {
+      const perMin = q.includes('1080') ? 20 : (q.includes('720') ? 10 : 5.5);
+      return `~${Math.round(mins * perMin)} MB`;
+    }
+  }
+
+  const variance = ((idx * 7) % 15) - 7;
+  return `~${baseMb + variance} MB`;
 }
 function getEpisodeEstimatedBytes(quality) {
-  if (quality === '1080P') return 520 * 1024 * 1024;
-  if (quality === '720P') return 280 * 1024 * 1024;
-  return 140 * 1024 * 1024;
+  if (quality === '1080P') return 480 * 1024 * 1024;
+  if (quality === '720P') return 260 * 1024 * 1024;
+  return 135 * 1024 * 1024;
 }
 
 // Switch Quality in Batch Modal (480P / 720P / 1080P)
@@ -8234,8 +8255,8 @@ function switchBatchQuality(quality) {
   // 3. If series, update episode size tags & summary
   const batchState = appState._batchDownload;
   if (batchState && batchState.isSeries && Array.isArray(batchState.episodes)) {
-    const sizeStr = getEpisodeEstimatedSize(currentDownloadQuality);
-    batchState.episodes.forEach((_, idx) => {
+    batchState.episodes.forEach((ep, idx) => {
+      const sizeStr = getEpisodeEstimatedSize(currentDownloadQuality, ep, idx);
       const sizeEl = document.getElementById(`dl_ep_size_${idx}`);
       if (sizeEl) sizeEl.innerText = sizeStr;
     });
@@ -8279,10 +8300,10 @@ function renderBatchEpisodesList(seasonNum) {
     selected: selectedSet
   };
 
-  const estSizeStr = getEpisodeEstimatedSize(currentDownloadQuality);
   scrollList.innerHTML = episodes.map((ep, idx) => {
     const epNum = ep.episode ?? ep.episodeNumber ?? ep.number ?? (idx + 1);
     const epTitle = ep.title ? ep.title : `Episode ${epNum}`;
+    const estSizeStr = getEpisodeEstimatedSize(currentDownloadQuality, ep, idx);
     return `
       <div class="dl-ep-item selected" id="dl_ep_item_${idx}" onclick="toggleBatchEpisode(${idx})">
         <div class="dl-ep-left">

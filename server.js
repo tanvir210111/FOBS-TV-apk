@@ -1395,7 +1395,8 @@ app.get('/api/moviebox/stream', async (req, res) => {
     const proxiedStreamUrl = `/api/stream?url=${encodeURIComponent(chosenStream)}`;
     const fullProxiedStreamUrl = `${baseUrl}${proxiedStreamUrl}`;
 
-    res.setHeader('X-Accel-Buffering', 'no');
+    res.setHeader('X-Accel-Buffering', 'yes');
+    res.setHeader('X-Stream-Resolution', String(chosenRes));
     res.setHeader('Cache-Control', 'public, max-age=86400, no-transform');
 
     if (req.query.json === '1') {
@@ -1718,17 +1719,20 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
     'Access-Control-Allow-Headers': 'Range, Content-Type, Accept, X-Requested-With, Origin, Authorization',
-    'Access-Control-Expose-Headers': 'Content-Range, Content-Length, Accept-Ranges, Content-Type',
+    'Access-Control-Expose-Headers': 'Content-Range, Content-Length, Accept-Ranges, Content-Type, X-Stream-Resolution',
     'Content-Disposition': 'inline',
     'Cache-Control': 'public, max-age=86400, no-transform',
-    'X-Accel-Buffering': 'no'
+    'X-Accel-Buffering': 'yes'
   };
 
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type, Accept, X-Requested-With, Origin, Authorization');
-  res.setHeader('Access-Control-Expose-Headers', 'Content-Range, Content-Length, Accept-Ranges, Content-Type');
-  res.setHeader('X-Accel-Buffering', 'no');
+  res.setHeader('Access-Control-Expose-Headers', 'Content-Range, Content-Length, Accept-Ranges, Content-Type, X-Stream-Resolution');
+  res.setHeader('X-Accel-Buffering', 'yes');
+  if (mbContext && mbContext.targetRes) {
+    res.setHeader('X-Stream-Resolution', String(mbContext.targetRes));
+  }
   res.setHeader('Cache-Control', 'public, max-age=86400, no-transform');
 
   if (req.socket && typeof req.socket.setNoDelay === 'function') {
@@ -2366,7 +2370,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.0.1",
+  version: "1.0.2",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 

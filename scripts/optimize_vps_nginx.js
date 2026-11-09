@@ -12,7 +12,7 @@ if (!fs.existsSync(confPath)) {
 
 let content = fs.readFileSync(confPath, 'utf8');
 
-const targetStreamBlock = `    # Zero-Delay Instant Video Streaming Playback
+const targetStreamBlock = `    # Smooth Buffer-Assisted Video Streaming Playback
     location ~* ^/api/(moviebox/stream|stream) {
         proxy_pass http://127.0.0.1:7000;
         proxy_http_version 1.1;
@@ -22,8 +22,10 @@ const targetStreamBlock = `    # Zero-Delay Instant Video Streaming Playback
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header Connection "";
 
-        proxy_buffering off;
-        proxy_request_buffering off;
+        proxy_buffering on;
+        proxy_buffers 16 256k;
+        proxy_buffer_size 256k;
+        proxy_busy_buffers_size 512k;
         proxy_max_temp_file_size 0;
         proxy_cache off;
         proxy_cache_bypass 1;
@@ -34,7 +36,7 @@ const targetStreamBlock = `    # Zero-Delay Instant Video Streaming Playback
         send_timeout 3600s;
 
         tcp_nodelay on;
-        tcp_nopush off;
+        tcp_nopush on;
         keepalive_timeout 3600s;
     }
 
