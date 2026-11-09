@@ -425,6 +425,7 @@ let appState = {
   currentAudioTrack: 'Hindi dub',
   viewsPollTimer: null
 };
+window.appState = appState;
 
 // Android 3-Button & System Navigation Bar Insets Management
 let _pendingNavBarInset = null;
@@ -3564,6 +3565,8 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
     return;
   }
   appState.currentMedia = media;
+  window.currentMedia = media;
+  window.appState = appState;
   appState.streamSeekOffset = 0;
   appState.pendingSeekTime = null;
 
