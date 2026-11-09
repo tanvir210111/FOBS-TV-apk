@@ -1505,21 +1505,21 @@ app.get('/api/app-update', (req, res) => {
   const data = getContentData();
   const defaultUpdate = {
     enabled: true,
-    latestVersionCode: 13,
-    latestVersionName: '3.1.5',
-    minVersionCode: 13,
+    latestVersionCode: 15,
+    latestVersionName: '3.1.7',
+    minVersionCode: 14,
     forceUpdate: false,
-    title: 'জরুরি আপডেট: FOBS TV v3.1.5',
-    message: 'নতুন v3.1.5 এ স্ক্রিন ব্রাইটনেস ও মুভি ডাউনলোড সমস্যার স্থায়ী সমাধান করা হয়েছে! নিচের বাটন থেকে আপডেট করে নিন।',
+    title: 'নতুন আপডেট: FOBS TV v3.1.7',
+    message: 'নতুন v3.1.7 এ MovieBox স্টাইলে কোয়ালিটি অনুযায়ী পর্ব ফিল্টারিং, রিয়েল ফাইল সাইজ ও অফলাইন ডাউনলোডের স্পিড অপ্টিমাইজ করা হয়েছে!',
     releaseNotes: [
-      '☀️ প্লেয়ার স্ক্রিন হার্ডওয়্যার ব্রাইটনেস কন্ট্রোল ও কালার ওয়াশ ফিক্স',
-      '📥 মুভি/সিরিজ ডাউনলোড Reconnecting এরর ফিক্স',
-      '⚡ সুপারফাস্ট অফলাইন ভিডিও ডাউনলোড ও প্লেব্যাক',
+      '🎬 MovieBox স্টাইলে সিলেক্ট করা রেজোলিউশন অনুযায়ী পর্ব ফিল্টারিং',
+      '📥 ডাউনলোড ফাইল সাইজ ও 140MB স্টোরেজ এরর সমাধান',
+      '⚡ হাই-স্পিড স্মুথ স্ট্রিমিং ও বাফারিং অপ্টিমাইজেশন',
       '🛡️ সম্পূর্ণ ক্লিন প্যাকেজ ও গুগল প্লে প্রোটেক্ট ভেরিফাইড'
     ],
-    downloadUrl: 'https://fobs-apk-download.vercel.app/',
+    downloadUrl: 'https://fobstv.duckdns.org/download/apk',
     fallbackUrl: 'https://fobs-apk-download.vercel.app/',
-    fileSize: '7.20 MB'
+    fileSize: '7.87 MB'
   };
     res.json(data.appUpdate || defaultUpdate);
 });
@@ -1550,7 +1550,7 @@ app.get('/download/apk', (req, res) => {
   ];
   for (const apkPath of candidates) {
     if (fs.existsSync(apkPath)) {
-      res.setHeader('Content-Disposition', 'attachment; filename="FOBS_TV_v3.1.6.apk"');
+      res.setHeader('Content-Disposition', 'attachment; filename="FOBS_TV_v3.1.7.apk"');
       return res.sendFile(apkPath);
     }
   }
