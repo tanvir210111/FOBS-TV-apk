@@ -8299,14 +8299,9 @@ function switchBatchQuality(quality) {
     previewMeta.innerText = `${dubLabel} • ${currentDownloadQuality} ${qNum >= 1080 ? 'Full HD' : (qNum >= 720 ? 'HD' : 'SD')}`;
   }
 
-  // 3. For series, re-filter and render only episodes available in this quality!
+  // 3. Re-filter and render items (works identically for series episodes and movies!)
   const batchState = appState._batchDownload;
-  if (batchState && batchState.isSeries) {
-    renderBatchEpisodesList(batchState.season || 1);
-  } else {
-    const btnText = document.getElementById('btnStartDownloadText');
-    if (btnText) btnText.innerText = `ডাউনলোড শুরু করুন (${currentDownloadQuality})`;
-  }
+  renderBatchEpisodesList(batchState?.season || (batchState?.isSeries ? 1 : 0));
 }
 window.switchBatchQuality = switchBatchQuality;
 
@@ -8316,8 +8311,12 @@ async function fetchExactEpisodesSizes(media, seasonNum) {
   const dPath = media.detailPath || media.mbDetailPath || '';
   if (!sId) return;
 
+  const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.seasons && media.seasons.length > 0) || (media.id && media.id.startsWith('mb-s-')) || (media.id && media.id.startsWith('kmdl-s-'));
+  const seParam = isSeries ? (seasonNum || 1) : 0;
+  const typeParam = isSeries ? '' : '&type=movie';
+
   try {
-    const res = await fetch(`${API_BASE_URL}/api/moviebox/episodes-info?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seasonNum}&_t=${Date.now()}`);
+    const res = await fetch(`${API_BASE_URL}/api/moviebox/episodes-info?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seParam}${typeParam}&_t=${Date.now()}`);
     if (!res.ok) return;
     const data = await res.json();
     if (data && data.ok && Array.isArray(data.episodes) && data.episodes.length > 0) {
@@ -8338,7 +8337,7 @@ async function fetchExactEpisodesSizes(media, seasonNum) {
         }
       }
 
-      // Re-render batch episodes with exact real sizes and strict quality matching
+      // Re-render items with exact real sizes and strict quality matching
       renderBatchEpisodesList(seasonNum);
     }
   } catch (err) {
@@ -8355,28 +8354,40 @@ function renderBatchEpisodesList(seasonNum) {
   const scrollList = document.getElementById('dlEpisodesScrollList');
   if (!scrollList) return;
 
-  // Resolve episodes for requested season
+  const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.seasons && media.seasons.length > 0) || (media.id && media.id.startsWith('mb-s-')) || (media.id && media.id.startsWith('kmdl-s-'));
+
+  // Resolve episodes or movie item
   let allEpisodes = [];
-  if (media.seasons && media.seasons.length > 0) {
-    const targetSeason = media.seasons.find(s => (s.seasonNumber || s.season) === seasonNum) || media.seasons[0];
-    allEpisodes = targetSeason?.episodes || [];
-  } else if (media.episodes && media.episodes.length > 0) {
-    allEpisodes = media.episodes;
+  if (isSeries) {
+    if (media.seasons && media.seasons.length > 0) {
+      const targetSeason = media.seasons.find(s => (s.seasonNumber || s.season) === seasonNum) || media.seasons[0];
+      allEpisodes = targetSeason?.episodes || [];
+    } else if (media.episodes && media.episodes.length > 0) {
+      allEpisodes = media.episodes;
+    }
+  } else {
+    // Single Movie is displayed exactly like an episode list item!
+    allEpisodes = [{
+      episode: 1,
+      isMovie: true,
+      title: media.title,
+      number: 1
+    }];
   }
 
   if (!allEpisodes || allEpisodes.length === 0) {
-    scrollList.innerHTML = `<div style="text-align: center; color: #94a3b8; padding: 20px;">এই সিজনে কোনো পর্ব পাওয়া যায়নি</div>`;
+    scrollList.innerHTML = `<div style="text-align: center; color: #94a3b8; padding: 20px;">${isSeries ? 'এই সিজনে কোনো পর্ব পাওয়া যায়নি' : 'মুভি ফাইল পাওয়া যায়নি'}</div>`;
     return;
   }
 
   const qNum = parseInt(currentDownloadQuality || '480P', 10) || 480;
   const episodesInfo = (media && media._episodesInfo) || [];
 
-  // Filter episodes strictly matching current download quality
+  // Filter items strictly matching current download quality
   let filteredEpisodes = [];
   allEpisodes.forEach((ep, origIdx) => {
     const epNum = ep ? (ep.episode ?? ep.episodeNumber ?? ep.number ?? (origIdx + 1)) : (origIdx + 1);
-    const info = episodesInfo.find(it => it.episode === epNum);
+    const info = episodesInfo.find(it => it.isMovie || it.episode === epNum);
     if (episodesInfo.length > 0) {
       if (info && Array.isArray(info.qualities) && info.qualities.length > 0) {
         const match = info.qualities.find(q => q.resolution === qNum);
@@ -8384,25 +8395,28 @@ function renderBatchEpisodesList(seasonNum) {
           filteredEpisodes.push({ ep, origIdx, epNum, match });
         }
       }
-      // If quality metadata exists and this episode does not have qNum, DO NOT SHOW IT!
+      // If quality metadata exists and this episode/movie does not have qNum, DO NOT SHOW IT!
     } else {
-      // If quality metadata not yet loaded, show episode until info arrives
+      // If quality metadata not yet loaded, show item until info arrives
       filteredEpisodes.push({ ep, origIdx, epNum, match: null });
     }
   });
 
   if (filteredEpisodes.length === 0 && allEpisodes.length > 0) {
+    const emptyMsg = isSeries
+      ? `${currentDownloadQuality} তে কোনো পর্ব নেই। উপরে 720P বা 1080P সিলেক্ট করুন।`
+      : `${currentDownloadQuality} তে কোনো ফাইল নেই। উপরে 720P বা 1080P সিলেক্ট করুন।`;
     scrollList.innerHTML = `
       <div style="text-align: center; color: #f59e0b; padding: 30px 15px; font-size: 13px;">
         <i class="fa-solid fa-circle-exclamation" style="font-size: 24px; display: block; margin-bottom: 8px;"></i>
-        <span>${currentDownloadQuality} তে কোনো পর্ব নেই। উপরে 720P বা 1080P সিলেক্ট করুন।</span>
+        <span>${emptyMsg}</span>
       </div>
     `;
     const totalCountEl = document.getElementById('dlTotalEpsCount');
     if (totalCountEl) totalCountEl.innerText = 0;
     appState._batchDownload = {
       media,
-      isSeries: true,
+      isSeries,
       season: seasonNum,
       episodes: [],
       selected: new Set()
@@ -8411,11 +8425,11 @@ function renderBatchEpisodesList(seasonNum) {
     return;
   }
 
-  // Initialize batch state with filtered episodes
+  // Initialize batch state with filtered episodes/movie
   const selectedSet = new Set(filteredEpisodes.map((_, i) => i));
   appState._batchDownload = {
     media,
-    isSeries: true,
+    isSeries,
     season: seasonNum,
     episodes: filteredEpisodes.map(f => {
       const epCopy = { ...f.ep, _origIdx: f.origIdx };
@@ -8430,13 +8444,18 @@ function renderBatchEpisodesList(seasonNum) {
   };
 
   scrollList.innerHTML = appState._batchDownload.episodes.map((ep, idx) => {
+    const isMovieItem = ep.isMovie || !isSeries;
     const epNum = ep.episode ?? ep.episodeNumber ?? ep.number ?? (idx + 1);
-    const epTitle = ep.title ? ep.title : `Episode ${epNum}`;
-    const estSizeStr = ep.realSizeText || getEpisodeEstimatedSize(currentDownloadQuality, ep, idx);
+    const badgeText = isMovieItem ? 'MOVIE' : `EP ${epNum}`;
+    const epTitle = isMovieItem ? media.title : (ep.title ? ep.title : `Episode ${epNum}`);
+    const estSizeStr = ep.realSizeText || (isMovieItem
+      ? (qNum >= 1080 ? '~1.2 GB' : (qNum >= 720 ? '~650 MB' : '~380 MB'))
+      : getEpisodeEstimatedSize(currentDownloadQuality, ep, idx));
+
     return `
       <div class="dl-ep-item selected" id="dl_ep_item_${idx}" onclick="toggleBatchEpisode(${idx})">
         <div class="dl-ep-left">
-          <span class="dl-ep-badge">EP ${epNum}</span>
+          <span class="dl-ep-badge">${badgeText}</span>
           <div class="dl-ep-title-wrap">
             <div class="dl-ep-title">${epTitle}</div>
             <div class="dl-ep-size" id="dl_ep_size_${idx}">${estSizeStr}</div>
@@ -8457,7 +8476,7 @@ function renderBatchEpisodesList(seasonNum) {
   if (selectAllChk) selectAllChk.checked = true;
 
   updateBatchSelectedSummary();
-  fetchExactEpisodesSizes(media, seasonNum);
+  fetchExactEpisodesSizes(media, isSeries ? seasonNum : 0);
 }
 window.renderBatchEpisodesList = renderBatchEpisodesList;
 
@@ -8524,7 +8543,7 @@ function updateBatchSelectedSummary() {
   const summaryEl = document.getElementById('dlSelectedSummary');
   const btnText = document.getElementById('btnStartDownloadText');
 
-  if (!batchState || !batchState.isSeries) {
+  if (!batchState) {
     if (btnText) btnText.innerText = `ডাউনলোড শুরু করুন (${currentDownloadQuality})`;
     return;
   }
@@ -8538,7 +8557,9 @@ function updateBatchSelectedSummary() {
         totalBytes += ep.realSizeBytes;
       } else {
         const qNum = parseInt(currentDownloadQuality, 10) || 480;
-        const estMb = qNum >= 1080 ? 750 : (qNum >= 720 ? 420 : 250);
+        const estMb = ep?.isMovie
+          ? (qNum >= 1080 ? 1200 : (qNum >= 720 ? 650 : 380))
+          : (qNum >= 1080 ? 750 : (qNum >= 720 ? 420 : 250));
         totalBytes += estMb * 1024 * 1024;
       }
     });
@@ -8548,12 +8569,19 @@ function updateBatchSelectedSummary() {
   const sizeFormatted = totalMb >= 1024 ? `${(totalMb / 1024).toFixed(2)} GB` : `${totalMb} MB`;
 
   if (summaryEl) {
-    summaryEl.innerText = `Selected: ${count} (~${sizeFormatted})`;
+    if (count === 0) {
+      summaryEl.innerText = 'কোনো ফাইল নির্বাচিত নয়';
+    } else {
+      summaryEl.innerText = `${count} টি ${batchState.isSeries ? 'পর্ব' : 'মুভি'} নির্বাচিত (${sizeFormatted})`;
+    }
   }
+
   if (btnText) {
-    btnText.innerText = count > 0 
-      ? `Download Selected (${count} Episodes) [${currentDownloadQuality}]` 
-      : 'Select Episodes to Download';
+    if (count === 0) {
+      btnText.innerText = 'ডাউনলোড শুরু করুন (০)';
+    } else {
+      btnText.innerText = `ডাউনলোড শুরু করুন (${currentDownloadQuality}) - ${sizeFormatted}`;
+    }
   }
 }
 
@@ -8614,9 +8642,11 @@ function triggerDownload() {
   const subjectId = media.subjectId || media.mbSubjectId || (media.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || (media.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '').replace(/-hindi$/, '') : null) || '';
   const detailPath = media.detailPath || media.mbDetailPath || '';
 
+  // Hide old single movie static list - both series and movie now use unified batch UI!
+  if (singleMovieQualityList) singleMovieQualityList.style.display = 'none';
+
   if (isSeries) {
     if (headerTitle) headerTitle.innerText = 'Download Episodes';
-    if (singleMovieQualityList) singleMovieQualityList.style.display = 'none';
 
     // Season Selector
     if (seasonSelector) {
@@ -8637,16 +8667,13 @@ function triggerDownload() {
 
     renderBatchEpisodesList(appState.currentSeason || 1);
   } else {
-    // Single Movie
+    // Single Movie (matches series episodes style!)
     if (headerTitle) headerTitle.innerText = 'Download Movie';
     if (seasonSelector) seasonSelector.style.display = 'none';
-    if (controlBar) controlBar.style.display = 'none';
-    if (scrollList) scrollList.style.display = 'none';
-    if (singleMovieQualityList) singleMovieQualityList.style.display = 'flex';
+    if (controlBar) controlBar.style.display = 'flex';
+    if (scrollList) scrollList.style.display = 'flex';
 
-    appState._batchDownload = { media, isSeries: false, episodes: [], selected: new Set() };
-    const btnText = document.getElementById('btnStartDownloadText');
-    if (btnText) btnText.innerText = 'ডাউনলোড শুরু করুন (480P SD)';
+    renderBatchEpisodesList(0);
   }
 
   appState._pendingDownload = {
@@ -8778,11 +8805,14 @@ function confirmBatchDownload() {
     return;
   }
 
-  // Single Movie Download
+  // Single Movie Download (with real size & resolution matching)
+  const ep = batchState?.episodes?.[0];
   const movieTitle = media.title;
   const moviePoster = media.poster || 'assets/fobs_logo.png';
-  const approxMb = targetResNum >= 1080 ? 950 : (targetResNum >= 720 ? 450 : 180);
-  const taskId = `dl_${subjectId || media.id}_movie_${currentDownloadQuality}`;
+  const realSize = ep?.realSizeText || `~${targetResNum >= 1080 ? 950 : (targetResNum >= 720 ? 450 : 250)} MB`;
+  const realBytes = ep?.realSizeBytes || 0;
+  const realQuality = ep?.realQuality || currentDownloadQuality;
+  const taskId = `dl_${subjectId || media.id}_movie_${realQuality}`;
   const downloadEndpointUrl = `/api/moviebox/stream?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=0&ep=0&q=${targetResNum}`;
 
   fobsDownloadQueue.enqueue({
@@ -8790,21 +8820,21 @@ function confirmBatchDownload() {
     mediaId: media.id,
     title: movieTitle,
     poster: moviePoster,
-    quality: currentDownloadQuality,
-    resolution: targetResNum,
+    quality: realQuality,
+    resolution: parseInt(realQuality, 10) || targetResNum,
     season: 0,
     episode: 0,
     isSeries: false,
     url: downloadEndpointUrl,
     progress: 0,
     receivedBytes: 0,
-    totalBytes: 0,
-    sizeText: `~${approxMb} MB`,
+    totalBytes: realBytes,
+    sizeText: realSize,
     date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
     status: 'queued',
     statusText: 'Waiting in Queue (লাইনে অপেক্ষমাণ)',
     options: {
-      quality: currentDownloadQuality,
+      quality: realQuality,
       resolution: targetResNum,
       poster: moviePoster,
       mediaId: media.id,
@@ -8817,7 +8847,7 @@ function confirmBatchDownload() {
   });
 
   closeDownloadOptionsModal();
-  showToast(`📥 "${movieTitle}" (${currentDownloadQuality}) ডাউনলোডের সারিতে যুক্ত হয়েছে`);
+  showToast(`📥 "${movieTitle}" (${realQuality}) ডাউনলোডের সারিতে যুক্ত হয়েছে`);
   openDownloadsView();
 }
 window.confirmBatchDownload = confirmBatchDownload;

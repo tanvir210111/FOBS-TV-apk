@@ -1420,9 +1420,9 @@ app.get('/api/moviebox/stream', async (req, res) => {
   }
 });
 
-// API: Get Real Episode Sizes & Available Qualities for Batch Download Modal
+// API: Get Real Episode Sizes & Available Qualities for Batch Download Modal (Series & Movies)
 app.get('/api/moviebox/episodes-info', async (req, res) => {
-  const { id, path: detailPath, se } = req.query;
+  const { id, path: detailPath, se, type } = req.query;
   if (!id) return res.status(400).json({ ok: false, error: 'Missing id parameter' });
   const cleanId = String(id).replace(/^mb-[s|m]-/, '');
   const seNum = parseInt(se || '1', 10);
@@ -1431,8 +1431,8 @@ app.get('/api/moviebox/episodes-info', async (req, res) => {
   try {
     const content = getContentData();
     const series = (content.series || []).find(s => String(s.subjectId) === cleanId || String(s.id).includes(cleanId));
-    const season = series?.seasons?.find(s => (s.seasonNumber || s.season) === seNum) || series?.seasons?.[0];
-    const epCount = season?.episodes?.length || 12;
+    const movie = (content.movies || []).find(m => String(m.subjectId) === cleanId || String(m.id).includes(cleanId));
+    const isMovie = type === 'movie' || (!series && (movie || seNum === 0 || String(id).startsWith('mb-m-')));
 
     const formatBytes = (bytes) => {
       const b = parseInt(bytes, 10);
@@ -1440,6 +1440,56 @@ app.get('/api/moviebox/episodes-info', async (req, res) => {
       if (b >= 1024 * 1024 * 1024) return (b / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
       return (b / (1024 * 1024)).toFixed(1) + ' MB';
     };
+
+    if (isMovie) {
+      // Resolve single movie qualities and exact sizes
+      try {
+        const media = await movieboxService.resolveMedia(cleanId, resolvedPath, 0, 0);
+        let qualities = [];
+        if (media && Array.isArray(media.qualities) && media.qualities.length > 0) {
+          qualities = media.qualities.map(q => ({
+            resolution: q.resolution,
+            sizeBytes: parseInt(q.size, 10) || 0,
+            sizeText: formatBytes(q.size)
+          }));
+        } else if (media && media.streamUrl) {
+          qualities = [{ resolution: media.resolution || 720, sizeBytes: 0, sizeText: null }];
+        }
+        return res.json({
+          ok: true,
+          subjectId: cleanId,
+          isMovie: true,
+          season: 0,
+          episodes: [
+            {
+              episode: 1,
+              isMovie: true,
+              title: movie?.title || media?.title || 'Full Movie',
+              qualities
+            }
+          ]
+        });
+      } catch (err) {
+        return res.json({
+          ok: true,
+          subjectId: cleanId,
+          isMovie: true,
+          season: 0,
+          episodes: [
+            {
+              episode: 1,
+              isMovie: true,
+              title: movie?.title || 'Full Movie',
+              qualities: []
+            }
+          ]
+        });
+      }
+    }
+
+    // Series Handling
+    const season = series?.seasons?.find(s => (s.seasonNumber || s.season) === seNum) || series?.seasons?.[0];
+    const epCount = season?.episodes?.length || 12;
 
     const epsToFetch = Math.min(epCount, 25);
     const epPromises = [];
@@ -1473,6 +1523,7 @@ app.get('/api/moviebox/episodes-info', async (req, res) => {
     res.json({
       ok: true,
       subjectId: cleanId,
+      isMovie: false,
       season: seNum,
       episodes: resolvedEps
     });
@@ -2426,7 +2477,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.1.1",
+  version: "1.1.2",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 
