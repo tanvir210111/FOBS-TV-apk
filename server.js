@@ -1419,14 +1419,21 @@ app.get('/api/moviebox/stream', async (req, res) => {
 app.get('/api/moviebox/episodes-info', async (req, res) => {
   const { id, path: detailPath, se, type } = req.query;
   if (!id) return res.status(400).json({ ok: false, error: 'Missing id parameter' });
-  const cleanId = String(id).replace(/^mb-[s|m]-/, '');
+  let cleanId = String(id).replace(/^mb-[s|m]-/, '');
   const seNum = parseInt(se || '1', 10);
-  const resolvedPath = detailPath || getMovieBoxDetailPath(cleanId) || '';
+  let resolvedPath = detailPath || getMovieBoxDetailPath(cleanId) || '';
 
   try {
     const content = getContentData();
-    const series = (content.series || []).find(s => String(s.subjectId) === cleanId || String(s.id).includes(cleanId));
-    const movie = (content.movies || []).find(m => String(m.subjectId) === cleanId || String(m.id).includes(cleanId));
+    const series = (content.series || []).find(s => String(s.subjectId) === cleanId || String(s.id).includes(cleanId) || (s.tmdbId && String(s.tmdbId) === cleanId));
+    const movie = (content.movies || []).find(m => String(m.subjectId) === cleanId || String(m.id).includes(cleanId) || (m.tmdbId && String(m.tmdbId) === cleanId));
+    if (movie && movie.subjectId) {
+      cleanId = String(movie.subjectId);
+      if (!resolvedPath && movie.detailPath) resolvedPath = movie.detailPath;
+    } else if (series && series.subjectId) {
+      cleanId = String(series.subjectId);
+      if (!resolvedPath) resolvedPath = series.detailPath || series.movieBoxDetailPath || '';
+    }
     const isMovie = type === 'movie' || (!series && (movie || seNum === 0 || String(id).startsWith('mb-m-')));
 
     const formatBytes = (bytes) => {
@@ -1443,12 +1450,19 @@ app.get('/api/moviebox/episodes-info', async (req, res) => {
         let qualities = [];
         if (media && Array.isArray(media.qualities) && media.qualities.length > 0) {
           qualities = media.qualities.map(q => ({
-            resolution: q.resolution,
+            resolution: parseInt(q.resolution, 10) || 720,
             sizeBytes: parseInt(q.size, 10) || 0,
             sizeText: formatBytes(q.size)
           }));
         } else if (media && media.streamUrl) {
-          qualities = [{ resolution: media.resolution || 720, sizeBytes: 0, sizeText: null }];
+          qualities = [{ resolution: parseInt(media.resolution, 10) || 720, sizeBytes: 0, sizeText: null }];
+        }
+        if (qualities.length === 0 && movie && Array.isArray(movie.servers) && movie.servers.length > 0) {
+          qualities = movie.servers.map(s => ({
+            resolution: parseInt(s.quality || '720', 10) || 720,
+            sizeBytes: 0,
+            sizeText: null
+          }));
         }
         return res.json({
           ok: true,
@@ -1465,6 +1479,14 @@ app.get('/api/moviebox/episodes-info', async (req, res) => {
           ]
         });
       } catch (err) {
+        let fallbackQualities = [];
+        if (movie && Array.isArray(movie.servers)) {
+          fallbackQualities = movie.servers.map(s => ({
+            resolution: parseInt(s.quality || '720', 10) || 720,
+            sizeBytes: 0,
+            sizeText: null
+          }));
+        }
         return res.json({
           ok: true,
           subjectId: cleanId,
@@ -1475,7 +1497,7 @@ app.get('/api/moviebox/episodes-info', async (req, res) => {
               episode: 1,
               isMovie: true,
               title: movie?.title || 'Full Movie',
-              qualities: []
+              qualities: fallbackQualities
             }
           ]
         });
@@ -1498,7 +1520,7 @@ app.get('/api/moviebox/episodes-info', async (req, res) => {
             return {
               episode: epNum,
               qualities: media.qualities.map(q => ({
-                resolution: q.resolution,
+                resolution: parseInt(q.resolution, 10) || 720,
                 sizeBytes: parseInt(q.size, 10) || 0,
                 sizeText: formatBytes(q.size)
               }))
@@ -1506,10 +1528,21 @@ app.get('/api/moviebox/episodes-info', async (req, res) => {
           } else if (media && media.streamUrl) {
             return {
               episode: epNum,
-              qualities: [{ resolution: media.resolution || 720, sizeBytes: 0, sizeText: null }]
+              qualities: [{ resolution: parseInt(media.resolution, 10) || 720, sizeBytes: 0, sizeText: null }]
             };
           }
         } catch (_) {}
+        const epData = season?.episodes?.find(e => (e.episodeNumber || e.episode) === epNum);
+        if (epData && Array.isArray(epData.servers) && epData.servers.length > 0) {
+          return {
+            episode: epNum,
+            qualities: epData.servers.map(s => ({
+              resolution: parseInt(s.quality || '720', 10) || 720,
+              sizeBytes: 0,
+              sizeText: null
+            }))
+          };
+        }
         return { episode: epNum, qualities: [] };
       })());
     }
@@ -2472,7 +2505,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.2.0",
+  version: "1.2.1",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 

@@ -1,13 +1,14 @@
-// FOBS TV Live OTA Patch Bundle v1.2.0
+// FOBS TV Live OTA Patch Bundle v1.2.1
 // 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (360p/480p default)
 // 2. Video Player: Never stuck on poster; Guaranteed "Connecting to stream server..." overlay with animated cyan spinner
 // 3. Quality sheet: Only show resolutions that ACTUALLY exist (jei resolution nai sei resolution video te show koraiyo na)
-// 4. Download modal: 480P SD, 720P HD, 1080P FHD tabs with real MovieBox streams & sizes; duplicate fallbacks removed
+// 4. Download modal: 480P SD, 720P HD, 1080P FHD tabs with real MovieBox streams & sizes; detect missing resolutions
 // 5. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
 // 6. Fast Bufferless Streaming: Instant low-latency playback & resilient offline download engine without proxy loops
 // 7. Auto Audio Silence: Instantly terminate background video & audio when opening Me / Downloads screen
+// 8. Flawless Pause & Resume: Instant response, persistent chunk recovery & no background worker conflicts
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.2.0 executing...');
+  console.log('⚡ FOBS TV Live Patch v1.2.1 executing...');
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -543,7 +544,7 @@
   };
 
   // -------------------------------------------------------------
-  // 4. Download Modal Filter Watcher: Updates sizes, NEVER hides items!
+  // 4. Download Modal Filter Watcher: Real Resolution Detection & Size Formatting
   // -------------------------------------------------------------
   function filterDownloadEpisodesModal() {
     const scrollList = document.getElementById('dlEpisodesScrollList');
@@ -560,48 +561,134 @@
     const state = getAppState();
     const batchState = state?._batchDownload;
 
+    // 1. Collect all available resolutions across this media item
+    const allAvailableResolutions = new Set();
+    episodesInfo.forEach(it => {
+      if (Array.isArray(it.qualities)) {
+        it.qualities.forEach(q => {
+          const r = parseInt(q.resolution, 10);
+          if (r > 0) {
+            allAvailableResolutions.add(r);
+            if (r === 360) allAvailableResolutions.add(480);
+          }
+        });
+      }
+    });
+
+    // 2. Mark tabs in #dlQualityTabs that do not have files
+    if (allAvailableResolutions.size > 0) {
+      document.querySelectorAll('#dlQualityTabs .dl-q-tab').forEach(tab => {
+        const qAttr = tab.getAttribute('data-quality') || '480P';
+        const qVal = parseInt(qAttr, 10) || 480;
+        const isAvail = allAvailableResolutions.has(qVal);
+        let tag = tab.querySelector('.dl-q-not-avail');
+        if (!isAvail) {
+          tab.classList.add('tab-disabled');
+          tab.style.opacity = '0.45';
+          if (!tag) {
+            tag = document.createElement('span');
+            tag.className = 'dl-q-not-avail';
+            tag.style.cssText = 'font-size: 9px; color: #ef4444; margin-left: 4px; font-weight: 700;';
+            tag.innerText = '(নেই)';
+            tab.appendChild(tag);
+          }
+        } else {
+          tab.classList.remove('tab-disabled');
+          tab.style.opacity = '1';
+          if (tag) tag.remove();
+        }
+      });
+
+      // If current selected tab has NO file, auto-switch to lowest available quality!
+      if (!allAvailableResolutions.has(qNum)) {
+        const sortedAvail = Array.from(allAvailableResolutions).sort((a, b) => a - b);
+        if (sortedAvail.length > 0) {
+          const targetQ = `${sortedAvail[0]}P`;
+          if (window.currentDownloadQuality !== targetQ) {
+            console.log(`Auto-switching download quality from unavailable ${curQ} to available ${targetQ}`);
+            window.currentDownloadQuality = targetQ;
+            document.querySelectorAll('#dlQualityTabs .dl-q-tab').forEach(tab => {
+              tab.classList.toggle('active', tab.getAttribute('data-quality') === targetQ);
+            });
+            setTimeout(filterDownloadEpisodesModal, 10);
+            return;
+          }
+        }
+      }
+    }
+
+    // 3. Inspect each episode / movie item in the scroll list
     const items = Array.from(scrollList.querySelectorAll('.dl-ep-item'));
     items.forEach((item, idx) => {
-      item.style.display = 'flex'; // ALWAYS visible!
+      item.style.display = 'flex';
       const badge = item.querySelector('.dl-ep-badge');
       const isMovieBadge = badge && badge.textContent.includes('MOVIE');
       const badgeText = badge ? badge.textContent.replace(/[^0-9]/g, '') : '';
       const epNum = parseInt(badgeText, 10) || (idx + 1);
+      const chk = item.querySelector('input[type="checkbox"]');
 
       const info = episodesInfo.find(it => (isMovieBadge || !isSeries) ? (it.isMovie || it.episode === 1) : it.episode === epNum);
+      const hasAnyQualityInfo = info && Array.isArray(info.qualities) && info.qualities.length > 0;
+
       let match = null;
-      if (info && Array.isArray(info.qualities) && info.qualities.length > 0) {
-        match = info.qualities.find(q => q.resolution === qNum)
-             || (qNum === 480 ? info.qualities.find(q => q.resolution === 360) : null);
+      if (hasAnyQualityInfo) {
+        match = info.qualities.find(q => parseInt(q.resolution, 10) === qNum)
+             || (qNum === 480 ? info.qualities.find(q => parseInt(q.resolution, 10) === 360) : null);
       }
 
       const sizeEl = item.querySelector('.dl-ep-size');
-      let sizeText = '';
-      let sizeBytes = 0;
 
-      if (match && match.sizeText) {
-        sizeText = match.sizeText;
-        sizeBytes = match.sizeBytes;
+      if (hasAnyQualityInfo && !match) {
+        // Quality NOT available for this episode/movie
+        item.classList.add('dl-unavailable');
+        item.classList.remove('selected');
+        item.style.opacity = '0.5';
+        if (chk) {
+          chk.checked = false;
+          chk.disabled = true;
+        }
+        if (sizeEl) {
+          sizeEl.innerHTML = '<span style="color: #ef4444; font-weight: 600; font-size: 11px;"><i class="fa-solid fa-circle-exclamation" style="margin-right: 4px;"></i>এই রেজুলেশনে ফাইল নেই</span>';
+        }
+        if (batchState?.selected) {
+          batchState.selected.delete(idx);
+        }
+        if (batchState?.episodes?.[idx]) {
+          batchState.episodes[idx].isUnavailable = true;
+        }
+      } else if (match && match.sizeText) {
+        // Quality available with exact size
+        item.classList.remove('dl-unavailable');
+        item.style.opacity = '1';
+        if (chk) chk.disabled = false;
+        if (sizeEl) {
+          sizeEl.innerHTML = `<span style="color: #94a3b8; font-weight: 500;">${match.sizeText}</span>`;
+        }
+        if (batchState?.episodes?.[idx]) {
+          batchState.episodes[idx].isUnavailable = false;
+          batchState.episodes[idx].realSizeText = match.sizeText;
+          batchState.episodes[idx].realSizeBytes = match.sizeBytes;
+          batchState.episodes[idx].realQuality = `${match.resolution}P`;
+        }
       } else {
+        // Fallback or still resolving
+        item.classList.remove('dl-unavailable');
+        item.style.opacity = '1';
+        if (chk) chk.disabled = false;
         const isMovieItem = isMovieBadge || !isSeries;
         const estMb = isMovieItem
           ? (qNum >= 1080 ? 1200 : (qNum >= 720 ? 650 : 380))
           : (qNum >= 1080 ? 480 : (qNum >= 720 ? 260 : 135));
-        sizeText = estMb >= 1024 ? `~${(estMb / 1024).toFixed(2)} GB` : `~${estMb} MB`;
-        sizeBytes = estMb * 1024 * 1024;
-      }
-
-      if (sizeEl) sizeEl.textContent = sizeText;
-      if (batchState?.episodes?.[idx]) {
-        batchState.episodes[idx].realSizeText = sizeText;
-        batchState.episodes[idx].realSizeBytes = sizeBytes;
-        batchState.episodes[idx].realQuality = curQ;
+        const sizeText = estMb >= 1024 ? `~${(estMb / 1024).toFixed(2)} GB` : `~${estMb} MB`;
+        if (sizeEl) sizeEl.innerHTML = `<span style="color: #94a3b8; font-weight: 500;">${sizeText}</span>`;
+        if (batchState?.episodes?.[idx]) {
+          batchState.episodes[idx].isUnavailable = false;
+          batchState.episodes[idx].realSizeText = sizeText;
+          batchState.episodes[idx].realSizeBytes = estMb * 1024 * 1024;
+          batchState.episodes[idx].realQuality = curQ;
+        }
       }
     });
-
-    // Remove any empty-quality notice
-    const emptyNotice = scrollList.querySelector('.dl-empty-quality-notice');
-    if (emptyNotice) emptyNotice.remove();
 
     const totalCountEl = document.getElementById('dlTotalEpsCount');
     if (totalCountEl) totalCountEl.innerText = items.length;
@@ -611,6 +698,73 @@
     }
   }
   window.filterDownloadEpisodesModal = filterDownloadEpisodesModal;
+
+  // Toggle Individual Episode Selection
+  window.toggleBatchEpisode = function(index) {
+    const itemEl = document.getElementById(`dl_ep_item_${index}`);
+    if (itemEl && itemEl.classList.contains('dl-unavailable')) {
+      if (typeof showToast === 'function') showToast('⚠️ এই রেজুলেশনের কোনো ফাইল উপলব্ধ নেই');
+      return;
+    }
+    const batchState = getAppState()?._batchDownload;
+    if (!batchState || !batchState.selected) return;
+
+    if (batchState.selected.has(index)) {
+      batchState.selected.delete(index);
+    } else {
+      batchState.selected.add(index);
+    }
+
+    const isChecked = batchState.selected.has(index);
+    const chkEl = document.getElementById(`dl_ep_chk_${index}`);
+    if (itemEl) itemEl.classList.toggle('selected', isChecked);
+    if (chkEl) chkEl.checked = isChecked;
+
+    const selectAllChk = document.getElementById('dlSelectAllCheckbox');
+    if (selectAllChk) {
+      const availCount = batchState.episodes.filter(ep => !ep.isUnavailable).length;
+      selectAllChk.checked = (batchState.selected.size === availCount && availCount > 0);
+    }
+
+    if (typeof window.updateBatchSelectedSummary === 'function') {
+      window.updateBatchSelectedSummary();
+    }
+  };
+
+  // Toggle Select All Episodes
+  window.toggleSelectAllEpisodes = function(checked) {
+    const batchState = getAppState()?._batchDownload;
+    if (!batchState || !batchState.episodes) return;
+
+    if (checked) {
+      const valid = [];
+      batchState.episodes.forEach((ep, i) => {
+        const itemEl = document.getElementById(`dl_ep_item_${i}`);
+        if (!itemEl || !itemEl.classList.contains('dl-unavailable')) {
+          valid.push(i);
+        }
+      });
+      batchState.selected = new Set(valid);
+    } else {
+      batchState.selected.clear();
+    }
+
+    batchState.episodes.forEach((ep, idx) => {
+      const isSelected = batchState.selected.has(idx);
+      const itemEl = document.getElementById(`dl_ep_item_${idx}`);
+      const chkEl = document.getElementById(`dl_ep_chk_${idx}`);
+      if (itemEl && !itemEl.classList.contains('dl-unavailable')) {
+        itemEl.classList.toggle('selected', isSelected);
+      }
+      if (chkEl && !chkEl.disabled) {
+        chkEl.checked = isSelected;
+      }
+    });
+
+    if (typeof window.updateBatchSelectedSummary === 'function') {
+      window.updateBatchSelectedSummary();
+    }
+  };
 
   // -------------------------------------------------------------
   // 5. Override triggerDownload to unify Movies and Series UI
@@ -736,9 +890,12 @@
     const batchState = getAppState()?._batchDownload;
     const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.seasons && media.seasons.length > 0) || (media.id && media.id.startsWith('mb-s-')) || (media.id && media.id.startsWith('kmdl-s-'));
 
-    const selectedIndices = Array.from(batchState?.selected || []).sort((a, b) => a - b);
-    if (selectedIndices.length === 0) {
-      showToast(isSeries ? 'অনুগ্রহ করে অন্তত ১টি পর্ব নির্বাচন করুন' : 'অনুগ্রহ করে মুভিটি নির্বাচন করুন');
+    const validIndices = selectedIndices.filter(idx => {
+      const itemEl = document.getElementById(`dl_ep_item_${idx}`);
+      return !itemEl || !itemEl.classList.contains('dl-unavailable');
+    });
+    if (validIndices.length === 0) {
+      showToast('⚠️ নির্বাচিত রেজুলেশনে ডাউনলোড করার মতো কোনো ফাইল নেই');
       return;
     }
 
@@ -759,7 +916,7 @@
 
     if (isSeries) {
       const seNum = batchState?.season || window.appState?.currentSeason || 1;
-      selectedIndices.forEach(idx => {
+      validIndices.forEach(idx => {
         const ep = batchState.episodes[idx];
         const epNum = ep ? (ep.episode ?? ep.episodeNumber ?? ep.number ?? (idx + 1)) : (idx + 1);
         const epTitle = ep?.title ? `${media.title} - ${ep.title}` : `${media.title} - S${seNum} Ep ${epNum}`;
@@ -812,7 +969,7 @@
       });
 
       if (typeof window.closeDownloadOptionsModal === 'function') window.closeDownloadOptionsModal();
-      if (typeof showToast === 'function') showToast(`📥 ${selectedIndices.length} টি পর্ব (${curQ}) ডাউনলোডের সারিতে যুক্ত হয়েছে`);
+      if (typeof showToast === 'function') showToast(`📥 ${validIndices.length} টি পর্ব (${curQ}) ডাউনলোডের সারিতে যুক্ত হয়েছে`);
       stopBackgroundMedia();
       if (typeof openDownloadsView === 'function') openDownloadsView();
       return;
@@ -1043,9 +1200,12 @@
         }
 
         // 3. Reset orphaned 'Reconnecting' or 'downloading' items that have no active worker
+        const activeTasks = window.activeDownloadTasks || {};
         const hasWorker = activeTasks[item.id] && activeTasks[item.id].isDownloading && !activeTasks[item.id].isPaused;
         const isReconnecting = typeof item.statusText === 'string' && item.statusText.toLowerCase().includes('reconnecting');
-        const isStuckDownloading = item.status === 'downloading' && !hasWorker;
+        const lastAct = item._lastActivity || 0;
+        const isRecent = (Date.now() - lastAct) < 25000;
+        const isStuckDownloading = item.status === 'downloading' && !hasWorker && !isRecent;
 
         if (isReconnecting || isStuckDownloading) {
           if (item.progress && item.progress > 0) {
@@ -1072,6 +1232,70 @@
     } catch (e) {
       console.warn('repairStuckDownloads error:', e);
     }
+  }
+
+  // Hook pauseDownload & resumeDownload for instant, zero-delay UI response
+  if (typeof window.pauseDownload === 'function' && !window.pauseDownload._hasPatchHook) {
+    const origPause = window.pauseDownload;
+    window.pauseDownload = function(id, e) {
+      if (e) {
+        try { e.stopPropagation(); e.preventDefault(); } catch (_) {}
+      }
+      const activeTasks = window.activeDownloadTasks || {};
+      const task = activeTasks[id];
+      if (task) {
+        task.isPaused = true;
+        task.isDownloading = false;
+        if (task.reader) {
+          try { task.reader.cancel('paused'); } catch (_) {}
+        }
+        if (task.controller) {
+          try { task.controller.abort(); } catch (_) {}
+        }
+      }
+      const downloads = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : [];
+      const item = downloads.find(d => d.id === id);
+      if (item) {
+        item.status = 'paused';
+        item.paused = true;
+        item.failed = false;
+        item._lastActivity = Date.now();
+        item.statusText = `Paused (${item.progress || 0}%)`;
+        try { localStorage.setItem('fobs_downloads', JSON.stringify(downloads)); } catch (_) {}
+      }
+      if (typeof renderDownloadsList === 'function') renderDownloadsList();
+      if (typeof showToast === 'function') showToast('⏸️ ডাউনলোড পজ করা হয়েছে');
+      return origPause(id, e);
+    };
+    window.pauseDownload._hasPatchHook = true;
+  }
+
+  if (typeof window.resumeDownload === 'function' && !window.resumeDownload._hasPatchHook) {
+    const origResume = window.resumeDownload;
+    window.resumeDownload = function(id, e) {
+      if (e) {
+        try { e.stopPropagation(); e.preventDefault(); } catch (_) {}
+      }
+      const activeTasks = window.activeDownloadTasks || {};
+      if (activeTasks[id]) {
+        activeTasks[id].isPaused = false;
+        activeTasks[id]._autoRetries = 0;
+      }
+      const downloads = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : [];
+      const item = downloads.find(d => d.id === id);
+      if (item) {
+        item.status = 'downloading';
+        item.paused = false;
+        item.failed = false;
+        item._lastActivity = Date.now();
+        const currentQuality = item.quality || item.options?.quality || '480P';
+        item.statusText = item.progress > 0 ? `Resuming ${currentQuality} (${item.progress}%)...` : `Connecting ${currentQuality}...`;
+        try { localStorage.setItem('fobs_downloads', JSON.stringify(downloads)); } catch (_) {}
+      }
+      if (typeof renderDownloadsList === 'function') renderDownloadsList();
+      return origResume(id, e);
+    };
+    window.resumeDownload._hasPatchHook = true;
   }
 
   // Hook retryDownload to auto-repair stale / broken item urls before retrying
@@ -1151,6 +1375,7 @@
   const origOpenDownloadsView = window.openDownloadsView;
   window.openDownloadsView = function() {
     stopBackgroundMedia();
+    repairStuckDownloads();
     if (typeof origOpenDownloadsView === 'function') {
       origOpenDownloadsView();
     } else {
@@ -1170,13 +1395,17 @@
     stripVideoPoster();
     restoreOnlineWatchPills();
     setupDownloadModalObserver();
-    repairStuckDownloads();
   }, 1500);
+
+  // Background queue check and repair every 12 seconds
+  setInterval(() => {
+    repairStuckDownloads();
+  }, 12000);
 
   restoreOnlineWatchPills();
   purgeFake140MB();
   repairStuckDownloads();
   setupDownloadModalObserver();
 
-  console.log('✅ FOBS TV Live Patch v1.2.0 active: Background video/audio silenced on download page, fast streaming, repaired offline downloads.');
+  console.log('✅ FOBS TV Live Patch v1.2.1 active: Real resolution detection & missing file warnings, responsive pause/resume buttons.');
 })();

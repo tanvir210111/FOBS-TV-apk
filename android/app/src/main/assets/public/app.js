@@ -8618,6 +8618,7 @@ window.closeDownloadOptionsModal = closeDownloadOptionsModal;
 
 // In-memory registry of active download tasks
 const activeDownloadTasks = {};
+window.activeDownloadTasks = activeDownloadTasks;
 
 function releaseWakeLockIfNoActiveDownloads() {
   const isAnyActive = Object.values(activeDownloadTasks).some(t => t && t.isDownloading);
@@ -9352,7 +9353,9 @@ function getStoredDownloadsList() {
 
 // Pause Ongoing Download
 async function pauseDownload(id, e) {
-  if (e) e.stopPropagation();
+  if (e) {
+    try { e.stopPropagation(); e.preventDefault(); } catch (_) {}
+  }
   const task = activeDownloadTasks[id];
   if (task) {
     task.isPaused = true;
@@ -9373,6 +9376,7 @@ async function pauseDownload(id, e) {
     item.paused = true;
     item.failed = false;
     item.downloaded = false;
+    item._lastActivity = Date.now();
     item.statusText = `Paused (${item.progress || 0}%)`;
     localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
   }
@@ -9384,15 +9388,24 @@ window.pauseDownload = pauseDownload;
 
 // Resume Paused Download
 async function resumeDownload(id, e) {
-  if (e) e.stopPropagation();
+  if (e) {
+    try { e.stopPropagation(); e.preventDefault(); } catch (_) {}
+  }
   const downloads = getStoredDownloadsList();
   const item = downloads.find(d => d.id === id);
   if (!item) return;
+
+  const task = activeDownloadTasks[id];
+  if (task) {
+    task.isPaused = false;
+    task._autoRetries = 0;
+  }
 
   item.status = 'downloading';
   item.paused = false;
   item.failed = false;
   item.downloaded = false;
+  item._lastActivity = Date.now();
   const currentQuality = item.quality || item.options?.quality || '480P';
   item.statusText = item.progress > 0 ? `Resuming ${currentQuality} (${item.progress}%)...` : `Connecting ${currentQuality}...`;
   localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
@@ -9404,10 +9417,18 @@ window.resumeDownload = resumeDownload;
 
 // Retry Failed Download
 async function retryDownload(id, e) {
-  if (e) e.stopPropagation();
+  if (e) {
+    try { e.stopPropagation(); e.preventDefault(); } catch (_) {}
+  }
   const downloads = getStoredDownloadsList();
   const item = downloads.find(d => d.id === id);
   if (!item) return;
+
+  const task = activeDownloadTasks[id];
+  if (task) {
+    task.isPaused = false;
+    task._autoRetries = 0;
+  }
 
   const currentQuality = item.quality || item.options?.quality || '480P';
   const progressPercent = item.progress || 0;
@@ -9416,6 +9437,7 @@ async function retryDownload(id, e) {
   item.failed = false;
   item.paused = false;
   item.downloaded = false;
+  item._lastActivity = Date.now();
   item.statusText = progressPercent > 0 ? `Resuming ${currentQuality} (${progressPercent}%)...` : `Connecting ${currentQuality}...`;
   localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
   renderDownloadsList();
