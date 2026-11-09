@@ -1448,6 +1448,11 @@ body.is-fullscreen .player-top-header.controls-hidden,
   }
 }
 
+/* Hide resolution button in portrait resources row as requested */
+#currentQualityBtn {
+  display: none !important;
+}
+
 /* Video Loader - Centered Transparent Spinner Overlay (Doesn't blackout whole video) */
 .video-loader {
   position: absolute !important;

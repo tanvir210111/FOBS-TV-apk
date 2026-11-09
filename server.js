@@ -1328,7 +1328,10 @@ app.get('/api/moviebox/stream', async (req, res) => {
                 const newDPath = bestMatch.detailPath || '';
                 media = await movieboxService.resolveMedia(newSid, newDPath, seNum, epNum);
                 if (!media || !media.streamUrl) media = await movieboxService.resolveMedia(newSid, newDPath, 0, epNum);
-                if (!media || !media.streamUrl) media = await movieboxService.resolveMedia(newSid, newDPath, 0, 0);
+                // STRICT CHECK: For series episodes (epNum > 0), NEVER fall back to (0,0) which returns Episode 1!
+                if ((!media || !media.streamUrl) && epNum === 0 && seNum === 0) {
+                  media = await movieboxService.resolveMedia(newSid, newDPath, 0, 0);
+                }
                 if (media && media.streamUrl) {
                   movieboxStreamCache.set(mediaCacheKey, { media, timestamp: Date.now() });
                 }
@@ -1827,7 +1830,10 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
       if (mbId) {
         let media = await movieboxService.resolveMedia(mbId, mbPath, mbSe, mbEp);
         if (!media || !media.streamUrl) media = await movieboxService.resolveMedia(mbId, mbPath, 0, mbEp);
-        if (!media || !media.streamUrl) media = await movieboxService.resolveMedia(mbId, mbPath, 0, 0);
+        // STRICT CHECK: For series episodes (mbEp > 0), NEVER fall back to (0,0) which returns Episode 1!
+        if ((!media || !media.streamUrl) && mbEp === 0 && mbSe === 0) {
+          media = await movieboxService.resolveMedia(mbId, mbPath, 0, 0);
+        }
         if (media && media.streamUrl) {
           if (mbQ > 0 && Array.isArray(media.qualities) && media.qualities.length > 0) {
             const matchedQ = media.qualities.find(q => q.resolution === mbQ)
@@ -2420,7 +2426,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.0.8",
+  version: "1.1.1",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 

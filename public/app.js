@@ -4039,13 +4039,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
 
   if (loader) loader.classList.add('active');
   const loaderText = loader ? loader.querySelector('.loader-text') : null;
-  if (loaderText) loaderText.innerText = 'Loading...';
-  if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
-  window.videoStreamColdStartTimer = setTimeout(() => {
-    if (loader && loader.classList.contains('active') && loaderText) {
-      loaderText.innerText = 'Connecting to stream server...';
-    }
-  }, 2500);
+  if (loaderText) loaderText.innerText = 'Connecting to stream server...';
 
   // Resolve embed or indirect URLs to direct stream URLs
   let playableUrl = url;
@@ -10213,6 +10207,24 @@ function switchAudioTrack(lang) {
 // Language / Dubbing Bottom Sheet Modal (Screenshot 2 & 5)
 // Video Quality Switcher Logic
 function openQualitySheet() {
+  const container = document.getElementById('qualityOptionsList');
+  if (container) {
+    const avail = appState.availableQualities || [];
+    const availResSet = new Set(avail.map(q => parseInt(q.resolution, 10)).filter(n => !isNaN(n) && n > 0));
+
+    const buttons = container.querySelectorAll('.sheet-option-btn');
+    buttons.forEach(btn => {
+      const qVal = parseInt(btn.getAttribute('data-q') || '', 10);
+      if (availResSet.size > 0) {
+        btn.style.display = availResSet.has(qVal) ? 'flex' : 'none';
+      } else {
+        btn.style.display = 'flex';
+      }
+      const curQ = parseInt(appState.currentQuality || '480', 10);
+      btn.classList.toggle('selected', qVal === curQ);
+    });
+  }
+
   const overlay = document.getElementById('qualitySheetOverlay');
   if (overlay) overlay.classList.add('open');
 }

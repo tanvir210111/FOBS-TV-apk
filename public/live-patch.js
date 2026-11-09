@@ -1,9 +1,10 @@
-// FOBS TV Live OTA Patch Bundle v1.1.0
+// FOBS TV Live OTA Patch Bundle v1.1.1
 // 1. Online watch: ALL episodes shown serially with auto-detect playback (always lowest resolution default)
-// 2. Video Player: Never stuck on poster; eliminate native WebKit play button & frozen poster overlays
-// 3. Download modal ONLY: strictly filter episodes by available resolution with exact real file sizes
+// 2. Video Player: Never stuck on poster; Connecting to stream server message with animated loader; hide resolution in portrait
+// 3. Quality sheet: Only show available resolutions for the current episode; hide non-existent ones
+// 4. Download modal ONLY: strictly filter episodes by available resolution with exact real file sizes
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.1.0 executing...');
+  console.log('⚡ FOBS TV Live Patch v1.1.1 executing...');
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -29,7 +30,7 @@
   }
 
   // -------------------------------------------------------------
-  // 0. Eliminate Native Android Poster Freeze & Big Play Button
+  // 0. Eliminate Native Android Poster Freeze, Big Play Button & Hide Portrait Resolution Button
   // -------------------------------------------------------------
   function injectNoNativePosterStyles() {
     if (document.getElementById('fobs-no-native-poster-style')) return;
@@ -51,6 +52,10 @@
         background: rgba(0, 0, 0, 0.75) !important;
         backdrop-filter: blur(3px) !important;
       }
+      /* Hide resolution dropdown in portrait mode resources row */
+      #currentQualityBtn {
+        display: none !important;
+      }
     `;
     document.head.appendChild(style);
   }
@@ -61,6 +66,8 @@
     if (video && video.hasAttribute('poster')) {
       video.removeAttribute('poster');
     }
+    const qBtn = document.getElementById('currentQualityBtn');
+    if (qBtn) qBtn.style.setProperty('display', 'none', 'important');
   }
   stripVideoPoster();
 
@@ -71,7 +78,7 @@
     videoEl._hasPosterWatcher = true;
   }
 
-  // Hook playStreamUrl to clear poster and display smooth cyan spinner
+  // Hook playStreamUrl: Connecting to stream server message with cyan spinner until video actually plays
   const origPlayStreamUrl = window.playStreamUrl;
   window.playStreamUrl = function(url, audioIndex = null, seekTime = null) {
     stripVideoPoster();
@@ -79,7 +86,7 @@
     if (loader) {
       loader.classList.add('active');
       const txt = loader.querySelector('.loader-text');
-      if (txt) txt.innerText = 'ভিডিও প্রস্তুত হচ্ছে...';
+      if (txt) txt.innerText = 'Connecting to stream server...';
     }
 
     const video = document.getElementById('mainVideoPlayer');
@@ -96,6 +103,38 @@
 
     if (typeof origPlayStreamUrl === 'function') {
       return origPlayStreamUrl(url, audioIndex, seekTime);
+    }
+  };
+
+  // -------------------------------------------------------------
+  // Dynamic Quality Sheet Filter (Only show available resolutions)
+  // -------------------------------------------------------------
+  const origOpenQualitySheet = window.openQualitySheet;
+  window.openQualitySheet = function() {
+    const container = document.getElementById('qualityOptionsList');
+    if (container) {
+      const state = getAppState();
+      const avail = state?.availableQualities || window.appState?.availableQualities || [];
+      const availResSet = new Set(avail.map(q => parseInt(q.resolution, 10)).filter(n => !isNaN(n) && n > 0));
+
+      const buttons = container.querySelectorAll('.sheet-option-btn');
+      buttons.forEach(btn => {
+        const qVal = parseInt(btn.getAttribute('data-q') || '', 10);
+        if (availResSet.size > 0) {
+          btn.style.display = availResSet.has(qVal) ? 'flex' : 'none';
+        } else {
+          btn.style.display = 'flex';
+        }
+        const curQ = parseInt(state?.currentQuality || '480', 10);
+        btn.classList.toggle('selected', qVal === curQ);
+      });
+    }
+
+    if (typeof origOpenQualitySheet === 'function') {
+      origOpenQualitySheet();
+    } else {
+      const overlay = document.getElementById('qualitySheetOverlay');
+      if (overlay) overlay.classList.add('open');
     }
   };
 
@@ -419,5 +458,5 @@
   purgeFake140MB();
   setupDownloadModalObserver();
 
-  console.log('✅ FOBS TV Live Patch v1.1.0 active: Normal download modal open, strict resolution filter, no stuck poster.');
+  console.log('✅ FOBS TV Live Patch v1.1.1 active: Connecting to stream server loader, portrait resolution hidden, quality filtered, no duplicate stream.');
 })();
