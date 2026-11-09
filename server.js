@@ -2367,6 +2367,17 @@ app.get('/api/download', async (req, res) => {
   }
 
   let targetUrl = req.query.url;
+  const explicitId = req.query.id || req.query.subjectId;
+  const reqQ = parseInt(req.query.q || req.query.resolution || req.query.quality || '0', 10);
+
+  if (!targetUrl && explicitId) {
+    const explicitDetail = req.query.path || req.query.detailPath || getMovieBoxDetailPath(explicitId) || '';
+    const explicitSe = parseInt(req.query.se || req.query.season || '0', 10) || 0;
+    const explicitEp = parseInt(req.query.ep || req.query.episode || '0', 10) || 0;
+    const targetRes = reqQ > 0 ? reqQ : 480;
+    targetUrl = `/api/moviebox/stream?id=${encodeURIComponent(explicitId)}&path=${encodeURIComponent(explicitDetail)}&se=${explicitSe}&ep=${explicitEp}&q=${targetRes}`;
+  }
+
   const filename = req.query.title ? `${req.query.title.replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_')}.mp4` : 'video.mp4';
 
   if (!targetUrl) {
@@ -2390,8 +2401,6 @@ app.get('/api/download', async (req, res) => {
       resolvedUrl = decodeURIComponent(urlObj.searchParams.get('url') || resolvedUrl);
     } catch(e) {}
   }
-
-  const reqQ = parseInt(req.query.q || req.query.quality || '0', 10);
 
   // If still a relative MovieBox route, resolve it directly to the real CDN URL for the requested quality
   let mbParams = null;
@@ -2432,7 +2441,6 @@ app.get('/api/download', async (req, res) => {
   }
 
   // If explicit subjectId/id was passed, resolve accurate quality stream
-  const explicitId = req.query.id || req.query.subjectId;
   if (!mbParams && explicitId) {
     try {
       const explicitDetail = req.query.path || req.query.detailPath || getMovieBoxDetailPath(explicitId) || '';

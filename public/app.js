@@ -8464,8 +8464,8 @@ function confirmBatchDownload() {
       const epPoster = ep?.stillPath || media.poster || 'assets/fobs_logo.png';
       const taskId = `dl_${subjectId || media.id}_s${seNum}_e${epNum}_${currentDownloadQuality}`;
 
-      // Construct server download proxy URL with STRICT resolution matching
-      const downloadEndpointUrl = `/api/download?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
+      // Construct server stream URL with STRICT resolution matching
+      const downloadEndpointUrl = `/api/moviebox/stream?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
 
       fobsDownloadQueue.enqueue({
         id: taskId,
@@ -8510,7 +8510,7 @@ function confirmBatchDownload() {
   const moviePoster = media.poster || 'assets/fobs_logo.png';
   const approxMb = targetResNum >= 1080 ? 950 : (targetResNum >= 720 ? 450 : 180);
   const taskId = `dl_${subjectId || media.id}_movie_${currentDownloadQuality}`;
-  const downloadEndpointUrl = `/api/download?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=0&ep=0&q=${targetResNum}`;
+  const downloadEndpointUrl = `/api/moviebox/stream?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=0&ep=0&q=${targetResNum}`;
 
   fobsDownloadQueue.enqueue({
     id: taskId,
