@@ -3300,63 +3300,43 @@ function getLowestResolutionServer(activeObj, isOrig) {
 // Helper: Resolve active stream URL matching the requested audio track
 function getActiveEpisodeStream(ep, audioTrack) {
   if (!ep) return '';
-  const isHindiMedia = (appState.currentMedia?.title?.includes('Hindi') || appState.currentMedia?.dubLanguage === 'Hindi' || appState.currentMedia?.category?.includes('Hindi'));
-  const track = audioTrack || appState.currentAudioTrack || (isHindiMedia ? 'Hindi dub' : 'Original audio');
-  const isOrig = track.toLowerCase().includes('original') || track.toLowerCase().includes('korean');
+  const m = appState.currentMedia;
+  const isMovie = m?.type === 'movie' || (!m?.seasons && !m?.episodes);
+  const epNum = isMovie ? 0 : (ep?.episode ?? ep?.episodeNumber ?? parseInt(ep?.number, 10) ?? 1);
+  const seNum = isMovie ? 0 : (ep?.season ?? appState.currentSeason ?? 1);
 
   // Always enforce default 480p SD for instant bufferless playback
   appState.currentQuality = '480p';
 
-  // 1. Language-matched server from episode servers if multiple audio servers exist
-  if (ep.servers && Array.isArray(ep.servers) && ep.servers.length > 0) {
-    const langServer = ep.servers.find(s => {
-      const a = (s.audio || s.name || '').toLowerCase();
-      return isOrig ? /orig|korean|english|japanese/i.test(a) : /hindi/i.test(a);
-    }) || ep.servers.find(s => s.url && s.url.includes('/api/moviebox/stream'));
-
-    if (langServer && langServer.url) {
-      let u = langServer.url;
-      if (u.includes('/api/moviebox/stream') && !u.includes('q=')) u += (u.includes('?') ? '&' : '?') + 'q=480';
-      return u;
-    }
-  }
-
-  // 2. High Priority: MovieBox subject stream URL respecting active media's subject ID
-  const m = appState.currentMedia;
-  const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null));
+  // 1. High Priority: MovieBox subject stream URL respecting active media's subject ID
+  const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (m?.id && /^\d{16,20}$/.test(m.id) ? m.id : null);
   const dPath = m?.detailPath || m?.mbDetailPath || m?.movieboxDetailPath || '';
   if (sId) {
-    const isMovie = m?.type === 'movie' || (!m?.seasons && !m?.episodes);
-    const epNum = isMovie ? 0 : (ep?.episode || parseInt(ep?.number, 10) || 1);
-    const seNum = isMovie ? 0 : (ep?.season || 1);
-    return `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480`;
+    return `/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480`;
   }
 
-  // 3. Lowest valid unexpired direct server
-  const lowestServer = getLowestResolutionServer(ep, isOrig);
-  if (lowestServer && lowestServer.url && lowestServer.url.startsWith('http') && !isUrlExpired(lowestServer.url)) {
-    const res = parseInt(lowestServer.quality || lowestServer.name || '480', 10) || 480;
-    appState.currentQuality = `${res}p`;
-    return lowestServer.url;
+  // 2. Check ep.streamUrl or ep.servers for an existing /api/moviebox/stream
+  const allUrls = [
+    ep?.streamUrl,
+    ...(Array.isArray(ep?.servers) ? ep.servers.map(s => s?.url) : []),
+    m?.streamUrl,
+    ...(Array.isArray(m?.servers) ? m.servers.map(s => s?.url) : [])
+  ].filter(Boolean);
+
+  const mbUrl = allUrls.find(u => typeof u === 'string' && u.includes('/api/moviebox/stream'));
+  if (mbUrl) {
+    let clean = mbUrl.replace(/([?&])q=\d+/g, '$1q=480');
+    if (!clean.includes('q=')) clean += (clean.includes('?') ? '&' : '?') + 'q=480';
+    return clean;
   }
 
-  // 4. Fallback direct stream if not expired
-  if (ep.directStreamUrl && ep.directStreamUrl.startsWith('http') && !isUrlExpired(ep.directStreamUrl)) {
-    return ep.directStreamUrl;
+  // 3. Raw MovieBox CDN links must NEVER be sent directly to Android WebView (avoids 428/429 blocks)
+  const rawCdn = allUrls.find(u => typeof u === 'string' && (u.includes('hakunaymatata') || u.includes('bcdnxw') || u.includes('haildrop') || u.includes('fogtwist') || u.includes('sunburst') || u.includes('stormshade')));
+  if (rawCdn) {
+    return `/api/stream?url=${encodeURIComponent(rawCdn)}`;
   }
 
-  // 5. Direct episode streamUrl fallback
-  if (ep.streamUrl) {
-    let u = ep.streamUrl;
-    if (u.includes('/api/moviebox/stream') && !u.includes('q=')) u += (u.includes('?') ? '&' : '?') + 'q=480';
-    return u;
-  }
-
-  const rawFallback = (lowestServer && lowestServer.url) || ep.streamUrl || '';
-  if (rawFallback && (rawFallback.includes('hakunaymatata') || rawFallback.includes('bcdnxw'))) {
-    return `/api/stream?url=${encodeURIComponent(rawFallback)}`;
-  }
-  return rawFallback;
+  return ep.streamUrl || m?.streamUrl || '';
 }
 
 // Switch Active Season (Season 1 / Season 2)
@@ -3731,27 +3711,30 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
     }
 
     // Instant zero-delay stream: Use auto-renewing 480p stream (instant TTFB, zero 403 retries)
-    const sId = media?.subjectId || media?.mbSubjectId || (media?.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null);
+    const sId = media?.subjectId || media?.mbSubjectId || (media?.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || (media?.id && /^\d{16,20}$/.test(media.id) ? media.id : null);
     const dPath = media?.detailPath || media?.mbDetailPath || '';
     let initialUrl = null;
 
     if (sId) {
-      initialUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=0&ep=0&q=480`;
+      initialUrl = `/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=0&ep=0&q=480`;
       appState.currentQuality = '480p';
     } else {
-      const autoRenewingServer = media.servers?.find(s => s.url && s.url.includes('/api/moviebox/stream'));
-      const lowestServer = getLowestResolutionServer(media);
-      if (autoRenewingServer && autoRenewingServer.url) {
-        initialUrl = autoRenewingServer.url.includes('q=') ? autoRenewingServer.url : `${autoRenewingServer.url}${autoRenewingServer.url.includes('?') ? '&' : '?'}q=480`;
+      const allUrls = [
+        media?.streamUrl,
+        ...(Array.isArray(media?.servers) ? media.servers.map(s => s?.url) : [])
+      ].filter(Boolean);
+      const autoRenewingServer = allUrls.find(u => typeof u === 'string' && u.includes('/api/moviebox/stream'));
+      if (autoRenewingServer) {
+        let clean = autoRenewingServer.replace(/([?&])q=\d+/g, '$1q=480');
+        if (!clean.includes('q=')) clean += (clean.includes('?') ? '&' : '?') + 'q=480';
+        initialUrl = clean;
         appState.currentQuality = '480p';
-      } else if (lowestServer && lowestServer.url && !isUrlExpired(lowestServer.url)) {
-        initialUrl = lowestServer.url;
-        const res = parseInt(lowestServer.quality || lowestServer.name || '480', 10) || 480;
-        appState.currentQuality = `${res}p`;
       } else {
-        initialUrl = media.streamUrl || media.driveUrl;
-        if (initialUrl && (initialUrl.includes('hakunaymatata') || initialUrl.includes('bcdnxw'))) {
-          initialUrl = `/api/stream?url=${encodeURIComponent(initialUrl)}`;
+        const rawCdn = allUrls.find(u => typeof u === 'string' && (u.includes('hakunaymatata') || u.includes('bcdnxw') || u.includes('haildrop') || u.includes('fogtwist') || u.includes('sunburst') || u.includes('stormshade')));
+        if (rawCdn) {
+          initialUrl = `/api/stream?url=${encodeURIComponent(rawCdn)}`;
+        } else {
+          initialUrl = media.streamUrl || media.driveUrl;
         }
       }
     }
@@ -4125,32 +4108,16 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     console.log('Playing MovieBox stream immediately:', fullUrl);
     videoPlayer.preload = 'auto';
     if (videoPlayer.src !== fullUrl) {
-      videoPlayer.removeAttribute('src');
       videoPlayer.src = fullUrl;
-      try { videoPlayer.load(); } catch (_) {}
     }
-
-    let streamReadyFired = false;
-    const loaderTimer = setTimeout(() => {
-      if (loader) loader.classList.remove('active');
-    }, 20000);
+    videoPlayer.play().catch(() => {});
 
     const onStreamReady = () => {
-      const p = videoPlayer.play();
-      if (p && typeof p.catch === 'function') {
-        p.catch(() => {
-          if (loader) loader.classList.remove('active');
-          if (typeof syncCenterPlayButton === 'function') syncCenterPlayButton();
-        });
-      }
+      videoPlayer.play().catch(() => {});
     };
     videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
+    videoPlayer.addEventListener('loadeddata', onStreamReady, { once: true });
     videoPlayer.addEventListener('playing', () => {
-      clearTimeout(loaderTimer);
-      if (loader) loader.classList.remove('active');
-    }, { once: true });
-    videoPlayer.addEventListener('error', () => {
-      clearTimeout(loaderTimer);
       if (loader) loader.classList.remove('active');
     }, { once: true });
 
@@ -4215,10 +4182,9 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     console.log('Playing stream via server proxy:', proxyStreamUrl);
     videoPlayer.preload = 'auto';
     if (videoPlayer.src !== proxyStreamUrl) {
-      videoPlayer.removeAttribute('src');
       videoPlayer.src = proxyStreamUrl;
-      try { videoPlayer.load(); } catch (_) {}
     }
+    videoPlayer.play().catch(() => {});
 
     let streamReadyFired = false;
     const loaderTimer = setTimeout(() => {

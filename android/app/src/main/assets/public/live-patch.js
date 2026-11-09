@@ -1,4 +1,4 @@
-// FOBS TV Live OTA Patch Bundle v1.1.6
+// FOBS TV Live OTA Patch Bundle v1.1.7
 // 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (360p/480p default)
 // 2. Video Player: Never stuck on poster; Guaranteed "Connecting to stream server..." overlay with animated cyan spinner
 // 3. Quality sheet: Only show resolutions that ACTUALLY exist (jei resolution nai sei resolution video te show koraiyo na)
@@ -6,7 +6,7 @@
 // 5. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
 // 6. Fast Bufferless Streaming: Instant low-latency playback & 90s download watchdog with resilient auto-resume
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.1.6 executing...');
+  console.log('⚡ FOBS TV Live Patch v1.1.7 executing...');
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -181,12 +181,75 @@
   }
   stripVideoPoster();
 
-  // Hook playStreamUrl: Guaranteed "Connecting to stream server..." overlay until video actually plays
+  // Universal Instant Stream Resolver: Ensures 480p SD default & never direct raw MovieBox CDN
+  window.getActiveEpisodeStream = function(ep, audioTrack) {
+    if (!ep) return '';
+    const m = getActiveMedia();
+    const isMovie = m?.type === 'movie' || (!m?.seasons && !m?.episodes);
+    const epNum = isMovie ? 0 : (ep?.episode ?? ep?.episodeNumber ?? parseInt(ep?.number, 10) ?? 1);
+    const seNum = isMovie ? 0 : (ep?.season ?? window.appState?.currentSeason ?? 1);
+
+    if (window.appState) window.appState.currentQuality = '480p';
+
+    const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (m?.id && /^\d{16,20}$/.test(m.id) ? m.id : null);
+    const dPath = m?.detailPath || m?.mbDetailPath || m?.movieboxDetailPath || '';
+    if (sId) {
+      return `/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480`;
+    }
+
+    const allUrls = [
+      ep?.streamUrl,
+      ...(Array.isArray(ep?.servers) ? ep.servers.map(s => s?.url) : []),
+      m?.streamUrl,
+      ...(Array.isArray(m?.servers) ? m.servers.map(s => s?.url) : [])
+    ].filter(Boolean);
+
+    const mbUrl = allUrls.find(u => typeof u === 'string' && u.includes('/api/moviebox/stream'));
+    if (mbUrl) {
+      let clean = mbUrl.replace(/([?&])q=\d+/g, '$1q=480');
+      if (!clean.includes('q=')) clean += (clean.includes('?') ? '&' : '?') + 'q=480';
+      return clean;
+    }
+
+    const rawCdn = allUrls.find(u => typeof u === 'string' && (u.includes('hakunaymatata') || u.includes('bcdnxw') || u.includes('haildrop') || u.includes('fogtwist') || u.includes('sunburst') || u.includes('stormshade')));
+    if (rawCdn) {
+      return `/api/stream?url=${encodeURIComponent(rawCdn)}`;
+    }
+
+    return ep?.streamUrl || m?.streamUrl || '';
+  };
+
+  // Hook playStreamUrl: Guaranteed 480p low-latency start & "Connecting to stream server..." overlay
   const origPlayStreamUrl = window.playStreamUrl;
   window.playStreamUrl = function(url, audioIndex = null, seekTime = null) {
     showConnectingLoader();
+
+    let fastUrl = url;
+    if (typeof fastUrl === 'string') {
+      if (fastUrl.includes('/api/moviebox/stream')) {
+        fastUrl = fastUrl.replace(/([?&])q=\d+/g, '$1q=480');
+        if (!fastUrl.includes('q=')) fastUrl += (fastUrl.includes('?') ? '&' : '?') + 'q=480';
+      } else if (fastUrl.includes('hakunaymatata') || fastUrl.includes('bcdnxw') || fastUrl.includes('haildrop') || fastUrl.includes('fogtwist') || fastUrl.includes('sunburst') || fastUrl.includes('stormshade')) {
+        const base = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : '';
+        fastUrl = `${base}/api/stream?url=${encodeURIComponent(fastUrl)}`;
+      }
+    }
+
+    const videoPlayer = document.getElementById('mainVideoPlayer');
+    if (videoPlayer && fastUrl) {
+      const fullUrl = (typeof API_BASE_URL !== 'undefined' && API_BASE_URL && fastUrl.startsWith('/')) ? `${API_BASE_URL}${fastUrl}` : fastUrl;
+      videoPlayer.preload = 'auto';
+      if (videoPlayer.src !== fullUrl) {
+        videoPlayer.src = fullUrl;
+      }
+      videoPlayer.play().catch(() => {});
+      const kickPlay = () => videoPlayer.play().catch(() => {});
+      videoPlayer.addEventListener('canplay', kickPlay, { once: true });
+      videoPlayer.addEventListener('loadeddata', kickPlay, { once: true });
+    }
+
     if (typeof origPlayStreamUrl === 'function') {
-      return origPlayStreamUrl(url, audioIndex, seekTime);
+      return origPlayStreamUrl(fastUrl, audioIndex, seekTime);
     }
   };
 
@@ -893,5 +956,5 @@
   purgeFake140MB();
   setupDownloadModalObserver();
 
-  console.log('✅ FOBS TV Live Patch v1.1.6 active: Dedicated Connecting to stream server overlay & anti-freeze active.');
+  console.log('✅ FOBS TV Live Patch v1.1.7 active: Instant 480p low-latency start & Connecting to stream server overlay active.');
 })();
