@@ -3309,7 +3309,7 @@ function getActiveEpisodeStream(ep, audioTrack) {
   appState.currentQuality = '480p';
 
   // 1. High Priority: MovieBox subject stream URL respecting active media's subject ID
-  const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (m?.id && /^\d{16,20}$/.test(m.id) ? m.id : null);
+  const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (m?.id && /^\d{16,20}$/.test(m.id) ? m.id : null) || m?.id;
   const dPath = m?.detailPath || m?.mbDetailPath || m?.movieboxDetailPath || '';
   if (sId) {
     return `/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480`;
@@ -3711,7 +3711,7 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
     }
 
     // Instant zero-delay stream: Use auto-renewing 480p stream (instant TTFB, zero 403 retries)
-    const sId = media?.subjectId || media?.mbSubjectId || (media?.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || (media?.id && /^\d{16,20}$/.test(media.id) ? media.id : null);
+    const sId = media?.subjectId || media?.mbSubjectId || (media?.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || (media?.id && /^\d{16,20}$/.test(media.id) ? media.id : null) || media?.id;
     const dPath = media?.detailPath || media?.mbDetailPath || '';
     let initialUrl = null;
 
@@ -3732,7 +3732,11 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
       } else {
         const rawCdn = allUrls.find(u => typeof u === 'string' && (u.includes('hakunaymatata') || u.includes('bcdnxw') || u.includes('haildrop') || u.includes('fogtwist') || u.includes('sunburst') || u.includes('stormshade')));
         if (rawCdn) {
-          initialUrl = `/api/stream?url=${encodeURIComponent(rawCdn)}`;
+          if (sId) {
+            initialUrl = `/api/moviebox/stream?id=${encodeURIComponent(sId)}&se=0&ep=0&q=480`;
+          } else {
+            initialUrl = `/api/stream?url=${encodeURIComponent(rawCdn)}`;
+          }
         } else {
           initialUrl = media.streamUrl || media.driveUrl;
         }

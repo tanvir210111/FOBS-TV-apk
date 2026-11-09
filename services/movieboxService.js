@@ -83,6 +83,31 @@ const HEADERS = {
   'Accept': 'application/json'
 };
 
+function extractMovieBoxExpiry(urlStr) {
+  if (!urlStr || typeof urlStr !== 'string') return null;
+  try {
+    const u = new URL(urlStr);
+    const tParam = u.searchParams.get('t');
+    if (tParam) {
+      const expSec = parseInt(tParam, 10);
+      if (!isNaN(expSec) && expSec > 0) {
+        return expSec * 1000;
+      }
+    }
+  } catch (_) {}
+  return null;
+}
+
+function isMovieBoxUrlExpired(urlStr) {
+  if (!urlStr || typeof urlStr !== 'string') return true;
+  const expMs = extractMovieBoxExpiry(urlStr);
+  if (expMs) {
+    // If expired or expires within 15 minutes, treat as expired to prevent 403
+    return (expMs - Date.now() < 15 * 60 * 1000);
+  }
+  return false;
+}
+
 class MovieBoxService {
   constructor() {
     this.cache = new Map();
@@ -769,10 +794,14 @@ class MovieBoxService {
     } else {
       const cached = this.cache.get(cacheKey);
       if (cached && cached.expireAt > Date.now()) {
-        const needsCaptions = options && (options.requireCaptions || options.needCaptions);
-        const hasCaptions = Array.isArray(cached.data?.captions) && cached.data.captions.length > 0;
-        if (!needsCaptions || hasCaptions) {
-          return cached.data;
+        if (isMovieBoxUrlExpired(cached.data?.streamUrl)) {
+          this.cache.delete(cacheKey);
+        } else {
+          const needsCaptions = options && (options.requireCaptions || options.needCaptions);
+          const hasCaptions = Array.isArray(cached.data?.captions) && cached.data.captions.length > 0;
+          if (!needsCaptions || hasCaptions) {
+            return cached.data;
+          }
         }
       }
     }
@@ -797,9 +826,16 @@ class MovieBoxService {
           }
         }
 
-        // 1. High-Speed Priority: concurrent domain race
-        let result = await this._fetchDownload(cleanId, activeDetailPath, seNum, epNum);
-        if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, seNum, epNum);
+        // 1. Ultra Fast Streaming Priority: concurrent race between play stream & download endpoints
+        let result = null;
+        try {
+          result = await Promise.any([
+            this._fetchPlayStream(cleanId, activeDetailPath, seNum, epNum),
+            this._fetchDownload(cleanId, activeDetailPath, seNum, epNum)
+          ]);
+        } catch (_) {
+          result = null;
+        }
 
         // Path Repair: If initial query failed, quickly verify with fresh getDetail
         if (!result) {
@@ -807,33 +843,61 @@ class MovieBoxService {
           if (freshDetail && freshDetail.detailPath && freshDetail.detailPath !== activeDetailPath) {
             activeDetailPath = freshDetail.detailPath;
             this.detailPathMap.set(cleanId, activeDetailPath);
-            result = await this._fetchDownload(cleanId, activeDetailPath, seNum, epNum);
-            if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, seNum, epNum);
+            try {
+              result = await Promise.any([
+                this._fetchPlayStream(cleanId, activeDetailPath, seNum, epNum),
+                this._fetchDownload(cleanId, activeDetailPath, seNum, epNum)
+              ]);
+            } catch (_) {}
           }
         }
 
         // Season/Episode Permutation Fallbacks:
         if (!result && seNum === 1 && epNum > 0) {
-          result = await this._fetchDownload(cleanId, activeDetailPath, 0, epNum - 1);
-          if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, 0, epNum - 1);
+          try {
+            result = await Promise.any([
+              this._fetchPlayStream(cleanId, activeDetailPath, 0, epNum - 1),
+              this._fetchDownload(cleanId, activeDetailPath, 0, epNum - 1)
+            ]);
+          } catch (_) {}
         }
         if (!result && seNum === 0 && epNum > 0) {
-          result = await this._fetchDownload(cleanId, activeDetailPath, 1, epNum);
-          if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, 1, epNum);
+          try {
+            result = await Promise.any([
+              this._fetchPlayStream(cleanId, activeDetailPath, 1, epNum),
+              this._fetchDownload(cleanId, activeDetailPath, 1, epNum)
+            ]);
+          } catch (_) {}
         }
         if (!result && seNum === 0 && epNum === 0) {
-          result = await this._fetchDownload(cleanId, activeDetailPath, 1, 1);
-          if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, 1, 1);
+          try {
+            result = await Promise.any([
+              this._fetchPlayStream(cleanId, activeDetailPath, 1, 1),
+              this._fetchDownload(cleanId, activeDetailPath, 1, 1)
+            ]);
+          } catch (_) {}
         }
         if (!result && seNum > 1 && epNum > 0) {
-          result = await this._fetchDownload(cleanId, activeDetailPath, 1, epNum);
-          if (!result) result = await this._fetchPlayStream(cleanId, activeDetailPath, 1, epNum);
+          try {
+            result = await Promise.any([
+              this._fetchPlayStream(cleanId, activeDetailPath, 1, epNum),
+              this._fetchDownload(cleanId, activeDetailPath, 1, epNum)
+            ]);
+          } catch (_) {}
         }
 
         if (result) {
+          const streamExp = extractMovieBoxExpiry(result.streamUrl);
+          let cacheTtl = 45 * 60 * 1000;
+          if (streamExp) {
+            const timeUntilExp = streamExp - Date.now() - (15 * 60 * 1000);
+            if (timeUntilExp > 0 && timeUntilExp < cacheTtl) {
+              cacheTtl = timeUntilExp;
+            }
+          }
           this.cache.set(cacheKey, {
             data: result,
-            expireAt: Date.now() + 45 * 60 * 1000 // 45 minutes (MovieBox CDN tokens expire in 2h)
+            expireAt: Date.now() + Math.max(cacheTtl, 5 * 60 * 1000)
           });
           this._saveDiskCache();
           return result;

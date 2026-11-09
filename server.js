@@ -26,6 +26,45 @@ const PORT = process.env.PORT || 7000;
 const movieboxService = require('./services/movieboxService');
 const movieboxStreamCache = new Map(); // key -> { media, timestamp }
 const movieboxResolvingMap = new Map(); // key -> in-flight promise for deduplication
+
+function extractMovieBoxExpiry(urlStr) {
+  if (!urlStr || typeof urlStr !== 'string') return null;
+  try {
+    const u = new URL(urlStr);
+    const tParam = u.searchParams.get('t');
+    if (tParam) {
+      const expSec = parseInt(tParam, 10);
+      if (!isNaN(expSec) && expSec > 0) {
+        return expSec * 1000;
+      }
+    }
+  } catch (_) {}
+  return null;
+}
+
+function isMovieBoxUrlExpired(urlStr) {
+  if (!urlStr || typeof urlStr !== 'string') return true;
+  const expMs = extractMovieBoxExpiry(urlStr);
+  if (expMs) {
+    // If expired or expiring in under 15 minutes, treat as expired
+    return (expMs - Date.now() < 15 * 60 * 1000);
+  }
+  return false;
+}
+
+function getValidCachedMovieBoxMedia(cacheKey) {
+  const cachedEntry = movieboxStreamCache.get(cacheKey);
+  if (!cachedEntry) return null;
+  if (Date.now() - cachedEntry.timestamp >= 45 * 60 * 1000) {
+    movieboxStreamCache.delete(cacheKey);
+    return null;
+  }
+  if (isMovieBoxUrlExpired(cachedEntry.media?.streamUrl)) {
+    movieboxStreamCache.delete(cacheKey);
+    return null;
+  }
+  return cachedEntry.media;
+}
 const liveTvService = require('./services/liveTvService');
 const syncService = require('./services/syncService');
 const dbService = require('./services/dbService');
@@ -1233,40 +1272,39 @@ app.get('/api/moviebox/stream', async (req, res) => {
     const requestedQ = parseInt(req.query.q || req.query.quality || '0', 10);
     // Unified cache key across all bitrates so all qualities/probes share one instant resolution
     const mediaCacheKey = `${cleanId}_s${seNum}_e${epNum}`;
-    let media = null;
-    const cachedEntry = movieboxStreamCache.get(mediaCacheKey);
-    if (cachedEntry && (Date.now() - cachedEntry.timestamp < 12 * 60 * 60 * 1000)) {
-      media = cachedEntry.media;
-    } else if (movieboxResolvingMap.has(mediaCacheKey)) {
-      media = await movieboxResolvingMap.get(mediaCacheKey);
-    } else {
-      const resolveTask = (async () => {
-        let m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', seNum, epNum);
-        if (!m || !m.streamUrl) {
-          if (epNum > 0) {
-            m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, epNum);
-          } else {
-            m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, 0);
+    let media = getValidCachedMovieBoxMedia(mediaCacheKey);
+    if (!media) {
+      if (movieboxResolvingMap.has(mediaCacheKey)) {
+        media = await movieboxResolvingMap.get(mediaCacheKey);
+      } else {
+        const resolveTask = (async () => {
+          let m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', seNum, epNum);
+          if (!m || !m.streamUrl || isMovieBoxUrlExpired(m.streamUrl)) {
+            if (epNum > 0) {
+              m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, epNum);
+            } else {
+              m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, 0);
+            }
           }
-        }
-        if (!m || !m.streamUrl) {
-          if (cleanId === '2587437118653956672' || String(cleanId).includes('arcane')) {
-            m = await movieboxService.resolveMedia('8350263472579564576', 'arcane-cSoWT6jiQW9', seNum, epNum);
+          if (!m || !m.streamUrl || isMovieBoxUrlExpired(m.streamUrl)) {
+            if (cleanId === '2587437118653956672' || String(cleanId).includes('arcane')) {
+              m = await movieboxService.resolveMedia('8350263472579564576', 'arcane-cSoWT6jiQW9', seNum, epNum);
+            }
           }
+          if (!m || !m.streamUrl || isMovieBoxUrlExpired(m.streamUrl)) {
+            m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', seNum, epNum, { forceRefresh: true });
+          }
+          return m;
+        })();
+        movieboxResolvingMap.set(mediaCacheKey, resolveTask);
+        try {
+          media = await resolveTask;
+        } finally {
+          movieboxResolvingMap.delete(mediaCacheKey);
         }
-        if (!m || !m.streamUrl) {
-          m = await movieboxService.resolveMedia(cleanId, resolvedPath || '', seNum, epNum, { forceRefresh: true });
+        if (media && media.streamUrl && !isMovieBoxUrlExpired(media.streamUrl)) {
+          movieboxStreamCache.set(mediaCacheKey, { media, timestamp: Date.now() });
         }
-        return m;
-      })();
-      movieboxResolvingMap.set(mediaCacheKey, resolveTask);
-      try {
-        media = await resolveTask;
-      } finally {
-        movieboxResolvingMap.delete(mediaCacheKey);
-      }
-      if (media && media.streamUrl) {
-        movieboxStreamCache.set(mediaCacheKey, { media, timestamp: Date.now() });
       }
     }
     if (!media || !media.streamUrl) {
@@ -2167,6 +2205,46 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
   requestHeaders['Range'] = upstreamRange;
 
   let streamFetchUrl = resolvedUrl;
+
+  // Proactive Token Expiration Check: If MovieBox CDN token is expired or expiring in < 15 mins, renew IMMEDIATELY before requesting!
+  if (isMovieBoxUrlExpired(streamFetchUrl)) {
+    const isMb = (
+      (mbContext && mbContext.id) ||
+      (targetUrl && targetUrl.includes('/api/moviebox/stream')) ||
+      (targetUrl && targetUrl.includes('movieboxapp.in')) ||
+      streamFetchUrl.includes('hakunaymatata') ||
+      streamFetchUrl.includes('bcdnxw') ||
+      streamFetchUrl.includes('haildrop') ||
+      streamFetchUrl.includes('fogtwist') ||
+      streamFetchUrl.includes('sunburst') ||
+      streamFetchUrl.includes('stormshade')
+    );
+    if (isMb && mbContext && mbContext.id) {
+      console.log(`[StreamMediaDirect] Token expired or expiring in stream URL. Proactively refreshing before request...`);
+      const cacheKey = `${mbContext.id}_s${mbContext.se}_e${mbContext.ep}`;
+      movieboxStreamCache.delete(cacheKey);
+      try {
+        const freshMedia = await movieboxService.resolveMedia(
+          mbContext.id,
+          mbContext.detailPath || '',
+          mbContext.se,
+          mbContext.ep,
+          { forceRefresh: true }
+        );
+        if (freshMedia && freshMedia.streamUrl) {
+          streamFetchUrl = freshMedia.streamUrl;
+          if (mbContext.targetRes && Array.isArray(freshMedia.qualities) && freshMedia.qualities.length > 0) {
+            const qMatch = freshMedia.qualities.find(q => q.resolution === mbContext.targetRes) || freshMedia.qualities[0];
+            if (qMatch?.url) streamFetchUrl = qMatch.url;
+          }
+          movieboxStreamCache.set(cacheKey, { media: freshMedia, timestamp: Date.now() });
+        }
+      } catch (prErr) {
+        console.warn(`[StreamMediaDirect] Proactive token refresh failed:`, prErr.message);
+      }
+    }
+  }
+
   let response;
   try {
     try {
@@ -2505,7 +2583,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.2.2",
+  version: "1.2.3",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 
@@ -2632,24 +2710,21 @@ app.get('/api/download', async (req, res) => {
     mbParams = { id: cleanId, detailPath: resolvedPath, se: explicitSe, ep: explicitEp, targetRes };
 
     const mediaCacheKey = `${cleanId}_s${explicitSe}_e${explicitEp}`;
-    let media = null;
-    const cachedEntry = movieboxStreamCache.get(mediaCacheKey);
-    if (cachedEntry && (Date.now() - cachedEntry.timestamp < 12 * 60 * 60 * 1000)) {
-      media = cachedEntry.media;
-    } else {
+    let media = getValidCachedMovieBoxMedia(mediaCacheKey);
+    if (!media) {
       try {
         media = await movieboxService.resolveMedia(cleanId, resolvedPath || '', explicitSe, explicitEp);
-        if (!media || !media.streamUrl) {
+        if (!media || !media.streamUrl || isMovieBoxUrlExpired(media.streamUrl)) {
           if (explicitEp > 0) {
             media = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, explicitEp);
           } else {
             media = await movieboxService.resolveMedia(cleanId, resolvedPath || '', 0, 0);
           }
         }
-        if (!media || !media.streamUrl) {
+        if (!media || !media.streamUrl || isMovieBoxUrlExpired(media.streamUrl)) {
           media = await movieboxService.resolveMedia(cleanId, resolvedPath || '', explicitSe, explicitEp, { forceRefresh: true });
         }
-        if (media && media.streamUrl) {
+        if (media && media.streamUrl && !isMovieBoxUrlExpired(media.streamUrl)) {
           movieboxStreamCache.set(mediaCacheKey, { media, timestamp: Date.now() });
         }
       } catch (mErr) {
