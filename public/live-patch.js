@@ -1,12 +1,13 @@
-// FOBS TV Live OTA Patch Bundle v1.4.6 (Download Queue, Pause & Resume Engine for v3.2.0)
-// 1. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
-// 2. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
-// 3. Smooth Online Playback: Connecting overlay smoothly dissolves only when video is actively playing (no frozen 1-2s icon)
-// 4. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
-// 5. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
+// FOBS TV Live OTA Patch Bundle v1.4.7 (Online Quality Switching & Startup Anti-Freeze)
+// 1. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
+// 2. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
+// 3. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
+// 4. Smooth Online Playback: Connecting overlay smoothly dissolves only when video is actively playing (no frozen 1-2s icon)
+// 5. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
+// 6. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.4.6 (Download Queue, Pause & Resume) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.4.6';
+  console.log('⚡ FOBS TV Live Patch v1.4.7 (Online Quality Switching & Anti-Freeze) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.4.7';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -730,15 +731,106 @@
     window.selectEpisode._hasLoaderHook = true;
   }
 
-  // Hook selectVideoQuality
-  if (typeof window.selectVideoQuality === 'function' && !window.selectVideoQuality._hasLoaderHook) {
-    const prevSelectQ = window.selectVideoQuality;
-    window.selectVideoQuality = function(quality, isSilent = false) {
-      showConnectingLoader();
-      return prevSelectQ(quality, isSilent);
-    };
-    window.selectVideoQuality._hasLoaderHook = true;
-  }
+  // -------------------------------------------------------------
+  // Robust Online Quality Switcher with Seek Preservation & Token Renewal
+  // -------------------------------------------------------------
+  window.selectVideoQuality = function(quality, isSilent = false) {
+    try {
+      if (typeof showConnectingLoader === 'function') showConnectingLoader();
+      const state = getAppState() || window.appState || {};
+      const targetQ = (quality || '480p').toLowerCase();
+      const targetResNum = parseInt(targetQ, 10) || (targetQ === 'auto' ? 480 : 720);
+
+      state.userExplicitQuality = true;
+      state.selectedQuality = `${targetResNum}p`;
+      state.currentQuality = `${targetResNum}p`;
+
+      if (typeof updateQualityDisplay === 'function') {
+        updateQualityDisplay(`${targetResNum}p`);
+      }
+
+      const overlay = document.getElementById('qualitySheetOverlay');
+      if (overlay) {
+        overlay.classList.remove('open');
+        overlay.style.setProperty('display', 'none', 'important');
+      }
+
+      const videoPlayer = document.getElementById('mainVideoPlayer');
+      if (!videoPlayer) return;
+
+      const currentMedia = state.currentMedia || window.currentMedia;
+      if (!currentMedia) return;
+
+      const isSeries = currentMedia.type === 'series' || (currentMedia.seasons && currentMedia.seasons.length > 0);
+      const activeObj = isSeries ? (state.currentEpisode || (currentMedia.seasons?.[0]?.episodes?.[0])) : currentMedia;
+      if (!activeObj) return;
+
+      let targetStreamUrl = null;
+
+      // 1. Re-craft /api/moviebox/stream with new &q= parameter
+      const currentSrc = videoPlayer.src || state.currentStreamUrl || '';
+      if (currentSrc.includes('/api/moviebox/stream')) {
+        let clean = currentSrc.replace(/([?&])q=\d+/, '');
+        targetStreamUrl = clean + (clean.includes('?') ? '&' : '?') + `q=${targetResNum}`;
+      }
+
+      if (!targetStreamUrl) {
+        let mbServer = (activeObj.servers || []).find(s => s.url && s.url.includes('/api/moviebox/stream'));
+        if (mbServer) {
+          let u = mbServer.url;
+          u = u.replace(/([?&])q=\d+/, '');
+          targetStreamUrl = u + (u.includes('?') ? '&' : '?') + `q=${targetResNum}`;
+        }
+      }
+
+      if (!targetStreamUrl) {
+        const sId = currentMedia.subjectId || currentMedia.mbSubjectId || (currentMedia.id && currentMedia.id.startsWith('mb-') ? currentMedia.id.replace(/^mb-[ms]-/, '').replace(/-hindi$/, '') : null);
+        if (sId) {
+          const seNum = isSeries ? (state.currentSeasonNumber || 1) : 0;
+          const epNum = isSeries ? (state.currentEpisodeNumber || 1) : 0;
+          const dPath = currentMedia.detailPath || currentMedia.mbDetailPath || '';
+          targetStreamUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
+        }
+      }
+
+      // 2. Direct match from availableQualities
+      if (!targetStreamUrl && Array.isArray(state.availableQualities) && state.availableQualities.length > 0) {
+        const matched = state.availableQualities.find(q => parseInt(q.resolution, 10) === targetResNum);
+        if (matched && (matched.proxyUrl || matched.url)) {
+          targetStreamUrl = matched.proxyUrl || matched.url;
+        }
+      }
+
+      if (targetStreamUrl) {
+        const seekPos = videoPlayer.currentTime || 0;
+        const isPaused = videoPlayer.paused;
+        console.log(`[LivePatch Quality Switch] Switching to ${targetResNum}p at ${seekPos.toFixed(1)}s:`, targetStreamUrl);
+
+        if (typeof window.playStreamUrl === 'function') {
+          window.playStreamUrl(targetStreamUrl, null, seekPos);
+        } else {
+          videoPlayer.src = targetStreamUrl;
+          try { videoPlayer.load(); } catch (e) {}
+          const onCanPlay = () => {
+            try { videoPlayer.currentTime = seekPos; } catch(e){}
+            if (!isPaused) videoPlayer.play().catch(() => {});
+          };
+          videoPlayer.addEventListener('canplay', onCanPlay, { once: true });
+        }
+
+        if (!isPaused) {
+          setTimeout(() => { videoPlayer.play().catch(() => {}); }, 150);
+        }
+      }
+
+      if (!isSilent && typeof showToast === 'function') {
+        showToast(`Quality set to ${targetResNum}p ${targetResNum >= 1080 ? 'FHD' : targetResNum >= 720 ? 'HD' : 'SD'}`);
+      }
+    } catch (err) {
+      console.warn('LivePatch selectVideoQuality error:', err);
+    }
+  };
+  window.selectVideoQuality._hasLoaderHook = true;
 
   // -------------------------------------------------------------
   // Dynamic Quality Sheet: ONLY show available resolutions! (jei resolution nai sei resolution video te show koraiyo na)

@@ -454,13 +454,20 @@ function applyNavigationBarInset(bottomDp) {
 }
 window.applyNavigationBarInset = applyNavigationBarInset;
 
-// Initialize Application
-document.addEventListener('DOMContentLoaded', () => {
-  applyNavigationBarInset();
-  window.addEventListener('resize', () => applyNavigationBarInset());
-  window.addEventListener('orientationchange', () => setTimeout(applyNavigationBarInset, 200));
+// Bulletproof bootstrap: fires immediately if document is already parsed, or on DOMContentLoaded
+function bootstrapApp() {
+  try { applyNavigationBarInset(); } catch(e) {}
+  window.addEventListener('resize', () => { try { applyNavigationBarInset(); } catch(e) {} });
+  window.addEventListener('orientationchange', () => setTimeout(() => { try { applyNavigationBarInset(); } catch(e) {} }, 200));
   initApp();
-});
+}
+window.bootstrapApp = bootstrapApp;
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootstrapApp);
+} else {
+  bootstrapApp();
+}
 
 // ============================================================
 // APP STARTUP CINEMATIC INTRO VIDEO & BACKGROUND REFRESH
@@ -478,7 +485,7 @@ function playAppIntroAndSync() {
   const progressFill = document.getElementById('introProgressFill');
   const statusText = document.getElementById('introStatusText');
 
-  if (!overlay || !video) {
+  if (!overlay || !video || window._introVideoEnded) {
     finishIntroAndShowApp();
     return;
   }
@@ -4234,8 +4241,10 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     console.log('Playing MovieBox stream immediately:', fullUrl);
     videoPlayer.preload = 'auto';
     videoPlayer.muted = false;
-    if (videoPlayer.src !== fullUrl) {
-      videoPlayer.src = fullUrl;
+    const needReload = (videoPlayer.src !== fullUrl);
+    videoPlayer.src = fullUrl;
+    if (needReload) {
+      try { videoPlayer.load(); } catch (e) {}
     }
     const safeTriggerPlay = () => {
       const p = videoPlayer.play();
@@ -4295,7 +4304,9 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
             if (Array.isArray(data.qualities) && data.qualities.length > 0) {
               appState.availableQualities = data.qualities;
             }
-            if (data.resolution) updateQualityDisplay(data.resolution);
+            if (data.resolution && !appState.userExplicitQuality) {
+              updateQualityDisplay(data.resolution);
+            }
           }
         })
         .catch(() => {});
@@ -4315,8 +4326,10 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     const proxyStreamUrl = playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`;
     console.log('Playing stream via server proxy:', proxyStreamUrl);
     videoPlayer.preload = 'auto';
-    if (videoPlayer.src !== proxyStreamUrl) {
-      videoPlayer.src = proxyStreamUrl;
+    const needReload = (videoPlayer.src !== proxyStreamUrl);
+    videoPlayer.src = proxyStreamUrl;
+    if (needReload) {
+      try { videoPlayer.load(); } catch (e) {}
     }
     videoPlayer.play().catch(() => {});
 
@@ -10859,6 +10872,8 @@ function selectVideoQuality(quality, isAuto = false) {
 
   const targetQ = (quality || '480p').toLowerCase();
   const targetResNum = parseInt(targetQ, 10) || (targetQ === 'auto' ? 480 : 720);
+  appState.userExplicitQuality = true;
+  appState.selectedQuality = `${targetResNum}p`;
   appState.currentQuality = `${targetResNum}p`;
 
   updateQualityDisplay(`${targetResNum}p`);
@@ -10886,15 +10901,42 @@ function selectVideoQuality(quality, isAuto = false) {
 
   let targetStreamUrl = null;
 
-  // 1. Check if appState.availableQualities has an exact match
-  if (Array.isArray(appState.availableQualities) && appState.availableQualities.length > 0) {
+  // 1. Direct MovieBox active URL re-crafting (highest reliability & token-safe)
+  const currentSrc = videoPlayer.src || appState.currentStreamUrl || '';
+  if (currentSrc.includes('/api/moviebox/stream')) {
+    let clean = currentSrc.replace(/([?&])q=\d+/, '');
+    targetStreamUrl = clean + (clean.includes('?') ? '&' : '?') + `q=${targetResNum}`;
+  }
+
+  // 2. Check if activeObj has a server with /api/moviebox/stream
+  if (!targetStreamUrl) {
+    let mbServer = (activeObj.servers || []).find(s => s.url && s.url.includes('/api/moviebox/stream'));
+    if (mbServer) {
+      let u = mbServer.url;
+      u = u.replace(/([?&])q=\d+/, '');
+      targetStreamUrl = u + (u.includes('?') ? '&' : '?') + `q=${targetResNum}`;
+    }
+  }
+
+  // 3. Check if subjectId is present to construct /api/moviebox/stream
+  if (!targetStreamUrl) {
+    const sId = currentMedia.subjectId || currentMedia.mbSubjectId || (currentMedia.id && currentMedia.id.startsWith('mb-') ? currentMedia.id.replace(/^mb-[ms]-/, '').replace(/-hindi$/, '') : null);
+    if (sId) {
+      const seNum = isSeries ? (appState.currentSeasonNumber || 1) : 0;
+      const epNum = isSeries ? (appState.currentEpisodeNumber || 1) : 0;
+      const dPath = currentMedia.detailPath || currentMedia.mbDetailPath || '';
+      targetStreamUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
+    }
+  }
+
+  // 4. Fallback to appState.availableQualities or server matching
+  if (!targetStreamUrl && Array.isArray(appState.availableQualities) && appState.availableQualities.length > 0) {
     const matched = appState.availableQualities.find(q => parseInt(q.resolution, 10) === targetResNum);
     if (matched && (matched.proxyUrl || matched.url)) {
       targetStreamUrl = matched.proxyUrl || matched.url;
     }
   }
 
-  // 2. Check if activeObj has a server with matching quality (ensuring token is not expired)
   if (!targetStreamUrl && Array.isArray(activeObj.servers)) {
     const matchedServer = activeObj.servers.find(s => {
       const qNum = parseInt(s.quality || '', 10);
@@ -10904,24 +10946,6 @@ function selectVideoQuality(quality, isAuto = false) {
     });
     if (matchedServer && matchedServer.url) {
       targetStreamUrl = matchedServer.url;
-    }
-  }
-
-  // 3. If not found in servers, check if there is an /api/moviebox/stream endpoint or subjectId
-  if (!targetStreamUrl) {
-    let mbServer = (activeObj.servers || []).find(s => s.url && s.url.includes('/api/moviebox/stream'));
-    if (mbServer) {
-      let u = mbServer.url;
-      u = u.replace(/([?&])q=\d+/, '');
-      targetStreamUrl = u + (u.includes('?') ? '&' : '?') + `q=${targetResNum}`;
-    } else {
-      const sId = currentMedia.subjectId || currentMedia.mbSubjectId || (currentMedia.id && currentMedia.id.startsWith('mb-') ? currentMedia.id.replace(/^mb-[ms]-/, '').replace(/-hindi$/, '') : null);
-      if (sId) {
-        const seNum = isSeries ? (appState.currentSeasonNumber || 1) : 0;
-        const epNum = isSeries ? (appState.currentEpisodeNumber || 1) : 0;
-        const dPath = currentMedia.detailPath || currentMedia.mbDetailPath || '';
-        targetStreamUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
-      }
     }
   }
 

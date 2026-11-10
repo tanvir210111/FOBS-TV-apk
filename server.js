@@ -1388,17 +1388,8 @@ app.get('/api/moviebox/stream', async (req, res) => {
       // Sort qualities ascending by resolution: [360, 480, 720, 1080, ...]
       const sortedAsc = [...media.qualities].sort((a, b) => (parseInt(a.resolution, 10) || 0) - (parseInt(b.resolution, 10) || 0));
 
-      if (requestedQ <= 480 || requestedQ === 0) {
-        // ALWAYS strictly pick the lowest available resolution file for bufferless, instant online playback
-        const lowQ = sortedAsc.find(q => parseInt(q.resolution, 10) === 480)
-                  || sortedAsc.find(q => parseInt(q.resolution, 10) === 360)
-                  || sortedAsc[0];
-        if (lowQ && lowQ.url) {
-          chosenStream = lowQ.url;
-          chosenRes = lowQ.resolution;
-        }
-      } else {
-        // Exact or closest requested resolution (720p / 1080p)
+      if (requestedQ > 0) {
+        // Exact or closest requested resolution (360p, 480p, 720p, 1080p)
         const exactMatch = media.qualities.find(q => parseInt(q.resolution, 10) === requestedQ);
         if (exactMatch && exactMatch.url) {
           chosenStream = exactMatch.url;
@@ -1414,6 +1405,15 @@ app.get('/api/moviebox/stream', async (req, res) => {
             chosenStream = matchQ.url;
             chosenRes = matchQ.resolution;
           }
+        }
+      } else {
+        // requestedQ === 0 (Auto / Unspecified): Pick optimal streaming resolution (480p or 360p or lowest)
+        const lowQ = sortedAsc.find(q => parseInt(q.resolution, 10) === 480)
+                  || sortedAsc.find(q => parseInt(q.resolution, 10) === 360)
+                  || sortedAsc[0];
+        if (lowQ && lowQ.url) {
+          chosenStream = lowQ.url;
+          chosenRes = lowQ.resolution;
         }
       }
     }
