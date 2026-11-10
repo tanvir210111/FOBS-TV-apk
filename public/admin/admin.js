@@ -1857,19 +1857,35 @@ function renderUsersTable(usersList) {
               <div class="table-title-bold" style="font-size: 13.5px; color: ${isReg ? '#f8fafc' : '#e2e8f0'}; font-weight: 700;">
                 ${escapeHtml(u.name || (isReg ? 'Google Member' : 'Mobile App User'))}
               </div>
-              <div class="table-meta-sub" style="font-family: var(--font-mono); font-size: 11px; color: #64748b;">
-                ID: ${escapeHtml((u.id || u.deviceId || '').substring(0, 18))}...
-              </div>
+              ${isReg && u.email && u.email.includes('@') ? `
+                <div style="font-size: 11.5px; color: #c084fc; font-weight: 600; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                  <i class="fa-regular fa-envelope" style="font-size: 10.5px;"></i> ${escapeHtml(u.email)}
+                </div>
+              ` : `
+                <div class="table-meta-sub" style="font-family: var(--font-mono); font-size: 11px; color: #64748b;">
+                  ID: ${escapeHtml((u.id || u.deviceId || '').substring(0, 18))}...
+                </div>
+              `}
             </div>
           </div>
         </td>
         <td>
-          <div style="display: flex; flex-direction: column; gap: 2px;">
-            <span style="font-weight: 600; font-size: 12.5px; color: #cbd5e1;">${escapeHtml(u.deviceModel || 'Android Phone')}</span>
-            <span style="font-family: var(--font-mono); font-size: 11.5px; color: #94a3b8;">
-              <i class="fa-solid fa-network-wired" style="font-size: 10px; color: #38bdf8; margin-right: 3px;"></i>
-              ${escapeHtml(rawIp || 'Direct Connection')}
-            </span>
+          <div style="display: flex; flex-direction: column; gap: 3px;">
+            ${isReg && u.email && u.email.includes('@') ? `
+              <div style="font-size: 13px; font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-envelope" style="color: #c084fc; font-size: 12px;"></i>
+                <span style="user-select: all; color: #e9d5ff;">${escapeHtml(u.email)}</span>
+              </div>
+              <div class="table-meta-sub" style="font-size: 11px; color: #94a3b8;">
+                <i class="fa-brands fa-google" style="color: #f59e0b; margin-right: 3px;"></i> Google Account &bull; ${escapeHtml(u.deviceModel || 'Mobile')}
+              </div>
+            ` : `
+              <span style="font-weight: 600; font-size: 12.5px; color: #cbd5e1;">${escapeHtml(u.deviceModel || 'Android Phone')}</span>
+              <span style="font-family: var(--font-mono); font-size: 11.5px; color: #38bdf8;">
+                <i class="fa-solid fa-network-wired" style="font-size: 10px; margin-right: 3px;"></i>
+                ${escapeHtml(rawIp || 'Direct Connection')}
+              </span>
+            `}
           </div>
         </td>
         <td>
@@ -1897,7 +1913,7 @@ function renderUsersTable(usersList) {
                 : '<span class="status-pill-offline">Offline</span>')}
         </td>
         <td style="text-align: right;">
-          <button class="btn-action-icon" onclick="copyToClipboard('${escapeHtml(rawIp || u.id)}')" title="Copy IP / ID">
+          <button class="btn-action-icon" onclick="copyToClipboard('${escapeHtml((isReg && u.email) ? u.email : (rawIp || u.id))}')" title="Copy Email / ID">
             <i class="fa-regular fa-copy"></i>
           </button>
         </td>
