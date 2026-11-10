@@ -1,22 +1,12 @@
-// FOBS TV Live OTA Patch Bundle v1.2.8
-// 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (360p/480p default)
-// 2. Ultra-Low Latency Millisecond Playback: Prefetch warm streams, preload auto, and instant H.264 playback
-// 3. Bulletproof Playback Guarantee: Robust autoplay with muted fallback, instant loader dismissal on ready, and touch-unmute
-// 4. Smooth Offline Playback & Seeking: Never freezes or gets stuck when dragging/scrubbing seek bar, instant fastSeek & queue
-// 5. Zero Stream Spinner on Offline: Completely disables "Connecting to stream server..." for offline blob videos
-// 6. Auto-Renewing CDN Tokens: CDN links with exp timestamp never 403 or expire; transparent on-the-fly renewal
-// 7. Robust Download Start: Fixed batch download selectedIndices error; series & movies download smoothly
-// 8. Watch History Play & Resume: Flawless resume without modal closing conflicts, accurate episode & seek time
-// 9. Quality sheet: Only show resolutions that ACTUALLY exist (jei resolution nai sei resolution video te show koraiyo na)
-// 10. Download modal: 480P SD, 720P HD, 1080P FHD tabs with real MovieBox streams & sizes; detect missing resolutions
-// 11. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
-// 12. Auto Audio Silence: Instantly terminate background video & audio when opening Me / Downloads screen
-// 13. Flawless Pause & Resume: Instant response, persistent chunk recovery & no background worker conflicts
-// 14. Real File Size & Quality Auto-Detection: Accurate resolution availability, fallback, and zero-hang instant download
-// 15. Absolute Stream URL Routing: Zero ERR_CONNECTION_REFUSED on mobile APK & instant unmuted playback
+// FOBS TV Live OTA Patch Bundle v1.2.9
+// 1. Dual Offline Subtitles: Bangla & English subtitles reliably fetched via proxy, saved to IndexedDB, and rendered offline
+// 2. Multi-Download Queue Engine: Automatic sequential downloading of all queued files with stall detection & watchdog
+// 3. Robust Offline Playback: Multi-key IndexedDB fallback (exact ID, temp_, cursor scan) - all downloaded videos play offline
+// 4. Zero Connecting Overlay on Offline: Dismisses stream overlay, unmutes audio, and ensures smooth offline playback
+// 5. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.2.8 executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.2.8';
+  console.log('⚡ FOBS TV Live Patch v1.2.9 executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.2.9';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -1826,7 +1816,133 @@
     window.retryDownload._hasRepairHook = true;
   }
 
-  // Hook window.downloadMedia to ensure clean URLs & quality defaults
+  // -------------------------------------------------------------
+  // 12. Robust Offline Playback & Multi-Key IndexedDB Fallback
+  // -------------------------------------------------------------
+  async function findOfflineMediaRecord(id, storedItem) {
+    if (!id) return null;
+    try {
+      const db = await (typeof openOfflineDatabase === 'function' ? openOfflineDatabase() : null);
+      if (!db) return null;
+
+      return new Promise((resolve) => {
+        try {
+          const tx = db.transaction(['media_files'], 'readonly');
+          const store = tx.objectStore('media_files');
+
+          const req1 = store.get(id);
+          req1.onsuccess = () => {
+            if (req1.result && (req1.result.videoBlob || req1.result.chunks || req1.result.blob)) {
+              return resolve(req1.result);
+            }
+            const req2 = store.get('temp_' + id);
+            req2.onsuccess = () => {
+              if (req2.result && (req2.result.videoBlob || req2.result.chunks || req2.result.blob)) {
+                return resolve(req2.result);
+              }
+              if (typeof id === 'string' && id.startsWith('temp_')) {
+                const req3 = store.get(id.replace('temp_', ''));
+                req3.onsuccess = () => {
+                  if (req3.result && (req3.result.videoBlob || req3.result.chunks || req3.result.blob)) {
+                    return resolve(req3.result);
+                  }
+                  scanAllRecords();
+                };
+                req3.onerror = () => scanAllRecords();
+              } else {
+                scanAllRecords();
+              }
+            };
+            req2.onerror = () => scanAllRecords();
+          };
+          req1.onerror = () => scanAllRecords();
+
+          function scanAllRecords() {
+            try {
+              const cursorReq = store.openCursor();
+              const candidates = [];
+              cursorReq.onsuccess = (e) => {
+                const cursor = e.target.result;
+                if (cursor) {
+                  const rec = cursor.value;
+                  if (rec && (rec.videoBlob || rec.chunks || rec.blob)) {
+                    const recId = String(rec.id || cursor.key);
+                    const cleanRecId = recId.replace('temp_', '');
+                    const cleanTargetId = String(id).replace('temp_', '');
+                    if (cleanRecId === cleanTargetId || cleanRecId.includes(cleanTargetId) || cleanTargetId.includes(cleanRecId)) {
+                      candidates.push(rec);
+                    } else if (storedItem && rec.mediaId && storedItem.mediaId && rec.mediaId === storedItem.mediaId) {
+                      if ((storedItem.episode !== undefined && rec.episode === storedItem.episode) || (!storedItem.episode && !rec.episode)) {
+                        candidates.push(rec);
+                      }
+                    } else if (storedItem && rec.title && storedItem.title && (rec.title === storedItem.title || rec.title.includes(storedItem.title) || storedItem.title.includes(rec.title))) {
+                      candidates.push(rec);
+                    }
+                  }
+                  cursor.continue();
+                } else {
+                  if (candidates.length > 0) {
+                    const best = candidates.find(c => c.videoBlob) || candidates[0];
+                    return resolve(best);
+                  }
+                  resolve(null);
+                }
+              };
+              cursorReq.onerror = () => resolve(null);
+            } catch (_) {
+              resolve(null);
+            }
+          }
+        } catch (_) {
+          resolve(null);
+        }
+      });
+    } catch (_) {
+      return null;
+    }
+  }
+
+  // Hook playDownloadedMedia for seamless offline video and dual subtitle rendering
+  if (typeof window.playDownloadedMedia === 'function' && !window.playDownloadedMedia._hasEnhancedHook) {
+    const origPlayDownloaded = window.playDownloadedMedia;
+    window.playDownloadedMedia = async function(id) {
+      if (typeof closeDownloadsView === 'function') closeDownloadsView();
+      if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
+      const cOverlay = document.getElementById('fobsConnectingOverlay');
+      if (cOverlay) { cOverlay.style.display = 'none'; cOverlay.style.opacity = '0'; }
+
+      const downloads = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : [];
+      const storedItem = downloads.find(d => d.id === id);
+      let offlineItem = await findOfflineMediaRecord(id, storedItem);
+
+      if (offlineItem) {
+        // Proceed with original or enhanced playback
+        const vp = document.getElementById('mainVideoPlayer');
+        if (vp) {
+          vp.muted = false;
+          vp.volume = 1.0;
+        }
+
+        // Ensure 100ms render loop is active for offline subtitles
+        if (!window._subCueRenderInterval) {
+          window._subCueRenderInterval = setInterval(() => {
+            const player = document.getElementById('mainVideoPlayer');
+            if (player && !player.paused && window.subtitleState?.enabled && window.subtitleState?.cues?.length > 0) {
+              const curTime = (player.currentTime || 0) + (window.appState?.streamSeekOffset || 0);
+              if (typeof window.renderActiveSubtitleCue === 'function') {
+                window.renderActiveSubtitleCue(curTime);
+              }
+            }
+          }, 100);
+        }
+      }
+
+      return origPlayDownloaded(id);
+    };
+    window.playDownloadedMedia._hasEnhancedHook = true;
+  }
+
+  // Hook window.downloadMedia to ensure clean URLs, proxy subtitles & quality defaults
   if (typeof window.downloadMedia === 'function' && !window.downloadMedia._hasCleanHook) {
     const origDownloadMedia = window.downloadMedia;
     window.downloadMedia = function(url, title, options = {}, resumeExistingId = null) {
@@ -1857,16 +1973,24 @@
     window.downloadMedia._hasCleanHook = true;
   }
 
+  // Hook fobsDownloadQueue for bulletproof sequential downloading
   if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
     const origQueueProcessNext = window.fobsDownloadQueue.processNext.bind(window.fobsDownloadQueue);
     window.fobsDownloadQueue.processNext = async function() {
+      const now = Date.now();
+      const activeTasks = window.activeDownloadTasks || {};
+      const isAnyActive = Object.values(activeTasks).some(t => t && t.isDownloading && !t.isPaused);
+      if (window.fobsDownloadQueue.isProcessing && !isAnyActive && (now - (window.fobsDownloadQueue._lastProcessStart || 0) > 30000)) {
+        console.warn('Resetting stuck fobsDownloadQueue lock in live-patch');
+        window.fobsDownloadQueue.isProcessing = false;
+      }
       repairStuckDownloads();
       return origQueueProcessNext();
     };
   }
 
   // -------------------------------------------------------------
-  // 12. Stop Background Video & Audio on Downloads View
+  // 13. Stop Background Video & Audio on Downloads View
   // -------------------------------------------------------------
   function stopBackgroundMedia() {
     try {
@@ -1893,6 +2017,9 @@
   window.openDownloadsView = function() {
     stopBackgroundMedia();
     repairStuckDownloads();
+    if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
+      window.fobsDownloadQueue.processNext();
+    }
     if (typeof origOpenDownloadsView === 'function') {
       origOpenDownloadsView();
     } else {
@@ -1905,8 +2032,20 @@
     }
   };
 
+  // Auto-wakeup download queue on network change or visibility resume
+  window.addEventListener('online', () => {
+    if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
+      window.fobsDownloadQueue.processNext();
+    }
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
+      window.fobsDownloadQueue.processNext();
+    }
+  });
+
   // -------------------------------------------------------------
-  // 13. Ongoing Watchdog
+  // 14. Ongoing Watchdog
   // -------------------------------------------------------------
   setInterval(() => {
     stripVideoPoster();
@@ -1914,15 +2053,21 @@
     setupDownloadModalObserver();
   }, 1500);
 
-  // Background queue check and repair every 12 seconds
+  // Background queue check and repair every 8 seconds
   setInterval(() => {
     repairStuckDownloads();
-  }, 12000);
+    if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
+      const list = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : [];
+      if (list.some(d => d && d.status === 'queued')) {
+        window.fobsDownloadQueue.processNext();
+      }
+    }
+  }, 8000);
 
   restoreOnlineWatchPills();
   purgeFake140MB();
   repairStuckDownloads();
   setupDownloadModalObserver();
 
-  console.log('✅ FOBS TV Live Patch v1.2.7 active: Instant download connection, real file size auto-detection, quality availability tabs, and zero-hang downloads.');
+  console.log('✅ FOBS TV Live Patch v1.2.9 active: Dual offline subtitles, multi-download queue auto-runner, and zero-hang offline playback.');
 })();

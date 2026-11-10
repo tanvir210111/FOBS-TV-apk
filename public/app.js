@@ -8342,31 +8342,39 @@ let currentDownloadSize = '140 MB';
 // Serial Download Queue Engine (processes episodes 1-by-1 at full speed)
 const fobsDownloadQueue = {
   isProcessing: false,
+  _lastProcessStart: 0,
   async processNext() {
+    const now = Date.now();
+    const activeTasks = window.activeDownloadTasks || {};
+    const isAnyActive = Object.values(activeTasks).some(t => t && t.isDownloading && !t.isPaused);
+    if (this.isProcessing && !isAnyActive && (now - (this._lastProcessStart || 0) > 30000)) {
+      console.warn('Resetting stuck fobsDownloadQueue lock');
+      this.isProcessing = false;
+    }
     if (this.isProcessing) return;
-    const isAnyActive = Object.values(activeDownloadTasks).some(t => t && t.isDownloading && !t.isPaused);
     if (isAnyActive) return;
 
     const list = getStoredDownloadsList();
-    const nextQueued = list.find(d => d.status === 'queued');
+    const nextQueued = list.find(d => d && d.status === 'queued');
     if (!nextQueued) {
       this.isProcessing = false;
       return;
     }
 
     this.isProcessing = true;
+    this._lastProcessStart = Date.now();
     try {
       await downloadMedia(nextQueued.url, nextQueued.title, nextQueued.options || {}, nextQueued.id);
     } catch (e) {
       console.warn('Queue item failed or paused:', e);
     } finally {
       this.isProcessing = false;
-      setTimeout(() => this.processNext(), 700);
+      setTimeout(() => this.processNext(), 500);
     }
   },
   enqueue(item) {
     const list = getStoredDownloadsList();
-    const existingIdx = list.findIndex(d => d.id === item.id);
+    const existingIdx = list.findIndex(d => d && d.id === item.id);
     if (existingIdx !== -1) {
       list[existingIdx] = { ...list[existingIdx], ...item, status: 'queued' };
     } else {
@@ -8374,10 +8382,19 @@ const fobsDownloadQueue = {
     }
     localStorage.setItem('fobs_downloads', JSON.stringify(list));
     renderDownloadsList();
-    this.processNext();
+    setTimeout(() => this.processNext(), 150);
   }
 };
 window.fobsDownloadQueue = fobsDownloadQueue;
+
+window.addEventListener('online', () => {
+  if (window.fobsDownloadQueue) window.fobsDownloadQueue.processNext();
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && window.fobsDownloadQueue) {
+    window.fobsDownloadQueue.processNext();
+  }
+});
 
 // Helper: Estimate episode size
 function getEpisodeEstimatedSize(quality, ep = null, idx = 0) {
@@ -9293,12 +9310,39 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       if (!subObj) return '';
       let subUrl = subObj.url || subObj.downloadUrl;
       if (!subUrl) return '';
-      if (subUrl.startsWith('/')) subUrl = `${API_BASE_URL}${subUrl}`;
+      if (subObj.vttText && subObj.vttText.startsWith('WEBVTT')) return subObj.vttText;
+
+      // Primary: proxy through VPS track endpoint which solves CORS, gunzips, and converts SRT to VTT
       try {
-        const res = await fetch(subUrl);
-        if (res.ok) return await res.text();
+        const proxyUrl = `${apiBase}/api/subtitles/track?url=${encodeURIComponent(subUrl)}`;
+        const res = await fetch(proxyUrl);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.success && data.vtt && data.vtt.length > 20) {
+            return data.vtt;
+          }
+        }
       } catch (e) {
-        console.warn('Failed to fetch offline sub:', e.message);
+        console.warn('Failed to fetch offline sub via proxy:', e.message);
+      }
+
+      // Secondary fallback
+      try {
+        const dlProxyUrl = `${apiBase}/api/subtitles/download?url=${encodeURIComponent(subUrl)}`;
+        const res = await fetch(dlProxyUrl);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.vtt && data.vtt.length > 20) return data.vtt;
+        }
+      } catch (_) {}
+
+      // Direct fallback if relative or on apiBase
+      if (subUrl.startsWith('/') || subUrl.startsWith(apiBase)) {
+        try {
+          const directUrl = subUrl.startsWith('http') ? subUrl : `${apiBase}${subUrl}`;
+          const res = await fetch(directUrl);
+          if (res.ok) return await res.text();
+        } catch (_) {}
       }
       return '';
     };
@@ -9313,7 +9357,7 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       let available = [];
       const cleanT = (title || '').replace(/\[.*?\]|\(.*?\)/g, '').replace(/ - Ep.*/i, '').trim();
 
-      const subApiUrl = `${API_BASE_URL}/api/subtitles?title=${encodeURIComponent(cleanT)}&season=${dlSeason}&episode=${dlEpisode}&subjectId=${encodeURIComponent(dlSubjectId)}&detailPath=${encodeURIComponent(dlDetailPath)}&type=${dlIsSeries ? 'series' : 'movie'}`;
+      const subApiUrl = `${apiBase}/api/subtitles?title=${encodeURIComponent(cleanT)}&season=${dlSeason}&episode=${dlEpisode}&subjectId=${encodeURIComponent(dlSubjectId)}&detailPath=${encodeURIComponent(dlDetailPath)}&type=${dlIsSeries ? 'series' : 'movie'}`;
       try {
         const sRes = await fetch(subApiUrl);
         if (sRes.ok) {
@@ -9342,9 +9386,12 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       if (!bnVttText && chosenEn && (chosenEn.url || chosenEn.downloadUrl)) {
         try {
           const enUrl = chosenEn.url || chosenEn.downloadUrl;
-          const aiUrl = `${API_BASE_URL}/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanT)}&season=${dlSeason}&episode=${dlEpisode}`;
+          const aiUrl = `${apiBase}/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanT)}&season=${dlSeason}&episode=${dlEpisode}`;
           const aiRes = await fetch(aiUrl);
-          if (aiRes.ok) bnVttText = await aiRes.text();
+          if (aiRes.ok) {
+            const aiText = await aiRes.text();
+            if (aiText && aiText.includes('-->')) bnVttText = aiText;
+          }
         } catch(aiErr) {}
       }
     } catch (subErr) {
@@ -9377,7 +9424,7 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
 
     const finalMb = (receivedBytes / (1024 * 1024)).toFixed(1);
     const curDownloads = getStoredDownloadsList();
-    const item = curDownloads.find(d => d.id === downloadId);
+    const item = curDownloads.find(d => d && (d.id === downloadId || d.id === ('dl_' + downloadId) || downloadId.includes(d.id)));
     if (item) {
       item.status = 'Ready (Offline)';
       item.statusText = 'Ready (Offline)';
@@ -9396,7 +9443,7 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     showToast(`✅ "${title}" ডাউনলোড সম্পন্ন (${finalMb} MB)! Me > Downloads এ দেখুন।`);
     setTimeout(() => {
       if (window.fobsDownloadQueue) window.fobsDownloadQueue.processNext();
-    }, 400);
+    }, 300);
 
   } catch (err) {
     const isPaused = activeDownloadTasks[downloadId]?.isPaused || err.name === 'AbortError' || err.message === 'paused';
@@ -9649,13 +9696,71 @@ async function retryDownload(id, e) {
 }
 window.retryDownload = retryDownload;
 
+async function findOfflineMediaRecord(id, storedItem) {
+  let offlineItem = await getOfflineMedia(id);
+  if (!offlineItem || (!offlineItem.videoBlob && !offlineItem.chunks && !offlineItem.blob)) {
+    offlineItem = await getOfflineMedia('temp_' + id);
+  }
+  if ((!offlineItem || (!offlineItem.videoBlob && !offlineItem.chunks && !offlineItem.blob)) && typeof id === 'string' && id.startsWith('temp_')) {
+    offlineItem = await getOfflineMedia(id.replace('temp_', ''));
+  }
+  if (!offlineItem || (!offlineItem.videoBlob && !offlineItem.chunks && !offlineItem.blob)) {
+    try {
+      const db = await openOfflineDatabase();
+      offlineItem = await new Promise((resolve) => {
+        try {
+          const tx = db.transaction([OFFLINE_STORE_NAME], 'readonly');
+          const store = tx.objectStore(OFFLINE_STORE_NAME);
+          const cursorReq = store.openCursor();
+          const candidates = [];
+          cursorReq.onsuccess = (e) => {
+            const cursor = e.target.result;
+            if (cursor) {
+              const rec = cursor.value;
+              if (rec && (rec.videoBlob || rec.chunks || rec.blob)) {
+                const recId = String(rec.id || cursor.key);
+                const cleanRecId = recId.replace('temp_', '');
+                const cleanTargetId = String(id).replace('temp_', '');
+                if (cleanRecId === cleanTargetId || cleanRecId.includes(cleanTargetId) || cleanTargetId.includes(cleanRecId)) {
+                  candidates.push(rec);
+                } else if (storedItem && rec.mediaId && storedItem.mediaId && rec.mediaId === storedItem.mediaId) {
+                  if ((storedItem.episode !== undefined && rec.episode === storedItem.episode) || (!storedItem.episode && !rec.episode)) {
+                    candidates.push(rec);
+                  }
+                } else if (storedItem && rec.title && storedItem.title && (rec.title === storedItem.title || rec.title.includes(storedItem.title) || storedItem.title.includes(rec.title))) {
+                  candidates.push(rec);
+                }
+              }
+              cursor.continue();
+            } else {
+              if (candidates.length > 0) {
+                const best = candidates.find(c => c.videoBlob) || candidates[0];
+                return resolve(best);
+              }
+              resolve(null);
+            }
+          };
+          cursorReq.onerror = () => resolve(null);
+        } catch (_) {
+          resolve(null);
+        }
+      });
+    } catch (_) {}
+  }
+  return offlineItem;
+}
+
 async function playDownloadedMedia(id) {
   closeDownloadsView();
+  if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
+  const cOverlay = document.getElementById('fobsConnectingOverlay');
+  if (cOverlay) { cOverlay.style.display = 'none'; cOverlay.style.opacity = '0'; }
+
   showToast('অফলাইন ভিডিও লোড হচ্ছে...');
 
-  let offlineItem = await getOfflineMedia(id);
   const storedList = getStoredDownloadsList();
   const storedItem = storedList.find(d => d.id === id);
+  let offlineItem = await findOfflineMediaRecord(id, storedItem);
 
   if (storedItem) {
     offlineItem = { ...storedItem, ...(offlineItem || {}) };
@@ -9765,6 +9870,8 @@ async function playDownloadedMedia(id) {
       videoPlayer._retryCount = 0;
       videoPlayer._ignoreErrors = true;
       videoPlayer.preload = 'auto';
+      videoPlayer.muted = false;
+      videoPlayer.volume = 1.0;
       videoPlayer.style.display = 'block';
       videoPlayer.pause();
       videoPlayer.removeAttribute('src');
@@ -9776,6 +9883,7 @@ async function playDownloadedMedia(id) {
 
       const hideLoader = () => {
         if (loader) loader.classList.remove('active');
+        if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
         videoPlayer._ignoreErrors = false;
       };
 
@@ -9919,6 +10027,17 @@ async function playDownloadedMedia(id) {
         }
       }
 
+      // Ensure 100ms render loop is active so offline cues render smoothly onto the video
+      if (!window._subCueRenderInterval) {
+        window._subCueRenderInterval = setInterval(() => {
+          const vp = document.getElementById('mainVideoPlayer');
+          if (vp && !vp.paused && subtitleState.enabled && subtitleState.cues.length > 0) {
+            const curTime = (vp.currentTime || 0) + (appState.streamSeekOffset || 0);
+            renderActiveSubtitleCue(curTime);
+          }
+        }, 100);
+      }
+
       subtitleState.availableTracks = offlineTracks;
       renderSubtitleLists();
 
@@ -9927,6 +10046,52 @@ async function playDownloadedMedia(id) {
         selectSubtitleTrack(preferredTrack.id);
       } else {
         selectSubtitleTrack('off');
+      }
+
+      // Retroactive subtitle fetch: if missing from offline record but user happens to be online right now
+      if (offlineTracks.length === 0 && navigator.onLine) {
+        (async () => {
+          try {
+            const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
+            const cleanT = (offlineItem.title || '').replace(/\[.*?\]|\(.*?\)/g, '').replace(/ - Ep.*/i, '').trim();
+            const sRes = await fetch(`${apiBase}/api/subtitles?title=${encodeURIComponent(cleanT)}&season=${offlineItem.season || 1}&episode=${offlineItem.episode || 1}&subjectId=${encodeURIComponent(offlineItem.mediaId || '')}&type=${offlineItem.isSeries ? 'series' : 'movie'}`);
+            if (sRes.ok) {
+              const sData = await sRes.json();
+              const subs = sData.subtitles || [];
+              const cBn = subs.find(t => t.langCode === 'bn');
+              const cEn = subs.find(t => t.langCode === 'en');
+              let nBn = '';
+              let nEn = '';
+              if (cBn) {
+                const tr = await fetch(`${apiBase}/api/subtitles/track?url=${encodeURIComponent(cBn.url || cBn.downloadUrl)}`);
+                if (tr.ok) {
+                  const td = await tr.json();
+                  if (td.success && td.vtt) nBn = td.vtt;
+                }
+              }
+              if (cEn) {
+                const tr = await fetch(`${apiBase}/api/subtitles/track?url=${encodeURIComponent(cEn.url || cEn.downloadUrl)}`);
+                if (tr.ok) {
+                  const td = await tr.json();
+                  if (td.success && td.vtt) nEn = td.vtt;
+                }
+              }
+              if (nBn || nEn) {
+                offlineItem.bnVttText = nBn;
+                offlineItem.enVttText = nEn;
+                offlineItem.vttText = nBn || nEn;
+                await saveOfflineMedia(offlineItem);
+                const updatedTracks = [];
+                if (nBn) updatedTracks.push({ id: 'offline_bn', language: 'Bangla (বাংলা)', langCode: 'bn', source: 'Offline Storage', rawCues: parseSubtitleTextToCues(nBn) });
+                if (nEn) updatedTracks.push({ id: 'offline_en', language: 'English', langCode: 'en', source: 'Offline Storage', rawCues: parseSubtitleTextToCues(nEn) });
+                subtitleState.availableTracks = updatedTracks;
+                renderSubtitleLists();
+                const pref = updatedTracks.find(t => t.langCode === 'bn') || updatedTracks[0];
+                if (pref) selectSubtitleTrack(pref.id);
+              }
+            }
+          } catch (_) {}
+        })();
       }
 
       showToast(`⚡ ইন্টারনেট ছাড়াই চলছে: ${offlineItem.title} (${qStyle.pixel})`);
