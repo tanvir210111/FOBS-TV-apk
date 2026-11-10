@@ -12063,12 +12063,8 @@ function checkAppUpdate(data) {
     const browserLinkFallback = document.getElementById('btnBrowserDownloadFallback');
     if (browserLinkFallback) browserLinkFallback.href = resolvedDownloadUrl;
 
-    if (Array.isArray(updateInfo.releaseNotes) && updateInfo.releaseNotes.length > 0) {
-      const notesList = document.getElementById('updateNotesList');
-      if (notesList) {
-        notesList.innerHTML = updateInfo.releaseNotes.map(n => `<li><i class="fa-solid fa-circle-check"></i> ${n}</li>`).join('');
-      }
-    }
+    const notesBox = document.querySelector('.update-notes-box');
+    if (notesBox) notesBox.style.display = 'none';
 
     // Force Update: User cannot use app without updating
     if (updateInfo.forceUpdate) {

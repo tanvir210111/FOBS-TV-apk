@@ -2518,13 +2518,7 @@
           forceUpdate: true,
           title: "জরুরি আপডেট: FOBS TV v3.1.8",
           message: "নতুন v3.1.8 ভার্সনে মুভিবক্স মেথডে ডিভাইস স্টোরেজ ডাউনলোড, অফলাইন বাংলা ও ইংরেজি সাবটাইটেল এবং ০-সেকেন্ডের স্মুথ অফলাইন রেঞ্জ প্লেব্যাক যুক্ত করা হয়েছে। আগের ভার্সনে ডাউনলোড সমস্যা এড়াতে এখনই আপডেট করুন!",
-          releaseNotes: [
-            "⚡ মুভিবক্স স্টাইল প্রাইভেট ডিভাইস স্টোরেজ ডাউনলোড (গ্যালারিতে শো করবে না)",
-            "⏩ অফলাইন প্লেব্যাক স্মুথ সিকিং: ভিডিও টেনে দেখা যাবে কোনো প্রকার ল্যাগ বা ফ্রিজ ছাড়া",
-            "📝 অফলাইন ডুয়াল সাবটাইটেল (বাংলা ও ইংরেজি) সাপোর্ট",
-            "🔇 পাওয়ার বাটন চাপলে বা স্ক্রিন লক করলে ভিডিও স্বয়ংক্রিয়ভাবে পজ ও সাউন্ড বন্ধ হওয়া",
-            "🎬 অনলাইন স্ট্রিমিং কানেক্টিং লোডার স্মুথ ট্রানজিশন ফিক্স"
-          ],
+          releaseNotes: [],
           downloadUrl: "https://fobstv.duckdns.org/download/apk",
           fallbackUrl: "https://fobs-apk-download.vercel.app/",
           fileSize: "7.75 MB"
@@ -2536,6 +2530,8 @@
       if (typeof window.openUpdateModal === 'function') {
         window.openUpdateModal(true);
       }
+      const nb = document.querySelector('.update-notes-box');
+      if (nb) nb.style.setProperty('display', 'none', 'important');
       const modal = document.getElementById('appUpdateModal');
       if (modal) {
         modal.classList.remove('hidden');
@@ -2544,6 +2540,11 @@
       }
     }
   }
+  try {
+    const hideNotesStyle = document.createElement('style');
+    hideNotesStyle.textContent = '.update-notes-box { display: none !important; }';
+    document.head.appendChild(hideNotesStyle);
+  } catch (_) {}
   enforceForceUpdatePopup();
   setTimeout(enforceForceUpdatePopup, 600);
   setTimeout(enforceForceUpdatePopup, 2000);
