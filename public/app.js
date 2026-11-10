@@ -3843,6 +3843,7 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
 }
 window.openPlayer = openPlayer;
 window.openPlayerById = openPlayerById;
+window.playStreamUrl = playStreamUrl;
 
 // Render Server Pills — always hidden (single MovieBox server only)
 function renderServerPills(media) {
@@ -4176,14 +4177,27 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     if (videoPlayer.src !== fullUrl) {
       videoPlayer.src = fullUrl;
     }
-    videoPlayer.play().catch(() => {});
+    const safeTriggerPlay = () => {
+      const p = videoPlayer.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(err => {
+          console.warn('Unmuted autoplay prevented, attempting muted autoplay:', err);
+          videoPlayer.muted = true;
+          videoPlayer.play().catch(() => {});
+        });
+      }
+    };
+    safeTriggerPlay();
 
     const onStreamReady = () => {
-      videoPlayer.play().catch(() => {});
+      safeTriggerPlay();
+      if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
+      if (loader) loader.classList.remove('active');
     };
     videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
     videoPlayer.addEventListener('loadeddata', onStreamReady, { once: true });
     videoPlayer.addEventListener('playing', () => {
+      if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
       if (loader) loader.classList.remove('active');
     }, { once: true });
 
@@ -4207,12 +4221,6 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       if (videoPlayer.readyState >= 1) {
         applySeek();
       }
-    }
-    const initialPlay = videoPlayer.play();
-    if (initialPlay && typeof initialPlay.catch === 'function') {
-      initialPlay.catch(() => {
-        if (loader) loader.classList.remove('active');
-      });
     }
 
     // Asynchronously discover qualities in background without competing with initial video buffer

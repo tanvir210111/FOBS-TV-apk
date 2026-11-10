@@ -1,16 +1,17 @@
-// FOBS TV Live OTA Patch Bundle v1.2.4
+// FOBS TV Live OTA Patch Bundle v1.2.5
 // 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (360p/480p default)
 // 2. Ultra-Low Latency Millisecond Playback: Prefetch warm streams, preload auto, and instant H.264 playback
-// 3. Auto-Renewing CDN Tokens: CDN links with exp timestamp never 403 or expire; transparent on-the-fly renewal
-// 4. Robust Download Start: Fixed batch download selectedIndices error; series & movies download smoothly
-// 5. Watch History Play & Resume: Flawless resume without modal closing conflicts, accurate episode & seek time
-// 6. Quality sheet: Only show resolutions that ACTUALLY exist (jei resolution nai sei resolution video te show koraiyo na)
-// 7. Download modal: 480P SD, 720P HD, 1080P FHD tabs with real MovieBox streams & sizes; detect missing resolutions
-// 8. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
-// 9. Auto Audio Silence: Instantly terminate background video & audio when opening Me / Downloads screen
-// 10. Flawless Pause & Resume: Instant response, persistent chunk recovery & no background worker conflicts
+// 3. Bulletproof Playback Guarantee: Robust autoplay with muted fallback, instant loader dismissal on ready, and touch-unmute
+// 4. Auto-Renewing CDN Tokens: CDN links with exp timestamp never 403 or expire; transparent on-the-fly renewal
+// 5. Robust Download Start: Fixed batch download selectedIndices error; series & movies download smoothly
+// 6. Watch History Play & Resume: Flawless resume without modal closing conflicts, accurate episode & seek time
+// 7. Quality sheet: Only show resolutions that ACTUALLY exist (jei resolution nai sei resolution video te show koraiyo na)
+// 8. Download modal: 480P SD, 720P HD, 1080P FHD tabs with real MovieBox streams & sizes; detect missing resolutions
+// 9. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
+// 10. Auto Audio Silence: Instantly terminate background video & audio when opening Me / Downloads screen
+// 11. Flawless Pause & Resume: Instant response, persistent chunk recovery & no background worker conflicts
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.2.4 executing...');
+  console.log('⚡ FOBS TV Live Patch v1.2.5 executing...');
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -72,7 +73,7 @@
         align-items: center !important;
         justify-content: center !important;
         z-index: 9999 !important;
-        pointer-events: none !important;
+        cursor: pointer !important;
       }
       #fobsConnectingOverlay.active {
         display: flex !important;
@@ -123,6 +124,19 @@
           <span>Connecting to stream server...</span>
         </div>
       `;
+      overlay.addEventListener('click', () => {
+        const vp = document.getElementById('mainVideoPlayer');
+        if (vp) {
+          const p = vp.play();
+          if (p && typeof p.catch === 'function') {
+            p.catch(() => {
+              vp.muted = true;
+              vp.play().catch(() => {});
+            });
+          }
+        }
+        hideConnectingLoader();
+      });
       container.appendChild(overlay);
     }
     return overlay;
@@ -134,24 +148,27 @@
       const posterObs = new MutationObserver(() => stripVideoPoster());
       posterObs.observe(videoEl, { attributes: true, attributeFilter: ['poster'] });
 
-      // Dismiss ONLY when playback has actually started rendering frames or errors
-      videoEl.addEventListener('playing', () => {
-        hideConnectingLoader();
+      const dismiss = () => hideConnectingLoader();
+
+      videoEl.addEventListener('playing', dismiss);
+      videoEl.addEventListener('canplay', dismiss);
+      videoEl.addEventListener('canplaythrough', dismiss);
+      videoEl.addEventListener('loadeddata', dismiss);
+      videoEl.addEventListener('loadedmetadata', () => {
+        if (!videoEl.paused) dismiss();
       });
       videoEl.addEventListener('timeupdate', () => {
-        if (videoEl.currentTime > 0.15 && !videoEl.paused) {
-          hideConnectingLoader();
-        }
+        if (videoEl.currentTime > 0) dismiss();
       });
-      videoEl.addEventListener('error', () => {
-        hideConnectingLoader();
-      });
+      videoEl.addEventListener('pause', dismiss);
+      videoEl.addEventListener('error', dismiss);
       videoEl.addEventListener('waiting', () => {
         if (!videoEl.paused) showConnectingLoader();
       });
       videoEl.addEventListener('loadstart', () => {
-        showConnectingLoader();
+        if (videoEl.paused) showConnectingLoader();
       });
+
       videoEl._hasFobsWatcher = true;
     }
   }
@@ -170,11 +187,11 @@
         txt.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #00f2fe; margin-right: 8px;"></i> Connecting to stream server...';
       }
     }
-    // Safety auto-dismiss fallback: Only dismiss if stream hangs completely (15 seconds)
+    // Safety auto-dismiss fallback: Never freeze playback (3.5 seconds max)
     if (window._connectingSafetyTimer) clearTimeout(window._connectingSafetyTimer);
     window._connectingSafetyTimer = setTimeout(() => {
       hideConnectingLoader();
-    }, 15000);
+    }, 3500);
   }
   window.showConnectingLoader = showConnectingLoader;
 
@@ -189,6 +206,16 @@
     if (loader) loader.classList.remove('active');
   }
   window.hideConnectingLoader = hideConnectingLoader;
+
+  // Un-mute automatically on the first user interaction
+  const unmuteOnUserAction = () => {
+    const vp = document.getElementById('mainVideoPlayer');
+    if (vp && vp.muted) {
+      vp.muted = false;
+    }
+  };
+  document.addEventListener('click', unmuteOnUserAction, { passive: true });
+  document.addEventListener('touchstart', unmuteOnUserAction, { passive: true });
 
   function stripVideoPoster() {
     const video = document.getElementById('mainVideoPlayer');
@@ -225,9 +252,14 @@
 
     if (window.appState) window.appState.currentQuality = '480p';
 
-    const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (m?.id && /^\d{16,20}$/.test(m.id) ? m.id : null) || m?.id;
+    const isMovieBox = (
+      m?.subjectId ||
+      m?.mbSubjectId ||
+      (m?.id && (m.id.startsWith('mb-s-') || m.id.startsWith('mb-m-') || /^\d{16,20}$/.test(m.id)))
+    );
+    const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (m?.id && /^\d{16,20}$/.test(m.id) ? m.id : null);
     const dPath = m?.detailPath || m?.mbDetailPath || m?.movieboxDetailPath || '';
-    if (sId) {
+    if (sId && isMovieBox) {
       return `/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480`;
     }
 
@@ -256,9 +288,9 @@
     return ep?.streamUrl || m?.streamUrl || '';
   };
 
-  // Hook playStreamUrl: Guaranteed 480p millisecond start & "Connecting to stream server..." overlay
-  const origPlayStreamUrl = window.playStreamUrl;
-  window.playStreamUrl = function(url, audioIndex = null, seekTime = null) {
+  // Hook playStreamUrl: Guaranteed 480p millisecond start & safe fallback
+  let origPlayStreamUrl = (typeof window.playStreamUrl === 'function' && !window.playStreamUrl._isFobsHook) ? window.playStreamUrl : null;
+  const fobsPlayStreamHook = function(url, audioIndex = null, seekTime = null) {
     showConnectingLoader();
     const vp = document.getElementById('mainVideoPlayer');
     if (vp) vp.preload = 'auto';
@@ -271,7 +303,7 @@
       } else if (fastUrl.includes('hakunaymatata') || fastUrl.includes('bcdnxw') || fastUrl.includes('haildrop') || fastUrl.includes('fogtwist') || fastUrl.includes('sunburst') || fastUrl.includes('stormshade')) {
         const base = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : '';
         const m = getActiveMedia();
-        const sId = m?.subjectId || m?.mbSubjectId || m?.id;
+        const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (m?.id && /^\d{16,20}$/.test(m.id) ? m.id : null);
         if (sId) {
           const se = window.appState?.currentSeason || 0;
           const ep = window.appState?.currentEpisodeNumber || 0;
@@ -282,11 +314,30 @@
       }
     }
 
-    // Let original playStreamUrl perform single, atomic setup and avoid decoder thrashing
+    if (!origPlayStreamUrl && typeof window.playStreamUrl === 'function' && window.playStreamUrl !== fobsPlayStreamHook) {
+      origPlayStreamUrl = window.playStreamUrl;
+    }
+
     if (typeof origPlayStreamUrl === 'function') {
       return origPlayStreamUrl(fastUrl, audioIndex, seekTime);
     }
+
+    // Direct fallback if origPlayStreamUrl is unavailable
+    if (vp && fastUrl) {
+      const base = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : '';
+      const full = fastUrl.startsWith('http') ? fastUrl : (base + (fastUrl.startsWith('/') ? '' : '/') + fastUrl);
+      if (vp.src !== full) vp.src = full;
+      const playP = vp.play();
+      if (playP && typeof playP.catch === 'function') {
+        playP.catch(() => {
+          vp.muted = true;
+          vp.play().catch(() => {});
+        });
+      }
+    }
   };
+  fobsPlayStreamHook._isFobsHook = true;
+  window.playStreamUrl = fobsPlayStreamHook;
 
   // Hook openPlayer & openPlayerById
   if (typeof window.openPlayer === 'function' && !window.openPlayer._hasLoaderHook) {
@@ -294,12 +345,21 @@
     window.openPlayer = function(media, episodeIndex = null, resumeSeekTime = null) {
       const vp = document.getElementById('mainVideoPlayer');
       if (vp) {
-        vp.muted = false;
         vp.preload = 'auto';
       }
       showConnectingLoader();
       if (media) prefetchStream(media, 0, 0);
-      return prevOpenPlayer(media, episodeIndex, resumeSeekTime);
+      const res = prevOpenPlayer(media, episodeIndex, resumeSeekTime);
+      if (vp && vp.paused) {
+        const p = vp.play();
+        if (p && typeof p.catch === 'function') {
+          p.catch(() => {
+            vp.muted = true;
+            vp.play().catch(() => {});
+          });
+        }
+      }
+      return res;
     };
     window.openPlayer._hasLoaderHook = true;
   }
@@ -337,11 +397,40 @@
       const base = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : '';
       if (id) fetch(`${base}/api/moviebox/stream?id=${encodeURIComponent(id)}&se=0&ep=0&q=480&json=1`, { priority: 'low' }).catch(() => {});
       
+      try {
+        const ret = prevOpenPlayerById(type, id);
+        const overlay = document.getElementById('playerOverlay');
+        if (overlay && overlay.classList.contains('open')) {
+          return ret;
+        }
+      } catch (err) {
+        console.warn('prevOpenPlayerById notice:', err);
+      }
+
       const foundItem = findMediaInCatalog(id, type);
       if (foundItem) {
+        if (type !== 'upcoming' && typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
+          if (window.appState) window.appState.pendingOpenMedia = { type, id };
+          if (typeof openSimpleLoginModal === 'function') openSimpleLoginModal();
+          hideConnectingLoader();
+          return;
+        }
+        if (foundItem.type === 'upcoming' || (foundItem.badgeRight && foundItem.badgeRight.toLowerCase().includes('coming'))) {
+          if (typeof openUpcomingBookingModal === 'function') openUpcomingBookingModal(foundItem);
+          hideConnectingLoader();
+          return;
+        }
+        const isSer = type === 'series' || foundItem.type === 'series' || (foundItem.seasons && foundItem.seasons.length > 0) || (foundItem.id && foundItem.id.startsWith('mb-s-'));
+        if (isSer) {
+          foundItem.type = 'series';
+          if ((!foundItem.episodes || foundItem.episodes.length === 0) && foundItem.seasons && foundItem.seasons[0] && foundItem.seasons[0].episodes) {
+            foundItem.episodes = foundItem.seasons[0].episodes;
+          }
+        } else {
+          foundItem.type = 'movie';
+        }
         return window.openPlayer(foundItem);
       }
-      return prevOpenPlayerById(type, id);
     };
   }
 
@@ -1233,8 +1322,8 @@
       setTimeout(filterDownloadEpisodesModal, 150);
     }
 
-    // Instant Click Listener for Video Play: shows connecting loader the exact moment user taps play
-    const playTarget = e.target.closest('.media-card, #heroPlayBtn, .details-sheet-play-btn, .details-play-btn, .ls-center-play-btn, #portraitPlayBtn, #lsCenterPlayIcon, #portraitPlayIcon, .sheet-option-btn, .episode-pill, .ep-btn, [onclick*="openPlayer"], [onclick*="selectEpisode"]');
+    // Instant Click Listener for Video Play: shows connecting loader when starting new video/episode
+    const playTarget = e.target.closest('.media-card, #heroPlayBtn, .details-sheet-play-btn, .details-play-btn, .sheet-option-btn, .episode-pill, .ep-btn, [onclick*="openPlayer"], [onclick*="selectEpisode"]');
     if (playTarget) {
       showConnectingLoader();
       try {
