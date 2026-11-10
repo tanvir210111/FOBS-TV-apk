@@ -1454,12 +1454,20 @@ app.get('/api/moviebox/stream', async (req, res) => {
 });
 
 // API: Get Real Episode Sizes & Available Qualities for Batch Download Modal (Series & Movies)
+const movieboxEpisodesInfoCache = new Map();
+
 app.get('/api/moviebox/episodes-info', async (req, res) => {
   const { id, path: detailPath, se, type } = req.query;
   if (!id) return res.status(400).json({ ok: false, error: 'Missing id parameter' });
   let cleanId = String(id).replace(/^mb-[s|m]-/, '');
   const seNum = parseInt(se || '1', 10);
   let resolvedPath = detailPath || getMovieBoxDetailPath(cleanId) || '';
+
+  const cacheKey = `${cleanId}_se${seNum}_${type || 'auto'}`;
+  const cached = movieboxEpisodesInfoCache.get(cacheKey);
+  if (cached && (Date.now() - cached.timestamp < 2 * 60 * 60 * 1000)) {
+    return res.json(cached.data);
+  }
 
   try {
     const content = getContentData();
@@ -1502,7 +1510,7 @@ app.get('/api/moviebox/episodes-info', async (req, res) => {
             sizeText: null
           }));
         }
-        return res.json({
+        const result = {
           ok: true,
           subjectId: cleanId,
           isMovie: true,
@@ -1515,7 +1523,9 @@ app.get('/api/moviebox/episodes-info', async (req, res) => {
               qualities
             }
           ]
-        });
+        };
+        movieboxEpisodesInfoCache.set(cacheKey, { data: result, timestamp: Date.now() });
+        return res.json(result);
       } catch (err) {
         let fallbackQualities = [];
         if (movie && Array.isArray(movie.servers)) {
@@ -1525,7 +1535,7 @@ app.get('/api/moviebox/episodes-info', async (req, res) => {
             sizeText: null
           }));
         }
-        return res.json({
+        const result = {
           ok: true,
           subjectId: cleanId,
           isMovie: true,
@@ -1538,7 +1548,8 @@ app.get('/api/moviebox/episodes-info', async (req, res) => {
               qualities: fallbackQualities
             }
           ]
-        });
+        };
+        return res.json(result);
       }
     }
 
@@ -1586,13 +1597,30 @@ app.get('/api/moviebox/episodes-info', async (req, res) => {
     }
 
     const resolvedEps = await Promise.all(epPromises);
-    res.json({
+
+    // Baseline Quality Inheritance: If some episodes succeeded, any empty episodes inherit the season's qualities
+    const sampleItem = resolvedEps.find(e => Array.isArray(e.qualities) && e.qualities.length > 0);
+    if (sampleItem && sampleItem.qualities.length > 0) {
+      resolvedEps.forEach(e => {
+        if (!Array.isArray(e.qualities) || e.qualities.length === 0) {
+          e.qualities = sampleItem.qualities.map(q => ({
+            resolution: q.resolution,
+            sizeBytes: q.sizeBytes || 0,
+            sizeText: q.sizeText || (q.resolution >= 1080 ? '~480 MB' : (q.resolution >= 720 ? '~260 MB' : '~135 MB'))
+          }));
+        }
+      });
+    }
+
+    const result = {
       ok: true,
       subjectId: cleanId,
       isMovie: false,
       season: seNum,
       episodes: resolvedEps
-    });
+    };
+    movieboxEpisodesInfoCache.set(cacheKey, { data: result, timestamp: Date.now() });
+    res.json(result);
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
@@ -2583,7 +2611,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.2.6",
+  version: "1.2.7",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 
@@ -2760,16 +2788,18 @@ app.get('/api/download', async (req, res) => {
 
     if (media) {
       if (Array.isArray(media.qualities) && media.qualities.length > 0) {
-        const sortedAsc = [...media.qualities].sort((a, b) => (parseInt(a.resolution, 10) || 0) - (parseInt(b.resolution, 10) || 0));
+        // Sort descending: 1080, 720, 480, 360
+        const sortedDesc = [...media.qualities].sort((a, b) => (parseInt(b.resolution, 10) || 0) - (parseInt(a.resolution, 10) || 0));
         let matchedQ = null;
         if (targetRes <= 480) {
-          matchedQ = sortedAsc.find(q => parseInt(q.resolution, 10) === 480)
-                  || sortedAsc.find(q => parseInt(q.resolution, 10) === 360)
-                  || sortedAsc[0];
+          matchedQ = sortedDesc.find(q => parseInt(q.resolution, 10) === 480)
+                  || sortedDesc.find(q => parseInt(q.resolution, 10) === 360)
+                  || sortedDesc[sortedDesc.length - 1];
         } else {
-          matchedQ = media.qualities.find(q => parseInt(q.resolution, 10) === targetRes)
-                  || media.qualities.find(q => Math.abs(parseInt(q.resolution, 10) - targetRes) <= 120)
-                  || media.qualities[0];
+          matchedQ = sortedDesc.find(q => parseInt(q.resolution, 10) === targetRes)
+                  || sortedDesc.find(q => Math.abs(parseInt(q.resolution, 10) - targetRes) <= 120)
+                  || sortedDesc.find(q => parseInt(q.resolution, 10) <= targetRes)
+                  || sortedDesc[0];
         }
         if (matchedQ && matchedQ.resolution) actualDeliveredResolution = matchedQ.resolution;
         resolvedUrl = matchedQ?.url || media.streamUrl;
@@ -2801,22 +2831,27 @@ app.get('/api/download', async (req, res) => {
   if (req.headers.range) {
     downloadHeaders['Range'] = req.headers.range;
   }
-  if (
-    resolvedUrl.includes('hakunaymatata') || 
-    resolvedUrl.includes('bcdnxw') || 
-    resolvedUrl.includes('haildrop') || 
-    resolvedUrl.includes('fogtwist') || 
-    resolvedUrl.includes('sunburst') || 
-    resolvedUrl.includes('stormshade') || 
-    targetUrl.includes('moviebox')
-  ) {
+  const isMbStream = (
+    (resolvedUrl && (
+      resolvedUrl.includes('hakunaymatata') || 
+      resolvedUrl.includes('bcdnxw') || 
+      resolvedUrl.includes('haildrop') || 
+      resolvedUrl.includes('fogtwist') || 
+      resolvedUrl.includes('sunburst') || 
+      resolvedUrl.includes('stormshade') ||
+      resolvedUrl.includes('moviebox')
+    )) || 
+    (typeof targetUrl === 'string' && targetUrl.includes('moviebox')) ||
+    (mbParams && mbParams.id)
+  );
+  if (isMbStream) {
     downloadHeaders['Referer'] = 'https://movieboxapp.in/';
     downloadHeaders['Origin'] = 'https://movieboxapp.in';
-  } else if (resolvedUrl.includes('upbolt.to') || (targetUrl && targetUrl.includes('upbolt'))) {
+  } else if (resolvedUrl.includes('upbolt.to') || (typeof targetUrl === 'string' && targetUrl.includes('upbolt'))) {
     downloadHeaders['Referer'] = 'https://upbolt.to/';
-  } else if (resolvedUrl.includes('vkuser.net') || (targetUrl && targetUrl.includes('ok.ru'))) {
+  } else if (resolvedUrl.includes('vkuser.net') || (typeof targetUrl === 'string' && targetUrl.includes('ok.ru'))) {
     downloadHeaders['Referer'] = 'https://ok.ru/';
-  } else if (resolvedUrl.includes('vkpluscdn') || resolvedUrl.includes('vkcdn') || (targetUrl && targetUrl.includes('pkembed'))) {
+  } else if (resolvedUrl.includes('vkpluscdn') || resolvedUrl.includes('vkcdn') || (typeof targetUrl === 'string' && targetUrl.includes('pkembed'))) {
     downloadHeaders['Referer'] = 'https://pkembed.site/';
   }
 

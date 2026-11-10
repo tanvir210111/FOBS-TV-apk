@@ -344,6 +344,20 @@ const API_BASE_URL = (() => {
   return BACKEND_URL;
 })();
 
+window.BACKEND_URL = BACKEND_URL;
+window.API_BASE_URL = API_BASE_URL;
+window.getApiBaseUrl = function() {
+  if (typeof window.API_BASE_URL === 'string' && window.API_BASE_URL) return window.API_BASE_URL;
+  const isCustomPort = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && 
+                       window.location.port && 
+                       window.location.port !== '80' && 
+                       window.location.port !== '443';
+  if (isCustomPort || window.location.hostname.includes('187.127.114.52') || window.location.hostname.includes('duckdns.org')) {
+    return '';
+  }
+  return BACKEND_URL;
+};
+
 const CACHE_KEY = 'fobs_tv_content_cache_v80';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 60 * 1000; // 1 minute TTL
@@ -8432,14 +8446,19 @@ async function fetchExactEpisodesSizes(media, seasonNum) {
   const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.seasons && media.seasons.length > 0) || (media.id && media.id.startsWith('mb-s-')) || (media.id && media.id.startsWith('kmdl-s-'));
   const seParam = isSeries ? (seasonNum || 1) : 0;
   const typeParam = isSeries ? '' : '&type=movie';
+  const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
 
   try {
-    const res = await fetch(`${API_BASE_URL}/api/moviebox/episodes-info?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seParam}${typeParam}&_t=${Date.now()}`);
+    const res = await fetch(`${apiBase}/api/moviebox/episodes-info?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seParam}${typeParam}&_t=${Date.now()}`);
     if (!res.ok) return;
     const data = await res.json();
     if (data && data.ok && Array.isArray(data.episodes) && data.episodes.length > 0) {
       media._episodesInfo = data.episodes;
-      renderBatchEpisodesList(seasonNum);
+      if (typeof window.filterDownloadEpisodesModal === 'function') {
+        window.filterDownloadEpisodesModal();
+      } else {
+        renderBatchEpisodesList(seasonNum);
+      }
     }
   } catch (err) {
     console.warn('Fetch exact episode sizes error:', err.message);
@@ -9039,11 +9058,12 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     // Construct robust server-proxied download URL to completely bypass CORS, Referer and SSL handshake hangs
     const cleanSafeTitle = (title || 'video').replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_');
     const qNum = options.resolution || parseInt(quality, 10) || 480;
+    const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
 
     let proxiedDownloadUrl;
     if (url.includes('/api/download')) {
       // Already an /api/download endpoint: DO NOT re-wrap inside ?url= to prevent recursive proxy loops!
-      proxiedDownloadUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+      proxiedDownloadUrl = url.startsWith('http') ? url : `${apiBase}${url.startsWith('/') ? '' : '/'}${url}`;
       if (!proxiedDownloadUrl.includes('title=')) {
         proxiedDownloadUrl += `${proxiedDownloadUrl.includes('?') ? '&' : '?'}title=${encodeURIComponent(cleanSafeTitle)}`;
       }
@@ -9053,18 +9073,18 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     } else if (url.includes('/api/moviebox/stream')) {
       // Directly translate /api/moviebox/stream?params to /api/download?params
       try {
-        const parsed = new URL(url.startsWith('http') ? url : `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`);
+        const parsed = new URL(url.startsWith('http') ? url : `${apiBase}${url.startsWith('/') ? '' : '/'}${url}`);
         parsed.pathname = '/api/download';
         if (!parsed.searchParams.has('title')) parsed.searchParams.set('title', cleanSafeTitle);
         if (!parsed.searchParams.has('q')) parsed.searchParams.set('q', String(qNum));
         proxiedDownloadUrl = parsed.toString();
       } catch (e) {
-        let streamFetchUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
-        proxiedDownloadUrl = `${API_BASE_URL}/api/download?url=${encodeURIComponent(streamFetchUrl)}&q=${qNum}&title=${encodeURIComponent(cleanSafeTitle)}`;
+        let streamFetchUrl = url.startsWith('http') ? url : `${apiBase}${url.startsWith('/') ? '' : '/'}${url}`;
+        proxiedDownloadUrl = `${apiBase}/api/download?url=${encodeURIComponent(streamFetchUrl)}&q=${qNum}&title=${encodeURIComponent(cleanSafeTitle)}`;
       }
     } else {
-      let streamFetchUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
-      proxiedDownloadUrl = `${API_BASE_URL}/api/download?url=${encodeURIComponent(streamFetchUrl)}&q=${qNum}&title=${encodeURIComponent(cleanSafeTitle)}`;
+      let streamFetchUrl = url.startsWith('http') ? url : `${apiBase}${url.startsWith('/') ? '' : '/'}${url}`;
+      proxiedDownloadUrl = `${apiBase}/api/download?url=${encodeURIComponent(streamFetchUrl)}&q=${qNum}&title=${encodeURIComponent(cleanSafeTitle)}`;
     }
 
     const fetchHeaders = {
@@ -9074,10 +9094,23 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       fetchHeaders['Range'] = `bytes=${existingBytes}-`;
     }
 
-    const response = await fetch(proxiedDownloadUrl, {
-      headers: fetchHeaders,
-      signal: controller.signal
-    });
+    // Connection watchdog: abort if initial connection stalls past 30s
+    let connectWatchdog = setTimeout(() => {
+      if (activeDownloadTasks[downloadId] && !activeDownloadTasks[downloadId].receivedBytes && !activeDownloadTasks[downloadId].isPaused) {
+        console.warn('Download initial connection watchdog triggered (30s)');
+        controller.abort();
+      }
+    }, 30000);
+
+    let response;
+    try {
+      response = await fetch(proxiedDownloadUrl, {
+        headers: fetchHeaders,
+        signal: controller.signal
+      });
+    } finally {
+      clearTimeout(connectWatchdog);
+    }
 
     if (!response.ok && response.status !== 206) {
       // If 416 Range Not Satisfiable, reset range and restart from 0

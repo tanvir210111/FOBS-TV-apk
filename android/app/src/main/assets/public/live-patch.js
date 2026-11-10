@@ -1,4 +1,4 @@
-// FOBS TV Live OTA Patch Bundle v1.2.6
+// FOBS TV Live OTA Patch Bundle v1.2.7
 // 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (360p/480p default)
 // 2. Ultra-Low Latency Millisecond Playback: Prefetch warm streams, preload auto, and instant H.264 playback
 // 3. Bulletproof Playback Guarantee: Robust autoplay with muted fallback, instant loader dismissal on ready, and touch-unmute
@@ -12,9 +12,10 @@
 // 11. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
 // 12. Auto Audio Silence: Instantly terminate background video & audio when opening Me / Downloads screen
 // 13. Flawless Pause & Resume: Instant response, persistent chunk recovery & no background worker conflicts
+// 14. Real File Size & Quality Auto-Detection: Accurate resolution availability, fallback, and zero-hang instant download
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.2.6 executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.2.6';
+  console.log('⚡ FOBS TV Live Patch v1.2.7 executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.2.7';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -37,6 +38,20 @@
       }
     } catch (e) {}
     return window.appState || null;
+  }
+
+  function getApiBaseUrl() {
+    if (typeof window.API_BASE_URL === 'string' && window.API_BASE_URL) {
+      return window.API_BASE_URL;
+    }
+    const isCustomLocalPort = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && 
+                              window.location.port && 
+                              window.location.port !== '80' && 
+                              window.location.port !== '443';
+    if (isCustomLocalPort || window.location.hostname.includes('duckdns.org') || window.location.hostname.includes('187.127.114.52')) {
+      return '';
+    }
+    return 'https://fobstv.duckdns.org';
   }
 
   // -------------------------------------------------------------
@@ -797,8 +812,22 @@
   // -------------------------------------------------------------
   function getMediaIdentifiers(media) {
     if (!media) return { sId: '', dPath: '' };
-    const sId = media.subjectId || media.mbSubjectId || (media.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '') : null) || (media.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || '';
-    const dPath = media.detailPath || media.mbDetailPath || '';
+    let sId = media.subjectId || media.mbSubjectId || (media.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '') : null) || (media.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || '';
+    let dPath = media.detailPath || media.mbDetailPath || '';
+
+    if (!sId && media.id && /^\d{16,20}$/.test(media.id)) {
+      sId = media.id;
+    }
+
+    // Catalog lookup fallback if subjectId is missing on media object
+    if (!sId && window.appState?.content) {
+      const all = [...(window.appState.content.movies || []), ...(window.appState.content.series || [])];
+      const found = all.find(x => x.id === media.id || (media.id && String(x.id).includes(media.id)) || (x.title && media.title && x.title === media.title));
+      if (found) {
+        if (found.subjectId) sId = String(found.subjectId);
+        if (found.detailPath && !dPath) dPath = found.detailPath;
+      }
+    }
     return { sId, dPath };
   }
 
@@ -810,10 +839,11 @@
     const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.seasons && media.seasons.length > 0) || (media.id && media.id.startsWith('mb-s-')) || (media.id && media.id.startsWith('kmdl-s-'));
     const seParam = isSeries ? (seasonNum || 1) : 0;
     const typeParam = isSeries ? '' : '&type=movie';
+    const apiBase = getApiBaseUrl();
 
     media._isFetchingInfo = true;
     try {
-      const res = await fetch(`${API_BASE_URL}/api/moviebox/episodes-info?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seParam}${typeParam}&_t=${Date.now()}`);
+      const res = await fetch(`${apiBase}/api/moviebox/episodes-info?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seParam}${typeParam}&_t=${Date.now()}`);
       if (!res.ok) return;
       const data = await res.json();
       if (data && data.ok && Array.isArray(data.episodes) && data.episodes.length > 0) {
@@ -864,6 +894,26 @@
 
     const curQ = window.currentDownloadQuality || '480P';
     const qNum = parseInt(curQ, 10) || 480;
+
+    // Instant 0ms pre-population if qualities are already attached to media or stream
+    if (!media._episodesInfo) {
+      if (!isSeries && Array.isArray(media.qualities) && media.qualities.length > 0) {
+        media._episodesInfo = [{
+          episode: 1,
+          isMovie: true,
+          title: media.title,
+          qualities: media.qualities
+        }];
+      } else if (!isSeries && Array.isArray(window.currentMovieBoxQualities) && window.currentMovieBoxQualities.length > 0) {
+        media._episodesInfo = [{
+          episode: 1,
+          isMovie: true,
+          title: media.title,
+          qualities: window.currentMovieBoxQualities
+        }];
+      }
+    }
+
     const episodesInfo = (media && media._episodesInfo) || [];
 
     // All episodes / movie are ALWAYS available in 480P, 720P, 1080P!
@@ -1332,7 +1382,8 @@
         if (directUrl && (directUrl.includes('/api/download') || directUrl.includes('/api/stream'))) {
           directUrl = '';
         }
-        let downloadEndpointUrl = `/api/download?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}&title=${encodeURIComponent(cleanSafeEpTitle)}`;
+        const apiBase = getApiBaseUrl();
+        let downloadEndpointUrl = `${apiBase}/api/download?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}&title=${encodeURIComponent(cleanSafeEpTitle)}`;
         if (directUrl && directUrl.startsWith('http')) {
           downloadEndpointUrl += `&streamUrl=${encodeURIComponent(directUrl)}`;
         }
@@ -1400,7 +1451,8 @@
     if (directMovieUrl && (directMovieUrl.includes('/api/download') || directMovieUrl.includes('/api/stream'))) {
       directMovieUrl = '';
     }
-    let downloadEndpointUrl = `/api/download?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=0&ep=0&q=${targetResNum}&title=${encodeURIComponent(cleanSafeMovieTitle)}`;
+    const apiBase = getApiBaseUrl();
+    let downloadEndpointUrl = `${apiBase}/api/download?id=${encodeURIComponent(subjectId)}&path=${encodeURIComponent(detailPath)}&se=0&ep=0&q=${targetResNum}&title=${encodeURIComponent(cleanSafeMovieTitle)}`;
     if (directMovieUrl && directMovieUrl.startsWith('http')) {
       downloadEndpointUrl += `&streamUrl=${encodeURIComponent(directMovieUrl)}`;
     }
@@ -1590,6 +1642,7 @@
 
       let changed = false;
       const activeTasks = window.activeDownloadTasks || {};
+      const apiBase = getApiBaseUrl();
 
       list.forEach(item => {
         if (!item || !item.id) return;
@@ -1599,7 +1652,7 @@
           let cleanUrl = item.url;
           while (cleanUrl.includes('/api/download?url=') || cleanUrl.includes('/api/stream?url=')) {
             try {
-              const u = new URL(cleanUrl, typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : window.location.origin);
+              const u = new URL(cleanUrl, apiBase || window.location.origin);
               const target = u.searchParams.get('url');
               if (target) {
                 cleanUrl = decodeURIComponent(target);
@@ -1614,6 +1667,12 @@
           }
         }
 
+        // Auto-prefix relative URLs with apiBase so on Android/Capacitor it connects directly to VPS
+        if (item.url && typeof item.url === 'string' && item.url.startsWith('/api/')) {
+          item.url = `${apiBase}${item.url}`;
+          changed = true;
+        }
+
         // 2. Fix empty or missing subjectId in download endpoint URL: /api/download?id=& or /api/download?id=undefined
         if (item.url && typeof item.url === 'string' && (item.url.includes('/api/download?id=&') || item.url.includes('/api/download?id=undefined') || item.url.includes('/api/download?id=null'))) {
           const catalog = window.appState?.content;
@@ -1626,7 +1685,7 @@
             const se = item.season || 0;
             const ep = item.episode || 0;
             const titleSafe = encodeURIComponent((item.title || 'video').replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_'));
-            item.url = `/api/download?id=${encodeURIComponent(sid)}&path=${encodeURIComponent(path)}&se=${se}&ep=${ep}&q=${q}&title=${titleSafe}`;
+            item.url = `${apiBase}/api/download?id=${encodeURIComponent(sid)}&path=${encodeURIComponent(path)}&se=${se}&ep=${ep}&q=${q}&title=${titleSafe}`;
             if (item.options) {
               item.options.subjectId = sid;
               item.options.detailPath = path;
@@ -1752,10 +1811,14 @@
   if (typeof window.downloadMedia === 'function' && !window.downloadMedia._hasCleanHook) {
     const origDownloadMedia = window.downloadMedia;
     window.downloadMedia = function(url, title, options = {}, resumeExistingId = null) {
+      const apiBase = getApiBaseUrl();
       let cleanUrl = url;
+      if (cleanUrl && cleanUrl.startsWith('/api/')) {
+        cleanUrl = `${apiBase}${cleanUrl}`;
+      }
       while (cleanUrl && (cleanUrl.includes('/api/download?url=') || cleanUrl.includes('/api/stream?url='))) {
         try {
-          const u = new URL(cleanUrl, typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : window.location.origin);
+          const u = new URL(cleanUrl, apiBase || window.location.origin);
           const target = u.searchParams.get('url');
           if (target) cleanUrl = decodeURIComponent(target);
           else break;
@@ -1843,5 +1906,5 @@
   repairStuckDownloads();
   setupDownloadModalObserver();
 
-  console.log('✅ FOBS TV Live Patch v1.2.2 active: Instant & continuous "Connecting to stream server..." overlay until playback starts, resolution detection & responsive pause/resume.');
+  console.log('✅ FOBS TV Live Patch v1.2.7 active: Instant download connection, real file size auto-detection, quality availability tabs, and zero-hang downloads.');
 })();
