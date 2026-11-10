@@ -96,7 +96,7 @@
   <!-- ============================================== -->
   <!-- APP STARTUP CINEMATIC INTRO VIDEO SPLASH       -->
   <!-- ============================================== -->
-  <div id="appIntroOverlay" class="app-intro-overlay">
+  <div id="appIntroOverlay" class="app-intro-overlay" onclick="typeof finishIntroAndShowApp === 'function' ? finishIntroAndShowApp() : (this.style.display='none')">
     <video id="appIntroVideo" class="app-intro-video" poster="assets/intro_poster.png" autoplay playsinline webkit-playsinline preload="auto">
       <source src="assets/intro.mp4" type="video/mp4">
     </video>
@@ -112,6 +112,30 @@
       <div class="app-intro-status-text" id="introStatusText">Refreshing latest movies & series...</div>
     </div>
   </div>
+  <script>
+    /* Instant Hard Failsafe: Guarantees intro overlay vanishes in max 4.5s on all devices */
+    (function() {
+      var overlayTimer = setTimeout(function() {
+        var ov = document.getElementById('appIntroOverlay');
+        if (ov) {
+          ov.style.transition = 'opacity 0.4s ease, visibility 0.4s ease';
+          ov.style.opacity = '0';
+          ov.style.visibility = 'hidden';
+          ov.style.pointerEvents = 'none';
+          setTimeout(function() { try { if (ov && ov.parentNode) ov.parentNode.removeChild(ov); } catch(e){} }, 450);
+        }
+        try {
+          document.body.classList.remove('intro-active');
+          document.body.style.removeProperty('overflow');
+          document.documentElement.style.removeProperty('overflow');
+        } catch(e){}
+        if (typeof finishIntroAndShowApp === 'function') {
+          try { finishIntroAndShowApp(); } catch(e){}
+        }
+      }, 4500);
+      window._introInlineFailsafe = overlayTimer;
+    })();
+  </script>
 
   <!-- Mobile Frame Container -->
   <div class="app-container">

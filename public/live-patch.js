@@ -1,12 +1,12 @@
-// FOBS TV Live OTA Patch Bundle v1.4.3 (Instant Intro Auto-Dismiss, Clean Force Update & MovieBox Engine)
+// FOBS TV Live OTA Patch Bundle v1.4.4 (Ultra-Fast Startup, Instant Intro Auto-Dismiss & Anti-Freeze Engine)
 // 1. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
 // 2. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
 // 3. Smooth Online Playback: Connecting overlay smoothly dissolves only when video is actively playing (no frozen 1-2s icon)
 // 4. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
 // 5. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.4.0 (MovieBox Native Engine) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.4.0';
+  console.log('⚡ FOBS TV Live Patch v1.4.4 (Ultra-Fast Startup & Anti-Freeze Engine) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.4.4';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -2596,20 +2596,47 @@
     document.head.appendChild(hideNotesStyle);
   } catch (_) {}
 
-  // 16. Guarantee Intro Video Dismissal on all devices (Never stuck!)
+  // 16. Guarantee Intro Video Dismissal & Safe App Bootstrap on all devices (Never stuck!)
   function dismissStuckIntro() {
     try {
       const intro = document.getElementById('appIntroOverlay');
       if (intro) {
         intro.classList.add('fade-out');
+        intro.style.setProperty('opacity', '0', 'important');
+        intro.style.setProperty('visibility', 'hidden', 'important');
         intro.style.setProperty('display', 'none', 'important');
         intro.style.setProperty('pointer-events', 'none', 'important');
         try { intro.remove(); } catch(_) {}
-        document.body.classList.remove('intro-active');
-        document.body.style.removeProperty('overflow');
-        document.body.style.setProperty('overflow-y', 'auto', 'important');
-        if (typeof window.finishIntroAndShowApp === 'function' && !window._introFinished) {
-          window.finishIntroAndShowApp();
+      }
+      document.body.classList.remove('intro-active');
+      document.body.style.removeProperty('overflow');
+      document.body.style.setProperty('overflow-y', 'auto', 'important');
+      document.documentElement.style.removeProperty('overflow');
+      document.documentElement.style.setProperty('overflow-y', 'auto', 'important');
+
+      if (typeof window.finishIntroAndShowApp === 'function' && !window._introFinished) {
+        try { window.finishIntroAndShowApp(); } catch(_) {}
+      }
+
+      // If app views never initialized due to DOMContentLoaded race condition, bootstrap now!
+      if (!window._initAppRan) {
+        if (typeof window.bootstrapApp === 'function') {
+          try { window.bootstrapApp(); } catch (_) {}
+        } else if (typeof window.initApp === 'function') {
+          try { window.initApp(); } catch (_) {}
+        }
+      }
+
+      // Guarantee content is populated and views rendered
+      if (window.appState && (!window.appState.content || !window.appState.content.movies || window.appState.content.movies.length === 0)) {
+        if (typeof window.loadCachedContent === 'function') {
+          try { window.loadCachedContent(); } catch (_) {}
+        }
+        if (typeof window.renderAllViews === 'function') {
+          try { window.renderAllViews(); } catch (_) {}
+        }
+        if (typeof window.syncContentWithBackend === 'function') {
+          try { window.syncContentWithBackend({ force: true, isBackground: true }); } catch (_) {}
         }
       }
     } catch (_) {}
@@ -2624,9 +2651,11 @@
     }
   } catch(_) {}
 
-  // Auto-dismiss stuck intro after 5s and 7s
-  setTimeout(dismissStuckIntro, 5000);
-  setTimeout(dismissStuckIntro, 7000);
+  // Auto-dismiss stuck intro aggressively (1s, 2.5s, 4s, 5.5s)
+  setTimeout(dismissStuckIntro, 1000);
+  setTimeout(dismissStuckIntro, 2500);
+  setTimeout(dismissStuckIntro, 4000);
+  setTimeout(dismissStuckIntro, 5500);
 
   // Trigger force update popup smoothly AFTER intro has concluded
   setTimeout(enforceForceUpdatePopup, 5500);

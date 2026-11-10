@@ -454,13 +454,20 @@ function applyNavigationBarInset(bottomDp) {
 }
 window.applyNavigationBarInset = applyNavigationBarInset;
 
-// Initialize Application
-document.addEventListener('DOMContentLoaded', () => {
-  applyNavigationBarInset();
-  window.addEventListener('resize', () => applyNavigationBarInset());
-  window.addEventListener('orientationchange', () => setTimeout(applyNavigationBarInset, 200));
+// Bulletproof bootstrap: fires immediately if document is already parsed, or on DOMContentLoaded
+function bootstrapApp() {
+  try { applyNavigationBarInset(); } catch(e) {}
+  window.addEventListener('resize', () => { try { applyNavigationBarInset(); } catch(e) {} });
+  window.addEventListener('orientationchange', () => setTimeout(() => { try { applyNavigationBarInset(); } catch(e) {} }, 200));
   initApp();
-});
+}
+window.bootstrapApp = bootstrapApp;
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootstrapApp);
+} else {
+  bootstrapApp();
+}
 
 // ============================================================
 // APP STARTUP CINEMATIC INTRO VIDEO & BACKGROUND REFRESH
@@ -568,18 +575,23 @@ function playAppIntroAndSync() {
     }
   })();
 
-  // Failsafe timeout: Max 6.5 seconds (video is ~5.5s, ends smoothly)
+  // Failsafe timeout: Max 4.2 seconds
   setTimeout(() => {
     if (!_introFinished) {
       finishIntroAndShowApp();
     }
-  }, 6500);
+  }, 4200);
 }
 window.playAppIntroAndSync = playAppIntroAndSync;
 
 function finishIntroAndShowApp() {
   if (_introFinished) return;
   _introFinished = true;
+  window._introFinished = true;
+
+  if (window._introInlineFailsafe) {
+    try { clearTimeout(window._introInlineFailsafe); } catch(e){}
+  }
 
   const overlay = document.getElementById('appIntroOverlay');
   const video = document.getElementById('appIntroVideo');
@@ -648,6 +660,18 @@ window.finishIntroAndShowApp = finishIntroAndShowApp;
 
 // App Startup Flow
 async function initApp() {
+  if (window._initAppRan) return;
+  window._initAppRan = true;
+
+  // 1. Cinematic Intro Video Splash with background refresh FIRST!
+  try {
+    playAppIntroAndSync();
+  } catch (err) {
+    console.warn('playAppIntroAndSync error during initApp:', err);
+    try { finishIntroAndShowApp(); } catch (_) {}
+  }
+
+  // 2. Safe app ping in background
   try {
     let pingViewerId = localStorage.getItem('fobs_viewer_uuid');
     if (!pingViewerId) {
@@ -656,7 +680,7 @@ async function initApp() {
     }
     const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.8');
     const pingBody = { viewerId: pingViewerId, platform: 'Android App', appVersion: appVer };
-    if (currentUser && currentUser.email && currentUser.email.includes('@')) {
+    if (typeof currentUser !== 'undefined' && currentUser && currentUser.email && currentUser.email.includes('@')) {
       pingBody.userId = currentUser.googleId || currentUser.id;
       pingBody.userEmail = currentUser.email;
       pingBody.userName = currentUser.name;
@@ -670,18 +694,20 @@ async function initApp() {
       body: JSON.stringify(pingBody)
     }).catch(() => {});
   } catch(e) {}
-  setupVideoListeners();
-  setupHeroSwipeGestures();
-  setupMovieHeroSwipeGestures();
-  setupSeriesHeroSwipeGestures();
-  setupPlayerSwipeToClose();
-  setupAppVisibilityListeners();
-  setupPullToRefresh();
-  setupAppUpdateModal();
-  setupSearchInputListener();
-  initGoogleAuth();
 
-  // Clear all stale/legacy cache versions immediately
+  // 3. Setup UI listeners safely with try-catch so one missing element never halts startup
+  try { setupVideoListeners(); } catch (e) { console.warn('setupVideoListeners err:', e); }
+  try { setupHeroSwipeGestures(); } catch (e) { console.warn('setupHeroSwipeGestures err:', e); }
+  try { setupMovieHeroSwipeGestures(); } catch (e) { console.warn('setupMovieHeroSwipeGestures err:', e); }
+  try { setupSeriesHeroSwipeGestures(); } catch (e) { console.warn('setupSeriesHeroSwipeGestures err:', e); }
+  try { setupPlayerSwipeToClose(); } catch (e) { console.warn('setupPlayerSwipeToClose err:', e); }
+  try { setupAppVisibilityListeners(); } catch (e) { console.warn('setupAppVisibilityListeners err:', e); }
+  try { setupPullToRefresh(); } catch (e) { console.warn('setupPullToRefresh err:', e); }
+  try { setupAppUpdateModal(); } catch (e) { console.warn('setupAppUpdateModal err:', e); }
+  try { setupSearchInputListener(); } catch (e) { console.warn('setupSearchInputListener err:', e); }
+  try { initGoogleAuth(); } catch (e) { console.warn('initGoogleAuth err:', e); }
+
+  // 4. Clear all stale/legacy cache versions immediately
   try {
     for (let i = localStorage.length - 1; i >= 0; i--) {
       const k = localStorage.key(i);
@@ -690,10 +716,8 @@ async function initApp() {
       }
     }
   } catch (e) {}
-
-  // Cinematic Intro Video Splash with background refresh
-  playAppIntroAndSync();
 }
+window.initApp = initApp;
 
 // Normalize content data structures
 function normalizeContentData(data) {
@@ -740,6 +764,7 @@ function loadCachedContent() {
   }
   return false;
 }
+window.loadCachedContent = loadCachedContent;
 
 function saveContentToCache(data) {
   try {
@@ -904,6 +929,7 @@ async function syncContentWithBackend({ force = false, isBackground = false, isI
     isSyncing = false;
   }
 }
+window.syncContentWithBackend = syncContentWithBackend;
 
 // Backward-compatible content fetch wrapper
 async function fetchAppContent() {
