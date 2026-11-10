@@ -12062,13 +12062,16 @@ function checkAppUpdate(data) {
 
     const updateDownloadUrl = updateInfo.downloadUrl || `${API_BASE_URL}/download/apk`;
     const resolvedDownloadUrl = updateDownloadUrl.startsWith('http') ? updateDownloadUrl : `${API_BASE_URL}${updateDownloadUrl}`;
-    const browserLink = document.getElementById('btnBrowserDownload');
-    if (browserLink) browserLink.href = resolvedDownloadUrl;
+    const startBtnSpan = document.querySelector('#btnStartUpdate span');
+    if (startBtnSpan) startBtnSpan.textContent = `Download New APK (v${updateInfo.latestVersionName || '3.1.8'})`;
+    if (browserLink) {
+      browserLink.href = resolvedDownloadUrl;
+      browserLink.innerHTML = `<i class="fa-solid fa-arrow-up-right-from-square"></i> Download v${updateInfo.latestVersionName || '3.1.8'}`;
+    }
     const browserLinkFallback = document.getElementById('btnBrowserDownloadFallback');
     if (browserLinkFallback) browserLinkFallback.href = resolvedDownloadUrl;
 
-    const notesBox = document.querySelector('.update-notes-box');
-    if (notesBox) notesBox.style.display = 'none';
+    document.querySelectorAll('.update-notes-box, #updateNotesList').forEach(el => el.remove());
 
     // Force Update: User cannot use app without updating
     if (updateInfo.forceUpdate) {
@@ -12114,7 +12117,7 @@ function startAppUpdate() {
     apkUrl = `${API_BASE_URL}${apkUrl.startsWith('/') ? '' : '/'}${apkUrl}`;
   }
 
-  showToast(`Opening browser to download FOBS TV v${currentAppUpdateConfig?.latestVersionName || '3.1.3'} (${currentAppUpdateConfig?.fileSize || '9.2 MB'})...`);
+  showToast(`Opening browser to download FOBS TV v${currentAppUpdateConfig?.latestVersionName || '3.1.8'} (${currentAppUpdateConfig?.fileSize || '7.75 MB'})...`);
 
   if (fill) fill.style.width = '100%';
   if (percentText) percentText.textContent = '100%';

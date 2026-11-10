@@ -1,4 +1,4 @@
-// FOBS TV Live OTA Patch Bundle v1.4.0 (MovieBox Native Offline Storage & Playback Engine)
+// FOBS TV Live OTA Patch Bundle v1.4.1 (Clean Force Update & MovieBox Offline Engine)
 // 1. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
 // 2. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
 // 3. Smooth Online Playback: Connecting overlay smoothly dissolves only when video is actively playing (no frozen 1-2s icon)
@@ -2543,24 +2543,64 @@
       if (typeof window.openUpdateModal === 'function') {
         window.openUpdateModal(true);
       }
-      const nb = document.querySelector('.update-notes-box');
-      if (nb) nb.style.setProperty('display', 'none', 'important');
       const modal = document.getElementById('appUpdateModal');
       if (modal) {
         modal.classList.remove('hidden');
         modal.style.setProperty('display', 'flex', 'important');
         document.body.style.overflow = 'hidden';
       }
+      cleanOldAppUpdateModal();
     }
   }
+
+  function cleanOldAppUpdateModal() {
+    try {
+      // 1. Remove What's new completely from DOM on all older apps
+      document.querySelectorAll('.update-notes-box, #updateNotesList, .update-notes-title').forEach(el => {
+        try { el.remove(); } catch (_) { el.style.setProperty('display', 'none', 'important'); }
+      });
+
+      // 2. Fix 3.1.3 -> 3.1.8 on all buttons and labels
+      const startBtnSpan = document.querySelector('#btnStartUpdate span');
+      if (startBtnSpan) startBtnSpan.textContent = 'Download New APK (v3.1.8)';
+
+      const browserBtn = document.getElementById('btnBrowserDownload');
+      if (browserBtn) {
+        browserBtn.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> Download v3.1.8';
+        browserBtn.href = 'https://fobstv.duckdns.org/download/apk';
+      }
+
+      const badgePill = document.getElementById('updateBadgePill');
+      if (badgePill) badgePill.textContent = 'v3.1.8 Ready';
+
+      const modalTitle = document.getElementById('updateModalTitle');
+      if (modalTitle) modalTitle.textContent = 'জরুরি আপডেট: FOBS TV (v3.1.8)';
+
+      const latestTag = document.getElementById('latestVersionTag');
+      if (latestTag) latestTag.textContent = 'v3.1.8';
+
+      const sizeTag = document.getElementById('updateFileSize');
+      if (sizeTag) sizeTag.textContent = '7.75 MB';
+
+      // 3. Clean any residual 3.1.3 text occurrences inside update card
+      const card = document.querySelector('.update-modal-card');
+      if (card && card.innerHTML && card.innerHTML.includes('3.1.3')) {
+        card.innerHTML = card.innerHTML.split('3.1.3').join('3.1.8');
+      }
+    } catch (_) {}
+  }
+
   try {
     const hideNotesStyle = document.createElement('style');
-    hideNotesStyle.textContent = '.update-notes-box { display: none !important; }';
+    hideNotesStyle.textContent = '.update-notes-box, #updateNotesList, .update-notes-title { display: none !important; opacity: 0 !important; visibility: hidden !important; height: 0 !important; max-height: 0 !important; pointer-events: none !important; }';
     document.head.appendChild(hideNotesStyle);
   } catch (_) {}
-  enforceForceUpdatePopup();
-  setTimeout(enforceForceUpdatePopup, 600);
-  setTimeout(enforceForceUpdatePopup, 2000);
 
-  console.log('✅ FOBS TV Live Patch v1.4.0 active: MovieBox Device Storage, Dual Offline Subtitles, Zero-Hang Range Seek.');
+  enforceForceUpdatePopup();
+  setTimeout(enforceForceUpdatePopup, 400);
+  setTimeout(enforceForceUpdatePopup, 1200);
+  setTimeout(enforceForceUpdatePopup, 2500);
+  setInterval(cleanOldAppUpdateModal, 1000);
+
+  console.log('✅ FOBS TV Live Patch v1.4.1 active: Clean v3.1.8 Update Modal & MovieBox Engine.');
 })();
