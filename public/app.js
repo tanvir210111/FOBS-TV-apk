@@ -8396,7 +8396,41 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-// Helper: Estimate episode size
+// Helper: Compute realistic dynamic episode size (deterministic variation per episode)
+function computeDynamicEpisodeSize(qNum, epNum, isMovie, durationMins = 0) {
+  const r = parseInt(qNum, 10) || 480;
+  if (isMovie) {
+    let baseMb = r >= 1080 ? 1250 : (r >= 720 ? 680 : 380);
+    const hash = Math.sin((epNum || 1) * 313 + r * 17) * 10000;
+    const variance = ((hash - Math.floor(hash)) * 0.2) - 0.1;
+    const estMb = Math.round(baseMb * (1 + variance));
+    return {
+      bytes: estMb * 1024 * 1024,
+      text: estMb >= 1024 ? `~${(estMb / 1024).toFixed(2)} GB` : `~${estMb} MB`
+    };
+  }
+
+  let baseMb;
+  if (r >= 1080) baseMb = 390;
+  else if (r >= 720) baseMb = 240;
+  else if (r >= 480) baseMb = 145;
+  else baseMb = 120;
+
+  const hash = Math.sin((epNum || 1) * 997 + r * 13) * 10000;
+  const varianceFactor = ((hash - Math.floor(hash)) * 0.28) - 0.14;
+  let estMb = Math.round(baseMb * (1 + varianceFactor));
+
+  if (durationMins > 0) {
+    const perMin = r >= 1080 ? 8.2 : (r >= 720 ? 5.1 : (r >= 480 ? 3.1 : 2.5));
+    estMb = Math.round(durationMins * perMin * (1 + (varianceFactor * 0.4)));
+  }
+
+  const bytes = estMb * 1024 * 1024;
+  const text = estMb >= 1024 ? `~${(estMb / 1024).toFixed(2)} GB` : `~${estMb} MB`;
+  return { bytes, text };
+}
+window.computeDynamicEpisodeSize = computeDynamicEpisodeSize;
+
 function getEpisodeEstimatedSize(quality, ep = null, idx = 0) {
   if (ep && ep.realSizeText) {
     return ep.realSizeText;
@@ -8404,22 +8438,10 @@ function getEpisodeEstimatedSize(quality, ep = null, idx = 0) {
   if (ep && (ep.size || ep.fileSize)) {
     return ep.size || ep.fileSize;
   }
-  const q = String(quality || '480P').toUpperCase();
-  let baseMb = 140;
-  if (q.includes('1080')) baseMb = 480;
-  else if (q.includes('720')) baseMb = 260;
-  else baseMb = 135;
-
-  if (ep && ep.duration) {
-    const mins = parseInt(ep.duration, 10);
-    if (!isNaN(mins) && mins > 0) {
-      const perMin = q.includes('1080') ? 20 : (q.includes('720') ? 10 : 5.5);
-      return `~${Math.round(mins * perMin)} MB`;
-    }
-  }
-
-  const variance = ((idx * 7) % 15) - 7;
-  return `~${baseMb + variance} MB`;
+  const qNum = parseInt(quality, 10) || 480;
+  const epNum = ep ? (ep.episode ?? ep.episodeNumber ?? (idx + 1)) : (idx + 1);
+  const duration = ep?.duration ? parseInt(ep.duration, 10) : 0;
+  return computeDynamicEpisodeSize(qNum, epNum, false, duration).text;
 }
 function getEpisodeEstimatedBytes(quality) {
   if (quality === '1080P') return 480 * 1024 * 1024;
@@ -8535,20 +8557,23 @@ function renderBatchEpisodesList(seasonNum) {
     if (info && Array.isArray(info.qualities) && info.qualities.length > 0) {
       match = info.qualities.find(q => q.resolution === qNum)
            || (qNum === 480 ? info.qualities.find(q => q.resolution === 360) : null);
+      if (!match) {
+        const sorted = [...info.qualities].sort((a, b) => Math.abs((a.resolution || 720) - qNum) - Math.abs((b.resolution || 720) - qNum));
+        match = sorted[0];
+      }
     }
 
     const epCopy = { ...ep, _origIdx: origIdx };
+    const durationMins = ep?.duration ? parseInt(ep.duration, 10) : 0;
+    const dynamicSize = computeDynamicEpisodeSize(qNum, epNum, isMovieItem, durationMins);
+
     if (match && match.sizeText) {
       epCopy.realSizeText = match.sizeText;
-      epCopy.realSizeBytes = match.sizeBytes;
-      epCopy.realQuality = `${match.resolution}P`;
+      epCopy.realSizeBytes = match.sizeBytes || dynamicSize.bytes;
+      epCopy.realQuality = `${match.resolution || qNum}P`;
     } else {
-      const estMb = isMovieItem
-        ? (qNum >= 1080 ? 1200 : (qNum >= 720 ? 650 : 380))
-        : (qNum >= 1080 ? 480 : (qNum >= 720 ? 260 : 135));
-      const formatted = estMb >= 1024 ? `~${(estMb / 1024).toFixed(2)} GB` : `~${estMb} MB`;
-      epCopy.realSizeText = formatted;
-      epCopy.realSizeBytes = estMb * 1024 * 1024;
+      epCopy.realSizeText = dynamicSize.text;
+      epCopy.realSizeBytes = dynamicSize.bytes;
       epCopy.realQuality = curQ;
     }
     return epCopy;
@@ -8571,7 +8596,7 @@ function renderBatchEpisodesList(seasonNum) {
     const estSizeStr = ep.realSizeText || 'Calculating size...';
 
     return `
-      <div class="dl-ep-item selected" id="dl_ep_item_${idx}" onclick="toggleBatchEpisode(${idx})">
+      <div class="dl-ep-item selected" id="dl_ep_item_${idx}" onclick="toggleBatchEpisode(${idx}, event)">
         <div class="dl-ep-left">
           <span class="dl-ep-badge">${badgeText}</span>
           <div class="dl-ep-title-wrap">
@@ -8580,7 +8605,7 @@ function renderBatchEpisodesList(seasonNum) {
           </div>
         </div>
         <label class="dl-ep-checkbox" onclick="event.stopPropagation()">
-          <input type="checkbox" id="dl_ep_chk_${idx}" checked onchange="toggleBatchEpisode(${idx})">
+          <input type="checkbox" id="dl_ep_chk_${idx}" checked onclick="event.stopPropagation()" onchange="toggleBatchEpisode(${idx}, event)">
           <span class="dl-checkbox-custom"><i class="fa-solid fa-check"></i></span>
         </label>
       </div>
@@ -8599,25 +8624,34 @@ function renderBatchEpisodesList(seasonNum) {
 window.renderBatchEpisodesList = renderBatchEpisodesList;
 
 // Toggle Individual Episode Selection
-function toggleBatchEpisode(index) {
+function toggleBatchEpisode(index, ev) {
   const batchState = appState._batchDownload;
   if (!batchState || !batchState.selected) return;
 
-  if (batchState.selected.has(index)) {
-    batchState.selected.delete(index);
+  const chkEl = document.getElementById(`dl_ep_chk_${index}`);
+
+  if (ev && ev.target && ev.target.type === 'checkbox') {
+    if (ev.target.checked) {
+      batchState.selected.add(index);
+    } else {
+      batchState.selected.delete(index);
+    }
   } else {
-    batchState.selected.add(index);
+    if (batchState.selected.has(index)) {
+      batchState.selected.delete(index);
+    } else {
+      batchState.selected.add(index);
+    }
   }
 
   const isChecked = batchState.selected.has(index);
   const itemEl = document.getElementById(`dl_ep_item_${index}`);
-  const chkEl = document.getElementById(`dl_ep_chk_${index}`);
   if (itemEl) itemEl.classList.toggle('selected', isChecked);
   if (chkEl) chkEl.checked = isChecked;
 
   const selectAllChk = document.getElementById('dlSelectAllCheckbox');
-  if (selectAllChk) {
-    selectAllChk.checked = (batchState.selected.size === batchState.episodes.length);
+  if (selectAllChk && batchState.episodes) {
+    selectAllChk.checked = (batchState.selected.size === batchState.episodes.length && batchState.episodes.length > 0);
   }
 
   updateBatchSelectedSummary();
