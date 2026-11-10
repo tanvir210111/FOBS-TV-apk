@@ -10822,8 +10822,9 @@ function openQualitySheet() {
     const buttons = container.querySelectorAll('.sheet-option-btn');
     buttons.forEach(btn => {
       const qVal = parseInt(btn.getAttribute('data-q') || '', 10);
-      if (availResSet.size > 0) {
-        btn.style.display = availResSet.has(qVal) ? 'flex' : 'none';
+      if (availResSet.size > 0 && qVal > 0) {
+        const isAvail = availResSet.has(qVal) || (qVal === 480 && availResSet.has(360));
+        btn.style.display = isAvail ? 'flex' : 'none';
       } else {
         btn.style.display = 'flex';
       }

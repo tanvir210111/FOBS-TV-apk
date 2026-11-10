@@ -444,7 +444,13 @@
     const epNum = isMovie ? 0 : (ep?.episode ?? ep?.episodeNumber ?? parseInt(ep?.number, 10) ?? 1);
     const seNum = isMovie ? 0 : (ep?.season ?? window.appState?.currentSeason ?? 1);
 
-    if (window.appState) window.appState.currentQuality = '480p';
+    const state = getAppState() || window.appState || {};
+    const targetQ = state.userExplicitQuality
+      ? (parseInt(state.selectedQuality || state.currentQuality, 10) || 720)
+      : 480;
+    if (!state.userExplicitQuality && state.currentQuality !== `${targetQ}p`) {
+      state.currentQuality = '480p';
+    }
 
     const isMovieBox = (
       m?.subjectId ||
@@ -454,7 +460,7 @@
     const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (m?.id && /^\d{16,20}$/.test(m.id) ? m.id : null);
     const dPath = m?.detailPath || m?.mbDetailPath || m?.movieboxDetailPath || '';
     if (sId && isMovieBox) {
-      return getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480`);
+      return getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=${targetQ}`);
     }
 
     const allUrls = [
@@ -466,15 +472,15 @@
 
     const mbUrl = allUrls.find(u => typeof u === 'string' && u.includes('/api/moviebox/stream'));
     if (mbUrl) {
-      let clean = mbUrl.replace(/([?&])q=\d+/g, '$1q=480');
-      if (!clean.includes('q=')) clean += (clean.includes('?') ? '&' : '?') + 'q=480';
+      let clean = mbUrl.replace(/([?&])q=\d+/g, `$1q=${targetQ}`);
+      if (!clean.includes('q=')) clean += (clean.includes('?') ? '&' : '?') + `q=${targetQ}`;
       return getAbsoluteApiUrl(clean);
     }
 
     const rawCdn = allUrls.find(u => typeof u === 'string' && (u.includes('hakunaymatata') || u.includes('bcdnxw') || u.includes('haildrop') || u.includes('fogtwist') || u.includes('sunburst') || u.includes('stormshade')));
     if (rawCdn) {
       if (sId) {
-        return getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&se=${seNum}&ep=${epNum}&q=480`);
+        return getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&se=${seNum}&ep=${epNum}&q=${targetQ}`);
       }
       return getAbsoluteApiUrl(`/api/stream?url=${encodeURIComponent(rawCdn)}`);
     }
@@ -502,16 +508,25 @@
       if (fastUrl.startsWith('/api/')) {
         fastUrl = getAbsoluteApiUrl(fastUrl);
       }
+      const state = getAppState() || window.appState || {};
+      const activeQ = state.userExplicitQuality
+        ? (parseInt(state.selectedQuality || state.currentQuality, 10) || 720)
+        : 480;
+
       if (fastUrl.includes('/api/moviebox/stream')) {
-        fastUrl = fastUrl.replace(/([?&])q=\d+/g, '$1q=480');
-        if (!fastUrl.includes('q=')) fastUrl += (fastUrl.includes('?') ? '&' : '?') + 'q=480';
+        const qMatch = fastUrl.match(/[?&]q=(\d+)/);
+        if (!qMatch) {
+          fastUrl += (fastUrl.includes('?') ? '&' : '?') + `q=${activeQ}`;
+        } else if (state.userExplicitQuality) {
+          fastUrl = fastUrl.replace(/([?&])q=\d+/g, `$1q=${activeQ}`);
+        }
       } else if (fastUrl.includes('hakunaymatata') || fastUrl.includes('bcdnxw') || fastUrl.includes('haildrop') || fastUrl.includes('fogtwist') || fastUrl.includes('sunburst') || fastUrl.includes('stormshade')) {
         const m = getActiveMedia();
         const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (m?.id && /^\d{16,20}$/.test(m.id) ? m.id : null);
         if (sId) {
           const se = window.appState?.currentSeason || 0;
           const ep = window.appState?.currentEpisodeNumber || 0;
-          fastUrl = getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&se=${se}&ep=${ep}&q=480`);
+          fastUrl = getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&se=${se}&ep=${ep}&q=${activeQ}`);
         } else {
           fastUrl = getAbsoluteApiUrl(`/api/stream?url=${encodeURIComponent(fastUrl)}`);
         }
@@ -845,6 +860,14 @@
     }
   };
   window.selectVideoQuality._hasLoaderHook = true;
+
+  window.setLandscapeQuality = function(quality) {
+    if (typeof window.selectVideoQuality === 'function') {
+      window.selectVideoQuality(quality);
+    }
+    if (typeof closeLandscapeDrawers === 'function') closeLandscapeDrawers();
+    if (typeof resetLandscapeControlsTimer === 'function') resetLandscapeControlsTimer();
+  };
 
   // -------------------------------------------------------------
   // Dynamic Quality Sheet: ONLY show available resolutions! (jei resolution nai sei resolution video te show koraiyo na)
