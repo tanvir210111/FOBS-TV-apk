@@ -33,9 +33,12 @@ function extractMovieBoxExpiry(urlStr) {
     const u = new URL(urlStr);
     const tParam = u.searchParams.get('t');
     if (tParam) {
-      const expSec = parseInt(tParam, 10);
-      if (!isNaN(expSec) && expSec > 0) {
-        return expSec * 1000;
+      const tsSec = parseInt(tParam, 10);
+      if (!isNaN(tsSec) && tsSec > 0) {
+        // 't' is the token creation/issue timestamp in MovieBox CDN URLs.
+        // MovieBox CDN tokens are valid for 4 hours (14,400s) from 't'.
+        // We set the expiry threshold at 3.5 hours (12,600s) for proactive safe renewal.
+        return (tsSec + 12600) * 1000;
       }
     }
   } catch (_) {}
@@ -46,8 +49,7 @@ function isMovieBoxUrlExpired(urlStr) {
   if (!urlStr || typeof urlStr !== 'string') return true;
   const expMs = extractMovieBoxExpiry(urlStr);
   if (expMs) {
-    // If expired or expiring in under 15 minutes, treat as expired
-    return (expMs - Date.now() < 15 * 60 * 1000);
+    return Date.now() >= expMs;
   }
   return false;
 }
@@ -1432,7 +1434,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
         resolution: chosenRes,
         qualities: (media.qualities || []).map(q => ({
           resolution: q.resolution,
-          url: `${baseUrl}/api/stream?url=${encodeURIComponent(q.url)}`,
+          url: `${baseUrl}/api/stream?url=${encodeURIComponent(q.url)}&id=${encodeURIComponent(id)}&path=${encodeURIComponent(resolvedPath || '')}&se=${seNum}&ep=${epNum}&q=${q.resolution}`,
           directUrl: q.url,
           size: q.size
         }))
