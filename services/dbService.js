@@ -95,7 +95,7 @@ function parseDeviceModel(ua, platform) {
 
 function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android', appVersion = '' }) {
   if (!deviceId || String(deviceId).length < 3) return;
-  const isV318 = !appVersion || appVersion === '3.1.8' || appVersion === 'v3.1.8' || (typeof appVersion === 'string' && appVersion.includes('3.1.8'));
+  const isV318 = appVersion === '3.1.8' || appVersion === 'v3.1.8' || (typeof appVersion === 'string' && appVersion.includes('3.1.8'));
   try {
     const devices = getDevicesMap();
     const cleanId = String(deviceId).trim();
@@ -104,7 +104,7 @@ function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android',
     if (ip && (!existing.ip || existing.ip === '127.0.0.1')) existing.ip = ip.replace('::ffff:', '');
     if (userAgent && !existing.userAgent) existing.userAgent = userAgent;
     existing.platform = platform || existing.platform || 'Android App';
-    existing.appVersion = isV318 ? '3.1.8' : (appVersion || '3.1.8');
+    existing.appVersion = isV318 ? '3.1.8' : (appVersion || 'Older Version');
     devices[cleanId] = existing;
     
     fs.writeFileSync(DEVICES_LOCAL_FILE, JSON.stringify(devices, null, 2), 'utf8');
@@ -132,15 +132,21 @@ async function getUserStats() {
   }
 
   const rawDevices = Object.values(devicesMap);
+  const V318_RELEASE_TIMESTAMP = new Date('2026-11-10T09:15:00.000Z').getTime();
 
-  // STRICT FILTER FOR v3.1.8: Only devices running v3.1.8 (or active in the last 24h as v3.1.8)
-  const devices = rawDevices.filter(d => (d.appVersion === '3.1.8' || (d.appVersion && d.appVersion.includes('3.1.8')) || (!d.appVersion && new Date(d.lastActive || 0).getTime() > Date.now() - 24 * 3600 * 1000)));
+  // STRICT FILTER FOR v3.1.8: Only devices actually running v3.1.8 AND active on/after v3.1.8 release
+  const devices = rawDevices.filter(d => {
+    const isVer318 = d.appVersion === '3.1.8' || (d.appVersion && d.appVersion.includes('3.1.8'));
+    const isTime318 = new Date(d.lastActive || d.firstSeen || 0).getTime() >= V318_RELEASE_TIMESTAMP;
+    return isVer318 && isTime318;
+  });
 
-  // STRICT FILTER FOR v3.1.8: Registered members (Google accounts) running v3.1.8 or admin
+  // STRICT FILTER FOR v3.1.8: Only registered members who actually opened/logged in on v3.1.8 on/after release
   const registeredUsers = rawRegisteredUsers.filter(u => {
-    const isAdmin = (u.email === 'tanvir210111@gmail.com') || (u.name && u.name.toLowerCase().includes('admin'));
-    const isV318 = u.appVersion === '3.1.8' || (u.appVersion && u.appVersion.includes('3.1.8'));
-    return isAdmin || isV318 || (new Date(u.lastLogin || u.createdAt || 0).getTime() > Date.now() - 48 * 3600 * 1000);
+    const isAdmin = (u.email === 'tanvir210111@gmail.com');
+    const isVer318 = u.appVersion === '3.1.8' || (u.appVersion && u.appVersion.includes('3.1.8'));
+    const isTime318 = new Date(u.lastLogin || u.createdAt || 0).getTime() >= V318_RELEASE_TIMESTAMP;
+    return isAdmin || (isVer318 && isTime318);
   });
 
   const totalRegistered = registeredUsers.length;
@@ -1252,23 +1258,25 @@ async function deleteReport(reportId) {
  * Purge all users and devices from older app versions, keeping ONLY v3.1.8 users
  */
 async function purgeOldVersionUsers(targetVersion = '3.1.8') {
-  const v318Threshold = new Date('2026-11-08T00:00:00.000Z').getTime();
+  // v3.1.8 was released today, Nov 10, 2026 at 3:15 PM (+06:00) / 09:15:00 UTC
+  const v318Threshold = new Date('2026-11-10T09:15:00.000Z').getTime();
 
   let mongoDeleted = 0;
   if (isMongoConnected && User) {
     try {
       const deleteResult = await User.deleteMany({
         $and: [
-          { appVersion: { $ne: targetVersion } },
           { email: { $ne: 'tanvir210111@gmail.com' } },
-          { createdAt: { $lt: new Date(v318Threshold) } }
+          {
+            $or: [
+              { appVersion: { $ne: targetVersion } },
+              { lastLogin: { $lt: new Date(v318Threshold) } },
+              { createdAt: { $lt: new Date(v318Threshold) } }
+            ]
+          }
         ]
       });
       mongoDeleted = deleteResult.deletedCount || 0;
-      await User.updateMany(
-        { email: 'tanvir210111@gmail.com' },
-        { $set: { appVersion: targetVersion } }
-      );
     } catch (e) {
       console.warn('Error purging MongoDB users:', e.message);
     }
@@ -1280,12 +1288,11 @@ async function purgeOldVersionUsers(targetVersion = '3.1.8') {
   let deletedUsers = 0;
 
   for (const [key, u] of Object.entries(usersMap)) {
-    const isV318 = (u.appVersion === targetVersion);
-    const isAdmin = (u.email === 'tanvir210111@gmail.com') || (u.name && u.name.toLowerCase().includes('admin'));
-    const isTodayPostRelease = u.createdAt && (new Date(u.createdAt).getTime() >= v318Threshold);
+    const isAdmin = (u.email === 'tanvir210111@gmail.com');
+    const isV318Time = new Date(u.lastLogin || u.createdAt || 0).getTime() >= v318Threshold;
+    const isV318Ver = (u.appVersion === targetVersion);
 
-    if (isV318 || isAdmin || isTodayPostRelease) {
-      u.appVersion = targetVersion;
+    if (isAdmin || (isV318Time && isV318Ver)) {
       keptUsers[key] = u;
     } else {
       deletedUsers++;
@@ -1304,9 +1311,10 @@ async function purgeOldVersionUsers(targetVersion = '3.1.8') {
   let deletedDevices = 0;
 
   for (const [id, d] of Object.entries(devicesMap)) {
-    const isV318Device = (d.appVersion === targetVersion) || (!d.appVersion && new Date(d.lastActive || 0).getTime() >= v318Threshold);
-    if (isV318Device) {
-      d.appVersion = targetVersion;
+    const isV318Time = new Date(d.lastActive || d.firstSeen || 0).getTime() >= v318Threshold;
+    const isV318Ver = (d.appVersion === targetVersion);
+
+    if (isV318Time && isV318Ver) {
       keptDevices[id] = d;
     } else {
       deletedDevices++;
