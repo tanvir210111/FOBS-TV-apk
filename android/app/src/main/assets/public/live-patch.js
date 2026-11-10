@@ -1,16 +1,16 @@
-// FOBS TV Live OTA Patch Bundle v1.2.3
+// FOBS TV Live OTA Patch Bundle v1.2.4
 // 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (360p/480p default)
 // 2. Ultra-Low Latency Millisecond Playback: Prefetch warm streams, preload auto, and instant H.264 playback
 // 3. Auto-Renewing CDN Tokens: CDN links with exp timestamp never 403 or expire; transparent on-the-fly renewal
-// 4. Video Player: Never stuck on poster; Guaranteed "Connecting to stream server..." overlay with animated cyan spinner from click until playing
-// 5. Quality sheet: Only show resolutions that ACTUALLY exist (jei resolution nai sei resolution video te show koraiyo na)
-// 6. Download modal: 480P SD, 720P HD, 1080P FHD tabs with real MovieBox streams & sizes; detect missing resolutions
-// 7. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
-// 8. Fast Bufferless Streaming: Instant low-latency playback & resilient offline download engine without proxy loops
+// 4. Robust Download Start: Fixed batch download selectedIndices error; series & movies download smoothly
+// 5. Watch History Play & Resume: Flawless resume without modal closing conflicts, accurate episode & seek time
+// 6. Quality sheet: Only show resolutions that ACTUALLY exist (jei resolution nai sei resolution video te show koraiyo na)
+// 7. Download modal: 480P SD, 720P HD, 1080P FHD tabs with real MovieBox streams & sizes; detect missing resolutions
+// 8. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
 // 9. Auto Audio Silence: Instantly terminate background video & audio when opening Me / Downloads screen
 // 10. Flawless Pause & Resume: Instant response, persistent chunk recovery & no background worker conflicts
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.2.3 executing...');
+  console.log('⚡ FOBS TV Live Patch v1.2.4 executing...');
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -304,16 +304,131 @@
     window.openPlayer._hasLoaderHook = true;
   }
 
-  if (typeof window.openPlayerById === 'function' && !window.openPlayerById._hasLoaderHook) {
+  // Universal Catalog Search Helper
+  function findMediaInCatalog(id, type = null) {
+    if (!id) return null;
+    const sId = String(id).trim();
+    const cleanId = sId.replace(/^mb-[s|m]-/, '').replace(/-hindi$/, '');
+    const allMovies = window.appState?.content?.movies || [];
+    const allSeries = window.appState?.content?.series || [];
+    const allUpcoming = window.appState?.content?.upcoming || [];
+    const all = [...allMovies, ...allSeries, ...allUpcoming];
+
+    let found = all.find(x => String(x.id) === sId || String(x.subjectId) === sId || String(x.id) === cleanId || String(x.subjectId) === cleanId);
+    if (found) return found;
+
+    found = all.find(x => (x.tmdbId && String(x.tmdbId) === cleanId));
+    if (found) return found;
+
+    found = all.find(x => (x.id && (String(x.id).includes(cleanId) || cleanId.includes(String(x.id)))) || (x.subjectId && String(x.subjectId).includes(cleanId)));
+    if (found) return found;
+
+    found = all.find(x => x.title && (x.title.toLowerCase() === sId.toLowerCase() || x.title.toLowerCase().includes(sId.toLowerCase())));
+    if (found) return found;
+
+    return null;
+  }
+  window.findMediaInCatalog = findMediaInCatalog;
+
+  if (typeof window.openPlayerById === 'function') {
     const prevOpenPlayerById = window.openPlayerById;
     window.openPlayerById = function(type, id) {
       showConnectingLoader();
       const base = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : '';
       if (id) fetch(`${base}/api/moviebox/stream?id=${encodeURIComponent(id)}&se=0&ep=0&q=480&json=1`, { priority: 'low' }).catch(() => {});
+      
+      const foundItem = findMediaInCatalog(id, type);
+      if (foundItem) {
+        return window.openPlayer(foundItem);
+      }
       return prevOpenPlayerById(type, id);
     };
-    window.openPlayerById._hasLoaderHook = true;
   }
+
+  // Safe Watch History Resume: Accurate season/episode, no tab conflict, no modal freeze
+  window.resumeHistoryItem = function(mediaId, type, resumeSeconds) {
+    const overlay = document.getElementById('historyModalOverlay');
+    if (overlay) {
+      overlay.classList.remove('open');
+      overlay.style.display = 'none';
+    }
+    const menu = document.getElementById('profileDropdownMenu');
+    if (menu) menu.classList.add('hidden');
+
+    let rawHist = [];
+    try { rawHist = JSON.parse(localStorage.getItem('fobs_watch_history') || '[]'); } catch (_) {}
+    const histList = (typeof currentUser !== 'undefined' && currentUser && Array.isArray(window.userHistory) && window.userHistory.length > 0) ? window.userHistory : rawHist;
+    const targetId = String(mediaId || '').trim();
+    const hist = histList.find(h => {
+      const hId = String(h.mediaId || h.id || '').trim();
+      return (hId && (hId === targetId || hId.includes(targetId) || targetId.includes(hId))) || (h.title && h.title === mediaId);
+    });
+
+    const seNum = hist?.seasonNumber || 1;
+    const epNum = hist?.episodeNumber || 1;
+    const seekTime = (typeof resumeSeconds === 'number' && resumeSeconds > 0) ? resumeSeconds : (hist?.progressSeconds || 0);
+    const mediaType = type || hist?.type || 'movie';
+
+    let media = findMediaInCatalog(mediaId, mediaType);
+    if (!media && hist?.title) {
+      media = findMediaInCatalog(hist.title, mediaType);
+    }
+
+    if (!media && hist) {
+      const isSer = mediaType === 'series';
+      const cleanSub = String(hist.subjectId || hist.mediaId || mediaId).replace(/^mb-[s|m]-/, '').replace(/-hindi$/, '');
+      media = {
+        id: hist.mediaId || mediaId,
+        subjectId: cleanSub,
+        detailPath: hist.detailPath || '',
+        title: hist.title || 'Video',
+        poster: hist.poster || 'assets/fobs_logo.png',
+        type: isSer ? 'series' : 'movie',
+        seasonsCount: 1,
+        seasons: isSer ? [{
+          seasonNumber: seNum,
+          episodes: [{
+            episodeNumber: epNum,
+            title: `Episode ${epNum}`,
+            streamUrl: `/api/moviebox/stream?id=${encodeURIComponent(cleanSub)}&se=${seNum}&ep=${epNum}&q=480`
+          }]
+        }] : [],
+        streamUrl: `/api/moviebox/stream?id=${encodeURIComponent(cleanSub)}&se=0&ep=0&q=480`
+      };
+    }
+
+    if (media) {
+      if (media.type === 'series' || (media.seasons && media.seasons.length > 0) || (media.episodes && media.episodes.length > 0)) {
+        media.type = 'series';
+        if (window.appState) window.appState.currentSeason = seNum;
+        const activeEpisodes = (typeof window.getActiveSeasonEpisodes === 'function') ? window.getActiveSeasonEpisodes(media) : (media.seasons?.[0]?.episodes || media.episodes || []);
+        let targetEpIdx = 0;
+        if (Array.isArray(activeEpisodes) && activeEpisodes.length > 0) {
+          const foundIdx = activeEpisodes.findIndex(ep => {
+            const num = ep ? (ep.episode ?? ep.episodeNumber ?? ep.number) : null;
+            return Number(num) === Number(epNum);
+          });
+          if (foundIdx !== -1) targetEpIdx = foundIdx;
+        }
+        window.openPlayer(media, targetEpIdx, seekTime);
+      } else {
+        window.openPlayer(media, null, seekTime);
+      }
+    } else {
+      window.openPlayerById(mediaType, mediaId);
+    }
+  };
+
+  window.closeHistoryModal = function(e) {
+    if (e && e.target !== document.getElementById('historyModalOverlay') && !e.target.closest('.sheet-close-btn') && !e.target.closest('.mb-page-back-btn')) {
+      return;
+    }
+    const overlay = document.getElementById('historyModalOverlay');
+    if (overlay) {
+      overlay.classList.remove('open');
+      overlay.style.display = 'none';
+    }
+  };
 
   // Hook selectEpisode
   if (typeof window.selectEpisode === 'function' && !window.selectEpisode._hasLoaderHook) {
@@ -920,15 +1035,6 @@
     const batchState = getAppState()?._batchDownload;
     const isSeries = media.type === 'series' || (media.episodes && media.episodes.length > 0) || (media.seasons && media.seasons.length > 0) || (media.id && media.id.startsWith('mb-s-')) || (media.id && media.id.startsWith('kmdl-s-'));
 
-    const validIndices = selectedIndices.filter(idx => {
-      const itemEl = document.getElementById(`dl_ep_item_${idx}`);
-      return !itemEl || !itemEl.classList.contains('dl-unavailable');
-    });
-    if (validIndices.length === 0) {
-      showToast('⚠️ নির্বাচিত রেজুলেশনে ডাউনলোড করার মতো কোনো ফাইল নেই');
-      return;
-    }
-
     let subjectId = media.subjectId || media.mbSubjectId || (media.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || (media.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '').replace(/-hindi$/, '') : null) || '';
     let detailPath = media.detailPath || media.mbDetailPath || '';
     if (!subjectId && media.id) {
@@ -945,9 +1051,23 @@
     if (!subjectId) subjectId = media.id || '';
 
     if (isSeries) {
+      const selectedIndices = Array.from(batchState?.selected || []).sort((a, b) => a - b);
+      if (selectedIndices.length === 0) {
+        if (typeof showToast === 'function') showToast('অনুগ্রহ করে অন্তত ১টি পর্ব নির্বাচন করুন');
+        return;
+      }
+      const validIndices = selectedIndices.filter(idx => {
+        const itemEl = document.getElementById(`dl_ep_item_${idx}`);
+        return !itemEl || !itemEl.classList.contains('dl-unavailable');
+      });
+      if (validIndices.length === 0) {
+        if (typeof showToast === 'function') showToast('⚠️ নির্বাচিত রেজুলেশনে ডাউনলোড করার মতো কোনো ফাইল নেই');
+        return;
+      }
+
       const seNum = batchState?.season || window.appState?.currentSeason || 1;
       validIndices.forEach(idx => {
-        const ep = batchState.episodes[idx];
+        const ep = batchState?.episodes?.[idx];
         const epNum = ep ? (ep.episode ?? ep.episodeNumber ?? ep.number ?? (idx + 1)) : (idx + 1);
         const epTitle = ep?.title ? `${media.title} - ${ep.title}` : `${media.title} - S${seNum} Ep ${epNum}`;
         const epPoster = ep?.stillPath || media.poster || 'assets/fobs_logo.png';
@@ -964,37 +1084,41 @@
           downloadEndpointUrl += `&streamUrl=${encodeURIComponent(directUrl)}`;
         }
 
-        if (window.fobsDownloadQueue) {
-          window.fobsDownloadQueue.enqueue({
-            id: taskId,
-            mediaId: media.id,
-            title: epTitle,
-            poster: epPoster,
+        const taskItem = {
+          id: taskId,
+          mediaId: media.id,
+          title: epTitle,
+          poster: epPoster,
+          quality: curQ,
+          resolution: targetResNum,
+          season: seNum,
+          episode: epNum,
+          isSeries: true,
+          url: downloadEndpointUrl,
+          progress: 0,
+          receivedBytes: 0,
+          totalBytes: epRealBytes,
+          sizeText: epRealSize,
+          date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          status: 'queued',
+          statusText: 'Waiting in Queue (লাইনে অপেক্ষমাণ)',
+          options: {
             quality: curQ,
             resolution: targetResNum,
+            poster: epPoster,
+            mediaId: media.id,
             season: seNum,
             episode: epNum,
-            isSeries: true,
-            url: downloadEndpointUrl,
-            progress: 0,
-            receivedBytes: 0,
-            totalBytes: epRealBytes,
-            sizeText: epRealSize,
-            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-            status: 'queued',
-            statusText: 'Waiting in Queue (লাইনে অপেক্ষমাণ)',
-            options: {
-              quality: curQ,
-              resolution: targetResNum,
-              poster: epPoster,
-              mediaId: media.id,
-              season: seNum,
-              episode: epNum,
-              subjectId,
-              detailPath,
-              isSeries: true
-            }
-          });
+            subjectId,
+            detailPath,
+            isSeries: true
+          }
+        };
+
+        if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.enqueue === 'function') {
+          window.fobsDownloadQueue.enqueue(taskItem);
+        } else if (typeof downloadMedia === 'function') {
+          downloadMedia(downloadEndpointUrl, epTitle, taskItem.options, taskId);
         }
       });
 
@@ -1006,6 +1130,12 @@
     }
 
     // Single Movie Download
+    const movieItemEl = document.getElementById('dl_ep_item_0');
+    if (movieItemEl && movieItemEl.classList.contains('dl-unavailable')) {
+      if (typeof showToast === 'function') showToast('⚠️ নির্বাচিত রেজুলেশনে ডাউনলোড করার মতো কোনো ফাইল নেই');
+      return;
+    }
+
     const ep = batchState?.episodes?.[0];
     const movieTitle = media.title;
     const moviePoster = media.poster || 'assets/fobs_logo.png';
@@ -1022,37 +1152,41 @@
       downloadEndpointUrl += `&streamUrl=${encodeURIComponent(directMovieUrl)}`;
     }
 
-    if (window.fobsDownloadQueue) {
-      window.fobsDownloadQueue.enqueue({
-        id: taskId,
-        mediaId: media.id,
-        title: movieTitle,
-        poster: moviePoster,
+    const movieTaskItem = {
+      id: taskId,
+      mediaId: media.id,
+      title: movieTitle,
+      poster: moviePoster,
+      quality: curQ,
+      resolution: targetResNum,
+      season: 0,
+      episode: 0,
+      isSeries: false,
+      url: downloadEndpointUrl,
+      progress: 0,
+      receivedBytes: 0,
+      totalBytes: realBytes,
+      sizeText: realSize,
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      status: 'queued',
+      statusText: 'Waiting in Queue (লাইনে অপেক্ষমাণ)',
+      options: {
         quality: curQ,
         resolution: targetResNum,
+        poster: moviePoster,
+        mediaId: media.id,
         season: 0,
         episode: 0,
-        isSeries: false,
-        url: downloadEndpointUrl,
-        progress: 0,
-        receivedBytes: 0,
-        totalBytes: realBytes,
-        sizeText: realSize,
-        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        status: 'queued',
-        statusText: 'Waiting in Queue (লাইনে অপেক্ষমাণ)',
-        options: {
-          quality: curQ,
-          resolution: targetResNum,
-          poster: moviePoster,
-          mediaId: media.id,
-          season: 0,
-          episode: 0,
-          subjectId,
-          detailPath,
-          isSeries: false
-        }
-      });
+        subjectId,
+        detailPath,
+        isSeries: false
+      }
+    };
+
+    if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.enqueue === 'function') {
+      window.fobsDownloadQueue.enqueue(movieTaskItem);
+    } else if (typeof downloadMedia === 'function') {
+      downloadMedia(downloadEndpointUrl, movieTitle, movieTaskItem.options, taskId);
     }
 
     if (typeof window.closeDownloadOptionsModal === 'function') window.closeDownloadOptionsModal();

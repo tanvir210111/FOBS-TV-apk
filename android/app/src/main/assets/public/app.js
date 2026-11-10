@@ -3364,6 +3364,36 @@ function switchSeason(seasonNumber) {
   }
 }
 
+// Find Media in Catalog by ID, Subject ID, TMDB ID or Title
+function findMediaInCatalog(id, type = null) {
+  if (!id) return null;
+  const sId = String(id).trim();
+  const cleanId = sId.replace(/^mb-[s|m]-/, '').replace(/-hindi$/, '');
+  const allMovies = appState?.content?.movies || [];
+  const allSeries = appState?.content?.series || [];
+  const allUpcoming = appState?.content?.upcoming || [];
+  const all = [...allMovies, ...allSeries, ...allUpcoming];
+
+  // 1. Exact match on id or subjectId
+  let found = all.find(x => String(x.id) === sId || String(x.subjectId) === sId || String(x.id) === cleanId || String(x.subjectId) === cleanId);
+  if (found) return found;
+
+  // 2. TMDB match
+  found = all.find(x => (x.tmdbId && String(x.tmdbId) === cleanId));
+  if (found) return found;
+
+  // 3. Partial contains match
+  found = all.find(x => (x.id && (String(x.id).includes(cleanId) || cleanId.includes(String(x.id)))) || (x.subjectId && String(x.subjectId).includes(cleanId)));
+  if (found) return found;
+
+  // 4. Title match
+  found = all.find(x => x.title && (x.title.toLowerCase() === sId.toLowerCase() || x.title.toLowerCase().includes(sId.toLowerCase())));
+  if (found) return found;
+
+  return null;
+}
+window.findMediaInCatalog = findMediaInCatalog;
+
 // Open Player by Item ID
 function openPlayerById(type, id) {
   if (type !== 'upcoming' && typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
@@ -3412,6 +3442,38 @@ function openPlayerById(type, id) {
           }
         }
       }
+    }
+  }
+
+  if (!item) {
+    item = findMediaInCatalog(id, type);
+  }
+
+  if (!item) {
+    let rawHist = [];
+    try { rawHist = JSON.parse(localStorage.getItem('fobs_watch_history') || '[]'); } catch (_) {}
+    const hist = rawHist.find(h => String(h.mediaId || h.id) === String(id) || h.title === id);
+    if (hist) {
+      const isSer = (type === 'series') || (hist.type === 'series');
+      const cleanSub = String(hist.subjectId || hist.mediaId || id).replace(/^mb-[s|m]-/, '').replace(/-hindi$/, '');
+      item = {
+        id: hist.mediaId || id,
+        subjectId: cleanSub,
+        detailPath: hist.detailPath || '',
+        title: hist.title || 'Video',
+        poster: hist.poster || 'assets/fobs_logo.png',
+        type: isSer ? 'series' : 'movie',
+        seasonsCount: 1,
+        seasons: isSer ? [{
+          seasonNumber: hist.seasonNumber || 1,
+          episodes: [{
+            episodeNumber: hist.episodeNumber || 1,
+            title: `Episode ${hist.episodeNumber || 1}`,
+            streamUrl: `/api/moviebox/stream?id=${encodeURIComponent(cleanSub)}&se=${hist.seasonNumber || 1}&ep=${hist.episodeNumber || 1}&q=480`
+          }]
+        }] : [],
+        streamUrl: `/api/moviebox/stream?id=${encodeURIComponent(cleanSub)}&se=0&ep=0&q=480`
+      };
     }
   }
 
@@ -12494,9 +12556,6 @@ function closeHistoryModal(e) {
     overlay.classList.remove('open');
     overlay.style.display = 'none';
   }
-  if (typeof switchMainTab === 'function') {
-    switchMainTab('me');
-  }
 }
 window.closeHistoryModal = closeHistoryModal;
 
@@ -12571,7 +12630,7 @@ function renderHistoryItems() {
         <h3 class="mb-hist-date-heading">${title}</h3>
         ${items.map(item => `
           <div class="mb-hist-row">
-            <div class="mb-hist-thumb-wrap" onclick="resumeHistoryItem('${item.id}', '${item.type}', ${item.progressSeconds || 0}); closeHistoryModal();">
+            <div class="mb-hist-thumb-wrap" onclick="resumeHistoryItem('${item.id}', '${item.type}', ${item.progressSeconds || 0});">
               <img src="${item.poster}" alt="${item.title}" class="mb-hist-thumb-img" onerror="this.onerror=null; this.src='assets/fobs_logo.png'">
               <span class="mb-hist-tag-badge">${item.type === 'series' ? 'TV' : 'MOVIE'}</span>
               <span class="mb-hist-duration">${item.duration}</span>
@@ -12579,7 +12638,7 @@ function renderHistoryItems() {
                 <div class="mb-hist-prog-fill" style="width: ${item.percentNum}%;"></div>
               </div>
             </div>
-            <div class="mb-hist-info" onclick="resumeHistoryItem('${item.id}', '${item.type}', ${item.progressSeconds || 0}); closeHistoryModal();">
+            <div class="mb-hist-info" onclick="resumeHistoryItem('${item.id}', '${item.type}', ${item.progressSeconds || 0});">
               <div class="mb-hist-title">${item.title}</div>
               <div class="mb-hist-meta">
                 ${item.ep ? `<span class="mb-hist-ep">${item.ep}</span>` : ''}
@@ -12587,7 +12646,7 @@ function renderHistoryItems() {
               </div>
             </div>
             <div class="mb-hist-actions">
-              <button class="mb-hist-play-circle" onclick="resumeHistoryItem('${item.id}', '${item.type}', ${item.progressSeconds || 0}); closeHistoryModal();" title="Play">
+              <button class="mb-hist-play-circle" onclick="resumeHistoryItem('${item.id}', '${item.type}', ${item.progressSeconds || 0});" title="Play">
                 <i class="fa-solid fa-play"></i>
               </button>
             </div>
@@ -12602,15 +12661,78 @@ function renderHistoryItems() {
 window.renderHistoryItems = renderHistoryItems;
 
 function resumeHistoryItem(mediaId, type, resumeSeconds) {
-  openPlayerById(type || 'movie', mediaId);
-  const videoPlayer = document.getElementById('mainVideoPlayer');
-  if (videoPlayer && resumeSeconds > 0) {
-    appState.pendingSeekTime = resumeSeconds;
-    const onCanPlay = () => {
-      videoPlayer.currentTime = resumeSeconds;
-      videoPlayer.removeEventListener('canplay', onCanPlay);
+  // 1. Instantly hide history modal overlay without killing player
+  const overlay = document.getElementById('historyModalOverlay');
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.style.display = 'none';
+  }
+  const menu = document.getElementById('profileDropdownMenu');
+  if (menu) menu.classList.add('hidden');
+
+  // 2. Read saved history entry to extract exact season and episode
+  let rawHist = [];
+  try { rawHist = JSON.parse(localStorage.getItem('fobs_watch_history') || '[]'); } catch (_) {}
+  const histList = (typeof currentUser !== 'undefined' && currentUser && Array.isArray(userHistory) && userHistory.length > 0) ? userHistory : rawHist;
+  const targetId = String(mediaId || '').trim();
+  const hist = histList.find(h => {
+    const hId = String(h.mediaId || h.id || '').trim();
+    return (hId && (hId === targetId || hId.includes(targetId) || targetId.includes(hId))) || (h.title && h.title === mediaId);
+  });
+
+  const seNum = hist?.seasonNumber || 1;
+  const epNum = hist?.episodeNumber || 1;
+  const seekTime = (typeof resumeSeconds === 'number' && resumeSeconds > 0) ? resumeSeconds : (hist?.progressSeconds || 0);
+  const mediaType = type || hist?.type || 'movie';
+
+  let media = findMediaInCatalog(mediaId, mediaType);
+  if (!media && hist?.title) {
+    media = findMediaInCatalog(hist.title, mediaType);
+  }
+
+  // 3. If media not in static catalog, construct full playable media object directly from history record
+  if (!media && hist) {
+    const isSer = mediaType === 'series';
+    const cleanSub = String(hist.subjectId || hist.mediaId || mediaId).replace(/^mb-[s|m]-/, '').replace(/-hindi$/, '');
+    media = {
+      id: hist.mediaId || mediaId,
+      subjectId: cleanSub,
+      detailPath: hist.detailPath || '',
+      title: hist.title || 'Video',
+      poster: hist.poster || 'assets/fobs_logo.png',
+      type: isSer ? 'series' : 'movie',
+      seasonsCount: 1,
+      seasons: isSer ? [{
+        seasonNumber: seNum,
+        episodes: [{
+          episodeNumber: epNum,
+          title: `Episode ${epNum}`,
+          streamUrl: `/api/moviebox/stream?id=${encodeURIComponent(cleanSub)}&se=${seNum}&ep=${epNum}&q=480`
+        }]
+      }] : [],
+      streamUrl: `/api/moviebox/stream?id=${encodeURIComponent(cleanSub)}&se=0&ep=0&q=480`
     };
-    videoPlayer.addEventListener('canplay', onCanPlay);
+  }
+
+  if (media) {
+    if (media.type === 'series' || (media.seasons && media.seasons.length > 0) || (media.episodes && media.episodes.length > 0)) {
+      media.type = 'series';
+      appState.currentSeason = seNum;
+      const activeEpisodes = getActiveSeasonEpisodes(media);
+      let targetEpIdx = 0;
+      if (Array.isArray(activeEpisodes) && activeEpisodes.length > 0) {
+        const foundIdx = activeEpisodes.findIndex(ep => {
+          const num = ep ? (ep.episode ?? ep.episodeNumber ?? ep.number) : null;
+          return Number(num) === Number(epNum);
+        });
+        if (foundIdx !== -1) targetEpIdx = foundIdx;
+      }
+      openPlayer(media, targetEpIdx, seekTime);
+    } else {
+      openPlayer(media, null, seekTime);
+    }
+  } else {
+    openPlayerById(mediaType, mediaId);
   }
 }
 window.resumeHistoryItem = resumeHistoryItem;

@@ -2583,7 +2583,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.2.3",
+  version: "1.2.4",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 
