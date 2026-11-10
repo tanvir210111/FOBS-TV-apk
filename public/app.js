@@ -8390,7 +8390,7 @@ const fobsDownloadQueue = {
     const list = getStoredDownloadsList();
     const activeTasks = window.activeDownloadTasks || {};
     const isJsActive = Object.values(activeTasks).some(t => t && t.isDownloading && !t.isPaused);
-    const isStoredActive = list.some(d => d && d.status === 'downloading');
+    const isStoredActive = list.some(d => d && d.status === 'downloading' && !d.paused && (Date.now() - (d._lastActivity || 0) < 60000));
     const isAnyActive = isJsActive || isStoredActive;
 
     if (this.isProcessing && !isAnyActive && (now - (this._lastProcessStart || 0) > 30000)) {
@@ -9769,12 +9769,7 @@ async function resumeDownload(id, e) {
   localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
   renderDownloadsList();
 
-  // Native Android Resume
-  if (window.AndroidApp && typeof window.AndroidApp.resumeNativeDownload === 'function') {
-    try { window.AndroidApp.resumeNativeDownload(id); } catch (_) {}
-    return;
-  }
-
+  showToast(`▶️ "${item.title}" ডাউনলোড শুরু হচ্ছে...`);
   downloadMedia(item.url, item.title, item.options || {}, id);
 }
 window.resumeDownload = resumeDownload;
@@ -10281,12 +10276,14 @@ window.onNativeDownloadProgress = function(id, percent, downloadedBytes, totalBy
   try {
     const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
     const item = downloads.find(d => d && (d.id === id || String(id).includes(d.id)));
-    if (item && item.status !== 'paused') {
+    if (item && item.status !== 'paused' && !item.paused) {
       item.progress = percent;
       item.receivedBytes = downloadedBytes;
       item.totalBytes = totalBytes;
       item.status = 'downloading';
       item.statusText = `Downloading... ${percent}%`;
+      item.sizeText = sizeText;
+      item._lastActivity = Date.now();
       localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
     }
   } catch (_) {}

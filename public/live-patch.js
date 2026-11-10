@@ -1,12 +1,12 @@
-// FOBS TV Live OTA Patch Bundle v1.4.5 (Download Queue, Pause & Resume Engine for v3.2.0)
+// FOBS TV Live OTA Patch Bundle v1.4.6 (Download Queue, Pause & Resume Engine for v3.2.0)
 // 1. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
 // 2. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
 // 3. Smooth Online Playback: Connecting overlay smoothly dissolves only when video is actively playing (no frozen 1-2s icon)
 // 4. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
 // 5. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.4.5 (Download Queue, Pause & Resume) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.4.5';
+  console.log('⚡ FOBS TV Live Patch v1.4.6 (Download Queue, Pause & Resume) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.4.6';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -1687,10 +1687,11 @@
         // 3. Reset orphaned 'Reconnecting' or 'downloading' items that have no active worker
         const activeTasks = window.activeDownloadTasks || {};
         const hasWorker = activeTasks[item.id] && activeTasks[item.id].isDownloading && !activeTasks[item.id].isPaused;
+        const hasNativeWorker = Boolean(window.AndroidApp);
         const isReconnecting = typeof item.statusText === 'string' && item.statusText.toLowerCase().includes('reconnecting');
         const lastAct = item._lastActivity || 0;
-        const isRecent = (Date.now() - lastAct) < 25000;
-        const isStuckDownloading = item.status === 'downloading' && !hasWorker && !isRecent;
+        const isRecent = (Date.now() - lastAct) < (hasNativeWorker ? 120000 : 25000);
+        const isStuckDownloading = item.status === 'downloading' && !hasWorker && !hasNativeWorker && !isRecent;
 
         if (isReconnecting || isStuckDownloading) {
           if (item.progress && item.progress > 0) {
@@ -2184,89 +2185,153 @@
     const downMb = (downloadedBytes / (1024 * 1024)).toFixed(1);
     const totMb = totalBytes > 0 ? (totalBytes / (1024 * 1024)).toFixed(1) : '?';
     const sizeText = `${downMb} MB / ${totMb} MB`;
-    if (typeof window.updateDownloadProgress === 'function') {
-      window.updateDownloadProgress(id, percent, sizeText);
-    }
     try {
       const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
-      const item = downloads.find(d => d && (d.id === id || id.includes(d.id)));
-      if (item) {
+      const item = downloads.find(d => d && (d.id === id || String(id).includes(d.id)));
+      if (item && item.status !== 'paused' && !item.paused) {
         item.progress = percent;
         item.receivedBytes = downloadedBytes;
         item.totalBytes = totalBytes;
         item.status = 'downloading';
         item.statusText = `Downloading... ${percent}%`;
         item.sizeText = sizeText;
+        item._lastActivity = Date.now();
         localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
       }
     } catch (_) {}
+    if (typeof window.updateDownloadProgress === 'function') {
+      window.updateDownloadProgress(id, percent, sizeText);
+    }
   };
 
   window.onNativeDownloadComplete = function(id) {
     try {
       const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
-      const item = downloads.find(d => d && (d.id === id || id.includes(d.id)));
+      const item = downloads.find(d => d && (d.id === id || String(id).includes(d.id)));
       if (item) {
         item.progress = 100;
         item.status = 'Ready (Offline)';
         item.downloaded = true;
         item.isReady = true;
         item.statusText = 'Downloaded • Ready to Watch (অফলাইন)';
+        item._lastActivity = Date.now();
         localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
       }
     } catch (_) {}
     if (typeof window.renderDownloadsList === 'function') window.renderDownloadsList();
     if (typeof showToast === 'function') showToast('🎬 ডাউনলোড সম্পন্ন হয়েছে! অফলাইনে প্লে করতে ক্লিক করুন');
     if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
-      setTimeout(() => window.fobsDownloadQueue.processNext(), 400);
+      setTimeout(() => window.fobsDownloadQueue.processNext(), 350);
     }
   };
 
   window.onNativeDownloadPaused = function(id) {
     try {
       const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
-      const item = downloads.find(d => d && (d.id === id || id.includes(d.id)));
+      const item = downloads.find(d => d && (d.id === id || String(id).includes(d.id)));
       if (item) {
         item.status = 'paused';
         item.paused = true;
         item.statusText = `Paused (${item.progress || 0}%)`;
+        item._lastActivity = Date.now();
         localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
       }
     } catch (_) {}
     if (typeof window.renderDownloadsList === 'function') window.renderDownloadsList();
+    if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
+      setTimeout(() => window.fobsDownloadQueue.processNext(), 350);
+    }
   };
 
   window.onNativeDownloadDeleted = function(id) {
     try {
       let downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
-      downloads = downloads.filter(d => d && d.id !== id && !id.includes(d.id));
+      downloads = downloads.filter(d => d && d.id !== id && !String(id).includes(d.id));
       localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
     } catch (_) {}
     if (typeof window.renderDownloadsList === 'function') window.renderDownloadsList();
+    if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
+      setTimeout(() => window.fobsDownloadQueue.processNext(), 350);
+    }
   };
 
   // Hook pause/resume/delete for Native Downloader
-  const origPause = window.pauseDownload;
-  window.pauseDownload = function(id, e) {
-    if (window.AndroidApp && typeof window.AndroidApp.pauseNativeDownload === 'function') {
-      window.AndroidApp.pauseNativeDownload(id);
+  window.pauseDownload = async function(id, e) {
+    if (e) {
+      try { e.stopPropagation(); e.preventDefault(); } catch (_) {}
     }
-    if (typeof origPause === 'function') origPause(id, e);
+    try {
+      const downloads = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
+      const item = downloads.find(d => d && (d.id === id || String(id).includes(d.id)));
+      if (item) {
+        item.status = 'paused';
+        item.paused = true;
+        item.failed = false;
+        item._lastActivity = Date.now();
+        item.statusText = `Paused (${item.progress || 0}%)`;
+        localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+      }
+    } catch (_) {}
+    if (typeof window.renderDownloadsList === 'function') window.renderDownloadsList();
+
+    if (window.AndroidApp && typeof window.AndroidApp.pauseNativeDownload === 'function') {
+      try { window.AndroidApp.pauseNativeDownload(id); } catch (_) {}
+    }
+
+    const activeTasks = window.activeDownloadTasks || {};
+    const task = activeTasks[id];
+    if (task) {
+      task.isPaused = true;
+      task.isDownloading = false;
+      if (task.reader) { try { task.reader.cancel('paused'); } catch (_) {} }
+      if (task.controller) { try { task.controller.abort(); } catch (_) {} }
+    }
+
+    if (typeof releaseWakeLockIfNoActiveDownloads === 'function') releaseWakeLockIfNoActiveDownloads();
+    if (typeof showToast === 'function') showToast('⏸️ ডাউনলোড পজ করা হয়েছে');
+
+    if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
+      setTimeout(() => window.fobsDownloadQueue.processNext(), 400);
+    }
   };
 
-  const origResume = window.resumeDownload;
-  window.resumeDownload = function(id, e) {
-    if (window.AndroidApp && typeof window.AndroidApp.resumeNativeDownload === 'function') {
-      window.AndroidApp.resumeNativeDownload(id);
-      return;
+  window.resumeDownload = async function(id, e) {
+    if (e) {
+      try { e.stopPropagation(); e.preventDefault(); } catch (_) {}
     }
-    if (typeof origResume === 'function') origResume(id, e);
+    const downloads = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
+    const item = downloads.find(d => d && (d.id === id || String(id).includes(d.id)));
+    if (!item) return;
+
+    item.status = 'downloading';
+    item.paused = false;
+    item.failed = false;
+    item.downloaded = false;
+    item._lastActivity = Date.now();
+    const currentQuality = item.quality || item.options?.quality || '480P';
+    item.statusText = item.progress > 0 ? `Resuming ${currentQuality} (${item.progress}%)...` : `Connecting ${currentQuality}...`;
+    localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+    if (typeof window.renderDownloadsList === 'function') window.renderDownloadsList();
+
+    const activeTasks = window.activeDownloadTasks || {};
+    if (activeTasks[id]) {
+      activeTasks[id].isPaused = false;
+      activeTasks[id]._autoRetries = 0;
+    }
+
+    if (typeof showToast === 'function') showToast(`▶️ "${item.title}" ডাউনলোড শুরু হচ্ছে...`);
+
+    try {
+      await window.downloadMedia(item.url, item.title, item.options || {}, item.id);
+    } catch (err) {
+      console.warn('Resume error:', err);
+    }
   };
 
   const origDelete = window.deleteDownload;
   window.deleteDownload = function(id, e) {
     if (window.AndroidApp && typeof window.AndroidApp.deleteNativeDownload === 'function') {
-      window.AndroidApp.deleteNativeDownload(id);
+      try { window.AndroidApp.deleteNativeDownload(id); } catch (_) {}
     }
     if (typeof origDelete === 'function') origDelete(id, e);
   };
@@ -2304,7 +2369,17 @@
         const qNum = opts.resolution || 480;
 
         let proxiedDownloadUrl = cleanUrl;
-        if (!proxiedDownloadUrl.startsWith('http')) {
+        if (proxiedDownloadUrl.includes('/api/moviebox/stream')) {
+          try {
+            const parsed = new URL(proxiedDownloadUrl.startsWith('http') ? proxiedDownloadUrl : `${apiBase}${proxiedDownloadUrl.startsWith('/') ? '' : '/'}${proxiedDownloadUrl}`);
+            parsed.pathname = '/api/download';
+            if (!parsed.searchParams.has('title')) parsed.searchParams.set('title', cleanSafeTitle);
+            if (!parsed.searchParams.has('q')) parsed.searchParams.set('q', String(qNum));
+            proxiedDownloadUrl = parsed.toString();
+          } catch (e) {
+            proxiedDownloadUrl = `${apiBase}/api/download?url=${encodeURIComponent(proxiedDownloadUrl)}&q=${qNum}&title=${encodeURIComponent(cleanSafeTitle)}`;
+          }
+        } else if (!proxiedDownloadUrl.startsWith('http')) {
           proxiedDownloadUrl = `${apiBase}${proxiedDownloadUrl.startsWith('/') ? '' : '/'}${proxiedDownloadUrl}`;
         }
         if (!proxiedDownloadUrl.includes('title=')) {
@@ -2362,6 +2437,7 @@
           curItem.paused = false;
           curItem.failed = false;
         }
+        curItem._lastActivity = Date.now();
         localStorage.setItem('fobs_downloads', JSON.stringify(curDownloads));
         if (typeof renderDownloadsList === 'function') renderDownloadsList();
 

@@ -53,7 +53,7 @@ public class NativeDownloadManager {
 
     public NativeDownloadManager(Context context) {
         this.context = context.getApplicationContext();
-        this.executor = Executors.newFixedThreadPool(2); // Download 1-2 streams concurrently
+        this.executor = Executors.newFixedThreadPool(1); // Serial queue: 1 stream at full bandwidth
         this.mainHandler = new Handler(Looper.getMainLooper());
         ensureDownloadsDirectory();
     }
@@ -163,7 +163,7 @@ public class NativeDownloadManager {
         }
 
         // Save metadata JSON
-        saveMetadata(cleanId, title, poster, quality, season, episode, isSeries, url, metaJson);
+        saveMetadata(cleanId, title, poster, quality, season, episode, isSeries, url, bnSubUrl, enSubUrl, metaJson);
 
         DownloadWorker worker = new DownloadWorker(cleanId, url, title, poster, quality,
                 season, episode, isSeries, bnSubUrl, enSubUrl);
@@ -254,7 +254,8 @@ public class NativeDownloadManager {
     }
 
     private void saveMetadata(String id, String title, String poster, String quality,
-                              int season, int episode, boolean isSeries, String url, String metaJson) {
+                              int season, int episode, boolean isSeries, String url,
+                              String bnSubUrl, String enSubUrl, String metaJson) {
         try {
             JSONObject json;
             if (metaJson != null && !metaJson.trim().isEmpty()) {
@@ -274,6 +275,8 @@ public class NativeDownloadManager {
             json.put("episode", episode);
             json.put("isSeries", isSeries);
             json.put("url", url);
+            json.put("bnSubUrl", bnSubUrl != null ? bnSubUrl : "");
+            json.put("enSubUrl", enSubUrl != null ? enSubUrl : "");
             json.put("savedAt", System.currentTimeMillis());
 
             File metaFile = new File(getDownloadsDir(), id + ".json");
@@ -524,6 +527,9 @@ public class NativeDownloadManager {
                 raf.close();
                 raf = null;
 
+                if (targetFile.exists()) {
+                    targetFile.delete();
+                }
                 if (partFile.renameTo(targetFile)) {
                     // Download Subtitles in background
                     fetchAndSaveSubtitles(id, bnSubUrl, enSubUrl);
