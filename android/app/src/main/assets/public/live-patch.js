@@ -1,4 +1,4 @@
-// FOBS TV Live OTA Patch Bundle v1.2.7
+// FOBS TV Live OTA Patch Bundle v1.2.8
 // 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (360p/480p default)
 // 2. Ultra-Low Latency Millisecond Playback: Prefetch warm streams, preload auto, and instant H.264 playback
 // 3. Bulletproof Playback Guarantee: Robust autoplay with muted fallback, instant loader dismissal on ready, and touch-unmute
@@ -13,9 +13,10 @@
 // 12. Auto Audio Silence: Instantly terminate background video & audio when opening Me / Downloads screen
 // 13. Flawless Pause & Resume: Instant response, persistent chunk recovery & no background worker conflicts
 // 14. Real File Size & Quality Auto-Detection: Accurate resolution availability, fallback, and zero-hang instant download
+// 15. Absolute Stream URL Routing: Zero ERR_CONNECTION_REFUSED on mobile APK & instant unmuted playback
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.2.7 executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.2.7';
+  console.log('⚡ FOBS TV Live Patch v1.2.8 executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.2.8';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -48,11 +49,22 @@
                               window.location.port && 
                               window.location.port !== '80' && 
                               window.location.port !== '443';
-    if (isCustomLocalPort || window.location.hostname.includes('duckdns.org') || window.location.hostname.includes('187.127.114.52')) {
+    if (isCustomLocalPort) {
       return '';
     }
     return 'https://fobstv.duckdns.org';
   }
+
+  function getAbsoluteApiUrl(path) {
+    if (!path || typeof path !== 'string') return '';
+    if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('blob:') || path.startsWith('data:')) {
+      return path;
+    }
+    const base = getApiBaseUrl();
+    const cleanPath = path.startsWith('/') ? path : '/' + path;
+    return `${base}${cleanPath}`;
+  }
+  window.getAbsoluteApiUrl = getAbsoluteApiUrl;
 
   // -------------------------------------------------------------
   // 0. Eliminate Native Android Poster Freeze, Big Play Button & Hide Portrait Resolution Button
@@ -91,7 +103,7 @@
         align-items: center !important;
         justify-content: center !important;
         z-index: 9999 !important;
-        cursor: pointer !important;
+        pointer-events: none !important;
       }
       #fobsConnectingOverlay.active {
         display: flex !important;
@@ -416,7 +428,7 @@
     const isMovie = media.type === 'movie' || (!media.seasons && !media.episodes);
     const seNum = isMovie ? 0 : (se || 1);
     const epNum = isMovie ? 0 : (ep || 1);
-    const pfUrl = `${base}/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480&json=1`;
+    const pfUrl = getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480&json=1`);
     fetch(pfUrl, { priority: 'low' }).catch(() => {});
   }
   window.prefetchStream = prefetchStream;
@@ -439,7 +451,7 @@
     const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (m?.id && /^\d{16,20}$/.test(m.id) ? m.id : null);
     const dPath = m?.detailPath || m?.mbDetailPath || m?.movieboxDetailPath || '';
     if (sId && isMovieBox) {
-      return `/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480`;
+      return getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480`);
     }
 
     const allUrls = [
@@ -453,58 +465,64 @@
     if (mbUrl) {
       let clean = mbUrl.replace(/([?&])q=\d+/g, '$1q=480');
       if (!clean.includes('q=')) clean += (clean.includes('?') ? '&' : '?') + 'q=480';
-      return clean;
+      return getAbsoluteApiUrl(clean);
     }
 
     const rawCdn = allUrls.find(u => typeof u === 'string' && (u.includes('hakunaymatata') || u.includes('bcdnxw') || u.includes('haildrop') || u.includes('fogtwist') || u.includes('sunburst') || u.includes('stormshade')));
     if (rawCdn) {
       if (sId) {
-        return `/api/moviebox/stream?id=${encodeURIComponent(sId)}&se=${seNum}&ep=${epNum}&q=480`;
+        return getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&se=${seNum}&ep=${epNum}&q=480`);
       }
-      return `/api/stream?url=${encodeURIComponent(rawCdn)}`;
+      return getAbsoluteApiUrl(`/api/stream?url=${encodeURIComponent(rawCdn)}`);
     }
 
     return ep?.streamUrl || m?.streamUrl || '';
   };
 
   // Hook playStreamUrl: Guaranteed 480p millisecond start & safe fallback
-  let origPlayStreamUrl = (typeof window.playStreamUrl === 'function' && !window.playStreamUrl._isFobsHook) ? window.playStreamUrl : null;
+  if (!window._fobsOriginalPlayStreamUrl && typeof window.playStreamUrl === 'function' && !window.playStreamUrl._isFobsHook) {
+    window._fobsOriginalPlayStreamUrl = window.playStreamUrl;
+  }
+  const basePlayStreamUrl = window._fobsOriginalPlayStreamUrl || (typeof window.playStreamUrl === 'function' && !window.playStreamUrl._isFobsHook ? window.playStreamUrl : null);
+
   const fobsPlayStreamHook = function(url, audioIndex = null, seekTime = null) {
     showConnectingLoader();
     const vp = document.getElementById('mainVideoPlayer');
-    if (vp) vp.preload = 'auto';
+    if (vp) {
+      vp.preload = 'auto';
+      // Ensure audio sound is restored on play start
+      vp.muted = false;
+    }
 
     let fastUrl = url;
     if (typeof fastUrl === 'string') {
+      if (fastUrl.startsWith('/api/')) {
+        fastUrl = getAbsoluteApiUrl(fastUrl);
+      }
       if (fastUrl.includes('/api/moviebox/stream')) {
         fastUrl = fastUrl.replace(/([?&])q=\d+/g, '$1q=480');
         if (!fastUrl.includes('q=')) fastUrl += (fastUrl.includes('?') ? '&' : '?') + 'q=480';
       } else if (fastUrl.includes('hakunaymatata') || fastUrl.includes('bcdnxw') || fastUrl.includes('haildrop') || fastUrl.includes('fogtwist') || fastUrl.includes('sunburst') || fastUrl.includes('stormshade')) {
-        const base = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : '';
         const m = getActiveMedia();
         const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (m?.id && /^\d{16,20}$/.test(m.id) ? m.id : null);
         if (sId) {
           const se = window.appState?.currentSeason || 0;
           const ep = window.appState?.currentEpisodeNumber || 0;
-          fastUrl = `${base}/api/moviebox/stream?id=${encodeURIComponent(sId)}&se=${se}&ep=${ep}&q=480`;
+          fastUrl = getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&se=${se}&ep=${ep}&q=480`);
         } else {
-          fastUrl = `${base}/api/stream?url=${encodeURIComponent(fastUrl)}`;
+          fastUrl = getAbsoluteApiUrl(`/api/stream?url=${encodeURIComponent(fastUrl)}`);
         }
       }
     }
 
-    if (!origPlayStreamUrl && typeof window.playStreamUrl === 'function' && window.playStreamUrl !== fobsPlayStreamHook) {
-      origPlayStreamUrl = window.playStreamUrl;
+    const activeBasePlay = window._fobsOriginalPlayStreamUrl || basePlayStreamUrl;
+    if (typeof activeBasePlay === 'function' && activeBasePlay !== fobsPlayStreamHook) {
+      return activeBasePlay(fastUrl, audioIndex, seekTime);
     }
 
-    if (typeof origPlayStreamUrl === 'function') {
-      return origPlayStreamUrl(fastUrl, audioIndex, seekTime);
-    }
-
-    // Direct fallback if origPlayStreamUrl is unavailable
+    // Direct fallback if basePlayStreamUrl is unavailable
     if (vp && fastUrl) {
-      const base = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : '';
-      const full = fastUrl.startsWith('http') ? fastUrl : (base + (fastUrl.startsWith('/') ? '' : '/') + fastUrl);
+      const full = getAbsoluteApiUrl(fastUrl);
       if (vp.src !== full) vp.src = full;
       const playP = vp.play();
       if (playP && typeof playP.catch === 'function') {
@@ -519,29 +537,22 @@
   window.playStreamUrl = fobsPlayStreamHook;
 
   // Hook openPlayer & openPlayerById
-  if (typeof window.openPlayer === 'function' && !window.openPlayer._hasLoaderHook) {
-    const prevOpenPlayer = window.openPlayer;
-    window.openPlayer = function(media, episodeIndex = null, resumeSeekTime = null) {
-      const vp = document.getElementById('mainVideoPlayer');
-      if (vp) {
-        vp.preload = 'auto';
-      }
-      showConnectingLoader();
-      if (media) prefetchStream(media, 0, 0);
-      const res = prevOpenPlayer(media, episodeIndex, resumeSeekTime);
-      if (vp && vp.paused) {
-        const p = vp.play();
-        if (p && typeof p.catch === 'function') {
-          p.catch(() => {
-            vp.muted = true;
-            vp.play().catch(() => {});
-          });
-        }
-      }
-      return res;
-    };
-    window.openPlayer._hasLoaderHook = true;
+  if (!window._fobsOriginalOpenPlayer && typeof window.openPlayer === 'function' && !window.openPlayer._hasLoaderHook) {
+    window._fobsOriginalOpenPlayer = window.openPlayer;
   }
+  const baseOpenPlayer = window._fobsOriginalOpenPlayer || window.openPlayer;
+
+  window.openPlayer = function(media, episodeIndex = null, resumeSeekTime = null) {
+    const vp = document.getElementById('mainVideoPlayer');
+    if (vp) {
+      vp.preload = 'auto';
+      vp.muted = false; // Restore sound!
+    }
+    showConnectingLoader();
+    if (media) prefetchStream(media, 0, 0);
+    return baseOpenPlayer(media, episodeIndex, resumeSeekTime);
+  };
+  window.openPlayer._hasLoaderHook = true;
 
   // Universal Catalog Search Helper
   function findMediaInCatalog(id, type = null) {
@@ -569,49 +580,57 @@
   }
   window.findMediaInCatalog = findMediaInCatalog;
 
-  if (typeof window.openPlayerById === 'function') {
-    const prevOpenPlayerById = window.openPlayerById;
-    window.openPlayerById = function(type, id) {
-      showConnectingLoader();
-      const base = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : '';
-      if (id) fetch(`${base}/api/moviebox/stream?id=${encodeURIComponent(id)}&se=0&ep=0&q=480&json=1`, { priority: 'low' }).catch(() => {});
-      
-      try {
-        const ret = prevOpenPlayerById(type, id);
+  if (!window._fobsOriginalOpenPlayerById && typeof window.openPlayerById === 'function' && !window.openPlayerById._hasFobsHook) {
+    window._fobsOriginalOpenPlayerById = window.openPlayerById;
+  }
+  const baseOpenPlayerById = window._fobsOriginalOpenPlayerById || (typeof window.openPlayerById === 'function' && !window.openPlayerById._hasFobsHook ? window.openPlayerById : null);
+
+  window.openPlayerById = function(type, id) {
+    showConnectingLoader();
+    if (id) {
+      const pfUrl = getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(id)}&se=0&ep=0&q=480&json=1`);
+      fetch(pfUrl, { priority: 'low' }).catch(() => {});
+    }
+    
+    try {
+      const activeBase = window._fobsOriginalOpenPlayerById || baseOpenPlayerById;
+      if (typeof activeBase === 'function') {
+        const ret = activeBase(type, id);
         const overlay = document.getElementById('playerOverlay');
         if (overlay && overlay.classList.contains('open')) {
           return ret;
         }
-      } catch (err) {
-        console.warn('prevOpenPlayerById notice:', err);
       }
+    } catch (err) {
+      console.warn('activeBase openPlayerById notice:', err);
+    }
 
-      const foundItem = findMediaInCatalog(id, type);
-      if (foundItem) {
-        if (type !== 'upcoming' && typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
-          if (window.appState) window.appState.pendingOpenMedia = { type, id };
-          if (typeof openSimpleLoginModal === 'function') openSimpleLoginModal();
-          hideConnectingLoader();
-          return;
-        }
-        if (foundItem.type === 'upcoming' || (foundItem.badgeRight && foundItem.badgeRight.toLowerCase().includes('coming'))) {
-          if (typeof openUpcomingBookingModal === 'function') openUpcomingBookingModal(foundItem);
-          hideConnectingLoader();
-          return;
-        }
-        const isSer = type === 'series' || foundItem.type === 'series' || (foundItem.seasons && foundItem.seasons.length > 0) || (foundItem.id && foundItem.id.startsWith('mb-s-'));
-        if (isSer) {
-          foundItem.type = 'series';
-          if ((!foundItem.episodes || foundItem.episodes.length === 0) && foundItem.seasons && foundItem.seasons[0] && foundItem.seasons[0].episodes) {
-            foundItem.episodes = foundItem.seasons[0].episodes;
-          }
-        } else {
-          foundItem.type = 'movie';
-        }
-        return window.openPlayer(foundItem);
+    const foundItem = findMediaInCatalog(id, type);
+    if (foundItem) {
+      if (type !== 'upcoming' && typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
+        if (window.appState) window.appState.pendingOpenMedia = { type, id };
+        if (typeof openSimpleLoginModal === 'function') openSimpleLoginModal();
+        hideConnectingLoader();
+        return;
       }
-    };
-  }
+      if (foundItem.type === 'upcoming' || (foundItem.badgeRight && foundItem.badgeRight.toLowerCase().includes('coming'))) {
+        if (typeof openUpcomingBookingModal === 'function') openUpcomingBookingModal(foundItem);
+        hideConnectingLoader();
+        return;
+      }
+      const isSer = type === 'series' || foundItem.type === 'series' || (foundItem.seasons && foundItem.seasons.length > 0) || (foundItem.id && foundItem.id.startsWith('mb-s-'));
+      if (isSer) {
+        foundItem.type = 'series';
+        if ((!foundItem.episodes || foundItem.episodes.length === 0) && foundItem.seasons && foundItem.seasons[0] && foundItem.seasons[0].episodes) {
+          foundItem.episodes = foundItem.seasons[0].episodes;
+        }
+      } else {
+        foundItem.type = 'movie';
+      }
+      return window.openPlayer(foundItem);
+    }
+  };
+  window.openPlayerById._hasFobsHook = true;
 
   // Safe Watch History Resume: Accurate season/episode, no tab conflict, no modal freeze
   window.resumeHistoryItem = function(mediaId, type, resumeSeconds) {
@@ -658,10 +677,10 @@
           episodes: [{
             episodeNumber: epNum,
             title: `Episode ${epNum}`,
-            streamUrl: `/api/moviebox/stream?id=${encodeURIComponent(cleanSub)}&se=${seNum}&ep=${epNum}&q=480`
+            streamUrl: getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(cleanSub)}&se=${seNum}&ep=${epNum}&q=480`)
           }]
         }] : [],
-        streamUrl: `/api/moviebox/stream?id=${encodeURIComponent(cleanSub)}&se=0&ep=0&q=480`
+        streamUrl: getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(cleanSub)}&se=0&ep=0&q=480`)
       };
     }
 
@@ -1854,7 +1873,6 @@
       const videoPlayer = document.getElementById('mainVideoPlayer');
       if (videoPlayer) {
         videoPlayer.pause();
-        videoPlayer.muted = true;
       }
       const embedFrame = document.getElementById('mainEmbedPlayer');
       if (embedFrame && embedFrame.src && embedFrame.src !== 'about:blank') {

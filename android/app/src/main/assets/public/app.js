@@ -3470,6 +3470,7 @@ function openPlayerById(type, id) {
     if (hist) {
       const isSer = (type === 'series') || (hist.type === 'series');
       const cleanSub = String(hist.subjectId || hist.mediaId || id).replace(/^mb-[s|m]-/, '').replace(/-hindi$/, '');
+      const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
       item = {
         id: hist.mediaId || id,
         subjectId: cleanSub,
@@ -3483,10 +3484,10 @@ function openPlayerById(type, id) {
           episodes: [{
             episodeNumber: hist.episodeNumber || 1,
             title: `Episode ${hist.episodeNumber || 1}`,
-            streamUrl: `/api/moviebox/stream?id=${encodeURIComponent(cleanSub)}&se=${hist.seasonNumber || 1}&ep=${hist.episodeNumber || 1}&q=480`
+            streamUrl: `${apiBase}/api/moviebox/stream?id=${encodeURIComponent(cleanSub)}&se=${hist.seasonNumber || 1}&ep=${hist.episodeNumber || 1}&q=480`
           }]
         }] : [],
-        streamUrl: `/api/moviebox/stream?id=${encodeURIComponent(cleanSub)}&se=0&ep=0&q=480`
+        streamUrl: `${apiBase}/api/moviebox/stream?id=${encodeURIComponent(cleanSub)}&se=0&ep=0&q=480`
       };
     }
   }
@@ -3792,7 +3793,8 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
     let initialUrl = null;
 
     if (sId) {
-      initialUrl = `/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=0&ep=0&q=480`;
+      const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
+      initialUrl = `${apiBase}/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=0&ep=0&q=480`;
       appState.currentQuality = '480p';
     } else {
       const allUrls = [
@@ -4183,11 +4185,13 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
 
   // MovieBox dynamic stream redirect handler: Instant zero-delay playback + background quality discovery
   if (playableUrl.includes('/api/moviebox/stream')) {
-    const fullUrl = playableUrl.startsWith('http') ? playableUrl : (API_BASE_URL + (playableUrl.startsWith('/') ? '' : '/') + playableUrl);
+    const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
+    const fullUrl = playableUrl.startsWith('http') ? playableUrl : (apiBase + (playableUrl.startsWith('/') ? '' : '/') + playableUrl);
     const jsonUrl = fullUrl.includes('?') ? (fullUrl + '&json=1') : (fullUrl + '?json=1');
 
     console.log('Playing MovieBox stream immediately:', fullUrl);
     videoPlayer.preload = 'auto';
+    videoPlayer.muted = false;
     if (videoPlayer.src !== fullUrl) {
       videoPlayer.src = fullUrl;
     }
@@ -7679,14 +7683,15 @@ function setupVideoListeners() {
       const resumeTime = appState.pendingSeekTime || videoPlayer.currentTime || 0;
       console.log(`Retrying stream via proxy at ${resumeTime}s (attempt ${videoPlayer._retryCount})...`);
 
-      const targetUrl = rawUrl.startsWith('http') ? rawUrl : `${API_BASE_URL}${rawUrl}`;
+      const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
+      const targetUrl = rawUrl.startsWith('http') ? rawUrl : `${apiBase}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`;
       if (targetUrl.includes('/api/moviebox/stream')) {
         playStreamUrl(targetUrl, null, resumeTime);
         return;
       }
       const proxyUrl = targetUrl.includes('/api/stream') 
         ? targetUrl 
-        : `${API_BASE_URL}/api/stream?url=${encodeURIComponent(targetUrl)}`;
+        : `${apiBase}/api/stream?url=${encodeURIComponent(targetUrl)}`;
 
       videoPlayer.src = proxyUrl;
       if (resumeTime > 0) {
