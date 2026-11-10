@@ -12001,12 +12001,16 @@ function checkAppUpdate(data) {
     } catch (e) {}
   }
 
-  // Strict guard: If running current v3.1.5+ (versionCode >= latestVersionCode), NEVER show update modal
-  if (activeVersionCode >= updateInfo.latestVersionCode) {
+  // Strict guard: If running current v3.1.8+ (versionCode >= latestVersionCode or versionName === '3.1.8'), NEVER show update modal
+  if (activeVersionCode >= updateInfo.latestVersionCode || activeVersionName === '3.1.8') {
     const modal = document.getElementById('appUpdateModal');
-    if (modal) modal.classList.add('hidden');
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.style.setProperty('display', 'none', 'important');
+    }
     const headerBtn = document.getElementById('headerUpdateBtn');
     if (headerBtn) headerBtn.classList.add('hidden');
+    document.body.style.overflow = '';
     return;
   }
 

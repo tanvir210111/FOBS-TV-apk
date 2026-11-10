@@ -2507,6 +2507,19 @@
       activeVc = CURRENT_APP_VERSION_CODE;
     }
 
+    if (activeVc >= 16 || activeVn === '3.1.8') {
+      // Version 3.1.8 is the latest version: NEVER show popup
+      const modal = document.getElementById('appUpdateModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.style.setProperty('display', 'none', 'important');
+      }
+      const headerBtn = document.getElementById('headerUpdateBtn');
+      if (headerBtn) headerBtn.classList.add('hidden');
+      document.body.style.overflow = '';
+      return;
+    }
+
     if (activeVc > 0 && activeVc < 16) {
       console.log('Outdated app detected (versionCode ' + activeVc + '). Forcing v3.1.8 update popup.');
       const updateData = {
