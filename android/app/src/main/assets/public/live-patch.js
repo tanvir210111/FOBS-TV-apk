@@ -1,13 +1,12 @@
-// FOBS TV Live OTA Patch Bundle v1.3.1
-// 1. Bulletproof Offline Video Playback: Directly mounts IndexedDB videoBlob via objectURL with zero-dependency on outer scope
-// 2. Dual Offline Subtitles: Bangla & English subtitles reliably fetched via proxy, saved to IndexedDB, and rendered offline
-// 3. Multi-Download Queue Engine: Automatic sequential downloading of all queued files with stall detection & watchdog
-// 4. Per-Episode Distinct File Size Detection: Every series episode gets distinct realistic size calculations
-// 5. Zero Connecting Overlay on Offline: Dismisses stream overlay, unmutes audio, and ensures smooth offline playback
-// 6. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
+// FOBS TV Live OTA Patch Bundle v1.3.2
+// 1. MovieBox Style Offline Video Playback: Direct IndexedDB videoBlob playback with zero byte-gaps & butter-smooth seek
+// 2. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
+// 3. Smooth Online Playback: Connecting overlay smoothly dissolves only when video is actively playing (no frozen 1-2s icon)
+// 4. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
+// 5. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.3.1 executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.3.1';
+  console.log('⚡ FOBS TV Live Patch v1.3.2 executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.3.2';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -182,12 +181,21 @@
       const posterObs = new MutationObserver(() => stripVideoPoster());
       posterObs.observe(videoEl, { attributes: true, attributeFilter: ['poster'] });
 
-      const dismiss = () => hideConnectingLoader();
+      // Smooth transition: Only dismiss connecting overlay when video is actively moving and rendering frames!
+      const dismissWhenPlaying = () => {
+        if (videoEl.currentTime > 0.05 || !videoEl.paused) {
+          hideConnectingLoader();
+        }
+      };
 
-      videoEl.addEventListener('playing', dismiss);
-      videoEl.addEventListener('canplay', dismiss);
-      videoEl.addEventListener('canplaythrough', dismiss);
-      videoEl.addEventListener('loadeddata', dismiss);
+      videoEl.addEventListener('playing', () => {
+        hideConnectingLoader();
+      });
+      videoEl.addEventListener('timeupdate', () => {
+        if (videoEl.currentTime > 0.05) {
+          hideConnectingLoader();
+        }
+      });
       videoEl.addEventListener('loadedmetadata', () => {
         if (videoEl.duration && isFinite(videoEl.duration) && videoEl.duration > 0) {
           const state = getAppState();
@@ -195,13 +203,10 @@
             state.currentMedia.duration = videoEl.duration;
           }
         }
-        if (!videoEl.paused) dismiss();
       });
-      videoEl.addEventListener('timeupdate', () => {
-        if (videoEl.currentTime > 0) dismiss();
+      videoEl.addEventListener('error', () => {
+        hideConnectingLoader();
       });
-      videoEl.addEventListener('pause', dismiss);
-      videoEl.addEventListener('error', dismiss);
       videoEl.addEventListener('waiting', () => {
         if (isOfflinePlayback(videoEl)) {
           hideConnectingLoader();
@@ -1374,7 +1379,9 @@
             episode: epNum,
             subjectId,
             detailPath,
-            isSeries: true
+            isSeries: true,
+            seriesTitle: media.title || '',
+            cleanTitle: media.title || ''
           }
         };
         taskItems.push(taskItem);
@@ -1448,7 +1455,8 @@
         episode: 0,
         subjectId,
         detailPath,
-        isSeries: false
+        isSeries: false,
+        cleanTitle: movieTitle || ''
       }
     };
 
@@ -2238,8 +2246,14 @@
       window.fobsDownloadQueue.processNext();
     }
   });
+  // Auto-pause video and silence audio when screen is locked or power button is pressed
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible' && window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
+    if (document.hidden) {
+      const vp = document.getElementById('mainVideoPlayer');
+      if (vp && !vp.paused) {
+        vp.pause();
+      }
+    } else if (document.visibilityState === 'visible' && window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
       window.fobsDownloadQueue.processNext();
     }
   });

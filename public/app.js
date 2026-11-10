@@ -9089,7 +9089,8 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       const tempSaved = await getOfflineMedia('temp_' + downloadId);
       if (tempSaved && tempSaved.chunks) {
         existingBlobChunks = [tempSaved.chunks];
-        existingBytes = tempSaved.receivedBytes || tempSaved.chunks.size || 0;
+        // CRITICAL: Must be exact byte size of the chunks Blob on disk, NEVER estimated receivedBytes!
+        existingBytes = (tempSaved.chunks instanceof Blob) ? tempSaved.chunks.size : (tempSaved.receivedBytes || 0);
       }
     } catch (tErr) {}
   }
@@ -9293,7 +9294,7 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
           saveOfflineMedia({
             id: 'temp_' + downloadId,
             chunks: tempBlob,
-            receivedBytes: receivedBytes,
+            receivedBytes: tempBlob.size,
             totalBytes: effectiveTotal,
             quality: quality,
             updatedAt: Date.now()
@@ -9389,7 +9390,16 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       const dlIsSeries = options.isSeries || false;
 
       let available = [];
-      const cleanT = (title || '').replace(/\[.*?\]|\(.*?\)/g, '').replace(/ - Ep.*/i, '').trim();
+      let cleanT = (options.cleanTitle || options.seriesTitle || title || '')
+        .replace(/\s*-\s*S\d+\s*Ep\s*\d+.*/i, '')
+        .replace(/\s*-\s*Episode\s*\d+.*/i, '')
+        .replace(/\s*-\s*Ep\s*\d+.*/i, '')
+        .replace(/\s*-\s*Season\s*\d+.*/i, '')
+        .replace(/\[.*?\]|\(.*?\)/g, '')
+        .trim();
+      if (cleanT.includes(' - ')) {
+        cleanT = cleanT.split(' - ')[0].trim();
+      }
 
       const subApiUrl = `${apiBase}/api/subtitles?title=${encodeURIComponent(cleanT)}&season=${dlSeason}&episode=${dlEpisode}&subjectId=${encodeURIComponent(dlSubjectId)}&detailPath=${encodeURIComponent(dlDetailPath)}&type=${dlIsSeries ? 'series' : 'movie'}`;
       try {
@@ -9505,7 +9515,7 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
           await saveOfflineMedia({
             id: 'temp_' + downloadId,
             chunks: partialBlob,
-            receivedBytes: receivedBytes,
+            receivedBytes: partialBlob.size,
             totalBytes: totalBytes,
             quality: quality
           });
@@ -9549,7 +9559,7 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
         await saveOfflineMedia({
           id: 'temp_' + downloadId,
           chunks: partialBlob,
-          receivedBytes: receivedBytes,
+          receivedBytes: partialBlob.size,
           totalBytes: totalBytes,
           quality: quality
         });
