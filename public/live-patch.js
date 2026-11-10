@@ -1,12 +1,12 @@
-// FOBS TV Live OTA Patch Bundle v1.3.2
-// 1. MovieBox Style Offline Video Playback: Direct IndexedDB videoBlob playback with zero byte-gaps & butter-smooth seek
+// FOBS TV Live OTA Patch Bundle v1.4.0 (MovieBox Native Offline Storage & Playback Engine)
+// 1. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
 // 2. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
 // 3. Smooth Online Playback: Connecting overlay smoothly dissolves only when video is actively playing (no frozen 1-2s icon)
 // 4. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
 // 5. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.3.2 executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.3.2';
+  console.log('⚡ FOBS TV Live Patch v1.4.0 (MovieBox Native Engine) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.4.0';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -169,7 +169,7 @@
     if (state?.currentMedia?.offlineDownloadId) return true;
     if (videoEl) {
       const src = videoEl.currentSrc || videoEl.src || '';
-      if (typeof src === 'string' && src.startsWith('blob:')) return true;
+      if (typeof src === 'string' && (src.startsWith('blob:') || src.includes('127.0.0.1') || src.includes('localhost'))) return true;
     }
     return false;
   }
@@ -270,7 +270,12 @@
   }
   window.showConnectingLoader = showConnectingLoader;
 
-  function hideConnectingLoader() {
+  function hideConnectingLoader(force = false) {
+    const videoEl = document.getElementById('mainVideoPlayer');
+    if (!force && videoEl && !isOfflinePlayback(videoEl) && videoEl.src && !videoEl.paused && videoEl.currentTime < 0.05) {
+      // Keep connecting overlay visible until video actually starts outputting frames!
+      return;
+    }
     if (window._connectingSafetyTimer) {
       clearTimeout(window._connectingSafetyTimer);
       window._connectingSafetyTimer = null;
@@ -1890,6 +1895,21 @@
 
     const downloads = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : [];
     const storedItem = downloads.find(d => d.id === id);
+
+    // Check MovieBox Native Device Storage first
+    const isNativeReady = window.AndroidApp && typeof window.AndroidApp.isLocalFileReady === 'function' && window.AndroidApp.isLocalFileReady(id);
+    let videoUrl = null;
+    let nativeBnSub = '';
+    let nativeEnSub = '';
+
+    if (isNativeReady) {
+      videoUrl = window.AndroidApp.getLocalStreamUrl(id);
+      try {
+        nativeBnSub = window.AndroidApp.getLocalSubtitle(id, 'bn') || '';
+        nativeEnSub = window.AndroidApp.getLocalSubtitle(id, 'en') || '';
+      } catch (_) {}
+    }
+
     let offlineItem = await findOfflineMediaRecord(id, storedItem);
 
     if (storedItem) {
@@ -1911,20 +1931,22 @@
       return;
     }
 
-    if (offlineItem && videoBlob) {
-      // Direct, robust offline video playback from IndexedDB Blob
+    if (!videoUrl && offlineItem && videoBlob) {
+      if (window._currentOfflineBlobUrl) {
+        try { URL.revokeObjectURL(window._currentOfflineBlobUrl); } catch (_) {}
+      }
+      videoUrl = URL.createObjectURL(videoBlob);
+      window._currentOfflineBlobUrl = videoUrl;
+    }
+
+    if (videoUrl && (isNativeReady || (offlineItem && videoBlob))) {
+      // Direct, robust offline video playback from Device Storage (MovieBox) or IndexedDB
       if (embedFrame) {
         embedFrame.src = 'about:blank';
         embedFrame.style.display = 'none';
       }
 
-      if (window._currentOfflineBlobUrl) {
-        try { URL.revokeObjectURL(window._currentOfflineBlobUrl); } catch (_) {}
-      }
-      const videoUrl = URL.createObjectURL(videoBlob);
-      window._currentOfflineBlobUrl = videoUrl;
-
-      const quality = offlineItem.quality || storedItem?.quality || '480P';
+      const quality = offlineItem?.quality || storedItem?.quality || '480P';
       const qStyle = (typeof getQualityBadgeStyle === 'function')
         ? getQualityBadgeStyle(quality)
         : { label: quality, pixel: quality, bg: '#00d26a', color: '#fff', border: 'none', glow: 'none' };
@@ -2058,17 +2080,18 @@
 
       // Offline Dual Subtitles
       const offlineTracks = [];
-      const bnText = offlineItem.bnVttText || offlineItem.vttText;
+      const bnText = nativeBnSub || offlineItem?.bnVttText || offlineItem?.vttText;
       if (bnText && typeof parseSubtitleTextToCues === 'function') {
         const bnCues = parseSubtitleTextToCues(bnText);
         if (bnCues && bnCues.length > 0) {
-          offlineTracks.push({ id: 'offline_bn', language: 'Bangla (বাংলা)', langCode: 'bn', source: 'Offline Storage', rawCues: bnCues });
+          offlineTracks.push({ id: 'offline_bn', language: 'Bangla (বাংলা)', langCode: 'bn', source: isNativeReady ? 'Device Storage (মুভিবক্স)' : 'Offline Storage', rawCues: bnCues });
         }
       }
-      if (offlineItem.enVttText && typeof parseSubtitleTextToCues === 'function') {
-        const enCues = parseSubtitleTextToCues(offlineItem.enVttText);
+      const enText = nativeEnSub || offlineItem?.enVttText;
+      if (enText && typeof parseSubtitleTextToCues === 'function') {
+        const enCues = parseSubtitleTextToCues(enText);
         if (enCues && enCues.length > 0) {
-          offlineTracks.push({ id: 'offline_en', language: 'English', langCode: 'en', source: 'Offline Storage', rawCues: enCues });
+          offlineTracks.push({ id: 'offline_en', language: 'English', langCode: 'en', source: isNativeReady ? 'Device Storage (মুভিবক্স)' : 'Offline Storage', rawCues: enCues });
         }
       }
 
@@ -2095,7 +2118,13 @@
         }, 100);
       }
 
-      if (typeof showToast === 'function') showToast(`⚡ ইন্টারনেট ছাড়াই চলছে: ${offlineItem.title} (${qStyle.pixel || quality})`);
+      const readyTitle = displayTitle || offlineItem?.title || storedItem?.title || 'Video';
+      if (typeof showToast === 'function') {
+        showToast(isNativeReady
+          ? `⚡ ইন্টারনেট ছাড়াই চলছে (মুভিবক্স ডিভাইস স্টোরেজ): ${readyTitle}`
+          : `⚡ ইন্টারনেট ছাড়াই চলছে: ${readyTitle} (${qStyle.pixel || quality})`
+        );
+      }
       return;
     }
 
@@ -2150,7 +2179,98 @@
   };
   window.playDownloadedMedia._hasEnhancedHook = true;
 
-  // Hook window.downloadMedia to ensure clean URLs, proxy subtitles & quality defaults
+  // Native MovieBox Downloader Callbacks
+  window.onNativeDownloadProgress = function(id, percent, downloadedBytes, totalBytes) {
+    const downMb = (downloadedBytes / (1024 * 1024)).toFixed(1);
+    const totMb = totalBytes > 0 ? (totalBytes / (1024 * 1024)).toFixed(1) : '?';
+    const sizeText = `${downMb} MB / ${totMb} MB`;
+    if (typeof window.updateDownloadProgress === 'function') {
+      window.updateDownloadProgress(id, percent, sizeText);
+    }
+    try {
+      const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
+      const item = downloads.find(d => d && (d.id === id || id.includes(d.id)));
+      if (item) {
+        item.progress = percent;
+        item.receivedBytes = downloadedBytes;
+        item.totalBytes = totalBytes;
+        item.status = 'downloading';
+        item.statusText = `Downloading... ${percent}%`;
+        item.sizeText = sizeText;
+        localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+      }
+    } catch (_) {}
+  };
+
+  window.onNativeDownloadComplete = function(id) {
+    try {
+      const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
+      const item = downloads.find(d => d && (d.id === id || id.includes(d.id)));
+      if (item) {
+        item.progress = 100;
+        item.status = 'Ready (Offline)';
+        item.downloaded = true;
+        item.isReady = true;
+        item.statusText = 'Downloaded • Ready to Watch (অফলাইন)';
+        localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+      }
+    } catch (_) {}
+    if (typeof window.renderDownloadsList === 'function') window.renderDownloadsList();
+    if (typeof showToast === 'function') showToast('🎬 ডাউনলোড সম্পন্ন হয়েছে! অফলাইনে প্লে করতে ক্লিক করুন');
+    if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
+      setTimeout(() => window.fobsDownloadQueue.processNext(), 400);
+    }
+  };
+
+  window.onNativeDownloadPaused = function(id) {
+    try {
+      const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
+      const item = downloads.find(d => d && (d.id === id || id.includes(d.id)));
+      if (item) {
+        item.status = 'paused';
+        item.paused = true;
+        item.statusText = `Paused (${item.progress || 0}%)`;
+        localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+      }
+    } catch (_) {}
+    if (typeof window.renderDownloadsList === 'function') window.renderDownloadsList();
+  };
+
+  window.onNativeDownloadDeleted = function(id) {
+    try {
+      let downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
+      downloads = downloads.filter(d => d && d.id !== id && !id.includes(d.id));
+      localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+    } catch (_) {}
+    if (typeof window.renderDownloadsList === 'function') window.renderDownloadsList();
+  };
+
+  // Hook pause/resume/delete for Native Downloader
+  const origPause = window.pauseDownload;
+  window.pauseDownload = function(id, e) {
+    if (window.AndroidApp && typeof window.AndroidApp.pauseNativeDownload === 'function') {
+      window.AndroidApp.pauseNativeDownload(id);
+    }
+    if (typeof origPause === 'function') origPause(id, e);
+  };
+
+  const origResume = window.resumeDownload;
+  window.resumeDownload = function(id, e) {
+    if (window.AndroidApp && typeof window.AndroidApp.resumeNativeDownload === 'function') {
+      window.AndroidApp.resumeNativeDownload(id);
+    }
+    if (typeof origResume === 'function') origResume(id, e);
+  };
+
+  const origDelete = window.deleteDownload;
+  window.deleteDownload = function(id, e) {
+    if (window.AndroidApp && typeof window.AndroidApp.deleteNativeDownload === 'function') {
+      window.AndroidApp.deleteNativeDownload(id);
+    }
+    if (typeof origDelete === 'function') origDelete(id, e);
+  };
+
+  // Hook window.downloadMedia to route to MovieBox Native Downloader when available
   if (typeof window.downloadMedia === 'function' && !window.downloadMedia._hasCleanHook) {
     const origDownloadMedia = window.downloadMedia;
     window.downloadMedia = function(url, title, options = {}, resumeExistingId = null) {
@@ -2174,6 +2294,94 @@
       }
       if (!opts.quality) {
         opts.quality = `${opts.resolution}P`;
+      }
+
+      // If running inside Android App with MovieBox Native Storage, use direct disk streaming!
+      if (window.AndroidApp && typeof window.AndroidApp.startNativeDownload === 'function') {
+        const downloadId = resumeExistingId || ('dl_' + Date.now());
+        const cleanSafeTitle = (title || 'video').replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_');
+        const qNum = opts.resolution || 480;
+
+        let proxiedDownloadUrl = cleanUrl;
+        if (!proxiedDownloadUrl.startsWith('http')) {
+          proxiedDownloadUrl = `${apiBase}${proxiedDownloadUrl.startsWith('/') ? '' : '/'}${proxiedDownloadUrl}`;
+        }
+        if (!proxiedDownloadUrl.includes('title=')) {
+          proxiedDownloadUrl += `${proxiedDownloadUrl.includes('?') ? '&' : '?'}title=${encodeURIComponent(cleanSafeTitle)}`;
+        }
+        if (!proxiedDownloadUrl.includes('q=')) {
+          proxiedDownloadUrl += `&q=${qNum}`;
+        }
+
+        let dlSeason = opts.season || 1;
+        let dlEpisode = opts.episode || 1;
+        let dlSubjectId = opts.subjectId || (opts.mediaId ? String(opts.mediaId).replace(/^mb-[s|m]-/, '') : '');
+        let dlDetailPath = opts.detailPath || '';
+        let dlIsSeries = opts.isSeries || false;
+
+        let cleanT = (opts.cleanTitle || opts.seriesTitle || title || '')
+          .replace(/\s*-\s*S\d+\s*Ep\s*\d+.*/i, '')
+          .replace(/\s*-\s*Episode\s*\d+.*/i, '')
+          .replace(/\s*-\s*Ep\s*\d+.*/i, '')
+          .replace(/\s*-\s*Season\s*\d+.*/i, '')
+          .replace(/\[.*?\]|\(.*?\)/g, '')
+          .trim();
+        if (cleanT.includes(' - ')) cleanT = cleanT.split(' - ')[0].trim();
+
+        const bnSubUrl = `${apiBase}/api/subtitles/download?title=${encodeURIComponent(cleanT)}&season=${dlSeason}&episode=${dlEpisode}&subjectId=${encodeURIComponent(dlSubjectId)}&detailPath=${encodeURIComponent(dlDetailPath)}&type=${dlIsSeries ? 'series' : 'movie'}&lang=bn`;
+        const enSubUrl = `${apiBase}/api/subtitles/download?title=${encodeURIComponent(cleanT)}&season=${dlSeason}&episode=${dlEpisode}&subjectId=${encodeURIComponent(dlSubjectId)}&detailPath=${encodeURIComponent(dlDetailPath)}&type=${dlIsSeries ? 'series' : 'movie'}&lang=en`;
+
+        const curDownloads = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : [];
+        let curItem = curDownloads.find(d => d.id === downloadId);
+        if (!curItem) {
+          curItem = {
+            id: downloadId,
+            mediaId: opts.mediaId || '',
+            title: title,
+            poster: opts.poster || 'assets/fobs_logo.png',
+            quality: opts.quality || '480P',
+            resolution: qNum,
+            season: opts.season,
+            episode: opts.episode,
+            isSeries: opts.isSeries,
+            url: proxiedDownloadUrl,
+            progress: 1,
+            receivedBytes: 0,
+            totalBytes: 0,
+            sizeText: 'Connecting...',
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+            status: 'downloading',
+            statusText: 'Connecting...',
+            options: opts
+          };
+          curDownloads.unshift(curItem);
+        } else {
+          curItem.status = 'downloading';
+          curItem.statusText = 'Connecting...';
+          curItem.paused = false;
+          curItem.failed = false;
+        }
+        localStorage.setItem('fobs_downloads', JSON.stringify(curDownloads));
+        if (typeof renderDownloadsList === 'function') renderDownloadsList();
+
+        window.AndroidApp.startNativeDownload(
+          downloadId,
+          proxiedDownloadUrl,
+          title,
+          opts.poster || '',
+          opts.quality || '480P',
+          opts.season || 0,
+          opts.episode || 0,
+          !!opts.isSeries,
+          bnSubUrl,
+          enSubUrl,
+          JSON.stringify(curItem)
+        );
+
+        if (typeof showToast === 'function') {
+          showToast(`📥 মুভিবক্স ডাউনলোড শুরু হয়েছে: "${title}" (${opts.quality})`);
+        }
+        return Promise.resolve();
       }
 
       return origDownloadMedia(cleanUrl, title, opts, resumeExistingId);
@@ -2283,5 +2491,5 @@
   repairStuckDownloads();
   setupDownloadModalObserver();
 
-  console.log('✅ FOBS TV Live Patch v1.2.9 active: Dual offline subtitles, multi-download queue auto-runner, and zero-hang offline playback.');
+  console.log('✅ FOBS TV Live Patch v1.4.0 active: MovieBox Device Storage, Dual Offline Subtitles, Zero-Hang Range Seek.');
 })();

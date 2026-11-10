@@ -9814,6 +9814,21 @@ async function playDownloadedMedia(id) {
 
   const storedList = getStoredDownloadsList();
   const storedItem = storedList.find(d => d.id === id);
+
+  // Check MovieBox Native Device Storage first
+  const isNativeReady = window.AndroidApp && typeof window.AndroidApp.isLocalFileReady === 'function' && window.AndroidApp.isLocalFileReady(id);
+  let videoUrl = null;
+  let nativeBnSub = '';
+  let nativeEnSub = '';
+
+  if (isNativeReady) {
+    videoUrl = window.AndroidApp.getLocalStreamUrl(id);
+    try {
+      nativeBnSub = window.AndroidApp.getLocalSubtitle(id, 'bn') || '';
+      nativeEnSub = window.AndroidApp.getLocalSubtitle(id, 'en') || '';
+    } catch (_) {}
+  }
+
   let offlineItem = await findOfflineMediaRecord(id, storedItem);
 
   if (storedItem) {
@@ -9825,8 +9840,11 @@ async function playDownloadedMedia(id) {
     videoBlob = new Blob([videoBlob], { type: 'video/mp4' });
   }
 
-  if (offlineItem && videoBlob) {
-    const videoUrl = URL.createObjectURL(videoBlob);
+  if (!videoUrl && offlineItem && videoBlob) {
+    videoUrl = URL.createObjectURL(videoBlob);
+  }
+
+  if (videoUrl && (isNativeReady || (offlineItem && videoBlob))) {
     const videoPlayer = document.getElementById('mainVideoPlayer');
     const playerOverlay = document.getElementById('playerOverlay');
     const embedFrame = document.getElementById('mainEmbedPlayer');
@@ -9838,15 +9856,15 @@ async function playDownloadedMedia(id) {
         embedFrame.style.display = 'none';
       }
 
-      const quality = offlineItem.quality || storedItem?.quality || '480P';
+      const quality = offlineItem?.quality || storedItem?.quality || '480P';
       const qStyle = getQualityBadgeStyle(quality);
 
-      let isSeries = !!(offlineItem.isSeries || storedItem?.isSeries || offlineItem.season || offlineItem.episode);
-      let epNum = offlineItem.episode || storedItem?.episode || storedItem?.options?.episode;
-      let seNum = offlineItem.season || storedItem?.season || storedItem?.options?.season;
+      let isSeries = !!(offlineItem?.isSeries || storedItem?.isSeries || offlineItem?.season || offlineItem?.episode);
+      let epNum = offlineItem?.episode || storedItem?.episode || storedItem?.options?.episode;
+      let seNum = offlineItem?.season || storedItem?.season || storedItem?.options?.season;
 
       // Fallback regex extraction from title if episode wasn't saved explicitly
-      if (!epNum && offlineItem.title) {
+      if (!epNum && offlineItem?.title) {
         const epMatch = offlineItem.title.match(/(?:ep(?:isode)?\.?\s*|e)(\d+)/i);
         if (epMatch) {
           epNum = parseInt(epMatch[1], 10);
@@ -10054,7 +10072,7 @@ async function playDownloadedMedia(id) {
 
       // Build offline subtitle tracks for full switching freedom!
       const offlineTracks = [];
-      const bnText = offlineItem.bnVttText || offlineItem.vttText;
+      const bnText = nativeBnSub || offlineItem?.bnVttText || offlineItem?.vttText;
       if (bnText && typeof parseSubtitleTextToCues === 'function') {
         const bnCues = parseSubtitleTextToCues(bnText);
         if (bnCues && bnCues.length > 0) {
@@ -10062,20 +10080,21 @@ async function playDownloadedMedia(id) {
             id: 'offline_bn',
             language: 'Bangla (বাংলা)',
             langCode: 'bn',
-            source: 'Offline Storage',
+            source: isNativeReady ? 'Device Storage (মুভিবক্স)' : 'Offline Storage',
             rawCues: bnCues
           });
         }
       }
 
-      if (offlineItem.enVttText && typeof parseSubtitleTextToCues === 'function') {
-        const enCues = parseSubtitleTextToCues(offlineItem.enVttText);
+      const enText = nativeEnSub || offlineItem?.enVttText;
+      if (enText && typeof parseSubtitleTextToCues === 'function') {
+        const enCues = parseSubtitleTextToCues(enText);
         if (enCues && enCues.length > 0) {
           offlineTracks.push({
             id: 'offline_en',
             language: 'English',
             langCode: 'en',
-            source: 'Offline Storage',
+            source: isNativeReady ? 'Device Storage (মুভিবক্স)' : 'Offline Storage',
             rawCues: enCues
           });
         }

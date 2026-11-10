@@ -63,6 +63,9 @@ public class MainActivity extends BridgeActivity {
     private static final String DL_CHANNEL_ID = "fobs_download_channel";
     private static final int DL_NOTIFICATION_ID = 9988;
 
+    private LocalStreamServer localStreamServer;
+    private NativeDownloadManager nativeDownloadManager;
+
     private void showDownloadNotification(String title) {
         try {
             NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -113,6 +116,17 @@ public class MainActivity extends BridgeActivity {
         // Always restore window screen brightness back to system default whenever app is paused or minimized
         resetBrightnessToSystemDefault();
 
+        // Immediately pause HTML5 video player so sound stops when phone screen is turned off or app minimized
+        try {
+            WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+            if (webView != null) {
+                webView.evaluateJavascript(
+                    "(function() { var v = document.getElementById('mainVideoPlayer'); if (v && !v.paused) v.pause(); })();",
+                    null
+                );
+            }
+        } catch (Exception ignored) {}
+
         // If an offline download is active, resume WebView so streaming reader and timers NEVER pause!
         if (isDownloadActive) {
             WebView webView = getBridge() != null ? getBridge().getWebView() : null;
@@ -127,6 +141,18 @@ public class MainActivity extends BridgeActivity {
     public void onStop() {
         super.onStop();
         resetBrightnessToSystemDefault();
+
+        // Immediately pause HTML5 video player so sound stops when phone screen is locked with power button
+        try {
+            WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+            if (webView != null) {
+                webView.evaluateJavascript(
+                    "(function() { var v = document.getElementById('mainVideoPlayer'); if (v && !v.paused) v.pause(); })();",
+                    null
+                );
+            }
+        } catch (Exception ignored) {}
+
         // Keep WebView and timers running while screen is turned off by power button
         if (isDownloadActive) {
             WebView webView = getBridge() != null ? getBridge().getWebView() : null;
@@ -361,7 +387,7 @@ public class MainActivity extends BridgeActivity {
             try {
                 return getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
             } catch (Exception e) {
-                return 14;
+                return 15;
             }
         }
 
@@ -370,7 +396,7 @@ public class MainActivity extends BridgeActivity {
             try {
                 return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             } catch (Exception e) {
-                return "3.1.6";
+                return "3.1.7";
             }
         }
 
@@ -541,6 +567,113 @@ public class MainActivity extends BridgeActivity {
                 }
             });
         }
+
+        // --- MovieBox Style Local Storage & Embedded HTTP Stream Server APIs ---
+
+        @JavascriptInterface
+        public boolean isNativeStorageSupported() {
+            return true;
+        }
+
+        @JavascriptInterface
+        public void startNativeDownload(String id, String url, String title, String poster, String quality,
+                                        int season, int episode, boolean isSeries, String bnSubUrl,
+                                        String enSubUrl, String metaJson) {
+            runOnUiThread(() -> {
+                try {
+                    acquireWakeLock(title);
+                    if (nativeDownloadManager != null) {
+                        nativeDownloadManager.startDownload(id, url, title, poster, quality, season, episode, isSeries, bnSubUrl, enSubUrl, metaJson);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void pauseNativeDownload(String id) {
+            runOnUiThread(() -> {
+                try {
+                    if (nativeDownloadManager != null) {
+                        nativeDownloadManager.pauseDownload(id);
+                    }
+                    if (nativeDownloadManager == null || !nativeDownloadManager.hasActiveDownloads()) {
+                        releaseWakeLock();
+                    }
+                } catch (Exception ignored) {}
+            });
+        }
+
+        @JavascriptInterface
+        public void resumeNativeDownload(String id) {
+            runOnUiThread(() -> {
+                try {
+                    acquireWakeLock("FOBS TV Video");
+                    if (nativeDownloadManager != null) {
+                        nativeDownloadManager.resumeDownload(id);
+                    }
+                } catch (Exception ignored) {}
+            });
+        }
+
+        @JavascriptInterface
+        public void deleteNativeDownload(String id) {
+            runOnUiThread(() -> {
+                try {
+                    if (nativeDownloadManager != null) {
+                        nativeDownloadManager.deleteDownload(id);
+                    }
+                    if (nativeDownloadManager == null || !nativeDownloadManager.hasActiveDownloads()) {
+                        releaseWakeLock();
+                    }
+                } catch (Exception ignored) {}
+            });
+        }
+
+        @JavascriptInterface
+        public boolean isLocalFileReady(String id) {
+            return nativeDownloadManager != null && nativeDownloadManager.isFileReady(id);
+        }
+
+        @JavascriptInterface
+        public String getLocalStreamUrl(String id) {
+            int port = (localStreamServer != null && localStreamServer.isRunning()) ? localStreamServer.getPort() : LocalStreamServer.DEFAULT_PORT;
+            String cleanId = (id != null) ? id.replaceAll("[^a-zA-Z0-9_-]", "_") : "";
+            return "http://127.0.0.1:" + port + "/downloads/" + cleanId + ".mp4";
+        }
+
+        @JavascriptInterface
+        public String getLocalSubtitle(String id, String lang) {
+            if (nativeDownloadManager != null) {
+                return nativeDownloadManager.getSubtitleContent(id, lang);
+            }
+            return "";
+        }
+
+        @JavascriptInterface
+        public boolean saveLocalSubtitle(String id, String lang, String vttText) {
+            if (nativeDownloadManager != null) {
+                return nativeDownloadManager.saveSubtitle(id, lang, vttText);
+            }
+            return false;
+        }
+
+        @JavascriptInterface
+        public long getLocalFileSize(String id) {
+            if (nativeDownloadManager != null) {
+                return nativeDownloadManager.getFileSize(id);
+            }
+            return 0;
+        }
+
+        @JavascriptInterface
+        public String getLocalDownloadsJson() {
+            if (nativeDownloadManager != null) {
+                return nativeDownloadManager.listDownloadsJson();
+            }
+            return "[]";
+        }
     }
 
     @Override
@@ -673,6 +806,20 @@ public class MainActivity extends BridgeActivity {
             System.setProperty("http.keepAlive", "true");
             System.setProperty("http.maxConnections", "20");
         } catch (Exception ignored) {}
+
+        // Initialize MovieBox-style Local Stream Server and Native Downloader
+        try {
+            localStreamServer = new LocalStreamServer(this);
+            localStreamServer.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            nativeDownloadManager = new NativeDownloadManager(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -817,6 +964,10 @@ public class MainActivity extends BridgeActivity {
             webView.addJavascriptInterface(new WebAppInterface(), "AndroidApp");
             webView.addJavascriptInterface(new WebAppInterface(), "AndroidBridge");
 
+            if (nativeDownloadManager != null) {
+                nativeDownloadManager.bindWebView(webView);
+            }
+
             webView.setDownloadListener((downloadUrl, userAgent, contentDisposition, mimetype, contentLength) -> {
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl));
@@ -841,6 +992,10 @@ public class MainActivity extends BridgeActivity {
 
     @Override
     public void onDestroy() {
+        if (localStreamServer != null) {
+            localStreamServer.stop();
+            localStreamServer = null;
+        }
         super.onDestroy();
     }
 }

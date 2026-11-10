@@ -45,6 +45,43 @@ public class DownloadForegroundService extends Service {
         }
     }
 
+    private static NotificationManager getNotificationManager(Context ctx) {
+        return (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+    }
+
+    public static void updateNotificationProgress(Context ctx, String title, int percent) {
+        try {
+            NotificationManager nm = getNotificationManager(ctx);
+            if (nm == null) return;
+
+            Intent launchIntent = new Intent(ctx, MainActivity.class);
+            launchIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            PendingIntent pi = PendingIntent.getActivity(
+                ctx,
+                0,
+                launchIntent,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0
+            );
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(ctx, CHANNEL_ID)
+                .setContentTitle(title != null ? title : "FOBS TV Downloader")
+                .setContentText(percent >= 100 ? "Download complete! 🎬" : "Downloading: " + percent + "%")
+                .setSmallIcon(percent >= 100 ? android.R.drawable.stat_sys_download_done : android.R.drawable.stat_sys_download)
+                .setContentIntent(pi)
+                .setOngoing(percent < 100)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setCategory(NotificationCompat.CATEGORY_SERVICE);
+
+            if (percent < 100) {
+                builder.setProgress(100, Math.max(0, Math.min(100, percent)), false);
+            } else {
+                builder.setProgress(0, 0, false);
+            }
+
+            nm.notify(NOTIFICATION_ID, builder.build());
+        } catch (Exception ignored) {}
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null && ACTION_STOP.equals(intent.getAction())) {
