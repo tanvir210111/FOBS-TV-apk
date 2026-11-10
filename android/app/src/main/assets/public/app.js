@@ -364,8 +364,8 @@ const CACHE_TTL_MS = 60 * 1000; // 1 minute TTL
 let isSyncing = false;
 
 // App Versioning & In-App Force Update Configuration
-const CURRENT_APP_VERSION_CODE = 14;
-const CURRENT_APP_VERSION_NAME = '3.1.6';
+const CURRENT_APP_VERSION_CODE = 16;
+const CURRENT_APP_VERSION_NAME = '3.1.8';
 window.CURRENT_APP_VERSION_CODE = CURRENT_APP_VERSION_CODE;
 window.CURRENT_APP_VERSION_NAME = CURRENT_APP_VERSION_NAME;
 let currentAppUpdateConfig = null;
@@ -12122,6 +12122,14 @@ function startAppUpdate() {
   if (bytesText) bytesText.textContent = `${currentAppUpdateConfig?.fileSize || '15.4 MB'}`;
 
   // 1. Open external browser in Android / Capacitor / System
+  try {
+    if (window.AndroidBridge && typeof window.AndroidBridge.openBrowser === 'function') {
+      window.AndroidBridge.openBrowser(apkUrl);
+    } else if (window.AndroidApp && typeof window.AndroidApp.openBrowser === 'function') {
+      window.AndroidApp.openBrowser(apkUrl);
+    }
+  } catch (e) {}
+
   try {
     if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Browser) {
       window.Capacitor.Plugins.Browser.open({ url: apkUrl });

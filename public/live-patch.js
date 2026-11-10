@@ -2491,5 +2491,62 @@
   repairStuckDownloads();
   setupDownloadModalObserver();
 
+  // -------------------------------------------------------------
+  // 15. Mandatory Force Update Popup for Older App Versions (< v3.1.8 / versionCode < 16)
+  // -------------------------------------------------------------
+  function enforceForceUpdatePopup() {
+    let activeVc = 0;
+    let activeVn = '';
+    if (window.AndroidBridge && typeof window.AndroidBridge.getAppVersionCode === 'function') {
+      try { activeVc = window.AndroidBridge.getAppVersionCode(); } catch (_) {}
+      try { activeVn = window.AndroidBridge.getAppVersionName(); } catch (_) {}
+    } else if (window.AndroidApp && typeof window.AndroidApp.getAppVersionCode === 'function') {
+      try { activeVc = window.AndroidApp.getAppVersionCode(); } catch (_) {}
+      try { activeVn = window.AndroidApp.getAppVersionName(); } catch (_) {}
+    } else if (typeof CURRENT_APP_VERSION_CODE !== 'undefined') {
+      activeVc = CURRENT_APP_VERSION_CODE;
+    }
+
+    if (activeVc > 0 && activeVc < 16) {
+      console.log('Outdated app detected (versionCode ' + activeVc + '). Forcing v3.1.8 update popup.');
+      const updateData = {
+        appUpdate: {
+          enabled: true,
+          latestVersionCode: 16,
+          latestVersionName: "3.1.8",
+          minVersionCode: 16,
+          forceUpdate: true,
+          title: "জরুরি আপডেট: FOBS TV v3.1.8",
+          message: "নতুন v3.1.8 ভার্সনে মুভিবক্স মেথডে ডিভাইস স্টোরেজ ডাউনলোড, অফলাইন বাংলা ও ইংরেজি সাবটাইটেল এবং ০-সেকেন্ডের স্মুথ অফলাইন রেঞ্জ প্লেব্যাক যুক্ত করা হয়েছে। আগের ভার্সনে ডাউনলোড সমস্যা এড়াতে এখনই আপডেট করুন!",
+          releaseNotes: [
+            "⚡ মুভিবক্স স্টাইল প্রাইভেট ডিভাইস স্টোরেজ ডাউনলোড (গ্যালারিতে শো করবে না)",
+            "⏩ অফলাইন প্লেব্যাক স্মুথ সিকিং: ভিডিও টেনে দেখা যাবে কোনো প্রকার ল্যাগ বা ফ্রিজ ছাড়া",
+            "📝 অফলাইন ডুয়াল সাবটাইটেল (বাংলা ও ইংরেজি) সাপোর্ট",
+            "🔇 পাওয়ার বাটন চাপলে বা স্ক্রিন লক করলে ভিডিও স্বয়ংক্রিয়ভাবে পজ ও সাউন্ড বন্ধ হওয়া",
+            "🎬 অনলাইন স্ট্রিমিং কানেক্টিং লোডার স্মুথ ট্রানজিশন ফিক্স"
+          ],
+          downloadUrl: "https://fobstv.duckdns.org/download/apk",
+          fallbackUrl: "https://fobs-apk-download.vercel.app/",
+          fileSize: "7.75 MB"
+        }
+      };
+      if (typeof window.checkAppUpdate === 'function') {
+        window.checkAppUpdate(updateData);
+      }
+      if (typeof window.openUpdateModal === 'function') {
+        window.openUpdateModal(true);
+      }
+      const modal = document.getElementById('appUpdateModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.style.setProperty('display', 'flex', 'important');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+  }
+  enforceForceUpdatePopup();
+  setTimeout(enforceForceUpdatePopup, 600);
+  setTimeout(enforceForceUpdatePopup, 2000);
+
   console.log('✅ FOBS TV Live Patch v1.4.0 active: MovieBox Device Storage, Dual Offline Subtitles, Zero-Hang Range Seek.');
 })();

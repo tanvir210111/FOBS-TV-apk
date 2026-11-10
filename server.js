@@ -1711,7 +1711,7 @@ app.get('/download/apk', (req, res) => {
   ];
   for (const apkPath of candidates) {
     if (fs.existsSync(apkPath)) {
-      res.setHeader('Content-Disposition', 'attachment; filename="FOBS_TV_v3.1.7.apk"');
+      res.setHeader('Content-Disposition', 'attachment; filename="FOBS_TV_v3.1.8.apk"');
       return res.sendFile(apkPath);
     }
   }
