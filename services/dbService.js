@@ -114,6 +114,50 @@ function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android',
   } catch (e) {}
 }
 
+function tryRecoverEmailFromGoogleId(googleId, name) {
+  if (!googleId || !name) return null;
+  const hash = String(googleId).replace(/^usr_usr_/, '').replace(/^usr_/, '');
+  if (!/^[a-f0-9]{14,32}$/i.test(hash)) return null;
+
+  const rawClean = name.toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (!rawClean || rawClean.length < 3) return null;
+
+  const words = name.toLowerCase().trim().split(/\s+/).filter(Boolean);
+  const variants = [
+    rawClean,
+    words.join(''),
+    words.join('.'),
+    words.join('_')
+  ];
+  if (words.length > 1) {
+    variants.push(words.slice().reverse().join(''));
+    variants.push(words.slice().reverse().join('.'));
+  }
+
+  const prefixSet = new Set(variants);
+  const targetPrefix = hash.substring(0, 14);
+
+  for (const v of prefixSet) {
+    const test1 = v + '@gmail.com';
+    if (crypto.createHash('md5').update(test1).digest('hex').startsWith(targetPrefix)) {
+      return test1;
+    }
+    for (let n = 0; n <= 9999; n++) {
+      const testN = v + n + '@gmail.com';
+      if (crypto.createHash('md5').update(testN).digest('hex').startsWith(targetPrefix)) {
+        return testN;
+      }
+    }
+    for (let y = 1980; y <= 2026; y++) {
+      const testY = v + y + '@gmail.com';
+      if (crypto.createHash('md5').update(testY).digest('hex').startsWith(targetPrefix)) {
+        return testY;
+      }
+    }
+  }
+  return null;
+}
+
 async function getUserStats() {
   const usersMap = getLocalUsersMap();
   const devicesMap = getDevicesMap();
@@ -213,6 +257,17 @@ async function getUserStats() {
           if (rep && rep.userEmail && rep.userEmail.includes('@')) {
             email = rep.userEmail.trim().toLowerCase();
             u.email = email;
+          }
+        } catch(e) {}
+      }
+
+      // 4. Try recovering email by matching MD5 hash of googleId with name permutations
+      if ((!email || !email.includes('@')) && u.googleId && u.name) {
+        try {
+          const recovered = tryRecoverEmailFromGoogleId(u.googleId, u.name);
+          if (recovered) {
+            email = recovered;
+            u.email = recovered;
           }
         } catch(e) {}
       }
