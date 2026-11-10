@@ -9319,10 +9319,10 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     if (activeDownloadTasks[downloadId]?.isPaused) {
       throw new Error('paused');
     }
-    if (totalBytes > 0 && receivedBytes < totalBytes * 0.98) {
+    if (totalBytes > 0 && receivedBytes < totalBytes * 0.95) {
       throw new Error(`Incomplete download: received ${receivedBytes} of ${totalBytes} bytes`);
     }
-    if (receivedBytes < 3 * 1024 * 1024) {
+    if (receivedBytes < 512 * 1024) {
       throw new Error(`Incomplete download: received only ${receivedBytes} bytes`);
     }
 
@@ -9433,23 +9433,30 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     }
 
     // Save final offline video into IndexedDB
-    await saveOfflineMedia({
-      id: downloadId,
-      mediaId,
-      title,
-      poster,
-      quality,
-      resolution: options.resolution || parseInt(quality, 10) || 480,
-      season: options.season,
-      episode: options.episode,
-      isSeries: options.isSeries,
-      videoBlob,
-      bnVttText,
-      enVttText,
-      vttText: bnVttText || enVttText,
-      sizeBytes: receivedBytes,
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    });
+    let idbSaveSuccess = false;
+    try {
+      idbSaveSuccess = await saveOfflineMedia({
+        id: downloadId,
+        mediaId,
+        title,
+        poster,
+        quality,
+        resolution: options.resolution || parseInt(quality, 10) || 480,
+        season: options.season,
+        episode: options.episode,
+        isSeries: options.isSeries,
+        videoBlob,
+        bnVttText,
+        enVttText,
+        vttText: bnVttText || enVttText,
+        sizeBytes: receivedBytes,
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      });
+      if (idbSaveSuccess === undefined) idbSaveSuccess = true;
+    } catch (saveErr) {
+      console.error('saveOfflineMedia failed:', saveErr);
+      idbSaveSuccess = false;
+    }
 
     // Remove any temporary partial cache
     await removeOfflineMedia('temp_' + downloadId);
@@ -9474,7 +9481,10 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       localStorage.setItem('fobs_downloads', JSON.stringify(curDownloads));
     }
     renderDownloadsList();
-    showToast(`✅ "${title}" ডাউনলোড সম্পন্ন (${finalMb} MB)! Me > Downloads এ দেখুন।`);
+    showToast(`✅ "${title}" ডাউনলোড সম্পন্ন (${finalMb} MB)! অফলাইনে প্লে করুন।`);
+    setTimeout(() => {
+      if (window.fobsDownloadQueue) window.fobsDownloadQueue.processNext();
+    }, 300);
     setTimeout(() => {
       if (window.fobsDownloadQueue) window.fobsDownloadQueue.processNext();
     }, 300);

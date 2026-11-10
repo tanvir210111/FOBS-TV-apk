@@ -1,14 +1,13 @@
-// FOBS TV Live OTA Patch Bundle v1.3.0
-// 1. Per-Episode Distinct File Size Detection: Every series episode gets distinct realistic size calculations
-// 2. Fix Series Download Bug: Eliminates unavailable lockouts, prevents checkbox double-toggling, and batch enqueues reliably
-// 3. Dual Offline Subtitles: Bangla & English subtitles reliably fetched via proxy, saved to IndexedDB, and rendered offline
-// 4. Multi-Download Queue Engine: Automatic sequential downloading of all queued files with stall detection & watchdog
-// 5. Robust Offline Playback: Multi-key IndexedDB fallback (exact ID, temp_, cursor scan) - all downloaded videos play offline
-// 6. Zero Connecting Overlay on Offline: Dismisses stream overlay, unmutes audio, and ensures smooth offline playback
-// 7. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
+// FOBS TV Live OTA Patch Bundle v1.3.1
+// 1. Bulletproof Offline Video Playback: Directly mounts IndexedDB videoBlob via objectURL with zero-dependency on outer scope
+// 2. Dual Offline Subtitles: Bangla & English subtitles reliably fetched via proxy, saved to IndexedDB, and rendered offline
+// 3. Multi-Download Queue Engine: Automatic sequential downloading of all queued files with stall detection & watchdog
+// 4. Per-Episode Distinct File Size Detection: Every series episode gets distinct realistic size calculations
+// 5. Zero Connecting Overlay on Offline: Dismisses stream overlay, unmutes audio, and ensures smooth offline playback
+// 6. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.3.0 executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.3.0';
+  console.log('⚡ FOBS TV Live Patch v1.3.1 executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.3.1';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -1871,45 +1870,277 @@
     }
   }
 
-  // Hook playDownloadedMedia for seamless offline video and dual subtitle rendering
-  if (typeof window.playDownloadedMedia === 'function' && !window.playDownloadedMedia._hasEnhancedHook) {
-    const origPlayDownloaded = window.playDownloadedMedia;
-    window.playDownloadedMedia = async function(id) {
-      if (typeof closeDownloadsView === 'function') closeDownloadsView();
-      if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
-      const cOverlay = document.getElementById('fobsConnectingOverlay');
-      if (cOverlay) { cOverlay.style.display = 'none'; cOverlay.style.opacity = '0'; }
+  // Full standalone override of playDownloadedMedia with robust offline playback & dual subtitles
+  window.playDownloadedMedia = async function(id) {
+    if (typeof closeDownloadsView === 'function') closeDownloadsView();
 
-      const downloads = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : [];
-      const storedItem = downloads.find(d => d.id === id);
-      let offlineItem = await findOfflineMediaRecord(id, storedItem);
+    const cOverlay = document.getElementById('fobsConnectingOverlay');
+    if (cOverlay) { cOverlay.style.display = 'none'; cOverlay.style.opacity = '0'; }
+    if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
 
-      if (offlineItem) {
-        // Proceed with original or enhanced playback
-        const vp = document.getElementById('mainVideoPlayer');
-        if (vp) {
-          vp.muted = false;
-          vp.volume = 1.0;
-        }
+    if (typeof showToast === 'function') showToast('অফলাইন ভিডিও লোড হচ্ছে...');
 
-        // Ensure 100ms render loop is active for offline subtitles
-        if (!window._subCueRenderInterval) {
-          window._subCueRenderInterval = setInterval(() => {
-            const player = document.getElementById('mainVideoPlayer');
-            if (player && !player.paused && window.subtitleState?.enabled && window.subtitleState?.cues?.length > 0) {
-              const curTime = (player.currentTime || 0) + (window.appState?.streamSeekOffset || 0);
-              if (typeof window.renderActiveSubtitleCue === 'function') {
-                window.renderActiveSubtitleCue(curTime);
-              }
-            }
-          }, 100);
+    const downloads = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : [];
+    const storedItem = downloads.find(d => d.id === id);
+    let offlineItem = await findOfflineMediaRecord(id, storedItem);
+
+    if (storedItem) {
+      offlineItem = { ...storedItem, ...(offlineItem || {}) };
+    }
+
+    let videoBlob = offlineItem ? (offlineItem.videoBlob || offlineItem.chunks || offlineItem.blob) : null;
+    if (videoBlob && !(videoBlob instanceof Blob)) {
+      try { videoBlob = new Blob([videoBlob], { type: 'video/mp4' }); } catch(_) { videoBlob = null; }
+    }
+
+    const videoPlayer = document.getElementById('mainVideoPlayer');
+    const playerOverlay = document.getElementById('playerOverlay');
+    const embedFrame = document.getElementById('mainEmbedPlayer');
+    const loader = document.getElementById('videoLoader');
+
+    if (!videoPlayer || !playerOverlay) {
+      if (typeof showToast === 'function') showToast('⚠️ প্লেয়ার আরম্ভ করা সম্ভব হয়নি');
+      return;
+    }
+
+    if (offlineItem && videoBlob) {
+      // Direct, robust offline video playback from IndexedDB Blob
+      if (embedFrame) {
+        embedFrame.src = 'about:blank';
+        embedFrame.style.display = 'none';
+      }
+
+      if (window._currentOfflineBlobUrl) {
+        try { URL.revokeObjectURL(window._currentOfflineBlobUrl); } catch (_) {}
+      }
+      const videoUrl = URL.createObjectURL(videoBlob);
+      window._currentOfflineBlobUrl = videoUrl;
+
+      const quality = offlineItem.quality || storedItem?.quality || '480P';
+      const qStyle = (typeof getQualityBadgeStyle === 'function')
+        ? getQualityBadgeStyle(quality)
+        : { label: quality, pixel: quality, bg: '#00d26a', color: '#fff', border: 'none', glow: 'none' };
+
+      let isSeries = !!(offlineItem.isSeries || storedItem?.isSeries || offlineItem.season || offlineItem.episode);
+      let epNum = offlineItem.episode || storedItem?.episode || storedItem?.options?.episode;
+      let seNum = offlineItem.season || storedItem?.season || storedItem?.options?.season;
+
+      if (!epNum && offlineItem.title) {
+        const epMatch = offlineItem.title.match(/(?:ep(?:isode)?\.?\s*|e)(\d+)/i);
+        if (epMatch) { epNum = parseInt(epMatch[1], 10); isSeries = true; }
+        const seMatch = offlineItem.title.match(/(?:s(?:eason)?\.?\s*)(\d+)/i);
+        if (seMatch) { seNum = parseInt(seMatch[1], 10); isSeries = true; }
+      }
+
+      const state = getAppState();
+      if (state) {
+        state.currentMedia = {
+          id: offlineItem.mediaId || offlineItem.id || id,
+          offlineDownloadId: offlineItem.id || id,
+          title: offlineItem.title || storedItem?.title || 'Offline Video',
+          poster: offlineItem.poster || storedItem?.poster,
+          isOffline: true,
+          quality: qStyle.pixel,
+          isSeries: isSeries,
+          season: seNum || 1,
+          episode: epNum || 1,
+          duration: offlineItem.duration || storedItem?.duration || null
+        };
+        if (isSeries && epNum) {
+          state.currentEpisode = { number: epNum, episodeNumber: epNum, episode: epNum, title: `Episode ${epNum}` };
+          state.currentEpisodeNumber = epNum;
+        } else {
+          state.currentEpisode = null;
         }
       }
 
-      return origPlayDownloaded(id);
-    };
-    window.playDownloadedMedia._hasEnhancedHook = true;
-  }
+      if (window.activeHlsPlayer) {
+        try { window.activeHlsPlayer.destroy(); } catch (_) {}
+        window.activeHlsPlayer = null;
+      }
+      if (window.videoStreamColdStartTimer) {
+        clearTimeout(window.videoStreamColdStartTimer);
+        window.videoStreamColdStartTimer = null;
+      }
+
+      videoPlayer._retryCount = 0;
+      videoPlayer._ignoreErrors = true;
+      videoPlayer.preload = 'auto';
+      videoPlayer.muted = false;
+      videoPlayer.volume = 1.0;
+      videoPlayer.style.display = 'block';
+      videoPlayer.pause();
+      videoPlayer.removeAttribute('src');
+      videoPlayer.src = videoUrl;
+      videoPlayer.load();
+
+      if (typeof restoreSystemBrightness === 'function') restoreSystemBrightness();
+
+      const dismissOverlay = () => {
+        if (loader) loader.classList.remove('active');
+        if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
+        const curOverlay = document.getElementById('fobsConnectingOverlay');
+        if (curOverlay) { curOverlay.style.display = 'none'; curOverlay.style.opacity = '0'; }
+        videoPlayer._ignoreErrors = false;
+      };
+
+      videoPlayer.addEventListener('loadedmetadata', dismissOverlay, { once: true });
+      videoPlayer.addEventListener('loadeddata', dismissOverlay, { once: true });
+      videoPlayer.addEventListener('canplay', dismissOverlay, { once: true });
+      videoPlayer.addEventListener('playing', dismissOverlay, { once: true });
+
+      // Saved position resume
+      let resumeSeekTime = 0;
+      try {
+        const offlineKey = 'fobs_offline_resume_' + (offlineItem.id || id);
+        const savedOffline = JSON.parse(localStorage.getItem(offlineKey) || 'null');
+        if (savedOffline && savedOffline.progressSeconds > 5) {
+          if (!savedOffline.completed && (!savedOffline.durationSeconds || (savedOffline.progressSeconds / savedOffline.durationSeconds) < 0.95)) {
+            resumeSeekTime = savedOffline.progressSeconds;
+          }
+        }
+      } catch (_) {}
+
+      if (resumeSeekTime > 0) {
+        videoPlayer.addEventListener('canplay', () => {
+          try {
+            const dur = videoPlayer.duration || (resumeSeekTime + 10);
+            videoPlayer.currentTime = Math.max(0, Math.min(dur > 1 ? dur - 1 : dur, resumeSeekTime));
+          } catch (_) {}
+        }, { once: true });
+      }
+
+      playerOverlay.style.setProperty('display', 'flex', 'important');
+      playerOverlay.classList.add('open');
+      document.body.classList.add('player-open');
+
+      videoPlayer.play().then(dismissOverlay).catch(dismissOverlay);
+
+      // Title & Badges
+      let displayTitle = offlineItem.title || storedItem?.title || 'Offline Video';
+      if (isSeries && epNum && !displayTitle.toLowerCase().includes('ep')) {
+        displayTitle = `${displayTitle} • Ep ${epNum}`;
+      }
+      const titleEl = document.getElementById('playerMediaTitle');
+      if (titleEl) titleEl.innerText = `${displayTitle} (Downloaded)`;
+
+      const metaEl = document.getElementById('playerMediaMeta');
+      if (metaEl) {
+        metaEl.innerHTML = `
+          <span style="background: rgba(0, 210, 106, 0.18); color: #00d26a; border: 1px solid rgba(0, 210, 106, 0.5); padding: 3px 10px; border-radius: 6px; font-weight: 700; font-size: 11px; display: inline-flex; align-items: center; gap: 5px;">
+            <i class="fa-solid fa-cloud-arrow-down"></i> Downloaded
+          </span>
+          <span style="background: ${qStyle.bg || 'rgba(0,210,106,0.2)'}; color: ${qStyle.color || '#00d26a'}; border: ${qStyle.border || '1px solid rgba(0,210,106,0.4)'}; padding: 3px 10px; border-radius: 6px; font-weight: 800; font-size: 11px;">
+            <i class="fa-solid fa-sliders"></i> ${qStyle.label || quality}
+          </span>
+          ${(isSeries && epNum) ? `
+          <span style="background: rgba(168, 85, 247, 0.18); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.5); padding: 3px 10px; border-radius: 6px; font-weight: 700; font-size: 11px;">
+            <i class="fa-solid fa-film"></i> ${seNum ? `S${seNum}:Ep ${epNum}` : `Ep ${epNum}`}
+          </span>` : ''}
+        `;
+      }
+
+      const lsTitle = document.getElementById('lsVideoTitle');
+      if (lsTitle) {
+        lsTitle.innerHTML = `<span>${displayTitle}</span> <span style="margin-left: 8px; color: #00d26a; font-size: 11px; font-weight: 700;"><i class="fa-solid fa-cloud-arrow-down"></i> Downloaded</span>`;
+      }
+
+      const seriesEpisodesWrapper = document.getElementById('seriesEpisodesWrapper');
+      if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'none';
+
+      // Offline Dual Subtitles
+      const offlineTracks = [];
+      const bnText = offlineItem.bnVttText || offlineItem.vttText;
+      if (bnText && typeof parseSubtitleTextToCues === 'function') {
+        const bnCues = parseSubtitleTextToCues(bnText);
+        if (bnCues && bnCues.length > 0) {
+          offlineTracks.push({ id: 'offline_bn', language: 'Bangla (বাংলা)', langCode: 'bn', source: 'Offline Storage', rawCues: bnCues });
+        }
+      }
+      if (offlineItem.enVttText && typeof parseSubtitleTextToCues === 'function') {
+        const enCues = parseSubtitleTextToCues(offlineItem.enVttText);
+        if (enCues && enCues.length > 0) {
+          offlineTracks.push({ id: 'offline_en', language: 'English', langCode: 'en', source: 'Offline Storage', rawCues: enCues });
+        }
+      }
+
+      if (window.subtitleState) {
+        window.subtitleState.availableTracks = offlineTracks;
+        if (typeof renderSubtitleLists === 'function') renderSubtitleLists();
+        const pref = offlineTracks.find(t => t.langCode === 'bn') || offlineTracks[0];
+        if (pref && typeof selectSubtitleTrack === 'function') {
+          selectSubtitleTrack(pref.id);
+        } else if (typeof selectSubtitleTrack === 'function') {
+          selectSubtitleTrack('off');
+        }
+      }
+
+      if (!window._subCueRenderInterval) {
+        window._subCueRenderInterval = setInterval(() => {
+          const vp = document.getElementById('mainVideoPlayer');
+          if (vp && !vp.paused && window.subtitleState?.enabled && window.subtitleState?.cues?.length > 0) {
+            const curTime = (vp.currentTime || 0) + (window.appState?.streamSeekOffset || 0);
+            if (typeof window.renderActiveSubtitleCue === 'function') {
+              window.renderActiveSubtitleCue(curTime);
+            }
+          }
+        }, 100);
+      }
+
+      if (typeof showToast === 'function') showToast(`⚡ ইন্টারনেট ছাড়াই চলছে: ${offlineItem.title} (${qStyle.pixel || quality})`);
+      return;
+    }
+
+    // Fallback: If blob was not found in IndexedDB
+    if (storedItem && navigator.onLine) {
+      console.warn('IndexedDB blob missing for', id, '— online stream fallback');
+      const apiBase = getApiBaseUrl();
+      const { subjectId, detailPath, season, episode, resolution, isSeries, options: itemOpts } = storedItem;
+      const sid = subjectId || itemOpts?.subjectId || '';
+      const path = detailPath || itemOpts?.detailPath || '';
+      const se = season ?? itemOpts?.season ?? 0;
+      const ep = episode ?? itemOpts?.episode ?? 0;
+      const q = resolution || parseInt(storedItem.quality, 10) || 480;
+
+      if (sid) {
+        const streamUrl = `${apiBase}/api/moviebox/stream?id=${encodeURIComponent(sid)}&path=${encodeURIComponent(path)}&se=${se}&ep=${ep}&q=${q}`;
+        if (embedFrame) { embedFrame.src = 'about:blank'; embedFrame.style.display = 'none'; }
+
+        const state = getAppState();
+        if (state) {
+          state.currentMedia = {
+            id: storedItem.mediaId || id,
+            offlineDownloadId: id,
+            title: storedItem.title,
+            poster: storedItem.poster,
+            isOffline: false,
+            quality: storedItem.quality || `${q}P`,
+            isSeries: !!(isSeries || itemOpts?.isSeries),
+            season: se || 1,
+            episode: ep || 1
+          };
+        }
+
+        videoPlayer.muted = false;
+        videoPlayer.volume = 1.0;
+        videoPlayer.style.display = 'block';
+        videoPlayer.src = streamUrl;
+        videoPlayer.load();
+        videoPlayer.play().catch(() => {});
+
+        playerOverlay.style.setProperty('display', 'flex', 'important');
+        playerOverlay.classList.add('open');
+        document.body.classList.add('player-open');
+        if (typeof showToast === 'function') showToast('⚡ স্ট্রিমিং মোডে চলছে');
+        return;
+      }
+    }
+
+    if (typeof showToast === 'function') {
+      showToast('⚠️ অফলাইনে এই ভিডিও ফাইলটি পাওয়া যায়নি। ইন্টারনেট সংযোগ দিয়ে আবার ডাউনলোড করুন।');
+    }
+  };
+  window.playDownloadedMedia._hasEnhancedHook = true;
 
   // Hook window.downloadMedia to ensure clean URLs, proxy subtitles & quality defaults
   if (typeof window.downloadMedia === 'function' && !window.downloadMedia._hasCleanHook) {
