@@ -1,4 +1,4 @@
-// FOBS TV Live OTA Patch Bundle v1.4.7 (Online Quality Switching for v3.2.0)
+// FOBS TV Live OTA Patch Bundle v1.4.8 (Online Quality Switching for v3.2.0)
 // 1. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
 // 2. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
 // 3. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
@@ -6,8 +6,8 @@
 // 5. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
 // 6. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.4.7 (Online Quality Switching) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.4.7';
+  console.log('⚡ FOBS TV Live Patch v1.4.8 (Online Quality Switching) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.4.8';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -769,9 +769,13 @@
 
       // 1. Instant switch: Check availableQualities first (direct CDN stream - 0ms lookup!)
       if (Array.isArray(state.availableQualities) && state.availableQualities.length > 0) {
-        const matched = state.availableQualities.find(q => parseInt(q.resolution, 10) === targetResNum);
-        if (matched && (matched.proxyUrl || matched.url)) {
-          targetStreamUrl = matched.proxyUrl || matched.url;
+        let matched = state.availableQualities.find(q => parseInt(q.resolution, 10) === targetResNum);
+        if (!matched && targetResNum >= 720) {
+          // If requested HD, prefer HD quality (1080 or 720) rather than picking nothing or falling back to SD
+          matched = state.availableQualities.find(q => parseInt(q.resolution, 10) >= 720);
+        }
+        if (matched && (matched.url || matched.proxyUrl || matched.directUrl)) {
+          targetStreamUrl = matched.url || matched.proxyUrl || matched.directUrl;
         }
       }
 
@@ -812,6 +816,7 @@
           window.playStreamUrl(targetStreamUrl, null, seekPos);
         } else {
           videoPlayer.src = targetStreamUrl;
+          try { videoPlayer.load(); } catch (e) {}
           const applySeek = () => {
             try {
               if (videoPlayer.duration && videoPlayer.duration > 1) {
@@ -823,8 +828,8 @@
             if (!isPaused) videoPlayer.play().catch(() => {});
             if (typeof hideConnectingLoader === 'function') hideConnectingLoader(true);
           };
+          videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
           videoPlayer.addEventListener('canplay', applySeek, { once: true });
-          videoPlayer.addEventListener('loadeddata', applySeek, { once: true });
         }
 
         if (!isPaused) {

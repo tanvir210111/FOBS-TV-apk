@@ -67,6 +67,50 @@ function getValidCachedMovieBoxMedia(cacheKey) {
   }
   return cachedEntry.media;
 }
+
+function selectResolutionMatch(qualities, requestedQ) {
+  if (!Array.isArray(qualities) || qualities.length === 0) return null;
+  const qNum = parseInt(requestedQ, 10) || 0;
+  if (qNum <= 0) {
+    return qualities.find(q => parseInt(q.resolution, 10) === 480)
+        || qualities.find(q => parseInt(q.resolution, 10) === 360)
+        || qualities.find(q => parseInt(q.resolution, 10) === 720)
+        || qualities[0];
+  }
+
+  // 1. Exact resolution match
+  const exact = qualities.find(q => parseInt(q.resolution, 10) === qNum);
+  if (exact && exact.url) return exact;
+
+  // 2. If user requested HD (720p or 1080p), strictly prioritize HD over SD
+  if (qNum >= 720) {
+    if (qNum === 720) {
+      const fhd = qualities.find(q => parseInt(q.resolution, 10) === 1080);
+      if (fhd && fhd.url) return fhd;
+    }
+    if (qNum === 1080) {
+      const hd = qualities.find(q => parseInt(q.resolution, 10) === 720);
+      if (hd && hd.url) return hd;
+    }
+    const sortedDesc = [...qualities].sort((a, b) => (parseInt(b.resolution, 10) || 0) - (parseInt(a.resolution, 10) || 0));
+    return sortedDesc[0];
+  }
+
+  // 3. For SD (480p / 360p)
+  if (qNum === 480) {
+    const q360 = qualities.find(q => parseInt(q.resolution, 10) === 360);
+    if (q360 && q360.url) return q360;
+  }
+  if (qNum === 360) {
+    const q480 = qualities.find(q => parseInt(q.resolution, 10) === 480);
+    if (q480 && q480.url) return q480;
+  }
+
+  const sorted = [...qualities].sort((a, b) => {
+    return Math.abs((parseInt(a.resolution, 10) || 0) - qNum) - Math.abs((parseInt(b.resolution, 10) || 0) - qNum);
+  });
+  return sorted[0];
+}
 const liveTvService = require('./services/liveTvService');
 const syncService = require('./services/syncService');
 const dbService = require('./services/dbService');
@@ -829,9 +873,7 @@ async function resolveStreamUrl(rawUrl) {
           }
           if (media && media.streamUrl) {
             if (reqQ > 0 && Array.isArray(media.qualities) && media.qualities.length > 0) {
-              const matchedQ = media.qualities.find(q => q.resolution === reqQ)
-                            || media.qualities.find(q => q.resolution <= reqQ)
-                            || media.qualities[0];
+              const matchedQ = selectResolutionMatch(media.qualities, reqQ);
               resolved = matchedQ?.url || media.streamUrl;
             } else {
               resolved = media.streamUrl;
@@ -1387,36 +1429,10 @@ app.get('/api/moviebox/stream', async (req, res) => {
     let chosenStream = media.streamUrl;
     let chosenRes = media.resolution || 480;
     if (Array.isArray(media.qualities) && media.qualities.length > 0) {
-      // Sort qualities ascending by resolution: [360, 480, 720, 1080, ...]
-      const sortedAsc = [...media.qualities].sort((a, b) => (parseInt(a.resolution, 10) || 0) - (parseInt(b.resolution, 10) || 0));
-
-      if (requestedQ > 0) {
-        // Exact or closest requested resolution (360p, 480p, 720p, 1080p)
-        const exactMatch = media.qualities.find(q => parseInt(q.resolution, 10) === requestedQ);
-        if (exactMatch && exactMatch.url) {
-          chosenStream = exactMatch.url;
-          chosenRes = exactMatch.resolution;
-        } else {
-          const sortedByMatch = [...media.qualities].sort((a, b) => {
-            const diffA = Math.abs((parseInt(a.resolution, 10) || 0) - requestedQ);
-            const diffB = Math.abs((parseInt(b.resolution, 10) || 0) - requestedQ);
-            return diffA - diffB;
-          });
-          const matchQ = sortedByMatch[0];
-          if (matchQ && matchQ.url) {
-            chosenStream = matchQ.url;
-            chosenRes = matchQ.resolution;
-          }
-        }
-      } else {
-        // requestedQ === 0 (Auto / Unspecified): Pick optimal streaming resolution (480p or 360p or lowest)
-        const lowQ = sortedAsc.find(q => parseInt(q.resolution, 10) === 480)
-                  || sortedAsc.find(q => parseInt(q.resolution, 10) === 360)
-                  || sortedAsc[0];
-        if (lowQ && lowQ.url) {
-          chosenStream = lowQ.url;
-          chosenRes = lowQ.resolution;
-        }
+      const matchQ = selectResolutionMatch(media.qualities, requestedQ);
+      if (matchQ && matchQ.url) {
+        chosenStream = matchQ.url;
+        chosenRes = matchQ.resolution || requestedQ || 480;
       }
     }
     const proxiedStreamUrl = `/api/stream?url=${encodeURIComponent(chosenStream)}`;
@@ -1434,7 +1450,8 @@ app.get('/api/moviebox/stream', async (req, res) => {
         resolution: chosenRes,
         qualities: (media.qualities || []).map(q => ({
           resolution: q.resolution,
-          url: `${baseUrl}/api/stream?url=${encodeURIComponent(q.url)}&id=${encodeURIComponent(id)}&path=${encodeURIComponent(resolvedPath || '')}&se=${seNum}&ep=${epNum}&q=${q.resolution}`,
+          url: `${baseUrl}/api/moviebox/stream?id=${encodeURIComponent(id)}&path=${encodeURIComponent(resolvedPath || '')}&se=${seNum}&ep=${epNum}&q=${q.resolution}`,
+          proxyUrl: `${baseUrl}/api/stream?url=${encodeURIComponent(q.url)}&id=${encodeURIComponent(id)}&path=${encodeURIComponent(resolvedPath || '')}&se=${seNum}&ep=${epNum}&q=${q.resolution}`,
           directUrl: q.url,
           size: q.size
         }))
@@ -1879,6 +1896,10 @@ function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders
           );
           if (refreshed && refreshed.streamUrl) {
             activeUrl = refreshed.streamUrl;
+            if (mbContext && mbContext.targetRes && Array.isArray(refreshed.qualities) && refreshed.qualities.length > 0) {
+              const qMatch = selectResolutionMatch(refreshed.qualities, mbContext.targetRes);
+              if (qMatch?.url) activeUrl = qMatch.url;
+            }
             resp = await axios({
               method: 'GET',
               url: activeUrl,
@@ -2007,14 +2028,12 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
         }
         if (media && media.streamUrl) {
           if (mbQ > 0 && Array.isArray(media.qualities) && media.qualities.length > 0) {
-            const matchedQ = media.qualities.find(q => q.resolution === mbQ)
-                          || media.qualities.find(q => q.resolution <= mbQ)
-                          || media.qualities[0];
+            const matchedQ = selectResolutionMatch(media.qualities, mbQ);
             targetUrl = matchedQ?.url || media.streamUrl;
           } else {
             const nonBtQ = (media.qualities || []).filter(q => !q.url.includes('/bt/'));
             const poolQ = nonBtQ.length > 0 ? nonBtQ : (media.qualities || []);
-            const bestQ = poolQ.find(q => q.resolution === 480) || poolQ.find(q => q.resolution === 720) || poolQ[poolQ.length - 1];
+            const bestQ = selectResolutionMatch(poolQ, 0);
             targetUrl = bestQ?.url || media.streamUrl;
           }
         }
@@ -2288,7 +2307,7 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
         if (freshMedia && freshMedia.streamUrl) {
           streamFetchUrl = freshMedia.streamUrl;
           if (mbContext.targetRes && Array.isArray(freshMedia.qualities) && freshMedia.qualities.length > 0) {
-            const qMatch = freshMedia.qualities.find(q => q.resolution === mbContext.targetRes) || freshMedia.qualities[0];
+            const qMatch = selectResolutionMatch(freshMedia.qualities, mbContext.targetRes);
             if (qMatch?.url) streamFetchUrl = qMatch.url;
           }
           movieboxStreamCache.set(cacheKey, { media: freshMedia, timestamp: Date.now() });
@@ -2344,7 +2363,7 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
             if (freshMedia && freshMedia.streamUrl) {
               freshUrl = freshMedia.streamUrl;
               if (mbContext.targetRes && Array.isArray(freshMedia.qualities) && freshMedia.qualities.length > 0) {
-                const qMatch = freshMedia.qualities.find(q => q.resolution === mbContext.targetRes) || freshMedia.qualities[0];
+                const qMatch = selectResolutionMatch(freshMedia.qualities, mbContext.targetRes);
                 if (qMatch?.url) freshUrl = qMatch.url;
               }
               movieboxStreamCache.set(cacheKey, { media: freshMedia, timestamp: Date.now() });
@@ -2384,6 +2403,10 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
                 }
                 if (mRes && mRes.streamUrl) {
                   freshUrl = mRes.streamUrl;
+                  if (mbContext?.targetRes && Array.isArray(mRes.qualities)) {
+                    const qM = selectResolutionMatch(mRes.qualities, mbContext.targetRes);
+                    if (qM?.url) freshUrl = qM.url;
+                  }
                   m.directStreamUrl = freshUrl;
                   break;
                 }
@@ -2407,6 +2430,10 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
                       }
                       if (sRes && sRes.streamUrl) {
                         freshUrl = sRes.streamUrl;
+                        if (mbContext?.targetRes && Array.isArray(sRes.qualities)) {
+                          const qM = selectResolutionMatch(sRes.qualities, mbContext.targetRes);
+                          if (qM?.url) freshUrl = qM.url;
+                        }
                         ep.directStreamUrl = freshUrl;
                         break;
                       }
@@ -2638,7 +2665,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.4.6",
+  version: "1.4.8",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 
