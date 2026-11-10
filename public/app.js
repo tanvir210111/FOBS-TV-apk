@@ -526,11 +526,15 @@ function playAppIntroAndSync() {
   };
   startPlay();
 
-  // Update progress bar as video plays
+  // Update progress bar as video plays & seamless auto-exit on completion
   video.ontimeupdate = () => {
     if (video.duration && isFinite(video.duration) && video.duration > 0) {
       const pct = Math.min(100, Math.round((video.currentTime / video.duration) * 100));
       if (progressFill) progressFill.style.width = `${pct}%`;
+      // Smooth early finish right before EOF so Android WebView never hangs on the last frame
+      if (video.currentTime >= video.duration - 0.35) {
+        finishIntroAndShowApp();
+      }
     }
   };
 
@@ -542,6 +546,14 @@ function playAppIntroAndSync() {
     console.warn('Intro video playback notice, proceeding to app');
     finishIntroAndShowApp();
   };
+
+  // Allow user to tap/click overlay anytime to enter app immediately (never stuck!)
+  if (overlay) {
+    overlay.style.cursor = 'pointer';
+    overlay.addEventListener('click', () => {
+      finishIntroAndShowApp();
+    });
+  }
 
   // Background refresh: Fetch latest fresh content from backend while video plays!
   (async () => {
@@ -556,12 +568,12 @@ function playAppIntroAndSync() {
     }
   })();
 
-  // Failsafe timeout: Max 9.5 seconds (video is ~7.9s, ends smoothly onended)
+  // Failsafe timeout: Max 6.5 seconds (video is ~5.5s, ends smoothly)
   setTimeout(() => {
     if (!_introFinished) {
       finishIntroAndShowApp();
     }
-  }, 9500);
+  }, 6500);
 }
 window.playAppIntroAndSync = playAppIntroAndSync;
 
@@ -578,15 +590,17 @@ function finishIntroAndShowApp() {
       video.ontimeupdate = null;
       video.onended = null;
       video.onerror = null;
+      video.src = '';
     } catch(e) {}
   }
 
-  document.body.classList.remove('intro-active');
-  document.body.style.setProperty('overflow', 'visible', 'important');
-  document.body.style.setProperty('overflow-x', 'clip', 'important');
-  document.body.style.setProperty('overflow-y', 'visible', 'important');
-  document.documentElement.style.setProperty('overflow-x', 'hidden', 'important');
-  document.documentElement.style.setProperty('overflow-y', 'auto', 'important');
+  try {
+    document.body.classList.remove('intro-active');
+    document.body.style.removeProperty('overflow');
+    document.body.style.setProperty('overflow-y', 'auto', 'important');
+    document.documentElement.style.removeProperty('overflow');
+    document.documentElement.style.setProperty('overflow-y', 'auto', 'important');
+  } catch(e) {}
 
   if (overlay) {
     overlay.classList.add('fade-out');
@@ -614,9 +628,21 @@ function finishIntroAndShowApp() {
     _pendingNavBarInset = null;
   }
 
-  renderAllViews();
-  checkAppUpdate(appState.content);
-  loadAllBookingsRealtime();
+  try {
+    renderAllViews();
+  } catch (err) {
+    console.error('renderAllViews error during startup:', err);
+  }
+
+  try {
+    checkAppUpdate(appState.content);
+  } catch (err) {
+    console.error('checkAppUpdate error during startup:', err);
+  }
+
+  try {
+    loadAllBookingsRealtime();
+  } catch (err) {}
 }
 window.finishIntroAndShowApp = finishIntroAndShowApp;
 
@@ -11989,102 +12015,108 @@ function setupAppUpdateModal() {
 }
 
 function checkAppUpdate(data) {
-  window.checkAppUpdate = checkAppUpdate;
-  const updateInfo = (data && data.appUpdate) || (appState.content && appState.content.appUpdate);
-  if (!updateInfo || !updateInfo.enabled) {
-    const headerBtn = document.getElementById('headerUpdateBtn');
-    if (headerBtn) headerBtn.classList.add('hidden');
-    return;
-  }
-
-  // Get active installed version (from native Android bridge if available, or client constant)
-  let activeVersionCode = CURRENT_APP_VERSION_CODE;
-  let activeVersionName = CURRENT_APP_VERSION_NAME;
-  if (window.AndroidBridge && typeof window.AndroidBridge.getAppVersionCode === 'function') {
-    try {
-      const vc = window.AndroidBridge.getAppVersionCode();
-      if (typeof vc === 'number' && vc > 0) activeVersionCode = vc;
-      const vn = window.AndroidBridge.getAppVersionName();
-      if (vn) activeVersionName = vn;
-    } catch (e) {}
-  }
-
-  // Strict guard: If running current v3.1.8+ (versionCode >= latestVersionCode or versionName === '3.1.8'), NEVER show update modal
-  if (activeVersionCode >= updateInfo.latestVersionCode || activeVersionName === '3.1.8') {
-    const modal = document.getElementById('appUpdateModal');
-    if (modal) {
-      modal.classList.add('hidden');
-      modal.style.setProperty('display', 'none', 'important');
+  try {
+    window.checkAppUpdate = checkAppUpdate;
+    const updateInfo = (data && data.appUpdate) || (appState.content && appState.content.appUpdate);
+    if (!updateInfo || !updateInfo.enabled) {
+      const headerBtn = document.getElementById('headerUpdateBtn');
+      if (headerBtn) headerBtn.classList.add('hidden');
+      return;
     }
+
+    // Get active installed version (from native Android bridge if available, or client constant)
+    let activeVersionCode = CURRENT_APP_VERSION_CODE;
+    let activeVersionName = CURRENT_APP_VERSION_NAME;
+    if (window.AndroidBridge && typeof window.AndroidBridge.getAppVersionCode === 'function') {
+      try {
+        const vc = window.AndroidBridge.getAppVersionCode();
+        if (typeof vc === 'number' && vc > 0) activeVersionCode = vc;
+        const vn = window.AndroidBridge.getAppVersionName();
+        if (vn) activeVersionName = vn;
+      } catch (e) {}
+    }
+
+    // Strict guard: If running current v3.1.8+ (versionCode >= latestVersionCode or versionName === '3.1.8'), NEVER show update modal
+    if (activeVersionCode >= updateInfo.latestVersionCode || activeVersionName === '3.1.8') {
+      const modal = document.getElementById('appUpdateModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.style.setProperty('display', 'none', 'important');
+      }
+      const headerBtn = document.getElementById('headerUpdateBtn');
+      if (headerBtn) headerBtn.classList.add('hidden');
+      document.body.style.overflow = '';
+      return;
+    }
+
+    currentAppUpdateConfig = updateInfo;
+
+    // Detect whether running in native Android / Capacitor environment
+    const isNative = (typeof window.Capacitor !== 'undefined' && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) ||
+                     window.location.protocol === 'capacitor:' ||
+                     window.location.protocol === 'ionic:' ||
+                     (window.location.hostname === 'localhost' && !window.location.port);
+
+    // If in a regular web browser, do not show blocking APK update modal
+    if (!isNative) {
+      const headerBtn = document.getElementById('headerUpdateBtn');
+      if (headerBtn) headerBtn.classList.add('hidden');
+      return;
+    }
+
+    const isOutdated = updateInfo.latestVersionCode > activeVersionCode;
+
     const headerBtn = document.getElementById('headerUpdateBtn');
-    if (headerBtn) headerBtn.classList.add('hidden');
-    document.body.style.overflow = '';
-    return;
-  }
+    if (headerBtn) {
+      if (isOutdated) {
+        headerBtn.classList.remove('hidden');
+      } else {
+        headerBtn.classList.add('hidden');
+      }
+    }
 
-  currentAppUpdateConfig = updateInfo;
-
-  // Detect whether running in native Android / Capacitor environment
-  const isNative = (typeof window.Capacitor !== 'undefined' && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) ||
-                   window.location.protocol === 'capacitor:' ||
-                   window.location.protocol === 'ionic:' ||
-                   (window.location.hostname === 'localhost' && !window.location.port);
-
-  // If in a regular web browser, do not show blocking APK update modal
-  if (!isNative) {
-    const headerBtn = document.getElementById('headerUpdateBtn');
-    if (headerBtn) headerBtn.classList.add('hidden');
-    return;
-  }
-
-  const isOutdated = updateInfo.latestVersionCode > activeVersionCode;
-
-  const headerBtn = document.getElementById('headerUpdateBtn');
-  if (headerBtn) {
     if (isOutdated) {
-      headerBtn.classList.remove('hidden');
-    } else {
-      headerBtn.classList.add('hidden');
+      // Populate update modal UI elements
+      const pill = document.getElementById('updateBadgePill');
+      if (pill) pill.textContent = (updateInfo.latestVersionName ? `v${updateInfo.latestVersionName}` : 'New Version') + ' Ready';
+
+      const title = document.getElementById('updateModalTitle');
+      if (title && updateInfo.title) title.textContent = updateInfo.title;
+
+      const desc = document.getElementById('updateModalDesc');
+      if (desc && updateInfo.message) desc.textContent = updateInfo.message;
+
+      const currentTag = document.getElementById('currentVersionTag');
+      if (currentTag) currentTag.textContent = `v${activeVersionName || CURRENT_APP_VERSION_NAME}`;
+
+      const latestTag = document.getElementById('latestVersionTag');
+      if (latestTag) latestTag.textContent = `v${updateInfo.latestVersionName || '3.1.8'}`;
+
+      const sizeTag = document.getElementById('updateFileSize');
+      if (sizeTag && updateInfo.fileSize) sizeTag.textContent = updateInfo.fileSize;
+
+      const updateDownloadUrl = updateInfo.downloadUrl || `${API_BASE_URL}/download/apk`;
+      const resolvedDownloadUrl = updateDownloadUrl.startsWith('http') ? updateDownloadUrl : `${API_BASE_URL}${updateDownloadUrl}`;
+      const startBtnSpan = document.querySelector('#btnStartUpdate span');
+      if (startBtnSpan) startBtnSpan.textContent = `Download New APK (v${updateInfo.latestVersionName || '3.1.8'})`;
+      
+      const browserLink = document.getElementById('btnBrowserDownload');
+      if (browserLink) {
+        browserLink.href = resolvedDownloadUrl;
+        browserLink.innerHTML = `<i class="fa-solid fa-arrow-up-right-from-square"></i> Download v${updateInfo.latestVersionName || '3.1.8'}`;
+      }
+      const browserLinkFallback = document.getElementById('btnBrowserDownloadFallback');
+      if (browserLinkFallback) browserLinkFallback.href = resolvedDownloadUrl;
+
+      document.querySelectorAll('.update-notes-box, #updateNotesList').forEach(el => el.remove());
+
+      // Force Update: User cannot use app without updating
+      if (updateInfo.forceUpdate) {
+        openUpdateModal(true);
+      }
     }
-  }
-
-  if (isOutdated) {
-    // Populate update modal UI elements
-    const pill = document.getElementById('updateBadgePill');
-    if (pill) pill.textContent = (updateInfo.latestVersionName ? `v${updateInfo.latestVersionName}` : 'New Version') + ' Ready';
-
-    const title = document.getElementById('updateModalTitle');
-    if (title && updateInfo.title) title.textContent = updateInfo.title;
-
-    const desc = document.getElementById('updateModalDesc');
-    if (desc && updateInfo.message) desc.textContent = updateInfo.message;
-
-    const currentTag = document.getElementById('currentVersionTag');
-    if (currentTag) currentTag.textContent = `v${activeVersionName || CURRENT_APP_VERSION_NAME}`;
-
-    const latestTag = document.getElementById('latestVersionTag');
-    if (latestTag) latestTag.textContent = `v${updateInfo.latestVersionName || '3.1.5'}`;
-
-    const sizeTag = document.getElementById('updateFileSize');
-    if (sizeTag && updateInfo.fileSize) sizeTag.textContent = updateInfo.fileSize;
-
-    const updateDownloadUrl = updateInfo.downloadUrl || `${API_BASE_URL}/download/apk`;
-    const resolvedDownloadUrl = updateDownloadUrl.startsWith('http') ? updateDownloadUrl : `${API_BASE_URL}${updateDownloadUrl}`;
-    const startBtnSpan = document.querySelector('#btnStartUpdate span');
-    if (startBtnSpan) startBtnSpan.textContent = `Download New APK (v${updateInfo.latestVersionName || '3.1.8'})`;
-    if (browserLink) {
-      browserLink.href = resolvedDownloadUrl;
-      browserLink.innerHTML = `<i class="fa-solid fa-arrow-up-right-from-square"></i> Download v${updateInfo.latestVersionName || '3.1.8'}`;
-    }
-    const browserLinkFallback = document.getElementById('btnBrowserDownloadFallback');
-    if (browserLinkFallback) browserLinkFallback.href = resolvedDownloadUrl;
-
-    document.querySelectorAll('.update-notes-box, #updateNotesList').forEach(el => el.remove());
-
-    // Force Update: User cannot use app without updating
-    if (updateInfo.forceUpdate) {
-      openUpdateModal(true);
-    }
+  } catch (err) {
+    console.warn('checkAppUpdate non-fatal notice:', err);
   }
 }
 

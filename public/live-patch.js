@@ -1,4 +1,4 @@
-// FOBS TV Live OTA Patch Bundle v1.4.2 (Clean Force Update, Video Reports Fix & MovieBox Offline Engine)
+// FOBS TV Live OTA Patch Bundle v1.4.3 (Instant Intro Auto-Dismiss, Clean Force Update & MovieBox Engine)
 // 1. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
 // 2. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
 // 3. Smooth Online Playback: Connecting overlay smoothly dissolves only when video is actively playing (no frozen 1-2s icon)
@@ -2596,13 +2596,43 @@
     document.head.appendChild(hideNotesStyle);
   } catch (_) {}
 
-  enforceForceUpdatePopup();
-  setTimeout(enforceForceUpdatePopup, 400);
-  setTimeout(enforceForceUpdatePopup, 1200);
-  setTimeout(enforceForceUpdatePopup, 2500);
+  // 16. Guarantee Intro Video Dismissal on all devices (Never stuck!)
+  function dismissStuckIntro() {
+    try {
+      const intro = document.getElementById('appIntroOverlay');
+      if (intro) {
+        intro.classList.add('fade-out');
+        intro.style.setProperty('display', 'none', 'important');
+        intro.style.setProperty('pointer-events', 'none', 'important');
+        try { intro.remove(); } catch(_) {}
+        document.body.classList.remove('intro-active');
+        document.body.style.removeProperty('overflow');
+        document.body.style.setProperty('overflow-y', 'auto', 'important');
+        if (typeof window.finishIntroAndShowApp === 'function' && !window._introFinished) {
+          window.finishIntroAndShowApp();
+        }
+      }
+    } catch (_) {}
+  }
+
+  // Allow clicking anywhere to skip intro on all devices
+  try {
+    const introEl = document.getElementById('appIntroOverlay');
+    if (introEl) {
+      introEl.style.cursor = 'pointer';
+      introEl.addEventListener('click', dismissStuckIntro);
+    }
+  } catch(_) {}
+
+  // Auto-dismiss stuck intro after 5s and 7s
+  setTimeout(dismissStuckIntro, 5000);
+  setTimeout(dismissStuckIntro, 7000);
+
+  // Trigger force update popup smoothly AFTER intro has concluded
+  setTimeout(enforceForceUpdatePopup, 5500);
   setInterval(cleanOldAppUpdateModal, 1000);
 
-  // 16. Fix Mobile App Video Reports API endpoint
+  // 17. Fix Mobile App Video Reports API endpoint
   window.submitVideoReport = async function() {
     const currentMedia = window.appState ? window.appState.currentMedia : null;
     const reasonRadio = document.querySelector('input[name="reportReason"]:checked');
