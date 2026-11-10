@@ -389,6 +389,9 @@ public class NativeDownloadManager {
 
         private volatile boolean isPaused = false;
         private volatile boolean isRunning = false;
+        private volatile HttpURLConnection conn = null;
+        private volatile InputStream in = null;
+        private volatile RandomAccessFile raf = null;
 
         public DownloadWorker(String id, String downloadUrl, String title, String poster,
                               String quality, int season, int episode, boolean isSeries,
@@ -412,6 +415,15 @@ public class NativeDownloadManager {
         public void pause() {
             isPaused = true;
             isRunning = false;
+            try {
+                if (conn != null) conn.disconnect();
+            } catch (Exception ignored) {}
+            try {
+                if (in != null) in.close();
+            } catch (Exception ignored) {}
+            try {
+                if (raf != null) raf.close();
+            } catch (Exception ignored) {}
         }
 
         @Override
@@ -423,9 +435,9 @@ public class NativeDownloadManager {
             File targetFile = new File(dir, id + ".mp4");
             File partFile = new File(dir, id + ".mp4.part");
 
-            RandomAccessFile raf = null;
-            InputStream in = null;
-            HttpURLConnection conn = null;
+            raf = null;
+            in = null;
+            conn = null;
 
             try {
                 long existingBytes = partFile.exists() ? partFile.length() : 0;

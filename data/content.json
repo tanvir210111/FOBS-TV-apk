@@ -1,12 +1,12 @@
 {
   "appUpdate": {
     "enabled": true,
-    "latestVersionCode": 16,
-    "latestVersionName": "3.1.8",
-    "minVersionCode": 16,
+    "latestVersionCode": 17,
+    "latestVersionName": "3.2.0",
+    "minVersionCode": 17,
     "forceUpdate": true,
-    "title": "জরুরি আপডেট: FOBS TV v3.1.8",
-    "message": "নতুন v3.1.8 ভার্সনে মুভিবক্স মেথডে ডিভাইস স্টোরেজ ডাউনলোড, অফলাইন বাংলা ও ইংরেজি সাবটাইটেল এবং ০-সেকেন্ডের স্মুথ অফলাইন রেঞ্জ প্লেব্যাক যুক্ত করা হয়েছে। আগের ভার্সনে ডাউনলোড সমস্যা এড়াতে এখনই আপডেট করুন!",
+    "title": "জরুরি আপডেট: FOBS TV v3.2.0",
+    "message": "নতুন v3.2.0 ভার্সনে ডাউনলোড পজ, রেজ্যুম এবং স্মার্ট সিরিয়াল কিউ ইঞ্জিন সম্পূর্ণ ঠিক করা হয়েছে। এখনই আপডেট করুন!",
     "releaseNotes": [],
     "downloadUrl": "https://fobstv.duckdns.org/download/apk",
     "fallbackUrl": "https://fobs-apk-download.vercel.app/",
@@ -155932,9 +155932,9 @@
       "source": "MovieBox",
       "addedAt": "2026-10-30T13:56:05.880Z",
       "createdAt": "2026-10-30T13:56:05.897Z",
-      "episodesCount": 814,
+      "episodesCount": 875,
       "isCustom": true,
-      "totalEpisodes": 814,
+      "totalEpisodes": 875,
       "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=1&q=720",
       "seasons": [
         {
@@ -156231,6 +156231,13 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=41&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-42",
+              "episode": 42,
+              "season": 1,
+              "title": "Episode 42",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=42&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-43",
               "episode": 43,
               "season": 1,
@@ -156509,6 +156516,13 @@
               "season": 1,
               "title": "Episode 82",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=82&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-83",
+              "episode": 83,
+              "season": 1,
+              "title": "Episode 83",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=83&q=720"
             },
             {
               "id": "ep-mithai-bn-1-84",
@@ -157729,6 +157743,41 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=257&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-258",
+              "episode": 258,
+              "season": 1,
+              "title": "Episode 258",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=258&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-259",
+              "episode": 259,
+              "season": 1,
+              "title": "Episode 259",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=259&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-260",
+              "episode": 260,
+              "season": 1,
+              "title": "Episode 260",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=260&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-261",
+              "episode": 261,
+              "season": 1,
+              "title": "Episode 261",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=261&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-262",
+              "episode": 262,
+              "season": 1,
+              "title": "Episode 262",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=262&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-263",
               "episode": 263,
               "season": 1,
@@ -158114,6 +158163,13 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=317&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-318",
+              "episode": 318,
+              "season": 1,
+              "title": "Episode 318",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=318&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-319",
               "episode": 319,
               "season": 1,
@@ -158128,11 +158184,25 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=320&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-321",
+              "episode": 321,
+              "season": 1,
+              "title": "Episode 321",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=321&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-322",
               "episode": 322,
               "season": 1,
               "title": "Episode 322",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=322&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-323",
+              "episode": 323,
+              "season": 1,
+              "title": "Episode 323",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=323&q=720"
             },
             {
               "id": "ep-mithai-bn-1-324",
@@ -158359,6 +158429,13 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=355&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-356",
+              "episode": 356,
+              "season": 1,
+              "title": "Episode 356",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=356&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-357",
               "episode": 357,
               "season": 1,
@@ -158406,6 +158483,13 @@
               "season": 1,
               "title": "Episode 363",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=363&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-364",
+              "episode": 364,
+              "season": 1,
+              "title": "Episode 364",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=364&q=720"
             },
             {
               "id": "ep-mithai-bn-1-365",
@@ -158457,11 +158541,25 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=371&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-372",
+              "episode": 372,
+              "season": 1,
+              "title": "Episode 372",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=372&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-373",
               "episode": 373,
               "season": 1,
               "title": "Episode 373",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=373&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-374",
+              "episode": 374,
+              "season": 1,
+              "title": "Episode 374",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=374&q=720"
             },
             {
               "id": "ep-mithai-bn-1-375",
@@ -158625,11 +158723,25 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=397&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-398",
+              "episode": 398,
+              "season": 1,
+              "title": "Episode 398",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=398&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-399",
               "episode": 399,
               "season": 1,
               "title": "Episode 399",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=399&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-400",
+              "episode": 400,
+              "season": 1,
+              "title": "Episode 400",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=400&q=720"
             },
             {
               "id": "ep-mithai-bn-1-401",
@@ -158667,6 +158779,20 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=405&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-406",
+              "episode": 406,
+              "season": 1,
+              "title": "Episode 406",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=406&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-407",
+              "episode": 407,
+              "season": 1,
+              "title": "Episode 407",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=407&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-408",
               "episode": 408,
               "season": 1,
@@ -158674,11 +158800,25 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=408&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-409",
+              "episode": 409,
+              "season": 1,
+              "title": "Episode 409",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=409&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-410",
               "episode": 410,
               "season": 1,
               "title": "Episode 410",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=410&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-411",
+              "episode": 411,
+              "season": 1,
+              "title": "Episode 411",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=411&q=720"
             },
             {
               "id": "ep-mithai-bn-1-412",
@@ -158737,6 +158877,20 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=419&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-420",
+              "episode": 420,
+              "season": 1,
+              "title": "Episode 420",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=420&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-421",
+              "episode": 421,
+              "season": 1,
+              "title": "Episode 421",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=421&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-422",
               "episode": 422,
               "season": 1,
@@ -158758,6 +158912,13 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=424&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-425",
+              "episode": 425,
+              "season": 1,
+              "title": "Episode 425",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=425&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-426",
               "episode": 426,
               "season": 1,
@@ -158770,6 +158931,13 @@
               "season": 1,
               "title": "Episode 427",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=427&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-428",
+              "episode": 428,
+              "season": 1,
+              "title": "Episode 428",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=428&q=720"
             },
             {
               "id": "ep-mithai-bn-1-429",
@@ -158931,6 +159099,41 @@
               "season": 1,
               "title": "Episode 451",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=451&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-452",
+              "episode": 452,
+              "season": 1,
+              "title": "Episode 452",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=452&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-453",
+              "episode": 453,
+              "season": 1,
+              "title": "Episode 453",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=453&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-454",
+              "episode": 454,
+              "season": 1,
+              "title": "Episode 454",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=454&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-455",
+              "episode": 455,
+              "season": 1,
+              "title": "Episode 455",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=455&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-456",
+              "episode": 456,
+              "season": 1,
+              "title": "Episode 456",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=456&q=720"
             },
             {
               "id": "ep-mithai-bn-1-457",
@@ -159101,6 +159304,13 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=480&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-481",
+              "episode": 481,
+              "season": 1,
+              "title": "Episode 481",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=481&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-482",
               "episode": 482,
               "season": 1,
@@ -159113,6 +159323,13 @@
               "season": 1,
               "title": "Episode 483",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=483&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-484",
+              "episode": 484,
+              "season": 1,
+              "title": "Episode 484",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=484&q=720"
             },
             {
               "id": "ep-mithai-bn-1-485",
@@ -159129,6 +159346,13 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=486&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-487",
+              "episode": 487,
+              "season": 1,
+              "title": "Episode 487",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=487&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-488",
               "episode": 488,
               "season": 1,
@@ -159136,11 +159360,39 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=488&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-489",
+              "episode": 489,
+              "season": 1,
+              "title": "Episode 489",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=489&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-490",
               "episode": 490,
               "season": 1,
               "title": "Episode 490",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=490&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-491",
+              "episode": 491,
+              "season": 1,
+              "title": "Episode 491",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=491&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-492",
+              "episode": 492,
+              "season": 1,
+              "title": "Episode 492",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=492&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-493",
+              "episode": 493,
+              "season": 1,
+              "title": "Episode 493",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=493&q=720"
             },
             {
               "id": "ep-mithai-bn-1-494",
@@ -159155,6 +159407,41 @@
               "season": 1,
               "title": "Episode 495",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=495&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-496",
+              "episode": 496,
+              "season": 1,
+              "title": "Episode 496",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=496&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-497",
+              "episode": 497,
+              "season": 1,
+              "title": "Episode 497",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=497&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-498",
+              "episode": 498,
+              "season": 1,
+              "title": "Episode 498",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=498&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-499",
+              "episode": 499,
+              "season": 1,
+              "title": "Episode 499",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=499&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-500",
+              "episode": 500,
+              "season": 1,
+              "title": "Episode 500",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=500&q=720"
             },
             {
               "id": "ep-mithai-bn-1-501",
@@ -159297,6 +159584,13 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=520&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-521",
+              "episode": 521,
+              "season": 1,
+              "title": "Episode 521",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=521&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-522",
               "episode": 522,
               "season": 1,
@@ -159379,6 +159673,13 @@
               "season": 1,
               "title": "Episode 533",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=533&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-534",
+              "episode": 534,
+              "season": 1,
+              "title": "Episode 534",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=534&q=720"
             },
             {
               "id": "ep-mithai-bn-1-535",
@@ -159500,6 +159801,13 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=551&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-552",
+              "episode": 552,
+              "season": 1,
+              "title": "Episode 552",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=552&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-553",
               "episode": 553,
               "season": 1,
@@ -159542,6 +159850,27 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=558&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-559",
+              "episode": 559,
+              "season": 1,
+              "title": "Episode 559",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=559&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-560",
+              "episode": 560,
+              "season": 1,
+              "title": "Episode 560",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=560&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-561",
+              "episode": 561,
+              "season": 1,
+              "title": "Episode 561",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=561&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-562",
               "episode": 562,
               "season": 1,
@@ -159554,6 +159883,13 @@
               "season": 1,
               "title": "Episode 563",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=563&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-564",
+              "episode": 564,
+              "season": 1,
+              "title": "Episode 564",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=564&q=720"
             },
             {
               "id": "ep-mithai-bn-1-565",
@@ -159591,11 +159927,25 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=569&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-570",
+              "episode": 570,
+              "season": 1,
+              "title": "Episode 570",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=570&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-571",
               "episode": 571,
               "season": 1,
               "title": "Episode 571",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=571&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-572",
+              "episode": 572,
+              "season": 1,
+              "title": "Episode 572",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=572&q=720"
             },
             {
               "id": "ep-mithai-bn-1-573",
@@ -159626,11 +159976,32 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=576&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-577",
+              "episode": 577,
+              "season": 1,
+              "title": "Episode 577",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=577&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-578",
               "episode": 578,
               "season": 1,
               "title": "Episode 578",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=578&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-579",
+              "episode": 579,
+              "season": 1,
+              "title": "Episode 579",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=579&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-580",
+              "episode": 580,
+              "season": 1,
+              "title": "Episode 580",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=580&q=720"
             },
             {
               "id": "ep-mithai-bn-1-581",
@@ -159708,6 +160079,13 @@
               "season": 1,
               "title": "Episode 591",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=591&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-592",
+              "episode": 592,
+              "season": 1,
+              "title": "Episode 592",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=592&q=720"
             },
             {
               "id": "ep-mithai-bn-1-593",
@@ -159806,6 +160184,13 @@
               "season": 1,
               "title": "Episode 606",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=606&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-607",
+              "episode": 607,
+              "season": 1,
+              "title": "Episode 607",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=607&q=720"
             },
             {
               "id": "ep-mithai-bn-1-608",
@@ -160144,6 +160529,13 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=655&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-656",
+              "episode": 656,
+              "season": 1,
+              "title": "Episode 656",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=656&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-657",
               "episode": 657,
               "season": 1,
@@ -160156,6 +160548,13 @@
               "season": 1,
               "title": "Episode 658",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=658&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-659",
+              "episode": 659,
+              "season": 1,
+              "title": "Episode 659",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=659&q=720"
             },
             {
               "id": "ep-mithai-bn-1-660",
@@ -160422,6 +160821,13 @@
               "season": 1,
               "title": "Episode 697",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=697&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-698",
+              "episode": 698,
+              "season": 1,
+              "title": "Episode 698",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=698&q=720"
             },
             {
               "id": "ep-mithai-bn-1-699",
@@ -160963,6 +161369,13 @@
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=775&q=720"
             },
             {
+              "id": "ep-mithai-bn-1-776",
+              "episode": 776,
+              "season": 1,
+              "title": "Episode 776",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=776&q=720"
+            },
+            {
               "id": "ep-mithai-bn-1-777",
               "episode": 777,
               "season": 1,
@@ -161066,6 +161479,20 @@
               "season": 1,
               "title": "Episode 791",
               "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=791&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-792",
+              "episode": 792,
+              "season": 1,
+              "title": "Episode 792",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=792&q=720"
+            },
+            {
+              "id": "ep-mithai-bn-1-793",
+              "episode": 793,
+              "season": 1,
+              "title": "Episode 793",
+              "streamUrl": "/api/moviebox/stream?id=2033195013856708224&path=mithai-bengali-OlawFoo3cq2&se=1&ep=793&q=720"
             },
             {
               "id": "ep-mithai-bn-1-794",

@@ -366,8 +366,8 @@ const CACHE_TTL_MS = 60 * 1000; // 1 minute TTL
 let isSyncing = false;
 
 // App Versioning & In-App Force Update Configuration
-const CURRENT_APP_VERSION_CODE = 16;
-const CURRENT_APP_VERSION_NAME = '3.1.8';
+const CURRENT_APP_VERSION_CODE = 17;
+const CURRENT_APP_VERSION_NAME = '3.2.0';
 window.CURRENT_APP_VERSION_CODE = CURRENT_APP_VERSION_CODE;
 window.CURRENT_APP_VERSION_NAME = CURRENT_APP_VERSION_NAME;
 let currentAppUpdateConfig = null;
@@ -454,20 +454,13 @@ function applyNavigationBarInset(bottomDp) {
 }
 window.applyNavigationBarInset = applyNavigationBarInset;
 
-// Bulletproof bootstrap: fires immediately if document is already parsed, or on DOMContentLoaded
-function bootstrapApp() {
-  try { applyNavigationBarInset(); } catch(e) {}
-  window.addEventListener('resize', () => { try { applyNavigationBarInset(); } catch(e) {} });
-  window.addEventListener('orientationchange', () => setTimeout(() => { try { applyNavigationBarInset(); } catch(e) {} }, 200));
+// Initialize Application
+document.addEventListener('DOMContentLoaded', () => {
+  applyNavigationBarInset();
+  window.addEventListener('resize', () => applyNavigationBarInset());
+  window.addEventListener('orientationchange', () => setTimeout(applyNavigationBarInset, 200));
   initApp();
-}
-window.bootstrapApp = bootstrapApp;
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', bootstrapApp);
-} else {
-  bootstrapApp();
-}
+});
 
 // ============================================================
 // APP STARTUP CINEMATIC INTRO VIDEO & BACKGROUND REFRESH
@@ -533,18 +526,15 @@ function playAppIntroAndSync() {
   };
   startPlay();
 
-  // Update progress bar as video plays & seamless auto-exit on completion
+  // Update progress bar as video plays
   video.ontimeupdate = () => {
     if (video.duration && isFinite(video.duration) && video.duration > 0) {
       const pct = Math.min(100, Math.round((video.currentTime / video.duration) * 100));
       if (progressFill) progressFill.style.width = `${pct}%`;
-      // Smooth early finish right before EOF so Android WebView never hangs on the last frame
-      if (video.currentTime >= video.duration - 0.35) {
-        finishIntroAndShowApp();
-      }
     }
   };
 
+  // Video runs full duration, then finishes smoothly
   video.onended = () => {
     finishIntroAndShowApp();
   };
@@ -553,14 +543,6 @@ function playAppIntroAndSync() {
     console.warn('Intro video playback notice, proceeding to app');
     finishIntroAndShowApp();
   };
-
-  // Allow user to tap/click overlay anytime to enter app immediately (never stuck!)
-  if (overlay) {
-    overlay.style.cursor = 'pointer';
-    overlay.addEventListener('click', () => {
-      finishIntroAndShowApp();
-    });
-  }
 
   // Background refresh: Fetch latest fresh content from backend while video plays!
   (async () => {
@@ -575,12 +557,12 @@ function playAppIntroAndSync() {
     }
   })();
 
-  // Failsafe timeout: Max 4.2 seconds
+  // Natural timeout safety
   setTimeout(() => {
     if (!_introFinished) {
       finishIntroAndShowApp();
     }
-  }, 4200);
+  }, 8800);
 }
 window.playAppIntroAndSync = playAppIntroAndSync;
 
@@ -8405,8 +8387,12 @@ const fobsDownloadQueue = {
   _lastProcessStart: 0,
   async processNext() {
     const now = Date.now();
+    const list = getStoredDownloadsList();
     const activeTasks = window.activeDownloadTasks || {};
-    const isAnyActive = Object.values(activeTasks).some(t => t && t.isDownloading && !t.isPaused);
+    const isJsActive = Object.values(activeTasks).some(t => t && t.isDownloading && !t.isPaused);
+    const isStoredActive = list.some(d => d && d.status === 'downloading');
+    const isAnyActive = isJsActive || isStoredActive;
+
     if (this.isProcessing && !isAnyActive && (now - (this._lastProcessStart || 0) > 30000)) {
       console.warn('Resetting stuck fobsDownloadQueue lock');
       this.isProcessing = false;
@@ -8414,7 +8400,6 @@ const fobsDownloadQueue = {
     if (this.isProcessing) return;
     if (isAnyActive) return;
 
-    const list = getStoredDownloadsList();
     const nextQueued = list.find(d => d && d.status === 'queued');
     if (!nextQueued) {
       this.isProcessing = false;
@@ -8429,7 +8414,6 @@ const fobsDownloadQueue = {
       console.warn('Queue item failed or paused:', e);
     } finally {
       this.isProcessing = false;
-      setTimeout(() => this.processNext(), 500);
     }
   },
   enqueue(item) {
@@ -9719,6 +9703,12 @@ async function pauseDownload(id, e) {
   if (e) {
     try { e.stopPropagation(); e.preventDefault(); } catch (_) {}
   }
+  // Native Android Pause
+  if (window.AndroidApp && typeof window.AndroidApp.pauseNativeDownload === 'function') {
+    try { window.AndroidApp.pauseNativeDownload(id); } catch (_) {}
+  }
+
+  // Web JS fetch Pause
   const task = activeDownloadTasks[id];
   if (task) {
     task.isPaused = true;
@@ -9733,7 +9723,7 @@ async function pauseDownload(id, e) {
 
   // Immediately update stored status and re-render list so the button never stays stuck
   const downloads = getStoredDownloadsList();
-  const item = downloads.find(d => d.id === id);
+  const item = downloads.find(d => d && (d.id === id || String(id).includes(d.id)));
   if (item) {
     item.status = 'paused';
     item.paused = true;
@@ -9746,6 +9736,11 @@ async function pauseDownload(id, e) {
   renderDownloadsList();
   releaseWakeLockIfNoActiveDownloads();
   showToast('⏸️ ডাউনলোড পজ করা হয়েছে');
+
+  // Wake up queue so next waiting item starts
+  if (window.fobsDownloadQueue) {
+    setTimeout(() => window.fobsDownloadQueue.processNext(), 400);
+  }
 }
 window.pauseDownload = pauseDownload;
 
@@ -9755,7 +9750,7 @@ async function resumeDownload(id, e) {
     try { e.stopPropagation(); e.preventDefault(); } catch (_) {}
   }
   const downloads = getStoredDownloadsList();
-  const item = downloads.find(d => d.id === id);
+  const item = downloads.find(d => d && (d.id === id || String(id).includes(d.id)));
   if (!item) return;
 
   const task = activeDownloadTasks[id];
@@ -9773,6 +9768,12 @@ async function resumeDownload(id, e) {
   item.statusText = item.progress > 0 ? `Resuming ${currentQuality} (${item.progress}%)...` : `Connecting ${currentQuality}...`;
   localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
   renderDownloadsList();
+
+  // Native Android Resume
+  if (window.AndroidApp && typeof window.AndroidApp.resumeNativeDownload === 'function') {
+    try { window.AndroidApp.resumeNativeDownload(id); } catch (_) {}
+    return;
+  }
 
   downloadMedia(item.url, item.title, item.options || {}, id);
 }
@@ -10238,6 +10239,10 @@ window.playDownloadedMedia = playDownloadedMedia;
 
 async function deleteDownload(id, e) {
   if (e) e.stopPropagation();
+  // Native Android Delete
+  if (window.AndroidApp && typeof window.AndroidApp.deleteNativeDownload === 'function') {
+    try { window.AndroidApp.deleteNativeDownload(id); } catch (_) {}
+  }
   // Abort active task if running
   if (activeDownloadTasks[id]) {
     activeDownloadTasks[id].isPaused = true;
@@ -10252,13 +10257,106 @@ async function deleteDownload(id, e) {
   } catch (e) {}
   try {
     const raw = localStorage.getItem('fobs_downloads') || '[]';
-    const downloads = JSON.parse(raw).filter(d => d.id !== id);
+    const downloads = JSON.parse(raw).filter(d => d && d.id !== id && !String(id).includes(d.id));
     localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
   } catch (e) {}
   renderDownloadsList();
   showToast('ডাউনলোড মুছে ফেলা হয়েছে');
+
+  // Wake up queue so next waiting item starts
+  if (window.fobsDownloadQueue) {
+    setTimeout(() => window.fobsDownloadQueue.processNext(), 400);
+  }
 }
 window.deleteDownload = deleteDownload;
+
+// Native Android Downloader Event Bridges
+window.onNativeDownloadProgress = function(id, percent, downloadedBytes, totalBytes) {
+  const downMb = (downloadedBytes / (1024 * 1024)).toFixed(1);
+  const totMb = totalBytes > 0 ? (totalBytes / (1024 * 1024)).toFixed(1) : '?';
+  const sizeText = `${downMb} MB / ${totMb} MB`;
+  if (typeof window.updateDownloadProgress === 'function') {
+    window.updateDownloadProgress(id, percent, sizeText);
+  }
+  try {
+    const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
+    const item = downloads.find(d => d && (d.id === id || String(id).includes(d.id)));
+    if (item && item.status !== 'paused') {
+      item.progress = percent;
+      item.receivedBytes = downloadedBytes;
+      item.totalBytes = totalBytes;
+      item.status = 'downloading';
+      item.statusText = `Downloading... ${percent}%`;
+      localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+    }
+  } catch (_) {}
+};
+
+window.onNativeDownloadComplete = function(id) {
+  try {
+    const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
+    const item = downloads.find(d => d && (d.id === id || String(id).includes(d.id)));
+    if (item) {
+      item.progress = 100;
+      item.status = 'Ready (Offline)';
+      item.downloaded = true;
+      item.isReady = true;
+      item.statusText = 'Downloaded • Ready to Watch (অফলাইন)';
+      localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+    }
+  } catch (_) {}
+  if (typeof window.renderDownloadsList === 'function') window.renderDownloadsList();
+  if (typeof showToast === 'function') showToast('🎬 ডাউনলোড সম্পন্ন হয়েছে! অফলাইনে প্লে করতে ক্লিক করুন');
+  if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
+    setTimeout(() => window.fobsDownloadQueue.processNext(), 500);
+  }
+};
+
+window.onNativeDownloadPaused = function(id) {
+  try {
+    const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
+    const item = downloads.find(d => d && (d.id === id || String(id).includes(d.id)));
+    if (item) {
+      item.status = 'paused';
+      item.paused = true;
+      item.statusText = `Paused (${item.progress || 0}%)`;
+      localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+    }
+  } catch (_) {}
+  if (typeof window.renderDownloadsList === 'function') window.renderDownloadsList();
+  if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
+    setTimeout(() => window.fobsDownloadQueue.processNext(), 500);
+  }
+};
+
+window.onNativeDownloadError = function(id, err) {
+  try {
+    const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
+    const item = downloads.find(d => d && (d.id === id || String(id).includes(d.id)));
+    if (item && item.status !== 'paused') {
+      item.status = 'failed';
+      item.failed = true;
+      item.statusText = 'Download Failed • Tap Retry';
+      localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+    }
+  } catch (_) {}
+  if (typeof window.renderDownloadsList === 'function') window.renderDownloadsList();
+  if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
+    setTimeout(() => window.fobsDownloadQueue.processNext(), 1000);
+  }
+};
+
+window.onNativeDownloadDeleted = function(id) {
+  try {
+    let downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
+    downloads = downloads.filter(d => d && d.id !== id && !String(id).includes(d.id));
+    localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
+  } catch (_) {}
+  if (typeof window.renderDownloadsList === 'function') window.renderDownloadsList();
+  if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
+    setTimeout(() => window.fobsDownloadQueue.processNext(), 500);
+  }
+};
 
 // Downloads View Management
 function renderDownloadsList() {

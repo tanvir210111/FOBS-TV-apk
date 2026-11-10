@@ -1,12 +1,12 @@
-// FOBS TV Live OTA Patch Bundle v1.4.4 (Ultra-Fast Startup, Instant Intro Auto-Dismiss & Anti-Freeze Engine)
+// FOBS TV Live OTA Patch Bundle v1.4.5 (Download Queue, Pause & Resume Engine for v3.2.0)
 // 1. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
 // 2. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
 // 3. Smooth Online Playback: Connecting overlay smoothly dissolves only when video is actively playing (no frozen 1-2s icon)
 // 4. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
 // 5. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.4.4 (Ultra-Fast Startup & Anti-Freeze Engine) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.4.4';
+  console.log('⚡ FOBS TV Live Patch v1.4.5 (Download Queue, Pause & Resume) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.4.5';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -2258,6 +2258,7 @@
   window.resumeDownload = function(id, e) {
     if (window.AndroidApp && typeof window.AndroidApp.resumeNativeDownload === 'function') {
       window.AndroidApp.resumeNativeDownload(id);
+      return;
     }
     if (typeof origResume === 'function') origResume(id, e);
   };
@@ -2642,20 +2643,8 @@
     } catch (_) {}
   }
 
-  // Allow clicking anywhere to skip intro on all devices
-  try {
-    const introEl = document.getElementById('appIntroOverlay');
-    if (introEl) {
-      introEl.style.cursor = 'pointer';
-      introEl.addEventListener('click', dismissStuckIntro);
-    }
-  } catch(_) {}
-
-  // Auto-dismiss stuck intro aggressively (1s, 2.5s, 4s, 5.5s)
-  setTimeout(dismissStuckIntro, 1000);
-  setTimeout(dismissStuckIntro, 2500);
-  setTimeout(dismissStuckIntro, 4000);
-  setTimeout(dismissStuckIntro, 5500);
+  // Intro plays full duration naturally (~8.8s failsafe)
+  setTimeout(dismissStuckIntro, 8800);
 
   // Trigger force update popup smoothly AFTER intro has concluded
   setTimeout(enforceForceUpdatePopup, 5500);

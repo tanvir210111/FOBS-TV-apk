@@ -1711,7 +1711,7 @@ app.get('/download/apk', (req, res) => {
   ];
   for (const apkPath of candidates) {
     if (fs.existsSync(apkPath)) {
-      res.setHeader('Content-Disposition', 'attachment; filename="FOBS_TV_v3.1.8.apk"');
+      res.setHeader('Content-Disposition', 'attachment; filename="FOBS_TV_v3.2.0.apk"');
       return res.sendFile(apkPath);
     }
   }
@@ -2635,7 +2635,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.4.4",
+  version: "1.4.5",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 
