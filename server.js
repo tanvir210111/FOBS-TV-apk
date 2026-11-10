@@ -2476,15 +2476,16 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
 
     // Upstream returned 206 natively (e.g. KMDL or Range-supporting servers)
     if (response.status === 206) {
+      const isRangeReq = Boolean(req.headers.range);
       const headersToSend = {
         ...standardStreamCorsHeaders,
         'Content-Type': contentType,
         'Accept-Ranges': 'bytes'
       };
-      if (response.headers['content-range']) headersToSend['Content-Range'] = response.headers['content-range'];
+      if (isRangeReq && response.headers['content-range']) headersToSend['Content-Range'] = response.headers['content-range'];
       if (response.headers['content-length']) headersToSend['Content-Length'] = response.headers['content-length'];
 
-      res.writeHead(206, headersToSend);
+      res.writeHead(isRangeReq ? 206 : 200, headersToSend);
       if (typeof res.flushHeaders === 'function') res.flushHeaders();
 
       let rangeStart = 0;

@@ -4234,10 +4234,8 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     console.log('Playing MovieBox stream immediately:', fullUrl);
     videoPlayer.preload = 'auto';
     videoPlayer.muted = false;
-    const needReload = (videoPlayer.src !== fullUrl);
-    videoPlayer.src = fullUrl;
-    if (needReload) {
-      try { videoPlayer.load(); } catch (e) {}
+    if (videoPlayer.src !== fullUrl) {
+      videoPlayer.src = fullUrl;
     }
     const safeTriggerPlay = () => {
       const p = videoPlayer.play();
@@ -4253,13 +4251,13 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
 
     const onStreamReady = () => {
       safeTriggerPlay();
-      if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
+      if (typeof hideConnectingLoader === 'function') hideConnectingLoader(true);
       if (loader) loader.classList.remove('active');
     };
     videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
     videoPlayer.addEventListener('loadeddata', onStreamReady, { once: true });
     videoPlayer.addEventListener('playing', () => {
-      if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
+      if (typeof hideConnectingLoader === 'function') hideConnectingLoader(true);
       if (loader) loader.classList.remove('active');
     }, { once: true });
 
@@ -4319,34 +4317,37 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     const proxyStreamUrl = playableUrl.startsWith('http') ? playableUrl : `${API_BASE_URL}${playableUrl}`;
     console.log('Playing stream via server proxy:', proxyStreamUrl);
     videoPlayer.preload = 'auto';
-    const needReload = (videoPlayer.src !== proxyStreamUrl);
-    videoPlayer.src = proxyStreamUrl;
-    if (needReload) {
-      try { videoPlayer.load(); } catch (e) {}
+    if (videoPlayer.src !== proxyStreamUrl) {
+      videoPlayer.src = proxyStreamUrl;
     }
     videoPlayer.play().catch(() => {});
 
     let streamReadyFired = false;
     const loaderTimer = setTimeout(() => {
       if (loader) loader.classList.remove('active');
-    }, 20000);
+      if (typeof hideConnectingLoader === 'function') hideConnectingLoader(true);
+    }, 4000);
 
     const onStreamReady = () => {
+      if (typeof hideConnectingLoader === 'function') hideConnectingLoader(true);
+      if (loader) loader.classList.remove('active');
       const p = videoPlayer.play();
       if (p && typeof p.catch === 'function') {
         p.catch(() => {
-          if (loader) loader.classList.remove('active');
           if (typeof syncCenterPlayButton === 'function') syncCenterPlayButton();
         });
       }
     };
     videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
+    videoPlayer.addEventListener('loadeddata', onStreamReady, { once: true });
     videoPlayer.addEventListener('playing', () => {
       clearTimeout(loaderTimer);
+      if (typeof hideConnectingLoader === 'function') hideConnectingLoader(true);
       if (loader) loader.classList.remove('active');
     }, { once: true });
     videoPlayer.addEventListener('error', () => {
       clearTimeout(loaderTimer);
+      if (typeof hideConnectingLoader === 'function') hideConnectingLoader(true);
       if (loader) loader.classList.remove('active');
     }, { once: true });
     if (seekTime && seekTime > 0) {
@@ -10894,14 +10895,24 @@ function selectVideoQuality(quality, isAuto = false) {
 
   let targetStreamUrl = null;
 
-  // 1. Direct MovieBox active URL re-crafting (highest reliability & token-safe)
-  const currentSrc = videoPlayer.src || appState.currentStreamUrl || '';
-  if (currentSrc.includes('/api/moviebox/stream')) {
-    let clean = currentSrc.replace(/([?&])q=\d+/, '');
-    targetStreamUrl = clean + (clean.includes('?') ? '&' : '?') + `q=${targetResNum}`;
+  // 1. Instant Quality Switch: Use already discovered CDN resolution from memory (0ms delay!)
+  if (Array.isArray(appState.availableQualities) && appState.availableQualities.length > 0) {
+    const matched = appState.availableQualities.find(q => parseInt(q.resolution, 10) === targetResNum);
+    if (matched && (matched.proxyUrl || matched.url)) {
+      targetStreamUrl = matched.proxyUrl || matched.url;
+    }
   }
 
-  // 2. Check if activeObj has a server with /api/moviebox/stream
+  // 2. Direct MovieBox active URL re-crafting if not in memory
+  if (!targetStreamUrl) {
+    const currentSrc = videoPlayer.src || appState.currentStreamUrl || '';
+    if (currentSrc.includes('/api/moviebox/stream')) {
+      let clean = currentSrc.replace(/([?&])q=\d+/, '');
+      targetStreamUrl = clean + (clean.includes('?') ? '&' : '?') + `q=${targetResNum}`;
+    }
+  }
+
+  // 3. Check if activeObj has a server with /api/moviebox/stream
   if (!targetStreamUrl) {
     let mbServer = (activeObj.servers || []).find(s => s.url && s.url.includes('/api/moviebox/stream'));
     if (mbServer) {
@@ -10911,7 +10922,7 @@ function selectVideoQuality(quality, isAuto = false) {
     }
   }
 
-  // 3. Check if subjectId is present to construct /api/moviebox/stream
+  // 4. Check if subjectId is present to construct /api/moviebox/stream
   if (!targetStreamUrl) {
     const sId = currentMedia.subjectId || currentMedia.mbSubjectId || (currentMedia.id && currentMedia.id.startsWith('mb-') ? currentMedia.id.replace(/^mb-[ms]-/, '').replace(/-hindi$/, '') : null);
     if (sId) {
@@ -10919,14 +10930,6 @@ function selectVideoQuality(quality, isAuto = false) {
       const epNum = isSeries ? (appState.currentEpisodeNumber || 1) : 0;
       const dPath = currentMedia.detailPath || currentMedia.mbDetailPath || '';
       targetStreamUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=${targetResNum}`;
-    }
-  }
-
-  // 4. Fallback to appState.availableQualities or server matching
-  if (!targetStreamUrl && Array.isArray(appState.availableQualities) && appState.availableQualities.length > 0) {
-    const matched = appState.availableQualities.find(q => parseInt(q.resolution, 10) === targetResNum);
-    if (matched && (matched.proxyUrl || matched.url)) {
-      targetStreamUrl = matched.proxyUrl || matched.url;
     }
   }
 

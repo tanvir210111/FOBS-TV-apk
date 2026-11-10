@@ -190,11 +190,17 @@
       };
 
       videoEl.addEventListener('playing', () => {
-        hideConnectingLoader();
+        hideConnectingLoader(true);
+      });
+      videoEl.addEventListener('canplay', () => {
+        hideConnectingLoader(true);
+      });
+      videoEl.addEventListener('loadeddata', () => {
+        hideConnectingLoader(true);
       });
       videoEl.addEventListener('timeupdate', () => {
         if (videoEl.currentTime > 0.05) {
-          hideConnectingLoader();
+          hideConnectingLoader(true);
         }
       });
       videoEl.addEventListener('loadedmetadata', () => {
@@ -206,39 +212,35 @@
         }
       });
       videoEl.addEventListener('error', () => {
-        hideConnectingLoader();
+        hideConnectingLoader(true);
       });
       videoEl.addEventListener('waiting', () => {
         if (isOfflinePlayback(videoEl)) {
-          hideConnectingLoader();
+          hideConnectingLoader(true);
           const l = document.getElementById('videoLoader');
           if (l) l.classList.remove('active');
           return;
         }
-        if (!videoEl.paused) showConnectingLoader();
       });
       videoEl.addEventListener('loadstart', () => {
         if (isOfflinePlayback(videoEl)) {
-          hideConnectingLoader();
+          hideConnectingLoader(true);
           const l = document.getElementById('videoLoader');
           if (l) l.classList.remove('active');
           return;
         }
-        if (videoEl.paused) showConnectingLoader();
       });
       videoEl.addEventListener('seeking', () => {
         if (isOfflinePlayback(videoEl)) {
-          hideConnectingLoader();
+          hideConnectingLoader(true);
           const l = document.getElementById('videoLoader');
           if (l) l.classList.remove('active');
         }
       });
       videoEl.addEventListener('seeked', () => {
-        if (isOfflinePlayback(videoEl)) {
-          hideConnectingLoader();
-          const l = document.getElementById('videoLoader');
-          if (l) l.classList.remove('active');
-        }
+        hideConnectingLoader(true);
+        const l = document.getElementById('videoLoader');
+        if (l) l.classList.remove('active');
       });
 
       videoEl._hasFobsWatcher = true;
@@ -248,7 +250,7 @@
 
   function showConnectingLoader() {
     if (isOfflinePlayback()) {
-      hideConnectingLoader();
+      hideConnectingLoader(true);
       return;
     }
     stripVideoPoster();
@@ -263,18 +265,17 @@
         txt.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #00f2fe; margin-right: 8px;"></i> Connecting to stream server...';
       }
     }
-    // Safety auto-dismiss fallback: Never freeze playback (3.5 seconds max)
+    // Safety auto-dismiss fallback: Max 1.2s so player is never stalled
     if (window._connectingSafetyTimer) clearTimeout(window._connectingSafetyTimer);
     window._connectingSafetyTimer = setTimeout(() => {
-      hideConnectingLoader();
-    }, 3500);
+      hideConnectingLoader(true);
+    }, 1200);
   }
   window.showConnectingLoader = showConnectingLoader;
 
   function hideConnectingLoader(force = false) {
     const videoEl = document.getElementById('mainVideoPlayer');
-    if (!force && videoEl && !isOfflinePlayback(videoEl) && videoEl.src && !videoEl.paused && videoEl.currentTime < 0.05) {
-      // Keep connecting overlay visible until video actually starts outputting frames!
+    if (!force && videoEl && !isOfflinePlayback(videoEl) && videoEl.src && !videoEl.paused && videoEl.currentTime < 0.05 && videoEl.readyState < 2) {
       return;
     }
     if (window._connectingSafetyTimer) {
@@ -732,11 +733,10 @@
   }
 
   // -------------------------------------------------------------
-  // Robust Online Quality Switcher with Seek Preservation & Token Renewal
+  // Fast Online Quality Switcher with Seek Preservation (Instant Sub-second switch)
   // -------------------------------------------------------------
   window.selectVideoQuality = function(quality, isSilent = false) {
     try {
-      if (typeof showConnectingLoader === 'function') showConnectingLoader();
       const state = getAppState() || window.appState || {};
       const targetQ = (quality || '480p').toLowerCase();
       const targetResNum = parseInt(targetQ, 10) || (targetQ === 'auto' ? 480 : 720);
@@ -767,11 +767,21 @@
 
       let targetStreamUrl = null;
 
-      // 1. Re-craft /api/moviebox/stream with new &q= parameter
-      const currentSrc = videoPlayer.src || state.currentStreamUrl || '';
-      if (currentSrc.includes('/api/moviebox/stream')) {
-        let clean = currentSrc.replace(/([?&])q=\d+/, '');
-        targetStreamUrl = clean + (clean.includes('?') ? '&' : '?') + `q=${targetResNum}`;
+      // 1. Instant switch: Check availableQualities first (direct CDN stream - 0ms lookup!)
+      if (Array.isArray(state.availableQualities) && state.availableQualities.length > 0) {
+        const matched = state.availableQualities.find(q => parseInt(q.resolution, 10) === targetResNum);
+        if (matched && (matched.proxyUrl || matched.url)) {
+          targetStreamUrl = matched.proxyUrl || matched.url;
+        }
+      }
+
+      // 2. Direct MovieBox active URL re-crafting if not in qualities array
+      if (!targetStreamUrl) {
+        const currentSrc = videoPlayer.src || state.currentStreamUrl || '';
+        if (currentSrc.includes('/api/moviebox/stream')) {
+          let clean = currentSrc.replace(/([?&])q=\d+/, '');
+          targetStreamUrl = clean + (clean.includes('?') ? '&' : '?') + `q=${targetResNum}`;
+        }
       }
 
       if (!targetStreamUrl) {
@@ -793,29 +803,28 @@
         }
       }
 
-      // 2. Direct match from availableQualities
-      if (!targetStreamUrl && Array.isArray(state.availableQualities) && state.availableQualities.length > 0) {
-        const matched = state.availableQualities.find(q => parseInt(q.resolution, 10) === targetResNum);
-        if (matched && (matched.proxyUrl || matched.url)) {
-          targetStreamUrl = matched.proxyUrl || matched.url;
-        }
-      }
-
       if (targetStreamUrl) {
         const seekPos = videoPlayer.currentTime || 0;
         const isPaused = videoPlayer.paused;
-        console.log(`[LivePatch Quality Switch] Switching to ${targetResNum}p at ${seekPos.toFixed(1)}s:`, targetStreamUrl);
+        console.log(`[LivePatch Fast Quality Switch] Switching to ${targetResNum}p at ${seekPos.toFixed(1)}s:`, targetStreamUrl);
 
         if (typeof window.playStreamUrl === 'function') {
           window.playStreamUrl(targetStreamUrl, null, seekPos);
         } else {
           videoPlayer.src = targetStreamUrl;
-          try { videoPlayer.load(); } catch (e) {}
-          const onCanPlay = () => {
-            try { videoPlayer.currentTime = seekPos; } catch(e){}
+          const applySeek = () => {
+            try {
+              if (videoPlayer.duration && videoPlayer.duration > 1) {
+                videoPlayer.currentTime = Math.min(seekPos, videoPlayer.duration - 1);
+              } else {
+                videoPlayer.currentTime = seekPos;
+              }
+            } catch(e) {}
             if (!isPaused) videoPlayer.play().catch(() => {});
+            if (typeof hideConnectingLoader === 'function') hideConnectingLoader(true);
           };
-          videoPlayer.addEventListener('canplay', onCanPlay, { once: true });
+          videoPlayer.addEventListener('canplay', applySeek, { once: true });
+          videoPlayer.addEventListener('loadeddata', applySeek, { once: true });
         }
 
         if (!isPaused) {
