@@ -1666,21 +1666,21 @@ app.get('/api/app-update', (req, res) => {
   const data = getContentData();
   const defaultUpdate = {
     enabled: true,
-    latestVersionCode: 15,
-    latestVersionName: '3.1.7',
-    minVersionCode: 14,
-    forceUpdate: false,
-    title: 'নতুন আপডেট: FOBS TV v3.1.7',
-    message: 'নতুন v3.1.7 এ MovieBox স্টাইলে কোয়ালিটি অনুযায়ী পর্ব ফিল্টারিং, রিয়েল ফাইল সাইজ ও অফলাইন ডাউনলোডের স্পিড অপ্টিমাইজ করা হয়েছে!',
+    latestVersionCode: 17,
+    latestVersionName: '3.2.0',
+    minVersionCode: 17,
+    forceUpdate: true,
+    title: 'জরুরি আপডেট: FOBS TV v3.2.0',
+    message: 'নতুন v3.2.0 ভার্সনে ডাউনলোড পজ, রেজ্যুম এবং স্মার্ট সিরিয়াল কিউ ইঞ্জিন সম্পূর্ণ ঠিক করা হয়েছে। এখনই আপডেট করুন!',
     releaseNotes: [
-      '🎬 MovieBox স্টাইলে সিলেক্ট করা রেজোলিউশন অনুযায়ী পর্ব ফিল্টারিং',
-      '📥 ডাউনলোড ফাইল সাইজ ও 140MB স্টোরেজ এরর সমাধান',
-      '⚡ হাই-স্পিড স্মুথ স্ট্রিমিং ও বাফারিং অপ্টিমাইজেশন',
+      '⚡ নতুন অফলাইন ডাউনলোড পজ এবং রেজ্যুম সিস্টেম',
+      '📥 স্মার্ট ব্যাকগ্রাউন্ড সিরিয়াল ডাউনলোড কিউ ইঞ্জিন',
+      '🎬 বাংলা ও ইংলিশ ডুয়াল সাবটাইটেল সাপোর্ট',
       '🛡️ সম্পূর্ণ ক্লিন প্যাকেজ ও গুগল প্লে প্রোটেক্ট ভেরিফাইড'
     ],
     downloadUrl: 'https://fobstv.duckdns.org/download/apk',
     fallbackUrl: 'https://fobs-apk-download.vercel.app/',
-    fileSize: '7.87 MB'
+    fileSize: '7.75 MB'
   };
     res.json(data.appUpdate || defaultUpdate);
 });
@@ -3225,7 +3225,7 @@ app.post('/api/auth/simple-login', async (req, res) => {
       email: cleanEmail,
       name: cleanName,
       picture,
-      appVersion: req.body.appVersion || req.headers['x-app-version'] || '3.1.8'
+      appVersion: req.body.appVersion || req.headers['x-app-version'] || '3.2.0'
     });
     const token = authService.generateAppToken(user);
 
@@ -3295,7 +3295,7 @@ app.post('/api/auth/login', async (req, res) => {
       email: cleanEmail,
       name: cleanName,
       picture,
-      appVersion: req.body.appVersion || req.headers['x-app-version'] || '3.1.8'
+      appVersion: req.body.appVersion || req.headers['x-app-version'] || '3.2.0'
     });
     const token = authService.generateAppToken(user);
 
@@ -3919,10 +3919,10 @@ app.get('/api/admin/diagnostic', adminService.authenticate, async (req, res) => 
   res.json({ success: true, nginxConf, pm2Logs, curlTest, mbTest, mbError, mbDebug });
 });
 
-// Purge Older Version Users & Devices (Keep v3.1.8)
+// Purge Older Version Users & Devices (Keep v3.2.0)
 app.post('/api/admin/users/purge-old', adminService.authenticate, async (req, res) => {
   try {
-    const targetVersion = req.body?.version || req.query?.version || '3.1.8';
+    const targetVersion = req.body?.version || req.query?.version || '3.2.0';
     const result = await dbService.purgeOldVersionUsers(targetVersion);
     res.json(result);
   } catch (err) {

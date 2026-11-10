@@ -95,7 +95,7 @@ function parseDeviceModel(ua, platform) {
 
 function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android', appVersion = '' }) {
   if (!deviceId || String(deviceId).length < 3) return;
-  const isV318 = appVersion === '3.1.8' || appVersion === 'v3.1.8' || (typeof appVersion === 'string' && appVersion.includes('3.1.8'));
+  const isModern = appVersion === '3.2.0' || appVersion === 'v3.2.0' || appVersion === '3.1.8' || (typeof appVersion === 'string' && (appVersion.includes('3.2.0') || appVersion.includes('3.1.8')));
   try {
     const devices = getDevicesMap();
     const cleanId = String(deviceId).trim();
@@ -104,7 +104,7 @@ function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android',
     if (ip && (!existing.ip || existing.ip === '127.0.0.1')) existing.ip = ip.replace('::ffff:', '');
     if (userAgent && !existing.userAgent) existing.userAgent = userAgent;
     existing.platform = platform || existing.platform || 'Android App';
-    existing.appVersion = isV318 ? '3.1.8' : (appVersion || 'Older Version');
+    existing.appVersion = appVersion ? appVersion.replace(/^v/, '') : (isModern ? '3.2.0' : 'Older Version');
     devices[cleanId] = existing;
     
     fs.writeFileSync(DEVICES_LOCAL_FILE, JSON.stringify(devices, null, 2), 'utf8');
@@ -287,19 +287,18 @@ async function getUserStats() {
   const rawDevices = Object.values(devicesMap);
   const V318_RELEASE_TIMESTAMP = new Date('2026-11-10T09:15:00.000Z').getTime();
 
-  // STRICT FILTER FOR v3.1.8: Only devices actually running v3.1.8 AND active on/after v3.1.8 release
+  // MODERN AUDIENCE FILTER: Devices and registered members running v3.2.0 or verified v3.1.8
   const devices = rawDevices.filter(d => {
-    const isVer318 = d.appVersion === '3.1.8' || (d.appVersion && d.appVersion.includes('3.1.8'));
-    const isTime318 = new Date(d.lastActive || d.firstSeen || 0).getTime() >= V318_RELEASE_TIMESTAMP;
-    return isVer318 && isTime318;
+    const isModern = d.appVersion === '3.2.0' || d.appVersion === '3.1.8' || (d.appVersion && (d.appVersion.includes('3.2.0') || d.appVersion.includes('3.1.8')));
+    const isTime = new Date(d.lastActive || d.firstSeen || 0).getTime() >= V318_RELEASE_TIMESTAMP;
+    return isModern && isTime;
   });
 
-  // STRICT FILTER FOR v3.1.8: Only registered members who actually opened/logged in on v3.1.8 on/after release
   const registeredUsers = rawRegisteredUsers.filter(u => {
     const isAdmin = (u.email === 'tanvir210111@gmail.com');
-    const isVer318 = u.appVersion === '3.1.8' || (u.appVersion && u.appVersion.includes('3.1.8'));
-    const isTime318 = new Date(u.lastLogin || u.createdAt || 0).getTime() >= V318_RELEASE_TIMESTAMP;
-    return isAdmin || (isVer318 && isTime318);
+    const isModern = u.appVersion === '3.2.0' || u.appVersion === '3.1.8' || (u.appVersion && (u.appVersion.includes('3.2.0') || u.appVersion.includes('3.1.8')));
+    const isTime = new Date(u.lastLogin || u.createdAt || 0).getTime() >= V318_RELEASE_TIMESTAMP;
+    return isAdmin || (isModern && isTime);
   });
 
   const totalRegistered = registeredUsers.length;
@@ -323,7 +322,7 @@ async function getUserStats() {
         platform: 'Google Account',
         deviceModel: 'Google Authenticated',
         ip: cleanIp,
-        appVersion: '3.1.8',
+        appVersion: u.appVersion || '3.2.0',
         versionVerified: true,
         watchlistCount: Array.isArray(u.watchlist) ? u.watchlist.length : 0,
         historyCount: Array.isArray(u.history) ? u.history.length : 0,
@@ -351,7 +350,7 @@ async function getUserStats() {
         picture: '',
         type: 'App Installation',
         platform: d.platform || 'Android App',
-        appVersion: '3.1.8',
+        appVersion: d.appVersion || '3.2.0',
         versionVerified: true,
         watchlistCount: 0,
         historyCount: 0,
@@ -628,7 +627,7 @@ async function getMediaViews(mediaId) {
 // 3. USER MANAGEMENT (PERSISTENCE)
 // ----------------------------------------------------
 
-async function findOrCreateUser({ googleId, email, name, picture, appVersion = '3.1.8' }) {
+async function findOrCreateUser({ googleId, email, name, picture, appVersion = '3.2.0' }) {
   const now = new Date();
   const cleanEmail = (email || '').toLowerCase().trim();
 
@@ -641,7 +640,7 @@ async function findOrCreateUser({ googleId, email, name, picture, appVersion = '
           email: cleanEmail,
           name: name || (cleanEmail && cleanEmail.includes('@') ? cleanEmail.split('@')[0] : 'User'),
           picture: picture || '',
-          appVersion: appVersion || '3.1.8',
+          appVersion: appVersion || '3.2.0',
           watchlist: [],
           history: [],
           createdAt: now,
@@ -654,7 +653,7 @@ async function findOrCreateUser({ googleId, email, name, picture, appVersion = '
         }
         user.name = name || user.name;
         user.picture = picture || user.picture;
-        user.appVersion = appVersion || user.appVersion || '3.1.8';
+        user.appVersion = appVersion || user.appVersion || '3.2.0';
         user.lastLogin = now;
         await user.save();
       }
@@ -675,7 +674,7 @@ async function findOrCreateUser({ googleId, email, name, picture, appVersion = '
       email: cleanEmail,
       name: name || (cleanEmail && cleanEmail.includes('@') ? cleanEmail.split('@')[0] : 'User'),
       picture: picture || '',
-      appVersion: appVersion || '3.1.8',
+      appVersion: appVersion || '3.2.0',
       watchlist: [],
       history: [],
       createdAt: now,
@@ -686,7 +685,7 @@ async function findOrCreateUser({ googleId, email, name, picture, appVersion = '
     if (cleanEmail && cleanEmail.includes('@')) user.email = cleanEmail;
     if (name) user.name = name;
     if (picture) user.picture = picture;
-    user.appVersion = appVersion || user.appVersion || '3.1.8';
+    user.appVersion = appVersion || user.appVersion || '3.2.0';
   }
   memoryUsers.set(googleId, user);
   usersMap[googleId] = user;
@@ -720,7 +719,7 @@ async function syncUserEmail({ userId, email, name, appVersion }) {
       googleId: targetKey,
       email: cleanEmail,
       name: cleanName,
-      appVersion: appVersion || '3.1.8',
+      appVersion: appVersion || '3.2.0',
       createdAt: new Date().toISOString(),
       lastLogin: new Date().toISOString(),
       watchlist: [],
@@ -737,7 +736,7 @@ async function syncUserEmail({ userId, email, name, appVersion }) {
           $set: { 
             email: cleanEmail, 
             name: cleanName,
-            appVersion: appVersion || '3.1.8',
+            appVersion: appVersion || '3.2.0',
             lastLogin: new Date()
           } 
         }
@@ -1466,9 +1465,9 @@ async function deleteReport(reportId) {
 }
 
 /**
- * Purge all users and devices from older app versions, keeping ONLY v3.1.8 users
+ * Purge all users and devices from older app versions, keeping ONLY v3.2.0 & modern verified users
  */
-async function purgeOldVersionUsers(targetVersion = '3.1.8') {
+async function purgeOldVersionUsers(targetVersion = '3.2.0') {
   // v3.1.8 was released today, Nov 10, 2026 at 3:15 PM (+06:00) / 09:15:00 UTC
   const v318Threshold = new Date('2026-11-10T09:15:00.000Z').getTime();
 

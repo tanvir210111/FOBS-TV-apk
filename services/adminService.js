@@ -3204,21 +3204,21 @@ class AdminService {
     const content = readContent();
     const appUpdate = content.appUpdate || {
       enabled: true,
-      latestVersionCode: 11,
-      latestVersionName: "3.1.3",
-      minVersionCode: 11,
+      latestVersionCode: 17,
+      latestVersionName: "3.2.0",
+      minVersionCode: 17,
       forceUpdate: true,
-      title: "জরুরি আপডেট: FOBS TV v3.1.3",
-      message: "FOBS TV-র নতুন v3.1.3 ভার্সন চলে এসেছে! আপনার মোবাইলে থাকা আগের অ্যাপটি আনইনস্টল (Uninstall) করে নিচের লিংক থেকে নতুন v3.1.3 অ্যাপটি ডাউনলোড করে ইনস্টল করুন।",
+      title: "জরুরি আপডেট: FOBS TV v3.2.0",
+      message: "নতুন v3.2.0 ভার্সনে ডাউনলোড পজ, রেজ্যুম এবং স্মার্ট সিরিয়াল কিউ ইঞ্জিন সম্পূর্ণ ঠিক করা হয়েছে। এখনই আপডেট করুন!",
       releaseNotes: [
-        "⚠️ আগের অ্যাপটি আনইনস্টল (Uninstall) করে নতুন v3.1.3 ইনস্টল করুন",
-        "⚡ ইনস্ট্যান্ট ভিডিও প্লেব্যাক ও বাফারিং অপ্টিমাইজেশন",
-        "📺 নতুন রেট্রো লোগো এবং ফুলস্ক্রিন সোয়াইপ কন্ট্রোল",
-        "📥 অফলাইন ভিডিও ডাউনলোড ও অটো-রিজিউম আপডেট"
+        "⚡ নতুন অফলাইন ডাউনলোড পজ এবং রেজ্যুম সিস্টেম",
+        "📥 স্মার্ট ব্যাকগ্রাউন্ড সিরিয়াল ডাউনলোড কিউ ইঞ্জিন",
+        "🎬 বাংলা ও ইংলিশ ডুয়াল সাবটাইটেল সাপোর্ট",
+        "🛡️ সম্পূর্ণ ক্লিন প্যাকেজ ও গুগল প্লে প্রোটেক্ট ভেরিফাইড"
       ],
-      downloadUrl: "https://fobs-apk-download.vercel.app/",
+      downloadUrl: "https://fobstv.duckdns.org/download/apk",
       fallbackUrl: "https://fobs-apk-download.vercel.app/",
-      fileSize: "9.2 MB"
+      fileSize: "7.75 MB"
     };
 
     const settings = content.settings || {
