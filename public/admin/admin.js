@@ -120,7 +120,11 @@ function authHeaders(headers = {}) {
 }
 
 async function authFetch(url, options = {}) {
-  options.headers = authHeaders(options.headers || {});
+  const headers = authHeaders(options.headers || {});
+  if (options.body && typeof options.body === 'string' && !headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json';
+  }
+  options.headers = headers;
   const res = await fetch(url, options);
   if (res.status === 401 || res.status === 403) {
     authToken = '';
@@ -3275,14 +3279,16 @@ async function submitSyncNewEpisodes() {
     return;
   }
   const btnSync = document.getElementById('btn-sync-new-episodes');
+  const originalBtnHtml = btnSync ? btnSync.innerHTML : '';
   if (btnSync) {
     btnSync.disabled = true;
-    btnSync.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Syncing...';
+    btnSync.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Syncing & Uploading...';
   }
 
   try {
     const res = await authFetch(`${API_BASE}/api/admin/series/${encodeURIComponent(state.updatingSeriesId)}/sync-new-episodes`, {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ episodes: eps })
     });
     const data = await res.json();
@@ -3300,6 +3306,7 @@ async function submitSyncNewEpisodes() {
   } finally {
     if (btnSync) {
       btnSync.disabled = false;
+      btnSync.innerHTML = originalBtnHtml || `<i class="fa-solid fa-bolt"></i> 1-Click Sync New Episodes (${eps.length})`;
     }
   }
 }

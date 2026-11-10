@@ -3121,7 +3121,13 @@ class AdminService {
     }
     const content = readContent();
     const seriesList = content.series || [];
-    const target = seriesList.find(s => s.id === identifier || s.subjectId === identifier || String(s.subjectId) === String(identifier));
+    const cleanId = String(identifier || '').replace(/^mb-s-/, '');
+    const target = seriesList.find(s => 
+      s.id === identifier || 
+      String(s.id).replace(/^mb-s-/, '') === cleanId ||
+      String(s.subjectId) === String(identifier) || 
+      String(s.subjectId) === cleanId
+    );
     if (!target) throw new Error('Series not found in database');
 
     if (!Array.isArray(target.seasons) || target.seasons.length === 0) {
@@ -3129,7 +3135,7 @@ class AdminService {
         seasonNumber: 1,
         title: 'Season 1',
         name: 'Season 1',
-        episodes: Array.isArray(target.episodes) ? target.episodes : []
+        episodes: Array.isArray(target.episodes) ? [...target.episodes] : []
       }];
     }
 
@@ -3150,7 +3156,7 @@ class AdminService {
       const existingEpNums = new Set(season.episodes.map(e => e.episode || parseInt(e.number, 10)));
       const epNum = parseInt(newEp.episode || newEp.number, 10);
       if (!existingEpNums.has(epNum)) {
-        season.episodes.push({
+        const newEpObj = {
           episode: epNum,
           episodeNumber: epNum,
           number: String(epNum).padStart(2, '0'),
@@ -3158,11 +3164,21 @@ class AdminService {
           season: seNum,
           streamUrl: newEp.streamUrl,
           duration: newEp.duration || '45 min'
-        });
+        };
+        season.episodes.push(newEpObj);
         season.episodes.sort((a, b) => (a.episode || 0) - (b.episode || 0));
         season.episodesCount = season.episodes.length;
+
+        if (Array.isArray(target.episodes)) {
+          const flatIdx = target.episodes.findIndex(e => (e.episode || parseInt(e.number, 10)) === epNum && (e.season || 1) === seNum);
+          if (flatIdx === -1) target.episodes.push(newEpObj);
+        }
         addedCount++;
       }
+    }
+
+    if (Array.isArray(target.episodes)) {
+      target.episodes.sort((a, b) => ((a.season || 1) - (b.season || 1)) || ((a.episode || 0) - (b.episode || 0)));
     }
 
     target.seasons.sort((a, b) => (a.seasonNumber || 1) - (b.seasonNumber || 1));

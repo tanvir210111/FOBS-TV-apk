@@ -4381,7 +4381,13 @@ app.get('/api/admin/series/:id/check-updates', adminService.authenticate, async 
 
 app.post('/api/admin/series/:id/sync-new-episodes', adminService.authenticate, async (req, res) => {
   try {
-    const { episodes } = req.body;
+    let episodes = req.body?.episodes;
+    if (!episodes && typeof req.body === 'string') {
+      try { episodes = JSON.parse(req.body).episodes || JSON.parse(req.body); } catch (_) {}
+    }
+    if (!episodes && Array.isArray(req.body)) {
+      episodes = req.body;
+    }
     const data = await adminService.syncNewSeriesEpisodes(req.params.id, episodes);
     res.json(data);
   } catch (err) {
