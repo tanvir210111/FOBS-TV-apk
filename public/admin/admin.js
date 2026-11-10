@@ -1834,6 +1834,8 @@ function renderUsersTable(usersList) {
   tbody.innerHTML = usersList.map(u => {
     const isOnline = u.isOnline || u.status === 'Online Now';
     const isReg = u.type === 'Registered Member';
+    const hasEmail = Boolean(isReg && u.email && u.email.includes('@') && u.email !== 'Google User');
+    const displayEmail = hasEmail ? u.email : ((u.email && u.email !== 'Google User') ? u.email : '');
     const rawIp = u.ip || (u.email && (u.email.includes('.') && !u.email.includes('@')) ? u.email.replace('IP: ', '') : '');
 
     const avatarHtml = isReg && u.picture
@@ -1857,24 +1859,29 @@ function renderUsersTable(usersList) {
               <div class="table-title-bold" style="font-size: 13.5px; color: ${isReg ? '#f8fafc' : '#e2e8f0'}; font-weight: 700;">
                 ${escapeHtml(u.name || (isReg ? 'Google Member' : 'Mobile App User'))}
               </div>
-              ${isReg && u.email && u.email.includes('@') ? `
+              ${hasEmail ? `
                 <div style="font-size: 11.5px; color: #c084fc; font-weight: 600; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
-                  <i class="fa-regular fa-envelope" style="font-size: 10.5px;"></i> ${escapeHtml(u.email)}
+                  <i class="fa-regular fa-envelope" style="font-size: 10.5px;"></i> ${escapeHtml(displayEmail)}
+                </div>
+              ` : (isReg ? `
+                <div style="font-size: 11px; color: #fbbf24; font-weight: 600; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                  <i class="fa-solid fa-envelope-circle-check" style="font-size: 10px;"></i>
+                  ${displayEmail ? escapeHtml(displayEmail) : 'Google Member (Sync Pending)'}
                 </div>
               ` : `
                 <div class="table-meta-sub" style="font-family: var(--font-mono); font-size: 11px; color: #64748b;">
                   ID: ${escapeHtml((u.id || u.deviceId || '').substring(0, 18))}...
                 </div>
-              `}
+              `)}
             </div>
           </div>
         </td>
         <td>
           <div style="display: flex; flex-direction: column; gap: 3px;">
-            ${isReg && u.email && u.email.includes('@') ? `
-              <div style="font-size: 13px; font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 6px;">
-                <i class="fa-solid fa-envelope" style="color: #c084fc; font-size: 12px;"></i>
-                <span style="user-select: all; color: #e9d5ff;">${escapeHtml(u.email)}</span>
+            ${isReg ? `
+              <div style="font-size: 13px; font-weight: 700; color: ${hasEmail ? '#f1f5f9' : '#fbbf24'}; display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-envelope" style="color: ${hasEmail ? '#c084fc' : '#fbbf24'}; font-size: 12px;"></i>
+                <span style="user-select: all; color: ${hasEmail ? '#e9d5ff' : '#fef08a'};">${escapeHtml(hasEmail ? displayEmail : (displayEmail || 'Google Authenticated'))}</span>
               </div>
               <div class="table-meta-sub" style="font-size: 11px; color: #94a3b8;">
                 <i class="fa-brands fa-google" style="color: #f59e0b; margin-right: 3px;"></i> Google Account &bull; ${escapeHtml(u.deviceModel || 'Mobile')}
@@ -1912,8 +1919,13 @@ function renderUsersTable(usersList) {
                 ? '<span class="status-pill-recent"><i class="fa-solid fa-clock"></i> Recent</span>'
                 : '<span class="status-pill-offline">Offline</span>')}
         </td>
-        <td style="text-align: right;">
-          <button class="btn-action-icon" onclick="copyToClipboard('${escapeHtml((isReg && u.email) ? u.email : (rawIp || u.id))}')" title="Copy Email / ID">
+        <td style="text-align: right; white-space: nowrap;">
+          ${isReg ? `
+            <button class="btn-action-icon" onclick="adminEditUserEmail('${escapeHtml(u.googleId || u.id)}', '${escapeHtml(u.name || '')}', '${escapeHtml(displayEmail)}')" title="Edit/Set User Email" style="margin-right: 4px; color: #c084fc;">
+              <i class="fa-solid fa-user-pen"></i>
+            </button>
+          ` : ''}
+          <button class="btn-action-icon" onclick="copyToClipboard('${escapeHtml(displayEmail || rawIp || u.id)}')" title="Copy Email / ID">
             <i class="fa-regular fa-copy"></i>
           </button>
         </td>
@@ -1921,6 +1933,34 @@ function renderUsersTable(usersList) {
     `;
   }).join('');
 }
+
+async function adminEditUserEmail(userId, userName, currentEmail) {
+  const promptVal = (currentEmail && currentEmail.includes('@') && currentEmail !== 'Google User') ? currentEmail : '';
+  const newEmail = prompt(`Enter/Update Google Email for ${userName || 'Member'}:`, promptVal);
+  if (!newEmail || !newEmail.trim()) return;
+  const clean = newEmail.trim().toLowerCase();
+  if (!clean.includes('@') || !clean.endsWith('@gmail.com')) {
+    alert('Please enter a valid Gmail address (ending in @gmail.com)');
+    return;
+  }
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/users/${encodeURIComponent(userId)}/update-email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: clean, name: userName })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast(`Email updated to ${clean} for ${userName || 'Member'}! 🎉`);
+      loadUsers();
+    } else {
+      showToast(data.error || 'Failed to update email', 'error');
+    }
+  } catch(e) {
+    showToast(e.message, 'error');
+  }
+}
+window.adminEditUserEmail = adminEditUserEmail;
 
 async function purgeOldVersions() {
   if (!confirm('This will purge all legacy user sessions and devices older than v3.1.8, keeping strictly v3.1.8 verified users. Continue?')) return;

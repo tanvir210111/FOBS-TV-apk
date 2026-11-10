@@ -124,11 +124,109 @@ async function getUserStats() {
       const dbUsers = await User.find({}).lean();
       if (Array.isArray(dbUsers) && dbUsers.length > 0) {
         const map = new Map();
-        for (const u of rawRegisteredUsers) map.set(u.googleId || u._id?.toString() || u.email, u);
-        for (const u of dbUsers) map.set(u.googleId || u._id?.toString() || u.email, u);
+        const normalizeKey = (u) => {
+          let gid = (u.googleId || '').replace(/^usr_usr_/, 'usr_');
+          let oid = u._id ? u._id.toString() : '';
+          let em = (u.email && u.email.includes('@') && u.email !== 'Google User') ? u.email.trim().toLowerCase() : '';
+          return gid || em || oid;
+        };
+
+        for (const u of rawRegisteredUsers) {
+          const k = normalizeKey(u);
+          if (k) map.set(k, { ...u });
+        }
+
+        for (const u of dbUsers) {
+          const k = normalizeKey(u);
+          if (!k) continue;
+          if (map.has(k)) {
+            const existing = map.get(k);
+            const resolvedEmail = (u.email && u.email.includes('@') && u.email !== 'Google User')
+              ? u.email.trim().toLowerCase()
+              : (existing.email && existing.email.includes('@') && existing.email !== 'Google User' ? existing.email : (u.email || existing.email || ''));
+            const resolvedName = (u.name && u.name !== 'Registered Member' && u.name !== 'User')
+              ? u.name
+              : (existing.name || u.name || 'Registered Member');
+            map.set(k, {
+              ...existing,
+              ...u,
+              email: resolvedEmail,
+              name: resolvedName,
+              watchlist: Array.isArray(u.watchlist) && u.watchlist.length > 0 ? u.watchlist : (existing.watchlist || []),
+              history: Array.isArray(u.history) && u.history.length > 0 ? u.history : (existing.history || []),
+              lastLogin: (new Date(u.lastLogin || 0) > new Date(existing.lastLogin || 0)) ? u.lastLogin : (existing.lastLogin || u.lastLogin)
+            });
+          } else {
+            map.set(k, { ...u });
+          }
+        }
         rawRegisteredUsers = Array.from(map.values());
       }
     } catch (e) {}
+  }
+
+  // Self-Healing: Search for missing user emails across DB collections & local records
+  for (const u of rawRegisteredUsers) {
+    let email = (u.email || u.userEmail || u.mail || '').trim().toLowerCase();
+    if (!email || !email.includes('@') || email === 'google user') {
+      // 1. Try finding in MongoDB User by exact name match
+      if (isMongoConnected && User && u.name && u.name !== 'Registered Member' && u.name !== 'User') {
+        try {
+          const matched = await User.findOne({
+            name: new RegExp('^' + u.name.trim() + '$', 'i'),
+            email: { $regex: /@/ }
+          }).lean();
+          if (matched && matched.email && matched.email.includes('@')) {
+            email = matched.email.trim().toLowerCase();
+            u.email = email;
+          }
+        } catch(e) {}
+      }
+
+      // 2. Try finding in Feedback collection
+      if ((!email || !email.includes('@')) && isMongoConnected && Feedback) {
+        try {
+          const fb = await Feedback.findOne({
+            $or: [
+              { googleId: u.googleId },
+              { name: new RegExp('^' + (u.name || '').trim() + '$', 'i') }
+            ],
+            email: { $regex: /@/ }
+          }).lean();
+          if (fb && fb.email && fb.email.includes('@')) {
+            email = fb.email.trim().toLowerCase();
+            u.email = email;
+          }
+        } catch(e) {}
+      }
+
+      // 3. Try finding in Report collection
+      if ((!email || !email.includes('@')) && isMongoConnected && Report) {
+        try {
+          const rep = await Report.findOne({
+            $or: [
+              { userId: u.googleId },
+              { userName: new RegExp('^' + (u.name || '').trim() + '$', 'i') }
+            ],
+            userEmail: { $regex: /@/ }
+          }).lean();
+          if (rep && rep.userEmail && rep.userEmail.includes('@')) {
+            email = rep.userEmail.trim().toLowerCase();
+            u.email = email;
+          }
+        } catch(e) {}
+      }
+    }
+
+    // Persist healed email back to usersMap & Mongo
+    if (email && email.includes('@') && email !== 'google user' && u.googleId) {
+      u.email = email;
+      const targetGid = u.googleId;
+      if (usersMap[targetGid]) {
+        usersMap[targetGid].email = email;
+        try { saveLocalUsersMap(usersMap); } catch(e) {}
+      }
+    }
   }
 
   const rawDevices = Object.values(devicesMap);
@@ -164,7 +262,7 @@ async function getUserStats() {
         id: u._id || u.googleId,
         googleId: u.googleId || '',
         name: u.name || 'Registered Member',
-        email: u.email || 'Google User',
+        email: (u.email && u.email !== 'Google User') ? u.email : '',
         picture: u.picture || '',
         type: 'Registered Member',
         platform: 'Google Account',
@@ -475,8 +573,9 @@ async function getMediaViews(mediaId) {
 // 3. USER MANAGEMENT (PERSISTENCE)
 // ----------------------------------------------------
 
-async function findOrCreateUser({ googleId, email, name, picture, appVersion = '3.1.1' }) {
+async function findOrCreateUser({ googleId, email, name, picture, appVersion = '3.1.8' }) {
   const now = new Date();
+  const cleanEmail = (email || '').toLowerCase().trim();
 
   if (isMongoConnected && User) {
     try {
@@ -484,10 +583,10 @@ async function findOrCreateUser({ googleId, email, name, picture, appVersion = '
       if (!user) {
         user = new User({
           googleId,
-          email,
-          name,
-          picture,
-          appVersion: appVersion || '3.1.1',
+          email: cleanEmail,
+          name: name || (cleanEmail && cleanEmail.includes('@') ? cleanEmail.split('@')[0] : 'User'),
+          picture: picture || '',
+          appVersion: appVersion || '3.1.8',
           watchlist: [],
           history: [],
           createdAt: now,
@@ -495,9 +594,12 @@ async function findOrCreateUser({ googleId, email, name, picture, appVersion = '
         });
         await user.save();
       } else {
+        if (cleanEmail && cleanEmail.includes('@')) {
+          user.email = cleanEmail;
+        }
         user.name = name || user.name;
         user.picture = picture || user.picture;
-        user.appVersion = appVersion || user.appVersion || '3.1.1';
+        user.appVersion = appVersion || user.appVersion || '3.1.8';
         user.lastLogin = now;
         await user.save();
       }
@@ -515,10 +617,10 @@ async function findOrCreateUser({ googleId, email, name, picture, appVersion = '
     user = {
       _id: 'usr_' + (googleId || Date.now()),
       googleId,
-      email: (email || '').toLowerCase().trim(),
-      name: name || 'User',
+      email: cleanEmail,
+      name: name || (cleanEmail && cleanEmail.includes('@') ? cleanEmail.split('@')[0] : 'User'),
       picture: picture || '',
-      appVersion: appVersion || '3.1.1',
+      appVersion: appVersion || '3.1.8',
       watchlist: [],
       history: [],
       createdAt: now,
@@ -526,14 +628,68 @@ async function findOrCreateUser({ googleId, email, name, picture, appVersion = '
     };
   } else {
     user.lastLogin = now;
+    if (cleanEmail && cleanEmail.includes('@')) user.email = cleanEmail;
     if (name) user.name = name;
     if (picture) user.picture = picture;
-    user.appVersion = appVersion || user.appVersion || '3.1.1';
+    user.appVersion = appVersion || user.appVersion || '3.1.8';
   }
   memoryUsers.set(googleId, user);
   usersMap[googleId] = user;
   saveLocalUsersMap(usersMap);
   return user;
+}
+
+async function syncUserEmail({ userId, email, name, appVersion }) {
+  if (!userId || !email || !email.includes('@')) return false;
+  const cleanEmail = email.toLowerCase().trim();
+  const cleanName = (name && name.trim()) ? name.trim() : cleanEmail.split('@')[0];
+
+  const usersMap = getLocalUsersMap();
+  const altKey1 = userId;
+  const altKey2 = userId.startsWith('usr_') ? userId.replace(/^usr_/, '') : ('usr_' + userId);
+  const altKey3 = userId.startsWith('usr_usr_') ? userId.replace(/^usr_usr_/, 'usr_') : ('usr_' + userId);
+
+  let targetKey = usersMap[altKey1] ? altKey1 : (usersMap[altKey2] ? altKey2 : (usersMap[altKey3] ? altKey3 : altKey1));
+  let user = usersMap[targetKey];
+
+  if (user) {
+    user.email = cleanEmail;
+    if (cleanName && (!user.name || user.name === 'User' || user.name === 'Registered Member')) user.name = cleanName;
+    if (appVersion) user.appVersion = appVersion;
+    user.lastLogin = new Date().toISOString();
+    usersMap[targetKey] = user;
+    saveLocalUsersMap(usersMap);
+  } else {
+    usersMap[targetKey] = {
+      _id: targetKey.startsWith('usr_') ? targetKey : ('usr_' + targetKey),
+      googleId: targetKey,
+      email: cleanEmail,
+      name: cleanName,
+      appVersion: appVersion || '3.1.8',
+      createdAt: new Date().toISOString(),
+      lastLogin: new Date().toISOString(),
+      watchlist: [],
+      history: []
+    };
+    saveLocalUsersMap(usersMap);
+  }
+
+  if (isMongoConnected && User) {
+    try {
+      await User.updateOne(
+        { $or: [{ googleId: altKey1 }, { googleId: altKey2 }, { googleId: altKey3 }, { _id: targetKey }] },
+        { 
+          $set: { 
+            email: cleanEmail, 
+            name: cleanName,
+            appVersion: appVersion || '3.1.8',
+            lastLogin: new Date()
+          } 
+        }
+      );
+    } catch(e) {}
+  }
+  return true;
 }
 
 async function getUserById(googleId) {
@@ -1344,6 +1500,7 @@ module.exports = {
   recordDevice,
   getUserStats,
   findOrCreateUser,
+  syncUserEmail,
   purgeOldVersionUsers,
   getUserById,
   toggleWatchlist,

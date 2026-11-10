@@ -248,6 +248,7 @@ async function submitSimpleLogin() {
     return;
   }
   email = cleanEmail;
+  const cleanName = (name && name.trim()) ? name.trim() : cleanEmail.split('@')[0];
 
   const btn = document.getElementById('btnSubmitSimpleLogin');
   if (btn) {
@@ -264,8 +265,6 @@ async function submitSimpleLogin() {
         'x-app-version': appVer
       },
       body: JSON.stringify({ email: cleanEmail, name: cleanName, appVersion: appVer })
-    });
-      body: JSON.stringify({ name, email, appVersion: appVer })
     });
     const data = await res.json();
     if (res.ok && data.success) {
@@ -630,13 +629,19 @@ async function initApp() {
       localStorage.setItem('fobs_viewer_uuid', pingViewerId);
     }
     const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.8');
+    const pingBody = { viewerId: pingViewerId, platform: 'Android App', appVersion: appVer };
+    if (currentUser && currentUser.email && currentUser.email.includes('@')) {
+      pingBody.userId = currentUser.googleId || currentUser.id;
+      pingBody.userEmail = currentUser.email;
+      pingBody.userName = currentUser.name;
+    }
     fetch(`${API_BASE_URL}/api/app-ping`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-app-version': appVer
       },
-      body: JSON.stringify({ viewerId: pingViewerId, platform: 'Android App', appVersion: appVer })
+      body: JSON.stringify(pingBody)
     }).catch(() => {});
   } catch(e) {}
   setupVideoListeners();

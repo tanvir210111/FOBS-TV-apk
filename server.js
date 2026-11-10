@@ -3839,9 +3839,9 @@ app.get('/api/admin/users', adminService.authenticate, async (req, res) => {
 });
 
 // App Launch Ping & Active Device Registration
-app.post('/api/app-ping', (req, res) => {
+app.post('/api/app-ping', async (req, res) => {
   try {
-    const { viewerId, platform, appVersion } = req.body;
+    const { viewerId, platform, appVersion, userId, userEmail, userName } = req.body;
     const vId = viewerId || req.headers['x-viewer-id'] || ('v_' + Math.random().toString(36).substring(2, 10));
     dbService.recordDevice({
       deviceId: vId,
@@ -3850,9 +3850,38 @@ app.post('/api/app-ping', (req, res) => {
       platform: platform || 'Android',
       appVersion: appVersion || req.headers['x-app-version'] || ''
     });
+
+    if (userId && userEmail && userEmail.includes('@')) {
+      await dbService.syncUserEmail({
+        userId,
+        email: userEmail,
+        name: userName,
+        appVersion
+      }).catch(() => {});
+    }
+
     res.json({ success: true, viewerId: vId });
   } catch(e) {
     res.json({ success: true });
+  }
+});
+
+// Admin manual user email update
+app.post('/api/admin/users/:id/update-email', adminService.authenticate, async (req, res) => {
+  try {
+    const { email, name } = req.body;
+    if (!email || !email.includes('@')) {
+      return res.status(400).json({ error: 'Valid email address required' });
+    }
+    const cleanEmail = email.trim().toLowerCase();
+    const success = await dbService.syncUserEmail({
+      userId: req.params.id,
+      email: cleanEmail,
+      name
+    });
+    res.json({ success: true, email: cleanEmail });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
