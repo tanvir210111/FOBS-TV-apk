@@ -97,7 +97,7 @@
   <!-- APP STARTUP CINEMATIC INTRO VIDEO SPLASH       -->
   <!-- ============================================== -->
   <div id="appIntroOverlay" class="app-intro-overlay">
-    <video id="appIntroVideo" class="app-intro-video" poster="assets/intro_poster.png" autoplay playsinline webkit-playsinline preload="auto" onended="if(window.finishIntroAndShowApp)window.finishIntroAndShowApp();" onerror="if(window.finishIntroAndShowApp)window.finishIntroAndShowApp();">
+    <video id="appIntroVideo" class="app-intro-video" poster="assets/intro_poster.png" autoplay playsinline webkit-playsinline preload="auto">
       <source src="assets/intro.mp4" type="video/mp4">
     </video>
     <div class="app-intro-top-bar">
@@ -112,22 +112,6 @@
       <div class="app-intro-status-text" id="introStatusText">Refreshing latest movies & series...</div>
     </div>
   </div>
-  <script>
-    window._introVideoEnded = false;
-    (function() {
-      var v = document.getElementById('appIntroVideo');
-      if (v) {
-        var onDone = function() {
-          window._introVideoEnded = true;
-          if (typeof window.finishIntroAndShowApp === 'function') {
-            window.finishIntroAndShowApp();
-          }
-        };
-        v.addEventListener('ended', onDone);
-        v.addEventListener('error', onDone);
-      }
-    })();
-  </script>
 
   <!-- Mobile Frame Container -->
   <div class="app-container">

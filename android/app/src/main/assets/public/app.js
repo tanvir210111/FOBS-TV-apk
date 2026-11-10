@@ -454,20 +454,13 @@ function applyNavigationBarInset(bottomDp) {
 }
 window.applyNavigationBarInset = applyNavigationBarInset;
 
-// Bulletproof bootstrap: fires immediately if document is already parsed, or on DOMContentLoaded
-function bootstrapApp() {
-  try { applyNavigationBarInset(); } catch(e) {}
-  window.addEventListener('resize', () => { try { applyNavigationBarInset(); } catch(e) {} });
-  window.addEventListener('orientationchange', () => setTimeout(() => { try { applyNavigationBarInset(); } catch(e) {} }, 200));
+// Initialize Application
+document.addEventListener('DOMContentLoaded', () => {
+  applyNavigationBarInset();
+  window.addEventListener('resize', () => applyNavigationBarInset());
+  window.addEventListener('orientationchange', () => setTimeout(applyNavigationBarInset, 200));
   initApp();
-}
-window.bootstrapApp = bootstrapApp;
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', bootstrapApp);
-} else {
-  bootstrapApp();
-}
+});
 
 // ============================================================
 // APP STARTUP CINEMATIC INTRO VIDEO & BACKGROUND REFRESH
@@ -485,7 +478,7 @@ function playAppIntroAndSync() {
   const progressFill = document.getElementById('introProgressFill');
   const statusText = document.getElementById('introStatusText');
 
-  if (!overlay || !video || window._introVideoEnded) {
+  if (!overlay || !video) {
     finishIntroAndShowApp();
     return;
   }
