@@ -1,17 +1,20 @@
-// FOBS TV Live OTA Patch Bundle v1.2.5
+// FOBS TV Live OTA Patch Bundle v1.2.6
 // 1. Online watch: ALL episodes shown serially; auto-detect plays lowest available resolution (360p/480p default)
 // 2. Ultra-Low Latency Millisecond Playback: Prefetch warm streams, preload auto, and instant H.264 playback
 // 3. Bulletproof Playback Guarantee: Robust autoplay with muted fallback, instant loader dismissal on ready, and touch-unmute
-// 4. Auto-Renewing CDN Tokens: CDN links with exp timestamp never 403 or expire; transparent on-the-fly renewal
-// 5. Robust Download Start: Fixed batch download selectedIndices error; series & movies download smoothly
-// 6. Watch History Play & Resume: Flawless resume without modal closing conflicts, accurate episode & seek time
-// 7. Quality sheet: Only show resolutions that ACTUALLY exist (jei resolution nai sei resolution video te show koraiyo na)
-// 8. Download modal: 480P SD, 720P HD, 1080P FHD tabs with real MovieBox streams & sizes; detect missing resolutions
-// 9. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
-// 10. Auto Audio Silence: Instantly terminate background video & audio when opening Me / Downloads screen
-// 11. Flawless Pause & Resume: Instant response, persistent chunk recovery & no background worker conflicts
+// 4. Smooth Offline Playback & Seeking: Never freezes or gets stuck when dragging/scrubbing seek bar, instant fastSeek & queue
+// 5. Zero Stream Spinner on Offline: Completely disables "Connecting to stream server..." for offline blob videos
+// 6. Auto-Renewing CDN Tokens: CDN links with exp timestamp never 403 or expire; transparent on-the-fly renewal
+// 7. Robust Download Start: Fixed batch download selectedIndices error; series & movies download smoothly
+// 8. Watch History Play & Resume: Flawless resume without modal closing conflicts, accurate episode & seek time
+// 9. Quality sheet: Only show resolutions that ACTUALLY exist (jei resolution nai sei resolution video te show koraiyo na)
+// 10. Download modal: 480P SD, 720P HD, 1080P FHD tabs with real MovieBox streams & sizes; detect missing resolutions
+// 11. Movies: Exactly like series episodes list UI with top quality tabs, badges, exact sizes, and checkbox
+// 12. Auto Audio Silence: Instantly terminate background video & audio when opening Me / Downloads screen
+// 13. Flawless Pause & Resume: Instant response, persistent chunk recovery & no background worker conflicts
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.2.5 executing...');
+  console.log('⚡ FOBS TV Live Patch v1.2.6 executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.2.6';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -142,6 +145,19 @@
     return overlay;
   }
 
+  function isOfflinePlayback(videoEl) {
+    if (!videoEl) videoEl = document.getElementById('mainVideoPlayer');
+    const state = getAppState();
+    if (state?.currentMedia?.isOffline) return true;
+    if (state?.currentMedia?.offlineDownloadId) return true;
+    if (videoEl) {
+      const src = videoEl.currentSrc || videoEl.src || '';
+      if (typeof src === 'string' && src.startsWith('blob:')) return true;
+    }
+    return false;
+  }
+  window.isOfflinePlayback = isOfflinePlayback;
+
   function attachVideoWatcher() {
     const videoEl = document.getElementById('mainVideoPlayer');
     if (videoEl && !videoEl._hasFobsWatcher) {
@@ -155,6 +171,12 @@
       videoEl.addEventListener('canplaythrough', dismiss);
       videoEl.addEventListener('loadeddata', dismiss);
       videoEl.addEventListener('loadedmetadata', () => {
+        if (videoEl.duration && isFinite(videoEl.duration) && videoEl.duration > 0) {
+          const state = getAppState();
+          if (state?.currentMedia && (state.currentMedia.isOffline || state.currentMedia.offlineDownloadId)) {
+            state.currentMedia.duration = videoEl.duration;
+          }
+        }
         if (!videoEl.paused) dismiss();
       });
       videoEl.addEventListener('timeupdate', () => {
@@ -163,10 +185,36 @@
       videoEl.addEventListener('pause', dismiss);
       videoEl.addEventListener('error', dismiss);
       videoEl.addEventListener('waiting', () => {
+        if (isOfflinePlayback(videoEl)) {
+          hideConnectingLoader();
+          const l = document.getElementById('videoLoader');
+          if (l) l.classList.remove('active');
+          return;
+        }
         if (!videoEl.paused) showConnectingLoader();
       });
       videoEl.addEventListener('loadstart', () => {
+        if (isOfflinePlayback(videoEl)) {
+          hideConnectingLoader();
+          const l = document.getElementById('videoLoader');
+          if (l) l.classList.remove('active');
+          return;
+        }
         if (videoEl.paused) showConnectingLoader();
+      });
+      videoEl.addEventListener('seeking', () => {
+        if (isOfflinePlayback(videoEl)) {
+          hideConnectingLoader();
+          const l = document.getElementById('videoLoader');
+          if (l) l.classList.remove('active');
+        }
+      });
+      videoEl.addEventListener('seeked', () => {
+        if (isOfflinePlayback(videoEl)) {
+          hideConnectingLoader();
+          const l = document.getElementById('videoLoader');
+          if (l) l.classList.remove('active');
+        }
       });
 
       videoEl._hasFobsWatcher = true;
@@ -175,6 +223,10 @@
   attachVideoWatcher();
 
   function showConnectingLoader() {
+    if (isOfflinePlayback()) {
+      hideConnectingLoader();
+      return;
+    }
     stripVideoPoster();
     attachVideoWatcher();
     const overlay = ensureConnectingOverlay();
@@ -206,6 +258,118 @@
     if (loader) loader.classList.remove('active');
   }
   window.hideConnectingLoader = hideConnectingLoader;
+
+  // -------------------------------------------------------------
+  // Flawless Offline Video Seeking Engine (FastSeek & Coalescing)
+  // -------------------------------------------------------------
+  let _liveOfflineSeekQueue = null;
+  let _isLiveOfflineSeeking = false;
+  let _liveOfflineSeekWatchdog = null;
+
+  function handleLiveOfflineSeek(video, targetSeconds, wasPlaying) {
+    if (!video) return;
+
+    hideConnectingLoader();
+    const loader = document.getElementById('videoLoader');
+    if (loader) loader.classList.remove('active');
+
+    // If hardware decoder is busy seeking, queue the newest target to prevent decoder pipeline lock
+    if (video.seeking || _isLiveOfflineSeeking) {
+      _liveOfflineSeekQueue = { targetSeconds, wasPlaying };
+      return;
+    }
+
+    _isLiveOfflineSeeking = true;
+    _liveOfflineSeekQueue = null;
+
+    if (_liveOfflineSeekWatchdog) clearTimeout(_liveOfflineSeekWatchdog);
+
+    const totalDur = (video.duration && isFinite(video.duration) && video.duration > 0)
+      ? video.duration
+      : ((typeof getMediaTotalDurationSeconds === 'function') ? getMediaTotalDurationSeconds() : 3600);
+    const safeTarget = Math.max(0, Math.min(totalDur > 1 ? totalDur - 0.5 : totalDur, targetSeconds));
+
+    let settled = false;
+    const finishSeek = () => {
+      if (settled) return;
+      settled = true;
+      _isLiveOfflineSeeking = false;
+      if (_liveOfflineSeekWatchdog) clearTimeout(_liveOfflineSeekWatchdog);
+
+      if (loader) loader.classList.remove('active');
+      hideConnectingLoader();
+
+      if (typeof updateLandscapeProgress === 'function') updateLandscapeProgress();
+      if (typeof syncPlayPauseIcons === 'function') syncPlayPauseIcons();
+
+      // If user dragged to another target while seeking was in flight, process immediately
+      if (_liveOfflineSeekQueue !== null) {
+        const queued = _liveOfflineSeekQueue;
+        _liveOfflineSeekQueue = null;
+        handleLiveOfflineSeek(video, queued.targetSeconds, queued.wasPlaying);
+        return;
+      }
+
+      if (wasPlaying) {
+        const p = video.play();
+        if (p && typeof p.catch === 'function') {
+          p.catch(() => {});
+        }
+      }
+    };
+
+    video.addEventListener('seeked', finishSeek, { once: true });
+    video.addEventListener('canplay', finishSeek, { once: true });
+
+    // Safety watchdog for lost seek events (350ms)
+    _liveOfflineSeekWatchdog = setTimeout(() => {
+      if (!settled) {
+        if (video.seeking) {
+          try {
+            const nudge = Math.min(totalDur > 1 ? totalDur - 0.2 : totalDur, safeTarget + 0.05);
+            video.currentTime = nudge;
+          } catch(e) {}
+        }
+        finishSeek();
+      }
+    }, 350);
+
+    // FastSeek for instantaneous keyframe jump without parsing all intra-frames
+    try {
+      if (typeof video.fastSeek === 'function') {
+        video.fastSeek(safeTarget);
+      } else {
+        video.currentTime = safeTarget;
+      }
+    } catch (e) {
+      console.warn('Offline fastSeek fallback:', e);
+      try {
+        video.currentTime = safeTarget;
+      } catch (e2) {}
+      finishSeek();
+    }
+  }
+  window.handleLiveOfflineSeek = handleLiveOfflineSeek;
+
+  // Intercept window.seekToAbsoluteTime
+  const origSeekToAbsoluteTime = (typeof window.seekToAbsoluteTime === 'function' && !window.seekToAbsoluteTime._isFobsHook)
+    ? window.seekToAbsoluteTime
+    : null;
+
+  window.seekToAbsoluteTime = function(targetSeconds) {
+    const video = document.getElementById('mainVideoPlayer');
+    if (video && isOfflinePlayback(video)) {
+      handleLiveOfflineSeek(video, targetSeconds, !video.paused);
+      return;
+    }
+    if (typeof origSeekToAbsoluteTime === 'function') {
+      return origSeekToAbsoluteTime(targetSeconds);
+    }
+    if (video) {
+      try { video.currentTime = targetSeconds; video.play().catch(() => {}); } catch(e) {}
+    }
+  };
+  window.seekToAbsoluteTime._isFobsHook = true;
 
   // Un-mute automatically on the first user interaction
   const unmuteOnUserAction = () => {
@@ -1324,7 +1488,7 @@
 
     // Instant Click Listener for Video Play: shows connecting loader when starting new video/episode
     const playTarget = e.target.closest('.media-card, #heroPlayBtn, .details-sheet-play-btn, .details-play-btn, .sheet-option-btn, .episode-pill, .ep-btn, [onclick*="openPlayer"], [onclick*="selectEpisode"]');
-    if (playTarget) {
+    if (playTarget && !playTarget.closest('#downloadsView, .mb-dl-card, [onclick*="playDownloadedMedia"]')) {
       showConnectingLoader();
       try {
         const vp = document.getElementById('mainVideoPlayer');

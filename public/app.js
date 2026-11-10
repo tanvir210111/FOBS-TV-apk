@@ -4649,8 +4649,11 @@ function getMediaTotalDurationSeconds() {
   const duration = (video && isFinite(video.duration) && video.duration > 0) ? video.duration : 0;
 
   // For offline downloaded videos, the video element's duration is the exact and authoritative length
-  if (appState.currentMedia && appState.currentMedia.isOffline && duration > 0) {
-    return duration;
+  if (appState.currentMedia && (appState.currentMedia.isOffline || appState.currentMedia.offlineDownloadId)) {
+    if (duration > 0) return duration;
+    if (appState.currentMedia.duration && appState.currentMedia.duration > 0) {
+      return appState.currentMedia.duration;
+    }
   }
 
   const epDur = appState.currentEpisode?.duration || appState.currentMedia?.duration;
@@ -4796,9 +4799,97 @@ function seekRelative(offsetSeconds) {
   if (seekDebounceTimer) clearTimeout(seekDebounceTimer);
   seekDebounceTimer = setTimeout(() => {
     const finalTarget = appState.pendingSeekTime !== null ? appState.pendingSeekTime : target;
-    seekToAbsoluteTime(finalTarget);
+    (window.seekToAbsoluteTime || seekToAbsoluteTime)(finalTarget);
   }, 120);
 }
+
+let _offlineSeekQueue = null;
+let _isOfflineSeeking = false;
+let _offlineSeekWatchdog = null;
+
+function handleOfflineSeek(video, targetSeconds, wasPlaying) {
+  if (!video) return;
+
+  if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
+  const loader = document.getElementById('videoLoader');
+  if (loader) loader.classList.remove('active');
+
+  // Coalesce rapid seeks: If already seeking on hardware decoder, store latest target and return
+  if (video.seeking || _isOfflineSeeking) {
+    _offlineSeekQueue = { targetSeconds, wasPlaying };
+    return;
+  }
+
+  _isOfflineSeeking = true;
+  _offlineSeekQueue = null;
+
+  if (_offlineSeekWatchdog) clearTimeout(_offlineSeekWatchdog);
+
+  const totalDur = (video.duration && isFinite(video.duration) && video.duration > 0)
+    ? video.duration
+    : ((typeof getMediaTotalDurationSeconds === 'function') ? getMediaTotalDurationSeconds() : 3600);
+  const safeTarget = Math.max(0, Math.min(totalDur > 1 ? totalDur - 0.5 : totalDur, targetSeconds));
+
+  let settled = false;
+  const finishSeek = () => {
+    if (settled) return;
+    settled = true;
+    _isOfflineSeeking = false;
+    if (_offlineSeekWatchdog) clearTimeout(_offlineSeekWatchdog);
+
+    if (loader) loader.classList.remove('active');
+    if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
+    if (typeof updateLandscapeProgress === 'function') updateLandscapeProgress();
+    if (typeof syncPlayPauseIcons === 'function') syncPlayPauseIcons();
+
+    // Check if user scrubbed to another position while this seek was in flight
+    if (_offlineSeekQueue !== null) {
+      const queued = _offlineSeekQueue;
+      _offlineSeekQueue = null;
+      handleOfflineSeek(video, queued.targetSeconds, queued.wasPlaying);
+      return;
+    }
+
+    if (wasPlaying) {
+      const p = video.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(() => {});
+      }
+    }
+  };
+
+  video.addEventListener('seeked', finishSeek, { once: true });
+  video.addEventListener('canplay', finishSeek, { once: true });
+
+  // Safety timeout in case seeked event was dropped by Android WebView (350ms)
+  _offlineSeekWatchdog = setTimeout(() => {
+    if (!settled) {
+      if (video.seeking) {
+        try {
+          const nudge = Math.min(totalDur > 1 ? totalDur - 0.2 : totalDur, safeTarget + 0.05);
+          video.currentTime = nudge;
+        } catch(e) {}
+      }
+      finishSeek();
+    }
+  }, 350);
+
+  // Perform seek: use fastSeek for instant keyframe jump if supported, fallback to currentTime
+  try {
+    if (typeof video.fastSeek === 'function') {
+      video.fastSeek(safeTarget);
+    } else {
+      video.currentTime = safeTarget;
+    }
+  } catch (e) {
+    console.warn('Offline fastSeek error, falling back to currentTime:', e);
+    try {
+      video.currentTime = safeTarget;
+    } catch (e2) {}
+    finishSeek();
+  }
+}
+window.handleOfflineSeek = handleOfflineSeek;
 
 function seekToAbsoluteTime(targetSeconds) {
   const video = document.getElementById('mainVideoPlayer');
@@ -4848,35 +4939,19 @@ function seekToAbsoluteTime(targetSeconds) {
   const loader = document.getElementById('videoLoader');
 
   // SPECIAL OFFLINE VIDEO SEEKING LOGIC:
-  // For downloaded offline videos, there is zero network latency. Never show loader spinner and resume immediately.
-  if (appState.currentMedia && appState.currentMedia.isOffline) {
+  // For downloaded offline videos, there is zero network latency. Never show loader spinner and seek smoothly.
+  const isOffline = !!(
+    (appState.currentMedia && (appState.currentMedia.isOffline || appState.currentMedia.offlineDownloadId)) ||
+    (video.src && video.src.startsWith('blob:')) ||
+    (video.currentSrc && video.currentSrc.startsWith('blob:'))
+  );
+
+  if (isOffline) {
     if (loader) loader.classList.remove('active');
+    if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
     appState.pendingSeekTime = null;
 
-    const offlineDur = (video.duration && isFinite(video.duration) && video.duration > 0) ? video.duration : duration;
-    const finalSafeTarget = Math.max(0, Math.min(offlineDur > 1 ? offlineDur - 0.5 : offlineDur, safeTarget));
-
-    let offlineSeekSettled = false;
-    const finishOfflineSeek = () => {
-      if (offlineSeekSettled) return;
-      offlineSeekSettled = true;
-      if (loader) loader.classList.remove('active');
-      appState.pendingSeekTime = null;
-      updateLandscapeProgress();
-      syncPlayPauseIcons();
-      video.play().catch(() => {});
-    };
-
-    video.addEventListener('seeked', finishOfflineSeek, { once: true });
-    video.addEventListener('canplay', finishOfflineSeek, { once: true });
-    setTimeout(finishOfflineSeek, 250);
-
-    try {
-      video.currentTime = finalSafeTarget;
-    } catch (e) {
-      console.warn('Offline seek error:', e);
-      finishOfflineSeek();
-    }
+    handleOfflineSeek(video, safeTarget, !video.paused);
     return;
   }
 
@@ -4927,6 +5002,7 @@ function seekToAbsoluteTime(targetSeconds) {
     finishSeek();
   }
 }
+window.seekToAbsoluteTime = seekToAbsoluteTime;
 
 function setupLandscapeProgressScrubbing() {
   const video = document.getElementById('mainVideoPlayer');
@@ -4984,7 +5060,7 @@ function setupLandscapeProgressScrubbing() {
       }
       const duration = getMediaTotalDurationSeconds();
       const targetTime = Math.floor(finalPos * duration);
-      seekToAbsoluteTime(targetTime);
+      (window.seekToAbsoluteTime || seekToAbsoluteTime)(targetTime);
       resetLandscapeControlsTimer();
     };
 
@@ -7202,7 +7278,7 @@ function setupPlayerGestures() {
       if (dragType === 'horizontal-seek') {
         const video = document.getElementById('mainVideoPlayer');
         if (video && !isNaN(targetSeekTime)) {
-          seekToAbsoluteTime(targetSeekTime);
+          (window.seekToAbsoluteTime || seekToAbsoluteTime)(targetSeekTime);
         }
         hideSeekGestureHud();
       } else {
@@ -7454,10 +7530,16 @@ function setupVideoListeners() {
   };
 
   videoPlayer.addEventListener('waiting', () => {
-    // If offline media, never show loading spinner and resume playback immediately
-    if (appState.currentMedia && appState.currentMedia.isOffline) {
+    // If offline media, never show loading spinner and preserve decoding pipeline
+    const isOffline = (appState.currentMedia && (appState.currentMedia.isOffline || appState.currentMedia.offlineDownloadId)) ||
+                      (videoPlayer.src && videoPlayer.src.startsWith('blob:')) ||
+                      (videoPlayer.currentSrc && videoPlayer.currentSrc.startsWith('blob:'));
+    if (isOffline) {
       if (loader) loader.classList.remove('active');
-      videoPlayer.play().catch(() => {});
+      if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
+      if (!videoPlayer.seeking && !videoPlayer.paused) {
+        videoPlayer.play().catch(() => {});
+      }
       return;
     }
     if (waitLoaderTimer) clearTimeout(waitLoaderTimer);
@@ -7470,10 +7552,16 @@ function setupVideoListeners() {
   });
 
   videoPlayer.addEventListener('stalled', () => {
-    // If offline media, never show loading spinner and resume playback immediately
-    if (appState.currentMedia && appState.currentMedia.isOffline) {
+    // If offline media, never show loading spinner and preserve decoding pipeline
+    const isOffline = (appState.currentMedia && (appState.currentMedia.isOffline || appState.currentMedia.offlineDownloadId)) ||
+                      (videoPlayer.src && videoPlayer.src.startsWith('blob:')) ||
+                      (videoPlayer.currentSrc && videoPlayer.currentSrc.startsWith('blob:'));
+    if (isOffline) {
       if (loader) loader.classList.remove('active');
-      videoPlayer.play().catch(() => {});
+      if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
+      if (!videoPlayer.seeking && !videoPlayer.paused) {
+        videoPlayer.play().catch(() => {});
+      }
       return;
     }
     if (videoPlayer.readyState >= 2) {
@@ -7490,8 +7578,12 @@ function setupVideoListeners() {
 
   videoPlayer.addEventListener('seeking', () => {
     // If offline media, never show loader spinner during seek
-    if (appState.currentMedia && appState.currentMedia.isOffline) {
+    const isOffline = (appState.currentMedia && (appState.currentMedia.isOffline || appState.currentMedia.offlineDownloadId)) ||
+                      (videoPlayer.src && videoPlayer.src.startsWith('blob:')) ||
+                      (videoPlayer.currentSrc && videoPlayer.currentSrc.startsWith('blob:'));
+    if (isOffline) {
       if (loader) loader.classList.remove('active');
+      if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
       return;
     }
     // Only show loader if seek takes more than a split second
@@ -9580,7 +9672,8 @@ async function playDownloadedMedia(id) {
         quality: qStyle.pixel,
         isSeries: isSeries,
         season: seNum || 1,
-        episode: epNum || 1
+        episode: epNum || 1,
+        duration: offlineItem.duration || storedItem?.duration || null
       };
 
       if (isSeries && epNum) {
@@ -9667,6 +9760,9 @@ async function playDownloadedMedia(id) {
       };
 
       videoPlayer.addEventListener('loadedmetadata', () => {
+        if (videoPlayer.duration && isFinite(videoPlayer.duration) && videoPlayer.duration > 0) {
+          if (appState.currentMedia) appState.currentMedia.duration = videoPlayer.duration;
+        }
         hideLoader();
         doSeekResume();
       }, { once: true });
