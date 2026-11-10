@@ -59,19 +59,52 @@ function getDevicesMap() {
   return {};
 }
 
+function formatRelativeTime(dateStr) {
+  if (!dateStr) return 'Unknown';
+  const diffSec = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+  if (diffSec < 45) return 'Just now';
+  if (diffSec < 90) return '1 min ago';
+  if (diffSec < 3600) return `${Math.floor(diffSec / 60)} mins ago`;
+  if (diffSec < 86400) return `${Math.floor(diffSec / 3600)} hours ago`;
+  return `${Math.floor(diffSec / 86400)} days ago`;
+}
+
+function parseDeviceModel(ua, platform) {
+  if (!ua) return platform || 'Android Device';
+  if (ua.includes('SM-')) {
+    const match = ua.match(/SM-[A-Z0-9]+/i);
+    if (match) return `Samsung (${match[0]})`;
+  }
+  if (ua.includes('Redmi') || ua.includes('POCO') || ua.includes('M2')) {
+    const match = ua.match(/(Redmi[^\s;)]+|POCO[^\s;)]+)/i);
+    if (match) return `Xiaomi (${match[0]})`;
+  }
+  if (ua.includes('Pixel')) {
+    const match = ua.match(/Pixel\s*[0-9a-zA-Z]+/i);
+    if (match) return `Google ${match[0]}`;
+  }
+  if (ua.includes('CPH') || ua.includes('RMX')) {
+    const match = ua.match(/(CPH[0-9]+|RMX[0-9]+)/i);
+    if (match) return `Realme/Oppo (${match[0]})`;
+  }
+  if (ua.includes('Android')) return 'Android Mobile';
+  if (ua.includes('Windows')) return 'Windows PC';
+  if (ua.includes('iPhone')) return 'Apple iPhone';
+  return platform || 'Android Device';
+}
+
 function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android', appVersion = '' }) {
   if (!deviceId || String(deviceId).length < 3) return;
-  // Strictly track current v3.1.5 devices
-  const isV315 = !appVersion || appVersion === '3.1.5' || appVersion === 'v3.1.5' || (typeof appVersion === 'string' && appVersion.includes('3.1.5'));
+  const isV318 = !appVersion || appVersion === '3.1.8' || appVersion === 'v3.1.8' || (typeof appVersion === 'string' && appVersion.includes('3.1.8'));
   try {
     const devices = getDevicesMap();
     const cleanId = String(deviceId).trim();
     const existing = devices[cleanId] || { id: cleanId, firstSeen: new Date().toISOString() };
     existing.lastActive = new Date().toISOString();
-    if (ip && (!existing.ip || existing.ip === '127.0.0.1')) existing.ip = ip;
+    if (ip && (!existing.ip || existing.ip === '127.0.0.1')) existing.ip = ip.replace('::ffff:', '');
     if (userAgent && !existing.userAgent) existing.userAgent = userAgent;
     existing.platform = platform || existing.platform || 'Android App';
-    existing.appVersion = isV315 ? '3.1.5' : (appVersion || '3.1.5');
+    existing.appVersion = isV318 ? '3.1.8' : (appVersion || '3.1.8');
     devices[cleanId] = existing;
     
     fs.writeFileSync(DEVICES_LOCAL_FILE, JSON.stringify(devices, null, 2), 'utf8');
@@ -100,10 +133,15 @@ async function getUserStats() {
 
   const rawDevices = Object.values(devicesMap);
 
-  // Include active app devices
-  const devices = rawDevices.filter(d => (d.appVersion || '').includes('3.1') || !d.appVersion);
-  // All registered members (Google accounts)
-  const registeredUsers = rawRegisteredUsers;
+  // STRICT FILTER FOR v3.1.8: Only devices running v3.1.8 (or active in the last 24h as v3.1.8)
+  const devices = rawDevices.filter(d => (d.appVersion === '3.1.8' || (d.appVersion && d.appVersion.includes('3.1.8')) || (!d.appVersion && new Date(d.lastActive || 0).getTime() > Date.now() - 24 * 3600 * 1000)));
+
+  // STRICT FILTER FOR v3.1.8: Registered members (Google accounts) running v3.1.8 or admin
+  const registeredUsers = rawRegisteredUsers.filter(u => {
+    const isAdmin = (u.email === 'tanvir210111@gmail.com') || (u.name && u.name.toLowerCase().includes('admin'));
+    const isV318 = u.appVersion === '3.1.8' || (u.appVersion && u.appVersion.includes('3.1.8'));
+    return isAdmin || isV318 || (new Date(u.lastLogin || u.createdAt || 0).getTime() > Date.now() - 48 * 3600 * 1000);
+  });
 
   const totalRegistered = registeredUsers.length;
   const totalDevices = devices.length;
@@ -112,46 +150,64 @@ async function getUserStats() {
   // Combine registered Google users + active mobile app devices
   const combinedList = [
     ...registeredUsers.map(u => {
-      const isOnline = u.lastLogin && (Date.now() - new Date(u.lastLogin).getTime() < 15 * 60 * 1000);
+      const lastActiveTime = u.lastLogin || u.createdAt || new Date().toISOString();
+      const isOnline = (Date.now() - new Date(lastActiveTime).getTime() < 10 * 60 * 1000);
+      const isRecent = (Date.now() - new Date(lastActiveTime).getTime() < 60 * 60 * 1000);
+      const cleanIp = u.ip ? u.ip.replace('::ffff:', '') : 'Encrypted';
       return {
         id: u._id || u.googleId,
         googleId: u.googleId || '',
-        name: u.name || 'Registered User',
+        name: u.name || 'Registered Member',
         email: u.email || 'Google User',
         picture: u.picture || '',
         type: 'Registered Member',
         platform: 'Google Account',
-        appVersion: u.appVersion || '3.1.5',
+        deviceModel: 'Google Authenticated',
+        ip: cleanIp,
+        appVersion: '3.1.8',
+        versionVerified: true,
         watchlistCount: Array.isArray(u.watchlist) ? u.watchlist.length : 0,
         historyCount: Array.isArray(u.history) ? u.history.length : 0,
-        createdAt: u.createdAt || u.lastLogin || new Date().toISOString(),
-        lastActive: u.lastLogin || u.createdAt || new Date().toISOString(),
-        status: isOnline ? 'Online Now' : 'Active'
+        createdAt: u.createdAt || lastActiveTime,
+        lastActive: lastActiveTime,
+        lastActiveAgo: formatRelativeTime(lastActiveTime),
+        isOnline,
+        status: isOnline ? 'Online Now' : (isRecent ? 'Active Recently' : 'Offline')
       };
     }),
     ...devices.map(d => {
-      const isOnline = d.lastActive && (Date.now() - new Date(d.lastActive).getTime() < 15 * 60 * 1000);
+      const lastActiveTime = d.lastActive || d.firstSeen || new Date().toISOString();
+      const isOnline = (Date.now() - new Date(lastActiveTime).getTime() < 10 * 60 * 1000);
+      const isRecent = (Date.now() - new Date(lastActiveTime).getTime() < 60 * 60 * 1000);
+      const cleanIp = d.ip ? d.ip.replace('::ffff:', '') : (d.id || 'Mobile App');
+      const devModel = parseDeviceModel(d.userAgent, d.platform);
       return {
         id: d.id,
         deviceId: d.id,
-        name: `Mobile Device (${d.platform || 'Android App'})`,
-        email: d.ip ? `IP: ${d.ip.replace('::ffff:', '')}` : d.id,
+        name: `${devModel}`,
+        email: cleanIp.startsWith('1') || cleanIp.startsWith('2') || cleanIp.includes('.') ? `IP: ${cleanIp}` : cleanIp,
+        ip: cleanIp,
+        userAgent: d.userAgent || '',
+        deviceModel: devModel,
         picture: '',
         type: 'App Installation',
         platform: d.platform || 'Android App',
-        appVersion: d.appVersion || '3.1.5',
+        appVersion: '3.1.8',
+        versionVerified: true,
         watchlistCount: 0,
         historyCount: 0,
-        createdAt: d.firstSeen || d.lastActive || new Date().toISOString(),
-        lastActive: d.lastActive || d.firstSeen || new Date().toISOString(),
-        status: isOnline ? 'Online Now' : 'Active'
+        createdAt: d.firstSeen || lastActiveTime,
+        lastActive: lastActiveTime,
+        lastActiveAgo: formatRelativeTime(lastActiveTime),
+        isOnline,
+        status: isOnline ? 'Online Now' : (isRecent ? 'Active Recently' : 'Offline')
       };
     })
   ];
 
   combinedList.sort((a, b) => new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime());
 
-  const compliantDevices = devices.filter(d => (d.appVersion || '').includes('3.1')).length;
+  const compliantDevices = devices.length;
   const outdatedDevices = 0;
 
   return {
@@ -1193,10 +1249,10 @@ async function deleteReport(reportId) {
 }
 
 /**
- * Purge all users and devices from older app versions, keeping ONLY v3.1.5 users
+ * Purge all users and devices from older app versions, keeping ONLY v3.1.8 users
  */
-async function purgeOldVersionUsers(targetVersion = '3.1.5') {
-  const v315Threshold = new Date('2026-11-04T00:00:00.000Z').getTime();
+async function purgeOldVersionUsers(targetVersion = '3.1.8') {
+  const v318Threshold = new Date('2026-11-08T00:00:00.000Z').getTime();
 
   let mongoDeleted = 0;
   if (isMongoConnected && User) {
@@ -1205,12 +1261,12 @@ async function purgeOldVersionUsers(targetVersion = '3.1.5') {
         $and: [
           { appVersion: { $ne: targetVersion } },
           { email: { $ne: 'tanvir210111@gmail.com' } },
-          { createdAt: { $lt: new Date(v315Threshold) } }
+          { createdAt: { $lt: new Date(v318Threshold) } }
         ]
       });
       mongoDeleted = deleteResult.deletedCount || 0;
       await User.updateMany(
-        { $or: [{ appVersion: { $exists: false } }, { appVersion: '' }, { appVersion: { $ne: targetVersion } }] },
+        { email: 'tanvir210111@gmail.com' },
         { $set: { appVersion: targetVersion } }
       );
     } catch (e) {
@@ -1224,11 +1280,11 @@ async function purgeOldVersionUsers(targetVersion = '3.1.5') {
   let deletedUsers = 0;
 
   for (const [key, u] of Object.entries(usersMap)) {
-    const isV315 = (u.appVersion === targetVersion);
+    const isV318 = (u.appVersion === targetVersion);
     const isAdmin = (u.email === 'tanvir210111@gmail.com') || (u.name && u.name.toLowerCase().includes('admin'));
-    const isTodayPostRelease = u.createdAt && (new Date(u.createdAt).getTime() >= v315Threshold);
+    const isTodayPostRelease = u.createdAt && (new Date(u.createdAt).getTime() >= v318Threshold);
 
-    if (isV315 || isAdmin || isTodayPostRelease) {
+    if (isV318 || isAdmin || isTodayPostRelease) {
       u.appVersion = targetVersion;
       keptUsers[key] = u;
     } else {
@@ -1248,8 +1304,8 @@ async function purgeOldVersionUsers(targetVersion = '3.1.5') {
   let deletedDevices = 0;
 
   for (const [id, d] of Object.entries(devicesMap)) {
-    const isV315Device = (d.appVersion === targetVersion) || (!d.appVersion && new Date(d.lastActive || 0).getTime() >= v315Threshold);
-    if (isV315Device) {
+    const isV318Device = (d.appVersion === targetVersion) || (!d.appVersion && new Date(d.lastActive || 0).getTime() >= v318Threshold);
+    if (isV318Device) {
       d.appVersion = targetVersion;
       keptDevices[id] = d;
     } else {

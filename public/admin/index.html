@@ -6,8 +6,8 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>FOBS TV — v3.2.5 Master Control Center</title>
-  <meta name="description" content="Central Master Administration for FOBS TV v3.2.5 Streaming Network">
+  <title>FOBS TV — v3.1.8 Master Control Center</title>
+  <meta name="description" content="Central Master Administration for FOBS TV v3.1.8 Streaming Network">
   <link rel="icon" type="image/png" href="/favicon.png">
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +28,7 @@
           <i class="fa-solid fa-satellite-dish"></i>
         </div>
         <h2>FOBS <span>TV</span></h2>
-        <span class="badge-v315">v3.2.5 Master Hub</span>
+        <span class="badge-v315">v3.1.8 Pro Hub</span>
         <p>Enter Master Administrative Password to authorize system control</p>
       </div>
       <form id="login-form">
@@ -66,7 +66,7 @@
           <h2>FOBS <span>TV</span></h2>
           <div class="brand-sub">
             <span class="pulse-dot"></span>
-            <span>v3.2.5 Control</span>
+            <span>v3.1.8 Control</span>
           </div>
         </div>
         <button id="sidebar-close" class="btn-icon mobile-only" title="Close menu">
@@ -96,7 +96,12 @@
           <span id="badge-channels-count" class="badge-count">0</span>
         </a>
 
-        <div class="nav-section-label">ENGAGEMENT & NOTICES</div>
+        <div class="nav-section-label">ENGAGEMENT & FEEDBACK</div>
+        <a href="#reports" class="nav-item highlight-red" data-tab="reports">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>Video Reports</span>
+          <span id="badge-reports-count" class="badge-count alert">0</span>
+        </a>
         <a href="#announcements" class="nav-item highlight-pink" data-tab="announcements">
           <i class="fa-solid fa-bullhorn"></i>
           <span>Popup Notices</span>
@@ -114,9 +119,9 @@
         </a>
 
         <div class="nav-section-label">SYSTEM & AUDIENCE</div>
-        <a href="#users" class="nav-item" data-tab="users">
+        <a href="#users" class="nav-item highlight-cyan" data-tab="users">
           <i class="fa-solid fa-users"></i>
-          <span>v3.2.5 App Users</span>
+          <span>v3.1.8 App Audience</span>
           <span id="badge-users-count" class="badge-count highlight">0</span>
         </a>
         <a href="#importer" class="nav-item" data-tab="importer">
@@ -125,7 +130,7 @@
         </a>
         <a href="#appcontrol" class="nav-item" data-tab="appcontrol">
           <i class="fa-solid fa-sliders"></i>
-          <span>v3.2.5 Config</span>
+          <span>v3.1.8 App Control</span>
         </a>
       </nav>
 
@@ -134,7 +139,7 @@
           <div class="status-indicator">
             <span class="status-dot online"></span>
             <div>
-              <div class="status-name">v3.2.5 Engine Online</div>
+              <div class="status-name">v3.1.8 Engine Online</div>
               <div class="status-uptime" id="status-uptime">Uptime: --</div>
             </div>
           </div>
@@ -156,12 +161,12 @@
           </button>
           <div class="page-title-box">
             <h1 id="page-title">Dashboard Overview</h1>
-            <p id="page-subtitle">Real-time FOBS TV v3.2.5 System Status & Streaming Network</p>
+            <p id="page-subtitle">Real-time FOBS TV v3.1.8 System Status & Streaming Network</p>
           </div>
         </div>
         <div class="topbar-right">
           <div class="server-metrics-group">
-            <span class="metric-chip"><i class="fa-solid fa-code-commit"></i> v3.2.5 Master</span>
+            <span class="metric-chip"><i class="fa-solid fa-code-commit"></i> v3.1.8 Pro</span>
             <span class="metric-chip"><i class="fa-solid fa-memory"></i> <strong id="ram-usage">-- MB</strong></span>
           </div>
           <button id="btn-quick-fix" class="btn-secondary" onclick="triggerRepairStreams()" title="1-Click Auto-Repair Playback Streams">
@@ -195,12 +200,12 @@
               <span class="metric-hint"><i class="fa-solid fa-layer-group"></i> Multi-season episodes</span>
             </div>
           </div>
-          <div class="metric-card glass">
+          <div class="metric-card glass clickable" onclick="switchAdminTab('users')" style="cursor: pointer;">
             <div class="metric-icon green"><i class="fa-solid fa-users"></i></div>
             <div class="metric-info">
-              <span class="metric-label">v3.2.5 App Users</span>
+              <span class="metric-label">v3.1.8 Active Audience</span>
               <h3 id="stat-users" class="metric-number">0</h3>
-              <span class="metric-hint"><i class="fa-solid fa-mobile-screen-button"></i> Active devices only</span>
+              <span class="metric-hint"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Verified v3.1.8 only</span>
             </div>
           </div>
           <div class="metric-card glass">
@@ -211,13 +216,21 @@
               <span class="metric-hint"><i class="fa-solid fa-chart-line"></i> Real-time tracking</span>
             </div>
           </div>
+          <div class="metric-card glass clickable" onclick="switchAdminTab('reports')" style="cursor: pointer; border: 1px solid rgba(239, 68, 68, 0.35);">
+            <div class="metric-icon red" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div class="metric-info">
+              <span class="metric-label">Video Reports</span>
+              <h3 id="stat-reports" class="metric-number" style="color: #f87171;">0</h3>
+              <span class="metric-hint"><i class="fa-solid fa-bell"></i> Issues pending review</span>
+            </div>
+          </div>
         </div>
 
         <!-- QUICK ACTION TILES -->
         <div class="action-banner glass">
           <div class="banner-text">
-            <h3><i class="fa-solid fa-bolt"></i> FOBS TV v3.2.5 Quick Operations</h3>
-            <p>Admin additions are permanently protected in git-immune persistent catalog and can never disappear.</p>
+            <h3><i class="fa-solid fa-bolt"></i> FOBS TV v3.1.8 Operations Hub</h3>
+            <p>Direct content management, live video reports inspection, and real-time audience monitor.</p>
           </div>
           <div class="banner-buttons">
             <button class="btn-primary" onclick="openAddMovieModal()">
@@ -416,12 +429,94 @@
         </div>
       </section>
 
+      <!-- TAB: VIDEO REPORTS & STREAM DIAGNOSTICS -->
+      <section id="tab-reports" class="tab-content">
+        <div class="section-top-bar glass">
+          <div class="section-desc">
+            <h3><i class="fa-solid fa-triangle-exclamation" style="color: #ef4444;"></i> Video Issue Reports &amp; Stream Diagnostics</h3>
+            <p>Real-time reports submitted directly from the player by mobile viewers (playback issues, audio delay, subtitle mismatch, broken stream).</p>
+          </div>
+          <div class="section-top-actions">
+            <button class="btn-secondary" onclick="loadReports()">
+              <i class="fa-solid fa-arrows-rotate"></i>
+              <span>Refresh Reports</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="metrics-grid" style="margin-bottom: 24px;">
+          <div class="metric-card glass clickable" onclick="setReportsFilter('all')" style="cursor: pointer;">
+            <div class="metric-icon cyan"><i class="fa-solid fa-list-check"></i></div>
+            <div class="metric-info">
+              <span class="metric-label">Total Reports</span>
+              <h3 id="stat-rep-total" class="metric-number">0</h3>
+              <span class="metric-hint">All-time submissions</span>
+            </div>
+          </div>
+          <div class="metric-card glass clickable" onclick="setReportsFilter('pending')" style="cursor: pointer; border: 1px solid rgba(239, 68, 68, 0.45);">
+            <div class="metric-icon red" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;"><i class="fa-solid fa-circle-exclamation"></i></div>
+            <div class="metric-info">
+              <span class="metric-label">Pending Action</span>
+              <h3 id="stat-rep-pending" class="metric-number" style="color: #f87171;">0</h3>
+              <span class="metric-hint">Needs attention</span>
+            </div>
+          </div>
+          <div class="metric-card glass clickable" onclick="setReportsFilter('resolved')" style="cursor: pointer; border: 1px solid rgba(16, 185, 129, 0.3);">
+            <div class="metric-icon green"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="metric-info">
+              <span class="metric-label">Resolved Issues</span>
+              <h3 id="stat-rep-resolved" class="metric-number" style="color: #10b981;">0</h3>
+              <span class="metric-hint">Fixed &amp; closed</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card glass">
+          <div class="table-toolbar" style="padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+            <div class="toolbar-search" style="flex: 1; min-width: 250px;">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="reports-search-input" placeholder="Search by media title, reason, user email, details..." oninput="filterReportsTable()">
+            </div>
+            <div class="users-filter-tabs" style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="btn-filter-chip active" id="chip-rep-all" onclick="setReportsFilter('all')">
+                <i class="fa-solid fa-list"></i> All (<span id="chip-rep-count-all">0</span>)
+              </button>
+              <button type="button" class="btn-filter-chip" id="chip-rep-pending" onclick="setReportsFilter('pending')" style="color: #f87171; border-color: rgba(239, 68, 68, 0.4); font-weight: 700;">
+                <i class="fa-solid fa-triangle-exclamation"></i> Pending (<span id="chip-rep-count-pending">0</span>)
+              </button>
+              <button type="button" class="btn-filter-chip" id="chip-rep-resolved" onclick="setReportsFilter('resolved')" style="color: #10b981; font-weight: 700;">
+                <i class="fa-solid fa-circle-check"></i> Resolved (<span id="chip-rep-count-resolved">0</span>)
+              </button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Media Title</th>
+                  <th>Season / Ep</th>
+                  <th>Issue Reason</th>
+                  <th>User Details</th>
+                  <th>Reporter</th>
+                  <th>Reported At</th>
+                  <th>Status</th>
+                  <th style="text-align: right; width: 140px;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="reports-tbody">
+                <tr><td colspan="8" class="text-center">Loading video reports...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <!-- TAB 5: POPUP NOTICES & ANNOUNCEMENTS -->
       <section id="tab-announcements" class="tab-content">
         <div class="section-top-bar glass">
           <div class="section-desc">
             <h3><i class="fa-solid fa-bullhorn"></i> In-App Popups & Announcements Manager</h3>
-            <p>Create instant notices that appear as a rich popup on FOBS TV v3.2.5 app launch. Monitor real-time likes, dislikes, and viewer comments.</p>
+            <p>Create instant notices that appear as a rich popup on FOBS TV v3.1.8 app launch. Monitor real-time likes, dislikes, and viewer comments.</p>
           </div>
           <button class="btn-primary glow" onclick="openAddNotificationModal()">
             <i class="fa-solid fa-plus"></i>
@@ -470,21 +565,21 @@
         </div>
       </section>
 
-      <!-- TAB 7: v3.2.5 APP USERS & DEVICES -->
+      <!-- TAB: v3.1.8 APP USERS & REALTIME AUDIENCE -->
       <section id="tab-users" class="tab-content">
         <div class="section-top-bar glass">
           <div class="section-desc">
-            <h3><i class="fa-solid fa-users"></i> v3.2.5 App Audience & Active Devices</h3>
-            <p>Strictly monitors devices running <strong>FOBS TV v3.2.5</strong>. Pre-3.1.5 sessions are filtered out.</p>
+            <h3><i class="fa-solid fa-users" style="color: #38bdf8;"></i> v3.1.8 Verified Audience &amp; Realtime Active Devices</h3>
+            <p>Strictly monitors active members and devices running <strong>FOBS TV v3.1.8</strong>. Pre-v3.1.8 records are automatically filtered out.</p>
           </div>
           <div class="section-top-actions">
-            <button class="btn-danger" onclick="purgeOldVersions()" title="Remove all older pre-v3.2.5 user and device records">
+            <button class="btn-danger" onclick="purgeOldVersions()" title="Remove all legacy pre-v3.1.8 user and device records">
               <i class="fa-solid fa-trash-can"></i>
-              <span>Purge Older Versions</span>
+              <span>Purge Pre-v3.1.8 Records</span>
             </button>
             <button class="btn-secondary" onclick="loadUsers()">
               <i class="fa-solid fa-arrows-rotate"></i>
-              <span>Refresh</span>
+              <span>Live Refresh</span>
             </button>
           </div>
         </div>
@@ -493,17 +588,17 @@
           <div class="metric-card glass clickable" onclick="setUserAudienceFilter('all')" title="Click to view all audience" style="cursor: pointer;">
             <div class="metric-icon cyan"><i class="fa-solid fa-users"></i></div>
             <div class="metric-info">
-              <span class="metric-label">Total Audience</span>
+              <span class="metric-label">Total v3.1.8 Audience</span>
               <h3 id="users-stat-devices" class="metric-number">0</h3>
-              <span class="metric-hint">Combined members & devices</span>
+              <span class="metric-hint">Combined members &amp; devices</span>
             </div>
           </div>
-          <div class="metric-card glass clickable" onclick="setUserAudienceFilter('online')" title="Click to view online users" style="cursor: pointer;">
+          <div class="metric-card glass clickable" onclick="setUserAudienceFilter('online')" title="Click to view online users" style="cursor: pointer; border: 1px solid rgba(16, 185, 129, 0.4);">
             <div class="metric-icon green"><i class="fa-solid fa-signal"></i></div>
             <div class="metric-info">
               <span class="metric-label">Online Active Now</span>
-              <h3 id="users-stat-online" class="metric-number">0</h3>
-              <span class="metric-hint">Active in past 15 min</span>
+              <h3 id="users-stat-online" class="metric-number" style="color: #34d399;">0</h3>
+              <span class="metric-hint">Active in past 10 min</span>
             </div>
           </div>
           <div class="metric-card glass clickable" onclick="setUserAudienceFilter('registered')" title="Click to view Registered Members" style="cursor: pointer; border: 1px solid rgba(192, 132, 252, 0.4);">
@@ -511,7 +606,15 @@
             <div class="metric-info">
               <span class="metric-label">Registered Members</span>
               <h3 id="users-stat-registered" class="metric-number">0</h3>
-              <span class="metric-hint">Google OAuth accounts</span>
+              <span class="metric-hint">Google authenticated</span>
+            </div>
+          </div>
+          <div class="metric-card glass clickable" onclick="setUserAudienceFilter('devices')" title="Click to view App Installations" style="cursor: pointer;">
+            <div class="metric-icon amber"><i class="fa-brands fa-android"></i></div>
+            <div class="metric-info">
+              <span class="metric-label">App Devices</span>
+              <h3 id="users-stat-app-devices" class="metric-number">0</h3>
+              <span class="metric-hint">Mobile installations</span>
             </div>
           </div>
         </div>
@@ -520,20 +623,20 @@
           <div class="table-toolbar" style="padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
             <div class="toolbar-search" style="flex: 1; min-width: 250px;">
               <i class="fa-solid fa-magnifying-glass"></i>
-              <input type="text" id="users-search-input" placeholder="Search by name, email, device ID, IP..." oninput="filterUsersTable()">
+              <input type="text" id="users-search-input" placeholder="Search by name, email, device model, IP, UUID..." oninput="filterUsersTable()">
             </div>
             <div class="users-filter-tabs" style="display: flex; gap: 8px; flex-wrap: wrap;">
               <button type="button" class="btn-filter-chip active" id="chip-users-all" onclick="setUserAudienceFilter('all')">
                 <i class="fa-solid fa-users"></i> All (<span id="chip-count-all">0</span>)
               </button>
+              <button type="button" class="btn-filter-chip" id="chip-users-online" onclick="setUserAudienceFilter('online')" style="color: #34d399; border-color: rgba(16, 185, 129, 0.4); font-weight: 700;">
+                <i class="fa-solid fa-signal"></i> Online Now (<span id="chip-count-online">0</span>)
+              </button>
               <button type="button" class="btn-filter-chip" id="chip-users-registered" onclick="setUserAudienceFilter('registered')" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.4); font-weight: 700;">
-                <i class="fa-solid fa-user-shield"></i> Registered Members (<span id="chip-count-registered">0</span>)
+                <i class="fa-solid fa-user-shield"></i> Members (<span id="chip-count-registered">0</span>)
               </button>
               <button type="button" class="btn-filter-chip" id="chip-users-devices" onclick="setUserAudienceFilter('devices')">
                 <i class="fa-brands fa-android"></i> App Devices (<span id="chip-count-devices">0</span>)
-              </button>
-              <button type="button" class="btn-filter-chip" id="chip-users-online" onclick="setUserAudienceFilter('online')">
-                <i class="fa-solid fa-signal" style="color: #10b981;"></i> Online Now (<span id="chip-count-online">0</span>)
               </button>
             </div>
           </div>
@@ -541,18 +644,19 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>User / Member</th>
-                  <th>Email / Connection</th>
-                  <th>Type</th>
+                  <th>User / Device</th>
+                  <th>Device Model &amp; IP</th>
+                  <th>Member Type</th>
                   <th>App Version</th>
                   <th>Platform</th>
                   <th>First Seen</th>
                   <th>Last Active</th>
-                  <th>Status</th>
+                  <th>Live Status</th>
+                  <th style="text-align: right;">Action</th>
                 </tr>
               </thead>
               <tbody id="users-tbody">
-                <tr><td colspan="8" class="text-center">Loading audience...</td></tr>
+                <tr><td colspan="9" class="text-center">Loading audience...</td></tr>
               </tbody>
             </table>
           </div>
@@ -750,7 +854,7 @@
         </div>
       </section>
 
-      <!-- TAB 10: v3.2.5 APP CONTROL -->
+      <!-- TAB 10: v3.1.8 APP CONTROL -->
       <section id="tab-appcontrol" class="tab-content">
         <div class="app-control-grid">
           <!-- Update Control Card -->
@@ -758,7 +862,7 @@
             <div class="card-header">
               <div class="card-title">
                 <i class="fa-solid fa-cloud-arrow-up"></i>
-                <span>v3.2.5 App Version & Remote Update</span>
+                <span>v3.1.8 App Version &amp; Remote Update</span>
               </div>
             </div>
             <div class="card-body">
@@ -766,20 +870,20 @@
                 <div class="form-row">
                   <div class="form-group">
                     <label>Latest Version Name</label>
-                    <input type="text" id="cfg-version-name" value="v3.2.5" required>
+                    <input type="text" id="cfg-version-name" value="v3.1.8" required>
                   </div>
                   <div class="form-group">
                     <label>Latest Version Code</label>
-                    <input type="number" id="cfg-version-code" value="13" required>
+                    <input type="number" id="cfg-version-code" value="16" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label>Official APK Download URL</label>
-                  <input type="url" id="cfg-download-url" value="https://fobs-apk-download.vercel.app/FOBS%20TV%20v3.2.5.apk" required>
+                  <input type="url" id="cfg-download-url" value="https://fobstv.duckdns.org/download/apk" required>
                 </div>
                 <div class="form-group">
                   <label>Release Notes (One per line)</label>
-                  <textarea id="cfg-release-notes" rows="4" placeholder="• v3.2.5 in-player video brightness engine&#10;• Full screen landscape notch fix&#10;• Bengali subtitle sync fix"></textarea>
+                  <textarea id="cfg-release-notes" rows="4" placeholder="• v3.1.8 MovieBox native device storage&#10;• Bengali &amp; English dual offline subtitles&#10;• Zero-hang range seek engine"></textarea>
                 </div>
                 <div class="form-row">
                   <label class="toggle-control">
@@ -1124,7 +1228,7 @@
         <div class="form-row">
           <div class="form-group flex-2">
             <label>Notice Title *</label>
-            <input type="text" id="notif-title" placeholder="e.g. New Update v3.2.5 Released!" required>
+            <input type="text" id="notif-title" placeholder="e.g. New Update v3.1.8 Released!" required>
           </div>
           <div class="form-group flex-1">
             <label>Badge Tag</label>
@@ -1158,8 +1262,8 @@
             <input type="checkbox" id="notif-ispopup" checked>
             <span class="toggle-slider"></span>
             <div>
-              <strong class="toggle-label">Show as Active Launch Popup Modal in v3.2.5 App</strong>
-              <div style="font-size: 12px; color: #94a3b8;">When enabled, every v3.2.5 user will automatically see this popup upon opening FOBS TV.</div>
+              <strong class="toggle-label">Show as Active Launch Popup Modal in v3.1.8 App</strong>
+              <div style="font-size: 12px; color: #94a3b8;">When enabled, every v3.1.8 user will automatically see this popup upon opening FOBS TV.</div>
             </div>
           </label>
         </div>

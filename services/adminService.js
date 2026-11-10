@@ -442,6 +442,14 @@ class AdminService {
     const notifications = readNotifications();
     const userStats = await dbService.getUserStats();
 
+    let pendingReports = 0;
+    let totalReports = 0;
+    try {
+      const allReports = await dbService.getAllReports();
+      totalReports = allReports.length;
+      pendingReports = allReports.filter(r => (r.status || 'pending').toLowerCase() === 'pending').length;
+    } catch (_) {}
+
     const mem = process.memoryUsage();
     return {
       success: true,
@@ -455,6 +463,8 @@ class AdminService {
         totalDevices: userStats.totalDevices || 1,
         pendingRequests: requests.filter(r => (r.status || '').toLowerCase() === 'pending').length,
         totalRequests: requests.length,
+        pendingReports,
+        totalReports,
         totalNotifications: notifications.length,
         uptimeSeconds: Math.floor(process.uptime()),
         memoryMb: Math.round(mem.rss / (1024 * 1024)),

@@ -131,7 +131,8 @@ async function submitVideoReport() {
   }
 
   try {
-    const res = await fetch('/api/reports', {
+    const targetUrl = (typeof API_BASE_URL !== 'undefined' && API_BASE_URL) ? `${API_BASE_URL}/api/reports` : '/api/reports';
+    const res = await fetch(targetUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -255,13 +256,15 @@ async function submitSimpleLogin() {
   }
 
   try {
-    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.5');
+    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.8');
     const res = await fetch(`${API_BASE_URL}/api/auth/simple-login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-app-version': appVer
       },
+      body: JSON.stringify({ email: cleanEmail, name: cleanName, appVersion: appVer })
+    });
       body: JSON.stringify({ name, email, appVersion: appVer })
     });
     const data = await res.json();
@@ -626,7 +629,7 @@ async function initApp() {
       pingViewerId = 'v_' + Math.random().toString(36).substring(2, 10);
       localStorage.setItem('fobs_viewer_uuid', pingViewerId);
     }
-    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.5');
+    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.8');
     fetch(`${API_BASE_URL}/api/app-ping`, {
       method: 'POST',
       headers: {

@@ -2635,7 +2635,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.4.1",
+  version: "1.4.2",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 
@@ -3225,7 +3225,7 @@ app.post('/api/auth/simple-login', async (req, res) => {
       email: cleanEmail,
       name: cleanName,
       picture,
-      appVersion: req.body.appVersion || req.headers['x-app-version'] || '3.1.1'
+      appVersion: req.body.appVersion || req.headers['x-app-version'] || '3.1.8'
     });
     const token = authService.generateAppToken(user);
 
@@ -3295,7 +3295,7 @@ app.post('/api/auth/login', async (req, res) => {
       email: cleanEmail,
       name: cleanName,
       picture,
-      appVersion: req.body.appVersion || req.headers['x-app-version'] || '3.1.1'
+      appVersion: req.body.appVersion || req.headers['x-app-version'] || '3.1.8'
     });
     const token = authService.generateAppToken(user);
 
@@ -3890,10 +3890,10 @@ app.get('/api/admin/diagnostic', adminService.authenticate, async (req, res) => 
   res.json({ success: true, nginxConf, pm2Logs, curlTest, mbTest, mbError, mbDebug });
 });
 
-// Purge Older Version Users & Devices (Keep v3.1.3)
+// Purge Older Version Users & Devices (Keep v3.1.8)
 app.post('/api/admin/users/purge-old', adminService.authenticate, async (req, res) => {
   try {
-    const targetVersion = req.body?.version || req.query?.version || '3.1.3';
+    const targetVersion = req.body?.version || req.query?.version || '3.1.8';
     const result = await dbService.purgeOldVersionUsers(targetVersion);
     res.json(result);
   } catch (err) {

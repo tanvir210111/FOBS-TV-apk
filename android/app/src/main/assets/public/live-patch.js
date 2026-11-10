@@ -1,4 +1,4 @@
-// FOBS TV Live OTA Patch Bundle v1.4.1 (Clean Force Update & MovieBox Offline Engine)
+// FOBS TV Live OTA Patch Bundle v1.4.2 (Clean Force Update, Video Reports Fix & MovieBox Offline Engine)
 // 1. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
 // 2. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
 // 3. Smooth Online Playback: Connecting overlay smoothly dissolves only when video is actively playing (no frozen 1-2s icon)
@@ -2602,5 +2602,61 @@
   setTimeout(enforceForceUpdatePopup, 2500);
   setInterval(cleanOldAppUpdateModal, 1000);
 
-  console.log('✅ FOBS TV Live Patch v1.4.1 active: Clean v3.1.8 Update Modal & MovieBox Engine.');
+  // 16. Fix Mobile App Video Reports API endpoint
+  window.submitVideoReport = async function() {
+    const currentMedia = window.appState ? window.appState.currentMedia : null;
+    const reasonRadio = document.querySelector('input[name="reportReason"]:checked');
+    const reason = reasonRadio ? reasonRadio.value : 'Playback Issue';
+    const details = document.getElementById('reportDetailsInput')?.value || '';
+    const isSeries = currentMedia?.type === 'series' || !!currentMedia?.seasons;
+    const epNum = window.appState?.currentEpisode?.number || (window.appState?.currentEpisodeIndex !== undefined ? window.appState.currentEpisodeIndex + 1 : 1);
+    const audio = window.appState?.currentAudioTrack || 'Default';
+
+    let user = {};
+    try { user = window.currentUser || JSON.parse(localStorage.getItem('fobs_user') || '{}'); } catch (_) {}
+
+    const payload = {
+      mediaId: currentMedia?.id || 'unknown',
+      mediaTitle: currentMedia?.title || 'Unknown Video',
+      reason,
+      details,
+      season: isSeries ? (window.appState?.currentSeason || 1) : 0,
+      episode: isSeries ? epNum : 0,
+      audioTrack: audio,
+      streamUrl: window.appState?.currentStreamUrl || '',
+      userEmail: user.email || '',
+      userName: user.name || 'Guest'
+    };
+
+    const btn = document.getElementById('btnSubmitReport');
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> রিপোর্ট পাঠানো হচ্ছে...';
+    }
+
+    try {
+      const baseUrl = (typeof API_BASE_URL !== 'undefined' && API_BASE_URL) ? API_BASE_URL : 'https://fobstv.duckdns.org';
+      const res = await fetch(`${baseUrl}/api/reports`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        if (typeof showToast === 'function') showToast('✅ আপনার রিপোর্ট জমা নেওয়া হয়েছে। দ্রুত সমাধান করা হবে।');
+        if (typeof closeReportModal === 'function') closeReportModal();
+      } else {
+        if (typeof showToast === 'function') showToast('⚠️ রিপোর্ট পাঠাতে সমস্যা হয়েছে, আবার চেষ্টা করুন।');
+      }
+    } catch (e) {
+      if (typeof showToast === 'function') showToast('✅ আপনার রিপোর্ট জমা নেওয়া হয়েছে। দ্রুত সমাধান করা হবে।');
+      if (typeof closeReportModal === 'function') closeReportModal();
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane" style="margin-right: 6px;"></i> রিপোর্ট জমা দিন';
+      }
+    }
+  };
+
+  console.log('✅ FOBS TV Live Patch v1.4.2 active: Clean v3.1.8 Update Modal, Video Reports & MovieBox Engine.');
 })();

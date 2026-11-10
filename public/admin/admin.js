@@ -1,6 +1,6 @@
 /**
- * FOBS TV — v3.2.5 Master Control Center Client
- * Handles full administration: permanent catalog, v3.2.5 audience, popups, reactions, and comments.
+ * FOBS TV — v3.1.8 Master Control Center Client
+ * Handles full administration: permanent catalog, v3.1.8 audience, video reports, popups, and community.
  */
 
 const API_BASE = '';
@@ -13,6 +13,7 @@ const state = {
   movies: [],
   series: [],
   channels: [],
+  reports: [],
   announcements: [],
   comments: [],
   users: [],
@@ -104,7 +105,7 @@ function showApp() {
   document.getElementById('login-modal').classList.remove('active');
   document.getElementById('app').style.display = 'flex';
   const initialHash = (window.location.hash || '').replace('#', '').trim();
-  if (initialHash && ['movies', 'series', 'livetv', 'announcements', 'comments', 'users', 'requests', 'importer', 'appcontrol'].includes(initialHash)) {
+  if (initialHash && ['movies', 'series', 'livetv', 'reports', 'announcements', 'comments', 'users', 'requests', 'importer', 'appcontrol'].includes(initialHash)) {
     switchAdminTab(initialHash);
   } else {
     loadDashboardData();
@@ -194,16 +195,17 @@ function switchAdminTab(tabName) {
   const titleEl = document.getElementById('page-title');
   const subEl = document.getElementById('page-subtitle');
   const titles = {
-    overview: { title: 'Dashboard Overview', sub: 'Real-time FOBS TV v3.2.5 System Status & Streaming Network' },
+    overview: { title: 'Dashboard Overview', sub: 'Real-time FOBS TV v3.1.8 System Status & Streaming Network' },
     movies: { title: 'Movies Management', sub: 'Manage permanent catalog, fast CDN streams, and audio dubbing' },
     series: { title: 'Series & TV Studio', sub: 'Manage seasons, episode streams, and subtitles' },
     livetv: { title: 'Live TV Channels', sub: 'Manage regional, sports, and international streaming channels' },
+    reports: { title: 'Video Issue Reports & Diagnostics', sub: 'Live player stream issue reports submitted by viewers' },
     announcements: { title: 'Popup Notices & Announcements', sub: 'Manage in-app popups, view real-time likes, dislikes, and viewer comments' },
     comments: { title: 'User Comments & Community', sub: 'Moderate viewer comments across movies and series' },
-    users: { title: 'v3.2.5 App Audience', sub: 'Active devices and registered users running FOBS TV v3.2.5' },
+    users: { title: 'v3.1.8 Verified Audience', sub: 'Active devices and registered members running FOBS TV v3.1.8' },
     requests: { title: 'User Requests & Pre-Bookings', sub: 'Viewer submitted requests for movies and series' },
     importer: { title: 'MovieBox 1-Click Importer', sub: 'Import trending titles with auto-renewing streams' },
-    appcontrol: { title: 'v3.2.5 App Control & Remote Config', sub: 'Configure target version, mandatory updates, and server maintenance' }
+    appcontrol: { title: 'v3.1.8 App Control & Remote Config', sub: 'Configure target version, mandatory updates, and server maintenance' }
   };
 
   if (titles[tabName]) {
@@ -224,6 +226,9 @@ function switchAdminTab(tabName) {
       break;
     case 'livetv':
       loadChannels();
+      break;
+    case 'reports':
+      loadReports();
       break;
     case 'announcements':
       loadAnnouncements();
@@ -266,6 +271,8 @@ async function loadDashboardData() {
       document.getElementById('badge-channels-count').innerText = data.stats.totalChannels || 0;
       document.getElementById('badge-requests-count').innerText = data.stats.pendingRequests || 0;
       document.getElementById('badge-users-count').innerText = data.stats.totalUsers || 0;
+      if (document.getElementById('stat-reports')) document.getElementById('stat-reports').innerText = data.stats.pendingReports || 0;
+      if (document.getElementById('badge-reports-count')) document.getElementById('badge-reports-count').innerText = data.stats.pendingReports || 0;
 
       document.getElementById('ram-usage').innerText = `${data.stats.memoryMb || 0} MB`;
       const uptimeHours = Math.floor((data.stats.uptimeSeconds || 0) / 3600);
@@ -317,7 +324,7 @@ async function loadOverviewPopupPreview() {
       badge.style.display = 'none';
       container.innerHTML = `
         <div class="empty-state-mini">
-          <p>No popup notice is currently active for v3.2.5 launch.</p>
+          <p>No popup notice is currently active for v3.1.8 launch.</p>
           <button class="btn-sm-primary" style="margin-top: 10px;" onclick="switchAdminTab('announcements')">
             <i class="fa-solid fa-plus"></i> Set Active Popup Notice
           </button>
@@ -1294,7 +1301,7 @@ function renderAnnouncements(list) {
         </div>
 
         <div class="announcement-actions-bar">
-          <label class="toggle-control" title="Toggle active popup on v3.2.5 app launch">
+          <label class="toggle-control" title="Toggle active popup on v3.1.8 app launch">
             <input type="checkbox" ${isPopup ? 'checked' : ''} onchange="toggleNoticePopup('${item.id}')">
             <span class="toggle-slider"></span>
             <span class="toggle-label" style="font-size: 11.5px;">${isPopup ? 'Active Popup' : 'Normal Notice'}</span>
@@ -1751,14 +1758,14 @@ async function confirmDeleteMediaComment(mediaId, commentId) {
 }
 
 // ============================================================
-// v3.2.5 APP USERS & DEVICES
+// v3.1.8 APP AUDIENCE & ACTIVE DEVICES
 // ============================================================
 
 let userAudienceFilter = 'all';
 
 async function loadUsers() {
   const tbody = document.getElementById('users-tbody');
-  tbody.innerHTML = '<tr><td colspan="8" class="text-center">Loading audience...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="9" class="text-center">Loading v3.1.8 audience...</td></tr>';
 
   try {
     const res = await authFetch(`${API_BASE}/api/admin/users`);
@@ -1767,11 +1774,12 @@ async function loadUsers() {
 
     const regCount = state.users.filter(u => u.type === 'Registered Member').length;
     const devCount = state.users.filter(u => u.type !== 'Registered Member').length;
-    const onlineCount = state.users.filter(u => u.status === 'Online Now').length;
+    const onlineCount = state.users.filter(u => u.isOnline || u.status === 'Online Now').length;
 
-    document.getElementById('users-stat-devices').innerText = state.users.length;
-    document.getElementById('users-stat-online').innerText = onlineCount;
-    document.getElementById('users-stat-registered').innerText = regCount;
+    if (document.getElementById('users-stat-devices')) document.getElementById('users-stat-devices').innerText = state.users.length;
+    if (document.getElementById('users-stat-online')) document.getElementById('users-stat-online').innerText = onlineCount;
+    if (document.getElementById('users-stat-registered')) document.getElementById('users-stat-registered').innerText = regCount;
+    if (document.getElementById('users-stat-app-devices')) document.getElementById('users-stat-app-devices').innerText = devCount;
 
     if (document.getElementById('chip-count-all')) document.getElementById('chip-count-all').innerText = state.users.length;
     if (document.getElementById('chip-count-registered')) document.getElementById('chip-count-registered').innerText = regCount;
@@ -1780,13 +1788,13 @@ async function loadUsers() {
 
     filterUsersTable();
   } catch (err) {
-    tbody.innerHTML = '<tr><td colspan="8" class="text-center error-text">Failed to load audience.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" class="text-center error-text">Failed to load v3.1.8 audience.</td></tr>';
   }
 }
 
 function setUserAudienceFilter(type) {
   userAudienceFilter = type;
-  document.querySelectorAll('.btn-filter-chip').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('#tab-users .btn-filter-chip').forEach(btn => btn.classList.remove('active'));
   const activeBtn = document.getElementById(`chip-users-${type}`);
   if (activeBtn) activeBtn.classList.add('active');
   filterUsersTable();
@@ -1798,13 +1806,15 @@ function filterUsersTable() {
     // Type filter
     if (userAudienceFilter === 'registered' && u.type !== 'Registered Member') return false;
     if (userAudienceFilter === 'devices' && u.type === 'Registered Member') return false;
-    if (userAudienceFilter === 'online' && u.status !== 'Online Now') return false;
+    if (userAudienceFilter === 'online' && !u.isOnline && u.status !== 'Online Now') return false;
 
     // Search query
     if (!query) return true;
     return (u.name && u.name.toLowerCase().includes(query)) ||
       (u.id && String(u.id).toLowerCase().includes(query)) ||
       (u.email && u.email.toLowerCase().includes(query)) ||
+      (u.ip && u.ip.toLowerCase().includes(query)) ||
+      (u.deviceModel && u.deviceModel.toLowerCase().includes(query)) ||
       (u.platform && u.platform.toLowerCase().includes(query));
   });
 
@@ -1815,54 +1825,81 @@ function renderUsersTable(usersList) {
   const tbody = document.getElementById('users-tbody');
   if (!usersList || usersList.length === 0) {
     const emptyMsg = userAudienceFilter === 'registered'
-      ? 'No registered Google accounts found.'
-      : 'No audience records matching this filter.';
-    tbody.innerHTML = `<tr><td colspan="8" class="text-center" style="padding: 30px; color: #64748b;">${emptyMsg}</td></tr>`;
+      ? 'No registered Google accounts found on v3.1.8.'
+      : (userAudienceFilter === 'online' ? 'No users online in the last 10 minutes.' : 'No audience records matching this filter.');
+    tbody.innerHTML = `<tr><td colspan="9" class="text-center" style="padding: 36px; color: #64748b;">${emptyMsg}</td></tr>`;
     return;
   }
 
   tbody.innerHTML = usersList.map(u => {
-    const isOnline = u.status === 'Online Now';
+    const isOnline = u.isOnline || u.status === 'Online Now';
     const isReg = u.type === 'Registered Member';
+    const rawIp = u.ip || (u.email && (u.email.includes('.') && !u.email.includes('@')) ? u.email.replace('IP: ', '') : '');
 
     const avatarHtml = isReg && u.picture
-      ? `<img src="${escapeHtml(u.picture)}" alt="${escapeHtml(u.name)}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">`
-      : `<div style="width: 32px; height: 32px; border-radius: 50%; background: ${isReg ? 'linear-gradient(135deg, #a855f7, #6366f1)' : 'rgba(255,255,255,0.08)'}; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">${escapeHtml((u.name || 'U').charAt(0).toUpperCase())}</div>`;
+      ? `<div style="position: relative; display: inline-block;">
+           <img src="${escapeHtml(u.picture)}" alt="${escapeHtml(u.name)}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
+           ${isOnline ? '<span class="pulse-dot-green" style="position: absolute; bottom: 0; right: 0; border: 1.5px solid #0f172a;"></span>' : ''}
+         </div>`
+      : `<div style="position: relative; display: inline-block;">
+           <div style="width: 36px; height: 36px; border-radius: 50%; background: ${isReg ? 'linear-gradient(135deg, #a855f7, #6366f1)' : 'rgba(56, 189, 248, 0.15)'}; color: ${isReg ? '#fff' : '#38bdf8'}; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; border: 1px solid ${isReg ? 'rgba(168,85,247,0.4)' : 'rgba(56,189,248,0.3)'};">
+             <i class="${isReg ? 'fa-solid fa-user' : 'fa-brands fa-android'}"></i>
+           </div>
+           ${isOnline ? '<span class="pulse-dot-green" style="position: absolute; bottom: 0; right: 0; border: 1.5px solid #0f172a;"></span>' : ''}
+         </div>`;
 
     return `
       <tr>
         <td>
-          <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
             ${avatarHtml}
             <div>
-              <div class="table-title-bold" style="font-size: 13.5px; color: ${isReg ? '#f1f5f9' : '#e2e8f0'}; font-weight: 700;">
+              <div class="table-title-bold" style="font-size: 13.5px; color: ${isReg ? '#f8fafc' : '#e2e8f0'}; font-weight: 700;">
                 ${escapeHtml(u.name || (isReg ? 'Google Member' : 'Mobile App User'))}
               </div>
-              <div class="table-meta-sub" style="font-family: var(--font-mono); font-size: 11px;">
-                ${escapeHtml(u.id || u.deviceId || '')}
+              <div class="table-meta-sub" style="font-family: var(--font-mono); font-size: 11px; color: #64748b;">
+                ID: ${escapeHtml((u.id || u.deviceId || '').substring(0, 18))}...
               </div>
             </div>
           </div>
         </td>
         <td>
-          <div style="color: ${isReg ? '#c084fc' : '#94a3b8'}; font-weight: ${isReg ? '600' : '400'};">
-            ${escapeHtml(u.email || 'Android Device')}
+          <div style="display: flex; flex-direction: column; gap: 2px;">
+            <span style="font-weight: 600; font-size: 12.5px; color: #cbd5e1;">${escapeHtml(u.deviceModel || 'Android Phone')}</span>
+            <span style="font-family: var(--font-mono); font-size: 11.5px; color: #94a3b8;">
+              <i class="fa-solid fa-network-wired" style="font-size: 10px; color: #38bdf8; margin-right: 3px;"></i>
+              ${escapeHtml(rawIp || 'Direct Connection')}
+            </span>
           </div>
-          ${isReg ? `<div class="table-meta-sub" style="font-size: 11px;">Saved: ${u.watchlistCount || 0} &bull; Watched: ${u.historyCount || 0}</div>` : ''}
         </td>
         <td>
-          <span class="badge-tag" style="background: ${isReg ? 'rgba(168, 85, 247, 0.2)' : 'rgba(56, 189, 248, 0.15)'}; color: ${isReg ? '#c084fc' : '#38bdf8'}; font-weight: 600;">
-            ${isReg ? '<i class="fa-solid fa-user-shield"></i> Registered' : '<i class="fa-brands fa-android"></i> App Device'}
+          <span class="badge-tag" style="background: ${isReg ? 'rgba(168, 85, 247, 0.18)' : 'rgba(56, 189, 248, 0.12)'}; color: ${isReg ? '#c084fc' : '#38bdf8'}; font-weight: 700; border: 1px solid ${isReg ? 'rgba(168, 85, 247, 0.35)' : 'rgba(56, 189, 248, 0.25)'};">
+            ${isReg ? '<i class="fa-solid fa-user-shield"></i> Member' : '<i class="fa-brands fa-android"></i> App Device'}
+          </span>
+          ${isReg ? `<div class="table-meta-sub" style="font-size: 10.5px; margin-top: 3px;">Saved: ${u.watchlistCount || 0} &bull; History: ${u.historyCount || 0}</div>` : ''}
+        </td>
+        <td>
+          <span class="badge-tag quality" style="background: rgba(16, 185, 129, 0.18); color: #34d399; font-weight: 800; border: 1px solid rgba(16, 185, 129, 0.4);">
+            <i class="fa-solid fa-circle-check" style="margin-right: 3px;"></i> v3.1.8
           </span>
         </td>
-        <td><span class="badge-tag quality" style="font-weight: 700;">v${escapeHtml(u.appVersion || '3.1.5')}</span></td>
-        <td><i class="${isReg ? 'fa-brands fa-google text-amber' : 'fa-brands fa-android text-emerald'}"></i> ${escapeHtml(u.platform || 'Android')}</td>
-        <td>${formatDate(u.createdAt)}</td>
-        <td>${formatTimeAgo(u.lastActive)}</td>
+        <td><i class="${isReg ? 'fa-brands fa-google' : 'fa-brands fa-android'}" style="color: ${isReg ? '#f59e0b' : '#34d399'}; margin-right: 4px;"></i> ${escapeHtml(u.platform || 'Android')}</td>
+        <td style="font-size: 12.5px; color: #94a3b8;">${formatDate(u.createdAt)}</td>
         <td>
-          <span class="badge-tag" style="background: ${isOnline ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255,255,255,0.06)'}; color: ${isOnline ? '#34d399' : '#94a3b8'};">
-            ${isOnline ? '<i class="fa-solid fa-circle" style="font-size: 7px; color: #10b981;"></i> Online Now' : 'Active'}
-          </span>
+          <div style="font-size: 12.5px; font-weight: 600; color: #f1f5f9;" title="${u.lastActive}">${u.lastActiveAgo || formatTimeAgo(u.lastActive)}</div>
+          <div class="table-meta-sub" style="font-size: 10.5px;">${formatDate(u.lastActive)}</div>
+        </td>
+        <td>
+          ${isOnline
+            ? '<span class="status-pill-online"><span class="pulse-dot-green"></span> Online Now</span>'
+            : (u.status === 'Active Recently'
+                ? '<span class="status-pill-recent"><i class="fa-solid fa-clock"></i> Recent</span>'
+                : '<span class="status-pill-offline">Offline</span>')}
+        </td>
+        <td style="text-align: right;">
+          <button class="btn-action-icon" onclick="copyToClipboard('${escapeHtml(rawIp || u.id)}')" title="Copy IP / ID">
+            <i class="fa-regular fa-copy"></i>
+          </button>
         </td>
       </tr>
     `;
@@ -1870,22 +1907,210 @@ function renderUsersTable(usersList) {
 }
 
 async function purgeOldVersions() {
-  if (!confirm('This will purge all legacy user sessions and devices older than v3.2.5. Continue?')) return;
+  if (!confirm('This will purge all legacy user sessions and devices older than v3.1.8, keeping strictly v3.1.8 verified users. Continue?')) return;
   try {
     const res = await authFetch(`${API_BASE}/api/admin/users/purge-old`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ version: '3.1.5' })
+      body: JSON.stringify({ version: '3.1.8' })
     });
     const data = await res.json();
     if (data.success) {
-      showToast(`Purged older records. Kept ${data.keptDevices} v3.2.5 devices.`);
+      showToast(`Purged older records. Kept ${data.keptDevices} v3.1.8 devices and ${data.keptUsers} members.`);
       loadUsers();
       loadDashboardData();
     }
   } catch (err) {
     showToast(err.message, 'error');
   }
+}
+
+// ============================================================
+// VIDEO REPORTS & STREAM DIAGNOSTICS
+// ============================================================
+
+let reportsFilter = 'all';
+
+async function loadReports() {
+  const tbody = document.getElementById('reports-tbody');
+  tbody.innerHTML = '<tr><td colspan="8" class="text-center">Loading video reports...</td></tr>';
+
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/reports`);
+    const data = await res.json();
+    state.reports = data.reports || [];
+
+    const total = state.reports.length;
+    const pending = state.reports.filter(r => (r.status || 'pending').toLowerCase() === 'pending').length;
+    const resolved = state.reports.filter(r => (r.status || '').toLowerCase() === 'resolved').length;
+
+    if (document.getElementById('stat-rep-total')) document.getElementById('stat-rep-total').innerText = total;
+    if (document.getElementById('stat-rep-pending')) document.getElementById('stat-rep-pending').innerText = pending;
+    if (document.getElementById('stat-rep-resolved')) document.getElementById('stat-rep-resolved').innerText = resolved;
+
+    if (document.getElementById('chip-rep-count-all')) document.getElementById('chip-rep-count-all').innerText = total;
+    if (document.getElementById('chip-rep-count-pending')) document.getElementById('chip-rep-count-pending').innerText = pending;
+    if (document.getElementById('chip-rep-count-resolved')) document.getElementById('chip-rep-count-resolved').innerText = resolved;
+
+    if (document.getElementById('badge-reports-count')) document.getElementById('badge-reports-count').innerText = pending;
+    if (document.getElementById('stat-reports')) document.getElementById('stat-reports').innerText = pending;
+
+    filterReportsTable();
+  } catch (err) {
+    tbody.innerHTML = '<tr><td colspan="8" class="text-center error-text">Failed to load reports.</td></tr>';
+  }
+}
+
+function setReportsFilter(type) {
+  reportsFilter = type;
+  document.querySelectorAll('#tab-reports .btn-filter-chip').forEach(btn => btn.classList.remove('active'));
+  const activeBtn = document.getElementById(`chip-rep-${type}`);
+  if (activeBtn) activeBtn.classList.add('active');
+  filterReportsTable();
+}
+
+function filterReportsTable() {
+  const query = (document.getElementById('reports-search-input')?.value || '').trim().toLowerCase();
+  const filtered = (state.reports || []).filter(r => {
+    // Status filter
+    const status = (r.status || 'pending').toLowerCase();
+    if (reportsFilter === 'pending' && status !== 'pending') return false;
+    if (reportsFilter === 'resolved' && status !== 'resolved') return false;
+
+    // Search query
+    if (!query) return true;
+    return (r.mediaTitle && r.mediaTitle.toLowerCase().includes(query)) ||
+      (r.reason && r.reason.toLowerCase().includes(query)) ||
+      (r.details && r.details.toLowerCase().includes(query)) ||
+      (r.userName && r.userName.toLowerCase().includes(query)) ||
+      (r.userEmail && r.userEmail.toLowerCase().includes(query)) ||
+      (r.ip && r.ip.toLowerCase().includes(query));
+  });
+
+  renderReportsTable(filtered);
+}
+
+function getReasonBadgeClass(reason) {
+  const r = (reason || '').toLowerCase();
+  if (r.includes('play') || r.includes('black') || r.includes('error')) return 'not-playing';
+  if (r.includes('audio') || r.includes('sound') || r.includes('sync')) return 'audio-sync';
+  if (r.includes('sub') || r.includes('bangla')) return 'sub-missing';
+  if (r.includes('buffer') || r.includes('stuck') || r.includes('slow')) return 'buffering';
+  return 'not-playing';
+}
+
+function renderReportsTable(reportsList) {
+  const tbody = document.getElementById('reports-tbody');
+  if (!reportsList || reportsList.length === 0) {
+    const emptyMsg = reportsFilter === 'pending'
+      ? '🎉 No pending video issue reports! All streams are working smoothly.'
+      : 'No video reports matching this filter.';
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center" style="padding: 36px; color: #64748b;">${emptyMsg}</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = reportsList.map(r => {
+    const isPending = (r.status || 'pending').toLowerCase() === 'pending';
+    const reasonClass = getReasonBadgeClass(r.reason);
+    const seasonEp = (r.season > 0 || r.episode > 0) ? `S${r.season || 1} : E${r.episode || 1}` : 'Single Movie';
+    const cleanIp = (r.ip || '').replace('::ffff:', '');
+
+    return `
+      <tr>
+        <td>
+          <div style="font-weight: 700; color: #f8fafc; font-size: 13.5px;">${escapeHtml(r.mediaTitle || 'Unknown Video')}</div>
+          <div class="table-meta-sub" style="font-size: 11px; color: #64748b;">ID: ${escapeHtml(r.mediaId || '')}</div>
+        </td>
+        <td>
+          <span class="badge-tag" style="background: rgba(255,255,255,0.06); color: #e2e8f0; font-weight: 600;">
+            ${seasonEp}
+          </span>
+          ${r.audioTrack ? `<div class="table-meta-sub" style="font-size: 10.5px; margin-top: 3px;">Audio: ${escapeHtml(r.audioTrack)}</div>` : ''}
+        </td>
+        <td>
+          <span class="report-reason-badge ${reasonClass}">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            ${escapeHtml(r.reason || 'Playback Issue')}
+          </span>
+        </td>
+        <td>
+          ${r.details ? `<div class="report-user-quote">${escapeHtml(r.details)}</div>` : '<span style="color: #64748b; font-size: 12px; font-style: italic;">No extra details provided</span>'}
+        </td>
+        <td>
+          <div style="font-size: 12.5px; font-weight: 600; color: #e2e8f0;">${escapeHtml(r.userName || 'Viewer')}</div>
+          <div class="table-meta-sub" style="font-size: 11px; color: #94a3b8;">${escapeHtml(r.userEmail || cleanIp || 'Mobile App')}</div>
+        </td>
+        <td>
+          <div style="font-size: 12.5px; color: #f1f5f9;">${formatTimeAgo(r.createdAt)}</div>
+          <div class="table-meta-sub" style="font-size: 10.5px;">${formatDate(r.createdAt)}</div>
+        </td>
+        <td>
+          ${isPending
+            ? '<span class="badge-tag" style="background: rgba(239, 68, 68, 0.18); color: #f87171; font-weight: 700; border: 1px solid rgba(239, 68, 68, 0.4);"><i class="fa-solid fa-clock"></i> Pending</span>'
+            : '<span class="badge-tag" style="background: rgba(16, 185, 129, 0.18); color: #34d399; font-weight: 700; border: 1px solid rgba(16, 185, 129, 0.4);"><i class="fa-solid fa-check-double"></i> Resolved</span>'}
+        </td>
+        <td style="text-align: right;">
+          <div style="display: flex; gap: 6px; justify-content: flex-end;">
+            ${isPending ? `
+              <button class="btn-action-icon resolve" onclick="resolveReport('${r.id || r._id}')" title="Mark Resolved">
+                <i class="fa-solid fa-check"></i>
+              </button>
+            ` : ''}
+            ${r.streamUrl ? `
+              <button class="btn-action-icon test" onclick="window.open('${escapeHtml(r.streamUrl)}', '_blank')" title="Test Stream URL">
+                <i class="fa-solid fa-play"></i>
+              </button>
+            ` : ''}
+            <button class="btn-action-icon delete" onclick="deleteReport('${r.id || r._id}')" title="Delete Report">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+async function resolveReport(reportId) {
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/reports/${reportId}/resolve`, {
+      method: 'POST'
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Report marked as resolved!');
+      loadReports();
+      loadDashboardData();
+    }
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+async function deleteReport(reportId) {
+  if (!confirm('Are you sure you want to permanently delete this report?')) return;
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/reports/${reportId}`, {
+      method: 'DELETE'
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Report deleted.');
+      loadReports();
+      loadDashboardData();
+    }
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+function copyToClipboard(text) {
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Copied to clipboard: ' + text);
+  }).catch(() => {
+    prompt('Copy value:', text);
+  });
 }
 
 // ============================================================
@@ -3167,7 +3392,7 @@ async function handleImportSubmit(e) {
 }
 
 // ============================================================
-// v3.2.5 APP CONTROL & REMOTE CONFIG
+// v3.1.8 APP CONTROL & REMOTE CONFIG
 // ============================================================
 
 async function loadAppSettings() {
@@ -3176,9 +3401,9 @@ async function loadAppSettings() {
     const data = await res.json();
     const update = data.appUpdate || {};
 
-    document.getElementById('cfg-version-name').value = update.latestVersion || 'v3.2.5';
-    document.getElementById('cfg-version-code').value = update.latestVersionCode || 13;
-    document.getElementById('cfg-download-url').value = update.downloadUrl || 'https://fobs-apk-download.vercel.app/FOBS%20TV%20v3.2.5.apk';
+    document.getElementById('cfg-version-name').value = update.latestVersion || update.latestVersionName || 'v3.1.8';
+    document.getElementById('cfg-version-code').value = update.latestVersionCode || 16;
+    document.getElementById('cfg-download-url').value = update.downloadUrl || 'https://fobstv.duckdns.org/download/apk';
     document.getElementById('cfg-release-notes').value = Array.isArray(update.releaseNotes) ? update.releaseNotes.join('\n') : (update.releaseNotes || '');
     document.getElementById('cfg-force-update').checked = !!update.forceUpdate;
     document.getElementById('cfg-update-enabled').checked = update.enabled !== false;
@@ -3192,8 +3417,8 @@ async function saveAppSettings(e) {
   const payload = {
     appUpdate: {
       latestVersion: document.getElementById('cfg-version-name').value.trim(),
-      latestVersionCode: parseInt(document.getElementById('cfg-version-code').value.trim(), 10) || 13,
-      minVersionCode: parseInt(document.getElementById('cfg-version-code').value.trim(), 10) || 13,
+      latestVersionCode: parseInt(document.getElementById('cfg-version-code').value.trim(), 10) || 16,
+      minVersionCode: parseInt(document.getElementById('cfg-version-code').value.trim(), 10) || 16,
       downloadUrl: document.getElementById('cfg-download-url').value.trim(),
       releaseNotes: document.getElementById('cfg-release-notes').value.trim(),
       forceUpdate: document.getElementById('cfg-force-update').checked,
@@ -3209,7 +3434,7 @@ async function saveAppSettings(e) {
     });
     const data = await res.json();
     if (data.success) {
-      showToast('v3.2.5 App Remote Configuration saved successfully!');
+      showToast('v3.1.8 App Remote Configuration saved successfully!');
     }
   } catch (err) {
     showToast(err.message, 'error');
