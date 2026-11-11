@@ -2911,5 +2911,181 @@
     }
   };
 
-  console.log('✅ FOBS TV Live Patch v1.4.2 active: Clean v3.1.8 Update Modal, Video Reports & MovieBox Engine.');
+  // -------------------------------------------------------------
+  // Live Patch v1.4.9: Universal Local .SRT / .VTT Upload & Auto-Encoding
+  // -------------------------------------------------------------
+  function patchLocalSrtUpload() {
+    function decodeSubtitleBuffer(buffer) {
+      if (!buffer) return '';
+      const bytes = new Uint8Array(buffer);
+      if (bytes.length >= 2 && bytes[0] === 0xFF && bytes[1] === 0xFE) {
+        try { return new TextDecoder('utf-16le').decode(buffer); } catch (e) {}
+      }
+      if (bytes.length >= 2 && bytes[0] === 0xFE && bytes[1] === 0xFF) {
+        try { return new TextDecoder('utf-16be').decode(buffer); } catch (e) {}
+      }
+      if (bytes.length >= 3 && bytes[0] === 0xEF && bytes[1] === 0xBB && bytes[2] === 0xBF) {
+        try { return new TextDecoder('utf-8').decode(buffer.slice(3)); } catch (e) {}
+      }
+      let zeroCount = 0;
+      for (let i = 1; i < Math.min(bytes.length, 100); i += 2) {
+        if (bytes[i] === 0x00) zeroCount++;
+      }
+      if (zeroCount > 10) {
+        try { return new TextDecoder('utf-16le').decode(buffer); } catch (e) {}
+      }
+      try {
+        return new TextDecoder('utf-8', { fatal: true }).decode(buffer);
+      } catch (_) {
+        try {
+          return new TextDecoder('windows-1252').decode(buffer);
+        } catch (__) {
+          return new TextDecoder().decode(buffer);
+        }
+      }
+    }
+
+    function parseSubtitleTextToCues(rawText) {
+      if (!rawText) return [];
+      rawText = rawText.replace(/^\uFEFF/, '').trim();
+      const cues = [];
+      const lines = rawText.replace(/\r\n|\r/g, '\n').split('\n');
+      let i = 0;
+
+      function parseTimestamp(str) {
+        const m = (str || '').match(/(?:(\d{1,2}):)?(\d{1,2}):(\d{2})[,\.](\d{1,3})/);
+        if (!m) return null;
+        const h = m[1] ? parseInt(m[1], 10) : 0;
+        const min = parseInt(m[2], 10);
+        const sec = parseInt(m[3], 10);
+        const ms = parseInt((m[4] + '00').slice(0, 3), 10);
+        return h * 3600 + min * 60 + sec + ms / 1000;
+      }
+
+      while (i < lines.length) {
+        const line = lines[i].trim();
+        if (line.includes('-->')) {
+          const parts = line.split('-->');
+          const startTime = parseTimestamp(parts[0]);
+          const endTime = parseTimestamp(parts[1]);
+
+          i++;
+          let textLines = [];
+          while (i < lines.length && lines[i].trim() !== '' && !lines[i].includes('-->')) {
+            textLines.push(lines[i].trim());
+            i++;
+          }
+
+          if (textLines.length > 1 && /^\d+$/.test(textLines[textLines.length - 1])) {
+            textLines.pop();
+          }
+
+          const text = textLines.join('\n')
+            .replace(/<[^>]+>/g, '')
+            .replace(/\{[^\}]+\}/g, '')
+            .replace(/&rlm;|&lrm;|&nbsp;/gi, ' ')
+            .trim();
+
+          if (text && startTime !== null && endTime !== null && endTime > startTime) {
+            cues.push({ startTime, endTime, text });
+          }
+          continue;
+        }
+        i++;
+      }
+      return cues;
+    }
+
+    window.triggerManualSrtUpload = function() {
+      let input = document.getElementById('customSrtFileInput');
+      if (!input) {
+        input = document.createElement('input');
+        input.type = 'file';
+        input.id = 'customSrtFileInput';
+        input.style.display = 'none';
+        input.onchange = window.handleManualSrtUpload;
+        document.body.appendChild(input);
+      }
+      input.setAttribute('accept', '*/*');
+      input.value = '';
+      input.click();
+    };
+
+    window.handleManualSrtUpload = function(event) {
+      const file = event.target?.files && event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const buffer = e.target.result;
+          const rawText = decodeSubtitleBuffer(buffer);
+          const cues = parseSubtitleTextToCues(rawText);
+
+          if (!cues || cues.length === 0) {
+            if (typeof showToast === 'function') {
+              showToast('⚠️ No valid timestamps found in this file. Please ensure it is a valid .srt or .vtt file.');
+            }
+            return;
+          }
+
+          const baseName = file.name.replace(/\.[^/.]+$/, '').trim();
+          const cleanName = baseName.length > 22 ? baseName.slice(0, 20) + '...' : baseName;
+
+          const customTrack = {
+            id: 'custom_srt_' + Date.now(),
+            language: cleanName,
+            langCode: 'custom',
+            source: 'Local File (.srt)',
+            rawCues: cues,
+            isCustom: true
+          };
+
+          if (typeof subtitleState !== 'undefined') {
+            subtitleState.availableTracks = [
+              customTrack,
+              ...(subtitleState.availableTracks || []).filter(t => !t.isCustom)
+            ];
+          }
+
+          if (typeof selectSubtitleTrack === 'function') {
+            selectSubtitleTrack(customTrack.id);
+          }
+
+          if (typeof showToast === 'function') {
+            showToast(`✅ Subtitle Active: "${cleanName}" (${cues.length} lines)`);
+          }
+        } catch (err) {
+          console.error('Manual SRT read error:', err);
+          if (typeof showToast === 'function') {
+            showToast('⚠️ Failed to parse subtitle file. Please try another .srt file.');
+          }
+        }
+      };
+
+      reader.onerror = function() {
+        if (typeof showToast === 'function') {
+          showToast('⚠️ Error reading selected file from device storage.');
+        }
+      };
+
+      reader.readAsArrayBuffer(file);
+    };
+
+    // Ensure existing input on DOM has accept="*/*"
+    const existingInput = document.getElementById('customSrtFileInput');
+    if (existingInput) {
+      existingInput.setAttribute('accept', '*/*');
+      existingInput.onchange = window.handleManualSrtUpload;
+    }
+  }
+
+  try {
+    patchLocalSrtUpload();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', patchLocalSrtUpload);
+    }
+  } catch (e) {}
+
+  console.log('✅ FOBS TV Live Patch v1.4.9 active: Clean v3.1.8 Update Modal, Video Reports, MovieBox Engine & Universal Local SRT Upload.');
 })();

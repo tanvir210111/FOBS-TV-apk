@@ -5502,45 +5502,90 @@ function saveSubtitleSettings() {
   } catch (e) {}
 }
 
+// Universal Subtitle Buffer Decoder (UTF-8, UTF-8 BOM, UTF-16 LE, UTF-16 BE, Windows-1252)
+function decodeSubtitleBuffer(buffer) {
+  if (!buffer) return '';
+  const bytes = new Uint8Array(buffer);
+  // 1. UTF-16 LE BOM (FF FE)
+  if (bytes.length >= 2 && bytes[0] === 0xFF && bytes[1] === 0xFE) {
+    try { return new TextDecoder('utf-16le').decode(buffer); } catch (e) {}
+  }
+  // 2. UTF-16 BE BOM (FE FF)
+  if (bytes.length >= 2 && bytes[0] === 0xFE && bytes[1] === 0xFF) {
+    try { return new TextDecoder('utf-16be').decode(buffer); } catch (e) {}
+  }
+  // 3. UTF-8 BOM (EF BB BF)
+  if (bytes.length >= 3 && bytes[0] === 0xEF && bytes[1] === 0xBB && bytes[2] === 0xBF) {
+    try { return new TextDecoder('utf-8').decode(buffer.slice(3)); } catch (e) {}
+  }
+  // 4. Check for UTF-16 LE without BOM (abundant null bytes in odd positions)
+  let zeroCount = 0;
+  for (let i = 1; i < Math.min(bytes.length, 100); i += 2) {
+    if (bytes[i] === 0x00) zeroCount++;
+  }
+  if (zeroCount > 10) {
+    try { return new TextDecoder('utf-16le').decode(buffer); } catch (e) {}
+  }
+  // 5. Standard UTF-8
+  try {
+    return new TextDecoder('utf-8', { fatal: true }).decode(buffer);
+  } catch (_) {
+    // 6. Fallback to Windows-1252 / ISO-8859-1
+    try {
+      return new TextDecoder('windows-1252').decode(buffer);
+    } catch (__) {
+      return new TextDecoder().decode(buffer);
+    }
+  }
+}
+
 // Client-side SRT and WebVTT Parser
 function parseSubtitleTextToCues(rawText) {
   if (!rawText) return [];
+  rawText = rawText.replace(/^\uFEFF/, '').trim();
   const cues = [];
   const lines = rawText.replace(/\r\n|\r/g, '\n').split('\n');
   let i = 0;
 
-  const parseTime = (timeStr) => {
-    const parts = (timeStr || '').trim().split(':');
-    if (parts.length === 3) {
-      const [h, m, s] = parts;
-      return parseFloat(h) * 3600 + parseFloat(m) * 60 + parseFloat(s.replace(',', '.'));
-    } else if (parts.length === 2) {
-      const [m, s] = parts;
-      return parseFloat(m) * 60 + parseFloat(s.replace(',', '.'));
-    }
-    return 0;
-  };
+  function parseTimestamp(str) {
+    const m = (str || '').match(/(?:(\d{1,2}):)?(\d{1,2}):(\d{2})[,\.](\d{1,3})/);
+    if (!m) return null;
+    const h = m[1] ? parseInt(m[1], 10) : 0;
+    const min = parseInt(m[2], 10);
+    const sec = parseInt(m[3], 10);
+    const ms = parseInt((m[4] + '00').slice(0, 3), 10);
+    return h * 3600 + min * 60 + sec + ms / 1000;
+  }
 
   while (i < lines.length) {
     const line = lines[i].trim();
     if (line.includes('-->')) {
-      const [startStr, endStr] = line.split('-->');
-      const startTime = parseTime(startStr);
-      const endTime = parseTime(endStr);
+      const parts = line.split('-->');
+      const startTime = parseTimestamp(parts[0]);
+      const endTime = parseTimestamp(parts[1]);
+
       i++;
       let textLines = [];
-      while (i < lines.length && lines[i].trim() !== '') {
+      while (i < lines.length && lines[i].trim() !== '' && !lines[i].includes('-->')) {
         textLines.push(lines[i].trim());
         i++;
       }
+
+      // If last line is a pure index number for next cue, pop it
+      if (textLines.length > 1 && /^\d+$/.test(textLines[textLines.length - 1])) {
+        textLines.pop();
+      }
+
       const text = textLines.join('\n')
-        .replace(/<[^>]+>/g, '')
-        .replace(/\{[^\}]+\}/g, '')
+        .replace(/<[^>]+>/g, '') // remove HTML tags
+        .replace(/\{[^\}]+\}/g, '') // remove ASS tags
         .replace(/&rlm;|&lrm;|&nbsp;/gi, ' ')
         .trim();
-      if (text) {
+
+      if (text && startTime !== null && endTime !== null && endTime > startTime) {
         cues.push({ startTime, endTime, text });
       }
+      continue;
     }
     i++;
   }
@@ -5549,11 +5594,19 @@ function parseSubtitleTextToCues(rawText) {
 
 // Manual .SRT / .VTT Local File Upload Handler
 function triggerManualSrtUpload() {
-  const input = document.getElementById('customSrtFileInput');
-  if (input) {
-    input.value = ''; // Reset so the user can re-upload or select same file
-    input.click();
+  let input = document.getElementById('customSrtFileInput');
+  if (!input) {
+    input = document.createElement('input');
+    input.type = 'file';
+    input.id = 'customSrtFileInput';
+    input.style.display = 'none';
+    input.onchange = handleManualSrtUpload;
+    document.body.appendChild(input);
   }
+  // Crucial: accept="*/*" allows Android system file picker to select .srt files without greying out!
+  input.setAttribute('accept', '*/*');
+  input.value = ''; // Reset so the user can re-upload or select same file
+  input.click();
 }
 window.triggerManualSrtUpload = triggerManualSrtUpload;
 
@@ -5564,7 +5617,8 @@ function handleManualSrtUpload(event) {
   const reader = new FileReader();
   reader.onload = function(e) {
     try {
-      const rawText = e.target.result;
+      const buffer = e.target.result;
+      const rawText = decodeSubtitleBuffer(buffer);
       const cues = parseSubtitleTextToCues(rawText);
 
       if (!cues || cues.length === 0) {
@@ -5605,7 +5659,8 @@ function handleManualSrtUpload(event) {
     showToast('⚠️ Error reading selected file from device storage.');
   };
 
-  reader.readAsText(file, 'utf-8');
+  // Read as ArrayBuffer for multi-encoding auto-detection (UTF-8, UTF-16 LE, ANSI)
+  reader.readAsArrayBuffer(file);
 }
 window.handleManualSrtUpload = handleManualSrtUpload;
 
