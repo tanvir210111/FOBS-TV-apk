@@ -1,4 +1,4 @@
-// FOBS TV Live OTA Patch Bundle v1.5.0 (Universal Anti-Blackout, Hardware Compositor Keep-Alive & Local SRT Upload)
+// FOBS TV Live OTA Patch Bundle v1.5.1 (Universal Anti-Blackout, Hardware Compositor Keep-Alive, Poster Performance & Catalog Sync)
 // 1. Video Anti-Blackout Keep-Alive: Eliminates Android WebView video freeze/blackout when controls auto-hide during playback
 // 2. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
 // 3. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
@@ -7,9 +7,10 @@
 // 6. Smooth Online Playback: Connecting overlay smoothly dissolves only when video is actively playing (no frozen 1-2s icon)
 // 7. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
 // 8. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
+// 9. Catalog Sync & Poster Acceleration: Auto-invalidates stale content cache and enables prioritized high-speed poster loading
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.5.0 (Universal Anti-Blackout & Keep-Alive) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.5.0';
+  console.log('⚡ FOBS TV Live Patch v1.5.1 (Anti-Blackout & Catalog Sync) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.5.1';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -3199,5 +3200,18 @@
     setInterval(patchVideoAntiBlackout, 2000);
   } catch (e) {}
 
-  console.log('✅ FOBS TV Live Patch v1.5.0 active: Universal Anti-Blackout Video Engine, Local SRT Upload & Performance Fixes.');
+  // Auto-invalidate stale content cache so newly added items show up instantly at the top of Latest
+  try {
+    const staleKey = 'fobs_tv_content_cache_v80';
+    if (localStorage.getItem(staleKey)) {
+      localStorage.removeItem(staleKey);
+      localStorage.removeItem('fobs_tv_last_sync_time');
+      console.log('⚡ Invalidated stale catalog cache v80 via OTA patch v1.5.1');
+      if (typeof window.syncContentWithBackend === 'function') {
+        window.syncContentWithBackend({ force: true });
+      }
+    }
+  } catch (e) {}
+
+  console.log('✅ FOBS TV Live Patch v1.5.1 active: Universal Anti-Blackout Video Engine, Catalog Sync & Poster Acceleration.');
 })();

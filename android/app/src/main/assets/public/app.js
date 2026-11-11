@@ -360,7 +360,7 @@ window.getApiBaseUrl = function() {
   return BACKEND_URL;
 };
 
-const CACHE_KEY = 'fobs_tv_content_cache_v80';
+const CACHE_KEY = 'fobs_tv_content_cache_v81';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 60 * 1000; // 1 minute TTL
 let isSyncing = false;
@@ -2172,7 +2172,7 @@ function renderHomeFeeds() {
     return `
       <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
         <div class="card-poster-wrap">
-          <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" loading="lazy">
+          <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" ${idx < 6 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
           <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
           ${getCardBadgeRightHtml(item, isSeries ? 'Series' : 'Movie')}
           ${idx < 3 ? `<div class="card-rank-number">${idx + 1}</div>` : ''}
@@ -2190,12 +2190,12 @@ function renderHomeFeeds() {
   const latestContainer = document.getElementById('latestList');
   if (latestContainer) {
     const latestItems = getRecentlyAddedItems(36);
-    latestContainer.innerHTML = latestItems.map(item => {
+    latestContainer.innerHTML = latestItems.map((item, idx) => {
       const isSeries = !!item.episodes || item.type === 'series' || item._mediaType === 'series';
       return `
         <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
           <div class="card-poster-wrap">
-            <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" loading="lazy">
+            <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" ${idx < 6 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
             <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
             ${getCardBadgeRightHtml(item, isSeries ? 'Series' : 'Movie')}
             <div class="card-play-hover">
@@ -3361,14 +3361,19 @@ function getActiveEpisodeStream(ep, audioTrack) {
   const epNum = isMovie ? 0 : (ep?.episode ?? ep?.episodeNumber ?? parseInt(ep?.number, 10) ?? 1);
   const seNum = isMovie ? 0 : (ep?.season ?? appState.currentSeason ?? 1);
 
-  // Always enforce default 480p SD for instant bufferless playback
-  appState.currentQuality = '480p';
+  // Preserve user-selected quality if explicit, otherwise default to 480p SD
+  const targetQ = appState.userExplicitQuality
+    ? (parseInt(appState.selectedQuality || appState.currentQuality, 10) || 720)
+    : 480;
+  if (!appState.userExplicitQuality) {
+    appState.currentQuality = '480p';
+  }
 
   // 1. High Priority: MovieBox subject stream URL respecting active media's subject ID
   const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (m?.id && /^\d{16,20}$/.test(m.id) ? m.id : null) || m?.id;
   const dPath = m?.detailPath || m?.mbDetailPath || m?.movieboxDetailPath || '';
   if (sId) {
-    return `/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480`;
+    return `/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=${targetQ}`;
   }
 
   // 2. Check ep.streamUrl or ep.servers for an existing /api/moviebox/stream
@@ -3381,8 +3386,8 @@ function getActiveEpisodeStream(ep, audioTrack) {
 
   const mbUrl = allUrls.find(u => typeof u === 'string' && u.includes('/api/moviebox/stream'));
   if (mbUrl) {
-    let clean = mbUrl.replace(/([?&])q=\d+/g, '$1q=480');
-    if (!clean.includes('q=')) clean += (clean.includes('?') ? '&' : '?') + 'q=480';
+    let clean = mbUrl.replace(/([?&])q=\d+/g, `$1q=${targetQ}`);
+    if (!clean.includes('q=')) clean += (clean.includes('?') ? '&' : '?') + `q=${targetQ}`;
     return clean;
   }
 
@@ -4236,6 +4241,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     videoPlayer.muted = false;
     if (videoPlayer.src !== fullUrl) {
       videoPlayer.src = fullUrl;
+      try { videoPlayer.load(); } catch (e) {}
     }
     const safeTriggerPlay = () => {
       const p = videoPlayer.play();
@@ -4278,9 +4284,6 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
       videoPlayer.addEventListener('canplay', applySeek, { once: true });
       videoPlayer.addEventListener('playing', applySeek, { once: true });
-      if (videoPlayer.readyState >= 1) {
-        applySeek();
-      }
     }
 
     // Asynchronously discover qualities in background without competing with initial video buffer
@@ -4319,6 +4322,7 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     videoPlayer.preload = 'auto';
     if (videoPlayer.src !== proxyStreamUrl) {
       videoPlayer.src = proxyStreamUrl;
+      try { videoPlayer.load(); } catch (e) {}
     }
     videoPlayer.play().catch(() => {});
 
@@ -4367,9 +4371,6 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
       videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
       videoPlayer.addEventListener('canplay', applySeek, { once: true });
       videoPlayer.addEventListener('playing', applySeek, { once: true });
-      if (videoPlayer.readyState >= 1) {
-        applySeek();
-      }
     }
     videoPlayer.play().catch(() => {});
     return;
@@ -10966,8 +10967,9 @@ function openQualitySheet() {
     const buttons = container.querySelectorAll('.sheet-option-btn');
     buttons.forEach(btn => {
       const qVal = parseInt(btn.getAttribute('data-q') || '', 10);
-      if (availResSet.size > 0) {
-        btn.style.display = availResSet.has(qVal) ? 'flex' : 'none';
+      if (availResSet.size > 0 && qVal > 0) {
+        const isAvail = availResSet.has(qVal) || (qVal === 480 && availResSet.has(360));
+        btn.style.display = isAvail ? 'flex' : 'none';
       } else {
         btn.style.display = 'flex';
       }
@@ -11042,9 +11044,13 @@ function selectVideoQuality(quality, isAuto = false) {
 
   // 1. Instant Quality Switch: Use already discovered CDN resolution from memory (0ms delay!)
   if (Array.isArray(appState.availableQualities) && appState.availableQualities.length > 0) {
-    const matched = appState.availableQualities.find(q => parseInt(q.resolution, 10) === targetResNum);
-    if (matched && (matched.proxyUrl || matched.url)) {
-      targetStreamUrl = matched.proxyUrl || matched.url;
+    let matched = appState.availableQualities.find(q => parseInt(q.resolution, 10) === targetResNum);
+    if (!matched && targetResNum >= 720) {
+      // If requested HD (720/1080), prefer any available HD quality
+      matched = appState.availableQualities.find(q => parseInt(q.resolution, 10) >= 720);
+    }
+    if (matched && (matched.url || matched.proxyUrl || matched.directUrl)) {
+      targetStreamUrl = matched.url || matched.proxyUrl || matched.directUrl;
     }
   }
 

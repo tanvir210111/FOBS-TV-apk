@@ -360,7 +360,7 @@ window.getApiBaseUrl = function() {
   return BACKEND_URL;
 };
 
-const CACHE_KEY = 'fobs_tv_content_cache_v80';
+const CACHE_KEY = 'fobs_tv_content_cache_v81';
 const SYNC_KEY = 'fobs_tv_last_sync_time';
 const CACHE_TTL_MS = 60 * 1000; // 1 minute TTL
 let isSyncing = false;
@@ -2172,7 +2172,7 @@ function renderHomeFeeds() {
     return `
       <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
         <div class="card-poster-wrap">
-          <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" loading="lazy">
+          <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" ${idx < 6 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
           <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
           ${getCardBadgeRightHtml(item, isSeries ? 'Series' : 'Movie')}
           ${idx < 3 ? `<div class="card-rank-number">${idx + 1}</div>` : ''}
@@ -2190,12 +2190,12 @@ function renderHomeFeeds() {
   const latestContainer = document.getElementById('latestList');
   if (latestContainer) {
     const latestItems = getRecentlyAddedItems(36);
-    latestContainer.innerHTML = latestItems.map(item => {
+    latestContainer.innerHTML = latestItems.map((item, idx) => {
       const isSeries = !!item.episodes || item.type === 'series' || item._mediaType === 'series';
       return `
         <div class="media-card" onclick='openPlayerById("${isSeries ? 'series' : 'movie'}", "${item.id}")'>
           <div class="card-poster-wrap">
-            <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" loading="lazy">
+            <img src="${getOptimizedPoster(item.poster)}" alt="${item.title}" class="card-poster-img" ${idx < 6 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
             <span class="card-badge-left">${getCardBadgeLeft(item)}</span>
             ${getCardBadgeRightHtml(item, isSeries ? 'Series' : 'Movie')}
             <div class="card-play-hover">
