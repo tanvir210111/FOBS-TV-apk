@@ -3087,5 +3087,115 @@
     }
   } catch (e) {}
 
-  console.log('✅ FOBS TV Live Patch v1.4.9 active: Clean v3.1.8 Update Modal, Video Reports, MovieBox Engine & Universal Local SRT Upload.');
+  // -------------------------------------------------------------
+  // Live Patch v1.5.0: Video Surface Anti-Blackout Compositor Engine
+  // Eliminates Android WebView video freeze/blackout when controls auto-hide
+  // -------------------------------------------------------------
+  function patchVideoAntiBlackout() {
+    try {
+      if (!document.getElementById('fobs-anti-blackout-style')) {
+        const style = document.createElement('style');
+        style.id = 'fobs-anti-blackout-style';
+        style.textContent = `
+          .video-container {
+            transform: translateZ(0) !important;
+            -webkit-transform: translateZ(0) !important;
+            backface-visibility: hidden !important;
+            -webkit-backface-visibility: hidden !important;
+          }
+          .video-container video, #mainVideoPlayer {
+            background-color: transparent !important;
+            transform: translateZ(0) !important;
+            -webkit-transform: translateZ(0) !important;
+            will-change: transform !important;
+            backface-visibility: hidden !important;
+            -webkit-backface-visibility: hidden !important;
+          }
+          .ls-player-ui {
+            background: transparent !important;
+          }
+        `;
+        (document.head || document.documentElement).appendChild(style);
+      }
+
+      const video = document.getElementById('mainVideoPlayer');
+      if (video && !video._antiBlackoutPatchActive) {
+        video._antiBlackoutPatchActive = true;
+        video.style.backgroundColor = 'transparent';
+
+        let rafId = null;
+        let frameCounter = 0;
+
+        const tick = () => {
+          if (!video.paused && !video.ended) {
+            frameCounter++;
+            if (frameCounter % 4 === 0) {
+              const toggle = (frameCounter % 8 === 0);
+              video.style.transform = toggle ? 'translateZ(0px)' : 'translate3d(0px, 0px, 0px)';
+            }
+            rafId = requestAnimationFrame(tick);
+          } else {
+            rafId = null;
+          }
+        };
+
+        const start = () => {
+          video.style.backgroundColor = 'transparent';
+          if (!rafId) rafId = requestAnimationFrame(tick);
+        };
+
+        const stop = () => {
+          if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+          }
+        };
+
+        video.addEventListener('play', start);
+        video.addEventListener('playing', start);
+        video.addEventListener('pause', stop);
+        video.addEventListener('ended', stop);
+        video.addEventListener('timeupdate', () => {
+          if (!video.paused && !rafId) start();
+        });
+
+        if ('requestVideoFrameCallback' in HTMLVideoElement.prototype) {
+          const onFrame = () => {
+            if (!video.paused && !video.ended) {
+              if (video.style.backgroundColor !== 'transparent') {
+                video.style.backgroundColor = 'transparent';
+              }
+              video.requestVideoFrameCallback(onFrame);
+            }
+          };
+          video.addEventListener('playing', () => video.requestVideoFrameCallback(onFrame));
+        }
+
+        const obs = new MutationObserver(() => {
+          if (!video.paused && video.readyState >= 2) {
+            video.style.transform = 'translateZ(0px)';
+          }
+        });
+        const lsUi = document.getElementById('landscapePlayerUI');
+        if (lsUi) obs.observe(lsUi, { attributes: true, attributeFilter: ['class'] });
+        const topHeader = document.getElementById('playerTopHeader');
+        if (topHeader) obs.observe(topHeader, { attributes: true, attributeFilter: ['class'] });
+        const ptBottom = document.getElementById('portraitBottomBar');
+        if (ptBottom) obs.observe(ptBottom, { attributes: true, attributeFilter: ['class'] });
+
+        if (!video.paused) start();
+      }
+    } catch (e) {}
+  }
+
+  try {
+    patchVideoAntiBlackout();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', patchVideoAntiBlackout);
+    }
+    // Also periodically verify video surface binding
+    setInterval(patchVideoAntiBlackout, 2000);
+  } catch (e) {}
+
+  console.log('✅ FOBS TV Live Patch v1.5.0 active: Universal Anti-Blackout Video Engine, Local SRT Upload & Performance Fixes.');
 })();

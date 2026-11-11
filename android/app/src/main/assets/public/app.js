@@ -7477,6 +7477,93 @@ function setupPlayerGestures() {
   });
 }
 
+// =============================================================
+// Android WebView Video Anti-Blackout Keep-Alive Engine
+// Prevents Android hardware compositor from freezing or blacking out
+// video frames when player controls auto-hide during playback
+// =============================================================
+function initVideoSurfaceAntiBlackout() {
+  const video = document.getElementById('mainVideoPlayer');
+  if (!video) return;
+
+  if (video._antiBlackoutAttached) return;
+  video._antiBlackoutAttached = true;
+
+  video.style.backgroundColor = 'transparent';
+
+  let rafId = null;
+  let frameCounter = 0;
+
+  const keepAliveTick = () => {
+    if (!video.paused && !video.ended) {
+      frameCounter++;
+      if (frameCounter % 4 === 0) {
+        const toggle = (frameCounter % 8 === 0);
+        video.style.transform = toggle ? 'translateZ(0px)' : 'translate3d(0px, 0px, 0px)';
+      }
+      rafId = requestAnimationFrame(keepAliveTick);
+    } else {
+      rafId = null;
+    }
+  };
+
+  const startLoop = () => {
+    video.style.backgroundColor = 'transparent';
+    if (!rafId) {
+      rafId = requestAnimationFrame(keepAliveTick);
+    }
+  };
+
+  const stopLoop = () => {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  };
+
+  video.addEventListener('play', startLoop);
+  video.addEventListener('playing', startLoop);
+  video.addEventListener('pause', stopLoop);
+  video.addEventListener('ended', stopLoop);
+  video.addEventListener('timeupdate', () => {
+    if (!video.paused && !rafId) {
+      startLoop();
+    }
+  });
+
+  if ('requestVideoFrameCallback' in HTMLVideoElement.prototype) {
+    const onVideoFrame = () => {
+      if (!video.paused && !video.ended) {
+        if (video.style.backgroundColor !== 'transparent') {
+          video.style.backgroundColor = 'transparent';
+        }
+        video.requestVideoFrameCallback(onVideoFrame);
+      }
+    };
+    video.addEventListener('playing', () => {
+      video.requestVideoFrameCallback(onVideoFrame);
+    });
+  }
+
+  const observer = new MutationObserver(() => {
+    if (!video.paused && video.readyState >= 2) {
+      video.style.transform = 'translateZ(0px)';
+    }
+  });
+
+  const lsUi = document.getElementById('landscapePlayerUI');
+  if (lsUi) observer.observe(lsUi, { attributes: true, attributeFilter: ['class'] });
+  const topHeader = document.getElementById('playerTopHeader');
+  if (topHeader) observer.observe(topHeader, { attributes: true, attributeFilter: ['class'] });
+  const ptBottom = document.getElementById('portraitBottomBar');
+  if (ptBottom) observer.observe(ptBottom, { attributes: true, attributeFilter: ['class'] });
+
+  if (!video.paused) {
+    startLoop();
+  }
+}
+window.initVideoSurfaceAntiBlackout = initVideoSurfaceAntiBlackout;
+
 // Setup Video Event Listeners
 function setupVideoListeners() {
   const videoPlayer = document.getElementById('mainVideoPlayer');
@@ -7484,6 +7571,9 @@ function setupVideoListeners() {
   const loader = document.getElementById('videoLoader');
   const embedFrame = document.getElementById('mainEmbedPlayer');
   if (!videoPlayer) return;
+
+  // Initialize Anti-Blackout Keep-Alive Engine
+  initVideoSurfaceAntiBlackout();
 
   // All tap events (portrait + landscape) are handled by playerTapDetector in setupPlayerGestures()
   // Do NOT add a second click listener on videoContainer — it causes double-firing.

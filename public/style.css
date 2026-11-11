@@ -1191,6 +1191,10 @@ body.is-fullscreen .player-view-overlay.open {
   justify-content: center !important;
   overflow: hidden;
   touch-action: none !important;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .video-container video {
@@ -1198,9 +1202,14 @@ body.is-fullscreen .player-view-overlay.open {
   height: 100%;
   object-fit: contain !important;
   object-position: center center !important;
-  background-color: #000 !important;
+  background-color: transparent !important;
   display: block;
   margin: auto !important;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* Eliminate Chromium / Android WebView native black play circle overlay */
@@ -2902,6 +2911,7 @@ body.is-fullscreen .player-top-header.controls-hidden,
   flex-direction: column;
   justify-content: space-between;
   pointer-events: none;
+  background: transparent !important;
 }
 
 .ls-player-ui.is-iframe-hidden,

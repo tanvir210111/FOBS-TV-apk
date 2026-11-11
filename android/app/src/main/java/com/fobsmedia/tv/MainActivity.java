@@ -838,6 +838,7 @@ public class MainActivity extends BridgeActivity {
             WebView webView = getBridge() != null ? getBridge().getWebView() : null;
             if (webView != null) {
                 webView.setBackgroundColor(Color.parseColor("#020C1C"));
+                webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
                 WebSettings settings = webView.getSettings();
                 settings.setMediaPlaybackRequiresUserGesture(false);
             }
@@ -938,6 +939,8 @@ public class MainActivity extends BridgeActivity {
             if (getBridge() == null) return;
             WebView webView = getBridge().getWebView();
             if (webView == null) return;
+
+            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
             // Maintain direct hardware compositor without offscreen buffering
             WebSettings settings = webView.getSettings();
