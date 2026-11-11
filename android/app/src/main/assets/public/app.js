@@ -2189,7 +2189,7 @@ function renderHomeFeeds() {
   // 1. Latest Movies & Series (Strictly by upload order - recently added items first)
   const latestContainer = document.getElementById('latestList');
   if (latestContainer) {
-    const latestItems = getRecentlyAddedItems(15);
+    const latestItems = getRecentlyAddedItems(36);
     latestContainer.innerHTML = latestItems.map(item => {
       const isSeries = !!item.episodes || item.type === 'series' || item._mediaType === 'series';
       return `
