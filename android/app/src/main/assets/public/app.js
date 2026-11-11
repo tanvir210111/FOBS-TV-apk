@@ -3684,9 +3684,8 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
     mainVideo._retryCount = 0;
     mainVideo.classList.remove('scale-fill', 'fit-cover');
     mainVideo.classList.add('fit-contain');
-    // Never set poster attribute on <video> element to prevent Android WebView
-    // from rendering its native stuck poster & big black play button over the player!
-    mainVideo.removeAttribute('poster');
+    // Transparent 1x1 base64 poster prevents Android WebView from ever showing its native black oval play button
+    mainVideo.setAttribute('poster', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
   }
   const fitLabel = document.getElementById('lsFitLabel');
   if (fitLabel) fitLabel.innerText = 'Fit';
@@ -5969,7 +5968,18 @@ async function selectSubtitleTrack(trackId) {
   if (loadedCues.length === 0 && targetUrl && targetUrl.startsWith('http')) {
     try {
       const directRes = await fetch(targetUrl);
-      const directText = await directRes.text();
+      const directBuffer = await directRes.arrayBuffer();
+      let directText = '';
+      const u8 = new Uint8Array(directBuffer);
+      if (u8.length >= 2 && u8[0] === 0x1f && u8[1] === 0x8b && typeof DecompressionStream !== 'undefined') {
+        const ds = new DecompressionStream('gzip');
+        const writer = ds.writable.getWriter();
+        writer.write(directBuffer);
+        writer.close();
+        directText = await new Response(ds.readable).text();
+      } else {
+        directText = new TextDecoder('utf-8').decode(directBuffer);
+      }
       loadedCues = parseSubtitleTextToCues(directText);
     } catch (directErr) {
       console.warn('Direct subtitle fetch failed:', directErr);
@@ -6001,7 +6011,15 @@ async function selectSubtitleTrack(trackId) {
     const curTime = (vp?.currentTime || 0) + (appState.streamSeekOffset || 0);
     renderActiveSubtitleCue(curTime);
   } else {
-    // If preferred track (e.g. AI Bangla) had no cues or was generating, fall back to English!
+    // If a human Bangla track failed, try the AI Auto-Translate Bangla track before falling back to English!
+    const altBnTrack = subtitleState.availableTracks.find(t => t.id !== track.id && t.langCode === 'bn');
+    if (altBnTrack && track.langCode === 'bn') {
+      console.log('Online human Bangla subtitle not available, switching to AI Bangla:', altBnTrack.id);
+      showToast('⚡ বাংলা সাবটাইটেল স্বয়ংক্রিয়ভাবে প্রস্তুত হচ্ছে...');
+      selectSubtitleTrack(altBnTrack.id);
+      return;
+    }
+    // If all Bangla tracks exhausted, fall back to English!
     const fallbackTrack = subtitleState.availableTracks.find(t => t.id !== track.id && (t.langCode === 'en' || !t.isAi));
     if (fallbackTrack && track.langCode === 'bn') {
       console.log('Bangla cues not ready yet, falling back to English track:', fallbackTrack.id);

@@ -2680,7 +2680,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.5.2",
+  version: "1.5.3",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 
@@ -3776,16 +3776,83 @@ app.get('/api/subtitles/online', async (req, res) => {
   }
 });
 
-// 3. Download, decompress and parse online subtitle into cues
+// 3. Download, decompress and parse subtitle into WebVTT text or structured cues
 app.get('/api/subtitles/download', async (req, res) => {
   try {
-    const { url } = req.query;
-    if (!url) return res.status(400).json({ success: false, error: 'URL is required' });
-    const result = await subtitleService.downloadSubtitle(url);
-    res.json({ success: true, ...result });
+    const { url, title, season, episode, lang = 'bn', subjectId, detailPath, type } = req.query;
+
+    let subVtt = '';
+    let targetUrl = url;
+
+    // If no direct url provided, resolve the best subtitle for the requested language
+    if (!targetUrl) {
+      const isBn = (lang === 'bn' || lang === 'ben' || lang === 'bangla');
+      const subList = await subtitleService.getSubtitles({
+        title,
+        season,
+        episode,
+        subjectId,
+        detailPath,
+        type
+      });
+
+      if (Array.isArray(subList) && subList.length > 0) {
+        if (isBn) {
+          // Prefer local verified -> SubSource -> AI
+          const bnSub = subList.find(s => s.langCode === 'bn' && !s.isAi)
+                     || subList.find(s => s.langCode === 'bn');
+          if (bnSub) {
+            targetUrl = bnSub.url || bnSub.downloadUrl;
+          }
+        } else {
+          // English
+          const enSub = subList.find(s => s.langCode === 'en' && !s.isAi)
+                     || subList.find(s => s.langCode === 'en');
+          if (enSub) {
+            targetUrl = enSub.url || enSub.downloadUrl;
+          }
+        }
+      }
+    }
+
+    if (targetUrl) {
+      if (targetUrl.startsWith('/api/subtitles/ai-translate') || targetUrl.includes('ai-translate')) {
+        const enSource = targetUrl.match(/[?&]url=([^&]+)/);
+        const actualEnUrl = enSource ? decodeURIComponent(enSource[1]) : '';
+        if (actualEnUrl) {
+          subVtt = await subtitleService.getOrTranslateToBangla(actualEnUrl, `ai_${title || 'sub'}_s${season || 0}_e${episode || 0}`, { subjectId, detailPath, season, episode });
+        }
+      } else {
+        const result = await subtitleService.downloadSubtitle(targetUrl);
+        if (result && result.vtt && result.vtt.trim().length > 20) {
+          subVtt = result.vtt;
+        }
+      }
+    }
+
+    // Fallback if still empty
+    if (!subVtt || subVtt.trim().length < 20) {
+      const isBn = (lang === 'bn' || lang === 'ben' || lang === 'bangla');
+      subVtt = `WEBVTT\n\n1\n00:00:01.000 --> 00:00:05.000\n[${title || 'Media'} - ${isBn ? 'বাংলা সাবটাইটেল' : 'English Subtitle'}]`;
+    }
+
+    // If client explicitly requested JSON
+    if (req.query.json === '1' || req.headers.accept?.includes('application/json')) {
+      const cues = subtitleService.parseCues(subVtt);
+      return res.json({ success: true, vtt: subVtt, cues, cuesCount: cues.length });
+    }
+
+    // Default: Return raw WebVTT with UTF-8 charset so Android NativeDownloadManager saves clean .vtt
+    res.setHeader('Content-Type', 'text/vtt; charset=utf-8');
+    res.setHeader('Content-Disposition', `inline; filename="${(title || 'subtitle').replace(/[^a-zA-Z0-9_-]/g, '_')}_${lang}.vtt"`);
+    res.send(subVtt);
   } catch (err) {
     console.warn('Subtitle download error:', err.message);
-    res.status(500).json({ success: false, error: err.message });
+    if (req.query.json === '1' || req.headers.accept?.includes('application/json')) {
+      return res.status(500).json({ success: false, error: err.message });
+    }
+    res.setHeader('Content-Type', 'text/vtt; charset=utf-8');
+    res.send(`WEBVTT\n\n1\n00:00:01.000 --> 00:00:05.000\n[${req.query.lang === 'en' ? 'Subtitle unavailable' : 'সাবটাইটেল পাওয়া যায়নি'}]`);
   }
 });
 
@@ -3796,25 +3863,24 @@ app.get('/api/subtitles/track', async (req, res) => {
     if (!url) return res.status(400).json({ error: 'URL is required' });
 
     const result = await subtitleService.downloadSubtitle(url);
-    res.json({ success: true, vtt: result.vtt, cues: result.cues });
+    const hasCues = result && Array.isArray(result.cues) && result.cues.length > 0;
+    res.json({ success: hasCues, vtt: result.vtt, cues: result.cues, error: result.error });
   } catch (err) {
     console.warn('Subtitle track fetch error:', err.message);
     res.json({ success: false, vtt: 'WEBVTT\n\n', cues: [], error: err.message });
   }
 });
 
-// 3. Fallback subtitle generator in English & Bangla for instant playback
-
 // 5. FOBS AI Subtitle Auto-Translation (Translates English subtitle to natural Bengali and caches to disk)
 app.get('/api/subtitles/ai-translate', async (req, res) => {
   try {
-    const { url, title, season, episode } = req.query;
+    const { url, title, season, episode, subjectId, detailPath } = req.query;
     if (!url) {
       res.setHeader('Content-Type', 'text/vtt; charset=utf-8');
       return res.send('WEBVTT\n\n1\n00:00:00.000 --> 00:00:05.000\nMissing subtitle URL');
     }
 
-    const vtt = await subtitleService.getOrTranslateToBangla(url, `ai_${title || 'sub'}_s${season || 0}_e${episode || 0}`);
+    const vtt = await subtitleService.getOrTranslateToBangla(url, `ai_${title || 'sub'}_s${season || 0}_e${episode || 0}`, { subjectId, detailPath, season, episode });
     res.setHeader('Content-Type', 'text/vtt; charset=utf-8');
     res.setHeader('Cache-Control', 'public, max-age=604800');
     res.send(vtt);

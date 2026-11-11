@@ -427,12 +427,29 @@ class SubtitleService {
       response = await axios.get(url, {
         responseType: 'arraybuffer',
         headers: downloadHeaders,
-        timeout: 12000
+        timeout: 12000,
+        maxRedirects: 10
       });
       rawBuffer = Buffer.from(response.data);
     } catch (dlErr) {
-      console.warn(`Subtitle download failed for ${url} (${dlErr.message})`);
-      return { ok: false, cuesCount: 0, cues: [], vtt: 'WEBVTT\n\n' };
+      // Retry with modern browser headers if TemporaryUserAgent failed or was blocked
+      try {
+        const retryHeaders = {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.9,bn;q=0.8'
+        };
+        response = await axios.get(url, {
+          responseType: 'arraybuffer',
+          headers: retryHeaders,
+          timeout: 12000,
+          maxRedirects: 10
+        });
+        rawBuffer = Buffer.from(response.data);
+      } catch (retryErr) {
+        console.warn(`Subtitle download failed for ${url} (${dlErr.message})`);
+        return { ok: false, cuesCount: 0, cues: [], vtt: 'WEBVTT\n\n', error: dlErr.message };
+      }
     }
 
     let rawText = '';
@@ -555,7 +572,7 @@ class SubtitleService {
   /**
    * Get cached Bangla subtitle or translate from English source URL
    */
-  async getOrTranslateToBangla(sourceUrl, cacheKey) {
+  async getOrTranslateToBangla(sourceUrl, cacheKey, meta = {}) {
     const subtitlesDir = path.join(__dirname, '..', 'data', 'subtitles');
     if (!fs.existsSync(subtitlesDir)) fs.mkdirSync(subtitlesDir, { recursive: true });
 
@@ -563,21 +580,38 @@ class SubtitleService {
     const diskFile = path.join(subtitlesDir, `bn_ai_${safeHash}.vtt`);
 
     if (fs.existsSync(diskFile)) {
-      return fs.readFileSync(diskFile, 'utf8');
+      const existing = fs.readFileSync(diskFile, 'utf8');
+      if (existing && existing.trim().length > 30) {
+        return existing;
+      } else {
+        try { fs.unlinkSync(diskFile); } catch (e) {}
+      }
     }
 
     // Download and parse original source
-    const downloaded = await this.downloadSubtitle(sourceUrl);
+    let downloaded = await this.downloadSubtitle(sourceUrl);
+    if ((!downloaded.cues || downloaded.cues.length === 0) && meta.subjectId) {
+      try {
+        const mbMedia = await movieboxService.resolveMedia(meta.subjectId, meta.detailPath || '', meta.season || 0, meta.episode || 0, { forceRefresh: true });
+        const freshEn = mbMedia?.captions?.find(c => (c.language || '').toLowerCase().includes('en'));
+        if (freshEn && freshEn.url) {
+          downloaded = await this.downloadSubtitle(freshEn.url);
+        }
+      } catch (_) {}
+    }
+
     if (!downloaded.cues || downloaded.cues.length === 0) {
-      return downloaded.vtt;
+      return downloaded.vtt || 'WEBVTT\n\n1\n00:00:01.000 --> 00:00:05.000\n[বাংলা সাবটাইটেল তৈরি হচ্ছে...]';
     }
 
     // Translate to Bangla
     const bnCues = await this.translateCuesToBangla(downloaded.cues);
     const bnVtt = this.cuesToVtt(bnCues);
 
-    // Save permanently to disk
-    fs.writeFileSync(diskFile, bnVtt, 'utf8');
+    // Save permanently to disk only if non-empty
+    if (bnCues.length > 0) {
+      fs.writeFileSync(diskFile, bnVtt, 'utf8');
+    }
     return bnVtt;
   }
 

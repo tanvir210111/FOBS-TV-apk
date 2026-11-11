@@ -3,6 +3,7 @@ package com.fobsmedia.tv;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -197,6 +198,12 @@ public class MainActivity extends BridgeActivity {
     private class FullscreenWebChromeClient extends BridgeWebChromeClient {
         public FullscreenWebChromeClient(Bridge bridge) {
             super(bridge);
+        }
+
+        @Override
+        public Bitmap getDefaultVideoPoster() {
+            // Return transparent 1x1 bitmap to eliminate Android's default black oval play button
+            return Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
         }
 
         @Override

@@ -1,4 +1,4 @@
-// FOBS TV Live OTA Patch Bundle v1.5.2 (Universal Anti-Blackout, Hardware Compositor Keep-Alive, Poster Performance & Catalog Sync)
+// FOBS TV Live OTA Patch Bundle v1.5.3 (Transparent Video Poster, Connecting Buffer Keeper, Offline Dual Subtitle & AI Translation Engine)
 // 1. Video Anti-Blackout Keep-Alive: Eliminates Android WebView video freeze/blackout when controls auto-hide during playback
 // 2. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
 // 3. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
@@ -9,8 +9,8 @@
 // 8. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 // 9. Catalog Sync & Poster Acceleration: Auto-invalidates stale content cache and enables prioritized high-speed poster loading
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.5.2 (Anti-Blackout & Catalog Sync) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.5.2';
+  console.log('⚡ FOBS TV Live Patch v1.5.3 (Video Playback & Subtitle Engine) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.5.3';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -179,30 +179,34 @@
   }
   window.isOfflinePlayback = isOfflinePlayback;
 
+  const TRANSPARENT_POSTER = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+
   function attachVideoWatcher() {
     const videoEl = document.getElementById('mainVideoPlayer');
     if (videoEl && !videoEl._hasFobsWatcher) {
-      const posterObs = new MutationObserver(() => stripVideoPoster());
+      const posterObs = new MutationObserver(() => {
+        if (videoEl.getAttribute('poster') !== TRANSPARENT_POSTER) {
+          stripVideoPoster();
+        }
+      });
       posterObs.observe(videoEl, { attributes: true, attributeFilter: ['poster'] });
 
       // Smooth transition: Only dismiss connecting overlay when video is actively moving and rendering frames!
-      const dismissWhenPlaying = () => {
-        if (videoEl.currentTime > 0.05 || !videoEl.paused) {
-          hideConnectingLoader();
-        }
-      };
-
       videoEl.addEventListener('playing', () => {
-        hideConnectingLoader(true);
-      });
-      videoEl.addEventListener('canplay', () => {
-        hideConnectingLoader(true);
-      });
-      videoEl.addEventListener('loadeddata', () => {
         hideConnectingLoader(true);
       });
       videoEl.addEventListener('timeupdate', () => {
         if (videoEl.currentTime > 0.05) {
+          hideConnectingLoader(true);
+        }
+      });
+      videoEl.addEventListener('canplay', () => {
+        if (isOfflinePlayback(videoEl) || (!videoEl.paused && videoEl.currentTime > 0.05)) {
+          hideConnectingLoader(true);
+        }
+      });
+      videoEl.addEventListener('loadeddata', () => {
+        if (isOfflinePlayback(videoEl) || (!videoEl.paused && videoEl.currentTime > 0.05)) {
           hideConnectingLoader(true);
         }
       });
@@ -268,11 +272,11 @@
         txt.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #00f2fe; margin-right: 8px;"></i> Connecting to stream server...';
       }
     }
-    // Safety auto-dismiss fallback: Max 1.2s so player is never stalled
+    // Safety auto-dismiss fallback: Max 8s so player is never stalled even on slow network
     if (window._connectingSafetyTimer) clearTimeout(window._connectingSafetyTimer);
     window._connectingSafetyTimer = setTimeout(() => {
       hideConnectingLoader(true);
-    }, 1200);
+    }, 8000);
   }
   window.showConnectingLoader = showConnectingLoader;
 
@@ -416,8 +420,8 @@
 
   function stripVideoPoster() {
     const video = document.getElementById('mainVideoPlayer');
-    if (video && video.hasAttribute('poster')) {
-      video.removeAttribute('poster');
+    if (video && video.getAttribute('poster') !== TRANSPARENT_POSTER) {
+      video.setAttribute('poster', TRANSPARENT_POSTER);
     }
     const qBtn = document.getElementById('currentQualityBtn');
     if (qBtn) qBtn.style.setProperty('display', 'none', 'important');
