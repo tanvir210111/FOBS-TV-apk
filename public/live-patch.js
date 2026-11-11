@@ -1,13 +1,15 @@
-// FOBS TV Live OTA Patch Bundle v1.4.8 (Online Quality Switching for v3.2.0)
-// 1. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
-// 2. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
-// 3. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
-// 4. Smooth Online Playback: Connecting overlay smoothly dissolves only when video is actively playing (no frozen 1-2s icon)
-// 5. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
-// 6. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
+// FOBS TV Live OTA Patch Bundle v1.5.0 (Universal Anti-Blackout, Hardware Compositor Keep-Alive & Local SRT Upload)
+// 1. Video Anti-Blackout Keep-Alive: Eliminates Android WebView video freeze/blackout when controls auto-hide during playback
+// 2. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
+// 3. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
+// 4. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
+// 5. Universal Local SRT Upload: Multi-encoding auto-detection (UTF-8, UTF-16 LE, ANSI) & Android system file picker support
+// 6. Smooth Online Playback: Connecting overlay smoothly dissolves only when video is actively playing (no frozen 1-2s icon)
+// 7. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
+// 8. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.4.8 (Online Quality Switching) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.4.8';
+  console.log('⚡ FOBS TV Live Patch v1.5.0 (Universal Anti-Blackout & Keep-Alive) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.5.0';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution

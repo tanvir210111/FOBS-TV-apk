@@ -1,13 +1,15 @@
-// FOBS TV Live OTA Patch Bundle v1.4.7 (Online Quality Switching for v3.2.0)
-// 1. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
-// 2. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
-// 3. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
-// 4. Smooth Online Playback: Connecting overlay smoothly dissolves only when video is actively playing (no frozen 1-2s icon)
-// 5. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
-// 6. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
+// FOBS TV Live OTA Patch Bundle v1.5.0 (Universal Anti-Blackout, Hardware Compositor Keep-Alive & Local SRT Upload)
+// 1. Video Anti-Blackout Keep-Alive: Eliminates Android WebView video freeze/blackout when controls auto-hide during playback
+// 2. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
+// 3. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
+// 4. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
+// 5. Universal Local SRT Upload: Multi-encoding auto-detection (UTF-8, UTF-16 LE, ANSI) & Android system file picker support
+// 6. Smooth Online Playback: Connecting overlay smoothly dissolves only when video is actively playing (no frozen 1-2s icon)
+// 7. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
+// 8. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.4.7 (Online Quality Switching) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.4.7';
+  console.log('⚡ FOBS TV Live Patch v1.5.0 (Universal Anti-Blackout & Keep-Alive) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.5.0';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -444,7 +446,13 @@
     const epNum = isMovie ? 0 : (ep?.episode ?? ep?.episodeNumber ?? parseInt(ep?.number, 10) ?? 1);
     const seNum = isMovie ? 0 : (ep?.season ?? window.appState?.currentSeason ?? 1);
 
-    if (window.appState) window.appState.currentQuality = '480p';
+    const state = getAppState() || window.appState || {};
+    const targetQ = state.userExplicitQuality
+      ? (parseInt(state.selectedQuality || state.currentQuality, 10) || 720)
+      : 480;
+    if (!state.userExplicitQuality && state.currentQuality !== `${targetQ}p`) {
+      state.currentQuality = '480p';
+    }
 
     const isMovieBox = (
       m?.subjectId ||
@@ -454,7 +462,7 @@
     const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (m?.id && /^\d{16,20}$/.test(m.id) ? m.id : null);
     const dPath = m?.detailPath || m?.mbDetailPath || m?.movieboxDetailPath || '';
     if (sId && isMovieBox) {
-      return getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480`);
+      return getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=${targetQ}`);
     }
 
     const allUrls = [
@@ -466,15 +474,15 @@
 
     const mbUrl = allUrls.find(u => typeof u === 'string' && u.includes('/api/moviebox/stream'));
     if (mbUrl) {
-      let clean = mbUrl.replace(/([?&])q=\d+/g, '$1q=480');
-      if (!clean.includes('q=')) clean += (clean.includes('?') ? '&' : '?') + 'q=480';
+      let clean = mbUrl.replace(/([?&])q=\d+/g, `$1q=${targetQ}`);
+      if (!clean.includes('q=')) clean += (clean.includes('?') ? '&' : '?') + `q=${targetQ}`;
       return getAbsoluteApiUrl(clean);
     }
 
     const rawCdn = allUrls.find(u => typeof u === 'string' && (u.includes('hakunaymatata') || u.includes('bcdnxw') || u.includes('haildrop') || u.includes('fogtwist') || u.includes('sunburst') || u.includes('stormshade')));
     if (rawCdn) {
       if (sId) {
-        return getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&se=${seNum}&ep=${epNum}&q=480`);
+        return getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&se=${seNum}&ep=${epNum}&q=${targetQ}`);
       }
       return getAbsoluteApiUrl(`/api/stream?url=${encodeURIComponent(rawCdn)}`);
     }
@@ -502,16 +510,25 @@
       if (fastUrl.startsWith('/api/')) {
         fastUrl = getAbsoluteApiUrl(fastUrl);
       }
+      const state = getAppState() || window.appState || {};
+      const activeQ = state.userExplicitQuality
+        ? (parseInt(state.selectedQuality || state.currentQuality, 10) || 720)
+        : 480;
+
       if (fastUrl.includes('/api/moviebox/stream')) {
-        fastUrl = fastUrl.replace(/([?&])q=\d+/g, '$1q=480');
-        if (!fastUrl.includes('q=')) fastUrl += (fastUrl.includes('?') ? '&' : '?') + 'q=480';
+        const qMatch = fastUrl.match(/[?&]q=(\d+)/);
+        if (!qMatch) {
+          fastUrl += (fastUrl.includes('?') ? '&' : '?') + `q=${activeQ}`;
+        } else if (state.userExplicitQuality) {
+          fastUrl = fastUrl.replace(/([?&])q=\d+/g, `$1q=${activeQ}`);
+        }
       } else if (fastUrl.includes('hakunaymatata') || fastUrl.includes('bcdnxw') || fastUrl.includes('haildrop') || fastUrl.includes('fogtwist') || fastUrl.includes('sunburst') || fastUrl.includes('stormshade')) {
         const m = getActiveMedia();
         const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (m?.id && /^\d{16,20}$/.test(m.id) ? m.id : null);
         if (sId) {
           const se = window.appState?.currentSeason || 0;
           const ep = window.appState?.currentEpisodeNumber || 0;
-          fastUrl = getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&se=${se}&ep=${ep}&q=480`);
+          fastUrl = getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&se=${se}&ep=${ep}&q=${activeQ}`);
         } else {
           fastUrl = getAbsoluteApiUrl(`/api/stream?url=${encodeURIComponent(fastUrl)}`);
         }
@@ -769,9 +786,13 @@
 
       // 1. Instant switch: Check availableQualities first (direct CDN stream - 0ms lookup!)
       if (Array.isArray(state.availableQualities) && state.availableQualities.length > 0) {
-        const matched = state.availableQualities.find(q => parseInt(q.resolution, 10) === targetResNum);
-        if (matched && (matched.proxyUrl || matched.url)) {
-          targetStreamUrl = matched.proxyUrl || matched.url;
+        let matched = state.availableQualities.find(q => parseInt(q.resolution, 10) === targetResNum);
+        if (!matched && targetResNum >= 720) {
+          // If requested HD, prefer HD quality (1080 or 720) rather than picking nothing or falling back to SD
+          matched = state.availableQualities.find(q => parseInt(q.resolution, 10) >= 720);
+        }
+        if (matched && (matched.url || matched.proxyUrl || matched.directUrl)) {
+          targetStreamUrl = matched.url || matched.proxyUrl || matched.directUrl;
         }
       }
 
@@ -812,6 +833,7 @@
           window.playStreamUrl(targetStreamUrl, null, seekPos);
         } else {
           videoPlayer.src = targetStreamUrl;
+          try { videoPlayer.load(); } catch (e) {}
           const applySeek = () => {
             try {
               if (videoPlayer.duration && videoPlayer.duration > 1) {
@@ -823,8 +845,8 @@
             if (!isPaused) videoPlayer.play().catch(() => {});
             if (typeof hideConnectingLoader === 'function') hideConnectingLoader(true);
           };
+          videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
           videoPlayer.addEventListener('canplay', applySeek, { once: true });
-          videoPlayer.addEventListener('loadeddata', applySeek, { once: true });
         }
 
         if (!isPaused) {
@@ -840,6 +862,14 @@
     }
   };
   window.selectVideoQuality._hasLoaderHook = true;
+
+  window.setLandscapeQuality = function(quality) {
+    if (typeof window.selectVideoQuality === 'function') {
+      window.selectVideoQuality(quality);
+    }
+    if (typeof closeLandscapeDrawers === 'function') closeLandscapeDrawers();
+    if (typeof resetLandscapeControlsTimer === 'function') resetLandscapeControlsTimer();
+  };
 
   // -------------------------------------------------------------
   // Dynamic Quality Sheet: ONLY show available resolutions! (jei resolution nai sei resolution video te show koraiyo na)
@@ -2883,5 +2913,291 @@
     }
   };
 
-  console.log('✅ FOBS TV Live Patch v1.4.2 active: Clean v3.1.8 Update Modal, Video Reports & MovieBox Engine.');
+  // -------------------------------------------------------------
+  // Live Patch v1.4.9: Universal Local .SRT / .VTT Upload & Auto-Encoding
+  // -------------------------------------------------------------
+  function patchLocalSrtUpload() {
+    function decodeSubtitleBuffer(buffer) {
+      if (!buffer) return '';
+      const bytes = new Uint8Array(buffer);
+      if (bytes.length >= 2 && bytes[0] === 0xFF && bytes[1] === 0xFE) {
+        try { return new TextDecoder('utf-16le').decode(buffer); } catch (e) {}
+      }
+      if (bytes.length >= 2 && bytes[0] === 0xFE && bytes[1] === 0xFF) {
+        try { return new TextDecoder('utf-16be').decode(buffer); } catch (e) {}
+      }
+      if (bytes.length >= 3 && bytes[0] === 0xEF && bytes[1] === 0xBB && bytes[2] === 0xBF) {
+        try { return new TextDecoder('utf-8').decode(buffer.slice(3)); } catch (e) {}
+      }
+      let zeroCount = 0;
+      for (let i = 1; i < Math.min(bytes.length, 100); i += 2) {
+        if (bytes[i] === 0x00) zeroCount++;
+      }
+      if (zeroCount > 10) {
+        try { return new TextDecoder('utf-16le').decode(buffer); } catch (e) {}
+      }
+      try {
+        return new TextDecoder('utf-8', { fatal: true }).decode(buffer);
+      } catch (_) {
+        try {
+          return new TextDecoder('windows-1252').decode(buffer);
+        } catch (__) {
+          return new TextDecoder().decode(buffer);
+        }
+      }
+    }
+
+    function parseSubtitleTextToCues(rawText) {
+      if (!rawText) return [];
+      rawText = rawText.replace(/^\uFEFF/, '').trim();
+      const cues = [];
+      const lines = rawText.replace(/\r\n|\r/g, '\n').split('\n');
+      let i = 0;
+
+      function parseTimestamp(str) {
+        const m = (str || '').match(/(?:(\d{1,2}):)?(\d{1,2}):(\d{2})[,\.](\d{1,3})/);
+        if (!m) return null;
+        const h = m[1] ? parseInt(m[1], 10) : 0;
+        const min = parseInt(m[2], 10);
+        const sec = parseInt(m[3], 10);
+        const ms = parseInt((m[4] + '00').slice(0, 3), 10);
+        return h * 3600 + min * 60 + sec + ms / 1000;
+      }
+
+      while (i < lines.length) {
+        const line = lines[i].trim();
+        if (line.includes('-->')) {
+          const parts = line.split('-->');
+          const startTime = parseTimestamp(parts[0]);
+          const endTime = parseTimestamp(parts[1]);
+
+          i++;
+          let textLines = [];
+          while (i < lines.length && lines[i].trim() !== '' && !lines[i].includes('-->')) {
+            textLines.push(lines[i].trim());
+            i++;
+          }
+
+          if (textLines.length > 1 && /^\d+$/.test(textLines[textLines.length - 1])) {
+            textLines.pop();
+          }
+
+          const text = textLines.join('\n')
+            .replace(/<[^>]+>/g, '')
+            .replace(/\{[^\}]+\}/g, '')
+            .replace(/&rlm;|&lrm;|&nbsp;/gi, ' ')
+            .trim();
+
+          if (text && startTime !== null && endTime !== null && endTime > startTime) {
+            cues.push({ startTime, endTime, text });
+          }
+          continue;
+        }
+        i++;
+      }
+      return cues;
+    }
+
+    window.triggerManualSrtUpload = function() {
+      let input = document.getElementById('customSrtFileInput');
+      if (!input) {
+        input = document.createElement('input');
+        input.type = 'file';
+        input.id = 'customSrtFileInput';
+        input.style.display = 'none';
+        input.onchange = window.handleManualSrtUpload;
+        document.body.appendChild(input);
+      }
+      input.setAttribute('accept', '*/*');
+      input.value = '';
+      input.click();
+    };
+
+    window.handleManualSrtUpload = function(event) {
+      const file = event.target?.files && event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const buffer = e.target.result;
+          const rawText = decodeSubtitleBuffer(buffer);
+          const cues = parseSubtitleTextToCues(rawText);
+
+          if (!cues || cues.length === 0) {
+            if (typeof showToast === 'function') {
+              showToast('⚠️ No valid timestamps found in this file. Please ensure it is a valid .srt or .vtt file.');
+            }
+            return;
+          }
+
+          const baseName = file.name.replace(/\.[^/.]+$/, '').trim();
+          const cleanName = baseName.length > 22 ? baseName.slice(0, 20) + '...' : baseName;
+
+          const customTrack = {
+            id: 'custom_srt_' + Date.now(),
+            language: cleanName,
+            langCode: 'custom',
+            source: 'Local File (.srt)',
+            rawCues: cues,
+            isCustom: true
+          };
+
+          if (typeof subtitleState !== 'undefined') {
+            subtitleState.availableTracks = [
+              customTrack,
+              ...(subtitleState.availableTracks || []).filter(t => !t.isCustom)
+            ];
+          }
+
+          if (typeof selectSubtitleTrack === 'function') {
+            selectSubtitleTrack(customTrack.id);
+          }
+
+          if (typeof showToast === 'function') {
+            showToast(`✅ Subtitle Active: "${cleanName}" (${cues.length} lines)`);
+          }
+        } catch (err) {
+          console.error('Manual SRT read error:', err);
+          if (typeof showToast === 'function') {
+            showToast('⚠️ Failed to parse subtitle file. Please try another .srt file.');
+          }
+        }
+      };
+
+      reader.onerror = function() {
+        if (typeof showToast === 'function') {
+          showToast('⚠️ Error reading selected file from device storage.');
+        }
+      };
+
+      reader.readAsArrayBuffer(file);
+    };
+
+    // Ensure existing input on DOM has accept="*/*"
+    const existingInput = document.getElementById('customSrtFileInput');
+    if (existingInput) {
+      existingInput.setAttribute('accept', '*/*');
+      existingInput.onchange = window.handleManualSrtUpload;
+    }
+  }
+
+  try {
+    patchLocalSrtUpload();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', patchLocalSrtUpload);
+    }
+  } catch (e) {}
+
+  // -------------------------------------------------------------
+  // Live Patch v1.5.0: Video Surface Anti-Blackout Compositor Engine
+  // Eliminates Android WebView video freeze/blackout when controls auto-hide
+  // -------------------------------------------------------------
+  function patchVideoAntiBlackout() {
+    try {
+      if (!document.getElementById('fobs-anti-blackout-style')) {
+        const style = document.createElement('style');
+        style.id = 'fobs-anti-blackout-style';
+        style.textContent = `
+          .video-container {
+            transform: translateZ(0) !important;
+            -webkit-transform: translateZ(0) !important;
+            backface-visibility: hidden !important;
+            -webkit-backface-visibility: hidden !important;
+          }
+          .video-container video, #mainVideoPlayer {
+            background-color: transparent !important;
+            transform: translateZ(0) !important;
+            -webkit-transform: translateZ(0) !important;
+            will-change: transform !important;
+            backface-visibility: hidden !important;
+            -webkit-backface-visibility: hidden !important;
+          }
+          .ls-player-ui {
+            background: transparent !important;
+          }
+        `;
+        (document.head || document.documentElement).appendChild(style);
+      }
+
+      const video = document.getElementById('mainVideoPlayer');
+      if (video && !video._antiBlackoutPatchActive) {
+        video._antiBlackoutPatchActive = true;
+        video.style.backgroundColor = 'transparent';
+
+        let rafId = null;
+        let frameCounter = 0;
+
+        const tick = () => {
+          if (!video.paused && !video.ended) {
+            frameCounter++;
+            if (frameCounter % 4 === 0) {
+              const toggle = (frameCounter % 8 === 0);
+              video.style.transform = toggle ? 'translateZ(0px)' : 'translate3d(0px, 0px, 0px)';
+            }
+            rafId = requestAnimationFrame(tick);
+          } else {
+            rafId = null;
+          }
+        };
+
+        const start = () => {
+          video.style.backgroundColor = 'transparent';
+          if (!rafId) rafId = requestAnimationFrame(tick);
+        };
+
+        const stop = () => {
+          if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+          }
+        };
+
+        video.addEventListener('play', start);
+        video.addEventListener('playing', start);
+        video.addEventListener('pause', stop);
+        video.addEventListener('ended', stop);
+        video.addEventListener('timeupdate', () => {
+          if (!video.paused && !rafId) start();
+        });
+
+        if ('requestVideoFrameCallback' in HTMLVideoElement.prototype) {
+          const onFrame = () => {
+            if (!video.paused && !video.ended) {
+              if (video.style.backgroundColor !== 'transparent') {
+                video.style.backgroundColor = 'transparent';
+              }
+              video.requestVideoFrameCallback(onFrame);
+            }
+          };
+          video.addEventListener('playing', () => video.requestVideoFrameCallback(onFrame));
+        }
+
+        const obs = new MutationObserver(() => {
+          if (!video.paused && video.readyState >= 2) {
+            video.style.transform = 'translateZ(0px)';
+          }
+        });
+        const lsUi = document.getElementById('landscapePlayerUI');
+        if (lsUi) obs.observe(lsUi, { attributes: true, attributeFilter: ['class'] });
+        const topHeader = document.getElementById('playerTopHeader');
+        if (topHeader) obs.observe(topHeader, { attributes: true, attributeFilter: ['class'] });
+        const ptBottom = document.getElementById('portraitBottomBar');
+        if (ptBottom) obs.observe(ptBottom, { attributes: true, attributeFilter: ['class'] });
+
+        if (!video.paused) start();
+      }
+    } catch (e) {}
+  }
+
+  try {
+    patchVideoAntiBlackout();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', patchVideoAntiBlackout);
+    }
+    // Also periodically verify video surface binding
+    setInterval(patchVideoAntiBlackout, 2000);
+  } catch (e) {}
+
+  console.log('✅ FOBS TV Live Patch v1.5.0 active: Universal Anti-Blackout Video Engine, Local SRT Upload & Performance Fixes.');
 })();
