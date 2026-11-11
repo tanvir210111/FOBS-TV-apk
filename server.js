@@ -26,6 +26,7 @@ const PORT = process.env.PORT || 7000;
 const movieboxService = require('./services/movieboxService');
 const movieboxStreamCache = new Map(); // key -> { media, timestamp }
 const movieboxResolvingMap = new Map(); // key -> in-flight promise for deduplication
+const streamFirstChunkCache = new Map(); // cleanUrlHash -> { buffer, contentType, totalLength }
 
 function extractMovieBoxExpiry(urlStr) {
   if (!urlStr || typeof urlStr !== 'string') return null;
@@ -33,9 +34,10 @@ function extractMovieBoxExpiry(urlStr) {
     const u = new URL(urlStr);
     const tParam = u.searchParams.get('t');
     if (tParam) {
-      const expSec = parseInt(tParam, 10);
-      if (!isNaN(expSec) && expSec > 0) {
-        return expSec * 1000;
+      const genSec = parseInt(tParam, 10);
+      if (!isNaN(genSec) && genSec > 0) {
+        // MovieBox CDN token generation timestamp. Expiry is 4 hours (14400s) after generation.
+        return (genSec + 14400) * 1000;
       }
     }
     const policyParam = u.searchParams.get('Policy');
@@ -54,7 +56,7 @@ function isMovieBoxUrlExpired(urlStr) {
   if (!urlStr || typeof urlStr !== 'string') return true;
   const expMs = extractMovieBoxExpiry(urlStr);
   if (expMs) {
-    return (expMs - Date.now() < 15 * 60 * 1000);
+    return (expMs - Date.now() < 10 * 60 * 1000);
   }
   return false;
 }
@@ -1813,7 +1815,7 @@ app.post('/api/content', (req, res) => {
  * Also handles TCP backpressure correctly so upstream CDN never sees an idle connection.
  * Re-authenticates MovieBox CDN tokens if 403 occurs.
  */
-function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders, mbContext, start, end, totalLen) {
+function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders, mbContext, start, end, totalLen, cleanUrlHash = null, contentType = 'video/mp4') {
   let currentResponse = initialResponse;
   let bytesTransferred = 0;
   const initialStart = typeof start === 'number' && !isNaN(start) ? start : 0;
@@ -1824,8 +1826,31 @@ function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders
   let retryCount = 0;
   const maxRetries = 20;
 
+  // In-memory Fast-Start RAM cache accumulator (first 2MB for instant moov atom delivery)
+  const isCapturingFirstChunk = (initialStart === 0 && cleanUrlHash && !streamFirstChunkCache.has(cleanUrlHash));
+  const firstChunkChunks = [];
+  let firstChunkBytes = 0;
+  const MAX_FIRST_CHUNK = 2 * 1024 * 1024; // 2MB
+
+  function saveFirstChunk() {
+    if (!isCapturingFirstChunk || firstChunkChunks.length === 0 || streamFirstChunkCache.has(cleanUrlHash)) return;
+    try {
+      const combined = Buffer.concat(firstChunkChunks);
+      if (streamFirstChunkCache.size > 80) {
+        const oldestKey = streamFirstChunkCache.keys().next().value;
+        streamFirstChunkCache.delete(oldestKey);
+      }
+      streamFirstChunkCache.set(cleanUrlHash, {
+        buffer: combined,
+        contentType: contentType || 'video/mp4',
+        totalLength: totalLen
+      });
+    } catch (_) {}
+  }
+
   const onClientClose = () => {
     isClientClosed = true;
+    saveFirstChunk();
     try {
       if (currentResponse && currentResponse.data && typeof currentResponse.data.destroy === 'function') {
         currentResponse.data.destroy();
@@ -1847,10 +1872,18 @@ function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders
 
     upstream.on('data', (chunk) => {
       bytesTransferred += chunk.length;
+      if (isCapturingFirstChunk && firstChunkBytes < MAX_FIRST_CHUNK) {
+        firstChunkChunks.push(chunk);
+        firstChunkBytes += chunk.length;
+        if (firstChunkBytes >= MAX_FIRST_CHUNK) {
+          saveFirstChunk();
+        }
+      }
     });
 
     upstream.on('error', (err) => {
       console.warn(`[ResilientStream] Upstream socket error after ${bytesTransferred} bytes: ${err.message}`);
+      saveFirstChunk();
       try { upstream.destroy(); } catch (_) {}
       if (!isClientClosed && !res.writableEnded && !res.destroyed) {
         attemptResume();
@@ -1858,6 +1891,7 @@ function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders
     });
 
     upstream.on('end', () => {
+      saveFirstChunk();
       const reachedEnd = expectedBytes > 0 && bytesTransferred >= expectedBytes;
       if (!reachedEnd && !isClientClosed && !res.writableEnded && !res.destroyed) {
         console.log(`[ResilientStream] Upstream closed early (${bytesTransferred}/${expectedBytes || 'unknown'}). Auto-resuming seamlessly...`);
@@ -2284,6 +2318,33 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
     }
   }
 
+  const cleanUrlHash = crypto.createHash('md5').update((resolvedUrl || targetUrl).split('?')[0]).digest('hex');
+
+  // Fast-Start RAM Probe: Instantly serve initial metadata/moov probes (< 2MB) from RAM in < 1ms
+  if (start === 0 && streamFirstChunkCache.has(cleanUrlHash)) {
+    const cachedChunk = streamFirstChunkCache.get(cleanUrlHash);
+    if (isHead) {
+      res.writeHead(200, {
+        ...standardStreamCorsHeaders,
+        'Content-Type': cachedChunk.contentType || 'video/mp4',
+        'Accept-Ranges': 'bytes',
+        'Content-Length': cachedChunk.totalLength ? String(cachedChunk.totalLength) : ''
+      });
+      return res.end();
+    }
+    if (isExplicitEnd && requestedEnd !== null && requestedEnd < cachedChunk.buffer.length) {
+      const slice = cachedChunk.buffer.subarray(start, requestedEnd + 1);
+      res.writeHead(206, {
+        ...standardStreamCorsHeaders,
+        'Content-Type': cachedChunk.contentType || 'video/mp4',
+        'Content-Range': `bytes ${start}-${requestedEnd}/${cachedChunk.totalLength || '*'}`,
+        'Content-Length': slice.length,
+        'Accept-Ranges': 'bytes'
+      });
+      return res.end(slice);
+    }
+  }
+
   let upstreamRange = 'bytes=0-';
   if (isHead) {
     upstreamRange = 'bytes=0-0';
@@ -2568,7 +2629,9 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
         mbContext,
         rangeStart,
         rangeEnd,
-        rangeTotal
+        rangeTotal,
+        cleanUrlHash,
+        contentType
       );
       return;
     }
@@ -2605,7 +2668,9 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
           mbContext,
           0,
           totalLength - 1,
-          totalLength
+          totalLength,
+          cleanUrlHash,
+          contentType
         );
       } else {
         const slicer = createRangeSlicer(start, end);
@@ -2635,7 +2700,9 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
         mbContext,
         0,
         !isNaN(totalLength) ? totalLength - 1 : null,
-        !isNaN(totalLength) ? totalLength : null
+        !isNaN(totalLength) ? totalLength : null,
+        cleanUrlHash,
+        contentType
       );
     }
 
@@ -2685,7 +2752,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.5.5",
+  version: "1.5.6",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 

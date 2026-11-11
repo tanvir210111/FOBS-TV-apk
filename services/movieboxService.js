@@ -89,10 +89,19 @@ function extractMovieBoxExpiry(urlStr) {
     const u = new URL(urlStr);
     const tParam = u.searchParams.get('t');
     if (tParam) {
-      const expSec = parseInt(tParam, 10);
-      if (!isNaN(expSec) && expSec > 0) {
-        return expSec * 1000;
+      const genSec = parseInt(tParam, 10);
+      if (!isNaN(genSec) && genSec > 0) {
+        // MovieBox CDN token generation timestamp. Expiry is 4 hours (14400s) after generation.
+        return (genSec + 14400) * 1000;
       }
+    }
+    const policyParam = u.searchParams.get('Policy');
+    if (policyParam) {
+      try {
+        const decoded = Buffer.from(policyParam, 'base64').toString('utf8');
+        const match = decoded.match(/"EpochTime":\s*(\d+)/);
+        if (match) return parseInt(match[1], 10) * 1000;
+      } catch (_) {}
     }
   } catch (_) {}
   return null;
@@ -102,8 +111,8 @@ function isMovieBoxUrlExpired(urlStr) {
   if (!urlStr || typeof urlStr !== 'string') return true;
   const expMs = extractMovieBoxExpiry(urlStr);
   if (expMs) {
-    // If expired or expires within 15 minutes, treat as expired to prevent 403
-    return (expMs - Date.now() < 15 * 60 * 1000);
+    // If expired or expires within 10 minutes, treat as expired to prevent 403
+    return (expMs - Date.now() < 10 * 60 * 1000);
   }
   return false;
 }

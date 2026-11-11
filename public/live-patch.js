@@ -1,4 +1,4 @@
-// FOBS TV Live OTA Patch Bundle v1.5.5 (Instant Zero-Delay Playback, Bulletproof Android Stream Engine & Auto-Proxy Fallback)
+// FOBS TV Live OTA Patch Bundle v1.5.6 (Lightning Fast Playback, Fast-Start RAM Header Cache & Zero-Latency Nginx Pipeline)
 // 1. Instant Video Playback: Eliminates connection spinner stall; video plays instantly on canplay/loadeddata
 // 2. Dynamic Stream Auto-Renew: Automatically routes all static/expired CDN links through zero-redirect dynamic stream resolver
 // 3. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
@@ -436,17 +436,29 @@
   stripVideoPoster();
 
   // Prefetch Stream: Warmed cache for millisecond playback startup (<100ms)
+  const _prefetchedStreams = new Set();
   function prefetchStream(media, se = 0, ep = 0) {
     if (!media) return;
     const sId = media.subjectId || media.mbSubjectId || (media.id && media.id.startsWith('mb-s-') ? media.id.replace('mb-s-', '') : (media.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (media.id && /^\d{16,20}$/.test(media.id) ? media.id : null) || media.id;
     if (!sId) return;
-    const dPath = media.detailPath || media.mbDetailPath || media.movieboxDetailPath || '';
-    const base = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : '';
     const isMovie = media.type === 'movie' || (!media.seasons && !media.episodes);
     const seNum = isMovie ? 0 : (se || 1);
     const epNum = isMovie ? 0 : (ep || 1);
+    const pfKey = `${sId}_${seNum}_${epNum}`;
+    if (_prefetchedStreams.has(pfKey)) return;
+    _prefetchedStreams.add(pfKey);
+
+    const dPath = media.detailPath || media.mbDetailPath || media.movieboxDetailPath || '';
     const pfUrl = getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${epNum}&q=480&json=1`);
-    fetch(pfUrl, { priority: 'low' }).catch(() => {});
+    fetch(pfUrl, { priority: 'low' })
+      .then(r => r.json())
+      .then(data => {
+        if (data && data.streamUrl) {
+          // Pre-warm upstream TCP/TLS socket and moov atom cache with a tiny 32KB range probe
+          fetch(data.streamUrl, { headers: { Range: 'bytes=0-32767' }, priority: 'low' }).catch(() => {});
+        }
+      })
+      .catch(() => {});
   }
   window.prefetchStream = prefetchStream;
 
@@ -720,8 +732,9 @@
   window.openPlayerById = function(type, id) {
     showConnectingLoader();
     if (id) {
-      const pfUrl = getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(id)}&se=0&ep=0&q=480&json=1`);
-      fetch(pfUrl, { priority: 'low' }).catch(() => {});
+      const isSer = (type === 'series');
+      const found = findMediaInCatalog(id, type);
+      prefetchStream(found || { id, type: isSer ? 'series' : 'movie' }, isSer ? 1 : 0, isSer ? 1 : 0);
     }
     
     try {
@@ -1781,10 +1794,12 @@
         const card = playTarget.closest('.media-card, [onclick*="openPlayerById"]');
         if (card) {
           const oc = card.getAttribute('onclick') || '';
-          const m = oc.match(/openPlayerById\s*\(\s*['"]?[^'",]+['"]?\s*,\s*['"]([^'"]+)['"]/);
-          if (m && m[1]) {
-            const base = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : '';
-            fetch(`${base}/api/moviebox/stream?id=${encodeURIComponent(m[1])}&se=0&ep=0&q=480&json=1`, { priority: 'low' }).catch(() => {});
+          const m = oc.match(/openPlayerById\s*\(\s*['"]([^'"]+)['"]\s*,\s*['"]([^'"]+)['"]/);
+          if (m && m[1] && m[2]) {
+            const cardType = m[1];
+            const cardId = m[2];
+            const found = findMediaInCatalog(cardId, cardType);
+            prefetchStream(found || { id: cardId, type: cardType }, cardType === 'series' ? 1 : 0, cardType === 'series' ? 1 : 0);
           }
         }
       } catch (_) {}
