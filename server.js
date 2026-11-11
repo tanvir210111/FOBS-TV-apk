@@ -33,13 +33,18 @@ function extractMovieBoxExpiry(urlStr) {
     const u = new URL(urlStr);
     const tParam = u.searchParams.get('t');
     if (tParam) {
-      const tsSec = parseInt(tParam, 10);
-      if (!isNaN(tsSec) && tsSec > 0) {
-        // 't' is the token creation/issue timestamp in MovieBox CDN URLs.
-        // MovieBox CDN tokens are valid for 4 hours (14,400s) from 't'.
-        // We set the expiry threshold at 3.5 hours (12,600s) for proactive safe renewal.
-        return (tsSec + 12600) * 1000;
+      const expSec = parseInt(tParam, 10);
+      if (!isNaN(expSec) && expSec > 0) {
+        return expSec * 1000;
       }
+    }
+    const policyParam = u.searchParams.get('Policy');
+    if (policyParam) {
+      try {
+        const decoded = Buffer.from(policyParam, 'base64').toString('utf8');
+        const match = decoded.match(/"EpochTime":\s*(\d+)/);
+        if (match) return parseInt(match[1], 10) * 1000;
+      } catch (_) {}
     }
   } catch (_) {}
   return null;
@@ -49,7 +54,7 @@ function isMovieBoxUrlExpired(urlStr) {
   if (!urlStr || typeof urlStr !== 'string') return true;
   const expMs = extractMovieBoxExpiry(urlStr);
   if (expMs) {
-    return Date.now() >= expMs;
+    return (expMs - Date.now() < 15 * 60 * 1000);
   }
   return false;
 }
@@ -2680,7 +2685,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.5.4",
+  version: "1.5.5",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 

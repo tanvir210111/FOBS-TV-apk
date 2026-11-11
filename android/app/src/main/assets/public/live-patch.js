@@ -1,4 +1,4 @@
-// FOBS TV Live OTA Patch Bundle v1.5.4 (Instant Zero-Delay Playback, Dynamic Stream Auto-Renew & Transparent Video Poster)
+// FOBS TV Live OTA Patch Bundle v1.5.5 (Instant Zero-Delay Playback, Bulletproof Android Stream Engine & Auto-Proxy Fallback)
 // 1. Instant Video Playback: Eliminates connection spinner stall; video plays instantly on canplay/loadeddata
 // 2. Dynamic Stream Auto-Renew: Automatically routes all static/expired CDN links through zero-redirect dynamic stream resolver
 // 3. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
@@ -9,8 +9,8 @@
 // 8. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 // 9. Catalog Sync & Poster Acceleration: Auto-invalidates stale content cache and enables prioritized high-speed poster loading
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.5.4 (Instant Playback & Stream Auto-Renew) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.5.4';
+  console.log('⚡ FOBS TV Live Patch v1.5.5 (Bulletproof Video Playback Engine) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.5.5';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -68,11 +68,16 @@
     const style = document.createElement('style');
     style.id = 'fobs-connecting-overlay-style';
     style.textContent = `
-      #mainVideoPlayer {
+      #mainVideoPlayer, video {
         background: #000 !important;
+        object-fit: contain !important;
       }
       #mainVideoPlayer::-webkit-media-controls-start-playback-button,
-      #mainVideoPlayer::-webkit-media-controls-overlay-play-button {
+      #mainVideoPlayer::-webkit-media-controls-overlay-play-button,
+      video::-webkit-media-controls-start-playback-button,
+      video::-webkit-media-controls-overlay-play-button,
+      ::-webkit-media-controls-start-playback-button,
+      ::-webkit-media-controls-overlay-play-button {
         display: none !important;
         -webkit-appearance: none !important;
         opacity: 0 !important;
@@ -297,8 +302,6 @@
     if (loader) loader.classList.remove('active');
   }
   window.hideConnectingLoader = hideConnectingLoader;
-  }
-  window.hideConnectingLoader = hideConnectingLoader;
 
   // -------------------------------------------------------------
   // Flawless Offline Video Seeking Engine (FastSeek & Coalescing)
@@ -510,8 +513,12 @@
     const vp = document.getElementById('mainVideoPlayer');
     if (vp) {
       vp.preload = 'auto';
-      // Ensure audio sound is restored on play start
       vp.muted = false;
+      const curM = getActiveMedia() || window.appState?.currentMedia;
+      if (curM) {
+        const posterImg = curM.backdrop || curM.cover || curM.poster || '';
+        if (posterImg) vp.poster = posterImg;
+      }
     }
 
     let fastUrl = url;
@@ -545,6 +552,61 @@
       }
     }
 
+    // Fail-Safe Watchdog: If direct /api/moviebox/stream hangs or takes > 2.5s, fetch json=1 and play via /api/stream proxy
+    if (vp && typeof fastUrl === 'string' && fastUrl.includes('/api/moviebox/stream')) {
+      let fallbackSwitched = false;
+      const doProxyFallback = () => {
+        if (fallbackSwitched) return;
+        fallbackSwitched = true;
+        const jsonUrl = fastUrl.includes('?') ? (fastUrl + '&json=1') : (fastUrl + '?json=1');
+        fetch(jsonUrl, { cache: 'no-store' })
+          .then(r => r.json())
+          .then(data => {
+            if (data && data.streamUrl && vp && (!vp.currentTime || vp.currentTime < 0.1)) {
+              console.log('⚡ Fallback: Switching to direct /api/stream proxy:', data.streamUrl);
+              vp.src = data.streamUrl;
+              vp.load();
+              vp.play().catch(() => {});
+            }
+          })
+          .catch(() => {});
+      };
+
+      const watchdogTimer = setTimeout(() => {
+        if (vp && (!vp.currentTime || vp.currentTime < 0.1) && vp.readyState < 2) {
+          console.warn('MovieBox stream buffering watchdog fired, switching to proxy fallback...');
+          doProxyFallback();
+        }
+      }, 2500);
+
+      const cancelWatchdog = () => {
+        clearTimeout(watchdogTimer);
+        vp.removeEventListener('playing', cancelWatchdog);
+        vp.removeEventListener('timeupdate', cancelWatchdog);
+      };
+      vp.addEventListener('playing', cancelWatchdog, { once: true });
+      vp.addEventListener('timeupdate', cancelWatchdog, { once: true });
+      vp.addEventListener('error', doProxyFallback, { once: true });
+    }
+
+    // Loader is dismissed ONLY when video actually renders frames (currentTime > 0.05 or playing)
+    if (vp) {
+      const onFrameMoving = () => {
+        if (vp.currentTime > 0.05) {
+          hideConnectingLoader();
+          const l = document.getElementById('videoLoader');
+          if (l) l.classList.remove('active');
+          vp.removeEventListener('timeupdate', onFrameMoving);
+        }
+      };
+      vp.addEventListener('timeupdate', onFrameMoving);
+      vp.addEventListener('playing', () => {
+        hideConnectingLoader();
+        const l = document.getElementById('videoLoader');
+        if (l) l.classList.remove('active');
+      }, { once: true });
+    }
+
     const activeBasePlay = window._fobsOriginalPlayStreamUrl || basePlayStreamUrl;
     if (typeof activeBasePlay === 'function' && activeBasePlay !== fobsPlayStreamHook) {
       return activeBasePlay(fastUrl, audioIndex, seekTime);
@@ -566,6 +628,43 @@
   fobsPlayStreamHook._isFobsHook = true;
   window.playStreamUrl = fobsPlayStreamHook;
 
+  // Safe Play/Pause: Prevent accidental pause while video is still buffering (readyState < 2)
+  if (typeof window.togglePlayPauseVideo === 'function' && !window.togglePlayPauseVideo._isSafeHook) {
+    const origToggle = window.togglePlayPauseVideo;
+    window.togglePlayPauseVideo = function() {
+      const video = document.getElementById('mainVideoPlayer');
+      if (video && video.readyState < 2 && !video.paused) {
+        video.play().catch(() => {});
+        if (typeof window.syncPlayPauseIcons === 'function') window.syncPlayPauseIcons();
+        return;
+      }
+      return origToggle.apply(this, arguments);
+    };
+    window.togglePlayPauseVideo._isSafeHook = true;
+  }
+
+  // Buffering-aware Play/Pause Icon Synchronization
+  if (typeof window.syncPlayPauseIcons === 'function' && !window.syncPlayPauseIcons._isBufferingAware) {
+    const origSync = window.syncPlayPauseIcons;
+    window.syncPlayPauseIcons = function() {
+      const video = document.getElementById('mainVideoPlayer');
+      const ptIcon = document.getElementById('portraitPlayIcon');
+      const centerIcon = document.getElementById('lsCenterPlayIcon');
+      const bottomIcon = document.getElementById('lsBottomPlayIcon');
+      if (video) {
+        const isBuffering = (video.readyState < 3 && !video.paused && (!video.currentTime || video.currentTime < 0.1));
+        const isPaused = video.paused || isBuffering;
+        const iconClass = isPaused ? 'fa-solid fa-play' : 'fa-solid fa-pause';
+        if (ptIcon) ptIcon.className = iconClass;
+        if (centerIcon) centerIcon.className = iconClass;
+        if (bottomIcon) bottomIcon.className = iconClass;
+        return;
+      }
+      return origSync.apply(this, arguments);
+    };
+    window.syncPlayPauseIcons._isBufferingAware = true;
+  }
+
   // Hook openPlayer & openPlayerById
   if (!window._fobsOriginalOpenPlayer && typeof window.openPlayer === 'function' && !window.openPlayer._hasLoaderHook) {
     window._fobsOriginalOpenPlayer = window.openPlayer;
@@ -577,6 +676,9 @@
     if (vp) {
       vp.preload = 'auto';
       vp.muted = false; // Restore sound!
+      if (media && (media.backdrop || media.cover || media.poster)) {
+        vp.poster = media.backdrop || media.cover || media.poster;
+      }
     }
     showConnectingLoader();
     if (media) prefetchStream(media, 0, 0);

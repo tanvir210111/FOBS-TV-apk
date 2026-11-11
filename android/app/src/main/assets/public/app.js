@@ -3684,8 +3684,12 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
     mainVideo._retryCount = 0;
     mainVideo.classList.remove('scale-fill', 'fit-cover');
     mainVideo.classList.add('fit-contain');
-    // Transparent 1x1 base64 poster prevents Android WebView from ever showing its native black oval play button
-    mainVideo.setAttribute('poster', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
+    const posterImg = media.backdrop || media.cover || media.poster || '';
+    if (posterImg) {
+      mainVideo.setAttribute('poster', posterImg);
+    } else {
+      mainVideo.removeAttribute('poster');
+    }
   }
   const fitLabel = document.getElementById('lsFitLabel');
   if (fitLabel) fitLabel.innerText = 'Fit';
@@ -4254,17 +4258,55 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     };
     safeTriggerPlay();
 
-    const onStreamReady = () => {
+    // Fail-Safe Watchdog: If direct /api/moviebox/stream buffering takes > 2.5s, fetch json=1 and play via /api/stream proxy
+    let fallbackSwitched = false;
+    const doProxyFallback = () => {
+      if (fallbackSwitched) return;
+      fallbackSwitched = true;
+      fetch(jsonUrl, { cache: 'no-store' })
+        .then(r => r.json())
+        .then(data => {
+          if (data && data.streamUrl && videoPlayer && (!videoPlayer.currentTime || videoPlayer.currentTime < 0.1)) {
+            console.log('⚡ Switching to direct stream proxy fallback:', data.streamUrl);
+            videoPlayer.src = data.streamUrl;
+            videoPlayer.load();
+            videoPlayer.play().catch(() => {});
+          }
+        })
+        .catch(() => {});
+    };
+
+    const watchdogTimer = setTimeout(() => {
+      if (videoPlayer && (!videoPlayer.currentTime || videoPlayer.currentTime < 0.1) && videoPlayer.readyState < 2) {
+        console.warn('MovieBox stream buffering watchdog fired, switching to proxy fallback...');
+        doProxyFallback();
+      }
+    }, 2500);
+
+    const cancelWatchdog = () => {
+      clearTimeout(watchdogTimer);
+      videoPlayer.removeEventListener('playing', cancelWatchdog);
+      videoPlayer.removeEventListener('timeupdate', cancelWatchdog);
+    };
+    videoPlayer.addEventListener('playing', cancelWatchdog, { once: true });
+    videoPlayer.addEventListener('timeupdate', cancelWatchdog, { once: true });
+    videoPlayer.addEventListener('error', doProxyFallback, { once: true });
+
+    // Dismiss loader ONLY when actual video frames are rendering (currentTime > 0.05 or playing)
+    const onFrameMoving = () => {
+      if (videoPlayer.currentTime > 0.05) {
+        if (typeof hideConnectingLoader === 'function') hideConnectingLoader(true);
+        if (loader) loader.classList.remove('active');
+        videoPlayer.removeEventListener('timeupdate', onFrameMoving);
+      }
+    };
+    videoPlayer.addEventListener('timeupdate', onFrameMoving);
+    videoPlayer.addEventListener('playing', () => {
       safeTriggerPlay();
       if (typeof hideConnectingLoader === 'function') hideConnectingLoader(true);
       if (loader) loader.classList.remove('active');
-    };
-    videoPlayer.addEventListener('canplay', onStreamReady, { once: true });
-    videoPlayer.addEventListener('loadeddata', onStreamReady, { once: true });
-    videoPlayer.addEventListener('playing', () => {
-      if (typeof hideConnectingLoader === 'function') hideConnectingLoader(true);
-      if (loader) loader.classList.remove('active');
     }, { once: true });
+    videoPlayer.addEventListener('canplay', safeTriggerPlay, { once: true });
 
     if (seekTime && seekTime > 0) {
       appState.pendingSeekTime = seekTime;
@@ -4671,6 +4713,12 @@ function togglePlayerLock() {
 function togglePlayPauseVideo() {
   const video = document.getElementById('mainVideoPlayer');
   if (!video) return;
+  // If video metadata is still loading (readyState < 2), do not pause! Trigger play.
+  if (video.readyState < 2 && !video.paused) {
+    video.play().catch(() => {});
+    syncPlayPauseIcons();
+    return;
+  }
   if (video.paused) {
     video.play().catch(() => {});
   } else {
@@ -4687,7 +4735,8 @@ function syncPlayPauseIcons() {
   const ptIcon = document.getElementById('portraitPlayIcon');
   if (!video) return;
 
-  const isPaused = video.paused;
+  const isBuffering = (video.readyState < 3 && !video.paused && (!video.currentTime || video.currentTime < 0.1));
+  const isPaused = video.paused || isBuffering;
   const iconClass = isPaused ? 'fa-solid fa-play' : 'fa-solid fa-pause';
   if (centerIcon) centerIcon.className = iconClass;
   if (bottomIcon) bottomIcon.className = iconClass;

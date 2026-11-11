@@ -974,6 +974,11 @@ public class MainActivity extends BridgeActivity {
             webView.addJavascriptInterface(new WebAppInterface(), "AndroidApp");
             webView.addJavascriptInterface(new WebAppInterface(), "AndroidBridge");
 
+            if (customChromeClient == null) {
+                customChromeClient = new FullscreenWebChromeClient(getBridge());
+            }
+            webView.setWebChromeClient(customChromeClient);
+
             if (nativeDownloadManager != null) {
                 nativeDownloadManager.bindWebView(webView);
             }
