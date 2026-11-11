@@ -1,17 +1,17 @@
-// FOBS TV Live OTA Patch Bundle v1.6.0 (Universal Zero-Expire Token Engine, Instant Iframe Embed & Default Bangla Subtitles)
-// 1. Universal Zero-Expire Token Engine: Eliminates 403 CDN token expiration with preemptive epoch calculation and transparent retry
-// 2. Instant Iframe Embed Router: Correctly routes VidLink, MultiEmbed, VidSrc directly to iframe player without <video> conflicts
-// 3. Dynamic Stream Auto-Renew: Automatically routes all static/expired CDN links through zero-redirect dynamic stream resolver
-// 4. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
-// 5. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
-// 6. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
-// 7. Universal Local SRT Upload: Multi-encoding auto-detection (UTF-8, UTF-16 LE, ANSI) & Android system file picker support
-// 8. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
-// 9. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
+// FOBS TV Live OTA Patch Bundle v1.6.1 (Unified #020c1c Video Player & Intro Background, Zero-Expire Token Engine)
+// 1. Unified Background (#020c1c): Intro splash and app video player top/bottom letterbox now share the exact same #020c1c color
+// 2. Universal Zero-Expire Token Engine: Eliminates 403 CDN token expiration with preemptive epoch calculation and transparent retry
+// 3. Instant Iframe Embed Router: Correctly routes VidLink, MultiEmbed, VidSrc directly to iframe player without <video> conflicts
+// 4. Dynamic Stream Auto-Renew: Automatically routes all static/expired CDN links through zero-redirect dynamic stream resolver
+// 5. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
+// 6. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
+// 7. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
+// 8. Universal Local SRT Upload: Multi-encoding auto-detection (UTF-8, UTF-16 LE, ANSI) & Android system file picker support
+// 9. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
 // 10. Self-Healing Playback Engine: Automatic silent token refresh on CDN 403 or pause expiration with 100% watch-time preservation
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.6.0 (Universal Zero-Expire Token & Playback Engine) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.6.0';
+  console.log('⚡ FOBS TV Live Patch v1.6.1 (Unified #020c1c Player & Zero-Expire Token Engine) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.6.1';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -22,7 +22,7 @@
         window.appState = appState;
         return appState.currentMedia;
       }
-    } catch (e) {}
+    } catch (e) { }
     return window.appState?.currentMedia || window.currentMedia || null;
   }
 
@@ -32,7 +32,7 @@
         window.appState = appState;
         return appState;
       }
-    } catch (e) {}
+    } catch (e) { }
     return window.appState || null;
   }
 
@@ -40,10 +40,10 @@
     if (typeof window.API_BASE_URL === 'string' && window.API_BASE_URL) {
       return window.API_BASE_URL;
     }
-    const isCustomLocalPort = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && 
-                              window.location.port && 
-                              window.location.port !== '80' && 
-                              window.location.port !== '443';
+    const isCustomLocalPort = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
+      window.location.port &&
+      window.location.port !== '80' &&
+      window.location.port !== '443';
     if (isCustomLocalPort) {
       return '';
     }
@@ -69,8 +69,11 @@
     const style = document.createElement('style');
     style.id = 'fobs-connecting-overlay-style';
     style.textContent = `
+      #mainVideoPlayer, video, .video-container, .player-view-overlay.open {
+        background: #020c1c !important;
+        background-color: #020c1c !important;
+      }
       #mainVideoPlayer, video {
-        background: #000 !important;
         object-fit: contain !important;
       }
       #mainVideoPlayer::-webkit-media-controls-start-playback-button,
@@ -165,7 +168,7 @@
           if (p && typeof p.catch === 'function') {
             p.catch(() => {
               vp.muted = true;
-              vp.play().catch(() => {});
+              vp.play().catch(() => { });
             });
           }
         }
@@ -209,7 +212,7 @@
           if (p && typeof p.catch === 'function') {
             p.catch(() => {
               videoEl.muted = true;
-              videoEl.play().catch(() => {});
+              videoEl.play().catch(() => { });
             });
           }
         }
@@ -362,7 +365,7 @@
       if (wasPlaying) {
         const p = video.play();
         if (p && typeof p.catch === 'function') {
-          p.catch(() => {});
+          p.catch(() => { });
         }
       }
     };
@@ -377,7 +380,7 @@
           try {
             const nudge = Math.min(totalDur > 1 ? totalDur - 0.2 : totalDur, safeTarget + 0.05);
             video.currentTime = nudge;
-          } catch(e) {}
+          } catch (e) { }
         }
         finishSeek();
       }
@@ -394,7 +397,7 @@
       console.warn('Offline fastSeek fallback:', e);
       try {
         video.currentTime = safeTarget;
-      } catch (e2) {}
+      } catch (e2) { }
       finishSeek();
     }
   }
@@ -405,7 +408,7 @@
     ? window.seekToAbsoluteTime
     : null;
 
-  window.seekToAbsoluteTime = function(targetSeconds) {
+  window.seekToAbsoluteTime = function (targetSeconds) {
     const video = document.getElementById('mainVideoPlayer');
     if (video && isOfflinePlayback(video)) {
       handleLiveOfflineSeek(video, targetSeconds, !video.paused);
@@ -415,7 +418,7 @@
       return origSeekToAbsoluteTime(targetSeconds);
     }
     if (video) {
-      try { video.currentTime = targetSeconds; video.play().catch(() => {}); } catch(e) {}
+      try { video.currentTime = targetSeconds; video.play().catch(() => { }); } catch (e) { }
     }
   };
   window.seekToAbsoluteTime._isFobsHook = true;
@@ -460,15 +463,15 @@
       .then(data => {
         if (data && data.streamUrl) {
           // Pre-warm upstream TCP/TLS socket and moov atom cache with a tiny 32KB range probe
-          fetch(data.streamUrl, { headers: { Range: 'bytes=0-32767' }, priority: 'low' }).catch(() => {});
+          fetch(data.streamUrl, { headers: { Range: 'bytes=0-32767' }, priority: 'low' }).catch(() => { });
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }
   window.prefetchStream = prefetchStream;
 
   // Universal Instant Stream Resolver: Ensures 480p SD default & auto-renewing stream endpoints
-  window.getActiveEpisodeStream = function(ep, audioTrack) {
+  window.getActiveEpisodeStream = function (ep, audioTrack) {
     if (!ep) return '';
     const m = getActiveMedia();
     const isMovie = m?.type === 'movie' || (!m?.seasons && !m?.episodes);
@@ -525,7 +528,7 @@
   }
   const basePlayStreamUrl = window._fobsOriginalPlayStreamUrl || (typeof window.playStreamUrl === 'function' && !window.playStreamUrl._isFobsHook ? window.playStreamUrl : null);
 
-  const fobsPlayStreamHook = function(url, audioIndex = null, seekTime = null) {
+  const fobsPlayStreamHook = function (url, audioIndex = null, seekTime = null) {
     // 0. Iframe Embed Router: Directly hand off dedicated embed providers without touching HTML5 video player
     const isIframeProvider = (u) => typeof u === 'string' && (
       u.includes('vidlink.pro') ||
@@ -609,14 +612,14 @@
                 vp.removeEventListener('loadedmetadata', onCanPlay);
                 try {
                   if (resumeTime > 0) vp.currentTime = resumeTime;
-                } catch (e) {}
-                vp.play().catch(() => {});
+                } catch (e) { }
+                vp.play().catch(() => { });
                 hideConnectingLoader();
               };
               vp.addEventListener('canplay', onCanPlay, { once: true });
               vp.addEventListener('loadedmetadata', onCanPlay, { once: true });
               vp.load();
-              vp.play().catch(() => {});
+              vp.play().catch(() => { });
             }
           })
           .catch(err => {
@@ -672,7 +675,7 @@
       if (playP && typeof playP.catch === 'function') {
         playP.catch(() => {
           vp.muted = true;
-          vp.play().catch(() => {});
+          vp.play().catch(() => { });
         });
       }
     }
@@ -683,10 +686,10 @@
   // Safe Play/Pause: Prevent accidental pause while video is still buffering (readyState < 2)
   if (typeof window.togglePlayPauseVideo === 'function' && !window.togglePlayPauseVideo._isSafeHook) {
     const origToggle = window.togglePlayPauseVideo;
-    window.togglePlayPauseVideo = function() {
+    window.togglePlayPauseVideo = function () {
       const video = document.getElementById('mainVideoPlayer');
       if (video && video.readyState < 2 && !video.paused) {
-        video.play().catch(() => {});
+        video.play().catch(() => { });
         if (typeof window.syncPlayPauseIcons === 'function') window.syncPlayPauseIcons();
         return;
       }
@@ -698,7 +701,7 @@
   // Buffering-aware Play/Pause Icon Synchronization
   if (typeof window.syncPlayPauseIcons === 'function' && !window.syncPlayPauseIcons._isBufferingAware) {
     const origSync = window.syncPlayPauseIcons;
-    window.syncPlayPauseIcons = function() {
+    window.syncPlayPauseIcons = function () {
       const video = document.getElementById('mainVideoPlayer');
       const ptIcon = document.getElementById('portraitPlayIcon');
       const centerIcon = document.getElementById('lsCenterPlayIcon');
@@ -723,7 +726,7 @@
   }
   const baseOpenPlayer = window._fobsOriginalOpenPlayer || window.openPlayer;
 
-  window.openPlayer = function(media, episodeIndex = null, resumeSeekTime = null) {
+  window.openPlayer = function (media, episodeIndex = null, resumeSeekTime = null) {
     const vp = document.getElementById('mainVideoPlayer');
     if (vp) {
       vp.preload = 'auto';
@@ -769,14 +772,14 @@
   }
   const baseOpenPlayerById = window._fobsOriginalOpenPlayerById || (typeof window.openPlayerById === 'function' && !window.openPlayerById._hasFobsHook ? window.openPlayerById : null);
 
-  window.openPlayerById = function(type, id) {
+  window.openPlayerById = function (type, id) {
     showConnectingLoader();
     if (id) {
       const isSer = (type === 'series');
       const found = findMediaInCatalog(id, type);
       prefetchStream(found || { id, type: isSer ? 'series' : 'movie' }, isSer ? 1 : 0, isSer ? 1 : 0);
     }
-    
+
     try {
       const activeBase = window._fobsOriginalOpenPlayerById || baseOpenPlayerById;
       if (typeof activeBase === 'function') {
@@ -818,7 +821,7 @@
   window.openPlayerById._hasFobsHook = true;
 
   // Safe Watch History Resume: Accurate season/episode, no tab conflict, no modal freeze
-  window.resumeHistoryItem = function(mediaId, type, resumeSeconds) {
+  window.resumeHistoryItem = function (mediaId, type, resumeSeconds) {
     const overlay = document.getElementById('historyModalOverlay');
     if (overlay) {
       overlay.classList.remove('open');
@@ -828,7 +831,7 @@
     if (menu) menu.classList.add('hidden');
 
     let rawHist = [];
-    try { rawHist = JSON.parse(localStorage.getItem('fobs_watch_history') || '[]'); } catch (_) {}
+    try { rawHist = JSON.parse(localStorage.getItem('fobs_watch_history') || '[]'); } catch (_) { }
     const histList = (typeof currentUser !== 'undefined' && currentUser && Array.isArray(window.userHistory) && window.userHistory.length > 0) ? window.userHistory : rawHist;
     const targetId = String(mediaId || '').trim();
     const hist = histList.find(h => {
@@ -891,7 +894,7 @@
     }
   };
 
-  window.closeHistoryModal = function(e) {
+  window.closeHistoryModal = function (e) {
     if (e && e.target !== document.getElementById('historyModalOverlay') && !e.target.closest('.sheet-close-btn') && !e.target.closest('.mb-page-back-btn')) {
       return;
     }
@@ -905,7 +908,7 @@
   // Hook selectEpisode
   if (typeof window.selectEpisode === 'function' && !window.selectEpisode._hasLoaderHook) {
     const prevSelectEp = window.selectEpisode;
-    window.selectEpisode = function(idx) {
+    window.selectEpisode = function (idx) {
       showConnectingLoader();
       const vp = document.getElementById('mainVideoPlayer');
       if (vp) vp.preload = 'auto';
@@ -917,7 +920,7 @@
   // -------------------------------------------------------------
   // Fast Online Quality Switcher with Seek Preservation (Instant Sub-second switch)
   // -------------------------------------------------------------
-  window.selectVideoQuality = function(quality, isSilent = false) {
+  window.selectVideoQuality = function (quality, isSilent = false) {
     try {
       const state = getAppState() || window.appState || {};
       const targetQ = (quality || '480p').toLowerCase();
@@ -998,7 +1001,7 @@
           window.playStreamUrl(targetStreamUrl, null, seekPos);
         } else {
           videoPlayer.src = targetStreamUrl;
-          try { videoPlayer.load(); } catch (e) {}
+          try { videoPlayer.load(); } catch (e) { }
           const applySeek = () => {
             try {
               if (videoPlayer.duration && videoPlayer.duration > 1) {
@@ -1006,8 +1009,8 @@
               } else {
                 videoPlayer.currentTime = seekPos;
               }
-            } catch(e) {}
-            if (!isPaused) videoPlayer.play().catch(() => {});
+            } catch (e) { }
+            if (!isPaused) videoPlayer.play().catch(() => { });
             if (typeof hideConnectingLoader === 'function') hideConnectingLoader(true);
           };
           videoPlayer.addEventListener('loadedmetadata', applySeek, { once: true });
@@ -1015,7 +1018,7 @@
         }
 
         if (!isPaused) {
-          setTimeout(() => { videoPlayer.play().catch(() => {}); }, 150);
+          setTimeout(() => { videoPlayer.play().catch(() => { }); }, 150);
         }
       }
 
@@ -1028,7 +1031,7 @@
   };
   window.selectVideoQuality._hasLoaderHook = true;
 
-  window.setLandscapeQuality = function(quality) {
+  window.setLandscapeQuality = function (quality) {
     if (typeof window.selectVideoQuality === 'function') {
       window.selectVideoQuality(quality);
     }
@@ -1040,7 +1043,7 @@
   // Dynamic Quality Sheet: ONLY show available resolutions! (jei resolution nai sei resolution video te show koraiyo na)
   // -------------------------------------------------------------
   const origOpenQualitySheet = window.openQualitySheet;
-  window.openQualitySheet = function() {
+  window.openQualitySheet = function () {
     const state = getAppState();
     const curQ = parseInt(state?.currentQuality || '480', 10);
     const avail = state?.availableQualities || window.appState?.availableQualities || [];
@@ -1100,7 +1103,7 @@
   }
 
   // Override window.renderEpisodePills to always render all episodes serially for online watch
-  window.renderEpisodePills = function(episodes, activeIndex) {
+  window.renderEpisodePills = function (episodes, activeIndex) {
     stripVideoPoster();
     const row = document.getElementById('episodesListRow');
     if (!row) return;
@@ -1108,18 +1111,18 @@
     row.innerHTML = `
       <button class="ep-pill ep-all">All</button>
       ${episodes.map((ep, idx) => {
-        const rawNum = ep ? (ep.number ?? ep.episodeNumber ?? ep.episode ?? (idx + 1)) : (idx + 1);
-        const isBad = rawNum === undefined || rawNum === null || String(rawNum).trim() === '' || String(rawNum).toLowerCase() === 'undefined';
-        const cleanNum = isBad ? (idx + 1) : rawNum;
-        const formatted = typeof cleanNum === 'number'
-          ? (cleanNum < 10 ? '0' + cleanNum : String(cleanNum))
-          : String(cleanNum).replace(/^ep\s*/i, '').padStart(2, '0');
-        return `
+      const rawNum = ep ? (ep.number ?? ep.episodeNumber ?? ep.episode ?? (idx + 1)) : (idx + 1);
+      const isBad = rawNum === undefined || rawNum === null || String(rawNum).trim() === '' || String(rawNum).toLowerCase() === 'undefined';
+      const cleanNum = isBad ? (idx + 1) : rawNum;
+      const formatted = typeof cleanNum === 'number'
+        ? (cleanNum < 10 ? '0' + cleanNum : String(cleanNum))
+        : String(cleanNum).replace(/^ep\s*/i, '').padStart(2, '0');
+      return `
           <button class="ep-pill ${idx === activeIndex ? 'active' : ''}" onclick="selectEpisode(${idx})">
             ${formatted}
           </button>
         `;
-      }).join('')}
+    }).join('')}
     `;
   };
 
@@ -1215,7 +1218,7 @@
   // -------------------------------------------------------------
   // 3. Render Batch Episodes/Movie List inside Download Modal
   // -------------------------------------------------------------
-  window.renderBatchEpisodesList = function(seasonNum) {
+  window.renderBatchEpisodesList = function (seasonNum) {
     const media = getActiveMedia();
     if (!media) return;
 
@@ -1279,7 +1282,7 @@
       let match = null;
       if (info && Array.isArray(info.qualities) && info.qualities.length > 0) {
         match = info.qualities.find(q => q.resolution === qNum)
-             || (qNum === 480 ? info.qualities.find(q => q.resolution === 360) : null);
+          || (qNum === 480 ? info.qualities.find(q => q.resolution === 360) : null);
         if (!match) {
           const sorted = [...info.qualities].sort((a, b) => Math.abs((a.resolution || 720) - qNum) - Math.abs((b.resolution || 720) - qNum));
           match = sorted[0];
@@ -1383,7 +1386,7 @@
       let match = null;
       if (hasAnyQualityInfo) {
         match = info.qualities.find(q => parseInt(q.resolution, 10) === qNum)
-             || (qNum === 480 ? info.qualities.find(q => parseInt(q.resolution, 10) === 360) : null);
+          || (qNum === 480 ? info.qualities.find(q => parseInt(q.resolution, 10) === 360) : null);
         if (!match) {
           const sorted = [...info.qualities].sort((a, b) => Math.abs((parseInt(a.resolution, 10) || 720) - qNum) - Math.abs((parseInt(b.resolution, 10) || 720) - qNum));
           match = sorted[0];
@@ -1431,7 +1434,7 @@
   window.filterDownloadEpisodesModal = filterDownloadEpisodesModal;
 
   // Toggle Individual Episode Selection
-  window.toggleBatchEpisode = function(index, ev) {
+  window.toggleBatchEpisode = function (index, ev) {
     const itemEl = document.getElementById(`dl_ep_item_${index}`);
     const batchState = getAppState()?._batchDownload;
     if (!batchState || !batchState.selected) return;
@@ -1467,7 +1470,7 @@
   };
 
   // Toggle Select All Episodes
-  window.toggleSelectAllEpisodes = function(checked) {
+  window.toggleSelectAllEpisodes = function (checked) {
     const batchState = getAppState()?._batchDownload;
     if (!batchState || !batchState.episodes) return;
 
@@ -1494,7 +1497,7 @@
   // 5. Override triggerDownload to unify Movies and Series UI
   // -------------------------------------------------------------
   const origTriggerDownload = window.triggerDownload;
-  window.triggerDownload = function() {
+  window.triggerDownload = function () {
     const media = getActiveMedia();
     if (!media) {
       if (typeof origTriggerDownload === 'function') origTriggerDownload();
@@ -1530,7 +1533,7 @@
   // -------------------------------------------------------------
   // 6. Hook Quality Selection in Download Modal (480P, 720P, 1080P)
   // -------------------------------------------------------------
-  window.switchBatchQuality = function(quality) {
+  window.switchBatchQuality = function (quality) {
     window.currentDownloadQuality = quality || '480P';
     document.querySelectorAll('#dlQualityTabs .dl-q-tab').forEach(tab => {
       tab.classList.toggle('active', tab.getAttribute('data-quality') === window.currentDownloadQuality);
@@ -1551,7 +1554,7 @@
   // -------------------------------------------------------------
   // 7. Update Selected Summary & Download Button Text
   // -------------------------------------------------------------
-  window.updateBatchSelectedSummary = function() {
+  window.updateBatchSelectedSummary = function () {
     const batchState = getAppState()?._batchDownload;
     const summaryEl = document.getElementById('dlSelectedSummary');
     const btnText = document.getElementById('btnStartDownloadText');
@@ -1600,7 +1603,7 @@
   // -------------------------------------------------------------
   // 8. Confirm Download (Handles Movies and Series with Fresh Token & Batch Queue)
   // -------------------------------------------------------------
-  window.confirmBatchDownload = function() {
+  window.confirmBatchDownload = function () {
     const media = getActiveMedia();
     if (!media) {
       if (typeof window.closeDownloadOptionsModal === 'function') window.closeDownloadOptionsModal();
@@ -1842,14 +1845,14 @@
             prefetchStream(found || { id: cardId, type: cardType }, cardType === 'series' ? 1 : 0, cardType === 'series' ? 1 : 0);
           }
         }
-      } catch (_) {}
+      } catch (_) { }
     }
   }, true);
 
   // -------------------------------------------------------------
   // 10. Auto-Repair Clamped Fake 140MB in Active UI & LocalStorage
   // -------------------------------------------------------------
-  window.updateDownloadProgress = function(id, percent, sizeText = '') {
+  window.updateDownloadProgress = function (id, percent, sizeText = '') {
     const bar = document.getElementById(`dl_progress_${id}`);
     const text = document.getElementById(`dl_status_${id}`);
 
@@ -1915,7 +1918,7 @@
           window.renderDownloadsList();
         }
       }
-    } catch (e) {}
+    } catch (e) { }
   }
 
   // -------------------------------------------------------------
@@ -2021,9 +2024,9 @@
   // Hook pauseDownload & resumeDownload for instant, zero-delay UI response
   if (typeof window.pauseDownload === 'function' && !window.pauseDownload._hasPatchHook) {
     const origPause = window.pauseDownload;
-    window.pauseDownload = function(id, e) {
+    window.pauseDownload = function (id, e) {
       if (e) {
-        try { e.stopPropagation(); e.preventDefault(); } catch (_) {}
+        try { e.stopPropagation(); e.preventDefault(); } catch (_) { }
       }
       const activeTasks = window.activeDownloadTasks || {};
       const task = activeTasks[id];
@@ -2031,10 +2034,10 @@
         task.isPaused = true;
         task.isDownloading = false;
         if (task.reader) {
-          try { task.reader.cancel('paused'); } catch (_) {}
+          try { task.reader.cancel('paused'); } catch (_) { }
         }
         if (task.controller) {
-          try { task.controller.abort(); } catch (_) {}
+          try { task.controller.abort(); } catch (_) { }
         }
       }
       const downloads = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : [];
@@ -2045,7 +2048,7 @@
         item.failed = false;
         item._lastActivity = Date.now();
         item.statusText = `Paused (${item.progress || 0}%)`;
-        try { localStorage.setItem('fobs_downloads', JSON.stringify(downloads)); } catch (_) {}
+        try { localStorage.setItem('fobs_downloads', JSON.stringify(downloads)); } catch (_) { }
       }
       if (typeof renderDownloadsList === 'function') renderDownloadsList();
       if (typeof showToast === 'function') showToast('⏸️ ডাউনলোড পজ করা হয়েছে');
@@ -2056,9 +2059,9 @@
 
   if (typeof window.resumeDownload === 'function' && !window.resumeDownload._hasPatchHook) {
     const origResume = window.resumeDownload;
-    window.resumeDownload = function(id, e) {
+    window.resumeDownload = function (id, e) {
       if (e) {
-        try { e.stopPropagation(); e.preventDefault(); } catch (_) {}
+        try { e.stopPropagation(); e.preventDefault(); } catch (_) { }
       }
       const activeTasks = window.activeDownloadTasks || {};
       if (activeTasks[id]) {
@@ -2074,7 +2077,7 @@
         item._lastActivity = Date.now();
         const currentQuality = item.quality || item.options?.quality || '480P';
         item.statusText = item.progress > 0 ? `Resuming ${currentQuality} (${item.progress}%)...` : `Connecting ${currentQuality}...`;
-        try { localStorage.setItem('fobs_downloads', JSON.stringify(downloads)); } catch (_) {}
+        try { localStorage.setItem('fobs_downloads', JSON.stringify(downloads)); } catch (_) { }
       }
       if (typeof renderDownloadsList === 'function') renderDownloadsList();
       return origResume(id, e);
@@ -2085,7 +2088,7 @@
   // Hook retryDownload to auto-repair stale / broken item urls before retrying
   if (typeof window.retryDownload === 'function' && !window.retryDownload._hasRepairHook) {
     const origRetryDownload = window.retryDownload;
-    window.retryDownload = function(id, e) {
+    window.retryDownload = function (id, e) {
       repairStuckDownloads();
       if (window.activeDownloadTasks && window.activeDownloadTasks[id]) {
         window.activeDownloadTasks[id]._autoRetries = 0;
@@ -2183,7 +2186,7 @@
   }
 
   // Full standalone override of playDownloadedMedia with robust offline playback & dual subtitles
-  window.playDownloadedMedia = async function(id) {
+  window.playDownloadedMedia = async function (id) {
     if (typeof closeDownloadsView === 'function') closeDownloadsView();
 
     const cOverlay = document.getElementById('fobsConnectingOverlay');
@@ -2206,7 +2209,7 @@
       try {
         nativeBnSub = window.AndroidApp.getLocalSubtitle(id, 'bn') || '';
         nativeEnSub = window.AndroidApp.getLocalSubtitle(id, 'en') || '';
-      } catch (_) {}
+      } catch (_) { }
     }
 
     let offlineItem = await findOfflineMediaRecord(id, storedItem);
@@ -2217,7 +2220,7 @@
 
     let videoBlob = offlineItem ? (offlineItem.videoBlob || offlineItem.chunks || offlineItem.blob) : null;
     if (videoBlob && !(videoBlob instanceof Blob)) {
-      try { videoBlob = new Blob([videoBlob], { type: 'video/mp4' }); } catch(_) { videoBlob = null; }
+      try { videoBlob = new Blob([videoBlob], { type: 'video/mp4' }); } catch (_) { videoBlob = null; }
     }
 
     const videoPlayer = document.getElementById('mainVideoPlayer');
@@ -2232,7 +2235,7 @@
 
     if (!videoUrl && offlineItem && videoBlob) {
       if (window._currentOfflineBlobUrl) {
-        try { URL.revokeObjectURL(window._currentOfflineBlobUrl); } catch (_) {}
+        try { URL.revokeObjectURL(window._currentOfflineBlobUrl); } catch (_) { }
       }
       videoUrl = URL.createObjectURL(videoBlob);
       window._currentOfflineBlobUrl = videoUrl;
@@ -2284,7 +2287,7 @@
       }
 
       if (window.activeHlsPlayer) {
-        try { window.activeHlsPlayer.destroy(); } catch (_) {}
+        try { window.activeHlsPlayer.destroy(); } catch (_) { }
         window.activeHlsPlayer = null;
       }
       if (window.videoStreamColdStartTimer) {
@@ -2328,14 +2331,14 @@
             resumeSeekTime = savedOffline.progressSeconds;
           }
         }
-      } catch (_) {}
+      } catch (_) { }
 
       if (resumeSeekTime > 0) {
         videoPlayer.addEventListener('canplay', () => {
           try {
             const dur = videoPlayer.duration || (resumeSeekTime + 10);
             videoPlayer.currentTime = Math.max(0, Math.min(dur > 1 ? dur - 1 : dur, resumeSeekTime));
-          } catch (_) {}
+          } catch (_) { }
         }, { once: true });
       }
 
@@ -2462,7 +2465,7 @@
         videoPlayer.style.display = 'block';
         videoPlayer.src = streamUrl;
         videoPlayer.load();
-        videoPlayer.play().catch(() => {});
+        videoPlayer.play().catch(() => { });
 
         playerOverlay.style.setProperty('display', 'flex', 'important');
         playerOverlay.classList.add('open');
@@ -2479,7 +2482,7 @@
   window.playDownloadedMedia._hasEnhancedHook = true;
 
   // Native MovieBox Downloader Callbacks
-  window.onNativeDownloadProgress = function(id, percent, downloadedBytes, totalBytes) {
+  window.onNativeDownloadProgress = function (id, percent, downloadedBytes, totalBytes) {
     const downMb = (downloadedBytes / (1024 * 1024)).toFixed(1);
     const totMb = totalBytes > 0 ? (totalBytes / (1024 * 1024)).toFixed(1) : '?';
     const sizeText = `${downMb} MB / ${totMb} MB`;
@@ -2496,13 +2499,13 @@
         item._lastActivity = Date.now();
         localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
       }
-    } catch (_) {}
+    } catch (_) { }
     if (typeof window.updateDownloadProgress === 'function') {
       window.updateDownloadProgress(id, percent, sizeText);
     }
   };
 
-  window.onNativeDownloadComplete = function(id) {
+  window.onNativeDownloadComplete = function (id) {
     try {
       const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
       const item = downloads.find(d => d && (d.id === id || String(id).includes(d.id)));
@@ -2515,7 +2518,7 @@
         item._lastActivity = Date.now();
         localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
       }
-    } catch (_) {}
+    } catch (_) { }
     if (typeof window.renderDownloadsList === 'function') window.renderDownloadsList();
     if (typeof showToast === 'function') showToast('🎬 ডাউনলোড সম্পন্ন হয়েছে! অফলাইনে প্লে করতে ক্লিক করুন');
     if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
@@ -2523,7 +2526,7 @@
     }
   };
 
-  window.onNativeDownloadPaused = function(id) {
+  window.onNativeDownloadPaused = function (id) {
     try {
       const downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
       const item = downloads.find(d => d && (d.id === id || String(id).includes(d.id)));
@@ -2534,19 +2537,19 @@
         item._lastActivity = Date.now();
         localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
       }
-    } catch (_) {}
+    } catch (_) { }
     if (typeof window.renderDownloadsList === 'function') window.renderDownloadsList();
     if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
       setTimeout(() => window.fobsDownloadQueue.processNext(), 350);
     }
   };
 
-  window.onNativeDownloadDeleted = function(id) {
+  window.onNativeDownloadDeleted = function (id) {
     try {
       let downloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
       downloads = downloads.filter(d => d && d.id !== id && !String(id).includes(d.id));
       localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
-    } catch (_) {}
+    } catch (_) { }
     if (typeof window.renderDownloadsList === 'function') window.renderDownloadsList();
     if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
       setTimeout(() => window.fobsDownloadQueue.processNext(), 350);
@@ -2554,9 +2557,9 @@
   };
 
   // Hook pause/resume/delete for Native Downloader
-  window.pauseDownload = async function(id, e) {
+  window.pauseDownload = async function (id, e) {
     if (e) {
-      try { e.stopPropagation(); e.preventDefault(); } catch (_) {}
+      try { e.stopPropagation(); e.preventDefault(); } catch (_) { }
     }
     try {
       const downloads = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
@@ -2569,11 +2572,11 @@
         item.statusText = `Paused (${item.progress || 0}%)`;
         localStorage.setItem('fobs_downloads', JSON.stringify(downloads));
       }
-    } catch (_) {}
+    } catch (_) { }
     if (typeof window.renderDownloadsList === 'function') window.renderDownloadsList();
 
     if (window.AndroidApp && typeof window.AndroidApp.pauseNativeDownload === 'function') {
-      try { window.AndroidApp.pauseNativeDownload(id); } catch (_) {}
+      try { window.AndroidApp.pauseNativeDownload(id); } catch (_) { }
     }
 
     const activeTasks = window.activeDownloadTasks || {};
@@ -2581,8 +2584,8 @@
     if (task) {
       task.isPaused = true;
       task.isDownloading = false;
-      if (task.reader) { try { task.reader.cancel('paused'); } catch (_) {} }
-      if (task.controller) { try { task.controller.abort(); } catch (_) {} }
+      if (task.reader) { try { task.reader.cancel('paused'); } catch (_) { } }
+      if (task.controller) { try { task.controller.abort(); } catch (_) { } }
     }
 
     if (typeof releaseWakeLockIfNoActiveDownloads === 'function') releaseWakeLockIfNoActiveDownloads();
@@ -2593,9 +2596,9 @@
     }
   };
 
-  window.resumeDownload = async function(id, e) {
+  window.resumeDownload = async function (id, e) {
     if (e) {
-      try { e.stopPropagation(); e.preventDefault(); } catch (_) {}
+      try { e.stopPropagation(); e.preventDefault(); } catch (_) { }
     }
     const downloads = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
     const item = downloads.find(d => d && (d.id === id || String(id).includes(d.id)));
@@ -2627,9 +2630,9 @@
   };
 
   const origDelete = window.deleteDownload;
-  window.deleteDownload = function(id, e) {
+  window.deleteDownload = function (id, e) {
     if (window.AndroidApp && typeof window.AndroidApp.deleteNativeDownload === 'function') {
-      try { window.AndroidApp.deleteNativeDownload(id); } catch (_) {}
+      try { window.AndroidApp.deleteNativeDownload(id); } catch (_) { }
     }
     if (typeof origDelete === 'function') origDelete(id, e);
   };
@@ -2637,7 +2640,7 @@
   // Hook window.downloadMedia to route to MovieBox Native Downloader when available
   if (typeof window.downloadMedia === 'function' && !window.downloadMedia._hasCleanHook) {
     const origDownloadMedia = window.downloadMedia;
-    window.downloadMedia = function(url, title, options = {}, resumeExistingId = null) {
+    window.downloadMedia = function (url, title, options = {}, resumeExistingId = null) {
       const apiBase = getApiBaseUrl();
       let cleanUrl = url;
       if (cleanUrl && cleanUrl.startsWith('/api/')) {
@@ -2767,7 +2770,7 @@
   // Hook fobsDownloadQueue for bulletproof sequential downloading
   if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
     const origQueueProcessNext = window.fobsDownloadQueue.processNext.bind(window.fobsDownloadQueue);
-    window.fobsDownloadQueue.processNext = async function() {
+    window.fobsDownloadQueue.processNext = async function () {
       const now = Date.now();
       const activeTasks = window.activeDownloadTasks || {};
       const isAnyActive = Object.values(activeTasks).some(t => t && t.isDownloading && !t.isPaused);
@@ -2800,12 +2803,12 @@
           closePlayer();
         }
       }
-    } catch (_) {}
+    } catch (_) { }
   }
   window.stopBackgroundMedia = stopBackgroundMedia;
 
   const origOpenDownloadsView = window.openDownloadsView;
-  window.openDownloadsView = function() {
+  window.openDownloadsView = function () {
     stopBackgroundMedia();
     repairStuckDownloads();
     if (window.fobsDownloadQueue && typeof window.fobsDownloadQueue.processNext === 'function') {
@@ -2873,11 +2876,11 @@
     let activeVc = 0;
     let activeVn = '';
     if (window.AndroidBridge && typeof window.AndroidBridge.getAppVersionCode === 'function') {
-      try { activeVc = window.AndroidBridge.getAppVersionCode(); } catch (_) {}
-      try { activeVn = window.AndroidBridge.getAppVersionName(); } catch (_) {}
+      try { activeVc = window.AndroidBridge.getAppVersionCode(); } catch (_) { }
+      try { activeVn = window.AndroidBridge.getAppVersionName(); } catch (_) { }
     } else if (window.AndroidApp && typeof window.AndroidApp.getAppVersionCode === 'function') {
-      try { activeVc = window.AndroidApp.getAppVersionCode(); } catch (_) {}
-      try { activeVn = window.AndroidApp.getAppVersionName(); } catch (_) {}
+      try { activeVc = window.AndroidApp.getAppVersionCode(); } catch (_) { }
+      try { activeVn = window.AndroidApp.getAppVersionName(); } catch (_) { }
     } else if (typeof CURRENT_APP_VERSION_CODE !== 'undefined') {
       activeVc = CURRENT_APP_VERSION_CODE;
     }
@@ -2962,14 +2965,14 @@
       if (card && card.innerHTML && card.innerHTML.includes('3.1.3')) {
         card.innerHTML = card.innerHTML.split('3.1.3').join('3.1.8');
       }
-    } catch (_) {}
+    } catch (_) { }
   }
 
   try {
     const hideNotesStyle = document.createElement('style');
     hideNotesStyle.textContent = '.update-notes-box, #updateNotesList, .update-notes-title { display: none !important; opacity: 0 !important; visibility: hidden !important; height: 0 !important; max-height: 0 !important; pointer-events: none !important; }';
     document.head.appendChild(hideNotesStyle);
-  } catch (_) {}
+  } catch (_) { }
 
   // 16. Guarantee Intro Video Dismissal & Safe App Bootstrap on all devices (Never stuck!)
   function dismissStuckIntro() {
@@ -2981,7 +2984,7 @@
         intro.style.setProperty('visibility', 'hidden', 'important');
         intro.style.setProperty('display', 'none', 'important');
         intro.style.setProperty('pointer-events', 'none', 'important');
-        try { intro.remove(); } catch(_) {}
+        try { intro.remove(); } catch (_) { }
       }
       document.body.classList.remove('intro-active');
       document.body.style.removeProperty('overflow');
@@ -2990,31 +2993,31 @@
       document.documentElement.style.setProperty('overflow-y', 'auto', 'important');
 
       if (typeof window.finishIntroAndShowApp === 'function' && !window._introFinished) {
-        try { window.finishIntroAndShowApp(); } catch(_) {}
+        try { window.finishIntroAndShowApp(); } catch (_) { }
       }
 
       // If app views never initialized due to DOMContentLoaded race condition, bootstrap now!
       if (!window._initAppRan) {
         if (typeof window.bootstrapApp === 'function') {
-          try { window.bootstrapApp(); } catch (_) {}
+          try { window.bootstrapApp(); } catch (_) { }
         } else if (typeof window.initApp === 'function') {
-          try { window.initApp(); } catch (_) {}
+          try { window.initApp(); } catch (_) { }
         }
       }
 
       // Guarantee content is populated and views rendered
       if (window.appState && (!window.appState.content || !window.appState.content.movies || window.appState.content.movies.length === 0)) {
         if (typeof window.loadCachedContent === 'function') {
-          try { window.loadCachedContent(); } catch (_) {}
+          try { window.loadCachedContent(); } catch (_) { }
         }
         if (typeof window.renderAllViews === 'function') {
-          try { window.renderAllViews(); } catch (_) {}
+          try { window.renderAllViews(); } catch (_) { }
         }
         if (typeof window.syncContentWithBackend === 'function') {
-          try { window.syncContentWithBackend({ force: true, isBackground: true }); } catch (_) {}
+          try { window.syncContentWithBackend({ force: true, isBackground: true }); } catch (_) { }
         }
       }
-    } catch (_) {}
+    } catch (_) { }
   }
 
   // Intro plays full duration naturally (~8.8s failsafe)
@@ -3025,7 +3028,7 @@
   setInterval(cleanOldAppUpdateModal, 1000);
 
   // 17. Fix Mobile App Video Reports API endpoint
-  window.submitVideoReport = async function() {
+  window.submitVideoReport = async function () {
     const currentMedia = window.appState ? window.appState.currentMedia : null;
     const reasonRadio = document.querySelector('input[name="reportReason"]:checked');
     const reason = reasonRadio ? reasonRadio.value : 'Playback Issue';
@@ -3035,7 +3038,7 @@
     const audio = window.appState?.currentAudioTrack || 'Default';
 
     let user = {};
-    try { user = window.currentUser || JSON.parse(localStorage.getItem('fobs_user') || '{}'); } catch (_) {}
+    try { user = window.currentUser || JSON.parse(localStorage.getItem('fobs_user') || '{}'); } catch (_) { }
 
     const payload = {
       mediaId: currentMedia?.id || 'unknown',
@@ -3088,20 +3091,20 @@
       if (!buffer) return '';
       const bytes = new Uint8Array(buffer);
       if (bytes.length >= 2 && bytes[0] === 0xFF && bytes[1] === 0xFE) {
-        try { return new TextDecoder('utf-16le').decode(buffer); } catch (e) {}
+        try { return new TextDecoder('utf-16le').decode(buffer); } catch (e) { }
       }
       if (bytes.length >= 2 && bytes[0] === 0xFE && bytes[1] === 0xFF) {
-        try { return new TextDecoder('utf-16be').decode(buffer); } catch (e) {}
+        try { return new TextDecoder('utf-16be').decode(buffer); } catch (e) { }
       }
       if (bytes.length >= 3 && bytes[0] === 0xEF && bytes[1] === 0xBB && bytes[2] === 0xBF) {
-        try { return new TextDecoder('utf-8').decode(buffer.slice(3)); } catch (e) {}
+        try { return new TextDecoder('utf-8').decode(buffer.slice(3)); } catch (e) { }
       }
       let zeroCount = 0;
       for (let i = 1; i < Math.min(bytes.length, 100); i += 2) {
         if (bytes[i] === 0x00) zeroCount++;
       }
       if (zeroCount > 10) {
-        try { return new TextDecoder('utf-16le').decode(buffer); } catch (e) {}
+        try { return new TextDecoder('utf-16le').decode(buffer); } catch (e) { }
       }
       try {
         return new TextDecoder('utf-8', { fatal: true }).decode(buffer);
@@ -3165,7 +3168,7 @@
       return cues;
     }
 
-    window.triggerManualSrtUpload = function() {
+    window.triggerManualSrtUpload = function () {
       let input = document.getElementById('customSrtFileInput');
       if (!input) {
         input = document.createElement('input');
@@ -3180,12 +3183,12 @@
       input.click();
     };
 
-    window.handleManualSrtUpload = function(event) {
+    window.handleManualSrtUpload = function (event) {
       const file = event.target?.files && event.target.files[0];
       if (!file) return;
 
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         try {
           const buffer = e.target.result;
           const rawText = decodeSubtitleBuffer(buffer);
@@ -3232,7 +3235,7 @@
         }
       };
 
-      reader.onerror = function() {
+      reader.onerror = function () {
         if (typeof showToast === 'function') {
           showToast('⚠️ Error reading selected file from device storage.');
         }
@@ -3254,7 +3257,7 @@
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', patchLocalSrtUpload);
     }
-  } catch (e) {}
+  } catch (e) { }
 
   // -------------------------------------------------------------
   // Live Patch v1.5.7: Rock-Solid Video Surface & Portrait Layout Jitter Eliminator
@@ -3309,13 +3312,13 @@
           video.addEventListener('playing', () => video.requestVideoFrameCallback(onFrame));
         }
       }
-    } catch (e) {}
+    } catch (e) { }
   }
 
   // Guaranteed Full Volume Output: Eliminates double volume attenuation on Android
   if (typeof window.applyPlayerVolume === 'function' && !window.applyPlayerVolume._isSoundFixed) {
     const origApplyVol = window.applyPlayerVolume;
-    window.applyPlayerVolume = function(val) {
+    window.applyPlayerVolume = function (val) {
       const safeVol = Math.max(0, Math.min(1.0, Number(val)));
       if (typeof window.playerSoundLevel !== 'undefined') {
         window.playerSoundLevel = safeVol;
@@ -3326,7 +3329,7 @@
           window.AndroidApp.setDeviceVolume(safeVol);
           isAndroid = true;
         }
-      } catch (e) {}
+      } catch (e) { }
 
       const video = document.getElementById('mainVideoPlayer');
       if (video) {
@@ -3346,7 +3349,7 @@
     }
     // Also periodically verify video surface binding
     setInterval(patchVideoAntiBlackout, 2000);
-  } catch (e) {}
+  } catch (e) { }
 
   // Auto-invalidate stale content cache so newly added items show up instantly at the top of Latest
   try {
@@ -3359,7 +3362,7 @@
         window.syncContentWithBackend({ force: true });
       }
     }
-  } catch (e) {}
+  } catch (e) { }
 
   // -------------------------------------------------------------
   // Live Patch v1.5.8: Guaranteed Default Bangla Subtitle Engine
@@ -3368,7 +3371,7 @@
   // -------------------------------------------------------------
   if (typeof window.setupSubtitlesForMedia === 'function' && !window.setupSubtitlesForMedia._hasBnPriorityHook) {
     const origSetupSubtitles = window.setupSubtitlesForMedia;
-    window.setupSubtitlesForMedia = async function(media) {
+    window.setupSubtitlesForMedia = async function (media) {
       if (!media) return;
       try {
         const ret = await origSetupSubtitles.apply(this, arguments);
@@ -3414,7 +3417,7 @@
   // Hook selectSubtitleTrack to ensure fallback goes to AI Bangla, never English
   if (typeof window.selectSubtitleTrack === 'function' && !window.selectSubtitleTrack._hasBnPriorityPatch) {
     const origSelectSubtitleTrack = window.selectSubtitleTrack;
-    window.selectSubtitleTrack = async function(trackId) {
+    window.selectSubtitleTrack = async function (trackId) {
       if (trackId === 'off') {
         return origSelectSubtitleTrack.apply(this, arguments);
       }
@@ -3495,14 +3498,14 @@
             const onCanResume = () => {
               vp.removeEventListener('canplay', onCanResume);
               vp.removeEventListener('loadedmetadata', onCanResume);
-              try { if (resumeTime > 0) vp.currentTime = resumeTime; } catch(err) {}
-              vp.play().catch(() => {});
+              try { if (resumeTime > 0) vp.currentTime = resumeTime; } catch (err) { }
+              vp.play().catch(() => { });
               hideConnectingLoader();
             };
             vp.addEventListener('canplay', onCanResume, { once: true });
             vp.addEventListener('loadedmetadata', onCanResume, { once: true });
             vp.load();
-            vp.play().catch(() => {});
+            vp.play().catch(() => { });
             return;
           }
         } catch (err) {
@@ -3515,7 +3518,7 @@
   // Universal Toast Filter: Suppress jarring "Playback error" toasts while background auto-healer is actively self-renewing
   if (typeof window.showToast === 'function' && !window.showToast._hasErrorFilter) {
     const origToast = window.showToast;
-    window.showToast = function(msg, duration) {
+    window.showToast = function (msg, duration) {
       if (typeof msg === 'string' && msg.includes('Playback error')) {
         const vp = document.getElementById('mainVideoPlayer');
         if (vp && (vp._isAutoHealing || (vp._retryCount && vp._retryCount < 3))) {
@@ -3528,5 +3531,5 @@
     window.showToast._hasErrorFilter = true;
   }
 
-  console.log('✅ FOBS TV Live Patch v1.6.0 active: Universal Zero-Expire Token Engine, Instant Iframe Embed & Default Human Bangla Subtitles.');
+  console.log('✅ FOBS TV Live Patch v1.6.1 active: Unified #020c1c Background, Zero-Expire Token Engine & Default Human Bangla Subtitles.');
 })();

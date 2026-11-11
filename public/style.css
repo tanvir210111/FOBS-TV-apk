@@ -1121,7 +1121,7 @@ body {
 
 body:not(.is-fullscreen) .player-view-overlay.open {
   padding-top: 0 !important;
-  background-color: #000000 !important;
+  background-color: #020c1c !important;
 }
 
 body.is-fullscreen .player-view-overlay.open {
@@ -1193,7 +1193,7 @@ body.is-fullscreen .player-view-overlay.open {
 .video-container {
   width: 100%;
   aspect-ratio: 16 / 9;
-  background-color: #000;
+  background-color: #020c1c !important;
   position: relative;
   display: flex !important;
   align-items: center !important;
@@ -1211,7 +1211,7 @@ body.is-fullscreen .player-view-overlay.open {
   height: 100%;
   object-fit: contain !important;
   object-position: center center !important;
-  background-color: transparent !important;
+  background-color: #020c1c !important;
   display: block;
   margin: auto !important;
   transform: translateZ(0);
