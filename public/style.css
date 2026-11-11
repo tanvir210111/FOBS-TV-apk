@@ -10152,7 +10152,7 @@ body.is-fullscreen #subtitleModal .subtitle-modal-container {
 }
 
 body.intro-active {
-  background-color: #000000 !important;
+  background-color: #020c1c !important;
 }
 
 /* ============================================================
@@ -10167,7 +10167,7 @@ body.intro-active {
   width: 100%;
   height: 100%;
   z-index: 999999999;
-  background-color: #000000;
+  background-color: #020c1c;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10195,7 +10195,7 @@ body.intro-active {
   max-width: 100vw;
   max-height: 100vh;
   object-fit: contain;
-  background-color: #000000;
+  background-color: #020c1c;
   border: none;
   outline: none;
   transform: translate3d(0, 0, 0);

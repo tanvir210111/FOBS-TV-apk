@@ -135,9 +135,9 @@
       #currentQualityBtn {
         display: none !important;
       }
-      /* Pure OLED Black Intro & Splash */
+      /* Pure Intro Video Seamless Blend (#020c1c) */
       body.intro-active, .app-intro-overlay, #appIntroOverlay, .app-intro-video {
-        background-color: #000000 !important;
+        background-color: #020c1c !important;
       }
     `;
     document.head.appendChild(style);

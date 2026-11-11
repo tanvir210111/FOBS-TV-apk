@@ -486,10 +486,10 @@ function playAppIntroAndSync() {
   // Ensure intro active state and unified background color across whole window
   document.body.classList.add('intro-active');
   if (window.AndroidApp && typeof window.AndroidApp.setSystemBarColors === 'function') {
-    window.AndroidApp.setSystemBarColors('#000000', '#000000');
+    window.AndroidApp.setSystemBarColors('#020c1c', '#020c1c');
   }
   const themeMeta = document.getElementById('themeColorMeta');
-  if (themeMeta) themeMeta.setAttribute('content', '#000000');
+  if (themeMeta) themeMeta.setAttribute('content', '#020c1c');
 
   // Pre-load local cached or seed content so UI is ready behind the scenes
   const hasCache = loadCachedContent();
