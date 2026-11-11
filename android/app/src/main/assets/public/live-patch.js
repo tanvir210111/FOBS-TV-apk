@@ -1,4 +1,4 @@
-// FOBS TV Live OTA Patch Bundle v1.5.1 (Universal Anti-Blackout, Hardware Compositor Keep-Alive, Poster Performance & Catalog Sync)
+// FOBS TV Live OTA Patch Bundle v1.5.2 (Universal Anti-Blackout, Hardware Compositor Keep-Alive, Poster Performance & Catalog Sync)
 // 1. Video Anti-Blackout Keep-Alive: Eliminates Android WebView video freeze/blackout when controls auto-hide during playback
 // 2. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
 // 3. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
@@ -9,8 +9,8 @@
 // 8. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 // 9. Catalog Sync & Poster Acceleration: Auto-invalidates stale content cache and enables prioritized high-speed poster loading
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.5.1 (Anti-Blackout & Catalog Sync) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.5.1';
+  console.log('⚡ FOBS TV Live Patch v1.5.2 (Anti-Blackout & Catalog Sync) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.5.2';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -3213,5 +3213,5 @@
     }
   } catch (e) {}
 
-  console.log('✅ FOBS TV Live Patch v1.5.1 active: Universal Anti-Blackout Video Engine, Catalog Sync & Poster Acceleration.');
+  console.log('✅ FOBS TV Live Patch v1.5.2 active: Universal Anti-Blackout Video Engine, Catalog Sync & Poster Acceleration.');
 })();
