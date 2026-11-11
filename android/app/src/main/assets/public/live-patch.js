@@ -1,16 +1,16 @@
-// FOBS TV Live OTA Patch Bundle v1.5.3 (Transparent Video Poster, Connecting Buffer Keeper, Offline Dual Subtitle & AI Translation Engine)
-// 1. Video Anti-Blackout Keep-Alive: Eliminates Android WebView video freeze/blackout when controls auto-hide during playback
-// 2. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
-// 3. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
-// 4. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
-// 5. Universal Local SRT Upload: Multi-encoding auto-detection (UTF-8, UTF-16 LE, ANSI) & Android system file picker support
-// 6. Smooth Online Playback: Connecting overlay smoothly dissolves only when video is actively playing (no frozen 1-2s icon)
+// FOBS TV Live OTA Patch Bundle v1.5.4 (Instant Zero-Delay Playback, Dynamic Stream Auto-Renew & Transparent Video Poster)
+// 1. Instant Video Playback: Eliminates connection spinner stall; video plays instantly on canplay/loadeddata
+// 2. Dynamic Stream Auto-Renew: Automatically routes all static/expired CDN links through zero-redirect dynamic stream resolver
+// 3. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
+// 4. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
+// 5. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
+// 6. Universal Local SRT Upload: Multi-encoding auto-detection (UTF-8, UTF-16 LE, ANSI) & Android system file picker support
 // 7. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
 // 8. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 // 9. Catalog Sync & Poster Acceleration: Auto-invalidates stale content cache and enables prioritized high-speed poster loading
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.5.3 (Video Playback & Subtitle Engine) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.5.3';
+  console.log('⚡ FOBS TV Live Patch v1.5.4 (Instant Playback & Stream Auto-Renew) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.5.4';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -90,14 +90,14 @@
         inset: 0 !important;
         width: 100% !important;
         height: 100% !important;
-        background: rgba(0, 0, 0, 0.65) !important;
-        backdrop-filter: blur(4px) !important;
+        background: rgba(0, 0, 0, 0.3) !important;
         display: none;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
         z-index: 9999 !important;
         pointer-events: none !important;
+        transition: opacity 0.2s ease-out !important;
       }
       #fobsConnectingOverlay.active {
         display: flex !important;
@@ -191,31 +191,37 @@
       });
       posterObs.observe(videoEl, { attributes: true, attributeFilter: ['poster'] });
 
-      // Smooth transition: Only dismiss connecting overlay when video is actively moving and rendering frames!
+      // Lightning-Fast Startup: Instantly dismiss loader and trigger playback on first stream signal
+      const triggerInstantPlay = () => {
+        hideConnectingLoader(true);
+        if (videoEl && videoEl.paused) {
+          const p = videoEl.play();
+          if (p && typeof p.catch === 'function') {
+            p.catch(() => {
+              videoEl.muted = true;
+              videoEl.play().catch(() => {});
+            });
+          }
+        }
+      };
+
       videoEl.addEventListener('playing', () => {
         hideConnectingLoader(true);
       });
-      videoEl.addEventListener('timeupdate', () => {
-        if (videoEl.currentTime > 0.05) {
-          hideConnectingLoader(true);
-        }
-      });
-      videoEl.addEventListener('canplay', () => {
-        if (isOfflinePlayback(videoEl) || (!videoEl.paused && videoEl.currentTime > 0.05)) {
-          hideConnectingLoader(true);
-        }
-      });
-      videoEl.addEventListener('loadeddata', () => {
-        if (isOfflinePlayback(videoEl) || (!videoEl.paused && videoEl.currentTime > 0.05)) {
-          hideConnectingLoader(true);
-        }
-      });
+      videoEl.addEventListener('canplay', triggerInstantPlay);
+      videoEl.addEventListener('loadeddata', triggerInstantPlay);
       videoEl.addEventListener('loadedmetadata', () => {
+        triggerInstantPlay();
         if (videoEl.duration && isFinite(videoEl.duration) && videoEl.duration > 0) {
           const state = getAppState();
           if (state?.currentMedia && (state.currentMedia.isOffline || state.currentMedia.offlineDownloadId)) {
             state.currentMedia.duration = videoEl.duration;
           }
+        }
+      });
+      videoEl.addEventListener('timeupdate', () => {
+        if (videoEl.currentTime > 0.05) {
+          hideConnectingLoader(true);
         }
       });
       videoEl.addEventListener('error', () => {
@@ -272,19 +278,15 @@
         txt.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #00f2fe; margin-right: 8px;"></i> Connecting to stream server...';
       }
     }
-    // Safety auto-dismiss fallback: Max 8s so player is never stalled even on slow network
+    // Safety auto-dismiss fallback: Max 1.2s so player is never stalled even on slow network
     if (window._connectingSafetyTimer) clearTimeout(window._connectingSafetyTimer);
     window._connectingSafetyTimer = setTimeout(() => {
       hideConnectingLoader(true);
-    }, 8000);
+    }, 1200);
   }
   window.showConnectingLoader = showConnectingLoader;
 
   function hideConnectingLoader(force = false) {
-    const videoEl = document.getElementById('mainVideoPlayer');
-    if (!force && videoEl && !isOfflinePlayback(videoEl) && videoEl.src && !videoEl.paused && videoEl.currentTime < 0.05 && videoEl.readyState < 2) {
-      return;
-    }
     if (window._connectingSafetyTimer) {
       clearTimeout(window._connectingSafetyTimer);
       window._connectingSafetyTimer = null;
@@ -293,6 +295,8 @@
     if (overlay) overlay.classList.remove('active');
     const loader = document.getElementById('videoLoader');
     if (loader) loader.classList.remove('active');
+  }
+  window.hideConnectingLoader = hideConnectingLoader;
   }
   window.hideConnectingLoader = hideConnectingLoader;
 
@@ -530,10 +534,11 @@
       } else if (fastUrl.includes('hakunaymatata') || fastUrl.includes('bcdnxw') || fastUrl.includes('haildrop') || fastUrl.includes('fogtwist') || fastUrl.includes('sunburst') || fastUrl.includes('stormshade')) {
         const m = getActiveMedia();
         const sId = m?.subjectId || m?.mbSubjectId || (m?.id && m.id.startsWith('mb-s-') ? m.id.replace('mb-s-', '') : (m?.id && m.id.startsWith('mb-m-') ? m.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (m?.id && /^\d{16,20}$/.test(m.id) ? m.id : null);
+        const dPath = m?.detailPath || m?.mbDetailPath || m?.movieboxDetailPath || '';
         if (sId) {
           const se = window.appState?.currentSeason || 0;
           const ep = window.appState?.currentEpisodeNumber || 0;
-          fastUrl = getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&se=${se}&ep=${ep}&q=${activeQ}`);
+          fastUrl = getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${se}&ep=${ep}&q=${activeQ}`);
         } else {
           fastUrl = getAbsoluteApiUrl(`/api/stream?url=${encodeURIComponent(fastUrl)}`);
         }
