@@ -1,4 +1,4 @@
-// FOBS TV Live OTA Patch Bundle v1.5.6 (Lightning Fast Playback, Fast-Start RAM Header Cache & Zero-Latency Nginx Pipeline)
+// FOBS TV Live OTA Patch Bundle v1.5.7 (Full-Volume Sound Fix, Portrait Layout Bouncing Eliminator & Stable Video Surface)
 // 1. Instant Video Playback: Eliminates connection spinner stall; video plays instantly on canplay/loadeddata
 // 2. Dynamic Stream Auto-Renew: Automatically routes all static/expired CDN links through zero-redirect dynamic stream resolver
 // 3. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
@@ -3217,8 +3217,8 @@
   } catch (e) {}
 
   // -------------------------------------------------------------
-  // Live Patch v1.5.0: Video Surface Anti-Blackout Compositor Engine
-  // Eliminates Android WebView video freeze/blackout when controls auto-hide
+  // Live Patch v1.5.7: Rock-Solid Video Surface & Portrait Layout Jitter Eliminator
+  // Eliminates portrait mode bottom bouncy layout shifts and stabilizes video surface
   // -------------------------------------------------------------
   function patchVideoAntiBlackout() {
     try {
@@ -3227,6 +3227,7 @@
         style.id = 'fobs-anti-blackout-style';
         style.textContent = `
           .video-container {
+            contain: layout paint !important;
             transform: translateZ(0) !important;
             -webkit-transform: translateZ(0) !important;
             backface-visibility: hidden !important;
@@ -3236,9 +3237,11 @@
             background-color: transparent !important;
             transform: translateZ(0) !important;
             -webkit-transform: translateZ(0) !important;
-            will-change: transform !important;
             backface-visibility: hidden !important;
             -webkit-backface-visibility: hidden !important;
+          }
+          .player-content-scroll {
+            contain: layout !important;
           }
           .ls-player-ui {
             background: transparent !important;
@@ -3251,42 +3254,8 @@
       if (video && !video._antiBlackoutPatchActive) {
         video._antiBlackoutPatchActive = true;
         video.style.backgroundColor = 'transparent';
-
-        let rafId = null;
-        let frameCounter = 0;
-
-        const tick = () => {
-          if (!video.paused && !video.ended) {
-            frameCounter++;
-            if (frameCounter % 4 === 0) {
-              const toggle = (frameCounter % 8 === 0);
-              video.style.transform = toggle ? 'translateZ(0px)' : 'translate3d(0px, 0px, 0px)';
-            }
-            rafId = requestAnimationFrame(tick);
-          } else {
-            rafId = null;
-          }
-        };
-
-        const start = () => {
-          video.style.backgroundColor = 'transparent';
-          if (!rafId) rafId = requestAnimationFrame(tick);
-        };
-
-        const stop = () => {
-          if (rafId) {
-            cancelAnimationFrame(rafId);
-            rafId = null;
-          }
-        };
-
-        video.addEventListener('play', start);
-        video.addEventListener('playing', start);
-        video.addEventListener('pause', stop);
-        video.addEventListener('ended', stop);
-        video.addEventListener('timeupdate', () => {
-          if (!video.paused && !rafId) start();
-        });
+        video.style.transform = 'translateZ(0)';
+        video.style.backfaceVisibility = 'hidden';
 
         if ('requestVideoFrameCallback' in HTMLVideoElement.prototype) {
           const onFrame = () => {
@@ -3299,22 +3268,35 @@
           };
           video.addEventListener('playing', () => video.requestVideoFrameCallback(onFrame));
         }
-
-        const obs = new MutationObserver(() => {
-          if (!video.paused && video.readyState >= 2) {
-            video.style.transform = 'translateZ(0px)';
-          }
-        });
-        const lsUi = document.getElementById('landscapePlayerUI');
-        if (lsUi) obs.observe(lsUi, { attributes: true, attributeFilter: ['class'] });
-        const topHeader = document.getElementById('playerTopHeader');
-        if (topHeader) obs.observe(topHeader, { attributes: true, attributeFilter: ['class'] });
-        const ptBottom = document.getElementById('portraitBottomBar');
-        if (ptBottom) obs.observe(ptBottom, { attributes: true, attributeFilter: ['class'] });
-
-        if (!video.paused) start();
       }
     } catch (e) {}
+  }
+
+  // Guaranteed Full Volume Output: Eliminates double volume attenuation on Android
+  if (typeof window.applyPlayerVolume === 'function' && !window.applyPlayerVolume._isSoundFixed) {
+    const origApplyVol = window.applyPlayerVolume;
+    window.applyPlayerVolume = function(val) {
+      const safeVol = Math.max(0, Math.min(1.0, Number(val)));
+      if (typeof window.playerSoundLevel !== 'undefined') {
+        window.playerSoundLevel = safeVol;
+      }
+      let isAndroid = false;
+      try {
+        if (window.AndroidApp && typeof window.AndroidApp.setDeviceVolume === 'function') {
+          window.AndroidApp.setDeviceVolume(safeVol);
+          isAndroid = true;
+        }
+      } catch (e) {}
+
+      const video = document.getElementById('mainVideoPlayer');
+      if (video) {
+        // Keep HTML5 audio at full 100% (1.0) so phone hardware master volume controls real loudness without halving
+        video.volume = isAndroid ? (safeVol > 0 ? 1.0 : 0.0) : safeVol;
+        video.muted = (safeVol <= 0);
+      }
+      return safeVol;
+    };
+    window.applyPlayerVolume._isSoundFixed = true;
   }
 
   try {

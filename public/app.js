@@ -7069,16 +7069,19 @@ function applyPlayerVolume(val) {
   playerSoundLevel = safeVol;
 
   // 1. Android hardware media stream volume (AudioManager.STREAM_MUSIC) for real hardware audio
+  let isAndroid = false;
   try {
     if (window.AndroidApp && typeof window.AndroidApp.setDeviceVolume === 'function') {
       window.AndroidApp.setDeviceVolume(safeVol);
+      isAndroid = true;
     }
   } catch (e) {}
 
-  // 2. HTML5 Video element volume (for web/browser fallback)
+  // 2. HTML5 Video element volume
+  // In Android app, keep video.volume at 1.0 (100%) so volume is not multiplied/halved!
   const video = document.getElementById('mainVideoPlayer');
   if (video) {
-    video.volume = safeVol;
+    video.volume = isAndroid ? (safeVol > 0 ? 1.0 : 0.0) : safeVol;
     video.muted = (safeVol <= 0);
   }
 
@@ -7558,46 +7561,8 @@ function initVideoSurfaceAntiBlackout() {
   video._antiBlackoutAttached = true;
 
   video.style.backgroundColor = 'transparent';
-
-  let rafId = null;
-  let frameCounter = 0;
-
-  const keepAliveTick = () => {
-    if (!video.paused && !video.ended) {
-      frameCounter++;
-      if (frameCounter % 4 === 0) {
-        const toggle = (frameCounter % 8 === 0);
-        video.style.transform = toggle ? 'translateZ(0px)' : 'translate3d(0px, 0px, 0px)';
-      }
-      rafId = requestAnimationFrame(keepAliveTick);
-    } else {
-      rafId = null;
-    }
-  };
-
-  const startLoop = () => {
-    video.style.backgroundColor = 'transparent';
-    if (!rafId) {
-      rafId = requestAnimationFrame(keepAliveTick);
-    }
-  };
-
-  const stopLoop = () => {
-    if (rafId) {
-      cancelAnimationFrame(rafId);
-      rafId = null;
-    }
-  };
-
-  video.addEventListener('play', startLoop);
-  video.addEventListener('playing', startLoop);
-  video.addEventListener('pause', stopLoop);
-  video.addEventListener('ended', stopLoop);
-  video.addEventListener('timeupdate', () => {
-    if (!video.paused && !rafId) {
-      startLoop();
-    }
-  });
+  video.style.transform = 'translateZ(0)';
+  video.style.backfaceVisibility = 'hidden';
 
   if ('requestVideoFrameCallback' in HTMLVideoElement.prototype) {
     const onVideoFrame = () => {
@@ -7611,23 +7576,6 @@ function initVideoSurfaceAntiBlackout() {
     video.addEventListener('playing', () => {
       video.requestVideoFrameCallback(onVideoFrame);
     });
-  }
-
-  const observer = new MutationObserver(() => {
-    if (!video.paused && video.readyState >= 2) {
-      video.style.transform = 'translateZ(0px)';
-    }
-  });
-
-  const lsUi = document.getElementById('landscapePlayerUI');
-  if (lsUi) observer.observe(lsUi, { attributes: true, attributeFilter: ['class'] });
-  const topHeader = document.getElementById('playerTopHeader');
-  if (topHeader) observer.observe(topHeader, { attributes: true, attributeFilter: ['class'] });
-  const ptBottom = document.getElementById('portraitBottomBar');
-  if (ptBottom) observer.observe(ptBottom, { attributes: true, attributeFilter: ['class'] });
-
-  if (!video.paused) {
-    startLoop();
   }
 }
 window.initVideoSurfaceAntiBlackout = initVideoSurfaceAntiBlackout;
