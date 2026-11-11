@@ -38,10 +38,10 @@ function extractMovieBoxExpiry(urlStr) {
     const u = new URL(urlStr);
     const tParam = u.searchParams.get('t');
     if (tParam) {
-      const genSec = parseInt(tParam, 10);
-      if (!isNaN(genSec) && genSec > 0) {
-        // MovieBox CDN token generation timestamp. Expiry is 4 hours (14400s) after generation.
-        return (genSec + 14400) * 1000;
+      const expSec = parseInt(tParam, 10);
+      if (!isNaN(expSec) && expSec > 0) {
+        // In MovieBox CDN tokens, t is the unix epoch expiration timestamp
+        return expSec * 1000;
       }
     }
     const policyParam = u.searchParams.get('Policy');
@@ -56,11 +56,11 @@ function extractMovieBoxExpiry(urlStr) {
   return null;
 }
 
-function isMovieBoxUrlExpired(urlStr) {
+function isMovieBoxUrlExpired(urlStr, bufferMs = 5 * 60 * 1000) {
   if (!urlStr || typeof urlStr !== 'string') return true;
   const expMs = extractMovieBoxExpiry(urlStr);
   if (expMs) {
-    return (expMs - Date.now() < 10 * 60 * 1000);
+    return (expMs - Date.now() < bufferMs);
   }
   return false;
 }
@@ -68,7 +68,7 @@ function isMovieBoxUrlExpired(urlStr) {
 function getValidCachedMovieBoxMedia(cacheKey) {
   const cachedEntry = movieboxStreamCache.get(cacheKey);
   if (!cachedEntry) return null;
-  if (Date.now() - cachedEntry.timestamp >= 45 * 60 * 1000) {
+  if (Date.now() - cachedEntry.timestamp >= 25 * 60 * 1000) {
     movieboxStreamCache.delete(cacheKey);
     return null;
   }
@@ -2756,7 +2756,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.5.9",
+  version: "1.6.0",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 

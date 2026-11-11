@@ -3837,36 +3837,49 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
       targetSeekTime = savedProgress.progressSeconds;
     }
 
-    // Instant zero-delay stream: Use auto-renewing 480p stream (instant TTFB, zero 403 retries)
-    const sId = media?.subjectId || media?.mbSubjectId || (media?.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || (media?.id && /^\d{16,20}$/.test(media.id) ? media.id : null) || media?.id;
-    const dPath = media?.detailPath || media?.mbDetailPath || '';
-    let initialUrl = null;
+    // Check if the movie or episode stream is a third-party embed iframe (VidLink, MultiEmbed, VidSrc, AutoEmbed)
+    const isIframeStream = (u) => typeof u === 'string' && (
+      u.includes('vidlink.pro') ||
+      u.includes('autoembed') ||
+      u.includes('multiembed') ||
+      u.includes('vidsrc') ||
+      u.includes('streamimdb')
+    );
 
-    if (sId) {
-      const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
-      initialUrl = `${apiBase}/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=0&ep=0&q=480`;
-      appState.currentQuality = '480p';
+    let initialUrl = null;
+    const mediaStream = media?.streamUrl || media?.driveUrl || (Array.isArray(media?.servers) ? media.servers[0]?.url : '');
+
+    if (isIframeStream(mediaStream)) {
+      initialUrl = mediaStream;
     } else {
-      const allUrls = [
-        media?.streamUrl,
-        ...(Array.isArray(media?.servers) ? media.servers.map(s => s?.url) : [])
-      ].filter(Boolean);
-      const autoRenewingServer = allUrls.find(u => typeof u === 'string' && u.includes('/api/moviebox/stream'));
-      if (autoRenewingServer) {
-        let clean = autoRenewingServer.replace(/([?&])q=\d+/g, '$1q=480');
-        if (!clean.includes('q=')) clean += (clean.includes('?') ? '&' : '?') + 'q=480';
-        initialUrl = clean;
+      // Check if media has a genuine 15-21 digit numeric MovieBox subjectId
+      const candidateId = media?.subjectId || media?.mbSubjectId || (media?.id && media.id.startsWith('mb-m-') ? media.id.replace('mb-m-', '').replace(/-hindi$/, '') : null) || (media?.id && /^\d{15,21}$/.test(media.id) ? media.id : null);
+      const isMbId = candidateId && /^\d{15,21}$/.test(String(candidateId).trim());
+      const sId = isMbId ? String(candidateId).trim() : null;
+      const dPath = media?.detailPath || media?.mbDetailPath || '';
+
+      if (sId) {
+        const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
+        initialUrl = `${apiBase}/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=0&ep=0&q=480`;
         appState.currentQuality = '480p';
       } else {
-        const rawCdn = allUrls.find(u => typeof u === 'string' && (u.includes('hakunaymatata') || u.includes('bcdnxw') || u.includes('haildrop') || u.includes('fogtwist') || u.includes('sunburst') || u.includes('stormshade')));
-        if (rawCdn) {
-          if (sId) {
-            initialUrl = `/api/moviebox/stream?id=${encodeURIComponent(sId)}&se=0&ep=0&q=480`;
-          } else {
-            initialUrl = `/api/stream?url=${encodeURIComponent(rawCdn)}`;
-          }
+        const allUrls = [
+          media?.streamUrl,
+          ...(Array.isArray(media?.servers) ? media.servers.map(s => s?.url) : [])
+        ].filter(Boolean);
+        const autoRenewingServer = allUrls.find(u => typeof u === 'string' && u.includes('/api/moviebox/stream'));
+        if (autoRenewingServer) {
+          let clean = autoRenewingServer.replace(/([?&])q=\d+/g, '$1q=480');
+          if (!clean.includes('q=')) clean += (clean.includes('?') ? '&' : '?') + 'q=480';
+          initialUrl = clean;
+          appState.currentQuality = '480p';
         } else {
-          initialUrl = media.streamUrl || media.driveUrl;
+          const rawCdn = allUrls.find(u => typeof u === 'string' && (u.includes('hakunaymatata') || u.includes('bcdnxw') || u.includes('haildrop') || u.includes('fogtwist') || u.includes('sunburst') || u.includes('stormshade')));
+          if (rawCdn) {
+            initialUrl = `/api/stream?url=${encodeURIComponent(rawCdn)}`;
+          } else {
+            initialUrl = mediaStream;
+          }
         }
       }
     }
@@ -7946,6 +7959,21 @@ function setupVideoListeners() {
     const curM = appState.currentMedia;
     const rawUrl = getActiveEpisodeStream(curEp, appState.currentAudioTrack) || curEp?.streamUrl || curM?.streamUrl;
 
+    const isIframeTarget = (u) => typeof u === 'string' && (
+      u.includes('vidlink.pro') ||
+      u.includes('autoembed') ||
+      u.includes('multiembed') ||
+      u.includes('vidsrc') ||
+      u.includes('streamimdb')
+    );
+
+    if (isIframeTarget(rawUrl) || isIframeTarget(curM?.streamUrl)) {
+      const embedUrl = isIframeTarget(rawUrl) ? rawUrl : curM.streamUrl;
+      console.log('Switching video player to iframe embed player:', embedUrl);
+      playStreamUrl(embedUrl);
+      return;
+    }
+
     if (!videoPlayer._retryCount) videoPlayer._retryCount = 0;
 
     // Retry seamlessly up to 3 times with silent self-renewing token retrieval
@@ -7957,13 +7985,16 @@ function setupVideoListeners() {
       const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
       let targetUrl = rawUrl ? (rawUrl.startsWith('http') ? rawUrl : `${apiBase}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`) : '';
 
-      // Moviebox Dynamic Token Self-Renewal Handler
-      const isMovieBox = (targetUrl && targetUrl.includes('/api/moviebox/stream')) || (curM && (curM.subjectId || curM.mbSubjectId || (curM.id && (curM.id.startsWith('mb-s-') || curM.id.startsWith('mb-m-') || /^\d{16,20}$/.test(curM.id)))));
+      // Moviebox Dynamic Token Self-Renewal Handler: strictly validates numeric 15-21 digit subject IDs
+      const rawCandidate = curM?.subjectId || curM?.mbSubjectId || (curM?.id && curM.id.startsWith('mb-s-') ? curM.id.replace('mb-s-', '') : (curM?.id && curM.id.startsWith('mb-m-') ? curM.id.replace('mb-m-', '').replace(/-hindi$/, '') : null));
+      const validNumericSId = (rawCandidate && /^\d{15,21}$/.test(String(rawCandidate).trim())) ? String(rawCandidate).trim() : null;
+
+      const isMovieBox = (targetUrl && targetUrl.includes('/api/moviebox/stream')) || Boolean(validNumericSId);
 
       if (isMovieBox) {
         let streamApiUrl = targetUrl;
         if (!streamApiUrl || !streamApiUrl.includes('/api/moviebox/stream')) {
-          const sId = curM?.subjectId || curM?.mbSubjectId || (curM?.id && curM.id.startsWith('mb-s-') ? curM.id.replace('mb-s-', '') : (curM?.id && curM.id.startsWith('mb-m-') ? curM.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (curM?.id && /^\d{16,20}$/.test(curM.id) ? curM.id : null);
+          const sId = validNumericSId;
           const dPath = curM?.detailPath || curM?.mbDetailPath || curM?.movieboxDetailPath || '';
           const se = appState.currentSeason || 0;
           const ep = appState.currentEpisodeNumber || 0;
