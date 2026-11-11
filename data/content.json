@@ -20219,7 +20219,7 @@
               "servers": [
                 {
                   "name": "Server 1 (Hindi Dub 1080p FHD)",
-                  "url": "https://bcdnxw.hakunaymatata.com/bt/791b9a8fd20d3e5fdb6f772a494091f5.mp4?sign=7624eb4d41ef47aa81561ddbc02e1c34&t=1794405037",
+                  "url": "/api/moviebox/stream?id=147960434178638584&path=death-note-hindi-i5KTRpWEVa&se=1&ep=1",
                   "isDirect": true,
                   "quality": "1080p",
                   "audio": "Hindi"
@@ -22106,11 +22106,11 @@
           "duration": "21m",
           "overview": "Brilliant but bored high school student Light Yagami suddenly finds himself holding the power of life and death in his hands—the power of the Death Note. He decides to rid the world of evil—by killing off criminals one by one. When the murders start to pile up, genius detective L is on the case, and an epic battle of wits unfolds.",
           "still": "https://image.tmdb.org/t/p/original/5DB79iXXP7dhJHdUVC86y5YDQ8i.jpg",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/791b9a8fd20d3e5fdb6f772a494091f5.mp4?sign=7624eb4d41ef47aa81561ddbc02e1c34&t=1794405037",
+          "streamUrl": "/api/moviebox/stream?id=147960434178638584&path=death-note-hindi-i5KTRpWEVa&se=1&ep=1",
           "servers": [
             {
               "name": "Server 1 (Hindi Dub 1080p FHD)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/791b9a8fd20d3e5fdb6f772a494091f5.mp4?sign=7624eb4d41ef47aa81561ddbc02e1c34&t=1794405037",
+              "url": "/api/moviebox/stream?id=147960434178638584&path=death-note-hindi-i5KTRpWEVa&se=1&ep=1",
               "isDirect": true,
               "quality": "1080p",
               "audio": "Hindi"
@@ -24141,7 +24141,7 @@
               "servers": [
                 {
                   "name": "Server 1 (Japanese Audio 1080p FHD)",
-                  "url": "https://bcdnxw.hakunaymatata.com/bt/fb15f15212889df2c38971fe45faa8c7.mp4?sign=0e9da1651423ab4ca071a9a149b21423&t=1794404664",
+                  "url": "/api/moviebox/stream?id=5165047272677199656&path=death-note-8apCqHdYx96&se=1&ep=1",
                   "isDirect": true,
                   "quality": "1080p",
                   "audio": "Japanese"
@@ -26028,11 +26028,11 @@
           "duration": "21m",
           "overview": "Brilliant but bored high school student Light Yagami suddenly finds himself holding the power of life and death in his hands—the power of the Death Note. He decides to rid the world of evil—by killing off criminals one by one. When the murders start to pile up, genius detective L is on the case, and an epic battle of wits unfolds.",
           "still": "https://image.tmdb.org/t/p/original/5DB79iXXP7dhJHdUVC86y5YDQ8i.jpg",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/fb15f15212889df2c38971fe45faa8c7.mp4?sign=0e9da1651423ab4ca071a9a149b21423&t=1794404664",
+          "streamUrl": "/api/moviebox/stream?id=5165047272677199656&path=death-note-8apCqHdYx96&se=1&ep=1",
           "servers": [
             {
               "name": "Server 1 (Japanese Audio 1080p FHD)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/fb15f15212889df2c38971fe45faa8c7.mp4?sign=0e9da1651423ab4ca071a9a149b21423&t=1794404664",
+              "url": "/api/moviebox/stream?id=5165047272677199656&path=death-note-8apCqHdYx96&se=1&ep=1",
               "isDirect": true,
               "quality": "1080p",
               "audio": "Japanese"
@@ -32361,7 +32361,7 @@
               "servers": [
                 {
                   "name": "Server 1 (Japanese Audio 1080p FHD)",
-                  "url": "https://bcdnxw.hakunaymatata.com/convert-h264/1246cdcd021caacf01147fc6cf004330.mp4?sign=6238cd7542dc8b5803dfb0c2f2f74b2c&t=1794404841",
+                  "url": "/api/moviebox/stream?id=7777395346602609920&path=attack-on-titan-yZeOXuiywg9&se=1&ep=1",
                   "isDirect": true,
                   "quality": "1080p",
                   "audio": "Japanese"
@@ -36828,11 +36828,11 @@
           "duration": "24m",
           "overview": "After one hundred years of peace, humanity is suddenly reminded of the terror of being at the Titans' mercy.",
           "still": "https://image.tmdb.org/t/p/original/e363TDn4uP8jP7kHAXQfHAs6HTR.jpg",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/1246cdcd021caacf01147fc6cf004330.mp4?sign=6238cd7542dc8b5803dfb0c2f2f74b2c&t=1794404841",
+          "streamUrl": "/api/moviebox/stream?id=7777395346602609920&path=attack-on-titan-yZeOXuiywg9&se=1&ep=1",
           "servers": [
             {
               "name": "Server 1 (Japanese Audio 1080p FHD)",
-              "url": "https://bcdnxw.hakunaymatata.com/convert-h264/1246cdcd021caacf01147fc6cf004330.mp4?sign=6238cd7542dc8b5803dfb0c2f2f74b2c&t=1794404841",
+              "url": "/api/moviebox/stream?id=7777395346602609920&path=attack-on-titan-yZeOXuiywg9&se=1&ep=1",
               "isDirect": true,
               "quality": "1080p",
               "audio": "Japanese"
@@ -38236,7 +38236,7 @@
               "servers": [
                 {
                   "name": "Server 1 (Hindi Dub 1080p FHD)",
-                  "url": "https://bcdnxw.hakunaymatata.com/vegamovies/f3b5b5bf7e4d7291872aead319880cbc.mp4?sign=a9e62f7fc77018b4132f007d705904aa&t=1794401881",
+                  "url": "/api/moviebox/stream?id=6000415223809722544&path=yu-yu-hakusho-hindi-8GhZeWQXf97&se=1&ep=1",
                   "isDirect": true,
                   "quality": "1080p",
                   "audio": "Hindi"
@@ -38491,11 +38491,11 @@
           "duration": "56m",
           "overview": "Awakening to a startling truth, Yusuke is greeted by a Spirit World guide. Meanwhile, malevolent otherworldly forces unleash chaos in the Human World.",
           "still": "https://image.tmdb.org/t/p/original/zauWAQiP3rxrkNubwDY8vFAsTvx.jpg",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/vegamovies/f3b5b5bf7e4d7291872aead319880cbc.mp4?sign=a9e62f7fc77018b4132f007d705904aa&t=1794401881",
+          "streamUrl": "/api/moviebox/stream?id=6000415223809722544&path=yu-yu-hakusho-hindi-8GhZeWQXf97&se=1&ep=1",
           "servers": [
             {
               "name": "Server 1 (Hindi Dub 1080p FHD)",
-              "url": "https://bcdnxw.hakunaymatata.com/vegamovies/f3b5b5bf7e4d7291872aead319880cbc.mp4?sign=a9e62f7fc77018b4132f007d705904aa&t=1794401881",
+              "url": "/api/moviebox/stream?id=6000415223809722544&path=yu-yu-hakusho-hindi-8GhZeWQXf97&se=1&ep=1",
               "isDirect": true,
               "quality": "1080p",
               "audio": "Hindi"
@@ -38879,7 +38879,7 @@
               "servers": [
                 {
                   "name": "Server 1 (Japanese Audio 1080p FHD)",
-                  "url": "https://bcdnxw.hakunaymatata.com/bt/806bf500078803cbb61f219396a1c7c4.mp4?sign=c9755450a53f38a627a229790f610c85&t=1794405334",
+                  "url": "/api/moviebox/stream?id=6367859007872745424&path=yu-yu-hakusho-wwGBrOqRoA7&se=1&ep=1",
                   "isDirect": true,
                   "quality": "1080p",
                   "audio": "Japanese"
@@ -39134,11 +39134,11 @@
           "duration": "56m",
           "overview": "Awakening to a startling truth, Yusuke is greeted by a Spirit World guide. Meanwhile, malevolent otherworldly forces unleash chaos in the Human World.",
           "still": "https://image.tmdb.org/t/p/original/zauWAQiP3rxrkNubwDY8vFAsTvx.jpg",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/806bf500078803cbb61f219396a1c7c4.mp4?sign=c9755450a53f38a627a229790f610c85&t=1794405334",
+          "streamUrl": "/api/moviebox/stream?id=6367859007872745424&path=yu-yu-hakusho-wwGBrOqRoA7&se=1&ep=1",
           "servers": [
             {
               "name": "Server 1 (Japanese Audio 1080p FHD)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/806bf500078803cbb61f219396a1c7c4.mp4?sign=c9755450a53f38a627a229790f610c85&t=1794405334",
+              "url": "/api/moviebox/stream?id=6367859007872745424&path=yu-yu-hakusho-wwGBrOqRoA7&se=1&ep=1",
               "isDirect": true,
               "quality": "1080p",
               "audio": "Japanese"
@@ -39486,7 +39486,7 @@
               "servers": [
                 {
                   "name": "Server 1 (MovieBox Japanese 1080p FHD)",
-                  "url": "https://bcdnxw.hakunaymatata.com/resource/51676dd47b035f314d7b31d5177d6ea9.mp4?sign=46b16a4f43341c5263a097f7cae09fbf&t=1794404297",
+                  "url": "/api/moviebox/stream?id=2987045125743854656&path=jujutsu-kaisen-AgF7dwiHEy3&se=1&ep=1",
                   "isDirect": true,
                   "quality": "1080p",
                   "audio": "Japanese"
@@ -40720,7 +40720,7 @@
               "servers": [
                 {
                   "name": "Server 1 (MovieBox Japanese 1080p FHD)",
-                  "url": "https://bcdnxw.hakunaymatata.com/bt/5bc94acf985b327653b0b171f8e45fb2.mp4?sign=e558c7a9404f589f1028eba752240329&t=1794402563",
+                  "url": "/api/moviebox/stream?id=2987045125743854656&path=jujutsu-kaisen-AgF7dwiHEy3&se=2&ep=1",
                   "isDirect": true,
                   "quality": "1080p",
                   "audio": "Japanese"
@@ -41893,11 +41893,11 @@
           "duration": "24m",
           "overview": "After visiting his beloved grandfather in the hospital, Yuji Itadori encounters an apprentice sorcerer who demands that Yuji hand over a cursed relic.",
           "still": "https://image.tmdb.org/t/p/original/3wymoL9HYpllpFrcD8VCvemktGg.jpg",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/51676dd47b035f314d7b31d5177d6ea9.mp4?sign=46b16a4f43341c5263a097f7cae09fbf&t=1794404297",
+          "streamUrl": "/api/moviebox/stream?id=2987045125743854656&path=jujutsu-kaisen-AgF7dwiHEy3&se=1&ep=1",
           "servers": [
             {
               "name": "Server 1 (MovieBox Japanese 1080p FHD)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/51676dd47b035f314d7b31d5177d6ea9.mp4?sign=46b16a4f43341c5263a097f7cae09fbf&t=1794404297",
+              "url": "/api/moviebox/stream?id=2987045125743854656&path=jujutsu-kaisen-AgF7dwiHEy3&se=1&ep=1",
               "isDirect": true,
               "quality": "1080p",
               "audio": "Japanese"
@@ -43214,7 +43214,7 @@
               "servers": [
                 {
                   "name": "Server 1 (MovieBox Hindi 1080p FHD)",
-                  "url": "https://bcdnxw.hakunaymatata.com/bt/7db582b40022bff040fa1a1cc636afe4.mp4?sign=7902db642dfab2bf499296cdfc57ebad&t=1794404802",
+                  "url": "/api/moviebox/stream?id=102175217904222864&path=jujutsu-kaisen-hindi-Gjrqz0KXx7&se=1&ep=1",
                   "isDirect": true,
                   "quality": "1080p",
                   "audio": "Hindi dub"
@@ -44448,7 +44448,7 @@
               "servers": [
                 {
                   "name": "Server 1 (MovieBox Hindi 1080p FHD)",
-                  "url": "https://bcdnxw.hakunaymatata.com/bt/7073d3bd6335e75aae393abfca417099.mp4?sign=a7390431bacc583fac34d712bc4d7450&t=1794402863",
+                  "url": "/api/moviebox/stream?id=102175217904222864&path=jujutsu-kaisen-hindi-Gjrqz0KXx7&se=2&ep=1",
                   "isDirect": true,
                   "quality": "1080p",
                   "audio": "Hindi dub"
@@ -45621,11 +45621,11 @@
           "duration": "24m",
           "overview": "After visiting his beloved grandfather in the hospital, Yuji Itadori encounters an apprentice sorcerer who demands that Yuji hand over a cursed relic.",
           "still": "https://image.tmdb.org/t/p/original/3wymoL9HYpllpFrcD8VCvemktGg.jpg",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/7db582b40022bff040fa1a1cc636afe4.mp4?sign=7902db642dfab2bf499296cdfc57ebad&t=1794404802",
+          "streamUrl": "/api/moviebox/stream?id=102175217904222864&path=jujutsu-kaisen-hindi-Gjrqz0KXx7&se=1&ep=1",
           "servers": [
             {
               "name": "Server 1 (MovieBox Hindi 1080p FHD)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/7db582b40022bff040fa1a1cc636afe4.mp4?sign=7902db642dfab2bf499296cdfc57ebad&t=1794404802",
+              "url": "/api/moviebox/stream?id=102175217904222864&path=jujutsu-kaisen-hindi-Gjrqz0KXx7&se=1&ep=1",
               "isDirect": true,
               "quality": "1080p",
               "audio": "Hindi dub"
@@ -46996,7 +46996,7 @@
                 },
                 {
                   "name": "Server 2 (Direct MovieBox CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/bt/b42a4827dd6638ec6e732540f08fc285.mp4?sign=698f3afea206be81aa785976c8dba6ed&t=1794400858",
+                  "url": "/api/moviebox/stream?id=2436819890184012624&path=the-promised-neverland-mzmPQGYE0U2&se=1&ep=1",
                   "isDirect": true,
                   "quality": "1080p"
                 },
@@ -48005,7 +48005,7 @@
             },
             {
               "name": "Server 2 (Direct MovieBox CDN)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/b42a4827dd6638ec6e732540f08fc285.mp4?sign=698f3afea206be81aa785976c8dba6ed&t=1794400858",
+              "url": "/api/moviebox/stream?id=2436819890184012624&path=the-promised-neverland-mzmPQGYE0U2&se=1&ep=1",
               "isDirect": true,
               "quality": "1080p"
             },
@@ -49778,7 +49778,7 @@
                 },
                 {
                   "name": "Server 2 (Direct MovieBox CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/resource/d2dc844ee4567222c7e80653d469e5cd.mp4?sign=463d92510b70c825e3026eb0f5098f75&t=1794400183",
+                  "url": "/api/moviebox/stream?id=4503491135423267032&path=death-note-gCRQKUi2Gm5&se=1&ep=1",
                   "isDirect": true,
                   "quality": "1080p"
                 },
@@ -50261,7 +50261,7 @@
             },
             {
               "name": "Server 2 (Direct MovieBox CDN)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/d2dc844ee4567222c7e80653d469e5cd.mp4?sign=463d92510b70c825e3026eb0f5098f75&t=1794400183",
+              "url": "/api/moviebox/stream?id=4503491135423267032&path=death-note-gCRQKUi2Gm5&se=1&ep=1",
               "isDirect": true,
               "quality": "1080p"
             },
@@ -51754,7 +51754,7 @@
                 },
                 {
                   "name": "Server 2 (Direct MovieBox CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/bt/d29695b6c1337a557c1197ee470d6887.mp4?sign=6507904bbfd5a5fc8156a38bc73db596&t=1794403788",
+                  "url": "/api/moviebox/stream?id=8932178126826790552&path=kakegurui-ytaFrVatPDa&se=1&ep=1",
                   "isDirect": true,
                   "quality": "1080p"
                 },
@@ -52419,7 +52419,7 @@
             },
             {
               "name": "Server 2 (Direct MovieBox CDN)",
-              "url": "https://bcdnxw.hakunaymatata.com/bt/d29695b6c1337a557c1197ee470d6887.mp4?sign=6507904bbfd5a5fc8156a38bc73db596&t=1794403788",
+              "url": "/api/moviebox/stream?id=8932178126826790552&path=kakegurui-ytaFrVatPDa&se=1&ep=1",
               "isDirect": true,
               "quality": "1080p"
             },
@@ -53489,7 +53489,7 @@
                 },
                 {
                   "name": "Server 2 (Direct MovieBox CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/resource/2ba8b54b479d8e328f18921c2e21c5bd.mp4?sign=9eb50c7d453dd6c1968cf1c4adfda54d&t=1794403790",
+                  "url": "/api/moviebox/stream?id=4806111042512241744&path=dearest-8mHTa5s22J5&se=1&ep=1",
                   "isDirect": true,
                   "quality": "1080p"
                 },
@@ -53929,7 +53929,7 @@
             },
             {
               "name": "Server 2 (Direct MovieBox CDN)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/2ba8b54b479d8e328f18921c2e21c5bd.mp4?sign=9eb50c7d453dd6c1968cf1c4adfda54d&t=1794403790",
+              "url": "/api/moviebox/stream?id=4806111042512241744&path=dearest-8mHTa5s22J5&se=1&ep=1",
               "isDirect": true,
               "quality": "1080p"
             },
@@ -54506,7 +54506,7 @@
                 },
                 {
                   "name": "Server 2 (Direct MovieBox CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/resource/c8aeaea3ea1c4322c7866aa8250c234f.mp4?sign=8f8485c557f4077a4ba3646e0260a8a4&t=1794403793",
+                  "url": "/api/moviebox/stream?id=4864020120923947856&path=your-turn-to-kill-uVBkLSlgjN5&se=1&ep=1",
                   "isDirect": true,
                   "quality": "1080p"
                 },
@@ -55376,7 +55376,7 @@
             },
             {
               "name": "Server 2 (Direct MovieBox CDN)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/c8aeaea3ea1c4322c7866aa8250c234f.mp4?sign=8f8485c557f4077a4ba3646e0260a8a4&t=1794403793",
+              "url": "/api/moviebox/stream?id=4864020120923947856&path=your-turn-to-kill-uVBkLSlgjN5&se=1&ep=1",
               "isDirect": true,
               "quality": "1080p"
             },
@@ -58178,7 +58178,7 @@
                 },
                 {
                   "name": "Server 2 (Direct MovieBox CDN)",
-                  "url": "https://bcdnxw.hakunaymatata.com/resource/f3725905ac44b0eda8d43619b3273777.mp4?sign=f410aa24ed0284968967f17d011c19a5&t=1794403497",
+                  "url": "/api/moviebox/stream?id=7412629799992444240&path=the-black-swindler-uhVaQueVzP8&se=1&ep=1",
                   "isDirect": true,
                   "quality": "1080p"
                 },
@@ -58618,7 +58618,7 @@
             },
             {
               "name": "Server 2 (Direct MovieBox CDN)",
-              "url": "https://bcdnxw.hakunaymatata.com/resource/f3725905ac44b0eda8d43619b3273777.mp4?sign=f410aa24ed0284968967f17d011c19a5&t=1794403497",
+              "url": "/api/moviebox/stream?id=7412629799992444240&path=the-black-swindler-uhVaQueVzP8&se=1&ep=1",
               "isDirect": true,
               "quality": "1080p"
             },
@@ -81358,7 +81358,7 @@
           "episode": 1,
           "season": 1,
           "title": "Episode 1",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/b426c3fd52d521eaa4846062a1b33fee.mp4?sign=0d885122352a5acb9b63ee87a86b33b4&t=1793952276"
+          "streamUrl": "/api/moviebox/stream?id=9079615145151721704&path=mousetrap-hindi-full-episode-ib3GtjuJIOa&se=1&ep=1"
         },
         {
           "id": "mb-s-9079615145151721704_s1_e2",
@@ -81576,70 +81576,70 @@
           "episode": 1,
           "season": 1,
           "title": "Episode 1",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/4f86815aa311995d8160298e348f913b.mp4?sign=80c0d7b6be4c72c3fae9eb430db08c2d&t=1793952160"
+          "streamUrl": "/api/moviebox/stream?id=6780765170550952464&path=mr-fanboy-E6DHbmxYT48&se=1&ep=1"
         },
         {
           "id": "mb-s-6780765170550952464_s1_e2",
           "episode": 2,
           "season": 1,
           "title": "Episode 2",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/5fd589e0359cfcb497d2538ac45bedd6.mp4?sign=5b38591af31d1feb32117d0fefc0f153&t=1793948825"
+          "streamUrl": "/api/moviebox/stream?id=6780765170550952464&path=mr-fanboy-E6DHbmxYT48&se=1&ep=2"
         },
         {
           "id": "mb-s-6780765170550952464_s1_e3",
           "episode": 3,
           "season": 1,
           "title": "Episode 3",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/5fe8360495597ed6ae3589b57fec6b2a.mp4?sign=5b86dd98ccd45a8538d56ccb04c1e057&t=1793952271"
+          "streamUrl": "/api/moviebox/stream?id=6780765170550952464&path=mr-fanboy-E6DHbmxYT48&se=1&ep=3"
         },
         {
           "id": "mb-s-6780765170550952464_s1_e4",
           "episode": 4,
           "season": 1,
           "title": "Episode 4",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/4fbc23aef56a19bb63667e8dc807a387.mp4?sign=1e1edd3c436eeacd1f66a1abd9329597&t=1793952272"
+          "streamUrl": "/api/moviebox/stream?id=6780765170550952464&path=mr-fanboy-E6DHbmxYT48&se=1&ep=4"
         },
         {
           "id": "mb-s-6780765170550952464_s1_e5",
           "episode": 5,
           "season": 1,
           "title": "Episode 5",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/4b7f0d55cdc04c2121b2f5611c007d3f.mp4?sign=de1748bf59e0e7d9561457c7cc9acc07&t=1793951631"
+          "streamUrl": "/api/moviebox/stream?id=6780765170550952464&path=mr-fanboy-E6DHbmxYT48&se=1&ep=5"
         },
         {
           "id": "mb-s-6780765170550952464_s1_e6",
           "episode": 6,
           "season": 1,
           "title": "Episode 6",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/eaeb7d09c7c705df377bd3d4f7a58dae.mp4?sign=d5c3d679dd40f7528cb944c0ffd26439&t=1793952272"
+          "streamUrl": "/api/moviebox/stream?id=6780765170550952464&path=mr-fanboy-E6DHbmxYT48&se=1&ep=6"
         },
         {
           "id": "mb-s-6780765170550952464_s1_e7",
           "episode": 7,
           "season": 1,
           "title": "Episode 7",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/97433771a198e06a3e90ad7d0bed93a4.mp4?sign=1365f37a1c7fd66d3b0b62269fc221e1&t=1793952276"
+          "streamUrl": "/api/moviebox/stream?id=6780765170550952464&path=mr-fanboy-E6DHbmxYT48&se=1&ep=7"
         },
         {
           "id": "mb-s-6780765170550952464_s1_e8",
           "episode": 8,
           "season": 1,
           "title": "Episode 8",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/6813310ee3e512072badf034fa0cb868.mp4?sign=744fbab05576dc6ef4eed39fe962208c&t=1793952276"
+          "streamUrl": "/api/moviebox/stream?id=6780765170550952464&path=mr-fanboy-E6DHbmxYT48&se=1&ep=8"
         },
         {
           "id": "mb-s-6780765170550952464_s1_e9",
           "episode": 9,
           "season": 1,
           "title": "Episode 9",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/54365e3a573a230fac28173212a1124f.mp4?sign=1e402d1e62dd13f4e4b6c23f1491cd8e&t=1793952276"
+          "streamUrl": "/api/moviebox/stream?id=6780765170550952464&path=mr-fanboy-E6DHbmxYT48&se=1&ep=9"
         },
         {
           "id": "mb-s-6780765170550952464_s1_e10",
           "episode": 10,
           "season": 1,
           "title": "Episode 10",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/98617022d2f88cd49e51842a60cf0506.mp4?sign=82bc0066314a31db47d1dd88db6e2f00&t=1793950017"
+          "streamUrl": "/api/moviebox/stream?id=6780765170550952464&path=mr-fanboy-E6DHbmxYT48&se=1&ep=10"
         },
         {
           "id": "mb-s-6780765170550952464_s1_e11",
@@ -82375,91 +82375,91 @@
           "episode": 1,
           "season": 1,
           "title": "Episode 1",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/3b6b10301fd7bce4f46edf48f0cfbaa3.mp4?sign=b806b5c5228d5ffd6a5bd18a37951fca&t=1793948634"
+          "streamUrl": "/api/moviebox/stream?id=2190807691784770592&path=lucifer-UQASHYbVPB2&se=1&ep=1"
         },
         {
           "id": "mb-s-2190807691784770592_s1_e2",
           "episode": 2,
           "season": 1,
           "title": "Episode 2",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/88aafa2262e772b7931c60af47472010.mp4?sign=1a94ccb41d2896b64c2f80116371666e&t=1793950959"
+          "streamUrl": "/api/moviebox/stream?id=2190807691784770592&path=lucifer-UQASHYbVPB2&se=1&ep=2"
         },
         {
           "id": "mb-s-2190807691784770592_s1_e3",
           "episode": 3,
           "season": 1,
           "title": "Episode 3",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/9f172c9456c6863608bec4b624045ba8.mp4?sign=663c3be02bb7f67b75041106f5d2dd81&t=1793949900"
+          "streamUrl": "/api/moviebox/stream?id=2190807691784770592&path=lucifer-UQASHYbVPB2&se=1&ep=3"
         },
         {
           "id": "mb-s-2190807691784770592_s1_e4",
           "episode": 4,
           "season": 1,
           "title": "Episode 4",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/df1c3cf033e897834e3d03592c5d30b2.mp4?sign=4f40abb86ecb88c9ce056248ca30e4ba&t=1793948651"
+          "streamUrl": "/api/moviebox/stream?id=2190807691784770592&path=lucifer-UQASHYbVPB2&se=1&ep=4"
         },
         {
           "id": "mb-s-2190807691784770592_s1_e5",
           "episode": 5,
           "season": 1,
           "title": "Episode 5",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/4e29e147a42200f4e53dc2d71ef76dc6.mp4?sign=40fa5ae1a4be7a013820c8068ad643dd&t=1793952199"
+          "streamUrl": "/api/moviebox/stream?id=2190807691784770592&path=lucifer-UQASHYbVPB2&se=1&ep=5"
         },
         {
           "id": "mb-s-2190807691784770592_s1_e6",
           "episode": 6,
           "season": 1,
           "title": "Episode 6",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/5a0bdc0048c71f40b0a88ba2edbe5472.mp4?sign=456d57176d052788aef4ba6330358d7c&t=1793950331"
+          "streamUrl": "/api/moviebox/stream?id=2190807691784770592&path=lucifer-UQASHYbVPB2&se=1&ep=6"
         },
         {
           "id": "mb-s-2190807691784770592_s1_e7",
           "episode": 7,
           "season": 1,
           "title": "Episode 7",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/afe1e1fb6322d5825bc23bb26e1f4ab1.mp4?sign=4ea96db427d74cadab4d820548b8bd73&t=1793950744"
+          "streamUrl": "/api/moviebox/stream?id=2190807691784770592&path=lucifer-UQASHYbVPB2&se=1&ep=7"
         },
         {
           "id": "mb-s-2190807691784770592_s1_e8",
           "episode": 8,
           "season": 1,
           "title": "Episode 8",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/09644adc3bff447acfb4e7eeabe55913.mp4?sign=8ab1e948f40cc56b38ea019a866f25ff&t=1793952181"
+          "streamUrl": "/api/moviebox/stream?id=2190807691784770592&path=lucifer-UQASHYbVPB2&se=1&ep=8"
         },
         {
           "id": "mb-s-2190807691784770592_s1_e9",
           "episode": 9,
           "season": 1,
           "title": "Episode 9",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/f9349a44e3098b4f897917c3b3edcd81.mp4?sign=dcc3c618f8e45bfed9c5cab68ffd2e59&t=1793952200"
+          "streamUrl": "/api/moviebox/stream?id=2190807691784770592&path=lucifer-UQASHYbVPB2&se=1&ep=9"
         },
         {
           "id": "mb-s-2190807691784770592_s1_e10",
           "episode": 10,
           "season": 1,
           "title": "Episode 10",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/02708c0b452db15effa151e38351a463.mp4?sign=53e1dc9f3a3e930749f2964527bfdbaf&t=1793949512"
+          "streamUrl": "/api/moviebox/stream?id=2190807691784770592&path=lucifer-UQASHYbVPB2&se=1&ep=10"
         },
         {
           "id": "mb-s-2190807691784770592_s1_e11",
           "episode": 11,
           "season": 1,
           "title": "Episode 11",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/bbb3bb657fbf7cd423204d62b0c88376.mp4?sign=afd8eb50e74d4e62a0e87ac7408a345f&t=1793952200"
+          "streamUrl": "/api/moviebox/stream?id=2190807691784770592&path=lucifer-UQASHYbVPB2&se=1&ep=11"
         },
         {
           "id": "mb-s-2190807691784770592_s1_e12",
           "episode": 12,
           "season": 1,
           "title": "Episode 12",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/68872bcf2b71bebb25604617caad0052.mp4?sign=5a50aeef641706996df9a55e962d3693&t=1793951123"
+          "streamUrl": "/api/moviebox/stream?id=2190807691784770592&path=lucifer-UQASHYbVPB2&se=1&ep=12"
         },
         {
           "id": "mb-s-2190807691784770592_s1_e13",
           "episode": 13,
           "season": 1,
           "title": "Episode 13",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/6f9e6d459f39316d34fc57623fbfd75d.mp4?sign=352116779da43ee1e74471c104347547&t=1793952201"
+          "streamUrl": "/api/moviebox/stream?id=2190807691784770592&path=lucifer-UQASHYbVPB2&se=1&ep=13"
         },
         {
           "id": "mb-s-2190807691784770592_s1_e14",
@@ -83314,56 +83314,56 @@
           "episode": 1,
           "season": 1,
           "title": "Episode 1",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/c53b1a70d6e5fbf79b295fe5c67eefb4.mp4?sign=0e0d8e286b9fd97e1e57020eadfb1b45&t=1793951460"
+          "streamUrl": "/api/moviebox/stream?id=3819281169544270880&path=the-witcher-qdCxXLAl8y4&se=1&ep=1"
         },
         {
           "id": "mb-s-3819281169544270880_s1_e2",
           "episode": 2,
           "season": 1,
           "title": "Episode 2",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/0a07a3bb8e23d3a84e409f0fba1d22e2.mp4?sign=b95efef925807a270a6828661af0dbad&t=1793951386"
+          "streamUrl": "/api/moviebox/stream?id=3819281169544270880&path=the-witcher-qdCxXLAl8y4&se=1&ep=2"
         },
         {
           "id": "mb-s-3819281169544270880_s1_e3",
           "episode": 3,
           "season": 1,
           "title": "Episode 3",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/50d9e82a80a7433c6eaf81ba55aa3ac1.mp4?sign=06e7046cc8e520269012295fd49e720b&t=1793952163"
+          "streamUrl": "/api/moviebox/stream?id=3819281169544270880&path=the-witcher-qdCxXLAl8y4&se=1&ep=3"
         },
         {
           "id": "mb-s-3819281169544270880_s1_e4",
           "episode": 4,
           "season": 1,
           "title": "Episode 4",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/6feedd102feb3b81ce2ab59c476f51c7.mp4?sign=e3fe40bad5322eeef7da5a3c76904521&t=1793952170"
+          "streamUrl": "/api/moviebox/stream?id=3819281169544270880&path=the-witcher-qdCxXLAl8y4&se=1&ep=4"
         },
         {
           "id": "mb-s-3819281169544270880_s1_e5",
           "episode": 5,
           "season": 1,
           "title": "Episode 5",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/cd7eff7d3e0b6c4e954c4d49957e09bd.mp4?sign=0990765fa25d4e11193a9c55ac33a515&t=1793952170"
+          "streamUrl": "/api/moviebox/stream?id=3819281169544270880&path=the-witcher-qdCxXLAl8y4&se=1&ep=5"
         },
         {
           "id": "mb-s-3819281169544270880_s1_e6",
           "episode": 6,
           "season": 1,
           "title": "Episode 6",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/ee5a29d7fbf6da59a8b9ee64cd18c5b1.mp4?sign=a5a40cea82e2cfc890d9d30750f5e1bc&t=1793952171"
+          "streamUrl": "/api/moviebox/stream?id=3819281169544270880&path=the-witcher-qdCxXLAl8y4&se=1&ep=6"
         },
         {
           "id": "mb-s-3819281169544270880_s1_e7",
           "episode": 7,
           "season": 1,
           "title": "Episode 7",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/1401b1ecb3d085fa8cbb18134a52bca7.mp4?sign=64b509a6f92660d08865d119b05b3919&t=1793952171"
+          "streamUrl": "/api/moviebox/stream?id=3819281169544270880&path=the-witcher-qdCxXLAl8y4&se=1&ep=7"
         },
         {
           "id": "mb-s-3819281169544270880_s1_e8",
           "episode": 8,
           "season": 1,
           "title": "Episode 8",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/617d3bd37d11a217e34fa3b037f19d33.mp4?sign=c37953ea4266eae4fd1b23e9f694d657&t=1793952171"
+          "streamUrl": "/api/moviebox/stream?id=3819281169544270880&path=the-witcher-qdCxXLAl8y4&se=1&ep=8"
         },
         {
           "id": "mb-s-3819281169544270880_s1_e9",
@@ -83770,56 +83770,56 @@
           "episode": 1,
           "season": 1,
           "title": "Episode 1",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/16b92b0b1c8ed5f4716e12e0b5cf1a79.mp4?sign=a02b500155812d88f3cbd9fa36a0de84&t=1793950487"
+          "streamUrl": "/api/moviebox/stream?id=5074096615720375064&path=the-lord-of-the-rings-the-rings-of-power-oWxADnOpP26&se=1&ep=1"
         },
         {
           "id": "mb-s-5074096615720375064_s1_e2",
           "episode": 2,
           "season": 1,
           "title": "Episode 2",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/9c60d622b4b7d3d6c24b795951c3a3f5.mp4?sign=47b8da647637c1706043e7cd388a2199&t=1793951754"
+          "streamUrl": "/api/moviebox/stream?id=5074096615720375064&path=the-lord-of-the-rings-the-rings-of-power-oWxADnOpP26&se=1&ep=2"
         },
         {
           "id": "mb-s-5074096615720375064_s1_e3",
           "episode": 3,
           "season": 1,
           "title": "Episode 3",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/73f8d2585574f316058f8bb047bc3084.mp4?sign=16f7d0820829d0715e362be0e2acab01&t=1793949350"
+          "streamUrl": "/api/moviebox/stream?id=5074096615720375064&path=the-lord-of-the-rings-the-rings-of-power-oWxADnOpP26&se=1&ep=3"
         },
         {
           "id": "mb-s-5074096615720375064_s1_e4",
           "episode": 4,
           "season": 1,
           "title": "Episode 4",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/06f82391c6597f59c1c592e3375c8d52.mp4?sign=c3e7dbe3d378edd6fa400b28183f19b5&t=1793950072"
+          "streamUrl": "/api/moviebox/stream?id=5074096615720375064&path=the-lord-of-the-rings-the-rings-of-power-oWxADnOpP26&se=1&ep=4"
         },
         {
           "id": "mb-s-5074096615720375064_s1_e5",
           "episode": 5,
           "season": 1,
           "title": "Episode 5",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/2c3a0ae723afd57ba68e55c58362a6d8.mp4?sign=b305a3ebc6e367c32dc1ce863416bfed&t=1793952149"
+          "streamUrl": "/api/moviebox/stream?id=5074096615720375064&path=the-lord-of-the-rings-the-rings-of-power-oWxADnOpP26&se=1&ep=5"
         },
         {
           "id": "mb-s-5074096615720375064_s1_e6",
           "episode": 6,
           "season": 1,
           "title": "Episode 6",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/a4f05b331aa9d861978e8efa23e0a649.mp4?sign=b1dfba3820e861e22f9cd32cc14ecfd1&t=1793951443"
+          "streamUrl": "/api/moviebox/stream?id=5074096615720375064&path=the-lord-of-the-rings-the-rings-of-power-oWxADnOpP26&se=1&ep=6"
         },
         {
           "id": "mb-s-5074096615720375064_s1_e7",
           "episode": 7,
           "season": 1,
           "title": "Episode 7",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/95c24c21bcec2cdcd8728a4ae0eb4ce1.mp4?sign=d8ca56f4f9245e6241b312913620cc73&t=1793949599"
+          "streamUrl": "/api/moviebox/stream?id=5074096615720375064&path=the-lord-of-the-rings-the-rings-of-power-oWxADnOpP26&se=1&ep=7"
         },
         {
           "id": "mb-s-5074096615720375064_s1_e8",
           "episode": 8,
           "season": 1,
           "title": "Episode 8",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/convert-h264/c78069abd1170373b7d46e7e685ca8f9.mp4?sign=13a6dd70c1377dc4cddb8477fb660ad1&t=1793950719"
+          "streamUrl": "/api/moviebox/stream?id=5074096615720375064&path=the-lord-of-the-rings-the-rings-of-power-oWxADnOpP26&se=1&ep=8"
         },
         {
           "id": "mb-s-5074096615720375064_s1_e9",
@@ -84184,70 +84184,70 @@
           "episode": 1,
           "season": 1,
           "title": "Episode 1",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/98f51eca3a483e1cdded651f8fb3e3b9.mp4?sign=a15e3f2a41f3b20907d935733840ff8a&t=1793951227"
+          "streamUrl": "/api/moviebox/stream?id=5373384118887662624&path=house-of-the-dragon-uTatZHG9Wo6&se=1&ep=1"
         },
         {
           "id": "mb-s-5373384118887662624_s1_e2",
           "episode": 2,
           "season": 1,
           "title": "Episode 2",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/ad87bb618385b8fb43dc6165b3aae46f.mp4?sign=89ebfc732238bdb32195ace52a5b16be&t=1793952117"
+          "streamUrl": "/api/moviebox/stream?id=5373384118887662624&path=house-of-the-dragon-uTatZHG9Wo6&se=1&ep=2"
         },
         {
           "id": "mb-s-5373384118887662624_s1_e3",
           "episode": 3,
           "season": 1,
           "title": "Episode 3",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/d06ba2dda892d1db7ccfbab1b3ed6aec.mp4?sign=d85d612e53a0554dad24b9039a754aa6&t=1793952117"
+          "streamUrl": "/api/moviebox/stream?id=5373384118887662624&path=house-of-the-dragon-uTatZHG9Wo6&se=1&ep=3"
         },
         {
           "id": "mb-s-5373384118887662624_s1_e4",
           "episode": 4,
           "season": 1,
           "title": "Episode 4",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/5af4fa6e032092826c61cd248e398f01.mp4?sign=d80ced9f9e1b476bf4f5231a1ce6403b&t=1793952117"
+          "streamUrl": "/api/moviebox/stream?id=5373384118887662624&path=house-of-the-dragon-uTatZHG9Wo6&se=1&ep=4"
         },
         {
           "id": "mb-s-5373384118887662624_s1_e5",
           "episode": 5,
           "season": 1,
           "title": "Episode 5",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/52ee4978b03fb7b89e07e19627d6b05d.mp4?sign=8b9fa365a81e902f3a2a77d1437bc473&t=1793952117"
+          "streamUrl": "/api/moviebox/stream?id=5373384118887662624&path=house-of-the-dragon-uTatZHG9Wo6&se=1&ep=5"
         },
         {
           "id": "mb-s-5373384118887662624_s1_e6",
           "episode": 6,
           "season": 1,
           "title": "Episode 6",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/cms/fb27ef482a02ee42f3220800848fb041.mp4?sign=25ade9040fde936f8611f58d079c1131&t=1793952125"
+          "streamUrl": "/api/moviebox/stream?id=5373384118887662624&path=house-of-the-dragon-uTatZHG9Wo6&se=1&ep=6"
         },
         {
           "id": "mb-s-5373384118887662624_s1_e7",
           "episode": 7,
           "season": 1,
           "title": "Episode 7",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/4d61819be2e0ffb5245c1799bf7a1d8d.mp4?sign=6c77cd53bf5979371c8d76d9572d1e16&t=1793952124"
+          "streamUrl": "/api/moviebox/stream?id=5373384118887662624&path=house-of-the-dragon-uTatZHG9Wo6&se=1&ep=7"
         },
         {
           "id": "mb-s-5373384118887662624_s1_e8",
           "episode": 8,
           "season": 1,
           "title": "Episode 8",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/b5e22218c5fc6651ae241ed41e45b6df.mp4?sign=8786e9807c9a038d6f577e8cbcd8bd3c&t=1793952126"
+          "streamUrl": "/api/moviebox/stream?id=5373384118887662624&path=house-of-the-dragon-uTatZHG9Wo6&se=1&ep=8"
         },
         {
           "id": "mb-s-5373384118887662624_s1_e9",
           "episode": 9,
           "season": 1,
           "title": "Episode 9",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/24b0cdae9fd3970468293e0b20527294.mp4?sign=82b8c4f59d3071a9b9668f62e90f462d&t=1793951761"
+          "streamUrl": "/api/moviebox/stream?id=5373384118887662624&path=house-of-the-dragon-uTatZHG9Wo6&se=1&ep=9"
         },
         {
           "id": "mb-s-5373384118887662624_s1_e10",
           "episode": 10,
           "season": 1,
           "title": "Episode 10",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/e51c2003e83322baa49709bf08f55026.mp4?sign=c6af6adf08f4bb5b1a5a03bdd00861e4&t=1793952126"
+          "streamUrl": "/api/moviebox/stream?id=5373384118887662624&path=house-of-the-dragon-uTatZHG9Wo6&se=1&ep=10"
         },
         {
           "id": "mb-s-5373384118887662624_s1_e11",
@@ -84941,70 +84941,70 @@
           "episode": 1,
           "season": 1,
           "title": "Episode 1",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/01d3529b715df100260ef139c88e151b.mp4?sign=fc02b73538bfebb9571823502b42b487&t=1793950783"
+          "streamUrl": "/api/moviebox/stream?id=2036860087691609120&path=game-of-thrones-AQP5Q48Qsq2&se=1&ep=1"
         },
         {
           "id": "mb-s-2036860087691609120_s1_e2",
           "episode": 2,
           "season": 1,
           "title": "Episode 2",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/455bd53c352e35608e4556befdceb722.mp4?sign=03245f312453d0120afeb4b1952048a7&t=1793950234"
+          "streamUrl": "/api/moviebox/stream?id=2036860087691609120&path=game-of-thrones-AQP5Q48Qsq2&se=1&ep=2"
         },
         {
           "id": "mb-s-2036860087691609120_s1_e3",
           "episode": 3,
           "season": 1,
           "title": "Episode 3",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/5da37ac799aa31bb2d2d71ee25235b3a.mp4?sign=b9485b133b1e0f91565edf194e50c150&t=1793952057"
+          "streamUrl": "/api/moviebox/stream?id=2036860087691609120&path=game-of-thrones-AQP5Q48Qsq2&se=1&ep=3"
         },
         {
           "id": "mb-s-2036860087691609120_s1_e4",
           "episode": 4,
           "season": 1,
           "title": "Episode 4",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/e99b859c8a195b709011dd2af11e0859.mp4?sign=9b5e1769802dcb544fd8daad7a33cf1b&t=1793949336"
+          "streamUrl": "/api/moviebox/stream?id=2036860087691609120&path=game-of-thrones-AQP5Q48Qsq2&se=1&ep=4"
         },
         {
           "id": "mb-s-2036860087691609120_s1_e5",
           "episode": 5,
           "season": 1,
           "title": "Episode 5",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/bd489c0b2b716689d310aa1af6a8768a.mp4?sign=682a90c6de64a39395e74f87cf330821&t=1793950258"
+          "streamUrl": "/api/moviebox/stream?id=2036860087691609120&path=game-of-thrones-AQP5Q48Qsq2&se=1&ep=5"
         },
         {
           "id": "mb-s-2036860087691609120_s1_e6",
           "episode": 6,
           "season": 1,
           "title": "Episode 6",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/000ba8829ed00120956f9fc3e1b672e2.mp4?sign=75ac46f0b487cb1d49295ee7e117b626&t=1793952057"
+          "streamUrl": "/api/moviebox/stream?id=2036860087691609120&path=game-of-thrones-AQP5Q48Qsq2&se=1&ep=6"
         },
         {
           "id": "mb-s-2036860087691609120_s1_e7",
           "episode": 7,
           "season": 1,
           "title": "Episode 7",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/d397c3f9e20f3a321111014592cb8836.mp4?sign=da23387d640288779f674beb57474b85&t=1793952058"
+          "streamUrl": "/api/moviebox/stream?id=2036860087691609120&path=game-of-thrones-AQP5Q48Qsq2&se=1&ep=7"
         },
         {
           "id": "mb-s-2036860087691609120_s1_e8",
           "episode": 8,
           "season": 1,
           "title": "Episode 8",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/resource/798428f1c1d72142130e873815698b13.mp4?sign=ab03fa8c24b6ba19614e5b1e253a7eb7&t=1793952058"
+          "streamUrl": "/api/moviebox/stream?id=2036860087691609120&path=game-of-thrones-AQP5Q48Qsq2&se=1&ep=8"
         },
         {
           "id": "mb-s-2036860087691609120_s1_e9",
           "episode": 9,
           "season": 1,
           "title": "Episode 9",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/e53a80864caaade0afcdf0169d3f57c7.mp4?sign=565bbe245d5d1c6ba9b4a0e646019385&t=1793949251"
+          "streamUrl": "/api/moviebox/stream?id=2036860087691609120&path=game-of-thrones-AQP5Q48Qsq2&se=1&ep=9"
         },
         {
           "id": "mb-s-2036860087691609120_s1_e10",
           "episode": 10,
           "season": 1,
           "title": "Episode 10",
-          "streamUrl": "https://bcdnxw.hakunaymatata.com/bt/fbc74b4a63e0e9971f91e3155ce69ea7.mp4?sign=96b35fad2545abb2c9f0936305836f4a&t=1793948038"
+          "streamUrl": "/api/moviebox/stream?id=2036860087691609120&path=game-of-thrones-AQP5Q48Qsq2&se=1&ep=10"
         },
         {
           "id": "mb-s-2036860087691609120_s1_e11",
@@ -126713,7 +126713,306 @@
         }
       ],
       "description": "Young, free and madly in love. As teenagers, the world was their oyster but as adults, their lives seem dimmer, like a very important piece is missing.",
-      "type": "series"
+      "type": "series",
+      "episodes": [
+        {
+          "id": "mb-s-9031119355689454368_s1_e1",
+          "episode": 1,
+          "episodeNumber": 1,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 1",
+          "name": "Episode 1",
+          "duration": "50m",
+          "still": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "stillPath": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "streamUrl": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=1",
+          "audioTracks": [
+            "Original audio"
+          ],
+          "selectedAudio": "Original audio",
+          "servers": [
+            {
+              "name": "Server 1 (Original Japanese - Auto-Renewing 1080p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=1",
+              "quality": "1080p",
+              "audio": "Original audio",
+              "isDirect": true
+            },
+            {
+              "name": "Server 2 (Auto Failover 480p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=1&q=480",
+              "quality": "480p",
+              "audio": "Original audio",
+              "isDirect": true
+            }
+          ]
+        },
+        {
+          "id": "mb-s-9031119355689454368_s1_e2",
+          "episode": 2,
+          "episodeNumber": 2,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 2",
+          "name": "Episode 2",
+          "duration": "50m",
+          "still": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "stillPath": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "streamUrl": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=2",
+          "audioTracks": [
+            "Original audio"
+          ],
+          "selectedAudio": "Original audio",
+          "servers": [
+            {
+              "name": "Server 1 (Original Japanese - Auto-Renewing 1080p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=2",
+              "quality": "1080p",
+              "audio": "Original audio",
+              "isDirect": true
+            },
+            {
+              "name": "Server 2 (Auto Failover 480p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=2&q=480",
+              "quality": "480p",
+              "audio": "Original audio",
+              "isDirect": true
+            }
+          ]
+        },
+        {
+          "id": "mb-s-9031119355689454368_s1_e3",
+          "episode": 3,
+          "episodeNumber": 3,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 3",
+          "name": "Episode 3",
+          "duration": "50m",
+          "still": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "stillPath": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "streamUrl": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=3",
+          "audioTracks": [
+            "Original audio"
+          ],
+          "selectedAudio": "Original audio",
+          "servers": [
+            {
+              "name": "Server 1 (Original Japanese - Auto-Renewing 1080p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=3",
+              "quality": "1080p",
+              "audio": "Original audio",
+              "isDirect": true
+            },
+            {
+              "name": "Server 2 (Auto Failover 480p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=3&q=480",
+              "quality": "480p",
+              "audio": "Original audio",
+              "isDirect": true
+            }
+          ]
+        },
+        {
+          "id": "mb-s-9031119355689454368_s1_e4",
+          "episode": 4,
+          "episodeNumber": 4,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 4",
+          "name": "Episode 4",
+          "duration": "50m",
+          "still": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "stillPath": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "streamUrl": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=4",
+          "audioTracks": [
+            "Original audio"
+          ],
+          "selectedAudio": "Original audio",
+          "servers": [
+            {
+              "name": "Server 1 (Original Japanese - Auto-Renewing 1080p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=4",
+              "quality": "1080p",
+              "audio": "Original audio",
+              "isDirect": true
+            },
+            {
+              "name": "Server 2 (Auto Failover 480p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=4&q=480",
+              "quality": "480p",
+              "audio": "Original audio",
+              "isDirect": true
+            }
+          ]
+        },
+        {
+          "id": "mb-s-9031119355689454368_s1_e5",
+          "episode": 5,
+          "episodeNumber": 5,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 5",
+          "name": "Episode 5",
+          "duration": "50m",
+          "still": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "stillPath": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "streamUrl": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=5",
+          "audioTracks": [
+            "Original audio"
+          ],
+          "selectedAudio": "Original audio",
+          "servers": [
+            {
+              "name": "Server 1 (Original Japanese - Auto-Renewing 1080p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=5",
+              "quality": "1080p",
+              "audio": "Original audio",
+              "isDirect": true
+            },
+            {
+              "name": "Server 2 (Auto Failover 480p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=5&q=480",
+              "quality": "480p",
+              "audio": "Original audio",
+              "isDirect": true
+            }
+          ]
+        },
+        {
+          "id": "mb-s-9031119355689454368_s1_e6",
+          "episode": 6,
+          "episodeNumber": 6,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 6",
+          "name": "Episode 6",
+          "duration": "50m",
+          "still": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "stillPath": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "streamUrl": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=6",
+          "audioTracks": [
+            "Original audio"
+          ],
+          "selectedAudio": "Original audio",
+          "servers": [
+            {
+              "name": "Server 1 (Original Japanese - Auto-Renewing 1080p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=6",
+              "quality": "1080p",
+              "audio": "Original audio",
+              "isDirect": true
+            },
+            {
+              "name": "Server 2 (Auto Failover 480p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=6&q=480",
+              "quality": "480p",
+              "audio": "Original audio",
+              "isDirect": true
+            }
+          ]
+        },
+        {
+          "id": "mb-s-9031119355689454368_s1_e7",
+          "episode": 7,
+          "episodeNumber": 7,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 7",
+          "name": "Episode 7",
+          "duration": "50m",
+          "still": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "stillPath": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "streamUrl": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=7",
+          "audioTracks": [
+            "Original audio"
+          ],
+          "selectedAudio": "Original audio",
+          "servers": [
+            {
+              "name": "Server 1 (Original Japanese - Auto-Renewing 1080p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=7",
+              "quality": "1080p",
+              "audio": "Original audio",
+              "isDirect": true
+            },
+            {
+              "name": "Server 2 (Auto Failover 480p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=7&q=480",
+              "quality": "480p",
+              "audio": "Original audio",
+              "isDirect": true
+            }
+          ]
+        },
+        {
+          "id": "mb-s-9031119355689454368_s1_e8",
+          "episode": 8,
+          "episodeNumber": 8,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 8",
+          "name": "Episode 8",
+          "duration": "50m",
+          "still": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "stillPath": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "streamUrl": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=8",
+          "audioTracks": [
+            "Original audio"
+          ],
+          "selectedAudio": "Original audio",
+          "servers": [
+            {
+              "name": "Server 1 (Original Japanese - Auto-Renewing 1080p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=8",
+              "quality": "1080p",
+              "audio": "Original audio",
+              "isDirect": true
+            },
+            {
+              "name": "Server 2 (Auto Failover 480p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=8&q=480",
+              "quality": "480p",
+              "audio": "Original audio",
+              "isDirect": true
+            }
+          ]
+        },
+        {
+          "id": "mb-s-9031119355689454368_s1_e9",
+          "episode": 9,
+          "episodeNumber": 9,
+          "season": 1,
+          "seasonNumber": 1,
+          "title": "Episode 9",
+          "name": "Episode 9",
+          "duration": "50m",
+          "still": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "stillPath": "https://pbcdnw.aoneroom.com/image/2026/01/26/10772c2ad532fadd7a57202cb873d366.jpg",
+          "streamUrl": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=9",
+          "audioTracks": [
+            "Original audio"
+          ],
+          "selectedAudio": "Original audio",
+          "servers": [
+            {
+              "name": "Server 1 (Original Japanese - Auto-Renewing 1080p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=9",
+              "quality": "1080p",
+              "audio": "Original audio",
+              "isDirect": true
+            },
+            {
+              "name": "Server 2 (Auto Failover 480p)",
+              "url": "/api/moviebox/stream?id=9031119355689454368&path=first-love-cIXgcKAC8La&se=1&ep=9&q=480",
+              "quality": "480p",
+              "audio": "Original audio",
+              "isDirect": true
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "mb-s-5374509463669983144",

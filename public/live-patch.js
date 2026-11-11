@@ -1,4 +1,4 @@
-// FOBS TV Live OTA Patch Bundle v1.5.8 (Always-Default Bangla Subtitle: Human SubSource First -> AI Fallback, Full-Volume Sound & Zero Jitter)
+// FOBS TV Live OTA Patch Bundle v1.5.9 (Always-Default Bangla Subtitle, Instant Playback, Zero Playback Errors & Token Auto-Renewal)
 // 1. Instant Video Playback: Eliminates connection spinner stall; video plays instantly on canplay/loadeddata
 // 2. Dynamic Stream Auto-Renew: Automatically routes all static/expired CDN links through zero-redirect dynamic stream resolver
 // 3. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
@@ -8,9 +8,10 @@
 // 7. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
 // 8. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 // 9. Catalog Sync & Poster Acceleration: Auto-invalidates stale content cache and enables prioritized high-speed poster loading
+// 10. Self-Healing Playback Engine: Automatic silent token refresh on CDN 403 or pause expiration with 100% watch-time preservation
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.5.8 (Always-Default Bangla Subtitles & Playback Engine) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.5.8';
+  console.log('⚡ FOBS TV Live Patch v1.5.9 (Self-Healing Playback & Default Bangla Subtitles Engine) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.5.9';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -133,6 +134,10 @@
       /* Hide resolution dropdown in portrait mode resources row */
       #currentQualityBtn {
         display: none !important;
+      }
+      /* Pure OLED Black Intro & Splash */
+      body.intro-active, .app-intro-overlay, #appIntroOverlay, .app-intro-video {
+        background-color: #000000 !important;
       }
     `;
     document.head.appendChild(style);
@@ -564,24 +569,40 @@
       }
     }
 
-    // Fail-Safe Watchdog: If direct /api/moviebox/stream hangs or takes > 2.5s, fetch json=1 and play via /api/stream proxy
+    // Fail-Safe Watchdog & Token Auto-Renew: If direct /api/moviebox/stream hangs or throws error, fetch fresh token and play
     if (vp && typeof fastUrl === 'string' && fastUrl.includes('/api/moviebox/stream')) {
       let fallbackSwitched = false;
-      const doProxyFallback = () => {
+      const doProxyFallback = (isErrorEvent = false) => {
         if (fallbackSwitched) return;
         fallbackSwitched = true;
-        const jsonUrl = fastUrl.includes('?') ? (fastUrl + '&json=1') : (fastUrl + '?json=1');
+        const resumeTime = vp._lastPlayhead || (vp.currentTime > 0 ? vp.currentTime : (seekTime || 0));
+        const jsonUrl = (fastUrl.includes('?') ? (fastUrl + '&') : (fastUrl + '?')) + `_renew=${Date.now()}&json=1`;
+        console.log(`[LivePatch Auto-Renew] Fetching fresh stream token for resume at ${resumeTime.toFixed(1)}s...`);
         fetch(jsonUrl, { cache: 'no-store' })
           .then(r => r.json())
           .then(data => {
-            if (data && data.streamUrl && vp && (!vp.currentTime || vp.currentTime < 0.1)) {
-              console.log('⚡ Fallback: Switching to direct /api/stream proxy:', data.streamUrl);
-              vp.src = data.streamUrl;
+            const freshUrl = data?.streamUrl || data?.directUrl;
+            if (freshUrl && vp) {
+              console.log('⚡ [LivePatch Auto-Renew] Switching to fresh self-renewed stream:', freshUrl);
+              vp.src = freshUrl;
+              const onCanPlay = () => {
+                vp.removeEventListener('canplay', onCanPlay);
+                vp.removeEventListener('loadedmetadata', onCanPlay);
+                try {
+                  if (resumeTime > 0) vp.currentTime = resumeTime;
+                } catch (e) {}
+                vp.play().catch(() => {});
+                hideConnectingLoader();
+              };
+              vp.addEventListener('canplay', onCanPlay, { once: true });
+              vp.addEventListener('loadedmetadata', onCanPlay, { once: true });
               vp.load();
               vp.play().catch(() => {});
             }
           })
-          .catch(() => {});
+          .catch(err => {
+            console.warn('[LivePatch Auto-Renew] Failed to fetch fresh stream:', err);
+          });
       };
 
       const watchdogTimer = setTimeout(() => {
@@ -598,7 +619,7 @@
       };
       vp.addEventListener('playing', cancelWatchdog, { once: true });
       vp.addEventListener('timeupdate', cancelWatchdog, { once: true });
-      vp.addEventListener('error', doProxyFallback, { once: true });
+      vp.addEventListener('error', () => doProxyFallback(true), { once: true });
     }
 
     // Loader is dismissed ONLY when video actually renders frames (currentTime > 0.05 or playing)
@@ -3383,5 +3404,77 @@
     window.selectSubtitleTrack._hasBnPriorityPatch = true;
   }
 
-  console.log('✅ FOBS TV Live Patch v1.5.8 active: Default Human Bangla SubSource & AI Fallback, Zero Jitter & High Performance.');
+  // Universal Video Playback Error & Expired Token Self-Healer
+  (function setupUniversalPlaybackErrorHandler() {
+    const vp = document.getElementById('mainVideoPlayer');
+    if (!vp || vp._fobsAutoHealerAttached) return;
+    vp._fobsAutoHealerAttached = true;
+
+    vp.addEventListener('timeupdate', () => {
+      if (vp.currentTime && !isNaN(vp.currentTime) && vp.currentTime > 0) {
+        vp._lastPlayhead = vp.currentTime;
+      }
+    });
+
+    let autoHealAttempts = 0;
+    vp.addEventListener('error', async (e) => {
+      const curM = getActiveMedia() || window.appState?.currentMedia;
+      if (curM?.isOffline || vp._isClosing || vp._ignoreErrors || vp.style.display === 'none') return;
+      if (vp.error && vp.error.code === 1) return; // MEDIA_ERR_ABORTED
+
+      if (autoHealAttempts >= 3) {
+        autoHealAttempts = 0;
+        return;
+      }
+      autoHealAttempts++;
+      const resumeTime = vp._lastPlayhead || (vp.currentTime > 0 ? vp.currentTime : (window.appState?.pendingSeekTime || 0));
+      console.warn(`[Auto-Healer] Video error detected (attempt ${autoHealAttempts}/3). Auto-refreshing stream at ${resumeTime.toFixed(1)}s...`);
+
+      const curEp = window.appState?.currentEpisode;
+      const rawUrl = (typeof window.getActiveEpisodeStream === 'function' ? window.getActiveEpisodeStream(curEp, window.appState?.currentAudioTrack) : null) || curEp?.streamUrl || curM?.streamUrl;
+
+      // Check if MovieBox stream
+      const sId = curM?.subjectId || curM?.mbSubjectId || (curM?.id && curM.id.startsWith('mb-s-') ? curM.id.replace('mb-s-', '') : (curM?.id && curM.id.startsWith('mb-m-') ? curM.id.replace('mb-m-', '').replace(/-hindi$/, '') : null)) || (curM?.id && /^\d{16,20}$/.test(curM.id) ? curM.id : null);
+      const dPath = curM?.detailPath || curM?.mbDetailPath || curM?.movieboxDetailPath || '';
+      const se = window.appState?.currentSeason || 0;
+      const ep = window.appState?.currentEpisodeNumber || 0;
+      const q = window.appState?.selectedQuality || 720;
+
+      let streamApiUrl = '';
+      if (rawUrl && rawUrl.includes('/api/moviebox/stream')) {
+        streamApiUrl = getAbsoluteApiUrl(rawUrl);
+      } else if (sId) {
+        streamApiUrl = getAbsoluteApiUrl(`/api/moviebox/stream?id=${encodeURIComponent(sId)}&path=${encodeURIComponent(dPath)}&se=${se}&ep=${ep}&q=${q}`);
+      }
+
+      if (streamApiUrl) {
+        try {
+          const renewJsonUrl = streamApiUrl + (streamApiUrl.includes('?') ? '&' : '?') + `_renew=${Date.now()}&json=1`;
+          const resp = await fetch(renewJsonUrl, { cache: 'no-store' });
+          const data = await resp.json();
+          const freshStream = data?.streamUrl || data?.directUrl;
+          if (freshStream) {
+            console.log('⚡ [Auto-Healer] Successfully refreshed token URL:', freshStream);
+            vp.src = freshStream;
+            const onCanResume = () => {
+              vp.removeEventListener('canplay', onCanResume);
+              vp.removeEventListener('loadedmetadata', onCanResume);
+              try { if (resumeTime > 0) vp.currentTime = resumeTime; } catch(err) {}
+              vp.play().catch(() => {});
+              hideConnectingLoader();
+            };
+            vp.addEventListener('canplay', onCanResume, { once: true });
+            vp.addEventListener('loadedmetadata', onCanResume, { once: true });
+            vp.load();
+            vp.play().catch(() => {});
+            return;
+          }
+        } catch (err) {
+          console.warn('[Auto-Healer] Token refresh request error:', err);
+        }
+      }
+    }, true);
+  })();
+
+  console.log('✅ FOBS TV Live Patch v1.5.9 active: Self-Healing Video Playback, Token Auto-Renewal, Default Human Bangla Subtitles.');
 })();
