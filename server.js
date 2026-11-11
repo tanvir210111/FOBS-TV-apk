@@ -1292,6 +1292,20 @@ app.get('/api/moviebox/stream', async (req, res) => {
       // Heaven Official's Blessing (Chinese Animation / Series)
       else if (id === '6484471729350922232') resolvedPath = 'heaven-officials-blessing-67QMvaRW0J7';
       else if (id === '2404784540335106472') resolvedPath = 'heaven-officials-blessing-hindi-O7ZIjocWDR2';
+      // Japanese Dramas
+      else if (id === '2723239920440591184') resolvedPath = 'vivant-GftSsWZsaf3';
+      else if (id === '7087255722031205080') resolvedPath = 'gannibal-ka0bfoNHxr8';
+      else if (id === '6536416339434061776') resolvedPath = 'an-incurable-case-of-love-8mTLT95RQM7';
+      else if (id === '8676306869654277928') resolvedPath = 'rurouni-kenshin-Kna6hXNzVka';
+      else if (id === '1866743088148874256') resolvedPath = 'tokyo-swindlers-hindi-qLjxXTAHTd2';
+      else if (id === '5107354711083157136') resolvedPath = 'tokyo-swindlers-kAbLDNNJh56';
+      else if (id === '5374509463669983144') resolvedPath = 'house-of-ninjas-hindi-K3Wtc2fj1p6';
+      else if (id === '4217661549353338168') resolvedPath = 'house-of-ninjas-yRM6pLWVy15';
+      else if (id === '1372737044979613864') resolvedPath = 'alice-in-borderland-hindi-EQwrWtj9pD1';
+      else if (id === '4873167462814077984') resolvedPath = 'alice-in-borderland-axeQWXP9ZN5';
+      else if (id === '3038612373557889200') resolvedPath = 'first-love-hindi-EYwQMPmSsC3';
+      else if (id === '5464301025991477936') resolvedPath = 'rurouni-kenshin-final-chapter-part-i-the-final-CJf1jQvyEv6';
+      else if (id === '2792737851409056592') resolvedPath = 'rurouni-kenshin-the-legend-ends-aDTVqZFLik3';
     }
 
     // Auto-discover subjectId & detailPath from content.json catalog if not explicitly supplied
