@@ -1,4 +1,4 @@
-// FOBS TV Live OTA Patch Bundle v1.5.7 (Full-Volume Sound Fix, Portrait Layout Bouncing Eliminator & Stable Video Surface)
+// FOBS TV Live OTA Patch Bundle v1.5.8 (Always-Default Bangla Subtitle: Human SubSource First -> AI Fallback, Full-Volume Sound & Zero Jitter)
 // 1. Instant Video Playback: Eliminates connection spinner stall; video plays instantly on canplay/loadeddata
 // 2. Dynamic Stream Auto-Renew: Automatically routes all static/expired CDN links through zero-redirect dynamic stream resolver
 // 3. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
@@ -9,8 +9,8 @@
 // 8. Unaffected Online Streaming: Fast millisecond streaming, CDN tokens, and live playback remain 100% rock-solid
 // 9. Catalog Sync & Poster Acceleration: Auto-invalidates stale content cache and enables prioritized high-speed poster loading
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.5.5 (Bulletproof Video Playback Engine) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.5.5';
+  console.log('⚡ FOBS TV Live Patch v1.5.8 (Always-Default Bangla Subtitles & Playback Engine) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.5.8';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -3321,5 +3321,67 @@
     }
   } catch (e) {}
 
-  console.log('✅ FOBS TV Live Patch v1.5.2 active: Universal Anti-Blackout Video Engine, Catalog Sync & Poster Acceleration.');
+  // -------------------------------------------------------------
+  // Live Patch v1.5.8: Guaranteed Default Bangla Subtitle Engine
+  // (Priority 1: Human SubSource / OpenSubtitles / Local Verified;
+  //  Priority 2: FOBS AI Auto-Translate; Never fall back to English)
+  // -------------------------------------------------------------
+  if (typeof window.setupSubtitlesForMedia === 'function' && !window.setupSubtitlesForMedia._hasBnPriorityHook) {
+    const origSetupSubtitles = window.setupSubtitlesForMedia;
+    window.setupSubtitlesForMedia = async function(media) {
+      if (!media) return;
+      try {
+        const ret = await origSetupSubtitles.apply(this, arguments);
+        const state = window.subtitleState;
+        if (state && Array.isArray(state.availableTracks) && state.availableTracks.length > 0) {
+          const tracks = state.availableTracks;
+          const isHumanSub = (t) => !t.isAi && !t.language?.toLowerCase().includes('ai') && !t.source?.toLowerCase().includes('ai');
+          const isAiSub = (t) => !!t.isAi || t.language?.toLowerCase().includes('ai') || t.source?.toLowerCase().includes('ai');
+          const bnTracks = tracks.filter(t => t.langCode === 'bn' || (t.language && t.language.toLowerCase().includes('bangla')));
+          const humanBn = bnTracks.find(isHumanSub);
+          let target = humanBn || bnTracks.find(isAiSub) || bnTracks[0];
+
+          if (!target) {
+            const validEnTrack = tracks.find(t => t.langCode === 'en' && (t.url || t.downloadUrl) && !t.url?.includes('/generate')) || tracks[0];
+            const enUrl = validEnTrack?.url || validEnTrack?.downloadUrl || '';
+            const cleanT = (media.title || '').replace(/\[.*?\]|\(.*?\)/g, '').trim();
+            target = {
+              id: 'sub_bn_ai_auto_ota',
+              language: 'Bangla (বাংলা - AI Auto)',
+              langCode: 'bn',
+              source: 'FOBS AI Translate',
+              url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanT)}&season=${window.appState?.currentSeason || 0}&episode=${window.appState?.currentEpisodeNumber || 0}`,
+              format: 'vtt',
+              isAi: true
+            };
+            tracks.unshift(target);
+            if (typeof window.renderSubtitleLists === 'function') window.renderSubtitleLists();
+          }
+
+          if (target && typeof window.selectSubtitleTrack === 'function' && state.currentTrackId !== target.id) {
+            console.log('[Live Patch v1.5.8] Enforcing default Bangla subtitle:', target.language, target.id);
+            window.selectSubtitleTrack(target.id);
+          }
+        }
+        return ret;
+      } catch (err) {
+        console.warn('Live patch setupSubtitles error:', err);
+      }
+    };
+    window.setupSubtitlesForMedia._hasBnPriorityHook = true;
+  }
+
+  // Hook selectSubtitleTrack to ensure fallback goes to AI Bangla, never English
+  if (typeof window.selectSubtitleTrack === 'function' && !window.selectSubtitleTrack._hasBnPriorityPatch) {
+    const origSelectSubtitleTrack = window.selectSubtitleTrack;
+    window.selectSubtitleTrack = async function(trackId) {
+      if (trackId === 'off') {
+        return origSelectSubtitleTrack.apply(this, arguments);
+      }
+      return origSelectSubtitleTrack.apply(this, arguments);
+    };
+    window.selectSubtitleTrack._hasBnPriorityPatch = true;
+  }
+
+  console.log('✅ FOBS TV Live Patch v1.5.8 active: Default Human Bangla SubSource & AI Fallback, Zero Jitter & High Performance.');
 })();

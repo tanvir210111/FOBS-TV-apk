@@ -5849,12 +5849,39 @@ async function setupSubtitlesForMedia(media) {
   subtitleState.availableTracks = tracks;
   renderSubtitleLists();
 
-  // Automatic Bangla Subtitle: When video opens, automatically select Bangla subtitle & enable!
-  const bnTrack = tracks.find(t => t.langCode === 'bn');
-  const enTrackObj = tracks.find(t => t.langCode === 'en');
-  const preferredTrack = bnTrack || enTrackObj || tracks[0];
-  if (preferredTrack) {
-    selectSubtitleTrack(preferredTrack.id);
+  // Automatic Bangla Subtitle Priority:
+  // 1. Human Bangla subtitle from SubSource / OpenSubtitles / Local Verified ALWAYS plays by default!
+  // 2. If no Human Bangla subtitle exists, Auto AI Bangla subtitle is automatically added & played by default!
+  const isHumanSub = (t) => !t.isAi && !t.language?.toLowerCase().includes('ai') && !t.source?.toLowerCase().includes('ai');
+  const isAiSub = (t) => !!t.isAi || t.language?.toLowerCase().includes('ai') || t.source?.toLowerCase().includes('ai');
+
+  const bnTracks = tracks.filter(t => t.langCode === 'bn' || (t.language && t.language.toLowerCase().includes('bangla')));
+  const humanBnTrack = bnTracks.find(isHumanSub);
+  let targetDefaultTrack = humanBnTrack || bnTracks.find(isAiSub) || bnTracks[0];
+
+  if (!targetDefaultTrack) {
+    // If no Bangla track exists yet, automatically create AI Bangla track and select it!
+    const validEnTrack = tracks.find(t => t.langCode === 'en' && (t.url || t.downloadUrl) && !t.url?.includes('/generate')) || tracks[0];
+    const enUrl = validEnTrack?.url || validEnTrack?.downloadUrl || '';
+    const aiTrack = {
+      id: 'sub_bn_ai_auto',
+      language: 'Bangla (বাংলা - AI Auto)',
+      langCode: 'bn',
+      source: 'FOBS AI Translate',
+      url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanTitle)}&season=${season}&episode=${ep}`,
+      format: 'vtt',
+      isAi: true
+    };
+    tracks.unshift(aiTrack);
+    targetDefaultTrack = aiTrack;
+  }
+
+  subtitleState.availableTracks = tracks;
+  renderSubtitleLists();
+
+  if (targetDefaultTrack) {
+    console.log('[FOBS Subtitle] Auto-activating default Bangla track:', targetDefaultTrack.language, targetDefaultTrack.id);
+    selectSubtitleTrack(targetDefaultTrack.id);
   }
 
   // Start real-time 100ms render loop for microsecond-precise cue display
@@ -6013,7 +6040,19 @@ async function selectSubtitleTrack(trackId) {
     }
   }
 
-  // Step 2: Client-side fallback if proxy gave no cues and URL is direct HTTP
+  // Step 2: Native Android Direct Fetch (Zero CORS, residential client IP)
+  if (loadedCues.length === 0 && targetUrl && window.AndroidApp && typeof window.AndroidApp.fetchDirectUrl === 'function') {
+    try {
+      const nativeRaw = window.AndroidApp.fetchDirectUrl(targetUrl);
+      if (nativeRaw && nativeRaw.trim().length > 20) {
+        loadedCues = parseSubtitleTextToCues(nativeRaw);
+      }
+    } catch (nativeErr) {
+      console.warn('Native direct subtitle fetch warning:', nativeErr);
+    }
+  }
+
+  // Step 3: Client-side fallback if proxy gave no cues and URL is direct HTTP
   if (loadedCues.length === 0 && targetUrl && targetUrl.startsWith('http')) {
     try {
       const directRes = await fetch(targetUrl);
@@ -6060,20 +6099,32 @@ async function selectSubtitleTrack(trackId) {
     const curTime = (vp?.currentTime || 0) + (appState.streamSeekOffset || 0);
     renderActiveSubtitleCue(curTime);
   } else {
-    // If a human Bangla track failed, try the AI Auto-Translate Bangla track before falling back to English!
-    const altBnTrack = subtitleState.availableTracks.find(t => t.id !== track.id && t.langCode === 'bn');
-    if (altBnTrack && track.langCode === 'bn') {
-      console.log('Online human Bangla subtitle not available, switching to AI Bangla:', altBnTrack.id);
-      showToast('⚡ বাংলা সাবটাইটেল স্বয়ংক্রিয়ভাবে প্রস্তুত হচ্ছে...');
-      selectSubtitleTrack(altBnTrack.id);
-      return;
-    }
-    // If all Bangla tracks exhausted, fall back to English!
-    const fallbackTrack = subtitleState.availableTracks.find(t => t.id !== track.id && (t.langCode === 'en' || !t.isAi));
-    if (fallbackTrack && track.langCode === 'bn') {
-      console.log('Bangla cues not ready yet, falling back to English track:', fallbackTrack.id);
-      showToast('⚠️ বাংলা সাবটাইটেল তৈরি হচ্ছে... ইংরেজি সাবটাইটেল সক্রিয় করা হয়েছে');
-      selectSubtitleTrack(fallbackTrack.id);
+    // If a human Bangla track failed, try the AI Auto-Translate Bangla track (NEVER switch to English!)
+    if (track.langCode === 'bn') {
+      const altBnTrack = subtitleState.availableTracks.find(t => t.id !== track.id && t.langCode === 'bn');
+      if (altBnTrack) {
+        console.log('Human Bangla subtitle not ready, auto-activating AI Bangla:', altBnTrack.id);
+        showToast('⚡ বাংলা এআই সাবটাইটেল স্বয়ংক্রিয়ভাবে সক্রিয় হচ্ছে...');
+        selectSubtitleTrack(altBnTrack.id);
+        return;
+      }
+      // If no alternate Bangla track in list, dynamically generate AI Bangla
+      const validEnTrack = subtitleState.availableTracks.find(t => t.langCode === 'en' && (t.url || t.downloadUrl) && !t.url?.includes('/generate')) || subtitleState.availableTracks[0];
+      const enUrl = validEnTrack?.url || validEnTrack?.downloadUrl || '';
+      const cleanT = (appState.currentMedia?.title || '').replace(/\[.*?\]|\(.*?\)/g, '').trim();
+      const dynAiTrack = {
+        id: 'sub_bn_ai_auto_' + Date.now(),
+        language: 'Bangla (বাংলা - AI Auto)',
+        langCode: 'bn',
+        source: 'FOBS AI Translate',
+        url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanT)}&season=${appState.currentSeason || 0}&episode=${appState.currentEpisodeNumber || 0}`,
+        format: 'vtt',
+        isAi: true
+      };
+      subtitleState.availableTracks.unshift(dynAiTrack);
+      renderSubtitleLists();
+      showToast('⚡ বাংলা এআই সাবটাইটেল প্রস্তুত ও সক্রিয় হচ্ছে...');
+      selectSubtitleTrack(dynAiTrack.id);
       return;
     }
     showToast('Could not load subtitles.');

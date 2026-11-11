@@ -1,3 +1,7 @@
+const dns = require('dns');
+if (typeof dns.setDefaultResultOrder === 'function') {
+  dns.setDefaultResultOrder('ipv4first');
+}
 const https = require('https');
 const express = require('express');
 const cors = require('cors');
@@ -2752,7 +2756,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.5.7",
+  version: "1.5.8",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 

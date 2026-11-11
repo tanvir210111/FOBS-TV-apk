@@ -1,6 +1,10 @@
 const fs = require('fs');
 const crypto = require('crypto');
 const path = require('path');
+const dns = require('dns');
+if (typeof dns.setDefaultResultOrder === 'function') {
+  dns.setDefaultResultOrder('ipv4first');
+}
 /**
  * FOBS TV - Subtitle Service
  * Integrates SubSource, OpenSubtitles & MovieBox Captions
@@ -196,6 +200,34 @@ class SubtitleService {
       }
     }
 
+    // Sort subtitles with strict user priority:
+    // 1. Human Bangla (SubSource / OpenSubtitles / Local Verified)
+    // 2. AI Bangla (MovieBox AI / FOBS AI Auto-Translate)
+    // 3. English Subtitles (Human, then AI)
+    availableSubtitles.sort((a, b) => {
+      const isBnA = a.langCode === 'bn' || (a.language && a.language.toLowerCase().includes('bangla'));
+      const isBnB = b.langCode === 'bn' || (b.language && b.language.toLowerCase().includes('bangla'));
+      const isAiA = !!a.isAi || (a.language && a.language.toLowerCase().includes('ai')) || (a.source && a.source.toLowerCase().includes('ai'));
+      const isAiB = !!b.isAi || (b.language && b.language.toLowerCase().includes('ai')) || (b.source && b.source.toLowerCase().includes('ai'));
+
+      const isHumanBnA = isBnA && !isAiA;
+      const isHumanBnB = isBnB && !isAiB;
+      if (isHumanBnA && !isHumanBnB) return -1;
+      if (!isHumanBnA && isHumanBnB) return 1;
+
+      const isAiBnA = isBnA && isAiA;
+      const isAiBnB = isBnB && isAiB;
+      if (isAiBnA && !isAiBnB) return -1;
+      if (!isAiBnA && isAiBnB) return 1;
+
+      const isEnA = a.langCode === 'en' || (a.language && a.language.toLowerCase().includes('english'));
+      const isEnB = b.langCode === 'en' || (b.language && b.language.toLowerCase().includes('english'));
+      if (isEnA && !isEnB) return -1;
+      if (!isEnA && isEnB) return 1;
+
+      return 0;
+    });
+
     // Cache for 2 hours
     this.cache.set(cacheKey, {
       data: availableSubtitles,
@@ -301,6 +333,7 @@ class SubtitleService {
         osUrl += `/sublanguageid-${sublang}`;
 
         const res = await axios.get(osUrl, {
+          family: 4,
           headers: {
             'User-Agent': 'TemporaryUserAgent'
           },
@@ -425,6 +458,7 @@ class SubtitleService {
     let response;
     try {
       response = await axios.get(url, {
+        family: 4,
         responseType: 'arraybuffer',
         headers: downloadHeaders,
         timeout: 12000,
@@ -440,6 +474,7 @@ class SubtitleService {
           'Accept-Language': 'en-US,en;q=0.9,bn;q=0.8'
         };
         response = await axios.get(url, {
+          family: 4,
           responseType: 'arraybuffer',
           headers: retryHeaders,
           timeout: 12000,
@@ -521,6 +556,7 @@ class SubtitleService {
             'https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=en&tl=bn',
             qs,
             {
+              family: 4,
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
               timeout: 8000
             }

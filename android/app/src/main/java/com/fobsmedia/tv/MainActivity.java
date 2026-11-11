@@ -659,6 +659,42 @@ public class MainActivity extends BridgeActivity {
         }
 
         @JavascriptInterface
+        public String fetchDirectUrl(String urlStr) {
+            if (urlStr == null || urlStr.trim().isEmpty()) return "";
+            try {
+                java.net.URL u = new java.net.URL(urlStr);
+                java.net.HttpURLConnection conn = (java.net.HttpURLConnection) u.openConnection();
+                conn.setConnectTimeout(8000);
+                conn.setReadTimeout(12000);
+                conn.setRequestProperty("User-Agent", "TemporaryUserAgent");
+                conn.setRequestProperty("Accept", "*/*");
+                conn.connect();
+                int code = conn.getResponseCode();
+                if (code >= 200 && code < 300) {
+                    java.io.InputStream is = conn.getInputStream();
+                    byte[] header = new byte[2];
+                    java.io.PushbackInputStream pis = new java.io.PushbackInputStream(is, 2);
+                    int r = pis.read(header);
+                    if (r > 0) pis.unread(header, 0, r);
+                    java.io.InputStream streamToRead = pis;
+                    if (r >= 2 && (header[0] == (byte) 0x1f && header[1] == (byte) 0x8b)) {
+                        streamToRead = new java.util.zip.GZIPInputStream(pis);
+                    }
+                    java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+                    byte[] buf = new byte[4096];
+                    int len;
+                    while ((len = streamToRead.read(buf)) != -1) {
+                        baos.write(buf, 0, len);
+                    }
+                    return baos.toString("UTF-8");
+                }
+            } catch (Exception e) {
+                android.util.Log.w("MainActivity", "fetchDirectUrl error: " + e.getMessage());
+            }
+            return "";
+        }
+
+        @JavascriptInterface
         public boolean saveLocalSubtitle(String id, String lang, String vttText) {
             if (nativeDownloadManager != null) {
                 return nativeDownloadManager.saveSubtitle(id, lang, vttText);
