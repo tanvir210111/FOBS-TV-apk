@@ -40,7 +40,7 @@ async function fetchTMDB(cleanTitle, type = 'tv') {
   }
 }
 
-async function buildSeriesRecord(item) {
+async function buildSingleTrackSeries(item) {
   const sId = item.id;
   const dPath = item.path;
   const internalId = `mb-s-${sId}`;
@@ -49,9 +49,12 @@ async function buildSeriesRecord(item) {
 
   const poster = tmdb?.poster || detail?.poster || '';
   const backdrop = tmdb?.backdrop || detail?.backdrop || poster;
-  const audioLabel = item.audioLabel || 'Original audio';
+  const isHindi = item.audioLabel === 'Hindi dub';
+  const audioLabel = isHindi ? 'Hindi dub' : 'Original audio';
+  const serverTag = isHindi ? 'Hindi Dub' : 'Original Japanese';
 
-  const rawSeasons = detail?.seasons && detail.seasons.length > 0 ? detail.seasons : [{ se: 1, maxEp: 1 }];
+  // Use explicit seasons to ensure exact episode count is never cut short by API jitter
+  const rawSeasons = item.explicitSeasons || (detail?.seasons && detail.seasons.length > 0 ? detail.seasons : [{ se: 1, maxEp: 1 }]);
   const seasons = [];
   const allEpisodes = [];
 
@@ -65,7 +68,7 @@ async function buildSeriesRecord(item) {
       const streamUrl = `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=${seNum}&ep=${ep}`;
       const epServers = [
         {
-          name: `Server 1 (${audioLabel} - Auto-Renewing 720p)`,
+          name: `Server 1 (${serverTag} - Auto-Renewing 720p)`,
           url: streamUrl,
           quality: '720p',
           audio: audioLabel,
@@ -80,18 +83,6 @@ async function buildSeriesRecord(item) {
         }
       ];
 
-      // If paired ID is provided for dual audio servers
-      if (item.pairedId && item.pairedPath) {
-        const pairedAudioLabel = item.pairedAudioLabel || (audioLabel === 'Hindi dub' ? 'Original audio' : 'Hindi dub');
-        epServers.push({
-          name: `Server 3 (${pairedAudioLabel} - Auto-Renewing 720p)`,
-          url: `/api/moviebox/stream?id=${item.pairedId}&path=${encodeURIComponent(item.pairedPath)}&se=${seNum}&ep=${ep}`,
-          quality: '720p',
-          audio: pairedAudioLabel,
-          isDirect: true
-        });
-      }
-
       const epObj = {
         id: `${internalId}_s${seNum}_e${ep}`,
         episode: ep,
@@ -104,7 +95,7 @@ async function buildSeriesRecord(item) {
         still: poster,
         stillPath: poster,
         streamUrl: streamUrl,
-        audioTracks: item.audioTracks || [audioLabel],
+        audioTracks: [audioLabel],
         selectedAudio: audioLabel,
         servers: epServers
       };
@@ -125,23 +116,20 @@ async function buildSeriesRecord(item) {
 
   const mainServers = [
     {
-      name: `Server 1 (${audioLabel} - Auto-Renewing 720p)`,
+      name: `Server 1 (${serverTag} - Auto-Renewing 720p)`,
       url: `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=1&ep=1`,
       quality: '720p',
       audio: audioLabel,
       isDirect: true
+    },
+    {
+      name: `Server 2 (Auto Failover 480p)`,
+      url: `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=1&ep=1&q=480`,
+      quality: '480p',
+      audio: audioLabel,
+      isDirect: true
     }
   ];
-  if (item.pairedId && item.pairedPath) {
-    const pairedAudioLabel = item.pairedAudioLabel || (audioLabel === 'Hindi dub' ? 'Original audio' : 'Hindi dub');
-    mainServers.push({
-      name: `Server 2 (${pairedAudioLabel} - Auto-Renewing 720p)`,
-      url: `/api/moviebox/stream?id=${item.pairedId}&path=${encodeURIComponent(item.pairedPath)}&se=1&ep=1`,
-      quality: '720p',
-      audio: pairedAudioLabel,
-      isDirect: true
-    });
-  }
 
   return {
     id: internalId,
@@ -159,21 +147,21 @@ async function buildSeriesRecord(item) {
     streamUrl: `/api/moviebox/stream?id=${sId}&path=${encodeURIComponent(dPath)}&se=1&ep=1`,
     servers: mainServers,
     episodesCount: allEpisodes.length,
-    category: 'Japanese Drama',
+    category: isHindi ? 'Japanese (Dubbed) Series' : 'Japanese Drama',
     industry: 'Japanese',
     country: 'Japan',
-    language: audioLabel === 'Hindi dub' ? 'Hindi' : 'Japanese',
-    dubLanguage: audioLabel === 'Hindi dub' ? 'Hindi' : 'Japanese',
-    audioTracks: item.audioTracks || [audioLabel],
+    language: isHindi ? 'Hindi' : 'Japanese',
+    dubLanguage: isHindi ? 'Hindi' : 'Japanese',
+    audioTracks: [audioLabel],
     selectedAudio: audioLabel,
     seasonsCount: seasons.length,
     addedAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
     releaseDate: `${tmdb?.year || detail?.year || item.year || '2024'}-01-01`,
     originalReleaseDate: `${tmdb?.year || detail?.year || item.year || '2024'}-01-01`,
-    badgeLeft: item.badgeLeft || (audioLabel === 'Hindi dub' ? 'Hindi' : 'HD'),
+    badgeLeft: isHindi ? 'Hindi' : 'HD',
     badgeRight: 'Japanese',
-    views: 2400,
+    views: isHindi ? 3200 : 2500,
     genre: tmdb?.genres || 'Drama, Mystery, Thriller',
     seasons: seasons,
     episodes: allEpisodes,
@@ -184,7 +172,7 @@ async function buildSeriesRecord(item) {
 }
 
 async function main() {
-  console.log('🚀 Ingesting Japanese Dramas into Catalog...');
+  console.log('🚀 Ingesting Japanese Dramas as 2 SEPARATE Independent Files (Hindi File & Japanese File)...');
 
   const contentFile = path.join(__dirname, '../data/content.json');
   const backupFile = path.join(__dirname, '../data/content.backup.json');
@@ -192,48 +180,9 @@ async function main() {
   content.series = content.series || [];
   content.movies = content.movies || [];
 
-  const seriesToIngest = [
-    // 1. Vivant (2023)
-    {
-      id: '2723239920440591184',
-      path: 'vivant-GftSsWZsaf3',
-      title: 'Vivant (2023)',
-      tmdbQuery: 'Vivant',
-      year: '2023',
-      audioLabel: 'Original audio',
-      audioTracks: ['Original audio']
-    },
-    // 2. Gannibal (2022)
-    {
-      id: '7087255722031205080',
-      path: 'gannibal-ka0bfoNHxr8',
-      title: 'Gannibal (2022)',
-      tmdbQuery: 'Gannibal',
-      year: '2022',
-      audioLabel: 'Original audio',
-      audioTracks: ['Original audio']
-    },
-    // 3. An Incurable Case of Love (2020)
-    {
-      id: '6536416339434061776',
-      path: 'an-incurable-case-of-love-8mTLT95RQM7',
-      title: 'An Incurable Case of Love (2020)',
-      tmdbQuery: 'An Incurable Case of Love',
-      year: '2020',
-      audioLabel: 'Original audio',
-      audioTracks: ['Original audio']
-    },
-    // 4. Rurouni Kenshin (Series)
-    {
-      id: '8676306869654277928',
-      path: 'rurouni-kenshin-Kna6hXNzVka',
-      title: 'Rurouni Kenshin',
-      tmdbQuery: 'Rurouni Kenshin',
-      year: '2023',
-      audioLabel: 'Original audio',
-      audioTracks: ['Original audio']
-    },
-    // 5. Tokyo Swindlers (2024) - Hindi Dub
+  const seriesList = [
+    // --- 1. TOKYO SWINDLERS (2 SEPARATE FILES) ---
+    // File A: Hindi Dubbed
     {
       id: '1866743088148874256',
       path: 'tokyo-swindlers-hindi-qLjxXTAHTd2',
@@ -242,26 +191,22 @@ async function main() {
       tmdbQuery: 'Tokyo Swindlers',
       year: '2024',
       audioLabel: 'Hindi dub',
-      audioTracks: ['Hindi dub', 'Original audio'],
-      pairedId: '5107354711083157136',
-      pairedPath: 'tokyo-swindlers-kAbLDNNJh56',
-      pairedAudioLabel: 'Original audio'
+      explicitSeasons: [{ se: 1, maxEp: 7 }]
     },
-    // 6. Tokyo Swindlers (2024) - Original Japanese Audio
+    // File B: Original Japanese
     {
       id: '5107354711083157136',
       path: 'tokyo-swindlers-kAbLDNNJh56',
-      title: 'Tokyo Swindlers',
+      title: 'Tokyo Swindlers (Japanese)',
       originalTitle: 'Tokyo Swindlers (地面師たち)',
       tmdbQuery: 'Tokyo Swindlers',
       year: '2024',
       audioLabel: 'Original audio',
-      audioTracks: ['Original audio', 'Hindi dub'],
-      pairedId: '1866743088148874256',
-      pairedPath: 'tokyo-swindlers-hindi-qLjxXTAHTd2',
-      pairedAudioLabel: 'Hindi dub'
+      explicitSeasons: [{ se: 1, maxEp: 7 }]
     },
-    // 7. House of Ninjas (2024) - Hindi Dub
+
+    // --- 2. HOUSE OF NINJAS (2 SEPARATE FILES) ---
+    // File A: Hindi Dubbed
     {
       id: '5374509463669983144',
       path: 'house-of-ninjas-hindi-K3Wtc2fj1p6',
@@ -270,26 +215,22 @@ async function main() {
       tmdbQuery: 'House of Ninjas',
       year: '2024',
       audioLabel: 'Hindi dub',
-      audioTracks: ['Hindi dub', 'Original audio'],
-      pairedId: '4217661549353338168',
-      pairedPath: 'house-of-ninjas-yRM6pLWVy15',
-      pairedAudioLabel: 'Original audio'
+      explicitSeasons: [{ se: 1, maxEp: 8 }]
     },
-    // 8. House of Ninjas (2024) - Original Japanese Audio
+    // File B: Original Japanese
     {
       id: '4217661549353338168',
       path: 'house-of-ninjas-yRM6pLWVy15',
-      title: 'House of Ninjas',
+      title: 'House of Ninjas (Japanese)',
       originalTitle: 'House of Ninjas (忍びの家)',
       tmdbQuery: 'House of Ninjas',
       year: '2024',
       audioLabel: 'Original audio',
-      audioTracks: ['Original audio', 'Hindi dub'],
-      pairedId: '5374509463669983144',
-      pairedPath: 'house-of-ninjas-hindi-K3Wtc2fj1p6',
-      pairedAudioLabel: 'Hindi dub'
+      explicitSeasons: [{ se: 1, maxEp: 8 }]
     },
-    // 9. Alice in Borderland (2020) - Hindi Dub
+
+    // --- 3. ALICE IN BORDERLAND (2 SEPARATE FILES) ---
+    // File A: Hindi Dubbed
     {
       id: '1372737044979613864',
       path: 'alice-in-borderland-hindi-EQwrWtj9pD1',
@@ -298,26 +239,29 @@ async function main() {
       tmdbQuery: 'Alice in Borderland',
       year: '2020',
       audioLabel: 'Hindi dub',
-      audioTracks: ['Hindi dub', 'Original audio'],
-      pairedId: '4873167462814077984',
-      pairedPath: 'alice-in-borderland-axeQWXP9ZN5',
-      pairedAudioLabel: 'Original audio'
+      explicitSeasons: [
+        { se: 1, maxEp: 8 },
+        { se: 2, maxEp: 8 },
+        { se: 3, maxEp: 6 }
+      ]
     },
-    // 10. Alice in Borderland (2020) - Original Japanese Audio
+    // File B: Original Japanese
     {
       id: '4873167462814077984',
       path: 'alice-in-borderland-axeQWXP9ZN5',
-      title: 'Alice in Borderland',
+      title: 'Alice in Borderland (Japanese)',
       originalTitle: 'Alice in Borderland (今際の国のアリス)',
       tmdbQuery: 'Alice in Borderland',
       year: '2020',
       audioLabel: 'Original audio',
-      audioTracks: ['Original audio', 'Hindi dub'],
-      pairedId: '1372737044979613864',
-      pairedPath: 'alice-in-borderland-hindi-EQwrWtj9pD1',
-      pairedAudioLabel: 'Hindi dub'
+      explicitSeasons: [
+        { se: 1, maxEp: 8 },
+        { se: 2, maxEp: 8 },
+        { se: 3, maxEp: 6 }
+      ]
     },
-    // 11. First Love: Hatsukoi (2022) - Hindi Dub
+
+    // --- 4. FIRST LOVE: HATSUKOI (HINDI FILE) ---
     {
       id: '3038612373557889200',
       path: 'first-love-hindi-EYwQMPmSsC3',
@@ -326,28 +270,75 @@ async function main() {
       tmdbQuery: 'First Love',
       year: '2022',
       audioLabel: 'Hindi dub',
-      audioTracks: ['Hindi dub']
+      explicitSeasons: [{ se: 1, maxEp: 9 }]
+    },
+
+    // --- 5. VIVANT (2023) (JAPANESE FILE) ---
+    {
+      id: '2723239920440591184',
+      path: 'vivant-GftSsWZsaf3',
+      title: 'Vivant (2023)',
+      tmdbQuery: 'Vivant',
+      year: '2023',
+      audioLabel: 'Original audio',
+      explicitSeasons: [{ se: 1, maxEp: 14 }]
+    },
+
+    // --- 6. GANNIBAL (2022) (JAPANESE FILE) ---
+    {
+      id: '7087255722031205080',
+      path: 'gannibal-ka0bfoNHxr8',
+      title: 'Gannibal (2022)',
+      tmdbQuery: 'Gannibal',
+      year: '2022',
+      audioLabel: 'Original audio',
+      explicitSeasons: [
+        { se: 1, maxEp: 7 },
+        { se: 2, maxEp: 8 }
+      ]
+    },
+
+    // --- 7. AN INCURABLE CASE OF LOVE (2020) (JAPANESE FILE) ---
+    {
+      id: '6536416339434061776',
+      path: 'an-incurable-case-of-love-8mTLT95RQM7',
+      title: 'An Incurable Case of Love (2020)',
+      tmdbQuery: 'An Incurable Case of Love',
+      year: '2020',
+      audioLabel: 'Original audio',
+      explicitSeasons: [{ se: 1, maxEp: 10 }]
+    },
+
+    // --- 8. RUROUNI KENSHIN (SERIES) (JAPANESE FILE) ---
+    {
+      id: '8676306869654277928',
+      path: 'rurouni-kenshin-Kna6hXNzVka',
+      title: 'Rurouni Kenshin (Series)',
+      tmdbQuery: 'Rurouni Kenshin',
+      year: '2023',
+      audioLabel: 'Original audio',
+      explicitSeasons: [{ se: 1, maxEp: 95 }]
     }
   ];
 
-  for (const it of seriesToIngest) {
-    console.log(`Processing: ${it.title}...`);
+  for (const it of seriesList) {
+    console.log(`Processing single-track file: ${it.title}...`);
     try {
-      const record = await buildSeriesRecord(it);
+      const record = await buildSingleTrackSeries(it);
       const exIdx = content.series.findIndex(s => s.id === record.id || s.subjectId === it.id);
       if (exIdx !== -1) {
         content.series[exIdx] = record;
-        console.log(`  🔄 Updated: ${record.title} (${record.episodesCount} eps)`);
+        console.log(`  🔄 Updated: ${record.title} (${record.episodesCount} eps, ${record.audioTracks.join(', ')})`);
       } else {
         content.series.unshift(record);
-        console.log(`  ✨ Added: ${record.title} (${record.episodesCount} eps)`);
+        console.log(`  ✨ Added: ${record.title} (${record.episodesCount} eps, ${record.audioTracks.join(', ')})`);
       }
     } catch (e) {
       console.error(`  ❌ Error processing ${it.title}:`, e.message);
     }
   }
 
-  // 12. Add Rurouni Kenshin Live-Action Movies
+  // --- 9. RUROUNI KENSHIN LIVE ACTION MOVIES (JAPANESE FILES) ---
   const kenshinMovies = [
     {
       id: 'mb-m-5464301025991477936',
@@ -393,6 +384,13 @@ async function main() {
             name: 'Server 1 (Original Japanese - 1080p FHD)',
             url: `/api/moviebox/stream?id=${km.subjectId}&path=${encodeURIComponent(km.detailPath)}&se=0&ep=0`,
             quality: '1080p',
+            audio: 'Original audio',
+            isDirect: true
+          },
+          {
+            name: 'Server 2 (Auto Failover 480p)',
+            url: `/api/moviebox/stream?id=${km.subjectId}&path=${encodeURIComponent(km.detailPath)}&se=0&ep=0&q=480`,
+            quality: '480p',
             audio: 'Original audio',
             isDirect: true
           }
@@ -445,7 +443,7 @@ async function main() {
       seed.movies = seed.movies || [];
 
       // sync series
-      for (const it of seriesToIngest) {
+      for (const it of seriesList) {
         const full = content.series.find(s => s.subjectId === it.id);
         if (full) {
           const idx = seed.series.findIndex(s => s.id === full.id || s.subjectId === full.subjectId);
@@ -469,7 +467,7 @@ async function main() {
     }
   }
 
-  console.log('🎉 Done adding all requested Japanese dramas & movies!');
+  console.log('🎉 Done saving 2 separate files (Hindi & Japanese) for all titles!');
 }
 
 main().catch(e => {
