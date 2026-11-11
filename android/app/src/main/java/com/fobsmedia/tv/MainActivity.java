@@ -31,6 +31,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.media.audiofx.LoudnessEnhancer;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.PowerManager;
@@ -66,6 +67,7 @@ public class MainActivity extends BridgeActivity {
 
     private LocalStreamServer localStreamServer;
     private NativeDownloadManager nativeDownloadManager;
+    private LoudnessEnhancer loudnessEnhancer = null;
 
     private void showDownloadNotification(String title) {
         try {
@@ -409,7 +411,38 @@ public class MainActivity extends BridgeActivity {
 
         @JavascriptInterface
         public void setAudioBoost(int boostPercent) {
-            // Handled cleanly via HTML5 video volume to avoid hardware audio conflicts
+            runOnUiThread(() -> {
+                try {
+                    AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                    if (am != null) {
+                        int maxVol = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+                        if (boostPercent <= 100) {
+                            int vol = Math.max(0, Math.min(maxVol, Math.round((boostPercent / 100.0f) * maxVol)));
+                            am.setStreamVolume(AudioManager.STREAM_MUSIC, vol, 0);
+                            if (loudnessEnhancer != null) {
+                                loudnessEnhancer.setEnabled(false);
+                            }
+                        } else {
+                            // Set maximum hardware stream volume
+                            am.setStreamVolume(AudioManager.STREAM_MUSIC, maxVol, 0);
+
+                            // Hardware LoudnessEnhancer for 101% to 200% sound boost (MovieBox / VLC style)
+                            int targetBoost = Math.min(200, boostPercent);
+                            if (loudnessEnhancer == null) {
+                                try {
+                                    loudnessEnhancer = new LoudnessEnhancer(0);
+                                } catch (Exception ignored) {}
+                            }
+                            if (loudnessEnhancer != null) {
+                                float extraRatio = (targetBoost - 100) / 100.0f; // 0.0 to 1.0
+                                int targetGainmB = Math.round(extraRatio * 1800); // Up to +18 dB audio boost
+                                loudnessEnhancer.setTargetGain(targetGainmB);
+                                loudnessEnhancer.setEnabled(true);
+                            }
+                        }
+                    }
+                } catch (Exception ignored) {}
+            });
         }
 
         @JavascriptInterface
@@ -1048,6 +1081,12 @@ public class MainActivity extends BridgeActivity {
             localStreamServer.stop();
             localStreamServer = null;
         }
+        try {
+            if (loudnessEnhancer != null) {
+                loudnessEnhancer.release();
+                loudnessEnhancer = null;
+            }
+        } catch (Exception ignored) {}
         super.onDestroy();
     }
 }

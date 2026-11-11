@@ -1,17 +1,17 @@
-// FOBS TV Live OTA Patch Bundle v1.6.1 (Unified #020c1c Video Player & Intro Background, Zero-Expire Token Engine)
-// 1. Unified Background (#020c1c): Intro splash and app video player top/bottom letterbox now share the exact same #020c1c color
-// 2. Universal Zero-Expire Token Engine: Eliminates 403 CDN token expiration with preemptive epoch calculation and transparent retry
-// 3. Instant Iframe Embed Router: Correctly routes VidLink, MultiEmbed, VidSrc directly to iframe player without <video> conflicts
-// 4. Dynamic Stream Auto-Renew: Automatically routes all static/expired CDN links through zero-redirect dynamic stream resolver
-// 5. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
-// 6. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
-// 7. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
-// 8. Universal Local SRT Upload: Multi-encoding auto-detection (UTF-8, UTF-16 LE, ANSI) & Android system file picker support
-// 9. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
-// 10. Self-Healing Playback Engine: Automatic silent token refresh on CDN 403 or pause expiration with 100% watch-time preservation
+// FOBS TV Live OTA Patch Bundle v1.6.2 (MovieBox 200% Sound Boost & Hardware LoudnessEnhancer Engine)
+// 1. 200% Sound Boost Engine: Web Audio gain & Android LoudnessEnhancer hardware boost up to +18dB
+// 2. Unified Background (#020c1c): Intro splash and app video player top/bottom letterbox share exact same #020c1c color
+// 3. Universal Zero-Expire Token Engine: Eliminates 403 CDN token expiration with preemptive epoch calculation and transparent retry
+// 4. Instant Iframe Embed Router: Correctly routes VidLink, MultiEmbed, VidSrc directly to iframe player without <video> conflicts
+// 5. Dynamic Stream Auto-Renew: Automatically routes all static/expired CDN links through zero-redirect dynamic stream resolver
+// 6. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
+// 7. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
+// 8. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
+// 9. Universal Local SRT Upload: Multi-encoding auto-detection (UTF-8, UTF-16 LE, ANSI) & Android system file picker support
+// 10. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.6.1 (Unified #020c1c Player & Zero-Expire Token Engine) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.6.1';
+  console.log('⚡ FOBS TV Live Patch v1.6.2 (200% Sound Boost Engine) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.6.2';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -3315,31 +3315,112 @@
     } catch (e) { }
   }
 
-  // Guaranteed Full Volume Output: Eliminates double volume attenuation on Android
-  if (typeof window.applyPlayerVolume === 'function' && !window.applyPlayerVolume._isSoundFixed) {
-    const origApplyVol = window.applyPlayerVolume;
-    window.applyPlayerVolume = function (val) {
-      const safeVol = Math.max(0, Math.min(1.0, Number(val)));
-      if (typeof window.playerSoundLevel !== 'undefined') {
-        window.playerSoundLevel = safeVol;
+  // -------------------------------------------------------------
+  // Live Patch v1.6.2: Guaranteed 200% Sound Boost & Hardware Loudness Engine
+  // -------------------------------------------------------------
+  let patchAudioBoostCtx = null;
+  let patchAudioBoostGain = null;
+  let patchAudioBoostSource = null;
+
+  function initPatchWebAudioBoost(video) {
+    if (!video) return;
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      if (!patchAudioBoostCtx) {
+        patchAudioBoostCtx = new AudioCtx();
       }
-      let isAndroid = false;
-      try {
-        if (window.AndroidApp && typeof window.AndroidApp.setDeviceVolume === 'function') {
-          window.AndroidApp.setDeviceVolume(safeVol);
+      if (patchAudioBoostCtx.state === 'suspended') {
+        patchAudioBoostCtx.resume().catch(() => {});
+      }
+      if (!video._hasPatchAudioBoost) {
+        try {
+          patchAudioBoostSource = patchAudioBoostCtx.createMediaElementSource(video);
+          patchAudioBoostGain = patchAudioBoostCtx.createGain();
+          patchAudioBoostGain.gain.value = 1.0;
+          patchAudioBoostSource.connect(patchAudioBoostGain);
+          patchAudioBoostGain.connect(patchAudioBoostCtx.destination);
+          video._hasPatchAudioBoost = true;
+        } catch (e) {}
+      }
+    } catch (e) {}
+  }
+
+  // Guaranteed Full Volume Output + 200% Boost
+  window.applyPlayerVolume = function (val) {
+    const safeVol = Math.max(0, Math.min(2.0, Number(val)));
+    window.playerSoundLevel = safeVol;
+    const pct = Math.round(safeVol * 100);
+
+    let isAndroid = false;
+    try {
+      if (window.AndroidApp) {
+        if (typeof window.AndroidApp.setAudioBoost === 'function') {
+          window.AndroidApp.setAudioBoost(pct);
+          isAndroid = true;
+        } else if (typeof window.AndroidApp.setDeviceVolume === 'function') {
+          window.AndroidApp.setDeviceVolume(Math.min(1.0, safeVol));
           isAndroid = true;
         }
-      } catch (e) { }
-
-      const video = document.getElementById('mainVideoPlayer');
-      if (video) {
-        // Keep HTML5 audio at full 100% (1.0) so phone hardware master volume controls real loudness without halving
-        video.volume = isAndroid ? (safeVol > 0 ? 1.0 : 0.0) : safeVol;
-        video.muted = (safeVol <= 0);
       }
-      return safeVol;
+    } catch (e) { }
+
+    const video = document.getElementById('mainVideoPlayer');
+    if (video) {
+      // Keep HTML5 audio at full 100% (1.0)
+      video.volume = safeVol > 1.0 ? 1.0 : (safeVol > 0 ? (isAndroid ? 1.0 : safeVol) : 0.0);
+      video.muted = (safeVol <= 0);
+
+      // Web Audio Gain Boost for web and devices
+      try {
+        initPatchWebAudioBoost(video);
+        if (patchAudioBoostGain) {
+          const boostGain = safeVol <= 1.0 ? 1.0 : (1.0 + (safeVol - 1.0) * 1.5);
+          patchAudioBoostGain.gain.setValueAtTime(boostGain, patchAudioBoostCtx.currentTime);
+        }
+      } catch (e) {}
+    }
+    return safeVol;
+  };
+  window.applyPlayerVolume._isSoundFixed = true;
+
+  // Patch showGestureHud to render 200% BOOST HUD
+  if (typeof window.showGestureHud === 'function') {
+    const origShowGestureHud = window.showGestureHud;
+    window.showGestureHud = function(type, value) {
+      if (type === 'volume') {
+        const hud = document.getElementById('playerGestureHud');
+        const icon = document.getElementById('gestureHudIcon');
+        const fill = document.getElementById('gestureHudBarFill');
+        const valText = document.getElementById('gestureHudVal');
+        if (hud && icon && fill && valText) {
+          const pct = Math.round(value * 100);
+          if (pct > 100) {
+            hud.classList.add('boost-mode');
+            icon.innerHTML = '<i class="fa-solid fa-bolt"></i>';
+            valText.innerHTML = `${pct}% <span class="boost-hud-tag">BOOST</span>`;
+            const fillPct = Math.min(100, Math.round((pct / 200) * 100));
+            fill.style.width = `${fillPct}%`;
+          } else {
+            hud.classList.remove('boost-mode');
+            let iconClass = 'fa-volume-high';
+            if (pct <= 0) iconClass = 'fa-volume-xmark';
+            else if (pct < 50) iconClass = 'fa-volume-low';
+            icon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+            fill.style.width = `${pct}%`;
+            valText.innerText = `${pct}%`;
+          }
+          hud.classList.add('visible');
+          if (window.gestureHudTimer) clearTimeout(window.gestureHudTimer);
+          window.gestureHudTimer = setTimeout(() => {
+            hud.classList.remove('visible');
+            hud.classList.remove('boost-mode');
+          }, 900);
+          return;
+        }
+      }
+      return origShowGestureHud.apply(this, arguments);
     };
-    window.applyPlayerVolume._isSoundFixed = true;
   }
 
   try {

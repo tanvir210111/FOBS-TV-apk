@@ -7128,25 +7128,75 @@ function getPlayerVolume() {
   return playerSoundLevel !== undefined ? playerSoundLevel : (video ? video.volume : 1.0);
 }
 
+// Web Audio API Boost Engine (Up to 200% loud sound on web & mobile)
+let audioBoostCtx = null;
+let audioBoostGainNode = null;
+let audioBoostSource = null;
+
+function setupAudioBoostNode(video) {
+  if (!video) return;
+  try {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
+
+    if (!audioBoostCtx) {
+      audioBoostCtx = new AudioContextClass();
+    }
+    if (audioBoostCtx.state === 'suspended') {
+      audioBoostCtx.resume().catch(() => {});
+    }
+
+    if (!video._hasAudioBoostNode) {
+      try {
+        audioBoostSource = audioBoostCtx.createMediaElementSource(video);
+        audioBoostGainNode = audioBoostCtx.createGain();
+        audioBoostGainNode.gain.value = 1.0;
+        audioBoostSource.connect(audioBoostGainNode);
+        audioBoostGainNode.connect(audioBoostCtx.destination);
+        video._hasAudioBoostNode = true;
+      } catch (e) {
+        // MediaElementSource might throw if already connected or CORS restricted
+      }
+    }
+  } catch (err) {}
+}
+
 function applyPlayerVolume(val) {
-  const safeVol = Math.max(0, Math.min(1.0, Number(val)));
+  const safeVol = Math.max(0, Math.min(2.0, Number(val))); // Allow up to 2.0 (200% sound boost)
   playerSoundLevel = safeVol;
 
-  // 1. Android hardware media stream volume (AudioManager.STREAM_MUSIC) for real hardware audio
+  const pct = Math.round(safeVol * 100);
+
+  // 1. Android hardware media stream volume & LoudnessEnhancer boost
   let isAndroid = false;
   try {
-    if (window.AndroidApp && typeof window.AndroidApp.setDeviceVolume === 'function') {
-      window.AndroidApp.setDeviceVolume(safeVol);
-      isAndroid = true;
+    if (window.AndroidApp) {
+      if (typeof window.AndroidApp.setAudioBoost === 'function') {
+        window.AndroidApp.setAudioBoost(pct);
+        isAndroid = true;
+      } else if (typeof window.AndroidApp.setDeviceVolume === 'function') {
+        window.AndroidApp.setDeviceVolume(Math.min(1.0, safeVol));
+        isAndroid = true;
+      }
     }
   } catch (e) {}
 
-  // 2. HTML5 Video element volume
-  // In Android app, keep video.volume at 1.0 (100%) so volume is not multiplied/halved!
+  // 2. HTML5 Video element volume & Web Audio Gain Boost
   const video = document.getElementById('mainVideoPlayer');
   if (video) {
-    video.volume = isAndroid ? (safeVol > 0 ? 1.0 : 0.0) : safeVol;
+    // Keep standard element volume at 1.0 (or 0 if muted)
+    video.volume = safeVol > 1.0 ? 1.0 : (safeVol > 0 ? (isAndroid ? 1.0 : safeVol) : 0.0);
     video.muted = (safeVol <= 0);
+
+    // Apply Web Audio Gain boost if element volume exceeds 1.0 or if web audio node is ready
+    try {
+      setupAudioBoostNode(video);
+      if (audioBoostGainNode) {
+        // Gain 1.0 for 0-100%, and scales smoothly up to 2.5x gain for 200% boost
+        const boostGain = safeVol <= 1.0 ? 1.0 : (1.0 + (safeVol - 1.0) * 1.5);
+        audioBoostGainNode.gain.setValueAtTime(boostGain, audioBoostCtx.currentTime);
+      }
+    } catch (e) {}
   }
 
   return safeVol;
@@ -7166,14 +7216,23 @@ function showGestureHud(type, value) {
     fill.style.width = `${pct}%`;
     valText.innerText = `${pct}%`;
   } else if (type === 'volume') {
-    hud.classList.remove('boost-mode');
-    const pct = Math.round(value * 100); // 0 to 100%
-    let iconClass = 'fa-volume-high';
-    if (pct <= 0) iconClass = 'fa-volume-xmark';
-    else if (pct < 50) iconClass = 'fa-volume-low';
-    icon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
-    fill.style.width = `${pct}%`;
-    valText.innerText = `${pct}%`;
+    const pct = Math.round(value * 100); // 0 to 200%
+    if (pct > 100) {
+      // MovieBox / MX Player 200% Sound Boost Mode!
+      hud.classList.add('boost-mode');
+      icon.innerHTML = '<i class="fa-solid fa-bolt"></i>';
+      valText.innerHTML = `${pct}% <span class="boost-hud-tag">BOOST</span>`;
+      const fillPct = Math.min(100, Math.round((pct / 200) * 100));
+      fill.style.width = `${fillPct}%`;
+    } else {
+      hud.classList.remove('boost-mode');
+      let iconClass = 'fa-volume-high';
+      if (pct <= 0) iconClass = 'fa-volume-xmark';
+      else if (pct < 50) iconClass = 'fa-volume-low';
+      icon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+      fill.style.width = `${pct}%`;
+      valText.innerText = `${pct}%`;
+    }
   }
 
   hud.classList.add('visible');
@@ -7496,8 +7555,8 @@ function setupPlayerGestures() {
           const newBrightness = applyPlayerBrightness(startBrightness + deltaRatio);
           showGestureHud('brightness', newBrightness);
         } else {
-          // Right side: Video Player Volume 0% to 100% (smooth linear tracking)
-          const newVolume = applyPlayerVolume(startVolume + deltaRatio);
+          // Right side: Video Player Volume up to 200% with sound boost mode
+          const newVolume = applyPlayerVolume(startVolume + deltaRatio * 1.5);
           showGestureHud('volume', newVolume);
         }
       }
