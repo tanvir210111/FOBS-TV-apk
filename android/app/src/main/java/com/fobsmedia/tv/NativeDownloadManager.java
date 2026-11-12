@@ -489,7 +489,7 @@ public class NativeDownloadManager {
                 raf.seek(existingBytes);
 
                 in = conn.getInputStream();
-                byte[] buffer = new byte[65536]; // 64KB buffer
+                byte[] buffer = new byte[131072]; // 128KB buffer for high-throughput Wi-Fi and mobile download
                 long downloaded = existingBytes;
                 long lastProgressTime = 0;
                 int lastPercent = -1;
@@ -567,11 +567,13 @@ public class NativeDownloadManager {
 
             while (redirects < 6) {
                 conn = (HttpURLConnection) curUrl.openConnection();
-                conn.setConnectTimeout(20000);
-                conn.setReadTimeout(60000);
+                conn.setConnectTimeout(45000); // 45s resilient connect timeout for Wi-Fi
+                conn.setReadTimeout(120000);  // 120s read timeout
                 conn.setInstanceFollowRedirects(false);
                 conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Mobile Safari/537.36");
                 conn.setRequestProperty("Accept", "video/mp4, video/*;q=0.9, */*;q=0.8");
+                conn.setRequestProperty("Connection", "Keep-Alive");
+                conn.setRequestProperty("Accept-Encoding", "identity");
 
                 if (existingBytes > 0) {
                     conn.setRequestProperty("Range", "bytes=" + existingBytes + "-");

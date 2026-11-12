@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.6.7 (The Remarried Empress Featured & #1 Latest Engine)
+// FOBS TV Live OTA Patch Bundle v1.6.8 (The Remarried Empress Ep 5 Download, Clean Audio & OnePlus Screen Fix)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.6.7 (Remarried Empress Featured & Latest #1) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.6.7';
+  console.log('⚡ FOBS TV Live Patch v1.6.8 (Ep 5 Download & Resilient Playback) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.6.8';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -104,12 +104,13 @@
     window.normalizeContentData._treHooked = true;
   }
 
-  // Force cache refresh once for v1.6.7
+  // Force cache refresh once for v1.6.8
   try {
-    if (!localStorage.getItem('fobs_patch_v167_synced')) {
+    if (!localStorage.getItem('fobs_patch_v168_synced')) {
       localStorage.removeItem('fobs_content_cache');
       localStorage.removeItem('fobs_content_sync_time');
-      localStorage.setItem('fobs_patch_v167_synced', 'true');
+      localStorage.removeItem('fobs_tv_content_cache_v83');
+      localStorage.setItem('fobs_patch_v168_synced', 'true');
       if (typeof window.syncContentWithBackend === 'function') {
         window.syncContentWithBackend({ force: true });
       }
@@ -1331,10 +1332,16 @@
 
     let allEpisodes = [];
     if (isSeries) {
-      if (media.seasons && media.seasons.length > 0) {
+      if (typeof patchTreEpisodes === 'function' && (media.id === 'mb-s-579116273137862480' || (media.title && media.title.toLowerCase().includes('remarried empress')))) {
+        patchTreEpisodes(media);
+      }
+      if (typeof window.getActiveSeasonEpisodes === 'function') {
+        allEpisodes = window.getActiveSeasonEpisodes(media) || [];
+      }
+      if ((!allEpisodes || allEpisodes.length === 0) && media.seasons && media.seasons.length > 0) {
         const targetSeason = media.seasons.find(s => (s.seasonNumber || s.season) === seasonNum) || media.seasons[0];
         allEpisodes = targetSeason?.episodes || [];
-      } else if (media.episodes && media.episodes.length > 0) {
+      } else if ((!allEpisodes || allEpisodes.length === 0) && media.episodes && media.episodes.length > 0) {
         allEpisodes = media.episodes;
       }
     } else {
@@ -3418,75 +3425,86 @@
   }
 
   // -------------------------------------------------------------
-  // Live Patch v1.6.2: Guaranteed 200% Sound Boost & Hardware Loudness Engine
+  // Live Patch v1.6.8: Clean Hardware Audio & OnePlus Anti-Sleep Keep-Screen-On Engine
   // -------------------------------------------------------------
-  let patchAudioBoostCtx = null;
-  let patchAudioBoostGain = null;
-  let patchAudioBoostSource = null;
+  let patchScreenWakeLock = null;
 
-  function initPatchWebAudioBoost(video) {
-    if (!video) return;
+  function patchSetScreenWakeState(active) {
     try {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (!AudioCtx) return;
-      if (!patchAudioBoostCtx) {
-        patchAudioBoostCtx = new AudioCtx();
+      if (active) {
+        if (window.AndroidApp && typeof window.AndroidApp.setKeepScreenOn === 'function') {
+          try { window.AndroidApp.setKeepScreenOn(true); } catch(e) {}
+        }
+        if ('wakeLock' in navigator && !patchScreenWakeLock) {
+          navigator.wakeLock.request('screen').then(wl => {
+            patchScreenWakeLock = wl;
+            wl.addEventListener('release', () => {
+              patchScreenWakeLock = null;
+            });
+          }).catch(() => {});
+        }
+      } else {
+        if (window.AndroidApp && typeof window.AndroidApp.setKeepScreenOn === 'function') {
+          try { window.AndroidApp.setKeepScreenOn(false); } catch(e) {}
+        }
+        if (patchScreenWakeLock) {
+          try { patchScreenWakeLock.release(); } catch(e) {}
+          patchScreenWakeLock = null;
+        }
       }
-      if (patchAudioBoostCtx.state === 'suspended') {
-        patchAudioBoostCtx.resume().catch(() => {});
-      }
-      if (!video._hasPatchAudioBoost) {
-        try {
-          patchAudioBoostSource = patchAudioBoostCtx.createMediaElementSource(video);
-          patchAudioBoostGain = patchAudioBoostCtx.createGain();
-          patchAudioBoostGain.gain.value = 1.0;
-          patchAudioBoostSource.connect(patchAudioBoostGain);
-          patchAudioBoostGain.connect(patchAudioBoostCtx.destination);
-          video._hasPatchAudioBoost = true;
-        } catch (e) {}
-      }
-    } catch (e) {}
+    } catch(e) {}
   }
+  window.setScreenWakeState = patchSetScreenWakeState;
 
-  // Guaranteed Full Volume Output + 200% Boost
+  function hookVideoScreenWake() {
+    const video = document.getElementById('mainVideoPlayer');
+    if (video && !video._hasWakeHooked) {
+      video.addEventListener('playing', () => patchSetScreenWakeState(true));
+      video.addEventListener('pause', () => patchSetScreenWakeState(false));
+      video.addEventListener('ended', () => patchSetScreenWakeState(false));
+      video._hasWakeHooked = true;
+    }
+  }
+  hookVideoScreenWake();
+  setInterval(hookVideoScreenWake, 2000);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      const video = document.getElementById('mainVideoPlayer');
+      const overlay = document.getElementById('playerOverlay');
+      if (overlay && overlay.classList.contains('open') && video && !video.paused) {
+        patchSetScreenWakeState(true);
+      }
+    }
+  });
+
+  // Direct Hardware Audio Engine (0% to 100% clear volume, zero Web Audio hijacking)
   window.applyPlayerVolume = function (val) {
-    const safeVol = Math.max(0, Math.min(2.0, Number(val)));
+    const safeVol = Math.max(0, Math.min(1.0, Number(val)));
     window.playerSoundLevel = safeVol;
     const pct = Math.round(safeVol * 100);
 
-    let isAndroid = false;
     try {
       if (window.AndroidApp) {
+        if (typeof window.AndroidApp.setDeviceVolume === 'function') {
+          window.AndroidApp.setDeviceVolume(safeVol);
+        }
         if (typeof window.AndroidApp.setAudioBoost === 'function') {
           window.AndroidApp.setAudioBoost(pct);
-          isAndroid = true;
-        } else if (typeof window.AndroidApp.setDeviceVolume === 'function') {
-          window.AndroidApp.setDeviceVolume(Math.min(1.0, safeVol));
-          isAndroid = true;
         }
       }
     } catch (e) { }
 
     const video = document.getElementById('mainVideoPlayer');
     if (video) {
-      // Keep HTML5 audio at full 100% (1.0)
-      video.volume = safeVol > 1.0 ? 1.0 : (safeVol > 0 ? (isAndroid ? 1.0 : safeVol) : 0.0);
+      video.volume = safeVol;
       video.muted = (safeVol <= 0);
-
-      // Web Audio Gain Boost for web and devices
-      try {
-        initPatchWebAudioBoost(video);
-        if (patchAudioBoostGain) {
-          const boostGain = safeVol <= 1.0 ? 1.0 : (1.0 + (safeVol - 1.0) * 1.5);
-          patchAudioBoostGain.gain.setValueAtTime(boostGain, patchAudioBoostCtx.currentTime);
-        }
-      } catch (e) {}
     }
     return safeVol;
   };
   window.applyPlayerVolume._isSoundFixed = true;
 
-  // Patch showGestureHud to render 200% BOOST HUD
+  // Clean Volume Gesture HUD (0% to 100%)
   if (typeof window.showGestureHud === 'function') {
     const origShowGestureHud = window.showGestureHud;
     window.showGestureHud = function(type, value) {
@@ -3496,22 +3514,15 @@
         const fill = document.getElementById('gestureHudBarFill');
         const valText = document.getElementById('gestureHudVal');
         if (hud && icon && fill && valText) {
-          const pct = Math.round(value * 100);
-          if (pct > 100) {
-            hud.classList.add('boost-mode');
-            icon.innerHTML = '<i class="fa-solid fa-bolt"></i>';
-            valText.innerHTML = `${pct}% <span class="boost-hud-tag">BOOST</span>`;
-            const fillPct = Math.min(100, Math.round((pct / 200) * 100));
-            fill.style.width = `${fillPct}%`;
-          } else {
-            hud.classList.remove('boost-mode');
-            let iconClass = 'fa-volume-high';
-            if (pct <= 0) iconClass = 'fa-volume-xmark';
-            else if (pct < 50) iconClass = 'fa-volume-low';
-            icon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
-            fill.style.width = `${pct}%`;
-            valText.innerText = `${pct}%`;
-          }
+          hud.classList.remove('boost-mode');
+          const pct = Math.max(0, Math.min(100, Math.round(value * 100)));
+          let iconClass = 'fa-volume-high';
+          if (pct <= 0) iconClass = 'fa-volume-xmark';
+          else if (pct < 50) iconClass = 'fa-volume-low';
+          icon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+          fill.style.width = `${pct}%`;
+          valText.innerText = `${pct}%`;
+
           hud.classList.add('visible');
           if (window.gestureHudTimer) clearTimeout(window.gestureHudTimer);
           window.gestureHudTimer = setTimeout(() => {

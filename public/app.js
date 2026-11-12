@@ -7216,75 +7216,58 @@ function getPlayerVolume() {
   return playerSoundLevel !== undefined ? playerSoundLevel : (video ? video.volume : 1.0);
 }
 
-// Web Audio API Boost Engine (Up to 200% loud sound on web & mobile)
-let audioBoostCtx = null;
-let audioBoostGainNode = null;
-let audioBoostSource = null;
+// Clean Direct Hardware Audio Engine (0% to 100% full clarity, zero hijacking/muting)
+let activeScreenWakeLock = null;
 
-function setupAudioBoostNode(video) {
-  if (!video) return;
+function setScreenWakeState(active) {
   try {
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContextClass) return;
-
-    if (!audioBoostCtx) {
-      audioBoostCtx = new AudioContextClass();
-    }
-    if (audioBoostCtx.state === 'suspended') {
-      audioBoostCtx.resume().catch(() => {});
-    }
-
-    if (!video._hasAudioBoostNode) {
-      try {
-        audioBoostSource = audioBoostCtx.createMediaElementSource(video);
-        audioBoostGainNode = audioBoostCtx.createGain();
-        audioBoostGainNode.gain.value = 1.0;
-        audioBoostSource.connect(audioBoostGainNode);
-        audioBoostGainNode.connect(audioBoostCtx.destination);
-        video._hasAudioBoostNode = true;
-      } catch (e) {
-        // MediaElementSource might throw if already connected or CORS restricted
+    if (active) {
+      if (window.AndroidApp && typeof window.AndroidApp.setKeepScreenOn === 'function') {
+        try { window.AndroidApp.setKeepScreenOn(true); } catch(e) {}
+      }
+      if ('wakeLock' in navigator && !activeScreenWakeLock) {
+        navigator.wakeLock.request('screen').then(wl => {
+          activeScreenWakeLock = wl;
+          wl.addEventListener('release', () => {
+            activeScreenWakeLock = null;
+          });
+        }).catch(() => {});
+      }
+    } else {
+      if (window.AndroidApp && typeof window.AndroidApp.setKeepScreenOn === 'function') {
+        try { window.AndroidApp.setKeepScreenOn(false); } catch(e) {}
+      }
+      if (activeScreenWakeLock) {
+        try { activeScreenWakeLock.release(); } catch(e) {}
+        activeScreenWakeLock = null;
       }
     }
-  } catch (err) {}
+  } catch(e) {}
 }
+window.setScreenWakeState = setScreenWakeState;
 
 function applyPlayerVolume(val) {
-  const safeVol = Math.max(0, Math.min(2.0, Number(val))); // Allow up to 2.0 (200% sound boost)
+  const safeVol = Math.max(0, Math.min(1.0, Number(val))); // 0.0 to 1.0 (100% full volume)
   playerSoundLevel = safeVol;
-
   const pct = Math.round(safeVol * 100);
 
-  // 1. Android hardware media stream volume & LoudnessEnhancer boost
-  let isAndroid = false;
+  // 1. Android hardware media stream volume
   try {
     if (window.AndroidApp) {
+      if (typeof window.AndroidApp.setDeviceVolume === 'function') {
+        window.AndroidApp.setDeviceVolume(safeVol);
+      }
       if (typeof window.AndroidApp.setAudioBoost === 'function') {
         window.AndroidApp.setAudioBoost(pct);
-        isAndroid = true;
-      } else if (typeof window.AndroidApp.setDeviceVolume === 'function') {
-        window.AndroidApp.setDeviceVolume(Math.min(1.0, safeVol));
-        isAndroid = true;
       }
     }
   } catch (e) {}
 
-  // 2. HTML5 Video element volume & Web Audio Gain Boost
+  // 2. Direct HTML5 Video element volume (Direct hardware pipeline, never hijacked)
   const video = document.getElementById('mainVideoPlayer');
   if (video) {
-    // Keep standard element volume at 1.0 (or 0 if muted)
-    video.volume = safeVol > 1.0 ? 1.0 : (safeVol > 0 ? (isAndroid ? 1.0 : safeVol) : 0.0);
+    video.volume = safeVol;
     video.muted = (safeVol <= 0);
-
-    // Apply Web Audio Gain boost if element volume exceeds 1.0 or if web audio node is ready
-    try {
-      setupAudioBoostNode(video);
-      if (audioBoostGainNode) {
-        // Gain 1.0 for 0-100%, and scales smoothly up to 2.5x gain for 200% boost
-        const boostGain = safeVol <= 1.0 ? 1.0 : (1.0 + (safeVol - 1.0) * 1.5);
-        audioBoostGainNode.gain.setValueAtTime(boostGain, audioBoostCtx.currentTime);
-      }
-    } catch (e) {}
   }
 
   return safeVol;
@@ -7297,30 +7280,21 @@ function showGestureHud(type, value) {
   const valText = document.getElementById('gestureHudVal');
   if (!hud || !icon || !fill || !valText) return;
 
+  hud.classList.remove('boost-mode');
+
   if (type === 'brightness') {
-    hud.classList.remove('boost-mode');
-    const pct = Math.round(value * 100);
+    const pct = Math.max(0, Math.min(100, Math.round(value * 100)));
     icon.innerHTML = '<i class="fa-solid fa-sun"></i>';
     fill.style.width = `${pct}%`;
     valText.innerText = `${pct}%`;
   } else if (type === 'volume') {
-    const pct = Math.round(value * 100); // 0 to 200%
-    if (pct > 100) {
-      // MovieBox / MX Player 200% Sound Boost Mode!
-      hud.classList.add('boost-mode');
-      icon.innerHTML = '<i class="fa-solid fa-bolt"></i>';
-      valText.innerHTML = `${pct}% <span class="boost-hud-tag">BOOST</span>`;
-      const fillPct = Math.min(100, Math.round((pct / 200) * 100));
-      fill.style.width = `${fillPct}%`;
-    } else {
-      hud.classList.remove('boost-mode');
-      let iconClass = 'fa-volume-high';
-      if (pct <= 0) iconClass = 'fa-volume-xmark';
-      else if (pct < 50) iconClass = 'fa-volume-low';
-      icon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
-      fill.style.width = `${pct}%`;
-      valText.innerText = `${pct}%`;
-    }
+    const pct = Math.max(0, Math.min(100, Math.round(value * 100)));
+    let iconClass = 'fa-volume-high';
+    if (pct <= 0) iconClass = 'fa-volume-xmark';
+    else if (pct < 50) iconClass = 'fa-volume-low';
+    icon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+    fill.style.width = `${pct}%`;
+    valText.innerText = `${pct}%`;
   }
 
   hud.classList.add('visible');
@@ -7643,8 +7617,8 @@ function setupPlayerGestures() {
           const newBrightness = applyPlayerBrightness(startBrightness + deltaRatio);
           showGestureHud('brightness', newBrightness);
         } else {
-          // Right side: Video Player Volume up to 200% with sound boost mode
-          const newVolume = applyPlayerVolume(startVolume + deltaRatio * 1.5);
+          // Right side: Video Player Volume 0% to 100%
+          const newVolume = applyPlayerVolume(startVolume + deltaRatio);
           showGestureHud('volume', newVolume);
         }
       }
@@ -7905,6 +7879,7 @@ function setupVideoListeners() {
   let waitLoaderTimer = null;
 
   videoPlayer.addEventListener('playing', () => {
+    setScreenWakeState(true);
     if (waitLoaderTimer) clearTimeout(waitLoaderTimer);
     if (window.videoStreamColdStartTimer) clearTimeout(window.videoStreamColdStartTimer);
     if (loader) loader.classList.remove('active');
@@ -7931,12 +7906,14 @@ function setupVideoListeners() {
   });
 
   videoPlayer.addEventListener('pause', () => {
+    setScreenWakeState(false);
     if (typeof stopWatchTimeTracker === 'function') {
       stopWatchTimeTracker();
     }
   });
 
   videoPlayer.addEventListener('ended', () => {
+    setScreenWakeState(false);
     if (typeof stopWatchTimeTracker === 'function') {
       stopWatchTimeTracker();
     }
@@ -8248,6 +8225,7 @@ function setupVideoListeners() {
 
 // Close Video Player Overlay
 function closePlayer() {
+  setScreenWakeState(false);
   if (typeof stopWatchTimeTracker === 'function') {
     stopWatchTimeTracker();
   }
@@ -9023,10 +9001,13 @@ function renderBatchEpisodesList(seasonNum) {
   // Resolve episodes or movie item
   let allEpisodes = [];
   if (isSeries) {
-    if (media.seasons && media.seasons.length > 0) {
+    if (typeof getActiveSeasonEpisodes === 'function') {
+      allEpisodes = getActiveSeasonEpisodes(media) || [];
+    }
+    if ((!allEpisodes || allEpisodes.length === 0) && media.seasons && media.seasons.length > 0) {
       const targetSeason = media.seasons.find(s => (s.seasonNumber || s.season) === seasonNum) || media.seasons[0];
       allEpisodes = targetSeason?.episodes || [];
-    } else if (media.episodes && media.episodes.length > 0) {
+    } else if ((!allEpisodes || allEpisodes.length === 0) && media.episodes && media.episodes.length > 0) {
       allEpisodes = media.episodes;
     }
   } else {
@@ -9516,6 +9497,108 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
   const mediaId = options.mediaId || '';
   const downloadId = resumeExistingId || ('dl_' + Date.now());
 
+  // High-performance Native Android Download Manager Route (10x faster, zero WebView freeze, direct disk stream)
+  if (window.AndroidApp && typeof window.AndroidApp.startNativeDownload === 'function') {
+    const cleanSafeTitle = (title || 'video').replace(/[^a-zA-Z0-9_\-\u0980-\u09FF]/g, '_');
+    const qNum = options.resolution || parseInt(quality, 10) || 480;
+    const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
+    let proxiedDownloadUrl = url;
+    if (proxiedDownloadUrl.includes('/api/moviebox/stream')) {
+      try {
+        const parsed = new URL(proxiedDownloadUrl.startsWith('http') ? proxiedDownloadUrl : `${apiBase}${proxiedDownloadUrl.startsWith('/') ? '' : '/'}${proxiedDownloadUrl}`);
+        parsed.pathname = '/api/download';
+        if (!parsed.searchParams.has('title')) parsed.searchParams.set('title', cleanSafeTitle);
+        if (!parsed.searchParams.has('q')) parsed.searchParams.set('q', String(qNum));
+        proxiedDownloadUrl = parsed.toString();
+      } catch (e) {
+        proxiedDownloadUrl = `${apiBase}/api/download?url=${encodeURIComponent(proxiedDownloadUrl)}&q=${qNum}&title=${encodeURIComponent(cleanSafeTitle)}`;
+      }
+    } else if (!proxiedDownloadUrl.startsWith('http')) {
+      proxiedDownloadUrl = `${apiBase}${proxiedDownloadUrl.startsWith('/') ? '' : '/'}${proxiedDownloadUrl}`;
+    }
+    if (!proxiedDownloadUrl.includes('title=')) {
+      proxiedDownloadUrl += `${proxiedDownloadUrl.includes('?') ? '&' : '?'}title=${encodeURIComponent(cleanSafeTitle)}`;
+    }
+    if (!proxiedDownloadUrl.includes('q=')) {
+      proxiedDownloadUrl += `&q=${qNum}`;
+    }
+
+    let dlSeason = options.season || 1;
+    let dlEpisode = options.episode || 1;
+    let dlSubjectId = options.subjectId || (options.mediaId ? String(options.mediaId).replace(/^mb-[s|m]-/, '') : '');
+    let dlDetailPath = options.detailPath || '';
+    let dlIsSeries = options.isSeries || false;
+
+    let cleanT = (options.cleanTitle || options.seriesTitle || title || '')
+      .replace(/\s*-\s*S\d+\s*Ep\s*\d+.*/i, '')
+      .replace(/\s*-\s*Episode\s*\d+.*/i, '')
+      .replace(/\s*-\s*Ep\s*\d+.*/i, '')
+      .replace(/\s*-\s*Season\s*\d+.*/i, '')
+      .replace(/\[.*?\]|\(.*?\)/g, '')
+      .trim();
+    if (cleanT.includes(' - ')) cleanT = cleanT.split(' - ')[0].trim();
+
+    const bnSubUrl = `${apiBase}/api/subtitles/download?title=${encodeURIComponent(cleanT)}&season=${dlSeason}&episode=${dlEpisode}&subjectId=${encodeURIComponent(dlSubjectId)}&detailPath=${encodeURIComponent(dlDetailPath)}&type=${dlIsSeries ? 'series' : 'movie'}&lang=bn`;
+    const enSubUrl = `${apiBase}/api/subtitles/download?title=${encodeURIComponent(cleanT)}&season=${dlSeason}&episode=${dlEpisode}&subjectId=${encodeURIComponent(dlSubjectId)}&detailPath=${encodeURIComponent(dlDetailPath)}&type=${dlIsSeries ? 'series' : 'movie'}&lang=en`;
+
+    const rawStorage = localStorage.getItem('fobs_downloads') || '[]';
+    let downloads = [];
+    try { downloads = JSON.parse(rawStorage); } catch (e) { downloads = []; }
+    let currentItem = downloads.find(d => d.id === downloadId);
+    if (!currentItem) {
+      currentItem = {
+        id: downloadId,
+        mediaId,
+        title,
+        poster,
+        quality,
+        resolution: qNum,
+        season: options.season,
+        episode: options.episode,
+        isSeries: options.isSeries,
+        url: proxiedDownloadUrl,
+        progress: 1,
+        receivedBytes: 0,
+        totalBytes: 0,
+        sizeText: 'Connecting...',
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        status: 'downloading',
+        statusText: 'Connecting...',
+        options
+      };
+      downloads.unshift(currentItem);
+    } else {
+      currentItem.status = 'downloading';
+      currentItem.statusText = 'Connecting...';
+      currentItem.paused = false;
+      currentItem.failed = false;
+    }
+    currentItem._lastActivity = Date.now();
+    localStorage.setItem('fobs_downloads', JSON.stringify(downloads.slice(0, 30)));
+    renderDownloadsList();
+
+    if (!resumeExistingId) {
+      showToast(`📥 অফলাইন ডাউনলোড শুরু হয়েছে: "${title}" (${quality})`);
+    } else {
+      showToast(`▶️ ডাউনলোড আবার শুরু হয়েছে: "${title}"`);
+    }
+
+    window.AndroidApp.startNativeDownload(
+      downloadId,
+      proxiedDownloadUrl,
+      title,
+      poster || '',
+      quality || '480P',
+      options.season || 0,
+      options.episode || 0,
+      !!options.isSeries,
+      bnSubUrl,
+      enSubUrl,
+      JSON.stringify(currentItem)
+    );
+    return;
+  }
+
   // If already active, don't start duplicate
   if (activeDownloadTasks[downloadId] && activeDownloadTasks[downloadId].isDownloading) {
     showToast('ডাউনলোড ইতিমধ্যে চলমান রয়েছে');
@@ -9651,13 +9734,13 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
       fetchHeaders['Range'] = `bytes=${existingBytes}-`;
     }
 
-    // Connection watchdog: abort if initial connection stalls past 30s
+    // Connection watchdog: abort if initial connection stalls past 60s
     let connectWatchdog = setTimeout(() => {
       if (activeDownloadTasks[downloadId] && !activeDownloadTasks[downloadId].receivedBytes && !activeDownloadTasks[downloadId].isPaused) {
-        console.warn('Download initial connection watchdog triggered (30s)');
+        console.warn('Download initial connection watchdog triggered (60s)');
         controller.abort();
       }
-    }, 30000);
+    }, 60000);
 
     let response;
     try {

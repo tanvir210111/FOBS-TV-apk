@@ -2467,7 +2467,8 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
         httpsAgent: streamHttpsAgent,
         responseType: 'stream',
         maxRedirects: 5,
-        timeout: 30000, validateStatus: (status) => (status >= 200 && status < 400) || status === 416
+        timeout: 0, // No arbitrary stream abort timeout for smooth continuous streaming and download
+        validateStatus: (status) => (status >= 200 && status < 400) || status === 416
       });
     } catch (initialErr) {
       const isMb = (
@@ -2601,7 +2602,8 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
             httpsAgent: streamHttpsAgent,
             responseType: 'stream',
             maxRedirects: 5,
-            timeout: 30000, validateStatus: (status) => (status >= 200 && status < 400) || status === 416
+            timeout: 0, // No arbitrary stream abort timeout for smooth continuous streaming and download
+        validateStatus: (status) => (status >= 200 && status < 400) || status === 416
           });
         } else {
           throw initialErr;
@@ -2810,7 +2812,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.6.7",
+  version: "1.6.8",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 
@@ -3152,6 +3154,8 @@ app.get('/api/download', async (req, res) => {
     res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type, Accept, X-Stream-Resolution');
     res.setHeader('Access-Control-Expose-Headers', 'Content-Range, Content-Length, Accept-Ranges, X-Stream-Resolution');
     res.setHeader('X-Stream-Resolution', String(actualDeliveredResolution));
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('Keep-Alive', 'timeout=120, max=1000');
 
     const cleanup = () => {
       try {
