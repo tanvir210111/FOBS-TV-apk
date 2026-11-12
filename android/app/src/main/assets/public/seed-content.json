@@ -38,8 +38,8 @@
     "badgeRight": "Bangla Sub",
     "views": 8940,
     "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/175cf56296ead10c869816df49077e1a.mp4?sign=36e7a384934b3b3b8d54e69579c63f51&t=1793761451",
-    "createdAt": "2026-11-12T03:10:34.315Z",
-    "addedAt": "2026-11-12T03:10:34.315Z",
+    "createdAt": "2026-11-12T03:35:45.095Z",
+    "addedAt": "2026-11-12T03:35:45.095Z",
     "isCustom": true,
     "streamUrl": "/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=1",
     "servers": [
@@ -19376,8 +19376,8 @@
       "badgeRight": "Bangla Sub",
       "views": 8940,
       "directStreamUrl": "https://bcdnxw.hakunaymatata.com/resource/175cf56296ead10c869816df49077e1a.mp4?sign=36e7a384934b3b3b8d54e69579c63f51&t=1793761451",
-      "createdAt": "2026-11-12T03:10:34.315Z",
-      "addedAt": "2026-11-12T03:10:34.315Z",
+      "createdAt": "2026-11-12T03:35:45.095Z",
+      "addedAt": "2026-11-12T03:35:45.095Z",
       "isCustom": true,
       "streamUrl": "/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=1",
       "servers": [
@@ -84864,85 +84864,6 @@
         }
       ],
       "totalEpisodes": 73
-    },
-    {
-      "id": "mb-s-1789038705722774000",
-      "subjectId": "1789038705722774000",
-      "detailPath": "the-remarried-empress-hindi-UWTMPFBO982",
-      "title": "The Remarried Empress [Hindi]",
-      "year": "2026",
-      "rating": "7.2",
-      "imdbRating": "7.2",
-      "poster": "https://image.tmdb.org/t/p/w500/zn3IXZzGavH3qle3o3g1r32eXDy.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/1ptukf8gx19U1HcBv3aRzzlXuyJ.jpg",
-      "cover": "https://image.tmdb.org/t/p/w1280/1ptukf8gx19U1HcBv3aRzzlXuyJ.jpg",
-      "duration": "1 Episodes",
-      "episodesCount": 1,
-      "category": "Korean (Dubbed) Series",
-      "industry": "Korean",
-      "language": "Hindi",
-      "dubLanguage": "Hindi",
-      "audioTracks": [
-        "Hindi dub",
-        "Original Audio"
-      ],
-      "selectedAudio": "Hindi dub",
-      "seasonsCount": 1,
-      "addedAt": "2026-11-06T08:31:47.554Z",
-      "createdAt": "2026-11-06T08:31:47.554Z",
-      "releaseDate": "2026-01-01",
-      "originalReleaseDate": "2026-01-01",
-      "badgeLeft": "Trending",
-      "badgeRight": "Hindi",
-      "views": 20,
-      "description": "The Remarried Empress [Hindi] - 1 Episodes streaming in HD on FOBS TV.",
-      "isCustom": true,
-      "type": "series",
-      "streamUrl": "/api/moviebox/stream?id=1789038705722774000&path=the-remarried-empress-hindi-UWTMPFBO982&se=1&ep=1",
-      "servers": [
-        {
-          "name": "Server 1 (Hindi Dub - Auto-Renewing 1080p)",
-          "url": "/api/moviebox/stream?id=1789038705722774000&path=the-remarried-empress-hindi-UWTMPFBO982&se=1&ep=1",
-          "quality": "1080p",
-          "audio": "Hindi dub",
-          "isDirect": true
-        },
-        {
-          "name": "Server 2 (Direct Fast CDN)",
-          "url": "https://bcdnxw.hakunaymatata.com/resource/4693c0c06574739886c093f5b9c49efa.mp4?sign=690863ad4bd63980bd979efa58c4cebd&t=1793950029",
-          "quality": "1080p",
-          "audio": "Hindi dub",
-          "isDirect": true
-        }
-      ],
-      "seasons": [
-        {
-          "seasonNumber": 1,
-          "title": "Season 1",
-          "name": "Season 1",
-          "year": "2026",
-          "episodesCount": 1,
-          "episodes": [
-            {
-              "id": "mb-s-1789038705722774000_s1_e1",
-              "episode": 1,
-              "season": 1,
-              "title": "Episode 1",
-              "streamUrl": "/api/moviebox/stream?id=1789038705722774000&path=the-remarried-empress-hindi-UWTMPFBO982&se=1&ep=1"
-            }
-          ]
-        }
-      ],
-      "episodes": [
-        {
-          "id": "mb-s-1789038705722774000_s1_e1",
-          "episode": 1,
-          "season": 1,
-          "title": "Episode 1",
-          "streamUrl": "/api/moviebox/stream?id=1789038705722774000&path=the-remarried-empress-hindi-UWTMPFBO982&se=1&ep=1"
-        }
-      ],
-      "totalEpisodes": 1
     },
     {
       "id": "mb-s-3166374236894154616",
