@@ -1,17 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.6.3 (The Remarried Empress Ep 5 & FOBS Special Subtitle Engine)
-// 1. The Remarried Empress Special Engine: Ep 5 added; strictly FOBS Special Sub + English ESub only (no AI/Subsource)
-// 2. 200% Sound Boost Engine: Web Audio gain & Android LoudnessEnhancer hardware boost up to +18dB
-// 3. Unified Background (#020c1c): Intro splash and app video player top/bottom letterbox share exact same #020c1c color
-// 4. Universal Zero-Expire Token Engine: Eliminates 403 CDN token expiration with preemptive epoch calculation and transparent retry
-// 5. Instant Iframe Embed Router: Correctly routes VidLink, MultiEmbed, VidSrc directly to iframe player without <video> conflicts
-// 6. Dynamic Stream Auto-Renew: Automatically routes all static/expired CDN links through zero-redirect dynamic stream resolver
-// 7. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
-// 8. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
-// 9. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
-// 10. Universal Local SRT Upload: Multi-encoding auto-detection (UTF-8, UTF-16 LE, ANSI) & Android system file picker support
+// FOBS TV Live OTA Patch Bundle v1.6.4 (The Remarried Empress Featured & #1 Latest Engine)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.6.3 (Remarried Empress FOBS Special Subtitle Engine) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.6.3';
+  console.log('⚡ FOBS TV Live Patch v1.6.4 (Remarried Empress Featured & Latest #1) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.6.4';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -3434,14 +3424,16 @@
 
   // Auto-invalidate stale content cache so newly added items show up instantly at the top of Latest
   try {
-    const staleKey = 'fobs_tv_content_cache_v80';
-    if (localStorage.getItem(staleKey)) {
-      localStorage.removeItem(staleKey);
-      localStorage.removeItem('fobs_tv_last_sync_time');
-      console.log('⚡ Invalidated stale catalog cache v80 via OTA patch v1.5.1');
-      if (typeof window.syncContentWithBackend === 'function') {
-        window.syncContentWithBackend({ force: true });
+    const currentKey = 'fobs_tv_content_cache_v83';
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith('fobs_tv_content_cache_') && k !== currentKey) {
+        localStorage.removeItem(k);
+        localStorage.removeItem('fobs_tv_last_sync_time');
       }
+    }
+    if (typeof window.syncContentWithBackend === 'function') {
+      window.syncContentWithBackend({ force: true });
     }
   } catch (e) { }
 
