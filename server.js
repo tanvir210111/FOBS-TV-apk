@@ -1108,7 +1108,24 @@ app.get('/api/content', async (req, res) => {
     }
     if (data.liveTv) data.liveTv.forEach(t => t.type = 'liveTv');
 
+    // Guarantee: The Remarried Empress (Korean Original Audio, 5 Episodes) is ALWAYS #1 in series and featured
+    if (Array.isArray(data.series)) {
+      // Filter out any Hindi duplicate of Remarried Empress
+      data.series = data.series.filter(s => s.id !== 'mb-s-1789038705722774000' && !(s.title && s.title.toLowerCase().includes('remarried empress') && s.title.toLowerCase().includes('hindi')));
 
+      const treIdx = data.series.findIndex(s => s.id === 'mb-s-579116273137862480' || (s.title && s.title.toLowerCase().includes('remarried empress')));
+      if (treIdx >= 0) {
+        const [tre] = data.series.splice(treIdx, 1);
+        tre.addedAt = '2099-01-01T00:00:00.000Z';
+        tre.createdAt = '2099-01-01T00:00:00.000Z';
+        if (tre.episodes && tre.episodes.length === 5) {
+          tre.totalEpisodes = 5;
+          tre.episodesCount = 5;
+        }
+        data.series.unshift(tre);
+        data.featured = tre;
+      }
+    }
 
     res.json(data);
   } catch (err) {
@@ -1120,7 +1137,16 @@ app.get('/api/content', async (req, res) => {
 // API: MovieBox Trending & Categories
 app.get('/api/moviebox/home', async (req, res) => {
   try {
-    const sections = await movieboxService.getHomepage();
+    const rawSections = await movieboxService.getHomepage();
+    const sections = (rawSections || []).map(sec => {
+      if (sec && Array.isArray(sec.items)) {
+        return {
+          ...sec,
+          items: sec.items.filter(it => it && it.id !== '1789038705722774000' && !(it.title && it.title.toLowerCase().includes('remarried empress') && it.title.toLowerCase().includes('hindi')))
+        };
+      }
+      return sec;
+    });
     res.json({ ok: true, sections });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
@@ -2756,7 +2782,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.6.4",
+  version: "1.6.5",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 

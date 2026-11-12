@@ -1,7 +1,78 @@
-// FOBS TV Live OTA Patch Bundle v1.6.4 (The Remarried Empress Featured & #1 Latest Engine)
+// FOBS TV Live OTA Patch Bundle v1.6.5 (The Remarried Empress Featured & #1 Latest Engine)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.6.4 (Remarried Empress Featured & Latest #1) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.6.4';
+  console.log('⚡ FOBS TV Live Patch v1.6.5 (Remarried Empress Featured & Latest #1) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.6.5';
+
+  // -------------------------------------------------------------
+  // Live Patch v1.6.5: Instant Client Feed Enforcer for The Remarried Empress
+  // -------------------------------------------------------------
+  function enforceRemarriedEmpressFeaturedAndLatest() {
+    try {
+      const st = (typeof appState !== 'undefined' ? appState : window.appState);
+      if (!st || !st.content) return;
+
+      // Filter out any Hindi duplicate from series
+      if (Array.isArray(st.content.series)) {
+        st.content.series = st.content.series.filter(s => s.id !== 'mb-s-1789038705722774000' && !(s.title && s.title.toLowerCase().includes('remarried empress') && s.title.toLowerCase().includes('hindi')));
+        
+        const treIdx = st.content.series.findIndex(s => s.id === 'mb-s-579116273137862480' || (s.title && s.title.toLowerCase().includes('remarried empress')));
+        if (treIdx >= 0) {
+          const [tre] = st.content.series.splice(treIdx, 1);
+          tre.addedAt = '2099-01-01T00:00:00.000Z';
+          tre.createdAt = '2099-01-01T00:00:00.000Z';
+          if (tre.episodes && tre.episodes.length === 5) {
+            tre.totalEpisodes = 5;
+            tre.episodesCount = 5;
+          }
+          st.content.series.unshift(tre);
+          st.content.featured = tre;
+        }
+      }
+
+      if (typeof window.renderHeroBanner === 'function') window.renderHeroBanner();
+      if (typeof window.renderSeriesHeroBanner === 'function') window.renderSeriesHeroBanner();
+      if (typeof window.renderHomeFeeds === 'function') window.renderHomeFeeds();
+    } catch(e) {
+      console.warn('enforceRemarriedEmpressFeaturedAndLatest error:', e);
+    }
+  }
+
+  enforceRemarriedEmpressFeaturedAndLatest();
+  setTimeout(enforceRemarriedEmpressFeaturedAndLatest, 300);
+  setTimeout(enforceRemarriedEmpressFeaturedAndLatest, 1000);
+  setTimeout(enforceRemarriedEmpressFeaturedAndLatest, 3000);
+
+  // Hook normalizeContentData so any future network sync preserves order
+  if (typeof window.normalizeContentData === 'function' && !window.normalizeContentData._treHooked) {
+    const origNormalize = window.normalizeContentData;
+    window.normalizeContentData = function (data) {
+      if (data && Array.isArray(data.series)) {
+        data.series = data.series.filter(s => s.id !== 'mb-s-1789038705722774000' && !(s.title && s.title.toLowerCase().includes('remarried empress') && s.title.toLowerCase().includes('hindi')));
+        const treIdx = data.series.findIndex(s => s.id === 'mb-s-579116273137862480' || (s.title && s.title.toLowerCase().includes('remarried empress')));
+        if (treIdx >= 0) {
+          const [tre] = data.series.splice(treIdx, 1);
+          tre.addedAt = '2099-01-01T00:00:00.000Z';
+          tre.createdAt = '2099-01-01T00:00:00.000Z';
+          data.series.unshift(tre);
+          data.featured = tre;
+        }
+      }
+      return origNormalize.apply(this, arguments);
+    };
+    window.normalizeContentData._treHooked = true;
+  }
+
+  // Force cache refresh once for v1.6.5
+  try {
+    if (!localStorage.getItem('fobs_patch_v165_synced')) {
+      localStorage.removeItem('fobs_content_cache');
+      localStorage.removeItem('fobs_content_sync_time');
+      localStorage.setItem('fobs_patch_v165_synced', 'true');
+      if (typeof window.syncContentWithBackend === 'function') {
+        window.syncContentWithBackend({ force: true });
+      }
+    }
+  } catch(e) {}
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -652,7 +723,6 @@
       }, { once: true });
     }
 
-    const activeBasePlay = window._fobsOriginalPlayStreamUrl || basePlayStreamUrl;
     if (typeof activeBasePlay === 'function' && activeBasePlay !== fobsPlayStreamHook) {
       return activeBasePlay(fastUrl, audioIndex, seekTime);
     }
@@ -3635,5 +3705,5 @@
     window.showToast._hasErrorFilter = true;
   }
 
-  console.log('✅ FOBS TV Live Patch v1.6.1 active: Unified #020c1c Background, Zero-Expire Token Engine & Default Human Bangla Subtitles.');
+  console.log('✅ FOBS TV Live Patch v1.6.5 active: The Remarried Empress Featured & #1 Latest Engine, FOBS Special Sub active.');
 })();
