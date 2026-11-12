@@ -1118,12 +1118,40 @@ app.get('/api/content', async (req, res) => {
         const [tre] = data.series.splice(treIdx, 1);
         tre.addedAt = '2099-01-01T00:00:00.000Z';
         tre.createdAt = '2099-01-01T00:00:00.000Z';
-        if (tre.episodes && tre.episodes.length === 5) {
-          tre.totalEpisodes = 5;
-          tre.episodesCount = 5;
+
+        const ep5 = {
+          id: 'mb-s-579116273137862480_s1_e5',
+          episode: 5,
+          season: 1,
+          title: 'Episode 5',
+          streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=5'
+        };
+        tre.episodes = (tre.episodes || []).filter(e => e.episode !== 5);
+        tre.episodes.push(ep5);
+        tre.episodes.sort((a, b) => a.episode - b.episode);
+
+        if (tre.seasons && tre.seasons[0]) {
+          tre.seasons[0].episodes = (tre.seasons[0].episodes || []).filter(e => e.episode !== 5);
+          tre.seasons[0].episodes.push(ep5);
+          tre.seasons[0].episodes.sort((a, b) => a.episode - b.episode);
+          tre.seasons[0].episodesCount = tre.seasons[0].episodes.length;
+        } else {
+          tre.seasons = [{
+            seasonNumber: 1,
+            season: 1,
+            title: 'Season 1',
+            name: 'Season 1',
+            year: '2026',
+            episodesCount: tre.episodes.length,
+            episodes: tre.episodes
+          }];
         }
+        tre.totalEpisodes = tre.episodes.length;
+        tre.episodesCount = tre.episodes.length;
+        tre.duration = `${tre.episodes.length} Episodes`;
+
         data.series.unshift(tre);
-        data.featured = tre;
+        data.featured = JSON.parse(JSON.stringify(tre));
       }
     }
 
@@ -2782,7 +2810,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.6.6",
+  version: "1.6.7",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 

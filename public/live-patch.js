@@ -1,10 +1,34 @@
-// FOBS TV Live OTA Patch Bundle v1.6.6 (The Remarried Empress Featured & #1 Latest Engine)
+// FOBS TV Live OTA Patch Bundle v1.6.7 (The Remarried Empress Featured & #1 Latest Engine)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.6.6 (Remarried Empress Featured & Latest #1) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.6.6';
+  console.log('⚡ FOBS TV Live Patch v1.6.7 (Remarried Empress Featured & Latest #1) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.6.7';
+
+  const REMARRIED_EP5 = {
+    id: 'mb-s-579116273137862480_s1_e5',
+    episode: 5,
+    season: 1,
+    title: 'Episode 5',
+    streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=5'
+  };
+
+  function patchTreEpisodes(target) {
+    if (!target) return;
+    target.episodes = (target.episodes || []).filter(e => e.episode !== 5);
+    target.episodes.push(REMARRIED_EP5);
+    target.episodes.sort((a, b) => a.episode - b.episode);
+    if (target.seasons && target.seasons[0]) {
+      target.seasons[0].episodes = (target.seasons[0].episodes || []).filter(e => e.episode !== 5);
+      target.seasons[0].episodes.push(REMARRIED_EP5);
+      target.seasons[0].episodes.sort((a, b) => a.episode - b.episode);
+      target.seasons[0].episodesCount = target.seasons[0].episodes.length;
+    }
+    target.totalEpisodes = target.episodes.length;
+    target.episodesCount = target.episodes.length;
+    target.duration = `${target.episodes.length} Episodes`;
+  }
 
   // -------------------------------------------------------------
-  // Live Patch v1.6.5: Instant Client Feed Enforcer for The Remarried Empress
+  // Live Patch v1.6.7: Instant Client Feed & Episode Enforcer for The Remarried Empress
   // -------------------------------------------------------------
   function enforceRemarriedEmpressFeaturedAndLatest() {
     try {
@@ -20,12 +44,17 @@
           const [tre] = st.content.series.splice(treIdx, 1);
           tre.addedAt = '2099-01-01T00:00:00.000Z';
           tre.createdAt = '2099-01-01T00:00:00.000Z';
-          if (tre.episodes && tre.episodes.length === 5) {
-            tre.totalEpisodes = 5;
-            tre.episodesCount = 5;
-          }
+          patchTreEpisodes(tre);
           st.content.series.unshift(tre);
           st.content.featured = tre;
+        }
+      }
+
+      if (st.currentMedia && (st.currentMedia.id === 'mb-s-579116273137862480' || (st.currentMedia.title && st.currentMedia.title.toLowerCase().includes('remarried empress')))) {
+        patchTreEpisodes(st.currentMedia);
+        if (typeof window.renderEpisodePills === 'function') {
+          const activeEps = (typeof window.getActiveSeasonEpisodes === 'function') ? window.getActiveSeasonEpisodes(st.currentMedia) : st.currentMedia.episodes;
+          window.renderEpisodePills(activeEps, st.currentEpisodeIndex || 0);
         }
       }
 
@@ -42,7 +71,19 @@
   setTimeout(enforceRemarriedEmpressFeaturedAndLatest, 1000);
   setTimeout(enforceRemarriedEmpressFeaturedAndLatest, 3000);
 
-  // Hook normalizeContentData so any future network sync preserves order
+  // Hook getActiveSeasonEpisodes
+  if (typeof window.getActiveSeasonEpisodes === 'function' && !window.getActiveSeasonEpisodes._treHooked) {
+    const origGetEpisodes = window.getActiveSeasonEpisodes;
+    window.getActiveSeasonEpisodes = function(media) {
+      if (media && (media.id === 'mb-s-579116273137862480' || (media.title && media.title.toLowerCase().includes('remarried empress')))) {
+        patchTreEpisodes(media);
+      }
+      return origGetEpisodes.apply(this, arguments);
+    };
+    window.getActiveSeasonEpisodes._treHooked = true;
+  }
+
+  // Hook normalizeContentData so any future network sync preserves order & 5 eps
   if (typeof window.normalizeContentData === 'function' && !window.normalizeContentData._treHooked) {
     const origNormalize = window.normalizeContentData;
     window.normalizeContentData = function (data) {
@@ -53,6 +94,7 @@
           const [tre] = data.series.splice(treIdx, 1);
           tre.addedAt = '2099-01-01T00:00:00.000Z';
           tre.createdAt = '2099-01-01T00:00:00.000Z';
+          patchTreEpisodes(tre);
           data.series.unshift(tre);
           data.featured = tre;
         }
@@ -62,12 +104,12 @@
     window.normalizeContentData._treHooked = true;
   }
 
-  // Force cache refresh once for v1.6.5
+  // Force cache refresh once for v1.6.7
   try {
-    if (!localStorage.getItem('fobs_patch_v165_synced')) {
+    if (!localStorage.getItem('fobs_patch_v167_synced')) {
       localStorage.removeItem('fobs_content_cache');
       localStorage.removeItem('fobs_content_sync_time');
-      localStorage.setItem('fobs_patch_v165_synced', 'true');
+      localStorage.setItem('fobs_patch_v167_synced', 'true');
       if (typeof window.syncContentWithBackend === 'function') {
         window.syncContentWithBackend({ force: true });
       }
@@ -3528,9 +3570,9 @@
             if (state) {
               const fobsTrack = {
                 id: `fobs_special_sub_remarried_ep${ep}`,
-                language: 'FOBS Special Sub (বাংলা)',
+                language: 'FOBS Team Special Sub (বাংলা)',
                 langCode: 'bn',
-                source: 'FOBS Special Subtitle Team',
+                source: 'FOBS Team Special',
                 url: `/subtitles/the_remarried_empress_s1_ep${ep}_fobs.vtt`,
                 format: 'vtt',
                 isFobsSpecial: true
@@ -3601,9 +3643,9 @@
           const ep = Math.max(1, Math.min(5, parseInt(rawEp, 10) || 1));
           const fobsTrack = {
             id: `fobs_special_sub_remarried_ep${ep}`,
-            language: 'FOBS Special Sub (বাংলা)',
+            language: 'FOBS Team Special Sub (বাংলা)',
             langCode: 'bn',
-            source: 'FOBS Special Subtitle Team',
+            source: 'FOBS Team Special',
             url: `/subtitles/the_remarried_empress_s1_ep${ep}_fobs.vtt`,
             format: 'vtt',
             isFobsSpecial: true
@@ -3737,5 +3779,5 @@
     window.showToast._hasErrorFilter = true;
   }
 
-  console.log('✅ FOBS TV Live Patch v1.6.6 active: The Remarried Empress Featured & #1 Latest Engine, FOBS Special Sub active.');
+  console.log('✅ FOBS TV Live Patch v1.6.7 active: The Remarried Empress 5 Episodes, FOBS Team Special Sub active.');
 })();

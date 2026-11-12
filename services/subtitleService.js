@@ -40,7 +40,7 @@ class SubtitleService {
     const epNum = isMovie ? 0 : (parseInt(episode, 10) || 0);
 
     // Strictly for The Remarried Empress:
-    // Remove all AI and SubSource bangla subtitles; keep ONLY English (ESub) and FOBS Special Sub!
+    // Remove all AI and SubSource bangla subtitles; keep ONLY English (ESub) and FOBS Team Special Sub!
     const isRemarriedEmpress = cleanTitle.toLowerCase().includes('remarried empress');
     if (isRemarriedEmpress) {
       const rawEp = parseInt(query.episode || query.ep || episode || 1, 10) || 1;
@@ -48,9 +48,9 @@ class SubtitleService {
       return [
         {
           id: `fobs_special_sub_remarried_ep${ep}`,
-          language: 'FOBS Special Sub (বাংলা)',
+          language: 'FOBS Team Special Sub (বাংলা)',
           langCode: 'bn',
-          source: 'FOBS Special Subtitle Team',
+          source: 'FOBS Team Special',
           url: `/subtitles/the_remarried_empress_s1_ep${ep}_fobs.vtt`,
           downloadUrl: `/subtitles/the_remarried_empress_s1_ep${ep}_fobs.vtt`,
           format: 'vtt',

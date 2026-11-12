@@ -3228,6 +3228,30 @@ function formatViewsCount(count) {
 // Helper: Get active episodes for currently selected season
 function getActiveSeasonEpisodes(media) {
   if (!media) return [];
+  if (media.id === 'mb-s-579116273137862480' || (media.title && media.title.toLowerCase().includes('remarried empress'))) {
+    const ep5 = {
+      id: 'mb-s-579116273137862480_s1_e5',
+      episode: 5,
+      season: 1,
+      title: 'Episode 5',
+      streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=5'
+    };
+    if (!media.episodes || !media.episodes.some(e => e.episode === 5)) {
+      media.episodes = (media.episodes || []).filter(e => e.episode !== 5);
+      media.episodes.push(ep5);
+      media.episodes.sort((a, b) => a.episode - b.episode);
+      media.episodesCount = media.episodes.length;
+      media.totalEpisodes = media.episodes.length;
+    }
+    if (media.seasons && media.seasons[0]) {
+      if (!media.seasons[0].episodes || !media.seasons[0].episodes.some(e => e.episode === 5)) {
+        media.seasons[0].episodes = (media.seasons[0].episodes || []).filter(e => e.episode !== 5);
+        media.seasons[0].episodes.push(ep5);
+        media.seasons[0].episodes.sort((a, b) => a.episode - b.episode);
+        media.seasons[0].episodesCount = media.seasons[0].episodes.length;
+      }
+    }
+  }
   if (media.seasons && media.seasons.length > 0) {
     const found = media.seasons.find(s => s.seasonNumber === appState.currentSeason);
     if (found && found.episodes && found.episodes.length > 0) {
@@ -5847,9 +5871,9 @@ async function setupSubtitlesForMedia(media) {
 
     const fobsSpecialTrack = {
       id: `fobs_special_sub_remarried_ep${ep}`,
-      language: 'FOBS Special Sub (বাংলা)',
+      language: 'FOBS Team Special Sub (বাংলা)',
       langCode: 'bn',
-      source: 'FOBS Special Subtitle Team',
+      source: 'FOBS Team Special',
       url: `/subtitles/the_remarried_empress_s1_ep${ep}_fobs.vtt`,
       format: 'vtt',
       isFobsSpecial: true
@@ -5956,9 +5980,9 @@ function renderSubtitleLists() {
     const ep = Math.max(1, Math.min(5, parseInt(rawEp, 10) || 1));
     const fobsTrack = {
       id: `fobs_special_sub_remarried_ep${ep}`,
-      language: 'FOBS Special Sub (বাংলা)',
+      language: 'FOBS Team Special Sub (বাংলা)',
       langCode: 'bn',
-      source: 'FOBS Special Subtitle Team',
+      source: 'FOBS Team Special',
       url: `/subtitles/the_remarried_empress_s1_ep${ep}_fobs.vtt`,
       format: 'vtt',
       isFobsSpecial: true
@@ -13324,5 +13348,30 @@ function isMediaInWatchlist(mediaId) {
 
 async function toggleCurrentMediaWatchlist() {
   if (!appState.currentMedia) return;
-  await toggleMediaW
-... [truncated for diff preview]
+  const media = appState.currentMedia;
+  const isAdded = isMediaInWatchlist(media.id);
+  if (currentUser) {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/user/watchlist/toggle`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: currentUser.id || currentUser._id, mediaId: media.id, media })
+      });
+      const data = await res.json();
+      if (data && data.success) {
+        userWatchlist = data.watchlist || [];
+      }
+    } catch (e) {}
+  } else {
+    let guest = JSON.parse(localStorage.getItem('fobs_guest_watchlist') || '[]');
+    if (isAdded) {
+      guest = guest.filter(i => i.mediaId !== media.id.toString());
+    } else {
+      guest.push({ mediaId: media.id.toString(), media, addedAt: new Date().toISOString() });
+    }
+    localStorage.setItem('fobs_guest_watchlist', JSON.stringify(guest));
+  }
+  if (typeof updateWatchlistBadge === 'function') updateWatchlistBadge();
+  if (typeof updateDetailsWatchlistBtn === 'function') updateDetailsWatchlistBtn();
+  showToast(isAdded ? 'Removed from Watchlist' : 'Added to Watchlist ❤️');
+}
