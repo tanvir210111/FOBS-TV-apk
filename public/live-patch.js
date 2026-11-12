@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.6.9 (The Remarried Empress Ep 6 Added, Fit/Fill Engine & Pure Black Player)
+// FOBS TV Live OTA Patch Bundle v1.7.0 (The Remarried Empress Ep 6, Bulletproof Fit/Fill Aspect Ratio & Pure Black Player)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.6.9 (Ep 6 Added, Fit/Fill & Pure Black Player) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.6.9';
+  console.log('⚡ FOBS TV Live Patch v1.7.0 (Ep 6 Added, Bulletproof Fit/Fill & Pure Black Player) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.7.0';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -115,13 +115,13 @@
     window.normalizeContentData._treHooked = true;
   }
 
-  // Force cache refresh once for v1.6.9
+  // Force cache refresh once for v1.7.0
   try {
-    if (!localStorage.getItem('fobs_patch_v169_synced')) {
+    if (!localStorage.getItem('fobs_patch_v170_synced')) {
       localStorage.removeItem('fobs_content_cache');
       localStorage.removeItem('fobs_content_sync_time');
       localStorage.removeItem('fobs_tv_content_cache_v83');
-      localStorage.setItem('fobs_patch_v169_synced', 'true');
+      localStorage.setItem('fobs_patch_v170_synced', 'true');
       if (typeof window.syncContentWithBackend === 'function') {
         window.syncContentWithBackend({ force: true });
       }
@@ -180,13 +180,19 @@
   // 0. Eliminate Native Android Poster Freeze, Big Play Button & Hide Portrait Resolution Button
   // -------------------------------------------------------------
   function injectConnectingOverlayStyles() {
-    if (document.getElementById('fobs-connecting-overlay-style')) return;
-    const style = document.createElement('style');
-    style.id = 'fobs-connecting-overlay-style';
+    let style = document.getElementById('fobs-connecting-overlay-style');
+    if (!style) {
+      style = document.createElement('style');
+      style.id = 'fobs-connecting-overlay-style';
+      document.head.appendChild(style);
+    }
     style.textContent = `
       #mainVideoPlayer, video, .video-container, .player-view-overlay.open {
         background: #000000 !important;
         background-color: #000000 !important;
+      }
+      .video-container {
+        overflow: hidden !important;
       }
       #mainVideoPlayer[data-aspect-mode="fill"], video[data-aspect-mode="fill"], #mainVideoPlayer.scale-fill, video.scale-fill {
         object-fit: cover !important;
@@ -3390,43 +3396,50 @@
   // -------------------------------------------------------------
   function patchVideoAntiBlackout() {
     try {
-      if (!document.getElementById('fobs-anti-blackout-style')) {
-        const style = document.createElement('style');
+      let style = document.getElementById('fobs-anti-blackout-style');
+      if (!style) {
+        style = document.createElement('style');
         style.id = 'fobs-anti-blackout-style';
-        style.textContent = `
-          .video-container {
-            contain: layout paint !important;
-            transform: translateZ(0) !important;
-            -webkit-transform: translateZ(0) !important;
-            backface-visibility: hidden !important;
-            -webkit-backface-visibility: hidden !important;
-            background-color: #000000 !important;
-            background: #000000 !important;
-          }
-          .video-container video, #mainVideoPlayer {
-            background-color: #000000 !important;
-            background: #000000 !important;
-            transform: translateZ(0) !important;
-            -webkit-transform: translateZ(0) !important;
-            backface-visibility: hidden !important;
-            -webkit-backface-visibility: hidden !important;
-          }
-          .player-content-scroll {
-            contain: layout !important;
-          }
-          .ls-player-ui {
-            background: transparent !important;
-          }
-        `;
         (document.head || document.documentElement).appendChild(style);
       }
+      style.textContent = `
+        .video-container {
+          contain: layout paint !important;
+          backface-visibility: hidden !important;
+          -webkit-backface-visibility: hidden !important;
+          background-color: #000000 !important;
+          background: #000000 !important;
+          overflow: hidden !important;
+        }
+        .video-container video, #mainVideoPlayer {
+          background-color: #000000 !important;
+          background: #000000 !important;
+          backface-visibility: hidden !important;
+          -webkit-backface-visibility: hidden !important;
+        }
+        .video-container video.scale-fill, #mainVideoPlayer.scale-fill,
+        .video-container video[data-aspect-mode="fill"], #mainVideoPlayer[data-aspect-mode="fill"] {
+          object-fit: cover !important;
+          object-position: center center !important;
+        }
+        .video-container video.fit-contain, #mainVideoPlayer.fit-contain,
+        .video-container video[data-aspect-mode="fit"], #mainVideoPlayer[data-aspect-mode="fit"] {
+          object-fit: contain !important;
+          object-position: center center !important;
+        }
+        .player-content-scroll {
+          contain: layout !important;
+        }
+        .ls-player-ui {
+          background: transparent !important;
+        }
+      `;
 
       const video = document.getElementById('mainVideoPlayer');
       if (video && !video._antiBlackoutPatchActive) {
         video._antiBlackoutPatchActive = true;
         video.style.backgroundColor = '#000000';
         video.style.background = '#000000';
-        video.style.transform = 'translateZ(0)';
         video.style.backfaceVisibility = 'hidden';
 
         if ('requestVideoFrameCallback' in HTMLVideoElement.prototype) {
@@ -3812,50 +3825,89 @@
   }
 
   // -------------------------------------------------------------
-  // Live Patch v1.6.9: Universal Landscape Fill / Fit Aspect Ratio Engine & Pure Black Player
+  // Live Patch v1.7.0: Universal Landscape Fill / Fit Aspect Ratio Engine & Pure Black Player
   // -------------------------------------------------------------
+  let _lastFitToggleTime = 0;
+  function executeToggleLandscapeFitFill(e) {
+    if (e && typeof e.stopPropagation === 'function') {
+      e.stopPropagation();
+    }
+    const now = Date.now();
+    if (now - _lastFitToggleTime < 250) {
+      return;
+    }
+    _lastFitToggleTime = now;
+
+    const video = document.getElementById('mainVideoPlayer');
+    const fitLabel = document.getElementById('lsFitLabel');
+    const fitBtn = document.getElementById('lsFitToggleBtn');
+    const container = document.getElementById('videoContainer') || video?.parentElement;
+    if (!video) return;
+
+    const currentMode = video.dataset.aspectMode || (video.classList.contains('scale-fill') ? 'fill' : 'fit');
+    const willBeFill = (currentMode === 'fit');
+
+    if (willBeFill) {
+      video.dataset.aspectMode = 'fill';
+      video.classList.remove('fit-contain');
+      video.classList.add('scale-fill');
+      video.style.setProperty('object-fit', 'cover', 'important');
+      video.style.setProperty('object-position', 'center center', 'important');
+
+      // Hardware acceleration zoom for Android WebViews that ignore object-fit: cover
+      let scale = 1.34;
+      try {
+        const cw = (container && container.clientWidth > 0) ? container.clientWidth : (window.innerWidth || 1);
+        const ch = (container && container.clientHeight > 0) ? container.clientHeight : (window.innerHeight || 1);
+        const vw = video.videoWidth || 16;
+        const vh = video.videoHeight || 9;
+        if (cw > 0 && ch > 0 && vw > 0 && vh > 0) {
+          const cRatio = cw / ch;
+          const vRatio = vw / vh;
+          scale = Math.max(cRatio / vRatio, vRatio / cRatio);
+          if (isNaN(scale) || scale < 1.05) scale = 1.34;
+        }
+      } catch (_) {}
+
+      video.style.setProperty('transform', `scale(${scale.toFixed(4)})`, 'important');
+      video.style.setProperty('-webkit-transform', `scale(${scale.toFixed(4)})`, 'important');
+      video.style.setProperty('transform-origin', 'center center', 'important');
+
+      if (fitLabel) fitLabel.innerText = 'Fill';
+      if (fitBtn) fitBtn.classList.add('active');
+      if (typeof window.showToast === 'function') window.showToast('Aspect Ratio: Fill (Zoomed Edge-to-Edge)');
+    } else {
+      video.dataset.aspectMode = 'fit';
+      video.classList.remove('scale-fill', 'fit-cover');
+      video.classList.add('fit-contain');
+      video.style.setProperty('object-fit', 'contain', 'important');
+      video.style.setProperty('object-position', 'center center', 'important');
+      video.style.setProperty('transform', 'scale(1)', 'important');
+      video.style.setProperty('-webkit-transform', 'scale(1)', 'important');
+
+      if (fitLabel) fitLabel.innerText = 'Fit';
+      if (fitBtn) fitBtn.classList.remove('active');
+      if (typeof window.showToast === 'function') window.showToast('Aspect Ratio: Fit (Original Centered)');
+    }
+
+    if (typeof window.resetLandscapeControlsTimer === 'function') {
+      window.resetLandscapeControlsTimer();
+    }
+  }
+
   function patchLandscapeFitFill() {
-    window.toggleLandscapeFitFill = function () {
-      const video = document.getElementById('mainVideoPlayer');
-      const fitLabel = document.getElementById('lsFitLabel');
-      if (!video) return;
-
-      const currentMode = video.dataset.aspectMode || (video.classList.contains('scale-fill') ? 'fill' : 'fit');
-      const willBeFill = (currentMode === 'fit');
-
-      if (willBeFill) {
-        video.dataset.aspectMode = 'fill';
-        video.classList.remove('fit-contain');
-        video.classList.add('scale-fill');
-        video.style.setProperty('object-fit', 'cover', 'important');
-        video.style.setProperty('object-position', 'center center', 'important');
-        if (fitLabel) fitLabel.innerText = 'Fill';
-        if (typeof window.showToast === 'function') window.showToast('Aspect Ratio: Zoom to Fill (Full Screen)');
-      } else {
-        video.dataset.aspectMode = 'fit';
-        video.classList.remove('scale-fill', 'fit-cover');
-        video.classList.add('fit-contain');
-        video.style.setProperty('object-fit', 'contain', 'important');
-        video.style.setProperty('object-position', 'center center', 'important');
-        if (fitLabel) fitLabel.innerText = 'Fit';
-        if (typeof window.showToast === 'function') window.showToast('Aspect Ratio: Fit (Centered, No Crop)');
-      }
-      if (typeof window.resetLandscapeControlsTimer === 'function') {
-        window.resetLandscapeControlsTimer();
-      }
+    window.toggleLandscapeFitFill = function (e) {
+      executeToggleLandscapeFitFill(e);
     };
-    window.toggleVideoScaling = function () {
-      window.toggleLandscapeFitFill();
+    window.toggleVideoScaling = function (e) {
+      executeToggleLandscapeFitFill(e);
     };
 
     const fitBtn = document.getElementById('lsFitToggleBtn');
-    if (fitBtn && !fitBtn._fitClickHooked) {
-      fitBtn._fitClickHooked = true;
-      fitBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        window.toggleLandscapeFitFill();
-      });
+    if (fitBtn) {
+      fitBtn.onclick = function (e) {
+        executeToggleLandscapeFitFill(e);
+      };
     }
 
     const v = document.getElementById('mainVideoPlayer');
@@ -3867,6 +3919,7 @@
     if (c) {
       c.style.setProperty('background', '#000000', 'important');
       c.style.setProperty('background-color', '#000000', 'important');
+      c.style.setProperty('overflow', 'hidden', 'important');
     }
   }
 
@@ -3884,18 +3937,29 @@
       const ret = origOpenPlayer.apply(this, arguments);
       const v = document.getElementById('mainVideoPlayer');
       const c = document.getElementById('videoContainer');
+      const fitLabel = document.getElementById('lsFitLabel');
+      const fitBtn = document.getElementById('lsFitToggleBtn');
       if (v) {
+        v.dataset.aspectMode = 'fit';
+        v.classList.remove('scale-fill', 'fit-cover');
+        v.classList.add('fit-contain');
         v.style.setProperty('background', '#000000', 'important');
         v.style.setProperty('background-color', '#000000', 'important');
+        v.style.setProperty('object-fit', 'contain', 'important');
+        v.style.setProperty('transform', 'scale(1)', 'important');
+        v.style.setProperty('-webkit-transform', 'scale(1)', 'important');
       }
       if (c) {
         c.style.setProperty('background', '#000000', 'important');
         c.style.setProperty('background-color', '#000000', 'important');
+        c.style.setProperty('overflow', 'hidden', 'important');
       }
+      if (fitLabel) fitLabel.innerText = 'Fit';
+      if (fitBtn) fitBtn.classList.remove('active');
       return ret;
     };
     window.openPlayer._blackBgHooked = true;
   }
 
-  console.log('✅ FOBS TV Live Patch v1.6.9 active: The Remarried Empress 6 Episodes, FOBS Team Special Sub, Fill/Fit Engine & Pure Black Player active.');
+  console.log('✅ FOBS TV Live Patch v1.7.0 active: The Remarried Empress 6 Episodes, FOBS Team Special Sub, Bulletproof Fit/Fill & Pure Black Player active.');
 })();

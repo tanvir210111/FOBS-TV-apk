@@ -3722,6 +3722,8 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
     mainVideo.classList.remove('scale-fill', 'fit-cover');
     mainVideo.classList.add('fit-contain');
     mainVideo.style.setProperty('object-fit', 'contain', 'important');
+    mainVideo.style.setProperty('transform', 'scale(1)', 'important');
+    mainVideo.style.setProperty('-webkit-transform', 'scale(1)', 'important');
     mainVideo.style.setProperty('background-color', '#000000', 'important');
     mainVideo.style.setProperty('background', '#000000', 'important');
     const posterImg = media.backdrop || media.cover || media.poster || '';
@@ -5294,9 +5296,21 @@ function setupLandscapeProgressScrubbing() {
   bindScrubber('portraitProgressWrapper');
 }
 
-function toggleLandscapeFitFill() {
+let _lastFitToggleTime = 0;
+function toggleLandscapeFitFill(e) {
+  if (e && typeof e.stopPropagation === 'function') {
+    e.stopPropagation();
+  }
+  const now = Date.now();
+  if (now - _lastFitToggleTime < 250) {
+    return;
+  }
+  _lastFitToggleTime = now;
+
   const video = document.getElementById('mainVideoPlayer');
   const fitLabel = document.getElementById('lsFitLabel');
+  const fitBtn = document.getElementById('lsFitToggleBtn');
+  const container = document.getElementById('videoContainer') || video?.parentElement;
   if (!video) return;
 
   const currentMode = video.dataset.aspectMode || (video.classList.contains('scale-fill') ? 'fill' : 'fit');
@@ -5308,16 +5322,40 @@ function toggleLandscapeFitFill() {
     video.classList.add('scale-fill');
     video.style.setProperty('object-fit', 'cover', 'important');
     video.style.setProperty('object-position', 'center center', 'important');
+
+    let scale = 1.34;
+    try {
+      const cw = (container && container.clientWidth > 0) ? container.clientWidth : (window.innerWidth || 1);
+      const ch = (container && container.clientHeight > 0) ? container.clientHeight : (window.innerHeight || 1);
+      const vw = video.videoWidth || 16;
+      const vh = video.videoHeight || 9;
+      if (cw > 0 && ch > 0 && vw > 0 && vh > 0) {
+        const cRatio = cw / ch;
+        const vRatio = vw / vh;
+        scale = Math.max(cRatio / vRatio, vRatio / cRatio);
+        if (isNaN(scale) || scale < 1.05) scale = 1.34;
+      }
+    } catch (_) {}
+
+    video.style.setProperty('transform', `scale(${scale.toFixed(4)})`, 'important');
+    video.style.setProperty('-webkit-transform', `scale(${scale.toFixed(4)})`, 'important');
+    video.style.setProperty('transform-origin', 'center center', 'important');
+
     if (fitLabel) fitLabel.innerText = 'Fill';
-    showToast('Aspect Ratio: Zoom to Fill (Full Screen)');
+    if (fitBtn) fitBtn.classList.add('active');
+    showToast('Aspect Ratio: Fill (Zoom to Screen)');
   } else {
     video.dataset.aspectMode = 'fit';
     video.classList.remove('scale-fill', 'fit-cover');
     video.classList.add('fit-contain');
     video.style.setProperty('object-fit', 'contain', 'important');
     video.style.setProperty('object-position', 'center center', 'important');
+    video.style.setProperty('transform', 'scale(1)', 'important');
+    video.style.setProperty('-webkit-transform', 'scale(1)', 'important');
+
     if (fitLabel) fitLabel.innerText = 'Fit';
-    showToast('Aspect Ratio: Fit (Centered, No Crop)');
+    if (fitBtn) fitBtn.classList.remove('active');
+    showToast('Aspect Ratio: Fit (Original Centered)');
   }
   resetLandscapeControlsTimer();
 }
