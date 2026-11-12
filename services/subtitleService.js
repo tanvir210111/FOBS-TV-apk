@@ -38,6 +38,36 @@ class SubtitleService {
     const isMovie = type === 'movie' || (!query.isSeries && (parseInt(season, 10) === 0 || !query.season));
     const seNum = isMovie ? 0 : (parseInt(season, 10) || 0);
     const epNum = isMovie ? 0 : (parseInt(episode, 10) || 0);
+
+    // Strictly for The Remarried Empress:
+    // Remove all AI and SubSource bangla subtitles; keep ONLY English (ESub) and FOBS Special Sub!
+    const isRemarriedEmpress = cleanTitle.toLowerCase().includes('remarried empress');
+    if (isRemarriedEmpress) {
+      const rawEp = parseInt(query.episode || query.ep || episode || 1, 10) || 1;
+      const ep = Math.max(1, Math.min(5, rawEp));
+      return [
+        {
+          id: `fobs_special_sub_remarried_ep${ep}`,
+          language: 'FOBS Special Sub (বাংলা)',
+          langCode: 'bn',
+          source: 'FOBS Special Subtitle Team',
+          url: `/subtitles/the_remarried_empress_s1_ep${ep}_fobs.vtt`,
+          downloadUrl: `/subtitles/the_remarried_empress_s1_ep${ep}_fobs.vtt`,
+          format: 'vtt',
+          isFobsSpecial: true,
+          isHuman: true
+        },
+        {
+          id: `local_en_the_remarried_empress_s1_ep${ep}_en`,
+          language: 'English',
+          langCode: 'en',
+          source: 'Official / ESub',
+          url: `/subtitles/the_remarried_empress_s1_ep${ep}_en.vtt`,
+          downloadUrl: `/subtitles/the_remarried_empress_s1_ep${ep}_en.vtt`,
+          format: 'vtt'
+        }
+      ];
+    }
     const cacheKey = `sub_${cleanTitle}_s${seNum}_e${epNum}`;
 
     if (this.cache.has(cacheKey)) {
@@ -257,6 +287,11 @@ class SubtitleService {
     };
 
     if (!cleanTitle) return results;
+
+    // The Remarried Empress uses only FOBS Special Sub + ESub
+    if (cleanTitle.toLowerCase().includes('remarried empress')) {
+      return results;
+    }
 
     const isMovie = type === 'movie' || (!query.isSeries && (parseInt(season, 10) === 0 || !query.season));
     const seNum = isMovie ? 0 : parseInt(season || 0, 10);

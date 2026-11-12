@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.6.5 (The Remarried Empress Featured & #1 Latest Engine)
+// FOBS TV Live OTA Patch Bundle v1.6.6 (The Remarried Empress Featured & #1 Latest Engine)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.6.5 (Remarried Empress Featured & Latest #1) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.6.5';
+  console.log('⚡ FOBS TV Live Patch v1.6.6 (Remarried Empress Featured & Latest #1) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.6.6';
 
   // -------------------------------------------------------------
   // Live Patch v1.6.5: Instant Client Feed Enforcer for The Remarried Empress
@@ -3512,93 +3512,125 @@
   // (Priority 1: Human SubSource / OpenSubtitles / Local Verified;
   //  Priority 2: FOBS AI Auto-Translate; Never fall back to English)
   // -------------------------------------------------------------
-  if (typeof window.setupSubtitlesForMedia === 'function' && !window.setupSubtitlesForMedia._hasBnPriorityHook) {
-    const origSetupSubtitles = window.setupSubtitlesForMedia;
-    window.setupSubtitlesForMedia = async function (media) {
-      if (!media) return;
-      try {
-        const cleanT = (media.title || '').toLowerCase();
-        const isRemarriedEmpress = cleanT.includes('remarried empress');
+  function hookSubtitleEngine() {
+    if (typeof window.setupSubtitlesForMedia === 'function' && !window.setupSubtitlesForMedia._hasBnPriorityHook) {
+      const origSetupSubtitles = window.setupSubtitlesForMedia;
+      window.setupSubtitlesForMedia = async function (media) {
+        if (!media) return;
+        try {
+          const cleanT = (media.title || '').toLowerCase();
+          const isRemarriedEmpress = cleanT.includes('remarried empress');
 
-        if (isRemarriedEmpress) {
-          const ep = window.appState?.currentEpisode?.episode || window.appState?.currentEpisodeNumber || 1;
+          if (isRemarriedEmpress) {
+            const rawEp = window.appState?.currentEpisode?.episode || window.appState?.currentEpisodeNumber || 1;
+            const ep = Math.max(1, Math.min(5, parseInt(rawEp, 10) || 1));
+            const state = window.subtitleState;
+            if (state) {
+              const fobsTrack = {
+                id: `fobs_special_sub_remarried_ep${ep}`,
+                language: 'FOBS Special Sub (বাংলা)',
+                langCode: 'bn',
+                source: 'FOBS Special Subtitle Team',
+                url: `/subtitles/the_remarried_empress_s1_ep${ep}_fobs.vtt`,
+                format: 'vtt',
+                isFobsSpecial: true
+              };
+              const enTrack = {
+                id: `local_en_the_remarried_empress_s1_ep${ep}_en`,
+                language: 'English',
+                langCode: 'en',
+                source: 'Official / ESub',
+                url: `/subtitles/the_remarried_empress_s1_ep${ep}_en.vtt`,
+                format: 'vtt'
+              };
+              state.availableTracks = [fobsTrack, enTrack];
+              if (typeof window.renderSubtitleLists === 'function') window.renderSubtitleLists();
+              if (typeof window.selectSubtitleTrack === 'function') window.selectSubtitleTrack(fobsTrack.id);
+              return;
+            }
+          }
+
+          const ret = await origSetupSubtitles.apply(this, arguments);
           const state = window.subtitleState;
-          if (state) {
-            const fobsTrack = {
-              id: `fobs_special_sub_remarried_ep${ep}`,
-              language: 'FOBS Special Sub (বাংলা)',
-              langCode: 'bn',
-              source: 'FOBS Special Subtitle Team',
-              url: `/subtitles/the_remarried_empress_s1_ep${ep}_fobs.vtt`,
-              format: 'vtt',
-              isFobsSpecial: true
-            };
-            const enTrack = {
-              id: `local_en_the_remarried_empress_s1_ep${ep}_en`,
-              language: 'English',
-              langCode: 'en',
-              source: 'Official / ESub',
-              url: `/subtitles/the_remarried_empress_s1_ep${ep}_en.vtt`,
-              format: 'vtt'
-            };
-            state.availableTracks = [fobsTrack, enTrack];
-            if (typeof window.renderSubtitleLists === 'function') window.renderSubtitleLists();
-            if (typeof window.selectSubtitleTrack === 'function') window.selectSubtitleTrack(fobsTrack.id);
-            return;
+          if (state && Array.isArray(state.availableTracks) && state.availableTracks.length > 0) {
+            const tracks = state.availableTracks;
+            const isHumanSub = (t) => !t.isAi && !t.language?.toLowerCase().includes('ai') && !t.source?.toLowerCase().includes('ai');
+            const isAiSub = (t) => !!t.isAi || t.language?.toLowerCase().includes('ai') || t.source?.toLowerCase().includes('ai');
+            const bnTracks = tracks.filter(t => t.langCode === 'bn' || (t.language && t.language.toLowerCase().includes('bangla')));
+            const humanBn = bnTracks.find(isHumanSub);
+            let target = humanBn || bnTracks.find(isAiSub) || bnTracks[0];
+
+            if (!target) {
+              const validEnTrack = tracks.find(t => t.langCode === 'en' && (t.url || t.downloadUrl) && !t.url?.includes('/generate')) || tracks[0];
+              const enUrl = validEnTrack?.url || validEnTrack?.downloadUrl || '';
+              const cleanT = (media.title || '').replace(/\[.*?\]|\(.*?\)/g, '').trim();
+              target = {
+                id: 'sub_bn_ai_auto_ota',
+                language: 'Bangla (বাংলা - AI Auto)',
+                langCode: 'bn',
+                source: 'FOBS AI Translate',
+                url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanT)}&season=${window.appState?.currentSeason || 0}&episode=${window.appState?.currentEpisodeNumber || 0}`,
+                format: 'vtt',
+                isAi: true
+              };
+              tracks.unshift(target);
+              if (typeof window.renderSubtitleLists === 'function') window.renderSubtitleLists();
+            }
+
+            if (target && typeof window.selectSubtitleTrack === 'function' && state.currentTrackId !== target.id) {
+              console.log('[Live Patch v1.6.6] Enforcing default Bangla subtitle:', target.language, target.id);
+              window.selectSubtitleTrack(target.id);
+            }
+          }
+          return ret;
+        } catch (err) {
+          console.warn('Live patch setupSubtitles error:', err);
+        }
+      };
+      window.setupSubtitlesForMedia._hasBnPriorityHook = true;
+    }
+
+    // Also Hook renderSubtitleLists to ensure FOBS Special Sub is strictly displayed for Remarried Empress
+    if (typeof window.renderSubtitleLists === 'function' && !window.renderSubtitleLists._hasTreHook) {
+      const origRender = window.renderSubtitleLists;
+      window.renderSubtitleLists = function () {
+        const curM = window.appState?.currentMedia;
+        const cleanT = (curM?.title || '').toLowerCase();
+        if (cleanT.includes('remarried empress') && window.subtitleState) {
+          const rawEp = window.appState?.currentEpisode?.episode || window.appState?.currentEpisodeNumber || 1;
+          const ep = Math.max(1, Math.min(5, parseInt(rawEp, 10) || 1));
+          const fobsTrack = {
+            id: `fobs_special_sub_remarried_ep${ep}`,
+            language: 'FOBS Special Sub (বাংলা)',
+            langCode: 'bn',
+            source: 'FOBS Special Subtitle Team',
+            url: `/subtitles/the_remarried_empress_s1_ep${ep}_fobs.vtt`,
+            format: 'vtt',
+            isFobsSpecial: true
+          };
+          const enTrack = {
+            id: `local_en_the_remarried_empress_s1_ep${ep}_en`,
+            language: 'English',
+            langCode: 'en',
+            source: 'Official / ESub',
+            url: `/subtitles/the_remarried_empress_s1_ep${ep}_en.vtt`,
+            format: 'vtt'
+          };
+          window.subtitleState.availableTracks = [fobsTrack, enTrack];
+          if (!window.subtitleState.currentTrackId || window.subtitleState.currentTrackId === 'off' || !window.subtitleState.availableTracks.some(t => t.id === window.subtitleState.currentTrackId)) {
+            window.subtitleState.currentTrackId = fobsTrack.id;
+            window.subtitleState.enabled = true;
           }
         }
-
-        const ret = await origSetupSubtitles.apply(this, arguments);
-        const state = window.subtitleState;
-        if (state && Array.isArray(state.availableTracks) && state.availableTracks.length > 0) {
-          const tracks = state.availableTracks;
-          const isHumanSub = (t) => !t.isAi && !t.language?.toLowerCase().includes('ai') && !t.source?.toLowerCase().includes('ai');
-          const isAiSub = (t) => !!t.isAi || t.language?.toLowerCase().includes('ai') || t.source?.toLowerCase().includes('ai');
-          const bnTracks = tracks.filter(t => t.langCode === 'bn' || (t.language && t.language.toLowerCase().includes('bangla')));
-          const humanBn = bnTracks.find(isHumanSub);
-          let target = humanBn || bnTracks.find(isAiSub) || bnTracks[0];
-
-          if (!target) {
-            const validEnTrack = tracks.find(t => t.langCode === 'en' && (t.url || t.downloadUrl) && !t.url?.includes('/generate')) || tracks[0];
-            const enUrl = validEnTrack?.url || validEnTrack?.downloadUrl || '';
-            const cleanT = (media.title || '').replace(/\[.*?\]|\(.*?\)/g, '').trim();
-            target = {
-              id: 'sub_bn_ai_auto_ota',
-              language: 'Bangla (বাংলা - AI Auto)',
-              langCode: 'bn',
-              source: 'FOBS AI Translate',
-              url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanT)}&season=${window.appState?.currentSeason || 0}&episode=${window.appState?.currentEpisodeNumber || 0}`,
-              format: 'vtt',
-              isAi: true
-            };
-            tracks.unshift(target);
-            if (typeof window.renderSubtitleLists === 'function') window.renderSubtitleLists();
-          }
-
-          if (target && typeof window.selectSubtitleTrack === 'function' && state.currentTrackId !== target.id) {
-            console.log('[Live Patch v1.5.8] Enforcing default Bangla subtitle:', target.language, target.id);
-            window.selectSubtitleTrack(target.id);
-          }
-        }
-        return ret;
-      } catch (err) {
-        console.warn('Live patch setupSubtitles error:', err);
-      }
-    };
-    window.setupSubtitlesForMedia._hasBnPriorityHook = true;
+        return origRender.apply(this, arguments);
+      };
+      window.renderSubtitleLists._hasTreHook = true;
+    }
   }
 
-  // Hook selectSubtitleTrack to ensure fallback goes to AI Bangla, never English
-  if (typeof window.selectSubtitleTrack === 'function' && !window.selectSubtitleTrack._hasBnPriorityPatch) {
-    const origSelectSubtitleTrack = window.selectSubtitleTrack;
-    window.selectSubtitleTrack = async function (trackId) {
-      if (trackId === 'off') {
-        return origSelectSubtitleTrack.apply(this, arguments);
-      }
-      return origSelectSubtitleTrack.apply(this, arguments);
-    };
-    window.selectSubtitleTrack._hasBnPriorityPatch = true;
-  }
+  hookSubtitleEngine();
+  const subEngineInterval = setInterval(hookSubtitleEngine, 200);
+  setTimeout(() => clearInterval(subEngineInterval), 15000);
 
   // Universal Video Playback Error & Expired Token Self-Healer
   (function setupUniversalPlaybackErrorHandler() {
@@ -3705,5 +3737,5 @@
     window.showToast._hasErrorFilter = true;
   }
 
-  console.log('✅ FOBS TV Live Patch v1.6.5 active: The Remarried Empress Featured & #1 Latest Engine, FOBS Special Sub active.');
+  console.log('✅ FOBS TV Live Patch v1.6.6 active: The Remarried Empress Featured & #1 Latest Engine, FOBS Special Sub active.');
 })();

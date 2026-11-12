@@ -5948,9 +5948,39 @@ function renderSubtitleLists() {
   const modalList = document.getElementById('subModalTracksList');
   const lsList = document.getElementById('lsSubtitleOptionsList');
 
+  const curM = appState.currentMedia;
+  const isRemarriedEmpress = (curM?.title || '').toLowerCase().includes('remarried empress');
+
+  if (isRemarriedEmpress) {
+    const rawEp = appState.currentEpisode?.episode || appState.currentEpisodeNumber || 1;
+    const ep = Math.max(1, Math.min(5, parseInt(rawEp, 10) || 1));
+    const fobsTrack = {
+      id: `fobs_special_sub_remarried_ep${ep}`,
+      language: 'FOBS Special Sub (বাংলা)',
+      langCode: 'bn',
+      source: 'FOBS Special Subtitle Team',
+      url: `/subtitles/the_remarried_empress_s1_ep${ep}_fobs.vtt`,
+      format: 'vtt',
+      isFobsSpecial: true
+    };
+    const enTrack = {
+      id: `local_en_the_remarried_empress_s1_ep${ep}_en`,
+      language: 'English',
+      langCode: 'en',
+      source: 'Official / ESub',
+      url: `/subtitles/the_remarried_empress_s1_ep${ep}_en.vtt`,
+      format: 'vtt'
+    };
+    subtitleState.availableTracks = [fobsTrack, enTrack];
+    if (!subtitleState.currentTrackId || subtitleState.currentTrackId === 'off' || !subtitleState.availableTracks.some(t => t.id === subtitleState.currentTrackId)) {
+      subtitleState.currentTrackId = fobsTrack.id;
+      subtitleState.enabled = true;
+    }
+  }
+
   // Strictly allow ONLY English, Bangla (বাংলা), and custom manually uploaded subtitles
   const filteredTracks = (subtitleState.availableTracks || []).filter(t => 
-    t.isCustom || t.langCode === 'en' || t.langCode === 'bn' || t.language === 'English' || t.language === 'Bangla (বাংলা)'
+    t.isCustom || t.langCode === 'en' || t.langCode === 'bn' || t.language === 'English' || t.language === 'Bangla (বাংলা)' || t.isFobsSpecial
   );
 
   const tracks = [
