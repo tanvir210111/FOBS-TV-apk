@@ -1126,13 +1126,20 @@ app.get('/api/content', async (req, res) => {
           title: 'Episode 5',
           streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=5'
         };
-        tre.episodes = (tre.episodes || []).filter(e => e.episode !== 5);
-        tre.episodes.push(ep5);
+        const ep6 = {
+          id: 'mb-s-579116273137862480_s1_e6',
+          episode: 6,
+          season: 1,
+          title: 'Episode 6',
+          streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=6'
+        };
+        tre.episodes = (tre.episodes || []).filter(e => e.episode !== 5 && e.episode !== 6);
+        tre.episodes.push(ep5, ep6);
         tre.episodes.sort((a, b) => a.episode - b.episode);
 
         if (tre.seasons && tre.seasons[0]) {
-          tre.seasons[0].episodes = (tre.seasons[0].episodes || []).filter(e => e.episode !== 5);
-          tre.seasons[0].episodes.push(ep5);
+          tre.seasons[0].episodes = (tre.seasons[0].episodes || []).filter(e => e.episode !== 5 && e.episode !== 6);
+          tre.seasons[0].episodes.push(ep5, ep6);
           tre.seasons[0].episodes.sort((a, b) => a.episode - b.episode);
           tre.seasons[0].episodesCount = tre.seasons[0].episodes.length;
         } else {
@@ -2812,7 +2819,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.6.8",
+  version: "1.6.9",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 

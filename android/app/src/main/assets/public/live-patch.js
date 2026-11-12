@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.6.8 (The Remarried Empress Ep 5 Download, Clean Audio & OnePlus Screen Fix)
+// FOBS TV Live OTA Patch Bundle v1.6.9 (The Remarried Empress Ep 6 Added, Fit/Fill Engine & Pure Black Player)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.6.8 (Ep 5 Download & Resilient Playback) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.6.8';
+  console.log('⚡ FOBS TV Live Patch v1.6.9 (Ep 6 Added, Fit/Fill & Pure Black Player) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.6.9';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -11,20 +11,31 @@
     streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=5'
   };
 
+  const REMARRIED_EP6 = {
+    id: 'mb-s-579116273137862480_s1_e6',
+    episode: 6,
+    season: 1,
+    title: 'Episode 6',
+    streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=6'
+  };
+
   function patchTreEpisodes(target) {
     if (!target) return;
-    target.episodes = (target.episodes || []).filter(e => e.episode !== 5);
-    target.episodes.push(REMARRIED_EP5);
+    target.episodes = (target.episodes || []).filter(e => e.episode !== 5 && e.episode !== 6);
+    target.episodes.push(REMARRIED_EP5, REMARRIED_EP6);
     target.episodes.sort((a, b) => a.episode - b.episode);
     if (target.seasons && target.seasons[0]) {
-      target.seasons[0].episodes = (target.seasons[0].episodes || []).filter(e => e.episode !== 5);
-      target.seasons[0].episodes.push(REMARRIED_EP5);
+      target.seasons[0].episodes = (target.seasons[0].episodes || []).filter(e => e.episode !== 5 && e.episode !== 6);
+      target.seasons[0].episodes.push(REMARRIED_EP5, REMARRIED_EP6);
       target.seasons[0].episodes.sort((a, b) => a.episode - b.episode);
       target.seasons[0].episodesCount = target.seasons[0].episodes.length;
     }
     target.totalEpisodes = target.episodes.length;
     target.episodesCount = target.episodes.length;
     target.duration = `${target.episodes.length} Episodes`;
+    target.isOngoing = true;
+    target.badgeRight = 'ONGOING';
+    target.status = 'Ongoing';
   }
 
   // -------------------------------------------------------------
@@ -104,13 +115,13 @@
     window.normalizeContentData._treHooked = true;
   }
 
-  // Force cache refresh once for v1.6.8
+  // Force cache refresh once for v1.6.9
   try {
-    if (!localStorage.getItem('fobs_patch_v168_synced')) {
+    if (!localStorage.getItem('fobs_patch_v169_synced')) {
       localStorage.removeItem('fobs_content_cache');
       localStorage.removeItem('fobs_content_sync_time');
       localStorage.removeItem('fobs_tv_content_cache_v83');
-      localStorage.setItem('fobs_patch_v168_synced', 'true');
+      localStorage.setItem('fobs_patch_v169_synced', 'true');
       if (typeof window.syncContentWithBackend === 'function') {
         window.syncContentWithBackend({ force: true });
       }
@@ -174,11 +185,16 @@
     style.id = 'fobs-connecting-overlay-style';
     style.textContent = `
       #mainVideoPlayer, video, .video-container, .player-view-overlay.open {
-        background: #020c1c !important;
-        background-color: #020c1c !important;
+        background: #000000 !important;
+        background-color: #000000 !important;
       }
-      #mainVideoPlayer, video {
+      #mainVideoPlayer[data-aspect-mode="fill"], video[data-aspect-mode="fill"], #mainVideoPlayer.scale-fill, video.scale-fill {
+        object-fit: cover !important;
+        object-position: center center !important;
+      }
+      #mainVideoPlayer[data-aspect-mode="fit"], video[data-aspect-mode="fit"], #mainVideoPlayer.fit-contain, video.fit-contain {
         object-fit: contain !important;
+        object-position: center center !important;
       }
       #mainVideoPlayer::-webkit-media-controls-start-playback-button,
       #mainVideoPlayer::-webkit-media-controls-overlay-play-button,
@@ -3384,9 +3400,12 @@
             -webkit-transform: translateZ(0) !important;
             backface-visibility: hidden !important;
             -webkit-backface-visibility: hidden !important;
+            background-color: #000000 !important;
+            background: #000000 !important;
           }
           .video-container video, #mainVideoPlayer {
-            background-color: transparent !important;
+            background-color: #000000 !important;
+            background: #000000 !important;
             transform: translateZ(0) !important;
             -webkit-transform: translateZ(0) !important;
             backface-visibility: hidden !important;
@@ -3405,15 +3424,17 @@
       const video = document.getElementById('mainVideoPlayer');
       if (video && !video._antiBlackoutPatchActive) {
         video._antiBlackoutPatchActive = true;
-        video.style.backgroundColor = 'transparent';
+        video.style.backgroundColor = '#000000';
+        video.style.background = '#000000';
         video.style.transform = 'translateZ(0)';
         video.style.backfaceVisibility = 'hidden';
 
         if ('requestVideoFrameCallback' in HTMLVideoElement.prototype) {
           const onFrame = () => {
             if (!video.paused && !video.ended) {
-              if (video.style.backgroundColor !== 'transparent') {
-                video.style.backgroundColor = 'transparent';
+              if (video.style.backgroundColor !== '#000000') {
+                video.style.backgroundColor = '#000000';
+                video.style.background = '#000000';
               }
               video.requestVideoFrameCallback(onFrame);
             }
@@ -3576,7 +3597,7 @@
 
           if (isRemarriedEmpress) {
             const rawEp = window.appState?.currentEpisode?.episode || window.appState?.currentEpisodeNumber || 1;
-            const ep = Math.max(1, Math.min(5, parseInt(rawEp, 10) || 1));
+            const ep = Math.max(1, Math.min(6, parseInt(rawEp, 10) || 1));
             const state = window.subtitleState;
             if (state) {
               const fobsTrack = {
@@ -3651,7 +3672,7 @@
         const cleanT = (curM?.title || '').toLowerCase();
         if (cleanT.includes('remarried empress') && window.subtitleState) {
           const rawEp = window.appState?.currentEpisode?.episode || window.appState?.currentEpisodeNumber || 1;
-          const ep = Math.max(1, Math.min(5, parseInt(rawEp, 10) || 1));
+          const ep = Math.max(1, Math.min(6, parseInt(rawEp, 10) || 1));
           const fobsTrack = {
             id: `fobs_special_sub_remarried_ep${ep}`,
             language: 'FOBS Team Special Sub (বাংলা)',
@@ -3790,5 +3811,91 @@
     window.showToast._hasErrorFilter = true;
   }
 
-  console.log('✅ FOBS TV Live Patch v1.6.7 active: The Remarried Empress 5 Episodes, FOBS Team Special Sub active.');
+  // -------------------------------------------------------------
+  // Live Patch v1.6.9: Universal Landscape Fill / Fit Aspect Ratio Engine & Pure Black Player
+  // -------------------------------------------------------------
+  function patchLandscapeFitFill() {
+    window.toggleLandscapeFitFill = function () {
+      const video = document.getElementById('mainVideoPlayer');
+      const fitLabel = document.getElementById('lsFitLabel');
+      if (!video) return;
+
+      const currentMode = video.dataset.aspectMode || (video.classList.contains('scale-fill') ? 'fill' : 'fit');
+      const willBeFill = (currentMode === 'fit');
+
+      if (willBeFill) {
+        video.dataset.aspectMode = 'fill';
+        video.classList.remove('fit-contain');
+        video.classList.add('scale-fill');
+        video.style.setProperty('object-fit', 'cover', 'important');
+        video.style.setProperty('object-position', 'center center', 'important');
+        if (fitLabel) fitLabel.innerText = 'Fill';
+        if (typeof window.showToast === 'function') window.showToast('Aspect Ratio: Zoom to Fill (Full Screen)');
+      } else {
+        video.dataset.aspectMode = 'fit';
+        video.classList.remove('scale-fill', 'fit-cover');
+        video.classList.add('fit-contain');
+        video.style.setProperty('object-fit', 'contain', 'important');
+        video.style.setProperty('object-position', 'center center', 'important');
+        if (fitLabel) fitLabel.innerText = 'Fit';
+        if (typeof window.showToast === 'function') window.showToast('Aspect Ratio: Fit (Centered, No Crop)');
+      }
+      if (typeof window.resetLandscapeControlsTimer === 'function') {
+        window.resetLandscapeControlsTimer();
+      }
+    };
+    window.toggleVideoScaling = function () {
+      window.toggleLandscapeFitFill();
+    };
+
+    const fitBtn = document.getElementById('lsFitToggleBtn');
+    if (fitBtn && !fitBtn._fitClickHooked) {
+      fitBtn._fitClickHooked = true;
+      fitBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        window.toggleLandscapeFitFill();
+      });
+    }
+
+    const v = document.getElementById('mainVideoPlayer');
+    const c = document.getElementById('videoContainer');
+    if (v) {
+      v.style.setProperty('background', '#000000', 'important');
+      v.style.setProperty('background-color', '#000000', 'important');
+    }
+    if (c) {
+      c.style.setProperty('background', '#000000', 'important');
+      c.style.setProperty('background-color', '#000000', 'important');
+    }
+  }
+
+  try {
+    patchLandscapeFitFill();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', patchLandscapeFitFill);
+    }
+    setInterval(patchLandscapeFitFill, 2000);
+  } catch (e) { }
+
+  if (typeof window.openPlayer === 'function' && !window.openPlayer._blackBgHooked) {
+    const origOpenPlayer = window.openPlayer;
+    window.openPlayer = function () {
+      const ret = origOpenPlayer.apply(this, arguments);
+      const v = document.getElementById('mainVideoPlayer');
+      const c = document.getElementById('videoContainer');
+      if (v) {
+        v.style.setProperty('background', '#000000', 'important');
+        v.style.setProperty('background-color', '#000000', 'important');
+      }
+      if (c) {
+        c.style.setProperty('background', '#000000', 'important');
+        c.style.setProperty('background-color', '#000000', 'important');
+      }
+      return ret;
+    };
+    window.openPlayer._blackBgHooked = true;
+  }
+
+  console.log('✅ FOBS TV Live Patch v1.6.9 active: The Remarried Empress 6 Episodes, FOBS Team Special Sub, Fill/Fit Engine & Pure Black Player active.');
 })();

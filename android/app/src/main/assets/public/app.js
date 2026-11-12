@@ -3236,17 +3236,24 @@ function getActiveSeasonEpisodes(media) {
       title: 'Episode 5',
       streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=5'
     };
-    if (!media.episodes || !media.episodes.some(e => e.episode === 5)) {
-      media.episodes = (media.episodes || []).filter(e => e.episode !== 5);
-      media.episodes.push(ep5);
+    const ep6 = {
+      id: 'mb-s-579116273137862480_s1_e6',
+      episode: 6,
+      season: 1,
+      title: 'Episode 6',
+      streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=6'
+    };
+    if (!media.episodes || !media.episodes.some(e => e.episode === 5) || !media.episodes.some(e => e.episode === 6)) {
+      media.episodes = (media.episodes || []).filter(e => e.episode !== 5 && e.episode !== 6);
+      media.episodes.push(ep5, ep6);
       media.episodes.sort((a, b) => a.episode - b.episode);
       media.episodesCount = media.episodes.length;
       media.totalEpisodes = media.episodes.length;
     }
     if (media.seasons && media.seasons[0]) {
-      if (!media.seasons[0].episodes || !media.seasons[0].episodes.some(e => e.episode === 5)) {
-        media.seasons[0].episodes = (media.seasons[0].episodes || []).filter(e => e.episode !== 5);
-        media.seasons[0].episodes.push(ep5);
+      if (!media.seasons[0].episodes || !media.seasons[0].episodes.some(e => e.episode === 5) || !media.seasons[0].episodes.some(e => e.episode === 6)) {
+        media.seasons[0].episodes = (media.seasons[0].episodes || []).filter(e => e.episode !== 5 && e.episode !== 6);
+        media.seasons[0].episodes.push(ep5, ep6);
         media.seasons[0].episodes.sort((a, b) => a.episode - b.episode);
         media.seasons[0].episodesCount = media.seasons[0].episodes.length;
       }
@@ -3703,11 +3710,20 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
 
   // Reset video scale to default "Fit" mode (contain, perfectly centered without crop)
   const mainVideo = document.getElementById('mainVideoPlayer');
+  const videoContainer = document.getElementById('videoContainer');
+  if (videoContainer) {
+    videoContainer.style.setProperty('background-color', '#000000', 'important');
+    videoContainer.style.setProperty('background', '#000000', 'important');
+  }
   if (mainVideo) {
     mainVideo._hasTriedMultiEmbed = false;
     mainVideo._retryCount = 0;
+    mainVideo.dataset.aspectMode = 'fit';
     mainVideo.classList.remove('scale-fill', 'fit-cover');
     mainVideo.classList.add('fit-contain');
+    mainVideo.style.setProperty('object-fit', 'contain', 'important');
+    mainVideo.style.setProperty('background-color', '#000000', 'important');
+    mainVideo.style.setProperty('background', '#000000', 'important');
     const posterImg = media.backdrop || media.cover || media.poster || '';
     if (posterImg) {
       mainVideo.setAttribute('poster', posterImg);
@@ -5283,15 +5299,23 @@ function toggleLandscapeFitFill() {
   const fitLabel = document.getElementById('lsFitLabel');
   if (!video) return;
 
-  const willBeFill = !video.classList.contains('scale-fill');
+  const currentMode = video.dataset.aspectMode || (video.classList.contains('scale-fill') ? 'fill' : 'fit');
+  const willBeFill = (currentMode === 'fit');
+
   if (willBeFill) {
+    video.dataset.aspectMode = 'fill';
     video.classList.remove('fit-contain');
     video.classList.add('scale-fill');
+    video.style.setProperty('object-fit', 'cover', 'important');
+    video.style.setProperty('object-position', 'center center', 'important');
     if (fitLabel) fitLabel.innerText = 'Fill';
     showToast('Aspect Ratio: Zoom to Fill (Full Screen)');
   } else {
+    video.dataset.aspectMode = 'fit';
     video.classList.remove('scale-fill', 'fit-cover');
     video.classList.add('fit-contain');
+    video.style.setProperty('object-fit', 'contain', 'important');
+    video.style.setProperty('object-position', 'center center', 'important');
     if (fitLabel) fitLabel.innerText = 'Fit';
     showToast('Aspect Ratio: Fit (Centered, No Crop)');
   }
@@ -5977,7 +6001,7 @@ function renderSubtitleLists() {
 
   if (isRemarriedEmpress) {
     const rawEp = appState.currentEpisode?.episode || appState.currentEpisodeNumber || 1;
-    const ep = Math.max(1, Math.min(5, parseInt(rawEp, 10) || 1));
+    const ep = Math.max(1, Math.min(6, parseInt(rawEp, 10) || 1));
     const fobsTrack = {
       id: `fobs_special_sub_remarried_ep${ep}`,
       language: 'FOBS Team Special Sub (বাংলা)',
@@ -7745,15 +7769,15 @@ function initVideoSurfaceAntiBlackout() {
   if (video._antiBlackoutAttached) return;
   video._antiBlackoutAttached = true;
 
-  video.style.backgroundColor = 'transparent';
+  video.style.backgroundColor = '#000000';
   video.style.transform = 'translateZ(0)';
   video.style.backfaceVisibility = 'hidden';
 
   if ('requestVideoFrameCallback' in HTMLVideoElement.prototype) {
     const onVideoFrame = () => {
       if (!video.paused && !video.ended) {
-        if (video.style.backgroundColor !== 'transparent') {
-          video.style.backgroundColor = 'transparent';
+        if (video.style.backgroundColor !== '#000000') {
+          video.style.backgroundColor = '#000000';
         }
         video.requestVideoFrameCallback(onVideoFrame);
       }

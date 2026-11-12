@@ -44,7 +44,7 @@ class SubtitleService {
     const isRemarriedEmpress = cleanTitle.toLowerCase().includes('remarried empress');
     if (isRemarriedEmpress) {
       const rawEp = parseInt(query.episode || query.ep || episode || 1, 10) || 1;
-      const ep = Math.max(1, Math.min(5, rawEp));
+      const ep = Math.max(1, Math.min(6, rawEp));
       return [
         {
           id: `fobs_special_sub_remarried_ep${ep}`,

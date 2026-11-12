@@ -1121,7 +1121,8 @@ body {
 
 body:not(.is-fullscreen) .player-view-overlay.open {
   padding-top: 0 !important;
-  background-color: #020c1c !important;
+  background-color: #000000 !important;
+  background: #000000 !important;
 }
 
 body.is-fullscreen .player-view-overlay.open {
@@ -1193,7 +1194,8 @@ body.is-fullscreen .player-view-overlay.open {
 .video-container {
   width: 100%;
   aspect-ratio: 16 / 9;
-  background-color: #020c1c !important;
+  background-color: #000000 !important;
+  background: #000000 !important;
   position: relative;
   display: flex !important;
   align-items: center !important;
@@ -1206,12 +1208,14 @@ body.is-fullscreen .player-view-overlay.open {
   -webkit-backface-visibility: hidden;
 }
 
-.video-container video {
+.video-container video,
+#mainVideoPlayer {
   width: 100%;
   height: 100%;
   object-fit: contain !important;
   object-position: center center !important;
-  background-color: #020c1c !important;
+  background-color: #000000 !important;
+  background: #000000 !important;
   display: block;
   margin: auto !important;
   transform: translateZ(0);
@@ -1235,12 +1239,19 @@ body.is-fullscreen .player-view-overlay.open {
 }
 
 .video-container video.scale-fill,
-.video-container video.fit-cover {
+.video-container video.fit-cover,
+video#mainVideoPlayer.scale-fill,
+video#mainVideoPlayer.fit-cover,
+.video-container video[data-aspect-mode="fill"],
+video#mainVideoPlayer[data-aspect-mode="fill"] {
   object-fit: cover !important;
   object-position: center center !important;
 }
 
-.video-container video.fit-contain {
+.video-container video.fit-contain,
+video#mainVideoPlayer.fit-contain,
+.video-container video[data-aspect-mode="fit"],
+video#mainVideoPlayer[data-aspect-mode="fit"] {
   object-fit: contain !important;
   object-position: center center !important;
 }
@@ -1331,7 +1342,8 @@ video:-webkit-full-screen,
   max-width: 100% !important;
   max-height: 100% !important;
   object-fit: contain !important; /* Default fit to screen without cropping */
-  background-color: transparent !important;
+  background-color: #000000 !important;
+  background: #000000 !important;
   border: none !important;
   outline: none !important;
   margin: 0 !important;
@@ -1342,8 +1354,16 @@ video:-webkit-full-screen,
 body.is-fullscreen .video-container video.scale-fill,
 .player-view-overlay.is-fullscreen .video-container video.scale-fill,
 body.is-fullscreen .video-container video.fit-cover,
-.player-view-overlay.is-fullscreen .video-container video.fit-cover {
+.player-view-overlay.is-fullscreen .video-container video.fit-cover,
+.video-container:fullscreen video.scale-fill,
+.video-container:-webkit-full-screen video.scale-fill,
+video:fullscreen.scale-fill,
+video:-webkit-full-screen.scale-fill,
+body.is-fullscreen .video-container video[data-aspect-mode="fill"],
+.player-view-overlay.is-fullscreen .video-container video[data-aspect-mode="fill"],
+.video-container:fullscreen video[data-aspect-mode="fill"] {
   object-fit: cover !important;
+  object-position: center center !important;
 }
 
 /* Fullscreen Top Header Overlay */
@@ -1442,7 +1462,8 @@ body.is-fullscreen .player-top-header.controls-hidden,
     max-height: 100% !important;
     object-fit: contain !important; /* Default fit to screen centered without cropping */
     object-position: center center !important;
-    background-color: transparent !important;
+    background-color: #000000 !important;
+    background: #000000 !important;
     border: none !important;
     outline: none !important;
     margin: auto !important;
