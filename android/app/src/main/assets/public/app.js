@@ -5831,6 +5831,40 @@ async function setupSubtitlesForMedia(media) {
   }
 
   // 3. Ensure English & Bangla exist
+  const isRemarriedEmpress = (cleanTitle || '').toLowerCase().includes('remarried empress');
+
+  if (isRemarriedEmpress) {
+    // Strictly for The Remarried Empress:
+    // Remove all AI and SubSource subtitles; keep ONLY English and add FOBS Special Subtitle!
+    const enTrack = tracks.find(t => t.langCode === 'en' && !t.isAi && !t.language?.toLowerCase().includes('ai')) || {
+      id: `local_en_the_remarried_empress_s1_ep${ep}_en`,
+      language: 'English',
+      langCode: 'en',
+      source: 'Official / ESub',
+      url: `/subtitles/the_remarried_empress_s1_ep${ep}_en.vtt`,
+      format: 'vtt'
+    };
+
+    const fobsSpecialTrack = {
+      id: `fobs_special_sub_remarried_ep${ep}`,
+      language: 'FOBS Special Sub (বাংলা)',
+      langCode: 'bn',
+      source: 'FOBS Special Subtitle Team',
+      url: `/subtitles/the_remarried_empress_s1_ep${ep}_fobs.vtt`,
+      format: 'vtt',
+      isFobsSpecial: true
+    };
+
+    tracks.length = 0;
+    tracks.push(fobsSpecialTrack);
+    tracks.push(enTrack);
+
+    subtitleState.availableTracks = tracks;
+    renderSubtitleLists();
+    selectSubtitleTrack(fobsSpecialTrack.id);
+    return;
+  }
+
   const hasEn = tracks.some(t => t.langCode === 'en');
   const hasBn = tracks.some(t => t.langCode === 'bn');
 
@@ -6004,7 +6038,7 @@ async function selectSubtitleTrack(trackId) {
   const subToggle = document.getElementById('lsSubtitleToggle');
   if (subToggle) subToggle.checked = true;
   const subBtnLabel = document.getElementById('playerSubtitleBtnLabel');
-  if (subBtnLabel) subBtnLabel.innerText = track.isCustom ? 'Custom Sub' : (track.langCode === 'bn' ? 'BN Sub' : (track.langCode === 'hi' ? 'HI Sub' : 'EN Sub'));
+  if (subBtnLabel) subBtnLabel.innerText = track.isFobsSpecial ? 'FOBS Sub' : (track.isCustom ? 'Custom Sub' : (track.langCode === 'bn' ? 'BN Sub' : (track.langCode === 'hi' ? 'HI Sub' : 'EN Sub')));
   const subIcon = document.getElementById('actionSubIcon');
   if (subIcon) subIcon.style.color = '#00f2fe';
 

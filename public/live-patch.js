@@ -1,17 +1,17 @@
-// FOBS TV Live OTA Patch Bundle v1.6.2 (MovieBox 200% Sound Boost & Hardware LoudnessEnhancer Engine)
-// 1. 200% Sound Boost Engine: Web Audio gain & Android LoudnessEnhancer hardware boost up to +18dB
-// 2. Unified Background (#020c1c): Intro splash and app video player top/bottom letterbox share exact same #020c1c color
-// 3. Universal Zero-Expire Token Engine: Eliminates 403 CDN token expiration with preemptive epoch calculation and transparent retry
-// 4. Instant Iframe Embed Router: Correctly routes VidLink, MultiEmbed, VidSrc directly to iframe player without <video> conflicts
-// 5. Dynamic Stream Auto-Renew: Automatically routes all static/expired CDN links through zero-redirect dynamic stream resolver
-// 6. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
-// 7. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
-// 8. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
-// 9. Universal Local SRT Upload: Multi-encoding auto-detection (UTF-8, UTF-16 LE, ANSI) & Android system file picker support
-// 10. Power Button Screen Lock Auto-Pause: Automatically pauses video and silences audio when screen is locked/turned off
+// FOBS TV Live OTA Patch Bundle v1.6.3 (The Remarried Empress Ep 5 & FOBS Special Subtitle Engine)
+// 1. The Remarried Empress Special Engine: Ep 5 added; strictly FOBS Special Sub + English ESub only (no AI/Subsource)
+// 2. 200% Sound Boost Engine: Web Audio gain & Android LoudnessEnhancer hardware boost up to +18dB
+// 3. Unified Background (#020c1c): Intro splash and app video player top/bottom letterbox share exact same #020c1c color
+// 4. Universal Zero-Expire Token Engine: Eliminates 403 CDN token expiration with preemptive epoch calculation and transparent retry
+// 5. Instant Iframe Embed Router: Correctly routes VidLink, MultiEmbed, VidSrc directly to iframe player without <video> conflicts
+// 6. Dynamic Stream Auto-Renew: Automatically routes all static/expired CDN links through zero-redirect dynamic stream resolver
+// 7. Online Stream Quality Switching: Smoothly switches 360p, 480p, 720p, 1080p, Auto and preserves current watch time
+// 8. MovieBox Style Offline Video Playback: Direct native device storage with embedded HTTP Range server & butter-smooth seek
+// 9. Dual Offline Subtitles: Bangla & English subtitles reliably saved with clean title extraction & rendered offline
+// 10. Universal Local SRT Upload: Multi-encoding auto-detection (UTF-8, UTF-16 LE, ANSI) & Android system file picker support
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.6.2 (200% Sound Boost Engine) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.6.2';
+  console.log('⚡ FOBS TV Live Patch v1.6.3 (Remarried Empress FOBS Special Subtitle Engine) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.6.3';
 
   // -------------------------------------------------------------
   // Safe Media & State Resolution
@@ -3455,6 +3455,37 @@
     window.setupSubtitlesForMedia = async function (media) {
       if (!media) return;
       try {
+        const cleanT = (media.title || '').toLowerCase();
+        const isRemarriedEmpress = cleanT.includes('remarried empress');
+
+        if (isRemarriedEmpress) {
+          const ep = window.appState?.currentEpisode?.episode || window.appState?.currentEpisodeNumber || 1;
+          const state = window.subtitleState;
+          if (state) {
+            const fobsTrack = {
+              id: `fobs_special_sub_remarried_ep${ep}`,
+              language: 'FOBS Special Sub (বাংলা)',
+              langCode: 'bn',
+              source: 'FOBS Special Subtitle Team',
+              url: `/subtitles/the_remarried_empress_s1_ep${ep}_fobs.vtt`,
+              format: 'vtt',
+              isFobsSpecial: true
+            };
+            const enTrack = {
+              id: `local_en_the_remarried_empress_s1_ep${ep}_en`,
+              language: 'English',
+              langCode: 'en',
+              source: 'Official / ESub',
+              url: `/subtitles/the_remarried_empress_s1_ep${ep}_en.vtt`,
+              format: 'vtt'
+            };
+            state.availableTracks = [fobsTrack, enTrack];
+            if (typeof window.renderSubtitleLists === 'function') window.renderSubtitleLists();
+            if (typeof window.selectSubtitleTrack === 'function') window.selectSubtitleTrack(fobsTrack.id);
+            return;
+          }
+        }
+
         const ret = await origSetupSubtitles.apply(this, arguments);
         const state = window.subtitleState;
         if (state && Array.isArray(state.availableTracks) && state.availableTracks.length > 0) {

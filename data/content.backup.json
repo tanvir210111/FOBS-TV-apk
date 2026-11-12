@@ -44424,8 +44424,8 @@
       "poster": "https://pbcdnw.aoneroom.com/image/2026/11/03/6e3ae85e6bc59b34d165d6239054789e.jpg",
       "backdrop": "https://pbcdnw.aoneroom.com/image/2026/11/03/6e3ae85e6bc59b34d165d6239054789e.jpg",
       "cover": "https://pbcdnw.aoneroom.com/image/2026/11/03/6e3ae85e6bc59b34d165d6239054789e.jpg",
-      "duration": "4 Episodes",
-      "episodesCount": 4,
+      "duration": "5 Episodes",
+      "episodesCount": 5,
       "seasonsCount": 1,
       "description": "Navier Ellie Trovi was an empress perfect in every way -- intelligent, courageous, and socially adept. However, the Emperor wants a mistress, not a queen. When Navier is forced to divorce, she chooses to remarry Heinrey, king of the neighboring Western Empire!",
       "badgeLeft": "Trending #1",
@@ -44459,7 +44459,7 @@
           "title": "Season 1",
           "name": "Season 1",
           "year": "2026",
-          "episodesCount": 4,
+          "episodesCount": 5,
           "episodes": [
             {
               "id": "mb-s-579116273137862480_s1_e1",
@@ -44488,6 +44488,13 @@
               "season": 1,
               "title": "Episode 4",
               "streamUrl": "/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=4"
+            },
+            {
+              "id": "mb-s-579116273137862480_s1_e5",
+              "episode": 5,
+              "season": 1,
+              "title": "Episode 5",
+              "streamUrl": "/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=5"
             }
           ]
         }
@@ -44520,9 +44527,16 @@
           "season": 1,
           "title": "Episode 4",
           "streamUrl": "/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=4"
+        },
+        {
+          "id": "mb-s-579116273137862480_s1_e5",
+          "episode": 5,
+          "season": 1,
+          "title": "Episode 5",
+          "streamUrl": "/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=5"
         }
       ],
-      "totalEpisodes": 4
+      "totalEpisodes": 5
     },
     {
       "id": "mb-s-3166726178862419960",
