@@ -27,13 +27,15 @@ const JWT_SECRET = process.env.JWT_SECRET || 'fobs_tv_admin_secret_key_2026';
 
 // High-Speed In-Memory Caches for Instant UI Response
 const tmdbLookupCache = new Map();
-const MB_FEED_CACHE_FILE = path.join(__dirname, '..', 'data', 'mb_feed_cache.json');
+const MB_FEED_CACHE_FILE = path.join(__dirname, '..', 'data', 'mb_feed_cache.local.json');
+const MB_FEED_LEGACY_FILE = path.join(__dirname, '..', 'data', 'mb_feed_cache.json');
 let mbFeedCache = { timestamp: 0, sections: null, specialized: {} };
 
 function loadFeedCacheFromDisk() {
   try {
-    if (fs.existsSync(MB_FEED_CACHE_FILE)) {
-      const parsed = JSON.parse(fs.readFileSync(MB_FEED_CACHE_FILE, 'utf8'));
+    const fileToRead = fs.existsSync(MB_FEED_CACHE_FILE) ? MB_FEED_CACHE_FILE : (fs.existsSync(MB_FEED_LEGACY_FILE) ? MB_FEED_LEGACY_FILE : null);
+    if (fileToRead) {
+      const parsed = JSON.parse(fs.readFileSync(fileToRead, 'utf8'));
       if (parsed && typeof parsed === 'object') {
         mbFeedCache = parsed;
         if (!mbFeedCache.specialized) mbFeedCache.specialized = {};

@@ -29,3 +29,4 @@ scratch/
 data/*.local.json
 data/*.backup.json
 data/moviebox_stream_cache.json
+data/mb_feed_cache.json
