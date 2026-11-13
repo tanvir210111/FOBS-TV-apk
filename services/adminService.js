@@ -1122,15 +1122,13 @@ class AdminService {
             hasNewEpisodes = true;
             updateType = 'new_episode';
             updateBadge = `Ep ${fobsEpisodesCount + 1}-${mbEpisodesTotal} Released!`;
-          } else if (matchedSeries.isOngoing) {
-            hasNewEpisodes = true;
-            updateType = 'new_episode';
-            updateBadge = `Ongoing (Ep ${fobsEpisodesCount})`;
           } else {
+            hasNewEpisodes = false;
             updateType = 'already_synced';
-            updateBadge = 'Synced';
+            updateBadge = matchedSeries.isOngoing ? `Ongoing (Ep ${fobsEpisodesCount})` : 'Synced';
           }
         } else if (matchedMovie) {
+          hasNewEpisodes = false;
           updateType = 'already_synced';
           updateBadge = 'Synced';
         }
@@ -1167,33 +1165,34 @@ class AdminService {
     }
 
     // 5. Smart Chronological Sort:
-    // Priority:
-    // 1. Ongoing series with newly released un-synced episodes at the top
-    // 2. Added Today & Added Yesterday releases next
-    // 3. Released content sorted strictly newest first (uploadTimestamp DESC)
-    // 4. Coming soon / upcoming releases
+    // Strictly latest additions first:
+    // 1. Ongoing series with genuinely newly released un-imported episodes
+    // 2. Added Today (uploadDate === todayDateStr) -> Nov 13 releases at the very top!
+    // 3. Added Yesterday (uploadDate === yesterdayDateStr) -> Nov 12 releases next!
+    // 4. Released content strictly ordered by uploadTimestamp DESC (Nov 11, Nov 10, Nov 9, ...)
+    // 5. Coming Soon / Future releases (uploadDate > todayDateStr) placed after released items
     processedItems.sort((a, b) => {
-      // 1. Ongoing series with new un-synced episodes at the absolute top
+      // 1. Genuinely new episodes to sync
       const epRankA = a.hasNewEpisodes ? 1 : 0;
       const epRankB = b.hasNewEpisodes ? 1 : 0;
       if (epRankB !== epRankA) return epRankB - epRankA;
 
-      // 2. Today's additions top priority
+      // 2. Separate released vs future releases
+      const isFutureA = a.uploadDate > todayDateStr ? 1 : 0;
+      const isFutureB = b.uploadDate > todayDateStr ? 1 : 0;
+      if (isFutureA !== isFutureB) {
+        return isFutureA - isFutureB; // Released items first, upcoming after
+      }
+
+      // 3. Today's additions first among released
       const isTodayA = a.uploadDate === todayDateStr ? 1 : 0;
       const isTodayB = b.uploadDate === todayDateStr ? 1 : 0;
       if (isTodayB !== isTodayA) return isTodayB - isTodayA;
 
-      // 3. Yesterday's additions next priority
+      // 4. Yesterday's additions next
       const isYestA = a.uploadDate === yesterdayDateStr ? 1 : 0;
       const isYestB = b.uploadDate === yesterdayDateStr ? 1 : 0;
       if (isYestB !== isYestA) return isYestB - isYestA;
-
-      // 4. Separate future releases (> todayDateStr) so they don't bury watchable releases
-      const isFutureA = a.uploadDate > todayDateStr ? 1 : 0;
-      const isFutureB = b.uploadDate > todayDateStr ? 1 : 0;
-      if (isFutureA !== isFutureB) {
-        return isFutureA - isFutureB; // Released items first, future after
-      }
 
       // 5. Strict chronological upload date
       if (b.uploadTimestamp !== a.uploadTimestamp) {

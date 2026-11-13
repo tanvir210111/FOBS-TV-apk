@@ -3840,15 +3840,15 @@ function applyLatestFilters() {
   const currentYearMonth = todayStr.substring(0, 7);
 
   if (dateFilter === 'today') {
-    items = items.filter(i => i.uploadDate === todayStr || (i.updateBadge || '').toLowerCase().includes('today') || i.hasNewEpisodes);
+    items = items.filter(i => i.uploadDate === todayStr || (i.updateBadge || '').toLowerCase().includes('today'));
   } else if (dateFilter === 'yesterday') {
     items = items.filter(i => i.uploadDate === yesterdayStr || (i.updateBadge || '').toLowerCase().includes('yesterday'));
   } else if (dateFilter === 'last3days') {
-    items = items.filter(i => (i.uploadDate >= threeDaysAgoStr && i.uploadDate <= todayStr) || i.hasNewEpisodes);
+    items = items.filter(i => i.uploadDate >= threeDaysAgoStr && i.uploadDate <= todayStr);
   } else if (dateFilter === 'last7days') {
-    items = items.filter(i => (i.uploadDate >= sevenDaysAgoStr && i.uploadDate <= todayStr) || i.hasNewEpisodes);
+    items = items.filter(i => i.uploadDate >= sevenDaysAgoStr && i.uploadDate <= todayStr);
   } else if (dateFilter === 'thismonth') {
-    items = items.filter(i => (i.uploadDate || '').startsWith(currentYearMonth));
+    items = items.filter(i => (i.uploadDate || '').startsWith(currentYearMonth) && i.uploadDate <= todayStr);
   } else if (dateFilter === 'custom' && customDate) {
     items = items.filter(i => i.uploadDate === customDate);
   }
