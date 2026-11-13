@@ -285,20 +285,23 @@ async function getUserStats() {
   }
 
   const rawDevices = Object.values(devicesMap);
-  const V318_RELEASE_TIMESTAMP = new Date('2026-11-10T09:15:00.000Z').getTime();
 
-  // MODERN AUDIENCE FILTER: Devices and registered members running v3.2.0 or verified v3.1.8
+  // Audience filter: Keep active devices running version 3.x
   const devices = rawDevices.filter(d => {
-    const isModern = d.appVersion === '3.2.0' || d.appVersion === '3.1.8' || (d.appVersion && (d.appVersion.includes('3.2.0') || d.appVersion.includes('3.1.8')));
-    const isTime = new Date(d.lastActive || d.firstSeen || 0).getTime() >= V318_RELEASE_TIMESTAMP;
-    return isModern && isTime;
+    if (!d || !d.id) return false;
+    const ver = String(d.appVersion || '');
+    return ver.startsWith('3.') || ver.includes('3.') || ver === 'Android App' || !ver;
   });
 
+  // Registered members: Keep ALL verified members who registered (never drop by date or app version!)
   const registeredUsers = rawRegisteredUsers.filter(u => {
-    const isAdmin = (u.email === 'tanvir210111@gmail.com');
-    const isModern = u.appVersion === '3.2.0' || u.appVersion === '3.1.8' || (u.appVersion && (u.appVersion.includes('3.2.0') || u.appVersion.includes('3.1.8')));
-    const isTime = new Date(u.lastLogin || u.createdAt || 0).getTime() >= V318_RELEASE_TIMESTAMP;
-    return isAdmin || (isModern && isTime);
+    if (!u) return false;
+    const email = (u.email || '').trim().toLowerCase();
+    const hasEmail = email && email.includes('@') && email !== 'google user';
+    const hasName = u.name && u.name !== 'User' && u.name !== 'Registered Member';
+    const isGoogleAuth = u.googleId && !String(u.googleId).startsWith('v_');
+    const isAdmin = email === 'tanvir210111@gmail.com';
+    return isAdmin || hasEmail || (hasName && isGoogleAuth);
   });
 
   const totalRegistered = registeredUsers.length;
@@ -1477,6 +1480,7 @@ async function purgeOldVersionUsers(targetVersion = '3.2.0') {
       const deleteResult = await User.deleteMany({
         $and: [
           { email: { $ne: 'tanvir210111@gmail.com' } },
+          { email: { $not: /@/ } }, // NEVER delete registered members with real email addresses!
           {
             $or: [
               { appVersion: { $ne: targetVersion } },
@@ -1499,10 +1503,12 @@ async function purgeOldVersionUsers(targetVersion = '3.2.0') {
 
   for (const [key, u] of Object.entries(usersMap)) {
     const isAdmin = (u.email === 'tanvir210111@gmail.com');
+    const hasEmail = u.email && u.email.includes('@') && u.email !== 'Google User' && u.email !== 'google user';
     const isV318Time = new Date(u.lastLogin || u.createdAt || 0).getTime() >= v318Threshold;
     const isV318Ver = (u.appVersion === targetVersion);
 
-    if (isAdmin || (isV318Time && isV318Ver)) {
+    // Legitimate registered users are NEVER purged!
+    if (isAdmin || hasEmail || (isV318Time && isV318Ver)) {
       keptUsers[key] = u;
     } else {
       deletedUsers++;
