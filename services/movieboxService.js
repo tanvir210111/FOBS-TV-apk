@@ -44,14 +44,29 @@ const SEARCH_DOMAINS = [
   'https://movie-box.co'
 ];
 
-function getRandomIp() {
-  const randSub = Math.floor(Math.random() * 200) + 20;
-  const randHost1 = Math.floor(Math.random() * 250) + 1;
-  const randHost2 = Math.floor(Math.random() * 250) + 1;
-  return `103.${randSub}.${randHost1}.${randHost2}`;
+const COUNTRY_CONFIG = {
+  BD: { timezone: 'Asia/Dhaka', ipSub: '103.147' },
+  IN: { timezone: 'Asia/Kolkata', ipSub: '103.212' },
+  US: { timezone: 'America/New_York', ipSub: '23.227' },
+  GB: { timezone: 'Europe/London', ipSub: '51.89' },
+  TR: { timezone: 'Europe/Istanbul', ipSub: '185.122' },
+  KR: { timezone: 'Asia/Seoul', ipSub: '211.234' },
+  JP: { timezone: 'Asia/Tokyo', ipSub: '133.242' }
+};
+
+function getCountryConfig(country = 'BD') {
+  const c = String(country || 'BD').toUpperCase();
+  return COUNTRY_CONFIG[c] || { timezone: 'Asia/Dhaka', ipSub: '103.147' };
 }
 
-function generateAuthHeaders(domain = BASE_URL, refererPath = '', country = 'IN') {
+function getRandomIp(country = 'BD') {
+  const cfg = getCountryConfig(country);
+  const randHost1 = Math.floor(Math.random() * 250) + 1;
+  const randHost2 = Math.floor(Math.random() * 250) + 1;
+  return `${cfg.ipSub}.${randHost1}.${randHost2}`;
+}
+
+function generateAuthHeaders(domain = BASE_URL, refererPath = '', country = 'BD') {
   const e = Math.floor(Date.now() / 1000);
   const r = String(e).split('').reverse().join('');
   const md5 = crypto.createHash('md5').update(r).digest('hex');
@@ -60,9 +75,8 @@ function generateAuthHeaders(domain = BASE_URL, refererPath = '', country = 'IN'
   const randomAccount = Math.floor(Math.random() * 1e18);
   const ref = refererPath ? (refererPath.startsWith('http') ? refererPath : `${domain}/movies/${refererPath}`) : `${domain}/`;
 
-  const randIp = country === 'BD'
-    ? `103.147.${Math.floor(Math.random() * 250) + 1}.${Math.floor(Math.random() * 250) + 1}`
-    : `103.212.${Math.floor(Math.random() * 250) + 1}.${Math.floor(Math.random() * 250) + 1}`;
+  const cfg = getCountryConfig(country);
+  const randIp = getRandomIp(country);
 
   return {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
@@ -70,7 +84,7 @@ function generateAuthHeaders(domain = BASE_URL, refererPath = '', country = 'IN'
     'Referer': ref,
     'Accept': 'application/json, text/plain, */*',
     'X-Client-Token': clientToken,
-    'X-Client-Info': JSON.stringify({ timezone: country === 'BD' ? 'Asia/Dhaka' : 'Asia/Kolkata', country }),
+    'X-Client-Info': JSON.stringify({ timezone: cfg.timezone, country }),
     'Cookie': `uuid=${randomUuid}; account=${randomAccount}|0|H5|${e}|; client_country=${country}; country=${country}`,
     'X-Forwarded-For': randIp,
     'Client-IP': randIp,
@@ -186,19 +200,9 @@ class MovieBoxService {
         const n = crypto.createHash('md5').update(r).digest('hex');
         const clientToken = `${e},${n}`;
 
+        const headers = generateAuthHeaders(domain, '', 'BD');
         const res = await axios.get(`${domain}/wefeed-h5api-bff/home?host=h5.aoneroom.com`, {
-          headers: {
-            'Accept': 'application/json',
-            'X-Client-Token': clientToken,
-            'X-Client-Info': JSON.stringify({ timezone: 'Asia/Kolkata', country: 'IN' }),
-            'X-Forwarded-For': getRandomIp(),
-            'Client-IP': getRandomIp(),
-            'X-Real-IP': getRandomIp(),
-            'X-Request-Lang': 'en',
-            'User-Agent': HEADERS['User-Agent'],
-            'Origin': 'https://h5.aoneroom.com',
-            'Referer': 'https://h5.aoneroom.com/'
-          },
+          headers,
           httpsAgent: cleanAgent,
           timeout: 4500
         });
@@ -259,7 +263,7 @@ class MovieBoxService {
       'https://h5.aoneroom.com',
       'https://movie-box.co'
     ];
-    const country = options.country || 'IN';
+    const country = options.country || 'BD';
 
     for (const domain of candidateDomains) {
       try {
@@ -470,19 +474,9 @@ class MovieBoxService {
         const r = String(e).split('').reverse().join('');
         const clientToken = `${e},${crypto.createHash('md5').update(r).digest('hex')}`;
 
-        const reqHeaders = {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'User-Agent': HEADERS['User-Agent'],
-          'Origin': 'https://h5.aoneroom.com',
-          'Referer': 'https://h5.aoneroom.com/',
-          'X-Client-Token': clientToken,
-          'X-Client-Info': JSON.stringify({ timezone: 'Asia/Kolkata', country: 'IN' }),
-          'X-Forwarded-For': getRandomIp(),
-          'Client-IP': getRandomIp(),
-          'X-Real-IP': getRandomIp(),
-          'X-Request-Lang': 'en'
-        };
+        const country = options.country || 'BD';
+        const reqHeaders = generateAuthHeaders(domain, '', country);
+        reqHeaders['Content-Type'] = 'application/json';
 
         if (sessionToken) {
           reqHeaders['Authorization'] = `Bearer ${sessionToken}`;

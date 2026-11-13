@@ -611,25 +611,32 @@ class AdminService {
       return 'Chinese';
     }
 
-    // 5. South Indian (Tamil / Telugu / Malayalam / Kannada)
-    if (
-      /tamil|telugu|malayalam|kannada|kollywood|tollywood|mollywood/i.test(tLower) ||
-      /baahubali|bahubali|pushpa|kgf|salaar|devara|kantara|vinaya vidheya|bharath ane nenu|duvvada jagannadham|iddarammayilatho|ala vaikunthapurramuloo|dangerous \[bengali\]|jailer|mandaadi|mookuthi|akka|pratap|pritam pedro|ranabaali|karuppu|nagabandham|mathagam|lik: love insurance|dhootha|vishwanath|jana nayagan|rana naidu/i.test(tLower) ||
-      (cName.includes('india') && /mandaadi|mookuthi|akka|pratap|pritam pedro|ranabaali|karuppu|nagabandham/i.test(tLower))
-    ) {
-      return 'South Indian';
-    }
-
-    // 6. Bengali / Bangladesh / Tollywood
+    // 5. Bengali / Bangladesh / Tollywood
     if (
       cName.includes('bangladesh') ||
       /saptadingar|nishir daak|gerakol|bohurupi|tekka|khadaan|babli|hubba|toofan|shurongo|mujib|raghu dakat|shwetkali|killbill society|mirza|pisach|bahir mahal|kothamrito|tollywood focus|pallichattambi|becoming light|tumi ami shudhu/i.test(tLower) ||
-      (isBangla && !/baahubali|dirilis|vinaya|bharath|duvvada|365 days/i.test(tLower))
+      (isBangla && !/baahubali|dirilis|vinaya|bharath|duvvada|365 days|murder in galicia/i.test(tLower) && (cName.includes('india') || cName.includes('bangladesh') || !cName))
     ) {
       return 'Bengali';
     }
 
-    // 7. Bollywood / Indian Cinema & Series
+    // 6. Western / European productions (Spain, France, Germany, Italy, US, UK)
+    // Foreign audio dubs like [Telugu] or [Hindi] do NOT change their Western/European origin!
+    const isWesternCountry = /spain|france|germany|italy|united states|united kingdom|canada|australia/i.test(cName);
+    if (isWesternCountry && !cName.includes('india')) {
+      return 'Hollywood';
+    }
+
+    // 7. South Indian (Tamil / Telugu / Malayalam / Kannada) - genuine Indian regional productions
+    if (
+      (cName.includes('india') || !cName) &&
+      (/tamil|telugu|malayalam|kannada|kollywood|tollywood|mollywood/i.test(tLower) ||
+      /baahubali|bahubali|pushpa|kgf|salaar|devara|kantara|vinaya vidheya|bharath ane nenu|duvvada jagannadham|iddarammayilatho|ala vaikunthapurramuloo|jailer|mandaadi|mookuthi|akka|pratap|pritam pedro|ranabaali|karuppu|nagabandham|mathagam|lik: love insurance|dhootha|vishwanath|jana nayagan|rana naidu/i.test(tLower))
+    ) {
+      return 'South Indian';
+    }
+
+    // 8. Bollywood / Indian Cinema & Series
     if (
       cName.includes('india') || secLower.includes('bollywood') ||
       /bollywood|punjabi|marathi|bhojpuri|gujarati|ramayana|tum mere ho|scene|dilwali diwali|blind game|kankaan de ohle|drishyam|dangal|gajab raat|adarsh baal vidyalaya|musafir cafe|the paradise|ordinary jackpot|hunkkaar|sardar 2|dhurandhar|war 2|brahmastra|om shanti om|hum aapke|dilwale|scoop|bigg boss|visionquest|brindavihari|pehla pyaar|tu hai meri kiran|chaar yaar|duniya ki thain|bebe main badmash/i.test(tLower)
@@ -637,7 +644,7 @@ class AdminService {
       return 'Bollywood';
     }
 
-    // 8. Hollywood / Western Cinema
+    // 9. Hollywood / Western Cinema
     return 'Hollywood';
   }
 
@@ -1145,6 +1152,7 @@ class AdminService {
           audioCategory,
           audioTag,
           industry,
+          countryName: it.countryName || industry,
           alreadyImported,
           fobsId: matchedItem ? matchedItem.id : null,
           updateType,

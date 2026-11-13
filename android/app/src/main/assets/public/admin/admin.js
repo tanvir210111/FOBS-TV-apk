@@ -3783,36 +3783,37 @@ function applyLatestFilters() {
     items = items.filter(i => i.audioCategory === audio);
   }
 
-  // 2. Industry Filter
+  // 2. Country / Industry Zone Filter
   if (industry !== 'all') {
     const indFilter = industry.toLowerCase().trim();
     items = items.filter(i => {
       const itemInd = (i.industry || '').toLowerCase().trim();
+      const itemCountry = (i.countryName || '').toLowerCase().trim();
       if (indFilter === 'south') {
         return itemInd.includes('south') || itemInd.includes('tollywood');
       }
       if (indFilter === 'bollywood') {
-        return itemInd.includes('bollywood') || itemInd.includes('hindi');
+        return itemInd.includes('bollywood') || (itemCountry.includes('india') && !itemInd.includes('south'));
       }
       if (indFilter === 'bengali') {
-        return itemInd.includes('bengali') || itemInd.includes('bangla');
+        return itemInd.includes('bengali') || itemInd.includes('bangla') || itemCountry.includes('bangladesh');
       }
       if (indFilter === 'korean') {
-        return itemInd.includes('korean');
+        return itemInd.includes('korean') || itemCountry.includes('korea');
       }
       if (indFilter === 'turkish') {
-        return itemInd.includes('turkish');
+        return itemInd.includes('turkish') || itemCountry.includes('turkey');
       }
       if (indFilter === 'chinese') {
-        return itemInd.includes('chinese');
+        return itemInd.includes('chinese') || itemCountry.includes('china') || itemCountry.includes('taiwan');
       }
       if (indFilter === 'anime') {
-        return itemInd.includes('anime');
+        return itemInd.includes('anime') || itemCountry.includes('japan');
       }
       if (indFilter === 'hollywood') {
-        return itemInd.includes('hollywood');
+        return itemInd.includes('hollywood') || /united states|united kingdom|canada|australia|spain|france|germany|italy/i.test(itemCountry);
       }
-      return itemInd.includes(indFilter);
+      return itemInd.includes(indFilter) || itemCountry.includes(indFilter);
     });
   }
 
@@ -3917,9 +3918,10 @@ function applyLatestFilters() {
         </div>
         <div class="importer-card-info">
           <div class="importer-card-title" title="${escapeHtml(it.title)}">${escapeHtml(it.title)}</div>
-          <div class="importer-card-sub" style="display:flex; justify-content:space-between;">
-            <span><i class="fa-solid fa-film"></i> ${escapeHtml(it.industry)}</span>
-            <span><i class="fa-solid fa-calendar"></i> ${escapeHtml(it.year)}</span>
+          <div class="importer-card-sub" style="display:flex; justify-content:space-between; align-items:center; font-size:11.5px;">
+            <span><i class="fa-solid fa-earth-americas" style="color:#00f2fe; margin-right:3px;"></i>${escapeHtml(it.countryName || it.industry)}</span>
+            <span><i class="fa-solid fa-film" style="margin-right:3px;"></i>${escapeHtml(it.industry)}</span>
+            <span><i class="fa-solid fa-calendar" style="margin-right:3px;"></i>${escapeHtml(it.year)}</span>
           </div>
           ${it.type === 'series' ? `
             <div class="latest-ep-status-row">
