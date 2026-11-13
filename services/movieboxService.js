@@ -275,7 +275,7 @@ class MovieBoxService {
           const sections = [];
           for (const group of operatingList) {
             const title = group.title;
-            if (!title || title.includes('Update Required') || title.includes('Join us') || title.includes('Update Now') || title.includes('अद्यतन आवश्यक')) continue;
+            if (!title || title.includes('Update Required') || title.includes('Join us') || title.includes('Update Now') || title.includes('अद्यतन आवश्यक') || /nollywood|made in africa|songs in africa|trending songs/i.test(title)) continue;
 
             const items = group.subjects || (group.banner?.items || []);
             if (!items || items.length === 0) continue;
@@ -291,6 +291,8 @@ class MovieBoxService {
                 type: isSeries ? 'series' : 'movie',
                 subjectType: it.subjectType,
                 releaseDate: it.releaseDate || '',
+                countryName: it.countryName || '',
+                genre: it.genre || '',
                 year: year || '2026',
                 rating: String(it.imdbRatingValue || '7.5'),
                 poster: poster,

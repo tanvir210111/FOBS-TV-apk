@@ -625,6 +625,8 @@ class AdminService {
       return cached.items;
     }
 
+    const garbageRegex = /\b(dj song|music video|official song|official music|bangla song|dance song|rhymes|shorts video|nwollywood|kids video|baby song|বাউল গান|ফোক গান|নাচ|ভিডিও গান|concert|mp3|folk song|tiny desk|mixtape|wrestling|worship songs)\b/i;
+
     const merged = [];
     const seen = new Set();
     for (const q of queries) {
@@ -633,6 +635,12 @@ class AdminService {
         if (Array.isArray(items)) {
           for (const it of items) {
             if (!it.id || seen.has(it.id)) continue;
+            const title = it.title || '';
+            if (garbageRegex.test(title)) continue;
+            // Ensure relevance for Bangla: title must contain bengali, bangla, or tollywood, or Bengali script
+            if (defaults.isBangla && !/\[bengali\]|\[bangla\]|\bbengali\b|\bbangla\b|[\u0980-\u09FF]/i.test(title) && !/bengali|bangla/i.test(it.genre || '')) {
+              continue;
+            }
             seen.add(it.id);
             merged.push({
               ...it,
@@ -999,6 +1007,7 @@ class AdminService {
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     const formatUploadDateBadge = (dateStr) => {
       if (!dateStr || dateStr.length < 10) return 'New Release';
+      if (dateStr > todayDateStr) return 'Coming Soon';
       if (dateStr === todayDateStr) return 'Added Today';
       if (dateStr === yesterdayDateStr) return 'Added Yesterday';
       const parts = dateStr.split('-');
@@ -1029,7 +1038,8 @@ class AdminService {
 
         // 1. Audio detection
         const isBangla = it.isBangla || /\[bengali\]|\[bangla\]|\bbengali\b|\bbangla\b/i.test(tLower) || /bengali|bangla/i.test(secLower);
-        const isHindi = it.isHindi || /\[hindi\]|\bhindi\b|bollywood/i.test(tLower) || /hindi|bollywood/i.test(secLower);
+        const isHindi = it.isHindi || /\[hindi\]|\bhindi\b/i.test(tLower) || /hindi|bollywood/i.test(secLower) ||
+                        (it.countryName === 'India' && !/tamil|telugu|malayalam|kannada/i.test(tLower));
 
         let audioCategory = 'original';
         let audioTag = 'Original Audio';
@@ -1043,29 +1053,33 @@ class AdminService {
 
         // 2. Industry detection
         let industry = it.industry || this.detectIndustry(it.title, secTitle, isBangla);
-        if (secLower.includes('korean')) industry = 'Korean';
-        else if (secLower.includes('chinese')) industry = 'Chinese';
-        else if (secLower.includes('turkish')) industry = 'Turkish';
-        else if (secLower.includes('bollywood') || secLower.includes('indian')) industry = 'Bollywood';
-        else if (secLower.includes('anime')) industry = 'Anime';
-        else if (secLower.includes('hollywood') || secLower.includes('western')) industry = 'Hollywood';
-        else if (isBangla) industry = 'Bengali';
+        const cName = (it.countryName || '').toLowerCase();
+        if (cName.includes('korea') || secLower.includes('korean')) industry = 'Korean';
+        else if (cName.includes('china') || secLower.includes('chinese')) industry = 'Chinese';
+        else if (cName.includes('japan') || (it.genre && it.genre.includes('Animation')) || secLower.includes('anime')) industry = 'Anime';
+        else if (cName.includes('turkey') || secLower.includes('turkish')) industry = 'Turkish';
+        else if (cName.includes('bangladesh') || isBangla) industry = 'Bengali';
+        else if (cName.includes('india') || secLower.includes('bollywood') || isHindi) industry = 'Bollywood';
+        else if (cName.includes('united states') || cName.includes('united kingdom') || secLower.includes('hollywood')) industry = 'Hollywood';
 
-        // 3. Extract exact MovieBox Backend Upload Timestamp from CDN poster path
-        const posterUrl = it.poster || '';
-        const dateMatch = posterUrl.match(/\/image\/(\d{4})\/(\d{2})\/(\d{2})\//);
-        let uploadDate = '2025-01-01';
-        let uploadTimestamp = 0;
-        if (dateMatch) {
-          uploadDate = `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]}`;
-          uploadTimestamp = new Date(`${uploadDate}T12:00:00Z`).getTime();
-        } else if (it.releaseDate && it.releaseDate.length >= 10) {
+        // 3. Extract Genuine MovieBox Release & Ingestion Date
+        let uploadDate = '';
+        if (it.releaseDate && /^\d{4}-\d{2}-\d{2}$/.test(it.releaseDate.substring(0, 10))) {
           uploadDate = it.releaseDate.substring(0, 10);
-          uploadTimestamp = new Date(`${uploadDate}T12:00:00Z`).getTime();
-        } else if (it.year) {
-          uploadDate = `${it.year}-01-01`;
-          uploadTimestamp = new Date(`${uploadDate}T12:00:00Z`).getTime();
+        } else if (it.year && /^\d{4}$/.test(String(it.year))) {
+          const posterUrl = it.poster || '';
+          const dateMatch = posterUrl.match(/\/image\/(\d{4})\/(\d{2})\/(\d{2})\//);
+          if (dateMatch && dateMatch[1] === String(it.year)) {
+            uploadDate = `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]}`;
+          } else {
+            uploadDate = `${it.year}-01-01`;
+          }
+        } else {
+          uploadDate = '2025-01-01';
         }
+
+        const uploadTimestamp = new Date(`${uploadDate}T12:00:00Z`).getTime();
+        const isFutureRelease = uploadDate > todayDateStr;
 
         // 4. Catalog cross-match (language-aware so Hindi/Bangla dubs don't falsely match Original Audio)
         const cleanT = tLower.replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, '');
@@ -1080,7 +1094,7 @@ class AdminService {
         const alreadyImported = !!(matchedSeries || matchedMovie);
         const matchedItem = matchedSeries || matchedMovie;
 
-        let updateType = 'new_title';
+        let updateType = isFutureRelease ? 'upcoming' : 'new_title';
         let updateBadge = formatUploadDateBadge(uploadDate);
         let hasNewEpisodes = false;
         let newEpisodesCount = 0;
@@ -1138,20 +1152,44 @@ class AdminService {
       }
     }
 
-    // 5. Strict Chronological Sort by MovieBox Backend Upload Timestamp Descending
-    // Truly latest additions on MovieBox CDN/backend appear right at the top
+    // 5. Smart Chronological Sort:
+    // Priority:
+    // 1. Ongoing series with newly released un-synced episodes at the top
+    // 2. Added Today & Added Yesterday releases next
+    // 3. Released content sorted strictly newest first (uploadTimestamp DESC)
+    // 4. Coming soon / upcoming releases
     processedItems.sort((a, b) => {
-      // 1. Strict chronological upload date
+      // 1. Ongoing series with new un-synced episodes at the absolute top
+      const epRankA = a.hasNewEpisodes ? 1 : 0;
+      const epRankB = b.hasNewEpisodes ? 1 : 0;
+      if (epRankB !== epRankA) return epRankB - epRankA;
+
+      // 2. Today's additions top priority
+      const isTodayA = a.uploadDate === todayDateStr ? 1 : 0;
+      const isTodayB = b.uploadDate === todayDateStr ? 1 : 0;
+      if (isTodayB !== isTodayA) return isTodayB - isTodayA;
+
+      // 3. Yesterday's additions next priority
+      const isYestA = a.uploadDate === yesterdayDateStr ? 1 : 0;
+      const isYestB = b.uploadDate === yesterdayDateStr ? 1 : 0;
+      if (isYestB !== isYestA) return isYestB - isYestA;
+
+      // 4. Separate future releases (> todayDateStr) so they don't bury watchable releases
+      const isFutureA = a.uploadDate > todayDateStr ? 1 : 0;
+      const isFutureB = b.uploadDate > todayDateStr ? 1 : 0;
+      if (isFutureA !== isFutureB) {
+        return isFutureA - isFutureB; // Released items first, future after
+      }
+
+      // 5. Strict chronological upload date
       if (b.uploadTimestamp !== a.uploadTimestamp) {
         return b.uploadTimestamp - a.uploadTimestamp;
       }
-      // 2. New unimported releases or new episodes first
-      const rankA = a.hasNewEpisodes ? 3 : (!a.alreadyImported ? 2 : 1);
-      const rankB = b.hasNewEpisodes ? 3 : (!b.alreadyImported ? 2 : 1);
-      if (rankB !== rankA) {
-        return rankB - rankA;
-      }
-      return 0;
+
+      // 6. Unimported before imported
+      const rankA = !a.alreadyImported ? 1 : 0;
+      const rankB = !b.alreadyImported ? 1 : 0;
+      return rankB - rankA;
     });
 
     // 5. Apply filters

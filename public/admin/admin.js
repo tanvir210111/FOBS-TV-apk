@@ -3786,18 +3786,18 @@ function applyLatestFilters() {
   const now = new Date();
   const todayStr = now.toISOString().split('T')[0];
   const yesterdayStr = new Date(now.getTime() - 86400000).toISOString().split('T')[0];
-  const threeDaysAgoMs = now.getTime() - (3 * 86400000);
-  const sevenDaysAgoMs = now.getTime() - (7 * 86400000);
+  const threeDaysAgoStr = new Date(now.getTime() - (3 * 86400000)).toISOString().split('T')[0];
+  const sevenDaysAgoStr = new Date(now.getTime() - (7 * 86400000)).toISOString().split('T')[0];
   const currentYearMonth = todayStr.substring(0, 7);
 
   if (dateFilter === 'today') {
-    items = items.filter(i => i.uploadDate === todayStr || (i.updateBadge || '').toLowerCase().includes('today'));
+    items = items.filter(i => i.uploadDate === todayStr || (i.updateBadge || '').toLowerCase().includes('today') || i.hasNewEpisodes);
   } else if (dateFilter === 'yesterday') {
     items = items.filter(i => i.uploadDate === yesterdayStr || (i.updateBadge || '').toLowerCase().includes('yesterday'));
   } else if (dateFilter === 'last3days') {
-    items = items.filter(i => (i.uploadTimestamp || 0) >= threeDaysAgoMs || i.uploadDate === todayStr || i.uploadDate === yesterdayStr);
+    items = items.filter(i => (i.uploadDate >= threeDaysAgoStr && i.uploadDate <= todayStr) || i.hasNewEpisodes);
   } else if (dateFilter === 'last7days') {
-    items = items.filter(i => (i.uploadTimestamp || 0) >= sevenDaysAgoMs || i.uploadDate === todayStr || i.uploadDate === yesterdayStr);
+    items = items.filter(i => (i.uploadDate >= sevenDaysAgoStr && i.uploadDate <= todayStr) || i.hasNewEpisodes);
   } else if (dateFilter === 'thismonth') {
     items = items.filter(i => (i.uploadDate || '').startsWith(currentYearMonth));
   } else if (dateFilter === 'custom' && customDate) {
