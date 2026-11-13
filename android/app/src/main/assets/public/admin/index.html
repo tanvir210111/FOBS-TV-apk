@@ -777,12 +777,13 @@
             <div class="importer-filter-col">
               <label><i class="fa-solid fa-calendar-day"></i> Added Date</label>
               <select id="latest-filter-date" class="custom-select" onchange="handleLatestDateFilterChange()">
-                <option value="all">📅 All Dates (Newest First)</option>
+                <option value="last30days" selected>🗓️ Last 30 Days (Full Month)</option>
                 <option value="today">⚡ Added Today (Newest)</option>
                 <option value="yesterday">🕒 Added Yesterday</option>
                 <option value="last3days">📆 Last 3 Days</option>
-                <option value="last7days">🗓️ Last 7 Days (This Week)</option>
+                <option value="last7days">⭐ Last 7 Days (This Week)</option>
                 <option value="thismonth">📅 This Month (Nov 2026)</option>
+                <option value="all">🌐 All Available Dates</option>
                 <option value="custom">🔍 Specific Calendar Date...</option>
               </select>
             </div>

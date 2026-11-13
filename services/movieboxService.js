@@ -340,18 +340,18 @@ class MovieBoxService {
         turkishSeries,
         animeSeries
       ] = await Promise.all([
-        fetchMulti({ channelId: 2, sort: 'Latest' }, { section: 'Latest Series Additions' }, 3),
-        fetchMulti({ channelId: 1, sort: 'Latest' }, { section: 'Latest Movie Additions' }, 3),
-        fetchMulti({ channelId: 2, classify: 'Hindi dub', sort: 'Latest' }, { isHindi: true, section: 'Latest Hindi Dubbed Series' }, 4),
-        fetchMulti({ channelId: 1, classify: 'Hindi dub', sort: 'Latest' }, { isHindi: true, section: 'Latest Hindi Dubbed Movies' }, 4),
-        fetchMulti({ channelId: 2, country: 'India', sort: 'Latest' }, { isHindi: true, section: 'Latest Bollywood Series' }, 2),
-        fetchMulti({ channelId: 1, country: 'India', sort: 'Latest' }, { isHindi: true, section: 'Latest Bollywood Movies' }, 2),
-        fetchMulti({ classify: 'Bengali dub', sort: 'Latest' }, { isBangla: true, section: 'Latest Bengali Dubbed' }, 2),
-        fetchMulti({ country: 'Bangladesh', sort: 'Latest' }, { isBangla: true, section: 'Latest Bangladesh Cinema' }, 2),
-        fetchMulti({ channelId: 2, country: 'Korea', sort: 'Latest' }, { section: 'Latest Korean Dramas' }, 2),
-        fetchMulti({ channelId: 2, country: 'China', sort: 'Latest' }, { section: 'Latest Chinese Dramas' }, 2),
-        fetchMulti({ channelId: 2, country: 'Turkey', sort: 'Latest' }, { section: 'Latest Turkish Series' }, 2),
-        fetchMulti({ channelId: 2, country: 'Japan', genre: 'Animation', sort: 'Latest' }, { section: 'Latest Anime Episodes' }, 2)
+        fetchMulti({ channelId: 2, sort: 'Latest' }, { section: 'Latest Series Additions' }, 5),
+        fetchMulti({ channelId: 1, sort: 'Latest' }, { section: 'Latest Movie Additions' }, 5),
+        fetchMulti({ channelId: 2, classify: 'Hindi dub', sort: 'Latest' }, { isHindi: true, section: 'Latest Hindi Dubbed Series' }, 6),
+        fetchMulti({ channelId: 1, classify: 'Hindi dub', sort: 'Latest' }, { isHindi: true, section: 'Latest Hindi Dubbed Movies' }, 6),
+        fetchMulti({ channelId: 2, country: 'India', sort: 'Latest' }, { isHindi: true, section: 'Latest Bollywood Series' }, 4),
+        fetchMulti({ channelId: 1, country: 'India', sort: 'Latest' }, { isHindi: true, section: 'Latest Bollywood Movies' }, 4),
+        fetchMulti({ classify: 'Bengali dub', sort: 'Latest' }, { isBangla: true, section: 'Latest Bengali Dubbed' }, 3),
+        fetchMulti({ country: 'Bangladesh', sort: 'Latest' }, { isBangla: true, section: 'Latest Bangladesh Cinema' }, 3),
+        fetchMulti({ channelId: 2, country: 'Korea', sort: 'Latest' }, { section: 'Latest Korean Dramas' }, 4),
+        fetchMulti({ channelId: 2, country: 'China', sort: 'Latest' }, { section: 'Latest Chinese Dramas' }, 4),
+        fetchMulti({ channelId: 2, country: 'Turkey', sort: 'Latest' }, { section: 'Latest Turkish Series' }, 4),
+        fetchMulti({ channelId: 2, country: 'Japan', genre: 'Animation', sort: 'Latest' }, { section: 'Latest Anime Episodes' }, 4)
       ]);
 
       const sections = [

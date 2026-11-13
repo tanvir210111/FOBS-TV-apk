@@ -1078,28 +1078,29 @@ class AdminService {
         // 2. Accurate Industry detection (Origin Country / Production Culture)
         const industry = this.detectIndustry(it.title, secTitle, it.countryName, it.genre, isBangla);
 
-        // 3. Extract Genuine MovieBox Release & Ingestion Date
-        const posterUrl = it.poster || '';
+        // 3. Extract Genuine MovieBox Ingestion & Upload Date (Strictly MovieBox upload date, NOT theatrical release date)
+        const posterUrl = it.poster || it.cover?.url || '';
+        const trailerUrl = it.trailer?.cover?.url || it.trailer?.videoAddress?.url || '';
         const posterMatch = posterUrl.match(/\/image\/(\d{4})\/(\d{2})\/(\d{2})\//);
-        const posterDate = posterMatch ? `${posterMatch[1]}-${posterMatch[2]}-${posterMatch[3]}` : '';
-        const releaseDateStr = (it.releaseDate && /^\d{4}-\d{2}-\d{2}$/.test(it.releaseDate.substring(0, 10))) ? it.releaseDate.substring(0, 10) : '';
+        const trailerMatch = trailerUrl.match(/\/vone\/(\d{4})\/(\d{2})\/(\d{2})\//);
 
         let uploadDate = '';
-        if (posterDate && releaseDateStr) {
-          // If poster CDN upload date is today or more recent than original release date (e.g. newly ingested Hindi/Bangla dub),
-          // prioritize the genuine backend ingestion date on MovieBox
-          if (posterDate <= todayDateStr && (posterDate > releaseDateStr || releaseDateStr > todayDateStr)) {
-            uploadDate = posterDate;
-          } else {
-            uploadDate = releaseDateStr;
-          }
-        } else if (posterDate) {
-          uploadDate = posterDate;
-        } else if (releaseDateStr) {
-          uploadDate = releaseDateStr;
+        if (posterMatch) {
+          // Genuine date MovieBox generated & ingested the poster on its CDN
+          uploadDate = `${posterMatch[1]}-${posterMatch[2]}-${posterMatch[3]}`;
+        } else if (trailerMatch) {
+          // Date MovieBox uploaded the trailer asset
+          uploadDate = `${trailerMatch[1]}-${trailerMatch[2]}-${trailerMatch[3]}`;
+        } else if (it.releaseDate && /^\d{4}-\d{2}-\d{2}$/.test(it.releaseDate.substring(0, 10))) {
+          uploadDate = it.releaseDate.substring(0, 10);
         } else if (it.year && /^\d{4}$/.test(String(it.year))) {
           uploadDate = `${it.year}-01-01`;
         } else {
+          uploadDate = todayDateStr;
+        }
+
+        // If MovieBox uploaded the asset today or recently, don't let placeholder future release dates push it into the future
+        if (uploadDate > todayDateStr && (posterMatch || trailerMatch)) {
           uploadDate = todayDateStr;
         }
 

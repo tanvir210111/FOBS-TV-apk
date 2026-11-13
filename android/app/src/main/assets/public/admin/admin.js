@@ -3866,12 +3866,13 @@ function applyLatestFilters() {
     items = items.filter(i => !i.alreadyImported);
   }
 
-  // 5. Date Filter (Today, Yesterday, Last 3 Days, Last 7 Days, This Month, Custom Date)
+  // 5. Date Filter (Today, Yesterday, Last 3 Days, Last 7 Days, Last 30 Days, This Month, Custom Date)
   const now = new Date();
   const todayStr = now.toISOString().split('T')[0];
   const yesterdayStr = new Date(now.getTime() - 86400000).toISOString().split('T')[0];
   const threeDaysAgoStr = new Date(now.getTime() - (3 * 86400000)).toISOString().split('T')[0];
   const sevenDaysAgoStr = new Date(now.getTime() - (7 * 86400000)).toISOString().split('T')[0];
+  const thirtyDaysAgoStr = new Date(now.getTime() - (30 * 86400000)).toISOString().split('T')[0];
   const currentYearMonth = todayStr.substring(0, 7);
 
   if (dateFilter === 'today') {
@@ -3882,6 +3883,8 @@ function applyLatestFilters() {
     items = items.filter(i => i.uploadDate >= threeDaysAgoStr && i.uploadDate <= todayStr);
   } else if (dateFilter === 'last7days') {
     items = items.filter(i => i.uploadDate >= sevenDaysAgoStr && i.uploadDate <= todayStr);
+  } else if (dateFilter === 'last30days' || dateFilter === '30days') {
+    items = items.filter(i => i.uploadDate >= thirtyDaysAgoStr && i.uploadDate <= todayStr);
   } else if (dateFilter === 'thismonth') {
     items = items.filter(i => (i.uploadDate || '').startsWith(currentYearMonth) && i.uploadDate <= todayStr);
   } else if (dateFilter === 'custom' && customDate) {
