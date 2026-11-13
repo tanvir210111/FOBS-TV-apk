@@ -591,13 +591,18 @@ class AdminService {
     if (/anime|japan|manga|solo leveling|jujutsu|demon slayer|naruto|one piece|dragon ball|bleach|attack on titan|arcane|heaven official|donghua/i.test(tLower) || /anime|japan/i.test(secLower)) {
       return 'Anime';
     }
-    // 5. Tollywood / South Indian / Bangla
+    // 5. Bengali / Tollywood
     if (isBangla || /bangla|bengali|kolkata/i.test(tLower) || /bangla|bengali/i.test(secLower)) {
-      return 'Tollywood';
+      return 'Bengali';
     }
     if (/south indian|tamil|telugu|malayalam|kannada/i.test(secLower) || /pushpa|bahubali|kgf|salaar|devara|kantara/i.test(tLower)) {
-      return 'Tollywood';
+      return 'South Indian';
     }
+    // 6. Bollywood / Indian
+    if (/bollywood|indian/i.test(secLower) || /bollywood/i.test(tLower) || (/hindi/i.test(tLower) && !/western|hollywood|percy|spider-man/i.test(tLower))) {
+      return 'Bollywood';
+    }
+    return 'Hollywood';
     // 6. Bollywood
     if (/bollywood|punjabi|marathi/i.test(tLower) || /bollywood|punjabi|marathi/i.test(secLower) || /indian drama|indian movies/i.test(secLower)) {
       return 'Bollywood';
@@ -946,32 +951,64 @@ class AdminService {
     // Map existing catalog for fast O(1) matching
     const seriesBySubjectId = new Map();
     const seriesByDetailPath = new Map();
-    const seriesByCleanTitle = new Map();
+    const seriesByTitleAndAudio = new Map();
 
     for (const s of existingSeries) {
       if (s.subjectId) seriesBySubjectId.set(String(s.subjectId), s);
       if (s.detailPath) seriesByDetailPath.set(s.detailPath.trim().toLowerCase(), s);
       if (s.title) {
         const cTitle = s.title.toLowerCase().replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, '');
-        if (cTitle) seriesByCleanTitle.set(cTitle, s);
+        const sIsHindi = s.isHindi || /hindi/i.test(s.title) || /hindi/i.test(s.dubLanguage || s.audio || '');
+        const sIsBangla = s.isBangla || /bangla|bengali/i.test(s.title) || /bangla|bengali/i.test(s.dubLanguage || s.audio || '');
+        const sAudio = sIsBangla ? 'bangla' : (sIsHindi ? 'hindi' : 'original');
+        if (cTitle) {
+          seriesByTitleAndAudio.set(`${cTitle}_${sAudio}`, s);
+          // Only fallback to base title if no specific audio
+          if (!seriesByTitleAndAudio.has(cTitle)) seriesByTitleAndAudio.set(cTitle, s);
+        }
       }
     }
 
     const moviesBySubjectId = new Map();
     const moviesByDetailPath = new Map();
-    const moviesByCleanTitle = new Map();
+    const moviesByTitleAndAudio = new Map();
 
     for (const m of existingMovies) {
       if (m.subjectId) moviesBySubjectId.set(String(m.subjectId), m);
       if (m.detailPath) moviesByDetailPath.set(m.detailPath.trim().toLowerCase(), m);
       if (m.title) {
         const cTitle = m.title.toLowerCase().replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, '');
-        if (cTitle) moviesByCleanTitle.set(cTitle, m);
+        const mIsHindi = m.isHindi || /hindi/i.test(m.title) || /hindi/i.test(m.dubLanguage || m.audio || '');
+        const mIsBangla = m.isBangla || /bangla|bengali/i.test(m.title) || /bangla|bengali/i.test(m.dubLanguage || m.audio || '');
+        const mAudio = mIsBangla ? 'bangla' : (mIsHindi ? 'hindi' : 'original');
+        if (cTitle) {
+          moviesByTitleAndAudio.set(`${cTitle}_${mAudio}`, m);
+          if (!moviesByTitleAndAudio.has(cTitle)) moviesByTitleAndAudio.set(cTitle, m);
+        }
       }
     }
 
     const seen = new Set();
     const processedItems = [];
+
+    // Today's date for relative upload labeling
+    const todayDateStr = new Date().toISOString().split('T')[0];
+    const yesterdayDate = new Date(Date.now() - 86400000);
+    const yesterdayDateStr = yesterdayDate.toISOString().split('T')[0];
+
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const formatUploadDateBadge = (dateStr) => {
+      if (!dateStr || dateStr.length < 10) return 'New Release';
+      if (dateStr === todayDateStr) return 'Added Today';
+      if (dateStr === yesterdayDateStr) return 'Added Yesterday';
+      const parts = dateStr.split('-');
+      if (parts.length === 3) {
+        const mIdx = parseInt(parts[1], 10) - 1;
+        const mName = months[mIdx] || parts[1];
+        return `Added ${parseInt(parts[2], 10)} ${mName}`;
+      }
+      return dateStr;
+    };
 
     for (const sec of allSections) {
       const secTitle = sec.title || '';
@@ -984,6 +1021,11 @@ class AdminService {
         const sid = String(it.subjectId || it.id || '');
         const itPath = (it.detailPath || '').trim().toLowerCase();
         const tLower = (it.title || '').toLowerCase();
+
+        // Filter out promotional non-media clips / songs / trailers if mistakenly in feed
+        if (/\b(dj song|music video|official song|official music|bangla song|dance song|rhymes|shorts video|nwollywood|kids video|baby song)\b/i.test(tLower)) {
+          continue;
+        }
 
         // 1. Audio detection
         const isBangla = it.isBangla || /\[bengali\]|\[bangla\]|\bbengali\b|\bbangla\b/i.test(tLower) || /bengali|bangla/i.test(secLower);
@@ -1009,21 +1051,37 @@ class AdminService {
         else if (secLower.includes('hollywood') || secLower.includes('western')) industry = 'Hollywood';
         else if (isBangla) industry = 'Bengali';
 
-        // 3. Catalog cross-match
+        // 3. Extract exact MovieBox Backend Upload Timestamp from CDN poster path
+        const posterUrl = it.poster || '';
+        const dateMatch = posterUrl.match(/\/image\/(\d{4})\/(\d{2})\/(\d{2})\//);
+        let uploadDate = '2025-01-01';
+        let uploadTimestamp = 0;
+        if (dateMatch) {
+          uploadDate = `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]}`;
+          uploadTimestamp = new Date(`${uploadDate}T12:00:00Z`).getTime();
+        } else if (it.releaseDate && it.releaseDate.length >= 10) {
+          uploadDate = it.releaseDate.substring(0, 10);
+          uploadTimestamp = new Date(`${uploadDate}T12:00:00Z`).getTime();
+        } else if (it.year) {
+          uploadDate = `${it.year}-01-01`;
+          uploadTimestamp = new Date(`${uploadDate}T12:00:00Z`).getTime();
+        }
+
+        // 4. Catalog cross-match (language-aware so Hindi/Bangla dubs don't falsely match Original Audio)
         const cleanT = tLower.replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, '');
         const matchedSeries = (sid && seriesBySubjectId.get(sid)) ||
                               (itPath && seriesByDetailPath.get(itPath)) ||
-                              (cleanT && seriesByCleanTitle.get(cleanT));
+                              (cleanT && seriesByTitleAndAudio.get(`${cleanT}_${audioCategory}`));
 
         const matchedMovie = (sid && moviesBySubjectId.get(sid)) ||
                              (itPath && moviesByDetailPath.get(itPath)) ||
-                             (cleanT && moviesByCleanTitle.get(cleanT));
+                             (cleanT && moviesByTitleAndAudio.get(`${cleanT}_${audioCategory}`));
 
         const alreadyImported = !!(matchedSeries || matchedMovie);
         const matchedItem = matchedSeries || matchedMovie;
 
         let updateType = 'new_title';
-        let updateBadge = 'New Release';
+        let updateBadge = formatUploadDateBadge(uploadDate);
         let hasNewEpisodes = false;
         let newEpisodesCount = 0;
         let fobsEpisodesCount = 0;
@@ -1040,31 +1098,27 @@ class AdminService {
             hasNewEpisodes = true;
             updateType = 'new_episode';
             updateBadge = `Ongoing (Ep ${fobsEpisodesCount})`;
-          } else if (audioCategory !== 'original' && (!matchedSeries.title.toLowerCase().includes('hindi') && !matchedSeries.title.toLowerCase().includes('bangla'))) {
-            updateType = 'new_dubbing';
-            updateBadge = `${audioTag} Added`;
           } else {
             updateType = 'already_synced';
             updateBadge = 'Synced';
           }
         } else if (matchedMovie) {
-          if (audioCategory !== 'original' && (!matchedMovie.title.toLowerCase().includes('hindi') && !matchedMovie.title.toLowerCase().includes('bangla'))) {
-            updateType = 'new_dubbing';
-            updateBadge = `${audioTag} Added`;
-          } else {
-            updateType = 'already_synced';
-            updateBadge = 'Synced';
-          }
+          updateType = 'already_synced';
+          updateBadge = 'Synced';
         }
+
+        // Determine accurate media type: check subjectType, seasons, episodes, or title
+        const isSeriesItem = it.type === 'series' || it.subjectType === 2 || (it.episodesCount && it.episodesCount > 1) || !!matchedSeries;
+        const itemType = isSeriesItem ? 'series' : 'movie';
 
         processedItems.push({
           id: it.id,
           subjectId: sid,
           title: it.title,
-          type: it.type || (matchedSeries ? 'series' : 'movie'),
+          type: itemType,
           poster: it.poster,
           rating: it.rating || '7.8',
-          year: it.year || '2026',
+          year: it.year || uploadDate.substring(0, 4) || '2026',
           detailPath: it.detailPath,
           section: secTitle,
           audioCategory,
@@ -1074,6 +1128,8 @@ class AdminService {
           fobsId: matchedItem ? matchedItem.id : null,
           updateType,
           updateBadge,
+          uploadDate,
+          uploadTimestamp,
           hasNewEpisodes,
           newEpisodesCount,
           fobsEpisodesCount,
@@ -1082,18 +1138,20 @@ class AdminService {
       }
     }
 
-    // 4. Sort: New episodes > New titles > New dubbing > Already synced
-    const scoreMap = {
-      'new_episode': 100,
-      'new_title': 80,
-      'new_dubbing': 70,
-      'already_synced': 10
-    };
-
+    // 5. Strict Chronological Sort by MovieBox Backend Upload Timestamp Descending
+    // Truly latest additions on MovieBox CDN/backend appear right at the top
     processedItems.sort((a, b) => {
-      const scoreA = (scoreMap[a.updateType] || 0) + (a.alreadyImported ? 0 : 15);
-      const scoreB = (scoreMap[b.updateType] || 0) + (b.alreadyImported ? 0 : 15);
-      return scoreB - scoreA;
+      // 1. Strict chronological upload date
+      if (b.uploadTimestamp !== a.uploadTimestamp) {
+        return b.uploadTimestamp - a.uploadTimestamp;
+      }
+      // 2. New unimported releases or new episodes first
+      const rankA = a.hasNewEpisodes ? 3 : (!a.alreadyImported ? 2 : 1);
+      const rankB = b.hasNewEpisodes ? 3 : (!b.alreadyImported ? 2 : 1);
+      if (rankB !== rankA) {
+        return rankB - rankA;
+      }
+      return 0;
     });
 
     // 5. Apply filters

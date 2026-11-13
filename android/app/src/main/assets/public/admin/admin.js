@@ -429,7 +429,14 @@ function renderMoviesTable(moviesList) {
     return;
   }
 
-  tbody.innerHTML = moviesList.map(m => `
+  // Ensure newest added movies appear at row #1
+  const sorted = [...moviesList].sort((a, b) => {
+    const timeA = a.addedAt ? new Date(a.addedAt).getTime() : 0;
+    const timeB = b.addedAt ? new Date(b.addedAt).getTime() : 0;
+    return timeB - timeA;
+  });
+
+  tbody.innerHTML = sorted.map(m => `
     <tr>
       <td>
         <img class="table-poster" src="${m.poster || 'assets/fobs_logo.png'}" onerror="this.src='assets/fobs_logo.png'" alt="">
@@ -630,7 +637,14 @@ function renderSeriesTable(seriesList) {
     return;
   }
 
-  tbody.innerHTML = seriesList.map(s => {
+  // Ensure newest added series appear at the very top
+  const sorted = [...seriesList].sort((a, b) => {
+    const timeA = a.addedAt ? new Date(a.addedAt).getTime() : 0;
+    const timeB = b.addedAt ? new Date(b.addedAt).getTime() : 0;
+    return timeB - timeA;
+  });
+
+  tbody.innerHTML = sorted.map(s => {
     const seasonsCount = s.seasonsCount || (s.seasons ? s.seasons.length : 1);
     const epsCount = s.episodesCount || (s.seasons ? s.seasons.reduce((acc, x) => acc + (x.episodes?.length || 0), 0) : 0);
 
@@ -2761,6 +2775,12 @@ async function openImportModal(item) {
   document.getElementById('imp-year').value = item.year || '2026';
   document.getElementById('imp-rating').value = item.rating || '8.5';
   document.getElementById('imp-type').value = isSeries ? 'series' : 'movie';
+  if (item.industry) document.getElementById('imp-industry').value = item.industry;
+  if (item.category) {
+    document.getElementById('imp-category').value = item.category;
+  } else {
+    document.getElementById('imp-category').value = isSeries ? `${item.industry || 'Hollywood'} Series` : `${item.industry || 'Hollywood'} Movies`;
+  }
   toggleImportType(isSeries ? 'series' : 'movie');
 
   const trackerBox = document.getElementById('imp-ongoing-tracker-box');
@@ -3445,6 +3465,34 @@ async function handleImportSubmit(e) {
       if (typeof applyImporterFilters === 'function') {
         applyImporterFilters();
       }
+
+      // Also instantly update Latest MovieBox Add items
+      if (Array.isArray(state.latestMbItems)) {
+        state.latestMbItems.forEach(item => {
+          const itemSid = String(item.subjectId || item.id || '').trim();
+          const itemDPath = String(item.detailPath || '').trim();
+          const itemClean = (item.title || '')
+            .replace(/\s*\[(hindi|bangla|english|orig)[^\]]*\]/gi, '')
+            .replace(/\s*\((hindi|bangla|english|orig)[^)]*\)/gi, '')
+            .replace(/\s*-\s*(hindi|bangla|english|orig)[^)]*$/gi, '')
+            .toLowerCase().trim();
+          const itemIsHindi = !!(item.isHindi || (item.title || '').toLowerCase().includes('hindi'));
+
+          if (
+            (targetSid && itemSid === targetSid) ||
+            (targetDPath && itemDPath === targetDPath) ||
+            (itemClean && itemClean === targetCleanTitle && itemIsHindi === targetIsHindi)
+          ) {
+            item.alreadyImported = true;
+            item.updateType = 'already_synced';
+            item.updateBadge = 'Synced';
+            item.fobsId = data.item ? data.item.id : item.fobsId;
+          }
+        });
+        if (typeof applyLatestFilters === 'function') {
+          applyLatestFilters();
+        }
+      }
     } else {
       showToast(data.error || 'Failed to import', 'error');
     }
@@ -3819,6 +3867,7 @@ function openLatestCardClick(idx) {
 function openLatestImportModal(idx) {
   const it = state.latestMbItems?.[idx];
   if (!it) return;
+  state.lastMovieBoxItems = state.latestMbItems;
   openImportModal(it);
 }
 

@@ -284,6 +284,8 @@ class MovieBoxService {
               subjectId: String(it.subjectId || it.id),
               title: it.title || 'Untitled',
               type: isSeries ? 'series' : 'movie',
+              subjectType: it.subjectType,
+              releaseDate: it.releaseDate || '',
               year: year || '2026',
               rating: String(it.imdbRatingValue || '7.5'),
               poster: poster,
