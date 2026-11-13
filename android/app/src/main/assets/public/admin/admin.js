@@ -1784,6 +1784,44 @@ async function confirmDeleteMediaComment(mediaId, commentId) {
 // ============================================================
 
 let userAudienceFilter = 'all';
+let userVersionFilter = '3.2.0'; // Filter by 3.2.0 by default as requested!
+
+function setUserVersionFilter(ver) {
+  userVersionFilter = ver;
+  updateUserStatsCounts();
+  filterUsersTable();
+}
+
+function setUserVersionFilterQuick(ver) {
+  const sel = document.getElementById('users-version-filter');
+  if (sel) sel.value = ver;
+  setUserVersionFilter(ver);
+}
+
+function updateUserStatsCounts() {
+  let list = state.users || [];
+  if (userVersionFilter === '3.2.0') {
+    list = list.filter(u => u.appVersion === '3.2.0' || (u.appVersion && u.appVersion.includes('3.2.0')));
+  } else if (userVersionFilter === 'older') {
+    list = list.filter(u => !(u.appVersion === '3.2.0' || (u.appVersion && u.appVersion.includes('3.2.0'))));
+  }
+
+  const regCount = list.filter(u => u.type === 'Registered Member').length;
+  const devCount = list.filter(u => u.type !== 'Registered Member').length;
+  const onlineCount = list.filter(u => u.isOnline || u.status === 'Online Now').length;
+  const v320Count = (state.users || []).filter(u => u.appVersion === '3.2.0' || (u.appVersion && u.appVersion.includes('3.2.0'))).length;
+
+  if (document.getElementById('users-stat-devices')) document.getElementById('users-stat-devices').innerText = list.length;
+  if (document.getElementById('users-stat-online')) document.getElementById('users-stat-online').innerText = onlineCount;
+  if (document.getElementById('users-stat-registered')) document.getElementById('users-stat-registered').innerText = regCount;
+  if (document.getElementById('users-stat-app-devices')) document.getElementById('users-stat-app-devices').innerText = devCount;
+
+  if (document.getElementById('chip-count-all')) document.getElementById('chip-count-all').innerText = list.length;
+  if (document.getElementById('chip-count-registered')) document.getElementById('chip-count-registered').innerText = regCount;
+  if (document.getElementById('chip-count-devices')) document.getElementById('chip-count-devices').innerText = devCount;
+  if (document.getElementById('chip-count-online')) document.getElementById('chip-count-online').innerText = onlineCount;
+  if (document.getElementById('chip-count-v320')) document.getElementById('chip-count-v320').innerText = v320Count;
+}
 
 async function loadUsers() {
   const tbody = document.getElementById('users-tbody');
@@ -1794,20 +1832,7 @@ async function loadUsers() {
     const data = await res.json();
     state.users = data.users || data.devices || [];
 
-    const regCount = state.users.filter(u => u.type === 'Registered Member').length;
-    const devCount = state.users.filter(u => u.type !== 'Registered Member').length;
-    const onlineCount = state.users.filter(u => u.isOnline || u.status === 'Online Now').length;
-
-    if (document.getElementById('users-stat-devices')) document.getElementById('users-stat-devices').innerText = state.users.length;
-    if (document.getElementById('users-stat-online')) document.getElementById('users-stat-online').innerText = onlineCount;
-    if (document.getElementById('users-stat-registered')) document.getElementById('users-stat-registered').innerText = regCount;
-    if (document.getElementById('users-stat-app-devices')) document.getElementById('users-stat-app-devices').innerText = devCount;
-
-    if (document.getElementById('chip-count-all')) document.getElementById('chip-count-all').innerText = state.users.length;
-    if (document.getElementById('chip-count-registered')) document.getElementById('chip-count-registered').innerText = regCount;
-    if (document.getElementById('chip-count-devices')) document.getElementById('chip-count-devices').innerText = devCount;
-    if (document.getElementById('chip-count-online')) document.getElementById('chip-count-online').innerText = onlineCount;
-
+    updateUserStatsCounts();
     filterUsersTable();
   } catch (err) {
     tbody.innerHTML = '<tr><td colspan="9" class="text-center error-text">Failed to load v3.2.0 audience.</td></tr>';
@@ -1825,6 +1850,15 @@ function setUserAudienceFilter(type) {
 function filterUsersTable() {
   const query = (document.getElementById('users-search-input')?.value || '').trim().toLowerCase();
   const filtered = (state.users || []).filter(u => {
+    // Version filter
+    if (userVersionFilter === '3.2.0') {
+      const isV320 = u.appVersion === '3.2.0' || (u.appVersion && u.appVersion.includes('3.2.0'));
+      if (!isV320) return false;
+    } else if (userVersionFilter === 'older') {
+      const isV320 = u.appVersion === '3.2.0' || (u.appVersion && u.appVersion.includes('3.2.0'));
+      if (isV320) return false;
+    }
+
     // Type filter
     if (userAudienceFilter === 'registered' && u.type !== 'Registered Member') return false;
     if (userAudienceFilter === 'devices' && u.type === 'Registered Member') return false;
@@ -1837,7 +1871,8 @@ function filterUsersTable() {
       (u.email && u.email.toLowerCase().includes(query)) ||
       (u.ip && u.ip.toLowerCase().includes(query)) ||
       (u.deviceModel && u.deviceModel.toLowerCase().includes(query)) ||
-      (u.platform && u.platform.toLowerCase().includes(query));
+      (u.platform && u.platform.toLowerCase().includes(query)) ||
+      (u.appVersion && u.appVersion.toLowerCase().includes(query));
   });
 
   renderUsersTable(filtered);

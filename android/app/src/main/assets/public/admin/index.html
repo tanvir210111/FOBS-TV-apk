@@ -626,13 +626,26 @@
 
         <div class="card glass">
           <div class="table-toolbar" style="padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
-            <div class="toolbar-search" style="flex: 1; min-width: 250px;">
+            <div class="toolbar-search" style="flex: 1; min-width: 220px;">
               <i class="fa-solid fa-magnifying-glass"></i>
               <input type="text" id="users-search-input" placeholder="Search by name, email, device model, IP, UUID..." oninput="filterUsersTable()">
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="users-version-filter" style="font-size: 12.5px; color: #94a3b8; font-weight: 600; white-space: nowrap;">
+                <i class="fa-solid fa-code-branch" style="color: #38bdf8;"></i> Version:
+              </label>
+              <select id="users-version-filter" class="custom-select" style="min-width: 145px; padding: 6px 12px; font-size: 13px; font-weight: 700; color: #38bdf8; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 8px;" onchange="setUserVersionFilter(this.value)">
+                <option value="3.2.0" selected>⚡ v3.2.0 (Active)</option>
+                <option value="all">🌐 All Versions</option>
+                <option value="older">🕒 Older Versions (&lt; 3.2.0)</option>
+              </select>
             </div>
             <div class="users-filter-tabs" style="display: flex; gap: 8px; flex-wrap: wrap;">
               <button type="button" class="btn-filter-chip active" id="chip-users-all" onclick="setUserAudienceFilter('all')">
                 <i class="fa-solid fa-users"></i> All (<span id="chip-count-all">0</span>)
+              </button>
+              <button type="button" class="btn-filter-chip" id="chip-users-v320" onclick="setUserVersionFilterQuick('3.2.0')" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); font-weight: 700;">
+                <i class="fa-solid fa-bolt"></i> v3.2.0 (<span id="chip-count-v320">0</span>)
               </button>
               <button type="button" class="btn-filter-chip" id="chip-users-online" onclick="setUserAudienceFilter('online')" style="color: #34d399; border-color: rgba(16, 185, 129, 0.4); font-weight: 700;">
                 <i class="fa-solid fa-signal"></i> Online Now (<span id="chip-count-online">0</span>)
