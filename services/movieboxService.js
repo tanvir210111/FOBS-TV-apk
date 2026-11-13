@@ -306,7 +306,24 @@ class MovieBoxService {
    * titles, newly released episodes, and newly ingested regional dubs.
    */
   async getBackendLatestFeed(options = {}) {
-    const fetch = (payload, meta = {}) => this.fetchFilter(payload, options).then(items => items.map(it => ({ ...it, ...meta })));
+    const fetchMulti = async (payloadBase, meta, maxPages = 3) => {
+      const pagePromises = [];
+      for (let p = 1; p <= maxPages; p++) {
+        pagePromises.push(
+          this.fetchFilter({ ...payloadBase, page: p, perPage: 40 }, options)
+            .then(items => items.map(it => ({ ...it, ...meta })))
+            .catch(() => [])
+        );
+      }
+      const pagesData = await Promise.all(pagePromises);
+      const flattened = [].concat(...pagesData);
+      const seenIds = new Set();
+      return flattened.filter(it => {
+        if (!it.id || seenIds.has(it.id)) return false;
+        seenIds.add(it.id);
+        return true;
+      });
+    };
 
     try {
       const [
@@ -314,6 +331,8 @@ class MovieBoxService {
         latestMovies,
         hindiSeries,
         hindiMovies,
+        bollywoodSeries,
+        bollywoodMovies,
         banglaDub,
         banglaCountry,
         koreanSeries,
@@ -321,16 +340,18 @@ class MovieBoxService {
         turkishSeries,
         animeSeries
       ] = await Promise.all([
-        fetch({ channelId: 2, sort: 'Latest', page: 1, perPage: 45 }, { section: 'Latest Series Additions' }),
-        fetch({ channelId: 1, sort: 'Latest', page: 1, perPage: 45 }, { section: 'Latest Movie Additions' }),
-        fetch({ channelId: 2, classify: 'Hindi dub', sort: 'Latest', page: 1, perPage: 45 }, { isHindi: true, section: 'Latest Hindi Dubbed Series' }),
-        fetch({ channelId: 1, classify: 'Hindi dub', sort: 'Latest', page: 1, perPage: 45 }, { isHindi: true, section: 'Latest Hindi Dubbed Movies' }),
-        fetch({ classify: 'Bengali dub', sort: 'Latest', page: 1, perPage: 40 }, { isBangla: true, section: 'Latest Bengali Dubbed' }),
-        fetch({ country: 'Bangladesh', sort: 'Latest', page: 1, perPage: 40 }, { isBangla: true, section: 'Latest Bangladesh Cinema' }),
-        fetch({ channelId: 2, country: 'Korea', sort: 'Latest', page: 1, perPage: 35 }, { section: 'Latest Korean Dramas' }),
-        fetch({ channelId: 2, country: 'China', sort: 'Latest', page: 1, perPage: 35 }, { section: 'Latest Chinese Dramas' }),
-        fetch({ channelId: 2, country: 'Turkey', sort: 'Latest', page: 1, perPage: 30 }, { section: 'Latest Turkish Series' }),
-        fetch({ channelId: 2, country: 'Japan', genre: 'Animation', sort: 'Latest', page: 1, perPage: 35 }, { section: 'Latest Anime Episodes' })
+        fetchMulti({ channelId: 2, sort: 'Latest' }, { section: 'Latest Series Additions' }, 3),
+        fetchMulti({ channelId: 1, sort: 'Latest' }, { section: 'Latest Movie Additions' }, 3),
+        fetchMulti({ channelId: 2, classify: 'Hindi dub', sort: 'Latest' }, { isHindi: true, section: 'Latest Hindi Dubbed Series' }, 4),
+        fetchMulti({ channelId: 1, classify: 'Hindi dub', sort: 'Latest' }, { isHindi: true, section: 'Latest Hindi Dubbed Movies' }, 4),
+        fetchMulti({ channelId: 2, country: 'India', sort: 'Latest' }, { isHindi: true, section: 'Latest Bollywood Series' }, 2),
+        fetchMulti({ channelId: 1, country: 'India', sort: 'Latest' }, { isHindi: true, section: 'Latest Bollywood Movies' }, 2),
+        fetchMulti({ classify: 'Bengali dub', sort: 'Latest' }, { isBangla: true, section: 'Latest Bengali Dubbed' }, 2),
+        fetchMulti({ country: 'Bangladesh', sort: 'Latest' }, { isBangla: true, section: 'Latest Bangladesh Cinema' }, 2),
+        fetchMulti({ channelId: 2, country: 'Korea', sort: 'Latest' }, { section: 'Latest Korean Dramas' }, 2),
+        fetchMulti({ channelId: 2, country: 'China', sort: 'Latest' }, { section: 'Latest Chinese Dramas' }, 2),
+        fetchMulti({ channelId: 2, country: 'Turkey', sort: 'Latest' }, { section: 'Latest Turkish Series' }, 2),
+        fetchMulti({ channelId: 2, country: 'Japan', genre: 'Animation', sort: 'Latest' }, { section: 'Latest Anime Episodes' }, 2)
       ]);
 
       const sections = [
@@ -338,6 +359,8 @@ class MovieBoxService {
         { title: 'Latest Movie Additions', items: latestMovies },
         { title: 'Latest Hindi Dubbed Series', items: hindiSeries },
         { title: 'Latest Hindi Dubbed Movies', items: hindiMovies },
+        { title: 'Latest Bollywood Series', items: bollywoodSeries },
+        { title: 'Latest Bollywood Movies', items: bollywoodMovies },
         { title: 'Latest Bengali Dubbed', items: banglaDub },
         { title: 'Latest Bangladesh Cinema', items: banglaCountry },
         { title: 'Latest Korean Dramas', items: koreanSeries },

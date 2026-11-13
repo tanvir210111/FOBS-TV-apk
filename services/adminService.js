@@ -1079,19 +1079,28 @@ class AdminService {
         const industry = this.detectIndustry(it.title, secTitle, it.countryName, it.genre, isBangla);
 
         // 3. Extract Genuine MovieBox Release & Ingestion Date
+        const posterUrl = it.poster || '';
+        const posterMatch = posterUrl.match(/\/image\/(\d{4})\/(\d{2})\/(\d{2})\//);
+        const posterDate = posterMatch ? `${posterMatch[1]}-${posterMatch[2]}-${posterMatch[3]}` : '';
+        const releaseDateStr = (it.releaseDate && /^\d{4}-\d{2}-\d{2}$/.test(it.releaseDate.substring(0, 10))) ? it.releaseDate.substring(0, 10) : '';
+
         let uploadDate = '';
-        if (it.releaseDate && /^\d{4}-\d{2}-\d{2}$/.test(it.releaseDate.substring(0, 10))) {
-          uploadDate = it.releaseDate.substring(0, 10);
-        } else if (it.year && /^\d{4}$/.test(String(it.year))) {
-          const posterUrl = it.poster || '';
-          const dateMatch = posterUrl.match(/\/image\/(\d{4})\/(\d{2})\/(\d{2})\//);
-          if (dateMatch && dateMatch[1] === String(it.year)) {
-            uploadDate = `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]}`;
+        if (posterDate && releaseDateStr) {
+          // If poster CDN upload date is today or more recent than original release date (e.g. newly ingested Hindi/Bangla dub),
+          // prioritize the genuine backend ingestion date on MovieBox
+          if (posterDate <= todayDateStr && (posterDate > releaseDateStr || releaseDateStr > todayDateStr)) {
+            uploadDate = posterDate;
           } else {
-            uploadDate = `${it.year}-01-01`;
+            uploadDate = releaseDateStr;
           }
+        } else if (posterDate) {
+          uploadDate = posterDate;
+        } else if (releaseDateStr) {
+          uploadDate = releaseDateStr;
+        } else if (it.year && /^\d{4}$/.test(String(it.year))) {
+          uploadDate = `${it.year}-01-01`;
         } else {
-          uploadDate = '2025-01-01';
+          uploadDate = todayDateStr;
         }
 
         const uploadTimestamp = new Date(`${uploadDate}T12:00:00Z`).getTime();
