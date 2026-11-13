@@ -571,47 +571,71 @@ class AdminService {
     return (t || '').toLowerCase().replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, '').trim();
   }
 
-  detectIndustry(title = '', section = '', isBangla = false) {
+  detectIndustry(title = '', section = '', countryName = '', genre = '', isBangla = false) {
     const tLower = (title || '').toLowerCase();
     const secLower = (section || '').toLowerCase();
+    const cName = (countryName || '').toLowerCase();
+    const gLower = (genre || '').toLowerCase();
 
-    // 1. Korean
-    if (/korean|kdrama|k-drama|remarried|squid game|glory|vincenzo|queen of tears|crash landing|descendants of the sun/i.test(tLower) || /k-drama|korean/i.test(secLower)) {
-      return 'Korean';
-    }
-    // 2. Turkish
-    if (/turkish|turkey|dizi|sen cal kapimi|ertugrul|kurulus|osman|yali capkini|hudutsuz sevda|kardeslerim/i.test(tLower) || /turkish/i.test(secLower)) {
-      return 'Turkish';
-    }
-    // 3. Chinese
-    if (/chinese|cdrama|c-drama|wuxia|hidden love|untamed|till the end of the moon|heaven official|tian guan|blessing|donghua|link click|scumbag system/i.test(tLower) || /c-drama|chinese/i.test(secLower)) {
-      return 'Chinese';
-    }
-    // 4. Anime / Japanese
-    if (/anime|japan|manga|solo leveling|jujutsu|demon slayer|naruto|one piece|dragon ball|bleach|attack on titan|arcane|heaven official|donghua/i.test(tLower) || /anime|japan/i.test(secLower)) {
+    // 1. Anime / Japanese Animation
+    if (
+      cName.includes('japan') || gLower.includes('animation') || secLower.includes('anime') ||
+      /anime|manga|jujutsu|solo leveling|demon slayer|naruto|one piece|bleach|attack on titan|dragon ball|slime|death note|haikyu|kuroko|chainsaw|demon's crest|demons' crest|grand blue|bass x machina|godzilla|kujo|viral hit|golden boy anime|street fighter|demon city/i.test(tLower)
+    ) {
       return 'Anime';
     }
-    // 5. Bengali / Tollywood
-    if (isBangla || /bangla|bengali|kolkata/i.test(tLower) || /bangla|bengali/i.test(secLower)) {
-      return 'Bengali';
-    }
-    if (/south indian|tamil|telugu|malayalam|kannada/i.test(secLower) || /pushpa|bahubali|kgf|salaar|devara|kantara/i.test(tLower)) {
-      return 'South Indian';
-    }
-    // 6. Bollywood / Indian
-    if (/bollywood|indian/i.test(secLower) || /bollywood/i.test(tLower) || (/hindi/i.test(tLower) && !/western|hollywood|percy|spider-man/i.test(tLower))) {
-      return 'Bollywood';
-    }
-    return 'Hollywood';
-    // 6. Bollywood
-    if (/bollywood|punjabi|marathi/i.test(tLower) || /bollywood|punjabi|marathi/i.test(secLower) || /indian drama|indian movies/i.test(secLower)) {
-      return 'Bollywood';
-    }
-    // 7. Hollywood / Western
-    if (secLower.includes('western') || secLower.includes('hollywood') || secLower.includes('cinema') || /avengers|marvel|spider-man|spiderman|batman|superman|stranger things|avatar|fast and furious/i.test(tLower)) {
-      return 'Hollywood';
+
+    // 2. Turkish Series & Cinema
+    if (
+      cName.includes('turkey') || cName.includes('türkiye') || secLower.includes('turkish') ||
+      /turkish|turkey|dizi|ertugrul|osman|kurulus|sen cal|hercai|yali capkini|hudutsuz|kardeslerim|arafta|baskalarinin|ask laftan|golden boy/i.test(tLower)
+    ) {
+      return 'Turkish';
     }
 
+    // 3. Korean / K-Drama
+    if (
+      cName.includes('korea') || secLower.includes('k-drama') || secLower.includes('korean') ||
+      /korean|k-drama|kdrama|remarried|squid game|glory|vincenzo|queen of tears|crash landing|sweet home|dead-end job|happy anding|what a boss|make me tingle|tingle|female hostel|possible love|my bias|boyfriend on demand|dive to you|perfect crown|seven first kisses|7 first kisses|gyeongseong|nine tailed|love in disguise/i.test(tLower)
+    ) {
+      return 'Korean';
+    }
+
+    // 4. Chinese / C-Drama
+    if (
+      cName.includes('china') || cName.includes('taiwan') || cName.includes('hong kong') || secLower.includes('c-drama') || secLower.includes('chinese') ||
+      /chinese|c-drama|cdrama|wuxia|miracles of the er|hidden love|untamed|till the end|donghua|tamed|kitchen soldier|love other than yours|filing for love|you are my glory|immortal cultivation/i.test(tLower)
+    ) {
+      return 'Chinese';
+    }
+
+    // 5. South Indian (Tamil / Telugu / Malayalam / Kannada)
+    if (
+      /tamil|telugu|malayalam|kannada|kollywood|tollywood|mollywood/i.test(tLower) ||
+      /baahubali|bahubali|pushpa|kgf|salaar|devara|kantara|vinaya vidheya|bharath ane nenu|duvvada jagannadham|iddarammayilatho|ala vaikunthapurramuloo|dangerous \[bengali\]|jailer|mandaadi|mookuthi|akka|pratap|pritam pedro|ranabaali|karuppu|nagabandham|mathagam|lik: love insurance|dhootha|vishwanath|jana nayagan|rana naidu/i.test(tLower) ||
+      (cName.includes('india') && /mandaadi|mookuthi|akka|pratap|pritam pedro|ranabaali|karuppu|nagabandham/i.test(tLower))
+    ) {
+      return 'South Indian';
+    }
+
+    // 6. Bengali / Bangladesh / Tollywood
+    if (
+      cName.includes('bangladesh') ||
+      /saptadingar|nishir daak|gerakol|bohurupi|tekka|khadaan|babli|hubba|toofan|shurongo|mujib|raghu dakat|shwetkali|killbill society|mirza|pisach|bahir mahal|kothamrito|tollywood focus|pallichattambi|becoming light|tumi ami shudhu/i.test(tLower) ||
+      (isBangla && !/baahubali|dirilis|vinaya|bharath|duvvada|365 days/i.test(tLower))
+    ) {
+      return 'Bengali';
+    }
+
+    // 7. Bollywood / Indian Cinema & Series
+    if (
+      cName.includes('india') || secLower.includes('bollywood') ||
+      /bollywood|punjabi|marathi|bhojpuri|gujarati|ramayana|tum mere ho|scene|dilwali diwali|blind game|kankaan de ohle|drishyam|dangal|gajab raat|adarsh baal vidyalaya|musafir cafe|the paradise|ordinary jackpot|hunkkaar|sardar 2|dhurandhar|war 2|brahmastra|om shanti om|hum aapke|dilwale|scoop|bigg boss|visionquest|brindavihari|pehla pyaar|tu hai meri kiran|chaar yaar|duniya ki thain|bebe main badmash/i.test(tLower)
+    ) {
+      return 'Bollywood';
+    }
+
+    // 8. Hollywood / Western Cinema
     return 'Hollywood';
   }
 
@@ -938,15 +962,13 @@ class AdminService {
     try {
       const banglaItems = await this.fetchSpecializedFeedItems('latest-bangla', ['bangla', 'bengali', 'bangla dubbed', 'bengali movies'], {
         isBangla: true,
-        audioTag: 'Bangla Dubbed',
-        industry: 'Bengali'
+        audioTag: 'Bangla Dubbed'
       }, forceRefresh);
       if (banglaItems && banglaItems.length > 0) extraSections.push({ title: 'Latest Bangla Additions', items: banglaItems });
 
-      const hindiItems = await this.fetchSpecializedFeedItems('latest-hindi', ['hindi dubbed', 'bollywood 2026', 'korean drama hindi', 'turkish hindi'], {
+      const hindiItems = await this.fetchSpecializedFeedItems('latest-hindi', ['hindi dubbed', 'bollywood 2026', 'korean drama hindi', 'turkish hindi', 'anime hindi', 'south hindi'], {
         isHindi: true,
-        audioTag: 'Hindi Dubbed',
-        industry: 'Bollywood'
+        audioTag: 'Hindi Dubbed'
       }, forceRefresh);
       if (hindiItems && hindiItems.length > 0) extraSections.push({ title: 'Latest Hindi Additions', items: hindiItems });
     } catch (_) {}
@@ -1031,13 +1053,13 @@ class AdminService {
         const itPath = (it.detailPath || '').trim().toLowerCase();
         const tLower = (it.title || '').toLowerCase();
 
-        // Filter out promotional non-media clips / songs / trailers if mistakenly in feed
-        if (/\b(dj song|music video|official song|official music|bangla song|dance song|rhymes|shorts video|nwollywood|kids video|baby song)\b/i.test(tLower)) {
+        // Filter out promotional non-media clips / songs / trailers / low-quality UGC
+        if (/\b(dj song|music video|official song|official music|bangla song|dance song|rhymes|shorts video|nwollywood|kids video|baby song|বাউল গান|ফোক গান|নাচ|ভিডিও গান|গজল|gojol|লুঙ্গি|নাটক|natok|concert|mp3|folk song|tiny desk|mixtape|wrestling|worship songs)\b/i.test(tLower)) {
           continue;
         }
 
-        // 1. Audio detection
-        const isBangla = it.isBangla || /\[bengali\]|\[bangla\]|\bbengali\b|\bbangla\b/i.test(tLower) || /bengali|bangla/i.test(secLower);
+        // 1. Audio detection (Orthogonal to Industry)
+        const isBangla = it.isBangla || /\[bengali\]|\[bangla\]|\bbengali\b|\bbangla\b|[\u0980-\u09FF]/i.test(tLower) || /bengali|bangla/i.test(secLower);
         const isHindi = it.isHindi || /\[hindi\]|\bhindi\b/i.test(tLower) || /hindi|bollywood/i.test(secLower) ||
                         (it.countryName === 'India' && !/tamil|telugu|malayalam|kannada/i.test(tLower));
 
@@ -1051,16 +1073,8 @@ class AdminService {
           audioTag = 'Hindi Dubbed';
         }
 
-        // 2. Industry detection
-        let industry = it.industry || this.detectIndustry(it.title, secTitle, isBangla);
-        const cName = (it.countryName || '').toLowerCase();
-        if (cName.includes('korea') || secLower.includes('korean')) industry = 'Korean';
-        else if (cName.includes('china') || secLower.includes('chinese')) industry = 'Chinese';
-        else if (cName.includes('japan') || (it.genre && it.genre.includes('Animation')) || secLower.includes('anime')) industry = 'Anime';
-        else if (cName.includes('turkey') || secLower.includes('turkish')) industry = 'Turkish';
-        else if (cName.includes('bangladesh') || isBangla) industry = 'Bengali';
-        else if (cName.includes('india') || secLower.includes('bollywood') || isHindi) industry = 'Bollywood';
-        else if (cName.includes('united states') || cName.includes('united kingdom') || secLower.includes('hollywood')) industry = 'Hollywood';
+        // 2. Accurate Industry detection (Origin Country / Production Culture)
+        const industry = this.detectIndustry(it.title, secTitle, it.countryName, it.genre, isBangla);
 
         // 3. Extract Genuine MovieBox Release & Ingestion Date
         let uploadDate = '';

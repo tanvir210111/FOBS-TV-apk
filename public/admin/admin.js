@@ -2766,6 +2766,34 @@ async function openImportModal(item) {
   const isSeries = item.type === 'series' || (item.category && item.category.toLowerCase().includes('series'));
   const sId = String(item.subjectId || item.id || '');
   const dPath = item.detailPath || '';
+  const tLower = (item.title || '').toLowerCase();
+  const isHindi = item.audioCategory === 'hindi' || !!item.isHindi || tLower.includes('[hindi]') || tLower.includes('hindi dubbed');
+  const isBangla = item.audioCategory === 'bangla' || !!item.isBangla || tLower.includes('[bengali]') || tLower.includes('[bangla]');
+
+  let detectedInd = item.industry || 'Hollywood';
+  if (detectedInd === 'Tollywood') detectedInd = 'South Indian';
+
+  // Suggest accurate catalog category matching app schema
+  let suggestedCat = '';
+  if (isSeries) {
+    if (detectedInd === 'Korean') suggestedCat = isHindi ? 'Korean (Dubbed) Series' : 'Korean Series';
+    else if (detectedInd === 'Chinese') suggestedCat = isHindi ? 'Chinese (Dubbed) Series' : 'Chinese Drama';
+    else if (detectedInd === 'Turkish') suggestedCat = isHindi ? 'Turkish Drama' : 'Turkish Series';
+    else if (detectedInd === 'Anime') suggestedCat = isHindi ? 'Anime Series (Hindi Dub)' : 'Anime';
+    else if (detectedInd === 'Bollywood') suggestedCat = 'Bollywood Series';
+    else if (detectedInd === 'South Indian') suggestedCat = 'Web Series';
+    else if (detectedInd === 'Bengali') suggestedCat = isBangla ? 'Bengali Series' : 'Bengali (Dubbed) Series';
+    else suggestedCat = isHindi ? 'Hollywood (Dubbed) Series' : 'Hollywood Series';
+  } else {
+    if (detectedInd === 'Korean') suggestedCat = isHindi ? 'Korean (Dubbed) Movies' : 'Korean Movie';
+    else if (detectedInd === 'Chinese') suggestedCat = isHindi ? 'Chinese (Dubbed) Movies' : 'Chinese Movies';
+    else if (detectedInd === 'Turkish') suggestedCat = isHindi ? 'Turkish Movies (Hindi)' : 'Turkish Movies';
+    else if (detectedInd === 'Anime') suggestedCat = isHindi ? 'Anime Movies (Hindi Dub)' : 'Anime Movies';
+    else if (detectedInd === 'Bollywood') suggestedCat = 'Bollywood Movies';
+    else if (detectedInd === 'South Indian') suggestedCat = 'South (Dubbed) Movies';
+    else if (detectedInd === 'Bengali') suggestedCat = 'Bengali';
+    else suggestedCat = isHindi ? 'Hollywood (Dubbed) Movies' : 'Hollywood Movies';
+  }
 
   document.getElementById('imp-subjectId').value = sId;
   document.getElementById('imp-detailPath').value = dPath;
@@ -2775,12 +2803,10 @@ async function openImportModal(item) {
   document.getElementById('imp-year').value = item.year || '2026';
   document.getElementById('imp-rating').value = item.rating || '8.5';
   document.getElementById('imp-type').value = isSeries ? 'series' : 'movie';
-  if (item.industry) document.getElementById('imp-industry').value = item.industry;
-  if (item.category) {
-    document.getElementById('imp-category').value = item.category;
-  } else {
-    document.getElementById('imp-category').value = isSeries ? `${item.industry || 'Hollywood'} Series` : `${item.industry || 'Hollywood'} Movies`;
-  }
+  document.getElementById('imp-industry').value = detectedInd;
+  document.getElementById('imp-category').value = item.category || suggestedCat;
+  document.getElementById('imp-ishindi').checked = isHindi;
+  document.getElementById('imp-featured').checked = false;
   toggleImportType(isSeries ? 'series' : 'movie');
 
   const trackerBox = document.getElementById('imp-ongoing-tracker-box');
@@ -2790,11 +2816,6 @@ async function openImportModal(item) {
   if (seasonSel) {
     seasonSel.innerHTML = '<option value="all">🌟 All Seasons (Auto-Detecting...)</option>';
   }
-
-  const tLower = (item.title || '').toLowerCase();
-  const isHindi = tLower.includes('[hindi]') || tLower.includes('hindi dubbed') || tLower.includes('hindi');
-  document.getElementById('imp-ishindi').checked = isHindi;
-  document.getElementById('imp-featured').checked = false;
 
   const statusText = document.getElementById('imp-autodetect-status');
   statusText.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #00f2fe;"></i> Auto-detecting real released episodes, stream URLs &amp; metadata from MovieBox &amp; TMDb...';
@@ -3765,7 +3786,35 @@ function applyLatestFilters() {
 
   // 2. Industry Filter
   if (industry !== 'all') {
-    items = items.filter(i => (i.industry || '').toLowerCase().includes(industry.toLowerCase()));
+    const indFilter = industry.toLowerCase().trim();
+    items = items.filter(i => {
+      const itemInd = (i.industry || '').toLowerCase().trim();
+      if (indFilter === 'south') {
+        return itemInd.includes('south') || itemInd.includes('tollywood');
+      }
+      if (indFilter === 'bollywood') {
+        return itemInd.includes('bollywood') || itemInd.includes('hindi');
+      }
+      if (indFilter === 'bengali') {
+        return itemInd.includes('bengali') || itemInd.includes('bangla');
+      }
+      if (indFilter === 'korean') {
+        return itemInd.includes('korean');
+      }
+      if (indFilter === 'turkish') {
+        return itemInd.includes('turkish');
+      }
+      if (indFilter === 'chinese') {
+        return itemInd.includes('chinese');
+      }
+      if (indFilter === 'anime') {
+        return itemInd.includes('anime');
+      }
+      if (indFilter === 'hollywood') {
+        return itemInd.includes('hollywood');
+      }
+      return itemInd.includes(indFilter);
+    });
   }
 
   // 3. Content Type Filter
