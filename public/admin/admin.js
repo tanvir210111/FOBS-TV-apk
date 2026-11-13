@@ -3735,6 +3735,15 @@ function selectLatestAudio(audio, btn) {
   applyLatestFilters();
 }
 
+function handleLatestDateFilterChange() {
+  const sel = document.getElementById('latest-filter-date');
+  const customCol = document.getElementById('latest-custom-date-col');
+  if (customCol) {
+    customCol.style.display = (sel && sel.value === 'custom') ? 'block' : 'none';
+  }
+  applyLatestFilters();
+}
+
 function applyLatestFilters() {
   const grid = document.getElementById('latest-mb-grid');
   if (!grid) return;
@@ -3744,21 +3753,27 @@ function applyLatestFilters() {
   const type = document.getElementById('latest-filter-type')?.value || 'all';
   const updateType = document.getElementById('latest-filter-update')?.value || 'all';
   const search = (document.getElementById('latest-filter-search')?.value || '').trim().toLowerCase();
+  const dateFilter = document.getElementById('latest-filter-date')?.value || 'all';
+  const customDate = document.getElementById('latest-filter-custom-date')?.value || '';
 
   let items = state.latestMbItems || [];
 
+  // 1. Audio Filter
   if (audio !== 'all') {
     items = items.filter(i => i.audioCategory === audio);
   }
 
+  // 2. Industry Filter
   if (industry !== 'all') {
     items = items.filter(i => (i.industry || '').toLowerCase().includes(industry.toLowerCase()));
   }
 
+  // 3. Content Type Filter
   if (type !== 'all') {
     items = items.filter(i => i.type === type);
   }
 
+  // 4. Update Type Filter
   if (updateType === 'new_episodes') {
     items = items.filter(i => i.hasNewEpisodes || i.updateType === 'new_episode');
   } else if (updateType === 'new_dub') {
@@ -3767,6 +3782,29 @@ function applyLatestFilters() {
     items = items.filter(i => !i.alreadyImported);
   }
 
+  // 5. Date Filter (Today, Yesterday, Last 3 Days, Last 7 Days, This Month, Custom Date)
+  const now = new Date();
+  const todayStr = now.toISOString().split('T')[0];
+  const yesterdayStr = new Date(now.getTime() - 86400000).toISOString().split('T')[0];
+  const threeDaysAgoMs = now.getTime() - (3 * 86400000);
+  const sevenDaysAgoMs = now.getTime() - (7 * 86400000);
+  const currentYearMonth = todayStr.substring(0, 7);
+
+  if (dateFilter === 'today') {
+    items = items.filter(i => i.uploadDate === todayStr || (i.updateBadge || '').toLowerCase().includes('today'));
+  } else if (dateFilter === 'yesterday') {
+    items = items.filter(i => i.uploadDate === yesterdayStr || (i.updateBadge || '').toLowerCase().includes('yesterday'));
+  } else if (dateFilter === 'last3days') {
+    items = items.filter(i => (i.uploadTimestamp || 0) >= threeDaysAgoMs || i.uploadDate === todayStr || i.uploadDate === yesterdayStr);
+  } else if (dateFilter === 'last7days') {
+    items = items.filter(i => (i.uploadTimestamp || 0) >= sevenDaysAgoMs || i.uploadDate === todayStr || i.uploadDate === yesterdayStr);
+  } else if (dateFilter === 'thismonth') {
+    items = items.filter(i => (i.uploadDate || '').startsWith(currentYearMonth));
+  } else if (dateFilter === 'custom' && customDate) {
+    items = items.filter(i => i.uploadDate === customDate);
+  }
+
+  // 6. Title Search
   if (search) {
     items = items.filter(i => (i.title || '').toLowerCase().includes(search) ||
                               (i.industry || '').toLowerCase().includes(search) ||
@@ -3783,13 +3821,13 @@ function applyLatestFilters() {
       <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #94a3b8;">
         <i class="fa-solid fa-box-open" style="font-size: 32px; margin-bottom: 10px; opacity: 0.6;"></i>
         <div style="font-size: 15px; font-weight: 600; color: #cbd5e1;">No matching additions found.</div>
-        <div style="font-size: 13px; margin-top: 4px;">Try changing the audio tab or resetting your industry filter.</div>
+        <div style="font-size: 13px; margin-top: 4px;">Try changing the date, audio tab, or resetting your filters.</div>
       </div>
     `;
     return;
   }
 
-  grid.innerHTML = items.map((it, idx) => {
+  grid.innerHTML = items.map(it => {
     let badgeClass = 'new-title';
     if (it.updateType === 'new_episode') badgeClass = 'new-ep';
     else if (it.updateType === 'new_dubbing') badgeClass = 'new-dub';
@@ -3800,26 +3838,26 @@ function applyLatestFilters() {
     let actionBtnHtml = '';
     if (it.hasNewEpisodes && it.fobsId) {
       actionBtnHtml = `
-        <button type="button" class="btn-primary glow importer-card-btn" style="background: linear-gradient(135deg, #f59e0b, #d97706); border:none;" onclick="event.stopPropagation(); triggerLatestEpisodeSync('${it.fobsId}', '${escapeHtml(it.title)}')">
+        <button type="button" class="btn-primary glow importer-card-btn" style="background: linear-gradient(135deg, #f59e0b, #d97706); border:none;" onclick="event.stopPropagation(); triggerLatestEpisodeSync('${escapeHtml(it.fobsId)}', '${escapeHtml(it.title)}')">
           <i class="fa-solid fa-arrows-rotate"></i> Sync New Episodes
         </button>
       `;
     } else if (it.alreadyImported) {
       actionBtnHtml = `
-        <button type="button" class="btn-secondary importer-card-btn" onclick="event.stopPropagation(); openExistingItemInStudio('${it.fobsId}', '${it.type}')">
+        <button type="button" class="btn-secondary importer-card-btn" onclick="event.stopPropagation(); openExistingItemInStudio('${escapeHtml(it.fobsId || '')}', '${escapeHtml(it.type || 'movie')}')">
           <i class="fa-solid fa-check"></i> Already Synced
         </button>
       `;
     } else {
       actionBtnHtml = `
-        <button type="button" class="btn-primary glow importer-card-btn" onclick="event.stopPropagation(); openLatestImportModal(${idx})">
+        <button type="button" class="btn-primary glow importer-card-btn" onclick="event.stopPropagation(); openLatestImportModalById('${escapeHtml(it.id)}')">
           <i class="fa-solid fa-wand-magic-sparkles"></i> 1-Click Import
         </button>
       `;
     }
 
     return `
-      <div class="importer-card" onclick="openLatestCardClick(${idx})" style="cursor: pointer; position: relative;">
+      <div class="importer-card" onclick="openLatestCardClickById('${escapeHtml(it.id)}')" style="cursor: pointer; position: relative;">
         <div class="importer-card-poster-wrap">
           <img src="${getOptimizedImageUrl(it.poster)}" loading="lazy" decoding="async" onerror="this.src='assets/fobs_logo.png'" alt="${escapeHtml(it.title)}">
           <span class="latest-badge-tag ${badgeClass}">
@@ -3852,20 +3890,20 @@ function applyLatestFilters() {
   }).join('');
 }
 
-function openLatestCardClick(idx) {
-  const it = state.latestMbItems?.[idx];
+function openLatestCardClickById(id) {
+  const it = (state.latestMbItems || []).find(x => String(x.id) === String(id));
   if (!it) return;
   if (it.hasNewEpisodes && it.fobsId) {
     triggerLatestEpisodeSync(it.fobsId, it.title);
   } else if (!it.alreadyImported) {
-    openLatestImportModal(idx);
+    openLatestImportModalById(id);
   } else if (it.fobsId) {
     openExistingItemInStudio(it.fobsId, it.type);
   }
 }
 
-function openLatestImportModal(idx) {
-  const it = state.latestMbItems?.[idx];
+function openLatestImportModalById(id) {
+  const it = (state.latestMbItems || []).find(x => String(x.id) === String(id));
   if (!it) return;
   state.lastMovieBoxItems = state.latestMbItems;
   openImportModal(it);

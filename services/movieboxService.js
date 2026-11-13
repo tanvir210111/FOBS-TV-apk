@@ -51,7 +51,7 @@ function getRandomIp() {
   return `103.${randSub}.${randHost1}.${randHost2}`;
 }
 
-function generateAuthHeaders(domain = BASE_URL, refererPath = '') {
+function generateAuthHeaders(domain = BASE_URL, refererPath = '', country = 'IN') {
   const e = Math.floor(Date.now() / 1000);
   const r = String(e).split('').reverse().join('');
   const md5 = crypto.createHash('md5').update(r).digest('hex');
@@ -59,7 +59,10 @@ function generateAuthHeaders(domain = BASE_URL, refererPath = '') {
   const randomUuid = crypto.randomUUID();
   const randomAccount = Math.floor(Math.random() * 1e18);
   const ref = refererPath ? (refererPath.startsWith('http') ? refererPath : `${domain}/movies/${refererPath}`) : `${domain}/`;
-  const randIp = getRandomIp();
+
+  const randIp = country === 'BD'
+    ? `103.147.${Math.floor(Math.random() * 250) + 1}.${Math.floor(Math.random() * 250) + 1}`
+    : `103.212.${Math.floor(Math.random() * 250) + 1}.${Math.floor(Math.random() * 250) + 1}`;
 
   return {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
@@ -67,8 +70,8 @@ function generateAuthHeaders(domain = BASE_URL, refererPath = '') {
     'Referer': ref,
     'Accept': 'application/json, text/plain, */*',
     'X-Client-Token': clientToken,
-    'X-Client-Info': JSON.stringify({ timezone: 'Asia/Kolkata', country: 'IN' }),
-    'Cookie': `uuid=${randomUuid}; account=${randomAccount}|0|H5|${e}|; client_country=IN`,
+    'X-Client-Info': JSON.stringify({ timezone: country === 'BD' ? 'Asia/Dhaka' : 'Asia/Kolkata', country }),
+    'Cookie': `uuid=${randomUuid}; account=${randomAccount}|0|H5|${e}|; client_country=${country}; country=${country}`,
     'X-Forwarded-For': randIp,
     'Client-IP': randIp,
     'X-Real-IP': randIp,
@@ -247,65 +250,99 @@ class MovieBoxService {
   }
 
   /**
-   * Fetches the homepage content with all categories (Trending, Cinema, Bollywood, Hollywood, Series, Anime)
+   * Fetches the homepage content with all categories (Trending, Cinema, Bollywood, Hollywood, Series, Anime, Bangla)
+   * Fetches both regional Indian & Bangladeshi catalogs with geo-spoof headers to guarantee complete coverage
    */
   async getHomepage() {
-    const urls = [
-      `${BASE_URL}/wefeed-h5-bff/web/home`,
-      `${BACKUP_URL_1}/wefeed-h5-bff/web/home`,
-      `${BACKUP_URL_2}/wefeed-h5-bff/web/home`
-    ];
+    const fetchRegionSections = async (countryCode) => {
+      const urls = [
+        `${BASE_URL}/wefeed-h5-bff/web/home`,
+        `${BACKUP_URL_1}/wefeed-h5-bff/web/home`,
+        `${BACKUP_URL_2}/wefeed-h5-bff/web/home`
+      ];
 
-    for (const url of urls) {
-      try {
-        const domain = url.startsWith(BASE_URL) ? BASE_URL : (url.startsWith(BACKUP_URL_1) ? BACKUP_URL_1 : BACKUP_URL_2);
-        const res = await axios.get(url, {
-          headers: { ...HEADERS, 'Origin': domain, 'Referer': `${domain}/` },
-          httpsAgent: cleanAgent,
-          timeout: 7000
-        });
-        const raw = res.data?.data || res.data;
-        const operatingList = raw?.operatingList || [];
+      for (const url of urls) {
+        try {
+          const domain = url.startsWith(BASE_URL) ? BASE_URL : (url.startsWith(BACKUP_URL_1) ? BACKUP_URL_1 : BACKUP_URL_2);
+          const res = await axios.get(url, {
+            headers: generateAuthHeaders(domain, '', countryCode),
+            httpsAgent: cleanAgent,
+            timeout: 6500
+          });
+          const raw = res.data?.data || res.data;
+          const operatingList = raw?.operatingList || [];
 
-        const sections = [];
-        for (const group of operatingList) {
-          const title = group.title;
-          if (!title || title.includes('Update Required') || title.includes('Join us')) continue;
+          const sections = [];
+          for (const group of operatingList) {
+            const title = group.title;
+            if (!title || title.includes('Update Required') || title.includes('Join us') || title.includes('Update Now') || title.includes('अद्यतन आवश्यक')) continue;
 
-          const items = group.subjects || (group.banner?.items || []);
-          if (!items || items.length === 0) continue;
+            const items = group.subjects || (group.banner?.items || []);
+            if (!items || items.length === 0) continue;
 
-          const formattedItems = items.map(it => {
-            const isSeries = it.subjectType === 2;
-            const poster = it.cover?.url || it.image?.url || '';
-            const year = it.releaseDate ? it.releaseDate.substring(0, 4) : '';
-            return {
-              id: String(it.subjectId || it.id),
-              subjectId: String(it.subjectId || it.id),
-              title: it.title || 'Untitled',
-              type: isSeries ? 'series' : 'movie',
-              subjectType: it.subjectType,
-              releaseDate: it.releaseDate || '',
-              year: year || '2026',
-              rating: String(it.imdbRatingValue || '7.5'),
-              poster: poster,
-              detailPath: it.detailPath || ''
-            };
-          }).filter(it => it.id && it.id !== '0' && it.title);
+            const formattedItems = items.map(it => {
+              const isSeries = it.subjectType === 2;
+              const poster = it.cover?.url || it.image?.url || '';
+              const year = it.releaseDate ? it.releaseDate.substring(0, 4) : '';
+              return {
+                id: String(it.subjectId || it.id),
+                subjectId: String(it.subjectId || it.id),
+                title: it.title || 'Untitled',
+                type: isSeries ? 'series' : 'movie',
+                subjectType: it.subjectType,
+                releaseDate: it.releaseDate || '',
+                year: year || '2026',
+                rating: String(it.imdbRatingValue || '7.5'),
+                poster: poster,
+                detailPath: it.detailPath || ''
+              };
+            }).filter(it => it.id && it.id !== '0' && it.title);
 
-          if (formattedItems.length > 0) {
-            sections.push({
-              title,
-              items: formattedItems
-            });
+            if (formattedItems.length > 0) {
+              sections.push({
+                title,
+                items: formattedItems
+              });
+            }
+          }
+          if (sections.length > 0) return sections;
+        } catch (_) {}
+      }
+      return [];
+    };
+
+    try {
+      const [inSections, bdSections] = await Promise.all([
+        fetchRegionSections('IN'),
+        fetchRegionSections('BD')
+      ]);
+
+      const mergedSections = [...(inSections || [])];
+      const seenTitles = new Set(mergedSections.map(s => s.title.toLowerCase()));
+
+      for (const bs of (bdSections || [])) {
+        if (!seenTitles.has(bs.title.toLowerCase())) {
+          seenTitles.add(bs.title.toLowerCase());
+          mergedSections.push(bs);
+        } else {
+          // If section title matches, merge unique items
+          const existing = mergedSections.find(s => s.title.toLowerCase() === bs.title.toLowerCase());
+          if (existing && Array.isArray(existing.items)) {
+            const itemIds = new Set(existing.items.map(x => x.id));
+            for (const bit of bs.items) {
+              if (!itemIds.has(bit.id)) {
+                itemIds.add(bit.id);
+                existing.items.push(bit);
+              }
+            }
           }
         }
-        if (sections.length > 0) return sections;
-      } catch (err) {
-        // Try fallback domain
       }
+
+      return mergedSections;
+    } catch (_) {
+      return [];
     }
-    return [];
   }
 
   /**

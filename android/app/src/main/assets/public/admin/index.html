@@ -15,7 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <!-- FontAwesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="/admin/style.css?v=3.3.0">
+  <link rel="stylesheet" href="/admin/style.css?v=3.4.0">
 </head>
 <body>
 
@@ -758,6 +758,26 @@
                 <option value="hollywood">Hollywood &amp; Western</option>
                 <option value="bengali">Bengali / Tollywood</option>
               </select>
+            </div>
+
+            <!-- Date Filter (Added on User Request) -->
+            <div class="importer-filter-col">
+              <label><i class="fa-solid fa-calendar-day"></i> Added Date</label>
+              <select id="latest-filter-date" class="custom-select" onchange="handleLatestDateFilterChange()">
+                <option value="all">📅 All Dates (Newest First)</option>
+                <option value="today">⚡ Added Today (Newest)</option>
+                <option value="yesterday">🕒 Added Yesterday</option>
+                <option value="last3days">📆 Last 3 Days</option>
+                <option value="last7days">🗓️ Last 7 Days (This Week)</option>
+                <option value="thismonth">📅 This Month (Nov 2026)</option>
+                <option value="custom">🔍 Specific Calendar Date...</option>
+              </select>
+            </div>
+
+            <!-- Specific Date Picker (Hidden by default, shown when "custom" is selected) -->
+            <div class="importer-filter-col" id="latest-custom-date-col" style="display: none;">
+              <label><i class="fa-solid fa-calendar-check"></i> Select Date</label>
+              <input type="date" id="latest-filter-custom-date" class="custom-select" onchange="applyLatestFilters()">
             </div>
 
             <!-- Content Type -->
@@ -1689,6 +1709,6 @@
   <div id="toast-container" class="toast-container"></div>
 
   <!-- SCRIPTS -->
-  <script src="/admin/admin.js?v=3.3.0"></script>
+  <script src="/admin/admin.js?v=3.4.0"></script>
 </body>
 </html>

@@ -618,10 +618,10 @@ class AdminService {
   /**
    * Helper to fetch and cache specialized regional/language feeds from MovieBox
    */
-  async fetchSpecializedFeedItems(key, queries, defaults = {}) {
+  async fetchSpecializedFeedItems(key, queries, defaults = {}, force = false) {
     if (!mbFeedCache.specialized) mbFeedCache.specialized = {};
     const cached = mbFeedCache.specialized[key];
-    if (cached && (Date.now() - cached.timestamp < 3600000) && Array.isArray(cached.items) && cached.items.length > 0) {
+    if (!force && cached && (Date.now() - cached.timestamp < 300000) && Array.isArray(cached.items) && cached.items.length > 0) {
       return cached.items;
     }
 
@@ -932,14 +932,14 @@ class AdminService {
         isBangla: true,
         audioTag: 'Bangla Dubbed',
         industry: 'Bengali'
-      });
+      }, forceRefresh);
       if (banglaItems && banglaItems.length > 0) extraSections.push({ title: 'Latest Bangla Additions', items: banglaItems });
 
       const hindiItems = await this.fetchSpecializedFeedItems('latest-hindi', ['hindi dubbed', 'bollywood 2026', 'korean drama hindi', 'turkish hindi'], {
         isHindi: true,
         audioTag: 'Hindi Dubbed',
         industry: 'Bollywood'
-      });
+      }, forceRefresh);
       if (hindiItems && hindiItems.length > 0) extraSections.push({ title: 'Latest Hindi Additions', items: hindiItems });
     } catch (_) {}
 
