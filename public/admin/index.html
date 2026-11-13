@@ -124,6 +124,11 @@
           <span>v3.2.0 App Audience</span>
           <span id="badge-users-count" class="badge-count highlight">0</span>
         </a>
+        <a href="#latest-mb" class="nav-item highlight-cyan" data-tab="latest-mb">
+          <i class="fa-solid fa-bolt-lightning"></i>
+          <span>Latest MovieBox Add</span>
+          <span id="badge-latest-mb-count" class="badge-pill live" style="margin-left:auto; display:none;">New</span>
+        </a>
         <a href="#importer" class="nav-item" data-tab="importer">
           <i class="fa-solid fa-wand-magic-sparkles"></i>
           <span>MovieBox Importer</span>
@@ -693,6 +698,100 @@
               </tbody>
             </table>
           </div>
+        </div>
+      </section>
+
+      <!-- TAB: LATEST MOVIEBOX ADDITIONS -->
+      <section id="tab-latest-mb" class="tab-content">
+        <div class="section-top-bar glass">
+          <div class="section-desc">
+            <h3><i class="fa-solid fa-bolt-lightning" style="color: #00f2fe;"></i> Latest MovieBox Add</h3>
+            <p>Real-time monitor of latest titles, new released episodes, and dubbing added to MovieBox.</p>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <button class="btn-primary glow" onclick="loadLatestMovieBoxAdd(true)">
+              <i class="fa-solid fa-rotate"></i> Check Latest Now
+            </button>
+          </div>
+        </div>
+
+        <!-- 3 MAIN AUDIO BAGS / TABS -->
+        <div class="latest-audio-tabs glass">
+          <button class="latest-audio-tab active" data-audio="all" onclick="selectLatestAudio('all', this)">
+            <i class="fa-solid fa-layer-group"></i> All Latest (<span id="latest-count-all">0</span>)
+          </button>
+          <button class="latest-audio-tab" data-audio="original" onclick="selectLatestAudio('original', this)">
+            <i class="fa-solid fa-headphones"></i> Original Audio (<span id="latest-count-original">0</span>)
+          </button>
+          <button class="latest-audio-tab" data-audio="hindi" onclick="selectLatestAudio('hindi', this)">
+            <i class="fa-solid fa-microphone"></i> Hindi Dubbed (<span id="latest-count-hindi">0</span>)
+          </button>
+          <button class="latest-audio-tab" data-audio="bangla" onclick="selectLatestAudio('bangla', this)">
+            <i class="fa-solid fa-language"></i> Bangla Dubbed (<span id="latest-count-bangla">0</span>)
+          </button>
+        </div>
+
+        <!-- INDUSTRY & UPDATE FILTERS -->
+        <div class="importer-filter-panel glass" style="margin-top: 14px;">
+          <div class="importer-filter-title">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <i class="fa-solid fa-sliders" style="color:var(--primary);"></i>
+              <span style="font-weight:600; font-size:13.5px;">Industry &amp; Update Filters</span>
+            </div>
+            <div id="latest-filter-summary" class="importer-count-badge">
+              Showing <span id="latest-count-shown">0</span> of <span id="latest-count-total">0</span> items
+            </div>
+          </div>
+
+          <div class="importer-filter-grid">
+            <!-- Industry Filter -->
+            <div class="importer-filter-col">
+              <label><i class="fa-solid fa-film"></i> Industry / Category</label>
+              <select id="latest-filter-industry" class="custom-select" onchange="applyLatestFilters()">
+                <option value="all">All Industries &amp; Categories</option>
+                <option value="korean">Korean / K-Drama</option>
+                <option value="turkish">Turkish Series / Dizi</option>
+                <option value="chinese">Chinese / C-Drama</option>
+                <option value="anime">Anime &amp; Animation</option>
+                <option value="bollywood">Bollywood &amp; Hindi</option>
+                <option value="south">South Indian (Hindi Dubbed)</option>
+                <option value="hollywood">Hollywood &amp; Western</option>
+                <option value="bengali">Bengali / Tollywood</option>
+              </select>
+            </div>
+
+            <!-- Content Type -->
+            <div class="importer-filter-col">
+              <label><i class="fa-solid fa-tv"></i> Content Type</label>
+              <select id="latest-filter-type" class="custom-select" onchange="applyLatestFilters()">
+                <option value="all">All Types (Movies &amp; Series)</option>
+                <option value="series">Series &amp; TV Shows Only</option>
+                <option value="movie">Movies Only</option>
+              </select>
+            </div>
+
+            <!-- Update Status Filter -->
+            <div class="importer-filter-col">
+              <label><i class="fa-solid fa-tag"></i> Update Type</label>
+              <select id="latest-filter-update" class="custom-select" onchange="applyLatestFilters()">
+                <option value="all">All Additions &amp; Updates</option>
+                <option value="new_episodes">🔥 New Episodes Released</option>
+                <option value="new_dub">🎙️ New Dubbing Added</option>
+                <option value="unimported">🚀 Unimported Items Only</option>
+              </select>
+            </div>
+
+            <!-- Quick Search inside Latest -->
+            <div class="importer-filter-col">
+              <label><i class="fa-solid fa-magnifying-glass"></i> Filter By Title</label>
+              <input type="text" id="latest-filter-search" class="custom-select" placeholder="Filter title..." oninput="applyLatestFilters()">
+            </div>
+          </div>
+        </div>
+
+        <!-- LATEST MEDIA GRID -->
+        <div class="importer-grid" id="latest-mb-grid" style="margin-top: 18px;">
+          <!-- Rendered via JS -->
         </div>
       </section>
 

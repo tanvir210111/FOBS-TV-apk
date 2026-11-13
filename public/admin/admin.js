@@ -208,6 +208,7 @@ function switchAdminTab(tabName) {
     comments: { title: 'User Comments & Community', sub: 'Moderate viewer comments across movies and series' },
     users: { title: 'v3.2.0 Verified Audience', sub: 'Active devices and registered members running FOBS TV v3.2.0' },
     requests: { title: 'User Requests & Pre-Bookings', sub: 'Viewer submitted requests for movies and series' },
+    'latest-mb': { title: 'Latest MovieBox Add', sub: 'Real-time monitor of latest titles, new ongoing episodes & new dubbing on MovieBox' },
     importer: { title: 'MovieBox 1-Click Importer', sub: 'Import trending titles with auto-renewing streams' },
     appcontrol: { title: 'v3.2.0 App Control & Remote Config', sub: 'Configure target version, mandatory updates, and server maintenance' }
   };
@@ -221,6 +222,9 @@ function switchAdminTab(tabName) {
   switch (tabName) {
     case 'overview':
       loadDashboardData();
+      break;
+    case 'latest-mb':
+      loadLatestMovieBoxAdd();
       break;
     case 'movies':
       loadMovies();
@@ -3618,4 +3622,247 @@ function formatTimeAgo(isoStr) {
 function previewImage(elId, url) {
   const img = document.getElementById(elId);
   if (img && url) img.src = url;
+}
+
+// ============================================================
+// LATEST MOVIEBOX ADDITIONS FEATURE
+// ============================================================
+state.latestMbItems = [];
+state.latestSelectedAudio = 'all';
+
+async function loadLatestMovieBoxAdd(force = false) {
+  const grid = document.getElementById('latest-mb-grid');
+  if (!grid) return;
+
+  grid.innerHTML = `
+    <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+      <i class="fa-solid fa-spinner fa-spin" style="font-size: 32px; color: #00f2fe; margin-bottom: 12px;"></i>
+      <div style="font-size: 15px; font-weight: 600; color: #fff;">Scanning MovieBox for latest additions, episodes &amp; dubbing...</div>
+      <div style="font-size: 12.5px; color: #94a3b8; margin-top: 4px;">Categorizing into Original, Hindi &amp; Bangla with Industry breakdown</div>
+    </div>
+  `;
+
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/moviebox/latest-additions${force ? '?refresh=true' : ''}`);
+    const data = await res.json();
+
+    if (!data || !data.success) {
+      grid.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #ef4444;">
+          <i class="fa-solid fa-circle-exclamation" style="font-size: 28px; margin-bottom: 8px;"></i>
+          <div>Failed to load latest additions from MovieBox.</div>
+        </div>
+      `;
+      return;
+    }
+
+    state.latestMbItems = data.items || [];
+
+    // Update counter badges
+    const cntAll = document.getElementById('latest-count-all');
+    const cntOrig = document.getElementById('latest-count-original');
+    const cntHindi = document.getElementById('latest-count-hindi');
+    const cntBangla = document.getElementById('latest-count-bangla');
+
+    if (cntAll) cntAll.innerText = data.counts?.all || state.latestMbItems.length;
+    if (cntOrig) cntOrig.innerText = data.counts?.original || 0;
+    if (cntHindi) cntHindi.innerText = data.counts?.hindi || 0;
+    if (cntBangla) cntBangla.innerText = data.counts?.bangla || 0;
+
+    applyLatestFilters();
+  } catch (err) {
+    grid.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #ef4444;">
+        <i class="fa-solid fa-triangle-exclamation" style="font-size: 28px; margin-bottom: 8px;"></i>
+        <div>Network error connecting to MovieBox feed: ${escapeHtml(err.message)}</div>
+      </div>
+    `;
+  }
+}
+
+function selectLatestAudio(audio, btn) {
+  state.latestSelectedAudio = audio;
+  document.querySelectorAll('.latest-audio-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  applyLatestFilters();
+}
+
+function applyLatestFilters() {
+  const grid = document.getElementById('latest-mb-grid');
+  if (!grid) return;
+
+  const audio = state.latestSelectedAudio || 'all';
+  const industry = document.getElementById('latest-filter-industry')?.value || 'all';
+  const type = document.getElementById('latest-filter-type')?.value || 'all';
+  const updateType = document.getElementById('latest-filter-update')?.value || 'all';
+  const search = (document.getElementById('latest-filter-search')?.value || '').trim().toLowerCase();
+
+  let items = state.latestMbItems || [];
+
+  if (audio !== 'all') {
+    items = items.filter(i => i.audioCategory === audio);
+  }
+
+  if (industry !== 'all') {
+    items = items.filter(i => (i.industry || '').toLowerCase().includes(industry.toLowerCase()));
+  }
+
+  if (type !== 'all') {
+    items = items.filter(i => i.type === type);
+  }
+
+  if (updateType === 'new_episodes') {
+    items = items.filter(i => i.hasNewEpisodes || i.updateType === 'new_episode');
+  } else if (updateType === 'new_dub') {
+    items = items.filter(i => i.updateType === 'new_dubbing');
+  } else if (updateType === 'unimported') {
+    items = items.filter(i => !i.alreadyImported);
+  }
+
+  if (search) {
+    items = items.filter(i => (i.title || '').toLowerCase().includes(search) ||
+                              (i.industry || '').toLowerCase().includes(search) ||
+                              (i.section || '').toLowerCase().includes(search));
+  }
+
+  const shownCount = document.getElementById('latest-count-shown');
+  const totalCount = document.getElementById('latest-count-total');
+  if (shownCount) shownCount.innerText = items.length;
+  if (totalCount) totalCount.innerText = state.latestMbItems.length;
+
+  if (items.length === 0) {
+    grid.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #94a3b8;">
+        <i class="fa-solid fa-box-open" style="font-size: 32px; margin-bottom: 10px; opacity: 0.6;"></i>
+        <div style="font-size: 15px; font-weight: 600; color: #cbd5e1;">No matching additions found.</div>
+        <div style="font-size: 13px; margin-top: 4px;">Try changing the audio tab or resetting your industry filter.</div>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = items.map((it, idx) => {
+    let badgeClass = 'new-title';
+    if (it.updateType === 'new_episode') badgeClass = 'new-ep';
+    else if (it.updateType === 'new_dubbing') badgeClass = 'new-dub';
+    else if (it.alreadyImported) badgeClass = 'synced';
+
+    const audioPillColor = it.audioCategory === 'bangla' ? '#10b981' : (it.audioCategory === 'hindi' ? '#f59e0b' : '#38bdf8');
+
+    let actionBtnHtml = '';
+    if (it.hasNewEpisodes && it.fobsId) {
+      actionBtnHtml = `
+        <button type="button" class="btn-primary glow importer-card-btn" style="background: linear-gradient(135deg, #f59e0b, #d97706); border:none;" onclick="event.stopPropagation(); triggerLatestEpisodeSync('${it.fobsId}', '${escapeHtml(it.title)}')">
+          <i class="fa-solid fa-arrows-rotate"></i> Sync New Episodes
+        </button>
+      `;
+    } else if (it.alreadyImported) {
+      actionBtnHtml = `
+        <button type="button" class="btn-secondary importer-card-btn" onclick="event.stopPropagation(); openExistingItemInStudio('${it.fobsId}', '${it.type}')">
+          <i class="fa-solid fa-check"></i> Already Synced
+        </button>
+      `;
+    } else {
+      actionBtnHtml = `
+        <button type="button" class="btn-primary glow importer-card-btn" onclick="event.stopPropagation(); openLatestImportModal(${idx})">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> 1-Click Import
+        </button>
+      `;
+    }
+
+    return `
+      <div class="importer-card" onclick="openLatestCardClick(${idx})" style="cursor: pointer; position: relative;">
+        <div class="importer-card-poster-wrap">
+          <img src="${getOptimizedImageUrl(it.poster)}" loading="lazy" decoding="async" onerror="this.src='assets/fobs_logo.png'" alt="${escapeHtml(it.title)}">
+          <span class="latest-badge-tag ${badgeClass}">
+            ${it.updateType === 'new_episode' ? '<i class=\"fa-solid fa-clock-rotate-left\"></i> ' : ''}${escapeHtml(it.updateBadge)}
+          </span>
+          <span class="latest-audio-pill-tag" style="color:${audioPillColor};">
+            ${escapeHtml(it.audioTag)}
+          </span>
+        </div>
+        <div class="importer-card-info">
+          <div class="importer-card-title" title="${escapeHtml(it.title)}">${escapeHtml(it.title)}</div>
+          <div class="importer-card-sub" style="display:flex; justify-content:space-between;">
+            <span><i class="fa-solid fa-film"></i> ${escapeHtml(it.industry)}</span>
+            <span><i class="fa-solid fa-calendar"></i> ${escapeHtml(it.year)}</span>
+          </div>
+          ${it.type === 'series' ? `
+            <div class="latest-ep-status-row">
+              <span style="color:#94a3b8;">FOBS TV: <strong>${it.fobsEpisodesCount || 0} Eps</strong></span>
+              <span style="color:${it.hasNewEpisodes ? '#fbbf24' : '#34d399'};">
+                ${it.hasNewEpisodes ? '<i class=\"fa-solid fa-bell\"></i> New Ep Live' : '<i class=\"fa-solid fa-circle-check\"></i> Up to date'}
+              </span>
+            </div>
+          ` : ''}
+          <div style="margin-top: 8px;">
+            ${actionBtnHtml}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openLatestCardClick(idx) {
+  const it = state.latestMbItems?.[idx];
+  if (!it) return;
+  if (it.hasNewEpisodes && it.fobsId) {
+    triggerLatestEpisodeSync(it.fobsId, it.title);
+  } else if (!it.alreadyImported) {
+    openLatestImportModal(idx);
+  } else if (it.fobsId) {
+    openExistingItemInStudio(it.fobsId, it.type);
+  }
+}
+
+function openLatestImportModal(idx) {
+  const it = state.latestMbItems?.[idx];
+  if (!it) return;
+  openImportModal(it);
+}
+
+async function triggerLatestEpisodeSync(seriesId, title) {
+  showToast(`Checking newly released episodes for "${title}"...`, 'info', 2500);
+  try {
+    const res = await authFetch(`${API_BASE}/api/admin/series/${seriesId}/check-updates`);
+    const data = await res.json();
+    if (!data || !data.success) {
+      showToast(data?.error || 'Failed to check updates', 'error');
+      return;
+    }
+
+    if (data.newEpisodesCount === 0) {
+      showToast(`All ${data.mbReleasedTotal || data.currentEpisodesTotal} episodes are already up-to-date in FOBS TV!`, 'success');
+      return;
+    }
+
+    const syncRes = await authFetch(`${API_BASE}/api/admin/series/${seriesId}/sync-new-episodes`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ episodes: data.newEpisodes })
+    });
+    const syncData = await syncRes.json();
+
+    if (syncData && syncData.success) {
+      showToast(`🎉 ${data.newEpisodesCount} new episode(s) synced permanently to "${title}"!`, 'success', 4000);
+      loadLatestMovieBoxAdd(true);
+      loadSeries();
+    } else {
+      showToast(syncData?.error || 'Failed to sync new episodes', 'error');
+    }
+  } catch (err) {
+    showToast(`Episode sync error: ${err.message}`, 'error');
+  }
+}
+
+function openExistingItemInStudio(id, type) {
+  if (type === 'series') {
+    switchAdminTab('series');
+    setTimeout(() => {
+      openEpisodesStudio(id);
+    }, 200);
+  } else {
+    switchAdminTab('movies');
+  }
 }

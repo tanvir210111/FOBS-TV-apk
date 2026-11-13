@@ -4196,6 +4196,16 @@ app.get('/api/admin/content', adminService.authenticate, (req, res) => {
   });
 });
 
+// Dedicated Latest MovieBox Additions Monitor
+app.get('/api/admin/moviebox/latest-additions', adminService.authenticate, async (req, res) => {
+  try {
+    const result = await adminService.getLatestMovieBoxAdditions(req.query);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // MovieBox Recent & Trending Live Feed & Importer
 app.get('/api/admin/moviebox/recent', adminService.authenticate, async (req, res) => {
   try {

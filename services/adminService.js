@@ -893,6 +893,255 @@ class AdminService {
     };
   }
 
+  /**
+   * Dedicated Live Feed of Latest Additions on MovieBox:
+   * Categorized by Audio (Original, Hindi Dubbed, Bangla Dubbed)
+   * And by Industry (Hollywood, Bollywood, South Indian, Korean, Chinese, Turkish, Anime, Bengali)
+   * Tracks:
+   * 1. Brand New Titles
+   * 2. New Episodes Released for Ongoing Series
+   * 3. New Dubbing Added (Hindi/Bangla)
+   */
+  async getLatestMovieBoxAdditions(query = {}) {
+    const audioFilter = String(query.audio || 'all').toLowerCase(); // 'all', 'original', 'hindi', 'bangla'
+    const industryFilter = String(query.industry || 'all').toLowerCase(); // 'all', 'hollywood', 'bollywood', etc.
+    const typeFilter = String(query.type || 'all').toLowerCase(); // 'all', 'movie', 'series'
+    const updateFilter = String(query.update || 'all').toLowerCase(); // 'all', 'new_episodes', 'new_dub', 'unimported'
+    const searchQuery = String(query.search || '').trim().toLowerCase();
+    const forceRefresh = query.refresh === 'true' || query.force === 'true';
+
+    // 1. Fetch live sections from MovieBox
+    let sections;
+    if (!forceRefresh && mbFeedCache.latestSections && (Date.now() - (mbFeedCache.latestTimestamp || 0) < 180000)) {
+      sections = JSON.parse(JSON.stringify(mbFeedCache.latestSections));
+    } else {
+      sections = await movieboxService.getHomepage();
+      mbFeedCache.latestSections = JSON.parse(JSON.stringify(sections || []));
+      mbFeedCache.latestTimestamp = Date.now();
+    }
+
+    // 2. Fetch specialized regional queries so we have extensive Bangla, Hindi, and Original items
+    const extraSections = [];
+    try {
+      const banglaItems = await this.fetchSpecializedFeedItems('latest-bangla', ['bangla', 'bengali', 'bangla dubbed', 'bengali movies'], {
+        isBangla: true,
+        audioTag: 'Bangla Dubbed',
+        industry: 'Bengali'
+      });
+      if (banglaItems && banglaItems.length > 0) extraSections.push({ title: 'Latest Bangla Additions', items: banglaItems });
+
+      const hindiItems = await this.fetchSpecializedFeedItems('latest-hindi', ['hindi dubbed', 'bollywood 2026', 'korean drama hindi', 'turkish hindi'], {
+        isHindi: true,
+        audioTag: 'Hindi Dubbed',
+        industry: 'Bollywood'
+      });
+      if (hindiItems && hindiItems.length > 0) extraSections.push({ title: 'Latest Hindi Additions', items: hindiItems });
+    } catch (_) {}
+
+    const allSections = [...extraSections, ...(sections || [])];
+    const content = readContent();
+    const existingSeries = content.series || [];
+    const existingMovies = content.movies || [];
+
+    // Map existing catalog for fast O(1) matching
+    const seriesBySubjectId = new Map();
+    const seriesByDetailPath = new Map();
+    const seriesByCleanTitle = new Map();
+
+    for (const s of existingSeries) {
+      if (s.subjectId) seriesBySubjectId.set(String(s.subjectId), s);
+      if (s.detailPath) seriesByDetailPath.set(s.detailPath.trim().toLowerCase(), s);
+      if (s.title) {
+        const cTitle = s.title.toLowerCase().replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, '');
+        if (cTitle) seriesByCleanTitle.set(cTitle, s);
+      }
+    }
+
+    const moviesBySubjectId = new Map();
+    const moviesByDetailPath = new Map();
+    const moviesByCleanTitle = new Map();
+
+    for (const m of existingMovies) {
+      if (m.subjectId) moviesBySubjectId.set(String(m.subjectId), m);
+      if (m.detailPath) moviesByDetailPath.set(m.detailPath.trim().toLowerCase(), m);
+      if (m.title) {
+        const cTitle = m.title.toLowerCase().replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, '');
+        if (cTitle) moviesByCleanTitle.set(cTitle, m);
+      }
+    }
+
+    const seen = new Set();
+    const processedItems = [];
+
+    for (const sec of allSections) {
+      const secTitle = sec.title || '';
+      const secLower = secTitle.toLowerCase();
+
+      for (const it of (sec.items || [])) {
+        if (!it.id || seen.has(it.id)) continue;
+        seen.add(it.id);
+
+        const sid = String(it.subjectId || it.id || '');
+        const itPath = (it.detailPath || '').trim().toLowerCase();
+        const tLower = (it.title || '').toLowerCase();
+
+        // 1. Audio detection
+        const isBangla = it.isBangla || /\[bengali\]|\[bangla\]|\bbengali\b|\bbangla\b/i.test(tLower) || /bengali|bangla/i.test(secLower);
+        const isHindi = it.isHindi || /\[hindi\]|\bhindi\b|bollywood/i.test(tLower) || /hindi|bollywood/i.test(secLower);
+
+        let audioCategory = 'original';
+        let audioTag = 'Original Audio';
+        if (isBangla) {
+          audioCategory = 'bangla';
+          audioTag = 'Bangla Dubbed';
+        } else if (isHindi) {
+          audioCategory = 'hindi';
+          audioTag = 'Hindi Dubbed';
+        }
+
+        // 2. Industry detection
+        let industry = it.industry || this.detectIndustry(it.title, secTitle, isBangla);
+        if (secLower.includes('korean')) industry = 'Korean';
+        else if (secLower.includes('chinese')) industry = 'Chinese';
+        else if (secLower.includes('turkish')) industry = 'Turkish';
+        else if (secLower.includes('bollywood') || secLower.includes('indian')) industry = 'Bollywood';
+        else if (secLower.includes('anime')) industry = 'Anime';
+        else if (secLower.includes('hollywood') || secLower.includes('western')) industry = 'Hollywood';
+        else if (isBangla) industry = 'Bengali';
+
+        // 3. Catalog cross-match
+        const cleanT = tLower.replace(/\[.*?\]|\(.*?\)/g, '').replace(/[^a-z0-9]/g, '');
+        const matchedSeries = (sid && seriesBySubjectId.get(sid)) ||
+                              (itPath && seriesByDetailPath.get(itPath)) ||
+                              (cleanT && seriesByCleanTitle.get(cleanT));
+
+        const matchedMovie = (sid && moviesBySubjectId.get(sid)) ||
+                             (itPath && moviesByDetailPath.get(itPath)) ||
+                             (cleanT && moviesByCleanTitle.get(cleanT));
+
+        const alreadyImported = !!(matchedSeries || matchedMovie);
+        const matchedItem = matchedSeries || matchedMovie;
+
+        let updateType = 'new_title';
+        let updateBadge = 'New Release';
+        let hasNewEpisodes = false;
+        let newEpisodesCount = 0;
+        let fobsEpisodesCount = 0;
+        let mbEpisodesTotal = it.episodesCount || it.totalEpisodes || 0;
+
+        if (matchedSeries) {
+          fobsEpisodesCount = (matchedSeries.episodes || []).length;
+          if (mbEpisodesTotal > fobsEpisodesCount) {
+            newEpisodesCount = mbEpisodesTotal - fobsEpisodesCount;
+            hasNewEpisodes = true;
+            updateType = 'new_episode';
+            updateBadge = `Ep ${fobsEpisodesCount + 1}-${mbEpisodesTotal} Released!`;
+          } else if (matchedSeries.isOngoing) {
+            hasNewEpisodes = true;
+            updateType = 'new_episode';
+            updateBadge = `Ongoing (Ep ${fobsEpisodesCount})`;
+          } else if (audioCategory !== 'original' && (!matchedSeries.title.toLowerCase().includes('hindi') && !matchedSeries.title.toLowerCase().includes('bangla'))) {
+            updateType = 'new_dubbing';
+            updateBadge = `${audioTag} Added`;
+          } else {
+            updateType = 'already_synced';
+            updateBadge = 'Synced';
+          }
+        } else if (matchedMovie) {
+          if (audioCategory !== 'original' && (!matchedMovie.title.toLowerCase().includes('hindi') && !matchedMovie.title.toLowerCase().includes('bangla'))) {
+            updateType = 'new_dubbing';
+            updateBadge = `${audioTag} Added`;
+          } else {
+            updateType = 'already_synced';
+            updateBadge = 'Synced';
+          }
+        }
+
+        processedItems.push({
+          id: it.id,
+          subjectId: sid,
+          title: it.title,
+          type: it.type || (matchedSeries ? 'series' : 'movie'),
+          poster: it.poster,
+          rating: it.rating || '7.8',
+          year: it.year || '2026',
+          detailPath: it.detailPath,
+          section: secTitle,
+          audioCategory,
+          audioTag,
+          industry,
+          alreadyImported,
+          fobsId: matchedItem ? matchedItem.id : null,
+          updateType,
+          updateBadge,
+          hasNewEpisodes,
+          newEpisodesCount,
+          fobsEpisodesCount,
+          mbEpisodesTotal
+        });
+      }
+    }
+
+    // 4. Sort: New episodes > New titles > New dubbing > Already synced
+    const scoreMap = {
+      'new_episode': 100,
+      'new_title': 80,
+      'new_dubbing': 70,
+      'already_synced': 10
+    };
+
+    processedItems.sort((a, b) => {
+      const scoreA = (scoreMap[a.updateType] || 0) + (a.alreadyImported ? 0 : 15);
+      const scoreB = (scoreMap[b.updateType] || 0) + (b.alreadyImported ? 0 : 15);
+      return scoreB - scoreA;
+    });
+
+    // 5. Apply filters
+    let filtered = processedItems;
+
+    if (audioFilter !== 'all') {
+      filtered = filtered.filter(i => i.audioCategory === audioFilter);
+    }
+
+    if (industryFilter !== 'all') {
+      const indLower = industryFilter.replace(/-/g, ' ');
+      filtered = filtered.filter(i => (i.industry || '').toLowerCase().includes(indLower));
+    }
+
+    if (typeFilter !== 'all') {
+      filtered = filtered.filter(i => i.type === typeFilter);
+    }
+
+    if (updateFilter === 'new_episodes') {
+      filtered = filtered.filter(i => i.hasNewEpisodes || i.updateType === 'new_episode');
+    } else if (updateFilter === 'new_dub') {
+      filtered = filtered.filter(i => i.updateType === 'new_dubbing');
+    } else if (updateFilter === 'unimported') {
+      filtered = filtered.filter(i => !i.alreadyImported);
+    }
+
+    if (searchQuery) {
+      filtered = filtered.filter(i => (i.title || '').toLowerCase().includes(searchQuery) ||
+                                      (i.industry || '').toLowerCase().includes(searchQuery) ||
+                                      (i.section || '').toLowerCase().includes(searchQuery));
+    }
+
+    return {
+      success: true,
+      totalCount: processedItems.length,
+      filteredCount: filtered.length,
+      counts: {
+        all: processedItems.length,
+        original: processedItems.filter(i => i.audioCategory === 'original').length,
+        hindi: processedItems.filter(i => i.audioCategory === 'hindi').length,
+        bangla: processedItems.filter(i => i.audioCategory === 'bangla').length,
+        newEpisodes: processedItems.filter(i => i.hasNewEpisodes || i.updateType === 'new_episode').length,
+        unimported: processedItems.filter(i => !i.alreadyImported).length
+      },
+      items: filtered
+    };
+  }
+
   async _old_getMovieBoxRecent(filter = 'all') {
     const sections = await movieboxService.getHomepage();
     const content = readContent();
