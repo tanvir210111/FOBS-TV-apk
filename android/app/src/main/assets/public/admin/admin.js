@@ -1784,7 +1784,7 @@ async function confirmDeleteMediaComment(mediaId, commentId) {
 // ============================================================
 
 let userAudienceFilter = 'all';
-let userVersionFilter = '3.2.0'; // Filter by 3.2.0 by default as requested!
+let userVersionFilter = 'all'; // Default to ALL versions so every single member is visible!
 
 function setUserVersionFilter(ver) {
   userVersionFilter = ver;

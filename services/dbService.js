@@ -293,15 +293,9 @@ async function getUserStats() {
     return ver.startsWith('3.') || ver.includes('3.') || ver === 'Android App' || !ver;
   });
 
-  // Registered members: Keep ALL verified members who registered (never drop by date or app version!)
+  // ALL Registered & App Members: Keep every single member in the list without dropping anyone!
   const registeredUsers = rawRegisteredUsers.filter(u => {
-    if (!u) return false;
-    const email = (u.email || '').trim().toLowerCase();
-    const hasEmail = email && email.includes('@') && email !== 'google user';
-    const hasName = u.name && u.name !== 'User' && u.name !== 'Registered Member';
-    const isGoogleAuth = u.googleId && !String(u.googleId).startsWith('v_');
-    const isAdmin = email === 'tanvir210111@gmail.com';
-    return isAdmin || hasEmail || (hasName && isGoogleAuth);
+    return u && (u.googleId || u._id || u.email || u.name);
   });
 
   const totalRegistered = registeredUsers.length;
@@ -311,19 +305,26 @@ async function getUserStats() {
   // Combine registered Google users + active mobile app devices
   const combinedList = [
     ...registeredUsers.map(u => {
-      const lastActiveTime = u.lastLogin || u.createdAt || new Date().toISOString();
+      const lastActiveTime = u.lastLogin || u.createdAt || (Array.isArray(u.history) && u.history[0]?.updatedAt) || new Date().toISOString();
       const isOnline = (Date.now() - new Date(lastActiveTime).getTime() < 10 * 60 * 1000);
       const isRecent = (Date.now() - new Date(lastActiveTime).getTime() < 60 * 60 * 1000);
       const cleanIp = u.ip ? u.ip.replace('::ffff:', '') : 'Encrypted';
+      const cleanGid = String(u.googleId || u._id || '').replace(/^usr_usr_/, 'usr_');
+      const displayName = (u.name && u.name !== 'User' && u.name !== 'Registered Member')
+        ? u.name
+        : (u.email && u.email.includes('@') && u.email !== 'Google User'
+            ? u.email.split('@')[0]
+            : `Member (${cleanGid.substring(0, 14) || 'App'})`);
+
       return {
         id: u._id || u.googleId,
         googleId: u.googleId || '',
-        name: u.name || 'Registered Member',
+        name: displayName,
         email: (u.email && u.email !== 'Google User') ? u.email : '',
         picture: u.picture || '',
         type: 'Registered Member',
-        platform: 'Google Account',
-        deviceModel: 'Google Authenticated',
+        platform: (u.email && u.email.includes('@')) ? 'Google Account' : 'App Account',
+        deviceModel: (u.email && u.email.includes('@')) ? 'Google Authenticated' : 'Mobile Member',
         ip: cleanIp,
         appVersion: u.appVersion || '3.2.0',
         versionVerified: true,
