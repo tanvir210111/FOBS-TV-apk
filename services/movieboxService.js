@@ -250,6 +250,106 @@ class MovieBoxService {
   }
 
   /**
+   * Direct Query to MovieBox Backend Database Filter API (/wefeed-h5api-bff/subject/filter)
+   * Retrieves raw chronological uploads and categorized items by channelId, sort, classify, country, and genre.
+   */
+  async fetchFilter(payload, options = {}) {
+    const candidateDomains = [
+      'https://h5-api.aoneroom.com',
+      'https://h5.aoneroom.com',
+      'https://movie-box.co'
+    ];
+    const country = options.country || 'IN';
+
+    for (const domain of candidateDomains) {
+      try {
+        const res = await axios.post(`${domain}/wefeed-h5api-bff/subject/filter`, payload, {
+          headers: generateAuthHeaders(domain, '', country),
+          httpsAgent: cleanAgent,
+          timeout: options.timeout || 6000
+        });
+        const items = res.data?.data?.items;
+        if (Array.isArray(items)) {
+          return items.map(it => {
+            const isSeries = it.subjectType === 2 || payload.channelId === 2;
+            const poster = it.cover?.url || it.image?.url || '';
+            const year = it.releaseDate ? it.releaseDate.substring(0, 4) : '';
+            return {
+              id: String(it.subjectId || it.id),
+              subjectId: String(it.subjectId || it.id),
+              title: it.title || 'Untitled',
+              type: isSeries ? 'series' : 'movie',
+              subjectType: it.subjectType || (isSeries ? 2 : 1),
+              releaseDate: it.releaseDate || '',
+              countryName: it.countryName || '',
+              genre: it.genre || '',
+              year: year || '2026',
+              rating: String(it.imdbRatingValue || '7.5'),
+              poster: poster,
+              detailPath: it.detailPath || '',
+              dubs: Array.isArray(it.dubs) ? it.dubs : []
+            };
+          }).filter(it => it.id && it.id !== '0' && it.title);
+        }
+      } catch (_) {}
+    }
+    return [];
+  }
+
+  /**
+   * Fetches Real-Time Chronological Backend Uploads directly from MovieBox backend database.
+   * Bypasses curated frontend homepage carousels and pulls genuine newly added
+   * titles, newly released episodes, and newly ingested regional dubs.
+   */
+  async getBackendLatestFeed(options = {}) {
+    const fetch = (payload, meta = {}) => this.fetchFilter(payload, options).then(items => items.map(it => ({ ...it, ...meta })));
+
+    try {
+      const [
+        latestSeries,
+        latestMovies,
+        hindiSeries,
+        hindiMovies,
+        banglaDub,
+        banglaCountry,
+        koreanSeries,
+        chineseSeries,
+        turkishSeries,
+        animeSeries
+      ] = await Promise.all([
+        fetch({ channelId: 2, sort: 'Latest', page: 1, perPage: 45 }, { section: 'Latest Series Additions' }),
+        fetch({ channelId: 1, sort: 'Latest', page: 1, perPage: 45 }, { section: 'Latest Movie Additions' }),
+        fetch({ channelId: 2, classify: 'Hindi dub', sort: 'Latest', page: 1, perPage: 45 }, { isHindi: true, section: 'Latest Hindi Dubbed Series' }),
+        fetch({ channelId: 1, classify: 'Hindi dub', sort: 'Latest', page: 1, perPage: 45 }, { isHindi: true, section: 'Latest Hindi Dubbed Movies' }),
+        fetch({ classify: 'Bengali dub', sort: 'Latest', page: 1, perPage: 40 }, { isBangla: true, section: 'Latest Bengali Dubbed' }),
+        fetch({ country: 'Bangladesh', sort: 'Latest', page: 1, perPage: 40 }, { isBangla: true, section: 'Latest Bangladesh Cinema' }),
+        fetch({ channelId: 2, country: 'Korea', sort: 'Latest', page: 1, perPage: 35 }, { section: 'Latest Korean Dramas' }),
+        fetch({ channelId: 2, country: 'China', sort: 'Latest', page: 1, perPage: 35 }, { section: 'Latest Chinese Dramas' }),
+        fetch({ channelId: 2, country: 'Turkey', sort: 'Latest', page: 1, perPage: 30 }, { section: 'Latest Turkish Series' }),
+        fetch({ channelId: 2, country: 'Japan', genre: 'Animation', sort: 'Latest', page: 1, perPage: 35 }, { section: 'Latest Anime Episodes' })
+      ]);
+
+      const sections = [
+        { title: 'Latest Series Additions', items: latestSeries },
+        { title: 'Latest Movie Additions', items: latestMovies },
+        { title: 'Latest Hindi Dubbed Series', items: hindiSeries },
+        { title: 'Latest Hindi Dubbed Movies', items: hindiMovies },
+        { title: 'Latest Bengali Dubbed', items: banglaDub },
+        { title: 'Latest Bangladesh Cinema', items: banglaCountry },
+        { title: 'Latest Korean Dramas', items: koreanSeries },
+        { title: 'Latest Chinese Dramas', items: chineseSeries },
+        { title: 'Latest Turkish Series', items: turkishSeries },
+        { title: 'Latest Anime Episodes', items: animeSeries }
+      ];
+
+      return sections;
+    } catch (e) {
+      console.error('[getBackendLatestFeed] Error:', e.message);
+      return [];
+    }
+  }
+
+  /**
    * Fetches the homepage content with all categories (Trending, Cinema, Bollywood, Hollywood, Series, Anime, Bangla)
    * Fetches both regional Indian & Bangladeshi catalogs with geo-spoof headers to guarantee complete coverage
    */

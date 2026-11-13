@@ -2848,10 +2848,9 @@ async function openImportModal(item) {
       if (d.title && !document.getElementById('imp-title').value.includes(d.title)) {
         document.getElementById('imp-title').value = d.title;
       }
-      if (d.type) {
-        document.getElementById('imp-type').value = d.type;
-        toggleImportType(d.type);
-      }
+      const finalType = isSeries ? 'series' : (d.type || document.getElementById('imp-type').value || 'movie');
+      document.getElementById('imp-type').value = finalType;
+      toggleImportType(finalType);
 
       state.isImportOngoing = !!d.isOngoing;
       state.importReleasedEps = Math.max(d.releasedEpisodesCount || d.totalEpisodes || 0, 1);

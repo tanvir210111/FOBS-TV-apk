@@ -939,6 +939,11 @@ class AdminService {
    * 2. New Episodes Released for Ongoing Series
    * 3. New Dubbing Added (Hindi/Bangla)
    */
+  /**
+   * Dedicated Fetcher for "Latest MovieBox Add" Feature (Admin Panel)
+   * Connects directly to MovieBox backend database filter feed (/wefeed-h5api-bff/subject/filter)
+   * Retrieves genuine chronological uploads across Original Audio, Hindi Dubbed & Bangla Dubbed.
+   */
   async getLatestMovieBoxAdditions(query = {}) {
     const audioFilter = String(query.audio || 'all').toLowerCase(); // 'all', 'original', 'hindi', 'bangla'
     const industryFilter = String(query.industry || 'all').toLowerCase(); // 'all', 'hollywood', 'bollywood', etc.
@@ -947,33 +952,21 @@ class AdminService {
     const searchQuery = String(query.search || '').trim().toLowerCase();
     const forceRefresh = query.refresh === 'true' || query.force === 'true';
 
-    // 1. Fetch live sections from MovieBox
-    let sections;
-    if (!forceRefresh && mbFeedCache.latestSections && (Date.now() - (mbFeedCache.latestTimestamp || 0) < 180000)) {
-      sections = JSON.parse(JSON.stringify(mbFeedCache.latestSections));
+    // 1. Fetch live chronological additions directly from MovieBox backend database
+    let allSections;
+    if (!forceRefresh && mbFeedCache.backendLatestSections && (Date.now() - (mbFeedCache.backendLatestTimestamp || 0) < 180000)) {
+      allSections = JSON.parse(JSON.stringify(mbFeedCache.backendLatestSections));
     } else {
-      sections = await movieboxService.getHomepage();
-      mbFeedCache.latestSections = JSON.parse(JSON.stringify(sections || []));
-      mbFeedCache.latestTimestamp = Date.now();
+      allSections = await movieboxService.getBackendLatestFeed({ forceRefresh });
+      if (allSections && allSections.length > 0) {
+        mbFeedCache.backendLatestSections = JSON.parse(JSON.stringify(allSections));
+        mbFeedCache.backendLatestTimestamp = Date.now();
+        saveFeedCacheToDisk();
+      } else if (mbFeedCache.backendLatestSections) {
+        allSections = JSON.parse(JSON.stringify(mbFeedCache.backendLatestSections));
+      }
     }
 
-    // 2. Fetch specialized regional queries so we have extensive Bangla, Hindi, and Original items
-    const extraSections = [];
-    try {
-      const banglaItems = await this.fetchSpecializedFeedItems('latest-bangla', ['bangla', 'bengali', 'bangla dubbed', 'bengali movies'], {
-        isBangla: true,
-        audioTag: 'Bangla Dubbed'
-      }, forceRefresh);
-      if (banglaItems && banglaItems.length > 0) extraSections.push({ title: 'Latest Bangla Additions', items: banglaItems });
-
-      const hindiItems = await this.fetchSpecializedFeedItems('latest-hindi', ['hindi dubbed', 'bollywood 2026', 'korean drama hindi', 'turkish hindi', 'anime hindi', 'south hindi'], {
-        isHindi: true,
-        audioTag: 'Hindi Dubbed'
-      }, forceRefresh);
-      if (hindiItems && hindiItems.length > 0) extraSections.push({ title: 'Latest Hindi Additions', items: hindiItems });
-    } catch (_) {}
-
-    const allSections = [...extraSections, ...(sections || [])];
     const content = readContent();
     const existingSeries = content.series || [];
     const existingMovies = content.movies || [];
@@ -1053,15 +1046,15 @@ class AdminService {
         const itPath = (it.detailPath || '').trim().toLowerCase();
         const tLower = (it.title || '').toLowerCase();
 
-        // Filter out promotional non-media clips / songs / trailers / low-quality UGC
-        if (/\b(dj song|music video|official song|official music|bangla song|dance song|rhymes|shorts video|nwollywood|kids video|baby song|বাউল গান|ফোক গান|নাচ|ভিডিও গান|গজল|gojol|লুঙ্গি|নাটক|natok|concert|mp3|folk song|tiny desk|mixtape|wrestling|worship songs)\b/i.test(tLower)) {
+        // Filter out promotional non-media clips / songs / trailers / low-quality UGC / sports reviews
+        if (/\b(dj song|music video|official song|official music|bangla song|dance song|rhymes|shorts video|nwollywood|kids video|baby song|বাউল গান|ফোক গান|নাচ|ভিডিও গান|গজল|gojol|লুঙ্গি|নাটক|natok|concert|mp3|folk song|tiny desk|mixtape|wrestling|wwe|raw|smackdown|highlights|review|reaction|vlog|gameplay|worship songs)\b/i.test(tLower)) {
           continue;
         }
 
         // 1. Audio detection (Orthogonal to Industry)
-        const isBangla = it.isBangla || /\[bengali\]|\[bangla\]|\bbengali\b|\bbangla\b|[\u0980-\u09FF]/i.test(tLower) || /bengali|bangla/i.test(secLower);
-        const isHindi = it.isHindi || /\[hindi\]|\bhindi\b/i.test(tLower) || /hindi|bollywood/i.test(secLower) ||
-                        (it.countryName === 'India' && !/tamil|telugu|malayalam|kannada/i.test(tLower));
+        const isBangla = it.isBangla || /\[bengali\]|\[bangla\]|\bbengali\b|\bbangla\b|[\u0980-\u09FF]/i.test(tLower) || it.countryName === 'Bangladesh' || /bengali|bangla/i.test(secLower);
+        const isHindi = !isBangla && (it.isHindi || /\[hindi\]|\bhindi\b/i.test(tLower) || /hindi/i.test(secLower) ||
+                        (it.countryName === 'India' && !/tamil|telugu|malayalam|kannada/i.test(tLower)));
 
         let audioCategory = 'original';
         let audioTag = 'Original Audio';
@@ -2013,7 +2006,8 @@ class AdminService {
     const autoDetail = await movieboxService.getDetail(subjectId, detailPath, { forceRefresh: true });
     if (autoDetail) {
       if (!title) title = autoDetail.title;
-      if (!type) type = autoDetail.type;
+      if (payload.type) type = payload.type;
+      else if (autoDetail.type) type = autoDetail.type;
       if (!detailPath) detailPath = autoDetail.detailPath;
       if (!year || year === '2026') year = autoDetail.year || year || '2026';
       if (!rating || rating === '8.0') rating = autoDetail.rating || rating || '8.2';
