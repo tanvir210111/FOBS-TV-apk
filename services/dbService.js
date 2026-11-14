@@ -13,6 +13,8 @@ const REDIS_URI = process.env.REDIS_URI || 'redis://127.0.0.1:6379';
 const BOOKINGS_FILE = path.join(__dirname, '..', 'data', 'bookings.json');
 const COMMENTS_FILE = path.join(__dirname, '..', 'data', 'comments.json');
 const REPORTS_FILE = path.join(__dirname, '..', 'data', 'reports.json');
+const REPORTS_LOCAL_FILE = path.join(__dirname, '..', 'data', 'reports.local.json');
+const REPORTS_LOG_FILE = path.join(__dirname, '..', 'data', 'reports.log.jsonl');
 const USERS_FILE = path.join(__dirname, '..', 'data', 'users.json');
 const USERS_LOCAL_FILE = path.join(__dirname, '..', 'data', 'users.local.json');
 const DEVICES_FILE = path.join(__dirname, '..', 'data', 'devices.json');
@@ -1370,6 +1372,12 @@ let Report = null;
 
 function getLocalReports() {
   try {
+    if (fs.existsSync(REPORTS_LOCAL_FILE)) {
+      const data = JSON.parse(fs.readFileSync(REPORTS_LOCAL_FILE, 'utf8'));
+      if (Array.isArray(data) && data.length > 0) return data;
+    }
+  } catch (e) {}
+  try {
     if (fs.existsSync(REPORTS_FILE)) {
       return JSON.parse(fs.readFileSync(REPORTS_FILE, 'utf8')) || [];
     }
@@ -1379,9 +1387,10 @@ function getLocalReports() {
 
 function saveLocalReports(reports) {
   try {
-    const dir = path.dirname(REPORTS_FILE);
+    const dir = path.dirname(REPORTS_LOCAL_FILE);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(REPORTS_FILE, JSON.stringify(reports, null, 2), 'utf8');
+    fs.writeFileSync(REPORTS_LOCAL_FILE, JSON.stringify(reports, null, 2), 'utf8');
+    try { fs.writeFileSync(REPORTS_FILE, JSON.stringify(reports, null, 2), 'utf8'); } catch (_) {}
   } catch (e) {
     console.error('Error saving reports file:', e.message);
   }
@@ -1405,12 +1414,17 @@ async function saveReport(data) {
     createdAt: new Date().toISOString()
   };
 
-  // 1. Save locally
+  // 1. Save locally with immune persistence
   const reports = getLocalReports();
   reports.unshift(reportObj);
   saveLocalReports(reports);
 
-  // 2. Save in MongoDB if online
+  // 2. Append-only persistent JSONL log
+  try {
+    fs.appendFileSync(REPORTS_LOG_FILE, JSON.stringify(reportObj) + '\n', 'utf8');
+  } catch (_) {}
+
+  // 3. Save in MongoDB if online
   if (isMongoConnected && Report) {
     try {
       const doc = new Report(reportObj);

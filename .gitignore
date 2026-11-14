@@ -28,7 +28,10 @@ scratch/
 # Local persistent runtime data (immune to git stash/pull)
 data/*.local.json
 data/*.backup.json
+data/*.log.jsonl
 data/moviebox_stream_cache.json
 data/mb_feed_cache.json
 data/users.json
 data/devices.json
+data/reports.json
+data/requests.json
