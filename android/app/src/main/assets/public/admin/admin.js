@@ -1914,7 +1914,7 @@ function renderUsersTable(usersList) {
             ${avatarHtml}
             <div>
               <div class="table-title-bold" style="font-size: 13.5px; color: ${isReg ? '#f8fafc' : '#e2e8f0'}; font-weight: 700;">
-                ${escapeHtml(u.name || (isReg ? 'Google Member' : 'Mobile App User'))}
+                ${escapeHtml(u.name || (isReg ? 'App Member' : 'Mobile App User'))}
               </div>
               ${hasEmail ? `
                 <div style="font-size: 11.5px; color: #c084fc; font-weight: 600; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
@@ -1923,7 +1923,7 @@ function renderUsersTable(usersList) {
               ` : (isReg ? `
                 <div style="font-size: 11px; color: #fbbf24; font-weight: 600; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
                   <i class="fa-solid fa-envelope-circle-check" style="font-size: 10px;"></i>
-                  ${displayEmail ? escapeHtml(displayEmail) : 'Google Member (Sync Pending)'}
+                  ${displayEmail ? escapeHtml(displayEmail) : 'App Member'}
                 </div>
               ` : `
                 <div class="table-meta-sub" style="font-family: var(--font-mono); font-size: 11px; color: #64748b;">
@@ -1938,10 +1938,10 @@ function renderUsersTable(usersList) {
             ${isReg ? `
               <div style="font-size: 13px; font-weight: 700; color: ${hasEmail ? '#f1f5f9' : '#fbbf24'}; display: flex; align-items: center; gap: 6px;">
                 <i class="fa-solid fa-envelope" style="color: ${hasEmail ? '#c084fc' : '#fbbf24'}; font-size: 12px;"></i>
-                <span style="user-select: all; color: ${hasEmail ? '#e9d5ff' : '#fef08a'};">${escapeHtml(hasEmail ? displayEmail : (displayEmail || 'Google Authenticated'))}</span>
+                <span style="user-select: all; color: ${hasEmail ? '#e9d5ff' : '#fef08a'};">${escapeHtml(hasEmail ? displayEmail : (displayEmail || 'Verified Account'))}</span>
               </div>
               <div class="table-meta-sub" style="font-size: 11px; color: #94a3b8;">
-                <i class="fa-brands fa-google" style="color: #f59e0b; margin-right: 3px;"></i> Google Account &bull; ${escapeHtml(u.deviceModel || 'Mobile')}
+                <i class="fa-solid fa-user-check" style="color: #38bdf8; margin-right: 3px;"></i> App Account &bull; ${escapeHtml(u.deviceModel || 'Mobile')}
               </div>
             ` : `
               <span style="font-weight: 600; font-size: 12.5px; color: #cbd5e1;">${escapeHtml(u.deviceModel || 'Android Phone')}</span>

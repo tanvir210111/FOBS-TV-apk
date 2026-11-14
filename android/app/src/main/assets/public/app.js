@@ -187,9 +187,13 @@ function isUserLoggedIn() {
   const name = (currentUser.name || '').trim();
   const email = (currentUser.email || '').trim().toLowerCase();
   
-  // If user has a name and either an email or an account ID, they are fully authenticated!
-  if (!name) return false;
-  if (!email && !currentUser.googleId && !currentUser.id) return false;
+  // Strict Login Gate: Must have a real name AND a valid @gmail.com email
+  if (!name || name.toLowerCase() === 'user' || name.toLowerCase() === 'registered member' || name.toLowerCase() === 'viewer') {
+    return false;
+  }
+  if (!email || !email.includes('@') || !email.endsWith('@gmail.com') || email === '@gmail.com') {
+    return false;
+  }
   return true;
 }
 window.isUserLoggedIn = isUserLoggedIn;
@@ -221,6 +225,32 @@ function closeSimpleLoginModal(e) {
   if (e && e.target !== document.getElementById('simpleLoginModalOverlay') && !e.target.closest('.sheet-close-btn')) return;
   const overlay = document.getElementById('simpleLoginModalOverlay');
   if (overlay) overlay.style.display = 'none';
+
+  // If user is NOT logged in and closed/cancelled the modal, ensure playback is unconditionally stopped
+  if (typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
+    const vp = document.getElementById('mainVideoPlayer');
+    if (vp) {
+      try { vp.pause(); vp.currentTime = 0; } catch(err) {}
+    }
+    const embedFrame = document.getElementById('mainEmbedPlayer');
+    if (embedFrame) {
+      embedFrame.src = 'about:blank';
+      embedFrame.style.display = 'none';
+    }
+    const playerOverlay = document.getElementById('playerOverlay');
+    if (playerOverlay && playerOverlay.classList.contains('open')) {
+      if (typeof closePlayer === 'function') {
+        closePlayer();
+      } else {
+        playerOverlay.classList.remove('open');
+        playerOverlay.style.display = 'none';
+      }
+    }
+    if (window.appState) {
+      window.appState.pendingOpenMedia = null;
+      window.appState.pendingPlay = null;
+    }
+  }
 }
 window.closeSimpleLoginModal = closeSimpleLoginModal;
 
@@ -4049,6 +4079,10 @@ function renderEpisodePills(episodes, activeIndex) {
 
 // Select Episode
 function selectEpisode(idx) {
+  if (typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
+    if (typeof openSimpleLoginModal === 'function') openSimpleLoginModal();
+    return;
+  }
   if (!appState.currentMedia) return;
   const currentEpisodes = getActiveSeasonEpisodes(appState.currentMedia);
   if (!currentEpisodes || !currentEpisodes[idx]) return;

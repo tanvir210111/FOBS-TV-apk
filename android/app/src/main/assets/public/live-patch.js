@@ -898,6 +898,13 @@
   const baseOpenPlayerById = window._fobsOriginalOpenPlayerById || (typeof window.openPlayerById === 'function' && !window.openPlayerById._hasFobsHook ? window.openPlayerById : null);
 
   window.openPlayerById = function (type, id) {
+    if (type !== 'upcoming' && typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
+      if (window.appState) window.appState.pendingOpenMedia = { type, id };
+      if (typeof openSimpleLoginModal === 'function') openSimpleLoginModal();
+      if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
+      return;
+    }
+
     showConnectingLoader();
     if (id) {
       const isSer = (type === 'series');
@@ -947,6 +954,10 @@
 
   // Safe Watch History Resume: Accurate season/episode, no tab conflict, no modal freeze
   window.resumeHistoryItem = function (mediaId, type, resumeSeconds) {
+    if (typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
+      if (typeof openSimpleLoginModal === 'function') openSimpleLoginModal();
+      return;
+    }
     const overlay = document.getElementById('historyModalOverlay');
     if (overlay) {
       overlay.classList.remove('open');
