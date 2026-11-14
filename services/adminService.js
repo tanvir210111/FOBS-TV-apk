@@ -1055,8 +1055,8 @@ class AdminService {
         const itPath = (it.detailPath || '').trim().toLowerCase();
         const tLower = (it.title || '').toLowerCase();
 
-        // Filter out promotional non-media clips / songs / trailers / low-quality UGC / sports reviews
-        if (/\b(dj song|music video|official song|official music|bangla song|dance song|rhymes|shorts video|nwollywood|kids video|baby song|বাউল গান|ফোক গান|নাচ|ভিডিও গান|গজল|gojol|লুঙ্গি|নাটক|natok|concert|mp3|folk song|tiny desk|mixtape|wrestling|wwe|raw|smackdown|highlights|review|reaction|vlog|gameplay|worship songs)\b/i.test(tLower)) {
+        // Filter out promotional non-media clips / songs / trailers / low-quality UGC / sports reviews / Nollywood clips
+        if (/\b(nollywood|nwollywood|yoruba|yoruba movie|hausa|african yoruba|african movie|it's showtime|showtime|dj song|music video|official song|official music|bangla song|dance song|rhymes|shorts video|kids video|baby song|বাউল গান|ফোক গান|নাচ|ভিডিও গান|গজল|gojol|লুঙ্গি|নাটক|natok|concert|mp3|folk song|tiny desk|mixtape|wrestling|wwe|raw|smackdown|highlights|review|reaction|vlog|gameplay|worship songs)\b/i.test(tLower)) {
           continue;
         }
 
@@ -1084,24 +1084,26 @@ class AdminService {
         const posterMatch = posterUrl.match(/\/image\/(\d{4})\/(\d{2})\/(\d{2})\//);
         const trailerMatch = trailerUrl.match(/\/vone\/(\d{4})\/(\d{2})\/(\d{2})\//);
 
-        let uploadDate = '';
-        if (posterMatch) {
-          // Genuine date MovieBox generated & ingested the poster on its CDN
-          uploadDate = `${posterMatch[1]}-${posterMatch[2]}-${posterMatch[3]}`;
-        } else if (trailerMatch) {
-          // Date MovieBox uploaded the trailer asset
-          uploadDate = `${trailerMatch[1]}-${trailerMatch[2]}-${trailerMatch[3]}`;
-        } else if (it.releaseDate && /^\d{4}-\d{2}-\d{2}$/.test(it.releaseDate.substring(0, 10))) {
-          uploadDate = it.releaseDate.substring(0, 10);
-        } else if (it.year && /^\d{4}$/.test(String(it.year))) {
-          uploadDate = `${it.year}-01-01`;
-        } else {
-          uploadDate = todayDateStr;
-        }
+        const pDate = posterMatch ? `${posterMatch[1]}-${posterMatch[2]}-${posterMatch[3]}` : '';
+        const tDate = trailerMatch ? `${trailerMatch[1]}-${trailerMatch[2]}-${trailerMatch[3]}` : '';
+        let relDate = (it.releaseDate && /^\d{4}-\d{2}-\d{2}$/.test(it.releaseDate.substring(0, 10))) ? it.releaseDate.substring(0, 10) : '';
 
-        // If MovieBox uploaded the asset today or recently, don't let placeholder future release dates push it into the future
-        if (uploadDate > todayDateStr && (posterMatch || trailerMatch)) {
-          uploadDate = todayDateStr;
+        let uploadDate = '';
+        if (pDate && pDate <= todayDateStr) {
+          // If poster date is valid and in past/today, compare with releaseDate
+          if (relDate && relDate <= todayDateStr && relDate > pDate) {
+            uploadDate = relDate; // Video/dub released on or after poster ingestion
+          } else {
+            uploadDate = pDate; // Asset ingested on MovieBox CDN on this date
+          }
+        } else if (relDate && relDate <= todayDateStr) {
+          uploadDate = relDate;
+        } else if (tDate && tDate <= todayDateStr) {
+          uploadDate = tDate;
+        } else if (pDate) {
+          uploadDate = todayDateStr; // Capped future date
+        } else {
+          uploadDate = relDate || todayDateStr;
         }
 
         const uploadTimestamp = new Date(`${uploadDate}T12:00:00Z`).getTime();
@@ -1178,11 +1180,10 @@ class AdminService {
     }
 
     // 5. Smart Chronological Sort:
-    // Strictly latest additions first:
     // 1. Ongoing series with genuinely newly released un-imported episodes
-    // 2. Added Today (uploadDate === todayDateStr) -> Nov 13 releases at the very top!
-    // 3. Added Yesterday (uploadDate === yesterdayDateStr) -> Nov 12 releases next!
-    // 4. Released content strictly ordered by uploadTimestamp DESC (Nov 11, Nov 10, Nov 9, ...)
+    // 2. Released content strictly ordered by uploadDate DESC (2026-11-14, 2026-11-13, 2026-11-12, ...)
+    // 3. Within same uploadDate: prioritize high-interest content (Bollywood, South, Hindi/Bangla dubs, K-Drama, Anime)
+    // 4. Unimported before imported
     // 5. Coming Soon / Future releases (uploadDate > todayDateStr) placed after released items
     processedItems.sort((a, b) => {
       // 1. Genuinely new episodes to sync
@@ -1190,29 +1191,35 @@ class AdminService {
       const epRankB = b.hasNewEpisodes ? 1 : 0;
       if (epRankB !== epRankA) return epRankB - epRankA;
 
-      // 2. Separate released vs future releases
+      // 2. Separate released vs future upcoming releases
       const isFutureA = a.uploadDate > todayDateStr ? 1 : 0;
       const isFutureB = b.uploadDate > todayDateStr ? 1 : 0;
       if (isFutureA !== isFutureB) {
-        return isFutureA - isFutureB; // Released items first, upcoming after
+        return isFutureA - isFutureB; // Released items first, upcoming at the bottom
       }
 
-      // 3. Today's additions first among released
-      const isTodayA = a.uploadDate === todayDateStr ? 1 : 0;
-      const isTodayB = b.uploadDate === todayDateStr ? 1 : 0;
-      if (isTodayB !== isTodayA) return isTodayB - isTodayA;
-
-      // 4. Yesterday's additions next
-      const isYestA = a.uploadDate === yesterdayDateStr ? 1 : 0;
-      const isYestB = b.uploadDate === yesterdayDateStr ? 1 : 0;
-      if (isYestB !== isYestA) return isYestB - isYestA;
-
-      // 5. Strict chronological upload date
+      // 3. Strict chronological upload date (newest upload first!)
       if (b.uploadTimestamp !== a.uploadTimestamp) {
         return b.uploadTimestamp - a.uploadTimestamp;
       }
 
-      // 6. Unimported before imported
+      // 4. Within the same upload date: prioritize high-interest industry & audio
+      const getPriorityScore = (item) => {
+        let score = 0;
+        const ind = (item.industry || '').toLowerCase();
+        const aud = (item.audioCategory || '').toLowerCase();
+        if (aud === 'bangla' || aud === 'hindi') score += 20;
+        if (ind.includes('bollywood') || ind.includes('south')) score += 15;
+        if (ind.includes('korean') || ind.includes('anime')) score += 10;
+        if (ind.includes('hollywood')) score += 8;
+        if (!item.alreadyImported) score += 5;
+        return score;
+      };
+
+      const scoreDiff = getPriorityScore(b) - getPriorityScore(a);
+      if (scoreDiff !== 0) return scoreDiff;
+
+      // 5. Unimported before imported
       const rankA = !a.alreadyImported ? 1 : 0;
       const rankB = !b.alreadyImported ? 1 : 0;
       return rankB - rankA;

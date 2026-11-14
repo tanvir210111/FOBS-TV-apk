@@ -326,7 +326,9 @@ class MovieBoxService {
     };
 
     try {
+      // Simultaneously pull live curated regional sections from MovieBox Homepage AND deep database feeds
       const [
+        homepageSections,
         latestSeries,
         latestMovies,
         hindiSeries,
@@ -340,6 +342,7 @@ class MovieBoxService {
         turkishSeries,
         animeSeries
       ] = await Promise.all([
+        this.getHomepage().catch(() => []),
         fetchMulti({ channelId: 2, sort: 'Latest' }, { section: 'Latest Series Additions' }, 5),
         fetchMulti({ channelId: 1, sort: 'Latest' }, { section: 'Latest Movie Additions' }, 5),
         fetchMulti({ channelId: 2, classify: 'Hindi dub', sort: 'Latest' }, { isHindi: true, section: 'Latest Hindi Dubbed Series' }, 6),
@@ -354,7 +357,7 @@ class MovieBoxService {
         fetchMulti({ channelId: 2, country: 'Japan', genre: 'Animation', sort: 'Latest' }, { section: 'Latest Anime Episodes' }, 4)
       ]);
 
-      const sections = [
+      const backendSections = [
         { title: 'Latest Series Additions', items: latestSeries },
         { title: 'Latest Movie Additions', items: latestMovies },
         { title: 'Latest Hindi Dubbed Series', items: hindiSeries },
@@ -369,7 +372,8 @@ class MovieBoxService {
         { title: 'Latest Anime Episodes', items: animeSeries }
       ];
 
-      return sections;
+      // Merge homepage sections (Cinema, Bollywood, South Indian, Indian Drama, Trending Now, etc.) with deep backend feeds
+      return [...(homepageSections || []), ...backendSections];
     } catch (e) {
       console.error('[getBackendLatestFeed] Error:', e.message);
       return [];
