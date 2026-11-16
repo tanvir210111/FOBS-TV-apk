@@ -2819,7 +2819,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.7.0",
+  version: "1.7.5",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 
@@ -4051,7 +4051,9 @@ app.get('/api/subtitles/ai-translate', async (req, res) => {
 
     const vtt = await subtitleService.getOrTranslateToBangla(url, `ai_${title || 'sub'}_s${season || 0}_e${episode || 0}`, { subjectId, detailPath, season, episode });
     res.setHeader('Content-Type', 'text/vtt; charset=utf-8');
-    res.setHeader('Cache-Control', 'public, max-age=604800');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     res.send(vtt);
   } catch (err) {
     console.warn('AI subtitle translate route error:', err.message);

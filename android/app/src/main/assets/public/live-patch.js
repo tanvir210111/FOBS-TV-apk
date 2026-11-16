@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.7.0 (The Remarried Empress Ep 6, Bulletproof Fit/Fill Aspect Ratio & Pure Black Player)
+// FOBS TV Live OTA Patch Bundle v1.7.5 (Default Bangla Subtitle Enforcer, Cache-Buster & When I Meet the Moon Full Support)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.7.0 (Ep 6 Added, Bulletproof Fit/Fill & Pure Black Player) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.7.0';
+  console.log('⚡ FOBS TV Live Patch v1.7.5 (Default Bangla Subtitle Enforcer & Cache-Buster) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.7.5';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -2524,16 +2524,24 @@
 
       // Offline Dual Subtitles
       const offlineTracks = [];
-      const bnText = nativeBnSub || offlineItem?.bnVttText || offlineItem?.vttText;
-      if (bnText && typeof parseSubtitleTextToCues === 'function') {
-        const bnCues = parseSubtitleTextToCues(bnText);
+      let bnRaw = nativeBnSub || offlineItem?.bnVttText || offlineItem?.vttText || '';
+      try {
+        const parsed = JSON.parse(bnRaw);
+        if (parsed && (parsed.vtt || parsed.rawVtt)) bnRaw = parsed.vtt || parsed.rawVtt;
+      } catch (e) {}
+      if (bnRaw && typeof parseSubtitleTextToCues === 'function') {
+        const bnCues = parseSubtitleTextToCues(bnRaw);
         if (bnCues && bnCues.length > 0) {
           offlineTracks.push({ id: 'offline_bn', language: 'Bangla (বাংলা)', langCode: 'bn', source: isNativeReady ? 'Device Storage (মুভিবক্স)' : 'Offline Storage', rawCues: bnCues });
         }
       }
-      const enText = nativeEnSub || offlineItem?.enVttText;
-      if (enText && typeof parseSubtitleTextToCues === 'function') {
-        const enCues = parseSubtitleTextToCues(enText);
+      let enRaw = nativeEnSub || offlineItem?.enVttText || '';
+      try {
+        const parsed = JSON.parse(enRaw);
+        if (parsed && (parsed.vtt || parsed.rawVtt)) enRaw = parsed.vtt || parsed.rawVtt;
+      } catch (e) {}
+      if (enRaw && typeof parseSubtitleTextToCues === 'function') {
+        const enCues = parseSubtitleTextToCues(enRaw);
         if (enCues && enCues.length > 0) {
           offlineTracks.push({ id: 'offline_en', language: 'English', langCode: 'en', source: isNativeReady ? 'Device Storage (মুভিবক্স)' : 'Offline Storage', rawCues: enCues });
         }
@@ -3662,12 +3670,13 @@
               const validEnTrack = tracks.find(t => t.langCode === 'en' && (t.url || t.downloadUrl) && !t.url?.includes('/generate')) || tracks[0];
               const enUrl = validEnTrack?.url || validEnTrack?.downloadUrl || '';
               const cleanT = (media.title || '').replace(/\[.*?\]|\(.*?\)/g, '').trim();
+              const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
               target = {
                 id: 'sub_bn_ai_auto_ota',
                 language: 'Bangla (বাংলা - AI Auto)',
                 langCode: 'bn',
                 source: 'FOBS AI Translate',
-                url: `/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanT)}&season=${window.appState?.currentSeason || 0}&episode=${window.appState?.currentEpisodeNumber || 0}`,
+                url: `${apiBase}/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanT)}&season=${window.appState?.currentSeason || 0}&episode=${window.appState?.currentEpisodeNumber || 0}`,
                 format: 'vtt',
                 isAi: true
               };
@@ -3675,8 +3684,8 @@
               if (typeof window.renderSubtitleLists === 'function') window.renderSubtitleLists();
             }
 
-            if (target && typeof window.selectSubtitleTrack === 'function' && state.currentTrackId !== target.id) {
-              console.log('[Live Patch v1.6.6] Enforcing default Bangla subtitle:', target.language, target.id);
+            if (target && typeof window.selectSubtitleTrack === 'function' && (state.currentTrackId !== target.id || !state.cues || state.cues.length === 0)) {
+              console.log('[Live Patch v1.7.5] Enforcing default Bangla subtitle:', target.language, target.id);
               window.selectSubtitleTrack(target.id);
             }
           }
@@ -3686,6 +3695,64 @@
         }
       };
       window.setupSubtitlesForMedia._hasBnPriorityHook = true;
+    }
+
+    // Wrap selectSubtitleTrack to bypass WebView disk cache and enforce genuine Bengali dialogue cues
+    if (typeof window.selectSubtitleTrack === 'function' && !window.selectSubtitleTrack._hasOtaBnCacheHook) {
+      const origSelectTrack = window.selectSubtitleTrack;
+      window.selectSubtitleTrack = async function (trackId) {
+        if (trackId === 'off') {
+          return origSelectTrack.apply(this, arguments);
+        }
+        const state = window.subtitleState;
+        const track = state?.availableTracks?.find(t => t.id === trackId || t.langCode === trackId);
+        if (track) {
+          const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
+          if (track.url && track.url.startsWith('/')) {
+            track.url = `${apiBase}${track.url}`;
+          }
+          if (track.downloadUrl && track.downloadUrl.startsWith('/')) {
+            track.downloadUrl = `${apiBase}${track.downloadUrl}`;
+          }
+        }
+        const res = await origSelectTrack.apply(this, arguments);
+
+        // Verification & Anti-ESub Safeguard: If user selected Bangla, ensure Bengali text is rendered
+        if (track && (track.langCode === 'bn' || (track.language && track.language.includes('Bangla')))) {
+          const subBtnLabel = document.getElementById('playerSubtitleBtnLabel');
+          if (subBtnLabel) subBtnLabel.innerText = track.isFobsSpecial ? 'FOBS Sub' : 'BN Sub';
+          const subToggle = document.getElementById('lsSubtitleToggle');
+          if (subToggle) subToggle.checked = true;
+
+          const hasBengaliCues = state && Array.isArray(state.cues) && state.cues.length > 0 && state.cues.some(c => /[\u0980-\u09FF]/.test(c.text));
+          if (!hasBengaliCues) {
+            console.warn('[Live Patch v1.7.5] Active Bangla track had no Bengali characters (possible stale English cache). Fetching fresh AI Bangla translation...');
+            try {
+              const curM = window.appState?.currentMedia;
+              const cleanT = (curM?.title || '').replace(/\[.*?\]|\(.*?\)/g, '').trim();
+              const validEn = state.availableTracks?.find(t => t.langCode === 'en' && (t.url || t.downloadUrl)) || state.availableTracks?.[0];
+              const enUrl = validEn?.url || validEn?.downloadUrl || '';
+              const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
+              const aiUrl = `${apiBase}/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanT)}&season=${window.appState?.currentSeason || 0}&episode=${window.appState?.currentEpisodeNumber || 0}&_force=1&_t=${Date.now()}`;
+              const directRes = await fetch(aiUrl, { cache: 'no-store' });
+              const directText = await directRes.text();
+              const freshCues = (typeof window.parseSubtitleTextToCues === 'function') ? window.parseSubtitleTextToCues(directText) : [];
+              if (freshCues.length > 0) {
+                state.cues = freshCues;
+                state.enabled = true;
+                if (subBtnLabel) subBtnLabel.innerText = 'BN Sub';
+                const vp = document.getElementById('mainVideoPlayer');
+                const curTime = (vp?.currentTime || 0) + (window.appState?.streamSeekOffset || 0);
+                if (typeof window.renderActiveSubtitleCue === 'function') window.renderActiveSubtitleCue(curTime);
+              }
+            } catch (fallbackErr) {
+              console.warn('[Live Patch v1.7.5] AI translation fallback error:', fallbackErr);
+            }
+          }
+        }
+        return res;
+      };
+      window.selectSubtitleTrack._hasOtaBnCacheHook = true;
     }
 
     // Also Hook renderSubtitleLists to ensure FOBS Special Sub is strictly displayed for Remarried Empress

@@ -5866,7 +5866,7 @@ async function setupSubtitlesForMedia(media) {
     subToggle.checked = false;
     subToggle.onchange = () => {
       if (subToggle.checked) {
-        const track = subtitleState.availableTracks.find(t => t.langCode === 'en' || t.langCode === 'bn') || subtitleState.availableTracks[0];
+        const track = subtitleState.availableTracks.find(t => t.langCode === 'bn') || subtitleState.availableTracks.find(t => t.langCode === 'en') || subtitleState.availableTracks[0];
         if (track) selectSubtitleTrack(track.id);
       } else {
         selectSubtitleTrack('off');
@@ -6213,10 +6213,14 @@ async function selectSubtitleTrack(trackId) {
     targetUrl = `${API_BASE_URL}${targetUrl}`;
   }
 
+  // Always fetch fresh subtitles without WebView disk cache
+  const subSep = targetUrl.includes('?') ? '&' : '?';
+  const freshSubUrl = `${targetUrl}${subSep}_t=${Date.now()}`;
+
   // If local / relative or AI translation VTT endpoint, fetch directly
   if (targetUrl.includes('/api/subtitles/ai-translate') || targetUrl.includes('/subtitles/')) {
     try {
-      const directRes = await fetch(targetUrl);
+      const directRes = await fetch(freshSubUrl, { cache: 'no-store' });
       const directText = await directRes.text();
       loadedCues = parseSubtitleTextToCues(directText);
     } catch (err) {
@@ -6227,7 +6231,7 @@ async function selectSubtitleTrack(trackId) {
   // Step 1: Try backend subtitle proxy (decompresses .gz, parses SRT/VTT with UTF-8 encoding)
   if (loadedCues.length === 0 && targetUrl) {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/subtitles/track?url=${encodeURIComponent(targetUrl)}`);
+      const res = await fetch(`${API_BASE_URL}/api/subtitles/track?url=${encodeURIComponent(targetUrl)}&_t=${Date.now()}`, { cache: 'no-store' });
       const data = await res.json();
       if (data && (data.success || data.ok) && Array.isArray(data.cues) && data.cues.length > 0) {
         loadedCues = data.cues;
@@ -6272,6 +6276,15 @@ async function selectSubtitleTrack(trackId) {
   }
 
   if (subtitleState._trackToken !== trackLoadToken) return;
+
+  // Strict Bengali content validation: Reject stale/cached English subtitles if a Bangla track was requested
+  if (track.langCode === 'bn' || (track.language && track.language.includes('Bangla'))) {
+    const bnCount = loadedCues.filter(c => /[\u0980-\u09FF]/.test(c.text)).length;
+    if (loadedCues.length > 0 && bnCount < Math.max(1, loadedCues.length * 0.25)) {
+      console.warn('Selected Bangla track contained insufficient Bengali text (likely stale English cache). Resetting cues to fetch fresh AI translation...');
+      loadedCues = [];
+    }
+  }
 
   if (loadedCues.length > 0) {
     subtitleState.cues = loadedCues;
