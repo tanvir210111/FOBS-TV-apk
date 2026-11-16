@@ -45,8 +45,8 @@ function extractMovieBoxExpiry(urlStr) {
     if (tParam) {
       const expSec = parseInt(tParam, 10);
       if (!isNaN(expSec) && expSec > 0) {
-        // In MovieBox CDN tokens, t is the unix epoch expiration timestamp
-        return expSec * 1000;
+        // MovieBox CDN token generation timestamp. Expiry is 4 hours (14400s) after generation.
+        return (expSec + 14400) * 1000;
       }
     }
     const policyParam = u.searchParams.get('Policy');
