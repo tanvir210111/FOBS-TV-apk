@@ -6810,15 +6810,46 @@ async function downloadAndApplySubtitle(id, encodedUrl, lang, title) {
   });
 
   try {
-    const res = await fetch(`${API_BASE_URL}/api/subtitles/download?url=${encodedUrl}`);
-    const data = await res.json();
+    let target = decodeURIComponent(encodedUrl || '');
+    let fetchUrl = '';
+    if (target.startsWith('http')) {
+      fetchUrl = target;
+    } else if (target.startsWith('/api/subtitles/download')) {
+      fetchUrl = `${API_BASE_URL}${target}`;
+    } else if (target.includes('subsourceLink=')) {
+      fetchUrl = `${API_BASE_URL}/api/subtitles/download?${target.replace(/^\/?api\/subtitles\/download\??/, '')}`;
+    } else {
+      fetchUrl = `${API_BASE_URL}/api/subtitles/download?url=${encodeURIComponent(target)}`;
+    }
 
-    if ((!data.ok && !data.success) || !Array.isArray(data.cues) || data.cues.length === 0) {
-      throw new Error(data.error || 'No cues found in downloaded subtitle');
+    if (!fetchUrl.includes('json=')) {
+      fetchUrl += (fetchUrl.includes('?') ? '&' : '?') + 'json=1';
+    }
+
+    const res = await fetch(fetchUrl, {
+      headers: { 'Accept': 'application/json, text/vtt, text/plain, */*' }
+    });
+
+    let cues = [];
+    const contentType = res.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      const data = await res.json();
+      if ((data.ok || data.success) && Array.isArray(data.cues) && data.cues.length > 0) {
+        cues = data.cues;
+      } else if (data.vtt) {
+        cues = parseSubtitleTextToCues(data.vtt);
+      }
+    } else {
+      const rawText = await res.text();
+      cues = parseSubtitleTextToCues(rawText);
+    }
+
+    if (!Array.isArray(cues) || cues.length === 0) {
+      throw new Error('No cues found in downloaded subtitle');
     }
 
     // Register into subtitleState
-    subtitleState.cues = data.cues;
+    subtitleState.cues = cues;
     subtitleState.enabled = true;
     subtitleState.activeSubId = id;
     subtitleState.currentTrackId = `online_${id}`;
@@ -6830,7 +6861,8 @@ async function downloadAndApplySubtitle(id, encodedUrl, lang, title) {
       language: `${lang} (Subsource)`,
       langCode: lang.toLowerCase().includes('bangla') || lang.toLowerCase().includes('bn') ? 'bn' : 'en',
       source: 'SubSource.net',
-      isCustom: true
+      isCustom: true,
+      rawCues: cues
     };
 
     const existingIdx = subtitleState.availableTracks.findIndex(t => t.id === newTrack.id);
@@ -6849,7 +6881,7 @@ async function downloadAndApplySubtitle(id, encodedUrl, lang, title) {
       renderActiveSubtitleCue((vp.currentTime || 0) + (appState.streamSeekOffset || 0));
     }
 
-    showToast(`Downloaded & Added: ${lang} Subtitle (${data.cues.length} cues) 📥`);
+    showToast(`Downloaded & Added: ${lang} Subtitle (${cues.length} cues) 📥`);
   } catch (err) {
     console.error('Subtitle download error:', err);
     btns.forEach(b => {

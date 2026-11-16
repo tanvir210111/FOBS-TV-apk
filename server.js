@@ -3920,13 +3920,40 @@ app.get('/api/subtitles/online', async (req, res) => {
 // 3. Download, decompress and parse subtitle into WebVTT text or structured cues
 app.get('/api/subtitles/download', async (req, res) => {
   try {
-    const { url, title, season, episode, lang = 'bn', subjectId, detailPath, type } = req.query;
+    let { url, subsourceLink, title, season, episode, lang = 'bn', subjectId, detailPath, type } = req.query;
 
     let subVtt = '';
-    let targetUrl = url;
 
-    // If no direct url provided, resolve the best subtitle for the requested language
-    if (!targetUrl) {
+    // Handle subsourceLink directly or extracted from url
+    if (!subsourceLink && url && (url.includes('subsourceLink=') || url.includes('subsource.net'))) {
+      const match = url.match(/[?&]subsourceLink=([^&]+)/);
+      if (match) subsourceLink = decodeURIComponent(match[1]);
+      else if (url.includes('subsource.net/subtitle/')) subsourceLink = url.replace(/^https?:\/\/subsource\.net\/subtitle\//, '');
+    }
+
+    if (subsourceLink) {
+      const sResult = await subtitleService.downloadSubsourceByLink(subsourceLink);
+      if (sResult && sResult.vtt && sResult.vtt.trim().length > 20) {
+        subVtt = sResult.vtt;
+      }
+    }
+
+    let targetUrl = url;
+    if (!subVtt && targetUrl) {
+      if (targetUrl.startsWith('/api/subtitles/ai-translate') || targetUrl.includes('ai-translate')) {
+        const enSource = targetUrl.match(/[?&]url=([^&]+)/);
+        const actualEnUrl = enSource ? decodeURIComponent(enSource[1]) : '';
+        subVtt = await subtitleService.getOrTranslateToBangla(actualEnUrl, `ai_${title || 'sub'}_s${season || 0}_e${episode || 0}`, { subjectId, detailPath, season, episode, title });
+      } else {
+        const result = await subtitleService.downloadSubtitle(targetUrl);
+        if (result && result.vtt && result.vtt.trim().length > 20) {
+          subVtt = result.vtt;
+        }
+      }
+    }
+
+    // If no direct url provided or it yielded no cues, resolve the best subtitle for the requested language
+    if (!subVtt || subVtt.trim().length < 20) {
       const isBn = (lang === 'bn' || lang === 'ben' || lang === 'bangla');
       const subList = await subtitleService.getSubtitles({
         title,
@@ -3943,30 +3970,31 @@ app.get('/api/subtitles/download', async (req, res) => {
           const bnSub = subList.find(s => s.langCode === 'bn' && !s.isAi)
                      || subList.find(s => s.langCode === 'bn');
           if (bnSub) {
-            targetUrl = bnSub.url || bnSub.downloadUrl;
+            const r = await subtitleService.downloadSubtitle(bnSub.downloadUrl || bnSub.url);
+            if (r && r.vtt && r.vtt.trim().length > 20) {
+              subVtt = r.vtt;
+            }
+          }
+
+          // If still no Bangla subtitle, auto-translate available English subtitle to Bangla!
+          if (!subVtt || subVtt.trim().length < 20) {
+            const enSub = subList.find(s => s.langCode === 'en' && !s.isAi)
+                       || subList.find(s => s.langCode === 'en');
+            if (enSub) {
+              const enUrl = enSub.downloadUrl || enSub.url;
+              subVtt = await subtitleService.getOrTranslateToBangla(enUrl, `ai_${title || 'sub'}_s${season || 0}_e${episode || 0}`, { subjectId, detailPath, season, episode, title });
+            }
           }
         } else {
           // English
           const enSub = subList.find(s => s.langCode === 'en' && !s.isAi)
                      || subList.find(s => s.langCode === 'en');
           if (enSub) {
-            targetUrl = enSub.url || enSub.downloadUrl;
+            const r = await subtitleService.downloadSubtitle(enSub.downloadUrl || enSub.url);
+            if (r && r.vtt && r.vtt.trim().length > 20) {
+              subVtt = r.vtt;
+            }
           }
-        }
-      }
-    }
-
-    if (targetUrl) {
-      if (targetUrl.startsWith('/api/subtitles/ai-translate') || targetUrl.includes('ai-translate')) {
-        const enSource = targetUrl.match(/[?&]url=([^&]+)/);
-        const actualEnUrl = enSource ? decodeURIComponent(enSource[1]) : '';
-        if (actualEnUrl) {
-          subVtt = await subtitleService.getOrTranslateToBangla(actualEnUrl, `ai_${title || 'sub'}_s${season || 0}_e${episode || 0}`, { subjectId, detailPath, season, episode });
-        }
-      } else {
-        const result = await subtitleService.downloadSubtitle(targetUrl);
-        if (result && result.vtt && result.vtt.trim().length > 20) {
-          subVtt = result.vtt;
         }
       }
     }
@@ -3977,10 +4005,10 @@ app.get('/api/subtitles/download', async (req, res) => {
       subVtt = `WEBVTT\n\n1\n00:00:01.000 --> 00:00:05.000\n[${title || 'Media'} - ${isBn ? 'বাংলা সাবটাইটেল' : 'English Subtitle'}]`;
     }
 
-    // If client explicitly requested JSON
-    if (req.query.json === '1' || req.headers.accept?.includes('application/json')) {
+    // If client requested JSON
+    if (req.query.json === '1' || req.query.format === 'json' || req.headers.accept?.includes('application/json')) {
       const cues = subtitleService.parseCues(subVtt);
-      return res.json({ success: true, vtt: subVtt, cues, cuesCount: cues.length });
+      return res.json({ success: cues.length > 0, ok: cues.length > 0, vtt: subVtt, cues, cuesCount: cues.length });
     }
 
     // Default: Return raw WebVTT with UTF-8 charset so Android NativeDownloadManager saves clean .vtt
@@ -3990,7 +4018,7 @@ app.get('/api/subtitles/download', async (req, res) => {
   } catch (err) {
     console.warn('Subtitle download error:', err.message);
     if (req.query.json === '1' || req.headers.accept?.includes('application/json')) {
-      return res.status(500).json({ success: false, error: err.message });
+      return res.status(500).json({ success: false, ok: false, error: err.message });
     }
     res.setHeader('Content-Type', 'text/vtt; charset=utf-8');
     res.send(`WEBVTT\n\n1\n00:00:01.000 --> 00:00:05.000\n[${req.query.lang === 'en' ? 'Subtitle unavailable' : 'সাবটাইটেল পাওয়া যায়নি'}]`);

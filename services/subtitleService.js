@@ -15,7 +15,35 @@ const axios = require('axios');
 const zlib = require('zlib');
 const movieboxService = require('./movieboxService');
 
-const SUBSOURCE_BASE = 'https://api.subsource.net/api/v1';
+function extractZipSubtitle(buf) {
+  if (!buf || buf.length < 30) return null;
+  let offset = 0;
+  while (offset < buf.length - 30) {
+    if (buf.readUInt32LE(offset) === 0x04034b50) {
+      const compMethod = buf.readUInt16LE(offset + 8);
+      const compSize = buf.readUInt32LE(offset + 18);
+      const nameLen = buf.readUInt16LE(offset + 26);
+      const extraLen = buf.readUInt16LE(offset + 28);
+      const fileName = buf.toString('utf8', offset + 30, offset + 30 + nameLen);
+      const dataOffset = offset + 30 + nameLen + extraLen;
+      const fileData = buf.subarray(dataOffset, dataOffset + compSize);
+      if (fileName.endsWith('.srt') || fileName.endsWith('.vtt') || fileName.endsWith('.ass')) {
+        let text = '';
+        try {
+          if (compMethod === 8) text = zlib.inflateRawSync(fileData).toString('utf8');
+          else if (compMethod === 0) text = fileData.toString('utf8');
+        } catch (_) {}
+        if (text) return { fileName, text };
+      }
+      offset = dataOffset + compSize;
+    } else {
+      offset++;
+    }
+  }
+  return null;
+}
+
+const SUBSOURCE_BASE = 'https://api.subsource.net/v1';
 const SUBSOURCE_KEY = process.env.SUBSOURCE_API_KEY || '';
 
 class SubtitleService {
@@ -187,7 +215,7 @@ class SubtitleService {
               ...en,
               url: subUrl,
               downloadUrl: subUrl,
-              language: en.language.includes('Human') ? en.language : `${en.language} - OpenSubtitles (Human)`
+              language: en.language.includes('Human') ? en.language : `${en.language} - ${en.source || 'SubSource'} (Human)`
             });
           }
         });
@@ -358,7 +386,91 @@ class SubtitleService {
       } catch (e) {}
     }
 
-    // 2. OpenSubtitles REST API (Free, fast, supports both English and Bangla)
+    // 2. SubSource API (Free, high-quality, genuine community Bangla & English subtitles)
+    try {
+      const sRes = await axios.post('https://api.subsource.net/v1/movie/search', { query: cleanTitle }, {
+        family: 4,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Referer': 'https://subsource.net/'
+        },
+        timeout: 6000
+      });
+      const resultsList = sRes.data?.results || [];
+      if (resultsList.length > 0) {
+        let match = null;
+        if (isMovie) {
+          match = resultsList.find(r => r.type === 'movie' && (!year || String(r.releaseYear) === String(year)))
+               || resultsList.find(r => r.type === 'movie')
+               || resultsList[0];
+        } else {
+          match = resultsList.find(r => r.type === 'tvseries' || r.type === 'series')
+               || resultsList.find(r => (!year || String(r.releaseYear) === String(year)))
+               || resultsList[0];
+        }
+
+        if (match && match.link) {
+          const slug = match.link.replace(/^\/(subtitles|series|movie)\//, '');
+          const [bnRes, enRes] = await Promise.allSettled([
+            axios.get(`https://api.subsource.net/v1/subtitles/${slug}/bengali`, { family: 4, timeout: 6000 }),
+            axios.get(`https://api.subsource.net/v1/subtitles/${slug}/english`, { family: 4, timeout: 6000 })
+          ]);
+
+          const filterForEp = (list) => {
+            if (!Array.isArray(list) || list.length === 0) return [];
+            if (isMovie || epNum <= 0) return list;
+            const epRegex = new RegExp(`(?:episode|ep|e)[\\s._-]*0*${epNum}(?:[^0-9]|$)`, 'i');
+            const exact = list.filter(s => {
+              if (s.episode && parseInt(s.episode, 10) === epNum) return true;
+              return epRegex.test(s.release_info || '');
+            });
+            return exact.length > 0 ? exact : list;
+          };
+
+          if (bnRes.status === 'fulfilled' && Array.isArray(bnRes.value.data?.subtitles)) {
+            const subs = filterForEp(bnRes.value.data.subtitles);
+            subs.forEach(s => {
+              results.bangla.push({
+                id: `subsource_${s.id}`,
+                title: s.release_info || `${cleanTitle} (Bangla)`,
+                language: 'Bangla (বাংলা)',
+                langCode: 'bn',
+                source: 'SubSource.net',
+                url: `/api/subtitles/download?subsourceLink=${encodeURIComponent(s.link)}&id=${s.id}`,
+                downloadUrl: `/api/subtitles/download?subsourceLink=${encodeURIComponent(s.link)}&id=${s.id}`,
+                subsourceLink: s.link,
+                downloadsCount: s.downloads || 0,
+                rating: s.rating === 'good' ? '9.8' : '8.5',
+                format: 'srt'
+              });
+            });
+          }
+
+          if (enRes.status === 'fulfilled' && Array.isArray(enRes.value.data?.subtitles)) {
+            const subs = filterForEp(enRes.value.data.subtitles);
+            subs.forEach(s => {
+              results.english.push({
+                id: `subsource_${s.id}`,
+                title: s.release_info || `${cleanTitle} (English)`,
+                language: 'English',
+                langCode: 'en',
+                source: 'SubSource.net',
+                url: `/api/subtitles/download?subsourceLink=${encodeURIComponent(s.link)}&id=${s.id}`,
+                downloadUrl: `/api/subtitles/download?subsourceLink=${encodeURIComponent(s.link)}&id=${s.id}`,
+                subsourceLink: s.link,
+                downloadsCount: s.downloads || 0,
+                rating: s.rating === 'good' ? '9.8' : '8.5',
+                format: 'srt'
+              });
+            });
+          }
+        }
+      }
+    } catch (ssErr) {
+      console.warn('SubSource search warning:', ssErr.message);
+    }
+
+    // 3. OpenSubtitles REST API (Secondary fallback)
     const searchOs = async (sublang, withSeason = true) => {
       try {
         let osUrl = `https://rest.opensubtitles.org/search/query-${encodeURIComponent(cleanTitle)}`;
@@ -412,39 +524,27 @@ class SubtitleService {
       return [];
     };
 
-    try {
-      const [engSubs, benSubs] = await Promise.all([
-        searchOs('eng', !isMovie && seNum > 0),
-        searchOs('ben', !isMovie && seNum > 0)
-      ]);
+    if (results.bangla.length === 0 || results.english.length === 0) {
+      try {
+        const [engSubs, benSubs] = await Promise.all([
+          results.english.length === 0 ? searchOs('eng', !isMovie && seNum > 0) : Promise.resolve([]),
+          results.bangla.length === 0 ? searchOs('ben', !isMovie && seNum > 0) : Promise.resolve([])
+        ]);
 
-      if (engSubs && engSubs.length > 0) {
-        results.english.push(...engSubs);
-      }
-      if (benSubs && benSubs.length > 0) {
-        results.bangla.push(...benSubs);
-      }
+        if (engSubs && engSubs.length > 0) {
+          results.english.push(...engSubs);
+        }
+        if (benSubs && benSubs.length > 0) {
+          results.bangla.push(...benSubs);
+        }
+      } catch (e) {}
+    }
 
-      // Only for movies do we fallback search without season/episode filter
-      // (For series, searching without season/episode incorrectly attaches Episode 1 subtitle to all episodes!)
-      if (isMovie && results.bangla.length === 0) {
-        const fallbackBen = await searchOs('ben', false);
-        if (fallbackBen && fallbackBen.length > 0) {
-          results.bangla.push(...fallbackBen);
-        }
-      }
-      if (isMovie && results.english.length === 0) {
-        const fallbackEng = await searchOs('eng', false);
-        if (fallbackEng && fallbackEng.length > 0) {
-          results.english.push(...fallbackEng);
-        }
-      }
-    } catch (e) {}
     // Deduplicate and limit to top 15 results per language
     const unique = (arr) => {
       const seen = new Set();
       return arr.filter(item => {
-        const k = item.title?.toLowerCase() || item.downloadUrl;
+        const k = item.title?.toLowerCase() || item.downloadUrl || item.url;
         if (seen.has(k)) return false;
         seen.add(k);
         return true;
@@ -458,11 +558,127 @@ class SubtitleService {
   }
 
   /**
+   * Download, unzip and parse subtitle directly from Subsource by page link
+   */
+  async downloadSubsourceByLink(subsourceLink) {
+    if (!subsourceLink) throw new Error('Missing subsource link');
+    const safeHash = crypto.createHash('md5').update(subsourceLink).digest('hex');
+    const cacheFile = path.join(__dirname, '..', 'data', 'subtitles', `subsource_${safeHash}.vtt`);
+    if (fs.existsSync(cacheFile)) {
+      const text = fs.readFileSync(cacheFile, 'utf8');
+      if (text && text.trim().length > 30) {
+        const cues = this.parseCues(text);
+        return { ok: true, success: true, cues, vtt: text, cuesCount: cues.length };
+      }
+    }
+
+    // Step 1: Fetch Subsource subtitle page to extract download token
+    const pageUrl = subsourceLink.startsWith('http') ? subsourceLink : `https://subsource.net/subtitle/${subsourceLink}`;
+    let downloadToken = '';
+    try {
+      const pageRes = await axios.get(pageUrl, {
+        family: 4,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Referer': 'https://subsource.net/'
+        },
+        timeout: 9000
+      });
+      const tokenMatch = String(pageRes.data).match(/download_token[\\"\s:]+([a-f0-9]{32,64})/i);
+      if (tokenMatch) {
+        downloadToken = tokenMatch[1];
+      }
+    } catch (e) {
+      console.warn('Failed to fetch Subsource page token:', e.message);
+    }
+
+    if (!downloadToken) {
+      throw new Error('Could not find Subsource download token');
+    }
+
+    // Step 2: Download ZIP payload using token
+    const dlRes = await axios.get(`https://api.subsource.net/v1/subtitle/download/${downloadToken}`, {
+      family: 4,
+      responseType: 'arraybuffer',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Referer': 'https://subsource.net/'
+      },
+      timeout: 12000
+    });
+
+    const rawBuf = Buffer.from(dlRes.data);
+    let rawText = '';
+
+    // Check if ZIP archive (0x04034b50 / PK)
+    const zipExtracted = extractZipSubtitle(rawBuf);
+    if (zipExtracted && zipExtracted.text) {
+      rawText = zipExtracted.text;
+    } else if (rawBuf.length >= 2 && rawBuf[0] === 0x1f && rawBuf[1] === 0x8b) {
+      rawText = zlib.gunzipSync(rawBuf).toString('utf8');
+    } else {
+      rawText = rawBuf.toString('utf8');
+    }
+
+    rawText = rawText.replace(/^\uFEFF/, '').trim();
+    const vtt = this.srtToVtt(rawText);
+    const cues = this.parseCues(rawText.includes('-->') ? rawText : vtt);
+
+    if (cues.length > 0) {
+      try {
+        const subDir = path.join(__dirname, '..', 'data', 'subtitles');
+        if (!fs.existsSync(subDir)) fs.mkdirSync(subDir, { recursive: true });
+        fs.writeFileSync(cacheFile, vtt, 'utf8');
+      } catch (_) {}
+    }
+
+    return {
+      ok: cues.length > 0,
+      success: cues.length > 0,
+      cues,
+      vtt,
+      cuesCount: cues.length
+    };
+  }
+
+  /**
    * Download, unzip and parse subtitle into WebVTT and structured cues
-   * @param {string} url - Subtitle direct download URL (supports .srt, .vtt, .gz)
+   * @param {string} url - Subtitle direct download URL (supports .srt, .vtt, .gz, Subsource, OpenSubtitles)
    */
   async downloadSubtitle(url) {
     if (!url) throw new Error('Missing subtitle URL');
+
+    // 1. If it's a Subsource link or proxy download link:
+    if (url.includes('subsourceLink=') || url.includes('/api/subtitles/download?subsourceLink=')) {
+      const match = url.match(/[?&]subsourceLink=([^&]+)/);
+      const link = match ? decodeURIComponent(match[1]) : '';
+      if (link) {
+        return await this.downloadSubsourceByLink(link);
+      }
+    }
+    if (url.includes('subsource.net/subtitle/')) {
+      const link = url.replace(/^https?:\/\/subsource\.net\/subtitle\//, '');
+      return await this.downloadSubsourceByLink(link);
+    }
+
+    // 2. If it's an AI translate endpoint
+    if (url.includes('/api/subtitles/ai-translate') || url.includes('ai-translate')) {
+      const match = url.match(/[?&]url=([^&]+)/);
+      const enUrl = match ? decodeURIComponent(match[1]) : '';
+      const titleMatch = url.match(/[?&]title=([^&]+)/);
+      const title = titleMatch ? decodeURIComponent(titleMatch[1]) : '';
+      const seMatch = url.match(/[?&]season=([^&]+)/);
+      const epMatch = url.match(/[?&]episode=([^&]+)/);
+      const vtt = await this.getOrTranslateToBangla(enUrl, `ai_${title || 'sub'}_s${seMatch ? seMatch[1] : 0}_e${epMatch ? epMatch[1] : 0}`, { title, season: seMatch ? seMatch[1] : 0, episode: epMatch ? epMatch[1] : 0 });
+      const cues = this.parseCues(vtt);
+      return { ok: cues.length > 0, success: cues.length > 0, cuesCount: cues.length, cues, vtt };
+    }
+
+    // 3. If it's a download proxy with url=
+    if (url.includes('/api/subtitles/download?url=')) {
+      const match = url.match(/[?&]url=([^&]+)/);
+      if (match) return await this.downloadSubtitle(decodeURIComponent(match[1]));
+    }
 
     let rawBuffer = null;
     if (url.startsWith('/subtitles/') || url.startsWith('subtitles/')) {
@@ -472,7 +688,7 @@ class SubtitleService {
         const rawText = fs.readFileSync(fullPath, 'utf8').replace(/^\uFEFF/, '').trim();
         const vtt = this.srtToVtt(rawText);
         const cues = this.parseCues(rawText.includes('-->') ? rawText : vtt);
-        return { ok: true, cuesCount: cues.length, cues, vtt };
+        return { ok: true, success: true, cuesCount: cues.length, cues, vtt };
       }
     }
 
@@ -481,7 +697,6 @@ class SubtitleService {
     };
 
     if (url.includes('opensubtitles.org')) {
-      // OpenSubtitles requires TemporaryUserAgent and rejects requests with foreign Referer
       downloadHeaders['User-Agent'] = 'TemporaryUserAgent';
     } else if (url.includes('subsource.net')) {
       downloadHeaders['Referer'] = 'https://subsource.net/';
@@ -501,7 +716,6 @@ class SubtitleService {
       });
       rawBuffer = Buffer.from(response.data);
     } catch (dlErr) {
-      // Retry with modern browser headers if TemporaryUserAgent failed or was blocked
       try {
         const retryHeaders = {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
@@ -518,17 +732,19 @@ class SubtitleService {
         rawBuffer = Buffer.from(response.data);
       } catch (retryErr) {
         console.warn(`Subtitle download failed for ${url} (${dlErr.message})`);
-        return { ok: false, cuesCount: 0, cues: [], vtt: 'WEBVTT\n\n', error: dlErr.message };
+        return { ok: false, success: false, cuesCount: 0, cues: [], vtt: 'WEBVTT\n\n', error: dlErr.message };
       }
     }
 
     let rawText = '';
-    // Check if buffer is GZIP compressed (Magic bytes 0x1F 0x8B)
-    if (rawBuffer.length >= 2 && rawBuffer[0] === 0x1f && rawBuffer[1] === 0x8b) {
+    // Check if buffer is ZIP compressed (Magic bytes 0x50 0x4B)
+    const zipExtracted = extractZipSubtitle(rawBuffer);
+    if (zipExtracted && zipExtracted.text) {
+      rawText = zipExtracted.text;
+    } else if (rawBuffer.length >= 2 && rawBuffer[0] === 0x1f && rawBuffer[1] === 0x8b) {
       try {
         rawText = zlib.gunzipSync(rawBuffer).toString('utf-8');
       } catch (gzErr) {
-        console.warn('Gunzip error, falling back to inflate:', gzErr.message);
         rawText = zlib.inflateSync(rawBuffer).toString('utf-8');
       }
     } else {
@@ -542,7 +758,8 @@ class SubtitleService {
     const cues = this.parseCues(rawText.includes('-->') ? rawText : vtt);
 
     return {
-      ok: true,
+      ok: cues.length > 0,
+      success: cues.length > 0,
       cuesCount: cues.length,
       cues,
       vtt
@@ -660,8 +877,14 @@ class SubtitleService {
     }
 
     // Download and parse original source
-    let downloaded = await this.downloadSubtitle(sourceUrl);
-    if ((!downloaded.cues || downloaded.cues.length === 0) && meta.subjectId) {
+    let downloaded = null;
+    if (sourceUrl && !sourceUrl.includes('/generate')) {
+      try {
+        downloaded = await this.downloadSubtitle(sourceUrl);
+      } catch (_) {}
+    }
+
+    if ((!downloaded || !downloaded.cues || downloaded.cues.length === 0) && meta.subjectId) {
       try {
         const mbMedia = await movieboxService.resolveMedia(meta.subjectId, meta.detailPath || '', meta.season || 0, meta.episode || 0, { forceRefresh: true });
         const freshEn = mbMedia?.captions?.find(c => (c.language || '').toLowerCase().includes('en'));
@@ -671,8 +894,22 @@ class SubtitleService {
       } catch (_) {}
     }
 
-    if (!downloaded.cues || downloaded.cues.length === 0) {
-      return downloaded.vtt || 'WEBVTT\n\n1\n00:00:01.000 --> 00:00:05.000\n[বাংলা সাবটাইটেল তৈরি হচ্ছে...]';
+    if (!downloaded || !downloaded.cues || downloaded.cues.length === 0) {
+      // Try searching online English subtitle from Subsource
+      try {
+        const titleForSearch = meta.title || (cacheKey || '').replace(/^ai_/, '').replace(/_s\d+_e\d+.*$/, '');
+        if (titleForSearch) {
+          const searchRes = await this.searchOnlineSubtitles({ title: titleForSearch, season: meta.season, episode: meta.episode });
+          const bestEn = searchRes.english && searchRes.english[0];
+          if (bestEn) {
+            downloaded = await this.downloadSubtitle(bestEn.downloadUrl || bestEn.url);
+          }
+        }
+      } catch (_) {}
+    }
+
+    if (!downloaded || !downloaded.cues || downloaded.cues.length === 0) {
+      return downloaded?.vtt || 'WEBVTT\n\n1\n00:00:01.000 --> 00:00:05.000\n[বাংলা সাবটাইটেল তৈরি হচ্ছে...]';
     }
 
     // Translate to Bangla
