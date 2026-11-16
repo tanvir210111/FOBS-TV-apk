@@ -267,8 +267,11 @@ class MovieBoxService {
 
     for (const domain of candidateDomains) {
       try {
+        const reqHeaders = generateAuthHeaders(domain, '', country);
+        reqHeaders['Content-Type'] = 'application/json';
+        delete reqHeaders['X-Client-Token'];
         const res = await axios.post(`${domain}/wefeed-h5api-bff/subject/filter`, payload, {
-          headers: generateAuthHeaders(domain, '', country),
+          headers: reqHeaders,
           httpsAgent: cleanAgent,
           timeout: options.timeout || 6000
         });
@@ -290,7 +293,13 @@ class MovieBoxService {
               year: year || '2026',
               rating: String(it.imdbRatingValue || '7.5'),
               poster: poster,
+              cover: it.cover || it.image,
+              trailer: it.trailer,
               detailPath: it.detailPath || '',
+              hasResource: it.hasResource !== false && it.hasResource !== 0,
+              appointmentDate: it.appointmentDate || '',
+              appointmentCnt: it.appointmentCnt || 0,
+              corner: it.corner || '',
               dubs: Array.isArray(it.dubs) ? it.dubs : []
             };
           }).filter(it => it.id && it.id !== '0' && it.title);
@@ -427,7 +436,14 @@ class MovieBoxService {
                 year: year || '2026',
                 rating: String(it.imdbRatingValue || '7.5'),
                 poster: poster,
-                detailPath: it.detailPath || ''
+                cover: it.cover || it.image,
+                trailer: it.trailer,
+                detailPath: it.detailPath || '',
+                hasResource: it.hasResource !== false && it.hasResource !== 0,
+                appointmentDate: it.appointmentDate || '',
+                appointmentCnt: it.appointmentCnt || 0,
+                corner: it.corner || '',
+                dubs: Array.isArray(it.dubs) ? it.dubs : []
               };
             }).filter(it => it.id && it.id !== '0' && it.title);
 
@@ -481,7 +497,7 @@ class MovieBoxService {
   /**
    * Searches MovieBox catalog with authenticated session token & multi-domain fallback
    */
-  async search(query) {
+  async search(query, options = {}) {
     if (!query) return [];
     const cleanQuery = query.trim();
     const cacheKey = `search_${cleanQuery.toLowerCase()}`;
@@ -497,13 +513,10 @@ class MovieBoxService {
 
     for (const domain of SEARCH_DOMAINS) {
       try {
-        const e = Math.floor(Date.now() / 1000);
-        const r = String(e).split('').reverse().join('');
-        const clientToken = `${e},${crypto.createHash('md5').update(r).digest('hex')}`;
-
         const country = options.country || 'BD';
         const reqHeaders = generateAuthHeaders(domain, '', country);
         reqHeaders['Content-Type'] = 'application/json';
+        delete reqHeaders['X-Client-Token']; // CRITICAL: MovieBox /subject/search rejects X-Client-Token
 
         if (sessionToken) {
           reqHeaders['Authorization'] = `Bearer ${sessionToken}`;
@@ -512,7 +525,7 @@ class MovieBoxService {
         const res = await axios.post(`${domain}/wefeed-h5api-bff/subject/search`, {
           keyword: cleanQuery,
           page: 1,
-          perPage: 25,
+          perPage: 30,
           subjectType: 0
         }, {
           headers: reqHeaders,
@@ -530,11 +543,20 @@ class MovieBoxService {
               subjectId: sid,
               title: it.title,
               type: it.subjectType === 2 ? 'series' : 'movie',
+              subjectType: it.subjectType || 1,
               year: it.releaseDate ? it.releaseDate.substring(0, 4) : '2026',
+              releaseDate: it.releaseDate || '',
               rating: String(it.imdbRatingValue || '7.5'),
               poster: it.cover?.url || it.image?.url || '',
+              cover: it.cover || it.image,
+              trailer: it.trailer,
               backdrop: it.stills?.[0]?.url || it.cover?.url || '',
-              detailPath: it.detailPath || ''
+              detailPath: it.detailPath || '',
+              hasResource: it.hasResource !== false && it.hasResource !== 0,
+              appointmentDate: it.appointmentDate || '',
+              appointmentCnt: it.appointmentCnt || 0,
+              corner: it.corner || '',
+              dubs: Array.isArray(it.dubs) ? it.dubs : []
             };
           }).filter(Boolean);
 
@@ -553,7 +575,7 @@ class MovieBoxService {
       try {
         const res = await axios.post(`${domain}/wefeed-h5api-bff/subject/search-suggest`, {
           keyword: cleanQuery,
-          perPage: 15
+          perPage: 20
         }, {
           headers: {
             'Accept': 'application/json',
@@ -577,10 +599,19 @@ class MovieBoxService {
                 subjectId: sid,
                 title: sub.title || it.word,
                 type: sub.subjectType === 2 ? 'series' : 'movie',
+                subjectType: sub.subjectType || 1,
                 year: sub.releaseDate ? sub.releaseDate.substring(0, 4) : '2026',
+                releaseDate: sub.releaseDate || '',
                 rating: String(sub.imdbRatingValue || '7.5'),
                 poster: sub.cover?.url || sub.image?.url || '',
-                detailPath: sub.detailPath || ''
+                cover: sub.cover || sub.image,
+                trailer: sub.trailer,
+                detailPath: sub.detailPath || '',
+                hasResource: sub.hasResource !== false && sub.hasResource !== 0,
+                appointmentDate: sub.appointmentDate || '',
+                appointmentCnt: sub.appointmentCnt || 0,
+                corner: sub.corner || '',
+                dubs: Array.isArray(sub.dubs) ? sub.dubs : []
               });
             }
           }

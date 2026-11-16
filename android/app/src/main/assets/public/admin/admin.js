@@ -452,7 +452,10 @@ function renderMoviesTable(moviesList) {
       <td>${escapeHtml(m.genre || 'Action')}</td>
       <td><i class="fa-solid fa-eye" style="color: #64748b;"></i> ${(m.views || 0).toLocaleString()}</td>
       <td>
-        <span class="badge-tag permanent"><i class="fa-solid fa-shield-check"></i> Permanent</span>
+        ${m.isComingSoon || (!m.streamUrl && (!m.servers || m.servers.length === 0))
+          ? '<span class="badge-tag coming-soon"><i class="fa-solid fa-hourglass-half"></i> Coming Soon</span>'
+          : '<span class="badge-tag permanent"><i class="fa-solid fa-shield-check"></i> Permanent</span>'
+        }
       </td>
       <td class="row-actions">
         <button class="btn-action-icon edit" onclick="openEditMovieModal('${m.id}')" title="Edit Movie"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -664,7 +667,10 @@ function renderSeriesTable(seriesList) {
         <td>⭐ ${s.rating || s.imdbRating || '8.4'}</td>
         <td><i class="fa-solid fa-eye" style="color: #64748b;"></i> ${(s.views || 0).toLocaleString()}</td>
         <td>
-          <span class="badge-tag permanent"><i class="fa-solid fa-shield-check"></i> Permanent</span>
+          ${s.isComingSoon || (!s.episodes || s.episodes.length === 0)
+            ? '<span class="badge-tag coming-soon"><i class="fa-solid fa-hourglass-half"></i> Coming Soon</span>'
+            : '<span class="badge-tag permanent"><i class="fa-solid fa-shield-check"></i> Permanent</span>'
+          }
         </td>
         <td class="row-actions">
           <button class="btn-sm-secondary" style="margin-right: 6px; color: #00f2fe; border-color: rgba(0, 242, 254, 0.4);" onclick="checkSeriesUpdates('${s.id}')" title="Check &amp; Sync New Released Episodes">
@@ -2496,6 +2502,9 @@ function applyImporterFilters() {
     const isImported = isItemAlreadyImported(item);
     if (status === 'unimported' && isImported) return false;
     if (status === 'imported' && !isImported) return false;
+    const isCS = !!item.isComingSoon || item.hasResource === false;
+    if (status === 'coming_soon' && !isCS) return false;
+    if (status === 'playable' && isCS) return false;
 
     // 7. Instant In-Page Search Keyword
     if (keyword) {
@@ -2707,6 +2716,8 @@ function renderImporterGrid(items) {
 
     const isImported = isItemAlreadyImported(item);
     if (isImported) item.alreadyImported = true;
+    const isComingSoon = !!item.isComingSoon || item.hasResource === false;
+    const comingSoonBadgeHtml = isComingSoon ? '<span class="card-badge-coming-soon"><i class="fa-solid fa-hourglass-half"></i> Coming Soon</span>' : '';
 
     const actionHtml = isImported
       ? `<div class="importer-card-imported-bar">
@@ -2715,15 +2726,19 @@ function renderImporterGrid(items) {
             <i class="fa-solid fa-arrows-rotate"></i> Update
           </button>
         </div>`
-      : `<button type="button" class="btn-primary glow importer-card-btn" onclick="event.stopPropagation(); openImportModalByIndex(${idx})">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> 1-Click Import
-        </button>`;
+      : (isComingSoon
+        ? `<button type="button" class="btn-secondary importer-card-btn" style="background: rgba(249, 115, 22, 0.15); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.35);" onclick="event.stopPropagation(); openImportModalByIndex(${idx})">
+            <i class="fa-solid fa-hourglass-half"></i> Coming Soon
+          </button>`
+        : `<button type="button" class="btn-primary glow importer-card-btn" onclick="event.stopPropagation(); openImportModalByIndex(${idx})">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> 1-Click Import
+          </button>`);
 
     return `
       <div class="importer-card" onclick="openImporterCardClick(${idx})" style="cursor: pointer; position:relative;">
         <div class="importer-card-poster-wrap">
           <img src="${getOptimizedImageUrl(item.poster)}" loading="lazy" decoding="async" onerror="this.src='assets/fobs_logo.png'" alt="${escapeHtml(item.title)}">
-          ${audioBadgeHtml}
+          ${comingSoonBadgeHtml || audioBadgeHtml}
           ${typeBadgeHtml}
           ${ratingBadgeHtml}
         </div>
@@ -3864,6 +3879,10 @@ function applyLatestFilters() {
     items = items.filter(i => i.updateType === 'new_dubbing');
   } else if (updateType === 'unimported') {
     items = items.filter(i => !i.alreadyImported);
+  } else if (updateType === 'coming_soon') {
+    items = items.filter(i => i.isComingSoon || i.updateType === 'upcoming');
+  } else if (updateType === 'playable') {
+    items = items.filter(i => !i.isComingSoon && i.updateType !== 'upcoming');
   }
 
   // 5. Date Filter (Today, Yesterday, Last 3 Days, Last 7 Days, Last 30 Days, This Month, Custom Date)
@@ -3916,14 +3935,21 @@ function applyLatestFilters() {
 
   grid.innerHTML = items.map(it => {
     let badgeClass = 'new-title';
-    if (it.updateType === 'new_episode') badgeClass = 'new-ep';
+    if (it.isComingSoon || it.updateType === 'upcoming') badgeClass = 'coming-soon';
+    else if (it.updateType === 'new_episode') badgeClass = 'new-ep';
     else if (it.updateType === 'new_dubbing') badgeClass = 'new-dub';
     else if (it.alreadyImported) badgeClass = 'synced';
 
     const audioPillColor = it.audioCategory === 'bangla' ? '#10b981' : (it.audioCategory === 'hindi' ? '#f59e0b' : '#38bdf8');
 
     let actionBtnHtml = '';
-    if (it.hasNewEpisodes && it.fobsId) {
+    if (it.isComingSoon || it.updateType === 'upcoming') {
+      actionBtnHtml = `
+        <button type="button" class="btn-secondary importer-card-btn" style="background: rgba(249, 115, 22, 0.15); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.35);" onclick="event.stopPropagation(); openLatestImportModalById('${escapeHtml(it.id)}')">
+          <i class="fa-solid fa-hourglass-half"></i> Coming Soon
+        </button>
+      `;
+    } else if (it.hasNewEpisodes && it.fobsId) {
       actionBtnHtml = `
         <button type="button" class="btn-primary glow importer-card-btn" style="background: linear-gradient(135deg, #f59e0b, #d97706); border:none;" onclick="event.stopPropagation(); triggerLatestEpisodeSync('${escapeHtml(it.fobsId)}', '${escapeHtml(it.title)}')">
           <i class="fa-solid fa-arrows-rotate"></i> Sync New Episodes

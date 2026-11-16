@@ -1122,8 +1122,16 @@ class AdminService {
         const alreadyImported = !!(matchedSeries || matchedMovie);
         const matchedItem = matchedSeries || matchedMovie;
 
-        let updateType = isFutureRelease ? 'upcoming' : 'new_title';
-        let updateBadge = formatUploadDateBadge(uploadDate);
+        const isComingSoon = it.hasResource === false ||
+          it.hasResource === 0 ||
+          (it.appointmentDate && String(it.appointmentDate).trim() !== '') ||
+          (it.releaseDate && it.releaseDate.substring(0, 10) > todayDateStr) ||
+          /coming soon|upcoming/i.test(secTitle) ||
+          /coming soon|upcoming/i.test(it.corner || '') ||
+          /coming soon|upcoming/i.test(it.title || '');
+
+        let updateType = isComingSoon ? 'upcoming' : 'new_title';
+        let updateBadge = isComingSoon ? 'Coming Soon' : formatUploadDateBadge(uploadDate);
         let hasNewEpisodes = false;
         let newEpisodesCount = 0;
         let fobsEpisodesCount = 0;
@@ -1174,7 +1182,9 @@ class AdminService {
           hasNewEpisodes,
           newEpisodesCount,
           fobsEpisodesCount,
-          mbEpisodesTotal
+          mbEpisodesTotal,
+          hasResource: it.hasResource !== false && it.hasResource !== 0,
+          isComingSoon
         });
       }
     }
@@ -1184,18 +1194,18 @@ class AdminService {
     // 2. Released content strictly ordered by uploadDate DESC (2026-11-14, 2026-11-13, 2026-11-12, ...)
     // 3. Within same uploadDate: prioritize high-interest content (Bollywood, South, Hindi/Bangla dubs, K-Drama, Anime)
     // 4. Unimported before imported
-    // 5. Coming Soon / Future releases (uploadDate > todayDateStr) placed after released items
+    // 5. Coming Soon / Future releases placed after released items
     processedItems.sort((a, b) => {
       // 1. Genuinely new episodes to sync
       const epRankA = a.hasNewEpisodes ? 1 : 0;
       const epRankB = b.hasNewEpisodes ? 1 : 0;
       if (epRankB !== epRankA) return epRankB - epRankA;
 
-      // 2. Separate released vs future upcoming releases
-      const isFutureA = a.uploadDate > todayDateStr ? 1 : 0;
-      const isFutureB = b.uploadDate > todayDateStr ? 1 : 0;
-      if (isFutureA !== isFutureB) {
-        return isFutureA - isFutureB; // Released items first, upcoming at the bottom
+      // 2. Separate released vs future/coming soon releases (playable content comes first!)
+      const isPendingA = (a.isComingSoon || a.uploadDate > todayDateStr) ? 1 : 0;
+      const isPendingB = (b.isComingSoon || b.uploadDate > todayDateStr) ? 1 : 0;
+      if (isPendingA !== isPendingB) {
+        return isPendingA - isPendingB; // Playable released items first, Coming Soon at the bottom
       }
 
       // 3. Strict chronological upload date (newest upload first!)
@@ -1247,6 +1257,10 @@ class AdminService {
       filtered = filtered.filter(i => i.updateType === 'new_dubbing');
     } else if (updateFilter === 'unimported') {
       filtered = filtered.filter(i => !i.alreadyImported);
+    } else if (updateFilter === 'coming_soon') {
+      filtered = filtered.filter(i => i.isComingSoon || i.updateType === 'upcoming');
+    } else if (updateFilter === 'playable') {
+      filtered = filtered.filter(i => !i.isComingSoon && i.updateType !== 'upcoming');
     }
 
     if (searchQuery) {
@@ -1265,7 +1279,9 @@ class AdminService {
         hindi: processedItems.filter(i => i.audioCategory === 'hindi').length,
         bangla: processedItems.filter(i => i.audioCategory === 'bangla').length,
         newEpisodes: processedItems.filter(i => i.hasNewEpisodes || i.updateType === 'new_episode').length,
-        unimported: processedItems.filter(i => !i.alreadyImported).length
+        unimported: processedItems.filter(i => !i.alreadyImported).length,
+        comingSoon: processedItems.filter(i => i.isComingSoon || i.updateType === 'upcoming').length,
+        playable: processedItems.filter(i => !i.isComingSoon && i.updateType !== 'upcoming').length
       },
       items: filtered
     };
@@ -1573,6 +1589,14 @@ class AdminService {
         existingExactTitles.has(titleExact) ||
         (itClean && existingCleanTitles.has(itAudioKey));
 
+      const isComingSoon = it.isComingSoon ||
+        it.hasResource === false ||
+        it.hasResource === 0 ||
+        (it.appointmentDate && String(it.appointmentDate).trim() !== '') ||
+        (it.releaseDate && it.releaseDate.substring(0, 10) > new Date().toISOString().split('T')[0]) ||
+        /coming soon|upcoming/i.test(it.corner || '') ||
+        /coming soon|upcoming/i.test(it.title || '');
+
       return {
         ...it,
         poster: poster || it.poster,
@@ -1590,7 +1614,9 @@ class AdminService {
         baseTitle,
         industry,
         category,
-        alreadyImported
+        alreadyImported,
+        isComingSoon: !!isComingSoon,
+        hasResource: (it.hasResource !== false && it.hasResource !== 0)
       };
     }));
 

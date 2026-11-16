@@ -809,6 +809,8 @@
               <label><i class="fa-solid fa-tag"></i> Update Type</label>
               <select id="latest-filter-update" class="custom-select" onchange="applyLatestFilters()">
                 <option value="all">All Additions &amp; Updates</option>
+                <option value="playable">▶️ Playable / Stream Ready</option>
+                <option value="coming_soon">⏳ Coming Soon Only</option>
                 <option value="new_episodes">🔥 New Episodes Released</option>
                 <option value="new_dub">🎙️ New Dubbing Added</option>
                 <option value="unimported">🚀 Unimported Items Only</option>
@@ -950,6 +952,8 @@
               <label><i class="fa-solid fa-circle-check"></i> Import Status</label>
               <select id="imp-filter-status" class="custom-select" onchange="applyImporterFilters()">
                 <option value="all">All Items</option>
+                <option value="playable">▶️ Playable / Stream Ready</option>
+                <option value="coming_soon">⏳ Coming Soon Only</option>
                 <option value="unimported">Unimported Only (New)</option>
                 <option value="imported">Already in FOBS TV</option>
               </select>
