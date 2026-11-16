@@ -782,55 +782,115 @@ class SubtitleService {
    */
 
   /**
+   * Translate a single text with multi-engine fallback
+   */
+  async translateSingle(text) {
+    if (!text || !text.trim() || !/[a-zA-Z]/.test(text)) return text;
+    const clean = text
+      .replace(/\r\n|\r|\n/g, ' ')
+      .replace(/\.{2,}/g, '.')
+      .replace(/[♪♫♩♬]/g, '')
+      .replace(/<[^>]+>/g, '')
+      .trim();
+
+    if (!clean) return text;
+
+    // 1. Try clients5 GET
+    try {
+      const res = await axios.get('https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=en&tl=bn&q=' + encodeURIComponent(clean), {
+        family: 4,
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+        timeout: 4000
+      });
+      if (res.data && res.data[0] && /[\u0980-\u09FF]/.test(res.data[0])) {
+        return res.data[0].trim();
+      }
+    } catch (_) {}
+
+    // 2. Try clients3 GET
+    try {
+      const res = await axios.get('https://clients3.google.com/translate_a/t?client=dict-chrome-ex&sl=en&tl=bn&q=' + encodeURIComponent(clean), {
+        family: 4,
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+        timeout: 4000
+      });
+      if (res.data && res.data[0] && /[\u0980-\u09FF]/.test(res.data[0])) {
+        return res.data[0].trim();
+      }
+    } catch (_) {}
+
+    // 3. Try MyMemory API
+    try {
+      const res = await axios.get('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(clean) + '&langpair=en|bn', {
+        family: 4,
+        timeout: 4000
+      });
+      const trans = res.data?.responseData?.translatedText;
+      if (trans && /[\u0980-\u09FF]/.test(trans)) {
+        return trans.trim();
+      }
+    } catch (_) {}
+
+    return text;
+  }
+
+  /**
    * Translate WebVTT / SRT cues into natural Bengali using Google batch engine
    * @param {Array} cues - Structured cues array [{ startTime, endTime, text }]
    */
   async translateCuesToBangla(cues = []) {
     if (!Array.isArray(cues) || cues.length === 0) return [];
     
-    const BATCH_SIZE = 40;
-    const batches = [];
-    for (let i = 0; i < cues.length; i += BATCH_SIZE) {
-      batches.push({ startIndex: i, cues: cues.slice(i, i + BATCH_SIZE) });
-    }
-
-    // Process up to 6 batches concurrently for lightning fast translation
-    const CONCURRENCY = 6;
+    const BATCH_SIZE = 25;
     const translatedCues = new Array(cues.length);
 
-    for (let i = 0; i < batches.length; i += CONCURRENCY) {
-      const currentChunk = batches.slice(i, i + CONCURRENCY);
-      await Promise.all(currentChunk.map(async (b) => {
-        const texts = b.cues.map(c => (c.text || '').replace(/\n/g, ' '));
-        const qs = texts.map(t => 'q=' + encodeURIComponent(t)).join('&');
-        try {
-          const res = await axios.post(
-            'https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=en&tl=bn',
-            qs,
-            {
-              family: 4,
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              timeout: 8000
-            }
-          );
-          const translatedTexts = Array.isArray(res.data) ? res.data : texts;
-          b.cues.forEach((cue, idx) => {
-            translatedCues[b.startIndex + idx] = {
-              startTime: cue.startTime,
-              endTime: cue.endTime,
-              text: translatedTexts[idx] || cue.text
-            };
-          });
-        } catch (err) {
-          b.cues.forEach((cue, idx) => {
-            translatedCues[b.startIndex + idx] = {
-              startTime: cue.startTime,
-              endTime: cue.endTime,
-              text: cue.text
-            };
-          });
+    for (let i = 0; i < cues.length; i += BATCH_SIZE) {
+      const chunk = cues.slice(i, i + BATCH_SIZE);
+      const cleaned = chunk.map(c => {
+        let t = (c.text || '')
+          .replace(/\r\n|\r|\n/g, ' ')
+          .replace(/\.{2,}/g, '.') // remove 2 or more dots ... so Google never blanks out batch
+          .replace(/[♪♫♩♬]/g, '') // remove music notes
+          .replace(/<[^>]+>/g, '') // remove HTML tags
+          .trim();
+        return t || '-';
+      });
+
+      const qs = cleaned.map(t => 'q=' + encodeURIComponent(t)).join('&');
+      let resList = [];
+      try {
+        const res = await axios.post(
+          'https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=en&tl=bn',
+          qs,
+          {
+            family: 4,
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            timeout: 7000
+          }
+        );
+        if (Array.isArray(res.data)) resList = res.data;
+      } catch (_) {}
+
+      for (let idx = 0; idx < chunk.length; idx++) {
+        const cue = chunk[idx];
+        let t = resList[idx] ? resList[idx].trim() : '';
+        // If translation is empty or failed to translate English cue, use fallback
+        if (!t || t === '-' || (!/[\u0980-\u09FF]/.test(t) && /[a-zA-Z]/.test(cue.text))) {
+          t = await this.translateSingle(cue.text);
         }
-      }));
+        translatedCues[i + idx] = {
+          startTime: cue.startTime,
+          endTime: cue.endTime,
+          text: (t && t !== '-') ? t : cue.text
+        };
+      }
+
+      if (i + BATCH_SIZE < cues.length) {
+        await new Promise(res => setTimeout(res, 40));
+      }
     }
 
     return translatedCues.filter(Boolean);
@@ -870,7 +930,19 @@ class SubtitleService {
     if (fs.existsSync(diskFile)) {
       const existing = fs.readFileSync(diskFile, 'utf8');
       if (existing && existing.trim().length > 30) {
-        return existing;
+        // Strict verification: ensure the cached file actually contains Bengali text (not corrupt English)
+        let bnChars = 0;
+        let enChars = 0;
+        for (let i = 0; i < existing.length; i++) {
+          const code = existing.charCodeAt(i);
+          if (code >= 0x0980 && code <= 0x09FF) bnChars++;
+          if ((code >= 65 && code <= 90) || (code >= 97 && code <= 122)) enChars++;
+        }
+        if (bnChars > 20 && bnChars >= (enChars * 0.4)) {
+          return existing;
+        } else {
+          try { fs.unlinkSync(diskFile); } catch (e) {}
+        }
       } else {
         try { fs.unlinkSync(diskFile); } catch (e) {}
       }
