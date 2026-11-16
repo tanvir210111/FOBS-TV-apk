@@ -4366,19 +4366,23 @@ async function playStreamUrl(url, audioIndex = null, seekTime = null) {
     };
 
     const watchdogTimer = setTimeout(() => {
-      if (videoPlayer && (!videoPlayer.currentTime || videoPlayer.currentTime < 0.1) && videoPlayer.readyState < 2) {
+      if (videoPlayer && (!videoPlayer.currentTime || videoPlayer.currentTime < 0.1) && videoPlayer.readyState < 1) {
         console.warn('MovieBox stream buffering watchdog fired, switching to proxy fallback...');
         doProxyFallback();
       }
-    }, 2500);
+    }, 25000);
 
     const cancelWatchdog = () => {
       clearTimeout(watchdogTimer);
       videoPlayer.removeEventListener('playing', cancelWatchdog);
       videoPlayer.removeEventListener('timeupdate', cancelWatchdog);
+      videoPlayer.removeEventListener('loadeddata', cancelWatchdog);
+      videoPlayer.removeEventListener('canplay', cancelWatchdog);
     };
     videoPlayer.addEventListener('playing', cancelWatchdog, { once: true });
     videoPlayer.addEventListener('timeupdate', cancelWatchdog, { once: true });
+    videoPlayer.addEventListener('loadeddata', cancelWatchdog, { once: true });
+    videoPlayer.addEventListener('canplay', cancelWatchdog, { once: true });
     videoPlayer.addEventListener('error', doProxyFallback, { once: true });
 
     // Dismiss loader ONLY when actual video frames are rendering (currentTime > 0.05 or playing)

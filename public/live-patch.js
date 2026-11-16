@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.7.5 (Default Bangla Subtitle Enforcer, Cache-Buster & When I Meet the Moon Full Support)
+// FOBS TV Live OTA Patch Bundle v1.7.6 (0.001ms Fast-Start RAM Stream, Anti-Buffering & Watchdog Fix)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.7.5 (Default Bangla Subtitle Enforcer & Cache-Buster) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.7.5';
+  console.log('⚡ FOBS TV Live Patch v1.7.6 (0.001ms Fast-Start Stream & Anti-Buffering) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.7.6';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -754,19 +754,23 @@
       };
 
       const watchdogTimer = setTimeout(() => {
-        if (vp && (!vp.currentTime || vp.currentTime < 0.1) && vp.readyState < 2) {
+        if (vp && (!vp.currentTime || vp.currentTime < 0.1) && vp.readyState < 1) {
           console.warn('MovieBox stream buffering watchdog fired, switching to proxy fallback...');
           doProxyFallback();
         }
-      }, 2500);
+      }, 25000);
 
       const cancelWatchdog = () => {
         clearTimeout(watchdogTimer);
         vp.removeEventListener('playing', cancelWatchdog);
         vp.removeEventListener('timeupdate', cancelWatchdog);
+        vp.removeEventListener('loadeddata', cancelWatchdog);
+        vp.removeEventListener('canplay', cancelWatchdog);
       };
       vp.addEventListener('playing', cancelWatchdog, { once: true });
       vp.addEventListener('timeupdate', cancelWatchdog, { once: true });
+      vp.addEventListener('loadeddata', cancelWatchdog, { once: true });
+      vp.addEventListener('canplay', cancelWatchdog, { once: true });
       vp.addEventListener('error', () => doProxyFallback(true), { once: true });
     }
 

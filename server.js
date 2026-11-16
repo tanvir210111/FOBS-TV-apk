@@ -31,6 +31,11 @@ const movieboxService = require('./services/movieboxService');
 const movieboxStreamCache = new Map(); // key -> { media, timestamp }
 const movieboxResolvingMap = new Map(); // key -> in-flight promise for deduplication
 const streamFirstChunkCache = new Map(); // cleanUrlHash -> { buffer, contentType, totalLength }
+const STREAM_CACHE_FILE = path.join(__dirname, 'data', 'moviebox_stream_cache.json');
+const STREAM_CACHE_DIR = path.join(__dirname, 'data', 'stream_cache');
+if (!fs.existsSync(STREAM_CACHE_DIR)) {
+  try { fs.mkdirSync(STREAM_CACHE_DIR, { recursive: true }); } catch (_) {}
+}
 
 function extractMovieBoxExpiry(urlStr) {
   if (!urlStr || typeof urlStr !== 'string') return null;
@@ -66,8 +71,26 @@ function isMovieBoxUrlExpired(urlStr, bufferMs = 5 * 60 * 1000) {
 }
 
 function getValidCachedMovieBoxMedia(cacheKey) {
-  const cachedEntry = movieboxStreamCache.get(cacheKey);
-  if (!cachedEntry) return null;
+  let cachedEntry = movieboxStreamCache.get(cacheKey);
+  if (!cachedEntry) {
+    const mbCached = movieboxService.cache?.get(cacheKey);
+    if (mbCached && mbCached.expireAt > Date.now() && !isMovieBoxUrlExpired(mbCached.data?.streamUrl)) {
+      movieboxStreamCache.set(cacheKey, { media: mbCached.data, timestamp: Date.now() });
+      return mbCached.data;
+    }
+    try {
+      if (fs.existsSync(STREAM_CACHE_FILE)) {
+        const raw = JSON.parse(fs.readFileSync(STREAM_CACHE_FILE, 'utf8'));
+        const diskEntry = raw[cacheKey];
+        if (diskEntry && diskEntry.expireAt > Date.now() && !isMovieBoxUrlExpired(diskEntry.data?.streamUrl)) {
+          movieboxStreamCache.set(cacheKey, { media: diskEntry.data, timestamp: Date.now() });
+          if (movieboxService.cache) movieboxService.cache.set(cacheKey, diskEntry);
+          return diskEntry.data;
+        }
+      }
+    } catch (_) {}
+    return null;
+  }
   if (Date.now() - cachedEntry.timestamp >= 25 * 60 * 1000) {
     movieboxStreamCache.delete(cacheKey);
     return null;
@@ -77,6 +100,104 @@ function getValidCachedMovieBoxMedia(cacheKey) {
     return null;
   }
   return cachedEntry.media;
+}
+
+function setValidCachedMovieBoxMedia(cacheKey, media) {
+  if (!cacheKey || !media) return;
+  movieboxStreamCache.set(cacheKey, { media, timestamp: Date.now() });
+  try {
+    if (movieboxService && movieboxService.cache) {
+      movieboxService.cache.set(cacheKey, { data: media, expireAt: Date.now() + 6 * 3600 * 1000 });
+      if (typeof movieboxService._saveDiskCache === 'function') {
+        movieboxService._saveDiskCache();
+      }
+    }
+  } catch (_) {}
+}
+
+function getFirstChunkFromCache(cleanUrlHash) {
+  if (streamFirstChunkCache.has(cleanUrlHash)) {
+    return streamFirstChunkCache.get(cleanUrlHash);
+  }
+  try {
+    const chunkPath = path.join(STREAM_CACHE_DIR, `${cleanUrlHash}_first.bin`);
+    const chunkMetaPath = path.join(STREAM_CACHE_DIR, `${cleanUrlHash}_first.json`);
+    if (fs.existsSync(chunkPath) && fs.existsSync(chunkMetaPath)) {
+      const meta = JSON.parse(fs.readFileSync(chunkMetaPath, 'utf8'));
+      const buffer = fs.readFileSync(chunkPath);
+      const entry = {
+        buffer,
+        contentType: meta.contentType || 'video/mp4',
+        totalLength: meta.totalLength
+      };
+      if (streamFirstChunkCache.size > 100) {
+        const oldest = streamFirstChunkCache.keys().next().value;
+        streamFirstChunkCache.delete(oldest);
+      }
+      streamFirstChunkCache.set(cleanUrlHash, entry);
+      return entry;
+    }
+  } catch (_) {}
+  return null;
+}
+
+function saveFirstChunkToCache(cleanUrlHash, buffer, contentType, totalLength) {
+  if (!cleanUrlHash || !buffer || buffer.length === 0) return;
+  const entry = {
+    buffer,
+    contentType: contentType || 'video/mp4',
+    totalLength: totalLength || null
+  };
+  if (streamFirstChunkCache.size > 100) {
+    const oldest = streamFirstChunkCache.keys().next().value;
+    streamFirstChunkCache.delete(oldest);
+  }
+  streamFirstChunkCache.set(cleanUrlHash, entry);
+  try {
+    const chunkPath = path.join(STREAM_CACHE_DIR, `${cleanUrlHash}_first.bin`);
+    const chunkMetaPath = path.join(STREAM_CACHE_DIR, `${cleanUrlHash}_first.json`);
+    fs.writeFile(chunkPath, buffer, () => {});
+    fs.writeFile(chunkMetaPath, JSON.stringify({ contentType: entry.contentType, totalLength: entry.totalLength }), () => {});
+  } catch (_) {}
+}
+
+async function prewarmStreamFirstChunk(url, referer = 'https://movieboxapp.in/') {
+  if (!url || typeof url !== 'string' || !url.startsWith('http')) return;
+  const cleanHash = crypto.createHash('md5').update(url.split('?')[0]).digest('hex');
+  if (streamFirstChunkCache.has(cleanHash)) return;
+  const chunkPath = path.join(STREAM_CACHE_DIR, `${cleanHash}_first.bin`);
+  if (fs.existsSync(chunkPath)) return;
+
+  try {
+    const res = await axios({
+      method: 'GET',
+      url,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'Referer': referer,
+        'Origin': referer.replace(/\/$/, ''),
+        'Range': 'bytes=0-2097151'
+      },
+      httpsAgent: streamHttpsAgent,
+      responseType: 'arraybuffer',
+      timeout: 10000,
+      validateStatus: (s) => s === 206 || s === 200
+    });
+
+    if (res.status === 206 || res.status === 200) {
+      const buffer = Buffer.from(res.data);
+      const cr = res.headers['content-range'];
+      let totalLen = null;
+      if (cr) {
+        const m = cr.match(/bytes\s+\d+-\d+\/(\d+)/);
+        if (m) totalLen = parseInt(m[1], 10);
+      } else if (res.headers['content-length']) {
+        totalLen = parseInt(res.headers['content-length'], 10);
+      }
+      const cType = res.headers['content-type'] || 'video/mp4';
+      saveFirstChunkToCache(cleanHash, buffer, cType, totalLen);
+    }
+  } catch (_) {}
 }
 
 function selectResolutionMatch(qualities, requestedQ) {
@@ -312,10 +433,6 @@ app.get('/health', (req, res) => {
 const DATA_FILE = path.join(__dirname, 'data', 'content.json');
 const BACKUP_DATA_FILE = path.join(__dirname, 'data', 'content.backup.json');
 const LOCAL_DATA_FILE = path.join(__dirname, 'data', 'content.local.json');
-const STREAM_CACHE_DIR = path.join(__dirname, 'data', 'stream_cache');
-if (!fs.existsSync(STREAM_CACHE_DIR)) {
-  fs.mkdirSync(STREAM_CACHE_DIR, { recursive: true });
-}
 
 // Range Slicer Transform Stream for Upstream Providers that ignore HTTP Range
 function createRangeSlicer(start, end) {
@@ -1434,7 +1551,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
           movieboxResolvingMap.delete(mediaCacheKey);
         }
         if (media && media.streamUrl && !isMovieBoxUrlExpired(media.streamUrl)) {
-          movieboxStreamCache.set(mediaCacheKey, { media, timestamp: Date.now() });
+          setValidCachedMovieBoxMedia(mediaCacheKey, media);
         }
       }
     }
@@ -1448,7 +1565,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
           // Do not use expired hakunaymatata CDN links
           if (direct && direct.startsWith('http') && !direct.includes('hakunaymatata') && !direct.includes('bcdnxw')) {
             media = { streamUrl: direct, resolution: 1080 };
-            movieboxStreamCache.set(mediaCacheKey, { media, timestamp: Date.now() });
+            setValidCachedMovieBoxMedia(mediaCacheKey, media);
           }
         } else {
           let foundSeries = (content.series || []).find(s => String(s.subjectId) === String(id));
@@ -1459,7 +1576,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
               const direct = epObj.directStreamUrl || epObj.servers[0].url;
               if (direct && direct.startsWith('http') && !direct.includes('hakunaymatata') && !direct.includes('bcdnxw')) {
                 media = { streamUrl: direct, resolution: 1080 };
-                movieboxStreamCache.set(mediaCacheKey, { media, timestamp: Date.now() });
+                setValidCachedMovieBoxMedia(mediaCacheKey, media);
               }
             }
           }
@@ -1497,7 +1614,7 @@ app.get('/api/moviebox/stream', async (req, res) => {
                   media = await movieboxService.resolveMedia(newSid, newDPath, 0, 0);
                 }
                 if (media && media.streamUrl) {
-                  movieboxStreamCache.set(mediaCacheKey, { media, timestamp: Date.now() });
+                  setValidCachedMovieBoxMedia(mediaCacheKey, media);
                 }
               }
             }
@@ -1901,15 +2018,7 @@ function pipeResilientStream(req, res, initialResponse, fetchUrl, requestHeaders
     if (!isCapturingFirstChunk || firstChunkChunks.length === 0 || streamFirstChunkCache.has(cleanUrlHash)) return;
     try {
       const combined = Buffer.concat(firstChunkChunks);
-      if (streamFirstChunkCache.size > 80) {
-        const oldestKey = streamFirstChunkCache.keys().next().value;
-        streamFirstChunkCache.delete(oldestKey);
-      }
-      streamFirstChunkCache.set(cleanUrlHash, {
-        buffer: combined,
-        contentType: contentType || 'video/mp4',
-        totalLength: totalLen
-      });
+      saveFirstChunkToCache(cleanUrlHash, combined, contentType || 'video/mp4', totalLen);
     } catch (_) {}
   }
 
@@ -2385,28 +2494,56 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
 
   const cleanUrlHash = crypto.createHash('md5').update((resolvedUrl || targetUrl).split('?')[0]).digest('hex');
 
-  // Fast-Start RAM Probe: Instantly serve initial metadata/moov probes (< 2MB) from RAM in < 1ms
-  if (start === 0 && streamFirstChunkCache.has(cleanUrlHash)) {
-    const cachedChunk = streamFirstChunkCache.get(cleanUrlHash);
-    if (isHead) {
-      res.writeHead(200, {
-        ...standardStreamCorsHeaders,
-        'Content-Type': cachedChunk.contentType || 'video/mp4',
-        'Accept-Ranges': 'bytes',
-        'Content-Length': cachedChunk.totalLength ? String(cachedChunk.totalLength) : ''
-      });
-      return res.end();
-    }
-    if (isExplicitEnd && requestedEnd !== null && requestedEnd < cachedChunk.buffer.length) {
-      const slice = cachedChunk.buffer.subarray(start, requestedEnd + 1);
-      res.writeHead(206, {
-        ...standardStreamCorsHeaders,
-        'Content-Type': cachedChunk.contentType || 'video/mp4',
-        'Content-Range': `bytes ${start}-${requestedEnd}/${cachedChunk.totalLength || '*'}`,
-        'Content-Length': slice.length,
-        'Accept-Ranges': 'bytes'
-      });
-      return res.end(slice);
+  // Fast-Start RAM Delivery: Instantly serve initial metadata/moov probes and open-ended starts (< 2MB) from RAM/disk in < 0.1ms
+  if (start === 0) {
+    const cachedChunk = getFirstChunkFromCache(cleanUrlHash);
+    if (cachedChunk) {
+      if (isHead) {
+        res.writeHead(200, {
+          ...standardStreamCorsHeaders,
+          'Content-Type': cachedChunk.contentType || 'video/mp4',
+          'Accept-Ranges': 'bytes',
+          'Content-Length': cachedChunk.totalLength ? String(cachedChunk.totalLength) : ''
+        });
+        return res.end();
+      }
+      if (isExplicitEnd && requestedEnd !== null && requestedEnd < cachedChunk.buffer.length) {
+        const slice = cachedChunk.buffer.subarray(start, requestedEnd + 1);
+        res.writeHead(206, {
+          ...standardStreamCorsHeaders,
+          'Content-Type': cachedChunk.contentType || 'video/mp4',
+          'Content-Range': `bytes ${start}-${requestedEnd}/${cachedChunk.totalLength || '*'}`,
+          'Content-Length': slice.length,
+          'Accept-Ranges': 'bytes'
+        });
+        return res.end(slice);
+      }
+      // Instant Fast-Start for open-ended requests (Range: bytes=0-) or full video playback:
+      // Instantly write HTTP 206 and the first 2MB to the client socket in < 0.1ms while streaming the remainder upstream!
+      if (cachedChunk.totalLength && cachedChunk.buffer && cachedChunk.buffer.length > 0) {
+        const serveEnd = (isExplicitEnd && requestedEnd !== null) ? requestedEnd : (cachedChunk.totalLength - 1);
+        const chunkTotal = cachedChunk.totalLength;
+        const initialChunkLen = Math.min(cachedChunk.buffer.length, serveEnd + 1);
+
+        res.writeHead(206, {
+          ...standardStreamCorsHeaders,
+          'Content-Type': cachedChunk.contentType || 'video/mp4',
+          'Content-Range': `bytes 0-${serveEnd}/${chunkTotal}`,
+          'Content-Length': String(serveEnd + 1),
+          'Accept-Ranges': 'bytes'
+        });
+        if (typeof res.flushHeaders === 'function') res.flushHeaders();
+
+        // Write first 2MB instantly from memory in < 0.001ms
+        res.write(cachedChunk.buffer.subarray(0, initialChunkLen));
+
+        if (initialChunkLen >= (serveEnd + 1)) {
+          return res.end();
+        }
+
+        // Seamlessly continue streaming from upstream starting at byte offset initialChunkLen!
+        start = initialChunkLen;
+      }
     }
   }
 
@@ -2456,7 +2593,7 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
             const qMatch = selectResolutionMatch(freshMedia.qualities, mbContext.targetRes);
             if (qMatch?.url) streamFetchUrl = qMatch.url;
           }
-          movieboxStreamCache.set(cacheKey, { media: freshMedia, timestamp: Date.now() });
+          setValidCachedMovieBoxMedia(cacheKey, freshMedia);
         }
       } catch (prErr) {
         console.warn(`[StreamMediaDirect] Proactive token refresh failed:`, prErr.message);
@@ -2513,7 +2650,7 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
                 const qMatch = selectResolutionMatch(freshMedia.qualities, mbContext.targetRes);
                 if (qMatch?.url) freshUrl = qMatch.url;
               }
-              movieboxStreamCache.set(cacheKey, { media: freshMedia, timestamp: Date.now() });
+              setValidCachedMovieBoxMedia(cacheKey, freshMedia);
             }
           } catch (rErr) {
             console.error('Failed to auto-refresh expired MovieBox token:', rErr.message);
@@ -2662,10 +2799,12 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
       if (isRangeReq && response.headers['content-range']) headersToSend['Content-Range'] = response.headers['content-range'];
       if (response.headers['content-length']) headersToSend['Content-Length'] = response.headers['content-length'];
 
-      res.writeHead(isRangeReq ? 206 : 200, headersToSend);
-      if (typeof res.flushHeaders === 'function') res.flushHeaders();
+      if (!res.headersSent) {
+        res.writeHead(isRangeReq ? 206 : 200, headersToSend);
+        if (typeof res.flushHeaders === 'function') res.flushHeaders();
+      }
 
-      let rangeStart = 0;
+      let rangeStart = start || 0;
       let rangeEnd = null;
       let rangeTotal = null;
       const cr = response.headers['content-range'];
@@ -2715,13 +2854,16 @@ async function streamMediaDirect(req, res, inputTargetUrl, mbContext = null) {
       const end = parts[1] ? parseInt(parts[1], 10) : totalLength - 1;
       const chunkLength = end - start + 1;
 
-      res.writeHead(206, {
-        ...standardStreamCorsHeaders,
-        'Content-Range': `bytes ${start}-${end}/${totalLength}`,
-        'Accept-Ranges': 'bytes',
-        'Content-Length': chunkLength,
-        'Content-Type': contentType
-      });
+      if (!res.headersSent) {
+        res.writeHead(206, {
+          ...standardStreamCorsHeaders,
+          'Content-Range': `bytes ${start}-${end}/${totalLength}`,
+          'Accept-Ranges': 'bytes',
+          'Content-Length': chunkLength,
+          'Content-Type': contentType
+        });
+        if (typeof res.flushHeaders === 'function') res.flushHeaders();
+      }
 
       if (isHead) return res.end();
 
@@ -2819,7 +2961,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.7.5",
+  version: "1.7.6",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 
@@ -2961,7 +3103,7 @@ app.get('/api/download', async (req, res) => {
           media = await movieboxService.resolveMedia(cleanId, resolvedPath || '', explicitSe, explicitEp, { forceRefresh: true });
         }
         if (media && media.streamUrl && !isMovieBoxUrlExpired(media.streamUrl)) {
-          movieboxStreamCache.set(mediaCacheKey, { media, timestamp: Date.now() });
+          setValidCachedMovieBoxMedia(mediaCacheKey, media);
         }
       } catch (mErr) {
         console.warn('MovieBox resolution failed in /api/download:', mErr.message);

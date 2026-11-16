@@ -181,7 +181,7 @@ class MovieBoxService {
         if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
         fs.writeFile(STREAM_CACHE_FILE, JSON.stringify(out), () => {});
       } catch (e) {}
-    }, 2000);
+    }, 100);
   }
 
   /**
@@ -994,7 +994,18 @@ class MovieBoxService {
       this.detailCache.delete(`detail_${cleanId}`);
       this.detailPathMap.delete(cleanId);
     } else {
-      const cached = this.cache.get(cacheKey);
+      let cached = this.cache.get(cacheKey);
+      if (!cached) {
+        try {
+          if (fs.existsSync(STREAM_CACHE_FILE)) {
+            const raw = JSON.parse(fs.readFileSync(STREAM_CACHE_FILE, 'utf8'));
+            if (raw[cacheKey] && raw[cacheKey].expireAt > Date.now()) {
+              this.cache.set(cacheKey, raw[cacheKey]);
+              cached = raw[cacheKey];
+            }
+          }
+        } catch (_) {}
+      }
       if (cached && cached.expireAt > Date.now()) {
         if (isMovieBoxUrlExpired(cached.data?.streamUrl)) {
           this.cache.delete(cacheKey);
