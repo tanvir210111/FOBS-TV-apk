@@ -601,7 +601,7 @@ class AdminService {
     // 1. Anime / Japanese Animation
     // Strictly Japanese anime or Japanese origin (never Western animations like Pixar/Disney)
     const isJapanese = lLower === 'ja' || oCountry === 'JP' || cName.includes('japan') || secLower.includes('anime');
-    const isAnimeKeyword = /anime|manga|jujutsu|solo leveling|demon slayer|naruto|one piece|bleach|attack on titan|dragon ball|slime|death note|haikyu|kuroko|chainsaw|demon's crest|demons' crest|grand blue|bass x machina|godzilla|kujo|viral hit|golden boy anime|street fighter|demon city|kaiju|wind breaker|dandadan|spy x family|blue lock|tokyo ghoul|your name|suzume|weathering with you|spirited away/i.test(tLower);
+    const isAnimeKeyword = /anime|manga|goblin slayer|jujutsu|solo leveling|demon slayer|naruto|one piece|bleach|attack on titan|dragon ball|slime|death note|haikyu|kuroko|chainsaw|demon's crest|demons' crest|grand blue|bass x machina|godzilla|kujo|viral hit|golden boy anime|street fighter|demon city|kaiju|wind breaker|dandadan|spy x family|blue lock|tokyo ghoul|your name|suzume|weathering with you|spirited away/i.test(tLower);
     if (isJapanese || isAnimeKeyword || (gLower.includes('animation') && (cName.includes('japan') || isAnimeKeyword))) {
       return 'Anime';
     }

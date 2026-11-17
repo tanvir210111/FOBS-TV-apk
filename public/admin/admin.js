@@ -2461,10 +2461,13 @@ async function searchMovieBox() {
   try {
     const res = await authFetch(`${API_BASE}/api/admin/moviebox/search?q=${encodeURIComponent(query)}`);
     const data = await res.json();
+    if (!data.success) {
+      throw new Error(data.error || 'Failed to search MovieBox');
+    }
     state.movieboxRawItems = data.items || [];
     applyImporterFilters();
   } catch (err) {
-    grid.innerHTML = `<div class="empty-state error-text"><i class="fa-solid fa-triangle-exclamation" style="font-size:24px; color:#ef4444; margin-bottom:10px; display:block;"></i>Search failed: ${escapeHtml(err.message || 'Network error')}. Please try again.</div>`;
+    grid.innerHTML = `<div class="empty-state error-text"><i class="fa-solid fa-triangle-exclamation" style="font-size:24px; color:#ef4444; margin-bottom:10px; display:block;"></i>Search failed: ${escapeHtml(err.message || 'Network error')}. Please try again.<br><button type="button" class="btn-secondary" onclick="searchMovieBox()" style="margin-top:12px; font-size:12px;"><i class="fa-solid fa-rotate-right"></i> Retry Search</button></div>`;
   }
 }
 
@@ -2725,6 +2728,7 @@ function renderImporterGrid(items) {
   if (!items || items.length === 0) {
     const rawTotal = (state.movieboxRawItems || []).length;
     const currentAudio = document.getElementById('imp-filter-audio')?.value || 'all';
+    const currentSearch = (document.getElementById('importer-search-input')?.value || '').trim();
     if (rawTotal > 0) {
       grid.innerHTML = `
         <div class="empty-state">
@@ -2733,6 +2737,17 @@ function renderImporterGrid(items) {
           <div style="display:inline-flex; gap:8px; margin-top:14px; flex-wrap:wrap; justify-content:center;">
             ${currentAudio !== 'all' ? `<button type="button" class="btn-primary" onclick="document.getElementById('imp-filter-audio').value='all'; applyImporterFilters();" style="font-size:12px;"><i class="fa-solid fa-volume-high"></i> Show All Audio Versions (${rawTotal})</button>` : ''}
             <button type="button" class="btn-secondary" onclick="resetImporterFilters()" style="font-size:12px;"><i class="fa-solid fa-rotate-left"></i> Reset All Filters</button>
+          </div>
+        </div>
+      `;
+    } else if (currentSearch) {
+      grid.innerHTML = `
+        <div class="empty-state">
+          <i class="fa-solid fa-magnifying-glass" style="font-size:32px; color:var(--text-dim); margin-bottom:12px; display:block;"></i>
+          No titles found matching "<strong>${escapeHtml(currentSearch)}</strong>".<br>
+          <div style="margin-top:14px; display:flex; gap:10px; justify-content:center;">
+            <button type="button" class="btn-primary" onclick="searchMovieBox()" style="font-size:12px;"><i class="fa-solid fa-rotate-right"></i> Retry Search</button>
+            <button type="button" class="btn-secondary" onclick="loadMovieBoxRecent('all')" style="font-size:12px;"><i class="fa-solid fa-globe"></i> Load All Feeds</button>
           </div>
         </div>
       `;
