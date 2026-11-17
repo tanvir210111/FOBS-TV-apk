@@ -845,11 +845,11 @@ class AdminService {
 
         const tLower = (it.title || '').toLowerCase();
         const secLower = (sec.title || '').toLowerCase();
-        let isHindi = (it.isHindi !== undefined) ? it.isHindi : (tLower.includes('hindi') || secLower.includes('hindi'));
-        const isBangla = (it.isBangla !== undefined) ? it.isBangla : (tLower.includes('bangla') || tLower.includes('bengali') || secLower.includes('bangla'));
-        const isEnglish = (it.isEnglish !== undefined) ? it.isEnglish : (/\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(it.title || '') || (/english/i.test(tLower) && !/hollywood/i.test(tLower)));
+        const isEnglish = /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(it.title || '') || it.corner === 'English';
+        const isBangla = /\[\s*bangla\s*\]|\[\s*bengali\s*\]|\(\s*bangla\s*\)|\bbangla\s*dub(bed)?\b/i.test(tLower) || it.corner === 'Bengali' || it.corner === 'Bangla' || secLower.includes('bengali dubbed');
+        const isHindi = !isEnglish && !isBangla && (/\[\s*hindi\s*\]|\(\s*hindi\s*\)|\bhindi\s*dub(bed)?\b/i.test(tLower) || it.corner === 'Hindi' || it.isHindiDub === true || secLower.includes('hindi dubbed') || secLower.includes('hindi dub'));
 
-        let audioTag = it.audioTag || 'Original Audio';
+        let audioTag = 'Original Audio';
         if (isHindi) audioTag = 'Hindi Dubbed';
         else if (isEnglish) audioTag = 'English Dubbed';
         else if (isBangla) audioTag = 'Bangla Dubbed';
@@ -1095,27 +1095,32 @@ class AdminService {
           continue;
         }
 
-        // 1. Audio detection (Orthogonal to Industry)
-        const isEnglish = /\[english\]|\(english\)|\benglish\b/i.test(tLower);
-        const isBangla = it.isBangla || /\[bengali\]|\[bangla\]|\bbengali\b|\bbangla\b|[\u0980-\u09FF]/i.test(tLower) || it.countryName === 'Bangladesh' || /bengali|bangla/i.test(secLower);
-        const isHindi = !isBangla && !isEnglish && (it.isHindi || /\[hindi\]|\bhindi\b/i.test(tLower) || /hindi/i.test(secLower) ||
-                        (it.countryName === 'India' && !/tamil|telugu|malayalam|kannada/i.test(tLower)));
+        // 1. Audio detection (Accurate Dubbed vs Original Audio distinction)
+        const isExplicitEnglishDub = /\[english\]|\(english\)|\benglish\s*dub(bed)?\b/i.test(tLower) || it.corner === 'English';
+        const isExplicitBanglaDub = /\[bengali\]|\[bangla\]|\bbengali\s*dub(bed)?\b|\bbangla\s*dub(bed)?\b/i.test(tLower) ||
+                                    it.corner === 'Bengali' || it.corner === 'Bangla' || it.isBanglaDub === true || secLower.includes('bengali dubbed');
+        const isExplicitHindiDub = /\[hindi\]|\(hindi\)|\bhindi\s*dub(bed)?\b/i.test(tLower) ||
+                                   it.corner === 'Hindi' || it.isHindiDub === true ||
+                                   secLower.includes('hindi dubbed') || secLower.includes('hindi dub');
 
         let audioCategory = 'original';
         let audioTag = 'Original Audio';
-        if (isBangla) {
+        if (isExplicitBanglaDub) {
           audioCategory = 'bangla';
           audioTag = 'Bangla Dubbed';
-        } else if (isHindi) {
+        } else if (isExplicitHindiDub) {
           audioCategory = 'hindi';
           audioTag = 'Hindi Dubbed';
-        } else if (isEnglish) {
+        } else if (isExplicitEnglishDub) {
           audioCategory = 'english';
           audioTag = 'English Dubbed';
+        } else {
+          audioCategory = 'original';
+          audioTag = 'Original Audio';
         }
 
         // 2. Accurate Industry detection (Origin Country / Production Culture)
-        const industry = this.detectIndustry(it.title, secTitle, it.countryName, it.genre, isBangla);
+        const industry = this.detectIndustry(it.title, secTitle, it.countryName, it.genre, isExplicitBanglaDub);
 
         // 3. Extract Genuine MovieBox Ingestion & Upload Date (Strictly MovieBox upload date, NOT theatrical release date)
         const posterUrl = it.poster || it.cover?.url || '';
@@ -1621,10 +1626,10 @@ class AdminService {
       let tmdbReleaseDate = '';
 
       const tLower = (it.title || '').toLowerCase();
-      const isHindi = (it.isHindi !== undefined) ? !!it.isHindi : (tLower.includes('hindi') || (it.audioTag && /hindi/i.test(it.audioTag)));
-      const isBangla = (it.isBangla !== undefined) ? !!it.isBangla : (tLower.includes('bangla') || tLower.includes('bengali') || (it.audioTag && /bangla|bengali/i.test(it.audioTag)));
-      const isEnglish = (it.isEnglish !== undefined) ? !!it.isEnglish : (/\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(it.title || '') || (/english/i.test(tLower) && !/hollywood/i.test(tLower)));
-      let audioTag = it.audioTag || 'Original Audio';
+      const isEnglish = /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(it.title || '') || it.corner === 'English';
+      const isBangla = /\[\s*bangla\s*\]|\[\s*bengali\s*\]|\(\s*bangla\s*\)|\bbangla\s*dub(bed)?\b/i.test(tLower) || it.corner === 'Bengali' || it.corner === 'Bangla';
+      const isHindi = !isEnglish && !isBangla && (/\[\s*hindi\s*\]|\(\s*hindi\s*\)|\bhindi\s*dub(bed)?\b/i.test(tLower) || it.corner === 'Hindi' || it.isHindiDub === true || (it.audioTag && /hindi dubbed/i.test(it.audioTag)));
+      let audioTag = 'Original Audio';
       if (isHindi) audioTag = 'Hindi Dubbed';
       else if (isEnglish) audioTag = 'English Dubbed';
       else if (isBangla) audioTag = 'Bangla Dubbed';

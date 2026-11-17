@@ -2492,25 +2492,19 @@ function applyImporterFilters() {
 
   let filtered = raw.filter(item => {
     const tLower = (item.title || '').toLowerCase();
-    const isHindi = !!item.isHindi ||
-      tLower.includes('hindi') ||
-      (item.audioTag && /hindi/i.test(item.audioTag)) ||
-      (item.category && /hindi/i.test(item.category)) ||
-      (item.section && /hindi/i.test(item.section)) ||
-      (item.dubLanguage && /hindi/i.test(item.dubLanguage)) ||
-      (item.audio && /hindi/i.test(item.audio)) ||
-      item.industry === 'Bollywood';
+    const isEnglish = /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(item.title || '') ||
+                      item.corner === 'English' || (item.audioTag && /english/i.test(item.audioTag));
 
-    const isBangla = !!item.isBangla ||
-      tLower.includes('bangla') || tLower.includes('bengali') ||
-      (item.audioTag && /bangla|bengali/i.test(item.audioTag)) ||
-      (item.category && /bangla|bengali/i.test(item.category)) ||
-      (item.section && /bangla|bengali/i.test(item.section)) ||
-      item.industry === 'Tollywood';
+    const isBangla = /\[\s*bangla\s*\]|\[\s*bengali\s*\]|\(\s*bangla\s*\)|\bbangla\s*dub(bed)?\b/i.test(tLower) ||
+                     item.corner === 'Bengali' || item.corner === 'Bangla' ||
+                     (item.audioTag && /bangla dubbed|bengali dubbed/i.test(item.audioTag));
 
-    const isEnglish = !!item.isEnglish ||
-      /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(item.title || '') ||
-      (item.audioTag && /english/i.test(item.audioTag));
+    const isHindi = !isEnglish && !isBangla && (
+      /\[\s*hindi\s*\]|\(\s*hindi\s*\)|\bhindi\s*dub(bed)?\b/i.test(tLower) ||
+      item.corner === 'Hindi' ||
+      (item.audioTag && /hindi dubbed/i.test(item.audioTag)) ||
+      (item.section && /hindi dubbed/i.test(item.section))
+    );
 
     const isSeries = item.type === 'series' || (item.category && item.category.toLowerCase().includes('series'));
 
@@ -2779,9 +2773,19 @@ function renderImporterGrid(items) {
   grid.innerHTML = items.map((item, idx) => {
     const isSeries = item.type === 'series' || (item.category && item.category.toLowerCase().includes('series'));
     const tLower = (item.title || '').toLowerCase();
-    const isHindi = item.isHindi || tLower.includes('hindi') || (item.audioTag && /hindi/i.test(item.audioTag));
-    const isEnglish = item.isEnglish || /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(item.title || '') || (item.audioTag && /english/i.test(item.audioTag));
-    const isBangla = item.isBangla || tLower.includes('bangla') || tLower.includes('bengali') || (item.audioTag && /bangla|bengali/i.test(item.audioTag));
+    const isEnglish = /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(item.title || '') ||
+                      item.corner === 'English' || (item.audioTag && /english/i.test(item.audioTag));
+
+    const isBangla = /\[\s*bangla\s*\]|\[\s*bengali\s*\]|\(\s*bangla\s*\)|\bbangla\s*dub(bed)?\b/i.test(tLower) ||
+                     item.corner === 'Bengali' || item.corner === 'Bangla' ||
+                     (item.audioTag && /bangla dubbed|bengali dubbed/i.test(item.audioTag));
+
+    const isHindi = !isEnglish && !isBangla && (
+      /\[\s*hindi\s*\]|\(\s*hindi\s*\)|\bhindi\s*dub(bed)?\b/i.test(tLower) ||
+      item.corner === 'Hindi' ||
+      (item.audioTag && /hindi dubbed/i.test(item.audioTag)) ||
+      (item.section && /hindi dubbed/i.test(item.section))
+    );
 
     let audioBadgeHtml = '';
     if (isHindi) {
@@ -4066,7 +4070,7 @@ function applyLatestFilters(resetLimit = true) {
     else if (it.updateType === 'new_dubbing') badgeClass = 'new-dub';
     else if (it.alreadyImported) badgeClass = 'synced';
 
-    const audioPillColor = it.audioCategory === 'bangla' ? '#10b981' : (it.audioCategory === 'hindi' ? '#f59e0b' : '#38bdf8');
+    const audioPillColor = it.audioCategory === 'bangla' ? '#10b981' : (it.audioCategory === 'hindi' ? '#f59e0b' : (it.audioCategory === 'english' ? '#a855f7' : '#38bdf8'));
 
     let actionBtnHtml = '';
     if (it.isComingSoon || it.updateType === 'upcoming') {
