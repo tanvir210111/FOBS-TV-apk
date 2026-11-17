@@ -1452,6 +1452,11 @@ class AdminService {
       { triggers: ['itaewon'], aliases: ['itaewon class'] },
       { triggers: ['demon slayer'], aliases: ['kimetsu no yaiba'] },
       { triggers: ['kimetsu no yaiba'], aliases: ['demon slayer'] },
+      { triggers: ['one spring night', 'spring night'], aliases: ['bombam'] },
+      { triggers: ['bombam'], aliases: ['one spring night'] },
+      { triggers: ['something in the rain'], aliases: ['pretty noona who buys me food'] },
+      { triggers: ['hotel del luna'], aliases: ['hotel delluna'] },
+      { triggers: ['strong woman do bong soon'], aliases: ['strong girl bong-soon'] },
       { triggers: ['heaven official', 'heaven officials', 'heaven official blessing'], aliases: ["heaven official's blessing", "tian guan ci fu"] }
     ];
 
@@ -1478,79 +1483,77 @@ class AdminService {
 
     const allowedWords = new Set([...qWords, ...aliasWords]);
 
-    // Query both Original and Hindi / Dubbed versions in parallel
-    const queriesToRun = [cleanQ];
     const isHindiQuery = /\bhindi\b/i.test(cleanQ);
     const isBanglaQuery = /\bbangla\b|\bbengali\b/i.test(cleanQ);
-
     const isGenericHindi = cleanQ.toLowerCase() === 'hindi' || cleanQ.toLowerCase() === 'hindi movies' || cleanQ.toLowerCase() === 'hindi series' || cleanQ.toLowerCase() === 'hindi dubbed';
-    if (isGenericHindi) {
-      queriesToRun.push('hindi dubbed', 'bollywood', 'hindi cinema', 'indian');
-    } else if (!isHindiQuery) {
-      queriesToRun.push(`${cleanQ} hindi`);
-    } else {
-      const strippedHindi = cleanQ.replace(/\bhindi\b/gi, '').trim();
-      if (strippedHindi) queriesToRun.push(strippedHindi);
-    }
 
-    // Expand common spelling variants
-    const normalizedQ = cleanQ.replace(/['’]s\b/gi, '').replace(/\boffic?als?\b/gi, 'official').trim();
-    if (normalizedQ.toLowerCase() !== cleanQ.toLowerCase() && !queriesToRun.includes(normalizedQ)) {
-      queriesToRun.push(normalizedQ);
-      if (!isHindiQuery) queriesToRun.push(`${normalizedQ} hindi`);
-    }
+    // 1. Run primary query first (Direct MovieBox results for user query are always preserved)
+    const primaryItems = await movieboxService.search(cleanQ);
+    const seenMap = new Map();
 
-    // Add alias queries
-    for (const aq of aliasQueries) {
-      if (!queriesToRun.includes(aq) && queriesToRun.length < 8) {
-        queriesToRun.push(aq);
+    if (Array.isArray(primaryItems)) {
+      for (const it of primaryItems) {
+        const sid = String(it.subjectId || it.id || '');
+        if (sid && !seenMap.has(sid)) {
+          seenMap.set(sid, it);
+        }
       }
     }
 
-    if (!isBanglaQuery && queriesToRun.length < 7 && cleanQ.length > 3 && !isGenericHindi) {
-      queriesToRun.push(`${cleanQ} bangla`);
+    // 2. Query targeted dubbed & alias variants in secondary pass (capped to prevent 429 rate limit)
+    const secondaryQueries = [];
+    if (isGenericHindi) {
+      secondaryQueries.push('hindi dubbed', 'bollywood');
+    } else if (!isHindiQuery) {
+      secondaryQueries.push(`${cleanQ} hindi`);
     }
 
-    const searchResults = await Promise.allSettled(
-      queriesToRun.map(async q => {
-        const isHQ = /\bhindi\b/i.test(q);
-        const res = await movieboxService.search(q);
-        if (Array.isArray(res) && isHQ) {
-          return res.map(item => ({
-            ...item,
-            isHindi: item.isHindi !== undefined ? item.isHindi : true,
-            audioTag: item.audioTag || 'Hindi Dubbed'
-          }));
-        }
-        return res;
-      })
-    );
+    for (const aq of aliasQueries) {
+      if (secondaryQueries.length < 3 && !secondaryQueries.includes(aq) && aq !== cleanQ) {
+        secondaryQueries.push(aq);
+      }
+    }
 
-    const seenMap = new Map();
-    for (const res of searchResults) {
-      if (res.status === 'fulfilled' && Array.isArray(res.value)) {
-        for (const it of res.value) {
-          const sid = String(it.subjectId || it.id || '');
-          if (!sid || seenMap.has(sid)) continue;
-
-          const titleLower = (it.title || '').toLowerCase();
-          const itBase = titleLower
-            .replace(/\[.*?\]|\(.*?\)/g, '')
-            .replace(/[^a-z0-9]/g, ' ')
-            .replace(/\s+/g, ' ')
-            .trim();
-
-          // Reject random fallback noise if not generic search:
-          // Must match at least one query word or alias phrase/word
-          if (!isGenericHindi && allowedWords.size > 0) {
-            const hasMatch = Array.from(allowedWords).some(w => titleLower.includes(w) || itBase.includes(w)) ||
-              aliasPhrases.some(ap => titleLower.includes(ap) || itBase.includes(ap));
-            if (!hasMatch) {
-              continue; // Drop completely unrelated fallback noise!
-            }
+    if (secondaryQueries.length > 0) {
+      const secondaryResults = await Promise.allSettled(
+        secondaryQueries.map(async q => {
+          const isHQ = /\bhindi\b/i.test(q);
+          const res = await movieboxService.search(q);
+          if (Array.isArray(res) && isHQ) {
+            return res.map(item => ({
+              ...item,
+              isHindi: item.isHindi !== undefined ? item.isHindi : true,
+              audioTag: item.audioTag || 'Hindi Dubbed'
+            }));
           }
+          return res;
+        })
+      );
 
-          seenMap.set(sid, it);
+      for (const res of secondaryResults) {
+        if (res.status === 'fulfilled' && Array.isArray(res.value)) {
+          for (const it of res.value) {
+            const sid = String(it.subjectId || it.id || '');
+            if (!sid || seenMap.has(sid)) continue;
+
+            const titleLower = (it.title || '').toLowerCase();
+            const itBase = titleLower
+              .replace(/\[.*?\]|\(.*?\)/g, '')
+              .replace(/[^a-z0-9]/g, ' ')
+              .replace(/\s+/g, ' ')
+              .trim();
+
+            // For secondary queries only: filter out completely unrelated fallback noise
+            if (!isGenericHindi && allowedWords.size > 0) {
+              const hasMatch = Array.from(allowedWords).some(w => titleLower.includes(w) || itBase.includes(w)) ||
+                aliasPhrases.some(ap => titleLower.includes(ap) || itBase.includes(ap));
+              if (!hasMatch) {
+                continue; // Drop unrelated fallback noise
+              }
+            }
+
+            seenMap.set(sid, it);
+          }
         }
       }
     }
@@ -1624,6 +1627,7 @@ class AdminService {
       let tmdbYear = it.year || '';
       let tmdbMonth = '';
       let tmdbReleaseDate = '';
+      let tmdbTitle = '';
 
       const tLower = (it.title || '').toLowerCase();
       const isEnglish = /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(it.title || '') || it.corner === 'English';
@@ -1668,6 +1672,9 @@ class AdminService {
           if (tmdbItem.backdrop_path) {
             backdrop = `https://image.tmdb.org/t/p/original${tmdbItem.backdrop_path}`;
           }
+          if (tmdbItem.title || tmdbItem.name) {
+            tmdbTitle = tmdbItem.title || tmdbItem.name || '';
+          }
           if (tmdbItem.vote_average) {
             tmdbRating = tmdbItem.vote_average.toFixed(1);
           }
@@ -1684,7 +1691,7 @@ class AdminService {
         }
       } catch (e) {}
 
-      let industry = this.detectIndustry(it.title, '', '', '', isBangla);
+      let industry = this.detectIndustry(tmdbTitle || it.title, '', '', '', isBangla);
       let category = this.detectCategory(industry, it.type, isHindi, isBangla);
 
       let itemYear = tmdbYear || it.year || '2026';
@@ -1716,8 +1723,13 @@ class AdminService {
         /coming soon|upcoming/i.test(it.corner || '') ||
         /coming soon|upcoming/i.test(it.title || '');
 
+      const finalTitle = tmdbTitle ? (isHindi ? `${tmdbTitle} [Hindi]` : (isBangla ? `${tmdbTitle} [Bengali]` : (isEnglish ? `${tmdbTitle} [English]` : tmdbTitle))) : it.title;
+
       return {
         ...it,
+        title: finalTitle,
+        originalMbTitle: it.title,
+        tmdbTitle,
         poster: poster || it.poster,
         backdrop: backdrop || it.backdrop || poster || it.poster,
         cover: backdrop || it.backdrop || poster || it.poster,
@@ -1742,15 +1754,16 @@ class AdminService {
     // Score relevance so the exact show and its Hindi Dubbed version appear at the very top!
     const scored = enriched.map(it => {
       const tLower = (it.title || '').toLowerCase();
+      const tmLower = (it.tmdbTitle || '').toLowerCase();
       const bTitle = it.baseTitle || '';
       let score = 0;
 
-      // Exact match with query or alias
-      if (bTitle === qLower || aliasPhrases.some(ap => bTitle === ap)) {
+      // Exact match with query or alias or tmdbTitle
+      if (bTitle === qLower || aliasPhrases.some(ap => bTitle === ap) || tmLower === qLower || tLower === qLower) {
         score += 6000;
-      } else if (bTitle.startsWith(qLower) || aliasPhrases.some(ap => bTitle.startsWith(ap))) {
+      } else if (bTitle.startsWith(qLower) || aliasPhrases.some(ap => bTitle.startsWith(ap)) || tmLower.startsWith(qLower) || tLower.startsWith(qLower)) {
         score += 3500;
-      } else if (tLower.includes(qLower) || aliasPhrases.some(ap => tLower.includes(ap))) {
+      } else if (tLower.includes(qLower) || aliasPhrases.some(ap => tLower.includes(ap)) || tmLower.includes(qLower)) {
         score += 2000;
       }
 
