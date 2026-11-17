@@ -1412,6 +1412,62 @@ class AdminService {
     cleanQ = cleanQ.replace(/\boffic?als?\b/gi, 'official');
     cleanQ = cleanQ.replace(/['’]s\b/gi, '');
 
+    const qLower = cleanQ
+      .toLowerCase()
+      .replace(/\[.*?\]|\(.*?\)/g, '')
+      .replace(/\b(s\d+|season\s*\d+|part\s*\d+|s\d+-s\d+)\b/gi, '')
+      .replace(/['’]s\b/gi, '')
+      .replace(/\boffic?als?\b/gi, 'official')
+      .replace(/[^a-z0-9]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    const qWords = qLower.split(/\s+/).filter(w => w.length > 1 && w !== 'hindi' && w !== 'dubbed' && w !== 'bangla');
+
+    // Known global aliases and alternative titles
+    const KNOWN_ALIASES = [
+      { triggers: ['goblin', 'dokkebbi', 'dokkebi', 'dokkaebi'], aliases: ['guardian the lonely and great god', 'guardian lonely and great god'] },
+      { triggers: ['guardian the lonely and great god', 'guardian lonely and great god'], aliases: ['goblin'] },
+      { triggers: ['cloy', 'crash landing'], aliases: ['crash landing on you'] },
+      { triggers: ['crash landing on you'], aliases: ['cloy'] },
+      { triggers: ['dots'], aliases: ['descendants of the sun'] },
+      { triggers: ['descendants of the sun'], aliases: ['dots'] },
+      { triggers: ['aot'], aliases: ['attack on titan', 'shingeki no kyojin'] },
+      { triggers: ['attack on titan', 'shingeki no kyojin'], aliases: ['aot'] },
+      { triggers: ['jujutsu'], aliases: ['jujutsu kaisen'] },
+      { triggers: ['solo leveling'], aliases: ['ore dake level up'] },
+      { triggers: ['ore dake level up'], aliases: ['solo leveling'] },
+      { triggers: ['tre', 'remarried empress'], aliases: ['the remarried empress'] },
+      { triggers: ['the remarried empress'], aliases: ['remarried empress', 'tre'] },
+      { triggers: ['squid game'], aliases: ['ojingeo geim'] },
+      { triggers: ['itaewon'], aliases: ['itaewon class'] },
+      { triggers: ['demon slayer'], aliases: ['kimetsu no yaiba'] },
+      { triggers: ['kimetsu no yaiba'], aliases: ['demon slayer'] },
+      { triggers: ['heaven official', 'heaven officials', 'heaven official blessing'], aliases: ["heaven official's blessing", "tian guan ci fu"] }
+    ];
+
+    const aliasQueries = [];
+    const aliasPhrases = [];
+    const aliasWords = new Set();
+
+    for (const entry of KNOWN_ALIASES) {
+      if (entry.triggers.some(t => qLower.includes(t)) || entry.aliases.some(a => qLower.includes(a))) {
+        for (const al of entry.aliases) {
+          if (!aliasQueries.includes(al)) {
+            aliasQueries.push(al);
+            aliasQueries.push(`${al} hindi`);
+          }
+          aliasPhrases.push(al);
+          al.split(/\s+/).forEach(w => { if (w.length > 2 && w !== 'the' && w !== 'and') aliasWords.add(w); });
+        }
+        for (const tr of entry.triggers) {
+          aliasPhrases.push(tr);
+          tr.split(/\s+/).forEach(w => { if (w.length > 2 && w !== 'the' && w !== 'and') aliasWords.add(w); });
+        }
+      }
+    }
+
+    const allowedWords = new Set([...qWords, ...aliasWords]);
+
     // Query both Original and Hindi / Dubbed versions in parallel
     const queriesToRun = [cleanQ];
     const isHindiQuery = /\bhindi\b/i.test(cleanQ);
@@ -1427,17 +1483,21 @@ class AdminService {
       if (strippedHindi) queriesToRun.push(strippedHindi);
     }
 
-    // Expand common spelling variants (e.g. officials -> official, apostrophes)
+    // Expand common spelling variants
     const normalizedQ = cleanQ.replace(/['’]s\b/gi, '').replace(/\boffic?als?\b/gi, 'official').trim();
-    if (normalizedQ.toLowerCase() !== cleanQ.toLowerCase()) {
+    if (normalizedQ.toLowerCase() !== cleanQ.toLowerCase() && !queriesToRun.includes(normalizedQ)) {
       queriesToRun.push(normalizedQ);
       if (!isHindiQuery) queriesToRun.push(`${normalizedQ} hindi`);
     }
-    if (/heaven\s*offic?als?(\s*blessing)?/i.test(cleanQ)) {
-      queriesToRun.push('heaven official blessing', 'heaven official blessing hindi');
+
+    // Add alias queries
+    for (const aq of aliasQueries) {
+      if (!queriesToRun.includes(aq) && queriesToRun.length < 8) {
+        queriesToRun.push(aq);
+      }
     }
 
-    if (!isBanglaQuery && queriesToRun.length < 5 && cleanQ.length > 3 && !isGenericHindi) {
+    if (!isBanglaQuery && queriesToRun.length < 7 && cleanQ.length > 3 && !isGenericHindi) {
       queriesToRun.push(`${cleanQ} bangla`);
     }
 
@@ -1461,9 +1521,26 @@ class AdminService {
       if (res.status === 'fulfilled' && Array.isArray(res.value)) {
         for (const it of res.value) {
           const sid = String(it.subjectId || it.id || '');
-          if (sid && !seenMap.has(sid)) {
-            seenMap.set(sid, it);
+          if (!sid || seenMap.has(sid)) continue;
+
+          const titleLower = (it.title || '').toLowerCase();
+          const itBase = titleLower
+            .replace(/\[.*?\]|\(.*?\)/g, '')
+            .replace(/[^a-z0-9]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+          // Reject random fallback noise if not generic search:
+          // Must match at least one query word or alias phrase/word
+          if (!isGenericHindi && allowedWords.size > 0) {
+            const hasMatch = Array.from(allowedWords).some(w => titleLower.includes(w) || itBase.includes(w)) ||
+              aliasPhrases.some(ap => titleLower.includes(ap) || itBase.includes(ap));
+            if (!hasMatch) {
+              continue; // Drop completely unrelated fallback noise!
+            }
           }
+
+          seenMap.set(sid, it);
         }
       }
     }
@@ -1653,41 +1730,45 @@ class AdminService {
     }));
 
     // Score relevance so the exact show and its Hindi Dubbed version appear at the very top!
-    const qLower = cleanQ
-      .toLowerCase()
-      .replace(/\[.*?\]|\(.*?\)/g, '')
-      .replace(/\b(s\d+|season\s*\d+|part\s*\d+|s\d+-s\d+)\b/gi, '')
-      .replace(/['’]s\b/gi, '')
-      .replace(/\boffic?als?\b/gi, 'official')
-      .replace(/[^a-z0-9]/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-    const qWords = qLower.split(/\s+/).filter(w => w.length > 1 && w !== 'hindi' && w !== 'dubbed');
-
     const scored = enriched.map(it => {
       const tLower = (it.title || '').toLowerCase();
       const bTitle = it.baseTitle || '';
       let score = 0;
 
-      if (bTitle === qLower) score += 2000;
-      else if (bTitle.startsWith(qLower)) score += 1000;
-      else if (tLower.includes(qLower)) score += 500;
+      // Exact match with query or alias
+      if (bTitle === qLower || aliasPhrases.some(ap => bTitle === ap)) {
+        score += 6000;
+      } else if (bTitle.startsWith(qLower) || aliasPhrases.some(ap => bTitle.startsWith(ap))) {
+        score += 3500;
+      } else if (tLower.includes(qLower) || aliasPhrases.some(ap => tLower.includes(ap))) {
+        score += 2000;
+      }
 
       for (const w of qWords) {
-        if (tLower.includes(w)) score += 100;
+        if (tLower.includes(w)) score += 300;
+      }
+      for (const aw of aliasWords) {
+        if (tLower.includes(aw)) score += 200;
       }
 
-      // Penalize AMVs, music videos, fan covers, and songs so actual series/movies are first
-      if (/amv|music video|official video|official audio|cover|ost|remix|lyrics|song/i.test(tLower)) {
-        score -= 2500;
+      // Heavily penalize AMVs, music videos, fan covers, and songs so actual series/movies are first
+      const isMusicOrOst = /amv|music video|official video|official audio|cover|ost|remix|lyrics|song|orchestra ver|fmv\b/i.test(tLower);
+      if (isMusicOrOst) {
+        score -= 8000;
       }
 
+      // Check if it matches any query or alias word
       let hasAnyWord = false;
-      for (const w of qWords) {
+      for (const w of allowedWords) {
         if (tLower.includes(w)) { hasAnyWord = true; break; }
       }
-      if (!hasAnyWord && qWords.length > 0) {
-        score -= 3000;
+      if (!hasAnyWord && allowedWords.size > 0 && !isGenericHindi) {
+        score -= 10000;
+      }
+
+      // Bonus for real series or movie
+      if (it.type === 'series' || it.type === 'movie') {
+        score += 200;
       }
 
       return { ...it, score };
@@ -1709,7 +1790,15 @@ class AdminService {
     });
 
     const pairedItems = [];
+    const hasPositiveMatches = sortedGroups.some(([_, grp]) => Math.max(...grp.map(x => x.score)) > 0);
+
     for (const [_, grp] of sortedGroups) {
+      const maxScore = Math.max(...grp.map(x => x.score));
+      // If we have positive matching series/movies, skip heavily penalized songs or unrelated items
+      if (hasPositiveMatches && maxScore < -3000) {
+        continue;
+      }
+
       // Within group: Original first, then Hindi Dubbed
       grp.sort((a, b) => {
         if (!a.isHindi && b.isHindi) return -1;

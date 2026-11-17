@@ -2372,19 +2372,22 @@ state.movieboxRawItems = [];
 
 // Live typing search debounce for importer
 let importerSearchDebounceTimer = null;
+let importerSearchSeq = 0;
 function handleImporterSearchInput(val) {
   clearTimeout(importerSearchDebounceTimer);
   const q = (val || '').trim();
   if (q.length >= 3) {
     importerSearchDebounceTimer = setTimeout(() => {
       searchMovieBox();
-    }, 400);
+    }, 650);
   } else if (q.length === 0) {
     loadMovieBoxRecent('all');
   }
 }
 
 async function loadMovieBoxRecent(filter = 'all', btnEl) {
+  importerSearchSeq++;
+  clearTimeout(importerSearchDebounceTimer);
   document.querySelectorAll('.importer-tab-btn').forEach(b => {
     b.classList.remove('active');
     if (btnEl && b === btnEl) {
@@ -2430,6 +2433,8 @@ async function loadMovieBoxRecent(filter = 'all', btnEl) {
 }
 
 async function searchMovieBox() {
+  clearTimeout(importerSearchDebounceTimer);
+  const currentSeq = ++importerSearchSeq;
   const inputEl = document.getElementById('importer-search-input');
   const query = (inputEl ? inputEl.value : '').trim();
   if (!query) {
@@ -2460,13 +2465,16 @@ async function searchMovieBox() {
 
   try {
     const res = await authFetch(`${API_BASE}/api/admin/moviebox/search?q=${encodeURIComponent(query)}`);
+    if (currentSeq !== importerSearchSeq) return; // Discard superseded out-of-order responses
     const data = await res.json();
+    if (currentSeq !== importerSearchSeq) return;
     if (!data.success) {
       throw new Error(data.error || 'Failed to search MovieBox');
     }
     state.movieboxRawItems = data.items || [];
     applyImporterFilters();
   } catch (err) {
+    if (currentSeq !== importerSearchSeq) return;
     grid.innerHTML = `<div class="empty-state error-text"><i class="fa-solid fa-triangle-exclamation" style="font-size:24px; color:#ef4444; margin-bottom:10px; display:block;"></i>Search failed: ${escapeHtml(err.message || 'Network error')}. Please try again.<br><button type="button" class="btn-secondary" onclick="searchMovieBox()" style="margin-top:12px; font-size:12px;"><i class="fa-solid fa-rotate-right"></i> Retry Search</button></div>`;
   }
 }
@@ -2603,15 +2611,20 @@ function applyImporterFilters() {
   } else if (sort === 'title-asc') {
     filtered.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
   } else {
-    // Default: Keep Original + Hindi paired side by side
+    // Default: Keep Original + Hindi paired side by side & preserve server relevance order
     const grouped = new Map();
     for (const item of filtered) {
       const bKey = item.baseTitle || (item.title || '').replace(/\[.*?hindi.*?\]|\(.*?\bhindi\b.*?\)|\[.*?bangla.*?\]|\(.*?\bbangla\b.*?\)/gi, '').trim().toLowerCase();
       if (!grouped.has(bKey)) grouped.set(bKey, []);
       grouped.get(bKey).push(item);
     }
+    const sortedGroups = Array.from(grouped.entries()).sort((a, b) => {
+      const maxA = Math.max(...a[1].map(x => (x.score !== undefined ? x.score : 0)));
+      const maxB = Math.max(...b[1].map(x => (x.score !== undefined ? x.score : 0)));
+      return maxB - maxA;
+    });
     const paired = [];
-    for (const [_, grp] of grouped) {
+    for (const [_, grp] of sortedGroups) {
       grp.sort((a, b) => {
         if (!a.isHindi && b.isHindi) return -1;
         if (a.isHindi && !b.isHindi) return 1;
