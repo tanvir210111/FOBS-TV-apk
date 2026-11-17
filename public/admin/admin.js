@@ -1896,14 +1896,17 @@ function renderUsersTable(usersList) {
 
   tbody.innerHTML = usersList.map(u => {
     const isOnline = u.isOnline || u.status === 'Online Now';
-    const isReg = u.type === 'Registered Member';
-    const hasEmail = Boolean(isReg && u.email && u.email.includes('@') && u.email !== 'Google User');
-    const displayEmail = hasEmail ? u.email : ((u.email && u.email !== 'Google User') ? u.email : '');
+    const isReg = u.type === 'Registered Member' || u.type === 'Linked Member Device';
+    const hasEmail = Boolean(u.email && u.email.includes('@') && u.email !== 'Google User' && !u.email.includes('@placeholder.'));
+    const displayEmail = hasEmail ? u.email : '';
     const rawIp = u.ip || (u.email && (u.email.includes('.') && !u.email.includes('@')) ? u.email.replace('IP: ', '') : '');
+    const displayName = (u.name && u.name !== 'User' && u.name !== 'App Member' && u.name !== 'Mobile App User')
+      ? u.name
+      : (displayEmail ? displayEmail.split('@')[0] : (isReg ? 'Registered Member' : (u.deviceModel || 'App Device')));
 
     const avatarHtml = isReg && u.picture
       ? `<div style="position: relative; display: inline-block;">
-           <img src="${escapeHtml(u.picture)}" alt="${escapeHtml(u.name)}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
+           <img src="${escapeHtml(u.picture)}" alt="${escapeHtml(displayName)}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
            ${isOnline ? '<span class="pulse-dot-green" style="position: absolute; bottom: 0; right: 0; border: 1.5px solid #0f172a;"></span>' : ''}
          </div>`
       : `<div style="position: relative; display: inline-block;">
@@ -1920,7 +1923,7 @@ function renderUsersTable(usersList) {
             ${avatarHtml}
             <div>
               <div class="table-title-bold" style="font-size: 13.5px; color: ${isReg ? '#f8fafc' : '#e2e8f0'}; font-weight: 700;">
-                ${escapeHtml(u.name || (isReg ? 'App Member' : 'Mobile App User'))}
+                ${escapeHtml(displayName)}
               </div>
               ${hasEmail ? `
                 <div style="font-size: 11.5px; color: #c084fc; font-weight: 600; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
@@ -1929,7 +1932,7 @@ function renderUsersTable(usersList) {
               ` : (isReg ? `
                 <div style="font-size: 11px; color: #fbbf24; font-weight: 600; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
                   <i class="fa-solid fa-envelope-circle-check" style="font-size: 10px;"></i>
-                  ${displayEmail ? escapeHtml(displayEmail) : 'App Member'}
+                  ${displayEmail ? escapeHtml(displayEmail) : 'Registered Member'}
                 </div>
               ` : `
                 <div class="table-meta-sub" style="font-family: var(--font-mono); font-size: 11px; color: #64748b;">
@@ -1941,13 +1944,20 @@ function renderUsersTable(usersList) {
         </td>
         <td>
           <div style="display: flex; flex-direction: column; gap: 3px;">
-            ${isReg ? `
-              <div style="font-size: 13px; font-weight: 700; color: ${hasEmail ? '#f1f5f9' : '#fbbf24'}; display: flex; align-items: center; gap: 6px;">
-                <i class="fa-solid fa-envelope" style="color: ${hasEmail ? '#c084fc' : '#fbbf24'}; font-size: 12px;"></i>
-                <span style="user-select: all; color: ${hasEmail ? '#e9d5ff' : '#fef08a'};">${escapeHtml(hasEmail ? displayEmail : (displayEmail || 'Verified Account'))}</span>
+            ${hasEmail ? `
+              <div style="font-size: 13px; font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-envelope" style="color: #c084fc; font-size: 12px;"></i>
+                <span style="user-select: all; color: #e9d5ff;">${escapeHtml(displayEmail)}</span>
               </div>
               <div class="table-meta-sub" style="font-size: 11px; color: #94a3b8;">
-                <i class="fa-solid fa-user-check" style="color: #38bdf8; margin-right: 3px;"></i> App Account &bull; ${escapeHtml(u.deviceModel || 'Mobile')}
+                <i class="fa-solid fa-user-check" style="color: #38bdf8; margin-right: 3px;"></i> Verified Account &bull; ${escapeHtml(u.deviceModel || 'Mobile')}
+              </div>
+            ` : (isReg ? `
+              <div style="font-size: 12px; color: #94a3b8; font-weight: 500;">
+                <i class="fa-regular fa-envelope-open" style="font-size: 11px; margin-right: 4px; color: #fbbf24;"></i> No Email Registered
+              </div>
+              <div class="table-meta-sub" style="font-size: 11px; color: #64748b;">
+                Guest Profile &bull; ${escapeHtml(u.deviceModel || 'App')}
               </div>
             ` : `
               <span style="font-weight: 600; font-size: 12.5px; color: #cbd5e1;">${escapeHtml(u.deviceModel || 'Android Phone')}</span>
@@ -1955,7 +1965,7 @@ function renderUsersTable(usersList) {
                 <i class="fa-solid fa-network-wired" style="font-size: 10px; margin-right: 3px;"></i>
                 ${escapeHtml(rawIp || 'Direct Connection')}
               </span>
-            `}
+            `)}
           </div>
         </td>
         <td>
@@ -3814,9 +3824,13 @@ function handleLatestDateFilterChange() {
   applyLatestFilters();
 }
 
-function applyLatestFilters() {
+function applyLatestFilters(resetLimit = true) {
   const grid = document.getElementById('latest-mb-grid');
   if (!grid) return;
+
+  if (resetLimit) {
+    state.latestRenderLimit = 36;
+  }
 
   const audio = state.latestSelectedAudio || 'all';
   const industry = document.getElementById('latest-filter-industry')?.value || 'all';
@@ -3885,7 +3899,7 @@ function applyLatestFilters() {
     items = items.filter(i => !i.isComingSoon && i.updateType !== 'upcoming');
   }
 
-  // 5. Date Filter (Today, Yesterday, Last 3 Days, Last 7 Days, Last 30 Days, This Month, Custom Date)
+  // 5. Date Filter (Immune to client-server timezone difference)
   const now = new Date();
   const todayStr = now.toISOString().split('T')[0];
   const yesterdayStr = new Date(now.getTime() - 86400000).toISOString().split('T')[0];
@@ -3895,17 +3909,17 @@ function applyLatestFilters() {
   const currentYearMonth = todayStr.substring(0, 7);
 
   if (dateFilter === 'today') {
-    items = items.filter(i => i.uploadDate === todayStr || (i.updateBadge || '').toLowerCase().includes('today'));
+    items = items.filter(i => i.uploadDate >= todayStr || (i.updateBadge || '').toLowerCase().includes('today'));
   } else if (dateFilter === 'yesterday') {
     items = items.filter(i => i.uploadDate === yesterdayStr || (i.updateBadge || '').toLowerCase().includes('yesterday'));
   } else if (dateFilter === 'last3days') {
-    items = items.filter(i => i.uploadDate >= threeDaysAgoStr && i.uploadDate <= todayStr);
+    items = items.filter(i => i.uploadDate >= threeDaysAgoStr);
   } else if (dateFilter === 'last7days') {
-    items = items.filter(i => i.uploadDate >= sevenDaysAgoStr && i.uploadDate <= todayStr);
+    items = items.filter(i => i.uploadDate >= sevenDaysAgoStr);
   } else if (dateFilter === 'last30days' || dateFilter === '30days') {
-    items = items.filter(i => i.uploadDate >= thirtyDaysAgoStr && i.uploadDate <= todayStr);
+    items = items.filter(i => i.uploadDate >= thirtyDaysAgoStr);
   } else if (dateFilter === 'thismonth') {
-    items = items.filter(i => (i.uploadDate || '').startsWith(currentYearMonth) && i.uploadDate <= todayStr);
+    items = items.filter(i => (i.uploadDate || '').startsWith(currentYearMonth));
   } else if (dateFilter === 'custom' && customDate) {
     items = items.filter(i => i.uploadDate === customDate);
   }
@@ -3933,7 +3947,10 @@ function applyLatestFilters() {
     return;
   }
 
-  grid.innerHTML = items.map(it => {
+  const limit = state.latestRenderLimit || 36;
+  const visibleItems = items.slice(0, limit);
+
+  const cardsHtml = visibleItems.map(it => {
     let badgeClass = 'new-title';
     if (it.isComingSoon || it.updateType === 'upcoming') badgeClass = 'coming-soon';
     else if (it.updateType === 'new_episode') badgeClass = 'new-ep';
@@ -4002,7 +4019,25 @@ function applyLatestFilters() {
       </div>
     `;
   }).join('');
+
+  let loadMoreHtml = '';
+  if (items.length > visibleItems.length) {
+    loadMoreHtml = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 24px 0 10px;">
+        <button type="button" class="btn-primary glow" onclick="loadMoreLatestItems()" style="padding: 12px 28px; font-size: 14px; font-weight: 700; border-radius: 9999px; background: linear-gradient(135deg, #00f2fe, #4facfe); border: none; cursor: pointer;">
+          <i class="fa-solid fa-angles-down" style="margin-right: 6px;"></i> Load More Additions (${visibleItems.length} of ${items.length})
+        </button>
+      </div>
+    `;
+  }
+
+  grid.innerHTML = cardsHtml + loadMoreHtml;
 }
+
+window.loadMoreLatestItems = function() {
+  state.latestRenderLimit = (state.latestRenderLimit || 36) + 36;
+  applyLatestFilters(false);
+};
 
 function openLatestCardClickById(id) {
   const it = (state.latestMbItems || []).find(x => String(x.id) === String(id));

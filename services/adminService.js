@@ -963,16 +963,19 @@ class AdminService {
 
     // 1. Fetch live chronological additions directly from MovieBox backend database
     let allSections;
-    if (!forceRefresh && mbFeedCache.backendLatestSections && (Date.now() - (mbFeedCache.backendLatestTimestamp || 0) < 180000)) {
+    if (!forceRefresh && mbFeedCache.backendLatestSections && mbFeedCache.backendLatestSections.length > 0 && (Date.now() - (mbFeedCache.backendLatestTimestamp || 0) < 180000)) {
       allSections = JSON.parse(JSON.stringify(mbFeedCache.backendLatestSections));
     } else {
-      allSections = await movieboxService.getBackendLatestFeed({ forceRefresh });
+      allSections = await movieboxService.getBackendLatestFeed({ forceRefresh }).catch(() => null);
       if (allSections && allSections.length > 0) {
         mbFeedCache.backendLatestSections = JSON.parse(JSON.stringify(allSections));
         mbFeedCache.backendLatestTimestamp = Date.now();
         saveFeedCacheToDisk();
-      } else if (mbFeedCache.backendLatestSections) {
+      } else if (mbFeedCache.backendLatestSections && mbFeedCache.backendLatestSections.length > 0) {
         allSections = JSON.parse(JSON.stringify(mbFeedCache.backendLatestSections));
+      } else {
+        const hp = await movieboxService.getHomepage().catch(() => []);
+        allSections = Array.isArray(hp) && hp.length > 0 ? hp : [];
       }
     }
 

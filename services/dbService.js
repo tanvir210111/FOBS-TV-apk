@@ -8,7 +8,7 @@ const Redis = require('ioredis');
 const fs = require('fs');
 const path = require('path');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/fobstv';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://fobsApp:Khan%407719@127.0.0.1:27017/fobstv?authSource=fobstv';
 const REDIS_URI = process.env.REDIS_URI || 'redis://127.0.0.1:6379';
 const BOOKINGS_FILE = path.join(__dirname, '..', 'data', 'bookings.json');
 const COMMENTS_FILE = path.join(__dirname, '..', 'data', 'comments.json');
@@ -95,7 +95,7 @@ function parseDeviceModel(ua, platform) {
   return platform || 'Android Device';
 }
 
-function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android', appVersion = '' }) {
+function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android', appVersion = '', userId = '', userEmail = '', userName = '' }) {
   if (!deviceId || String(deviceId).length < 3) return;
   const isModern = appVersion === '3.2.0' || appVersion === 'v3.2.0' || appVersion === '3.1.8' || (typeof appVersion === 'string' && (appVersion.includes('3.2.0') || appVersion.includes('3.1.8')));
   try {
@@ -107,6 +107,9 @@ function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android',
     if (userAgent && !existing.userAgent) existing.userAgent = userAgent;
     existing.platform = platform || existing.platform || 'Android App';
     existing.appVersion = appVersion ? appVersion.replace(/^v/, '') : (isModern ? '3.2.0' : 'Older Version');
+    if (userId) existing.userId = userId;
+    if (userEmail && userEmail.includes('@')) existing.userEmail = userEmail;
+    if (userName && userName !== 'User' && userName !== 'App Member') existing.userName = userName;
     devices[cleanId] = existing;
     
     fs.writeFileSync(DEVICES_LOCAL_FILE, JSON.stringify(devices, null, 2), 'utf8');
@@ -300,7 +303,12 @@ async function getUserStats() {
     return u && (u.googleId || u._id || u.email || u.name);
   });
 
-  const totalRegistered = registeredUsers.length;
+  const verifiedMembers = registeredUsers.filter(u => {
+    const em = (u.email || '').toLowerCase().trim();
+    return em && em.includes('@') && !em.includes('@placeholder.') && em !== 'google user';
+  });
+
+  const totalRegistered = verifiedMembers.length;
   const totalDevices = devices.length;
   const totalUsers = totalRegistered + totalDevices;
 
@@ -312,21 +320,27 @@ async function getUserStats() {
       const isRecent = (Date.now() - new Date(lastActiveTime).getTime() < 60 * 60 * 1000);
       const cleanIp = u.ip ? u.ip.replace('::ffff:', '') : 'Encrypted';
       const cleanGid = String(u.googleId || u._id || '').replace(/^usr_usr_/, 'usr_');
-      const displayName = (u.name && u.name !== 'User' && u.name !== 'Registered Member')
-        ? u.name
-        : (u.email && u.email.includes('@') && u.email !== 'Google User'
-            ? u.email.split('@')[0]
-            : `Member (${cleanGid.substring(0, 14) || 'App'})`);
+
+      const rawEmail = (u.email || '').toLowerCase().trim();
+      const hasRealEmail = Boolean(rawEmail && rawEmail.includes('@') && !rawEmail.includes('@placeholder.') && rawEmail !== 'google user');
+      const cleanEmail = hasRealEmail ? rawEmail : '';
+
+      const rawName = (u.name || '').trim();
+      const hasRealName = Boolean(rawName && rawName !== 'User' && rawName !== 'Registered Member' && !rawName.startsWith('usr_'));
+      const displayName = hasRealName
+        ? rawName
+        : (cleanEmail ? cleanEmail.split('@')[0] : `Guest (${cleanGid.substring(0, 10)})`);
 
       return {
         id: u._id || u.googleId,
         googleId: u.googleId || '',
         name: displayName,
-        email: (u.email && u.email !== 'Google User') ? u.email : '',
+        email: cleanEmail,
+        hasEmail: hasRealEmail,
         picture: u.picture || '',
-        type: 'Registered Member',
-        platform: (u.email && u.email.includes('@')) ? 'Verified Account' : 'App Account',
-        deviceModel: (u.email && u.email.includes('@')) ? 'Registered Member' : 'Mobile Member',
+        type: hasRealEmail ? 'Registered Member' : 'App Guest Profile',
+        platform: hasRealEmail ? 'Google Account' : 'App Guest',
+        deviceModel: hasRealEmail ? 'Verified Account' : 'Guest Watcher',
         ip: cleanIp,
         appVersion: u.appVersion || '3.2.0',
         versionVerified: true,
@@ -345,16 +359,20 @@ async function getUserStats() {
       const isRecent = (Date.now() - new Date(lastActiveTime).getTime() < 60 * 60 * 1000);
       const cleanIp = d.ip ? d.ip.replace('::ffff:', '') : (d.id || 'Mobile App');
       const devModel = parseDeviceModel(d.userAgent, d.platform);
+      const devName = d.userName || `${devModel}`;
+      const devEmail = (d.userEmail && d.userEmail.includes('@') && !d.userEmail.includes('@placeholder.'))
+        ? d.userEmail
+        : (cleanIp.startsWith('1') || cleanIp.startsWith('2') || cleanIp.includes('.') ? `IP: ${cleanIp}` : cleanIp);
       return {
         id: d.id,
         deviceId: d.id,
-        name: `${devModel}`,
-        email: cleanIp.startsWith('1') || cleanIp.startsWith('2') || cleanIp.includes('.') ? `IP: ${cleanIp}` : cleanIp,
+        name: devName,
+        email: devEmail,
         ip: cleanIp,
         userAgent: d.userAgent || '',
         deviceModel: devModel,
         picture: '',
-        type: 'App Installation',
+        type: d.userName ? 'Linked Member Device' : 'App Installation',
         platform: d.platform || 'Android App',
         appVersion: d.appVersion || '3.2.0',
         versionVerified: true,
@@ -369,7 +387,18 @@ async function getUserStats() {
     })
   ];
 
-  combinedList.sort((a, b) => new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime());
+  // Prioritize Real Verified Members with Gmail, then Online users, then newest active
+  combinedList.sort((a, b) => {
+    const isRealMemberA = (a.type === 'Registered Member' && a.email && a.email.includes('@')) ? 1 : 0;
+    const isRealMemberB = (b.type === 'Registered Member' && b.email && b.email.includes('@')) ? 1 : 0;
+    if (isRealMemberB !== isRealMemberA) return isRealMemberB - isRealMemberA;
+
+    const onlineA = a.isOnline ? 1 : 0;
+    const onlineB = b.isOnline ? 1 : 0;
+    if (onlineB !== onlineA) return onlineB - onlineA;
+
+    return new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime();
+  });
 
   const compliantDevices = devices.length;
   const outdatedDevices = 0;
@@ -422,10 +451,10 @@ const WatchHistoryItemSchema = new mongoose.Schema({
 
 const UserSchema = new mongoose.Schema({
   googleId: { type: String, required: true, unique: true, index: true },
-  email: { type: String, required: true, lowercase: true, trim: true, index: true },
-  name: { type: String, required: true },
+  email: { type: String, default: '', lowercase: true, trim: true, index: true },
+  name: { type: String, default: 'User' },
   picture: { type: String, default: '' },
-  appVersion: { type: String, default: '3.1.1' },
+  appVersion: { type: String, default: '3.2.0' },
   watchlist: [WatchlistItemSchema],
   history: [WatchHistoryItemSchema],
   bookings: [{
@@ -435,7 +464,7 @@ const UserSchema = new mongoose.Schema({
   }],
   createdAt: { type: Date, default: Date.now },
   lastLogin: { type: Date, default: Date.now }
-});
+}, { versionKey: false });
 
 const FeedbackSchema = new mongoose.Schema({
   googleId: { type: String, default: 'guest' },
@@ -636,6 +665,8 @@ async function getMediaViews(mediaId) {
 async function findOrCreateUser({ googleId, email, name, picture, appVersion = '3.2.0' }) {
   const now = new Date();
   const cleanEmail = (email || '').toLowerCase().trim();
+  const cleanName = (name && name.trim()) ? name.trim() : (cleanEmail && cleanEmail.includes('@') ? cleanEmail.split('@')[0] : 'User');
+  let userDoc = null;
 
   if (isMongoConnected && User) {
     try {
@@ -644,7 +675,7 @@ async function findOrCreateUser({ googleId, email, name, picture, appVersion = '
         user = new User({
           googleId,
           email: cleanEmail,
-          name: name || (cleanEmail && cleanEmail.includes('@') ? cleanEmail.split('@')[0] : 'User'),
+          name: cleanName,
           picture: picture || '',
           appVersion: appVersion || '3.2.0',
           watchlist: [],
@@ -657,28 +688,29 @@ async function findOrCreateUser({ googleId, email, name, picture, appVersion = '
         if (cleanEmail && cleanEmail.includes('@')) {
           user.email = cleanEmail;
         }
-        user.name = name || user.name;
-        user.picture = picture || user.picture;
+        if (cleanName && cleanName !== 'User') {
+          user.name = cleanName;
+        }
+        if (picture) user.picture = picture;
         user.appVersion = appVersion || user.appVersion || '3.2.0';
         user.lastLogin = now;
         await user.save();
       }
-      return user.toObject();
+      userDoc = user.toObject();
     } catch (err) {
-      console.warn('⚠️ MongoDB User error (' + err.message + '). Falling back to resilient disk storage.');
-      isMongoConnected = false;
+      console.warn('⚠️ MongoDB User save warning (' + err.message + '). Continuing with resilient disk storage.');
     }
   }
 
-  // Resilient JSON Disk & In-Memory Storage
+  // Resilient JSON Disk & In-Memory Storage Sync
   const usersMap = getLocalUsersMap();
-  let user = usersMap[googleId] || memoryUsers.get(googleId);
+  let user = usersMap[googleId] || memoryUsers.get(googleId) || userDoc;
   if (!user) {
     user = {
       _id: 'usr_' + (googleId || Date.now()),
       googleId,
       email: cleanEmail,
-      name: name || (cleanEmail && cleanEmail.includes('@') ? cleanEmail.split('@')[0] : 'User'),
+      name: cleanName,
       picture: picture || '',
       appVersion: appVersion || '3.2.0',
       watchlist: [],
@@ -689,14 +721,14 @@ async function findOrCreateUser({ googleId, email, name, picture, appVersion = '
   } else {
     user.lastLogin = now;
     if (cleanEmail && cleanEmail.includes('@')) user.email = cleanEmail;
-    if (name) user.name = name;
+    if (cleanName && cleanName !== 'User') user.name = cleanName;
     if (picture) user.picture = picture;
     user.appVersion = appVersion || user.appVersion || '3.2.0';
   }
   memoryUsers.set(googleId, user);
   usersMap[googleId] = user;
   saveLocalUsersMap(usersMap);
-  return user;
+  return userDoc || user;
 }
 
 async function syncUserEmail({ userId, email, name, appVersion }) {
@@ -759,7 +791,6 @@ async function getUserById(googleId) {
       if (user) return user.toObject();
     } catch (err) {
       console.warn('⚠️ MongoDB getUserById error:', err.message);
-      isMongoConnected = false;
     }
   }
   const usersMap = getLocalUsersMap();
@@ -792,7 +823,6 @@ async function toggleWatchlist(googleId, mediaItem) {
       }
     } catch (err) {
       console.warn('⚠️ MongoDB toggleWatchlist error:', err.message);
-      isMongoConnected = false;
     }
   }
 
@@ -852,7 +882,6 @@ async function updateWatchHistory(googleId, historyItem) {
       }
     } catch (err) {
       console.warn('⚠️ MongoDB updateWatchHistory error:', err.message);
-      isMongoConnected = false;
     }
   }
 

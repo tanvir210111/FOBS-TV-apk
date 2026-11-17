@@ -4267,12 +4267,16 @@ app.post('/api/app-ping', async (req, res) => {
   try {
     const { viewerId, platform, appVersion, userId, userEmail, userName } = req.body;
     const vId = viewerId || req.headers['x-viewer-id'] || ('v_' + Math.random().toString(36).substring(2, 10));
+    const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || req.connection?.remoteAddress || '';
     dbService.recordDevice({
       deviceId: vId,
-      ip: req.ip || req.connection?.remoteAddress,
-      userAgent: req.headers['user-agent'],
+      ip: clientIp,
+      userAgent: req.headers['user-agent'] || '',
       platform: platform || 'Android',
-      appVersion: appVersion || req.headers['x-app-version'] || ''
+      appVersion: appVersion || req.headers['x-app-version'] || '',
+      userId: userId || '',
+      userEmail: userEmail || '',
+      userName: userName || ''
     });
 
     if (userId && userEmail && userEmail.includes('@')) {
