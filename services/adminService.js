@@ -1096,8 +1096,9 @@ class AdminService {
         }
 
         // 1. Audio detection (Orthogonal to Industry)
+        const isEnglish = /\[english\]|\(english\)|\benglish\b/i.test(tLower);
         const isBangla = it.isBangla || /\[bengali\]|\[bangla\]|\bbengali\b|\bbangla\b|[\u0980-\u09FF]/i.test(tLower) || it.countryName === 'Bangladesh' || /bengali|bangla/i.test(secLower);
-        const isHindi = !isBangla && (it.isHindi || /\[hindi\]|\bhindi\b/i.test(tLower) || /hindi/i.test(secLower) ||
+        const isHindi = !isBangla && !isEnglish && (it.isHindi || /\[hindi\]|\bhindi\b/i.test(tLower) || /hindi/i.test(secLower) ||
                         (it.countryName === 'India' && !/tamil|telugu|malayalam|kannada/i.test(tLower)));
 
         let audioCategory = 'original';
@@ -1108,6 +1109,9 @@ class AdminService {
         } else if (isHindi) {
           audioCategory = 'hindi';
           audioTag = 'Hindi Dubbed';
+        } else if (isEnglish) {
+          audioCategory = 'english';
+          audioTag = 'English Dubbed';
         }
 
         // 2. Accurate Industry detection (Origin Country / Production Culture)
@@ -1312,6 +1316,7 @@ class AdminService {
         all: processedItems.length,
         original: processedItems.filter(i => i.audioCategory === 'original').length,
         hindi: processedItems.filter(i => i.audioCategory === 'hindi').length,
+        english: processedItems.filter(i => i.audioCategory === 'english').length,
         bangla: processedItems.filter(i => i.audioCategory === 'bangla').length,
         newEpisodes: processedItems.filter(i => i.hasNewEpisodes || i.updateType === 'new_episode').length,
         unimported: processedItems.filter(i => !i.alreadyImported).length,
