@@ -478,9 +478,29 @@ function filterMoviesTable() {
   renderMoviesTable(filtered);
 }
 
+function syncMovieCategoryFromIndustry() {
+  const ind = document.getElementById('movie-industry')?.value || 'Hollywood';
+  const dub = (document.getElementById('movie-dub')?.value || '').toLowerCase();
+  const isHindi = dub.includes('hindi');
+  let cat = 'Hollywood Movies';
+  if (ind === 'Korean') cat = isHindi ? 'Korean (Dubbed) Movies' : 'Korean Movie';
+  else if (ind === 'Chinese') cat = isHindi ? 'Chinese (Dubbed) Movies' : 'Chinese Movies';
+  else if (ind === 'Turkish') cat = isHindi ? 'Turkish Movies (Hindi)' : 'Turkish Movies';
+  else if (ind === 'Anime') cat = isHindi ? 'Anime Movies (Hindi Dub)' : 'Anime Movies';
+  else if (ind === 'Bollywood') cat = 'Bollywood Movies';
+  else if (ind === 'South Indian') cat = 'South (Dubbed) Movies';
+  else if (ind === 'Bengali') cat = 'Bengali';
+  else cat = isHindi ? 'Hollywood (Dubbed) Movies' : 'Hollywood Movies';
+  const catEl = document.getElementById('movie-category');
+  if (catEl) catEl.value = cat;
+}
+window.syncMovieCategoryFromIndustry = syncMovieCategoryFromIndustry;
+
 function openAddMovieModal() {
   document.getElementById('movie-form').reset();
   document.getElementById('movie-id').value = '';
+  if (document.getElementById('movie-industry')) document.getElementById('movie-industry').value = 'Hollywood';
+  if (document.getElementById('movie-category')) document.getElementById('movie-category').value = 'Hollywood Movies';
   document.getElementById('movie-modal-title').innerHTML = '<i class="fa-solid fa-film"></i> Add New Movie';
   openModal('movie-modal');
 }
@@ -498,6 +518,8 @@ function openEditMovieModal(id) {
   document.getElementById('movie-quality').value = movie.quality || '1080p Full HD';
   document.getElementById('movie-dub').value = movie.dubLanguage || movie.audio || 'Hindi Dubbed';
   document.getElementById('movie-genre').value = movie.genre || '';
+  if (document.getElementById('movie-industry')) document.getElementById('movie-industry').value = movie.industry || 'Hollywood';
+  if (document.getElementById('movie-category')) document.getElementById('movie-category').value = movie.category || 'Hollywood Movies';
   document.getElementById('movie-overview').value = movie.overview || movie.description || '';
   document.getElementById('movie-stream').value = movie.directStreamUrl || movie.streamUrl || '';
   document.getElementById('movie-stream-backup').value = (movie.servers && movie.servers[1] ? movie.servers[1].url : '');
@@ -531,6 +553,8 @@ async function triggerAutoDetectMovie() {
     document.getElementById('movie-backdrop').value = d.backdrop || d.poster || '';
     document.getElementById('movie-genre').value = d.genre || 'Action, Thriller';
     document.getElementById('movie-dub').value = d.isHindi ? 'Hindi Dubbed' : (d.dubLanguage || 'Original Audio');
+    if (d.industry && document.getElementById('movie-industry')) document.getElementById('movie-industry').value = d.industry;
+    if (d.category && document.getElementById('movie-category')) document.getElementById('movie-category').value = d.category;
     document.getElementById('movie-overview').value = d.overview || '';
     if (d.streamUrl) document.getElementById('movie-stream-url').value = d.streamUrl;
 
@@ -568,6 +592,8 @@ async function handleMovieSubmit(e) {
     quality: document.getElementById('movie-quality').value.trim() || '1080p Full HD',
     dubLanguage: dub,
     audio: dub,
+    industry: document.getElementById('movie-industry')?.value || 'Hollywood',
+    category: document.getElementById('movie-category')?.value.trim() || 'Hollywood Movies',
     genre: document.getElementById('movie-genre').value.trim() || 'Action',
     overview: document.getElementById('movie-overview').value.trim(),
     description: document.getElementById('movie-overview').value.trim(),
@@ -693,9 +719,29 @@ function filterSeriesTable() {
   renderSeriesTable(filtered);
 }
 
+function syncSeriesCategoryFromIndustry() {
+  const ind = document.getElementById('series-industry')?.value || 'Korean';
+  const dub = (document.getElementById('series-dub')?.value || '').toLowerCase();
+  const isHindi = dub.includes('hindi');
+  let cat = 'Korean Series';
+  if (ind === 'Korean') cat = isHindi ? 'Korean (Dubbed) Series' : 'Korean Series';
+  else if (ind === 'Chinese') cat = isHindi ? 'Chinese (Dubbed) Series' : 'Chinese Drama';
+  else if (ind === 'Turkish') cat = isHindi ? 'Turkish Drama' : 'Turkish Series';
+  else if (ind === 'Anime') cat = isHindi ? 'Anime Series (Hindi Dub)' : 'Anime';
+  else if (ind === 'Bollywood') cat = 'Bollywood Series';
+  else if (ind === 'South Indian') cat = 'South Indian Series';
+  else if (ind === 'Bengali') cat = isHindi ? 'Bengali (Dubbed) Series' : 'Bengali Series';
+  else cat = isHindi ? 'Hollywood (Dubbed) Series' : 'Hollywood Series';
+  const catEl = document.getElementById('series-category');
+  if (catEl) catEl.value = cat;
+}
+window.syncSeriesCategoryFromIndustry = syncSeriesCategoryFromIndustry;
+
 function openAddSeriesModal() {
   document.getElementById('series-form').reset();
   document.getElementById('series-id').value = '';
+  if (document.getElementById('series-industry')) document.getElementById('series-industry').value = 'Korean';
+  if (document.getElementById('series-category')) document.getElementById('series-category').value = 'Korean Series';
   document.getElementById('series-modal-title').innerHTML = '<i class="fa-solid fa-tv"></i> Add New Series';
   openModal('series-modal');
 }
@@ -712,6 +758,8 @@ function openEditSeriesModal(id) {
   document.getElementById('series-backdrop').value = series.cover || series.backdrop || '';
   document.getElementById('series-dub').value = series.dubLanguage || series.audio || '';
   document.getElementById('series-genre').value = series.genre || '';
+  if (document.getElementById('series-industry')) document.getElementById('series-industry').value = series.industry || 'Korean';
+  if (document.getElementById('series-category')) document.getElementById('series-category').value = series.category || 'Korean Series';
   document.getElementById('series-overview').value = series.overview || series.description || '';
 
   document.getElementById('series-modal-title').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Series';
@@ -742,6 +790,8 @@ async function triggerAutoDetectSeries() {
     document.getElementById('series-backdrop').value = d.backdrop || d.poster || '';
     document.getElementById('series-genre').value = d.genre || 'Drama, Mystery';
     document.getElementById('series-dub').value = d.isHindi ? 'Hindi Dubbed' : (d.dubLanguage || 'Korean / Original');
+    if (d.industry && document.getElementById('series-industry')) document.getElementById('series-industry').value = d.industry;
+    if (d.category && document.getElementById('series-category')) document.getElementById('series-category').value = d.category;
     document.getElementById('series-overview').value = d.overview || '';
 
     // Cache detected seasons & episodes so handleSeriesSubmit attaches them automatically!
@@ -861,6 +911,8 @@ async function handleSeriesSubmit(e) {
     backdrop: document.getElementById('series-backdrop').value.trim(),
     cover: document.getElementById('series-backdrop').value.trim() || document.getElementById('series-poster').value.trim(),
     dubLanguage: document.getElementById('series-dub').value.trim(),
+    industry: document.getElementById('series-industry')?.value || 'Korean',
+    category: document.getElementById('series-category')?.value.trim() || 'Korean Series',
     genre: document.getElementById('series-genre').value.trim() || 'Drama',
     overview: document.getElementById('series-overview').value.trim(),
     description: document.getElementById('series-overview').value.trim(),
@@ -2817,6 +2869,35 @@ function openImportModalByIndex(idx) {
   }
 }
 
+function syncImportCategoryFromIndustry() {
+  const ind = document.getElementById('imp-industry')?.value || 'Hollywood';
+  const isSeries = document.getElementById('imp-type')?.value === 'series';
+  const isHindi = !!document.getElementById('imp-ishindi')?.checked;
+  let cat = 'Hollywood Movies';
+  if (isSeries) {
+    if (ind === 'Korean') cat = isHindi ? 'Korean (Dubbed) Series' : 'Korean Series';
+    else if (ind === 'Chinese') cat = isHindi ? 'Chinese (Dubbed) Series' : 'Chinese Drama';
+    else if (ind === 'Turkish') cat = isHindi ? 'Turkish Drama' : 'Turkish Series';
+    else if (ind === 'Anime') cat = isHindi ? 'Anime Series (Hindi Dub)' : 'Anime';
+    else if (ind === 'Bollywood') cat = 'Bollywood Series';
+    else if (ind === 'South Indian') cat = 'South Indian Series';
+    else if (ind === 'Bengali') cat = isHindi ? 'Bengali (Dubbed) Series' : 'Bengali Series';
+    else cat = isHindi ? 'Hollywood (Dubbed) Series' : 'Hollywood Series';
+  } else {
+    if (ind === 'Korean') cat = isHindi ? 'Korean (Dubbed) Movies' : 'Korean Movie';
+    else if (ind === 'Chinese') cat = isHindi ? 'Chinese (Dubbed) Movies' : 'Chinese Movies';
+    else if (ind === 'Turkish') cat = isHindi ? 'Turkish Movies (Hindi)' : 'Turkish Movies';
+    else if (ind === 'Anime') cat = isHindi ? 'Anime Movies (Hindi Dub)' : 'Anime Movies';
+    else if (ind === 'Bollywood') cat = 'Bollywood Movies';
+    else if (ind === 'South Indian') cat = 'South (Dubbed) Movies';
+    else if (ind === 'Bengali') cat = 'Bengali';
+    else cat = isHindi ? 'Hollywood (Dubbed) Movies' : 'Hollywood Movies';
+  }
+  const catEl = document.getElementById('imp-category');
+  if (catEl) catEl.value = cat;
+}
+window.syncImportCategoryFromIndustry = syncImportCategoryFromIndustry;
+
 function toggleImportType(type) {
   const row = document.getElementById('imp-series-row');
   if (row) row.style.display = (type === 'series') ? 'flex' : 'none';
@@ -2841,7 +2922,7 @@ async function openImportModal(item) {
     else if (detectedInd === 'Turkish') suggestedCat = isHindi ? 'Turkish Drama' : 'Turkish Series';
     else if (detectedInd === 'Anime') suggestedCat = isHindi ? 'Anime Series (Hindi Dub)' : 'Anime';
     else if (detectedInd === 'Bollywood') suggestedCat = 'Bollywood Series';
-    else if (detectedInd === 'South Indian') suggestedCat = 'Web Series';
+    else if (detectedInd === 'South Indian') suggestedCat = 'South Indian Series';
     else if (detectedInd === 'Bengali') suggestedCat = isBangla ? 'Bengali Series' : 'Bengali (Dubbed) Series';
     else suggestedCat = isHindi ? 'Hollywood (Dubbed) Series' : 'Hollywood Series';
   } else {
