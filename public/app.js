@@ -3273,17 +3273,24 @@ function getActiveSeasonEpisodes(media) {
       title: 'Episode 6',
       streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=6'
     };
-    if (!media.episodes || !media.episodes.some(e => e.episode === 5) || !media.episodes.some(e => e.episode === 6)) {
-      media.episodes = (media.episodes || []).filter(e => e.episode !== 5 && e.episode !== 6);
-      media.episodes.push(ep5, ep6);
+    const ep7 = {
+      id: 'mb-s-579116273137862480_s1_e7',
+      episode: 7,
+      season: 1,
+      title: 'Episode 7',
+      streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=7'
+    };
+    if (!media.episodes || !media.episodes.some(e => e.episode === 5) || !media.episodes.some(e => e.episode === 6) || !media.episodes.some(e => e.episode === 7)) {
+      media.episodes = (media.episodes || []).filter(e => e.episode !== 5 && e.episode !== 6 && e.episode !== 7);
+      media.episodes.push(ep5, ep6, ep7);
       media.episodes.sort((a, b) => a.episode - b.episode);
       media.episodesCount = media.episodes.length;
       media.totalEpisodes = media.episodes.length;
     }
     if (media.seasons && media.seasons[0]) {
-      if (!media.seasons[0].episodes || !media.seasons[0].episodes.some(e => e.episode === 5) || !media.seasons[0].episodes.some(e => e.episode === 6)) {
-        media.seasons[0].episodes = (media.seasons[0].episodes || []).filter(e => e.episode !== 5 && e.episode !== 6);
-        media.seasons[0].episodes.push(ep5, ep6);
+      if (!media.seasons[0].episodes || !media.seasons[0].episodes.some(e => e.episode === 5) || !media.seasons[0].episodes.some(e => e.episode === 6) || !media.seasons[0].episodes.some(e => e.episode === 7)) {
+        media.seasons[0].episodes = (media.seasons[0].episodes || []).filter(e => e.episode !== 5 && e.episode !== 6 && e.episode !== 7);
+        media.seasons[0].episodes.push(ep5, ep6, ep7);
         media.seasons[0].episodes.sort((a, b) => a.episode - b.episode);
         media.seasons[0].episodesCount = media.seasons[0].episodes.length;
       }

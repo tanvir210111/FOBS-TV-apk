@@ -19,14 +19,22 @@
     streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=6'
   };
 
+  const REMARRIED_EP7 = {
+    id: 'mb-s-579116273137862480_s1_e7',
+    episode: 7,
+    season: 1,
+    title: 'Episode 7',
+    streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=7'
+  };
+
   function patchTreEpisodes(target) {
     if (!target) return;
-    target.episodes = (target.episodes || []).filter(e => e.episode !== 5 && e.episode !== 6);
-    target.episodes.push(REMARRIED_EP5, REMARRIED_EP6);
+    target.episodes = (target.episodes || []).filter(e => e.episode !== 5 && e.episode !== 6 && e.episode !== 7);
+    target.episodes.push(REMARRIED_EP5, REMARRIED_EP6, REMARRIED_EP7);
     target.episodes.sort((a, b) => a.episode - b.episode);
     if (target.seasons && target.seasons[0]) {
-      target.seasons[0].episodes = (target.seasons[0].episodes || []).filter(e => e.episode !== 5 && e.episode !== 6);
-      target.seasons[0].episodes.push(REMARRIED_EP5, REMARRIED_EP6);
+      target.seasons[0].episodes = (target.seasons[0].episodes || []).filter(e => e.episode !== 5 && e.episode !== 6 && e.episode !== 7);
+      target.seasons[0].episodes.push(REMARRIED_EP5, REMARRIED_EP6, REMARRIED_EP7);
       target.seasons[0].episodes.sort((a, b) => a.episode - b.episode);
       target.seasons[0].episodesCount = target.seasons[0].episodes.length;
     }
