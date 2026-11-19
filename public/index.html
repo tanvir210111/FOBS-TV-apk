@@ -137,8 +137,8 @@
           <button class="nav-tab-pill" data-tab="livetv" onclick="switchMainTab('livetv')">
             <i class="fa-solid fa-satellite-dish"></i> <span>Live TV</span>
           </button>
-          <button class="nav-tab-pill" data-tab="me" onclick="switchMainTab('me')">
-            <i class="fa-solid fa-user"></i> <span>Me</span>
+          <button class="nav-tab-pill" data-tab="anime" onclick="switchMainTab('anime')">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Anime</span>
           </button>
         </nav>
 
@@ -148,6 +148,11 @@
             <input type="text" id="searchInput" placeholder="Search movies, series, anime..." autocomplete="off">
             <button class="search-btn" onclick="handleSearch()">Search</button>
           </div>
+
+          <button class="nav-me-btn tv-nav-item" id="desktopMeBtn" data-tab="me" onclick="switchMainTab('me')" title="My Profile & Settings">
+            <div class="nav-me-avatar"><i class="fa-solid fa-user"></i></div>
+            <span class="nav-me-label">Me</span>
+          </button>
 
           <button id="headerUpdateBtn" class="header-update-btn hidden" onclick="openUpdateModal()" title="App Update Available">
             <i class="fa-solid fa-cloud-arrow-down"></i>
@@ -174,6 +179,9 @@
         <div class="hero-slider-container" id="heroSliderContainer">
           <div class="hero-backdrop-track" id="heroBackdropTrack" onclick="handleActiveHeroClick('home')"></div>
           <div class="hero-gradient-overlay" onclick="handleActiveHeroClick('home')"></div>
+
+          <!-- Cinematic Widescreen Hero Spotlight Details (Option 1 Netflix Style) -->
+          <div class="hero-spotlight-details" id="heroSpotlightDetails"></div>
 
           <!-- Bottom 75% Active + 25% Next Peek Slider Track -->
           <div class="hero-bottom-slider">
@@ -299,6 +307,9 @@
         <div class="hero-slider-container" id="movieHeroSliderContainer">
           <div class="hero-backdrop-track" id="movieHeroBackdropTrack" onclick="handleActiveHeroClick('movie')"></div>
           <div class="hero-gradient-overlay" onclick="handleActiveHeroClick('movie')"></div>
+
+          <!-- Cinematic Widescreen Hero Spotlight Details -->
+          <div class="hero-spotlight-details" id="movieHeroSpotlightDetails"></div>
 
           <!-- Bottom 75% Active + 25% Next Peek Slider Track -->
           <div class="hero-bottom-slider">
@@ -452,6 +463,9 @@
         <div class="hero-slider-container" id="seriesHeroSliderContainer">
           <div class="hero-backdrop-track" id="seriesHeroBackdropTrack" onclick="handleActiveHeroClick('series')"></div>
           <div class="hero-gradient-overlay" onclick="handleActiveHeroClick('series')"></div>
+
+          <!-- Cinematic Widescreen Hero Spotlight Details -->
+          <div class="hero-spotlight-details" id="seriesHeroSpotlightDetails"></div>
 
           <!-- Bottom 75% Active + 25% Next Peek Slider Track -->
           <div class="hero-bottom-slider">
@@ -617,6 +631,73 @@
 
         <div class="live-tv-grid" id="liveTvGrid">
           <!-- Populated via JS -->
+        </div>
+
+        <!-- FOBS Community Banner Strip -->
+        <div class="home-community-banner" onclick="openCommunity()">
+          <div class="home-community-left">
+            <div class="home-comm-icon-wrap">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="home-comm-text">
+              <div class="home-comm-title">Join FOBS Community</div>
+              <div class="home-comm-desc">Telegram • WhatsApp • Facebook • Official Website</div>
+            </div>
+          </div>
+          <div class="home-comm-btn">
+            <span>Join Now</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- ANIME TAB VIEW (Dedicated PC & TV Anime Hub) -->
+      <section id="animeView" class="tab-view">
+        <!-- Hero Spotlight Banner for Anime -->
+        <div class="hero-slider-container" id="animeHeroSliderContainer">
+          <div class="hero-backdrop-track" id="animeHeroBackdropTrack" onclick="handleActiveHeroClick('anime')"></div>
+          <div class="hero-gradient-overlay" onclick="handleActiveHeroClick('anime')"></div>
+
+          <!-- Cinematic Widescreen Hero Spotlight Details -->
+          <div class="hero-spotlight-details" id="animeHeroSpotlightDetails"></div>
+
+          <!-- Bottom 75% Active + 25% Next Peek Slider Track -->
+          <div class="hero-bottom-slider">
+            <div class="hero-cards-track" id="animeHeroCardsTrack"></div>
+          </div>
+        </div>
+
+        <!-- Section: Trending Anime -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-wand-magic-sparkles" style="color: #00f2fe; margin-right: 6px;"></i> Trending Anime</h2>
+            <span class="section-more" onclick="openSectionDetail('anime', 'Trending Anime')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="animeTrendingList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Anime Series -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-tv" style="color: #ff9f43; margin-right: 6px;"></i> Anime Series</h2>
+            <span class="section-more" onclick="openSectionDetail('series-anime', 'Anime Series')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="animeSeriesList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Section: Anime Movies -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-film" style="color: #ff6b81; margin-right: 6px;"></i> Anime Movies</h2>
+            <span class="section-more" onclick="openSectionDetail('movie-anime', 'Anime Movies')">All <i class="fa-solid fa-chevron-right"></i></span>
+          </div>
+          <div class="horizontal-scroll" id="animeMoviesList">
+            <!-- Populated via JS -->
+          </div>
         </div>
 
         <!-- FOBS Community Banner Strip -->

@@ -1315,6 +1315,7 @@ function renderAllViews() {
   renderHomeFeeds();
   renderAllMovies();
   renderAllSeries();
+  renderAllAnime();
   renderLiveTv();
 }
 
@@ -1430,6 +1431,13 @@ function handleActiveHeroClick(tab) {
     if (activeItem) {
       openPlayerById('series', activeItem.id);
     }
+  } else if (tab === 'anime' && animeHeroItems && animeHeroItems.length > 0) {
+    const activeItem = animeHeroItems[currentAnimeHeroIndex % animeHeroItems.length];
+    if (activeItem) {
+      const isSer = activeItem.type === 'series' || !!activeItem.episodes || (activeItem.id && activeItem.id.startsWith('mb-s-')) || (activeItem.seasons && activeItem.seasons.length > 0);
+      const type = isSer ? 'series' : 'movie';
+      openPlayerById(type, activeItem.id);
+    }
   }
 }
 
@@ -1478,17 +1486,91 @@ function prevHeroSlide() {
   }, 650);
 }
 
+// Escape helper for hero HTML injection
+function escapeHeroHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// Render Widescreen Cinematic Hero Spotlight Details (Netflix / Option 1 Style)
+function renderHeroSpotlightDetails(containerId, item) {
+  const container = document.getElementById(containerId);
+  if (!container || !item) return;
+
+  const isSeries = item.type === 'series' || !!item.episodes || (item.id && item.id.startsWith('mb-s-')) || (item.seasons && item.seasons.length > 0);
+  const itemType = isSeries ? 'series' : 'movie';
+  const tagText = isSeries ? 'TRENDING SERIES' : 'FEATURED MOVIE';
+  const rating = item.rating || item.imdbRating || '8.9';
+  const year = item.year || (item.releaseDate ? item.releaseDate.slice(0, 4) : '2024');
+  const genre = item.genre || item.category || (isSeries ? 'Web Series' : 'Action / Blockbuster');
+  const quality = item.quality || '4K Ultra HD';
+  const hasSub = item.hasBanglaSub || (item.subtitles && item.subtitles.length > 0) || (item.language && item.language.toLowerCase().includes('bangla')) || true;
+  const synopsis = item.overview || item.description || item.synopsis || `${item.title} is now streaming in Full HD with Bangla subtitle and zero buffering on FOBS TV.`;
+  const isInList = typeof isMediaInWatchlist === 'function' ? isMediaInWatchlist(item.id) : false;
+
+  container.innerHTML = `
+    <div class="hero-spotlight-tag"><i class="fa-solid fa-sparkles"></i> <span>${tagText}</span></div>
+    <h1 class="hero-spotlight-title">${escapeHeroHtml(item.title)}</h1>
+    <div class="hero-spotlight-meta">
+      ${hasSub ? `<span class="meta-badge badge-sub"><i class="fa-solid fa-closed-captioning"></i> বাংলা সাবটাইটেল</span>` : ''}
+      <span class="meta-badge badge-res">${escapeHeroHtml(quality)}</span>
+      <span class="meta-badge badge-imdb"><i class="fa-solid fa-star"></i> IMDb ${escapeHeroHtml(rating)}</span>
+      <span class="meta-badge badge-year">${escapeHeroHtml(year)}</span>
+      <span class="meta-badge badge-genre">${escapeHeroHtml(genre)}</span>
+    </div>
+    <p class="hero-spotlight-synopsis">${escapeHeroHtml(synopsis)}</p>
+    <div class="hero-spotlight-actions">
+      <button class="btn-hero-watch tv-nav-item" onclick="openPlayerById('${itemType}', '${item.id}')" title="Watch Now">
+        <i class="fa-solid fa-play"></i>
+        <span>Watch Now</span>
+      </button>
+      <button class="btn-hero-list tv-nav-item" id="heroListBtn_${item.id}" onclick="toggleHeroWatchlist('${item.id}')" title="Add to My List">
+        <i class="fa-solid ${isInList ? 'fa-check' : 'fa-plus'}"></i>
+        <span>${isInList ? 'In List' : 'My List'}</span>
+      </button>
+      <button class="btn-hero-info tv-nav-item" onclick="openPlayerById('${itemType}', '${item.id}')" title="View Details">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>Details</span>
+      </button>
+    </div>
+  `;
+}
+
+// Toggle Hero Watchlist state with immediate visual update
+function toggleHeroWatchlist(id) {
+  let item = (appState.content.movies || []).find(m => m.id === id) || (appState.content.series || []).find(s => s.id === id);
+  if (!item) return;
+  appState.currentMedia = item;
+  if (typeof toggleCurrentMediaWatchlist === 'function') {
+    toggleCurrentMediaWatchlist();
+  }
+  const btn = document.getElementById(`heroListBtn_${id}`);
+  if (btn) {
+    const isAdded = typeof isMediaInWatchlist === 'function' ? isMediaInWatchlist(id) : false;
+    btn.innerHTML = `<i class="fa-solid ${isAdded ? 'fa-check' : 'fa-plus'}"></i> <span>${isAdded ? 'In List' : 'My List'}</span>`;
+  }
+}
+
 // Slide both the full background poster and the bottom 75/25 card track
 function applyHeroSlide(index, animate = true) {
+  if (!heroItems || heroItems.length === 0) return;
   const actualIndex = index % heroItems.length;
 
   // 1. Update full-fill backdrop poster
-  const backdropSlides = document.querySelectorAll('.hero-backdrop-slide');
-  backdropSlides.forEach((slide, idx) => {
-    slide.classList.toggle('active', idx === actualIndex);
-  });
+  const backdropTrack = document.getElementById('heroBackdropTrack');
+  if (backdropTrack) {
+    const backdropSlides = backdropTrack.querySelectorAll('.hero-backdrop-slide');
+    backdropSlides.forEach((slide, idx) => {
+      slide.classList.toggle('active', idx === actualIndex);
+    });
+  }
 
-  // 2. Slide bottom cards track: 75% active + 25% peek of next card
+  // 2. Slide bottom cards track: 75% active + 25% peek of next card (mobile)
   const cardsTrack = document.getElementById('heroCardsTrack');
   if (cardsTrack && cardsTrack.children.length > 0) {
     const cards = cardsTrack.children;
@@ -1509,6 +1591,9 @@ function applyHeroSlide(index, animate = true) {
 
     cardsTrack.style.transform = `translateX(-${offset}px)`;
   }
+
+  // 3. Render Widescreen Hero Spotlight Details
+  renderHeroSpotlightDetails('heroSpotlightDetails', heroItems[actualIndex]);
 }
 
 // Touch and Swipe Gestures for Hero Section (Left/Right Drag Support)
@@ -1739,6 +1824,9 @@ function applyMovieHeroSlide(index, animate = true) {
 
     cardsTrack.style.transform = `translateX(-${offset}px)`;
   }
+
+  // 3. Render Widescreen Hero Spotlight Details
+  renderHeroSpotlightDetails('movieHeroSpotlightDetails', movieHeroItems[actualIndex]);
 }
 
 // Touch and Swipe Gestures for Movie Hero Section
@@ -1968,6 +2056,9 @@ function applySeriesHeroSlide(index, animate = true) {
 
     cardsTrack.style.transform = `translateX(-${offset}px)`;
   }
+
+  // 3. Render Widescreen Hero Spotlight Details
+  renderHeroSpotlightDetails('seriesHeroSpotlightDetails', seriesHeroItems[actualIndex]);
 }
 
 // Touch and Swipe Gestures for Series Hero Section
@@ -3015,6 +3106,131 @@ function renderAllSeries() {
   renderCategoryList('seriesOthersList', sortByReleaseDateDesc(othersSeries), false, true);
 }
 
+// ============================================================
+// ANIME HERO SLIDER & ANIME TAB VIEW (PC & TV HYBRID HUB)
+// ============================================================
+let currentAnimeHeroIndex = 0;
+let animeHeroSliderInterval = null;
+let animeHeroItems = [];
+let animeLoopCardsList = [];
+let isAnimeHeroSliding = false;
+
+function renderAnimeHeroBanner() {
+  const movies = appState.content.movies || [];
+  const series = appState.content.series || [];
+  const allAnime = [...movies, ...series].filter(isAnimeMedia);
+  const animePool = allAnime.length > 0 ? allAnime : movies.filter(m => m.country === 'Japan');
+  if (animePool.length === 0) return;
+
+  animeHeroItems = sortByReleaseDateDesc(animePool).slice(0, 5);
+  animeLoopCardsList = animeHeroItems.length > 1 ? [...animeHeroItems, animeHeroItems[0]] : [...animeHeroItems];
+
+  const backdropTrack = document.getElementById('animeHeroBackdropTrack');
+  const cardsTrack = document.getElementById('animeHeroCardsTrack');
+
+  if (backdropTrack) {
+    backdropTrack.innerHTML = animeHeroItems.map((slide, idx) => {
+      const bgUrl = getValidBackdropUrl(slide);
+      return `<div class="hero-backdrop-slide ${idx === 0 ? 'active' : ''}" style="background-image: url('${bgUrl}')"></div>`;
+    }).join('');
+  }
+
+  if (cardsTrack) {
+    cardsTrack.innerHTML = animeLoopCardsList.map((slide, idx) => {
+      const isSeries = slide.type === 'series' || !!slide.episodes || (slide.id && slide.id.startsWith('mb-s-')) || (slide.seasons && slide.seasons.length > 0);
+      const originalIndex = idx % animeHeroItems.length;
+      return `
+        <div class="hero-peek-card ${idx === 0 ? 'active' : ''}" data-index="${originalIndex}" onclick="handleHeroCardClick(event, '${isSeries ? 'series' : 'movie'}', '${slide.id}')">
+          <div class="hero-peek-thumb-wrap">
+            <img src="${slide.poster}" alt="${slide.title}" class="hero-peek-thumb" loading="lazy" onerror="this.onerror=null; this.src='assets/fobs_logo.png';">
+          </div>
+          <div class="hero-peek-info">
+            <div class="hero-peek-title-scroll-container">
+              <div class="hero-peek-title">${slide.title}</div>
+            </div>
+            <div class="hero-peek-sub">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> | ${slide.year || '2026'} | Anime
+            </div>
+          </div>
+          <div class="hero-peek-play">
+            <i class="fa-solid fa-play"></i>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  currentAnimeHeroIndex = 0;
+  applyAnimeHeroSlide(0, false);
+}
+
+function applyAnimeHeroSlide(index, animate = true) {
+  if (!animeHeroItems || animeHeroItems.length === 0) return;
+  const actualIndex = index % animeHeroItems.length;
+
+  const backdropTrack = document.getElementById('animeHeroBackdropTrack');
+  if (backdropTrack) {
+    const backdropSlides = backdropTrack.querySelectorAll('.hero-backdrop-slide');
+    backdropSlides.forEach((slide, idx) => {
+      slide.classList.toggle('active', idx === actualIndex);
+    });
+  }
+
+  const cardsTrack = document.getElementById('animeHeroCardsTrack');
+  if (cardsTrack && cardsTrack.children.length > 0) {
+    const cards = cardsTrack.children;
+    for (let i = 0; i < cards.length; i++) {
+      cards[i].classList.toggle('active', i === index);
+    }
+
+    const firstCard = cards[0];
+    const cardWidth = firstCard.offsetWidth || 260;
+    const gap = 10;
+    const offset = index * (cardWidth + gap);
+
+    if (animate) {
+      cardsTrack.style.transition = 'transform 0.65s cubic-bezier(0.25, 1, 0.5, 1)';
+    } else {
+      cardsTrack.style.transition = 'none';
+    }
+
+    cardsTrack.style.transform = `translateX(-${offset}px)`;
+  }
+
+  // Render Widescreen Hero Spotlight Details
+  renderHeroSpotlightDetails('animeHeroSpotlightDetails', animeHeroItems[actualIndex]);
+}
+
+function startAnimeHeroAutoSlide() {
+  if (animeHeroSliderInterval) clearInterval(animeHeroSliderInterval);
+  if (!animeHeroItems || animeHeroItems.length <= 1) return;
+  animeHeroSliderInterval = setInterval(() => {
+    currentAnimeHeroIndex = (currentAnimeHeroIndex + 1) % animeHeroItems.length;
+    applyAnimeHeroSlide(currentAnimeHeroIndex, true);
+  }, 4000);
+}
+
+function renderAllAnime() {
+  const movies = appState.content.movies || [];
+  const series = appState.content.series || [];
+
+  // 1. Anime Hero Banner
+  renderAnimeHeroBanner();
+
+  // 2. Trending Anime (Movies + Series)
+  const allAnime = sortByReleaseDateDesc([...movies, ...series].filter(isAnimeMedia));
+  const effectiveAnime = allAnime.length > 0 ? allAnime : movies.filter(m => m.country === 'Japan');
+  renderCategoryList('animeTrendingList', effectiveAnime.slice(0, 24), true);
+
+  // 3. Anime Series
+  const animeSeries = sortByReleaseDateDesc(series.filter(isAnimeMedia));
+  renderCategoryList('animeSeriesList', animeSeries.length > 0 ? animeSeries : series.filter(s => s.country === 'Japan'), false, true);
+
+  // 4. Anime Movies
+  const animeMovies = sortByReleaseDateDesc(movies.filter(isAnimeMedia));
+  renderCategoryList('animeMoviesList', animeMovies.length > 0 ? animeMovies : movies.filter(m => m.country === 'Japan'));
+}
+
 let currentLiveTvCategory = 'All';
 
 function filterLiveTvCategory(cat) {
@@ -3141,6 +3357,12 @@ function switchMainTab(tabName) {
     btn.classList.toggle('active', btn.dataset.tab === tabName);
   });
 
+  // Update Desktop Me Profile Button (Option 2 Apple TV style)
+  const desktopMeBtn = document.getElementById('desktopMeBtn');
+  if (desktopMeBtn) {
+    desktopMeBtn.classList.toggle('active', tabName === 'me');
+  }
+
   // Update Section Views
   document.querySelectorAll('.tab-view').forEach(view => {
     view.classList.remove('active');
@@ -3155,6 +3377,7 @@ function switchMainTab(tabName) {
   if (heroSliderInterval) clearInterval(heroSliderInterval);
   if (movieHeroSliderInterval) clearInterval(movieHeroSliderInterval);
   if (seriesHeroSliderInterval) clearInterval(seriesHeroSliderInterval);
+  if (animeHeroSliderInterval) clearInterval(animeHeroSliderInterval);
 
   if (tabName === 'movie') {
     setTimeout(() => {
@@ -3170,6 +3393,12 @@ function switchMainTab(tabName) {
     setTimeout(() => {
       applySeriesHeroSlide(currentSeriesHeroIndex, false);
       startSeriesHeroAutoSlide();
+    }, 50);
+  } else if (tabName === 'anime') {
+    setTimeout(() => {
+      renderAllAnime();
+      applyAnimeHeroSlide(currentAnimeHeroIndex, false);
+      startAnimeHeroAutoSlide();
     }, 50);
   } else if (tabName === 'me') {
     if (typeof updateAuthUI === 'function') updateAuthUI();

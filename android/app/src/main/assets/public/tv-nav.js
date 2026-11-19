@@ -10,8 +10,13 @@
 
   const FOCUSABLE_SELECTOR = [
     '.nav-tab-pill',
+    '.nav-me-btn',
     '#searchInput',
     '.search-btn',
+    '.btn-hero-watch',
+    '.btn-hero-list',
+    '.btn-hero-info',
+    '.tv-nav-item',
     '.media-card',
     '.bottom-tab-item',
     '.category-pill',
