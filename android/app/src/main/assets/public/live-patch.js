@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.7.9 (0.001ms Fast-Start RAM Stream, 2:3 Posters & Windowed Theater Player OTA)
+// FOBS TV Live OTA Patch Bundle v1.8.0 (Center Floating Glass Nav Bar, 2:3 Posters & Theater Player OTA)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.7.9 (2:3 Posters & Windowed Theater Player OTA) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.7.9';
+  console.log('⚡ FOBS TV Live Patch v1.8.0 (Center Floating Glass Nav, 2:3 Posters & Theater Player OTA) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.8.0';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -4069,14 +4069,15 @@
         html, body { width: 100%; height: 100%; overflow-x: hidden; background-color: #07070a !important; }
         .app-container { max-width: 100% !important; width: 100% !important; min-height: 100vh; margin: 0 auto; background-color: #07070a !important; box-shadow: none !important; padding-bottom: 40px !important; }
         .app-header { position: sticky !important; top: 0 !important; z-index: 999 !important; width: 100% !important; background: rgba(7, 8, 12, 0.92) !important; backdrop-filter: blur(24px) !important; -webkit-backdrop-filter: blur(24px) !important; border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important; padding: 12px 48px !important; box-sizing: border-box !important; }
-        .header-top-row { display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100% !important; max-width: 1800px !important; margin: 0 auto !important; gap: 32px !important; }
+        .header-top-row { display: grid !important; grid-template-columns: 1fr auto 1fr !important; align-items: center !important; width: 100% !important; max-width: 1800px !important; margin: 0 auto !important; gap: 24px !important; }
+        .brand-logo { justify-self: start !important; display: flex !important; align-items: center !important; }
         .brand-logo-img { height: 40px !important; width: auto !important; }
-        .desktop-nav-menu { display: flex !important; align-items: center !important; gap: 10px !important; flex: 1 !important; margin-left: 16px !important; }
-        .nav-tab-pill { background: transparent; border: 1px solid transparent; color: #94a3b8; padding: 8px 18px; border-radius: 20px; font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.22s ease; outline: none; user-select: none; }
-        .nav-tab-pill:hover, .nav-tab-pill.tv-focused { color: #fff !important; background: rgba(255, 255, 255, 0.08) !important; border-color: rgba(255, 255, 255, 0.16) !important; transform: translateY(-2px) !important; }
-        .nav-tab-pill.active { color: #00f2fe !important; background: rgba(0, 242, 254, 0.12) !important; border-color: rgba(0, 242, 254, 0.45) !important; box-shadow: 0 0 18px rgba(0, 242, 254, 0.25) !important; }
+        .desktop-nav-menu { justify-self: center !important; display: flex !important; align-items: center !important; gap: 6px !important; margin: 0 !important; background: rgba(18, 20, 30, 0.72) !important; backdrop-filter: blur(28px) saturate(180%) !important; -webkit-backdrop-filter: blur(28px) saturate(180%) !important; border: 1px solid rgba(255, 255, 255, 0.12) !important; border-radius: 40px !important; padding: 5px 8px !important; box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.14) !important; z-index: 10 !important; }
+        .nav-tab-pill { background: transparent; border: 1px solid transparent; color: #94a3b8; padding: 7px 16px; border-radius: 30px; font-size: 13.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.22s ease; outline: none; user-select: none; }
+        .nav-tab-pill:hover, .nav-tab-pill.tv-focused { color: #fff !important; background: rgba(255, 255, 255, 0.1) !important; border-color: rgba(255, 255, 255, 0.18) !important; transform: translateY(-1px) !important; }
+        .nav-tab-pill.active { color: #00f2fe !important; background: rgba(0, 242, 254, 0.15) !important; border-color: rgba(0, 242, 254, 0.55) !important; box-shadow: 0 0 18px rgba(0, 242, 254, 0.3) !important; }
         .nav-tab-pill.active i { color: #00f2fe !important; }
-        .header-right-actions { display: flex !important; align-items: center !important; gap: 14px !important; }
+        .header-right-actions { justify-self: end !important; display: flex !important; align-items: center !important; gap: 14px !important; }
         .nav-me-btn { display: inline-flex !important; align-items: center !important; gap: 8px !important; background: rgba(255, 255, 255, 0.06) !important; border: 1px solid rgba(255, 255, 255, 0.14) !important; border-radius: 20px !important; padding: 6px 14px 6px 8px !important; color: #e2e8f0 !important; font-size: 13.5px !important; font-weight: 700 !important; cursor: pointer !important; transition: all 0.22s ease !important; outline: none !important; }
         .nav-me-btn .nav-me-avatar { width: 26px !important; height: 26px !important; border-radius: 50% !important; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%) !important; color: #000 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 12px !important; }
         .nav-me-btn:hover, .nav-me-btn.tv-focused { background: rgba(255, 255, 255, 0.12) !important; border-color: #00f2fe !important; color: #fff !important; transform: translateY(-2px) !important; box-shadow: 0 0 16px rgba(0, 242, 254, 0.3) !important; }
@@ -4234,16 +4235,24 @@
     function ensureDesktopNavInHeader() {
       const headerTopRow = document.querySelector('.header-top-row');
       if (headerTopRow) {
+        let rightActions = headerTopRow.querySelector('.header-right-actions');
+        if (!rightActions) {
+          rightActions = document.createElement('div');
+          rightActions.className = 'header-right-actions';
+          const searchWrapper = headerTopRow.querySelector('.search-bar-wrapper');
+          if (searchWrapper) {
+            headerTopRow.insertBefore(rightActions, searchWrapper);
+            rightActions.appendChild(searchWrapper);
+          } else {
+            headerTopRow.appendChild(rightActions);
+          }
+        }
+
         let desktopNav = document.querySelector('.desktop-nav-menu');
         if (!desktopNav) {
           desktopNav = document.createElement('nav');
           desktopNav.className = 'desktop-nav-menu';
-          const searchWrapper = headerTopRow.querySelector('.search-bar-wrapper');
-          if (searchWrapper) {
-            headerTopRow.insertBefore(desktopNav, searchWrapper);
-          } else {
-            headerTopRow.appendChild(desktopNav);
-          }
+          headerTopRow.insertBefore(desktopNav, rightActions);
         }
         desktopNav.innerHTML = `
           <button class="nav-tab-pill active" data-tab="home" onclick="switchMainTab('home')">
@@ -4263,7 +4272,6 @@
           </button>
         `;
 
-        const rightActions = headerTopRow.querySelector('.header-right-actions');
         if (rightActions && !document.getElementById('desktopMeBtn')) {
           const meBtn = document.createElement('button');
           meBtn.className = 'nav-me-btn tv-nav-item';

@@ -10741,13 +10741,19 @@ body.intro-active {
   }
 
   .header-top-row {
-    display: flex !important;
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr !important;
     align-items: center !important;
-    justify-content: space-between !important;
     width: 100% !important;
     max-width: 1800px !important;
     margin: 0 auto !important;
-    gap: 32px !important;
+    gap: 24px !important;
+  }
+
+  .brand-logo {
+    justify-self: start !important;
+    display: flex !important;
+    align-items: center !important;
   }
 
   .brand-logo-img {
@@ -10761,22 +10767,30 @@ body.intro-active {
     transform: scale(1.05) !important;
   }
 
-  /* Desktop Top Nav Menu (Replaces bottom mobile floating bar) */
+  /* Desktop Top Nav Menu: Floated Glassy Capsule in the Exact Center */
   .desktop-nav-menu {
+    justify-self: center !important;
     display: flex !important;
     align-items: center !important;
-    gap: 10px !important;
-    flex: 1 !important;
-    margin-left: 16px !important;
+    gap: 6px !important;
+    margin: 0 !important;
+    background: rgba(18, 20, 30, 0.72) !important;
+    backdrop-filter: blur(28px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 40px !important;
+    padding: 5px 8px !important;
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
+    z-index: 10 !important;
   }
 
   .nav-tab-pill {
     background: transparent;
     border: 1px solid transparent;
     color: #94a3b8;
-    padding: 8px 18px;
-    border-radius: 20px;
-    font-size: 14px;
+    padding: 7px 16px;
+    border-radius: 30px;
+    font-size: 13.5px;
     font-weight: 700;
     display: inline-flex;
     align-items: center;
@@ -10788,23 +10802,23 @@ body.intro-active {
   }
 
   .nav-tab-pill i {
-    font-size: 14px;
+    font-size: 13.5px;
     transition: color 0.2s ease;
   }
 
   .nav-tab-pill:hover,
   .nav-tab-pill.tv-focused {
-    color: #fff !important;
-    background: rgba(255, 255, 255, 0.08) !important;
-    border-color: rgba(255, 255, 255, 0.16) !important;
-    transform: translateY(-2px) !important;
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    transform: translateY(-1px) !important;
   }
 
   .nav-tab-pill.active {
     color: #00f2fe !important;
-    background: rgba(0, 242, 254, 0.12) !important;
-    border-color: rgba(0, 242, 254, 0.45) !important;
-    box-shadow: 0 0 18px rgba(0, 242, 254, 0.25) !important;
+    background: rgba(0, 242, 254, 0.15) !important;
+    border-color: rgba(0, 242, 254, 0.55) !important;
+    box-shadow: 0 0 18px rgba(0, 242, 254, 0.3) !important;
   }
 
   .nav-tab-pill.active i {
@@ -10813,6 +10827,7 @@ body.intro-active {
 
   /* Right Header Controls & Search */
   .header-right-actions {
+    justify-self: end !important;
     display: flex !important;
     align-items: center !important;
     gap: 14px !important;
