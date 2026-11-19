@@ -10681,133 +10681,505 @@ body.intro-active {
    16:9 WIDESCREEN (TV & PC DISPLAY ADAPTATION)
    Preserves 100% of mobile app design, cards, colors & badges
    ============================================================ */
+/* ============================================================
+   DESKTOP / TV NAVIGATION MENU (Mobile default: Hidden)
+   ============================================================ */
+.desktop-nav-menu {
+  display: none;
+}
+
+.header-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ============================================================
+   16:9 WIDESCREEN & CINEMATIC TV / PC APP EXPERIENCE
+   Transforms FOBS TV into a Premium TV & PC Streaming Interface
+   ============================================================ */
 @media (min-width: 768px) {
   html, body {
     width: 100%;
     height: 100%;
     overflow-x: hidden;
-    background-color: #07070a;
+    background-color: #07070a !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
 
-  /* Expand the 480px mobile lock to 100% full 16:9 widescreen */
+  /* Expand from 480px mobile lock to 100% full widescreen */
   .app-container {
     max-width: 100% !important;
     width: 100% !important;
     min-height: 100vh;
     margin: 0 auto;
+    background-color: #07070a !important;
     box-shadow: none !important;
+    padding-bottom: 40px !important;
   }
 
-  /* App Header & Top Navigation centered */
+  /* Sticky Cinematic Top Navigation Bar */
   .app-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 999 !important;
     width: 100% !important;
-    max-width: 1600px !important;
-    margin: 0 auto !important;
-    padding: 12px 32px !important;
-  }
-
-  /* Main Feed & Content Wrap */
-  .feed-container,
-  .main-content,
-  .main-content-wrap,
-  .section-detail-body {
-    max-width: 1600px !important;
-    width: 100% !important;
-    margin: 0 auto !important;
-    padding-left: 32px !important;
-    padding-right: 32px !important;
+    background: rgba(7, 8, 12, 0.92) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding: 12px 48px !important;
     box-sizing: border-box !important;
   }
 
-  /* 16:9 Cinematic Hero Slider Banner */
+  .header-top-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    max-width: 1800px !important;
+    margin: 0 auto !important;
+    gap: 32px !important;
+  }
+
+  .brand-logo-img {
+    height: 40px !important;
+    width: auto !important;
+    transition: transform 0.2s ease !important;
+  }
+
+  .brand-logo:hover .brand-logo-img,
+  .brand-logo.tv-focused .brand-logo-img {
+    transform: scale(1.05) !important;
+  }
+
+  /* Desktop Top Nav Menu (Replaces bottom mobile floating bar) */
+  .desktop-nav-menu {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    flex: 1 !important;
+    margin-left: 16px !important;
+  }
+
+  .nav-tab-pill {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #94a3b8;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+    outline: none;
+    user-select: none;
+  }
+
+  .nav-tab-pill i {
+    font-size: 14px;
+    transition: color 0.2s ease;
+  }
+
+  .nav-tab-pill:hover,
+  .nav-tab-pill.tv-focused {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.16) !important;
+    transform: translateY(-2px) !important;
+  }
+
+  .nav-tab-pill.active {
+    color: #00f2fe !important;
+    background: rgba(0, 242, 254, 0.12) !important;
+    border-color: rgba(0, 242, 254, 0.45) !important;
+    box-shadow: 0 0 18px rgba(0, 242, 254, 0.25) !important;
+  }
+
+  .nav-tab-pill.active i {
+    color: #00f2fe !important;
+  }
+
+  /* Right Header Controls & Search */
+  .header-right-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+  }
+
+  .search-bar-wrapper {
+    width: 280px !important;
+    max-width: 320px !important;
+    height: 40px !important;
+    border-radius: 20px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 6px 0 14px !important;
+    transition: all 0.25s ease !important;
+  }
+
+  .search-bar-wrapper:focus-within,
+  .search-bar-wrapper.tv-focused {
+    width: 340px !important;
+    border-color: #00f2fe !important;
+    box-shadow: 0 0 16px rgba(0, 242, 254, 0.3) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .search-bar-wrapper input {
+    font-size: 13.5px !important;
+    color: #fff !important;
+  }
+
+  .search-btn {
+    height: 30px !important;
+    padding: 0 14px !important;
+    border-radius: 15px !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%) !important;
+    color: #000 !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: opacity 0.2s ease !important;
+  }
+
+  .search-btn:hover {
+    opacity: 0.9 !important;
+  }
+
+  /* HIDE BOTTOM NAV BAR ON WIDESCREEN (Leaves viewport completely free) */
+  .bottom-tab-bar {
+    display: none !important;
+  }
+
+  /* 16:9 CINEMATIC HERO SLIDER BANNER */
   .hero-slider-container {
-    max-width: 1600px !important;
-    height: clamp(340px, 36vw, 480px) !important;
-    margin: 0 auto 24px auto !important;
-    border-radius: 16px !important;
+    max-width: 1800px !important;
+    height: clamp(380px, 45vh, 520px) !important;
+    margin: 0 auto 36px auto !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
   }
 
   .hero-backdrop-slide {
     background-size: cover !important;
-    background-position: center 20% !important;
+    background-position: center 25% !important;
   }
 
-  /* Movie & Series Cards Grid (Repeats 5-7 cards per row in 16:9) */
+  /* Vignette dark gradient overlay (Dark on the left for text, fades to black at bottom) */
+  .hero-gradient-overlay {
+    background: linear-gradient(90deg, rgba(7, 8, 12, 0.96) 0%, rgba(7, 8, 12, 0.75) 35%, rgba(7, 8, 12, 0.15) 75%),
+                linear-gradient(180deg, rgba(7, 8, 12, 0) 50%, rgba(7, 8, 12, 0.98) 100%) !important;
+  }
+
+  /* Bottom Hero Card Track: Clean compact floating hero card on the bottom-left */
+  .hero-bottom-slider {
+    position: absolute !important;
+    bottom: 32px !important;
+    left: 48px !important;
+    right: auto !important;
+    max-width: 520px !important;
+    width: 100% !important;
+    padding-left: 0 !important;
+    z-index: 5 !important;
+  }
+
+  .hero-peek-card {
+    flex: 0 0 440px !important;
+    width: 440px !important;
+    height: 90px !important;
+    min-height: 90px !important;
+    max-height: 90px !important;
+    padding: 10px 16px !important;
+    border-radius: 16px !important;
+    background: rgba(18, 20, 30, 0.88) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65) !important;
+    transition: all 0.25s ease !important;
+  }
+
+  .hero-peek-card.active {
+    border-color: #00f2fe !important;
+    background: rgba(22, 26, 42, 0.94) !important;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 242, 254, 0.3) !important;
+    transform: scale(1.02) !important;
+  }
+
+  .hero-peek-card:not(.active) {
+    opacity: 0.55 !important;
+    transform: scale(0.96) !important;
+  }
+
+  .hero-peek-thumb-wrap {
+    width: 52px !important;
+    min-width: 52px !important;
+    height: 70px !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+  }
+
+  .hero-peek-thumb {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .hero-peek-title {
+    font-size: 16.5px !important;
+    font-weight: 800 !important;
+    color: #fff !important;
+    letter-spacing: -0.2px !important;
+  }
+
+  .hero-peek-sub {
+    font-size: 13px !important;
+    color: #94a3b8 !important;
+    margin-top: 3px !important;
+  }
+
+  .hero-peek-play {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%) !important;
+    color: #000 !important;
+    font-size: 18px !important;
+    box-shadow: 0 4px 16px rgba(0, 242, 254, 0.4) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  }
+
+  .hero-peek-card:hover .hero-peek-play,
+  .hero-peek-card.tv-focused .hero-peek-play {
+    transform: scale(1.1) !important;
+    box-shadow: 0 6px 22px rgba(0, 242, 254, 0.65) !important;
+  }
+
+  /* CONTENT WRAPPERS & SECTIONS */
+  .feed-container,
+  .main-content,
+  .main-content-wrap,
+  .tab-view {
+    max-width: 1800px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
+
+  .content-section {
+    max-width: 1800px !important;
+    margin: 0 auto 36px auto !important;
+    padding: 0 48px !important;
+    box-sizing: border-box !important;
+  }
+
+  .section-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 16px !important;
+    padding: 0 4px !important;
+  }
+
+  .section-title {
+    font-size: 21px !important;
+    font-weight: 800 !important;
+    color: #fff !important;
+    letter-spacing: -0.4px !important;
+  }
+
+  .section-more {
+    font-size: 14px !important;
+    color: #00f2fe !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: transform 0.2s ease, color 0.2s ease !important;
+  }
+
+  .section-more:hover {
+    color: #38bdf8 !important;
+    transform: translateX(4px) !important;
+  }
+
+  /* HORIZONTAL SCROLL ROWS (Smooth Netflix-style carousel) */
+  .horizontal-scroll {
+    gap: 20px !important;
+    padding: 12px 6px 24px 6px !important;
+    overflow-x: auto !important;
+    scroll-behavior: smooth !important;
+  }
+
+  .horizontal-scroll::-webkit-scrollbar,
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    height: 8px !important;
+    width: 8px !important;
+  }
+
+  .horizontal-scroll::-webkit-scrollbar-track,
+  html::-webkit-scrollbar-track,
+  body::-webkit-scrollbar-track {
+    background: transparent !important;
+  }
+
+  .horizontal-scroll::-webkit-scrollbar-thumb,
+  html::-webkit-scrollbar-thumb,
+  body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-radius: 4px !important;
+  }
+
+  .horizontal-scroll::-webkit-scrollbar-thumb:hover,
+  html::-webkit-scrollbar-thumb:hover,
+  body::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 242, 254, 0.5) !important;
+  }
+
+  /* MEDIA CARDS (Wide Screen Scale & Glow) */
+  .horizontal-scroll .media-card {
+    width: 185px !important;
+    min-width: 185px !important;
+    max-width: 185px !important;
+    cursor: pointer !important;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease !important;
+  }
+
+  .horizontal-scroll .card-poster-wrap {
+    width: 100% !important;
+    height: 275px !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  }
+
+  .horizontal-scroll .card-poster {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    transition: transform 0.35s ease !important;
+  }
+
+  .horizontal-scroll .media-card:hover,
+  .horizontal-scroll .media-card.tv-focused {
+    transform: scale(1.07) translateY(-6px) !important;
+    z-index: 10 !important;
+  }
+
+  .horizontal-scroll .media-card:hover .card-poster-wrap,
+  .horizontal-scroll .media-card.tv-focused .card-poster-wrap {
+    border-color: #00f2fe !important;
+    box-shadow: 0 16px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 242, 254, 0.35) !important;
+  }
+
+  .horizontal-scroll .media-card:hover .card-poster {
+    transform: scale(1.05) !important;
+  }
+
+  /* 3-COLUMN ALL GRID (Adapts to 6-8 columns on Widescreen) */
   .grid-3-col {
     display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)) !important;
-    gap: 18px !important;
-    padding: 0 !important;
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)) !important;
+    gap: 22px !important;
+    padding: 16px 48px !important;
+    box-sizing: border-box !important;
   }
 
   .grid-3-col .media-card {
     width: 100% !important;
     max-width: 100% !important;
+    cursor: pointer !important;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease !important;
   }
 
   .grid-3-col .card-poster-wrap {
-    height: 250px !important;
     width: 100% !important;
-    border-radius: 10px !important;
+    height: 275px !important;
+    border-radius: 14px !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
   }
 
-  /* Horizontal Scroll Rows for Wide Screen */
-  .horizontal-scroll {
-    gap: 16px !important;
-    padding: 8px 4px !important;
+  .grid-3-col .media-card:hover,
+  .grid-3-col .media-card.tv-focused {
+    transform: scale(1.07) translateY(-6px) !important;
+    z-index: 10 !important;
   }
 
-  .horizontal-scroll .media-card {
-    width: 170px !important;
-    min-width: 170px !important;
-    max-width: 170px !important;
+  .grid-3-col .media-card:hover .card-poster-wrap,
+  .grid-3-col .media-card.tv-focused .card-poster-wrap {
+    border-color: #00f2fe !important;
+    box-shadow: 0 16px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 242, 254, 0.35) !important;
   }
 
-  .horizontal-scroll .card-poster-wrap {
-    height: 250px !important;
-  }
-
-  /* Live TV Channels Grid */
+  /* LIVE TV CHANNELS GRID */
   .live-tv-grid {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
-    gap: 18px !important;
-    padding: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+    gap: 20px !important;
+    padding: 16px 48px !important;
+    box-sizing: border-box !important;
   }
 
-  /* Bottom Navigation Bar Centered for TV & PC */
-  .bottom-tab-bar {
-    max-width: 600px !important;
-    width: 90% !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    right: auto !important;
-    bottom: 12px !important;
-    border-radius: 24px !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+  .live-channel-card,
+  .channel-card {
+    border-radius: 14px !important;
+    padding: 16px !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    transition: all 0.25s ease !important;
+    cursor: pointer !important;
   }
 
-  /* Detail Bottom Sheet / Modal centered nicely */
+  .live-channel-card:hover,
+  .channel-card:hover,
+  .live-channel-card.tv-focused,
+  .channel-card.tv-focused {
+    transform: scale(1.05) translateY(-4px) !important;
+    border-color: #00f2fe !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 242, 254, 0.3) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+  }
+
+  /* DETAIL MODAL ON PC & TV (Floating Centered Dialog) */
   .details-modal,
   .details-sheet,
   .media-detail-overlay {
-    max-width: 760px !important;
+    max-width: 860px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    border-radius: 20px 20px 0 0 !important;
+    border-radius: 20px !important;
+    bottom: 40px !important;
+    top: auto !important;
+    max-height: 85vh !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
   }
 
-  /* TV Remote & PC Keyboard D-Pad Focus Visual Glow */
+  /* TV REMOTE & PC KEYBOARD FOCUS GLOW */
+  .nav-tab-pill.tv-focused,
   .media-card.tv-focused,
-  .media-card:focus-visible,
-  .bottom-tab-item.tv-focused,
-  .bottom-tab-item:focus-visible,
   .category-pill.tv-focused,
-  .category-pill:focus-visible,
+  .channel-card.tv-focused,
+  .search-bar-wrapper.tv-focused,
   .tv-nav-item.tv-focused,
   button.tv-focused {
-    outline: 2px solid #00f2fe !important;
-    box-shadow: 0 0 20px rgba(0, 242, 254, 0.75) !important;
+    outline: 2.5px solid #00f2fe !important;
+    box-shadow: 0 0 24px rgba(0, 242, 254, 0.8) !important;
     transform: scale(1.06) !important;
     z-index: 50 !important;
     transition: transform 0.15s ease, box-shadow 0.15s ease !important;

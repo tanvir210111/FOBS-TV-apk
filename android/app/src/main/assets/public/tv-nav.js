@@ -9,10 +9,14 @@
   let isNavActive = false;
 
   const FOCUSABLE_SELECTOR = [
+    '.nav-tab-pill',
+    '#searchInput',
+    '.search-btn',
     '.media-card',
     '.bottom-tab-item',
     '.category-pill',
     '.hero-backdrop-track',
+    '.hero-peek-card',
     '.hero-bottom-slider',
     '.live-channel-card',
     '.channel-card',

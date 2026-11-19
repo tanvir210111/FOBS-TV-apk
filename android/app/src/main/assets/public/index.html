@@ -119,20 +119,41 @@
     <!-- Top Status Bar & App Header -->
     <header class="app-header">
       <div class="header-top-row">
-        <div class="brand-logo" onclick="switchMainTab('home')">
+        <div class="brand-logo" onclick="switchMainTab('home')" style="cursor: pointer;" title="FOBS TV Home">
           <img src="assets/fobs_logo_full.png" alt="FOBS TV" class="brand-logo-img">
         </div>
 
-        <div class="search-bar-wrapper">
-          <i class="fa-solid fa-magnifying-glass search-icon"></i>
-          <input type="text" id="searchInput" placeholder="Search movies, series, anime..." autocomplete="off">
-          <button class="search-btn" onclick="handleSearch()">Search</button>
-        </div>
+        <!-- Desktop & TV Navigation Menu (Visible on PC & TV Widescreen) -->
+        <nav class="desktop-nav-menu">
+          <button class="nav-tab-pill active" data-tab="home" onclick="switchMainTab('home')">
+            <i class="fa-solid fa-house"></i> <span>Home</span>
+          </button>
+          <button class="nav-tab-pill" data-tab="movie" onclick="switchMainTab('movie')">
+            <i class="fa-solid fa-film"></i> <span>Movies</span>
+          </button>
+          <button class="nav-tab-pill" data-tab="series" onclick="switchMainTab('series')">
+            <i class="fa-solid fa-tv"></i> <span>Series</span>
+          </button>
+          <button class="nav-tab-pill" data-tab="livetv" onclick="switchMainTab('livetv')">
+            <i class="fa-solid fa-satellite-dish"></i> <span>Live TV</span>
+          </button>
+          <button class="nav-tab-pill" data-tab="me" onclick="switchMainTab('me')">
+            <i class="fa-solid fa-user"></i> <span>Me</span>
+          </button>
+        </nav>
 
-        <button id="headerUpdateBtn" class="header-update-btn hidden" onclick="openUpdateModal()" title="App Update Available">
-          <i class="fa-solid fa-cloud-arrow-down"></i>
-          <span class="update-pulse-badge"></span>
-        </button>
+        <div class="header-right-actions">
+          <div class="search-bar-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Search movies, series, anime..." autocomplete="off">
+            <button class="search-btn" onclick="handleSearch()">Search</button>
+          </div>
+
+          <button id="headerUpdateBtn" class="header-update-btn hidden" onclick="openUpdateModal()" title="App Update Available">
+            <i class="fa-solid fa-cloud-arrow-down"></i>
+            <span class="update-pulse-badge"></span>
+          </button>
+        </div>
       </div>
     </header>
 

@@ -478,9 +478,29 @@ function filterMoviesTable() {
   renderMoviesTable(filtered);
 }
 
+function syncMovieCategoryFromIndustry() {
+  const ind = document.getElementById('movie-industry')?.value || 'Hollywood';
+  const dub = (document.getElementById('movie-dub')?.value || '').toLowerCase();
+  const isHindi = dub.includes('hindi');
+  let cat = 'Hollywood Movies';
+  if (ind === 'Korean') cat = isHindi ? 'Korean (Dubbed) Movies' : 'Korean Movie';
+  else if (ind === 'Chinese') cat = isHindi ? 'Chinese (Dubbed) Movies' : 'Chinese Movies';
+  else if (ind === 'Turkish') cat = isHindi ? 'Turkish Movies (Hindi)' : 'Turkish Movies';
+  else if (ind === 'Anime') cat = isHindi ? 'Anime Movies (Hindi Dub)' : 'Anime Movies';
+  else if (ind === 'Bollywood') cat = 'Bollywood Movies';
+  else if (ind === 'South Indian') cat = 'South (Dubbed) Movies';
+  else if (ind === 'Bengali') cat = 'Bengali';
+  else cat = isHindi ? 'Hollywood (Dubbed) Movies' : 'Hollywood Movies';
+  const catEl = document.getElementById('movie-category');
+  if (catEl) catEl.value = cat;
+}
+window.syncMovieCategoryFromIndustry = syncMovieCategoryFromIndustry;
+
 function openAddMovieModal() {
   document.getElementById('movie-form').reset();
   document.getElementById('movie-id').value = '';
+  if (document.getElementById('movie-industry')) document.getElementById('movie-industry').value = 'Hollywood';
+  if (document.getElementById('movie-category')) document.getElementById('movie-category').value = 'Hollywood Movies';
   document.getElementById('movie-modal-title').innerHTML = '<i class="fa-solid fa-film"></i> Add New Movie';
   openModal('movie-modal');
 }
@@ -498,6 +518,8 @@ function openEditMovieModal(id) {
   document.getElementById('movie-quality').value = movie.quality || '1080p Full HD';
   document.getElementById('movie-dub').value = movie.dubLanguage || movie.audio || 'Hindi Dubbed';
   document.getElementById('movie-genre').value = movie.genre || '';
+  if (document.getElementById('movie-industry')) document.getElementById('movie-industry').value = movie.industry || 'Hollywood';
+  if (document.getElementById('movie-category')) document.getElementById('movie-category').value = movie.category || 'Hollywood Movies';
   document.getElementById('movie-overview').value = movie.overview || movie.description || '';
   document.getElementById('movie-stream').value = movie.directStreamUrl || movie.streamUrl || '';
   document.getElementById('movie-stream-backup').value = (movie.servers && movie.servers[1] ? movie.servers[1].url : '');
@@ -531,6 +553,8 @@ async function triggerAutoDetectMovie() {
     document.getElementById('movie-backdrop').value = d.backdrop || d.poster || '';
     document.getElementById('movie-genre').value = d.genre || 'Action, Thriller';
     document.getElementById('movie-dub').value = d.isHindi ? 'Hindi Dubbed' : (d.dubLanguage || 'Original Audio');
+    if (d.industry && document.getElementById('movie-industry')) document.getElementById('movie-industry').value = d.industry;
+    if (d.category && document.getElementById('movie-category')) document.getElementById('movie-category').value = d.category;
     document.getElementById('movie-overview').value = d.overview || '';
     if (d.streamUrl) document.getElementById('movie-stream-url').value = d.streamUrl;
 
@@ -568,6 +592,8 @@ async function handleMovieSubmit(e) {
     quality: document.getElementById('movie-quality').value.trim() || '1080p Full HD',
     dubLanguage: dub,
     audio: dub,
+    industry: document.getElementById('movie-industry')?.value || 'Hollywood',
+    category: document.getElementById('movie-category')?.value.trim() || 'Hollywood Movies',
     genre: document.getElementById('movie-genre').value.trim() || 'Action',
     overview: document.getElementById('movie-overview').value.trim(),
     description: document.getElementById('movie-overview').value.trim(),
@@ -693,9 +719,29 @@ function filterSeriesTable() {
   renderSeriesTable(filtered);
 }
 
+function syncSeriesCategoryFromIndustry() {
+  const ind = document.getElementById('series-industry')?.value || 'Korean';
+  const dub = (document.getElementById('series-dub')?.value || '').toLowerCase();
+  const isHindi = dub.includes('hindi');
+  let cat = 'Korean Series';
+  if (ind === 'Korean') cat = isHindi ? 'Korean (Dubbed) Series' : 'Korean Series';
+  else if (ind === 'Chinese') cat = isHindi ? 'Chinese (Dubbed) Series' : 'Chinese Drama';
+  else if (ind === 'Turkish') cat = isHindi ? 'Turkish Drama' : 'Turkish Series';
+  else if (ind === 'Anime') cat = isHindi ? 'Anime Series (Hindi Dub)' : 'Anime';
+  else if (ind === 'Bollywood') cat = 'Bollywood Series';
+  else if (ind === 'South Indian') cat = 'South Indian Series';
+  else if (ind === 'Bengali') cat = isHindi ? 'Bengali (Dubbed) Series' : 'Bengali Series';
+  else cat = isHindi ? 'Hollywood (Dubbed) Series' : 'Hollywood Series';
+  const catEl = document.getElementById('series-category');
+  if (catEl) catEl.value = cat;
+}
+window.syncSeriesCategoryFromIndustry = syncSeriesCategoryFromIndustry;
+
 function openAddSeriesModal() {
   document.getElementById('series-form').reset();
   document.getElementById('series-id').value = '';
+  if (document.getElementById('series-industry')) document.getElementById('series-industry').value = 'Korean';
+  if (document.getElementById('series-category')) document.getElementById('series-category').value = 'Korean Series';
   document.getElementById('series-modal-title').innerHTML = '<i class="fa-solid fa-tv"></i> Add New Series';
   openModal('series-modal');
 }
@@ -712,6 +758,8 @@ function openEditSeriesModal(id) {
   document.getElementById('series-backdrop').value = series.cover || series.backdrop || '';
   document.getElementById('series-dub').value = series.dubLanguage || series.audio || '';
   document.getElementById('series-genre').value = series.genre || '';
+  if (document.getElementById('series-industry')) document.getElementById('series-industry').value = series.industry || 'Korean';
+  if (document.getElementById('series-category')) document.getElementById('series-category').value = series.category || 'Korean Series';
   document.getElementById('series-overview').value = series.overview || series.description || '';
 
   document.getElementById('series-modal-title').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Series';
@@ -742,6 +790,8 @@ async function triggerAutoDetectSeries() {
     document.getElementById('series-backdrop').value = d.backdrop || d.poster || '';
     document.getElementById('series-genre').value = d.genre || 'Drama, Mystery';
     document.getElementById('series-dub').value = d.isHindi ? 'Hindi Dubbed' : (d.dubLanguage || 'Korean / Original');
+    if (d.industry && document.getElementById('series-industry')) document.getElementById('series-industry').value = d.industry;
+    if (d.category && document.getElementById('series-category')) document.getElementById('series-category').value = d.category;
     document.getElementById('series-overview').value = d.overview || '';
 
     // Cache detected seasons & episodes so handleSeriesSubmit attaches them automatically!
@@ -861,6 +911,8 @@ async function handleSeriesSubmit(e) {
     backdrop: document.getElementById('series-backdrop').value.trim(),
     cover: document.getElementById('series-backdrop').value.trim() || document.getElementById('series-poster').value.trim(),
     dubLanguage: document.getElementById('series-dub').value.trim(),
+    industry: document.getElementById('series-industry')?.value || 'Korean',
+    category: document.getElementById('series-category')?.value.trim() || 'Korean Series',
     genre: document.getElementById('series-genre').value.trim() || 'Drama',
     overview: document.getElementById('series-overview').value.trim(),
     description: document.getElementById('series-overview').value.trim(),
@@ -1804,6 +1856,24 @@ function setUserVersionFilterQuick(ver) {
   setUserVersionFilter(ver);
 }
 
+function getUserCategory(u) {
+  if (!u) return 'app';
+  const plat = (u.platform || '').toLowerCase();
+  const model = (u.deviceModel || '').toLowerCase();
+  const ua = (u.userAgent || '').toLowerCase();
+
+  const isExe = plat.includes('exe') || plat.includes('pc') || plat.includes('win') || plat.includes('electron') ||
+                model.includes('pc') || model.includes('exe') || model.includes('windows') ||
+                ua.includes('fobs-tv-pc-app') || ua.includes('electron') || ua.includes('windows');
+  if (isExe) return 'exe';
+
+  const isTv = plat.includes('tv') || model.includes('tv') ||
+               ua.includes('android tv') || ua.includes('leanback') || ua.includes('smarttv') || ua.includes('smart-tv') || ua.includes('mitv') || ua.includes('aft');
+  if (isTv) return 'tv';
+
+  return 'app';
+}
+
 function updateUserStatsCounts() {
   let list = state.users || [];
   if (userVersionFilter === '3.2.0') {
@@ -1812,21 +1882,22 @@ function updateUserStatsCounts() {
     list = list.filter(u => !(u.appVersion === '3.2.0' || (u.appVersion && u.appVersion.includes('3.2.0'))));
   }
 
-  const regCount = list.filter(u => u.type === 'Registered Member').length;
-  const devCount = list.filter(u => u.type !== 'Registered Member').length;
+  const appCount = list.filter(u => getUserCategory(u) === 'app').length;
+  const tvCount = list.filter(u => getUserCategory(u) === 'tv').length;
+  const exeCount = list.filter(u => getUserCategory(u) === 'exe').length;
   const onlineCount = list.filter(u => u.isOnline || u.status === 'Online Now').length;
-  const v320Count = (state.users || []).filter(u => u.appVersion === '3.2.0' || (u.appVersion && u.appVersion.includes('3.2.0'))).length;
 
   if (document.getElementById('users-stat-devices')) document.getElementById('users-stat-devices').innerText = list.length;
+  if (document.getElementById('users-stat-app')) document.getElementById('users-stat-app').innerText = appCount;
+  if (document.getElementById('users-stat-tv')) document.getElementById('users-stat-tv').innerText = tvCount;
+  if (document.getElementById('users-stat-exe')) document.getElementById('users-stat-exe').innerText = exeCount;
   if (document.getElementById('users-stat-online')) document.getElementById('users-stat-online').innerText = onlineCount;
-  if (document.getElementById('users-stat-registered')) document.getElementById('users-stat-registered').innerText = regCount;
-  if (document.getElementById('users-stat-app-devices')) document.getElementById('users-stat-app-devices').innerText = devCount;
 
   if (document.getElementById('chip-count-all')) document.getElementById('chip-count-all').innerText = list.length;
-  if (document.getElementById('chip-count-registered')) document.getElementById('chip-count-registered').innerText = regCount;
-  if (document.getElementById('chip-count-devices')) document.getElementById('chip-count-devices').innerText = devCount;
+  if (document.getElementById('chip-count-app')) document.getElementById('chip-count-app').innerText = appCount;
+  if (document.getElementById('chip-count-tv')) document.getElementById('chip-count-tv').innerText = tvCount;
+  if (document.getElementById('chip-count-exe')) document.getElementById('chip-count-exe').innerText = exeCount;
   if (document.getElementById('chip-count-online')) document.getElementById('chip-count-online').innerText = onlineCount;
-  if (document.getElementById('chip-count-v320')) document.getElementById('chip-count-v320').innerText = v320Count;
 }
 
 async function loadUsers() {
@@ -1865,7 +1936,10 @@ function filterUsersTable() {
       if (isV320) return false;
     }
 
-    // Type filter
+    // Platform / Audience filter
+    if (userAudienceFilter === 'app' && getUserCategory(u) !== 'app') return false;
+    if (userAudienceFilter === 'tv' && getUserCategory(u) !== 'tv') return false;
+    if (userAudienceFilter === 'exe' && getUserCategory(u) !== 'exe') return false;
     if (userAudienceFilter === 'registered' && u.type !== 'Registered Member') return false;
     if (userAudienceFilter === 'devices' && u.type === 'Registered Member') return false;
     if (userAudienceFilter === 'online' && !u.isOnline && u.status !== 'Online Now') return false;
@@ -1887,23 +1961,29 @@ function filterUsersTable() {
 function renderUsersTable(usersList) {
   const tbody = document.getElementById('users-tbody');
   if (!usersList || usersList.length === 0) {
-    const emptyMsg = userAudienceFilter === 'registered'
-      ? 'No registered Google accounts found on v3.2.0.'
-      : (userAudienceFilter === 'online' ? 'No users online in the last 10 minutes.' : 'No audience records matching this filter.');
+    let emptyMsg = 'No audience records matching this filter.';
+    if (userAudienceFilter === 'app') emptyMsg = 'No Mobile App audience found on this filter.';
+    else if (userAudienceFilter === 'tv') emptyMsg = 'No Android TV audience found on this filter.';
+    else if (userAudienceFilter === 'exe') emptyMsg = 'No Windows PC (EXE) audience found on this filter.';
+    else if (userAudienceFilter === 'registered') emptyMsg = 'No registered Google accounts found on v3.2.0.';
+    else if (userAudienceFilter === 'online') emptyMsg = 'No users online in the last 10 minutes.';
     tbody.innerHTML = `<tr><td colspan="9" class="text-center" style="padding: 36px; color: #64748b;">${emptyMsg}</td></tr>`;
     return;
   }
 
   tbody.innerHTML = usersList.map(u => {
     const isOnline = u.isOnline || u.status === 'Online Now';
-    const isReg = u.type === 'Registered Member';
-    const hasEmail = Boolean(isReg && u.email && u.email.includes('@') && u.email !== 'Google User');
-    const displayEmail = hasEmail ? u.email : ((u.email && u.email !== 'Google User') ? u.email : '');
+    const isReg = u.type === 'Registered Member' || u.type === 'Linked Member Device';
+    const hasEmail = Boolean(u.email && u.email.includes('@') && u.email !== 'Google User' && !u.email.includes('@placeholder.'));
+    const displayEmail = hasEmail ? u.email : '';
     const rawIp = u.ip || (u.email && (u.email.includes('.') && !u.email.includes('@')) ? u.email.replace('IP: ', '') : '');
+    const displayName = (u.name && u.name !== 'User' && u.name !== 'App Member' && u.name !== 'Mobile App User')
+      ? u.name
+      : (displayEmail ? displayEmail.split('@')[0] : (isReg ? 'Registered Member' : (u.deviceModel || 'App Device')));
 
     const avatarHtml = isReg && u.picture
       ? `<div style="position: relative; display: inline-block;">
-           <img src="${escapeHtml(u.picture)}" alt="${escapeHtml(u.name)}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
+           <img src="${escapeHtml(u.picture)}" alt="${escapeHtml(displayName)}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
            ${isOnline ? '<span class="pulse-dot-green" style="position: absolute; bottom: 0; right: 0; border: 1.5px solid #0f172a;"></span>' : ''}
          </div>`
       : `<div style="position: relative; display: inline-block;">
@@ -1920,7 +2000,7 @@ function renderUsersTable(usersList) {
             ${avatarHtml}
             <div>
               <div class="table-title-bold" style="font-size: 13.5px; color: ${isReg ? '#f8fafc' : '#e2e8f0'}; font-weight: 700;">
-                ${escapeHtml(u.name || (isReg ? 'App Member' : 'Mobile App User'))}
+                ${escapeHtml(displayName)}
               </div>
               ${hasEmail ? `
                 <div style="font-size: 11.5px; color: #c084fc; font-weight: 600; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
@@ -1929,7 +2009,7 @@ function renderUsersTable(usersList) {
               ` : (isReg ? `
                 <div style="font-size: 11px; color: #fbbf24; font-weight: 600; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
                   <i class="fa-solid fa-envelope-circle-check" style="font-size: 10px;"></i>
-                  ${displayEmail ? escapeHtml(displayEmail) : 'App Member'}
+                  ${displayEmail ? escapeHtml(displayEmail) : 'Registered Member'}
                 </div>
               ` : `
                 <div class="table-meta-sub" style="font-family: var(--font-mono); font-size: 11px; color: #64748b;">
@@ -1941,13 +2021,20 @@ function renderUsersTable(usersList) {
         </td>
         <td>
           <div style="display: flex; flex-direction: column; gap: 3px;">
-            ${isReg ? `
-              <div style="font-size: 13px; font-weight: 700; color: ${hasEmail ? '#f1f5f9' : '#fbbf24'}; display: flex; align-items: center; gap: 6px;">
-                <i class="fa-solid fa-envelope" style="color: ${hasEmail ? '#c084fc' : '#fbbf24'}; font-size: 12px;"></i>
-                <span style="user-select: all; color: ${hasEmail ? '#e9d5ff' : '#fef08a'};">${escapeHtml(hasEmail ? displayEmail : (displayEmail || 'Verified Account'))}</span>
+            ${hasEmail ? `
+              <div style="font-size: 13px; font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-envelope" style="color: #c084fc; font-size: 12px;"></i>
+                <span style="user-select: all; color: #e9d5ff;">${escapeHtml(displayEmail)}</span>
               </div>
               <div class="table-meta-sub" style="font-size: 11px; color: #94a3b8;">
-                <i class="fa-solid fa-user-check" style="color: #38bdf8; margin-right: 3px;"></i> App Account &bull; ${escapeHtml(u.deviceModel || 'Mobile')}
+                <i class="fa-solid fa-user-check" style="color: #38bdf8; margin-right: 3px;"></i> Verified Account &bull; ${escapeHtml(u.deviceModel || 'Mobile')}
+              </div>
+            ` : (isReg ? `
+              <div style="font-size: 12px; color: #94a3b8; font-weight: 500;">
+                <i class="fa-regular fa-envelope-open" style="font-size: 11px; margin-right: 4px; color: #fbbf24;"></i> No Email Registered
+              </div>
+              <div class="table-meta-sub" style="font-size: 11px; color: #64748b;">
+                Guest Profile &bull; ${escapeHtml(u.deviceModel || 'App')}
               </div>
             ` : `
               <span style="font-weight: 600; font-size: 12.5px; color: #cbd5e1;">${escapeHtml(u.deviceModel || 'Android Phone')}</span>
@@ -1955,7 +2042,7 @@ function renderUsersTable(usersList) {
                 <i class="fa-solid fa-network-wired" style="font-size: 10px; margin-right: 3px;"></i>
                 ${escapeHtml(rawIp || 'Direct Connection')}
               </span>
-            `}
+            `)}
           </div>
         </td>
         <td>
@@ -1969,7 +2056,18 @@ function renderUsersTable(usersList) {
             <i class="fa-solid fa-circle-check" style="margin-right: 3px;"></i> ${escapeHtml(u.appVersion ? ('v' + String(u.appVersion).replace(/^v/, '')) : 'v3.2.0')}
           </span>
         </td>
-        <td><i class="${isReg ? 'fa-brands fa-google' : 'fa-brands fa-android'}" style="color: ${isReg ? '#f59e0b' : '#34d399'}; margin-right: 4px;"></i> ${escapeHtml(u.platform || 'Android')}</td>
+        <td>
+          ${(() => {
+            const cat = getUserCategory(u);
+            if (cat === 'exe') {
+              return `<span class="badge-tag" style="background: rgba(192, 132, 252, 0.18); color: #c084fc; border: 1px solid rgba(192, 132, 252, 0.4);"><i class="fa-brands fa-windows"></i> EXE (PC)</span>`;
+            } else if (cat === 'tv') {
+              return `<span class="badge-tag" style="background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4);"><i class="fa-solid fa-tv"></i> Android TV</span>`;
+            } else {
+              return `<span class="badge-tag" style="background: rgba(56, 189, 248, 0.18); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4);"><i class="fa-brands fa-android"></i> App (Mobile)</span>`;
+            }
+          })()}
+        </td>
         <td style="font-size: 12.5px; color: #94a3b8;">${formatDate(u.createdAt)}</td>
         <td>
           <div style="font-size: 12.5px; font-weight: 600; color: #f1f5f9;" title="${u.lastActive}">${u.lastActiveAgo || formatTimeAgo(u.lastActive)}</div>
@@ -2310,19 +2408,22 @@ state.movieboxRawItems = [];
 
 // Live typing search debounce for importer
 let importerSearchDebounceTimer = null;
+let importerSearchSeq = 0;
 function handleImporterSearchInput(val) {
   clearTimeout(importerSearchDebounceTimer);
   const q = (val || '').trim();
   if (q.length >= 3) {
     importerSearchDebounceTimer = setTimeout(() => {
       searchMovieBox();
-    }, 400);
+    }, 650);
   } else if (q.length === 0) {
     loadMovieBoxRecent('all');
   }
 }
 
 async function loadMovieBoxRecent(filter = 'all', btnEl) {
+  importerSearchSeq++;
+  clearTimeout(importerSearchDebounceTimer);
   document.querySelectorAll('.importer-tab-btn').forEach(b => {
     b.classList.remove('active');
     if (btnEl && b === btnEl) {
@@ -2368,6 +2469,8 @@ async function loadMovieBoxRecent(filter = 'all', btnEl) {
 }
 
 async function searchMovieBox() {
+  clearTimeout(importerSearchDebounceTimer);
+  const currentSeq = ++importerSearchSeq;
   const inputEl = document.getElementById('importer-search-input');
   const query = (inputEl ? inputEl.value : '').trim();
   if (!query) {
@@ -2398,11 +2501,17 @@ async function searchMovieBox() {
 
   try {
     const res = await authFetch(`${API_BASE}/api/admin/moviebox/search?q=${encodeURIComponent(query)}`);
+    if (currentSeq !== importerSearchSeq) return; // Discard superseded out-of-order responses
     const data = await res.json();
+    if (currentSeq !== importerSearchSeq) return;
+    if (!data.success) {
+      throw new Error(data.error || 'Failed to search MovieBox');
+    }
     state.movieboxRawItems = data.items || [];
     applyImporterFilters();
   } catch (err) {
-    grid.innerHTML = `<div class="empty-state error-text"><i class="fa-solid fa-triangle-exclamation" style="font-size:24px; color:#ef4444; margin-bottom:10px; display:block;"></i>Search failed: ${escapeHtml(err.message || 'Network error')}. Please try again.</div>`;
+    if (currentSeq !== importerSearchSeq) return;
+    grid.innerHTML = `<div class="empty-state error-text"><i class="fa-solid fa-triangle-exclamation" style="font-size:24px; color:#ef4444; margin-bottom:10px; display:block;"></i>Search failed: ${escapeHtml(err.message || 'Network error')}. Please try again.<br><button type="button" class="btn-secondary" onclick="searchMovieBox()" style="margin-top:12px; font-size:12px;"><i class="fa-solid fa-rotate-right"></i> Retry Search</button></div>`;
   }
 }
 
@@ -2419,25 +2528,19 @@ function applyImporterFilters() {
 
   let filtered = raw.filter(item => {
     const tLower = (item.title || '').toLowerCase();
-    const isHindi = !!item.isHindi ||
-      tLower.includes('hindi') ||
-      (item.audioTag && /hindi/i.test(item.audioTag)) ||
-      (item.category && /hindi/i.test(item.category)) ||
-      (item.section && /hindi/i.test(item.section)) ||
-      (item.dubLanguage && /hindi/i.test(item.dubLanguage)) ||
-      (item.audio && /hindi/i.test(item.audio)) ||
-      item.industry === 'Bollywood';
+    const isEnglish = /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(item.title || '') ||
+                      item.corner === 'English' || (item.audioTag && /english/i.test(item.audioTag));
 
-    const isBangla = !!item.isBangla ||
-      tLower.includes('bangla') || tLower.includes('bengali') ||
-      (item.audioTag && /bangla|bengali/i.test(item.audioTag)) ||
-      (item.category && /bangla|bengali/i.test(item.category)) ||
-      (item.section && /bangla|bengali/i.test(item.section)) ||
-      item.industry === 'Tollywood';
+    const isBangla = /\[\s*bangla\s*\]|\[\s*bengali\s*\]|\(\s*bangla\s*\)|\bbangla\s*dub(bed)?\b/i.test(tLower) ||
+                     item.corner === 'Bengali' || item.corner === 'Bangla' ||
+                     (item.audioTag && /bangla dubbed|bengali dubbed/i.test(item.audioTag));
 
-    const isEnglish = !!item.isEnglish ||
-      /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(item.title || '') ||
-      (item.audioTag && /english/i.test(item.audioTag));
+    const isHindi = !isEnglish && !isBangla && (
+      /\[\s*hindi\s*\]|\(\s*hindi\s*\)|\bhindi\s*dub(bed)?\b/i.test(tLower) ||
+      item.corner === 'Hindi' ||
+      (item.audioTag && /hindi dubbed/i.test(item.audioTag)) ||
+      (item.section && /hindi dubbed/i.test(item.section))
+    );
 
     const isSeries = item.type === 'series' || (item.category && item.category.toLowerCase().includes('series'));
 
@@ -2538,15 +2641,20 @@ function applyImporterFilters() {
   } else if (sort === 'title-asc') {
     filtered.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
   } else {
-    // Default: Keep Original + Hindi paired side by side
+    // Default: Keep Original + Hindi paired side by side & preserve server relevance order
     const grouped = new Map();
     for (const item of filtered) {
       const bKey = item.baseTitle || (item.title || '').replace(/\[.*?hindi.*?\]|\(.*?\bhindi\b.*?\)|\[.*?bangla.*?\]|\(.*?\bbangla\b.*?\)/gi, '').trim().toLowerCase();
       if (!grouped.has(bKey)) grouped.set(bKey, []);
       grouped.get(bKey).push(item);
     }
+    const sortedGroups = Array.from(grouped.entries()).sort((a, b) => {
+      const maxA = Math.max(...a[1].map(x => (x.score !== undefined ? x.score : 0)));
+      const maxB = Math.max(...b[1].map(x => (x.score !== undefined ? x.score : 0)));
+      return maxB - maxA;
+    });
     const paired = [];
-    for (const [_, grp] of grouped) {
+    for (const [_, grp] of sortedGroups) {
       grp.sort((a, b) => {
         if (!a.isHindi && b.isHindi) return -1;
         if (a.isHindi && !b.isHindi) return 1;
@@ -2663,6 +2771,7 @@ function renderImporterGrid(items) {
   if (!items || items.length === 0) {
     const rawTotal = (state.movieboxRawItems || []).length;
     const currentAudio = document.getElementById('imp-filter-audio')?.value || 'all';
+    const currentSearch = (document.getElementById('importer-search-input')?.value || '').trim();
     if (rawTotal > 0) {
       grid.innerHTML = `
         <div class="empty-state">
@@ -2671,6 +2780,17 @@ function renderImporterGrid(items) {
           <div style="display:inline-flex; gap:8px; margin-top:14px; flex-wrap:wrap; justify-content:center;">
             ${currentAudio !== 'all' ? `<button type="button" class="btn-primary" onclick="document.getElementById('imp-filter-audio').value='all'; applyImporterFilters();" style="font-size:12px;"><i class="fa-solid fa-volume-high"></i> Show All Audio Versions (${rawTotal})</button>` : ''}
             <button type="button" class="btn-secondary" onclick="resetImporterFilters()" style="font-size:12px;"><i class="fa-solid fa-rotate-left"></i> Reset All Filters</button>
+          </div>
+        </div>
+      `;
+    } else if (currentSearch) {
+      grid.innerHTML = `
+        <div class="empty-state">
+          <i class="fa-solid fa-magnifying-glass" style="font-size:32px; color:var(--text-dim); margin-bottom:12px; display:block;"></i>
+          No titles found matching "<strong>${escapeHtml(currentSearch)}</strong>".<br>
+          <div style="margin-top:14px; display:flex; gap:10px; justify-content:center;">
+            <button type="button" class="btn-primary" onclick="searchMovieBox()" style="font-size:12px;"><i class="fa-solid fa-rotate-right"></i> Retry Search</button>
+            <button type="button" class="btn-secondary" onclick="loadMovieBoxRecent('all')" style="font-size:12px;"><i class="fa-solid fa-globe"></i> Load All Feeds</button>
           </div>
         </div>
       `;
@@ -2689,9 +2809,19 @@ function renderImporterGrid(items) {
   grid.innerHTML = items.map((item, idx) => {
     const isSeries = item.type === 'series' || (item.category && item.category.toLowerCase().includes('series'));
     const tLower = (item.title || '').toLowerCase();
-    const isHindi = item.isHindi || tLower.includes('hindi') || (item.audioTag && /hindi/i.test(item.audioTag));
-    const isEnglish = item.isEnglish || /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(item.title || '') || (item.audioTag && /english/i.test(item.audioTag));
-    const isBangla = item.isBangla || tLower.includes('bangla') || tLower.includes('bengali') || (item.audioTag && /bangla|bengali/i.test(item.audioTag));
+    const isEnglish = /\[\s*english\s*\]|\(\s*english\s*\)|\benglish\s*dub(bed)?\b/i.test(item.title || '') ||
+                      item.corner === 'English' || (item.audioTag && /english/i.test(item.audioTag));
+
+    const isBangla = /\[\s*bangla\s*\]|\[\s*bengali\s*\]|\(\s*bangla\s*\)|\bbangla\s*dub(bed)?\b/i.test(tLower) ||
+                     item.corner === 'Bengali' || item.corner === 'Bangla' ||
+                     (item.audioTag && /bangla dubbed|bengali dubbed/i.test(item.audioTag));
+
+    const isHindi = !isEnglish && !isBangla && (
+      /\[\s*hindi\s*\]|\(\s*hindi\s*\)|\bhindi\s*dub(bed)?\b/i.test(tLower) ||
+      item.corner === 'Hindi' ||
+      (item.audioTag && /hindi dubbed/i.test(item.audioTag)) ||
+      (item.section && /hindi dubbed/i.test(item.section))
+    );
 
     let audioBadgeHtml = '';
     if (isHindi) {
@@ -2807,6 +2937,35 @@ function openImportModalByIndex(idx) {
   }
 }
 
+function syncImportCategoryFromIndustry() {
+  const ind = document.getElementById('imp-industry')?.value || 'Hollywood';
+  const isSeries = document.getElementById('imp-type')?.value === 'series';
+  const isHindi = !!document.getElementById('imp-ishindi')?.checked;
+  let cat = 'Hollywood Movies';
+  if (isSeries) {
+    if (ind === 'Korean') cat = isHindi ? 'Korean (Dubbed) Series' : 'Korean Series';
+    else if (ind === 'Chinese') cat = isHindi ? 'Chinese (Dubbed) Series' : 'Chinese Drama';
+    else if (ind === 'Turkish') cat = isHindi ? 'Turkish Drama' : 'Turkish Series';
+    else if (ind === 'Anime') cat = isHindi ? 'Anime Series (Hindi Dub)' : 'Anime';
+    else if (ind === 'Bollywood') cat = 'Bollywood Series';
+    else if (ind === 'South Indian') cat = 'South Indian Series';
+    else if (ind === 'Bengali') cat = isHindi ? 'Bengali (Dubbed) Series' : 'Bengali Series';
+    else cat = isHindi ? 'Hollywood (Dubbed) Series' : 'Hollywood Series';
+  } else {
+    if (ind === 'Korean') cat = isHindi ? 'Korean (Dubbed) Movies' : 'Korean Movie';
+    else if (ind === 'Chinese') cat = isHindi ? 'Chinese (Dubbed) Movies' : 'Chinese Movies';
+    else if (ind === 'Turkish') cat = isHindi ? 'Turkish Movies (Hindi)' : 'Turkish Movies';
+    else if (ind === 'Anime') cat = isHindi ? 'Anime Movies (Hindi Dub)' : 'Anime Movies';
+    else if (ind === 'Bollywood') cat = 'Bollywood Movies';
+    else if (ind === 'South Indian') cat = 'South (Dubbed) Movies';
+    else if (ind === 'Bengali') cat = 'Bengali';
+    else cat = isHindi ? 'Hollywood (Dubbed) Movies' : 'Hollywood Movies';
+  }
+  const catEl = document.getElementById('imp-category');
+  if (catEl) catEl.value = cat;
+}
+window.syncImportCategoryFromIndustry = syncImportCategoryFromIndustry;
+
 function toggleImportType(type) {
   const row = document.getElementById('imp-series-row');
   if (row) row.style.display = (type === 'series') ? 'flex' : 'none';
@@ -2831,7 +2990,7 @@ async function openImportModal(item) {
     else if (detectedInd === 'Turkish') suggestedCat = isHindi ? 'Turkish Drama' : 'Turkish Series';
     else if (detectedInd === 'Anime') suggestedCat = isHindi ? 'Anime Series (Hindi Dub)' : 'Anime';
     else if (detectedInd === 'Bollywood') suggestedCat = 'Bollywood Series';
-    else if (detectedInd === 'South Indian') suggestedCat = 'Web Series';
+    else if (detectedInd === 'South Indian') suggestedCat = 'South Indian Series';
     else if (detectedInd === 'Bengali') suggestedCat = isBangla ? 'Bengali Series' : 'Bengali (Dubbed) Series';
     else suggestedCat = isHindi ? 'Hollywood (Dubbed) Series' : 'Hollywood Series';
   } else {
@@ -3814,9 +3973,13 @@ function handleLatestDateFilterChange() {
   applyLatestFilters();
 }
 
-function applyLatestFilters() {
+function applyLatestFilters(resetLimit = true) {
   const grid = document.getElementById('latest-mb-grid');
   if (!grid) return;
+
+  if (resetLimit) {
+    state.latestRenderLimit = 36;
+  }
 
   const audio = state.latestSelectedAudio || 'all';
   const industry = document.getElementById('latest-filter-industry')?.value || 'all';
@@ -3885,7 +4048,7 @@ function applyLatestFilters() {
     items = items.filter(i => !i.isComingSoon && i.updateType !== 'upcoming');
   }
 
-  // 5. Date Filter (Today, Yesterday, Last 3 Days, Last 7 Days, Last 30 Days, This Month, Custom Date)
+  // 5. Date Filter (Immune to client-server timezone difference)
   const now = new Date();
   const todayStr = now.toISOString().split('T')[0];
   const yesterdayStr = new Date(now.getTime() - 86400000).toISOString().split('T')[0];
@@ -3895,17 +4058,17 @@ function applyLatestFilters() {
   const currentYearMonth = todayStr.substring(0, 7);
 
   if (dateFilter === 'today') {
-    items = items.filter(i => i.uploadDate === todayStr || (i.updateBadge || '').toLowerCase().includes('today'));
+    items = items.filter(i => i.uploadDate >= todayStr || (i.updateBadge || '').toLowerCase().includes('today'));
   } else if (dateFilter === 'yesterday') {
     items = items.filter(i => i.uploadDate === yesterdayStr || (i.updateBadge || '').toLowerCase().includes('yesterday'));
   } else if (dateFilter === 'last3days') {
-    items = items.filter(i => i.uploadDate >= threeDaysAgoStr && i.uploadDate <= todayStr);
+    items = items.filter(i => i.uploadDate >= threeDaysAgoStr);
   } else if (dateFilter === 'last7days') {
-    items = items.filter(i => i.uploadDate >= sevenDaysAgoStr && i.uploadDate <= todayStr);
+    items = items.filter(i => i.uploadDate >= sevenDaysAgoStr);
   } else if (dateFilter === 'last30days' || dateFilter === '30days') {
-    items = items.filter(i => i.uploadDate >= thirtyDaysAgoStr && i.uploadDate <= todayStr);
+    items = items.filter(i => i.uploadDate >= thirtyDaysAgoStr);
   } else if (dateFilter === 'thismonth') {
-    items = items.filter(i => (i.uploadDate || '').startsWith(currentYearMonth) && i.uploadDate <= todayStr);
+    items = items.filter(i => (i.uploadDate || '').startsWith(currentYearMonth));
   } else if (dateFilter === 'custom' && customDate) {
     items = items.filter(i => i.uploadDate === customDate);
   }
@@ -3933,14 +4096,17 @@ function applyLatestFilters() {
     return;
   }
 
-  grid.innerHTML = items.map(it => {
+  const limit = state.latestRenderLimit || 36;
+  const visibleItems = items.slice(0, limit);
+
+  const cardsHtml = visibleItems.map(it => {
     let badgeClass = 'new-title';
     if (it.isComingSoon || it.updateType === 'upcoming') badgeClass = 'coming-soon';
     else if (it.updateType === 'new_episode') badgeClass = 'new-ep';
     else if (it.updateType === 'new_dubbing') badgeClass = 'new-dub';
     else if (it.alreadyImported) badgeClass = 'synced';
 
-    const audioPillColor = it.audioCategory === 'bangla' ? '#10b981' : (it.audioCategory === 'hindi' ? '#f59e0b' : '#38bdf8');
+    const audioPillColor = it.audioCategory === 'bangla' ? '#10b981' : (it.audioCategory === 'hindi' ? '#f59e0b' : (it.audioCategory === 'english' ? '#a855f7' : '#38bdf8'));
 
     let actionBtnHtml = '';
     if (it.isComingSoon || it.updateType === 'upcoming') {
@@ -4002,7 +4168,25 @@ function applyLatestFilters() {
       </div>
     `;
   }).join('');
+
+  let loadMoreHtml = '';
+  if (items.length > visibleItems.length) {
+    loadMoreHtml = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 24px 0 10px;">
+        <button type="button" class="btn-primary glow" onclick="loadMoreLatestItems()" style="padding: 12px 28px; font-size: 14px; font-weight: 700; border-radius: 9999px; background: linear-gradient(135deg, #00f2fe, #4facfe); border: none; cursor: pointer;">
+          <i class="fa-solid fa-angles-down" style="margin-right: 6px;"></i> Load More Additions (${visibleItems.length} of ${items.length})
+        </button>
+      </div>
+    `;
+  }
+
+  grid.innerHTML = cardsHtml + loadMoreHtml;
 }
+
+window.loadMoreLatestItems = function() {
+  state.latestRenderLimit = (state.latestRenderLimit || 36) + 36;
+  applyLatestFilters(false);
+};
 
 function openLatestCardClickById(id) {
   const it = (state.latestMbItems || []).find(x => String(x.id) === String(id));

@@ -593,33 +593,33 @@
           <div class="metric-card glass clickable" onclick="setUserAudienceFilter('all')" title="Click to view all audience" style="cursor: pointer;">
             <div class="metric-icon cyan"><i class="fa-solid fa-users"></i></div>
             <div class="metric-info">
-              <span class="metric-label">Total v3.2.0 Audience</span>
+              <span class="metric-label">All Audience</span>
               <h3 id="users-stat-devices" class="metric-number">0</h3>
-              <span class="metric-hint">Combined members &amp; devices</span>
+              <span class="metric-hint">Combined all platforms</span>
             </div>
           </div>
-          <div class="metric-card glass clickable" onclick="setUserAudienceFilter('online')" title="Click to view online users" style="cursor: pointer; border: 1px solid rgba(16, 185, 129, 0.4);">
-            <div class="metric-icon green"><i class="fa-solid fa-signal"></i></div>
+          <div class="metric-card glass clickable" onclick="setUserAudienceFilter('app')" title="Click to view Mobile App users" style="cursor: pointer; border: 1px solid rgba(56, 189, 248, 0.4);">
+            <div class="metric-icon blue"><i class="fa-brands fa-android"></i></div>
             <div class="metric-info">
-              <span class="metric-label">Online Active Now</span>
-              <h3 id="users-stat-online" class="metric-number" style="color: #34d399;">0</h3>
-              <span class="metric-hint">Active in past 10 min</span>
+              <span class="metric-label">App (Mobile)</span>
+              <h3 id="users-stat-app" class="metric-number" style="color: #38bdf8;">0</h3>
+              <span class="metric-hint">Android phones &amp; tablets</span>
             </div>
           </div>
-          <div class="metric-card glass clickable" onclick="setUserAudienceFilter('registered')" title="Click to view Registered Members" style="cursor: pointer; border: 1px solid rgba(192, 132, 252, 0.4);">
-            <div class="metric-icon purple"><i class="fa-solid fa-user-shield"></i></div>
+          <div class="metric-card glass clickable" onclick="setUserAudienceFilter('tv')" title="Click to view Android TV users" style="cursor: pointer; border: 1px solid rgba(245, 158, 11, 0.4);">
+            <div class="metric-icon amber"><i class="fa-solid fa-tv"></i></div>
             <div class="metric-info">
-              <span class="metric-label">Registered Members</span>
-              <h3 id="users-stat-registered" class="metric-number">0</h3>
-              <span class="metric-hint">Google authenticated</span>
+              <span class="metric-label">Android TV</span>
+              <h3 id="users-stat-tv" class="metric-number" style="color: #fbbf24;">0</h3>
+              <span class="metric-hint">Smart TV &amp; TV Boxes</span>
             </div>
           </div>
-          <div class="metric-card glass clickable" onclick="setUserAudienceFilter('devices')" title="Click to view App Installations" style="cursor: pointer;">
-            <div class="metric-icon amber"><i class="fa-brands fa-android"></i></div>
+          <div class="metric-card glass clickable" onclick="setUserAudienceFilter('exe')" title="Click to view Windows PC (EXE) users" style="cursor: pointer; border: 1px solid rgba(192, 132, 252, 0.4);">
+            <div class="metric-icon purple"><i class="fa-brands fa-windows"></i></div>
             <div class="metric-info">
-              <span class="metric-label">App Devices</span>
-              <h3 id="users-stat-app-devices" class="metric-number">0</h3>
-              <span class="metric-hint">Mobile installations</span>
+              <span class="metric-label">Windows PC (EXE)</span>
+              <h3 id="users-stat-exe" class="metric-number" style="color: #c084fc;">0</h3>
+              <span class="metric-hint">Desktop PC installations</span>
             </div>
           </div>
         </div>
@@ -644,17 +644,17 @@
               <button type="button" class="btn-filter-chip active" id="chip-users-all" onclick="setUserAudienceFilter('all')">
                 <i class="fa-solid fa-users"></i> All (<span id="chip-count-all">0</span>)
               </button>
-              <button type="button" class="btn-filter-chip" id="chip-users-v320" onclick="setUserVersionFilterQuick('3.2.0')" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); font-weight: 700;">
-                <i class="fa-solid fa-bolt"></i> v3.2.0 (<span id="chip-count-v320">0</span>)
+              <button type="button" class="btn-filter-chip" id="chip-users-app" onclick="setUserAudienceFilter('app')" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); font-weight: 700;">
+                <i class="fa-brands fa-android"></i> App (<span id="chip-count-app">0</span>)
+              </button>
+              <button type="button" class="btn-filter-chip" id="chip-users-tv" onclick="setUserAudienceFilter('tv')" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.4); font-weight: 700;">
+                <i class="fa-solid fa-tv"></i> TV (<span id="chip-count-tv">0</span>)
+              </button>
+              <button type="button" class="btn-filter-chip" id="chip-users-exe" onclick="setUserAudienceFilter('exe')" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.4); font-weight: 700;">
+                <i class="fa-brands fa-windows"></i> EXE (<span id="chip-count-exe">0</span>)
               </button>
               <button type="button" class="btn-filter-chip" id="chip-users-online" onclick="setUserAudienceFilter('online')" style="color: #34d399; border-color: rgba(16, 185, 129, 0.4); font-weight: 700;">
-                <i class="fa-solid fa-signal"></i> Online Now (<span id="chip-count-online">0</span>)
-              </button>
-              <button type="button" class="btn-filter-chip" id="chip-users-registered" onclick="setUserAudienceFilter('registered')" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.4); font-weight: 700;">
-                <i class="fa-solid fa-user-shield"></i> Members (<span id="chip-count-registered">0</span>)
-              </button>
-              <button type="button" class="btn-filter-chip" id="chip-users-devices" onclick="setUserAudienceFilter('devices')">
-                <i class="fa-brands fa-android"></i> App Devices (<span id="chip-count-devices">0</span>)
+                <i class="fa-solid fa-signal"></i> Online (<span id="chip-count-online">0</span>)
               </button>
             </div>
           </div>
@@ -1146,6 +1146,27 @@
           </div>
         </div>
 
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label><i class="fa-solid fa-globe"></i> Industry</label>
+            <select id="movie-industry" class="custom-select" onchange="syncMovieCategoryFromIndustry()">
+              <option value="Hollywood">Hollywood</option>
+              <option value="Bollywood">Bollywood</option>
+              <option value="South Indian">South Indian</option>
+              <option value="Korean">Korean</option>
+              <option value="Chinese">Chinese</option>
+              <option value="Anime">Anime</option>
+              <option value="Turkish">Turkish</option>
+              <option value="Bengali">Bengali</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group flex-2">
+            <label><i class="fa-solid fa-folder"></i> Category</label>
+            <input type="text" id="movie-category" placeholder="e.g. South (Dubbed) Movies, Hollywood Movies">
+          </div>
+        </div>
+
         <div class="form-group">
           <label>Overview / Synopsis</label>
           <textarea id="movie-overview" rows="3" placeholder="Movie description..."></textarea>
@@ -1242,6 +1263,27 @@
           <div class="form-group">
             <label>Genre(s)</label>
             <input type="text" id="series-genre" placeholder="Crime, Romance, Thriller">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label><i class="fa-solid fa-globe"></i> Industry</label>
+            <select id="series-industry" class="custom-select" onchange="syncSeriesCategoryFromIndustry()">
+              <option value="Korean">Korean</option>
+              <option value="Hollywood">Hollywood</option>
+              <option value="Bollywood">Bollywood</option>
+              <option value="South Indian">South Indian</option>
+              <option value="Chinese">Chinese</option>
+              <option value="Anime">Anime</option>
+              <option value="Turkish">Turkish</option>
+              <option value="Bengali">Bengali</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group flex-2">
+            <label><i class="fa-solid fa-folder"></i> Category</label>
+            <input type="text" id="series-category" placeholder="e.g. Korean (Dubbed) Series, Turkish Drama">
           </div>
         </div>
 
@@ -1545,14 +1587,14 @@
         <div class="form-row">
           <div class="form-group">
             <label><i class="fa-solid fa-film"></i> Type</label>
-            <select id="imp-type" class="custom-select" onchange="toggleImportType(this.value)">
+            <select id="imp-type" class="custom-select" onchange="toggleImportType(this.value); if(window.syncImportCategoryFromIndustry) syncImportCategoryFromIndustry();">
               <option value="movie">Movie</option>
               <option value="series">Series / TV Show</option>
             </select>
           </div>
           <div class="form-group">
             <label><i class="fa-solid fa-globe"></i> Industry</label>
-            <select id="imp-industry" class="custom-select">
+            <select id="imp-industry" class="custom-select" onchange="if(window.syncImportCategoryFromIndustry) syncImportCategoryFromIndustry();">
               <option value="Korean">Korean</option>
               <option value="Hollywood">Hollywood</option>
               <option value="Bollywood">Bollywood</option>
@@ -1618,7 +1660,7 @@
 
         <div class="form-row" style="margin-top: 10px;">
           <label class="toggle-control" style="background: rgba(255,255,255,0.04); padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); flex: 1;">
-            <input type="checkbox" id="imp-ishindi">
+            <input type="checkbox" id="imp-ishindi" onchange="if(window.syncImportCategoryFromIndustry) syncImportCategoryFromIndustry();">
             <span class="toggle-slider"></span>
             <div>
               <strong style="color: #fff; font-size: 13.5px; display: block;">Hindi Dubbed Audio</strong>
@@ -1728,6 +1770,6 @@
   <div id="toast-container" class="toast-container"></div>
 
   <!-- SCRIPTS -->
-  <script src="/admin/admin.js?v=3.7.0"></script>
+  <script src="/admin/admin.js?v=3.9.7"></script>
 </body>
 </html>
