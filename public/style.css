@@ -3225,8 +3225,22 @@ video::-webkit-media-controls-panel {
   display: none !important;
 }
 
+/* Default Player Controls: When not in Fullscreen, ALWAYS show Portrait Header & Single-Row Bottom Bar */
+body:not(.is-fullscreen) #landscapePlayerUI,
+body:not(.is-fullscreen) .ls-player-ui {
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+body:not(.is-fullscreen) #playerTopHeader,
+body:not(.is-fullscreen) .portrait-bottom-bar {
+  display: flex !important;
+}
+
 @media (orientation: landscape) {
-  body.player-open .ls-player-ui:not(.is-iframe-hidden) {
+  body.player-open.is-fullscreen .ls-player-ui:not(.is-iframe-hidden) {
     display: flex !important;
     position: absolute !important;
     inset: 0 !important;
@@ -3236,8 +3250,8 @@ video::-webkit-media-controls-panel {
     pointer-events: none !important;
   }
 
-  body.player-open #playerTopHeader,
-  body.player-open .portrait-bottom-bar {
+  body.player-open.is-fullscreen #playerTopHeader,
+  body.player-open.is-fullscreen .portrait-bottom-bar {
     display: none !important;
   }
 
@@ -11425,15 +11439,191 @@ body.intro-active {
     z-index: 2000000 !important;
   }
 
+  /* WIDESCREEN / PC & TV SCALED PORTRAIT PLAYER DETAILS & FEATURES */
   .player-view-overlay.open .player-content-scroll {
     display: block !important;
     width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 24px 48px 60px 48px !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 28px 48px 80px 48px !important;
     box-sizing: border-box !important;
     flex: 1 !important;
-    background: #07070a !important;
+    background: transparent !important;
+  }
+
+  .player-view-overlay.open .player-title-inline h2,
+  .player-view-overlay.open .player-title-info h2,
+  .player-view-overlay.open #playerMediaTitle {
+    font-size: 26px !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    letter-spacing: -0.4px !important;
+    line-height: 1.3 !important;
+  }
+
+  .player-view-overlay.open .info-tag-btn {
+    font-size: 13.5px !important;
+    padding: 4px 12px !important;
+    border-radius: 14px !important;
+  }
+
+  .player-view-overlay.open .media-meta-line {
+    font-size: 15px !important;
+    gap: 16px !important;
+    margin-top: 8px !important;
+    color: #94a3b8 !important;
+  }
+
+  .player-view-overlay.open .media-meta-line .star-rating {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: #f5c518 !important;
+  }
+
+  /* Action Buttons (Add to list, Share, Download, BN Sub, Report) */
+  .player-view-overlay.open .action-buttons-strip {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 14px !important;
+    margin: 20px 0 !important;
+  }
+
+  .player-view-overlay.open .action-strip-btn {
+    flex: 0 0 auto !important;
+    min-width: 140px !important;
+    height: 48px !important;
+    padding: 10px 22px !important;
+    border-radius: 12px !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    color: #e2e8f0 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .player-view-overlay.open .action-strip-btn i {
+    font-size: 16px !important;
+  }
+
+  .player-view-overlay.open .action-strip-btn:hover,
+  .player-view-overlay.open .action-strip-btn.tv-focused {
+    background: rgba(255, 255, 255, 0.16) !important;
+    border-color: #00f2fe !important;
+    color: #ffffff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 18px rgba(0, 242, 254, 0.35) !important;
+  }
+
+  /* Resources & Dub Row */
+  .player-view-overlay.open .resources-section {
+    margin-top: 14px !important;
+  }
+
+  .player-view-overlay.open .resources-meta {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .player-view-overlay.open .uploader-tag {
+    font-size: 13px !important;
+  }
+
+  .player-view-overlay.open .dub-selector-row {
+    display: flex !important;
+    gap: 12px !important;
+    align-items: center !important;
+  }
+
+  .player-view-overlay.open .dub-dropdown-btn {
+    padding: 10px 20px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    border-radius: 12px !important;
+    height: 44px !important;
+    gap: 10px !important;
+  }
+
+  /* Episode Pills */
+  .player-view-overlay.open .series-episodes-wrapper {
+    margin-top: 16px !important;
+  }
+
+  .player-view-overlay.open .episodes-scroll-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    overflow-x: auto !important;
+    padding: 4px 0 14px 0 !important;
+  }
+
+  .player-view-overlay.open .episodes-scroll-row .ep-pill {
+    min-width: 52px !important;
+    height: 46px !important;
+    padding: 0 16px !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    border-radius: 12px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    color: #cbd5e1 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .player-view-overlay.open .episodes-scroll-row .ep-pill:hover,
+  .player-view-overlay.open .episodes-scroll-row .ep-pill.tv-focused {
+    background: rgba(255, 255, 255, 0.18) !important;
+    border-color: #00f2fe !important;
+    color: #fff !important;
+    transform: translateY(-2px) !important;
+  }
+
+  .player-view-overlay.open .episodes-scroll-row .ep-pill.active {
+    background: linear-gradient(135deg, #00d26a 0%, #00f2fe 100%) !important;
+    color: #000000 !important;
+    border-color: transparent !important;
+    box-shadow: 0 4px 16px rgba(0, 242, 254, 0.45) !important;
+  }
+
+  /* Community Banner */
+  .player-view-overlay.open .floating-community-container {
+    margin: 20px 0 !important;
+  }
+
+  .player-view-overlay.open .cyan-community-pill {
+    padding: 16px 28px !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    border-radius: 16px !important;
+  }
+
+  .player-view-overlay.open .cyan-community-pill i {
+    font-size: 20px !important;
+  }
+
+  /* For You & Comments Tabs */
+  .player-view-overlay.open .sub-tabs-header {
+    display: flex !important;
+    gap: 28px !important;
+    margin: 24px 0 18px 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  }
+
+  .player-view-overlay.open .sub-tab-btn {
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    padding: 12px 4px !important;
   }
 
   /* LIVE TV CHANNELS GRID */

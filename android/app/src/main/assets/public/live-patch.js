@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.8.2 (Fullscreen Edge-to-Edge Portrait Player Layout OTA)
+// FOBS TV Live OTA Patch Bundle v1.8.3 (True Portrait Player Controls & Big Scaled Content Details OTA)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.8.2 (Fullscreen Edge-to-Edge Portrait Player Layout OTA) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.8.2';
+  console.log('⚡ FOBS TV Live Patch v1.8.3 (True Portrait Player Controls & Big Scaled Content Details OTA) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.8.3';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -4065,6 +4065,26 @@
       .nav-me-btn { display: none; }
       .hero-spotlight-details { display: none; }
       .header-right-actions { display: flex; align-items: center; gap: 10px; }
+
+      /* Default Player Controls: When not in Fullscreen, ALWAYS show Portrait Header & Single-Row Bottom Bar */
+      body:not(.is-fullscreen) #landscapePlayerUI,
+      body:not(.is-fullscreen) .ls-player-ui {
+        display: none !important;
+        pointer-events: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+      }
+      body:not(.is-fullscreen) #playerTopHeader,
+      body:not(.is-fullscreen) .portrait-bottom-bar {
+        display: flex !important;
+      }
+      body.is-fullscreen .ls-player-ui:not(.is-iframe-hidden) {
+        display: flex !important;
+      }
+      body.is-fullscreen #playerTopHeader,
+      body.is-fullscreen .portrait-bottom-bar {
+        display: none !important;
+      }
       @media (min-width: 768px) {
         html, body { width: 100%; height: 100%; overflow-x: hidden; background-color: #07070a !important; }
         .app-container { max-width: 100% !important; width: 100% !important; min-height: 100vh; margin: 0 auto; background-color: #07070a !important; box-shadow: none !important; padding-bottom: 40px !important; }
@@ -4256,15 +4276,191 @@
           background: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 65%, transparent 100%) !important;
           z-index: 2000000 !important;
         }
+        /* WIDESCREEN / PC & TV SCALED PORTRAIT PLAYER DETAILS & FEATURES */
         .player-view-overlay.open .player-content-scroll {
           display: block !important;
           width: 100% !important;
-          max-width: 100% !important;
-          margin: 0 !important;
-          padding: 24px 48px 60px 48px !important;
+          max-width: 1400px !important;
+          margin: 0 auto !important;
+          padding: 28px 48px 80px 48px !important;
           box-sizing: border-box !important;
           flex: 1 !important;
-          background: #07070a !important;
+          background: transparent !important;
+        }
+
+        .player-view-overlay.open .player-title-inline h2,
+        .player-view-overlay.open .player-title-info h2,
+        .player-view-overlay.open #playerMediaTitle {
+          font-size: 26px !important;
+          font-weight: 800 !important;
+          color: #ffffff !important;
+          letter-spacing: -0.4px !important;
+          line-height: 1.3 !important;
+        }
+
+        .player-view-overlay.open .info-tag-btn {
+          font-size: 13.5px !important;
+          padding: 4px 12px !important;
+          border-radius: 14px !important;
+        }
+
+        .player-view-overlay.open .media-meta-line {
+          font-size: 15px !important;
+          gap: 16px !important;
+          margin-top: 8px !important;
+          color: #94a3b8 !important;
+        }
+
+        .player-view-overlay.open .media-meta-line .star-rating {
+          font-size: 15px !important;
+          font-weight: 700 !important;
+          color: #f5c518 !important;
+        }
+
+        /* Action Buttons (Add to list, Share, Download, BN Sub, Report) */
+        .player-view-overlay.open .action-buttons-strip {
+          display: flex !important;
+          flex-wrap: wrap !important;
+          gap: 14px !important;
+          margin: 20px 0 !important;
+        }
+
+        .player-view-overlay.open .action-strip-btn {
+          flex: 0 0 auto !important;
+          min-width: 140px !important;
+          height: 48px !important;
+          padding: 10px 22px !important;
+          border-radius: 12px !important;
+          display: inline-flex !important;
+          flex-direction: row !important;
+          align-items: center !important;
+          justify-content: center !important;
+          gap: 10px !important;
+          font-size: 14.5px !important;
+          font-weight: 700 !important;
+          background: rgba(255, 255, 255, 0.08) !important;
+          border: 1px solid rgba(255, 255, 255, 0.14) !important;
+          color: #e2e8f0 !important;
+          cursor: pointer !important;
+          transition: all 0.2s ease !important;
+        }
+
+        .player-view-overlay.open .action-strip-btn i {
+          font-size: 16px !important;
+        }
+
+        .player-view-overlay.open .action-strip-btn:hover,
+        .player-view-overlay.open .action-strip-btn.tv-focused {
+          background: rgba(255, 255, 255, 0.16) !important;
+          border-color: #00f2fe !important;
+          color: #ffffff !important;
+          transform: translateY(-2px) !important;
+          box-shadow: 0 4px 18px rgba(0, 242, 254, 0.35) !important;
+        }
+
+        /* Resources & Dub Row */
+        .player-view-overlay.open .resources-section {
+          margin-top: 14px !important;
+        }
+
+        .player-view-overlay.open .resources-meta {
+          font-size: 16px !important;
+          font-weight: 700 !important;
+          margin-bottom: 12px !important;
+        }
+
+        .player-view-overlay.open .uploader-tag {
+          font-size: 13px !important;
+        }
+
+        .player-view-overlay.open .dub-selector-row {
+          display: flex !important;
+          gap: 12px !important;
+          align-items: center !important;
+        }
+
+        .player-view-overlay.open .dub-dropdown-btn {
+          padding: 10px 20px !important;
+          font-size: 14px !important;
+          font-weight: 700 !important;
+          border-radius: 12px !important;
+          height: 44px !important;
+          gap: 10px !important;
+        }
+
+        /* Episode Pills */
+        .player-view-overlay.open .series-episodes-wrapper {
+          margin-top: 16px !important;
+        }
+
+        .player-view-overlay.open .episodes-scroll-row {
+          display: flex !important;
+          align-items: center !important;
+          gap: 10px !important;
+          overflow-x: auto !important;
+          padding: 4px 0 14px 0 !important;
+        }
+
+        .player-view-overlay.open .episodes-scroll-row .ep-pill {
+          min-width: 52px !important;
+          height: 46px !important;
+          padding: 0 16px !important;
+          font-size: 15px !important;
+          font-weight: 800 !important;
+          border-radius: 12px !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          background: rgba(255, 255, 255, 0.08) !important;
+          border: 1px solid rgba(255, 255, 255, 0.14) !important;
+          color: #cbd5e1 !important;
+          cursor: pointer !important;
+          transition: all 0.2s ease !important;
+        }
+
+        .player-view-overlay.open .episodes-scroll-row .ep-pill:hover,
+        .player-view-overlay.open .episodes-scroll-row .ep-pill.tv-focused {
+          background: rgba(255, 255, 255, 0.18) !important;
+          border-color: #00f2fe !important;
+          color: #fff !important;
+          transform: translateY(-2px) !important;
+        }
+
+        .player-view-overlay.open .episodes-scroll-row .ep-pill.active {
+          background: linear-gradient(135deg, #00d26a 0%, #00f2fe 100%) !important;
+          color: #000000 !important;
+          border-color: transparent !important;
+          box-shadow: 0 4px 16px rgba(0, 242, 254, 0.45) !important;
+        }
+
+        /* Community Banner */
+        .player-view-overlay.open .floating-community-container {
+          margin: 20px 0 !important;
+        }
+
+        .player-view-overlay.open .cyan-community-pill {
+          padding: 16px 28px !important;
+          font-size: 16px !important;
+          font-weight: 800 !important;
+          border-radius: 16px !important;
+        }
+
+        .player-view-overlay.open .cyan-community-pill i {
+          font-size: 20px !important;
+        }
+
+        /* For You & Comments Tabs */
+        .player-view-overlay.open .sub-tabs-header {
+          display: flex !important;
+          gap: 28px !important;
+          margin: 24px 0 18px 0 !important;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+        }
+
+        .player-view-overlay.open .sub-tab-btn {
+          font-size: 17px !important;
+          font-weight: 700 !important;
+          padding: 12px 4px !important;
         }
         .live-tv-grid { display: grid !important; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important; gap: 20px !important; padding: 16px 48px !important; box-sizing: border-box !important; }
         .live-channel-card:hover, .channel-card:hover, .live-channel-card.tv-focused, .channel-card.tv-focused { transform: scale(1.05) translateY(-4px) !important; border-color: #00f2fe !important; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 242, 254, 0.3) !important; }
