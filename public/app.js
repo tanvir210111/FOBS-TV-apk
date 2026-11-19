@@ -690,8 +690,21 @@ async function initApp() {
       pingViewerId = 'v_' + Math.random().toString(36).substring(2, 10);
       localStorage.setItem('fobs_viewer_uuid', pingViewerId);
     }
-    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.1.8');
-    const pingBody = { viewerId: pingViewerId, platform: 'Android App', appVersion: appVer };
+    const appVer = (typeof CURRENT_APP_VERSION_NAME !== 'undefined' ? CURRENT_APP_VERSION_NAME : '3.2.0');
+    let clientPlatform = 'Android Mobile';
+    const isElectron = Boolean(window.process && window.process.type) || (navigator.userAgent && navigator.userAgent.includes('FOBS-TV-PC-App')) || (navigator.userAgent && navigator.userAgent.includes('Electron')) || (window.navigator && window.navigator.userAgent && window.navigator.userAgent.includes('Windows'));
+    const isTv = Boolean(
+      (navigator.userAgent && (navigator.userAgent.includes('Android TV') || navigator.userAgent.includes('Leanback') || navigator.userAgent.includes('SmartTV') || navigator.userAgent.includes('SMART-TV'))) ||
+      (window.innerWidth >= 1280 && navigator.userAgent && navigator.userAgent.includes('Android'))
+    );
+    if (isElectron) {
+      clientPlatform = 'EXE (Windows PC)';
+    } else if (isTv) {
+      clientPlatform = 'Android TV';
+    } else {
+      clientPlatform = 'Android Mobile';
+    }
+    const pingBody = { viewerId: pingViewerId, platform: clientPlatform, appVersion: appVer };
     if (typeof currentUser !== 'undefined' && currentUser && currentUser.email && currentUser.email.includes('@')) {
       pingBody.userId = currentUser.googleId || currentUser.id;
       pingBody.userEmail = currentUser.email;

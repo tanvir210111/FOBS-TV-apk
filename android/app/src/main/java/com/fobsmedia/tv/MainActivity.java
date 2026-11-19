@@ -415,11 +415,11 @@ public class MainActivity extends BridgeActivity {
                 try {
                     if (keepOn) {
                         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                        if (webView != null) webView.setKeepScreenOn(true);
                     } else {
                         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                        if (webView != null) webView.setKeepScreenOn(false);
                     }
+                    WebView wv = getBridge() != null ? getBridge().getWebView() : null;
+                    if (wv != null) wv.setKeepScreenOn(keepOn);
                 } catch (Exception ignored) {}
             });
         }

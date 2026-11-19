@@ -4287,14 +4287,25 @@ app.get('/api/admin/users', adminService.authenticate, async (req, res) => {
 // App Launch Ping & Active Device Registration
 app.post('/api/app-ping', async (req, res) => {
   try {
-    const { viewerId, platform, appVersion, userId, userEmail, userName } = req.body;
+    let { viewerId, platform, appVersion, userId, userEmail, userName } = req.body;
     const vId = viewerId || req.headers['x-viewer-id'] || ('v_' + Math.random().toString(36).substring(2, 10));
     const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || req.connection?.remoteAddress || '';
+    const userAgent = req.headers['user-agent'] || '';
+
+    // Auto-detect and classify platform: PC (EXE), Android TV, or Android Mobile
+    if (req.headers['x-fobs-client'] === 'pc-app' || userAgent.includes('FOBS-TV-PC-App') || userAgent.includes('Electron') || (platform && (platform.toLowerCase().includes('exe') || platform.toLowerCase().includes('pc') || platform.toLowerCase().includes('win')))) {
+      platform = 'EXE (Windows PC)';
+    } else if (userAgent.includes('Android TV') || userAgent.includes('Leanback') || userAgent.includes('SmartTV') || (platform && platform.toLowerCase().includes('tv'))) {
+      platform = 'Android TV';
+    } else if (!platform || platform === 'Android') {
+      platform = 'Android Mobile';
+    }
+
     dbService.recordDevice({
       deviceId: vId,
       ip: clientIp,
-      userAgent: req.headers['user-agent'] || '',
-      platform: platform || 'Android',
+      userAgent: userAgent,
+      platform: platform,
       appVersion: appVersion || req.headers['x-app-version'] || '',
       userId: userId || '',
       userEmail: userEmail || '',

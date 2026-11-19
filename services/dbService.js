@@ -105,7 +105,15 @@ function recordDevice({ deviceId, ip = '', userAgent = '', platform = 'Android',
     existing.lastActive = new Date().toISOString();
     if (ip && (!existing.ip || existing.ip === '127.0.0.1')) existing.ip = ip.replace('::ffff:', '');
     if (userAgent && !existing.userAgent) existing.userAgent = userAgent;
-    existing.platform = platform || existing.platform || 'Android App';
+    let resolvedPlatform = platform || existing.platform || 'Android Mobile';
+    if (userAgent.includes('FOBS-TV-PC-App') || userAgent.includes('Electron') || userAgent.includes('Windows') || String(resolvedPlatform).toLowerCase().includes('exe') || String(resolvedPlatform).toLowerCase().includes('pc')) {
+      resolvedPlatform = 'EXE (Windows PC)';
+    } else if (userAgent.includes('Android TV') || userAgent.includes('Leanback') || userAgent.includes('SmartTV') || userAgent.includes('SMART-TV') || String(resolvedPlatform).toLowerCase().includes('tv')) {
+      resolvedPlatform = 'Android TV';
+    } else if (resolvedPlatform.toLowerCase().includes('android') || resolvedPlatform.toLowerCase().includes('mobile') || resolvedPlatform === 'Android') {
+      resolvedPlatform = 'Android Mobile';
+    }
+    existing.platform = resolvedPlatform;
     existing.appVersion = appVersion ? appVersion.replace(/^v/, '') : (isModern ? '3.2.0' : 'Older Version');
     if (userId) existing.userId = userId;
     if (userEmail && userEmail.includes('@')) existing.userEmail = userEmail;

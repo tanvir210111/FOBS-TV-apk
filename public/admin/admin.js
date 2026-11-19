@@ -1856,6 +1856,24 @@ function setUserVersionFilterQuick(ver) {
   setUserVersionFilter(ver);
 }
 
+function getUserCategory(u) {
+  if (!u) return 'app';
+  const plat = (u.platform || '').toLowerCase();
+  const model = (u.deviceModel || '').toLowerCase();
+  const ua = (u.userAgent || '').toLowerCase();
+
+  const isExe = plat.includes('exe') || plat.includes('pc') || plat.includes('win') || plat.includes('electron') ||
+                model.includes('pc') || model.includes('exe') || model.includes('windows') ||
+                ua.includes('fobs-tv-pc-app') || ua.includes('electron') || ua.includes('windows');
+  if (isExe) return 'exe';
+
+  const isTv = plat.includes('tv') || model.includes('tv') ||
+               ua.includes('android tv') || ua.includes('leanback') || ua.includes('smarttv') || ua.includes('smart-tv') || ua.includes('mitv') || ua.includes('aft');
+  if (isTv) return 'tv';
+
+  return 'app';
+}
+
 function updateUserStatsCounts() {
   let list = state.users || [];
   if (userVersionFilter === '3.2.0') {
@@ -1864,21 +1882,22 @@ function updateUserStatsCounts() {
     list = list.filter(u => !(u.appVersion === '3.2.0' || (u.appVersion && u.appVersion.includes('3.2.0'))));
   }
 
-  const regCount = list.filter(u => u.type === 'Registered Member').length;
-  const devCount = list.filter(u => u.type !== 'Registered Member').length;
+  const appCount = list.filter(u => getUserCategory(u) === 'app').length;
+  const tvCount = list.filter(u => getUserCategory(u) === 'tv').length;
+  const exeCount = list.filter(u => getUserCategory(u) === 'exe').length;
   const onlineCount = list.filter(u => u.isOnline || u.status === 'Online Now').length;
-  const v320Count = (state.users || []).filter(u => u.appVersion === '3.2.0' || (u.appVersion && u.appVersion.includes('3.2.0'))).length;
 
   if (document.getElementById('users-stat-devices')) document.getElementById('users-stat-devices').innerText = list.length;
+  if (document.getElementById('users-stat-app')) document.getElementById('users-stat-app').innerText = appCount;
+  if (document.getElementById('users-stat-tv')) document.getElementById('users-stat-tv').innerText = tvCount;
+  if (document.getElementById('users-stat-exe')) document.getElementById('users-stat-exe').innerText = exeCount;
   if (document.getElementById('users-stat-online')) document.getElementById('users-stat-online').innerText = onlineCount;
-  if (document.getElementById('users-stat-registered')) document.getElementById('users-stat-registered').innerText = regCount;
-  if (document.getElementById('users-stat-app-devices')) document.getElementById('users-stat-app-devices').innerText = devCount;
 
   if (document.getElementById('chip-count-all')) document.getElementById('chip-count-all').innerText = list.length;
-  if (document.getElementById('chip-count-registered')) document.getElementById('chip-count-registered').innerText = regCount;
-  if (document.getElementById('chip-count-devices')) document.getElementById('chip-count-devices').innerText = devCount;
+  if (document.getElementById('chip-count-app')) document.getElementById('chip-count-app').innerText = appCount;
+  if (document.getElementById('chip-count-tv')) document.getElementById('chip-count-tv').innerText = tvCount;
+  if (document.getElementById('chip-count-exe')) document.getElementById('chip-count-exe').innerText = exeCount;
   if (document.getElementById('chip-count-online')) document.getElementById('chip-count-online').innerText = onlineCount;
-  if (document.getElementById('chip-count-v320')) document.getElementById('chip-count-v320').innerText = v320Count;
 }
 
 async function loadUsers() {
@@ -1917,7 +1936,10 @@ function filterUsersTable() {
       if (isV320) return false;
     }
 
-    // Type filter
+    // Platform / Audience filter
+    if (userAudienceFilter === 'app' && getUserCategory(u) !== 'app') return false;
+    if (userAudienceFilter === 'tv' && getUserCategory(u) !== 'tv') return false;
+    if (userAudienceFilter === 'exe' && getUserCategory(u) !== 'exe') return false;
     if (userAudienceFilter === 'registered' && u.type !== 'Registered Member') return false;
     if (userAudienceFilter === 'devices' && u.type === 'Registered Member') return false;
     if (userAudienceFilter === 'online' && !u.isOnline && u.status !== 'Online Now') return false;
@@ -1939,9 +1961,12 @@ function filterUsersTable() {
 function renderUsersTable(usersList) {
   const tbody = document.getElementById('users-tbody');
   if (!usersList || usersList.length === 0) {
-    const emptyMsg = userAudienceFilter === 'registered'
-      ? 'No registered Google accounts found on v3.2.0.'
-      : (userAudienceFilter === 'online' ? 'No users online in the last 10 minutes.' : 'No audience records matching this filter.');
+    let emptyMsg = 'No audience records matching this filter.';
+    if (userAudienceFilter === 'app') emptyMsg = 'No Mobile App audience found on this filter.';
+    else if (userAudienceFilter === 'tv') emptyMsg = 'No Android TV audience found on this filter.';
+    else if (userAudienceFilter === 'exe') emptyMsg = 'No Windows PC (EXE) audience found on this filter.';
+    else if (userAudienceFilter === 'registered') emptyMsg = 'No registered Google accounts found on v3.2.0.';
+    else if (userAudienceFilter === 'online') emptyMsg = 'No users online in the last 10 minutes.';
     tbody.innerHTML = `<tr><td colspan="9" class="text-center" style="padding: 36px; color: #64748b;">${emptyMsg}</td></tr>`;
     return;
   }
@@ -2031,7 +2056,18 @@ function renderUsersTable(usersList) {
             <i class="fa-solid fa-circle-check" style="margin-right: 3px;"></i> ${escapeHtml(u.appVersion ? ('v' + String(u.appVersion).replace(/^v/, '')) : 'v3.2.0')}
           </span>
         </td>
-        <td><i class="${isReg ? 'fa-brands fa-google' : 'fa-brands fa-android'}" style="color: ${isReg ? '#f59e0b' : '#34d399'}; margin-right: 4px;"></i> ${escapeHtml(u.platform || 'Android')}</td>
+        <td>
+          ${(() => {
+            const cat = getUserCategory(u);
+            if (cat === 'exe') {
+              return `<span class="badge-tag" style="background: rgba(192, 132, 252, 0.18); color: #c084fc; border: 1px solid rgba(192, 132, 252, 0.4);"><i class="fa-brands fa-windows"></i> EXE (PC)</span>`;
+            } else if (cat === 'tv') {
+              return `<span class="badge-tag" style="background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4);"><i class="fa-solid fa-tv"></i> Android TV</span>`;
+            } else {
+              return `<span class="badge-tag" style="background: rgba(56, 189, 248, 0.18); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4);"><i class="fa-brands fa-android"></i> App (Mobile)</span>`;
+            }
+          })()}
+        </td>
         <td style="font-size: 12.5px; color: #94a3b8;">${formatDate(u.createdAt)}</td>
         <td>
           <div style="font-size: 12.5px; font-weight: 600; color: #f1f5f9;" title="${u.lastActive}">${u.lastActiveAgo || formatTimeAgo(u.lastActive)}</div>
