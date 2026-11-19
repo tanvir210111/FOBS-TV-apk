@@ -11341,21 +11341,23 @@ function renderDownloadsList() {
   const countBadge = document.getElementById('mbDlCountBadge');
   if (!container) return;
 
-  const downloads = getStoredDownloadsList();
+  const downloads = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : [];
 
   if (countBadge) countBadge.textContent = `${downloads.length} ${downloads.length === 1 ? 'File' : 'Files'}`;
 
   const meDlCount = document.getElementById('meDownloadsCount');
   if (meDlCount) meDlCount.innerText = downloads.length;
 
+  const isLarge = (typeof window !== 'undefined' && window.innerWidth >= 768);
+
   if (downloads.length === 0) {
     container.innerHTML = `
-      <div class="mb-dl-empty" style="text-align: center; padding: 48px 16px; color: #64748b;">
-        <div style="width: 68px; height: 68px; border-radius: 50%; background: rgba(0, 242, 254, 0.12); color: #00f2fe; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 16px auto;">
+      <div class="mb-dl-empty" style="text-align: center; padding: ${isLarge ? '70px 24px' : '48px 16px'}; color: #64748b;">
+        <div style="width: ${isLarge ? '84px' : '68px'}; height: ${isLarge ? '84px' : '68px'}; border-radius: 50%; background: rgba(0, 242, 254, 0.12); color: #00f2fe; display: flex; align-items: center; justify-content: center; font-size: ${isLarge ? '36px' : '30px'}; margin: 0 auto 16px auto;">
           <i class="fa-solid fa-cloud-arrow-down"></i>
         </div>
-        <h4 style="color: #fff; font-size: 16px; margin: 0 0 6px 0;">কোনো ডাউনলোড নেই</h4>
-        <p style="font-size: 13px; line-height: 1.5; margin: 0 auto; max-width: 300px;">যেকোনো ভিডিওর নিচে "Download" বাটনে চাপ দিন। এপের ভিতরেই ডাউনলোড হবে এবং ইন্টারনেট ছাড়াই অফলাইনে দেখতে পারবেন।</p>
+        <h4 style="color: #fff; font-size: ${isLarge ? '20px' : '16px'}; font-weight: 800; margin: 0 0 8px 0;">কোনো ডাউনলোড নেই</h4>
+        <p style="font-size: ${isLarge ? '15px' : '13px'}; line-height: 1.6; margin: 0 auto; max-width: ${isLarge ? '440px' : '300px'}; color: #94a3b8;">যেকোনো ভিডিওর নিচে "Download" বাটনে চাপ দিন। এপের ভিতরেই ডাউনলোড হবে এবং ইন্টারনেট ছাড়াই অফলাইনে দেখতে পারবেন।</p>
       </div>
     `;
     return;
@@ -11391,63 +11393,68 @@ function renderDownloadsList() {
     }
 
     const sizeInfo = item.sizeText ? ` • ${item.sizeText}` : '';
-    const qStyle = getQualityBadgeStyle(item.quality || '480P');
+    const qStyle = (typeof getQualityBadgeStyle === 'function') ? getQualityBadgeStyle(item.quality || '480P') : { pixel: item.quality || '480P', bg: 'rgba(0,242,254,0.15)', color: '#00f2fe', border: '1px solid rgba(0,242,254,0.4)' };
     let epNum = item.episode || item.options?.episode;
     if (!epNum && item.title) {
       const match = item.title.match(/(?:ep(?:isode)?\.?\s*|e)(\d+)/i);
       if (match) epNum = parseInt(match[1], 10);
     }
-    const epBadge = (item.isSeries || epNum) ? `<span style="font-size: 10.5px; font-weight: 700; background: rgba(168, 85, 247, 0.18); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.5); padding: 2px 7px; border-radius: 5px;">Ep ${epNum || 1}</span>` : '';
+    const epBadge = (item.isSeries || epNum) ? `<span style="font-size: ${isLarge ? '12px' : '10.5px'}; font-weight: 700; background: rgba(168, 85, 247, 0.18); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.5); padding: 2px 8px; border-radius: 5px;">Ep ${epNum || 1}</span>` : '';
+
+    const btnPad = isLarge ? '9px 16px' : '7px 12px';
+    const btnFont = isLarge ? '13.5px' : '12px';
+    const iconBtnPad = isLarge ? '9px 12px' : '6px 8px';
+    const iconBtnFont = isLarge ? '13px' : '11px';
 
     // Action button logic: Pause, Resume, Retry, Play, Start Queued
     let actionButtonsHtml = '';
     if (isReady) {
       actionButtonsHtml = `
-        <button onclick="playDownloadedMedia('${item.id}')" style="background: rgba(0, 210, 106, 0.2); border: 1px solid rgba(0, 210, 106, 0.4); color: #00d26a; font-size: 12px; font-weight: 700; padding: 7px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 5px;" title="Play Offline">
+        <button onclick="playDownloadedMedia('${item.id}')" style="background: rgba(0, 210, 106, 0.2); border: 1px solid rgba(0, 210, 106, 0.4); color: #00d26a; font-size: ${btnFont}; font-weight: 700; padding: ${btnPad}; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Play Offline">
           <i class="fa-solid fa-play"></i>
           <span>Play</span>
         </button>
-        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: 11px; padding: 6px 8px; border-radius: 8px; cursor: pointer;" title="Remove">
+        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: ${iconBtnFont}; padding: ${iconBtnPad}; border-radius: 8px; cursor: pointer;" title="Remove">
           <i class="fa-solid fa-trash-can"></i>
         </button>
       `;
     } else if (isQueued) {
       actionButtonsHtml = `
-        <button onclick="resumeDownload('${item.id}', event)" style="background: rgba(0, 242, 254, 0.2); border: 1px solid rgba(0, 242, 254, 0.4); color: #00f2fe; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 4px;" title="Start Now">
+        <button onclick="resumeDownload('${item.id}', event)" style="background: rgba(0, 242, 254, 0.2); border: 1px solid rgba(0, 242, 254, 0.4); color: #00f2fe; font-size: ${btnFont}; font-weight: 700; padding: ${btnPad}; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Start Now">
           <i class="fa-solid fa-bolt"></i>
           <span>Start</span>
         </button>
-        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: 11px; padding: 6px 8px; border-radius: 8px; cursor: pointer;" title="Cancel">
+        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: ${iconBtnFont}; padding: ${iconBtnPad}; border-radius: 8px; cursor: pointer;" title="Cancel">
           <i class="fa-solid fa-xmark"></i>
         </button>
       `;
     } else if (isDownloading) {
       actionButtonsHtml = `
-        <button onclick="pauseDownload('${item.id}', event)" style="background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4); color: #f59e0b; font-size: 12px; font-weight: 700; padding: 7px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 5px;" title="Pause">
+        <button onclick="pauseDownload('${item.id}', event)" style="background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4); color: #f59e0b; font-size: ${btnFont}; font-weight: 700; padding: ${btnPad}; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Pause">
           <i class="fa-solid fa-pause"></i>
           <span>Pause</span>
         </button>
-        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: 11px; padding: 6px 8px; border-radius: 8px; cursor: pointer;" title="Cancel">
+        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: ${iconBtnFont}; padding: ${iconBtnPad}; border-radius: 8px; cursor: pointer;" title="Cancel">
           <i class="fa-solid fa-xmark"></i>
         </button>
       `;
     } else if (isPaused) {
       actionButtonsHtml = `
-        <button onclick="resumeDownload('${item.id}', event)" style="background: rgba(0, 242, 254, 0.2); border: 1px solid rgba(0, 242, 254, 0.4); color: #00f2fe; font-size: 12px; font-weight: 700; padding: 7px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 5px;" title="Resume">
+        <button onclick="resumeDownload('${item.id}', event)" style="background: rgba(0, 242, 254, 0.2); border: 1px solid rgba(0, 242, 254, 0.4); color: #00f2fe; font-size: ${btnFont}; font-weight: 700; padding: ${btnPad}; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Resume">
           <i class="fa-solid fa-play"></i>
           <span>Resume</span>
         </button>
-        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: 11px; padding: 6px 8px; border-radius: 8px; cursor: pointer;" title="Remove">
+        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: ${iconBtnFont}; padding: ${iconBtnPad}; border-radius: 8px; cursor: pointer;" title="Remove">
           <i class="fa-solid fa-trash-can"></i>
         </button>
       `;
     } else if (isFailed) {
       actionButtonsHtml = `
-        <button onclick="retryDownload('${item.id}', event)" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; font-size: 12px; font-weight: 700; padding: 7px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 5px;" title="Retry">
+        <button onclick="retryDownload('${item.id}', event)" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; font-size: ${btnFont}; font-weight: 700; padding: ${btnPad}; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Retry">
           <i class="fa-solid fa-rotate-right"></i>
           <span>Retry</span>
         </button>
-        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: 11px; padding: 6px 8px; border-radius: 8px; cursor: pointer;" title="Remove">
+        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: ${iconBtnFont}; padding: ${iconBtnPad}; border-radius: 8px; cursor: pointer;" title="Remove">
           <i class="fa-solid fa-trash-can"></i>
         </button>
       `;
@@ -11455,30 +11462,35 @@ function renderDownloadsList() {
 
     const clickAction = isReady ? `onclick="playDownloadedMedia('${item.id}')"` : (isQueued ? `onclick="resumeDownload('${item.id}', event)"` : (isPaused ? `onclick="resumeDownload('${item.id}', event)"` : (isFailed ? `onclick="retryDownload('${item.id}', event)"` : '')));
 
+    const cardThumbW = isLarge ? '95px' : '68px';
+    const cardThumbH = isLarge ? '125px' : '86px';
+    const cardTitleFont = isLarge ? '18px' : '14px';
+    const cardPadding = isLarge ? '16px 20px' : '12px';
+
     return `
-    <div class="mb-dl-card" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
-      <div class="mb-dl-card-thumb" ${clickAction} style="position: relative; width: 68px; height: 86px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #171821; cursor: pointer;">
+    <div class="mb-dl-card" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: ${cardPadding}; display: flex; align-items: center; gap: 14px; margin-bottom: 12px;">
+      <div class="mb-dl-card-thumb" ${clickAction} style="position: relative; width: ${cardThumbW}; height: ${cardThumbH}; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #171821; cursor: pointer;">
         <img src="${item.poster || 'assets/fobs_logo.png'}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.src='assets/fobs_logo.png';">
-        <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px;">
+        <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; color: #fff; font-size: ${isLarge ? '22px' : '16px'};">
           <i class="${isReady ? 'fa-solid fa-play' : (isQueued ? 'fa-solid fa-clock' : (isPaused ? 'fa-solid fa-pause' : (isFailed ? 'fa-solid fa-rotate-right' : 'fa-solid fa-cloud-arrow-down')))}"></i>
         </div>
       </div>
       <div class="mb-dl-card-info" style="flex: 1; min-width: 0;">
-        <div style="font-size: 14px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px;">${item.title}</div>
-        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
-          <span style="font-size: 10.5px; font-weight: 800; background: ${qStyle.bg}; color: ${qStyle.color}; border: ${qStyle.border}; padding: 2px 7px; border-radius: 5px;">${qStyle.pixel}</span>
+        <div style="font-size: ${cardTitleFont}; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 5px;">${item.title}</div>
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 7px; flex-wrap: wrap;">
+          <span style="font-size: ${isLarge ? '12px' : '10.5px'}; font-weight: 800; background: ${qStyle.bg}; color: ${qStyle.color}; border: ${qStyle.border}; padding: 2px 8px; border-radius: 5px;">${qStyle.pixel}</span>
           ${epBadge}
-          <span style="font-size: 11px; color: #8b95a5;">${item.date || 'Today'}${sizeInfo}</span>
+          <span style="font-size: ${isLarge ? '13px' : '11px'}; color: #8b95a5;">${item.date || 'Today'}${sizeInfo}</span>
         </div>
-        <div id="dl_status_${item.id}" style="font-size: 11.5px; color: ${statusColor}; display: flex; align-items: center; gap: 5px; font-weight: 600;">
+        <div id="dl_status_${item.id}" style="font-size: ${isLarge ? '13.5px' : '11.5px'}; color: ${statusColor}; display: flex; align-items: center; gap: 6px; font-weight: 600;">
           <i class="${statusIcon}"></i>
           <span>${statusText}</span>
         </div>
-        <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 6px; overflow: hidden;">
+        <div style="width: 100%; height: ${isLarge ? '6px' : '4px'}; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 8px; overflow: hidden;">
           <div id="dl_progress_${item.id}" style="width: ${item.progress || (isReady ? 100 : (isQueued ? 0 : 5))}%; height: 100%; background: ${isFailed ? '#ef4444' : (isPaused || isQueued ? '#f59e0b' : '#00f2fe')}; transition: width 0.3s ease;"></div>
         </div>
       </div>
-      <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">
+      <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-end;">
         ${actionButtonsHtml}
       </div>
     </div>

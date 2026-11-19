@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.8.5 (Black Shadow Fix, Prev Ep Button, Portrait Return Pill, Scaled Subtitles, Dark Scrollbar, Registered Members)
+// FOBS TV Live OTA Patch Bundle v1.8.6 (Black Shadow Fix, Prev Ep Button, Portrait Return Pill, Scaled Subtitles, Dark Scrollbar, Registered Members)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.8.5 (Black Shadow Fix, Prev Ep Button, Portrait Return Pill, Scaled Subtitles, Dark Scrollbar) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.8.5';
+  console.log('⚡ FOBS TV Live Patch v1.8.6 (Black Shadow Fix, Prev Ep Button, Portrait Return Pill, Scaled Subtitles, Dark Scrollbar) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.8.6';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -4550,13 +4550,444 @@
           padding: 12px 4px !important;
         }
         /* Me / Profile Page Scaling for PC & TV */
-        /* Me / Profile Page Scaling for PC & TV (Full Width & Big Features) */
         #meView.me-tab-view { width: 100% !important; max-width: 1400px !important; margin: 0 auto !important; padding: 36px 48px 100px 48px !important; box-sizing: border-box !important; }
-        .mb-fullscreen-page { width: 92% !important; max-width: 1200px !important; height: 90vh !important; max-height: 90vh !important; border-radius: 24px !important; border: 1px solid rgba(255, 255, 255, 0.12) !important; box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95), 0 0 40px rgba(0, 242, 254, 0.12) !important; }
-        .mb-page-header { padding: 20px 32px !important; }
-        .mb-page-title { font-size: 24px !important; font-weight: 800 !important; }
-        .mb-page-back-btn, .mb-page-action-btn { width: 44px !important; height: 44px !important; font-size: 18px !important; }
-        .mb-history-page-body { padding: 24px 32px 48px 32px !important; }
+  /* Full Screen Overlay and Pages for PC & TV (True Full Window Layout, Zero Letterboxing) */
+  .mb-fullscreen-page-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: #0c0e14 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    z-index: 100000 !important;
+    display: none !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+
+  .mb-fullscreen-page-overlay.open,
+  .mb-fullscreen-page-overlay[style*="display: flex"] {
+    display: flex !important;
+  }
+
+  .mb-fullscreen-page {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #0c0e14 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .mb-page-header {
+    width: 100% !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 24px 48px !important;
+    background: #0c0e14 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+  }
+
+  .mb-page-title {
+    font-size: 28px !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    letter-spacing: -0.3px !important;
+  }
+
+  .mb-page-back-btn,
+  .mb-page-action-btn {
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 20px !important;
+    border-radius: 14px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .mb-page-back-btn:hover,
+  .mb-page-action-btn:hover {
+    background: rgba(0, 242, 254, 0.16) !important;
+    border-color: #00f2fe !important;
+    color: #00f2fe !important;
+    transform: scale(1.06) !important;
+  }
+
+  .mb-history-page-body,
+  .mb-page-scrollable-body,
+  .mb-dl-page-body {
+    width: 100% !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 32px 48px 100px 48px !important;
+    box-sizing: border-box !important;
+    flex: 1 !important;
+    overflow-y: auto !important;
+  }
+
+  /* DOWNLOADS PAGE PC & TV FULL SCALING */
+  .mb-offline-storage-banner {
+    padding: 24px 30px !important;
+    border-radius: 20px !important;
+    margin-bottom: 28px !important;
+    gap: 22px !important;
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.14) 0%, rgba(79, 172, 254, 0.06) 100%) !important;
+    border: 1px solid rgba(0, 242, 254, 0.35) !important;
+  }
+  .mb-offline-storage-banner > div:first-child {
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 26px !important;
+    border-radius: 16px !important;
+    background: rgba(0, 242, 254, 0.22) !important;
+  }
+  .mb-offline-storage-banner h4 {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    margin: 0 0 6px 0 !important;
+    color: #ffffff !important;
+  }
+  .mb-offline-storage-banner p {
+    font-size: 15px !important;
+    line-height: 1.55 !important;
+    color: #94a3b8 !important;
+  }
+
+  .mb-dl-storage-row {
+    margin-bottom: 22px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+  .mb-dl-sec-title {
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+  }
+  .mb-dl-sec-title-wrap i {
+    font-size: 20px !important;
+  }
+  .mb-dl-storage-stat {
+    font-size: 15px !important;
+    padding: 6px 16px !important;
+    border-radius: 20px !important;
+    background: rgba(255, 255, 255, 0.07) !important;
+    color: #cbd5e1 !important;
+    font-weight: 700 !important;
+  }
+
+  .mb-dl-list-container {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(580px, 1fr)) !important;
+    gap: 20px !important;
+  }
+  .mb-dl-card {
+    padding: 18px 24px !important;
+    border-radius: 18px !important;
+    gap: 20px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    transition: all 0.2s ease !important;
+  }
+  .mb-dl-card:hover {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border-color: rgba(0, 242, 254, 0.3) !important;
+    transform: translateY(-2px) !important;
+  }
+  .mb-dl-card-thumb {
+    width: 95px !important;
+    height: 125px !important;
+    border-radius: 12px !important;
+  }
+  .mb-dl-card-thumb i {
+    font-size: 24px !important;
+  }
+  .mb-dl-card-info > div:first-child {
+    font-size: 18.5px !important;
+    font-weight: 800 !important;
+    margin-bottom: 8px !important;
+    color: #ffffff !important;
+  }
+  .mb-dl-card-info span {
+    font-size: 13.5px !important;
+  }
+  .mb-dl-card-info [id^="dl_status_"] {
+    font-size: 14px !important;
+    margin-top: 6px !important;
+  }
+  .mb-dl-card button {
+    font-size: 14px !important;
+    padding: 10px 18px !important;
+    border-radius: 10px !important;
+  }
+  .mb-dl-card button i {
+    font-size: 14px !important;
+  }
+
+  .mb-dl-empty {
+    padding: 80px 24px !important;
+  }
+  .mb-dl-empty > div {
+    width: 90px !important;
+    height: 90px !important;
+    font-size: 40px !important;
+    margin-bottom: 22px !important;
+  }
+  .mb-dl-empty h4 {
+    font-size: 22px !important;
+    margin-bottom: 10px !important;
+  }
+  .mb-dl-empty p {
+    font-size: 16px !important;
+    max-width: 480px !important;
+    line-height: 1.6 !important;
+  }
+
+  /* SECTION DETAIL VIEW (ALL ITEMS PAGE) SCALING */
+  .section-detail-view {
+    width: 100% !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 24px 48px 100px 48px !important;
+    box-sizing: border-box !important;
+  }
+  .section-detail-header-bar {
+    padding: 18px 0 24px 0 !important;
+    background: transparent !important;
+    gap: 18px !important;
+  }
+  .section-back-btn {
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 20px !important;
+    border-radius: 14px !important;
+  }
+  .section-page-title {
+    font-size: 28px !important;
+    font-weight: 800 !important;
+  }
+  .section-page-subtitle {
+    font-size: 15px !important;
+  }
+  .section-count-badge {
+    font-size: 15px !important;
+    padding: 6px 16px !important;
+    border-radius: 20px !important;
+  }
+  .section-detail-body .grid-3-col {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+    gap: 24px !important;
+    padding: 10px 0 40px 0 !important;
+  }
+
+  /* WATCHLIST (MY LIST) SCALING */
+  #watchlistModalOverlay .mb-fullscreen-page-overlay,
+  #watchlistModalOverlay .mb-fullscreen-page {
+    width: 100vw !important;
+    height: 100vh !important;
+  }
+  #watchlistItemsContainer > div {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)) !important;
+    gap: 24px !important;
+  }
+  .watchlist-card {
+    border-radius: 18px !important;
+  }
+  .watchlist-card div[title] {
+    font-size: 17px !important;
+    font-weight: 800 !important;
+  }
+  .watchlist-card button {
+    font-size: 14px !important;
+    padding: 10px 16px !important;
+    border-radius: 10px !important;
+  }
+
+  /* WATCH HISTORY SCALING */
+  #historyModalOverlay .mb-fullscreen-page-overlay,
+  #historyModalOverlay .mb-fullscreen-page {
+    width: 100vw !important;
+    height: 100vh !important;
+  }
+  #historyItemsContainer > div {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(580px, 1fr)) !important;
+    gap: 16px !important;
+  }
+  #historyItemsContainer > div > div {
+    padding: 18px 22px !important;
+    border-radius: 18px !important;
+    gap: 20px !important;
+  }
+  #historyItemsContainer img {
+    width: 90px !important;
+    height: 120px !important;
+    border-radius: 10px !important;
+  }
+  #historyItemsContainer div[style*="font-size: 15px"],
+  #historyItemsContainer div[style*="font-size: 18px"] {
+    font-size: 19px !important;
+    font-weight: 800 !important;
+  }
+
+  /* SETTINGS PAGE SCALING */
+  #settingsModalOverlay .mb-history-page-body {
+    max-width: 1000px !important;
+    margin: 0 auto !important;
+  }
+  #settingsModalOverlay .mb-menu-group {
+    border-radius: 22px !important;
+    margin-bottom: 24px !important;
+  }
+  #settingsModalOverlay .mb-menu-row {
+    padding: 22px 30px !important;
+  }
+  #settingsModalOverlay .mb-m-left {
+    font-size: 18px !important;
+    gap: 18px !important;
+    font-weight: 700 !important;
+  }
+  #settingsModalOverlay .mb-m-left i {
+    font-size: 22px !important;
+    width: 28px !important;
+  }
+  #settingsModalOverlay .mb-m-right {
+    font-size: 16px !important;
+    gap: 12px !important;
+  }
+
+  /* MOVIE & SERIES REQUEST SCALING */
+  #mediaRequestModal .mb-history-page-body {
+    max-width: 900px !important;
+    margin: 0 auto !important;
+  }
+  #mediaRequestModal form {
+    gap: 22px !important;
+  }
+  #mediaRequestModal label {
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    margin-bottom: 8px !important;
+    color: #e2e8f0 !important;
+  }
+  #mediaRequestModal input,
+  #mediaRequestModal select,
+  #mediaRequestModal textarea {
+    font-size: 16.5px !important;
+    padding: 16px 22px !important;
+    border-radius: 14px !important;
+  }
+  #mediaRequestModal button[type="submit"] {
+    font-size: 18px !important;
+    padding: 16px 32px !important;
+    border-radius: 16px !important;
+    font-weight: 800 !important;
+  }
+  .mb-req-type-btn {
+    font-size: 16px !important;
+    padding: 14px 24px !important;
+    border-radius: 14px !important;
+    font-weight: 700 !important;
+  }
+
+  /* MESSAGES SCALING */
+  #messagesModalOverlay .mb-history-page-body {
+    max-width: 1100px !important;
+    margin: 0 auto !important;
+  }
+  #messagesListContainer > div > div {
+    padding: 22px 28px !important;
+    border-radius: 18px !important;
+    gap: 20px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+  #messagesListContainer h4 {
+    font-size: 19px !important;
+    font-weight: 800 !important;
+  }
+  #messagesListContainer p {
+    font-size: 15.5px !important;
+    line-height: 1.55 !important;
+  }
+
+  /* FEEDBACK SCALING */
+  #feedbackModalOverlay .mb-history-page-body {
+    max-width: 850px !important;
+    margin: 0 auto !important;
+  }
+  #feedbackStarRow i {
+    font-size: 38px !important;
+    padding: 8px !important;
+  }
+  #feedbackMsgInput {
+    font-size: 16.5px !important;
+    padding: 18px 22px !important;
+    border-radius: 16px !important;
+  }
+
+  /* ACTIVITY SCALING */
+  #activityModalOverlay .mb-history-page-body {
+    max-width: 1100px !important;
+    margin: 0 auto !important;
+  }
+  #activityModalOverlay .mb-history-page-body > div:first-child {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 22px !important;
+    margin-bottom: 28px !important;
+  }
+  #activityModalOverlay .mb-history-page-body > div:first-child > div {
+    padding: 26px 24px !important;
+    border-radius: 20px !important;
+  }
+  #activityModalOverlay .mb-history-page-body h2 {
+    font-size: 34px !important;
+  }
+  #activityModalOverlay .mb-history-page-body p {
+    font-size: 16px !important;
+  }
+
+  /* PRE-BOOKINGS SCALING */
+  #preBookingsModal .mb-history-page-body {
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+  }
+  #preBookingsContainer {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)) !important;
+    gap: 24px !important;
+  }
+
         .mb-profile-header { padding: 28px 36px !important; border-radius: 24px !important; margin-bottom: 24px !important; background: rgba(255, 255, 255, 0.04) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important; }
         .mb-avatar-circle { width: 80px !important; height: 80px !important; font-size: 32px !important; }
         .mb-name-text { font-size: 26px !important; font-weight: 800 !important; }
@@ -5430,7 +5861,172 @@ if (typeof origSwitchMainTab === 'function') {
     return res;
   };
 }
+
+    // 25. High-Resolution Downloads View Engine
+    window.renderDownloadsList = function renderDownloadsList() {
+  const container = document.getElementById('downloadsListContainer');
+  const countBadge = document.getElementById('mbDlCountBadge');
+  if (!container) return;
+
+  const downloads = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : [];
+
+  if (countBadge) countBadge.textContent = `${downloads.length} ${downloads.length === 1 ? 'File' : 'Files'}`;
+
+  const meDlCount = document.getElementById('meDownloadsCount');
+  if (meDlCount) meDlCount.innerText = downloads.length;
+
+  const isLarge = (typeof window !== 'undefined' && window.innerWidth >= 768);
+
+  if (downloads.length === 0) {
+    container.innerHTML = `
+      <div class="mb-dl-empty" style="text-align: center; padding: ${isLarge ? '70px 24px' : '48px 16px'}; color: #64748b;">
+        <div style="width: ${isLarge ? '84px' : '68px'}; height: ${isLarge ? '84px' : '68px'}; border-radius: 50%; background: rgba(0, 242, 254, 0.12); color: #00f2fe; display: flex; align-items: center; justify-content: center; font-size: ${isLarge ? '36px' : '30px'}; margin: 0 auto 16px auto;">
+          <i class="fa-solid fa-cloud-arrow-down"></i>
+        </div>
+        <h4 style="color: #fff; font-size: ${isLarge ? '20px' : '16px'}; font-weight: 800; margin: 0 0 8px 0;">কোনো ডাউনলোড নেই</h4>
+        <p style="font-size: ${isLarge ? '15px' : '13px'}; line-height: 1.6; margin: 0 auto; max-width: ${isLarge ? '440px' : '300px'}; color: #94a3b8;">যেকোনো ভিডিওর নিচে "Download" বাটনে চাপ দিন। এপের ভিতরেই ডাউনলোড হবে এবং ইন্টারনেট ছাড়াই অফলাইনে দেখতে পারবেন।</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = downloads.map(item => {
+    const isPaused = item.status === 'paused' || !!item.paused;
+    const isFailed = item.status === 'failed' || !!item.failed;
+    const isQueued = item.status === 'queued';
+    const isReady = !isPaused && !isFailed && !isQueued && (item.status === 'Ready (Offline)' || (item.progress === 100 && item.downloaded === true));
+    const isDownloading = !isReady && !isPaused && !isFailed && !isQueued;
+
+    let statusColor = '#00f2fe';
+    let statusIcon = 'fa-solid fa-spinner fa-spin';
+    let statusText = item.statusText || 'Downloading...';
+
+    if (isReady) {
+      statusColor = '#22c55e';
+      statusIcon = 'fa-solid fa-circle-check';
+      statusText = 'Ready (Offline)';
+    } else if (isQueued) {
+      statusColor = '#f59e0b';
+      statusIcon = 'fa-solid fa-clock';
+      statusText = item.statusText || 'Waiting in Queue (লাইনে অপেক্ষমাণ)';
+    } else if (isPaused) {
+      statusColor = '#f59e0b';
+      statusIcon = 'fa-solid fa-circle-pause';
+      statusText = item.statusText || `Paused (${item.progress || 0}%)`;
+    } else if (isFailed) {
+      statusColor = '#ef4444';
+      statusIcon = 'fa-solid fa-triangle-exclamation';
+      statusText = item.statusText || 'Download Failed • Tap Retry';
+    }
+
+    const sizeInfo = item.sizeText ? ` • ${item.sizeText}` : '';
+    const qStyle = (typeof getQualityBadgeStyle === 'function') ? getQualityBadgeStyle(item.quality || '480P') : { pixel: item.quality || '480P', bg: 'rgba(0,242,254,0.15)', color: '#00f2fe', border: '1px solid rgba(0,242,254,0.4)' };
+    let epNum = item.episode || item.options?.episode;
+    if (!epNum && item.title) {
+      const match = item.title.match(/(?:ep(?:isode)?\.?\s*|e)(\d+)/i);
+      if (match) epNum = parseInt(match[1], 10);
+    }
+    const epBadge = (item.isSeries || epNum) ? `<span style="font-size: ${isLarge ? '12px' : '10.5px'}; font-weight: 700; background: rgba(168, 85, 247, 0.18); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.5); padding: 2px 8px; border-radius: 5px;">Ep ${epNum || 1}</span>` : '';
+
+    const btnPad = isLarge ? '9px 16px' : '7px 12px';
+    const btnFont = isLarge ? '13.5px' : '12px';
+    const iconBtnPad = isLarge ? '9px 12px' : '6px 8px';
+    const iconBtnFont = isLarge ? '13px' : '11px';
+
+    // Action button logic: Pause, Resume, Retry, Play, Start Queued
+    let actionButtonsHtml = '';
+    if (isReady) {
+      actionButtonsHtml = `
+        <button onclick="playDownloadedMedia('${item.id}')" style="background: rgba(0, 210, 106, 0.2); border: 1px solid rgba(0, 210, 106, 0.4); color: #00d26a; font-size: ${btnFont}; font-weight: 700; padding: ${btnPad}; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Play Offline">
+          <i class="fa-solid fa-play"></i>
+          <span>Play</span>
+        </button>
+        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: ${iconBtnFont}; padding: ${iconBtnPad}; border-radius: 8px; cursor: pointer;" title="Remove">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      `;
+    } else if (isQueued) {
+      actionButtonsHtml = `
+        <button onclick="resumeDownload('${item.id}', event)" style="background: rgba(0, 242, 254, 0.2); border: 1px solid rgba(0, 242, 254, 0.4); color: #00f2fe; font-size: ${btnFont}; font-weight: 700; padding: ${btnPad}; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Start Now">
+          <i class="fa-solid fa-bolt"></i>
+          <span>Start</span>
+        </button>
+        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: ${iconBtnFont}; padding: ${iconBtnPad}; border-radius: 8px; cursor: pointer;" title="Cancel">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      `;
+    } else if (isDownloading) {
+      actionButtonsHtml = `
+        <button onclick="pauseDownload('${item.id}', event)" style="background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4); color: #f59e0b; font-size: ${btnFont}; font-weight: 700; padding: ${btnPad}; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Pause">
+          <i class="fa-solid fa-pause"></i>
+          <span>Pause</span>
+        </button>
+        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: ${iconBtnFont}; padding: ${iconBtnPad}; border-radius: 8px; cursor: pointer;" title="Cancel">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      `;
+    } else if (isPaused) {
+      actionButtonsHtml = `
+        <button onclick="resumeDownload('${item.id}', event)" style="background: rgba(0, 242, 254, 0.2); border: 1px solid rgba(0, 242, 254, 0.4); color: #00f2fe; font-size: ${btnFont}; font-weight: 700; padding: ${btnPad}; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Resume">
+          <i class="fa-solid fa-play"></i>
+          <span>Resume</span>
+        </button>
+        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: ${iconBtnFont}; padding: ${iconBtnPad}; border-radius: 8px; cursor: pointer;" title="Remove">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      `;
+    } else if (isFailed) {
+      actionButtonsHtml = `
+        <button onclick="retryDownload('${item.id}', event)" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; font-size: ${btnFont}; font-weight: 700; padding: ${btnPad}; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Retry">
+          <i class="fa-solid fa-rotate-right"></i>
+          <span>Retry</span>
+        </button>
+        <button onclick="deleteDownload('${item.id}', event)" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #ef4444; font-size: ${iconBtnFont}; padding: ${iconBtnPad}; border-radius: 8px; cursor: pointer;" title="Remove">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      `;
+    }
+
+    const clickAction = isReady ? `onclick="playDownloadedMedia('${item.id}')"` : (isQueued ? `onclick="resumeDownload('${item.id}', event)"` : (isPaused ? `onclick="resumeDownload('${item.id}', event)"` : (isFailed ? `onclick="retryDownload('${item.id}', event)"` : '')));
+
+    const cardThumbW = isLarge ? '95px' : '68px';
+    const cardThumbH = isLarge ? '125px' : '86px';
+    const cardTitleFont = isLarge ? '18px' : '14px';
+    const cardPadding = isLarge ? '16px 20px' : '12px';
+
+    return `
+    <div class="mb-dl-card" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: ${cardPadding}; display: flex; align-items: center; gap: 14px; margin-bottom: 12px;">
+      <div class="mb-dl-card-thumb" ${clickAction} style="position: relative; width: ${cardThumbW}; height: ${cardThumbH}; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #171821; cursor: pointer;">
+        <img src="${item.poster || 'assets/fobs_logo.png'}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.src='assets/fobs_logo.png';">
+        <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; color: #fff; font-size: ${isLarge ? '22px' : '16px'};">
+          <i class="${isReady ? 'fa-solid fa-play' : (isQueued ? 'fa-solid fa-clock' : (isPaused ? 'fa-solid fa-pause' : (isFailed ? 'fa-solid fa-rotate-right' : 'fa-solid fa-cloud-arrow-down')))}"></i>
+        </div>
+      </div>
+      <div class="mb-dl-card-info" style="flex: 1; min-width: 0;">
+        <div style="font-size: ${cardTitleFont}; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 5px;">${item.title}</div>
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 7px; flex-wrap: wrap;">
+          <span style="font-size: ${isLarge ? '12px' : '10.5px'}; font-weight: 800; background: ${qStyle.bg}; color: ${qStyle.color}; border: ${qStyle.border}; padding: 2px 8px; border-radius: 5px;">${qStyle.pixel}</span>
+          ${epBadge}
+          <span style="font-size: ${isLarge ? '13px' : '11px'}; color: #8b95a5;">${item.date || 'Today'}${sizeInfo}</span>
+        </div>
+        <div id="dl_status_${item.id}" style="font-size: ${isLarge ? '13.5px' : '11.5px'}; color: ${statusColor}; display: flex; align-items: center; gap: 6px; font-weight: 600;">
+          <i class="${statusIcon}"></i>
+          <span>${statusText}</span>
+        </div>
+        <div style="width: 100%; height: ${isLarge ? '6px' : '4px'}; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 8px; overflow: hidden;">
+          <div id="dl_progress_${item.id}" style="width: ${item.progress || (isReady ? 100 : (isQueued ? 0 : 5))}%; height: 100%; background: ${isFailed ? '#ef4444' : (isPaused || isQueued ? '#f59e0b' : '#00f2fe')}; transition: width 0.3s ease;"></div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-end;">
+        ${actionButtonsHtml}
+      </div>
+    </div>
+    `;
+  }).join('');
+}
+window.renderDownloadsList = renderDownloadsList;;
+
   } catch (_) {}
 
-  console.log('✅ FOBS TV Live Patch v1.8.5 active: No Shadow, Previous Ep Btn, Portrait Switch, Scaled Subtitles & Dark Scrollbars.');
+  console.log('✅ FOBS TV Live Patch v1.8.6 active: No Shadow, Previous Ep Btn, Portrait Switch, Scaled Subtitles & Dark Scrollbars.');
 })();
