@@ -1389,8 +1389,8 @@ body.is-fullscreen .player-top-header.controls-hidden,
   visibility: hidden !important;
 }
 
-/* Landscape orientation behavior when player is open */
-@media (orientation: landscape) {
+/* Landscape orientation behavior when player is open - STRICTLY MOBILE PHONES ONLY (< 768px) */
+@media (max-width: 767px) and (orientation: landscape) {
   body.player-open .app-container {
     max-width: 100vw !important;
     width: 100vw !important;
@@ -11209,18 +11209,22 @@ body.intro-active {
     background: rgba(0, 242, 254, 0.5) !important;
   }
 
-  /* MEDIA CARDS (Wide Screen Scale & Glow) */
+  /* MEDIA CARDS (Wide Screen Scale & Glow) - FIXED 2:3 CINEMA PROPORTIONS */
   .horizontal-scroll .media-card {
+    flex: 0 0 185px !important;
     width: 185px !important;
     min-width: 185px !important;
     max-width: 185px !important;
+    box-sizing: border-box !important;
     cursor: pointer !important;
     transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease !important;
   }
 
   .horizontal-scroll .card-poster-wrap {
     width: 100% !important;
+    max-width: 100% !important;
     height: 275px !important;
+    aspect-ratio: 2 / 3 !important;
     border-radius: 14px !important;
     overflow: hidden !important;
     border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
@@ -11228,11 +11232,21 @@ body.intro-active {
     transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
   }
 
-  .horizontal-scroll .card-poster {
+  .horizontal-scroll .card-poster,
+  .horizontal-scroll .card-poster-img,
+  .card-poster-img {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
+    object-position: center top !important;
     transition: transform 0.35s ease !important;
+  }
+
+  .horizontal-scroll .card-title,
+  .horizontal-scroll .card-meta {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .horizontal-scroll .media-card:hover,
@@ -11247,6 +11261,7 @@ body.intro-active {
     box-shadow: 0 16px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 242, 254, 0.35) !important;
   }
 
+  .horizontal-scroll .media-card:hover .card-poster-img,
   .horizontal-scroll .media-card:hover .card-poster {
     transform: scale(1.05) !important;
   }
@@ -11261,19 +11276,31 @@ body.intro-active {
   }
 
   .grid-3-col .media-card {
+    flex: unset !important;
     width: 100% !important;
     max-width: 100% !important;
+    box-sizing: border-box !important;
     cursor: pointer !important;
     transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease !important;
   }
 
   .grid-3-col .card-poster-wrap {
     width: 100% !important;
+    max-width: 100% !important;
     height: 275px !important;
+    aspect-ratio: 2 / 3 !important;
     border-radius: 14px !important;
     border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
     transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  }
+
+  .grid-3-col .card-poster,
+  .grid-3-col .card-poster-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center top !important;
   }
 
   .grid-3-col .media-card:hover,
@@ -11286,6 +11313,57 @@ body.intro-active {
   .grid-3-col .media-card.tv-focused .card-poster-wrap {
     border-color: #00f2fe !important;
     box-shadow: 0 16px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 242, 254, 0.35) !important;
+  }
+
+  /* WIDESCREEN / PC & TV THEATER PLAYER (Windowed, Never Forces Fullscreen) */
+  .player-view-overlay.open {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: 100% !important;
+    background: rgba(7, 8, 12, 0.98) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    z-index: 1000 !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding-top: 16px !important;
+  }
+
+  .player-view-overlay.open .video-container {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 1100px !important;
+    height: clamp(380px, 52vh, 580px) !important;
+    aspect-ratio: 16 / 9 !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    background-color: #000000 !important;
+    margin: 0 auto 16px auto !important;
+  }
+
+  .player-view-overlay.open .player-content-scroll {
+    display: block !important;
+    width: 100% !important;
+    max-width: 1100px !important;
+    margin: 0 auto 40px auto !important;
+    padding: 0 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  .player-view-overlay.open .player-top-header {
+    display: flex !important;
+    position: relative !important;
+    width: 100% !important;
+    max-width: 1100px !important;
+    margin: 0 auto 10px auto !important;
+    background: transparent !important;
+    z-index: 10 !important;
   }
 
   /* LIVE TV CHANNELS GRID */

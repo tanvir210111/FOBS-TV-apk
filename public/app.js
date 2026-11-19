@@ -4049,8 +4049,8 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
   overlay.classList.add('open');
   document.body.classList.add('player-open');
 
-  // Auto-enter edge-to-edge fullscreen if screen is already in landscape
-  if (window.innerWidth > window.innerHeight) {
+  // Auto-enter edge-to-edge fullscreen ONLY on mobile devices rotated to landscape (< 768px)
+  if (window.innerWidth < 768 && window.innerWidth > window.innerHeight) {
     enterFullscreenMode({ skipRotate: true });
   }
 

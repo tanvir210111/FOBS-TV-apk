@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.7.8 (0.001ms Fast-Start RAM Stream, Anti-Buffering & TV/PC Hybrid UI OTA)
+// FOBS TV Live OTA Patch Bundle v1.7.9 (0.001ms Fast-Start RAM Stream, 2:3 Posters & Windowed Theater Player OTA)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.7.8 (Fast-Start Stream & TV/PC Hybrid UI OTA) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.7.8';
+  console.log('⚡ FOBS TV Live Patch v1.7.9 (2:3 Posters & Windowed Theater Player OTA) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.7.9';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -4108,16 +4108,122 @@
         .section-title { font-size: 21px !important; font-weight: 800 !important; color: #fff !important; letter-spacing: -0.4px !important; }
         .section-more { font-size: 14px !important; color: #00f2fe !important; font-weight: 700 !important; cursor: pointer !important; }
         .horizontal-scroll { gap: 20px !important; padding: 12px 6px 24px 6px !important; overflow-x: auto !important; scroll-behavior: smooth !important; }
-        .horizontal-scroll .media-card { width: 185px !important; min-width: 185px !important; max-width: 185px !important; cursor: pointer !important; transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease !important; }
-        .horizontal-scroll .card-poster-wrap { width: 100% !important; height: 275px !important; border-radius: 14px !important; overflow: hidden !important; border: 1.5px solid rgba(255, 255, 255, 0.08) !important; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important; transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important; }
-        .horizontal-scroll .card-poster { width: 100% !important; height: 100% !important; object-fit: cover !important; transition: transform 0.35s ease !important; }
+        .horizontal-scroll .media-card {
+          flex: 0 0 185px !important;
+          width: 185px !important;
+          min-width: 185px !important;
+          max-width: 185px !important;
+          box-sizing: border-box !important;
+          cursor: pointer !important;
+          transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease !important;
+        }
+        .horizontal-scroll .card-poster-wrap {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: 275px !important;
+          aspect-ratio: 2 / 3 !important;
+          border-radius: 14px !important;
+          overflow: hidden !important;
+          border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+          transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+        }
+        .horizontal-scroll .card-poster,
+        .horizontal-scroll .card-poster-img,
+        .card-poster-img {
+          width: 100% !important;
+          height: 100% !important;
+          object-fit: cover !important;
+          object-position: center top !important;
+          transition: transform 0.35s ease !important;
+        }
+        .horizontal-scroll .card-title,
+        .horizontal-scroll .card-meta {
+          width: 100% !important;
+          max-width: 100% !important;
+          box-sizing: border-box !important;
+        }
         .horizontal-scroll .media-card:hover, .horizontal-scroll .media-card.tv-focused { transform: scale(1.07) translateY(-6px) !important; z-index: 10 !important; }
         .horizontal-scroll .media-card:hover .card-poster-wrap, .horizontal-scroll .media-card.tv-focused .card-poster-wrap { border-color: #00f2fe !important; box-shadow: 0 16px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 242, 254, 0.35) !important; }
+        .horizontal-scroll .media-card:hover .card-poster-img,
+        .horizontal-scroll .media-card:hover .card-poster { transform: scale(1.05) !important; }
+
         .grid-3-col { display: grid !important; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)) !important; gap: 22px !important; padding: 16px 48px !important; box-sizing: border-box !important; }
-        .grid-3-col .media-card { width: 100% !important; max-width: 100% !important; cursor: pointer !important; transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease !important; }
-        .grid-3-col .card-poster-wrap { width: 100% !important; height: 275px !important; border-radius: 14px !important; border: 1.5px solid rgba(255, 255, 255, 0.08) !important; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important; }
+        .grid-3-col .media-card {
+          flex: unset !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          box-sizing: border-box !important;
+          cursor: pointer !important;
+          transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease !important;
+        }
+        .grid-3-col .card-poster-wrap {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: 275px !important;
+          aspect-ratio: 2 / 3 !important;
+          border-radius: 14px !important;
+          border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+          transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+        }
+        .grid-3-col .card-poster,
+        .grid-3-col .card-poster-img {
+          width: 100% !important;
+          height: 100% !important;
+          object-fit: cover !important;
+          object-position: center top !important;
+        }
         .grid-3-col .media-card:hover, .grid-3-col .media-card.tv-focused { transform: scale(1.07) translateY(-6px) !important; z-index: 10 !important; }
         .grid-3-col .media-card:hover .card-poster-wrap, .grid-3-col .media-card.tv-focused .card-poster-wrap { border-color: #00f2fe !important; box-shadow: 0 16px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 242, 254, 0.35) !important; }
+
+        /* WIDESCREEN / PC & TV THEATER PLAYER (Windowed, Never Forces Fullscreen) */
+        .player-view-overlay.open {
+          position: fixed !important;
+          inset: 0 !important;
+          width: 100vw !important;
+          height: 100vh !important;
+          max-width: 100% !important;
+          background: rgba(7, 8, 12, 0.98) !important;
+          backdrop-filter: blur(24px) !important;
+          -webkit-backdrop-filter: blur(24px) !important;
+          z-index: 1000 !important;
+          overflow-y: auto !important;
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
+          padding-top: 16px !important;
+        }
+        .player-view-overlay.open .video-container {
+          position: relative !important;
+          width: 100% !important;
+          max-width: 1100px !important;
+          height: clamp(380px, 52vh, 580px) !important;
+          aspect-ratio: 16 / 9 !important;
+          border-radius: 20px !important;
+          overflow: hidden !important;
+          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85) !important;
+          border: 1px solid rgba(255, 255, 255, 0.12) !important;
+          background-color: #000000 !important;
+          margin: 0 auto 16px auto !important;
+        }
+        .player-view-overlay.open .player-content-scroll {
+          display: block !important;
+          width: 100% !important;
+          max-width: 1100px !important;
+          margin: 0 auto 40px auto !important;
+          padding: 0 16px !important;
+          box-sizing: border-box !important;
+        }
+        .player-view-overlay.open .player-top-header {
+          display: flex !important;
+          position: relative !important;
+          width: 100% !important;
+          max-width: 1100px !important;
+          margin: 0 auto 10px auto !important;
+          background: transparent !important;
+          z-index: 10 !important;
+        }
         .live-tv-grid { display: grid !important; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important; gap: 20px !important; padding: 16px 48px !important; box-sizing: border-box !important; }
         .live-channel-card:hover, .channel-card:hover, .live-channel-card.tv-focused, .channel-card.tv-focused { transform: scale(1.05) translateY(-4px) !important; border-color: #00f2fe !important; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 242, 254, 0.3) !important; }
         .nav-tab-pill.tv-focused, .nav-me-btn.tv-focused, .btn-hero-watch.tv-focused, .btn-hero-list.tv-focused, .btn-hero-info.tv-focused, .media-card.tv-focused, .category-pill.tv-focused, .channel-card.tv-focused, .search-bar-wrapper.tv-focused, button.tv-focused { outline: 2.5px solid #00f2fe !important; box-shadow: 0 0 24px rgba(0, 242, 254, 0.8) !important; transform: scale(1.06) !important; z-index: 50 !important; }
@@ -4174,7 +4280,22 @@
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', ensureDesktopNavInHeader);
     }
+
+    // Hook enterFullscreenMode on wide screens (PC & TV) to prevent auto-fullscreen on openPlayer
+    try {
+      if (typeof window.enterFullscreenMode === 'function' && !window.enterFullscreenMode._otaHooked) {
+        const origEnterFullscreenMode = window.enterFullscreenMode;
+        window.enterFullscreenMode = function(opts) {
+          if (opts && opts.skipRotate && window.innerWidth >= 768) {
+            console.log('🖥️ [Live-Patch] Prevented auto-fullscreen on widescreen/PC/TV theater player.');
+            return;
+          }
+          return origEnterFullscreenMode.apply(this, arguments);
+        };
+        window.enterFullscreenMode._otaHooked = true;
+      }
+    } catch (_) {}
   } catch (_) {}
 
-  console.log('✅ FOBS TV Live Patch v1.7.8 active: TV/PC Hybrid UI OTA, Anime Tab & Me Profile active.');
+  console.log('✅ FOBS TV Live Patch v1.7.9 active: 2:3 Posters, Windowed Theater Player & TV/PC Layout active.');
 })();
