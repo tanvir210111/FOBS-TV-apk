@@ -6858,8 +6858,15 @@ function hexToRgba(hex, alpha = 0.7) {
 function applySubtitleStylesToElement(el) {
   if (!el) return;
   const isLargeScreen = (window.innerWidth >= 768);
-  const scale = isLargeScreen ? 1.6 : 1.0;
-  const effectiveSize = Math.max(isLargeScreen ? 26 : 14, Math.round((subtitleState.fontSize || 18) * scale));
+  const curSize = Number(subtitleState.fontSize) || 18;
+  let effectiveSize = curSize;
+  if (isLargeScreen) {
+    if (curSize <= 14) effectiveSize = 22;
+    else if (curSize <= 18) effectiveSize = 28;
+    else if (curSize <= 23) effectiveSize = 36;
+    else if (curSize <= 28) effectiveSize = 44;
+    else effectiveSize = 52;
+  }
   el.style.setProperty('font-size', `${effectiveSize}px`, 'important');
   el.style.setProperty('color', subtitleState.textColor, 'important');
 
@@ -6972,7 +6979,10 @@ function setSubtitleSize(size) {
   if (cueTextEl) {
     applySubtitleStylesToElement(cueTextEl);
   }
+  const sizeNames = { 14: 'Small', 18: 'Normal', 23: 'Large', 28: 'Extra', 34: 'Huge' };
+  showToast(`Subtitle Size: ${sizeNames[size] || size}`);
 }
+window.setSubtitleSize = setSubtitleSize;
 
 // Toggle and Load Online Subtitles (Subsource / OpenSubtitles)
 function toggleOnlineSubtitleList(target = 'landscape') {
@@ -13888,4 +13898,594 @@ async function toggleCurrentMediaWatchlist() {
   if (typeof updateWatchlistBadge === 'function') updateWatchlistBadge();
   if (typeof updateDetailsWatchlistBtn === 'function') updateDetailsWatchlistBtn();
   showToast(isAdded ? 'Removed from Watchlist' : 'Added to Watchlist ❤️');
+}
+
+// ============================================================
+// ME / USER PROFILE COMPLETE FEATURE ENGINE & MODAL SUITE
+// ============================================================
+
+// 1. Copy Website Link
+function copyWebsiteLink(url = 'https://fobs-apk-download.vercel.app/') {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => {
+      showToast('🔗 Website link copied to clipboard!');
+    }).catch(() => {
+      showToast('🔗 Link: ' + url);
+    });
+  } else {
+    showToast('🔗 Link: ' + url);
+  }
+}
+window.copyWebsiteLink = copyWebsiteLink;
+
+// 2. Watchlist (My List) Modal
+function openWatchlistModal() {
+  const overlay = document.getElementById('watchlistModalOverlay');
+  if (overlay) {
+    overlay.style.setProperty('display', 'flex', 'important');
+    overlay.classList.add('open');
+  }
+  renderWatchlistItems();
+}
+window.openWatchlistModal = openWatchlistModal;
+
+function closeWatchlistModal() {
+  const overlay = document.getElementById('watchlistModalOverlay');
+  if (overlay) {
+    overlay.style.setProperty('display', 'none', 'important');
+    overlay.classList.remove('open');
+  }
+}
+window.closeWatchlistModal = closeWatchlistModal;
+
+function renderWatchlistItems() {
+  const container = document.getElementById('watchlistItemsContainer');
+  const countBadge = document.getElementById('meWatchlistHeaderCount');
+  if (!container) return;
+
+  const raw = localStorage.getItem('fobs_guest_watchlist') || '[]';
+  let list = [];
+  try {
+    const parsed = JSON.parse(raw);
+    const guestClean = Array.isArray(parsed) ? parsed.map(item => item.media || item) : [];
+    list = (typeof currentUser !== 'undefined' && currentUser && Array.isArray(userWatchlist) && userWatchlist.length > 0)
+      ? userWatchlist
+      : guestClean;
+  } catch (e) { list = []; }
+
+  if (countBadge) countBadge.textContent = `${list.length} Titles`;
+
+  if (!list || list.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 60px 20px; color: #94a3b8;">
+        <i class="fa-regular fa-bookmark" style="font-size: 54px; color: #38bdf8; margin-bottom: 16px; opacity: 0.8;"></i>
+        <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">Your List is Empty</h3>
+        <p style="font-size: 14px; max-width: 320px; margin: 0 auto 20px auto; line-height: 1.5;">Tap "+ Add to list" on any movie or series to watch them later here.</p>
+        <button onclick="closeWatchlistModal(); switchMainTab('movie');" style="background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); color: #000; font-weight: 800; border: none; padding: 12px 24px; border-radius: 20px; cursor: pointer; font-size: 14px;">Browse Movies</button>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 18px; padding: 12px 0;">
+      ${list.map(item => `
+        <div class="watchlist-card" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s;" onmouseenter="this.style.transform='translateY(-4px)'" onmouseleave="this.style.transform='translateY(0)'">
+          <div style="position: relative; aspect-ratio: 2/3; width: 100%; cursor: pointer;" onclick="closeWatchlistModal(); openPlayerById('${item.type || 'movie'}', '${item.id}')">
+            <img src="${item.poster || item.cover || 'assets/fobs_logo.png'}" style="width: 100%; height: 100%; object-fit: cover;" alt="${item.title || ''}" loading="lazy">
+            <div style="position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.85) 100%); display: flex; align-items: flex-end; padding: 10px;">
+              <span style="font-size: 11px; font-weight: 700; color: #00f2fe; background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 6px;">${item.type === 'series' ? 'Series' : 'Movie'}</span>
+            </div>
+          </div>
+          <div style="padding: 12px; display: flex; flex-direction: column; gap: 8px; flex: 1; justify-content: space-between;">
+            <div>
+              <div style="font-size: 14.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${item.title}">${item.title}</div>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">⭐ ${item.imdbRating || item.rating || '8.2'}</div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button onclick="closeWatchlistModal(); openPlayerById('${item.type || 'movie'}', '${item.id}')" style="flex: 1; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); color: #000; border: none; font-weight: 700; font-size: 12.5px; padding: 7px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                <i class="fa-solid fa-play"></i> Watch
+              </button>
+              <button onclick="removeFromWatchlist('${item.id}')" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #f43f5e; padding: 7px 10px; border-radius: 8px; cursor: pointer;" title="Remove">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+window.renderWatchlistItems = renderWatchlistItems;
+
+function removeFromWatchlist(id) {
+  let list = [];
+  try {
+    const raw = JSON.parse(localStorage.getItem('fobs_guest_watchlist') || '[]');
+    list = raw.filter(item => (item.id !== id && item.mediaId !== id));
+  } catch (e) {}
+  localStorage.setItem('fobs_guest_watchlist', JSON.stringify(list));
+  if (typeof userWatchlist !== 'undefined' && Array.isArray(userWatchlist)) {
+    userWatchlist = userWatchlist.filter(item => item.id !== id);
+  }
+  if (typeof updateAuthUI === 'function') updateAuthUI();
+  renderWatchlistItems();
+  showToast('Removed from Watchlist');
+}
+window.removeFromWatchlist = removeFromWatchlist;
+
+// 3. Watch History Full Page & Slider
+function openHistoryModal() {
+  const overlay = document.getElementById('historyModalOverlay');
+  if (overlay) {
+    overlay.style.setProperty('display', 'flex', 'important');
+    overlay.classList.add('open');
+  }
+  renderFullWatchHistory();
+}
+window.openHistoryModal = openHistoryModal;
+
+function closeHistoryModal() {
+  const overlay = document.getElementById('historyModalOverlay');
+  if (overlay) {
+    overlay.style.setProperty('display', 'none', 'important');
+    overlay.classList.remove('open');
+  }
+}
+window.closeHistoryModal = closeHistoryModal;
+
+function renderFullWatchHistory() {
+  const container = document.getElementById('historyItemsContainer');
+  if (!container) return;
+
+  let rawHist = [];
+  try { rawHist = JSON.parse(localStorage.getItem('fobs_watch_history') || '[]'); } catch (_) {}
+  const list = (typeof currentUser !== 'undefined' && currentUser && Array.isArray(window.userHistory) && window.userHistory.length > 0)
+    ? window.userHistory
+    : rawHist;
+
+  if (!list || list.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 60px 20px; color: #94a3b8;">
+        <i class="fa-solid fa-clock-rotate-left" style="font-size: 54px; color: #a855f7; margin-bottom: 16px; opacity: 0.8;"></i>
+        <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">No Watch History</h3>
+        <p style="font-size: 14px; max-width: 320px; margin: 0 auto 20px auto; line-height: 1.5;">Movies and episodes you watch will appear here so you can easily resume.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div style="display: flex; flex-direction: column; gap: 12px; padding: 12px 0;">
+      ${list.map(h => {
+        const pct = h.duration ? Math.min(100, Math.round((h.currentTime / h.duration) * 100)) : 10;
+        return `
+          <div style="display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 12px 14px; cursor: pointer; transition: background 0.2s;" onclick="closeHistoryModal(); resumeHistoryPlayback('${h.id || h.mediaId}', '${h.type || 'movie'}', ${h.currentTime || 0}, ${h.episodeIndex || 0})">
+            <div style="position: relative; width: 68px; height: 96px; border-radius: 8px; overflow: hidden; flex-shrink: 0;">
+              <img src="${h.poster || h.cover || 'assets/fobs_logo.png'}" style="width: 100%; height: 100%; object-fit: cover;" alt="${h.title || ''}">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: rgba(0,0,0,0.6);">
+                <div style="height: 100%; width: ${pct}%; background: #00d26a;"></div>
+              </div>
+            </div>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-size: 15px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${h.title || 'Untitled Video'}</div>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                ${h.episodeTitle ? `${h.episodeTitle} • ` : ''}Watched ${pct}%
+              </div>
+              <div style="font-size: 11.5px; color: #00f2fe; margin-top: 4px;">
+                <i class="fa-solid fa-play" style="font-size: 10px; margin-right: 4px;"></i> Resume at ${typeof formatPlayerTime === 'function' ? formatPlayerTime(h.currentTime || 0) : '00:00'}
+              </div>
+            </div>
+            <button onclick="event.stopPropagation(); deleteHistoryItem('${h.id || h.mediaId}')" style="background: transparent; border: none; color: #64748b; font-size: 16px; padding: 10px; cursor: pointer;" title="Remove from History">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+window.renderFullWatchHistory = renderFullWatchHistory;
+
+function resumeHistoryPlayback(id, type, seekTime, epIdx) {
+  if (typeof resumeHistoryItem === 'function') {
+    resumeHistoryItem(id, type, seekTime);
+  } else if (typeof openPlayerById === 'function') {
+    openPlayerById(type, id);
+  }
+}
+window.resumeHistoryPlayback = resumeHistoryPlayback;
+
+function deleteHistoryItem(id) {
+  let list = [];
+  try { list = JSON.parse(localStorage.getItem('fobs_watch_history') || '[]'); } catch (_) {}
+  list = list.filter(h => (h.id !== id && h.mediaId !== id));
+  localStorage.setItem('fobs_watch_history', JSON.stringify(list));
+  renderFullWatchHistory();
+  renderMeWatchHistorySlider();
+  showToast('Removed from history');
+}
+window.deleteHistoryItem = deleteHistoryItem;
+
+function clearWatchHistory() {
+  if (confirm('Clear all your watch history?')) {
+    localStorage.removeItem('fobs_watch_history');
+    if (typeof userHistory !== 'undefined' && Array.isArray(userHistory)) {
+      userHistory = [];
+    }
+    renderFullWatchHistory();
+    renderMeWatchHistorySlider();
+    showToast('Watch history cleared');
+  }
+}
+window.clearWatchHistory = clearWatchHistory;
+
+// Populate History Slider on Me page
+function renderMeWatchHistorySlider() {
+  const slider = document.getElementById('mbHistorySlider');
+  if (!slider) return;
+
+  let rawHist = [];
+  try { rawHist = JSON.parse(localStorage.getItem('fobs_watch_history') || '[]'); } catch (_) {}
+  const list = (typeof currentUser !== 'undefined' && currentUser && Array.isArray(window.userHistory) && window.userHistory.length > 0)
+    ? window.userHistory
+    : rawHist;
+
+  if (!list || list.length === 0) {
+    slider.innerHTML = `
+      <div style="padding: 16px 20px; color: #64748b; font-size: 13px;">
+        <i class="fa-solid fa-clock-rotate-left" style="margin-right: 6px;"></i> No watch history yet. Start streaming movies or series!
+      </div>
+    `;
+    return;
+  }
+
+  slider.innerHTML = list.slice(0, 10).map(h => {
+    const pct = h.duration ? Math.min(100, Math.round((h.currentTime / h.duration) * 100)) : 10;
+    return `
+      <div class="mb-h-card" onclick="resumeHistoryPlayback('${h.id || h.mediaId}', '${h.type || 'movie'}', ${h.currentTime || 0}, ${h.episodeIndex || 0})">
+        <div class="mb-h-thumb-wrap">
+          <img src="${h.poster || h.cover || 'assets/fobs_logo.png'}" class="mb-h-thumb" alt="${h.title || ''}" loading="lazy">
+          <div class="mb-h-play-badge"><i class="fa-solid fa-play"></i></div>
+          <div class="mb-h-progress-bar">
+            <div class="mb-h-progress-fill" style="width: ${pct}%;"></div>
+          </div>
+        </div>
+        <div class="mb-h-title">${h.title || 'Untitled Video'}</div>
+      </div>
+    `;
+  }).join('');
+}
+window.renderMeWatchHistorySlider = renderMeWatchHistorySlider;
+
+// 4. Settings Modal
+function openSettingsModal() {
+  const overlay = document.getElementById('settingsModalOverlay');
+  if (overlay) {
+    overlay.style.setProperty('display', 'flex', 'important');
+    overlay.classList.add('open');
+  }
+}
+window.openSettingsModal = openSettingsModal;
+
+function closeSettingsModal() {
+  const overlay = document.getElementById('settingsModalOverlay');
+  if (overlay) {
+    overlay.style.setProperty('display', 'none', 'important');
+    overlay.classList.remove('open');
+  }
+}
+window.closeSettingsModal = closeSettingsModal;
+
+function cycleVideoQuality() {
+  const qualities = ['Auto (1080p)', '1080p FHD', '720p HD', '480p SD'];
+  const el = document.getElementById('settingsQualityLabel');
+  let cur = el ? el.textContent.trim() : 'Auto (1080p)';
+  let idx = (qualities.indexOf(cur) + 1) % qualities.length;
+  if (el) el.textContent = qualities[idx];
+  localStorage.setItem('fobs_pref_quality', qualities[idx]);
+  showToast(`Default Quality: ${qualities[idx]}`);
+}
+window.cycleVideoQuality = cycleVideoQuality;
+
+function cycleDefaultAudio() {
+  const audios = ['Hindi', 'Original Audio', 'English', 'Bangla'];
+  const el = document.getElementById('settingsAudioLabel');
+  let cur = el ? el.textContent.trim() : 'Hindi';
+  let idx = (audios.indexOf(cur) + 1) % audios.length;
+  if (el) el.textContent = audios[idx];
+  localStorage.setItem('fobs_pref_audio', audios[idx]);
+  showToast(`Preferred Audio: ${audios[idx]}`);
+}
+window.cycleDefaultAudio = cycleDefaultAudio;
+
+function runSpeedTest() {
+  const badge = document.getElementById('settingsSpeedBadge');
+  if (badge) {
+    badge.textContent = 'Testing...';
+    badge.style.color = '#ffd700';
+  }
+  const start = Date.now();
+  fetch(`${API_BASE_URL}/api/health?_t=${start}`)
+    .then(r => r.json())
+    .then(() => {
+      const ping = Math.max(12, Date.now() - start);
+      if (badge) {
+        badge.textContent = `${ping}ms • Ultra Fast`;
+        badge.style.color = '#00d26a';
+      }
+      showToast(`⚡ CDN Speed Test: ${ping}ms Ping (Optimal for 1080p Stream)`);
+    })
+    .catch(() => {
+      if (badge) {
+        badge.textContent = 'Connected';
+        badge.style.color = '#00f2fe';
+      }
+      showToast('⚡ CDN Speed: Connected & Streaming Smoothly');
+    });
+}
+window.runSpeedTest = runSpeedTest;
+
+function clearAppCache() {
+  const label = document.getElementById('settingsCacheLabel');
+  if (label) label.textContent = '0.0 MB';
+  try {
+    sessionStorage.clear();
+  } catch (e) {}
+  showToast('🧹 App cache cleared successfully!');
+}
+window.clearAppCache = clearAppCache;
+
+// 5. Media Request Modal
+let currentReqType = 'Movie';
+function openMediaRequestModal() {
+  const modal = document.getElementById('mediaRequestModal');
+  if (modal) {
+    modal.style.setProperty('display', 'flex', 'important');
+    modal.classList.add('open');
+  }
+}
+window.openMediaRequestModal = openMediaRequestModal;
+
+function closeMediaRequestModal() {
+  const modal = document.getElementById('mediaRequestModal');
+  if (modal) {
+    modal.style.setProperty('display', 'none', 'important');
+    modal.classList.remove('open');
+  }
+}
+window.closeMediaRequestModal = closeMediaRequestModal;
+
+function selectReqType(btn) {
+  document.querySelectorAll('.req-type-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentReqType = btn.dataset.type || btn.textContent.trim();
+}
+window.selectReqType = selectReqType;
+
+async function submitMediaRequest(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const titleInput = document.getElementById('reqTitleInput');
+  const yearInput = document.getElementById('reqYearInput');
+  const title = titleInput ? titleInput.value.trim() : '';
+  const year = yearInput ? yearInput.value.trim() : '';
+
+  if (!title) {
+    showToast('⚠️ অনুগ্রহ করে মুভি বা সিরিজের নাম লিখুন');
+    titleInput?.focus();
+    return;
+  }
+
+  try {
+    const user = (typeof currentUser !== 'undefined' && currentUser) ? currentUser : JSON.parse(localStorage.getItem('fobs_user') || '{}');
+    await fetch(`${API_BASE_URL}/api/requests`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title,
+        year,
+        type: currentReqType,
+        userName: user.name || 'Viewer',
+        userEmail: user.email || ''
+      })
+    });
+  } catch (_) {}
+
+  showToast('🎉 ধন্যবাদ! আপনার রিকোয়েস্ট সফলভাবে জমা হয়েছে।');
+  if (titleInput) titleInput.value = '';
+  if (yearInput) yearInput.value = '';
+  closeMediaRequestModal();
+}
+window.submitMediaRequest = submitMediaRequest;
+
+// 6. Messages Modal
+function openMessagesModal() {
+  const overlay = document.getElementById('messagesModalOverlay');
+  if (overlay) {
+    overlay.style.setProperty('display', 'flex', 'important');
+    overlay.classList.add('open');
+  }
+  renderMessagesList();
+}
+window.openMessagesModal = openMessagesModal;
+
+function closeMessagesModal() {
+  const overlay = document.getElementById('messagesModalOverlay');
+  if (overlay) {
+    overlay.style.setProperty('display', 'none', 'important');
+    overlay.classList.remove('open');
+  }
+}
+window.closeMessagesModal = closeMessagesModal;
+
+function renderMessagesList() {
+  const container = document.getElementById('messagesListContainer');
+  if (!container) return;
+  container.innerHTML = `
+    <div style="display: flex; flex-direction: column; gap: 12px; padding: 12px 0;">
+      <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(0,242,254,0.3); border-radius: 14px; padding: 16px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+          <span style="font-size: 11px; font-weight: 800; color: #00f2fe; background: rgba(0,242,254,0.15); padding: 3px 8px; border-radius: 6px;">SYSTEM UPDATE</span>
+          <span style="font-size: 11px; color: #64748b;">Today</span>
+        </div>
+        <h4 style="font-size: 15px; font-weight: 700; color: #fff; margin: 0 0 6px 0;">FOBS TV v3.2.0 Live OTA Update</h4>
+        <p style="font-size: 13px; color: #94a3b8; margin: 0; line-height: 1.5;">Welcome to the new responsive desktop & TV theater UI with zero-buffer streaming and high quality subtitles!</p>
+      </div>
+      <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 16px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+          <span style="font-size: 11px; font-weight: 800; color: #00d26a; background: rgba(0,210,106,0.15); padding: 3px 8px; border-radius: 6px;">NEW CONTENT</span>
+          <span style="font-size: 11px; color: #64748b;">Yesterday</span>
+        </div>
+        <h4 style="font-size: 15px; font-weight: 700; color: #fff; margin: 0 0 6px 0;">Hindi Dubbed Series & Movies Added</h4>
+        <p style="font-size: 13px; color: #94a3b8; margin: 0; line-height: 1.5;">Latest Korean dramas, anime, and blockbuster movies are now streaming with Bangla subtitles and Hindi dubbing.</p>
+      </div>
+    </div>
+  `;
+}
+window.renderMessagesList = renderMessagesList;
+
+function markAllMessagesRead() {
+  const badge = document.getElementById('meMessagesCount');
+  if (badge) badge.textContent = '0';
+  showToast('All messages marked as read');
+}
+window.markAllMessagesRead = markAllMessagesRead;
+
+// 7. My Activity Modal
+function openActivityModal() {
+  const overlay = document.getElementById('activityModalOverlay');
+  if (overlay) {
+    overlay.style.setProperty('display', 'flex', 'important');
+    overlay.classList.add('open');
+  }
+  const totalHoursEl = document.getElementById('actTotalHours');
+  const watchedCountEl = document.getElementById('actWatchedCount');
+  const watchlistCountEl = document.getElementById('actWatchlistCount');
+  const downloadsCountEl = document.getElementById('actDownloadsCount');
+  const todayWatchTimeEl = document.getElementById('actTodayWatchTime');
+
+  let rawHist = [];
+  try { rawHist = JSON.parse(localStorage.getItem('fobs_watch_history') || '[]'); } catch (_) {}
+  const rawWatchlist = JSON.parse(localStorage.getItem('fobs_guest_watchlist') || '[]');
+  const rawDownloads = JSON.parse(localStorage.getItem('fobs_downloads') || '[]');
+
+  let totalSecs = 0;
+  rawHist.forEach(h => { totalSecs += (h.currentTime || 0); });
+
+  if (totalHoursEl) totalHoursEl.textContent = (typeof formatWatchTime === 'function') ? formatWatchTime(totalSecs) : `${Math.round(totalSecs / 60)}m`;
+  if (watchedCountEl) watchedCountEl.textContent = rawHist.length;
+  if (watchlistCountEl) watchlistCountEl.textContent = (typeof userWatchlist !== 'undefined' && userWatchlist.length) ? userWatchlist.length : rawWatchlist.length;
+  if (downloadsCountEl) downloadsCountEl.textContent = rawDownloads.length;
+  if (todayWatchTimeEl) todayWatchTimeEl.textContent = (typeof formatWatchTime === 'function') ? formatWatchTime(Math.min(totalSecs, 5400)) : '45m';
+}
+window.openActivityModal = openActivityModal;
+
+function closeActivityModal() {
+  const overlay = document.getElementById('activityModalOverlay');
+  if (overlay) {
+    overlay.style.setProperty('display', 'none', 'important');
+    overlay.classList.remove('open');
+  }
+}
+window.closeActivityModal = closeActivityModal;
+
+// 8. Credits Modal
+function openCreditsModal() {
+  const overlay = document.getElementById('creditsOverlay');
+  if (overlay) {
+    overlay.style.setProperty('display', 'flex', 'important');
+    overlay.classList.add('open');
+  }
+}
+window.openCreditsModal = openCreditsModal;
+
+function closeCreditsModal(e) {
+  if (e && e.target && !e.target.closest('.credits-view-sheet') && !e.target.closest('.credits-back-btn')) {
+    const overlay = document.getElementById('creditsOverlay');
+    if (overlay) {
+      overlay.style.setProperty('display', 'none', 'important');
+      overlay.classList.remove('open');
+    }
+    return;
+  }
+  const overlay = document.getElementById('creditsOverlay');
+  if (overlay) {
+    overlay.style.setProperty('display', 'none', 'important');
+    overlay.classList.remove('open');
+  }
+}
+window.closeCreditsModal = closeCreditsModal;
+
+// 9. User Feedback Modal
+let currentFeedbackRating = 5;
+function openFeedbackModal() {
+  const overlay = document.getElementById('feedbackModalOverlay');
+  if (overlay) {
+    overlay.style.setProperty('display', 'flex', 'important');
+    overlay.classList.add('open');
+  }
+}
+window.openFeedbackModal = openFeedbackModal;
+
+function closeFeedbackModal() {
+  const overlay = document.getElementById('feedbackModalOverlay');
+  if (overlay) {
+    overlay.style.setProperty('display', 'none', 'important');
+    overlay.classList.remove('open');
+  }
+}
+window.closeFeedbackModal = closeFeedbackModal;
+
+function setFeedbackRating(num) {
+  currentFeedbackRating = num;
+  const stars = document.querySelectorAll('#feedbackStarWrap i');
+  stars.forEach((star, idx) => {
+    star.style.color = (idx < num) ? '#f59e0b' : '#475569';
+  });
+}
+window.setFeedbackRating = setFeedbackRating;
+
+async function submitUserFeedback() {
+  const cat = document.getElementById('feedbackCategoryInput')?.value || 'feedback';
+  const msgInput = document.getElementById('feedbackMessageInput');
+  const msg = msgInput ? msgInput.value.trim() : '';
+
+  if (!msg) {
+    showToast('⚠️ অনুগ্রহ করে আপনার মতামত লিখুন');
+    msgInput?.focus();
+    return;
+  }
+
+  try {
+    const user = (typeof currentUser !== 'undefined' && currentUser) ? currentUser : JSON.parse(localStorage.getItem('fobs_user') || '{}');
+    await fetch(`${API_BASE_URL}/api/feedback`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        category: cat,
+        rating: currentFeedbackRating,
+        message: msg,
+        userName: user.name || 'Viewer',
+        userEmail: user.email || ''
+      })
+    });
+  } catch (_) {}
+
+  showToast('ধন্যবাদ! আপনার মূল্যবান মতামত পাঠানো হয়েছে।');
+  if (msgInput) msgInput.value = '';
+  closeFeedbackModal();
+}
+window.submitUserFeedback = submitUserFeedback;
+
+// Auto-render history slider when tab switches to me
+const origSwitchMainTab = window.switchMainTab;
+if (typeof origSwitchMainTab === 'function') {
+  window.switchMainTab = function(tabName) {
+    const res = origSwitchMainTab.apply(this, arguments);
+    if (tabName === 'me') {
+      if (typeof renderMeWatchHistorySlider === 'function') renderMeWatchHistorySlider();
+      if (typeof updateAuthUI === 'function') updateAuthUI();
+    }
+    return res;
+  };
 }

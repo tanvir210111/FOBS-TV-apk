@@ -3668,14 +3668,14 @@ body.is-fullscreen .ls-bottom-bar {
 .ls-drawer-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
+  background: rgba(0, 0, 0, 0.65) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   z-index: 2000005 !important;
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
 .ls-player-ui.has-drawer-open .ls-drawer-backdrop {
@@ -3684,7 +3684,7 @@ body.is-fullscreen .ls-bottom-bar {
   visibility: visible;
 }
 
-/* Side Drawers (Screenshot 3, 4, 5) */
+/* Side Drawers (Screenshot 3, 4, 5) - Zero Lag Hardware Accelerated */
 .ls-player-ui {
   overflow: hidden !important;
 }
@@ -3695,18 +3695,19 @@ body.is-fullscreen .ls-bottom-bar {
   right: 0;
   bottom: 0;
   z-index: 2000010 !important;
-  background: rgba(12, 14, 20, 0.96);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: #0c0e14 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   border-left: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: none !important;
   visibility: hidden !important;
   pointer-events: none !important;
   transform: translateX(100%);
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.28s;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.22s;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  will-change: transform !important;
 }
 
 .ls-side-drawer:not(.open) {
@@ -11705,83 +11706,132 @@ body.intro-active {
     transition: transform 0.15s ease, box-shadow 0.15s ease !important;
   }
 
-  /* ME / USER PROFILE TAB VIEW (PC & TV SCALED) */
+  /* ME / USER PROFILE TAB VIEW (PC & TV FULL PAGE SCALED) */
   #meView.me-tab-view {
-    max-width: 960px !important;
+    width: 100% !important;
+    max-width: 1400px !important;
     margin: 0 auto !important;
-    padding: 32px 32px 90px 32px !important;
+    padding: 36px 48px 100px 48px !important;
+    box-sizing: border-box !important;
   }
 
-  .mb-profile-header {
-    padding: 24px 30px !important;
-    border-radius: 20px !important;
+  .mb-fullscreen-page {
+    width: 92% !important;
+    max-width: 1200px !important;
+    height: 90vh !important;
+    max-height: 90vh !important;
+    border-radius: 24px !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95), 0 0 40px rgba(0, 242, 254, 0.12) !important;
   }
 
-  .mb-avatar-circle {
-    width: 68px !important;
-    height: 68px !important;
-    font-size: 28px !important;
+  .mb-page-header {
+    padding: 20px 32px !important;
   }
 
-  .mb-name-text {
+  .mb-page-title {
     font-size: 24px !important;
+    font-weight: 800 !important;
   }
 
-  .mb-id-pill {
-    font-size: 14.5px !important;
-    padding: 5px 14px !important;
-  }
-
-  .mb-header-login-btn {
-    font-size: 15px !important;
-    padding: 10px 22px !important;
-  }
-
-  .mb-official-strip {
-    font-size: 15px !important;
-    padding: 14px 22px !important;
-    border-radius: 14px !important;
-  }
-
-  .mb-history-header {
+  .mb-page-back-btn,
+  .mb-page-action-btn {
+    width: 44px !important;
+    height: 44px !important;
     font-size: 18px !important;
   }
 
+  .mb-history-page-body {
+    padding: 24px 32px 48px 32px !important;
+  }
+
+  .mb-profile-header {
+    padding: 28px 36px !important;
+    border-radius: 24px !important;
+    margin-bottom: 24px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .mb-avatar-circle {
+    width: 80px !important;
+    height: 80px !important;
+    font-size: 32px !important;
+  }
+
+  .mb-name-text {
+    font-size: 26px !important;
+    font-weight: 800 !important;
+  }
+
+  .mb-id-pill {
+    font-size: 15px !important;
+    padding: 6px 16px !important;
+    border-radius: 20px !important;
+  }
+
+  .mb-header-login-btn {
+    font-size: 16px !important;
+    padding: 12px 26px !important;
+    border-radius: 16px !important;
+  }
+
+  .mb-official-strip {
+    font-size: 16px !important;
+    padding: 16px 28px !important;
+    border-radius: 16px !important;
+    margin-bottom: 24px !important;
+  }
+
+  .mb-history-section {
+    margin-bottom: 24px !important;
+  }
+
+  .mb-history-header {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    margin-bottom: 14px !important;
+  }
+
   .mb-h-title {
-    font-size: 14px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
   }
 
   .mb-menu-group {
-    border-radius: 20px !important;
-    margin-bottom: 22px !important;
+    border-radius: 22px !important;
+    margin-bottom: 24px !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.07) !important;
   }
 
   .mb-menu-row {
-    padding: 18px 24px !important;
+    padding: 22px 30px !important;
   }
 
   .mb-m-left {
-    font-size: 16.5px !important;
-    gap: 16px !important;
+    font-size: 18px !important;
+    gap: 18px !important;
+    font-weight: 700 !important;
   }
 
   .mb-m-left i {
-    font-size: 20px !important;
-    width: 24px !important;
+    font-size: 22px !important;
+    width: 28px !important;
   }
 
   .mb-m-right {
-    font-size: 15.5px !important;
+    font-size: 16.5px !important;
+    gap: 12px !important;
   }
 
   .mb-m-right i {
-    font-size: 14px !important;
+    font-size: 15px !important;
   }
 
-  /* SUBTITLE SCALING ON PC & TV */
+  /* SUBTITLE SCALING ON PC & TV - Controlled directly by JS font-size for instant Small/Normal/Large/Extra/Huge response */
   #customSubtitleOverlay .custom-subtitle-cue,
   .custom-subtitle-cue {
-    font-size: clamp(26px, 2.6vw, 44px) !important;
     line-height: 1.45 !important;
     padding: 6px 18px !important;
   }
