@@ -22,8 +22,13 @@ function createWindow() {
 
   Menu.setApplicationMenu(null);
 
-  // Load the live FOBS TV platform in 16:9 widescreen
-  mainWindow.loadURL('https://fobstv.duckdns.org/');
+  // Load the FOBS TV frontend in 16:9 widescreen (connects to live backend API)
+  const localIndex = path.join(__dirname, '..', 'public', 'index.html');
+  if (require('fs').existsSync(localIndex)) {
+    mainWindow.loadFile(localIndex);
+  } else {
+    mainWindow.loadURL('https://fobstv.duckdns.org/');
+  }
 
   mainWindow.on('closed', () => {
     mainWindow = null;
