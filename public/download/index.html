@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FOBS TV - ডাউনলোড করুন (Mobile, Android TV & Windows PC)</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07070a;
+      --card-bg: rgba(18, 20, 29, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --primary: #00f2fe;
+      --primary-hover: #4facfe;
+      --accent: #ff3366;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient background glow */
+    .bg-glow-1 {
+      position: absolute;
+      top: -150px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.05) 50%, transparent 70%);
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Top Navbar */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .brand img {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+    }
+
+    .brand-text h1 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #fff 40%, #00f2fe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-text span {
+      font-size: 11px;
+      color: var(--text-sub);
+      display: block;
+      margin-top: -2px;
+    }
+
+    .live-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.25);
+      color: #4ade80;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #22c55e;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 60px 10px 40px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 30px;
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .hero-title {
+      font-size: clamp(32px, 5vw, 54px);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      letter-spacing: -1px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(15px, 2vw, 18px);
+      color: var(--text-sub);
+      max-width: 680px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+
+    /* Cards Grid */
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 70px;
+    }
+
+    .download-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px 26px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .download-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(0, 242, 254, 0.35);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 242, 254, 0.15);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--primary);
+    }
+
+    .card-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-mobile { background: rgba(0, 242, 254, 0.15); color: #00f2fe; border: 1px solid rgba(0, 242, 254, 0.3); }
+    .badge-tv { background: rgba(250, 204, 21, 0.15); color: #facc15; border: 1px solid rgba(250, 204, 21, 0.3); }
+    .badge-pc { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+
+    .card-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .card-meta {
+      font-size: 13px;
+      color: var(--text-sub);
+      margin-bottom: 20px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .card-features {
+      list-style: none;
+      margin-bottom: 30px;
+      flex: 1;
+    }
+
+    .card-features li {
+      font-size: 14px;
+      color: #cbd5e1;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.4;
+    }
+
+    .card-features li i {
+      color: #22c55e;
+      font-size: 14px;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+      color: #07070a;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(0, 242, 254, 0.25);
+    }
+
+    .btn-download:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 25px rgba(0, 242, 254, 0.45);
+    }
+
+    .btn-download-pc {
+      background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(168, 85, 247, 0.25);
+    }
+
+    .btn-download-pc:hover {
+      box-shadow: 0 6px 25px rgba(168, 85, 247, 0.45);
+    }
+
+    .btn-download-tv {
+      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.25);
+    }
+
+    .btn-download-tv:hover {
+      box-shadow: 0 6px 25px rgba(245, 158, 11, 0.45);
+    }
+
+    /* Highlight Section */
+    .highlights-section {
+      background: rgba(15, 18, 26, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 40px 30px;
+      margin-bottom: 70px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 30px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-box {
+      text-align: center;
+      padding: 16px;
+    }
+
+    .feature-icon {
+      font-size: 30px;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .feature-box h4 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .feature-box p {
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+
+    /* Guide Section */
+    .guide-box {
+      background: rgba(18, 20, 29, 0.7);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 40px;
+    }
+
+    .guide-box h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .guide-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 12px;
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(0, 242, 254, 0.15);
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-content h5 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .step-content p {
+      font-size: 12px;
+      color: var(--text-sub);
+      line-height: 1.4;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--text-sub);
+      font-size: 13px;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow-1"></div>
+
+  <div class="container">
+    <!-- Navbar -->
+    <header class="navbar">
+      <a href="/" class="brand">
+        <img src="/favicon.png" alt="FOBS TV Logo">
+        <div class="brand-text">
+          <h1>FOBS TV</h1>
+          <span>Live Streaming Platform</span>
+        </div>
+      </a>
+      <div class="live-status">
+        <span class="live-dot"></span>
+        <span>v3.2.0 • 16:9 Edition Live</span>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-badge">অফিশিয়াল ডাউনলোড হাব</div>
+      <h2 class="hero-title">সীমাহীন সিনেমা ও সিরিজ <br><span>মোবাইল, টিভি এবং পিসিতে</span></h2>
+      <p class="hero-subtitle">কোনো সাবস্ক্রিপশন ছাড়াই ফুল এইচডি ও 4K কোয়ালিটিতে বাংলা সাবটাইটেল সহ উপভোগ করুন আপনার পছন্দের সকল কন্টেন্ট। নিচের তালিকা থেকে আপনার ডিভাইসের অ্যাপটি নামিয়ে নিন।</p>
+    </section>
+
+    <!-- Download Cards -->
+    <div class="download-grid">
+      <!-- 1. Android Mobile -->
+      <div class="download-card">
+        <div class="card-top">
+          <div class="card-icon"><i class="fa-brands fa-android"></i></div>
+          <span class="card-badge badge-mobile">Mobile APK</span>
+        </div>
+        <h3 class="card-title">Android Mobile</h3>
+        <div class="card-meta">
+          <span><i class="fa-regular fa-hard-drive"></i> ~10.1 MB</span>
+          <span><i class="fa-solid fa-code-branch"></i> v3.2.0</span>
+          <span><i class="fa-solid fa-shield-halved"></i> Verified</span>
+        </div>
+        <ul class="card-features">
+          <li><i class="fa-solid fa-check"></i> 1080p ফুল এইচডি অটো-রিনিউয়িং স্ট্রিম</li>
+          <li><i class="fa-solid fa-check"></i> FOBS টিম স্পেশাল বাংলা সাবটাইটেল</li>
+          <li><i class="fa-solid fa-check"></i> ব্যাকগ্রাউন্ড ডাউনলোড ও পজ/রেজ্যুম সাপোর্ট</li>
+          <li><i class="fa-solid fa-check"></i> ২০০+ লাইভ টিভি চ্যানেল সম্পূর্ণ ফ্রি</li>
+        </ul>
+        <a href="/download/apk" class="btn-download">
+          <i class="fa-solid fa-download"></i> মোবাইল APK ডাউনলোড
+        </a>
+      </div>
+
+      <!-- 2. Android TV -->
+      <div class="download-card">
+        <div class="card-top">
+          <div class="card-icon" style="color: #facc15;"><i class="fa-solid fa-tv"></i></div>
+          <span class="card-badge badge-tv">16:9 TV Edition</span>
+        </div>
+        <h3 class="card-title">Android TV & Box</h3>
+        <div class="card-meta">
+          <span><i class="fa-regular fa-hard-drive"></i> ~10.1 MB</span>
+          <span><i class="fa-solid fa-desktop"></i> 16:9 Leanback</span>
+          <span><i class="fa-solid fa-gamepad"></i> D-Pad Remote</span>
+        </div>
+        <ul class="card-features">
+          <li><i class="fa-solid fa-check"></i> 16:9 ওয়াইডস্ক্রিন সিনেমাটিক ডিসপ্লে লেআউট</li>
+          <li><i class="fa-solid fa-check"></i> টিভি রিমোটের বোতাম (D-Pad) দিয়ে সম্পূর্ণ নেভিগেশন</li>
+          <li><i class="fa-solid fa-check"></i> রিমোটের OK বোতাম দিয়ে সরাসরি প্লেব্যাক</li>
+          <li><i class="fa-solid fa-check"></i> অ্যান্ড্রয়েড টিভি, টিভি বক্স ও ফায়ার টিভিতে ১০০% কম্প্যাটিবল</li>
+        </ul>
+        <a href="/download/FOBS_TV_TV_and_Mobile.apk" class="btn-download btn-download-tv">
+          <i class="fa-solid fa-tv"></i> টিভি APK ডাউনলোড করুন
+        </a>
+      </div>
+
+      <!-- 3. Windows PC -->
+      <div class="download-card">
+        <div class="card-top">
+          <div class="card-icon" style="color: #c084fc;"><i class="fa-brands fa-windows"></i></div>
+          <span class="card-badge badge-pc">Windows Desktop</span>
+        </div>
+        <h3 class="card-title">Windows PC (.exe)</h3>
+        <div class="card-meta">
+          <span><i class="fa-regular fa-hard-drive"></i> ~114 MB</span>
+          <span><i class="fa-solid fa-microchip"></i> Win 10/11 (64-bit)</span>
+          <span><i class="fa-solid fa-bolt"></i> Portable</span>
+        </div>
+        <ul class="card-features">
+          <li><i class="fa-solid fa-check"></i> কোনো ব্রাউজার ছাড়াই সরাসরি ডেস্কটপ অ্যাপ</li>
+          <li><i class="fa-solid fa-check"></i> মাউস ও কীবোর্ড কন্ট্রোল (Spacebar দিয়ে Pause, Arrow দিয়ে Seek)</li>
+          <li><i class="fa-solid fa-check"></i> পোর্টেবল জিপ — ইনস্টলেশন ছাড়াই ডাবল ক্লিকে রান</li>
+          <li><i class="fa-solid fa-check"></i> 4K ও ফুল এইচডি মনিটরে সর্বোচ্চ স্পষ্ট ভিডিও প্লেব্যাক</li>
+        </ul>
+        <a href="/download/FOBS_TV_PC_v1.0.0.zip" class="btn-download btn-download-pc">
+          <i class="fa-solid fa-file-zipper"></i> উইন্ডোজ PC অ্যাপ ডাউনলোড (.zip)
+        </a>
+      </div>
+    </div>
+
+    <!-- Highlights Grid -->
+    <section class="highlights-section">
+      <h3 class="section-title">কেন FOBS TV সবার সেরা?</h3>
+      <div class="features-grid">
+        <div class="feature-box">
+          <div class="feature-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+          <h4>জিরো বাফারিং সিডিএন</h4>
+          <p>হাই-স্পিড ডেডিকেটেড সিডিএন নোড দিয়ে বাফারিং ছাড়া যেকোনো ইন্টারনেট স্পিডে মসৃণ স্ট্রিমিং।</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon"><i class="fa-solid fa-language"></i></div>
+          <h4>বাংলা সাবটাইটেল</h4>
+          <p>FOBS টিমের নিজস্ব অনুবাদকৃত নিখুঁত বাংলা সাবটাইটেল এবং অফিশিয়াল ইংলিশ সাবটাইটেল।</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon"><i class="fa-solid fa-film"></i></div>
+          <h4>বিশাল কন্টেন্ট লাইব্রেরি</h4>
+          <p>কে-ড্রামা, হলিউড, বলিউড, অ্যানিমে এবং তুর্কি সিরিজসহ প্রতিদিন যুক্ত হচ্ছে নতুন পর্ব ও মুভি।</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon"><i class="fa-solid fa-satellite-dish"></i></div>
+          <h4>২০০+ লাইভ টিভি চ্যানেল</h4>
+          <p>বাংলাদেশ, ভারত ও আন্তর্জাতিক জনপ্রিয় স্পোর্টস, নিউজ ও এন্টারটেইনমেন্ট চ্যানেল ফুল এইচডি কোয়ালিটিতে।</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Installation Guides -->
+    <div class="guide-box">
+      <h3><i class="fa-solid fa-circle-question" style="color: var(--primary);"></i> কীভাবে ইনস্টল করবেন?</h3>
+      <div class="guide-steps">
+        <div class="step-item">
+          <div class="step-num">১</div>
+          <div class="step-content">
+            <h5>মোবাইলে ইনস্টল</h5>
+            <p>APK ফাইলটি ডাউনলোড করে ওপেন করুন। 'Unknown Sources' অপশন চালু করে ইনস্টল সম্পন্ন করুন।</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">২</div>
+          <div class="step-content">
+            <h5>টিভিতে ইনস্টল</h5>
+            <p>পেনড্রাইভ বা 'Send Files to TV' অ্যাপ দিয়ে TV APK ফাইলটি টিভিতে পাঠিয়ে ফাইল ম্যানেজার দিয়ে ইনস্টল করুন।</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">৩</div>
+          <div class="step-content">
+            <h5>পিসিতে চালানো</h5>
+            <p>পিসির ZIP ফাইলটি ডাউনলোড করে Extract করুন। ফোল্ডারের ভেতর থাকা <b>FOBS TV.exe</b>-তে ডাবল ক্লিক করলেই রান হবে।</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2026 FOBS TV Team. All rights reserved. | <a href="/admin">Admin Panel</a></p>
+    </footer>
+  </div>
+</body>
+</html>

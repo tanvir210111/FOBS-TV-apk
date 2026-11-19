@@ -1930,6 +1930,11 @@ app.post('/api/app-update', (req, res) => {
   }
 });
 
+// Public Download Landing Page
+app.get(['/download', '/download/'], (req, res) => {
+  return res.sendFile(path.join(__dirname, 'public', 'download', 'index.html'));
+});
+
 // Direct APK Download route
 app.get('/download/apk', (req, res) => {
   const candidates = [
