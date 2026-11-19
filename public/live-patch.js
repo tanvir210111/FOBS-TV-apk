@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.7.6 (0.001ms Fast-Start RAM Stream, Anti-Buffering & Watchdog Fix)
+// FOBS TV Live OTA Patch Bundle v1.7.7 (0.001ms Fast-Start RAM Stream, Anti-Buffering & TV/PC Widescreen OTA)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.7.6 (0.001ms Fast-Start Stream & Anti-Buffering) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.7.6';
+  console.log('⚡ FOBS TV Live Patch v1.7.7 (Fast-Start Stream & TV/PC Widescreen OTA) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.7.7';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -4051,5 +4051,102 @@
     window.openPlayer._blackBgHooked = true;
   }
 
-  console.log('✅ FOBS TV Live Patch v1.7.0 active: The Remarried Empress 6 Episodes, FOBS Team Special Sub, Bulletproof Fit/Fill & Pure Black Player active.');
+  // 17. Live OTA Widescreen & TV/PC Layout Sync (Zero-reinstall OTA)
+  try {
+    const WIDESCREEN_OTA_STYLE_ID = 'fobs-widescreen-tv-pc-style';
+    if (!document.getElementById(WIDESCREEN_OTA_STYLE_ID)) {
+      const otaStyle = document.createElement('style');
+      otaStyle.id = WIDESCREEN_OTA_STYLE_ID;
+      otaStyle.textContent = `
+        .desktop-nav-menu { display: none; }
+        .header-right-actions { display: flex; align-items: center; gap: 10px; }
+        @media (min-width: 768px) {
+          html, body { width: 100%; height: 100%; overflow-x: hidden; background-color: #07070a !important; }
+          .app-container { max-width: 100% !important; width: 100% !important; min-height: 100vh; margin: 0 auto; background-color: #07070a !important; box-shadow: none !important; padding-bottom: 40px !important; }
+          .app-header { position: sticky !important; top: 0 !important; z-index: 999 !important; width: 100% !important; background: rgba(7, 8, 12, 0.92) !important; backdrop-filter: blur(24px) !important; -webkit-backdrop-filter: blur(24px) !important; border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important; padding: 12px 48px !important; box-sizing: border-box !important; }
+          .header-top-row { display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100% !important; max-width: 1800px !important; margin: 0 auto !important; gap: 32px !important; }
+          .brand-logo-img { height: 40px !important; width: auto !important; }
+          .desktop-nav-menu { display: flex !important; align-items: center !important; gap: 10px !important; flex: 1 !important; margin-left: 16px !important; }
+          .nav-tab-pill { background: transparent; border: 1px solid transparent; color: #94a3b8; padding: 8px 18px; border-radius: 20px; font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.22s ease; outline: none; user-select: none; }
+          .nav-tab-pill:hover, .nav-tab-pill.tv-focused { color: #fff !important; background: rgba(255, 255, 255, 0.08) !important; border-color: rgba(255, 255, 255, 0.16) !important; transform: translateY(-2px) !important; }
+          .nav-tab-pill.active { color: #00f2fe !important; background: rgba(0, 242, 254, 0.12) !important; border-color: rgba(0, 242, 254, 0.45) !important; box-shadow: 0 0 18px rgba(0, 242, 254, 0.25) !important; }
+          .nav-tab-pill.active i { color: #00f2fe !important; }
+          .header-right-actions { display: flex !important; align-items: center !important; gap: 14px !important; }
+          .search-bar-wrapper { width: 280px !important; max-width: 320px !important; height: 40px !important; border-radius: 20px !important; background: rgba(255, 255, 255, 0.06) !important; border: 1px solid rgba(255, 255, 255, 0.12) !important; display: flex !important; align-items: center !important; padding: 0 6px 0 14px !important; transition: all 0.25s ease !important; }
+          .search-bar-wrapper:focus-within, .search-bar-wrapper.tv-focused { width: 340px !important; border-color: #00f2fe !important; box-shadow: 0 0 16px rgba(0, 242, 254, 0.3) !important; background: rgba(255, 255, 255, 0.1) !important; }
+          .search-btn { height: 30px !important; padding: 0 14px !important; border-radius: 15px !important; font-size: 12.5px !important; font-weight: 700 !important; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%) !important; color: #000 !important; border: none !important; cursor: pointer !important; }
+          .bottom-tab-bar { display: none !important; }
+          .hero-slider-container { max-width: 1800px !important; height: clamp(380px, 45vh, 520px) !important; margin: 0 auto 36px auto !important; border-radius: 20px !important; overflow: hidden !important; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important; }
+          .hero-backdrop-slide { background-size: cover !important; background-position: center 25% !important; }
+          .hero-gradient-overlay { background: linear-gradient(90deg, rgba(7, 8, 12, 0.96) 0%, rgba(7, 8, 12, 0.75) 35%, rgba(7, 8, 12, 0.15) 75%), linear-gradient(180deg, rgba(7, 8, 12, 0) 50%, rgba(7, 8, 12, 0.98) 100%) !important; }
+          .hero-bottom-slider { position: absolute !important; bottom: 32px !important; left: 48px !important; right: auto !important; max-width: 520px !important; width: 100% !important; padding-left: 0 !important; z-index: 5 !important; }
+          .hero-peek-card { flex: 0 0 440px !important; width: 440px !important; height: 90px !important; min-height: 90px !important; max-height: 90px !important; padding: 10px 16px !important; border-radius: 16px !important; background: rgba(18, 20, 30, 0.88) !important; backdrop-filter: blur(20px) !important; -webkit-backdrop-filter: blur(20px) !important; border: 1px solid rgba(255, 255, 255, 0.14) !important; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65) !important; transition: all 0.25s ease !important; }
+          .hero-peek-card.active { border-color: #00f2fe !important; background: rgba(22, 26, 42, 0.94) !important; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 242, 254, 0.3) !important; transform: scale(1.02) !important; }
+          .hero-peek-card:not(.active) { opacity: 0.55 !important; transform: scale(0.96) !important; }
+          .hero-peek-thumb-wrap { width: 52px !important; min-width: 52px !important; height: 70px !important; border-radius: 8px !important; overflow: hidden !important; }
+          .hero-peek-thumb { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+          .hero-peek-title { font-size: 16.5px !important; font-weight: 800 !important; color: #fff !important; letter-spacing: -0.2px !important; }
+          .hero-peek-sub { font-size: 13px !important; color: #94a3b8 !important; margin-top: 3px !important; }
+          .hero-peek-play { width: 48px !important; height: 48px !important; min-width: 48px !important; border-radius: 50% !important; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%) !important; color: #000 !important; font-size: 18px !important; box-shadow: 0 4px 16px rgba(0, 242, 254, 0.4) !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+          .content-section { max-width: 1800px !important; margin: 0 auto 36px auto !important; padding: 0 48px !important; box-sizing: border-box !important; }
+          .section-header { display: flex !important; align-items: center !important; justify-content: space-between !important; margin-bottom: 16px !important; padding: 0 4px !important; }
+          .section-title { font-size: 21px !important; font-weight: 800 !important; color: #fff !important; letter-spacing: -0.4px !important; }
+          .section-more { font-size: 14px !important; color: #00f2fe !important; font-weight: 700 !important; cursor: pointer !important; }
+          .horizontal-scroll { gap: 20px !important; padding: 12px 6px 24px 6px !important; overflow-x: auto !important; scroll-behavior: smooth !important; }
+          .horizontal-scroll .media-card { width: 185px !important; min-width: 185px !important; max-width: 185px !important; cursor: pointer !important; transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease !important; }
+          .horizontal-scroll .card-poster-wrap { width: 100% !important; height: 275px !important; border-radius: 14px !important; overflow: hidden !important; border: 1.5px solid rgba(255, 255, 255, 0.08) !important; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important; transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important; }
+          .horizontal-scroll .card-poster { width: 100% !important; height: 100% !important; object-fit: cover !important; transition: transform 0.35s ease !important; }
+          .horizontal-scroll .media-card:hover, .horizontal-scroll .media-card.tv-focused { transform: scale(1.07) translateY(-6px) !important; z-index: 10 !important; }
+          .horizontal-scroll .media-card:hover .card-poster-wrap, .horizontal-scroll .media-card.tv-focused .card-poster-wrap { border-color: #00f2fe !important; box-shadow: 0 16px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 242, 254, 0.35) !important; }
+          .grid-3-col { display: grid !important; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)) !important; gap: 22px !important; padding: 16px 48px !important; box-sizing: border-box !important; }
+          .grid-3-col .media-card { width: 100% !important; max-width: 100% !important; cursor: pointer !important; transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease !important; }
+          .grid-3-col .card-poster-wrap { width: 100% !important; height: 275px !important; border-radius: 14px !important; border: 1.5px solid rgba(255, 255, 255, 0.08) !important; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important; }
+          .grid-3-col .media-card:hover, .grid-3-col .media-card.tv-focused { transform: scale(1.07) translateY(-6px) !important; z-index: 10 !important; }
+          .grid-3-col .media-card:hover .card-poster-wrap, .grid-3-col .media-card.tv-focused .card-poster-wrap { border-color: #00f2fe !important; box-shadow: 0 16px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 242, 254, 0.35) !important; }
+          .live-tv-grid { display: grid !important; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important; gap: 20px !important; padding: 16px 48px !important; box-sizing: border-box !important; }
+          .live-channel-card:hover, .channel-card:hover, .live-channel-card.tv-focused, .channel-card.tv-focused { transform: scale(1.05) translateY(-4px) !important; border-color: #00f2fe !important; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 242, 254, 0.3) !important; }
+          .nav-tab-pill.tv-focused, .media-card.tv-focused, .category-pill.tv-focused, .channel-card.tv-focused, .search-bar-wrapper.tv-focused, button.tv-focused { outline: 2.5px solid #00f2fe !important; box-shadow: 0 0 24px rgba(0, 242, 254, 0.8) !important; transform: scale(1.06) !important; z-index: 50 !important; }
+        }
+      `;
+      (document.head || document.documentElement).appendChild(otaStyle);
+    }
+
+    // Ensure Top Nav Menu exists in Header on older APKs
+    function ensureDesktopNavInHeader() {
+      const headerTopRow = document.querySelector('.header-top-row');
+      if (headerTopRow && !document.querySelector('.desktop-nav-menu')) {
+        const desktopNav = document.createElement('nav');
+        desktopNav.className = 'desktop-nav-menu';
+        desktopNav.innerHTML = `
+          <button class="nav-tab-pill active" data-tab="home" onclick="switchMainTab('home')">
+            <i class="fa-solid fa-house"></i> <span>Home</span>
+          </button>
+          <button class="nav-tab-pill" data-tab="movie" onclick="switchMainTab('movie')">
+            <i class="fa-solid fa-film"></i> <span>Movies</span>
+          </button>
+          <button class="nav-tab-pill" data-tab="series" onclick="switchMainTab('series')">
+            <i class="fa-solid fa-tv"></i> <span>Series</span>
+          </button>
+          <button class="nav-tab-pill" data-tab="livetv" onclick="switchMainTab('livetv')">
+            <i class="fa-solid fa-satellite-dish"></i> <span>Live TV</span>
+          </button>
+          <button class="nav-tab-pill" data-tab="me" onclick="switchMainTab('me')">
+            <i class="fa-solid fa-user"></i> <span>Me</span>
+          </button>
+        `;
+        const searchWrapper = headerTopRow.querySelector('.search-bar-wrapper');
+        if (searchWrapper) {
+          headerTopRow.insertBefore(desktopNav, searchWrapper);
+        } else {
+          headerTopRow.appendChild(desktopNav);
+        }
+      }
+    }
+    ensureDesktopNavInHeader();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', ensureDesktopNavInHeader);
+    }
+  } catch (_) {}
+
+  console.log('✅ FOBS TV Live Patch v1.7.7 active: TV/PC Widescreen OTA, The Remarried Empress Ep 7, Bulletproof Fit/Fill & Pure Black Player active.');
 })();
