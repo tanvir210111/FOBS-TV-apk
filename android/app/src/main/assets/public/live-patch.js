@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.8.1 (Wider Logo, 60fps GPU Compositing & Smooth PC EXE OTA)
+// FOBS TV Live OTA Patch Bundle v1.8.2 (Fullscreen Edge-to-Edge Portrait Player Layout OTA)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.8.1 (Wider Logo, 60fps GPU Compositing & Smooth PC EXE OTA) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.8.1';
+  console.log('⚡ FOBS TV Live Patch v1.8.2 (Fullscreen Edge-to-Edge Portrait Player Layout OTA) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.8.2';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -4195,52 +4195,76 @@
         .grid-3-col .media-card:hover, .grid-3-col .media-card.tv-focused { transform: scale(1.07) translateY(-6px) !important; z-index: 10 !important; }
         .grid-3-col .media-card:hover .card-poster-wrap, .grid-3-col .media-card.tv-focused .card-poster-wrap { border-color: #00f2fe !important; box-shadow: 0 16px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 242, 254, 0.35) !important; }
 
-        /* WIDESCREEN / PC & TV THEATER PLAYER (Windowed, Never Forces Fullscreen) */
+        /* WIDESCREEN / PC & TV FULLSCREEN PORTRAIT PLAYER LAYOUT */
         .player-view-overlay.open {
           position: fixed !important;
           inset: 0 !important;
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          bottom: 0 !important;
           width: 100vw !important;
           height: 100vh !important;
-          max-width: 100% !important;
-          background: rgba(7, 8, 12, 0.98) !important;
-          backdrop-filter: blur(24px) !important;
-          -webkit-backdrop-filter: blur(24px) !important;
+          max-width: 100vw !important;
+          max-height: 100vh !important;
+          background: #000000 !important;
           z-index: 1000 !important;
           overflow-y: auto !important;
+          overflow-x: hidden !important;
           display: flex !important;
           flex-direction: column !important;
-          align-items: center !important;
-          padding-top: 16px !important;
+          align-items: stretch !important;
+          padding: 0 !important;
+          margin: 0 !important;
+          border-radius: 0 !important;
+          border: none !important;
         }
         .player-view-overlay.open .video-container {
           position: relative !important;
           width: 100% !important;
-          max-width: 1100px !important;
-          height: clamp(380px, 52vh, 580px) !important;
-          aspect-ratio: 16 / 9 !important;
-          border-radius: 20px !important;
-          overflow: hidden !important;
-          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85) !important;
-          border: 1px solid rgba(255, 255, 255, 0.12) !important;
+          max-width: 100% !important;
+          height: clamp(360px, 52vh, 600px) !important;
           background-color: #000000 !important;
-          margin: 0 auto 16px auto !important;
+          border-radius: 0 !important;
+          border: none !important;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9) !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          overflow: hidden !important;
+          flex-shrink: 0 !important;
+        }
+        .player-view-overlay.open .video-container video,
+        .player-view-overlay.open #mainVideoPlayer {
+          width: 100% !important;
+          height: 100% !important;
+          object-fit: contain !important;
+          object-position: center center !important;
+        }
+        .player-view-overlay.open .player-top-header {
+          display: flex !important;
+          position: absolute !important;
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          margin: 0 !important;
+          padding: 12px 24px !important;
+          background: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 65%, transparent 100%) !important;
+          z-index: 2000000 !important;
         }
         .player-view-overlay.open .player-content-scroll {
           display: block !important;
           width: 100% !important;
-          max-width: 1100px !important;
-          margin: 0 auto 40px auto !important;
-          padding: 0 16px !important;
+          max-width: 100% !important;
+          margin: 0 !important;
+          padding: 24px 48px 60px 48px !important;
           box-sizing: border-box !important;
-        }
-        .player-view-overlay.open .player-top-header {
-          display: flex !important;
-          position: relative !important;
-          width: 100% !important;
-          max-width: 1100px !important;
-          margin: 0 auto 10px auto !important;
-          background: transparent !important;
-          z-index: 10 !important;
+          flex: 1 !important;
+          background: #07070a !important;
         }
         .live-tv-grid { display: grid !important; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important; gap: 20px !important; padding: 16px 48px !important; box-sizing: border-box !important; }
         .live-channel-card:hover, .channel-card:hover, .live-channel-card.tv-focused, .channel-card.tv-focused { transform: scale(1.05) translateY(-4px) !important; border-color: #00f2fe !important; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 242, 254, 0.3) !important; }
