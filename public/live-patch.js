@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.8.0 (Center Floating Glass Nav Bar, 2:3 Posters & Theater Player OTA)
+// FOBS TV Live OTA Patch Bundle v1.8.1 (Wider Logo, 60fps GPU Compositing & Smooth PC EXE OTA)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.8.0 (Center Floating Glass Nav, 2:3 Posters & Theater Player OTA) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.8.0';
+  console.log('⚡ FOBS TV Live Patch v1.8.1 (Wider Logo, 60fps GPU Compositing & Smooth PC EXE OTA) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.8.1';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -4071,7 +4071,7 @@
         .app-header { position: sticky !important; top: 0 !important; z-index: 999 !important; width: 100% !important; background: rgba(7, 8, 12, 0.92) !important; backdrop-filter: blur(24px) !important; -webkit-backdrop-filter: blur(24px) !important; border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important; padding: 12px 48px !important; box-sizing: border-box !important; }
         .header-top-row { display: grid !important; grid-template-columns: 1fr auto 1fr !important; align-items: center !important; width: 100% !important; max-width: 1800px !important; margin: 0 auto !important; gap: 24px !important; }
         .brand-logo { justify-self: start !important; display: flex !important; align-items: center !important; }
-        .brand-logo-img { height: 40px !important; width: auto !important; }
+        .brand-logo-img { height: 40px !important; max-height: 40px !important; width: 108px !important; object-fit: fill !important; border-radius: 8px !important; transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important; }
         .desktop-nav-menu { justify-self: center !important; display: flex !important; align-items: center !important; gap: 6px !important; margin: 0 !important; background: rgba(18, 20, 30, 0.72) !important; backdrop-filter: blur(28px) saturate(180%) !important; -webkit-backdrop-filter: blur(28px) saturate(180%) !important; border: 1px solid rgba(255, 255, 255, 0.12) !important; border-radius: 40px !important; padding: 5px 8px !important; box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.14) !important; z-index: 10 !important; }
         .nav-tab-pill { background: transparent; border: 1px solid transparent; color: #94a3b8; padding: 7px 16px; border-radius: 30px; font-size: 13.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.22s ease; outline: none; user-select: none; }
         .nav-tab-pill:hover, .nav-tab-pill.tv-focused { color: #fff !important; background: rgba(255, 255, 255, 0.1) !important; border-color: rgba(255, 255, 255, 0.18) !important; transform: translateY(-1px) !important; }
@@ -4086,7 +4086,7 @@
         .search-bar-wrapper:focus-within, .search-bar-wrapper.tv-focused { width: 340px !important; border-color: #00f2fe !important; box-shadow: 0 0 16px rgba(0, 242, 254, 0.3) !important; background: rgba(255, 255, 255, 0.1) !important; }
         .search-btn { height: 30px !important; padding: 0 14px !important; border-radius: 15px !important; font-size: 12.5px !important; font-weight: 700 !important; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%) !important; color: #000 !important; border: none !important; cursor: pointer !important; }
         .bottom-tab-bar { display: none !important; }
-        .hero-slider-container { position: relative !important; max-width: 1800px !important; height: clamp(480px, 56vh, 620px) !important; margin: 0 auto 36px auto !important; border-radius: 24px !important; overflow: hidden !important; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important; }
+        .hero-slider-container { position: relative !important; max-width: 1800px !important; height: clamp(480px, 56vh, 620px) !important; margin: 0 auto 36px auto !important; border-radius: 24px !important; overflow: hidden !important; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important; transform: translateZ(0) !important; backface-visibility: hidden !important; }
         .hero-backdrop-slide { background-size: cover !important; background-position: center 20% !important; }
         .hero-gradient-overlay { background: linear-gradient(90deg, rgba(7, 8, 12, 0.98) 0%, rgba(7, 8, 12, 0.88) 32%, rgba(7, 8, 12, 0.3) 65%, rgba(7, 8, 12, 0.05) 100%), linear-gradient(180deg, rgba(7, 8, 12, 0) 50%, rgba(7, 8, 12, 0.98) 100%) !important; }
         .hero-spotlight-details { position: absolute !important; top: 50% !important; transform: translateY(-50%) !important; left: 48px !important; max-width: 660px !important; z-index: 10 !important; display: flex !important; flex-direction: column !important; align-items: flex-start !important; gap: 14px !important; pointer-events: auto !important; }
@@ -4108,7 +4108,7 @@
         .section-header { display: flex !important; align-items: center !important; justify-content: space-between !important; margin-bottom: 16px !important; padding: 0 4px !important; }
         .section-title { font-size: 21px !important; font-weight: 800 !important; color: #fff !important; letter-spacing: -0.4px !important; }
         .section-more { font-size: 14px !important; color: #00f2fe !important; font-weight: 700 !important; cursor: pointer !important; }
-        .horizontal-scroll { gap: 20px !important; padding: 12px 6px 24px 6px !important; overflow-x: auto !important; scroll-behavior: smooth !important; }
+        .horizontal-scroll { gap: 20px !important; padding: 12px 6px 24px 6px !important; overflow-x: auto !important; scroll-behavior: smooth !important; -webkit-overflow-scrolling: touch !important; will-change: scroll-position !important; transform: translateZ(0) !important; }
         .horizontal-scroll .media-card {
           flex: 0 0 185px !important;
           width: 185px !important;
@@ -4116,7 +4116,13 @@
           max-width: 185px !important;
           box-sizing: border-box !important;
           cursor: pointer !important;
-          transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease !important;
+          contain: layout paint !important;
+          content-visibility: auto !important;
+          contain-intrinsic-size: 185px 275px !important;
+          will-change: transform !important;
+          transform: translateZ(0) !important;
+          backface-visibility: hidden !important;
+          transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s ease !important;
         }
         .horizontal-scroll .card-poster-wrap {
           width: 100% !important;
@@ -4126,8 +4132,10 @@
           border-radius: 14px !important;
           overflow: hidden !important;
           border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
-          transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45) !important;
+          transform: translateZ(0) !important;
+          backface-visibility: hidden !important;
+          transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
         }
         .horizontal-scroll .card-poster,
         .horizontal-scroll .card-poster-img,
@@ -4136,7 +4144,10 @@
           height: 100% !important;
           object-fit: cover !important;
           object-position: center top !important;
-          transition: transform 0.35s ease !important;
+          transform: translateZ(0) !important;
+          backface-visibility: hidden !important;
+          image-rendering: auto !important;
+          transition: transform 0.25s ease !important;
         }
         .horizontal-scroll .card-title,
         .horizontal-scroll .card-meta {
@@ -4144,10 +4155,10 @@
           max-width: 100% !important;
           box-sizing: border-box !important;
         }
-        .horizontal-scroll .media-card:hover, .horizontal-scroll .media-card.tv-focused { transform: scale(1.07) translateY(-6px) !important; z-index: 10 !important; }
-        .horizontal-scroll .media-card:hover .card-poster-wrap, .horizontal-scroll .media-card.tv-focused .card-poster-wrap { border-color: #00f2fe !important; box-shadow: 0 16px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 242, 254, 0.35) !important; }
+        .horizontal-scroll .media-card:hover, .horizontal-scroll .media-card.tv-focused { transform: scale(1.05) translateY(-4px) translateZ(0) !important; z-index: 10 !important; }
+        .horizontal-scroll .media-card:hover .card-poster-wrap, .horizontal-scroll .media-card.tv-focused .card-poster-wrap { border-color: #00f2fe !important; box-shadow: 0 12px 28px rgba(0, 0, 0, 0.75), 0 0 20px rgba(0, 242, 254, 0.3) !important; }
         .horizontal-scroll .media-card:hover .card-poster-img,
-        .horizontal-scroll .media-card:hover .card-poster { transform: scale(1.05) !important; }
+        .horizontal-scroll .media-card:hover .card-poster { transform: scale(1.04) !important; }
 
         .grid-3-col { display: grid !important; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)) !important; gap: 22px !important; padding: 16px 48px !important; box-sizing: border-box !important; }
         .grid-3-col .media-card {
@@ -4156,7 +4167,13 @@
           max-width: 100% !important;
           box-sizing: border-box !important;
           cursor: pointer !important;
-          transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease !important;
+          contain: layout paint !important;
+          content-visibility: auto !important;
+          contain-intrinsic-size: 185px 275px !important;
+          will-change: transform !important;
+          transform: translateZ(0) !important;
+          backface-visibility: hidden !important;
+          transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s ease !important;
         }
         .grid-3-col .card-poster-wrap {
           width: 100% !important;
@@ -4303,7 +4320,27 @@
         window.enterFullscreenMode._otaHooked = true;
       }
     } catch (_) {}
+
+    // Smooth horizontal wheel scrolling for PC mouse users
+    try {
+      if (!window._pcWheelScrollHooked) {
+        document.addEventListener('wheel', function(e) {
+          if (window.innerWidth < 768) return;
+          const hScroll = e.target.closest && e.target.closest('.horizontal-scroll');
+          if (hScroll) {
+            if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+              e.preventDefault();
+              hScroll.scrollBy({
+                left: e.deltaY * 1.6,
+                behavior: 'smooth'
+              });
+            }
+          }
+        }, { passive: false });
+        window._pcWheelScrollHooked = true;
+      }
+    } catch (_) {}
   } catch (_) {}
 
-  console.log('✅ FOBS TV Live Patch v1.7.9 active: 2:3 Posters, Windowed Theater Player & TV/PC Layout active.');
+  console.log('✅ FOBS TV Live Patch v1.8.1 active: Wider Logo, 60fps GPU Compositing & Ultra-Smooth PC EXE.');
 })();

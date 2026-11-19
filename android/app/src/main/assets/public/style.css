@@ -10758,8 +10758,11 @@ body.intro-active {
 
   .brand-logo-img {
     height: 40px !important;
-    width: auto !important;
-    transition: transform 0.2s ease !important;
+    max-height: 40px !important;
+    width: 108px !important;
+    object-fit: fill !important;
+    border-radius: 8px !important;
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
   }
 
   .brand-logo:hover .brand-logo-img,
@@ -11224,7 +11227,17 @@ body.intro-active {
     background: rgba(0, 242, 254, 0.5) !important;
   }
 
-  /* MEDIA CARDS (Wide Screen Scale & Glow) - FIXED 2:3 CINEMA PROPORTIONS */
+  /* MEDIA CARDS (Wide Screen Scale & Glow) - FIXED 2:3 CINEMA PROPORTIONS & 60FPS GPU COMPOSITING */
+  .horizontal-scroll {
+    gap: 20px !important;
+    padding: 12px 6px 24px 6px !important;
+    overflow-x: auto !important;
+    scroll-behavior: smooth !important;
+    -webkit-overflow-scrolling: touch !important;
+    will-change: scroll-position !important;
+    transform: translateZ(0) !important;
+  }
+
   .horizontal-scroll .media-card {
     flex: 0 0 185px !important;
     width: 185px !important;
@@ -11232,7 +11245,13 @@ body.intro-active {
     max-width: 185px !important;
     box-sizing: border-box !important;
     cursor: pointer !important;
-    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease !important;
+    contain: layout paint !important;
+    content-visibility: auto !important;
+    contain-intrinsic-size: 185px 275px !important;
+    will-change: transform !important;
+    transform: translateZ(0) !important;
+    backface-visibility: hidden !important;
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s ease !important;
   }
 
   .horizontal-scroll .card-poster-wrap {
@@ -11243,8 +11262,10 @@ body.intro-active {
     border-radius: 14px !important;
     overflow: hidden !important;
     border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
-    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45) !important;
+    transform: translateZ(0) !important;
+    backface-visibility: hidden !important;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
   }
 
   .horizontal-scroll .card-poster,
@@ -11254,7 +11275,10 @@ body.intro-active {
     height: 100% !important;
     object-fit: cover !important;
     object-position: center top !important;
-    transition: transform 0.35s ease !important;
+    transform: translateZ(0) !important;
+    backface-visibility: hidden !important;
+    image-rendering: auto !important;
+    transition: transform 0.25s ease !important;
   }
 
   .horizontal-scroll .card-title,
@@ -11266,19 +11290,19 @@ body.intro-active {
 
   .horizontal-scroll .media-card:hover,
   .horizontal-scroll .media-card.tv-focused {
-    transform: scale(1.07) translateY(-6px) !important;
+    transform: scale(1.05) translateY(-4px) translateZ(0) !important;
     z-index: 10 !important;
   }
 
   .horizontal-scroll .media-card:hover .card-poster-wrap,
   .horizontal-scroll .media-card.tv-focused .card-poster-wrap {
     border-color: #00f2fe !important;
-    box-shadow: 0 16px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 242, 254, 0.35) !important;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.75), 0 0 20px rgba(0, 242, 254, 0.3) !important;
   }
 
   .horizontal-scroll .media-card:hover .card-poster-img,
   .horizontal-scroll .media-card:hover .card-poster {
-    transform: scale(1.05) !important;
+    transform: scale(1.04) !important;
   }
 
   /* 3-COLUMN ALL GRID (Adapts to 6-8 columns on Widescreen) */
@@ -11296,7 +11320,13 @@ body.intro-active {
     max-width: 100% !important;
     box-sizing: border-box !important;
     cursor: pointer !important;
-    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease !important;
+    contain: layout paint !important;
+    content-visibility: auto !important;
+    contain-intrinsic-size: 185px 275px !important;
+    will-change: transform !important;
+    transform: translateZ(0) !important;
+    backface-visibility: hidden !important;
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s ease !important;
   }
 
   .grid-3-col .card-poster-wrap {
