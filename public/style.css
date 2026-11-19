@@ -10677,3 +10677,141 @@ body.intro-active {
   border-color: rgba(255, 255, 255, 0.25);
 }
 
+/* ============================================================
+   16:9 WIDESCREEN (TV & PC DISPLAY ADAPTATION)
+   Preserves 100% of mobile app design, cards, colors & badges
+   ============================================================ */
+@media (min-width: 768px) {
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    background-color: #07070a;
+  }
+
+  /* Expand the 480px mobile lock to 100% full 16:9 widescreen */
+  .app-container {
+    max-width: 100% !important;
+    width: 100% !important;
+    min-height: 100vh;
+    margin: 0 auto;
+    box-shadow: none !important;
+  }
+
+  /* App Header & Top Navigation centered */
+  .app-header {
+    width: 100% !important;
+    max-width: 1600px !important;
+    margin: 0 auto !important;
+    padding: 12px 32px !important;
+  }
+
+  /* Main Feed & Content Wrap */
+  .feed-container,
+  .main-content,
+  .main-content-wrap,
+  .section-detail-body {
+    max-width: 1600px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 16:9 Cinematic Hero Slider Banner */
+  .hero-slider-container {
+    max-width: 1600px !important;
+    height: clamp(340px, 36vw, 480px) !important;
+    margin: 0 auto 24px auto !important;
+    border-radius: 16px !important;
+  }
+
+  .hero-backdrop-slide {
+    background-size: cover !important;
+    background-position: center 20% !important;
+  }
+
+  /* Movie & Series Cards Grid (Repeats 5-7 cards per row in 16:9) */
+  .grid-3-col {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)) !important;
+    gap: 18px !important;
+    padding: 0 !important;
+  }
+
+  .grid-3-col .media-card {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .grid-3-col .card-poster-wrap {
+    height: 250px !important;
+    width: 100% !important;
+    border-radius: 10px !important;
+  }
+
+  /* Horizontal Scroll Rows for Wide Screen */
+  .horizontal-scroll {
+    gap: 16px !important;
+    padding: 8px 4px !important;
+  }
+
+  .horizontal-scroll .media-card {
+    width: 170px !important;
+    min-width: 170px !important;
+    max-width: 170px !important;
+  }
+
+  .horizontal-scroll .card-poster-wrap {
+    height: 250px !important;
+  }
+
+  /* Live TV Channels Grid */
+  .live-tv-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+    gap: 18px !important;
+    padding: 0 !important;
+  }
+
+  /* Bottom Navigation Bar Centered for TV & PC */
+  .bottom-tab-bar {
+    max-width: 600px !important;
+    width: 90% !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    right: auto !important;
+    bottom: 12px !important;
+    border-radius: 24px !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+  }
+
+  /* Detail Bottom Sheet / Modal centered nicely */
+  .details-modal,
+  .details-sheet,
+  .media-detail-overlay {
+    max-width: 760px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    border-radius: 20px 20px 0 0 !important;
+  }
+
+  /* TV Remote & PC Keyboard D-Pad Focus Visual Glow */
+  .media-card.tv-focused,
+  .media-card:focus-visible,
+  .bottom-tab-item.tv-focused,
+  .bottom-tab-item:focus-visible,
+  .category-pill.tv-focused,
+  .category-pill:focus-visible,
+  .tv-nav-item.tv-focused,
+  button.tv-focused {
+    outline: 2px solid #00f2fe !important;
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.75) !important;
+    transform: scale(1.06) !important;
+    z-index: 50 !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+  }
+}
+
+
