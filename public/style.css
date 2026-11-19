@@ -3685,6 +3685,10 @@ body.is-fullscreen .ls-bottom-bar {
 }
 
 /* Side Drawers (Screenshot 3, 4, 5) */
+.ls-player-ui {
+  overflow: hidden !important;
+}
+
 .ls-side-drawer {
   position: absolute;
   top: 0;
@@ -3695,16 +3699,28 @@ body.is-fullscreen .ls-bottom-bar {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-left: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: -15px 0 35px rgba(0, 0, 0, 0.85);
+  box-shadow: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
   transform: translateX(100%);
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: auto !important;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.28s;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
 
+.ls-side-drawer:not(.open) {
+  display: none !important;
+  visibility: hidden !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+}
+
 .ls-side-drawer.open {
+  display: flex !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  box-shadow: -15px 0 35px rgba(0, 0, 0, 0.85) !important;
   transform: translateX(0);
 }
 
@@ -11688,6 +11704,210 @@ body.intro-active {
     z-index: 50 !important;
     transition: transform 0.15s ease, box-shadow 0.15s ease !important;
   }
+
+  /* ME / USER PROFILE TAB VIEW (PC & TV SCALED) */
+  #meView.me-tab-view {
+    max-width: 960px !important;
+    margin: 0 auto !important;
+    padding: 32px 32px 90px 32px !important;
+  }
+
+  .mb-profile-header {
+    padding: 24px 30px !important;
+    border-radius: 20px !important;
+  }
+
+  .mb-avatar-circle {
+    width: 68px !important;
+    height: 68px !important;
+    font-size: 28px !important;
+  }
+
+  .mb-name-text {
+    font-size: 24px !important;
+  }
+
+  .mb-id-pill {
+    font-size: 14.5px !important;
+    padding: 5px 14px !important;
+  }
+
+  .mb-header-login-btn {
+    font-size: 15px !important;
+    padding: 10px 22px !important;
+  }
+
+  .mb-official-strip {
+    font-size: 15px !important;
+    padding: 14px 22px !important;
+    border-radius: 14px !important;
+  }
+
+  .mb-history-header {
+    font-size: 18px !important;
+  }
+
+  .mb-h-title {
+    font-size: 14px !important;
+  }
+
+  .mb-menu-group {
+    border-radius: 20px !important;
+    margin-bottom: 22px !important;
+  }
+
+  .mb-menu-row {
+    padding: 18px 24px !important;
+  }
+
+  .mb-m-left {
+    font-size: 16.5px !important;
+    gap: 16px !important;
+  }
+
+  .mb-m-left i {
+    font-size: 20px !important;
+    width: 24px !important;
+  }
+
+  .mb-m-right {
+    font-size: 15.5px !important;
+  }
+
+  .mb-m-right i {
+    font-size: 14px !important;
+  }
+
+  /* SUBTITLE SCALING ON PC & TV */
+  #customSubtitleOverlay .custom-subtitle-cue,
+  .custom-subtitle-cue {
+    font-size: clamp(26px, 2.6vw, 44px) !important;
+    line-height: 1.45 !important;
+    padding: 6px 18px !important;
+  }
+
+  /* COMMENTS SECTION SCALING ON PC & TV */
+  .sub-tabs-header {
+    margin-top: 24px !important;
+    gap: 16px !important;
+  }
+
+  .sub-tab-btn {
+    font-size: 17px !important;
+    padding: 10px 24px !important;
+  }
+
+  #commentsView {
+    padding: 20px 0 80px 0 !important;
+  }
+
+  .comments-section-header {
+    font-size: 18px !important;
+  }
+
+  .comment-input-bar-wrap {
+    padding: 16px 22px !important;
+    border-radius: 16px !important;
+  }
+
+  .comment-text-input {
+    font-size: 15.5px !important;
+    padding: 12px 18px !important;
+  }
+}
+
+/* Global Custom Dark Scrollbars (No White Native Slider on PC & TV) */
+.player-view-overlay.open,
+.player-view-overlay,
+.player-content-scroll,
+html, body {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(255, 255, 255, 0.16) transparent !important;
+}
+
+.player-view-overlay.open::-webkit-scrollbar,
+.player-view-overlay::-webkit-scrollbar,
+.player-content-scroll::-webkit-scrollbar,
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+  background: transparent !important;
+}
+
+.player-view-overlay.open::-webkit-scrollbar-track,
+.player-view-overlay::-webkit-scrollbar-track,
+.player-content-scroll::-webkit-scrollbar-track,
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.player-view-overlay.open::-webkit-scrollbar-thumb,
+.player-view-overlay::-webkit-scrollbar-thumb,
+.player-content-scroll::-webkit-scrollbar-thumb,
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-radius: 999px !important;
+}
+
+.player-view-overlay.open::-webkit-scrollbar-thumb:hover,
+.player-content-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 242, 254, 0.5) !important;
+}
+
+/* GPU Hardware Layer Isolation for 60fps Stutter-Free Playback */
+.video-container {
+  contain: layout paint !important;
+  transform: translateZ(0) !important;
+  will-change: transform !important;
+  isolation: isolate !important;
+}
+
+#mainVideoPlayer {
+  transform: translateZ(0) !important;
+  will-change: transform !important;
+}
+
+.player-content-scroll {
+  contain: content !important;
+  transform: translateZ(0) !important;
+  isolation: isolate !important;
+}
+
+/* Previous Episode Button & Landscape Portrait Return Pill */
+.ls-prev-ep-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ls-prev-ep-btn:hover {
+  background: rgba(0, 242, 254, 0.35);
+  border-color: #00f2fe;
+  color: #00f2fe;
+  transform: scale(1.08);
+}
+
+.ls-action-pill.ls-portrait-pill {
+  background: rgba(0, 242, 254, 0.15) !important;
+  border-color: rgba(0, 242, 254, 0.4) !important;
+  color: #00f2fe !important;
+}
+
+.ls-action-pill.ls-portrait-pill:hover {
+  background: rgba(0, 242, 254, 0.3) !important;
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.4) !important;
 }
 
 

@@ -622,6 +622,14 @@
               <span class="metric-hint">Desktop PC installations</span>
             </div>
           </div>
+          <div class="metric-card glass clickable" onclick="setUserAudienceFilter('registered')" title="Click to view Registered Members" style="cursor: pointer; border: 1px solid rgba(16, 185, 129, 0.4);">
+            <div class="metric-icon emerald"><i class="fa-solid fa-user-check"></i></div>
+            <div class="metric-info">
+              <span class="metric-label">Registered Members</span>
+              <h3 id="users-stat-registered" class="metric-number" style="color: #34d399;">0</h3>
+              <span class="metric-hint">Google / Email Verified</span>
+            </div>
+          </div>
         </div>
 
         <div class="card glass">
@@ -652,6 +660,9 @@
               </button>
               <button type="button" class="btn-filter-chip" id="chip-users-exe" onclick="setUserAudienceFilter('exe')" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.4); font-weight: 700;">
                 <i class="fa-brands fa-windows"></i> EXE (<span id="chip-count-exe">0</span>)
+              </button>
+              <button type="button" class="btn-filter-chip" id="chip-users-registered" onclick="setUserAudienceFilter('registered')" style="color: #34d399; border-color: rgba(16, 185, 129, 0.4); font-weight: 700;">
+                <i class="fa-solid fa-user-check"></i> Members (<span id="chip-count-registered">0</span>)
               </button>
               <button type="button" class="btn-filter-chip" id="chip-users-online" onclick="setUserAudienceFilter('online')" style="color: #34d399; border-color: rgba(16, 185, 129, 0.4); font-weight: 700;">
                 <i class="fa-solid fa-signal"></i> Online (<span id="chip-count-online">0</span>)

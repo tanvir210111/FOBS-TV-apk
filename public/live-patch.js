@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.8.3 (True Portrait Player Controls & Big Scaled Content Details OTA)
+// FOBS TV Live OTA Patch Bundle v1.8.4 (Black Shadow Fix, Prev Ep Button, Portrait Return Pill, Scaled Subtitles, Dark Scrollbar, Registered Members)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.8.3 (True Portrait Player Controls & Big Scaled Content Details OTA) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.8.3';
+  console.log('⚡ FOBS TV Live Patch v1.8.4 (Black Shadow Fix, Prev Ep Button, Portrait Return Pill, Scaled Subtitles, Dark Scrollbar) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.8.4';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -4061,6 +4061,80 @@
       (document.head || document.documentElement).appendChild(otaStyle);
     }
     otaStyle.textContent = `
+      /* Right-Side Shadow Fix on All Devices */
+      .ls-player-ui { overflow: hidden !important; }
+      .ls-side-drawer:not(.open) { display: none !important; visibility: hidden !important; box-shadow: none !important; pointer-events: none !important; }
+      .ls-side-drawer.open { display: flex !important; visibility: visible !important; pointer-events: auto !important; box-shadow: -15px 0 35px rgba(0, 0, 0, 0.85) !important; }
+
+      /* Global Dark Scrollbars (No White Native Slider on PC & TV) */
+      .player-view-overlay.open, .player-view-overlay, .player-content-scroll, html, body {
+        scrollbar-width: thin !important;
+        scrollbar-color: rgba(255, 255, 255, 0.16) transparent !important;
+      }
+      .player-view-overlay.open::-webkit-scrollbar, .player-view-overlay::-webkit-scrollbar, .player-content-scroll::-webkit-scrollbar, html::-webkit-scrollbar, body::-webkit-scrollbar {
+        width: 6px !important;
+        height: 6px !important;
+        background: transparent !important;
+      }
+      .player-view-overlay.open::-webkit-scrollbar-track, .player-view-overlay::-webkit-scrollbar-track, .player-content-scroll::-webkit-scrollbar-track, html::-webkit-scrollbar-track, body::-webkit-scrollbar-track {
+        background: transparent !important;
+      }
+      .player-view-overlay.open::-webkit-scrollbar-thumb, .player-view-overlay::-webkit-scrollbar-thumb, .player-content-scroll::-webkit-scrollbar-thumb, html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.18) !important;
+        border-radius: 999px !important;
+      }
+      .player-view-overlay.open::-webkit-scrollbar-thumb:hover, .player-content-scroll::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 242, 254, 0.5) !important;
+      }
+
+      /* GPU Hardware Layer Isolation for 60fps Stutter-Free Playback */
+      .video-container {
+        contain: layout paint !important;
+        transform: translateZ(0) !important;
+        will-change: transform !important;
+        isolation: isolate !important;
+      }
+      #mainVideoPlayer {
+        transform: translateZ(0) !important;
+        will-change: transform !important;
+      }
+      .player-content-scroll {
+        contain: content !important;
+        transform: translateZ(0) !important;
+        isolation: isolate !important;
+      }
+
+      /* Previous Episode Button & Landscape Portrait Return Pill */
+      .ls-prev-ep-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .ls-prev-ep-btn:hover {
+        background: rgba(0, 242, 254, 0.35);
+        border-color: #00f2fe;
+        color: #00f2fe;
+        transform: scale(1.08);
+      }
+      .ls-action-pill.ls-portrait-pill {
+        background: rgba(0, 242, 254, 0.15) !important;
+        border-color: rgba(0, 242, 254, 0.4) !important;
+        color: #00f2fe !important;
+      }
+      .ls-action-pill.ls-portrait-pill:hover {
+        background: rgba(0, 242, 254, 0.3) !important;
+        box-shadow: 0 0 12px rgba(0, 242, 254, 0.4) !important;
+      }
+
       .desktop-nav-menu { display: none; }
       .nav-me-btn { display: none; }
       .hero-spotlight-details { display: none; }
@@ -4462,6 +4536,36 @@
           font-weight: 700 !important;
           padding: 12px 4px !important;
         }
+        /* Me / Profile Page Scaling for PC & TV */
+        #meView.me-tab-view { max-width: 960px !important; margin: 0 auto !important; padding: 32px 32px 90px 32px !important; }
+        .mb-profile-header { padding: 24px 30px !important; border-radius: 20px !important; }
+        .mb-avatar-circle { width: 68px !important; height: 68px !important; font-size: 28px !important; }
+        .mb-name-text { font-size: 24px !important; }
+        .mb-id-pill { font-size: 14.5px !important; padding: 5px 14px !important; }
+        .mb-header-login-btn { font-size: 15px !important; padding: 10px 22px !important; }
+        .mb-official-strip { font-size: 15px !important; padding: 14px 22px !important; border-radius: 14px !important; }
+        .mb-history-header { font-size: 18px !important; }
+        .mb-h-title { font-size: 14px !important; }
+        .mb-menu-group { border-radius: 20px !important; margin-bottom: 22px !important; }
+        .mb-menu-row { padding: 18px 24px !important; }
+        .mb-m-left { font-size: 16.5px !important; gap: 16px !important; }
+        .mb-m-left i { font-size: 20px !important; width: 24px !important; }
+        .mb-m-right { font-size: 15.5px !important; }
+        .mb-m-right i { font-size: 14px !important; }
+
+        /* Subtitle Scaling for PC & TV */
+        #customSubtitleOverlay .custom-subtitle-cue, .custom-subtitle-cue {
+          font-size: clamp(26px, 2.6vw, 44px) !important;
+          line-height: 1.45 !important;
+          padding: 6px 18px !important;
+        }
+
+        /* Comments Styling for PC & TV */
+        #commentsView { padding: 20px 0 80px 0 !important; }
+        .comments-section-header { font-size: 18px !important; }
+        .comment-input-bar-wrap { padding: 16px 22px !important; border-radius: 16px !important; }
+        .comment-text-input { font-size: 15.5px !important; padding: 12px 18px !important; }
+
         .live-tv-grid { display: grid !important; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important; gap: 20px !important; padding: 16px 48px !important; box-sizing: border-box !important; }
         .live-channel-card:hover, .channel-card:hover, .live-channel-card.tv-focused, .channel-card.tv-focused { transform: scale(1.05) translateY(-4px) !important; border-color: #00f2fe !important; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 242, 254, 0.3) !important; }
         .nav-tab-pill.tv-focused, .nav-me-btn.tv-focused, .btn-hero-watch.tv-focused, .btn-hero-list.tv-focused, .btn-hero-info.tv-focused, .media-card.tv-focused, .category-pill.tv-focused, .channel-card.tv-focused, .search-bar-wrapper.tv-focused, button.tv-focused { outline: 2.5px solid #00f2fe !important; box-shadow: 0 0 24px rgba(0, 242, 254, 0.8) !important; transform: scale(1.06) !important; z-index: 50 !important; }
@@ -4560,7 +4664,141 @@
         window._pcWheelScrollHooked = true;
       }
     } catch (_) {}
+
+    // 18. Inject Player Extra Controls (Previous Episode Button & Landscape-to-Portrait Return Pill)
+    function ensurePlayerExtraControls() {
+      // 1. Previous Episode Button in Center Controls
+      const centerControls = document.getElementById('lsCenterControls');
+      const playPauseBtn = document.getElementById('lsCenterPlayPauseBtn');
+      if (centerControls && playPauseBtn && !document.getElementById('lsCenterPrevEpBtn')) {
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'ls-center-btn ls-prev-ep-btn';
+        prevBtn.id = 'lsCenterPrevEpBtn';
+        prevBtn.title = 'Previous Episode';
+        prevBtn.style.display = 'none';
+        prevBtn.onclick = function() { window.playPreviousEpisode(); };
+        prevBtn.innerHTML = '<i class="fa-solid fa-backward-step"></i>';
+        centerControls.insertBefore(prevBtn, playPauseBtn);
+      }
+
+      // 2. Landscape-to-Portrait Button in Bottom Actions
+      const bottomActions = document.querySelector('.ls-bottom-actions');
+      if (bottomActions && !document.getElementById('lsPortraitToggleBtn')) {
+        const ptBtn = document.createElement('button');
+        ptBtn.className = 'ls-action-pill ls-portrait-pill';
+        ptBtn.id = 'lsPortraitToggleBtn';
+        ptBtn.title = 'Exit Fullscreen / Portrait Mode';
+        ptBtn.onclick = function() {
+          if (typeof window.exitFullscreenMode === 'function') {
+            window.exitFullscreenMode({ skipRotate: false });
+          }
+        };
+        ptBtn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+          </svg>
+          <span>Portrait</span>
+        `;
+        bottomActions.appendChild(ptBtn);
+      }
+    }
+    ensurePlayerExtraControls();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', ensurePlayerExtraControls);
+    }
+    setInterval(ensurePlayerExtraControls, 2000);
+
+    // 19. Global Implementation: playPreviousEpisode()
+    window.playPreviousEpisode = function() {
+      if (!window.appState?.currentMedia) return;
+      const episodes = (typeof getActiveSeasonEpisodes === 'function') ? getActiveSeasonEpisodes(window.appState.currentMedia) : (window.appState.currentMedia.episodes || []);
+      if (!episodes || !episodes.length) return;
+      const curIdx = window.appState.currentEpisodeIndex || 0;
+      const prevIdx = curIdx - 1;
+      if (prevIdx >= 0) {
+        if (typeof selectEpisode === 'function') selectEpisode(prevIdx);
+        if (typeof showToast === 'function') showToast(`Playing Episode ${prevIdx + 1}`);
+      } else {
+        if (typeof showToast === 'function') showToast('This is the first episode of this season');
+      }
+    };
+
+    // 20. Hook updateNextEpisodeBtnVisibility to update both Prev & Next Episode Buttons
+    if (typeof window.updateNextEpisodeBtnVisibility === 'function' && !window.updateNextEpisodeBtnVisibility._otaHooked) {
+      const origUpdateNext = window.updateNextEpisodeBtnVisibility;
+      window.updateNextEpisodeBtnVisibility = function() {
+        origUpdateNext.apply(this, arguments);
+        const prevBtn = document.getElementById('lsCenterPrevEpBtn');
+        const media = window.appState?.currentMedia;
+        const isSeries = media && (media.type === 'series' || (media.seasons && media.seasons.length > 0) || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('mb-s-')));
+        if (!isSeries) {
+          if (prevBtn) prevBtn.style.display = 'none';
+          return;
+        }
+        const episodes = (typeof getActiveSeasonEpisodes === 'function') ? getActiveSeasonEpisodes(media) : (media.episodes || []);
+        const curIdx = window.appState.currentEpisodeIndex || 0;
+        if (prevBtn) {
+          prevBtn.style.display = 'flex';
+          if (episodes && curIdx > 0) {
+            prevBtn.style.opacity = '1';
+            prevBtn.style.cursor = 'pointer';
+          } else {
+            prevBtn.style.opacity = '0.5';
+            prevBtn.style.cursor = 'default';
+          }
+        }
+      };
+      window.updateNextEpisodeBtnVisibility._otaHooked = true;
+    }
+
+    // 21. Hook handlePlayerBackClick: Landscape back button returns to Portrait view, never quits to home
+    if (typeof window.handlePlayerBackClick === 'function' && !window.handlePlayerBackClick._otaHooked) {
+      const origHandleBack = window.handlePlayerBackClick;
+      window.handlePlayerBackClick = function() {
+        const isFs = document.body.classList.contains('is-fullscreen') || Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+        if (isFs) {
+          if (typeof window.exitFullscreenMode === 'function') {
+            window.exitFullscreenMode({ skipRotate: false });
+            if (typeof window.restoreSystemBrightness === 'function') window.restoreSystemBrightness();
+            return;
+          }
+        }
+        return origHandleBack.apply(this, arguments);
+      };
+      window.handlePlayerBackClick._otaHooked = true;
+    }
+
+    // 22. Dynamic Subtitle Scaling on PC & TV
+    if (typeof window.applySubtitleStylesToElement === 'function' && !window.applySubtitleStylesToElement._otaHooked) {
+      const origApplySub = window.applySubtitleStylesToElement;
+      window.applySubtitleStylesToElement = function(el) {
+        origApplySub.apply(this, arguments);
+        if (el && window.innerWidth >= 768) {
+          const curSize = (window.subtitleState && window.subtitleState.fontSize) || 18;
+          const scaled = Math.max(26, Math.round(curSize * 1.6));
+          el.style.setProperty('font-size', `${scaled}px`, 'important');
+          el.style.setProperty('line-height', '1.45', 'important');
+        }
+      };
+      window.applySubtitleStylesToElement._otaHooked = true;
+    }
+
+    // 23. Strict Login Enforcement Guard
+    if (typeof window.openPlayer === 'function' && !window.openPlayer._loginGateHooked) {
+      const origOpen = window.openPlayer;
+      window.openPlayer = function(media, episodeIndex = null, resumeSeekTime = null) {
+        if (typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
+          if (window.appState) window.appState.pendingOpenMedia = { media, episodeIndex, resumeSeekTime };
+          if (typeof openSimpleLoginModal === 'function') openSimpleLoginModal();
+          if (typeof hideConnectingLoader === 'function') hideConnectingLoader();
+          return;
+        }
+        return origOpen.apply(this, arguments);
+      };
+      window.openPlayer._loginGateHooked = true;
+    }
   } catch (_) {}
 
-  console.log('✅ FOBS TV Live Patch v1.8.1 active: Wider Logo, 60fps GPU Compositing & Ultra-Smooth PC EXE.');
+  console.log('✅ FOBS TV Live Patch v1.8.4 active: No Shadow, Previous Ep Btn, Portrait Switch, Scaled Subtitles & Dark Scrollbars.');
 })();

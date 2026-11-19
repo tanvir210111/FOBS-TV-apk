@@ -1885,18 +1885,21 @@ function updateUserStatsCounts() {
   const appCount = list.filter(u => getUserCategory(u) === 'app').length;
   const tvCount = list.filter(u => getUserCategory(u) === 'tv').length;
   const exeCount = list.filter(u => getUserCategory(u) === 'exe').length;
+  const regCount = list.filter(u => u.type === 'Registered Member' || (u.email && u.email.includes('@') && u.email !== 'Google User' && !u.email.includes('@placeholder.'))).length;
   const onlineCount = list.filter(u => u.isOnline || u.status === 'Online Now').length;
 
   if (document.getElementById('users-stat-devices')) document.getElementById('users-stat-devices').innerText = list.length;
   if (document.getElementById('users-stat-app')) document.getElementById('users-stat-app').innerText = appCount;
   if (document.getElementById('users-stat-tv')) document.getElementById('users-stat-tv').innerText = tvCount;
   if (document.getElementById('users-stat-exe')) document.getElementById('users-stat-exe').innerText = exeCount;
+  if (document.getElementById('users-stat-registered')) document.getElementById('users-stat-registered').innerText = regCount;
   if (document.getElementById('users-stat-online')) document.getElementById('users-stat-online').innerText = onlineCount;
 
   if (document.getElementById('chip-count-all')) document.getElementById('chip-count-all').innerText = list.length;
   if (document.getElementById('chip-count-app')) document.getElementById('chip-count-app').innerText = appCount;
   if (document.getElementById('chip-count-tv')) document.getElementById('chip-count-tv').innerText = tvCount;
   if (document.getElementById('chip-count-exe')) document.getElementById('chip-count-exe').innerText = exeCount;
+  if (document.getElementById('chip-count-registered')) document.getElementById('chip-count-registered').innerText = regCount;
   if (document.getElementById('chip-count-online')) document.getElementById('chip-count-online').innerText = onlineCount;
 }
 

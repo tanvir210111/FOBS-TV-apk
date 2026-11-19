@@ -4226,15 +4226,9 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
   const commentNotice = document.getElementById('commentLoginNotice');
   if (commentNotice) commentNotice.style.display = 'none';
   if (media && media.id) {
-    fetch(`${API_BASE_URL}/api/comments/${encodeURIComponent(media.id)}`)
-      .then(res => res.json())
-      .then(d => {
-        const badge = document.getElementById('commentsCountBadge');
-        if (badge && d && d.success && Array.isArray(d.comments)) {
-          badge.textContent = d.comments.length;
-        }
-      })
-      .catch(() => {});
+    if (typeof loadMediaComments === 'function') {
+      loadMediaComments(media.id);
+    }
   }
 
   // Setup MovieBox Subtitles and Quality options
@@ -4363,25 +4357,57 @@ function selectEpisode(idx) {
 
 function updateNextEpisodeBtnVisibility() {
   const nextBtn = document.getElementById('lsCenterNextEpBtn');
-  if (!nextBtn) return;
+  const prevBtn = document.getElementById('lsCenterPrevEpBtn');
   const media = appState.currentMedia;
   const isSeries = media && (media.type === 'series' || (media.seasons && media.seasons.length > 0) || (media.episodes && media.episodes.length > 0) || (media.id && media.id.startsWith('mb-s-')));
   if (!isSeries) {
-    nextBtn.style.display = 'none';
+    if (nextBtn) nextBtn.style.display = 'none';
+    if (prevBtn) prevBtn.style.display = 'none';
     return;
   }
   const episodes = getActiveSeasonEpisodes(media);
   const curIdx = appState.currentEpisodeIndex || 0;
-  nextBtn.style.display = 'flex';
-  if (episodes && curIdx < episodes.length - 1) {
-    nextBtn.style.opacity = '1';
-    nextBtn.style.cursor = 'pointer';
-  } else {
-    nextBtn.style.opacity = '0.5';
-    nextBtn.style.cursor = 'default';
+  if (nextBtn) {
+    nextBtn.style.display = 'flex';
+    if (episodes && curIdx < episodes.length - 1) {
+      nextBtn.style.opacity = '1';
+      nextBtn.style.cursor = 'pointer';
+    } else {
+      nextBtn.style.opacity = '0.5';
+      nextBtn.style.cursor = 'default';
+    }
+  }
+  if (prevBtn) {
+    prevBtn.style.display = 'flex';
+    if (episodes && curIdx > 0) {
+      prevBtn.style.opacity = '1';
+      prevBtn.style.cursor = 'pointer';
+    } else {
+      prevBtn.style.opacity = '0.5';
+      prevBtn.style.cursor = 'default';
+    }
   }
 }
 window.updateNextEpisodeBtnVisibility = updateNextEpisodeBtnVisibility;
+
+function playPreviousEpisode() {
+  if (!appState.currentMedia) return;
+  const episodes = getActiveSeasonEpisodes(appState.currentMedia);
+  if (!episodes || !episodes.length) return;
+  const curIdx = appState.currentEpisodeIndex || 0;
+  const prevIdx = curIdx - 1;
+  if (prevIdx >= 0) {
+    selectEpisode(prevIdx);
+    if (typeof showToast === 'function') {
+      showToast(`Playing Episode ${prevIdx + 1}`);
+    }
+  } else {
+    if (typeof showToast === 'function') {
+      showToast('This is the first episode of this season');
+    }
+  }
+}
+window.playPreviousEpisode = playPreviousEpisode;
 
 function playNextEpisode() {
   if (!appState.currentMedia) return;
@@ -5177,9 +5203,12 @@ function updateLandscapeProgress() {
   const curFormatted = formatPlayerTime(current);
   const durFormatted = formatPlayerTime(duration);
 
-  if (curEl) curEl.innerText = curFormatted;
-  if (durEl) durEl.innerText = durFormatted;
-  if (ptTimeEl) ptTimeEl.innerText = `${curFormatted}/${durFormatted}`;
+  if (curEl && curEl.textContent !== curFormatted) curEl.textContent = curFormatted;
+  if (durEl && durEl.textContent !== durFormatted) durEl.textContent = durFormatted;
+  if (ptTimeEl) {
+    const combined = `${curFormatted}/${durFormatted}`;
+    if (ptTimeEl.textContent !== combined) ptTimeEl.textContent = combined;
+  }
 
   if (duration > 0) {
     const pct = Math.min(100, Math.max(0, (current / duration) * 100));
@@ -5367,9 +5396,12 @@ function seekToAbsoluteTime(targetSeconds) {
 
   const curFormatted = formatPlayerTime(safeTarget);
   const durFormatted = formatPlayerTime(duration);
-  if (curEl) curEl.innerText = curFormatted;
-  if (durEl) durEl.innerText = durFormatted;
-  if (ptTimeEl) ptTimeEl.innerText = `${curFormatted}/${durFormatted}`;
+  if (curEl && curEl.textContent !== curFormatted) curEl.textContent = curFormatted;
+  if (durEl && durEl.textContent !== durFormatted) durEl.textContent = durFormatted;
+  if (ptTimeEl) {
+    const combined = `${curFormatted}/${durFormatted}`;
+    if (ptTimeEl.textContent !== combined) ptTimeEl.textContent = combined;
+  }
 
   if (duration > 0) {
     const pct = Math.min(100, Math.max(0, (safeTarget / duration) * 100));
@@ -6825,7 +6857,10 @@ function hexToRgba(hex, alpha = 0.7) {
 // Apply chosen font size, colors, borders and background
 function applySubtitleStylesToElement(el) {
   if (!el) return;
-  el.style.setProperty('font-size', `${subtitleState.fontSize}px`, 'important');
+  const isLargeScreen = (window.innerWidth >= 768);
+  const scale = isLargeScreen ? 1.6 : 1.0;
+  const effectiveSize = Math.max(isLargeScreen ? 26 : 14, Math.round((subtitleState.fontSize || 18) * scale));
+  el.style.setProperty('font-size', `${effectiveSize}px`, 'important');
   el.style.setProperty('color', subtitleState.textColor, 'important');
 
   // Border & Text Outline
@@ -7482,7 +7517,9 @@ function handlePlayerBackClick() {
     resetLandscapeControlsTimer();
     return;
   }
-  if (document.body.classList.contains('is-fullscreen')) {
+  // When in fullscreen or landscape view on any device: exit back to portrait player details page!
+  const isFs = document.body.classList.contains('is-fullscreen') || Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+  if (isFs) {
     exitFullscreenMode({ skipRotate: false });
     restoreSystemBrightness();
     return;
