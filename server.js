@@ -290,6 +290,16 @@ app.use((req, res, next) => {
     return next();
   }
 
+  // Allow official FOBS TV PC Desktop App (Electron)
+  const ua = req.headers['user-agent'] || '';
+  const isOfficialPcApp = ua.includes('FOBS-TV-PC') || 
+                          ua.includes('Electron') || 
+                          req.headers['x-fobs-client'] === 'pc-app' || 
+                          req.query.fobs_app === 'pc';
+  if (isOfficialPcApp) {
+    return next();
+  }
+
   // Block direct web browser visits to root, index, and web streaming bundles
   if (
     req.path === '/' ||

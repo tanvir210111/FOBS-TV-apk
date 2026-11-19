@@ -1,7 +1,9 @@
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, Menu, session } = require('electron');
 const path = require('path');
 
 let mainWindow;
+
+const PC_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 FOBS-TV-PC-App/1.0.0 Electron/33.2.0';
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -22,13 +24,20 @@ function createWindow() {
 
   Menu.setApplicationMenu(null);
 
-  // Load the FOBS TV frontend in 16:9 widescreen (connects to live backend API)
-  const localIndex = path.join(__dirname, '..', 'public', 'index.html');
-  if (require('fs').existsSync(localIndex)) {
-    mainWindow.loadFile(localIndex);
-  } else {
-    mainWindow.loadURL('https://fobstv.duckdns.org/');
-  }
+  // Ensure all outbound requests carry the official PC app signature
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    details.requestHeaders['User-Agent'] = PC_USER_AGENT;
+    details.requestHeaders['X-FOBS-Client'] = 'pc-app';
+    callback({ cancel: false, requestHeaders: details.requestHeaders });
+  });
+
+  mainWindow.webContents.setUserAgent(PC_USER_AGENT);
+
+  // Load the live FOBS TV platform with PC client signature
+  mainWindow.loadURL('https://fobstv.duckdns.org/?fobs_app=pc', {
+    userAgent: PC_USER_AGENT,
+    extraHeaders: 'X-FOBS-Client: pc-app\n'
+  });
 
   mainWindow.on('closed', () => {
     mainWindow = null;
