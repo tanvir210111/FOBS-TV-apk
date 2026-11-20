@@ -1928,7 +1928,7 @@ app.get('/api/app-update', (req, res) => {
     ],
     downloadUrl: 'https://fobstv.duckdns.org/download/apk',
     fallbackUrl: 'https://fobstv.duckdns.org/download',
-    fileSize: '7.75 MB'
+    fileSize: '7.4 MB'
   };
     res.json(data.appUpdate || defaultUpdate);
 });
@@ -1956,6 +1956,7 @@ app.get(['/download', '/download/'], (req, res) => {
 // Direct APK Download route
 app.get('/download/apk', (req, res) => {
   const candidates = [
+    path.join(__dirname, 'public', 'download', 'FOBS_TV_v3.2.0.apk'),
     path.join(__dirname, 'public', 'download', 'FOBS_TV_latest.apk'),
     path.join(__dirname, 'public', 'download', 'app-release.apk'),
     path.join(__dirname, 'public', 'download', 'fobs-tv-debug.apk'),
