@@ -8,17 +8,18 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="referrer" content="no-referrer-when-downgrade">
   <meta name="monetag" content="8f946e8a023f930c4b73e0a5181dd84d">
-  <!-- Monetag Native Banner Ad (In-Page Push - Mobile & PC) -->
+  <!-- Monetag Native Banner Ad (In-Page Push - Web Only; suppressed on PC App & TV to prevent stuck/floating cards) -->
   <script>
     (function() {
       try {
         var ua = (navigator.userAgent || '').toLowerCase();
+        var isDesktopApp = Boolean(window.process && window.process.type) || ua.includes('electron') || ua.includes('fobs-tv-pc-app');
         var isTv = ua.includes('android tv') || ua.includes('smarttv') || ua.includes('smart-tv') || ua.includes('leanback') || ua.includes('aftt') || ua.includes('aftm') || ua.includes('mitv') || ua.includes('bravia');
         if (!isTv && /android/i.test(ua) && window.innerWidth >= 1280 && (!('ontouchstart' in window) || navigator.maxTouchPoints === 0)) {
           isTv = true;
         }
-        if (isTv) {
-          console.log('[Ad] Android TV detected. Monetag suppressed for clean remote control navigation.');
+        if (isDesktopApp || isTv) {
+          console.log('[Ad] Desktop PC App or Android TV detected. Monetag suppressed for clean native experience.');
           return;
         }
         // Monetag Native Banner / In-Page Push (Zone 12310416)
@@ -133,6 +134,25 @@
       <div class="app-intro-status-text" id="introStatusText">Refreshing latest movies & series...</div>
     </div>
   </div>
+
+  <script>
+    // Fail-safe: Always dismiss intro splash within 4 seconds max so PC/Mobile/TV never gets stuck
+    window._introInlineFailsafe = setTimeout(function() {
+      try {
+        var ov = document.getElementById('appIntroOverlay');
+        if (ov && !window._introFinished) {
+          if (typeof window.finishIntroAndShowApp === 'function') {
+            window.finishIntroAndShowApp();
+          } else {
+            ov.classList.add('fade-out');
+            ov.style.setProperty('display', 'none', 'important');
+            document.body.classList.remove('intro-active');
+            if (ov.parentNode) ov.parentNode.removeChild(ov);
+          }
+        }
+      } catch(e) {}
+    }, 4000);
+  </script>
 
   <!-- Mobile Frame Container -->
   <div class="app-container">
