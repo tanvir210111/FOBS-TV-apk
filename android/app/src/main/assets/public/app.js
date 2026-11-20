@@ -5955,6 +5955,7 @@ const subtitleState = {
   _loadToken: null,
   _trackToken: null
 };
+window.subtitleState = subtitleState;
 
 // Restore saved settings from localStorage
 function restoreSubtitleSettings() {
@@ -6202,6 +6203,34 @@ async function setupSubtitlesForMedia(media) {
   const loadToken = `${media.id || ''}_s${season}_e${ep}_${Date.now()}`;
   subtitleState._loadToken = loadToken;
 
+  // Instant Priority: The Remarried Empress uses FOBS Special Subtitle (Bangla) + Official ESub
+  const isRemarriedEmpress = (cleanTitle || '').toLowerCase().includes('remarried empress');
+  if (isRemarriedEmpress) {
+    const epNum = Math.max(1, ep);
+    const fobsSpecialTrack = {
+      id: `fobs_special_sub_remarried_ep${epNum}`,
+      language: 'FOBS Team Special Sub (বাংলা)',
+      langCode: 'bn',
+      source: 'FOBS Team Special',
+      url: `/subtitles/the_remarried_empress_s1_ep${epNum}_fobs.vtt`,
+      format: 'vtt',
+      isFobsSpecial: true
+    };
+    const enTrack = {
+      id: `local_en_the_remarried_empress_s1_ep${epNum}_en`,
+      language: 'English',
+      langCode: 'en',
+      source: 'Official / ESub',
+      url: `/subtitles/the_remarried_empress_s1_ep${epNum}_en.vtt`,
+      format: 'vtt'
+    };
+
+    subtitleState.availableTracks = [fobsSpecialTrack, enTrack];
+    renderSubtitleLists();
+    selectSubtitleTrack(fobsSpecialTrack.id);
+    return;
+  }
+
   const tracks = [];
 
   // 1. Direct embedded captions from active Episode / Media (Instant & 100% Reliable)
@@ -6381,7 +6410,7 @@ function renderSubtitleLists() {
 
   if (isRemarriedEmpress) {
     const rawEp = appState.currentEpisode?.episode || appState.currentEpisodeNumber || 1;
-    const ep = Math.max(1, Math.min(6, parseInt(rawEp, 10) || 1));
+    const ep = Math.max(1, parseInt(rawEp, 10) || 1);
     const fobsTrack = {
       id: `fobs_special_sub_remarried_ep${ep}`,
       language: 'FOBS Team Special Sub (বাংলা)',
@@ -6403,6 +6432,9 @@ function renderSubtitleLists() {
     if (!subtitleState.currentTrackId || subtitleState.currentTrackId === 'off' || !subtitleState.availableTracks.some(t => t.id === subtitleState.currentTrackId)) {
       subtitleState.currentTrackId = fobsTrack.id;
       subtitleState.enabled = true;
+    }
+    if ((!subtitleState.cues || subtitleState.cues.length === 0) && typeof selectSubtitleTrack === 'function') {
+      selectSubtitleTrack(fobsTrack.id);
     }
   }
 

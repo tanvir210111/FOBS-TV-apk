@@ -1,7 +1,7 @@
 // FOBS TV Live OTA Patch Bundle v1.9.4 (The Remarried Empress Episode 8 + FOBS Bangla Sub added)
 (function () {
   console.log('⚡ FOBS TV Live Patch v1.9.4 (The Remarried Empress Episode 8 + FOBS Bangla Sub) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.9.4';
+  window.FOBS_LIVE_PATCH_VERSION = '1.9.5';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -3908,6 +3908,9 @@
           if (!window.subtitleState.currentTrackId || window.subtitleState.currentTrackId === 'off' || !window.subtitleState.availableTracks.some(t => t.id === window.subtitleState.currentTrackId)) {
             window.subtitleState.currentTrackId = fobsTrack.id;
             window.subtitleState.enabled = true;
+          }
+          if ((!window.subtitleState.cues || window.subtitleState.cues.length === 0) && typeof window.selectSubtitleTrack === 'function') {
+            window.selectSubtitleTrack(fobsTrack.id);
           }
         }
         return origRender.apply(this, arguments);
