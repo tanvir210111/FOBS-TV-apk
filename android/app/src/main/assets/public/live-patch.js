@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.9.5 (Instant Default BSUB Autoplay & True Sync)
+// FOBS TV Live OTA Patch Bundle v1.9.6 (Restore Original Mobile Subtitle Font Size & Keep PC/TV Scaling)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.9.5 (Instant Default BSUB Autoplay & True Sync) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.9.5';
+  console.log('⚡ FOBS TV Live Patch v1.9.6 (Restore Original Mobile Subtitle Font Size) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.9.6';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -5399,9 +5399,11 @@
     // 22. Dynamic Subtitle Scaling on PC & TV (Fixed & Responsive)
     window.applySubtitleStylesToElement = function(el) {
       if (!el) return;
-      const curSize = Number(window.subtitleState && window.subtitleState.fontSize) || 18;
+      const state = window.subtitleState || (typeof subtitleState !== 'undefined' ? subtitleState : null);
+      const curSize = Number(state && state.fontSize) || 18;
+      const isMobileApp = Boolean(window.AndroidApp) || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
       let effectiveSize = curSize;
-      if (window.innerWidth >= 768) {
+      if (!isMobileApp && window.innerWidth >= 1024) {
         if (curSize <= 14) effectiveSize = 22;
         else if (curSize <= 18) effectiveSize = 28;
         else if (curSize <= 23) effectiveSize = 36;
@@ -5409,9 +5411,36 @@
         else effectiveSize = 52;
       }
       el.style.setProperty('font-size', `${effectiveSize}px`, 'important');
-      el.style.setProperty('line-height', '1.45', 'important');
-      if (window.subtitleState && window.subtitleState.textColor) {
-        el.style.setProperty('color', window.subtitleState.textColor, 'important');
+      el.style.setProperty('line-height', '1.38', 'important');
+      if (state && state.textColor) {
+        el.style.setProperty('color', state.textColor, 'important');
+      }
+
+      // Border & Text Outline
+      const bColor = (state && state.borderColor) || '#000000';
+      if (bColor === 'transparent') {
+        el.style.setProperty('text-shadow', '0 2px 5px rgba(0,0,0,0.85)', 'important');
+      } else if (bColor === '#00f2fe') {
+        el.style.setProperty('text-shadow', '0 0 8px rgba(0, 242, 254, 0.9), 0 0 14px rgba(0, 242, 254, 0.6)', 'important');
+      } else {
+        el.style.setProperty('text-shadow', `
+          -1.5px -1.5px 0 ${bColor},
+           1.5px -1.5px 0 ${bColor},
+          -1.5px  1.5px 0 ${bColor},
+           1.5px  1.5px 0 ${bColor},
+           0px 2px 6px rgba(0,0,0,0.9)
+        `, 'important');
+      }
+
+      // Background Box
+      const isBgOff = !state || !state.bgEnabled || state.bgStyle === 'transparent' || state.bgStyle === 'none';
+      if (isBgOff) {
+        el.style.setProperty('background-color', 'transparent', 'important');
+        el.style.setProperty('background', 'transparent', 'important');
+      } else {
+        const bgVal = state.bgColor || 'rgba(0, 0, 0, 0.7)';
+        el.style.setProperty('background-color', bgVal, 'important');
+        el.style.setProperty('background', bgVal, 'important');
       }
     };
 

@@ -6915,7 +6915,8 @@ function hexToRgba(hex, alpha = 0.7) {
 // Apply chosen font size, colors, borders and background
 function applySubtitleStylesToElement(el) {
   if (!el) return;
-  const isLargeScreen = (window.innerWidth >= 768);
+  const isMobileApp = Boolean(window.AndroidApp) || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+  const isLargeScreen = !isMobileApp && (window.innerWidth >= 1024);
   const curSize = Number(subtitleState.fontSize) || 18;
   let effectiveSize = curSize;
   if (isLargeScreen) {
