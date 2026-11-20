@@ -280,11 +280,12 @@ app.use((req, res, next) => {
 // The official FOBS TV Android APK loads locally from device assets and calls /api
 // ============================================================
 app.use((req, res, next) => {
-  // Allow Admin panel, API endpoints, APK downloads, and health checks
+  // Allow Admin panel, API endpoints, APK downloads, Ad frames, and health checks
   if (
     req.path.startsWith('/admin') ||
     req.path.startsWith('/api') ||
     req.path.startsWith('/download') ||
+    req.path.startsWith('/ads') ||
     req.path === '/health'
   ) {
     return next();
@@ -2983,7 +2984,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.8.9",
+  version: "1.9.0",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 

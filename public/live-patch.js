@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.8.9 (Official Download Portal URL Update, Subtitle Size Active Color Fix)
+// FOBS TV Live OTA Patch Bundle v1.9.0 (Adsterra Clean Banner Ads 300x250 & 320x50, Safe TV Isolation)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.8.9 (Official Download Portal URL Update to fobstv.duckdns.org/download) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.8.9';
+  console.log('⚡ FOBS TV Live Patch v1.9.0 (Adsterra Clean Banner Ads & Safe TV Isolation) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.9.0';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -4238,6 +4238,61 @@
         border-color: #00f2fe !important;
       }
 
+      /* Clean Banner Ad Slots */
+      .fobs-ad-slot {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 14px auto !important;
+        width: 100% !important;
+        position: relative !important;
+        contain: layout !important;
+      }
+      .fobs-ad-header {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin-bottom: 6px !important;
+        width: 100% !important;
+      }
+      .fobs-ad-badge {
+        font-size: 9px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.8px !important;
+        text-transform: uppercase !important;
+        color: #64748b !important;
+        background: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        padding: 2px 7px !important;
+        border-radius: 4px !important;
+      }
+      .fobs-ad-frame-wrapper {
+        background: rgba(15, 20, 30, 0.6) !important;
+        border: 1px solid rgba(255, 255, 255, 0.06) !important;
+        border-radius: 12px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        overflow: hidden !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+      }
+      .fobs-ad-300x250 { width: 300px !important; height: 250px !important; min-width: 300px !important; min-height: 250px !important; }
+      .fobs-ad-320x50 { width: 320px !important; height: 50px !important; min-width: 320px !important; min-height: 50px !important; }
+      .fobs-ad-iframe { border: none !important; outline: none !important; display: block !important; }
+      .fobs-ad-card { display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; padding: 10px 0 !important; width: 100% !important; }
+      
+      /* Completely Hide Banner Ads on Android TV to Protect D-Pad Remote Focus */
+      .tv-mode .fobs-ad-slot,
+      body.tv-device .fobs-ad-slot,
+      [data-device="tv"] .fobs-ad-slot,
+      .is-android-tv .fobs-ad-slot {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        pointer-events: none !important;
+      }
+
       /* Previous Episode Button & Landscape Portrait Return Pill */
       .ls-prev-ep-btn {
         width: 44px;
@@ -6284,7 +6339,88 @@ window.renderDownloadsList = renderDownloadsList;;
       showToast('সাবটাইটেল পাওয়া যায়নি');
     };
 
+    // 25. Adsterra Clean Banner Ads Engine (Mobile & PC, TV-Safe Isolation)
+    function injectAdsterraBanners() {
+      try {
+        const isTv = Boolean(
+          (navigator.userAgent && (navigator.userAgent.includes('Android TV') || navigator.userAgent.includes('Leanback') || navigator.userAgent.includes('SmartTV') || navigator.userAgent.includes('SMART-TV'))) ||
+          (window.innerWidth >= 1280 && navigator.userAgent && navigator.userAgent.includes('Android')) ||
+          document.body.classList.contains('tv-mode')
+        );
+        if (isTv) {
+          document.querySelectorAll('.fobs-ad-slot').forEach(el => el.remove());
+          return;
+        }
+
+        // 1. Details Ad Slot (300x250)
+        if (!document.getElementById('fobsAdDetailsSlot')) {
+          const commContainer = document.querySelector('.floating-community-container');
+          if (commContainer && commContainer.parentNode) {
+            const slot = document.createElement('div');
+            slot.className = 'fobs-ad-slot fobs-ad-details';
+            slot.id = 'fobsAdDetailsSlot';
+            slot.innerHTML = `
+              <div class="fobs-ad-header"><span class="fobs-ad-badge"><i class="fa-solid fa-rectangle-ad"></i> SPONSORED</span></div>
+              <div class="fobs-ad-frame-wrapper fobs-ad-300x250">
+                <iframe class="fobs-ad-iframe" src="/ads/banner-300x250.html" width="300" height="250" frameborder="0" scrolling="no" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+              </div>
+            `;
+            commContainer.parentNode.insertBefore(slot, commContainer);
+          }
+        }
+
+        // 2. Home Feed Ad Slot (300x250)
+        if (!document.getElementById('fobsAdHomeSlot')) {
+          const trendingSec = document.querySelector('#trendingList')?.closest('.content-section');
+          if (trendingSec && trendingSec.parentNode) {
+            const slot = document.createElement('div');
+            slot.className = 'fobs-ad-slot fobs-ad-home';
+            slot.id = 'fobsAdHomeSlot';
+            slot.innerHTML = `
+              <div class="fobs-ad-card">
+                <div class="fobs-ad-header"><span class="fobs-ad-badge"><i class="fa-solid fa-rectangle-ad"></i> SPONSORED</span></div>
+                <div class="fobs-ad-frame-wrapper fobs-ad-300x250">
+                  <iframe class="fobs-ad-iframe" src="/ads/banner-300x250.html" width="300" height="250" frameborder="0" scrolling="no" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+                </div>
+              </div>
+            `;
+            trendingSec.parentNode.insertBefore(slot, trendingSec.nextSibling);
+          }
+        }
+
+        // 3. Me Page Ad Slot (320x50)
+        if (!document.getElementById('fobsAdMeSlot')) {
+          const meFooter = document.querySelector('.mb-official-footer');
+          if (meFooter && meFooter.parentNode) {
+            const slot = document.createElement('div');
+            slot.className = 'fobs-ad-slot fobs-ad-me';
+            slot.id = 'fobsAdMeSlot';
+            slot.innerHTML = `
+              <div class="fobs-ad-header"><span class="fobs-ad-badge"><i class="fa-solid fa-rectangle-ad"></i> SPONSORED</span></div>
+              <div class="fobs-ad-frame-wrapper fobs-ad-320x50">
+                <iframe class="fobs-ad-iframe" src="/ads/banner-320x50.html" width="320" height="50" frameborder="0" scrolling="no" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+              </div>
+            `;
+            meFooter.parentNode.insertBefore(slot, meFooter);
+          }
+        }
+      } catch (_) {}
+    }
+
+    setTimeout(injectAdsterraBanners, 500);
+    setTimeout(injectAdsterraBanners, 2000);
+
+    // Also inject when opening player overlay
+    if (typeof window.openPlayer === 'function' && !window.openPlayer._adSlotHooked) {
+      const origOpenPlayerForAds = window.openPlayer;
+      window.openPlayer = function(m, ep, t) {
+        origOpenPlayerForAds(m, ep, t);
+        setTimeout(injectAdsterraBanners, 300);
+      };
+      window.openPlayer._adSlotHooked = true;
+    }
+
   } catch (_) {}
 
-  console.log('✅ FOBS TV Live Patch v1.8.9 active: Download Portal URL fobstv.duckdns.org/download updated, Size Highlight & Offline Subs.');
+  console.log('✅ FOBS TV Live Patch v1.9.0 active: Adsterra Clean Banners (300x250 & 320x50), TV-Safe Isolation, Size Highlight & Offline Subs.');
 })();

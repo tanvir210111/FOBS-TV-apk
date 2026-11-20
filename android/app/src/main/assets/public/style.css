@@ -12371,4 +12371,93 @@ body::-webkit-scrollbar-thumb {
   box-shadow: 0 0 12px rgba(0, 242, 254, 0.4) !important;
 }
 
+/* ============================================================ */
+/* FOBS TV CLEAN AD SLOTS (ADSTERRA 300x250 & 320x50)           */
+/* ============================================================ */
+.fobs-ad-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 14px auto;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  contain: layout;
+}
+
+.fobs-ad-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+  width: 100%;
+}
+
+.fobs-ad-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #64748b;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.fobs-ad-frame-wrapper {
+  background: rgba(15, 20, 30, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.fobs-ad-300x250 {
+  width: 300px;
+  height: 250px;
+  min-width: 300px;
+  min-height: 250px;
+}
+
+.fobs-ad-320x50 {
+  width: 320px;
+  height: 50px;
+  min-width: 320px;
+  min-height: 50px;
+}
+
+.fobs-ad-iframe {
+  border: none;
+  outline: none;
+  display: block;
+}
+
+.fobs-ad-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  width: 100%;
+}
+
+/* On Android TV & Leanback: completely hide all banner ads to avoid remote focus traps */
+.tv-mode .fobs-ad-slot,
+body.tv-device .fobs-ad-slot,
+[data-device="tv"] .fobs-ad-slot,
+.is-android-tv .fobs-ad-slot {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+
+
 
