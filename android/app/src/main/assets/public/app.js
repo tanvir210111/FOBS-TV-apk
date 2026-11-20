@@ -3595,19 +3595,29 @@ function renderSeasonDropdown(media) {
 // Season Bottom Sheet Modal (Matches Select language modal)
 function openSeasonSheet() {
   const el = document.getElementById('seasonSheetOverlay');
-  if (el) el.classList.add('open');
+  if (el) {
+    el.style.removeProperty('display');
+    el.style.display = 'flex';
+    el.classList.add('open');
+  }
 }
 
 function closeSeasonSheet(event) {
   if (event && event.target !== event.currentTarget && !event.target.closest('.sheet-close-btn')) return;
   const el = document.getElementById('seasonSheetOverlay');
-  if (el) el.classList.remove('open');
+  if (el) {
+    el.classList.remove('open');
+    el.style.display = 'none';
+  }
 }
 
 function selectSeason(seasonNumber) {
   switchSeason(seasonNumber);
   const el = document.getElementById('seasonSheetOverlay');
-  if (el) el.classList.remove('open');
+  if (el) {
+    el.classList.remove('open');
+    el.style.display = 'none';
+  }
 }
 
 function toggleSeasonDropdown(event) {
@@ -4022,6 +4032,12 @@ function openPlayer(media, episodeIndex = null, resumeSeekTime = null) {
   const downloadBtn = document.querySelector('.action-strip-btn[onclick="triggerDownload()"]');
   if (downloadBtn) {
     downloadBtn.style.display = (media.type === 'liveTv') ? 'none' : 'flex';
+  }
+
+  // Update Add to list button status in action strip
+  if (typeof updateActionStripWatchlistBtn === 'function') {
+    const inWatchlist = typeof isMediaInWatchlist === 'function' ? isMediaInWatchlist(media.id) : false;
+    updateActionStripWatchlistBtn(inWatchlist);
   }
 
   // Handle Coming Soon items (MovieBox Signature UI)
@@ -11844,7 +11860,11 @@ function openQualitySheet() {
   }
 
   const overlay = document.getElementById('qualitySheetOverlay');
-  if (overlay) overlay.classList.add('open');
+  if (overlay) {
+    overlay.style.removeProperty('display');
+    overlay.style.display = 'flex';
+    overlay.classList.add('open');
+  }
 }
 
 function closeQualitySheet(event) {
@@ -11852,7 +11872,7 @@ function closeQualitySheet(event) {
   const overlay = document.getElementById('qualitySheetOverlay');
   if (overlay) {
     overlay.classList.remove('open');
-    overlay.style.setProperty('display', 'none', 'important');
+    overlay.style.display = 'none';
   }
 }
 
@@ -11991,26 +12011,106 @@ function setLandscapeQuality(quality) {
 }
 
 function openLanguageSheet() {
-  document.getElementById('languageSheetOverlay').classList.add('open');
+  const overlay = document.getElementById('languageSheetOverlay');
+  if (overlay) {
+    overlay.style.removeProperty('display');
+    overlay.style.display = 'flex';
+    overlay.classList.add('open');
+  }
 }
 
 function closeLanguageSheet(event) {
   if (event && event.target !== event.currentTarget && !event.target.closest('.sheet-close-btn')) return;
-  document.getElementById('languageSheetOverlay').classList.remove('open');
+  const overlay = document.getElementById('languageSheetOverlay');
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.style.display = 'none';
+  }
 }
 
 function selectLanguage(lang) {
   switchAudioTrack(lang);
-  document.getElementById('languageSheetOverlay').classList.remove('open');
+  const overlay = document.getElementById('languageSheetOverlay');
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.style.display = 'none';
+  }
 }
 
-// Add to list action (connected to MongoDB User Watchlist)
-function toggleAddToList() {
-  toggleCurrentMediaWatchlist();
+// Update Action Strip Watchlist Button (Icon & Text)
+function updateActionStripWatchlistBtn(inList) {
+  const btn = document.getElementById('btnActionAddToList');
+  const icon = document.getElementById('actionAddToListIcon');
+  const text = document.getElementById('actionAddToListText');
+  if (btn && icon && text) {
+    if (inList) {
+      icon.className = 'fa-solid fa-check';
+      icon.style.color = '#00d26a';
+      text.innerText = 'Added';
+      text.style.color = '#00d26a';
+      btn.style.borderColor = 'rgba(0, 210, 106, 0.45)';
+    } else {
+      icon.className = 'fa-solid fa-plus';
+      icon.style.color = '';
+      text.innerText = 'Add to list';
+      text.style.color = '';
+      btn.style.borderColor = '';
+    }
+  }
 }
+window.updateActionStripWatchlistBtn = updateActionStripWatchlistBtn;
+
+// Add to list action (connected to MongoDB User Watchlist & Local Storage)
+async function toggleAddToList() {
+  const media = appState.currentMedia;
+  if (!media) {
+    if (typeof showToast === 'function') showToast('No media selected');
+    return;
+  }
+  const isAdded = typeof isMediaInWatchlist === 'function' ? isMediaInWatchlist(media.id) : false;
+  const newStatus = !isAdded;
+
+  // 1. Instant optimistic UI update
+  updateActionStripWatchlistBtn(newStatus);
+  if (typeof showToast === 'function') {
+    showToast(newStatus ? 'Added to My List ❤️' : 'Removed from My List');
+  }
+
+  // 2. LocalStorage guest watchlist update immediately
+  let guest = JSON.parse(localStorage.getItem('fobs_guest_watchlist') || '[]');
+  const mediaIdStr = media.id.toString();
+  if (newStatus) {
+    if (!guest.some(i => i.mediaId === mediaIdStr)) {
+      guest.push({ mediaId: mediaIdStr, media, addedAt: new Date().toISOString() });
+    }
+  } else {
+    guest = guest.filter(i => i.mediaId !== mediaIdStr);
+  }
+  localStorage.setItem('fobs_guest_watchlist', JSON.stringify(guest));
+
+  // 3. User account sync if logged in
+  if (typeof currentUser !== 'undefined' && currentUser) {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/user/watchlist/toggle`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: currentUser.id || currentUser._id, mediaId: media.id, media })
+      });
+      const data = await res.json();
+      if (data && data.success && data.watchlist) {
+        userWatchlist = data.watchlist;
+      }
+    } catch (e) {
+      console.warn('Watchlist cloud sync deferred:', e);
+    }
+  }
+
+  // 4. Update badges & modals
+  if (typeof updateWatchlistBadge === 'function') updateWatchlistBadge();
+}
+window.toggleAddToList = toggleAddToList;
 
 // Share action
-
 function shareApp() {
   const shareTitle = 'FOBS TV — Free Movies, Series & Anime';
   const shareText = 'Watch trending movies, web series, Korean dramas & Hindi dubbed anime in 1080p Full HD on FOBS TV! Download now: https://fobstv.duckdns.org/download';
@@ -12046,8 +12146,10 @@ function shareMedia() {
   const shareText = `Watch "${shareTitle}" in HD on FOBS TV! Download the app: https://fobstv.duckdns.org/download`;
 
   if (window.AndroidApp && typeof window.AndroidApp.shareText === 'function') {
-    window.AndroidApp.shareText(shareTitle, shareText);
-    return;
+    try {
+      window.AndroidApp.shareText(shareTitle, shareText);
+      return;
+    } catch (e) {}
   }
 
   if (navigator.share) {
@@ -12062,18 +12164,34 @@ function shareMedia() {
     copyShareFallback(shareText);
   }
 }
+window.shareMedia = shareMedia;
 
 function copyShareFallback(text) {
+  let copied = false;
+  try {
+    const tempInput = document.createElement('textarea');
+    tempInput.value = text;
+    tempInput.style.position = 'fixed';
+    tempInput.style.left = '-9999px';
+    tempInput.style.top = '0';
+    tempInput.setAttribute('readonly', '');
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    copied = document.execCommand('copy');
+    document.body.removeChild(tempInput);
+  } catch (e) {}
+
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
-      showToast('Share link copied to clipboard! 📋');
+      showToast('🔗 Share link copied to clipboard!');
     }).catch(() => {
-      showToast('Share: ' + text);
+      showToast(copied ? '🔗 Share link copied to clipboard!' : 'Share: ' + text);
     });
   } else {
-    showToast('Share: ' + text);
+    showToast(copied ? '🔗 Share link copied to clipboard!' : 'Share: ' + text);
   }
 }
+window.copyShareFallback = copyShareFallback;
 
 // Search Handler - searches across all Movies, Series, Upcoming, and Live TV
 function handleSearch(customQuery = null) {

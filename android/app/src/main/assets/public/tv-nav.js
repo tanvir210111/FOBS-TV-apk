@@ -30,6 +30,12 @@
     '.nav-icon-btn',
     '.search-input',
     '.player-control-btn',
+    '.action-strip-btn',
+    '.dub-dropdown-btn',
+    '.season-dropdown-btn',
+    '.sheet-option-btn',
+    '.sheet-close-btn',
+    '.ep-pill',
     '.episode-item',
     '.server-btn',
     '.subtitle-option',
@@ -38,7 +44,24 @@
   ].join(', ');
 
   function getVisibleFocusables() {
-    // If player is open, only allow player controls
+    // 0. If a modal, dropdown bottom-sheet, or report dialog is open, constrain focus to it FIRST!
+    const activeTopModal = document.querySelector(`
+      #languageSheetOverlay.open,
+      #seasonSheetOverlay.open,
+      #qualitySheetOverlay.open,
+      #reportModalOverlay.open,
+      #subtitleModal.open,
+      .bottom-sheet-overlay.open,
+      .details-modal.open,
+      .media-detail-overlay.open
+    `);
+    if (activeTopModal && isVisible(activeTopModal)) {
+      const modalItems = Array.from(activeTopModal.querySelectorAll('button, .sheet-option-btn, .sheet-close-btn, input, textarea, [tabindex="0"]'))
+        .filter(isVisible);
+      if (modalItems.length > 0) return modalItems;
+    }
+
+    // If player is open, allow player controls, action strip buttons, dub/season dropdowns, and episode pills
     const isPlayerOpen = document.body.classList.contains('player-open') || 
                          document.body.classList.contains('is-fullscreen') ||
                          document.querySelector('.player-view-overlay.open');
@@ -46,14 +69,14 @@
     if (isPlayerOpen) {
       const playerOverlay = document.querySelector('.player-view-overlay');
       if (playerOverlay) {
-        return Array.from(playerOverlay.querySelectorAll('button, .player-control-btn, .episode-item, [tabindex="0"]'))
+        return Array.from(playerOverlay.querySelectorAll('button, .player-control-btn, .action-strip-btn, .dub-dropdown-btn, .season-dropdown-btn, .ep-pill, .episode-item, [tabindex="0"]'))
           .filter(isVisible);
       }
     }
 
-    // If a modal or sheet is open, constrain to it
-    const activeModal = document.querySelector('.details-modal.open, .media-detail-overlay.open, .mb-fullscreen-page-overlay:not([style*="display: none"])');
-    if (activeModal) {
+    // If another fullscreen modal is open
+    const activeModal = document.querySelector('.mb-fullscreen-page-overlay:not([style*="display: none"]):not([style*="display:none"])');
+    if (activeModal && isVisible(activeModal)) {
       return Array.from(activeModal.querySelectorAll('button, .details-btn, .episode-pill, .server-btn, [tabindex="0"]'))
         .filter(isVisible);
     }
@@ -187,6 +210,27 @@
       }
     } else if (key === 'Escape' || keyCode === 27 || key === 'Backspace' || keyCode === 8 || keyCode === 10009 || keyCode === 461 || keyCode === 4) {
       // Handle Back Navigation
+      // 0. If top modal / sheet is open -> close it first!
+      const activeSheet = document.querySelector(`
+        #languageSheetOverlay.open,
+        #seasonSheetOverlay.open,
+        #qualitySheetOverlay.open,
+        #reportModalOverlay.open,
+        #subtitleModal.open,
+        .bottom-sheet-overlay.open
+      `);
+      if (activeSheet) {
+        const sheetClose = activeSheet.querySelector('.sheet-close-btn, .modal-close-btn');
+        if (sheetClose) {
+          sheetClose.click();
+        } else {
+          activeSheet.classList.remove('open');
+          activeSheet.style.display = 'none';
+        }
+        e.preventDefault();
+        return;
+      }
+
       // 1. If player open -> exit player
       const isPlayerOpen = document.body.classList.contains('player-open') || 
                            document.body.classList.contains('is-fullscreen') ||

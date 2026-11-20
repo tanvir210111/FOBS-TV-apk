@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.9.2 (320x50 Banner on Home, Movies, Series, Live TV, Anime & Details)
+// FOBS TV Live OTA Patch Bundle v1.9.3 (Dropdowns, Add to list, Share & Centered Report modal fix)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.9.2 (320x50 Banners on Movies, Series, Live TV & Anime) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.9.2';
+  console.log('⚡ FOBS TV Live Patch v1.9.3 (Dropdowns, Add to list, Share & Centered Report modal fix) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.9.3';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -6473,5 +6473,406 @@ window.renderDownloadsList = renderDownloadsList;;
 
   } catch (_) {}
 
-  console.log('✅ FOBS TV Live Patch v1.9.2 active: 320x50 Banners on Movies, Series, Live TV & Anime.');
+  // ============================================================
+  // v1.9.3 PATCH: FIX DROPDOWNS, ADD TO LIST, SHARE & CENTERED REPORT MODAL (PC, TV & MOBILE)
+  // ============================================================
+  try {
+    const patchStyleId = 'fobs-patch-v193-style';
+    let pStyle = document.getElementById(patchStyleId);
+    if (!pStyle) {
+      pStyle = document.createElement('style');
+      pStyle.id = patchStyleId;
+      pStyle.textContent = `
+        /* High z-index centered sheet overlays for Dropdowns */
+        #languageSheetOverlay,
+        #seasonSheetOverlay,
+        #qualitySheetOverlay {
+          position: fixed !important;
+          inset: 0 !important;
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          bottom: 0 !important;
+          width: 100vw !important;
+          height: 100vh !important;
+          z-index: 10000005 !important;
+          background: rgba(0, 0, 0, 0.78) !important;
+          backdrop-filter: blur(8px) !important;
+          -webkit-backdrop-filter: blur(8px) !important;
+          display: none !important;
+          align-items: center !important;
+          justify-content: center !important;
+          padding: 20px !important;
+          box-sizing: border-box !important;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.2s ease;
+        }
+
+        #languageSheetOverlay.open,
+        #seasonSheetOverlay.open,
+        #qualitySheetOverlay.open {
+          display: flex !important;
+          opacity: 1 !important;
+          pointer-events: auto !important;
+          visibility: visible !important;
+        }
+
+        #languageSheetOverlay .bottom-sheet-container,
+        #seasonSheetOverlay .bottom-sheet-container,
+        #qualitySheetOverlay .bottom-sheet-container {
+          margin: auto !important;
+          width: 90% !important;
+          max-width: 400px !important;
+          background: #171923 !important;
+          border: 1px solid rgba(255, 255, 255, 0.16) !important;
+          border-radius: 20px !important;
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9) !important;
+          padding: 20px !important;
+          transform: scale(1) !important;
+          opacity: 1 !important;
+          display: flex !important;
+          flex-direction: column !important;
+        }
+
+        #languageSheetOverlay .sheet-header,
+        #seasonSheetOverlay .sheet-header,
+        #qualitySheetOverlay .sheet-header {
+          display: flex !important;
+          align-items: center !important;
+          justify-content: space-between !important;
+          margin-bottom: 16px !important;
+          padding-bottom: 12px !important;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+
+        #languageSheetOverlay .sheet-header h3,
+        #seasonSheetOverlay .sheet-header h3,
+        #qualitySheetOverlay .sheet-header h3 {
+          font-size: 17px !important;
+          font-weight: 700 !important;
+          color: #fff !important;
+          margin: 0 !important;
+        }
+
+        #languageSheetOverlay .sheet-close-btn,
+        #seasonSheetOverlay .sheet-close-btn,
+        #qualitySheetOverlay .sheet-close-btn {
+          background: rgba(255, 255, 255, 0.08) !important;
+          border: none !important;
+          color: #fff !important;
+          width: 32px !important;
+          height: 32px !important;
+          border-radius: 50% !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          cursor: pointer !important;
+          font-size: 15px !important;
+        }
+
+        #languageSheetOverlay .sheet-options-list,
+        #seasonSheetOverlay .sheet-options-list,
+        #qualitySheetOverlay .sheet-options-list {
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 10px !important;
+          max-height: 60vh !important;
+          overflow-y: auto !important;
+        }
+
+        /* Perfectly Centered Video Report Modal */
+        #reportModalOverlay {
+          position: fixed !important;
+          inset: 0 !important;
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          bottom: 0 !important;
+          width: 100vw !important;
+          height: 100vh !important;
+          z-index: 10000008 !important;
+          background: rgba(0, 0, 0, 0.82) !important;
+          backdrop-filter: blur(10px) !important;
+          -webkit-backdrop-filter: blur(10px) !important;
+          display: none !important;
+          align-items: center !important;
+          justify-content: center !important;
+          padding: 20px !important;
+          box-sizing: border-box !important;
+          pointer-events: auto !important;
+        }
+
+        #reportModalOverlay.open {
+          display: flex !important;
+        }
+
+        #reportModalOverlay .report-modal,
+        #reportModal {
+          margin: auto !important;
+          width: 100% !important;
+          max-width: 460px !important;
+          background: #151821 !important;
+          border: 1px solid rgba(255, 255, 255, 0.16) !important;
+          border-radius: 20px !important;
+          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9) !important;
+          overflow: hidden !important;
+          transform: scale(1) !important;
+        }
+      `;
+      document.head.appendChild(pStyle);
+    }
+
+    // Window functions override for sheets
+    window.openLanguageSheet = function() {
+      const overlay = document.getElementById('languageSheetOverlay');
+      if (overlay) {
+        overlay.style.removeProperty('display');
+        overlay.style.display = 'flex';
+        overlay.classList.add('open');
+      }
+    };
+
+    window.closeLanguageSheet = function(event) {
+      if (event && event.target !== event.currentTarget && !event.target.closest('.sheet-close-btn')) return;
+      const overlay = document.getElementById('languageSheetOverlay');
+      if (overlay) {
+        overlay.classList.remove('open');
+        overlay.style.display = 'none';
+      }
+    };
+
+    window.openSeasonSheet = function() {
+      const overlay = document.getElementById('seasonSheetOverlay');
+      if (overlay) {
+        overlay.style.removeProperty('display');
+        overlay.style.display = 'flex';
+        overlay.classList.add('open');
+      }
+    };
+
+    window.closeSeasonSheet = function(event) {
+      if (event && event.target !== event.currentTarget && !event.target.closest('.sheet-close-btn')) return;
+      const overlay = document.getElementById('seasonSheetOverlay');
+      if (overlay) {
+        overlay.classList.remove('open');
+        overlay.style.display = 'none';
+      }
+    };
+
+    window.openQualitySheet = function() {
+      const container = document.getElementById('qualityOptionsList');
+      if (container) {
+        const state = typeof getAppState === 'function' ? getAppState() : window.appState;
+        const curQ = parseInt(state?.currentQuality || '480', 10);
+        const avail = state?.availableQualities || window.appState?.availableQualities || [];
+        const availResSet = new Set(avail.map(q => parseInt(q.resolution, 10)).filter(n => !isNaN(n) && n > 0));
+
+        const buttons = container.querySelectorAll('.sheet-option-btn');
+        buttons.forEach(btn => {
+          const qVal = parseInt(btn.getAttribute('data-q') || '', 10);
+          if (availResSet.size > 0 && qVal > 0) {
+            const isAvail = availResSet.has(qVal) || (qVal === 480 && availResSet.has(360));
+            btn.style.display = isAvail ? 'flex' : 'none';
+          } else {
+            btn.style.display = 'flex';
+          }
+          btn.classList.toggle('selected', qVal === curQ);
+        });
+      }
+      const overlay = document.getElementById('qualitySheetOverlay');
+      if (overlay) {
+        overlay.style.removeProperty('display');
+        overlay.style.display = 'flex';
+        overlay.classList.add('open');
+      }
+    };
+
+    window.closeQualitySheet = function(event) {
+      if (event && event.target !== event.currentTarget && !event.target.closest('.sheet-close-btn')) return;
+      const overlay = document.getElementById('qualitySheetOverlay');
+      if (overlay) {
+        overlay.classList.remove('open');
+        overlay.style.display = 'none';
+      }
+    };
+
+    window.openReportModal = function() {
+      const overlay = document.getElementById('reportModalOverlay');
+      if (!overlay) return;
+      const curMedia = window.appState?.currentMedia;
+      const title = curMedia ? (curMedia.title || 'Video') : 'Current Video';
+      const subEl = document.getElementById('reportMediaSubtitle');
+      if (subEl) {
+        const isSeries = curMedia?.type === 'series' || !!curMedia?.seasons;
+        const epNum = window.appState?.currentEpisode?.number || (window.appState?.currentEpisodeIndex !== undefined ? window.appState.currentEpisodeIndex + 1 : 1);
+        const audio = window.appState?.currentAudioTrack || 'Default Audio';
+        subEl.innerText = isSeries ? `${title} • Episode ${epNum} • Audio: ${audio}` : `${title} • Audio: ${audio}`;
+      }
+      const details = document.getElementById('reportDetailsInput');
+      if (details) details.value = '';
+      overlay.style.removeProperty('display');
+      overlay.style.display = 'flex';
+      overlay.classList.add('open');
+    };
+
+    window.closeReportModal = function(e) {
+      if (e && e.target !== document.getElementById('reportModalOverlay') && !e.target.closest('.sheet-close-btn')) return;
+      const overlay = document.getElementById('reportModalOverlay');
+      if (overlay) {
+        overlay.classList.remove('open');
+        overlay.style.display = 'none';
+      }
+    };
+
+    // Watchlist Action Strip Button
+    window.updateActionStripWatchlistBtn = function(inList) {
+      const btn = document.getElementById('btnActionAddToList') || document.querySelector('.action-buttons-strip .action-strip-btn:first-child');
+      if (!btn) return;
+      const icon = btn.querySelector('i') || document.getElementById('actionAddToListIcon');
+      const text = btn.querySelector('span') || document.getElementById('actionAddToListText');
+      if (inList) {
+        if (icon) {
+          icon.className = 'fa-solid fa-check';
+          icon.style.color = '#00d26a';
+        }
+        if (text) {
+          text.innerText = 'Added';
+          text.style.color = '#00d26a';
+        }
+        btn.style.borderColor = 'rgba(0, 210, 106, 0.45)';
+      } else {
+        if (icon) {
+          icon.className = 'fa-solid fa-plus';
+          icon.style.color = '';
+        }
+        if (text) {
+          text.innerText = 'Add to list';
+          text.style.color = '';
+        }
+        btn.style.borderColor = '';
+      }
+    };
+
+    window.toggleAddToList = async function() {
+      const media = window.appState?.currentMedia;
+      if (!media) {
+        if (typeof showToast === 'function') showToast('No media selected');
+        return;
+      }
+      const isAdded = typeof isMediaInWatchlist === 'function' ? isMediaInWatchlist(media.id) : false;
+      const newStatus = !isAdded;
+
+      // Optimistic update
+      window.updateActionStripWatchlistBtn(newStatus);
+      if (typeof showToast === 'function') {
+        showToast(newStatus ? 'Added to My List ❤️' : 'Removed from My List');
+      }
+
+      // Guest / localStorage update
+      let guest = JSON.parse(localStorage.getItem('fobs_guest_watchlist') || '[]');
+      const mediaIdStr = media.id.toString();
+      if (newStatus) {
+        if (!guest.some(i => i.mediaId === mediaIdStr)) {
+          guest.push({ mediaId: mediaIdStr, media, addedAt: new Date().toISOString() });
+        }
+      } else {
+        guest = guest.filter(i => i.mediaId !== mediaIdStr);
+      }
+      localStorage.setItem('fobs_guest_watchlist', JSON.stringify(guest));
+
+      // User account sync if logged in
+      if (typeof currentUser !== 'undefined' && currentUser) {
+        try {
+          const apiBase = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : window.location.origin;
+          const res = await fetch(`${apiBase}/api/user/watchlist/toggle`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: currentUser.id || currentUser._id, mediaId: media.id, media })
+          });
+          const data = await res.json();
+          if (data && data.success && data.watchlist && typeof userWatchlist !== 'undefined') {
+            userWatchlist = data.watchlist;
+          }
+        } catch (_) {}
+      }
+
+      if (typeof updateWatchlistBadge === 'function') updateWatchlistBadge();
+    };
+
+    // Share action
+    window.copyShareFallback = function(text) {
+      let copied = false;
+      try {
+        const tempInput = document.createElement('textarea');
+        tempInput.value = text;
+        tempInput.style.position = 'fixed';
+        tempInput.style.left = '-9999px';
+        tempInput.style.top = '0';
+        tempInput.setAttribute('readonly', '');
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        copied = document.execCommand('copy');
+        document.body.removeChild(tempInput);
+      } catch (_) {}
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          if (typeof showToast === 'function') showToast('🔗 Share link copied to clipboard!');
+        }).catch(() => {
+          if (typeof showToast === 'function') showToast(copied ? '🔗 Share link copied to clipboard!' : 'Share: ' + text);
+        });
+      } else {
+        if (typeof showToast === 'function') showToast(copied ? '🔗 Share link copied to clipboard!' : 'Share: ' + text);
+      }
+    };
+
+    window.shareMedia = function() {
+      const media = window.appState?.currentMedia;
+      const shareTitle = media ? (media.title || 'FOBS TV') : 'FOBS TV — Free Movies, Series & Anime';
+      const shareUrl = 'https://fobstv.duckdns.org/download';
+      const shareText = media 
+        ? `Watch "${shareTitle}" in HD on FOBS TV! Download the app: ${shareUrl}`
+        : `Watch trending movies, web series & anime on FOBS TV! Download: ${shareUrl}`;
+
+      if (window.AndroidApp && typeof window.AndroidApp.shareText === 'function') {
+        try {
+          window.AndroidApp.shareText(shareTitle, shareText);
+          return;
+        } catch (_) {}
+      }
+
+      if (navigator.share) {
+        navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: shareUrl
+        }).catch(() => {
+          window.copyShareFallback(shareText);
+        });
+      } else {
+        window.copyShareFallback(shareText);
+      }
+    };
+
+    // Hook openPlayer to update watchlist button in action strip
+    if (typeof window.openPlayer === 'function' && !window.openPlayer._watchlistStripHooked) {
+      const origOpenPlayerForStrip = window.openPlayer;
+      window.openPlayer = function(m, ep, t) {
+        origOpenPlayerForStrip(m, ep, t);
+        setTimeout(() => {
+          if (m && typeof window.updateActionStripWatchlistBtn === 'function') {
+            const inW = typeof isMediaInWatchlist === 'function' ? isMediaInWatchlist(m.id) : false;
+            window.updateActionStripWatchlistBtn(inW);
+          }
+        }, 150);
+      };
+      window.openPlayer._watchlistStripHooked = true;
+    }
+
+  } catch (err) {
+    console.error('v1.9.3 patch error:', err);
+  }
+
+  console.log('✅ FOBS TV Live Patch v1.9.3 active: Dropdowns, Add to list, Share & Centered Report modal fixed.');
 })();

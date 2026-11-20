@@ -12445,5 +12445,144 @@ body::-webkit-scrollbar-thumb {
   width: 100%;
 }
 
+/* ============================================================
+   DROPDOWNS & MODALS FIX (PC, WEB, TV & MOBILE)
+   ============================================================ */
+#languageSheetOverlay,
+#seasonSheetOverlay,
+#qualitySheetOverlay {
+  position: fixed !important;
+  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 10000005 !important;
+  background: rgba(0, 0, 0, 0.78) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  display: none !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px !important;
+  box-sizing: border-box !important;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+#languageSheetOverlay.open,
+#seasonSheetOverlay.open,
+#qualitySheetOverlay.open {
+  display: flex !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+}
+
+#languageSheetOverlay .bottom-sheet-container,
+#seasonSheetOverlay .bottom-sheet-container,
+#qualitySheetOverlay .bottom-sheet-container {
+  margin: auto !important;
+  width: 90% !important;
+  max-width: 400px !important;
+  background: #171923 !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9) !important;
+  padding: 20px !important;
+  transform: scale(1) !important;
+  opacity: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+#languageSheetOverlay .sheet-header,
+#seasonSheetOverlay .sheet-header,
+#qualitySheetOverlay .sheet-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 16px !important;
+  padding-bottom: 12px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+#languageSheetOverlay .sheet-header h3,
+#seasonSheetOverlay .sheet-header h3,
+#qualitySheetOverlay .sheet-header h3 {
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+  margin: 0 !important;
+}
+
+#languageSheetOverlay .sheet-close-btn,
+#seasonSheetOverlay .sheet-close-btn,
+#qualitySheetOverlay .sheet-close-btn {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: none !important;
+  color: #fff !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  font-size: 15px !important;
+}
+
+#languageSheetOverlay .sheet-options-list,
+#seasonSheetOverlay .sheet-options-list,
+#qualitySheetOverlay .sheet-options-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  max-height: 60vh !important;
+  overflow-y: auto !important;
+}
+
+/* Video Report Modal Overlay - Centered on Mobile, PC, & TV */
+#reportModalOverlay {
+  position: fixed !important;
+  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 10000008 !important;
+  background: rgba(0, 0, 0, 0.82) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  display: none !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px !important;
+  box-sizing: border-box !important;
+  pointer-events: auto !important;
+}
+
+#reportModalOverlay.open {
+  display: flex !important;
+}
+
+#reportModalOverlay .report-modal,
+#reportModal {
+  margin: auto !important;
+  width: 100% !important;
+  max-width: 460px !important;
+  background: #151821 !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9) !important;
+  overflow: hidden !important;
+  transform: scale(1) !important;
+}
+
 
 

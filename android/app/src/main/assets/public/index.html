@@ -1538,11 +1538,11 @@
 
         <!-- Quick Action Buttons -->
         <div class="action-buttons-strip">
-          <button class="action-strip-btn" onclick="toggleAddToList()">
-            <i class="fa-solid fa-plus"></i>
-            <span>Add to list</span>
+          <button class="action-strip-btn" id="btnActionAddToList" onclick="toggleAddToList()" title="Add to My List">
+            <i class="fa-solid fa-plus" id="actionAddToListIcon"></i>
+            <span id="actionAddToListText">Add to list</span>
           </button>
-          <button class="action-strip-btn" onclick="shareMedia()">
+          <button class="action-strip-btn" id="btnActionShare" onclick="shareMedia()" title="Share with Friends">
             <i class="fa-solid fa-share-nodes"></i>
             <span>Share</span>
           </button>
