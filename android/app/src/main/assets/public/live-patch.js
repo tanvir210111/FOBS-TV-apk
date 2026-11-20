@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.8.6 (Black Shadow Fix, Prev Ep Button, Portrait Return Pill, Scaled Subtitles, Dark Scrollbar, Registered Members)
+// FOBS TV Live OTA Patch Bundle v1.8.7 (Black Shadow Fix, Prev Ep Button, Portrait Return Pill, Scaled Subtitles, Dark Scrollbar, Registered Members)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.8.6 (Black Shadow Fix, Prev Ep Button, Portrait Return Pill, Scaled Subtitles, Dark Scrollbar) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.8.6';
+  console.log('⚡ FOBS TV Live Patch v1.8.7 (Black Shadow Fix, Prev Ep Button, Portrait Return Pill, Scaled Subtitles, Dark Scrollbar) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.8.7';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -2534,52 +2534,155 @@
       const seriesEpisodesWrapper = document.getElementById('seriesEpisodesWrapper');
       if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'none';
 
-      // Offline Dual Subtitles
+            // Build offline subtitle tracks for full switching freedom!
       const offlineTracks = [];
-      let bnRaw = nativeBnSub || offlineItem?.bnVttText || offlineItem?.vttText || '';
+      let bnText = nativeBnSub || offlineItem?.bnVttText || offlineItem?.vttText || storedItem?.bnVttText || '';
       try {
-        const parsed = JSON.parse(bnRaw);
-        if (parsed && (parsed.vtt || parsed.rawVtt)) bnRaw = parsed.vtt || parsed.rawVtt;
-      } catch (e) {}
-      if (bnRaw && typeof parseSubtitleTextToCues === 'function') {
-        const bnCues = parseSubtitleTextToCues(bnRaw);
+        if (bnText.trim().startsWith('{')) {
+          const p = JSON.parse(bnText);
+          if (p.vtt) bnText = p.vtt;
+        }
+      } catch (_) {}
+
+      if (bnText && typeof parseSubtitleTextToCues === 'function') {
+        const bnCues = parseSubtitleTextToCues(bnText);
         if (bnCues && bnCues.length > 0) {
-          offlineTracks.push({ id: 'offline_bn', language: 'Bangla (বাংলা)', langCode: 'bn', source: isNativeReady ? 'Device Storage (মুভিবক্স)' : 'Offline Storage', rawCues: bnCues });
+          offlineTracks.push({
+            id: 'offline_bn',
+            language: 'Bangla (বাংলা)',
+            langCode: 'bn',
+            source: isNativeReady ? 'Device Storage (মুভিবক্স)' : 'Offline Storage',
+            rawCues: bnCues
+          });
         }
       }
-      let enRaw = nativeEnSub || offlineItem?.enVttText || '';
+
+      let enText = nativeEnSub || offlineItem?.enVttText || storedItem?.enVttText || '';
       try {
-        const parsed = JSON.parse(enRaw);
-        if (parsed && (parsed.vtt || parsed.rawVtt)) enRaw = parsed.vtt || parsed.rawVtt;
-      } catch (e) {}
-      if (enRaw && typeof parseSubtitleTextToCues === 'function') {
-        const enCues = parseSubtitleTextToCues(enRaw);
+        if (enText.trim().startsWith('{')) {
+          const p = JSON.parse(enText);
+          if (p.vtt) enText = p.vtt;
+        }
+      } catch (_) {}
+
+      if (enText && typeof parseSubtitleTextToCues === 'function') {
+        const enCues = parseSubtitleTextToCues(enText);
         if (enCues && enCues.length > 0) {
-          offlineTracks.push({ id: 'offline_en', language: 'English', langCode: 'en', source: isNativeReady ? 'Device Storage (মুভিবক্স)' : 'Offline Storage', rawCues: enCues });
+          offlineTracks.push({
+            id: 'offline_en',
+            language: 'English',
+            langCode: 'en',
+            source: isNativeReady ? 'Device Storage (মুভিবক্স)' : 'Offline Storage',
+            rawCues: enCues
+          });
         }
       }
 
-      if (window.subtitleState) {
-        window.subtitleState.availableTracks = offlineTracks;
-        if (typeof renderSubtitleLists === 'function') renderSubtitleLists();
-        const pref = offlineTracks.find(t => t.langCode === 'bn') || offlineTracks[0];
-        if (pref && typeof selectSubtitleTrack === 'function') {
-          selectSubtitleTrack(pref.id);
-        } else if (typeof selectSubtitleTrack === 'function') {
-          selectSubtitleTrack('off');
-        }
-      }
-
+      // Ensure 100ms render loop is active so offline cues render smoothly onto the video
       if (!window._subCueRenderInterval) {
         window._subCueRenderInterval = setInterval(() => {
           const vp = document.getElementById('mainVideoPlayer');
-          if (vp && !vp.paused && window.subtitleState?.enabled && window.subtitleState?.cues?.length > 0) {
-            const curTime = (vp.currentTime || 0) + (window.appState?.streamSeekOffset || 0);
-            if (typeof window.renderActiveSubtitleCue === 'function') {
-              window.renderActiveSubtitleCue(curTime);
-            }
+          if (vp && !vp.paused && subtitleState.enabled && subtitleState.cues.length > 0) {
+            const curTime = (vp.currentTime || 0) + (appState.streamSeekOffset || 0);
+            renderActiveSubtitleCue(curTime);
           }
         }, 100);
+      }
+
+      subtitleState.availableTracks = offlineTracks;
+      renderSubtitleLists();
+
+      const preferredTrack = offlineTracks.find(t => t.langCode === 'bn') || offlineTracks[0];
+      if (preferredTrack) {
+        selectSubtitleTrack(preferredTrack.id);
+      } else {
+        selectSubtitleTrack('off');
+      }
+
+      // Instant Auto-Sync for offline media if subtitles are missing from local storage
+      if (offlineTracks.length === 0) {
+        (async () => {
+          try {
+            const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
+            const cleanT = (offlineItem?.title || storedItem?.title || '')
+              .replace(/\s*-\s*S\d+\s*Ep\s*\d+.*/i, '')
+              .replace(/\s*-\s*Episode\s*\d+.*/i, '')
+              .replace(/\s*-\s*Ep\s*\d+.*/i, '')
+              .replace(/\s*-\s*Season\s*\d+.*/i, '')
+              .replace(/\[.*?\]|\(.*?\)/g, '')
+              .trim();
+            const sNum = offlineItem?.season || storedItem?.season || 0;
+            const eNum = offlineItem?.episode || storedItem?.episode || 0;
+            const subId = offlineItem?.mediaId || storedItem?.mediaId || '';
+            const isSer = !!(offlineItem?.isSeries || storedItem?.isSeries || sNum || eNum);
+
+            const fetchSubJson = async (lang) => {
+              try {
+                const u = `${apiBase}/api/subtitles/download?title=${encodeURIComponent(cleanT)}&season=${sNum}&episode=${eNum}&subjectId=${encodeURIComponent(subId)}&type=${isSer ? 'series' : 'movie'}&lang=${lang}&json=1`;
+                const r = await fetch(u);
+                if (r.ok) {
+                  const t = await r.text();
+                  if (t.trim().startsWith('{')) {
+                    try {
+                      const j = JSON.parse(t);
+                      if (j.vtt && j.vtt.includes('-->')) return j.vtt;
+                    } catch (_) {}
+                  }
+                  if (t.includes('-->')) return t;
+                }
+              } catch (_) {}
+              return '';
+            };
+
+            const [nBn, nEn] = await Promise.all([fetchSubJson('bn'), fetchSubJson('en')]);
+            if (nBn || nEn) {
+              if (offlineItem) {
+                if (nBn) offlineItem.bnVttText = nBn;
+                if (nEn) offlineItem.enVttText = nEn;
+                offlineItem.vttText = nBn || nEn;
+                if (typeof saveOfflineMedia === 'function') await saveOfflineMedia(offlineItem);
+              }
+              if (storedItem) {
+                if (nBn) storedItem.bnVttText = nBn;
+                if (nEn) storedItem.enVttText = nEn;
+              }
+              try {
+                const curDls = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : [];
+                const curD = curDls.find(d => d.id === id);
+                if (curD) {
+                  if (nBn) curD.bnVttText = nBn;
+                  if (nEn) curD.enVttText = nEn;
+                  localStorage.setItem('fobs_downloads', JSON.stringify(curDls));
+                }
+              } catch (_) {}
+              if (window.AndroidApp && typeof window.AndroidApp.saveLocalSubtitle === 'function') {
+                if (nBn) window.AndroidApp.saveLocalSubtitle(id, 'bn', nBn);
+                if (nEn) window.AndroidApp.saveLocalSubtitle(id, 'en', nEn);
+              }
+
+              const newTracks = [];
+              if (nBn && typeof parseSubtitleTextToCues === 'function') {
+                const bnCues = parseSubtitleTextToCues(nBn);
+                if (bnCues.length > 0) newTracks.push({ id: 'offline_bn', language: 'Bangla (বাংলা)', langCode: 'bn', source: 'Offline Storage', rawCues: bnCues });
+              }
+              if (nEn && typeof parseSubtitleTextToCues === 'function') {
+                const enCues = parseSubtitleTextToCues(nEn);
+                if (enCues.length > 0) newTracks.push({ id: 'offline_en', language: 'English', langCode: 'en', source: 'Offline Storage', rawCues: enCues });
+              }
+              if (newTracks.length > 0) {
+                subtitleState.availableTracks = newTracks;
+                renderSubtitleLists();
+                const pref = newTracks.find(t => t.langCode === 'bn') || newTracks[0];
+                if (pref && typeof selectSubtitleTrack === 'function') {
+                  selectSubtitleTrack(pref.id);
+                  showToast(`💬 অফলাইন সাবটাইটেল প্রস্তুত: ${pref.language}`);
+                }
+              }
+            }
+          } catch (err) {
+            console.warn('Auto offline subtitle fetch error:', err);
+          }
+        })();
       }
 
       const readyTitle = displayTitle || offlineItem?.title || storedItem?.title || 'Video';
@@ -6026,7 +6129,48 @@ if (typeof origSwitchMainTab === 'function') {
 }
 window.renderDownloadsList = renderDownloadsList;;
 
+
+    // 26. Global Offline Subtitle Sync Helper
+    window.syncCurrentOfflineSubtitles = async function() {
+      const media = window.appState?.currentMedia;
+      if (!media) return;
+      showToast('🔄 সাবটাইটেল সিঙ্ক হচ্ছে...');
+      const cleanT = (media.title || '')
+        .replace(/\s*-\s*S\d+\s*Ep\s*\d+.*/i, '')
+        .replace(/\s*-\s*Episode\s*\d+.*/i, '')
+        .replace(/\s*-\s*Ep\s*\d+.*/i, '')
+        .replace(/\s*-\s*Season\s*\d+.*/i, '')
+        .replace(/\[.*?\]|\(.*?\)/g, '')
+        .trim();
+      const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
+      try {
+        const u = `${apiBase}/api/subtitles/download?title=${encodeURIComponent(cleanT)}&season=${media.season || 0}&episode=${media.episode || 0}&subjectId=${encodeURIComponent(media.id || '')}&type=${media.isSeries ? 'series' : 'movie'}&lang=bn&json=1`;
+        const r = await fetch(u);
+        if (r.ok) {
+          const t = await r.text();
+          let vtt = t;
+          if (t.trim().startsWith('{')) {
+            try { const j = JSON.parse(t); if (j.vtt) vtt = j.vtt; } catch(_) {}
+          }
+          if (vtt && vtt.includes('-->') && typeof parseSubtitleTextToCues === 'function') {
+            const cues = parseSubtitleTextToCues(vtt);
+            if (cues.length > 0) {
+              const track = { id: 'offline_bn', language: 'Bangla (বাংলা)', langCode: 'bn', source: 'Offline Storage', rawCues: cues };
+              if (window.subtitleState) {
+                window.subtitleState.availableTracks = [track];
+                if (typeof renderSubtitleLists === 'function') renderSubtitleLists();
+                if (typeof selectSubtitleTrack === 'function') selectSubtitleTrack(track.id);
+              }
+              showToast(`✅ বাংলা সাবটাইটেল সক্রিয় (${cues.length} লাইন)`);
+              return;
+            }
+          }
+        }
+      } catch (e) {}
+      showToast('সাবটাইটেল পাওয়া যায়নি');
+    };
+
   } catch (_) {}
 
-  console.log('✅ FOBS TV Live Patch v1.8.6 active: No Shadow, Previous Ep Btn, Portrait Switch, Scaled Subtitles & Dark Scrollbars.');
+  console.log('✅ FOBS TV Live Patch v1.8.7 active: No Shadow, Previous Ep Btn, Portrait Switch, Scaled Subtitles & Dark Scrollbars.');
 })();

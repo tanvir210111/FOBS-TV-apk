@@ -6385,7 +6385,7 @@ function renderSubtitleLists() {
 
   // Strictly allow ONLY English, Bangla (বাংলা), and custom manually uploaded subtitles
   const filteredTracks = (subtitleState.availableTracks || []).filter(t => 
-    t.isCustom || t.langCode === 'en' || t.langCode === 'bn' || t.language === 'English' || t.language === 'Bangla (বাংলা)' || t.isFobsSpecial
+    t.isCustom || t.langCode === 'en' || t.langCode === 'bn' || t.language === 'English' || t.language === 'Bangla (বাংলা)' || t.isFobsSpecial || (t.id && t.id.startsWith('offline_'))
   );
 
   const tracks = [
@@ -10364,56 +10364,13 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
     // Dual Subtitle Download (Bangla & English) for full offline playback freedom
     let bnVttText = '';
     let enVttText = '';
-
-    const fetchSubText = async (subObj) => {
-      if (!subObj) return '';
-      let subUrl = subObj.url || subObj.downloadUrl;
-      if (!subUrl) return '';
-      if (subObj.vttText && subObj.vttText.startsWith('WEBVTT')) return subObj.vttText;
-
-      // Primary: proxy through VPS track endpoint which solves CORS, gunzips, and converts SRT to VTT
-      try {
-        const proxyUrl = `${apiBase}/api/subtitles/track?url=${encodeURIComponent(subUrl)}`;
-        const res = await fetch(proxyUrl);
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.success && data.vtt && data.vtt.length > 20) {
-            return data.vtt;
-          }
-        }
-      } catch (e) {
-        console.warn('Failed to fetch offline sub via proxy:', e.message);
-      }
-
-      // Secondary fallback
-      try {
-        const dlProxyUrl = `${apiBase}/api/subtitles/download?url=${encodeURIComponent(subUrl)}`;
-        const res = await fetch(dlProxyUrl);
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.vtt && data.vtt.length > 20) return data.vtt;
-        }
-      } catch (_) {}
-
-      // Direct fallback if relative or on apiBase
-      if (subUrl.startsWith('/') || subUrl.startsWith(apiBase)) {
-        try {
-          const directUrl = subUrl.startsWith('http') ? subUrl : `${apiBase}${subUrl}`;
-          const res = await fetch(directUrl);
-          if (res.ok) return await res.text();
-        } catch (_) {}
-      }
-      return '';
-    };
-
     try {
-      const dlSeason = options.season || 1;
-      const dlEpisode = options.episode || 1;
+      const dlSeason = options.season || 0;
+      const dlEpisode = options.episode || 0;
       const dlSubjectId = options.subjectId || (mediaId ? String(mediaId).replace(/^mb-[s|m]-/, '') : '');
       const dlDetailPath = options.detailPath || '';
       const dlIsSeries = options.isSeries || false;
 
-      let available = [];
       let cleanT = (options.cleanTitle || options.seriesTitle || title || '')
         .replace(/\s*-\s*S\d+\s*Ep\s*\d+.*/i, '')
         .replace(/\s*-\s*Episode\s*\d+.*/i, '')
@@ -10421,51 +10378,37 @@ async function downloadMedia(url, title, options = {}, resumeExistingId = null) 
         .replace(/\s*-\s*Season\s*\d+.*/i, '')
         .replace(/\[.*?\]|\(.*?\)/g, '')
         .trim();
-      if (cleanT.includes(' - ')) {
-        cleanT = cleanT.split(' - ')[0].trim();
-      }
+      if (cleanT.includes(' - ')) cleanT = cleanT.split(' - ')[0].trim();
 
-      const subApiUrl = `${apiBase}/api/subtitles?title=${encodeURIComponent(cleanT)}&season=${dlSeason}&episode=${dlEpisode}&subjectId=${encodeURIComponent(dlSubjectId)}&detailPath=${encodeURIComponent(dlDetailPath)}&type=${dlIsSeries ? 'series' : 'movie'}`;
-      try {
-        const sRes = await fetch(subApiUrl);
-        if (sRes.ok) {
-          const sData = await sRes.json();
-          if (sData && Array.isArray(sData.subtitles) && sData.subtitles.length > 0) {
-            available = sData.subtitles;
+      const fetchSubFromEndpoint = async (lang) => {
+        try {
+          const endpointUrl = `${apiBase}/api/subtitles/download?title=${encodeURIComponent(cleanT)}&season=${dlSeason}&episode=${dlEpisode}&subjectId=${encodeURIComponent(dlSubjectId)}&detailPath=${encodeURIComponent(dlDetailPath)}&type=${dlIsSeries ? 'series' : 'movie'}&lang=${lang}&json=1`;
+          const res = await fetch(endpointUrl);
+          if (res.ok) {
+            const text = await res.text();
+            if (text.trim().startsWith('{')) {
+              try {
+                const j = JSON.parse(text);
+                if (j.vtt && j.vtt.includes('-->')) return j.vtt;
+              } catch (_) {}
+            }
+            if (text.includes('-->')) return text;
           }
-        }
-      } catch (e) {}
+        } catch (_) {}
+        return '';
+      };
 
-      if (available.length === 0 && subtitleState.availableTracks && subtitleState.availableTracks.length > 0) {
-        available = subtitleState.availableTracks;
-      }
-
-      const chosenBn = available.find(t => t.langCode === 'bn' && !t.isAi && !t.url?.includes('ai-translate')) || available.find(t => t.langCode === 'bn');
-      const chosenEn = available.find(t => t.langCode === 'en');
-
-      const [bnFetched, enFetched] = await Promise.all([
-        fetchSubText(chosenBn),
-        fetchSubText(chosenEn)
+      const [bText, eText] = await Promise.all([
+        fetchSubFromEndpoint('bn'),
+        fetchSubFromEndpoint('en')
       ]);
 
-      bnVttText = bnFetched || '';
-      enVttText = enFetched || '';
-
-      if (!bnVttText && chosenEn && (chosenEn.url || chosenEn.downloadUrl)) {
-        try {
-          const enUrl = chosenEn.url || chosenEn.downloadUrl;
-          const aiUrl = `${apiBase}/api/subtitles/ai-translate?url=${encodeURIComponent(enUrl)}&title=${encodeURIComponent(cleanT)}&season=${dlSeason}&episode=${dlEpisode}`;
-          const aiRes = await fetch(aiUrl);
-          if (aiRes.ok) {
-            const aiText = await aiRes.text();
-            if (aiText && aiText.includes('-->')) bnVttText = aiText;
-          }
-        } catch(aiErr) {}
-      }
+      bnVttText = bText || '';
+      enVttText = eText || '';
     } catch (subErr) {
       console.warn('Offline subtitle sync warning:', subErr.message);
     }
-
+    
     // Save final offline video into IndexedDB
     let idbSaveSuccess = false;
     try {
@@ -11106,9 +11049,16 @@ async function playDownloadedMedia(id) {
       const seriesEpisodesWrapper = document.getElementById('seriesEpisodesWrapper');
       if (seriesEpisodesWrapper) seriesEpisodesWrapper.style.display = 'none';
 
-      // Build offline subtitle tracks for full switching freedom!
+            // Build offline subtitle tracks for full switching freedom!
       const offlineTracks = [];
-      const bnText = nativeBnSub || offlineItem?.bnVttText || offlineItem?.vttText;
+      let bnText = nativeBnSub || offlineItem?.bnVttText || offlineItem?.vttText || storedItem?.bnVttText || '';
+      try {
+        if (bnText.trim().startsWith('{')) {
+          const p = JSON.parse(bnText);
+          if (p.vtt) bnText = p.vtt;
+        }
+      } catch (_) {}
+
       if (bnText && typeof parseSubtitleTextToCues === 'function') {
         const bnCues = parseSubtitleTextToCues(bnText);
         if (bnCues && bnCues.length > 0) {
@@ -11122,7 +11072,14 @@ async function playDownloadedMedia(id) {
         }
       }
 
-      const enText = nativeEnSub || offlineItem?.enVttText;
+      let enText = nativeEnSub || offlineItem?.enVttText || storedItem?.enVttText || '';
+      try {
+        if (enText.trim().startsWith('{')) {
+          const p = JSON.parse(enText);
+          if (p.vtt) enText = p.vtt;
+        }
+      } catch (_) {}
+
       if (enText && typeof parseSubtitleTextToCues === 'function') {
         const enCues = parseSubtitleTextToCues(enText);
         if (enCues && enCues.length > 0) {
@@ -11157,49 +11114,89 @@ async function playDownloadedMedia(id) {
         selectSubtitleTrack('off');
       }
 
-      // Retroactive subtitle fetch: if missing from offline record but user happens to be online right now
-      if (offlineTracks.length === 0 && navigator.onLine) {
+      // Instant Auto-Sync for offline media if subtitles are missing from local storage
+      if (offlineTracks.length === 0) {
         (async () => {
           try {
             const apiBase = (typeof window.getApiBaseUrl === 'function') ? window.getApiBaseUrl() : (window.API_BASE_URL || 'https://fobstv.duckdns.org');
-            const cleanT = (offlineItem.title || '').replace(/\[.*?\]|\(.*?\)/g, '').replace(/ - Ep.*/i, '').trim();
-            const sRes = await fetch(`${apiBase}/api/subtitles?title=${encodeURIComponent(cleanT)}&season=${offlineItem.season || 1}&episode=${offlineItem.episode || 1}&subjectId=${encodeURIComponent(offlineItem.mediaId || '')}&type=${offlineItem.isSeries ? 'series' : 'movie'}`);
-            if (sRes.ok) {
-              const sData = await sRes.json();
-              const subs = sData.subtitles || [];
-              const cBn = subs.find(t => t.langCode === 'bn');
-              const cEn = subs.find(t => t.langCode === 'en');
-              let nBn = '';
-              let nEn = '';
-              if (cBn) {
-                const tr = await fetch(`${apiBase}/api/subtitles/track?url=${encodeURIComponent(cBn.url || cBn.downloadUrl)}`);
-                if (tr.ok) {
-                  const td = await tr.json();
-                  if (td.success && td.vtt) nBn = td.vtt;
+            const cleanT = (offlineItem?.title || storedItem?.title || '')
+              .replace(/\s*-\s*S\d+\s*Ep\s*\d+.*/i, '')
+              .replace(/\s*-\s*Episode\s*\d+.*/i, '')
+              .replace(/\s*-\s*Ep\s*\d+.*/i, '')
+              .replace(/\s*-\s*Season\s*\d+.*/i, '')
+              .replace(/\[.*?\]|\(.*?\)/g, '')
+              .trim();
+            const sNum = offlineItem?.season || storedItem?.season || 0;
+            const eNum = offlineItem?.episode || storedItem?.episode || 0;
+            const subId = offlineItem?.mediaId || storedItem?.mediaId || '';
+            const isSer = !!(offlineItem?.isSeries || storedItem?.isSeries || sNum || eNum);
+
+            const fetchSubJson = async (lang) => {
+              try {
+                const u = `${apiBase}/api/subtitles/download?title=${encodeURIComponent(cleanT)}&season=${sNum}&episode=${eNum}&subjectId=${encodeURIComponent(subId)}&type=${isSer ? 'series' : 'movie'}&lang=${lang}&json=1`;
+                const r = await fetch(u);
+                if (r.ok) {
+                  const t = await r.text();
+                  if (t.trim().startsWith('{')) {
+                    try {
+                      const j = JSON.parse(t);
+                      if (j.vtt && j.vtt.includes('-->')) return j.vtt;
+                    } catch (_) {}
+                  }
+                  if (t.includes('-->')) return t;
                 }
-              }
-              if (cEn) {
-                const tr = await fetch(`${apiBase}/api/subtitles/track?url=${encodeURIComponent(cEn.url || cEn.downloadUrl)}`);
-                if (tr.ok) {
-                  const td = await tr.json();
-                  if (td.success && td.vtt) nEn = td.vtt;
-                }
-              }
-              if (nBn || nEn) {
-                offlineItem.bnVttText = nBn;
-                offlineItem.enVttText = nEn;
+              } catch (_) {}
+              return '';
+            };
+
+            const [nBn, nEn] = await Promise.all([fetchSubJson('bn'), fetchSubJson('en')]);
+            if (nBn || nEn) {
+              if (offlineItem) {
+                if (nBn) offlineItem.bnVttText = nBn;
+                if (nEn) offlineItem.enVttText = nEn;
                 offlineItem.vttText = nBn || nEn;
-                await saveOfflineMedia(offlineItem);
-                const updatedTracks = [];
-                if (nBn) updatedTracks.push({ id: 'offline_bn', language: 'Bangla (বাংলা)', langCode: 'bn', source: 'Offline Storage', rawCues: parseSubtitleTextToCues(nBn) });
-                if (nEn) updatedTracks.push({ id: 'offline_en', language: 'English', langCode: 'en', source: 'Offline Storage', rawCues: parseSubtitleTextToCues(nEn) });
-                subtitleState.availableTracks = updatedTracks;
+                if (typeof saveOfflineMedia === 'function') await saveOfflineMedia(offlineItem);
+              }
+              if (storedItem) {
+                if (nBn) storedItem.bnVttText = nBn;
+                if (nEn) storedItem.enVttText = nEn;
+              }
+              try {
+                const curDls = (typeof getStoredDownloadsList === 'function') ? getStoredDownloadsList() : [];
+                const curD = curDls.find(d => d.id === id);
+                if (curD) {
+                  if (nBn) curD.bnVttText = nBn;
+                  if (nEn) curD.enVttText = nEn;
+                  localStorage.setItem('fobs_downloads', JSON.stringify(curDls));
+                }
+              } catch (_) {}
+              if (window.AndroidApp && typeof window.AndroidApp.saveLocalSubtitle === 'function') {
+                if (nBn) window.AndroidApp.saveLocalSubtitle(id, 'bn', nBn);
+                if (nEn) window.AndroidApp.saveLocalSubtitle(id, 'en', nEn);
+              }
+
+              const newTracks = [];
+              if (nBn && typeof parseSubtitleTextToCues === 'function') {
+                const bnCues = parseSubtitleTextToCues(nBn);
+                if (bnCues.length > 0) newTracks.push({ id: 'offline_bn', language: 'Bangla (বাংলা)', langCode: 'bn', source: 'Offline Storage', rawCues: bnCues });
+              }
+              if (nEn && typeof parseSubtitleTextToCues === 'function') {
+                const enCues = parseSubtitleTextToCues(nEn);
+                if (enCues.length > 0) newTracks.push({ id: 'offline_en', language: 'English', langCode: 'en', source: 'Offline Storage', rawCues: enCues });
+              }
+              if (newTracks.length > 0) {
+                subtitleState.availableTracks = newTracks;
                 renderSubtitleLists();
-                const pref = updatedTracks.find(t => t.langCode === 'bn') || updatedTracks[0];
-                if (pref) selectSubtitleTrack(pref.id);
+                const pref = newTracks.find(t => t.langCode === 'bn') || newTracks[0];
+                if (pref && typeof selectSubtitleTrack === 'function') {
+                  selectSubtitleTrack(pref.id);
+                  showToast(`💬 অফলাইন সাবটাইটেল প্রস্তুত: ${pref.language}`);
+                }
               }
             }
-          } catch (_) {}
+          } catch (err) {
+            console.warn('Auto offline subtitle fetch error:', err);
+          }
         })();
       }
 

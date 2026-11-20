@@ -611,8 +611,8 @@ public class NativeDownloadManager {
             try {
                 URL u = new URL(urlStr);
                 HttpURLConnection c = (HttpURLConnection) u.openConnection();
-                c.setConnectTimeout(10000);
-                c.setReadTimeout(15000);
+                c.setConnectTimeout(25000);
+                c.setReadTimeout(50000);
                 c.setRequestProperty("User-Agent", "FOBS-TV-SubDownloader");
                 c.connect();
                 if (c.getResponseCode() == 200) {
