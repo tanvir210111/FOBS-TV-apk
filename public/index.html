@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="referrer" content="no-referrer-when-downgrade">
   <meta name="monetag" content="8f946e8a023f930c4b73e0a5181dd84d">
-  <!-- Monetag Vignette Banner Ad (Active on Mobile & PC; suppressed on TV to protect D-pad navigation) -->
+  <!-- Monetag Ads Engine (Vignette Banner & In-Page Push Banner - Mobile & PC) -->
   <script>
     (function() {
       try {
@@ -18,10 +18,13 @@
           isTv = true;
         }
         if (isTv) {
-          console.log('[Ad] Android TV detected. Monetag Vignette suppressed for clean remote control navigation.');
+          console.log('[Ad] Android TV detected. Monetag suppressed for clean remote control navigation.');
           return;
         }
+        // 1. Monetag Vignette Banner (Zone 12310109)
         (function(s){s.dataset.zone='12310109',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+        // 2. Monetag In-Page Push / Banner Tag (Zone 12310416)
+        (function(s){s.dataset.zone='12310416',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
       } catch (e) {
         console.warn('[Ad] Monetag init error:', e);
       }
