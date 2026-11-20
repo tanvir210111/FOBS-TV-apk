@@ -3522,17 +3522,24 @@ function getActiveSeasonEpisodes(media) {
       title: 'Episode 7',
       streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=7'
     };
-    if (!media.episodes || !media.episodes.some(e => e.episode === 5) || !media.episodes.some(e => e.episode === 6) || !media.episodes.some(e => e.episode === 7)) {
-      media.episodes = (media.episodes || []).filter(e => e.episode !== 5 && e.episode !== 6 && e.episode !== 7);
-      media.episodes.push(ep5, ep6, ep7);
+    const ep8 = {
+      id: 'mb-s-579116273137862480_s1_e8',
+      episode: 8,
+      season: 1,
+      title: 'Episode 8',
+      streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=8'
+    };
+    if (!media.episodes || !media.episodes.some(e => e.episode === 5) || !media.episodes.some(e => e.episode === 6) || !media.episodes.some(e => e.episode === 7) || !media.episodes.some(e => e.episode === 8)) {
+      media.episodes = (media.episodes || []).filter(e => e.episode !== 5 && e.episode !== 6 && e.episode !== 7 && e.episode !== 8);
+      media.episodes.push(ep5, ep6, ep7, ep8);
       media.episodes.sort((a, b) => a.episode - b.episode);
       media.episodesCount = media.episodes.length;
       media.totalEpisodes = media.episodes.length;
     }
     if (media.seasons && media.seasons[0]) {
-      if (!media.seasons[0].episodes || !media.seasons[0].episodes.some(e => e.episode === 5) || !media.seasons[0].episodes.some(e => e.episode === 6) || !media.seasons[0].episodes.some(e => e.episode === 7)) {
-        media.seasons[0].episodes = (media.seasons[0].episodes || []).filter(e => e.episode !== 5 && e.episode !== 6 && e.episode !== 7);
-        media.seasons[0].episodes.push(ep5, ep6, ep7);
+      if (!media.seasons[0].episodes || !media.seasons[0].episodes.some(e => e.episode === 5) || !media.seasons[0].episodes.some(e => e.episode === 6) || !media.seasons[0].episodes.some(e => e.episode === 7) || !media.seasons[0].episodes.some(e => e.episode === 8)) {
+        media.seasons[0].episodes = (media.seasons[0].episodes || []).filter(e => e.episode !== 5 && e.episode !== 6 && e.episode !== 7 && e.episode !== 8);
+        media.seasons[0].episodes.push(ep5, ep6, ep7, ep8);
         media.seasons[0].episodes.sort((a, b) => a.episode - b.episode);
         media.seasons[0].episodesCount = media.seasons[0].episodes.length;
       }

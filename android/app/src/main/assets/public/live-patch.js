@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.9.3 (Dropdowns, Add to list, Share & Centered Report modal fix)
+// FOBS TV Live OTA Patch Bundle v1.9.4 (The Remarried Empress Episode 8 + FOBS Bangla Sub added)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.9.3 (Dropdowns, Add to list, Share & Centered Report modal fix) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.9.3';
+  console.log('⚡ FOBS TV Live Patch v1.9.4 (The Remarried Empress Episode 8 + FOBS Bangla Sub) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.9.4';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -27,14 +27,22 @@
     streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=7'
   };
 
+  const REMARRIED_EP8 = {
+    id: 'mb-s-579116273137862480_s1_e8',
+    episode: 8,
+    season: 1,
+    title: 'Episode 8',
+    streamUrl: '/api/moviebox/stream?id=579116273137862480&path=the-remarried-empress-aVOAhKemMG&se=1&ep=8'
+  };
+
   function patchTreEpisodes(target) {
     if (!target) return;
-    target.episodes = (target.episodes || []).filter(e => e.episode !== 5 && e.episode !== 6 && e.episode !== 7);
-    target.episodes.push(REMARRIED_EP5, REMARRIED_EP6, REMARRIED_EP7);
+    target.episodes = (target.episodes || []).filter(e => e.episode !== 5 && e.episode !== 6 && e.episode !== 7 && e.episode !== 8);
+    target.episodes.push(REMARRIED_EP5, REMARRIED_EP6, REMARRIED_EP7, REMARRIED_EP8);
     target.episodes.sort((a, b) => a.episode - b.episode);
     if (target.seasons && target.seasons[0]) {
-      target.seasons[0].episodes = (target.seasons[0].episodes || []).filter(e => e.episode !== 5 && e.episode !== 6 && e.episode !== 7);
-      target.seasons[0].episodes.push(REMARRIED_EP5, REMARRIED_EP6, REMARRIED_EP7);
+      target.seasons[0].episodes = (target.seasons[0].episodes || []).filter(e => e.episode !== 5 && e.episode !== 6 && e.episode !== 7 && e.episode !== 8);
+      target.seasons[0].episodes.push(REMARRIED_EP5, REMARRIED_EP6, REMARRIED_EP7, REMARRIED_EP8);
       target.seasons[0].episodes.sort((a, b) => a.episode - b.episode);
       target.seasons[0].episodesCount = target.seasons[0].episodes.length;
     }
@@ -3744,7 +3752,7 @@
 
           if (isRemarriedEmpress) {
             const rawEp = window.appState?.currentEpisode?.episode || window.appState?.currentEpisodeNumber || 1;
-            const ep = Math.max(1, Math.min(6, parseInt(rawEp, 10) || 1));
+            const ep = Math.max(1, parseInt(rawEp, 10) || 1);
             const state = window.subtitleState;
             if (state) {
               const fobsTrack = {
@@ -3878,7 +3886,7 @@
         const cleanT = (curM?.title || '').toLowerCase();
         if (cleanT.includes('remarried empress') && window.subtitleState) {
           const rawEp = window.appState?.currentEpisode?.episode || window.appState?.currentEpisodeNumber || 1;
-          const ep = Math.max(1, Math.min(6, parseInt(rawEp, 10) || 1));
+          const ep = Math.max(1, parseInt(rawEp, 10) || 1);
           const fobsTrack = {
             id: `fobs_special_sub_remarried_ep${ep}`,
             language: 'FOBS Team Special Sub (বাংলা)',
@@ -6874,5 +6882,5 @@ window.renderDownloadsList = renderDownloadsList;;
     console.error('v1.9.3 patch error:', err);
   }
 
-  console.log('✅ FOBS TV Live Patch v1.9.3 active: Dropdowns, Add to list, Share & Centered Report modal fixed.');
+  console.log('✅ FOBS TV Live Patch v1.9.4 active: The Remarried Empress Episode 8 + FOBS Bangla Sub active.');
 })();
