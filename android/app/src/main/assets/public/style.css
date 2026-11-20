@@ -8714,9 +8714,11 @@ body.is-fullscreen .custom-subtitle-overlay {
 }
 
 .ls-size-chip.active, .ls-bg-chip.active {
-  background: #00f2fe;
-  color: #0a0d14;
-  font-weight: 700;
+  background: #00f2fe !important;
+  color: #0a0d14 !important;
+  font-weight: 800 !important;
+  border-color: #00f2fe !important;
+  box-shadow: 0 0 14px rgba(0, 242, 254, 0.45) !important;
 }
 
 .ls-color-row {
@@ -9218,10 +9220,11 @@ body.is-fullscreen #subtitleModal .subtitle-modal-container {
 }
 
 .sub-size-chip.active, .sub-bg-chip.active {
-  background: #00f2fe;
-  color: #0a0d14;
-  font-weight: 800;
-  border-color: #00f2fe;
+  background: #00f2fe !important;
+  color: #0a0d14 !important;
+  font-weight: 800 !important;
+  border-color: #00f2fe !important;
+  box-shadow: 0 0 14px rgba(0, 242, 254, 0.45) !important;
 }
 
 .sub-color-palette {

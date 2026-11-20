@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.8.7 (Black Shadow Fix, Prev Ep Button, Portrait Return Pill, Scaled Subtitles, Dark Scrollbar, Registered Members)
+// FOBS TV Live OTA Patch Bundle v1.8.8 (Subtitle Size Active Color Fix, Full Page Modals, Offline Subtitles)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.8.7 (Black Shadow Fix, Prev Ep Button, Portrait Return Pill, Scaled Subtitles, Dark Scrollbar) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.8.7';
+  console.log('⚡ FOBS TV Live Patch v1.8.8 (Subtitle Size Active Highlight Fix, Full Page Modals, Offline Subtitles) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.8.8';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -4220,6 +4220,24 @@
         isolation: isolate !important;
       }
 
+      /* Subtitle Size & Style Active State Highlights */
+      .ls-size-chip.active,
+      .sub-size-chip.active,
+      .font-size-chip.active {
+        background: #00f2fe !important;
+        color: #0a0d14 !important;
+        font-weight: 800 !important;
+        border-color: #00f2fe !important;
+        box-shadow: 0 0 14px rgba(0, 242, 254, 0.45) !important;
+      }
+      .ls-bg-chip.active,
+      .sub-bg-chip.active {
+        background: #00f2fe !important;
+        color: #0a0d14 !important;
+        font-weight: 800 !important;
+        border-color: #00f2fe !important;
+      }
+
       /* Previous Episode Button & Landscape Portrait Return Pill */
       .ls-prev-ep-btn {
         width: 44px;
@@ -5340,25 +5358,93 @@
       }
     };
 
-    window.setSubtitleSize = function(size) {
-      if (!window.subtitleState) window.subtitleState = {};
-      window.subtitleState.fontSize = Number(size) || 18;
-      try {
-        localStorage.setItem('fobs_subtitle_size', String(window.subtitleState.fontSize));
-      } catch (_) {}
-      document.querySelectorAll('.font-size-chip').forEach(c => {
-        if (Number(c.dataset.size) === Number(size)) c.classList.add('active');
-        else c.classList.remove('active');
+    window.updateSubtitleSizeUI = function(size) {
+      const activeSize = Number(size || (window.subtitleState && window.subtitleState.fontSize) || localStorage.getItem('fobs_subtitle_size') || 18);
+      document.querySelectorAll('.ls-size-chip, .sub-size-chip, .font-size-chip, [data-size]').forEach(btn => {
+        const btnSize = Number(btn.dataset.size || btn.getAttribute('data-size'));
+        if (btnSize && btnSize === activeSize) {
+          btn.classList.add('active');
+          btn.style.setProperty('background', '#00f2fe', 'important');
+          btn.style.setProperty('color', '#0a0d14', 'important');
+          btn.style.setProperty('border-color', '#00f2fe', 'important');
+          btn.style.setProperty('font-weight', '800', 'important');
+          btn.style.setProperty('box-shadow', '0 0 14px rgba(0, 242, 254, 0.45)', 'important');
+        } else if (btnSize) {
+          btn.classList.remove('active');
+          btn.style.removeProperty('background');
+          btn.style.removeProperty('color');
+          btn.style.removeProperty('border-color');
+          btn.style.removeProperty('font-weight');
+          btn.style.removeProperty('box-shadow');
+        }
       });
-      const cueTextEl = document.querySelector('#customSubtitleOverlay .custom-subtitle-cue, .custom-subtitle-cue');
-      if (cueTextEl) {
+    };
+
+    window.setSubtitleSize = function(size) {
+      const numSize = Number(size) || 18;
+      if (!window.subtitleState) window.subtitleState = {};
+      window.subtitleState.fontSize = numSize;
+      try {
+        localStorage.setItem('fobs_subtitle_size', String(numSize));
+      } catch (_) {}
+      if (typeof saveSubtitleSettings === 'function') {
+        try { saveSubtitleSettings(); } catch (_) {}
+      }
+      if (typeof window.updateSubtitleSizeUI === 'function') {
+        window.updateSubtitleSizeUI(numSize);
+      }
+      if (typeof updateSubtitlePreview === 'function') {
+        try { updateSubtitlePreview(); } catch (_) {}
+      }
+      const cueTextEl = document.querySelector('#customSubtitleOverlay .custom-subtitle-cue, .custom-subtitle-cue, #customSubtitleCueText');
+      if (cueTextEl && typeof window.applySubtitleStylesToElement === 'function') {
         window.applySubtitleStylesToElement(cueTextEl);
       }
       const sizeNames = { 14: 'Small', 18: 'Normal', 23: 'Large', 28: 'Extra', 34: 'Huge' };
       if (typeof showToast === 'function') {
-        showToast(`Subtitle Size: ${sizeNames[size] || size}`);
+        showToast(`Subtitle Size: ${sizeNames[numSize] || numSize}`);
       }
     };
+
+    // Auto sync size chips when subtitle modal or landscape style drawer opens
+    if (typeof window.openSubtitleModal === 'function' && !window.openSubtitleModal._sizeSyncHooked) {
+      const origOpenSubModal = window.openSubtitleModal;
+      window.openSubtitleModal = function(tab) {
+        origOpenSubModal(tab);
+        setTimeout(() => {
+          if (typeof window.updateSubtitleSizeUI === 'function') window.updateSubtitleSizeUI();
+        }, 15);
+      };
+      window.openSubtitleModal._sizeSyncHooked = true;
+    }
+
+    if (typeof window.showLandscapeSubView === 'function' && !window.showLandscapeSubView._sizeSyncHooked) {
+      const origShowLsSubView = window.showLandscapeSubView;
+      window.showLandscapeSubView = function(view) {
+        origShowLsSubView(view);
+        if (view === 'style') {
+          setTimeout(() => {
+            if (typeof window.updateSubtitleSizeUI === 'function') window.updateSubtitleSizeUI();
+          }, 15);
+        }
+      };
+      window.showLandscapeSubView._sizeSyncHooked = true;
+    }
+
+    // Capture click on any size chip button directly
+    document.addEventListener('click', function(e) {
+      const btn = e.target && e.target.closest && e.target.closest('.ls-size-chip, .sub-size-chip, .font-size-chip');
+      if (btn && (btn.dataset.size || btn.getAttribute('data-size'))) {
+        const s = Number(btn.dataset.size || btn.getAttribute('data-size'));
+        if (s) {
+          window.setSubtitleSize(s);
+        }
+      }
+    }, true);
+
+    setTimeout(() => {
+      if (typeof window.updateSubtitleSizeUI === 'function') window.updateSubtitleSizeUI();
+    }, 400);
 
     // 23. Strict Login Enforcement Guard
     if (typeof window.openPlayer === 'function' && !window.openPlayer._loginGateHooked) {
@@ -6172,5 +6258,5 @@ window.renderDownloadsList = renderDownloadsList;;
 
   } catch (_) {}
 
-  console.log('✅ FOBS TV Live Patch v1.8.7 active: No Shadow, Previous Ep Btn, Portrait Switch, Scaled Subtitles & Dark Scrollbars.');
+  console.log('✅ FOBS TV Live Patch v1.8.8 active: Subtitle Size Highlight, Full-Page Scaling, Offline Subs & Dark Scrollbars.');
 })();

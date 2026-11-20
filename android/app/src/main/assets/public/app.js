@@ -6436,7 +6436,10 @@ function showLandscapeSubView(view) {
   if (styleView) styleView.style.display = (view === 'style') ? 'flex' : 'none';
 
   if (view === 'sync') updateSyncUI();
-  if (view === 'style') updateBgUI();
+  if (view === 'style') {
+    updateBgUI();
+    if (typeof updateSubtitleSizeUI === 'function') updateSubtitleSizeUI();
+  }
 }
 
 // Select a Subtitle Track
@@ -6968,19 +6971,44 @@ function updateSubtitlePreview() {
 }
 
 // Set Font Size
-function setSubtitleSize(size) {
-  subtitleState.fontSize = size;
-  saveSubtitleSettings();
-  document.querySelectorAll('.sub-size-chip, .ls-size-chip').forEach(btn => {
-    btn.classList.toggle('active', parseInt(btn.dataset.size, 10) === size);
+function updateSubtitleSizeUI(size) {
+  const targetSize = Number(size || subtitleState.fontSize || localStorage.getItem('fobs_subtitle_size') || 18);
+  document.querySelectorAll('.sub-size-chip, .ls-size-chip, .font-size-chip, [data-size]').forEach(btn => {
+    const btnSize = Number(btn.dataset.size || btn.getAttribute('data-size'));
+    if (btnSize && btnSize === targetSize) {
+      btn.classList.add('active');
+      btn.style.setProperty('background', '#00f2fe', 'important');
+      btn.style.setProperty('color', '#0a0d14', 'important');
+      btn.style.setProperty('border-color', '#00f2fe', 'important');
+      btn.style.setProperty('font-weight', '800', 'important');
+      btn.style.setProperty('box-shadow', '0 0 14px rgba(0, 242, 254, 0.45)', 'important');
+    } else if (btnSize) {
+      btn.classList.remove('active');
+      btn.style.removeProperty('background');
+      btn.style.removeProperty('color');
+      btn.style.removeProperty('border-color');
+      btn.style.removeProperty('font-weight');
+      btn.style.removeProperty('box-shadow');
+    }
   });
+}
+window.updateSubtitleSizeUI = updateSubtitleSizeUI;
+
+function setSubtitleSize(size) {
+  const numSize = Number(size) || 18;
+  subtitleState.fontSize = numSize;
+  saveSubtitleSettings();
+  try {
+    localStorage.setItem('fobs_subtitle_size', String(numSize));
+  } catch (_) {}
+  updateSubtitleSizeUI(numSize);
   updateSubtitlePreview();
   const cueTextEl = document.getElementById('customSubtitleCueText');
   if (cueTextEl) {
     applySubtitleStylesToElement(cueTextEl);
   }
   const sizeNames = { 14: 'Small', 18: 'Normal', 23: 'Large', 28: 'Extra', 34: 'Huge' };
-  showToast(`Subtitle Size: ${sizeNames[size] || size}`);
+  showToast(`Subtitle Size: ${sizeNames[numSize] || numSize}`);
 }
 window.setSubtitleSize = setSubtitleSize;
 
@@ -7301,6 +7329,7 @@ function openSubtitleModal(tab = 'lang') {
   switchSubtitleModalTab(tab);
   updateSyncUI();
   updateBgUI();
+  if (typeof updateSubtitleSizeUI === 'function') updateSubtitleSizeUI();
   updateSubtitlePreview();
   renderSubtitleLists();
 }
