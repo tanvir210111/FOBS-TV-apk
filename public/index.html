@@ -7,28 +7,6 @@
   <meta name="theme-color" content="#020c1c" id="themeColorMeta">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="referrer" content="no-referrer-when-downgrade">
-  <meta name="monetag" content="8f946e8a023f930c4b73e0a5181dd84d">
-  <!-- Monetag Native Banner Ad (In-Page Push - Web Only; suppressed on PC App & TV to prevent stuck/floating cards) -->
-  <script>
-    (function() {
-      try {
-        var ua = (navigator.userAgent || '').toLowerCase();
-        var isDesktopApp = Boolean(window.process && window.process.type) || ua.includes('electron') || ua.includes('fobs-tv-pc-app');
-        var isTv = ua.includes('android tv') || ua.includes('smarttv') || ua.includes('smart-tv') || ua.includes('leanback') || ua.includes('aftt') || ua.includes('aftm') || ua.includes('mitv') || ua.includes('bravia');
-        if (!isTv && /android/i.test(ua) && window.innerWidth >= 1280 && (!('ontouchstart' in window) || navigator.maxTouchPoints === 0)) {
-          isTv = true;
-        }
-        if (isDesktopApp || isTv) {
-          console.log('[Ad] Desktop PC App or Android TV detected. Monetag suppressed for clean native experience.');
-          return;
-        }
-        // Monetag Native Banner / In-Page Push (Zone 12310416)
-        (function(s){s.dataset.zone='12310416',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
-      } catch (e) {
-        console.warn('[Ad] Monetag init error:', e);
-      }
-    })();
-  </script>
   <title>FOBS TV - Live Streaming & Download App</title>
   <style>
     /* Critical First-Paint CSS: Eliminate white flash & preserve butter-smooth scrolling */
