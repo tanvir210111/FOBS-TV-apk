@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.9.1 (Clean 320x50 Banner Ads for All Apps Mobile PC & TV)
+// FOBS TV Live OTA Patch Bundle v1.9.2 (320x50 Banner on Home, Movies, Series, Live TV, Anime & Details)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.9.1 (Clean 320x50 Banner Ads for All Apps) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.9.1';
+  console.log('⚡ FOBS TV Live Patch v1.9.2 (320x50 Banners on Movies, Series, Live TV & Anime) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.9.2';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -6371,7 +6371,68 @@ window.renderDownloadsList = renderDownloadsList;;
           homeSlot.innerHTML = `<div class="fobs-ad-card">${makeFrame()}</div>`;
         }
 
-        // 3. Me Page Ad Slot (320x50)
+        // 3. Movie Tab Ad Slot (320x50)
+        let movieSlot = document.getElementById('fobsAdMovieSlot');
+        if (!movieSlot) {
+          const movieSec = document.querySelector('#movieTrendingList')?.closest('.content-section');
+          if (movieSec && movieSec.parentNode) {
+            movieSlot = document.createElement('div');
+            movieSlot.className = 'fobs-ad-slot fobs-ad-movie';
+            movieSlot.id = 'fobsAdMovieSlot';
+            movieSec.parentNode.insertBefore(movieSlot, movieSec.nextSibling);
+          }
+        }
+        if (movieSlot && (!movieSlot.querySelector('iframe') || movieSlot.querySelector('iframe').hasAttribute('sandbox'))) {
+          movieSlot.innerHTML = `<div class="fobs-ad-card">${makeFrame()}</div>`;
+        }
+
+        // 4. Series Tab Ad Slot (320x50)
+        let seriesSlot = document.getElementById('fobsAdSeriesSlot');
+        if (!seriesSlot) {
+          const seriesSec = document.querySelector('#seriesTrendingList')?.closest('.content-section');
+          if (seriesSec && seriesSec.parentNode) {
+            seriesSlot = document.createElement('div');
+            seriesSlot.className = 'fobs-ad-slot fobs-ad-series';
+            seriesSlot.id = 'fobsAdSeriesSlot';
+            seriesSec.parentNode.insertBefore(seriesSlot, seriesSec.nextSibling);
+          }
+        }
+        if (seriesSlot && (!seriesSlot.querySelector('iframe') || seriesSlot.querySelector('iframe').hasAttribute('sandbox'))) {
+          seriesSlot.innerHTML = `<div class="fobs-ad-card">${makeFrame()}</div>`;
+        }
+
+        // 5. Live TV Tab Ad Slot (320x50)
+        let liveTvSlot = document.getElementById('fobsAdLiveTvSlot');
+        if (!liveTvSlot) {
+          const catBar = document.getElementById('liveTvCategoryBar');
+          if (catBar && catBar.parentNode) {
+            liveTvSlot = document.createElement('div');
+            liveTvSlot.className = 'fobs-ad-slot fobs-ad-livetv';
+            liveTvSlot.id = 'fobsAdLiveTvSlot';
+            liveTvSlot.style.cssText = 'margin: 8px auto 14px;';
+            catBar.parentNode.insertBefore(liveTvSlot, catBar.nextSibling);
+          }
+        }
+        if (liveTvSlot && (!liveTvSlot.querySelector('iframe') || liveTvSlot.querySelector('iframe').hasAttribute('sandbox'))) {
+          liveTvSlot.innerHTML = makeFrame();
+        }
+
+        // 6. Anime Tab Ad Slot (320x50)
+        let animeSlot = document.getElementById('fobsAdAnimeSlot');
+        if (!animeSlot) {
+          const animeSec = document.querySelector('#animeTrendingList')?.closest('.content-section');
+          if (animeSec && animeSec.parentNode) {
+            animeSlot = document.createElement('div');
+            animeSlot.className = 'fobs-ad-slot fobs-ad-anime';
+            animeSlot.id = 'fobsAdAnimeSlot';
+            animeSec.parentNode.insertBefore(animeSlot, animeSec.nextSibling);
+          }
+        }
+        if (animeSlot && (!animeSlot.querySelector('iframe') || animeSlot.querySelector('iframe').hasAttribute('sandbox'))) {
+          animeSlot.innerHTML = `<div class="fobs-ad-card">${makeFrame()}</div>`;
+        }
+
+        // 7. Me Page Ad Slot (320x50)
         let meSlot = document.getElementById('fobsAdMeSlot');
         if (!meSlot) {
           const meFooter = document.querySelector('.mb-official-footer');
@@ -6391,7 +6452,7 @@ window.renderDownloadsList = renderDownloadsList;;
     setTimeout(injectAdsterraBanners, 400);
     setTimeout(injectAdsterraBanners, 1800);
 
-    // Also inject when opening player overlay
+    // Also inject when opening player overlay or switching tabs
     if (typeof window.openPlayer === 'function' && !window.openPlayer._adSlotHooked) {
       const origOpenPlayerForAds = window.openPlayer;
       window.openPlayer = function(m, ep, t) {
@@ -6401,7 +6462,16 @@ window.renderDownloadsList = renderDownloadsList;;
       window.openPlayer._adSlotHooked = true;
     }
 
+    if (typeof window.switchMainTab === 'function' && !window.switchMainTab._adSlotHooked) {
+      const origSwitchMainTab = window.switchMainTab;
+      window.switchMainTab = function(tab) {
+        origSwitchMainTab(tab);
+        setTimeout(injectAdsterraBanners, 200);
+      };
+      window.switchMainTab._adSlotHooked = true;
+    }
+
   } catch (_) {}
 
-  console.log('✅ FOBS TV Live Patch v1.9.1 active: Clean 320x50 Banners for All Apps (Mobile, PC & TV).');
+  console.log('✅ FOBS TV Live Patch v1.9.2 active: 320x50 Banners on Movies, Series, Live TV & Anime.');
 })();
