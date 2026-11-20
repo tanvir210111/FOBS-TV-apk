@@ -12013,7 +12013,7 @@ function toggleAddToList() {
 
 function shareApp() {
   const shareTitle = 'FOBS TV — Free Movies, Series & Anime';
-  const shareText = 'Watch trending movies, web series, Korean dramas & Hindi dubbed anime in 1080p Full HD on FOBS TV! Download now: https://fobs-apk-download.vercel.app/';
+  const shareText = 'Watch trending movies, web series, Korean dramas & Hindi dubbed anime in 1080p Full HD on FOBS TV! Download now: https://fobstv.duckdns.org/download';
 
   try {
     if (window.AndroidApp && typeof window.AndroidApp.shareText === 'function') {
@@ -12026,7 +12026,7 @@ function shareApp() {
     navigator.share({
       title: shareTitle,
       text: shareText,
-      url: 'https://fobs-apk-download.vercel.app/'
+      url: 'https://fobstv.duckdns.org/download'
     }).catch(() => {
       copyShareFallback(shareText);
     });
@@ -12043,7 +12043,7 @@ function shareMedia() {
     return;
   }
   const shareTitle = media.title || 'FOBS TV';
-  const shareText = `Watch "${shareTitle}" in HD on FOBS TV! Download the app: https://fobs-apk-download.vercel.app/`;
+  const shareText = `Watch "${shareTitle}" in HD on FOBS TV! Download the app: https://fobstv.duckdns.org/download`;
 
   if (window.AndroidApp && typeof window.AndroidApp.shareText === 'function') {
     window.AndroidApp.shareText(shareTitle, shareText);
@@ -12054,7 +12054,7 @@ function shareMedia() {
     navigator.share({
       title: shareTitle,
       text: shareText,
-      url: 'https://fobs-apk-download.vercel.app/'
+      url: 'https://fobstv.duckdns.org/download'
     }).catch(() => {
       copyShareFallback(shareText);
     });
@@ -13309,7 +13309,7 @@ function startAppUpdate() {
   if (btnStart) btnStart.style.display = 'none';
   if (progContainer) progContainer.classList.remove('hidden');
 
-  let apkUrl = currentAppUpdateConfig?.downloadUrl || 'https://fobs-apk-download.vercel.app/';
+  let apkUrl = currentAppUpdateConfig?.downloadUrl || 'https://fobstv.duckdns.org/download';
   if (!apkUrl.startsWith('http')) {
     apkUrl = `${API_BASE_URL}${apkUrl.startsWith('/') ? '' : '/'}${apkUrl}`;
   }
@@ -13943,7 +13943,7 @@ async function toggleCurrentMediaWatchlist() {
 // ============================================================
 
 // 1. Copy Website Link
-function copyWebsiteLink(url = 'https://fobs-apk-download.vercel.app/') {
+function copyWebsiteLink(url = 'https://fobstv.duckdns.org/download') {
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(url).then(() => {
       showToast('🔗 Website link copied to clipboard!');

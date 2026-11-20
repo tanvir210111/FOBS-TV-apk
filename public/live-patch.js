@@ -1,7 +1,7 @@
-// FOBS TV Live OTA Patch Bundle v1.8.8 (Subtitle Size Active Color Fix, Full Page Modals, Offline Subtitles)
+// FOBS TV Live OTA Patch Bundle v1.8.9 (Official Download Portal URL Update, Subtitle Size Active Color Fix)
 (function () {
-  console.log('⚡ FOBS TV Live Patch v1.8.8 (Subtitle Size Active Highlight Fix, Full Page Modals, Offline Subtitles) executing...');
-  window.FOBS_LIVE_PATCH_VERSION = '1.8.8';
+  console.log('⚡ FOBS TV Live Patch v1.8.9 (Official Download Portal URL Update to fobstv.duckdns.org/download) executing...');
+  window.FOBS_LIVE_PATCH_VERSION = '1.8.9';
 
   const REMARRIED_EP5 = {
     id: 'mb-s-579116273137862480_s1_e5',
@@ -3176,7 +3176,7 @@
           message: "নতুন v3.1.8 ভার্সনে মুভিবক্স মেথডে ডিভাইস স্টোরেজ ডাউনলোড, অফলাইন বাংলা ও ইংরেজি সাবটাইটেল এবং ০-সেকেন্ডের স্মুথ অফলাইন রেঞ্জ প্লেব্যাক যুক্ত করা হয়েছে। আগের ভার্সনে ডাউনলোড সমস্যা এড়াতে এখনই আপডেট করুন!",
           releaseNotes: [],
           downloadUrl: "https://fobstv.duckdns.org/download/apk",
-          fallbackUrl: "https://fobs-apk-download.vercel.app/",
+          fallbackUrl: "https://fobstv.duckdns.org/download",
           fileSize: "7.75 MB"
         }
       };
@@ -5466,7 +5466,7 @@
 // ============================================================
 
 // 1. Copy Website Link
-function copyWebsiteLink(url = 'https://fobs-apk-download.vercel.app/') {
+function copyWebsiteLink(url = 'https://fobstv.duckdns.org/download') {
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(url).then(() => {
       showToast('🔗 Website link copied to clipboard!');
@@ -5478,6 +5478,34 @@ function copyWebsiteLink(url = 'https://fobs-apk-download.vercel.app/') {
   }
 }
 window.copyWebsiteLink = copyWebsiteLink;
+
+// Live Me Page Download URL Sync
+function syncMePageDownloadUrl() {
+  try {
+    document.querySelectorAll('.mb-official-strip').forEach(strip => {
+      strip.setAttribute('onclick', "copyWebsiteLink('https://fobstv.duckdns.org/download')");
+      const span = strip.querySelector('.mb-strip-left span');
+      if (span) span.textContent = 'Official app: fobstv.duckdns.org/download';
+    });
+    document.querySelectorAll('.mb-official-footer').forEach(footer => {
+      footer.setAttribute('onclick', "copyWebsiteLink('https://fobstv.duckdns.org/download')");
+      const span = footer.querySelector('span:first-child');
+      if (span) span.textContent = 'Official app: fobstv.duckdns.org/download';
+    });
+    document.querySelectorAll('.mb-menu-row').forEach(row => {
+      const leftSpan = row.querySelector('.mb-m-left span');
+      if (leftSpan && leftSpan.textContent.includes('Official App Portal')) {
+        row.setAttribute('onclick', "copyWebsiteLink('https://fobstv.duckdns.org/download')");
+        const valSpan = row.querySelector('.mb-sub-val');
+        if (valSpan) valSpan.textContent = 'fobstv.duckdns.org';
+      }
+    });
+    const browserDownloadBtn = document.getElementById('btnBrowserDownload');
+    if (browserDownloadBtn) browserDownloadBtn.href = 'https://fobstv.duckdns.org/download';
+  } catch (_) {}
+}
+setTimeout(syncMePageDownloadUrl, 300);
+setTimeout(syncMePageDownloadUrl, 1500);
 
 // 2. Watchlist (My List) Modal
 function openWatchlistModal() {
@@ -6258,5 +6286,5 @@ window.renderDownloadsList = renderDownloadsList;;
 
   } catch (_) {}
 
-  console.log('✅ FOBS TV Live Patch v1.8.8 active: Subtitle Size Highlight, Full-Page Scaling, Offline Subs & Dark Scrollbars.');
+  console.log('✅ FOBS TV Live Patch v1.8.9 active: Download Portal URL fobstv.duckdns.org/download updated, Size Highlight & Offline Subs.');
 })();

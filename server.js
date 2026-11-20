@@ -1919,7 +1919,7 @@ app.get('/api/app-update', (req, res) => {
       '🛡️ সম্পূর্ণ ক্লিন প্যাকেজ ও গুগল প্লে প্রোটেক্ট ভেরিফাইড'
     ],
     downloadUrl: 'https://fobstv.duckdns.org/download/apk',
-    fallbackUrl: 'https://fobs-apk-download.vercel.app/',
+    fallbackUrl: 'https://fobstv.duckdns.org/download',
     fileSize: '7.75 MB'
   };
     res.json(data.appUpdate || defaultUpdate);
@@ -1963,7 +1963,7 @@ app.get('/download/apk', (req, res) => {
   const data = getContentData();
   const directApkUrl = (data.appUpdate && data.appUpdate.downloadUrl && !data.appUpdate.downloadUrl.includes('/download/apk'))
     ? data.appUpdate.downloadUrl
-    : 'https://fobs-apk-download.vercel.app/';
+    : 'https://fobstv.duckdns.org/download';
   return res.redirect(directApkUrl);
 });
 
@@ -2983,7 +2983,7 @@ app.all('/api/stream', async (req, res) => {
 // ============================================================
 let livePatchConfig = {
   enabled: true,
-  version: "1.8.8",
+  version: "1.8.9",
   scriptUrl: "/api/live-patch/bundle.js"
 };
 
