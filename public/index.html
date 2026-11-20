@@ -8,8 +8,25 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="referrer" content="no-referrer-when-downgrade">
   <meta name="monetag" content="8f946e8a023f930c4b73e0a5181dd84d">
-  <!-- Monetag Vignette Banner Ad -->
-  <script>(function(s){s.dataset.zone='12310109',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+  <!-- Monetag Vignette Banner Ad (Active on Mobile & PC; suppressed on TV to protect D-pad navigation) -->
+  <script>
+    (function() {
+      try {
+        var ua = (navigator.userAgent || '').toLowerCase();
+        var isTv = ua.includes('android tv') || ua.includes('smarttv') || ua.includes('smart-tv') || ua.includes('leanback') || ua.includes('aftt') || ua.includes('aftm') || ua.includes('mitv') || ua.includes('bravia');
+        if (!isTv && /android/i.test(ua) && window.innerWidth >= 1280 && (!('ontouchstart' in window) || navigator.maxTouchPoints === 0)) {
+          isTv = true;
+        }
+        if (isTv) {
+          console.log('[Ad] Android TV detected. Monetag Vignette suppressed for clean remote control navigation.');
+          return;
+        }
+        (function(s){s.dataset.zone='12310109',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+      } catch (e) {
+        console.warn('[Ad] Monetag init error:', e);
+      }
+    })();
+  </script>
   <title>FOBS TV - Live Streaming & Download App</title>
   <style>
     /* Critical First-Paint CSS: Eliminate white flash & preserve butter-smooth scrolling */
