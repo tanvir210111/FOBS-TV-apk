@@ -6370,122 +6370,13 @@ window.renderDownloadsList = renderDownloadsList;;
       showToast('সাবটাইটেল পাওয়া যায়নি');
     };
 
-    // 25. Adsterra Clean 320x50 Banner Ads Engine (For All Apps: Mobile, PC & TV)
+    // 25. Adsterra Banners Removed - All old ad slots hidden
     function injectAdsterraBanners() {
       try {
-        const adUrl = 'https://fobstv.duckdns.org/ads/banner-320x50.html';
-        const makeFrame = () => `
-          <div class="fobs-ad-header"><span class="fobs-ad-badge"><i class="fa-solid fa-rectangle-ad"></i> SPONSORED</span></div>
-          <div class="fobs-ad-frame-wrapper fobs-ad-320x50">
-            <iframe class="fobs-ad-iframe" src="${adUrl}" width="320" height="50" frameborder="0" scrolling="no" loading="lazy" tabindex="-1"></iframe>
-          </div>
-        `;
-
-        // 1. Details Ad Slot (320x50)
-        let detailsSlot = document.getElementById('fobsAdDetailsSlot');
-        if (!detailsSlot) {
-          const commContainer = document.querySelector('.floating-community-container');
-          if (commContainer && commContainer.parentNode) {
-            detailsSlot = document.createElement('div');
-            detailsSlot.className = 'fobs-ad-slot fobs-ad-details';
-            detailsSlot.id = 'fobsAdDetailsSlot';
-            commContainer.parentNode.insertBefore(detailsSlot, commContainer);
-          }
-        }
-        if (detailsSlot && (!detailsSlot.querySelector('iframe') || detailsSlot.querySelector('iframe').src.includes('300x250') || detailsSlot.querySelector('iframe').hasAttribute('sandbox'))) {
-          detailsSlot.innerHTML = makeFrame();
-        }
-
-        // 2. Home Feed Ad Slot (320x50)
-        let homeSlot = document.getElementById('fobsAdHomeSlot');
-        if (!homeSlot) {
-          const trendingSec = document.querySelector('#trendingList')?.closest('.content-section');
-          if (trendingSec && trendingSec.parentNode) {
-            homeSlot = document.createElement('div');
-            homeSlot.className = 'fobs-ad-slot fobs-ad-home';
-            homeSlot.id = 'fobsAdHomeSlot';
-            trendingSec.parentNode.insertBefore(homeSlot, trendingSec.nextSibling);
-          }
-        }
-        if (homeSlot && (!homeSlot.querySelector('iframe') || homeSlot.querySelector('iframe').src.includes('300x250') || homeSlot.querySelector('iframe').hasAttribute('sandbox'))) {
-          homeSlot.innerHTML = `<div class="fobs-ad-card">${makeFrame()}</div>`;
-        }
-
-        // 3. Movie Tab Ad Slot (320x50)
-        let movieSlot = document.getElementById('fobsAdMovieSlot');
-        if (!movieSlot) {
-          const movieSec = document.querySelector('#movieTrendingList')?.closest('.content-section');
-          if (movieSec && movieSec.parentNode) {
-            movieSlot = document.createElement('div');
-            movieSlot.className = 'fobs-ad-slot fobs-ad-movie';
-            movieSlot.id = 'fobsAdMovieSlot';
-            movieSec.parentNode.insertBefore(movieSlot, movieSec.nextSibling);
-          }
-        }
-        if (movieSlot && (!movieSlot.querySelector('iframe') || movieSlot.querySelector('iframe').hasAttribute('sandbox'))) {
-          movieSlot.innerHTML = `<div class="fobs-ad-card">${makeFrame()}</div>`;
-        }
-
-        // 4. Series Tab Ad Slot (320x50)
-        let seriesSlot = document.getElementById('fobsAdSeriesSlot');
-        if (!seriesSlot) {
-          const seriesSec = document.querySelector('#seriesTrendingList')?.closest('.content-section');
-          if (seriesSec && seriesSec.parentNode) {
-            seriesSlot = document.createElement('div');
-            seriesSlot.className = 'fobs-ad-slot fobs-ad-series';
-            seriesSlot.id = 'fobsAdSeriesSlot';
-            seriesSec.parentNode.insertBefore(seriesSlot, seriesSec.nextSibling);
-          }
-        }
-        if (seriesSlot && (!seriesSlot.querySelector('iframe') || seriesSlot.querySelector('iframe').hasAttribute('sandbox'))) {
-          seriesSlot.innerHTML = `<div class="fobs-ad-card">${makeFrame()}</div>`;
-        }
-
-        // 5. Live TV Tab Ad Slot (320x50)
-        let liveTvSlot = document.getElementById('fobsAdLiveTvSlot');
-        if (!liveTvSlot) {
-          const catBar = document.getElementById('liveTvCategoryBar');
-          if (catBar && catBar.parentNode) {
-            liveTvSlot = document.createElement('div');
-            liveTvSlot.className = 'fobs-ad-slot fobs-ad-livetv';
-            liveTvSlot.id = 'fobsAdLiveTvSlot';
-            liveTvSlot.style.cssText = 'margin: 8px auto 14px;';
-            catBar.parentNode.insertBefore(liveTvSlot, catBar.nextSibling);
-          }
-        }
-        if (liveTvSlot && (!liveTvSlot.querySelector('iframe') || liveTvSlot.querySelector('iframe').hasAttribute('sandbox'))) {
-          liveTvSlot.innerHTML = makeFrame();
-        }
-
-        // 6. Anime Tab Ad Slot (320x50)
-        let animeSlot = document.getElementById('fobsAdAnimeSlot');
-        if (!animeSlot) {
-          const animeSec = document.querySelector('#animeTrendingList')?.closest('.content-section');
-          if (animeSec && animeSec.parentNode) {
-            animeSlot = document.createElement('div');
-            animeSlot.className = 'fobs-ad-slot fobs-ad-anime';
-            animeSlot.id = 'fobsAdAnimeSlot';
-            animeSec.parentNode.insertBefore(animeSlot, animeSec.nextSibling);
-          }
-        }
-        if (animeSlot && (!animeSlot.querySelector('iframe') || animeSlot.querySelector('iframe').hasAttribute('sandbox'))) {
-          animeSlot.innerHTML = `<div class="fobs-ad-card">${makeFrame()}</div>`;
-        }
-
-        // 7. Me Page Ad Slot (320x50)
-        let meSlot = document.getElementById('fobsAdMeSlot');
-        if (!meSlot) {
-          const meFooter = document.querySelector('.mb-official-footer');
-          if (meFooter && meFooter.parentNode) {
-            meSlot = document.createElement('div');
-            meSlot.className = 'fobs-ad-slot fobs-ad-me';
-            meSlot.id = 'fobsAdMeSlot';
-            meFooter.parentNode.insertBefore(meSlot, meFooter);
-          }
-        }
-        if (meSlot && (!meSlot.querySelector('iframe') || meSlot.querySelector('iframe').hasAttribute('sandbox'))) {
-          meSlot.innerHTML = makeFrame();
-        }
+        document.querySelectorAll('.fobs-ad-slot').forEach(function(el) {
+          el.style.display = 'none';
+          el.innerHTML = '';
+        });
       } catch (_) {}
     }
 

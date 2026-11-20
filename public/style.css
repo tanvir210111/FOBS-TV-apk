@@ -12375,15 +12375,11 @@ body::-webkit-scrollbar-thumb {
 /* FOBS TV CLEAN AD SLOTS (ADSTERRA 300x250 & 320x50)           */
 /* ============================================================ */
 .fobs-ad-slot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 14px auto;
-  width: 100%;
-  max-width: 100%;
-  position: relative;
-  contain: layout;
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
 }
 
 .fobs-ad-header {
